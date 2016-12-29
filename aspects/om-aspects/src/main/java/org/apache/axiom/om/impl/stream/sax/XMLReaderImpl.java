@@ -40,10 +40,12 @@ public class XMLReaderImpl extends AbstractXMLReader {
         this.cache = cache;
     }
 
+    @Override
     public void parse(InputSource input) throws IOException, SAXException {
         parse();
     }
 
+    @Override
     public void parse(String systemId) throws IOException, SAXException {
         parse();
     }

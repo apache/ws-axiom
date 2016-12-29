@@ -33,16 +33,19 @@ final class SizeLimitedOutputStream extends OutputStream {
         this.maxSize = maxSize;
     }
 
+    @Override
     public void write(byte[] b, int off, int len) throws IOException {
         size += len;
         checkSize();
     }
 
+    @Override
     public void write(byte[] b) throws IOException {
         size += b.length;
         checkSize();
     }
 
+    @Override
     public void write(int b) throws IOException {
         size++;
         checkSize();

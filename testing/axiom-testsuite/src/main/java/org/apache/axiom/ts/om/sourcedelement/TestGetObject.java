@@ -37,6 +37,7 @@ public class TestGetObject extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         DataSource ds = new ByteArrayDataSource("test".getBytes("utf-8"), "text/plain; charset=utf-8");

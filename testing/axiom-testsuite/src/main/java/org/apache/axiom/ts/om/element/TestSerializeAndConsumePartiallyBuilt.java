@@ -35,6 +35,7 @@ public class TestSerializeAndConsumePartiallyBuilt extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String xml = "<root><child><grandchild1>text</grandchild1></child><child><grandchild2>text</grandchild2></child></root>";
         

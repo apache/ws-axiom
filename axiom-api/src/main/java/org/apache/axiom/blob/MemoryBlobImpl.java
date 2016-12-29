@@ -28,6 +28,7 @@ final class MemoryBlobImpl implements MemoryBlob {
     private MemoryBlobChunk firstChunk;
     private boolean committed;
     
+    @Override
     public long getSize() {
         if (firstChunk == null || !committed) {
             throw new IllegalStateException();
@@ -42,6 +43,7 @@ final class MemoryBlobImpl implements MemoryBlob {
         }
     }
 
+    @Override
     public OutputStream getOutputStream() {
         return internalGetOutputStream();
     }
@@ -58,6 +60,7 @@ final class MemoryBlobImpl implements MemoryBlob {
         committed = true;
     }
     
+    @Override
     public long readFrom(InputStream in) throws StreamCopyException {
         MemoryBlobOutputStream out = internalGetOutputStream();
         try {
@@ -67,15 +70,17 @@ final class MemoryBlobImpl implements MemoryBlob {
         }
     }
 
+    @Override
     public InputStream getInputStream() {
         return getInputStream(true);
     }
     
+    @Override
     public InputStream readOnce() {
         return getInputStream(false);
     }
 
-    public InputStream getInputStream(boolean preserve) {
+    private InputStream getInputStream(boolean preserve) {
         if (firstChunk == null || !committed) {
             throw new IllegalStateException();
         }
@@ -86,6 +91,7 @@ final class MemoryBlobImpl implements MemoryBlob {
         return in;
     }
 
+    @Override
     public void writeTo(OutputStream os) throws StreamCopyException {
         if (firstChunk == null || !committed) {
             throw new IllegalStateException();
@@ -103,6 +109,7 @@ final class MemoryBlobImpl implements MemoryBlob {
         }
     }
 
+    @Override
     public void release() {
         firstChunk = null;
     }

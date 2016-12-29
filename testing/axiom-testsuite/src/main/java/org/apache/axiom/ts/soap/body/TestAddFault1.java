@@ -29,6 +29,7 @@ public class TestAddFault1 extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPBody body = soapFactory.createSOAPBody(envelope);

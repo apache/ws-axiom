@@ -35,6 +35,7 @@ final class ContentHandlerWriter extends Writer {
         this.contentHandler = contentHandler;
     }
 
+    @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
         try {
             contentHandler.characters(cbuf, off, len);
@@ -45,9 +46,11 @@ final class ContentHandlerWriter extends Writer {
         }
     }
 
+    @Override
     public void close() throws IOException {
     }
 
+    @Override
     public void flush() throws IOException {
     }
 }

@@ -51,6 +51,7 @@ public class TestBuilder extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String soap12Message =
                 "<env:Envelope xmlns:env=\"http://www.w3.org/2003/05/soap-envelope\">\n" +

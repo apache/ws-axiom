@@ -35,6 +35,7 @@ public class TestGetValueAsQNameWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, SOAPSample.SOAP12_FAULT);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultSubCode subCode = envelope.getBody().getFault().getCode().getSubCode();
         assertEquals(new QName("http:www.sample.org", "MessageTimeout_In_First_Subcode"), subCode.getValueAsQName());

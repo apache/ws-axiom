@@ -35,6 +35,7 @@ public class TestGetNamespaceNormalized extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Element element = doc.createElementNS(null, "test");

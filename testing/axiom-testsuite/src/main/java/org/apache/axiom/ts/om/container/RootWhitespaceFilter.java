@@ -34,6 +34,7 @@ public class RootWhitespaceFilter extends XMLStreamReaderWrapper {
         super(parent);
     }
 
+    @Override
     public int next() throws XMLStreamException {
         int event;
         loop: while (true) {

@@ -37,6 +37,7 @@ public class TestCloseOnComplete extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         PullOMDataSource ds = new PullOMDataSource("<root><a/></root>");
         OMSourcedElement element = metaFactory.getOMFactory().createOMElement(ds);

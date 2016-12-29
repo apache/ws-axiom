@@ -39,15 +39,18 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     private final ScopedNamespaceContext namespaceContext = new ScopedNamespaceContext();
     private boolean inEmptyElement;
 
+    @Override
     public final NamespaceContext getNamespaceContext() {
         return namespaceContext;
     }
 
+    @Override
     public final void setNamespaceContext(NamespaceContext context) throws XMLStreamException {
         // We currently don't support this method
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final String getPrefix(String uri) throws XMLStreamException {
         return namespaceContext.getPrefix(uri);
     }
@@ -61,38 +64,45 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
         namespaceContext.setPrefix(prefix, uri);
     }
     
+    @Override
     public final void setDefaultNamespace(String uri) throws XMLStreamException {
         internalSetPrefix("", uri);
     }
 
+    @Override
     public final void setPrefix(String prefix, String uri) throws XMLStreamException {
         internalSetPrefix(prefix, uri);
     }
 
+    @Override
     public final void writeStartDocument() throws XMLStreamException {
         doWriteStartDocument();
     }
     
     protected abstract void doWriteStartDocument() throws XMLStreamException;
 
+    @Override
     public final void writeStartDocument(String encoding, String version) throws XMLStreamException {
         doWriteStartDocument(encoding, version);
     }
 
     protected abstract void doWriteStartDocument(String encoding, String version) throws XMLStreamException;
 
+    @Override
     public final void writeStartDocument(String version) throws XMLStreamException {
         doWriteStartDocument(version);
     }
 
     protected abstract void doWriteStartDocument(String version) throws XMLStreamException;
     
+    @Override
     public final void writeDTD(String dtd) throws XMLStreamException {
         doWriteDTD(dtd);
     }
 
     protected abstract void doWriteDTD(String dtd) throws XMLStreamException;
     
+    @Override
     public final void writeEndDocument() throws XMLStreamException {
         doWriteEndDocument();
     }
@@ -108,6 +118,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
         }
     }
     
+    @Override
     public final void writeStartElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException {
         doWriteStartElement(prefix, localName, namespaceURI);
@@ -115,6 +126,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
         inEmptyElement = false;
     }
 
+    @Override
     public final void writeStartElement(String namespaceURI, String localName) throws XMLStreamException {
         doWriteStartElement(internalGetPrefix(namespaceURI), localName, namespaceURI);
         namespaceContext.startScope();
@@ -124,6 +136,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     protected abstract void doWriteStartElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException;
 
+    @Override
     public final void writeStartElement(String localName) throws XMLStreamException {
         doWriteStartElement(localName);
         namespaceContext.startScope();
@@ -132,6 +145,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
 
     protected abstract void doWriteStartElement(String localName) throws XMLStreamException;
 
+    @Override
     public final void writeEndElement() throws XMLStreamException {
         doWriteEndElement();
         namespaceContext.endScope();
@@ -140,12 +154,14 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
 
     protected abstract void doWriteEndElement() throws XMLStreamException;
 
+    @Override
     public final void writeEmptyElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException {
         doWriteEmptyElement(prefix, localName, namespaceURI);
         inEmptyElement = true;
     }
 
+    @Override
     public final void writeEmptyElement(String namespaceURI, String localName)
             throws XMLStreamException {
         doWriteEmptyElement(internalGetPrefix(namespaceURI), localName, namespaceURI);
@@ -155,6 +171,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     protected abstract void doWriteEmptyElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException;
 
+    @Override
     public final void writeEmptyElement(String localName) throws XMLStreamException {
         doWriteEmptyElement(localName);
         inEmptyElement = true;
@@ -162,11 +179,13 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
 
     protected abstract void doWriteEmptyElement(String localName) throws XMLStreamException;
     
+    @Override
     public final void writeAttribute(String prefix, String namespaceURI, String localName, String value)
             throws XMLStreamException {
         doWriteAttribute(prefix, namespaceURI, localName, value);
     }
 
+    @Override
     public final void writeAttribute(String namespaceURI, String localName, String value)
             throws XMLStreamException {
         doWriteAttribute(internalGetPrefix(namespaceURI), namespaceURI, localName, value);
@@ -175,6 +194,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     protected abstract void doWriteAttribute(String prefix, String namespaceURI, String localName,
             String value) throws XMLStreamException;
 
+    @Override
     public final void writeAttribute(String localName, String value) throws XMLStreamException {
         doWriteAttribute(localName, value);
     }
@@ -182,6 +202,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     protected abstract void doWriteAttribute(String localName, String value)
             throws XMLStreamException;
 
+    @Override
     public final void writeNamespace(String prefix, String namespaceURI) throws XMLStreamException {
         doWriteNamespace(prefix, namespaceURI);
         namespaceContext.setPrefix(prefix, namespaceURI);
@@ -190,6 +211,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     protected abstract void doWriteNamespace(String prefix, String namespaceURI)
             throws XMLStreamException;
 
+    @Override
     public final void writeDefaultNamespace(String namespaceURI) throws XMLStreamException {
         doWriteDefaultNamespace(namespaceURI);
         namespaceContext.setPrefix("", namespaceURI);
@@ -197,6 +219,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
 
     protected abstract void doWriteDefaultNamespace(String namespaceURI) throws XMLStreamException;
 
+    @Override
     public final void writeCharacters(char[] text, int start, int len) throws XMLStreamException {
         doWriteCharacters(text, start, len);
         inEmptyElement = false;
@@ -205,6 +228,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     protected abstract void doWriteCharacters(char[] text, int start, int len)
             throws XMLStreamException;
 
+    @Override
     public final void writeCharacters(String text) throws XMLStreamException {
         doWriteCharacters(text);
         inEmptyElement = false;
@@ -212,6 +236,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     
     protected abstract void doWriteCharacters(String text) throws XMLStreamException;
 
+    @Override
     public final void writeCData(String data) throws XMLStreamException {
         doWriteCData(data);
         inEmptyElement = false;
@@ -219,6 +244,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     
     protected abstract void doWriteCData(String data) throws XMLStreamException;
 
+    @Override
     public final void writeComment(String data) throws XMLStreamException {
         doWriteComment(data);
         inEmptyElement = false;
@@ -226,6 +252,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
 
     protected abstract void doWriteComment(String data) throws XMLStreamException;
 
+    @Override
     public final void writeEntityRef(String name) throws XMLStreamException {
         doWriteEntityRef(name);
         inEmptyElement = false;
@@ -233,6 +260,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
 
     protected abstract void doWriteEntityRef(String name) throws XMLStreamException;
 
+    @Override
     public final void writeProcessingInstruction(String target, String data)
             throws XMLStreamException {
         doWriteProcessingInstruction(target, data);
@@ -242,6 +270,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     protected abstract void doWriteProcessingInstruction(String target, String data)
             throws XMLStreamException;
 
+    @Override
     public final void writeProcessingInstruction(String target) throws XMLStreamException {
         doWriteProcessingInstruction(target);
         inEmptyElement = false;

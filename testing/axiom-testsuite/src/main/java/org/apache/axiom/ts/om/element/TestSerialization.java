@@ -70,6 +70,7 @@ public class TestSerialization extends AxiomTestCase {
         }
     }
     
+    @Override
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
 

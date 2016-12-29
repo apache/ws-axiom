@@ -37,6 +37,7 @@ public class TestCloneNodeIncomplete extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Element element = (Element)OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 new StringReader("<root><child1/><child2/></root>")).getDocumentElement();

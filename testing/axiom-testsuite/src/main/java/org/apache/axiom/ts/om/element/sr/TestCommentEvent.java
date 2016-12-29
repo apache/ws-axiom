@@ -41,6 +41,7 @@ public class TestCommentEvent extends AxiomTestCase {
         addTestParameter("cache", cache);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory, new InputSource(new StringReader("<a><!--comment text--></a>")));
         OMElement element = builder.getDocumentElement();

@@ -47,10 +47,12 @@ public interface StAXParserConfiguration {
      * also put the parser in non coalescing mode.
      */
     StAXParserConfiguration PRESERVE_CDATA_SECTIONS = new StAXParserConfiguration() {
+        @Override
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
             return dialect.enableCDataReporting(factory);
         }
         
+        @Override
         public String toString() {
             return "PRESERVE_CDATA_SECTIONS";
         }
@@ -72,6 +74,7 @@ public interface StAXParserConfiguration {
      * E.g. default attribute values defined in the DTD will not be reported.
      */
     StAXParserConfiguration STANDALONE = new StAXParserConfiguration() {
+        @Override
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
             factory = DEFAULT.configure(factory, dialect);
             factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
@@ -80,6 +83,7 @@ public interface StAXParserConfiguration {
             // we add a custom XMLResolver that returns empty documents. See WSTX-117 for
             // an interesting discussion about this.
             factory.setXMLResolver(new XMLResolver() {
+                @Override
                 public Object resolveEntity(String publicID, String systemID, String baseURI,
                         String namespace) throws XMLStreamException {
                     return new ByteArrayInputStream(new byte[0]);
@@ -88,6 +92,7 @@ public interface StAXParserConfiguration {
             return factory;
         }
 
+        @Override
         public String toString() {
             return "STANDALONE";
         }
@@ -97,11 +102,13 @@ public interface StAXParserConfiguration {
      * Configuration that sets up the parser in coalescing mode.
      */
     StAXParserConfiguration COALESCING = new StAXParserConfiguration() {
+        @Override
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
             factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
             return factory;
         }
 
+        @Override
         public String toString() {
             return "NON_COALESCING";
         }
@@ -111,11 +118,13 @@ public interface StAXParserConfiguration {
      * Configuration that sets up the parser in non coalescing mode.
      */
     StAXParserConfiguration NON_COALESCING = new StAXParserConfiguration() {
+        @Override
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
             factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
             return factory;
         }
 
+        @Override
         public String toString() {
             return "NON_COALESCING";
         }
@@ -133,10 +142,12 @@ public interface StAXParserConfiguration {
      * @see StAXDialect#disallowDoctypeDecl(XMLInputFactory)
      */
     StAXParserConfiguration SOAP = new StAXParserConfiguration() {
+        @Override
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
             return dialect.disallowDoctypeDecl(DEFAULT.configure(factory, dialect));
         }
 
+        @Override
         public String toString() {
             return "SOAP";
         }

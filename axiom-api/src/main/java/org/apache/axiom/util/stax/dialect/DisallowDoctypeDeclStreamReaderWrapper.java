@@ -29,6 +29,7 @@ class DisallowDoctypeDeclStreamReaderWrapper extends XMLStreamReaderWrapper {
         super(parent);
     }
 
+    @Override
     public int next() throws XMLStreamException {
         int event = super.next();
         if (event == DTD) {

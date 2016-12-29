@@ -37,6 +37,7 @@ public class TestSetMustUnderstandWithInvalidValue extends SOAPTestCase {
         addTestParameter("value", value);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
         try {

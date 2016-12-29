@@ -35,6 +35,7 @@ public class EmptyDataSource implements SizeAwareDataSource {
     public static final EmptyDataSource INSTANCE = new EmptyDataSource("application/octet-stream");
     
     private static final InputStream emptyInputStream = new InputStream() {
+        @Override
         public int read() throws IOException {
             return -1;
         }
@@ -51,22 +52,27 @@ public class EmptyDataSource implements SizeAwareDataSource {
         this.contentType = contentType;
     }
 
+    @Override
     public String getContentType() {
         return contentType;
     }
 
+    @Override
     public String getName() {
         return null;
     }
 
+    @Override
     public long getSize() {
         return 0;
     }
 
+    @Override
     public InputStream getInputStream() throws IOException {
         return emptyInputStream;
     }
 
+    @Override
     public OutputStream getOutputStream() throws IOException {
         throw new UnsupportedOperationException();
     }

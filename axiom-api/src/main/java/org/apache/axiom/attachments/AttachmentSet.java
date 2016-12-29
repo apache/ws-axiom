@@ -38,48 +38,59 @@ import org.apache.axiom.om.OMException;
 class AttachmentSet extends AttachmentsDelegate {
     private final Map<String,DataHandler> attachmentsMap = new LinkedHashMap<String,DataHandler>();
 
+    @Override
     ContentType getContentType() {
         return null;
     }
 
+    @Override
     DataHandler getDataHandler(String contentID) {
         return attachmentsMap.get(contentID);
     }
 
+    @Override
     void addDataHandler(String contentID, DataHandler dataHandler) {
         attachmentsMap.put(contentID, dataHandler);
     }
     
+    @Override
     void removeDataHandler(String blobContentID) {
         attachmentsMap.remove(blobContentID);
     }
 
+    @Override
     InputStream getRootPartInputStream(boolean preserve) throws OMException {
         throw new OMException("Invalid operation. Attachments are created programatically.");
     }
 
+    @Override
     String getRootPartContentID() {
         return null;
     }
 
+    @Override
     String getRootPartContentType() {
         throw new OMException(
                 "The attachments map was created programatically. Unsupported operation.");
     }
 
+    @Override
     IncomingAttachmentStreams getIncomingAttachmentStreams() {
         throw new IllegalStateException(
                 "The attachments map was created programatically. No streams are available.");
     }
 
+    @Override
     Set<String> getContentIDs(boolean fetchAll) {
         return attachmentsMap.keySet();
     }
     
+    @Override
     Map<String,DataHandler> getMap() {
         return Collections.unmodifiableMap(attachmentsMap);
     }
     
+    @Override
     long getContentLength() throws IOException {
         return -1;
     }

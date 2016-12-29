@@ -66,6 +66,7 @@ public class OMChildElementIterator implements Iterator {
      *                                       the <tt>remove</tt> method has already been called
      *                                       after the last call to the <tt>next</tt> method.
      */
+    @Override
     public void remove() {
         if (!nextCalled) {
             throw new IllegalStateException(
@@ -89,6 +90,7 @@ public class OMChildElementIterator implements Iterator {
      *
      * @return Returns <tt>true</tt> if the iterator has more elements.
      */
+    @Override
     public boolean hasNext() {
         return (currentChild != null);
     }
@@ -100,6 +102,7 @@ public class OMChildElementIterator implements Iterator {
      * @throws java.util.NoSuchElementException
      *          iteration has no more elements.
      */
+    @Override
     public Object next() {
         nextCalled = true;
         removeCalled = false;

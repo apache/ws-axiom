@@ -34,6 +34,7 @@ public class TestDiscardIncomplete extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement documentElement = null;
         

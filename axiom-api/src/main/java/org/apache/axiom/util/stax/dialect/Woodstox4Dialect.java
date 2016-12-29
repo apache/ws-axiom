@@ -31,6 +31,7 @@ class Woodstox4Dialect extends AbstractStAXDialect {
         this.wstx276 = wstx276;
     }
 
+    @Override
     public String getName() {
         StringBuilder result = new StringBuilder("Woodstox 4.x");
         if (wstx276) {
@@ -39,6 +40,7 @@ class Woodstox4Dialect extends AbstractStAXDialect {
         return result.toString();
     }
 
+    @Override
     public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
         factory.setProperty("http://java.sun.com/xml/stream/properties/report-cdata-event", Boolean.TRUE);
@@ -46,28 +48,34 @@ class Woodstox4Dialect extends AbstractStAXDialect {
         return factory;
     }
 
+    @Override
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
         return StAXDialectUtils.disallowDoctypeDecl(factory);
     }
 
+    @Override
     public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
         // Woodstox' factories are designed to be thread safe
         return factory;
     }
 
+    @Override
     public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
         // Woodstox' factories are designed to be thread safe
         return factory;
     }
 
+    @Override
     public XMLStreamReader normalize(XMLStreamReader reader) {
         return new Woodstox4StreamReaderWrapper(reader);
     }
 
+    @Override
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
         return new Woodstox4StreamWriterWrapper(writer);
     }
 
+    @Override
     public XMLInputFactory normalize(XMLInputFactory factory) {
         // Woodstox 3 used to report whitespace in prolog, but this is no longer the case by default
         // in Woodstox 4. The following property changes that behavior.
@@ -79,6 +87,7 @@ class Woodstox4Dialect extends AbstractStAXDialect {
         return factory;
     }
 
+    @Override
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
         
         // TODO: quick fix for AXIOM-415; need a proper solution

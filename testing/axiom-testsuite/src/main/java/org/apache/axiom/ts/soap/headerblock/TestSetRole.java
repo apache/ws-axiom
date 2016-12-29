@@ -28,6 +28,7 @@ public class TestSetRole extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
         soapHeaderBlock.setRole(

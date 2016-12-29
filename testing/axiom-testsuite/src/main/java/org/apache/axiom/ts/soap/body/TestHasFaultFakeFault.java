@@ -34,6 +34,7 @@ public class TestHasFaultFakeFault extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPBody body = soapFactory.getDefaultEnvelope().getBody();
         soapFactory.createOMElement("Fault", soapFactory.getNamespace(), body);

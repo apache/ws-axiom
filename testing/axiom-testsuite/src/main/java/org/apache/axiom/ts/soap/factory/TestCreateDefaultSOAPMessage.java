@@ -38,6 +38,7 @@ public class TestCreateDefaultSOAPMessage extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPMessage message = soapFactory.createDefaultSOAPMessage();
         SOAPEnvelope env = message.getSOAPEnvelope();

@@ -28,6 +28,7 @@ public class TestGetLocalName extends LazyNameTestCase {
         super(metaFactory, variant, qname);
     }
 
+    @Override
     protected void runTest(OMSourcedElement element) throws Throwable {
         assertEquals(qname.getLocalPart(), element.getLocalName());
         if (variant.isLocalNameRequiresExpansion()) {

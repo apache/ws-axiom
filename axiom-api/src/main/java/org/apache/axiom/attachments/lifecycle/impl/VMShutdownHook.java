@@ -70,6 +70,7 @@ public class VMShutdownHook extends Thread {
         files.add(file);   
     }
 
+    @Override
     public void run() {
         if(log.isDebugEnabled()){
             log.debug("JVM running VM Shutdown Hook");

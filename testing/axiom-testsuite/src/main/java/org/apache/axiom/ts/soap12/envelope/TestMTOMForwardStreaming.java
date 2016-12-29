@@ -55,6 +55,7 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
         this.buildSOAPPart = buildSOAPPart;
     }
 
+    @Override
     protected void runTest() throws Throwable {
         DataSource ds1 = new TestDataSource('A', Runtime.getRuntime().maxMemory());
         DataSource ds2 = new TestDataSource('B', Runtime.getRuntime().maxMemory());
@@ -79,6 +80,7 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
         
         // Create the producer thread (simulating the client sending the MTOM message)
         Thread producerThread = new Thread(new Runnable() {
+            @Override
             public void run() {
                 try {
                     try {
@@ -98,6 +100,7 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
         
         // Create the forwarder thread (simulating the mediation engine that forwards the message)
         Thread forwarderThread = new Thread(new Runnable() {
+            @Override
             public void run() {
                 try {
                     try {

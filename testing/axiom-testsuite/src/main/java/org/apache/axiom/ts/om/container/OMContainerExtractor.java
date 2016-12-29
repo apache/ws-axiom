@@ -34,18 +34,22 @@ import org.xml.sax.InputSource;
  */
 public abstract class OMContainerExtractor extends Multiton implements Dimension {
     public static final OMContainerExtractor DOCUMENT = new OMContainerExtractor() {
+        @Override
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("container", "document");
         }
 
+        @Override
         public InputSource getControl(InputStream testFileContent) {
             return new InputSource(testFileContent);
         }
 
+        @Override
         public OMContainer getContainer(OMXMLParserWrapper builder) {
             return builder.getDocument();
         }
 
+        @Override
         public XMLStreamReader filter(XMLStreamReader reader) {
             return new RootWhitespaceFilter(reader);
         }

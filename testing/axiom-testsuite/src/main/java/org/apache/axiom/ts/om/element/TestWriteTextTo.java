@@ -40,6 +40,7 @@ public class TestWriteTextTo extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("a"));

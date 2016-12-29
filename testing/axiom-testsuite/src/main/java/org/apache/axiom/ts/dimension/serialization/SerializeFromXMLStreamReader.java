@@ -36,11 +36,13 @@ public class SerializeFromXMLStreamReader extends SerializationStrategy {
         this.cache = cache;
     }
 
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("serializationStrategy", "XMLStreamReader");
         testCase.addTestParameter("cache", cache);
     }
 
+    @Override
     public XML serialize(OMContainer container) throws Exception {
         StringWriter sw = new StringWriter();
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(container.getOMFactory(), container.getXMLStreamReader(cache));
@@ -49,14 +51,17 @@ public class SerializeFromXMLStreamReader extends SerializationStrategy {
         return new XMLAsString(sw.toString());
     }
 
+    @Override
     public boolean isPush() {
         return false;
     }
 
+    @Override
     public boolean isCaching() {
         return cache;
     }
 
+    @Override
     public boolean supportsInternalSubset() {
         return true;
     }

@@ -31,6 +31,7 @@ public class TestGetMetaFactory extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         assertSame(metaFactory, metaFactory.getOMFactory().getMetaFactory());
     }

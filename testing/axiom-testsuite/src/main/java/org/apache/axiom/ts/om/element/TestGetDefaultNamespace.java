@@ -31,6 +31,7 @@ public class TestGetDefaultNamespace extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", "urn:ns1", "");

@@ -115,5 +115,6 @@ public interface OMDocument extends OMContainer {
     /**
      * {@inheritDoc}
      */
+    @Override
     Iterator<OMSerializable> getDescendants(boolean includeSelf);
 }

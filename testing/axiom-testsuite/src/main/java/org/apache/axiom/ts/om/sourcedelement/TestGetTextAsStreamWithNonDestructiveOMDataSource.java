@@ -39,6 +39,7 @@ public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends AxiomTest
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         DataSource ds = new RandomDataSource(445566, 32, 128, 20000000);

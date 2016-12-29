@@ -287,6 +287,7 @@ public class MIMEOutputUtils {
         try {
             if (!rootDataHandler.getContentType().equals(contentType)) {
                 rootDataHandler = new DataHandlerWrapper(rootDataHandler) {
+                    @Override
                     public String getContentType() {
                         return contentType;
                     }

@@ -71,10 +71,12 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameA
         this.object = object;
     }
 
+    @Override
     public boolean isDestructiveWrite() {
         return false;
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         try {
             Marshaller marshaller = context.createMarshaller();
@@ -113,14 +115,17 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameA
         return cachedQName;
     }
     
+    @Override
     public String getLocalName() {
         return getQName().getLocalPart();
     }
 
+    @Override
     public String getNamespaceURI() {
         return getQName().getNamespaceURI();
     }
 
+    @Override
     public String getPrefix() {
         return null;
     }

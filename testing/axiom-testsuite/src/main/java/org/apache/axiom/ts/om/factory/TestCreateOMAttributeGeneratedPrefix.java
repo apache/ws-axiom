@@ -33,6 +33,7 @@ public class TestCreateOMAttributeGeneratedPrefix extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMAttribute attr = factory.createOMAttribute("attr", factory.createOMNamespace("urn:ns", null), "value");

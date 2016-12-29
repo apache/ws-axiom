@@ -43,16 +43,19 @@ public class WriteNamespaceScenario implements PushOMDataSourceScenario {
         this.namespaceURI = namespaceURI;
     }
 
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "writeNamespace");
         testCase.addTestParameter("prefix", prefix);
         testCase.addTestParameter("uri", namespaceURI);
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement("_p_", "root", "urn:__test__");
         writer.writeNamespace("_p_", "urn:__test__");
@@ -60,6 +63,7 @@ public class WriteNamespaceScenario implements PushOMDataSourceScenario {
         writer.writeEndElement();
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMNamespace decl = null;
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();

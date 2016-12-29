@@ -47,6 +47,7 @@ public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends AxiomT
         addTestParameter("build", build);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement root = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
                 "<root><child><emptyElement/><element>content</element></child></root>");

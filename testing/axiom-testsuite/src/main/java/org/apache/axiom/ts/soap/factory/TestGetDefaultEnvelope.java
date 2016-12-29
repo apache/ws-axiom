@@ -37,6 +37,7 @@ public class TestGetDefaultEnvelope extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope env = soapFactory.getDefaultEnvelope();
         

@@ -35,6 +35,7 @@ final class Feature {
         return priority;
     }
 
+    @Override
     public String toString() {
         return name + "(priority=" + priority + ")";
     }

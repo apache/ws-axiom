@@ -106,6 +106,7 @@ public class Attachments {
             final WritableBlobFactory<?> tempFileBlobFactory = new LegacyTempFileBlobFactory(this, attachmentRepoDir);
             if (fileStorageThreshold > 0) {
                 attachmentBlobFactory = new WritableBlobFactory<WritableBlob>() {
+                    @Override
                     public WritableBlob createBlob() {
                         return Blobs.createOverflowableBlob(fileStorageThreshold, tempFileBlobFactory);
                     }

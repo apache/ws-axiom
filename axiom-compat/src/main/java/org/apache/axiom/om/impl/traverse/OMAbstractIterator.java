@@ -60,6 +60,7 @@ public abstract class OMAbstractIterator implements Iterator {
      */
     protected abstract OMNode getNextNode(OMNode currentNode);
 
+    @Override
     public boolean hasNext() {
         if (noMoreNodes) {
             return false;
@@ -75,6 +76,7 @@ public abstract class OMAbstractIterator implements Iterator {
         }
     }
 
+    @Override
     public Object next() {
         if (hasNext()) {
             currentNode = nextNode;
@@ -87,6 +89,7 @@ public abstract class OMAbstractIterator implements Iterator {
         }
     }
 
+    @Override
     public void remove() {
         if (!nextCalled) {
             throw new IllegalStateException("next() has not yet been called");

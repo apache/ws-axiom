@@ -36,6 +36,7 @@ public class TestCreateOMElementWithNamespaceInScope2 extends CreateOMElementTes
         super(metaFactory, variant, null);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", "urn:test", "p1");

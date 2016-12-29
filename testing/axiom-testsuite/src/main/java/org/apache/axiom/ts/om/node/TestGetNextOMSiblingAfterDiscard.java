@@ -33,6 +33,7 @@ public class TestGetNextOMSiblingAfterDiscard extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(

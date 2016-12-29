@@ -34,6 +34,7 @@ public class TestCreateOMTextCDATASection extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMText text = metaFactory.getOMFactory().createOMText("cdata section content", OMNode.CDATA_SECTION_NODE);
         assertTrue(text instanceof CDATASection);

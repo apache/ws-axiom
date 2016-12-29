@@ -29,6 +29,7 @@ public class TestDigestWithNamespace extends DigestTestCase {
         super(metaFactory, "MD5", "76e696f6b648837de0fa32e2ad8f1250");
     }
 
+    @Override
     protected OMInformationItem createInformationItem() {
         return metaFactory.getOMFactory().createOMElement(new QName("urn:ns", "element", "p"));
     }

@@ -36,10 +36,12 @@ public abstract class AddAttributeStrategy extends Multiton implements Dimension
      * and then adds it using {@link OMElement#addAttribute(OMAttribute)}.
      */
     public static final AddAttributeStrategy FACTORY = new AddAttributeStrategy() {
+        @Override
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("addAttribute", "factory");
         }
         
+        @Override
         public OMAttribute addAttribute(OMElement element, String localName, OMNamespace ns, String value) {
             OMAttribute attr = element.getOMFactory().createOMAttribute(localName, ns, value);
             element.addAttribute(attr);
@@ -51,10 +53,12 @@ public abstract class AddAttributeStrategy extends Multiton implements Dimension
      * Adds the attribute using {@link OMElement#addAttribute(String, String, OMNamespace)}.
      */
     public static final AddAttributeStrategy DIRECT = new AddAttributeStrategy() {
+        @Override
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("addAttribute", "direct");
         }
         
+        @Override
         public OMAttribute addAttribute(OMElement element, String localName, OMNamespace ns, String value) {
             return element.addAttribute(localName, value, ns);
         }

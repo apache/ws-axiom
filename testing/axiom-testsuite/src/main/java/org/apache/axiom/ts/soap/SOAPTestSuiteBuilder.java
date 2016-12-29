@@ -293,6 +293,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.xpath.TestXPathAppliedToSOAPEnvelope(metaFactory, spec, false));
     }
     
+    @Override
     protected void addTests() {
         addTests(SOAPSpec.SOAP11);
         addTests(SOAPSpec.SOAP12);

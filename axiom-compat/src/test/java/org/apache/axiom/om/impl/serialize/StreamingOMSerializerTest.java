@@ -48,6 +48,7 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
         this.file = file;
     }
 
+    @Override
     protected void runTest() throws Throwable {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         StAXDialect dialect = StAXDialectDetector.getDialect(inputFactory.getClass());

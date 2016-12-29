@@ -60,6 +60,7 @@ class PriorityBasedOMMetaFactoryLocator implements OMMetaFactoryLocator {
         }
     }
     
+    @Override
     public OMMetaFactory getOMMetaFactory(String feature) {
         return factories.get(feature);
     }

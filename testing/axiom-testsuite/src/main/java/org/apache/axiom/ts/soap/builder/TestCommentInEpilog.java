@@ -37,6 +37,7 @@ public class TestCommentInEpilog extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
                 new StringReader(soapFactory.getDefaultEnvelope() + "<!--comment-->")).getSOAPEnvelope();

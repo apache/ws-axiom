@@ -31,6 +31,7 @@ public class TestGetNamespacesInScopeWithMaskedDefaultNamespace extends AxiomTes
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
                 "<a xmlns='urn:test'><b xmlns=''/></a>");

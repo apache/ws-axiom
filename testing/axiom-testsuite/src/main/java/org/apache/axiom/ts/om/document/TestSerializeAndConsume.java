@@ -37,6 +37,7 @@ public class TestSerializeAndConsume extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory,

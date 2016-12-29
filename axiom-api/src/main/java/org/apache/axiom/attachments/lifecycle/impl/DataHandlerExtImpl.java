@@ -51,12 +51,14 @@ public class DataHandlerExtImpl extends DataHandler implements
 		this.manager = manager;
 	}
 
+    @Override
 	public InputStream readOnce() throws IOException {
 	    // Instances of DataHandlerExtImpl are only created by legacy code, so it's OK to
 	    // throw an UnsupportedOperationException here.
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void deleteWhenReadOnce() throws IOException {
 		deleteOnreadOnce = true;
 		FileAccessor fa =manager.getFileAccessor(getName());
@@ -71,6 +73,7 @@ public class DataHandlerExtImpl extends DataHandler implements
 		}			
 	}
 
+    @Override
 	public void purgeDataSource() throws IOException {
 		if(log.isDebugEnabled()){
 			log.debug("Start purgeDataSource");
@@ -90,6 +93,7 @@ public class DataHandlerExtImpl extends DataHandler implements
 		}
 	}
 	
+    @Override
 	public void update(Observable o, Object arg) {
 		try{
 			if(log.isDebugEnabled()){

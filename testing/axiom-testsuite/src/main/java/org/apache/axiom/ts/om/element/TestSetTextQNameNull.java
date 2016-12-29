@@ -33,6 +33,7 @@ public class TestSetTextQNameNull extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = metaFactory.getOMFactory().createOMElement("test", null);
         element.setText("some text");

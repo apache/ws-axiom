@@ -69,6 +69,7 @@ public class Base64EncodingWriterOutputStream extends AbstractBase64EncodingOutp
         this(writer, 4096, false);
     }
 
+    @Override
     protected void doWrite(byte[] b) throws IOException {
         if (buffer.length - len < 4) {
             flushBuffer();
@@ -78,15 +79,18 @@ public class Base64EncodingWriterOutputStream extends AbstractBase64EncodingOutp
         }
     }
     
+    @Override
     protected void flushBuffer() throws IOException {
         writer.write(buffer, 0, len);
         len = 0;
     }
 
+    @Override
     protected void doFlush() throws IOException {
         writer.flush();
     }
 
+    @Override
     protected void doClose() throws IOException {
         writer.close();
     }

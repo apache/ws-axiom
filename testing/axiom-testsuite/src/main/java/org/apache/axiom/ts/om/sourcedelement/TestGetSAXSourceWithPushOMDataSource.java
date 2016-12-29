@@ -51,13 +51,16 @@ public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
         addTestParameter("serializeParent", serializeParent);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement sourcedElement = factory.createOMElement(new AbstractPushOMDataSource() {
+            @Override
             public void serialize(XMLStreamWriter writer) throws XMLStreamException {
                 scenario.serialize(writer);
             }
             
+            @Override
             public boolean isDestructiveWrite() {
                 return false;
             }

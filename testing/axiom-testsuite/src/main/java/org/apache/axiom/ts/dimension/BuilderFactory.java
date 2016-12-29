@@ -43,17 +43,21 @@ public abstract class BuilderFactory extends Multiton implements Dimension {
      * instantiate an appropriate parser.
      */
     public static final BuilderFactory PARSER = new BuilderFactory() {
+        @Override
         public boolean isDeferredParsing() {
             return true;
         }
 
+        @Override
         public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
         }
 
+        @Override
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("source", "parser");
         }
 
+        @Override
         public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
             return ((OMMetaFactorySPI)metaFactory).createOMBuilder(AxiomTestCase.TEST_PARSER_CONFIGURATION,
                     inputSource);

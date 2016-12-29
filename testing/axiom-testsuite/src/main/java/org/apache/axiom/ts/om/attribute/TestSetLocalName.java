@@ -30,6 +30,7 @@ public class TestSetLocalName extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMAttribute attr = factory.createOMAttribute("test", factory.createOMNamespace("urn:test", "p"), "value");

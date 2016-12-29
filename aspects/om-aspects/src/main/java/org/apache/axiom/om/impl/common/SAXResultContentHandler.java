@@ -61,9 +61,11 @@ public final class SAXResultContentHandler implements XmlHandler {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void completed() {
     }
 
+    @Override
     public void processDocumentTypeDeclaration(String rootName, String publicId,
             String systemId, String internalSubset) {
         if (target instanceof OMDocument) {
@@ -71,11 +73,13 @@ public final class SAXResultContentHandler implements XmlHandler {
         }
     }
 
+    @Override
     public void startElement(String namespaceURI, String localName, String prefix) {
         // TODO: inefficient: we should not create a new OMNamespace instance every time
         target = factory.createOMElement(localName, factory.createOMNamespace(namespaceURI, prefix), target);
     }
 
+    @Override
     public void endElement() {
         target = ((OMNode)target).getParent();
     }
@@ -158,6 +162,7 @@ public final class SAXResultContentHandler implements XmlHandler {
         factory.createOMComment(target, stopBuffering());
     }
 
+    @Override
     public void processEntityReference(String name, String replacementText) {
         if (replacementText == null) {
             factory.createOMEntityReference(target, name);

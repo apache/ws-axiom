@@ -43,14 +43,17 @@ final class LegacyPartDataHandler extends PartDataHandler implements DataHandler
         }
     }
 
+    @Override
     public InputStream readOnce() throws IOException {
         return getPart().getInputStream(false);
     }
 
+    @Override
     public void purgeDataSource() throws IOException {
         getPart().discard();
     }
 
+    @Override
     public void deleteWhenReadOnce() throws IOException {
         // As shown in AXIOM-381, in all released versions of Axiom, deleteWhenReadOnce
         // always has the same effect as purgeDataSource

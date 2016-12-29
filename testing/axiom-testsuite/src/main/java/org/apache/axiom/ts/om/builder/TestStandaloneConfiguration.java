@@ -41,6 +41,7 @@ public class TestStandaloneConfiguration extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         InputStream is = TestStandaloneConfiguration.class.getResourceAsStream("web_w_dtd2.xml");
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),

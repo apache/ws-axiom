@@ -35,6 +35,7 @@ public class TestCloneOMElement2 extends ConformanceTestCase {
         super(metaFactory, file);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         InputStream in = file.getInputStream();

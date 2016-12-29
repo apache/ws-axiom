@@ -28,6 +28,7 @@ public class TestGetNamespaceURI extends LazyNameTestCase {
         super(metaFactory, variant, qname);
     }
 
+    @Override
     protected void runTest(OMSourcedElement element) throws Throwable {
         String uri = qname.getNamespaceURI();
         if (uri.length() == 0) {

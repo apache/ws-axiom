@@ -31,6 +31,7 @@ public class TestGetAllDeclaredNamespaces extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<e xmlns:p='urn:test' p:attr='test'/>");
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();

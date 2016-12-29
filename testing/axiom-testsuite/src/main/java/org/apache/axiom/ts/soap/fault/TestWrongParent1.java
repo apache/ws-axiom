@@ -37,6 +37,7 @@ public class TestWrongParent1 extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPFaultCode parent = soapFactory.createSOAPFaultCode();
         SOAPFault fault = soapFactory.createSOAPFault();

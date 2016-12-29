@@ -43,6 +43,7 @@ public class ByteArrayCustomBuilder implements CustomBuilder {
         this.encoding = (encoding == null) ? "utf-8" :encoding;
     }
 
+    @Override
     public OMDataSource create(OMElement element) throws OMException {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

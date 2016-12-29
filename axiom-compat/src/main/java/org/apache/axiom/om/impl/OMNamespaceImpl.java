@@ -54,6 +54,7 @@ public class OMNamespaceImpl implements OMNamespace {
      * @param prefix
      * @return Returns boolean.
      */
+    @Override
     public boolean equals(String uri, String prefix) {
         return (this.uri.equals(uri) &&
                 (this.prefix == null ? prefix == null :
@@ -61,6 +62,7 @@ public class OMNamespaceImpl implements OMNamespace {
 
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof OMNamespace)) return false;
         OMNamespace other = (OMNamespace)obj;
@@ -75,6 +77,7 @@ public class OMNamespaceImpl implements OMNamespace {
      *
      * @return Returns String.
      */
+    @Override
     public String getPrefix() {
         return prefix;
     }
@@ -84,14 +87,17 @@ public class OMNamespaceImpl implements OMNamespace {
      *
      * @return Returns String.
      */
+    @Override
     public String getName() {
         return uri;
     }
 
+    @Override
     public String getNamespaceURI() {
         return uri;
     }
 
+    @Override
     public int hashCode() {
         return uri.hashCode() ^ (prefix != null ? prefix.hashCode() : 0);
     }

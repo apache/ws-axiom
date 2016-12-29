@@ -45,6 +45,7 @@ final class Implementation {
         return features;
     }
 
+    @Override
     public String toString() {
         return name + "(metaFactory=" + metaFactory.getClass().getName()
                 + ",features=" + (features != null ? Arrays.asList(features) : null) + ")";

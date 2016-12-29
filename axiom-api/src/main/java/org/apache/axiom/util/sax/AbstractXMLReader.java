@@ -51,38 +51,47 @@ public abstract class AbstractXMLReader implements XMLReader {
     protected EntityResolver entityResolver;
     protected ErrorHandler errorHandler;
     
+    @Override
     public ContentHandler getContentHandler() {
         return contentHandler;
     }
 
+    @Override
     public void setContentHandler(ContentHandler contentHandler) {
         this.contentHandler = contentHandler;
     }
 
+    @Override
     public DTDHandler getDTDHandler() {
         return dtdHandler;
     }
 
+    @Override
     public void setDTDHandler(DTDHandler dtdHandler) {
         this.dtdHandler = dtdHandler;
     }
 
+    @Override
     public EntityResolver getEntityResolver() {
         return entityResolver;
     }
 
+    @Override
     public void setEntityResolver(EntityResolver entityResolver) {
         this.entityResolver = entityResolver;
     }
 
+    @Override
     public ErrorHandler getErrorHandler() {
         return errorHandler;
     }
 
+    @Override
     public void setErrorHandler(ErrorHandler errorHandler) {
         this.errorHandler = errorHandler;
     }
 
+    @Override
     public boolean getFeature(String name)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         if (URI_NAMESPACES.equals(name)) {
@@ -96,6 +105,7 @@ public abstract class AbstractXMLReader implements XMLReader {
         }
     }
 
+    @Override
     public void setFeature(String name, boolean value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         
@@ -110,6 +120,7 @@ public abstract class AbstractXMLReader implements XMLReader {
         }
     }
 
+    @Override
     public Object getProperty(String name)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         
@@ -120,6 +131,7 @@ public abstract class AbstractXMLReader implements XMLReader {
         }
     }
 
+    @Override
     public void setProperty(String name, Object value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         if (URI_LEXICAL_HANDLER.equals(name)) {

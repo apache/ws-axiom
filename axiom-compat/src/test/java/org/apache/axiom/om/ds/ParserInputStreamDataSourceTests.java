@@ -383,6 +383,7 @@ public class ParserInputStreamDataSourceTests extends TestCase {
             
         }
 
+        @Override
         public boolean markSupported() {
             return false;
         }

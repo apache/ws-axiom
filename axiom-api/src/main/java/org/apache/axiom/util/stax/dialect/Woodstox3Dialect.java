@@ -27,42 +27,51 @@ import javax.xml.stream.XMLStreamWriter;
 class Woodstox3Dialect extends AbstractStAXDialect {
     public static final Woodstox3Dialect INSTANCE = new Woodstox3Dialect();
 
+    @Override
     public String getName() {
         return "Woodstox 3.x";
     }
 
+    @Override
     public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         // For Woodstox, this is sufficient
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
         return factory;
     }
 
+    @Override
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
         return StAXDialectUtils.disallowDoctypeDecl(factory);
     }
 
+    @Override
     public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
         // Woodstox' factories are designed to be thread safe
         return factory;
     }
 
+    @Override
     public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
         // Woodstox' factories are designed to be thread safe
         return factory;
     }
 
+    @Override
     public XMLStreamReader normalize(XMLStreamReader reader) {
         return new Woodstox3StreamReaderWrapper(reader);
     }
 
+    @Override
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
         return new Woodstox3StreamWriterWrapper(writer);
     }
 
+    @Override
     public XMLInputFactory normalize(XMLInputFactory factory) {
         return new NormalizingXMLInputFactoryWrapper(factory, this);
     }
 
+    @Override
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
         return new Woodstox3OutputFactoryWrapper(factory, this);
     }

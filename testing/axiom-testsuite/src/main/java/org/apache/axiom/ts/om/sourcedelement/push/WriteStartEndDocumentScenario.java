@@ -37,14 +37,17 @@ import org.junit.Assert;
  * documentation of {@link OMDataSource#serialize(XMLStreamWriter)}.
  */
 public class WriteStartEndDocumentScenario implements PushOMDataSourceScenario {
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "writeStartEndDocument");
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         try {
             writer.writeStartDocument();
@@ -73,6 +76,7 @@ public class WriteStartEndDocumentScenario implements PushOMDataSourceScenario {
         }
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         // Just fore expansion
         element.getFirstOMChild();

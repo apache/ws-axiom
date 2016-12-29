@@ -36,6 +36,7 @@ public class TestGetBooleanAttributeUnspported extends BooleanAttributeTestCase 
         super(metaFactory, spec, attribute);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));

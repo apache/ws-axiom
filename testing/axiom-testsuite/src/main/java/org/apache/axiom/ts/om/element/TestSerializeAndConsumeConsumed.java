@@ -41,6 +41,7 @@ public class TestSerializeAndConsumeConsumed extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
                 metaFactory.getOMFactory(),

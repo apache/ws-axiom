@@ -27,6 +27,7 @@ public class TestDigest extends DigestTestCase {
         super(metaFactory, "SHA1", "91b802187b7ae7c2c858f4aa5ae5470fc50d0306");
     }
 
+    @Override
     protected OMInformationItem createInformationItem() {
         return metaFactory.getOMFactory().createOMText("some test data");
     }

@@ -24,28 +24,34 @@ import org.apache.axiom.om.OMFactory;
 public abstract class CreateOMElementParentSupplier {
     public static final CreateOMElementParentSupplier[] INSTANCES = {
         new CreateOMElementParentSupplier("null") {
+            @Override
             public boolean isSupported(CreateOMElementVariant variant) {
                 return true;
             }
 
+            @Override
             public OMContainer createParent(OMFactory factory) {
                 return null;
             }
         },
         new CreateOMElementParentSupplier("document") {
+            @Override
             public boolean isSupported(CreateOMElementVariant variant) {
                 return variant.isSupportsContainer();
             }
 
+            @Override
             public OMContainer createParent(OMFactory factory) {
                 return factory.createOMDocument();
             }
         },
         new CreateOMElementParentSupplier("element") {
+            @Override
             public boolean isSupported(CreateOMElementVariant variant) {
                 return variant.isSupportsContainer();
             }
 
+            @Override
             public OMContainer createParent(OMFactory factory) {
                 return factory.createOMElement("test", null);
             }

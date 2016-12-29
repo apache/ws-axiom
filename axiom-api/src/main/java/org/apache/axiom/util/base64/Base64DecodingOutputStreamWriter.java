@@ -33,14 +33,17 @@ public class Base64DecodingOutputStreamWriter extends AbstractBase64DecodingWrit
         this.stream = stream;
     }
 
+    @Override
     protected void doWrite(byte[] b, int len) throws IOException {
         stream.write(b, 0, len);
     }
 
+    @Override
     public void flush() throws IOException {
         stream.flush();
     }
 
+    @Override
     public void close() throws IOException {
         stream.close();
     }

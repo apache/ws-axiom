@@ -42,6 +42,7 @@ public class TestGetNamespaceContext extends AxiomTestCase {
         addTestParameter("detached", detached);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         InputStream in = TestGetNamespaceContext.class.getResourceAsStream("namespacecontext.xml");
         OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocumentElement();

@@ -52,6 +52,7 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
         addTestParameter("cache", cache);
     }
     
+    @Override
     protected final void runTest() throws Throwable {
         InputStream in = file.getInputStream();
         try {

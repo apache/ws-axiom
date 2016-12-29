@@ -52,6 +52,7 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
         }
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SAXParserFactory factory = implementation.newSAXParserFactory();
         factory.setNamespaceAware(true);

@@ -30,6 +30,7 @@ public class TestDiscardIncomplete extends SampleBasedSOAPTestCase {
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         envelope.getHeader().discard();
         envelope.getBody().toStringWithConsume();

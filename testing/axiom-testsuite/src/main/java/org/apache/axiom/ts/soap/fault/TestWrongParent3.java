@@ -37,6 +37,7 @@ public class TestWrongParent3 extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPHeader parent = soapFactory.createSOAPHeader();
         OMElement child1 = soapFactory.createSOAPHeaderBlock("child1", soapFactory.createOMNamespace("urn:test", "p"), parent);

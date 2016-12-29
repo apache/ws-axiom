@@ -25,34 +25,41 @@ import javax.xml.stream.XMLOutputFactory;
 class UnknownStAXDialect implements StAXDialect {
     public static final UnknownStAXDialect INSTANCE = new UnknownStAXDialect();
 
+    @Override
     public String getName() {
         return "Unknown";
     }
 
+    @Override
     public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         // This is in principle only the prerequisite; let's hope that it is sufficient
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
         return factory;
     }
     
+    @Override
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
         return StAXDialectUtils.disallowDoctypeDecl(factory);
     }
 
+    @Override
     public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
         // Cross fingers and assume that the factory is already thread safe
         return factory;
     }
 
+    @Override
     public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
         // Cross fingers and assume that the factory is already thread safe
         return factory;
     }
 
+    @Override
     public XMLInputFactory normalize(XMLInputFactory factory) {
         return factory;
     }
 
+    @Override
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
         return factory;
     }

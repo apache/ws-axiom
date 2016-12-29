@@ -22,6 +22,7 @@ import org.apache.xml.serializer.ToXMLStream;
 import org.xml.sax.SAXException;
 
 final class SAXSerializer extends ToXMLStream {
+    @Override
     public void skippedEntity(String name) throws SAXException {
         // The Xalan serializer ignores skippedEntity events; output them as entity references
         entityReference(name);

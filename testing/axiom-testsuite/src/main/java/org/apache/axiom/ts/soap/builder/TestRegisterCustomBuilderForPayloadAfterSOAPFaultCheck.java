@@ -44,6 +44,7 @@ public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck extends Samp
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPModelBuilder builder = (SOAPModelBuilder)envelope.getBuilder();
         

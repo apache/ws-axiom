@@ -31,6 +31,7 @@ public final class DeferredNamespace implements OMNamespace {
         this.uri = ns;
     }
 
+    @Override
     public boolean equals(String uri, String prefix) {
         String thisPrefix = getPrefix();
         return (this.uri.equals(uri) &&
@@ -38,14 +39,17 @@ public final class DeferredNamespace implements OMNamespace {
                         thisPrefix.equals(prefix)));
     }
 
+    @Override
     public String getName() {
         return uri;
     }
 
+    @Override
     public String getNamespaceURI() {
         return uri;
     }
 
+    @Override
     public String getPrefix() {
         if (!element.isExpanded()) {
             element.forceExpand();
@@ -54,11 +58,13 @@ public final class DeferredNamespace implements OMNamespace {
         return actualNS == null ? "" : actualNS.getPrefix();
     }
     
+    @Override
     public int hashCode() {
         String thisPrefix = getPrefix();
         return uri.hashCode() ^ (thisPrefix != null ? thisPrefix.hashCode() : 0);
     }
     
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof OMNamespace)) {
             return false;

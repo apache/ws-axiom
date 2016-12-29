@@ -39,6 +39,7 @@ public class Activator implements BundleActivator {
     
     private BundleTracker<List<RegisteredImplementation>> tracker;
 
+    @Override
     public void start(BundleContext context) throws Exception {
         OSGiOMMetaFactoryLocator locator = new OSGiOMMetaFactoryLocator(context);
         OMAbstractFactory.setMetaFactoryLocator(locator);
@@ -49,6 +50,7 @@ public class Activator implements BundleActivator {
         log.debug("OSGi support enabled");
     }
 
+    @Override
     public void stop(BundleContext context) throws Exception {
         tracker.close();
         OMAbstractFactory.setMetaFactoryLocator(null);

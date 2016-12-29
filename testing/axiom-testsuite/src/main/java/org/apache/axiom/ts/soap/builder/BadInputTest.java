@@ -35,6 +35,7 @@ public class BadInputTest extends AxiomTestCase {
         addTestParameter("file", file);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         try {
             SOAPEnvelope soapEnvelope =

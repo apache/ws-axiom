@@ -49,6 +49,7 @@ final class DebugInputStream extends InputStream {
         }
     }
     
+    @Override
     public int available() throws IOException {
         try {
             return parent.available();
@@ -58,14 +59,17 @@ final class DebugInputStream extends InputStream {
         }
     }
 
+    @Override
     public boolean markSupported() {
         return parent.markSupported();
     }
 
+    @Override
     public void mark(int readlimit) {
         parent.mark(readlimit);
     }
 
+    @Override
     public void reset() throws IOException {
         try {
             parent.reset();
@@ -75,6 +79,7 @@ final class DebugInputStream extends InputStream {
         }
     }
 
+    @Override
     public int read() throws IOException {
         int result;
         try {
@@ -92,6 +97,7 @@ final class DebugInputStream extends InputStream {
         return result;
     }
 
+    @Override
     public int read(byte[] b, int off, int len) throws IOException {
         int c;
         try {
@@ -109,6 +115,7 @@ final class DebugInputStream extends InputStream {
         return c;
     }
 
+    @Override
     public long skip(long n) throws IOException {
         try {
             return parent.skip(n);
@@ -118,6 +125,7 @@ final class DebugInputStream extends InputStream {
         }
     }
 
+    @Override
     public void close() throws IOException {
         if (!logged) {
             log.debug("Closing stream after reading " + read + " bytes in " + chunks + " chunks");

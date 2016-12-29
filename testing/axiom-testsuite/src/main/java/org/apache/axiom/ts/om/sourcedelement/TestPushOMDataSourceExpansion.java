@@ -39,11 +39,13 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
     class PushOMDataSource extends AbstractPushOMDataSource {
         private boolean expanded;
         
+        @Override
         public void serialize(XMLStreamWriter writer) throws XMLStreamException {
             scenario.serialize(writer);
             expanded = true;
         }
         
+        @Override
         public boolean isDestructiveWrite() {
             return false;
         }
@@ -61,6 +63,7 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
         scenario.addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         PushOMDataSource ds = new PushOMDataSource();

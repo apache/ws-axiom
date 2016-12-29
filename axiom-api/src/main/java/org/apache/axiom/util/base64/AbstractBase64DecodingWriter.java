@@ -34,6 +34,7 @@ public abstract class AbstractBase64DecodingWriter extends Writer {
         return c <= 32 && (c == ' ' || c == '\n' || c == '\r' || c == '\t'); 
     }
     
+    @Override
     public final void write(char[] cbuf, int off, int len) throws IOException {
         while (len > 0) {
             write(cbuf[off]);
@@ -42,6 +43,7 @@ public abstract class AbstractBase64DecodingWriter extends Writer {
         }
     }
 
+    @Override
     public final void write(String str, int off, int len) throws IOException {
         while (len > 0) {
             write(str.charAt(off));
@@ -50,6 +52,7 @@ public abstract class AbstractBase64DecodingWriter extends Writer {
         }
     }
 
+    @Override
     public final void write(int c) throws IOException {
         if (!isWhitespace(c)) {
             in[rest++] = (char)c;

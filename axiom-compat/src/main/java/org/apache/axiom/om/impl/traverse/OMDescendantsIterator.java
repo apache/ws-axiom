@@ -34,6 +34,7 @@ public class OMDescendantsIterator extends OMAbstractIterator {
         super(firstNode);
     }
 
+    @Override
     protected OMNode getNextNode(OMNode currentNode) {
         if (currentNode instanceof OMContainer) {
             OMNode firstChild = ((OMContainer)currentNode).getFirstOMChild();

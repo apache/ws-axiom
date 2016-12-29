@@ -44,6 +44,7 @@ public abstract class DigestTestCase extends AxiomTestCase {
         this.expectedDigest = expectedDigest;
     }
 
+    @Override
     protected final void runTest() throws Throwable {
         OMInformationItem node = createInformationItem();
         DigestGenerator digestGenerator = new DigestGenerator();

@@ -36,6 +36,7 @@ public class TestGetNextOMSiblingIncomplete extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement omse = factory.createOMElement(new StringOMDataSource("<sourcedelement/>"));

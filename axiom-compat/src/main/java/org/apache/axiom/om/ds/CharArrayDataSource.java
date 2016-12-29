@@ -45,6 +45,7 @@ public class CharArrayDataSource extends OMDataSourceExtBase {
         this.chars = chars;
     }
 
+    @Override
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
         try {
             writer.write(chars);
@@ -55,6 +56,7 @@ public class CharArrayDataSource extends OMDataSourceExtBase {
         }
     }
     
+    @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         CharArrayReader reader = new CharArrayReader(chars);
         
@@ -62,30 +64,36 @@ public class CharArrayDataSource extends OMDataSourceExtBase {
     }
     
     
+    @Override
     public Object getObject() {
        return chars;
     }
 
+    @Override
     public boolean isDestructiveRead() {
         // Reading chars is not destructive
         return false;
     }
 
+    @Override
     public boolean isDestructiveWrite() {
         // Writing chars is not destructive
         return false;
     }
 
+    @Override
     public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
         
         String text = new String(chars);
         return text.getBytes(encoding);
     }
     
+    @Override
     public void close() {
         chars = null;
     }
 
+    @Override
     public OMDataSourceExt copy() {
         // Return shallow copy
         return new CharArrayDataSource(chars);

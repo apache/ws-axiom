@@ -34,14 +34,17 @@ import org.junit.Assert;
  * Scenario that uses {@link XMLStreamWriter#writeCharacters(char[], int, int)}.
  */
 public class WriteCharactersCharArrayScenario implements PushOMDataSourceScenario {
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "writeCharactersCharArray");
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         char[] ch = new char[6];
@@ -52,6 +55,7 @@ public class WriteCharactersCharArrayScenario implements PushOMDataSourceScenari
         writer.writeEndElement();
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMText);

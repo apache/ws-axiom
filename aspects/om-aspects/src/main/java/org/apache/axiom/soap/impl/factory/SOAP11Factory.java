@@ -35,50 +35,62 @@ public class SOAP11Factory extends SOAPFactoryImpl {
         super(metaFactory, nodeFactory);
     }
 
+    @Override
     public final SOAPHelper getSOAPHelper() {
         return SOAPHelper.SOAP11;
     }
 
+    @Override
     public final SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final SOAPFaultValue createSOAPFaultValue() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final SOAPFaultSubCode createSOAPFaultSubCode() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final SOAPFaultText createSOAPFaultText(SOAPFaultReason parent) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final SOAPFaultText createSOAPFaultText() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final SOAPFaultNode createSOAPFaultNode(SOAPFault parent) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final SOAPFaultNode createSOAPFaultNode() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final SOAPEnvelope getDefaultFaultEnvelope() {
         SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
         SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());

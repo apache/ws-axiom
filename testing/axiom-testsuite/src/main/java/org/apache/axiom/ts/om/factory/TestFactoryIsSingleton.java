@@ -32,6 +32,7 @@ public class TestFactoryIsSingleton extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         assertSame(metaFactory.getOMFactory(), metaFactory.getOMFactory());
     }

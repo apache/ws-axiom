@@ -66,18 +66,21 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
             this.parent = parent;
         }
 
+        @Override
         public String getNamespaceURI(String prefix) {
             return XOPConstants.DEFAULT_PREFIX.equals(prefix)
                     ? XOPConstants.NAMESPACE_URI
                     : parent.getNamespaceURI(prefix);
         }
 
+        @Override
         public String getPrefix(String namespaceURI) {
             return XOPConstants.NAMESPACE_URI.equals(namespaceURI)
                     ? XOPConstants.DEFAULT_PREFIX
                     : parent.getPrefix(namespaceURI);
         }
 
+        @Override
         public Iterator<?> getPrefixes(String namespaceURI) {
             Iterator<?> prefixes = parent.getPrefixes(namespaceURI);
             if (XOPConstants.NAMESPACE_URI.equals(namespaceURI)) {
@@ -139,6 +142,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         this.dataHandlerReader = dataHandlerReader;
     }
 
+    @Override
     public int next() throws XMLStreamException {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -180,10 +184,12 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public boolean hasNext() throws XMLStreamException {
         return state == STATE_PASS_THROUGH ? parent.hasNext() : true;
     }
 
+    @Override
     public int nextTag() throws XMLStreamException {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -197,6 +203,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public void require(int type, String namespaceURI, String localName) throws XMLStreamException {
         if (state == STATE_PASS_THROUGH) {
             parent.require(type, namespaceURI, localName);
@@ -210,46 +217,57 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public Location getLocation() {
         return parent.getLocation();
     }
 
+    @Override
     public void close() throws XMLStreamException {
         parent.close();
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         return parent.getProperty(name);
     }
 
+    @Override
     public String getEncoding() {
         return parent.getEncoding();
     }
 
+    @Override
     public String getCharacterEncodingScheme() {
         return parent.getCharacterEncodingScheme();
     }
 
+    @Override
     public String getVersion() {
         return parent.getVersion();
     }
 
+    @Override
     public boolean isStandalone() {
         return parent.isStandalone();
     }
 
+    @Override
     public boolean standaloneSet() {
         return parent.standaloneSet();
     }
 
+    @Override
     public String getPIData() {
         return parent.getPIData();
     }
 
+    @Override
     public String getPITarget() {
         return parent.getPITarget();
     }
 
+    @Override
     public int getAttributeCount() {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -261,6 +279,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public String getAttributeLocalName(int index) {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -275,6 +294,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public QName getAttributeName(int index) {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -289,6 +309,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public String getAttributeNamespace(int index) {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -303,6 +324,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public String getAttributePrefix(int index) {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -317,6 +339,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public String getAttributeType(int index) {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -331,6 +354,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public String getAttributeValue(int index) {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -349,6 +373,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public boolean isAttributeSpecified(int index) {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -363,6 +388,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public String getAttributeValue(String namespaceURI, String localName) {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -379,6 +405,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public String getElementText() throws XMLStreamException {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -391,6 +418,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public int getEventType() {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -402,22 +430,27 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public String getNamespaceURI() {
         return state == STATE_PASS_THROUGH ? parent.getNamespaceURI() : XOPConstants.NAMESPACE_URI;
     }
 
+    @Override
     public String getLocalName() {
         return state == STATE_PASS_THROUGH ? parent.getLocalName() : XOPConstants.INCLUDE;
     }
 
+    @Override
     public String getPrefix() {
         return state == STATE_PASS_THROUGH ? parent.getPrefix() : XOPConstants.DEFAULT_PREFIX;
     }
 
+    @Override
     public QName getName() {
         return state == STATE_PASS_THROUGH ? parent.getName() : XOPConstants.INCLUDE_QNAME;
     }
 
+    @Override
     public NamespaceContext getNamespaceContext() {
         NamespaceContext ctx = parent.getNamespaceContext();
         if (state != STATE_PASS_THROUGH) {
@@ -426,6 +459,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         return ctx;
     }
 
+    @Override
     public String getNamespaceURI(String prefix) {
         if (state != STATE_PASS_THROUGH && XOPConstants.DEFAULT_PREFIX.equals(prefix)) {
             return XOPConstants.NAMESPACE_URI;
@@ -434,10 +468,12 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public int getNamespaceCount() {
         return state == STATE_PASS_THROUGH ? parent.getNamespaceCount() : 1;
     }
 
+    @Override
     public String getNamespacePrefix(int index) {
         if (state == STATE_PASS_THROUGH) {
             return parent.getNamespacePrefix(index);
@@ -448,6 +484,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
     
+    @Override
     public String getNamespaceURI(int index) {
         if (state == STATE_PASS_THROUGH) {
             return parent.getNamespaceURI(index);
@@ -458,6 +495,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public String getText() {
         if (state == STATE_PASS_THROUGH) {
             return parent.getText();
@@ -466,6 +504,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public int getTextStart() {
         if (state == STATE_PASS_THROUGH) {
             return parent.getTextStart();
@@ -474,6 +513,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public int getTextLength() {
         if (state == STATE_PASS_THROUGH) {
             return parent.getTextLength();
@@ -482,6 +522,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public char[] getTextCharacters() {
         if (state == STATE_PASS_THROUGH) {
             return parent.getTextCharacters();
@@ -490,6 +531,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
         if (state == STATE_PASS_THROUGH) {
@@ -499,22 +541,27 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public boolean hasName() {
         return state == STATE_PASS_THROUGH ? parent.hasName() : true;
     }
 
+    @Override
     public boolean hasText() {
         return state == STATE_PASS_THROUGH ? parent.hasText() : false;
     }
 
+    @Override
     public boolean isCharacters() {
         return state == STATE_PASS_THROUGH ? parent.isCharacters() : false;
     }
 
+    @Override
     public boolean isWhiteSpace() {
         return state == STATE_PASS_THROUGH ? parent.isWhiteSpace() : false;
     }
 
+    @Override
     public boolean isStartElement() {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT: return true;
@@ -523,6 +570,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
     }
 
+    @Override
     public boolean isEndElement() {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT: return false;

@@ -31,7 +31,7 @@ import javax.xml.namespace.NamespaceContext;
  * prefixes) defined in the {@link NamespaceContext} Javadoc.
  */
 public abstract class AbstractNamespaceContext implements NamespaceContext {
-
+    @Override
     public final String getNamespaceURI(String prefix) {
         if (prefix == null) {
             throw new IllegalArgumentException("prefix can't be null");
@@ -56,6 +56,7 @@ public abstract class AbstractNamespaceContext implements NamespaceContext {
      */
     protected abstract String doGetNamespaceURI(String prefix);
     
+    @Override
     public final String getPrefix(String namespaceURI) {
         if (namespaceURI == null) {
             throw new IllegalArgumentException("namespaceURI can't be null");
@@ -80,6 +81,7 @@ public abstract class AbstractNamespaceContext implements NamespaceContext {
      */
     protected abstract String doGetPrefix(String namespaceURI);
 
+    @Override
     public final Iterator<String> getPrefixes(String namespaceURI) {
         if (namespaceURI == null) {
             throw new IllegalArgumentException("namespaceURI can't be null");

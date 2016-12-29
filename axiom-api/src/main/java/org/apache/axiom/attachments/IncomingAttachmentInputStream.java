@@ -99,30 +99,36 @@ public class IncomingAttachmentInputStream extends InputStream {
      * Don't want to support mark and reset since this may get us into concurrency problem when
      * different pieces of software may have a handle to the underlying InputStream.
      */
+    @Override
     public boolean markSupported() {
         return false;
     }
 
+    @Override
     public void reset() throws IOException {
         throw new IOException("markNotSupported");
     }
 
+    @Override
     public void mark(int readLimit) {
         // do nothing
     }
 
+    @Override
     public int read() throws IOException {
         int retval = _stream.read();
         parentContainer.setReadyToGetNextStream(retval == -1);
         return retval;
     }
 
+    @Override
     public int read(byte[] b) throws IOException {
         int retval = _stream.read(b);
         parentContainer.setReadyToGetNextStream(retval == -1);
         return retval;
     }
 
+    @Override
     public int read(byte[] b, int off, int len) throws IOException {
         int retval = _stream.read(b, off, len);
         parentContainer.setReadyToGetNextStream(retval == -1);

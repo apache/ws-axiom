@@ -35,6 +35,7 @@ public class TestDetailEntriesUsingDefaultNamespaceWithParser extends SampleBase
         super(metaFactory, spec, SOAPSampleSet.FAULT_DETAIL_DEFAULT_NAMESPACE);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultDetail soapFaultDetail = envelope.getBody().getFault().getDetail();
         OMElement detailElement = soapFaultDetail.getFirstElement();

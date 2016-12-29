@@ -41,11 +41,13 @@ final class OMElementExtractor extends OMContainerExtractor {
         this.detached = detached;
     }
 
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("container", "element");
         testCase.addTestParameter("detached", detached);
     }
 
+    @Override
     public InputSource getControl(InputStream testFileContent) throws Exception {
         try {
             Document doc = DOMImplementation.XERCES.parse(testFileContent);
@@ -59,10 +61,12 @@ final class OMElementExtractor extends OMContainerExtractor {
         }
     }
 
+    @Override
     public OMContainer getContainer(OMXMLParserWrapper builder) {
         return builder.getDocumentElement(detached);
     }
 
+    @Override
     public XMLStreamReader filter(XMLStreamReader reader) {
         return new DocumentElementExtractor(reader);
     }

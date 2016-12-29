@@ -58,6 +58,7 @@ public class XOPDecodingStreamWriter extends XMLStreamWriterWrapper {
         dataHandlerWriter = (DataHandlerWriter)parent.getProperty(DataHandlerWriter.PROPERTY);
     }
 
+    @Override
     public void writeStartElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException {
         if (localName.equals(XOPConstants.INCLUDE)
@@ -68,6 +69,7 @@ public class XOPDecodingStreamWriter extends XMLStreamWriterWrapper {
         }
     }
 
+    @Override
     public void writeStartElement(String namespaceURI, String localName) throws XMLStreamException {
         if (localName.equals(XOPConstants.INCLUDE)
                 && namespaceURI.equals(XOPConstants.NAMESPACE_URI)) {
@@ -77,6 +79,7 @@ public class XOPDecodingStreamWriter extends XMLStreamWriterWrapper {
         }
     }
 
+    @Override
     public void writeAttribute(String prefix, String namespaceURI, String localName, String value)
             throws XMLStreamException {
         if (inXOPInclude) {
@@ -86,6 +89,7 @@ public class XOPDecodingStreamWriter extends XMLStreamWriterWrapper {
         }
     }
 
+    @Override
     public void writeAttribute(String namespaceURI, String localName, String value)
             throws XMLStreamException {
         if (inXOPInclude) {
@@ -95,6 +99,7 @@ public class XOPDecodingStreamWriter extends XMLStreamWriterWrapper {
         }
     }
 
+    @Override
     public void writeAttribute(String localName, String value) throws XMLStreamException {
         if (inXOPInclude) {
             processAttribute(null, localName, value);
@@ -123,6 +128,7 @@ public class XOPDecodingStreamWriter extends XMLStreamWriterWrapper {
         }
     }
     
+    @Override
     public void writeEndElement() throws XMLStreamException {
         if (inXOPInclude) {
             if (contentID == null) {

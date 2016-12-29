@@ -32,6 +32,7 @@ class NormalizingXMLInputFactoryWrapper extends WrappingXMLInputFactory {
         this.dialect = dialect;
     }
 
+    @Override
     protected final XMLStreamReader wrap(XMLStreamReader reader) {
         return dialect.normalize(reader);
     }

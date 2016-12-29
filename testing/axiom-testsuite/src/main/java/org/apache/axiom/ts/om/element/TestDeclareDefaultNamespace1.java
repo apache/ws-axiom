@@ -29,6 +29,7 @@ public class TestDeclareDefaultNamespace1 extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         /**
          * <RootElement xmlns="http://one.org">

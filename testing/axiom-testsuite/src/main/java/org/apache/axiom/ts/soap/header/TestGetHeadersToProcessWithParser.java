@@ -35,6 +35,7 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, spec, SOAPSampleSet.HEADERS);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPHeader soapHeader = envelope.getHeader();
 

@@ -49,6 +49,7 @@ public class XMLStreamWriterWriter extends Writer {
         this.writer = writer;
     }
 
+    @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
         try {
             writer.writeCharacters(cbuf, off, len);
@@ -57,10 +58,12 @@ public class XMLStreamWriterWriter extends Writer {
         }
     }
 
+    @Override
     public void write(String str, int off, int len) throws IOException {
         write(str.substring(off, off+len));
     }
 
+    @Override
     public void write(String str) throws IOException {
         try {
             writer.writeCharacters(str);
@@ -69,14 +72,17 @@ public class XMLStreamWriterWriter extends Writer {
         }
     }
     
+    @Override
     public void write(int c) throws IOException {
         write(new char[] { (char)c });
     }
 
+    @Override
     public void flush() throws IOException {
         // Do nothing
     }
 
+    @Override
     public void close() throws IOException {
         // Do nothing
     }

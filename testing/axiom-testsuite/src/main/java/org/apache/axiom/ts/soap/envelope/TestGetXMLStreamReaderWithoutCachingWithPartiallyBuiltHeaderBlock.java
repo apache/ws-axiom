@@ -44,6 +44,7 @@ public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock e
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPHeaderBlock headerBlock = (SOAPHeaderBlock)envelope.getHeader().getFirstChildWithName(
                 new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));

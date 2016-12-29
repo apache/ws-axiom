@@ -31,6 +31,7 @@ public class TestGetBodyWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPBody body = envelope.getBody();
         assertEquals("Body Test : - Body local name mismatch",

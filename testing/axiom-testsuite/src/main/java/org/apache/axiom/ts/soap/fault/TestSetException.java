@@ -33,6 +33,7 @@ public class TestSetException extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
         Exception exception = new Exception("Test exception message");

@@ -30,6 +30,7 @@ public class TestCreateOMText extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace namespace =

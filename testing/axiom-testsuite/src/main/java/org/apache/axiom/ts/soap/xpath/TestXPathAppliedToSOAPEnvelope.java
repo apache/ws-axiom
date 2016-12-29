@@ -38,6 +38,7 @@ public class TestXPathAppliedToSOAPEnvelope extends SOAPTestCase {
         addTestParameter("createDocument", createDocument);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement elem1 = soapFactory.createOMElement("elem1", null);
         OMElement elem2 = soapFactory.createOMElement("elem2", null);

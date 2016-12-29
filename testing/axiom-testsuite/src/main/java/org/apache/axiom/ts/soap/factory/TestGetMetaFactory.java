@@ -32,6 +32,7 @@ public class TestGetMetaFactory extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         assertSame(metaFactory, soapFactory.getMetaFactory());
     }

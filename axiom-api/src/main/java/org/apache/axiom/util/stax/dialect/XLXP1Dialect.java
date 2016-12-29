@@ -31,34 +31,41 @@ class XLXP1Dialect extends AbstractStAXDialect {
         this.isSetPrefixBroken = isSetPrefixBroken;
     }
     
+    @Override
     public String getName() {
         return isSetPrefixBroken ? "XL XP-J (StAX non-compliant versions)"
                                  : "XL XP-J (StAX compliant versions)";
     }
 
+    @Override
     public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
         return factory;
     }
 
+    @Override
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
         return StAXDialectUtils.disallowDoctypeDecl(factory);
     }
 
+    @Override
     public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
         // XLXP's factories are thread safe
         return factory;
     }
 
+    @Override
     public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
         // XLXP's factories are thread safe
         return factory;
     }
 
+    @Override
     public XMLStreamReader normalize(XMLStreamReader reader) {
         return new XLXP1StreamReaderWrapper(reader);
     }
 
+    @Override
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
         XMLStreamWriter wrapper = new XLXPStreamWriterWrapper(writer);
         // In early versions of XLXP the scope of the prefix bindings defined by setPrefix
@@ -69,10 +76,12 @@ class XLXP1Dialect extends AbstractStAXDialect {
         return wrapper;
     }
 
+    @Override
     public XMLInputFactory normalize(XMLInputFactory factory) {
         return new CloseShieldXMLInputFactoryWrapper(new XLXPInputFactoryWrapper(factory, this));
     }
 
+    @Override
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
         return new NormalizingXMLOutputFactoryWrapper(factory, this);
     }

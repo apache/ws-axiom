@@ -42,6 +42,7 @@ class XLXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public boolean isCharacters() {
         // XLXP returns true for SPACE events as well; this is not correct
         return getEventType() == CHARACTERS;

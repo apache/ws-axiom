@@ -38,15 +38,18 @@ class ImplicitNamespaceContextWrapper extends AbstractNamespaceContext {
         this.parent = parent;
     }
 
+    @Override
     protected String doGetNamespaceURI(String prefix) {
         return parent.getNamespaceURI(prefix);
     }
     
+    @Override
     protected String doGetPrefix(String namespaceURI) {
         return parent.getPrefix(namespaceURI);
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     protected Iterator<String> doGetPrefixes(String namespaceURI) {
         return parent.getPrefixes(namespaceURI);
     }

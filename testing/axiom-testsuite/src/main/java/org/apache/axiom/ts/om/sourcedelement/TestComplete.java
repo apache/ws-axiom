@@ -34,6 +34,7 @@ public class TestComplete extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         // Build a root element and child OMSE
         OMFactory f = metaFactory.getOMFactory();

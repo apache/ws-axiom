@@ -35,6 +35,7 @@ public class TestAddHeaderBlockFromQName extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope env = soapFactory.getDefaultEnvelope();
         SOAPHeader header = env.getOrCreateHeader();

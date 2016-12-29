@@ -30,10 +30,12 @@ class XMLAsString implements XML {
         this.xml = xml;
     }
 
+    @Override
     public InputSource getInputSource() {
         return new InputSource(new StringReader(xml));
     }
 
+    @Override
     public void dump(PrintStream out) {
         out.println(xml);
     }

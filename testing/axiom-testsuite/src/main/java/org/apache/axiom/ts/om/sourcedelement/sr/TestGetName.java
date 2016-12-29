@@ -39,6 +39,7 @@ public class TestGetName extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement root = factory.createOMElement("root", null);

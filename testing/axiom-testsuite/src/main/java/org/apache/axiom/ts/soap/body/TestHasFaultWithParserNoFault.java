@@ -35,6 +35,7 @@ public class TestHasFaultWithParserNoFault extends FirstElementNameWithParserTes
         super(metaFactory, spec, qname, true);
     }
 
+    @Override
     protected void runTest(SOAPBody body) throws Throwable {
         assertFalse(body.hasFault());
     }

@@ -39,6 +39,7 @@ public abstract class BlobOutputStream extends OutputStream implements ReadFromS
      */
     public abstract WritableBlob getBlob();
 
+    @Override
     public long readFrom(InputStream inputStream, long length) throws StreamCopyException {
         return getBlob().readFrom(inputStream, length);
     }

@@ -61,18 +61,22 @@ class MultipartWriterImpl implements MultipartWriter {
             parent = blob.getOutputStream();
         }
 
+        @Override
         public void write(int b) throws IOException {
             parent.write(b);
         }
 
+        @Override
         public void write(byte[] b, int off, int len) throws IOException {
             parent.write(b, off, len);
         }
 
+        @Override
         public void write(byte[] b) throws IOException {
             parent.write(b);
         }
         
+        @Override
         public void close() throws IOException {
             parent.close();
             writePart(new DataHandler(new BlobDataSource(blob, contentType)),
@@ -93,17 +97,20 @@ class MultipartWriterImpl implements MultipartWriter {
         }
     }
     
+    @Override
     public OutputStream writePart(String contentType, String contentTransferEncoding,
             String contentID) throws IOException {
         return new PartOutputStream(contentType, contentTransferEncoding, contentID, null);
     }
     
+    @Override
     public OutputStream writePart(String contentType, String contentTransferEncoding,
             String contentID, List/*<Header>*/ extraHeaders) throws IOException {
         return new PartOutputStream(contentType, contentTransferEncoding, contentID,
                 extraHeaders);
     }
 
+    @Override
     public void writePart(DataHandler dataHandler, String contentTransferEncoding,
             String contentID, List/*<Header>*/ extraHeaders) throws IOException {
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
@@ -137,11 +144,13 @@ class MultipartWriterImpl implements MultipartWriter {
         out.write(CR_LF);
     }
     
+    @Override
     public void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID)
             throws IOException {
         writePart(dataHandler, contentTransferEncoding, contentID, null);
     }
 
+    @Override
     public void complete() throws IOException {
         out.write(DASH_DASH);
         out.write(boundary);

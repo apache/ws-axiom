@@ -40,6 +40,7 @@ final class TempFileBlobImpl extends AbstractWritableBlob {
         trace = log.isDebugEnabled() ? new Throwable() : null;
     }
 
+    @Override
     public OutputStream getOutputStream() throws IOException {
         if (state != State.NEW) {
             throw new IllegalStateException();
@@ -60,6 +61,7 @@ final class TempFileBlobImpl extends AbstractWritableBlob {
         return out;
     }
 
+    @Override
     public InputStream getInputStream() throws IOException {
         if (state != State.COMMITTED) {
             throw new IllegalStateException();
@@ -70,6 +72,7 @@ final class TempFileBlobImpl extends AbstractWritableBlob {
         return new TempFileInputStream(file);
     }
 
+    @Override
     public long getSize() {
         if (state != State.COMMITTED) {
             throw new IllegalStateException();
@@ -77,6 +80,7 @@ final class TempFileBlobImpl extends AbstractWritableBlob {
         return file.length();
     }
 
+    @Override
     public void release() throws IOException {
         if (file != null) {
             if (log.isDebugEnabled()) {
@@ -90,6 +94,7 @@ final class TempFileBlobImpl extends AbstractWritableBlob {
         }
     }
 
+    @Override
     protected void finalize() throws Throwable {
         if (file != null) {
             log.warn("Cleaning up unreleased temporary file " + file);

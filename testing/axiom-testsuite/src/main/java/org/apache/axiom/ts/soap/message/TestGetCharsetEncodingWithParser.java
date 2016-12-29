@@ -38,6 +38,7 @@ public class TestGetCharsetEncodingWithParser extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String encoding = "iso-8859-15";
         SOAPEnvelope orgEnvelope = soapFactory.getDefaultEnvelope();

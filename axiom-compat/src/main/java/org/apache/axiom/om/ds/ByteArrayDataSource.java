@@ -51,6 +51,7 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
     }
    
  
+    @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         if (log.isDebugEnabled()) {
             log.debug("getReader");
@@ -59,20 +60,24 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
                                                byteArray.encoding);                                                                       
     }
 
+    @Override
     public Object getObject() {
        return byteArray;
     }
 
+    @Override
     public boolean isDestructiveRead() {
         // Reading bytes is not destructive
         return false;
     }
 
+    @Override
     public boolean isDestructiveWrite() {
         // Writing bytes is not destructive
         return false;
     }
 
+    @Override
     public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
         if (encoding == null)
         {
@@ -95,10 +100,12 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
         return byteArray.bytes;
     }
     
+    @Override
     public void close() {
         byteArray = null;
     }
 
+    @Override
     public OMDataSourceExt copy() {
         // Return shallow copy
         return new ByteArrayDataSource(byteArray.bytes, byteArray.encoding);

@@ -30,6 +30,7 @@ public class TestSetLang extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPFaultText faultText = soapFactory.createSOAPFaultText();
         faultText.setLang("en");

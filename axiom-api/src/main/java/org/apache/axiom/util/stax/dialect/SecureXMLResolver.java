@@ -30,8 +30,9 @@ import org.apache.commons.logging.LogFactory;
  * is made to read an entity.
  */
 final class SecureXMLResolver implements XMLResolver {
-
     private static final Log log = LogFactory.getLog(SecureXMLResolver.class);
+
+    @Override
     public Object resolveEntity(String publicID, String systemID, String baseURI,
             String namespace) throws XMLStreamException {
         // Do not expose the name of the entity that was attempted to be 
@@ -42,6 +43,5 @@ final class SecureXMLResolver implements XMLResolver {
         }
         throw new XMLStreamException("Reading external entities is disabled");
     }
-
 }
 

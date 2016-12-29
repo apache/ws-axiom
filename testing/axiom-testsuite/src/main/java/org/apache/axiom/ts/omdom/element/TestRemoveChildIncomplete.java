@@ -33,6 +33,7 @@ public class TestRemoveChildIncomplete extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Element element = (Element)AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
                 "<parent><a/><b/><c/></parent>");

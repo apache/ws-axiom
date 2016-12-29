@@ -44,6 +44,7 @@ public class TestIOExceptionInGetText extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         // Construct a stream that will throw an exception in the middle of a text node.
         // We need to create a very large document, because some parsers (such as some

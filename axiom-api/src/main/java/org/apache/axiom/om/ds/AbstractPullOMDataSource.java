@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMDataSourceExt;
  * content.
  */
 public abstract class AbstractPullOMDataSource extends AbstractOMDataSource {
+    @Override
     public final boolean isDestructiveWrite() {
         // Since we serialize by copying the events from the XMLStreamReader returned by getReader(),
         // obviously write is destructive if and only if read is destructive
@@ -38,6 +39,7 @@ public abstract class AbstractPullOMDataSource extends AbstractOMDataSource {
     }
 
     // Note: this method is never executed by Axiom itself
+    @Override
     public final void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         OMAbstractFactory.getOMFactory().createOMElement(this).serialize(xmlWriter, false);
     }

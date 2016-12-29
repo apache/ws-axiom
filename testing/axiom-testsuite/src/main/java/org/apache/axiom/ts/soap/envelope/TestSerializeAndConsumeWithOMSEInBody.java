@@ -47,6 +47,7 @@ public class TestSerializeAndConsumeWithOMSEInBody extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPBody body = soapFactory.createSOAPBody();
@@ -68,6 +69,7 @@ public class TestSerializeAndConsumeWithOMSEInBody extends SOAPTestCase {
         /**
          * @see org.apache.axiom.om.OMDataSource#getReader()
          */
+        @Override
         public XMLStreamReader getReader() throws XMLStreamException {
             // TODO Auto-generated method stub
             return StAXUtils.createXMLStreamReader(new StringReader(xml));
@@ -76,6 +78,7 @@ public class TestSerializeAndConsumeWithOMSEInBody extends SOAPTestCase {
         /**
          * @see org.apache.axiom.om.OMDataSource#serialize(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
          */
+        @Override
         public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
             // TODO Auto-generated method stub
             
@@ -84,6 +87,7 @@ public class TestSerializeAndConsumeWithOMSEInBody extends SOAPTestCase {
         /**
          * @see org.apache.axiom.om.OMDataSource#serialize(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
          */
+        @Override
         public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
             // TODO Auto-generated method stub
             
@@ -92,6 +96,7 @@ public class TestSerializeAndConsumeWithOMSEInBody extends SOAPTestCase {
         /**
          * @see org.apache.axiom.om.OMDataSource#serialize(javax.xml.stream.XMLStreamWriter)
          */
+        @Override
         public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
             // TODO Auto-generated method stub
             

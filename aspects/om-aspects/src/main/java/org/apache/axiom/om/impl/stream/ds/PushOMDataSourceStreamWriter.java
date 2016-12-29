@@ -38,38 +38,47 @@ public final class PushOMDataSourceStreamWriter extends XMLStreamWriterWrapper {
         return super.getParent();
     }
 
+    @Override
     public void writeStartDocument() {
         throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument()");
     }
 
+    @Override
     public void writeStartDocument(String encoding, String version) {
         throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument(String, String)");
     }
 
+    @Override
     public void writeStartDocument(String version) {
         throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument(String)");
     }
 
+    @Override
     public void writeEndDocument() {
         throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeEndDocument()");
     }
 
+    @Override
     public void writeDTD(String dtd) throws XMLStreamException {
         throw new XMLStreamException("A DTD must not appear in element content");
     }
 
+    @Override
     public void writeStartElement(String localName) throws XMLStreamException {
         throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartElement(String)");
     }
 
+    @Override
     public void writeEmptyElement(String localName) throws XMLStreamException {
         throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeEmptyElement(String)");
     }
 
+    @Override
     public void flush() throws XMLStreamException {
         // Do nothing
     }
 
+    @Override
     public void close() throws XMLStreamException {
         throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT call XMLStreamWriter#close()");
     }

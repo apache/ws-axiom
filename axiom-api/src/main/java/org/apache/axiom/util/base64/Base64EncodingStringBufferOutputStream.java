@@ -47,20 +47,24 @@ public class Base64EncodingStringBufferOutputStream extends AbstractBase64Encodi
         this.buffer = buffer;
     }
 
+    @Override
     protected void doWrite(byte[] b) throws IOException {
         for (int i=0; i<4; i++) {
             buffer.append((char)(b[i] & 0xFF));
         }
     }
 
+    @Override
     protected void flushBuffer() throws IOException {
         // Nothing to do
     }
     
+    @Override
     protected void doClose() throws IOException {
         // Nothing to do
     }
 
+    @Override
     protected void doFlush() throws IOException {
         // Nothing to do
     }

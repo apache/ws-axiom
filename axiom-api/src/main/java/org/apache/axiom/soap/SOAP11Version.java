@@ -33,50 +33,62 @@ public class SOAP11Version implements SOAPVersion, SOAP11Constants {
     private SOAP11Version() {
     }
 
+    @Override
     public String getEnvelopeURI() {
         return SOAP_ENVELOPE_NAMESPACE_URI;
     }
 
+    @Override
     public String getEncodingURI() {
         return SOAP_ENCODING_NAMESPACE_URI;
     }
 
+    @Override
     public QName getRoleAttributeQName() {
         return QNAME_ACTOR;
     }
 
+    @Override
     public String getNextRoleURI() {
         return SOAP_ACTOR_NEXT;
     }
 
+    @Override
     public QName getMustUnderstandFaultCode() {
         return QNAME_MU_FAULTCODE;
     }
 
+    @Override
     public QName getSenderFaultCode() {
         return QNAME_SENDER_FAULTCODE;
     }
 
+    @Override
     public QName getReceiverFaultCode() {
         return QNAME_RECEIVER_FAULTCODE;
     }
 
+    @Override
     public QName getFaultReasonQName() {
         return QNAME_FAULT_REASON;
     }
 
+    @Override
     public QName getFaultCodeQName() {
         return QNAME_FAULT_CODE;
     }
 
+    @Override
     public QName getFaultDetailQName() {
         return QNAME_FAULT_DETAIL;
     }
 
+    @Override
     public QName getFaultRoleQName() {
         return QNAME_FAULT_ROLE;
     }
 
+    @Override
     public MediaType getMediaType() {
         return MediaType.TEXT_XML;
     }

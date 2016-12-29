@@ -34,6 +34,7 @@ public class TestGetFirstElementLocalNameWithParser extends FirstElementNameWith
         super(metaFactory, spec, qname, true);
     }
 
+    @Override
     protected void runTest(SOAPBody body) throws Throwable {
         assertEquals(qname.getLocalPart(), body.getFirstElementLocalName());
     }

@@ -36,6 +36,7 @@ public class TestGetAttributeValueWithXmlPrefix2 extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement elem = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
                 "<Policy xml:base=\"uri:thisBase\"></Policy>");

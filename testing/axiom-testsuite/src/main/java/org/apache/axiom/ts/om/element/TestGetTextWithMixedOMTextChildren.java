@@ -34,6 +34,7 @@ public class TestGetTextWithMixedOMTextChildren extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement omElement = factory.createOMElement("element2", null);

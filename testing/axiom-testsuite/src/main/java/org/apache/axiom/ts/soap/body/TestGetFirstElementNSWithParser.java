@@ -35,6 +35,7 @@ public class TestGetFirstElementNSWithParser extends FirstElementNameWithParserT
         super(metaFactory, spec, qname, true);
     }
 
+    @Override
     protected void runTest(SOAPBody body) throws Throwable {
         OMNamespace ns = body.getFirstElementNS();
         if (qname.getNamespaceURI().length() == 0) {

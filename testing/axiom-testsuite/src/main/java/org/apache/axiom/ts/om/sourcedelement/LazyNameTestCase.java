@@ -38,6 +38,7 @@ public abstract class LazyNameTestCase extends AxiomTestCase {
         addTestParameter("uri", qname.getNamespaceURI());
     }
     
+    @Override
     protected final void runTest() throws Throwable {
         runTest(variant.createOMSourcedElement(metaFactory.getOMFactory(), qname));
     }

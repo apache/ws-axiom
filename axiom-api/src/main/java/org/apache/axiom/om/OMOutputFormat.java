@@ -402,6 +402,7 @@ public class OMOutputFormat {
     /**
      * Use toString for logging state of the OMOutputFormat
      */
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("OMOutputFormat [");

@@ -41,6 +41,7 @@ public class TestDiscardPartiallyBuilt extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(

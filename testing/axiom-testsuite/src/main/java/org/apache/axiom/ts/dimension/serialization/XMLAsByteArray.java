@@ -31,10 +31,12 @@ class XMLAsByteArray implements XML {
         this.xml = xml;
     }
 
+    @Override
     public InputSource getInputSource() {
         return new InputSource(new ByteArrayInputStream(xml));
     }
 
+    @Override
     public void dump(PrintStream out) throws IOException {
         out.write(xml);
         out.println();

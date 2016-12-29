@@ -40,10 +40,12 @@ final class SAXBuilderFactory extends BuilderFactory {
         this.implementation = implementation;
     }
 
+    @Override
     public boolean isDeferredParsing() {
         return false;
     }
 
+    @Override
     public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
         // SAX doesn't provide this information
         comparator.setCompareCharacterEncodingScheme(false);
@@ -53,10 +55,12 @@ final class SAXBuilderFactory extends BuilderFactory {
         comparator.setCompareInternalSubset(implementation.reportsExternalSubsetEntity());
     }
 
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("source", implementation.getName() + "-sax");
     }
 
+    @Override
     public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
         SAXParserFactory factory = implementation.newSAXParserFactory();
         factory.setNamespaceAware(true);

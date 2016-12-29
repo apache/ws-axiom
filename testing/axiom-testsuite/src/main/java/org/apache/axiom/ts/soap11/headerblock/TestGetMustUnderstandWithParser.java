@@ -30,6 +30,7 @@ public class TestGetMustUnderstandWithParser extends SOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP11);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Iterator<SOAPHeaderBlock> iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
         iterator.next();

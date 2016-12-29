@@ -65,6 +65,7 @@ final class MemoryBlobOutputStream extends OutputStream implements ReadFromSuppo
         chunk.buffer[chunk.size++] = (byte)b;
     }
 
+    @Override
     public long readFrom(InputStream in, long length) throws StreamCopyException {
         if (chunk == null) {
             throw new IllegalStateException();

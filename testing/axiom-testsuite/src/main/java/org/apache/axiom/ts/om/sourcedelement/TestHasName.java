@@ -28,6 +28,7 @@ public class TestHasName extends LazyNameTestCase {
         super(metaFactory, variant, qname);
     }
 
+    @Override
     protected void runTest(OMSourcedElement element) throws Throwable {
         assertTrue(element.hasName(qname));
         assertFalse(element.hasName(new QName("urn:other", "other")));

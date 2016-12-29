@@ -55,6 +55,7 @@ public class TextHelperTest extends TestCase {
         super(testName);
     }
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         tempDir = new File(System.getProperty("basedir", "."), "target/temp");
@@ -71,6 +72,7 @@ public class TextHelperTest extends TestCase {
         file.deleteOnExit();
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         if (file != null) {

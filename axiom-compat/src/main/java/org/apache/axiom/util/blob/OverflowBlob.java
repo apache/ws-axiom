@@ -51,10 +51,12 @@ public class OverflowBlob implements WritableBlob {
         
         private FileOutputStream fileOutputStream;
         
+        @Override
         public WritableBlob getBlob() {
             return OverflowBlob.this;
         }
 
+        @Override
         public void write(byte[] b, int off, int len) throws IOException {
 
             if (fileOutputStream != null) {
@@ -91,20 +93,24 @@ public class OverflowBlob implements WritableBlob {
             }
         }
 
+        @Override
         public void write(byte[] b) throws IOException {
             write(b, 0, b.length);
         }
 
+        @Override
         public void write(int b) throws IOException {
             write(new byte[] { (byte)b }, 0, 1);
         }
 
+        @Override
         public void flush() throws IOException {
             if (fileOutputStream != null) {
                 fileOutputStream.flush();
             }
         }
 
+        @Override
         public void close() throws IOException {
             if (fileOutputStream != null) {
                 fileOutputStream.close();
@@ -120,10 +126,12 @@ public class OverflowBlob implements WritableBlob {
         private int markChunkIndex;
         private int markChunkOffset;
         
+        @Override
         public int available() throws IOException {
             return (chunkIndex-currentChunkIndex)*chunkSize + chunkOffset - currentChunkOffset;
         }
 
+        @Override
         public int read(byte[] b, int off, int len) throws IOException {
 
             if (len == 0) {
@@ -164,29 +172,35 @@ public class OverflowBlob implements WritableBlob {
             }
         }
 
+        @Override
         public int read(byte[] b) throws IOException {
             return read(b, 0, b.length);
         }
 
+        @Override
         public int read() throws IOException {
             byte[] b = new byte[1];
             return read(b) == -1 ? -1 : b[0] & 0xFF;
         }
 
+        @Override
         public boolean markSupported() {
             return true;
         }
 
+        @Override
         public void mark(int readlimit) {
             markChunkIndex = currentChunkIndex;
             markChunkOffset = currentChunkOffset;
         }
 
+        @Override
         public void reset() throws IOException {
             currentChunkIndex = markChunkIndex;
             currentChunkOffset = markChunkOffset;
         }
 
+        @Override
         public long skip(long n) throws IOException {
 
             int available = available();
@@ -198,6 +212,7 @@ public class OverflowBlob implements WritableBlob {
             return c;
         }
         
+        @Override
         public void close() throws IOException {
         }
     }
@@ -253,6 +268,7 @@ public class OverflowBlob implements WritableBlob {
         chunks = new byte[numberOfChunks][];
     }
     
+    @Override
     public boolean isSupportingReadUncommitted() {
         // This is actually a limitation of the implementation, not an intrinsic limitation
         return false;
@@ -304,6 +320,7 @@ public class OverflowBlob implements WritableBlob {
         return fileOutputStream;
     }
     
+    @Override
     public BlobOutputStream getOutputStream() {
         if (state != STATE_NEW) {
             throw new IllegalStateException();
@@ -313,6 +330,7 @@ public class OverflowBlob implements WritableBlob {
         }
     }
     
+    @Override
     public long readFrom(InputStream in, long length, boolean commit) throws StreamCopyException {
         // TODO: this will not work if the blob is in state UNCOMMITTED and we have already switched to a temporary file
         long read = 0;
@@ -376,10 +394,12 @@ public class OverflowBlob implements WritableBlob {
         return read;
     }
     
+    @Override
     public long readFrom(InputStream in, long length) throws StreamCopyException {
         return readFrom(in, length, state == STATE_NEW);
     }
 
+    @Override
     public InputStream getInputStream() throws IOException {
         if (state != STATE_COMMITTED) {
             throw new IllegalStateException();
@@ -390,6 +410,7 @@ public class OverflowBlob implements WritableBlob {
         }
     }
     
+    @Override
     public void writeTo(OutputStream out) throws StreamCopyException {
         if (temporaryFile != null) {
             FileInputStream in;
@@ -441,6 +462,7 @@ public class OverflowBlob implements WritableBlob {
         }
     }
     
+    @Override
     public long getLength() {
         if (temporaryFile != null) {
             return temporaryFile.length();
@@ -449,6 +471,7 @@ public class OverflowBlob implements WritableBlob {
         }
     }
     
+    @Override
     public void release() {
         if (temporaryFile != null) {
             if (log.isDebugEnabled()) {
@@ -458,6 +481,7 @@ public class OverflowBlob implements WritableBlob {
         }
     }
 
+    @Override
     protected void finalize() throws Throwable {
         if (temporaryFile != null) {
             log.warn("Cleaning up unreleased temporary file " + temporaryFile);

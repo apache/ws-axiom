@@ -37,6 +37,7 @@ public class TestGetXMLStreamReaderCDATAEventFromParser extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         // Create an element with a CDATA section.
         InputStream is = new ByteArrayInputStream("<test><![CDATA[hello world]]></test>".getBytes());

@@ -32,12 +32,14 @@ class CloseTestXMLStreamReaderWrapper extends XMLStreamReaderWrapper {
         this.ds = ds;
     }
 
+    @Override
     public void close() throws XMLStreamException {
         super.close();
         ds.readerClosed(this);
         closed = true;
     }
 
+    @Override
     public int next() throws XMLStreamException {
         if (closed) {
             throw new IllegalStateException();

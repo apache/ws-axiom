@@ -36,6 +36,7 @@ public class TestBuildWithAttachments extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         MTOMSample sample = MTOMSample.SAMPLE1;
         InputStream in = sample.getInputStream();

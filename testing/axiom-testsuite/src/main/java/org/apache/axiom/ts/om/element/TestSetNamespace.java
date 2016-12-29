@@ -40,14 +40,17 @@ public class TestSetNamespace extends SetNamespaceTestCase {
         }
     }
 
+    @Override
     protected boolean context() {
         return true;
     }
 
+    @Override
     protected OMNamedInformationItem node(OMFactory factory, OMElement context) {
         return context;
     }
 
+    @Override
     protected void setNamespace(OMNamedInformationItem node, OMNamespace ns) {
         if (declare == null) {
             ((OMElement)node).setNamespace(ns);

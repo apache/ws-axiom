@@ -27,6 +27,7 @@ public class NamespaceDeclarationMapper implements Mapper<OMNamespace,AxiomNames
     
     private NamespaceDeclarationMapper() {}
     
+    @Override
     public OMNamespace map(AxiomNamespaceDeclaration namespaceDeclaration) {
         return namespaceDeclaration.getDeclaredNamespace();
     }

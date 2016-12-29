@@ -39,6 +39,7 @@ public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCa
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement incompleteElement = OMXMLBuilderFactory.createOMBuilder(factory,

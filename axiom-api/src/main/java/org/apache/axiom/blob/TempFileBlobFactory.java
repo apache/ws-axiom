@@ -32,6 +32,7 @@ final class TempFileBlobFactory implements WritableBlobFactory<WritableBlob> {
         this.tempDirectory = tempDirectory;
     }
 
+    @Override
     public WritableBlob createBlob() {
         return new TempFileBlobImpl(this);
     }

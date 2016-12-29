@@ -33,6 +33,7 @@ public class TestInsertSiblingBefore extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
         OMElement parent = fac.createOMElement("test", null);

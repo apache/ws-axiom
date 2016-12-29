@@ -45,6 +45,7 @@ public class TestSerialize extends AxiomTestCase {
         serializationStrategy.addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPMessage soapMessage = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
                 message.getInputStream(), null).getSOAPMessage();

@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 public abstract class CreateOMElementVariant {
     public static final CreateOMElementVariant[] INSTANCES = {
         new CreateOMElementVariant("QName", false, false) {
+            @Override
             public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 if (prefix == null) {
@@ -37,6 +38,7 @@ public abstract class CreateOMElementVariant {
             }
         },
         new CreateOMElementVariant("QName,OMContainer", false, true) {
+            @Override
             public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 if (prefix == null) {
@@ -46,6 +48,7 @@ public abstract class CreateOMElementVariant {
             }
         },
         new CreateOMElementVariant("String,OMNamespace", true, false) {
+            @Override
             public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 return factory.createOMElement(localName,
@@ -53,6 +56,7 @@ public abstract class CreateOMElementVariant {
             }
         },
         new CreateOMElementVariant("String,OMNamespace,OMContainer", true, true) {
+            @Override
             public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 return factory.createOMElement(localName,
@@ -60,6 +64,7 @@ public abstract class CreateOMElementVariant {
             }
         },
         new CreateOMElementVariant("String,String,String", true, false) {
+            @Override
             public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 return factory.createOMElement(localName, namespaceURI, prefix);

@@ -81,6 +81,7 @@ public abstract class XOPEncodingStreamWrapper implements MimePartProvider {
         return Collections.unmodifiableSet(dataHandlerObjects.keySet());
     }
 
+    @Override
     public boolean isLoaded(String contentID) {
         Object dataHandlerObject = dataHandlerObjects.get(contentID);
         if (dataHandlerObject == null) {
@@ -93,6 +94,7 @@ public abstract class XOPEncodingStreamWrapper implements MimePartProvider {
         }
     }
 
+    @Override
     public DataHandler getDataHandler(String contentID) throws IOException {
         Object dataHandlerObject = dataHandlerObjects.get(contentID);
         if (dataHandlerObject == null) {

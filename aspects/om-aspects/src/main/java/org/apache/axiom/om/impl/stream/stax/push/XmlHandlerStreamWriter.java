@@ -60,6 +60,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
     
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         if (DataHandlerWriter.PROPERTY.equals(name)) {
             return this;
@@ -68,6 +69,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteStartDocument() throws XMLStreamException {
         try {
             handler.startDocument(null, "1.0", null, null);
@@ -76,6 +78,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteStartDocument(String encoding, String version) throws XMLStreamException {
         try {
             handler.startDocument(null, version, encoding, null);
@@ -84,6 +87,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteStartDocument(String version) throws XMLStreamException {
         try {
             handler.startDocument(null, version, null, null);
@@ -92,6 +96,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteEndDocument() throws XMLStreamException {
         try {
             handler.completed();
@@ -100,6 +105,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteDTD(String dtd) throws XMLStreamException {
         if (serializer != null) {
             try {
@@ -112,6 +118,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteStartElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
         finishStartElement();
         try {
@@ -122,10 +129,12 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         inStartElement = true;
     }
 
+    @Override
     protected void doWriteStartElement(String localName) throws XMLStreamException {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     protected void doWriteEndElement() throws XMLStreamException {
         finishStartElement();
         try {
@@ -146,16 +155,19 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
     
+    @Override
     protected void doWriteEmptyElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
         doWriteStartElement(prefix, localName, namespaceURI);
         finishStartElement();
         doWriteEndElement();
     }
 
+    @Override
     protected void doWriteEmptyElement(String localName) throws XMLStreamException {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     protected void doWriteAttribute(String prefix, String namespaceURI, String localName, String value) throws XMLStreamException {
         try {
             handler.processAttribute(normalize(namespaceURI), localName, normalize(prefix), value, OMConstants.XMLATTRTYPE_CDATA, true);
@@ -164,10 +176,12 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteAttribute(String localName, String value) throws XMLStreamException {
         doWriteAttribute(null, null, localName, value);
     }
 
+    @Override
     protected void doWriteNamespace(String prefix, String namespaceURI) throws XMLStreamException {
         try {
             handler.processNamespaceDeclaration(normalize(prefix), normalize(namespaceURI));
@@ -176,14 +190,17 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteDefaultNamespace(String namespaceURI) throws XMLStreamException {
         doWriteNamespace(null, namespaceURI);
     }
 
+    @Override
     protected void doWriteCharacters(char[] text, int start, int len) throws XMLStreamException {
         doWriteCharacters(new String(text, start, len));
     }
 
+    @Override
     protected void doWriteCharacters(String text) throws XMLStreamException {
         finishStartElement();
         try {
@@ -193,6 +210,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteCData(String data) throws XMLStreamException {
         finishStartElement();
         try {
@@ -204,6 +222,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteComment(String data) throws XMLStreamException {
         finishStartElement();
         try {
@@ -215,6 +234,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteEntityRef(String name) throws XMLStreamException {
         finishStartElement();
         try {
@@ -224,6 +244,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteProcessingInstruction(String piTarget, String data) throws XMLStreamException {
         finishStartElement();
         try {
@@ -235,10 +256,12 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     protected void doWriteProcessingInstruction(String target) throws XMLStreamException {
         doWriteProcessingInstruction(target, "");
     }
 
+    @Override
     public void flush() throws XMLStreamException {
         if (serializer != null) {
             try {
@@ -249,10 +272,12 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     public void close() throws XMLStreamException {
         flush();
     }
 
+    @Override
     public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
             throws IOException, XMLStreamException {
         finishStartElement();
@@ -263,6 +288,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         }
     }
 
+    @Override
     public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
             boolean optimize) throws IOException, XMLStreamException {
         finishStartElement();

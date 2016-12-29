@@ -29,6 +29,7 @@ public class TestSetNode extends SOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP12);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
         soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault));

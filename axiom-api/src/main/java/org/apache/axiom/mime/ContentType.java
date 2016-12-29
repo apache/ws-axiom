@@ -151,6 +151,7 @@ public final class ContentType {
      * 
      * @return the string representation of this content type
      */
+    @Override
     public String toString() {
         StringBuilder buffer = new StringBuilder();
         buffer.append(mediaType.getPrimaryType());

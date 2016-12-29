@@ -34,6 +34,7 @@ public class TestSerializationWithTwoNonBuiltOMElements extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String sampleXMLOne = "<ChildOne><Name>ChildName</Name></ChildOne>";
         String sampleXMLTwo = "<ChildTwo><Name>ChildName</Name></ChildTwo>";

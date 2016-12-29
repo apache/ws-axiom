@@ -36,30 +36,37 @@ final class DetachableInputStream extends InputStream implements Detachable {
         this.closeOnDetach = closeOnDetach;
     }
 
+    @Override
     public int read() throws IOException {
         return target.read();
     }
 
+    @Override
     public int read(byte[] b) throws IOException {
         return target.read(b);
     }
 
+    @Override
     public int read(byte[] b, int off, int len) throws IOException {
         return target.read(b, off, len);
     }
 
+    @Override
     public long skip(long n) throws IOException {
         return target.skip(n);
     }
 
+    @Override
     public int available() throws IOException {
         return target.available();
     }
 
+    @Override
     public void close() throws IOException {
         target.close();
     }
 
+    @Override
     public void detach() throws OMException {
         MemoryBlob blob = Blobs.createMemoryBlob();
         try {

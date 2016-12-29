@@ -35,6 +35,7 @@ public class TestGetChildrenWithLocalName extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 XMLSample.SIMPLE.getInputStream()).getDocumentElement().getFirstElement();

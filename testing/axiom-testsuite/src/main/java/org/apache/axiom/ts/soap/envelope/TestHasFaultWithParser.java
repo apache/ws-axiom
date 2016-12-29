@@ -29,6 +29,7 @@ public class TestHasFaultWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         assertTrue(envelope.hasFault());
     }

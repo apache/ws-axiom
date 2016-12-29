@@ -93,6 +93,7 @@ public class TestSerialize extends AxiomTestCase {
         addTestParameter("count", count);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(factory, push, destructive);

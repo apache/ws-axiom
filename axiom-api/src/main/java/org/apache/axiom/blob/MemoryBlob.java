@@ -39,9 +39,16 @@ public interface MemoryBlob extends WritableBlob {
         }
     };
 
+    @Override
     InputStream getInputStream();
+
+    @Override
     OutputStream getOutputStream();
+
+    @Override
     long getSize();
+
+    @Override
     void release();
 
     /**

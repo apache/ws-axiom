@@ -27,15 +27,18 @@ import javax.xml.stream.XMLStreamWriter;
 class XLXP2Dialect extends AbstractStAXDialect {
     public static final StAXDialect INSTANCE = new XLXP2Dialect();
     
+    @Override
     public String getName() {
         return "XLXP2";
     }
 
+    @Override
     public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
         return factory;
     }
 
+    @Override
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
         // Set an XMLResolver that fails if an attempt is made to resolve a reference
         // This is an additional safeguard.
@@ -43,30 +46,36 @@ class XLXP2Dialect extends AbstractStAXDialect {
         return StAXDialectUtils.disallowDoctypeDecl(factory);
     }
 
+    @Override
     public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
         // XLXP's factories are thread safe
         return factory;
     }
 
+    @Override
     public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
         // XLXP's factories are thread safe
         return factory;
     }
 
+    @Override
     public XMLStreamReader normalize(XMLStreamReader reader) {
         // XLXP2's getNamespaceContext implementation is broken
         return new NamespaceContextCorrectingXMLStreamReaderWrapper(
                 new XLXPStreamReaderWrapper(reader));
     }
 
+    @Override
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
         return new XLXPStreamWriterWrapper(writer);
     }
 
+    @Override
     public XMLInputFactory normalize(XMLInputFactory factory) {
         return new XLXPInputFactoryWrapper(factory, this);
     }
 
+    @Override
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
         return new NormalizingXMLOutputFactoryWrapper(factory, this);
     }

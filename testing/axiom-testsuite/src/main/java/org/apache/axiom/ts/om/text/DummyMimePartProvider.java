@@ -38,10 +38,12 @@ final class DummyMimePartProvider implements MimePartProvider {
         return loaded;
     }
 
+    @Override
     public boolean isLoaded(String contentID) {
         return loaded;
     }
 
+    @Override
     public DataHandler getDataHandler(String contentID) throws IOException {
         if (!contentID.equals(this.contentID)) {
             throw new IllegalArgumentException("Unknown content ID");

@@ -34,20 +34,24 @@ import org.junit.Assert;
  * bindings (defined by the ancestors of the {@link OMSourcedElement}).
  */
 public class GetNamespaceContextScenario implements PushOMDataSourceScenario {
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "getNamespaceContext");
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.singletonMap("p", "urn:test");
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         Assert.assertEquals("urn:test", writer.getNamespaceContext().getNamespaceURI("p"));
         writer.writeStartElement(null, "root", null);
         writer.writeEndElement();
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         // Just expand the element
         element.getFirstOMChild();

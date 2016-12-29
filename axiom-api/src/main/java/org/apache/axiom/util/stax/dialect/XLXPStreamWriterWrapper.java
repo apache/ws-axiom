@@ -29,6 +29,7 @@ class XLXPStreamWriterWrapper extends XMLStreamWriterWrapper {
         super(parent);
     }
 
+    @Override
     public void writeStartDocument(String encoding, String version) throws XMLStreamException {
         if (encoding == null) {
             throw new IllegalArgumentException();

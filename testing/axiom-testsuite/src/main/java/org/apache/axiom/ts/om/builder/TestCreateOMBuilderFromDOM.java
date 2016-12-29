@@ -54,6 +54,7 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
         return implementation.parse(new InputSource(file.getUrl().toString()), expandEntityReferences);
     }
     
+    @Override
     protected void runTest() throws Throwable {
         // We never expand entity references during parsing, but we may do this later when
         // converting DOM to OM.

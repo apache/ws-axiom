@@ -33,6 +33,7 @@ public class TestCreateOMTextWithNullParent extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMText text = metaFactory.getOMFactory().createOMText(null, "text");
         assertNull(text.getParent());

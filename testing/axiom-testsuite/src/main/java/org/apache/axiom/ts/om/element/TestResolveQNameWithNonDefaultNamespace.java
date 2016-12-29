@@ -30,6 +30,7 @@ public class TestResolveQNameWithNonDefaultNamespace extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<root xmlns:p='urn:ns'/>");
         QName qname = element.resolveQName("p:test");

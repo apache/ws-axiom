@@ -35,16 +35,19 @@ public final class LiveNamespaceContext extends AbstractNamespaceContext {
         this.element = element;
     }
 
+    @Override
     protected String doGetNamespaceURI(String prefix) {
         OMNamespace ns = element.findNamespaceURI(prefix);
         return ns == null ? XMLConstants.NULL_NS_URI : ns.getNamespaceURI();
     }
 
+    @Override
     protected String doGetPrefix(String namespaceURI) {
         OMNamespace ns = element.findNamespace(namespaceURI, null);
         return ns == null ? null : ns.getPrefix();
     }
 
+    @Override
     protected Iterator<String> doGetPrefixes(String namespaceURI) {
         List<String> prefixes = new ArrayList<String>();
         for (Iterator<OMNamespace> it = element.getNamespacesInScope(); it.hasNext(); ) {

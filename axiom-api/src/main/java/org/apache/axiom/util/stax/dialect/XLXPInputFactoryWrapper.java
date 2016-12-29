@@ -30,10 +30,12 @@ class XLXPInputFactoryWrapper extends NormalizingXMLInputFactoryWrapper {
         super(parent, dialect);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(InputStream stream) throws XMLStreamException {
         return createXMLStreamReader(null, stream);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream)
             throws XMLStreamException {
         // Both versions of XLXP have issues with documents using UTF-16 without byte

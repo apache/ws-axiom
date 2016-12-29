@@ -41,10 +41,12 @@ public interface StAXWriterConfiguration {
      * The default configuration.
      */
     StAXWriterConfiguration DEFAULT = new StAXWriterConfiguration() {
+        @Override
         public XMLOutputFactory configure(XMLOutputFactory factory, StAXDialect dialect) {
             return factory;
         }
 
+        @Override
         public String toString() {
             return "DEFAULT";
         }

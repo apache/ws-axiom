@@ -42,6 +42,7 @@ public class BufferUtilsTest extends TestCase {
     byte[] bytes;
     static final int MAX = 1024 * 1024;
    
+    @Override
     protected void setUp() throws Exception {
         bytes = new byte[MAX];
         for (int i = 0; i < MAX /20; i++) {

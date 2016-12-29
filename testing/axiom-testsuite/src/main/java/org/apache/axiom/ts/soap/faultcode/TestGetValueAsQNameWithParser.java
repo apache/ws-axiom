@@ -34,6 +34,7 @@ public class TestGetValueAsQNameWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultCode faultCode = envelope.getBody().getFault().getCode();
         assertEquals(spec.getReceiverFaultCode(), faultCode.getValueAsQName());

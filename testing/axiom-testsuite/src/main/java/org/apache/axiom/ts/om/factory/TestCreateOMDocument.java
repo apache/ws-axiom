@@ -28,6 +28,7 @@ public class TestCreateOMDocument extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMDocument document = metaFactory.getOMFactory().createOMDocument();
         assertNotNull(document);

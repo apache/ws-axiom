@@ -40,6 +40,7 @@ public class TestCreateOMBuilderFromDOMElement extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = DOMImplementation.XERCES.parse(new InputSource(new StringReader("<a><b><c/></b><b2/></a>")));
         Element domB = (Element)document.getElementsByTagNameNS(null, "b").item(0);

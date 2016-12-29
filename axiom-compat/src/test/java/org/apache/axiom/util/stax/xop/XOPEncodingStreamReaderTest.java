@@ -31,6 +31,7 @@ import org.apache.axiom.ts.soap.MTOMSample;
 
 public class XOPEncodingStreamReaderTest extends TestCase {
     private static ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
+        @Override
         public String generateContentID(String existingContentID) {
             if (existingContentID == null) {
                 fail();

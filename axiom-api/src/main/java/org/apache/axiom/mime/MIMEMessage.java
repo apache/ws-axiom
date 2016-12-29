@@ -193,6 +193,7 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
         return partMap.containsKey(contentID);
     }
 
+    @Override
     public DataHandler getDataHandler(String contentID) {
         do {
             PartImpl part = partMap.get(contentID);

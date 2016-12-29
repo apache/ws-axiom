@@ -40,10 +40,12 @@ public class AXIOMXPathTestCase extends JaxenXPathTestBase {
         this.metaFactory = metaFactory;
     }
 
+    @Override
     protected Navigator createNavigator() {
         return new DocumentNavigator();
     }
 
+    @Override
     protected Object loadDocument(InputStream in) throws Exception {
         // Jaxen's unit tests assume that whitespace in the prolog/epilog is not
         // represented in the tree (as in DOM), so we need to filter these events.
@@ -52,6 +54,7 @@ public class AXIOMXPathTestCase extends JaxenXPathTestBase {
         return OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader).getDocument();
     }
 
+    @Override
     protected void releaseDocument(Object document) {
         ((OMDocument)document).close(false);
     }

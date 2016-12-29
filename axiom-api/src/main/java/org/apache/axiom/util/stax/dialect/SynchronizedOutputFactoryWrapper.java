@@ -34,41 +34,49 @@ class SynchronizedOutputFactoryWrapper extends XMLOutputFactoryWrapper {
         super(parent);
     }
 
+    @Override
     public synchronized XMLEventWriter createXMLEventWriter(OutputStream stream, String encoding)
             throws XMLStreamException {
         return super.createXMLEventWriter(stream, encoding);
     }
 
+    @Override
     public synchronized XMLEventWriter createXMLEventWriter(OutputStream stream)
             throws XMLStreamException {
         return super.createXMLEventWriter(stream);
     }
 
+    @Override
     public synchronized XMLEventWriter createXMLEventWriter(Result result)
             throws XMLStreamException {
         return super.createXMLEventWriter(result);
     }
 
+    @Override
     public synchronized XMLEventWriter createXMLEventWriter(Writer stream)
             throws XMLStreamException {
         return super.createXMLEventWriter(stream);
     }
 
+    @Override
     public synchronized XMLStreamWriter createXMLStreamWriter(OutputStream stream, String encoding)
             throws XMLStreamException {
         return super.createXMLStreamWriter(stream, encoding);
     }
 
+    @Override
     public synchronized XMLStreamWriter createXMLStreamWriter(OutputStream stream)
             throws XMLStreamException {
         return super.createXMLStreamWriter(stream);
     }
 
+    @Override
     public synchronized XMLStreamWriter createXMLStreamWriter(Result result)
             throws XMLStreamException {
         return super.createXMLStreamWriter(result);
     }
 
+    @Override
     public synchronized XMLStreamWriter createXMLStreamWriter(Writer stream)
             throws XMLStreamException {
         return super.createXMLStreamWriter(stream);

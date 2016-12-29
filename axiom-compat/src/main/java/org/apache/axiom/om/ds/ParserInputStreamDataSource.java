@@ -92,6 +92,7 @@ public class ParserInputStreamDataSource extends OMDataSourceExtBase {
     }
     
 
+    @Override
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         if(log.isDebugEnabled()){
             log.debug("Entry ParserInputStreamDataSource.serialize(OutputStream, OMOutputFormat");
@@ -120,6 +121,7 @@ public class ParserInputStreamDataSource extends OMDataSourceExtBase {
         }
     }
 
+    @Override
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         if(log.isDebugEnabled()){
             log.debug("Entry ParserInputStreamDataSource.serialize(XMLStreamWriter)");
@@ -130,6 +132,7 @@ public class ParserInputStreamDataSource extends OMDataSourceExtBase {
         }
     }
 
+    @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         if(log.isDebugEnabled()){
             log.debug("Entry ParserInputStreamDataSource.getReader()");
@@ -155,6 +158,7 @@ public class ParserInputStreamDataSource extends OMDataSourceExtBase {
      * (non-Javadoc)
      * @see org.apache.axiom.om.ds.OMDataSourceExtBase#getXMLInputStream(java.lang.String)
      */
+    @Override
     public InputStream getXMLInputStream(String encoding)  
         throws UnsupportedEncodingException {
         try{
@@ -169,10 +173,12 @@ public class ParserInputStreamDataSource extends OMDataSourceExtBase {
     }
     
     
+    @Override
     public Object getObject() {
         return data;
     }
 
+    @Override
     public boolean isDestructiveRead() {
         // If DESTRUCTIVE return true
         // If NOT_DESTRUCTIVE return false
@@ -181,6 +187,7 @@ public class ParserInputStreamDataSource extends OMDataSourceExtBase {
         return (data.behavior == Behavior.DESTRUCTIVE);
     }
 
+    @Override
     public boolean isDestructiveWrite() {
      // If DESTRUCTIVE return true
         // If NOT_DESTRUCTIVE return false
@@ -189,6 +196,7 @@ public class ParserInputStreamDataSource extends OMDataSourceExtBase {
         return (data.behavior == Behavior.DESTRUCTIVE);
     }
 
+    @Override
     public byte[] getXMLBytes(String encoding){
         if(log.isDebugEnabled()){
             log.debug("Entry ParserInputStreamDataSource.getXMLBytes(encoding)");
@@ -222,6 +230,7 @@ public class ParserInputStreamDataSource extends OMDataSourceExtBase {
         }
     }
 
+    @Override
     public void close() {
         if(log.isDebugEnabled()){
             log.debug("Entry ParserInputStreamDataSource.close()");
@@ -242,6 +251,7 @@ public class ParserInputStreamDataSource extends OMDataSourceExtBase {
     /**
      * Return a InputStreamDataSource backed by a ByteArrayInputStream
      */
+    @Override
     public OMDataSourceExt copy() {
         if(log.isDebugEnabled()){
             log.debug("Enter ParserInputStreamDataSource.copy()");

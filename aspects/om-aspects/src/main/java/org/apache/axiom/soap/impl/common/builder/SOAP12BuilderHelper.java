@@ -51,6 +51,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
     private boolean processingDetailElements = false;
     private Vector<String> detailElementNames;
 
+    @Override
     public Class<? extends AxiomElement> handleEvent(OMElement parent, int elementLevel,
             String namespaceURI, String localName) throws SOAPProcessingException {
         Class<? extends AxiomElement> elementType = null;

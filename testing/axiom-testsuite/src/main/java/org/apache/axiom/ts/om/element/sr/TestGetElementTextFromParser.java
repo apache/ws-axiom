@@ -55,6 +55,7 @@ public class TestGetElementTextFromParser extends AxiomTestCase {
         addTestParameter("build", build);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         // Note: We test getElementText on a child element ("b") of the element from which we request
         //       the XMLStreamReader ("a"). This is to make sure that the XMLStreamReader implementation actually

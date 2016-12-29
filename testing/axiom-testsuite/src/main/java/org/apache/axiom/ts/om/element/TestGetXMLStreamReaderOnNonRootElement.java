@@ -43,6 +43,7 @@ public class TestGetXMLStreamReaderOnNonRootElement extends AxiomTestCase {
         addTestParameter("cache", cache);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement root = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
                 "<a><b><c/></b><d>content</d></a>");

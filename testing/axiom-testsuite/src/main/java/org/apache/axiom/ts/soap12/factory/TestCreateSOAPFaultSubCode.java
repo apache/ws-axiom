@@ -41,6 +41,7 @@ public class TestCreateSOAPFaultSubCode extends SOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP12);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
         SOAPFault fault = envelope.getBody().getFault();

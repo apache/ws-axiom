@@ -34,6 +34,7 @@ public class TestGetXMLStreamReaderCDATAEventFromElement extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory omfactory = metaFactory.getOMFactory();
         OMElement element = omfactory.createOMElement("test", null);

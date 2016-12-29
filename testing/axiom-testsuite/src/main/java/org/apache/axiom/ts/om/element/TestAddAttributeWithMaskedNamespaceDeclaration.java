@@ -55,6 +55,7 @@ public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCas
         strategy.addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns1 = factory.createOMNamespace("urn:ns1", "p");

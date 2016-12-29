@@ -44,10 +44,12 @@ import org.apache.axiom.om.util.StAXUtils;
  * the descendants is not applicable.
  */
 public abstract class AbstractPushOMDataSource extends AbstractOMDataSource {
+    @Override
     public final boolean isDestructiveRead() {
         return isDestructiveWrite();
     }
 
+    @Override
     public final XMLStreamReader getReader() throws XMLStreamException {
         // Note: we don't actually expect this code to be called because OMSourcedElement should handle
         // AbstractPushOMDataSource instances differently. Nevertheless the code is functionally correct

@@ -71,10 +71,12 @@ public class TestSetNamespace extends SetNamespaceTestCase {
         addTestParameter("owner", owner);
     }
 
+    @Override
     protected boolean context() {
         return owner;
     }
 
+    @Override
     protected OMNamedInformationItem node(OMFactory factory, OMElement context) {
         if (context != null) {
             return context.addAttribute("attr", "value", null);
@@ -83,6 +85,7 @@ public class TestSetNamespace extends SetNamespaceTestCase {
         }
     }
 
+    @Override
     protected void setNamespace(OMNamedInformationItem node, OMNamespace ns) {
         node.setNamespace(ns, declare);
     }

@@ -33,10 +33,12 @@ public class TestCreateOMTextFromDataHandlerProvider extends AxiomTestCase {
     static class TestDataHandlerProvider implements DataHandlerProvider {
         private DataHandler dh;
         
+        @Override
         public boolean isLoaded() {
             return false;
         }
 
+        @Override
         public DataHandler getDataHandler() {
             if (dh == null) {
                 dh = new DataHandler("Data", "text/plain");
@@ -57,6 +59,7 @@ public class TestCreateOMTextFromDataHandlerProvider extends AxiomTestCase {
         addTestParameter("nullContentId", nullContentID);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         TestDataHandlerProvider prov = new TestDataHandlerProvider();
         OMFactory factory = metaFactory.getOMFactory();

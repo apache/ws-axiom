@@ -39,6 +39,7 @@ public class TestAddChildWithSameParent extends AxiomTestCase {
         addTestParameter("build", build);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement parent = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<parent><a/><b/><c/></parent>");
         if (build) {

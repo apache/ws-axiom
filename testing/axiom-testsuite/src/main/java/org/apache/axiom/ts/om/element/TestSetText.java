@@ -32,6 +32,7 @@ public class TestSetText extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = metaFactory.getOMFactory().createOMElement("test", null);
         String text = "The quick brown fox jumps over the lazy dog";

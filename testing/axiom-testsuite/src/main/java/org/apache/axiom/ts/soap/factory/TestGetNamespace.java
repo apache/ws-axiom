@@ -29,6 +29,7 @@ public class TestGetNamespace extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMNamespace ns = soapFactory.getNamespace();
         assertEquals(SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX, ns.getPrefix());

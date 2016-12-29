@@ -33,6 +33,7 @@ public class TestGetChildrenRemove2 extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 new StringReader("<root><child1/><child2/></root>")).getDocumentElement();

@@ -38,6 +38,7 @@ public class TestGetDocumentElementWithDiscardDocumentIllFormedEpilog extends Ax
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory,

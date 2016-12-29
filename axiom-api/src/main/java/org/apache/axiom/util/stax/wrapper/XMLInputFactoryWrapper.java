@@ -49,106 +49,130 @@ public class XMLInputFactoryWrapper extends XMLInputFactory {
         this.parent = parent;
     }
 
+    @Override
     public XMLEventReader createFilteredReader(XMLEventReader reader, EventFilter filter)
             throws XMLStreamException {
         return parent.createFilteredReader(reader, filter);
     }
 
+    @Override
     public XMLStreamReader createFilteredReader(XMLStreamReader reader, StreamFilter filter)
             throws XMLStreamException {
         return parent.createFilteredReader(reader, filter);
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(InputStream stream, String encoding)
             throws XMLStreamException {
         return parent.createXMLEventReader(stream, encoding);
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(InputStream stream) throws XMLStreamException {
         return parent.createXMLEventReader(stream);
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(Reader reader) throws XMLStreamException {
         return parent.createXMLEventReader(reader);
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(Source source) throws XMLStreamException {
         return parent.createXMLEventReader(source);
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(String systemId, InputStream stream)
             throws XMLStreamException {
         return parent.createXMLEventReader(systemId, stream);
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(String systemId, Reader reader)
             throws XMLStreamException {
         return parent.createXMLEventReader(systemId, reader);
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(XMLStreamReader reader) throws XMLStreamException {
         return parent.createXMLEventReader(reader);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(InputStream stream, String encoding)
             throws XMLStreamException {
         return parent.createXMLStreamReader(stream, encoding);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(InputStream stream) throws XMLStreamException {
         return parent.createXMLStreamReader(stream);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(Reader reader) throws XMLStreamException {
         return parent.createXMLStreamReader(reader);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(Source source) throws XMLStreamException {
         return parent.createXMLStreamReader(source);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream)
             throws XMLStreamException {
         return parent.createXMLStreamReader(systemId, stream);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(String systemId, Reader reader)
             throws XMLStreamException {
         return parent.createXMLStreamReader(systemId, reader);
     }
 
+    @Override
     public XMLEventAllocator getEventAllocator() {
         return parent.getEventAllocator();
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         return parent.getProperty(name);
     }
 
+    @Override
     public XMLReporter getXMLReporter() {
         return parent.getXMLReporter();
     }
 
+    @Override
     public XMLResolver getXMLResolver() {
         return parent.getXMLResolver();
     }
 
+    @Override
     public boolean isPropertySupported(String name) {
         return parent.isPropertySupported(name);
     }
 
+    @Override
     public void setEventAllocator(XMLEventAllocator allocator) {
         parent.setEventAllocator(allocator);
     }
 
+    @Override
     public void setProperty(String name, Object value) throws IllegalArgumentException {
         parent.setProperty(name, value);
     }
 
+    @Override
     public void setXMLReporter(XMLReporter reporter) {
         parent.setXMLReporter(reporter);
     }
 
+    @Override
     public void setXMLResolver(XMLResolver resolver) {
         parent.setXMLResolver(resolver);
     }

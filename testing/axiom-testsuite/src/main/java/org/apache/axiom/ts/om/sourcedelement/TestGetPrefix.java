@@ -28,6 +28,7 @@ public class TestGetPrefix extends LazyNameTestCase {
         super(metaFactory, variant, qname);
     }
 
+    @Override
     protected void runTest(OMSourcedElement element) throws Throwable {
         String prefix = qname.getPrefix();
         if (prefix.length() == 0) {

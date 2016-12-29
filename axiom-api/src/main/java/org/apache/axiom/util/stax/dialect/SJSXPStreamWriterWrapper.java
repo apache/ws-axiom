@@ -29,6 +29,7 @@ class SJSXPStreamWriterWrapper extends XMLStreamWriterWrapper {
         super(parent);
     }
 
+    @Override
     public void writeStartDocument(String encoding, String version) throws XMLStreamException {
         if (encoding == null) {
             throw new IllegalArgumentException();
@@ -37,6 +38,7 @@ class SJSXPStreamWriterWrapper extends XMLStreamWriterWrapper {
         }
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         // When no properties have been set on the writer, getProperty throws a
         // NullPointerException; see https://sjsxp.dev.java.net/issues/show_bug.cgi?id=28
@@ -47,6 +49,7 @@ class SJSXPStreamWriterWrapper extends XMLStreamWriterWrapper {
         }
     }
 
+    @Override
     public void writeStartElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException {
         // In SJSXP, writeStartElement(String,String,String) will update the namespace context,

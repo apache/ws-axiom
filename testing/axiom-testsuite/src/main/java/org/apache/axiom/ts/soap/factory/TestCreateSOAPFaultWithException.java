@@ -42,6 +42,7 @@ public class TestCreateSOAPFaultWithException extends SOAPTestCase {
         addTestParameter("withParent", withParent);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPBody body = withParent ? soapFactory.getDefaultEnvelope().getBody() : null;
         SOAPFault fault = soapFactory.createSOAPFault(body, new Exception("Testing soap fault"));

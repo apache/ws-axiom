@@ -49,6 +49,7 @@ public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
         return TestGetSAXSourceIdentityTransform.class.getResourceAsStream("test.xml");
     }
     
+    @Override
     protected void runTest() throws Throwable {
         Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer();
         

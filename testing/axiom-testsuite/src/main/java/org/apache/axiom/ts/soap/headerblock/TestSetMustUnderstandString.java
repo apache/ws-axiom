@@ -33,6 +33,7 @@ public class TestSetMustUnderstandString extends SOAPTestCase {
         addTestParameter("literal", literal.getLexicalRepresentation());
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
         soapHeaderBlock.setMustUnderstand(literal.getLexicalRepresentation());

@@ -55,14 +55,17 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     
     public abstract SOAPHelper getSOAPHelper();
 
+    @Override
     public final String getSoapVersionURI() {
         return getSOAPHelper().getEnvelopeURI();
     }
 
+    @Override
     public final SOAPVersion getSOAPVersion() {
         return getSOAPHelper().getVersion();
     }
     
+    @Override
     public final OMNamespace getNamespace() {
         return getSOAPHelper().getNamespace();
     }
@@ -90,109 +93,132 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
         return element;
     }
 
+    @Override
     public final SOAPMessage createSOAPMessage() {
         AxiomSOAPMessage message = createNode(AxiomSOAPMessage.class);
         message.initSOAPFactory(this);
         return message;
     }
 
+    @Override
     public final SOAPEnvelope createSOAPEnvelope() {
         return createSOAPEnvelope(getNamespace());
     }
     
+    @Override
     public final SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
         return createAxiomElement(getSOAPHelper().getEnvelopeClass(), null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns);
     }
 
+    @Override
     public final SOAPHeader createSOAPHeader(SOAPEnvelope parent) {
         SOAPHelper helper = getSOAPHelper();
         return createSOAPElement(helper.getHeaderClass(), parent, helper.getHeaderQName(), envelopeSequence, 0);
     }
 
+    @Override
     public final SOAPHeader createSOAPHeader() {
         return createSOAPHeader(null);
     }
 
+    @Override
     public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, SOAPHeader parent) {
         return createAxiomElement(getSOAPHelper().getHeaderBlockClass(), parent, localName, ns);
     }
 
+    @Override
     public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns) {
         return createAxiomElement(getSOAPHelper().getHeaderBlockClass(), null, localName, ns);
     }
 
+    @Override
     public final SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
         AxiomSOAPHeaderBlock element = createNode(getSOAPHelper().getHeaderBlockClass());
         element.init(source);
         return element;
     }
 
+    @Override
     public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, OMDataSource ds) {
         AxiomSOAPHeaderBlock element = createNode(getSOAPHelper().getHeaderBlockClass());
         element.init(localName, ns, ds);
         return element;
     }
 
+    @Override
     public final SOAPBody createSOAPBody(SOAPEnvelope parent) {
         SOAPHelper helper = getSOAPHelper();
         return createSOAPElement(helper.getBodyClass(), parent, helper.getBodyQName(), envelopeSequence, 1);
     }
 
+    @Override
     public final SOAPBody createSOAPBody() {
         return createSOAPBody(null);
     }
 
+    @Override
     public final SOAPFault createSOAPFault(SOAPBody parent) {
         SOAPHelper helper = getSOAPHelper();
         return createSOAPElement(helper.getFaultClass(), parent, helper.getFaultQName());
     }
 
+    @Override
     public final SOAPFault createSOAPFault() {
         return createSOAPFault(null);
     }
 
+    @Override
     public final SOAPFault createSOAPFault(SOAPBody parent, Exception e) {
         SOAPFault fault = createSOAPFault(parent);
         fault.setException(e);
         return fault;
     }
 
+    @Override
     public final SOAPFaultCode createSOAPFaultCode(SOAPFault parent) {
         SOAPHelper helper = getSOAPHelper();
         return createSOAPElement(helper.getFaultCodeClass(), parent, helper.getFaultCodeQName());
     }
 
+    @Override
     public final SOAPFaultCode createSOAPFaultCode() {
         return createSOAPFaultCode(null);
     }
 
+    @Override
     public final SOAPFaultReason createSOAPFaultReason(SOAPFault parent) {
         SOAPHelper helper = getSOAPHelper();
         return createSOAPElement(helper.getFaultReasonClass(), parent, helper.getFaultReasonQName());
     }
 
+    @Override
     public final SOAPFaultReason createSOAPFaultReason() {
         return createSOAPFaultReason(null);
     }
 
+    @Override
     public final SOAPFaultRole createSOAPFaultRole(SOAPFault parent) {
         SOAPHelper helper = getSOAPHelper();
         return createSOAPElement(helper.getFaultRoleClass(), parent, helper.getFaultRoleQName());
     }
 
+    @Override
     public final SOAPFaultRole createSOAPFaultRole() {
         return createSOAPFaultRole(null);
     }
 
+    @Override
     public final SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent) {
         SOAPHelper helper = getSOAPHelper();
         return createSOAPElement(helper.getFaultDetailClass(), parent, helper.getFaultDetailQName());
     }
 
+    @Override
     public final SOAPFaultDetail createSOAPFaultDetail() {
         return createSOAPFaultDetail(null);
     }
 
+    @Override
     public final SOAPMessage createDefaultSOAPMessage() {
         SOAPMessage message = createSOAPMessage();
         SOAPEnvelope env = createSOAPEnvelope();
@@ -201,6 +227,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
         return message;
     }
     
+    @Override
     public final SOAPEnvelope getDefaultEnvelope() {
         SOAPEnvelope env = createSOAPEnvelope();
         createSOAPHeader(env);

@@ -37,10 +37,12 @@ final class DOMBuilderFactory extends BuilderFactory {
         this.implementation = implementation;
     }
 
+    @Override
     public boolean isDeferredParsing() {
         return true;
     }
 
+    @Override
     public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
         comparator.setCompareCharacterEncodingScheme(implementation.isDOM3());
         comparator.setCompareEncoding(implementation.isDOM3());
@@ -54,10 +56,12 @@ final class DOMBuilderFactory extends BuilderFactory {
         comparator.setSortAttributes(true);
     }
 
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("source", implementation.getName() + "-dom");
     }
 
+    @Override
     public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
         return OMXMLBuilderFactory.createOMBuilder(
                 metaFactory.getOMFactory(),

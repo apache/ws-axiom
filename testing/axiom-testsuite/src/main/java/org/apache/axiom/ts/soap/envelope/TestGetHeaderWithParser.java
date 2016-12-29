@@ -31,6 +31,7 @@ public class TestGetHeaderWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPHeader header = envelope.getHeader();
         assertEquals("Header Test : - Header local name mismatch",

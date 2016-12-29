@@ -30,6 +30,7 @@ class NoCopyCharArrayWriter extends CharArrayWriter {
         super(expectedSize);
     }
 
+    @Override
     public char[] toCharArray() {
         return count == buf.length ? buf : super.toCharArray();
     }

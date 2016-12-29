@@ -34,6 +34,7 @@ public class TestGetAllDetailEntriesWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultDetail soapFaultDetail = envelope.getBody().getFault().getDetail();
         Iterator<OMElement> iterator = soapFaultDetail.getAllDetailEntries();

@@ -29,6 +29,7 @@ public class TestCreateOMAttribute extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMAttribute attr = factory.createOMAttribute("attr", null, "value");

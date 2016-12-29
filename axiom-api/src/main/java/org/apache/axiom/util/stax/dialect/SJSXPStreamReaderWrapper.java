@@ -46,6 +46,7 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getCharacterEncodingScheme() {
         if (getEventType() == START_DOCUMENT) {
             return super.getCharacterEncodingScheme();
@@ -54,6 +55,7 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getEncoding() {
         if (getEventType() == START_DOCUMENT) {
             return super.getEncoding();
@@ -62,6 +64,7 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getVersion() {
         if (getEventType() == START_DOCUMENT) {
             return super.getVersion();
@@ -70,6 +73,7 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public boolean isStandalone() {
         if (getEventType() == START_DOCUMENT) {
             return super.isStandalone();
@@ -78,6 +82,7 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public boolean standaloneSet() {
         if (getEventType() == START_DOCUMENT) {
             return super.standaloneSet();
@@ -86,6 +91,7 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getLocalName() {
         // Fix for https://sjsxp.dev.java.net/issues/show_bug.cgi?id=21
         int event = super.getEventType();
@@ -96,6 +102,7 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getPrefix() {
         // Fix for:
         // - https://sjsxp.dev.java.net/issues/show_bug.cgi?id=24
@@ -109,6 +116,7 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getNamespaceURI() {
         // Fix for https://sjsxp.dev.java.net/issues/show_bug.cgi?id=27
         int event = getEventType();
@@ -119,6 +127,7 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public QName getName() {
         // Fix for https://sjsxp.dev.java.net/issues/show_bug.cgi?id=44
         try {
@@ -128,20 +137,24 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public boolean hasName() {
         // Fix for https://sjsxp.dev.java.net/issues/show_bug.cgi?id=22
         int event = super.getEventType();
         return event == START_ELEMENT || event == END_ELEMENT;
     }
 
+    @Override
     public boolean hasText() {
         return super.hasText() || super.getEventType() == SPACE;
     }
 
+    @Override
     public boolean isWhiteSpace() {
         return super.isWhiteSpace() || super.getEventType() == SPACE;
     }
 
+    @Override
     public int next() throws XMLStreamException {
         // Fix for https://sjsxp.dev.java.net/issues/show_bug.cgi?id=17
         // Note that the StAX specs has contradicting information about the type
@@ -155,6 +168,7 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         } 
     }
 
+    @Override
     public NamespaceContext getNamespaceContext() {
         return new SJSXPNamespaceContextWrapper(super.getNamespaceContext());
     }

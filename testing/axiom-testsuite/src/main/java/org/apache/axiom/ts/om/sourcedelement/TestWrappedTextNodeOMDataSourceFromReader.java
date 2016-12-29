@@ -36,6 +36,7 @@ public class TestWrappedTextNodeOMDataSourceFromReader extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Random random = new Random();
         StringBuilder buffer = new StringBuilder(40000);

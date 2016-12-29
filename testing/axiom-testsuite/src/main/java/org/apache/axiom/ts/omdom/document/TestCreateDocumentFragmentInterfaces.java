@@ -34,6 +34,7 @@ public class TestCreateDocumentFragmentInterfaces extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         DocumentFragment fragment = document.createDocumentFragment();

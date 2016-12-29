@@ -34,6 +34,7 @@ public class TestDeclareNamespaceInvalid1 extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = metaFactory.getOMFactory().createOMElement(new QName("test"));
         try {

@@ -30,6 +30,7 @@ public class TestNextTag extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
                 "<a> <b> </b> <?pi?> <!--comment--> <c/> </a>");

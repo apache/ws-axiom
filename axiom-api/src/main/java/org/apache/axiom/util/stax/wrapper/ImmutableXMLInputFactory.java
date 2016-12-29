@@ -39,18 +39,22 @@ public class ImmutableXMLInputFactory extends XMLInputFactoryWrapper {
         super(parent);
     }
 
+    @Override
     public void setEventAllocator(XMLEventAllocator allocator) {
         throw new IllegalStateException("This factory is immutable");
     }
 
+    @Override
     public void setProperty(String name, Object value) throws IllegalArgumentException {
         throw new IllegalStateException("This factory is immutable");
     }
 
+    @Override
     public void setXMLReporter(XMLReporter reporter) {
         throw new IllegalStateException("This factory is immutable");
     }
 
+    @Override
     public void setXMLResolver(XMLResolver resolver) {
         throw new IllegalStateException("This factory is immutable");
     }

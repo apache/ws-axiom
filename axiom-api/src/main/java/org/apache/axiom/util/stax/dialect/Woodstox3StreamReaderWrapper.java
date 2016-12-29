@@ -28,6 +28,7 @@ class Woodstox3StreamReaderWrapper extends XMLStreamReaderWrapper {
         super(reader);
     }
 
+    @Override
     public String getCharacterEncodingScheme() {
         if (getEventType() == START_DOCUMENT) {
             return super.getCharacterEncodingScheme();
@@ -36,6 +37,7 @@ class Woodstox3StreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getEncoding() {
         if (getEventType() == START_DOCUMENT) {
             return super.getEncoding();
@@ -44,6 +46,7 @@ class Woodstox3StreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getVersion() {
         if (getEventType() == START_DOCUMENT) {
             return super.getVersion();
@@ -52,6 +55,7 @@ class Woodstox3StreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public boolean isStandalone() {
         if (getEventType() == START_DOCUMENT) {
             return super.isStandalone();
@@ -60,6 +64,7 @@ class Woodstox3StreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public boolean standaloneSet() {
         if (getEventType() == START_DOCUMENT) {
             return super.standaloneSet();
@@ -68,11 +73,13 @@ class Woodstox3StreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public boolean isCharacters() {
         // This addresses WSTX-201:
         return getEventType() == CHARACTERS;
     }
 
+    @Override
     public NamespaceContext getNamespaceContext() {
         return new NamespaceURICorrectingNamespaceContextWrapper(super.getNamespaceContext());
     }

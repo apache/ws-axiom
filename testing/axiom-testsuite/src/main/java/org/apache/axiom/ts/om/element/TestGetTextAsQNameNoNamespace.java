@@ -34,6 +34,7 @@ public class TestGetTextAsQNameNoNamespace extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement omElement = factory.createOMElement("TestElement", null);

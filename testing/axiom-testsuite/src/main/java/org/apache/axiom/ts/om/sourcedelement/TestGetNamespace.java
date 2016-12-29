@@ -29,6 +29,7 @@ public class TestGetNamespace extends LazyNameTestCase {
         super(metaFactory, variant, qname);
     }
 
+    @Override
     protected void runTest(OMSourcedElement element) throws Throwable {
         OMNamespace ns = element.getNamespace();
         if (qname.getNamespaceURI().length() == 0) {

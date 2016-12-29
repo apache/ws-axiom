@@ -40,6 +40,7 @@ public class TestDiscardPartiallyBuilt extends SampleBasedSOAPTestCase {
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPHeader header = envelope.getHeader();
         OMElement from = header.getFirstChildWithName(new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));

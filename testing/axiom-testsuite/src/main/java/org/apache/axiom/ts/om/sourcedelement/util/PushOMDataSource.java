@@ -40,6 +40,7 @@ public final class PushOMDataSource extends AbstractPushOMDataSource {
         this.destructive = destructive;
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         if (destroyed) {
             throw new IllegalStateException("The OMDataSource has already been consumed");
@@ -52,6 +53,7 @@ public final class PushOMDataSource extends AbstractPushOMDataSource {
         builder.close();
     }
 
+    @Override
     public boolean isDestructiveWrite() {
         return destructive;
     }

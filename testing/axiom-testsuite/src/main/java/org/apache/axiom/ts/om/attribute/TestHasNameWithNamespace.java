@@ -35,6 +35,7 @@ public class TestHasNameWithNamespace extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String localName = "attr";
         String uri = "urn:test";

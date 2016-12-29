@@ -96,6 +96,7 @@ public final class UIDGenerator {
      * to avoid class loader leaks (see AXIOM-354).
      */
     private static final ThreadLocal<long[]> triplet = new ThreadLocal<long[]>() {
+        @Override
         protected long[] initialValue() {
             long[] values = new long[3];
             values[0] = Thread.currentThread().getId() ^ threadIdXorOperand;

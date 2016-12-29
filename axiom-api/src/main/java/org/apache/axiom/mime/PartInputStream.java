@@ -61,10 +61,12 @@ final class PartInputStream extends InputStream {
         blobFactory = null;
     }
     
+    @Override
     public int available() throws IOException {
         return in == null ? 0 : in.available();
     }
 
+    @Override
     public int read() throws IOException {
         if (in == null) {
             return -1;
@@ -77,6 +79,7 @@ final class PartInputStream extends InputStream {
         }
     }
 
+    @Override
     public int read(byte[] b, int off, int len) throws IOException {
         if (in == null) {
             return -1;
@@ -89,6 +92,7 @@ final class PartInputStream extends InputStream {
         }
     }
 
+    @Override
     public int read(byte[] b) throws IOException {
         if (in == null) {
             return -1;
@@ -101,10 +105,12 @@ final class PartInputStream extends InputStream {
         }
     }
 
+    @Override
     public long skip(long n) throws IOException {
         return in == null ? 0 : in.skip(n);
     }
 
+    @Override
     public void close() throws IOException {
         if (in != null) {
             in.close();

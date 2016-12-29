@@ -22,6 +22,7 @@ import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 
 public class SOAPSampleAdapterFactory implements AdapterFactory<SOAPSample> {
+    @Override
     public void createAdapters(SOAPSample sample, Adapters adapters) {
         adapters.add(new SOAPSampleAdapter(sample));
     }

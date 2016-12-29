@@ -44,6 +44,7 @@ public class TestDTDReaderFromParser extends AxiomTestCase {
         addTestParameter("cache", cache);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMDocument doc = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 StAXParserConfiguration.STANDALONE,

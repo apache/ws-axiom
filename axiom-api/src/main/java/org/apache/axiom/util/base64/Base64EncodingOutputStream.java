@@ -52,6 +52,7 @@ public class Base64EncodingOutputStream extends AbstractBase64EncodingOutputStre
         this(parent, 4096);
     }
 
+    @Override
     protected void doWrite(byte[] b) throws IOException {
         if (buffer.length - len < 4) {
             flushBuffer();
@@ -60,15 +61,18 @@ public class Base64EncodingOutputStream extends AbstractBase64EncodingOutputStre
         len += 4;
     }
     
+    @Override
     protected void flushBuffer() throws IOException {
         parent.write(buffer, 0, len);
         len = 0;
     }
 
+    @Override
     protected void doFlush() throws IOException {
         parent.flush();
     }
 
+    @Override
     protected void doClose() throws IOException {
         parent.close();
     }

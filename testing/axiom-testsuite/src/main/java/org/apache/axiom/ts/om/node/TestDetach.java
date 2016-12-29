@@ -44,6 +44,7 @@ public class TestDetach extends AxiomTestCase {
         addTestParameter("build", build);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMContainer root;

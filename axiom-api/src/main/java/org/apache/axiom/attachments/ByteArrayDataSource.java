@@ -45,6 +45,7 @@ public class ByteArrayDataSource implements org.apache.axiom.ext.activation.Size
         this.type = type;
     }
 
+    @Override
     public String getContentType() {
         if (type == null)
             return "application/octet-stream";
@@ -52,19 +53,23 @@ public class ByteArrayDataSource implements org.apache.axiom.ext.activation.Size
             return type;
     }
 
+    @Override
     public InputStream getInputStream() throws IOException {
         return new ByteArrayInputStream(data == null ? new byte[0] : data);
     }
 
+    @Override
     public String getName() {
 
         return "ByteArrayDataSource";
     }
 
+    @Override
     public OutputStream getOutputStream() throws IOException {
         throw new IOException("Not Supported");
     }
 
+    @Override
     public long getSize() {
         return data == null ? 0 : data.length;
     }

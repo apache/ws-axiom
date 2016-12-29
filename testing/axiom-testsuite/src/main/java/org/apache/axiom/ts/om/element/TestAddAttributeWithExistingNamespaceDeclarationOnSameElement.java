@@ -42,6 +42,7 @@ public class TestAddAttributeWithExistingNamespaceDeclarationOnSameElement exten
         strategy.addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("test"));

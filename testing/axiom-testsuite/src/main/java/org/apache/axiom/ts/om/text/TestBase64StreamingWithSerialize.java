@@ -41,6 +41,7 @@ public class TestBase64StreamingWithSerialize extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement elem = factory.createOMElement("test", null);

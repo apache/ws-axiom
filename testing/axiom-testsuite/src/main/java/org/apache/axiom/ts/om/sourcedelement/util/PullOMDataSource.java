@@ -44,6 +44,7 @@ public final class PullOMDataSource extends AbstractPullOMDataSource {
         this.destructive = destructive;
     }
 
+    @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         if (destroyed) {
             throw new IllegalStateException("The OMDataSource has already been consumed");
@@ -58,6 +59,7 @@ public final class PullOMDataSource extends AbstractPullOMDataSource {
         return reader;
     }
 
+    @Override
     public boolean isDestructiveRead() {
         return destructive;
     }

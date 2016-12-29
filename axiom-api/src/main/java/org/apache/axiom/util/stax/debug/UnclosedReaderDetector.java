@@ -50,11 +50,13 @@ public class UnclosedReaderDetector extends WrappingXMLInputFactory {
             stackTrace = new Throwable();
         }
     
+        @Override
         public void close() throws XMLStreamException {
             super.close();
             isClosed = true;
         }
     
+        @Override
         protected void finalize() throws Throwable {
             if (!isClosed) {
                 log.warn("Detected unclosed XMLStreamReader.", stackTrace);
@@ -71,6 +73,7 @@ public class UnclosedReaderDetector extends WrappingXMLInputFactory {
         super(parent);
     }
 
+    @Override
     protected XMLStreamReader wrap(XMLStreamReader reader) {
         return new StreamReaderWrapper(reader);
     }

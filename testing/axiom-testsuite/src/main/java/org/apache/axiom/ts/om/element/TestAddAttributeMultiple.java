@@ -41,6 +41,7 @@ public class TestAddAttributeMultiple extends AxiomTestCase {
         strategy.addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String expectedXML =
                 "<AttributeTester xmlns:myAttr2NS=\"http://test-attributes-2.org\" " +

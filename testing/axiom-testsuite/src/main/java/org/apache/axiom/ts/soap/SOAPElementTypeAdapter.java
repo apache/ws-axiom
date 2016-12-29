@@ -44,6 +44,7 @@ public abstract class SOAPElementTypeAdapter implements Dimension {
         this.setter = setter;
     }
 
+    @Override
     public final void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("type", type.getSimpleName());
     }

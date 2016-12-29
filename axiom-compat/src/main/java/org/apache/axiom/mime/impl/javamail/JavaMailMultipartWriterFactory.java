@@ -37,6 +37,7 @@ import org.apache.axiom.mime.impl.axiom.AxiomMultipartWriterFactory;
 public class JavaMailMultipartWriterFactory implements MultipartWriterFactory {
     public static final MultipartWriterFactory INSTANCE = new JavaMailMultipartWriterFactory();
 
+    @Override
     public MultipartWriter createMultipartWriter(OutputStream out, String boundary) {
         return new MultipartWriterImpl(out, boundary);
     }

@@ -33,6 +33,7 @@ public class TestGetNamespaceURIWithNamespace extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMAttribute attr = factory.createOMAttribute("name", factory.createOMNamespace("urn:ns", "p"), "value");

@@ -40,6 +40,7 @@ public class TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified extends 
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 new StringReader("<root><a/><b/><c/></root>")).getDocumentElement();

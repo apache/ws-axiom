@@ -59,6 +59,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
 	
     private Map<String,Object> map;  // Map of properties
 
+    @Override
     public Object getProperty(String key) {
         if (map == null) {
             return null;
@@ -66,6 +67,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
         return map.get(key);
     }
 
+    @Override
     public Object setProperty(String key, Object value) {
         if (map == null) {
             map = new HashMap<String,Object>();
@@ -73,6 +75,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
         return map.put(key, value);
     }
     
+    @Override
     public boolean hasProperty(String key) {
         if (map == null) {
             return false;
@@ -80,6 +83,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
         return map.containsKey(key);
     }
    
+    @Override
     public InputStream getXMLInputStream(String encoding)  throws 
         UnsupportedEncodingException{
         if (log.isDebugEnabled()) {
@@ -88,6 +92,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
         return new ByteArrayInputStream(getXMLBytes(encoding));
     }
 
+    @Override
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         if (log.isDebugEnabled()) {
             log.debug("serialize output="+output+" format="+format);
@@ -100,6 +105,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
         }
     }
 
+    @Override
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
         if (log.isDebugEnabled()) {
             log.debug("serialize writer="+writer+" format="+format);
@@ -115,6 +121,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
         }
     }
 
+    @Override
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         if (log.isDebugEnabled()) {
             log.debug("serialize xmlWriter="+xmlWriter);

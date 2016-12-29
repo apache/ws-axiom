@@ -46,6 +46,7 @@ public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOM
         this.charset = charset;
     }
     
+    @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         InputStream is;
         try {
@@ -57,14 +58,17 @@ public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOM
         return new WrappedTextNodeStreamReader(wrapperElementName, new InputStreamReader(is, charset));
     }
 
+    @Override
     public Object getObject() {
         return binaryData;
     }
 
+    @Override
     public boolean isDestructiveRead() {
         return false;
     }
 
+    @Override
     public OMDataSourceExt copy() {
         return new WrappedTextNodeOMDataSourceFromDataSource(wrapperElementName, binaryData, charset);
     }

@@ -40,6 +40,7 @@ public class TestCloneBinary extends AxiomTestCase {
         addTestParameter("fetch", fetch);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         DataHandler dh = new DataHandler(new RandomDataSource(600613L, 4096));
         StringReader rootPart = new StringReader("<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>");

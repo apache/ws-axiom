@@ -35,6 +35,7 @@ public class TestHasNameWithoutNamespace extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMAttribute attr = metaFactory.getOMFactory().createOMAttribute("name", null, "value");
         assertTrue(attr.hasName(new QName("name")));

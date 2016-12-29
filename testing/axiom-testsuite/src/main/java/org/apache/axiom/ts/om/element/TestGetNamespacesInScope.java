@@ -31,6 +31,7 @@ public class TestGetNamespacesInScope extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
                 "<a xmlns:ns1='urn:ns1'><b xmlns:ns2='urn:ns2'/></a>");

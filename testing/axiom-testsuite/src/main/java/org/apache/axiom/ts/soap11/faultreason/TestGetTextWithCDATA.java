@@ -38,6 +38,7 @@ public class TestGetTextWithCDATA extends SOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP11);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String soap11Fault = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" +

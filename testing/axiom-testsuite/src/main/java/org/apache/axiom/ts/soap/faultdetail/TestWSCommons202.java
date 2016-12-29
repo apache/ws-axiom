@@ -29,6 +29,7 @@ public class TestWSCommons202 extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPFaultDetail soapFaultDetail = soapFactory.createSOAPFaultDetail();
         soapFaultDetail.setText("a");

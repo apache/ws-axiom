@@ -38,6 +38,7 @@ public class TestGetXMLStreamReaderWithNamespaceURIInterning extends AxiomTestCa
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         // Use "new String" to create String objects that are not interned

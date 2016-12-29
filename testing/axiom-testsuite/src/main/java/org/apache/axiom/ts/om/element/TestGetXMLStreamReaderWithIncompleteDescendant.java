@@ -50,6 +50,7 @@ public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCas
         addTestParameter("cache", cache);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement root = factory.createOMElement(new QName("root"));

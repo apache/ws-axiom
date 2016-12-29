@@ -35,6 +35,7 @@ public class TestInsertSiblingAfterLastChild extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
         OMNamespace ns = fac.createOMNamespace("http://www.testuri.com","ns");

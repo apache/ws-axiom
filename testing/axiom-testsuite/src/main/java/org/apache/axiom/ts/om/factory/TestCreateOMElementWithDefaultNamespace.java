@@ -30,6 +30,7 @@ public class TestCreateOMElementWithDefaultNamespace extends CreateOMElementTest
         super(metaFactory, variant, parentSupplier);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "urn:ns", "");

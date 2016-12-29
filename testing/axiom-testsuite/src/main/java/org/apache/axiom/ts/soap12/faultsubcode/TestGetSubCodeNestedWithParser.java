@@ -30,6 +30,7 @@ public class TestGetSubCodeNestedWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, SOAPSample.SOAP12_FAULT);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultSubCode subCode = envelope.getBody().getFault().getCode().getSubCode().getSubCode();
         assertNotNull(

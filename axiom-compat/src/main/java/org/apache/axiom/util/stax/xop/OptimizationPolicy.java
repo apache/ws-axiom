@@ -40,10 +40,12 @@ public interface OptimizationPolicy {
      * Policy implementation that optimizes all binary content marked as eligible for optimization.
      */
     OptimizationPolicy DEFAULT = new OptimizationPolicy() {
+        @Override
         public boolean isOptimized(DataHandler dataHandler, boolean optimize) {
             return optimize;
         }
 
+        @Override
         public boolean isOptimized(DataHandlerProvider dataHandlerProvider, boolean optimize) {
             return optimize;
         }
@@ -54,10 +56,12 @@ public interface OptimizationPolicy {
      * marked as eligible for optimization.
      */
     OptimizationPolicy ALL = new OptimizationPolicy() {
+        @Override
         public boolean isOptimized(DataHandler dataHandler, boolean optimize) {
             return true;
         }
 
+        @Override
         public boolean isOptimized(DataHandlerProvider dataHandlerProvider, boolean optimize) {
             return true;
         }

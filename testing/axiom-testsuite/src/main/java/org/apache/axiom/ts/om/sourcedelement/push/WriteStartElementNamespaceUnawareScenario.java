@@ -34,14 +34,17 @@ import org.junit.Assert;
  * disallowed as per the specification of {@link OMDataSource#serialize(XMLStreamWriter)}.
  */
 public class WriteStartElementNamespaceUnawareScenario implements PushOMDataSourceScenario {
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "writeStartElementNamespaceUnaware");
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         try {
@@ -53,6 +56,7 @@ public class WriteStartElementNamespaceUnawareScenario implements PushOMDataSour
         writer.writeEndElement();
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         // Just expand the element
         element.getFirstOMChild();

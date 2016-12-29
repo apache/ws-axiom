@@ -35,11 +35,13 @@ public class SerializeToOutputStream extends SerializationStrategy {
         this.cache = cache;
     }
 
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("serializationStrategy", "OutputStream");
         testCase.addTestParameter("cache", cache);
     }
 
+    @Override
     public XML serialize(OMContainer container) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         if (cache) {
@@ -50,14 +52,17 @@ public class SerializeToOutputStream extends SerializationStrategy {
         return new XMLAsByteArray(baos.toByteArray());
     }
 
+    @Override
     public boolean isPush() {
         return true;
     }
 
+    @Override
     public boolean isCaching() {
         return cache;
     }
 
+    @Override
     public boolean supportsInternalSubset() {
         return true;
     }

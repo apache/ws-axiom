@@ -71,6 +71,7 @@ class TextFromElementReader extends Reader {
         this.allowNonTextChildren = allowNonTextChildren;
     }
 
+    @Override
     public int read(char[] cbuf, int off, int len) throws IOException {
         if (endOfStream) {
             return -1;
@@ -122,6 +123,7 @@ class TextFromElementReader extends Reader {
         }
     }
 
+    @Override
     public void close() throws IOException {
         // Do nothing
     }

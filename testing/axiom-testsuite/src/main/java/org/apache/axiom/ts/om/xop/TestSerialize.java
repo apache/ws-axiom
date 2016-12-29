@@ -40,6 +40,7 @@ public class TestSerialize extends AxiomTestCase {
         addTestParameter("base64", base64);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         MTOMSample testMessage = MTOMSample.SAMPLE1;
 

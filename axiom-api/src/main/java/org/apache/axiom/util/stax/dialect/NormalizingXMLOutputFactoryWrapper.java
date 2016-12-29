@@ -32,6 +32,7 @@ class NormalizingXMLOutputFactoryWrapper extends WrappingXMLOutputFactory {
         this.dialect = dialect;
     }
 
+    @Override
     protected final XMLStreamWriter wrap(XMLStreamWriter writer) {
         return dialect.normalize(writer);
     }

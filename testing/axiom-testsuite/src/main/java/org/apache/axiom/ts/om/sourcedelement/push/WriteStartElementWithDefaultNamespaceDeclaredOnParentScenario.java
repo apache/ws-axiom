@@ -33,14 +33,17 @@ import org.junit.Assert;
  * {@link OMElement} if the element uses a default namespace declared on the parent.
  */
 public class WriteStartElementWithDefaultNamespaceDeclaredOnParentScenario implements PushOMDataSourceScenario {
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "writeStartElementWithDefaultNamespaceDeclaredOnParent");
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement("", "root", "urn:test");
         writer.writeDefaultNamespace("urn:test");
@@ -51,6 +54,7 @@ public class WriteStartElementWithDefaultNamespaceDeclaredOnParentScenario imple
         writer.writeEndElement();
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMElement child = element.getFirstElement();
         Assert.assertNull(child.getPrefix());

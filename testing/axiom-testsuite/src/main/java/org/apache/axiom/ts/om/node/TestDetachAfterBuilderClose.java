@@ -32,6 +32,7 @@ public class TestDetachAfterBuilderClose extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a><b/></a>"));

@@ -47,6 +47,7 @@ public class TestGetDataHandlerFromElement extends AxiomTestCase {
         addTestParameter("cache", cache);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         RandomDataSource orgDS = new RandomDataSource(64*1024);

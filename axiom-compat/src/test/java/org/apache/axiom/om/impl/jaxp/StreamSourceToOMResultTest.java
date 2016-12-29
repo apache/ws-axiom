@@ -52,6 +52,7 @@ public class StreamSourceToOMResultTest extends MatrixTestCase {
         addTestParameter("file", file.getName());
     }
     
+    @Override
     protected void runTest() throws Throwable {
         StreamSource source = new StreamSource(file.getUrl().toString());
         OMResult result = new OMResult(omMetaFactory.getOMFactory());
@@ -70,6 +71,7 @@ public class StreamSourceToOMResultTest extends MatrixTestCase {
 
     public static TestSuite suite() {
         MatrixTestSuiteBuilder builder = new MatrixTestSuiteBuilder() {
+            @Override
             protected void addTests() {
                 for (int i=0; i<axiomImplementations.length; i++) {
                     for (Iterator it = Multiton.getInstances(XMLSample.class).iterator(); it.hasNext(); ) {

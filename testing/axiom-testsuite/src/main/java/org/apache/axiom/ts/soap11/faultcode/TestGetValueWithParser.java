@@ -30,6 +30,7 @@ public class TestGetValueWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP11, SOAPSampleSet.SIMPLE_FAULT);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultCode code = envelope.getBody().getFault().getCode();
         assertNull(code.getValue());

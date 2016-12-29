@@ -28,6 +28,7 @@ public class TestCreateOMEntityReferenceWithNullParent extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMEntityReference entref = factory.createOMEntityReference(null, "testref");

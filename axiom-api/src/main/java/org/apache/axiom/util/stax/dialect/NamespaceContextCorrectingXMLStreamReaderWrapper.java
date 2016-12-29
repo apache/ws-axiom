@@ -55,6 +55,7 @@ class NamespaceContextCorrectingXMLStreamReaderWrapper extends XMLStreamReaderWr
         }
     }
     
+    @Override
     public int next() throws XMLStreamException {
         if (isEndElement()) {
             namespaceContext.endScope();
@@ -66,6 +67,7 @@ class NamespaceContextCorrectingXMLStreamReaderWrapper extends XMLStreamReaderWr
         return event;
     }
 
+    @Override
     public int nextTag() throws XMLStreamException {
         if (isEndElement()) {
             namespaceContext.endScope();
@@ -77,10 +79,12 @@ class NamespaceContextCorrectingXMLStreamReaderWrapper extends XMLStreamReaderWr
         return event;
     }
 
+    @Override
     public NamespaceContext getNamespaceContext() {
         return namespaceContext;
     }
 
+    @Override
     public String getNamespaceURI(String prefix) {
         String uri = namespaceContext.getNamespaceURI(prefix);
         return uri.length() == 0 ? null : uri;

@@ -33,6 +33,7 @@ public class TestCreateOMAttributeWithInvalidNamespace2 extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("urn:test", "");

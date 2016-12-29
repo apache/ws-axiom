@@ -47,6 +47,7 @@ public class TestRemoveChildren extends AxiomTestCase {
         addTestParameter("accessDocumentElement", accessDocumentElement);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory,

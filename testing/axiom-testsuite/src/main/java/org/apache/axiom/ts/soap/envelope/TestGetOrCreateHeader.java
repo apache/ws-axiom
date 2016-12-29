@@ -29,6 +29,7 @@ public class TestGetOrCreateHeader extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         SOAPHeader header = (SOAPHeader)envelope.getFirstOMChild();

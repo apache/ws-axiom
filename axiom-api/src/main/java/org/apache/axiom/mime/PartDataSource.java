@@ -34,22 +34,27 @@ final class PartDataSource implements SizeAwareDataSource {
         this.part = part;
     }
 
+    @Override
     public String getContentType() {
         return Util.getDataSourceContentType(part);
     }
 
+    @Override
     public InputStream getInputStream() throws IOException {
         return part.getInputStream(true);
     }
 
+    @Override
     public String getName() {
         return part.getContentID();
     }
 
+    @Override
     public OutputStream getOutputStream() throws IOException {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public long getSize() {
         return part.getBlob().getSize();
     }

@@ -46,6 +46,7 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
         addTestParameter("cache", cache);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         InputStream inStream = MTOMSample.SAMPLE2.getInputStream();
         Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE2.getContentType());

@@ -29,6 +29,7 @@ public class TestGetQNameWithoutNamespace extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = metaFactory.getOMFactory().createOMElement("name", null);
         QName qname = element.getQName();

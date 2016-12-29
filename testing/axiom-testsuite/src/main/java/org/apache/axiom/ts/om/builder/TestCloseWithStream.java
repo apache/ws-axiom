@@ -35,6 +35,7 @@ public class TestCloseWithStream extends AxiomTestCase {
         addTestParameter("type", streamType.getType().getSimpleName());
     }
 
+    @Override
     protected void runTest() throws Throwable {
         InstrumentedStream in = streamType.instrumentStream(streamType.getStream(XMLSample.SIMPLE));
         try {

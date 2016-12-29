@@ -38,10 +38,12 @@ public class MemoryBlob implements WritableBlob {
     final static int BUFFER_SIZE = 4096;
     
     class OutputStreamImpl extends BlobOutputStream {
+        @Override
         public WritableBlob getBlob() {
             return MemoryBlob.this;
         }
 
+        @Override
         public void write(byte[] b, int off, int len) throws IOException {
            int total = 0;
            while (total < len) {
@@ -56,16 +58,19 @@ public class MemoryBlob implements WritableBlob {
            }
         }
 
+        @Override
         public void write(byte[] b) throws IOException {
             this.write(b, 0, b.length);
         }
         
         byte[] writeByte = new byte[1];
+        @Override
         public void write(int b) throws IOException {
             writeByte[0] = (byte) b;
             this.write(writeByte, 0, 1);
         }
 
+        @Override
         public void close() throws IOException {
             outputStream = null;
             committed = true;
@@ -83,6 +88,7 @@ public class MemoryBlob implements WritableBlob {
         public InputStreamImpl() {
         }
 
+        @Override
         public int read() throws IOException {
             int read = read(read_byte);
 
@@ -93,19 +99,23 @@ public class MemoryBlob implements WritableBlob {
             }
         }
 
+        @Override
         public int available() throws IOException {
             return (int)getLength() - totalIndex;
         }
 
 
+        @Override
         public synchronized void mark(int readlimit) {
             mark = totalIndex;
         }
 
+        @Override
         public boolean markSupported() {
             return true;
         }
 
+        @Override
         public int read(byte[] b, int off, int len) throws IOException {
             int size = (int)getLength();
             int total = 0;
@@ -136,10 +146,12 @@ public class MemoryBlob implements WritableBlob {
             return total;
         }
 
+        @Override
         public int read(byte[] b) throws IOException {
             return this.read(b, 0, b.length);
         }
 
+        @Override
         public synchronized void reset() throws IOException {
             i = mark / BUFFER_SIZE;
             currIndex = mark - (i * BUFFER_SIZE);
@@ -165,10 +177,12 @@ public class MemoryBlob implements WritableBlob {
         index = 0;
     }
     
+    @Override
     public boolean isSupportingReadUncommitted() {
         return true;
     }
 
+    @Override
     public long getLength() {
         if (data == null) {
             return 0;
@@ -177,6 +191,7 @@ public class MemoryBlob implements WritableBlob {
         }
     }
 
+    @Override
     public BlobOutputStream getOutputStream() {
         if (data != null) {
             throw new IllegalStateException();
@@ -186,6 +201,7 @@ public class MemoryBlob implements WritableBlob {
         }
     }
 
+    @Override
     public long readFrom(InputStream in, long length, boolean commit) throws StreamCopyException {
         if (data == null) {
             init();
@@ -229,14 +245,17 @@ public class MemoryBlob implements WritableBlob {
         return bytesReceived;
     }
 
+    @Override
     public long readFrom(InputStream in, long length) throws StreamCopyException {
         return readFrom(in, length, data == null);
     }
 
+    @Override
     public InputStream getInputStream() throws IOException {
         return new InputStreamImpl();
     }
 
+    @Override
     public void writeTo(OutputStream os) throws StreamCopyException {
         int size = (int)getLength();
         if (data != null) {
@@ -255,6 +274,7 @@ public class MemoryBlob implements WritableBlob {
         }
     }
 
+    @Override
     public void release() {
         // no-op
     }

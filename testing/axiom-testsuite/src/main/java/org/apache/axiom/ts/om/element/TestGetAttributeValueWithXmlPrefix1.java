@@ -36,6 +36,7 @@ public class TestGetAttributeValueWithXmlPrefix1 extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement elem = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
                 "<wsp:Policy xml:base=\"uri:thisBase\" " +

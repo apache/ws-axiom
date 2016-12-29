@@ -40,6 +40,7 @@ public class TestAppendChildIncomplete extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         Document document = (Document)OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/></root>")).getDocument();

@@ -33,6 +33,7 @@ class StAX2StreamReaderWrapper extends XMLStreamReaderWrapper implements DTDRead
         super(parent);
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         if (DTDReader.PROPERTY.equals(name)) {
             return this;
@@ -41,14 +42,17 @@ class StAX2StreamReaderWrapper extends XMLStreamReaderWrapper implements DTDRead
         }
     }
 
+    @Override
     public String getRootName() {
         return ((DTDInfo)getParent()).getDTDRootName();
     }
 
+    @Override
     public String getPublicId() {
         return ((DTDInfo)getParent()).getDTDPublicId();
     }
 
+    @Override
     public String getSystemId() {
         return ((DTDInfo)getParent()).getDTDSystemId();
     }

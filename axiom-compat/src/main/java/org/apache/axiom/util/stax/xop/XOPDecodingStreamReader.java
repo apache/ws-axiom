@@ -73,10 +73,12 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
             return contentID;
         }
 
+        @Override
         public boolean isLoaded() {
             return mimePartProvider.isLoaded(contentID);
         }
 
+        @Override
         public DataHandler getDataHandler() throws IOException {
             return mimePartProvider.getDataHandler(contentID);
         }
@@ -167,6 +169,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         return contentID;
     }
     
+    @Override
     public int next() throws XMLStreamException {
         boolean wasStartElement;
         int event;
@@ -193,10 +196,12 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public int getEventType() {
         return dh == null ? super.getEventType() : CHARACTERS;
     }
 
+    @Override
     public int nextTag() throws XMLStreamException {
         if (dh != null) {
             resetDataHandler();
@@ -208,6 +213,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         if (DataHandlerReader.PROPERTY.equals(name)) {
             return this;
@@ -216,6 +222,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public String getElementText() throws XMLStreamException {
         if (super.getEventType() != START_ELEMENT) {
             throw new XMLStreamException("The current event is not a START_ELEMENT event");
@@ -272,6 +279,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public String getPrefix() {
         if (dh != null) {
             throw new IllegalStateException();
@@ -280,6 +288,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public String getNamespaceURI() {
         if (dh != null) {
             throw new IllegalStateException();
@@ -288,6 +297,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public String getLocalName() {
         if (dh != null) {
             throw new IllegalStateException();
@@ -296,6 +306,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public QName getName() {
         if (dh != null) {
             throw new IllegalStateException();
@@ -304,10 +315,12 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public Location getLocation() {
         return super.getLocation();
     }
 
+    @Override
     public String getNamespaceURI(String prefix) {
         String uri = super.getNamespaceURI(prefix);
         if ("xop".equals(prefix) && uri != null) {
@@ -316,6 +329,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         return uri;
     }
 
+    @Override
     public int getNamespaceCount() {
         if (dh != null) {
             throw new IllegalStateException();
@@ -324,6 +338,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public String getNamespacePrefix(int index) {
         if (dh != null) {
             throw new IllegalStateException();
@@ -332,6 +347,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public String getNamespaceURI(int index) {
         if (dh != null) {
             throw new IllegalStateException();
@@ -359,6 +375,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         return base64;
     }
     
+    @Override
     public String getText() {
         if (dh != null) {
             try {
@@ -371,6 +388,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public char[] getTextCharacters() {
         if (dh != null) {
             try {
@@ -383,6 +401,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
         if (dh != null) {
@@ -395,6 +414,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public int getTextLength() {
         if (dh != null) {
             try {
@@ -407,6 +427,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public int getTextStart() {
         if (dh != null) {
             return 0;
@@ -415,30 +436,37 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public boolean hasText() {
         return dh != null || super.hasText();
     }
 
+    @Override
     public boolean isCharacters() {
         return dh != null || super.isCharacters();
     }
 
+    @Override
     public boolean isStartElement() {
         return dh == null && super.isStartElement();
     }
 
+    @Override
     public boolean isEndElement() {
         return dh == null && super.isEndElement();
     }
 
+    @Override
     public boolean hasName() {
         return dh == null && super.hasName();
     }
 
+    @Override
     public boolean isWhiteSpace() {
         return dh == null && super.isWhiteSpace();
     }
 
+    @Override
     public void require(int type, String namespaceURI, String localName)
             throws XMLStreamException {
         if (dh != null) {
@@ -450,23 +478,28 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public boolean isBinary() {
         return dh != null;
     }
 
+    @Override
     public boolean isOptimized() {
         // xop:Include implies optimized
         return true;
     }
 
+    @Override
     public boolean isDeferred() {
         return true;
     }
     
+    @Override
     public String getContentID() {
         return dh.getContentID();
     }
 
+    @Override
     public DataHandler getDataHandler() throws XMLStreamException{
         try {
             return dh.getDataHandler();
@@ -475,6 +508,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
     }
 
+    @Override
     public DataHandlerProvider getDataHandlerProvider() {
         return dh;
     }

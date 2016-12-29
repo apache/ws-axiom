@@ -37,6 +37,7 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNS extends SOAPTestCase {
         addTestParameter("uri", qname.getNamespaceURI());
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         OMElement bodyElement = soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());

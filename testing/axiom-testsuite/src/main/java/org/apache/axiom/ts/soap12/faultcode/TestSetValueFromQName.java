@@ -39,6 +39,7 @@ public class TestSetValueFromQName extends SOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP12);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPFaultCode code = soapFactory.createSOAPFaultCode();
         code.setValue(new QName("urn:test", "MyFaultCode", "p"));

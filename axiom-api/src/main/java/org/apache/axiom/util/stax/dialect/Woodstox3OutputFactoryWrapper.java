@@ -31,6 +31,7 @@ class Woodstox3OutputFactoryWrapper extends NormalizingXMLOutputFactoryWrapper {
         super(parent, dialect);
     }
 
+    @Override
     public XMLEventWriter createXMLEventWriter(OutputStream stream, String encoding)
             throws XMLStreamException {
         if (encoding == null) {
@@ -40,6 +41,7 @@ class Woodstox3OutputFactoryWrapper extends NormalizingXMLOutputFactoryWrapper {
         }
     }
 
+    @Override
     public XMLStreamWriter createXMLStreamWriter(OutputStream stream, String encoding)
             throws XMLStreamException {
         if (encoding == null) {

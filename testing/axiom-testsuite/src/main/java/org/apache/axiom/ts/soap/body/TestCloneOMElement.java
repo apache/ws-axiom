@@ -34,6 +34,7 @@ public class TestCloneOMElement extends SampleBasedSOAPTestCase {
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPBody body = envelope.getBody();
 

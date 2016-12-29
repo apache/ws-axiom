@@ -33,6 +33,7 @@ public class TestGetException extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
         SOAPFaultDetail detail = soapFactory.createSOAPFaultDetail(fault);

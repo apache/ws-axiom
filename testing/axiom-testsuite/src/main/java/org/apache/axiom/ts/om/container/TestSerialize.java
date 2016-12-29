@@ -50,6 +50,7 @@ public class TestSerialize extends ConformanceTestCase {
         serializationStrategy.addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMXMLParserWrapper builder = ((OMMetaFactorySPI)metaFactory).createOMBuilder(TEST_PARSER_CONFIGURATION,
                 new InputSource(file.getUrl().toString()));

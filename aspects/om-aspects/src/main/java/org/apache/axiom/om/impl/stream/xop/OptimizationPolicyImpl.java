@@ -44,6 +44,7 @@ public final class OptimizationPolicyImpl implements OptimizationPolicy {
         this.format = format;
     }
 
+    @Override
     public boolean isOptimized(DataHandler dataHandler, boolean optimize) {
         if (!optimize) {
             return false;
@@ -60,6 +61,7 @@ public final class OptimizationPolicyImpl implements OptimizationPolicy {
         }
     }
 
+    @Override
     public boolean isOptimized(DataHandlerProvider dataHandlerProvider, boolean optimize)
             throws IOException {
         

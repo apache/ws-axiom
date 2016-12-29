@@ -27,6 +27,7 @@ public class TestGetBodyOnEmptyEnvelope extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         assertNull(soapFactory.createSOAPEnvelope().getBody());
     }

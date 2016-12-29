@@ -35,10 +35,12 @@ public class SOAPModelBuilderImpl extends OMXMLParserWrapperImpl implements SOAP
         super(builder, detachable);
     }
     
+    @Override
     public SOAPEnvelope getSOAPEnvelope() throws OMException {
         return (SOAPEnvelope)getDocumentElement();
     }
 
+    @Override
     public SOAPMessage getSOAPMessage() {
         return (SOAPMessage)getDocument();
     }

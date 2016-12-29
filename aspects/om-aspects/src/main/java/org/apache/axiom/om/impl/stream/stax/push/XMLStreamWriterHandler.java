@@ -73,6 +73,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
     public void startFragment() throws StreamException {
     }
 
+    @Override
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
         StringWriter sw = new StringWriter();
         Serializer serializer = new Serializer(sw);
@@ -86,6 +87,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
         }
     }
 
+    @Override
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         try {
             writer.writeStartElement(prefix, localName, namespaceURI);
@@ -94,6 +96,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
         }
     }
 
+    @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         try {
             if (prefix.length() != 0) {
@@ -106,6 +109,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
         }
     }
 
+    @Override
     public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
         try {
             writer.writeAttribute(prefix, namespaceURI, localName, value);
@@ -123,10 +127,12 @@ public class XMLStreamWriterHandler implements XmlHandler {
         }
     }
 
+    @Override
     public void attributesCompleted() throws StreamException {
         // Nothing to do here
     }
 
+    @Override
     public void endElement() throws StreamException {
         try {
             writer.writeEndElement();
@@ -135,6 +141,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
         }
     }
 
+    @Override
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         if (buffering) {
             buffer.append(data);
@@ -205,6 +212,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
         }
     }
 
+    @Override
     public void processEntityReference(String name, String replacementText) throws StreamException {
         try {
             writer.writeEntityRef(name);
@@ -221,6 +229,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
         return dataHandlerWriter;
     }
 
+    @Override
     public void completed() throws StreamException {
         // TODO: the original StAX serialization code newer called writeEndDocument; this is probably a mistake
     }

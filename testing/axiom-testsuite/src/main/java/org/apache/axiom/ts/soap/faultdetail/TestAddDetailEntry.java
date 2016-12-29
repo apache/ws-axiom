@@ -36,6 +36,7 @@ public class TestAddDetailEntry extends SOAPTestCase {
         super(omMetaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPBody body = soapFactory.createSOAPBody(envelope);

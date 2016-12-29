@@ -38,11 +38,13 @@ final class LegacyTempFileBlob extends AbstractWritableBlob {
         this.attachmentDir = attachmentDir;
     }
 
+    @Override
     public OutputStream getOutputStream() throws IOException {
         fileAccessor = lifecycleManager.create(attachmentDir);
         return fileAccessor.getOutputStream();
     }
 
+    @Override
     public InputStream getInputStream() throws IOException {
         return fileAccessor.getInputStream();
     }
@@ -53,10 +55,12 @@ final class LegacyTempFileBlob extends AbstractWritableBlob {
         return ds;
     }
     
+    @Override
     public long getSize() {
         return fileAccessor.getSize();
     }
 
+    @Override
     public void release() throws IOException {
         lifecycleManager.delete(fileAccessor.getFile());
     }

@@ -104,6 +104,7 @@ public class DetachableInputStream extends FilterInputStream {
         }
     }
 
+    @Override
     public int available() throws IOException {
         if (localStream != null) {
             return localStream.available();
@@ -112,6 +113,7 @@ public class DetachableInputStream extends FilterInputStream {
         }
     }
 
+    @Override
     public void close() throws IOException {
         isClosed = true;
         if (localStream != null) {
@@ -121,16 +123,19 @@ public class DetachableInputStream extends FilterInputStream {
         }
     }
 
+    @Override
     public boolean markSupported() {
         // Mark is not supported because stream can
         // switch
         return false;
     }
     
+    @Override
     public synchronized void mark(int readlimit) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public int read() throws IOException {
         if (localStream == null) {
             int rc = super.read();
@@ -143,6 +148,7 @@ public class DetachableInputStream extends FilterInputStream {
         }
     }
 
+    @Override
     public int read(byte[] b, int off, int len) throws IOException {
         if (localStream == null) {
             int rc = super.read(b, off, len);
@@ -155,6 +161,7 @@ public class DetachableInputStream extends FilterInputStream {
         }
     }
 
+    @Override
     public int read(byte[] b) throws IOException {
         if (localStream == null) {
             int rc =  super.read(b);
@@ -167,10 +174,12 @@ public class DetachableInputStream extends FilterInputStream {
         }
     }
 
+    @Override
     public synchronized void reset() throws IOException {
         throw new IOException();
     }
 
+    @Override
     public long skip(long n) throws IOException {
         if (localStream == null) {
             long rc = super.skip(n);

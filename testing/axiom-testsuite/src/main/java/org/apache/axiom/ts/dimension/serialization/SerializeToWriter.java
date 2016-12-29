@@ -35,11 +35,13 @@ public class SerializeToWriter extends SerializationStrategy {
         this.cache = cache;
     }
 
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("serializationStrategy", "Writer");
         testCase.addTestParameter("cache", cache);
     }
 
+    @Override
     public XML serialize(OMContainer container) throws Exception {
         StringWriter sw = new StringWriter();
         if (cache) {
@@ -50,14 +52,17 @@ public class SerializeToWriter extends SerializationStrategy {
         return new XMLAsString(sw.toString());
     }
 
+    @Override
     public boolean isPush() {
         return true;
     }
 
+    @Override
     public boolean isCaching() {
         return cache;
     }
 
+    @Override
     public boolean supportsInternalSubset() {
         return true;
     }

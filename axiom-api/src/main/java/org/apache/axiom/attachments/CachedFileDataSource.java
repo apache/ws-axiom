@@ -63,6 +63,7 @@ public class CachedFileDataSource extends FileDataSource implements SizeAwareDat
         }
     }
 
+    @Override
     public String getContentType() {
         if (this.contentType != null) {
             return contentType;
@@ -75,6 +76,7 @@ public class CachedFileDataSource extends FileDataSource implements SizeAwareDat
         this.contentType = contentType;
     }
 
+    @Override
     public long getSize() {
         return getFile().length();
     }

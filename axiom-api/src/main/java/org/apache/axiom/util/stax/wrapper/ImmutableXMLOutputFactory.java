@@ -35,6 +35,7 @@ public class ImmutableXMLOutputFactory extends XMLOutputFactoryWrapper {
         super(parent);
     }
 
+    @Override
     public void setProperty(String name, Object value) throws IllegalArgumentException {
         throw new IllegalStateException("This factory is immutable");
     }

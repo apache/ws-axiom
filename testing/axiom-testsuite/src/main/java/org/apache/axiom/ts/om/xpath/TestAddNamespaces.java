@@ -31,6 +31,7 @@ public class TestAddNamespaces extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement root1 = AXIOMUtil.stringToOM(factory,

@@ -42,6 +42,7 @@ public class TestAddAttributeWithoutExistingNamespaceDeclaration extends AxiomTe
         strategy.addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("test"));

@@ -54,6 +54,7 @@ public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
             out = new Base64DecodingOutputStreamWriter(new ByteStreamComparator(expected));
         }
 
+        @Override
         public void characters(char[] ch, int start, int length) throws SAXException {
             try {
                 out.write(ch, start, length);
@@ -62,6 +63,7 @@ public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
             }
         }
 
+        @Override
         public void endDocument() throws SAXException {
             try {
                 out.close();
@@ -75,6 +77,7 @@ public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement elem = factory.createOMElement("test", null);

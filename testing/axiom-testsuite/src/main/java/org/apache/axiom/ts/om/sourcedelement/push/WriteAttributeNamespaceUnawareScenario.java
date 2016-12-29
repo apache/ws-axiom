@@ -33,20 +33,24 @@ import org.junit.Assert;
  * Tests that {@link XMLStreamWriter#writeAttribute(String, String)} creates the expected attribute.
  */
 public class WriteAttributeNamespaceUnawareScenario implements PushOMDataSourceScenario {
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "writeAttributeNoNamespace");
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement("p", "root", "urn:test");
         writer.writeAttribute("attr", "value");
         writer.writeEndElement();
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         Assert.assertEquals("value", element.getAttributeValue(new QName("attr")));
     }

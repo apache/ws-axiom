@@ -35,6 +35,7 @@ public class TestGetDescendants extends AxiomTestCase {
         addTestParameter("includeSelf", includeSelf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
                 "<root><a><b><c><d/><e/></c></b><f/></a><g/></root>");

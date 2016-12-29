@@ -34,10 +34,12 @@ class BEAInputFactoryWrapper extends XMLInputFactoryWrapper {
         super(parent);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(InputStream stream) throws XMLStreamException {
         return createXMLStreamReader(null, stream);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream)
             throws XMLStreamException {
         // The getEncoding() method of the stream reader produced by the reference implementation
@@ -60,19 +62,23 @@ class BEAInputFactoryWrapper extends XMLInputFactoryWrapper {
         return new BEAStreamReaderWrapper(reader, encoding);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(InputStream stream, String encoding)
             throws XMLStreamException {
         return new BEAStreamReaderWrapper(super.createXMLStreamReader(stream, encoding), null);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(Reader reader) throws XMLStreamException {
         return new BEAStreamReaderWrapper(super.createXMLStreamReader(reader), null);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(Source source) throws XMLStreamException {
         return new BEAStreamReaderWrapper(super.createXMLStreamReader(source), null);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(String systemId, Reader reader)
             throws XMLStreamException {
         return new BEAStreamReaderWrapper(super.createXMLStreamReader(systemId, reader), null);

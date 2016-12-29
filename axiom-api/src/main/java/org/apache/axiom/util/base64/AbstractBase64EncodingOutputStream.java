@@ -59,6 +59,7 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
         this(false);
     }
     
+    @Override
     public final void write(byte[] b, int off, int len) throws IOException {
         if (completed) {
             throw new IOException("Attempt to write data after base64 encoding has been completed");
@@ -84,6 +85,7 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
         }
     }
 
+    @Override
     public final void write(int b) throws IOException {
         in[rest++] = (byte)b;
         if (rest == 3) {
@@ -132,6 +134,7 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
         doWrite(out);
     }
 
+    @Override
     public final void flush() throws IOException {
         if (!ignoreFlush) {
             flushBuffer();
@@ -139,6 +142,7 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
         }
     }
 
+    @Override
     public final void close() throws IOException {
         complete();
         doClose();

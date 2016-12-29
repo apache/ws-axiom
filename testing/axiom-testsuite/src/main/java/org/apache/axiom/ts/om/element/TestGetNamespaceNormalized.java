@@ -48,6 +48,7 @@ public class TestGetNamespaceNormalized extends AxiomTestCase {
         addTestParameter("useNull", useNull);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", "urn:test", "");

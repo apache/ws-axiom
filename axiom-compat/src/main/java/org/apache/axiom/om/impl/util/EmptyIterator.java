@@ -27,15 +27,18 @@ import java.util.NoSuchElementException;
  */
 @SuppressWarnings("rawtypes")
 public class EmptyIterator implements Iterator {
+    @Override
     public void remove() {
         throw new UnsupportedOperationException();
 
     }
 
+    @Override
     public boolean hasNext() {
         return false;
     }
 
+    @Override
     public Object next() {
         throw new NoSuchElementException();
     }

@@ -44,6 +44,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
     /* (non-Javadoc)
      * @see org.apache.axiom.lifecycle.LifecycleManager#create(java.lang.String)
      */
+    @Override
     public FileAccessor create(String attachmentDir) throws IOException {
         if(log.isDebugEnabled()){
             log.debug("Start Create()");
@@ -80,6 +81,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
     /* (non-Javadoc)
      * @see org.apache.axiom.lifecycle.LifecycleManager#delete(java.io.File)
      */
+    @Override
     public void delete(File file) throws IOException {
         if(log.isDebugEnabled()){
             log.debug("Start delete()");
@@ -119,6 +121,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
     /* (non-Javadoc)
      * @see org.apache.axiom.lifecycle.LifecycleManager#deleteOnExit(java.io.File)
      */
+    @Override
     public void deleteOnExit(File file) throws IOException {
         if(log.isDebugEnabled()){
             log.debug("Start deleteOnExit()");
@@ -142,6 +145,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
     /* (non-Javadoc)
      * @see org.apache.axiom.lifecycle.LifecycleManager#deleteOnTimeInterval(int)
      */
+    @Override
     public void deleteOnTimeInterval(int interval, File file) throws IOException {
         if(log.isDebugEnabled()){
             log.debug("Start deleteOnTimeInterval()");
@@ -161,6 +165,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
         }
         try{
             hook = AccessController.doPrivileged(new PrivilegedExceptionAction<VMShutdownHook>() {
+                @Override
                 public VMShutdownHook run() throws SecurityException, IllegalStateException, IllegalArgumentException {
                     VMShutdownHook hook = VMShutdownHook.hook();
                     if(!hook.isRegistered()){
@@ -193,6 +198,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
             this._file = file;           
         }
 
+        @Override
         public void run() {
             try{
                 Thread.sleep(interval*1000);
@@ -209,6 +215,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
         }        
     }
 
+    @Override
 	public FileAccessor getFileAccessor(String fileName) throws IOException {		
 		return table.get(fileName);
 	}

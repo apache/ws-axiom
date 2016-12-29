@@ -50,6 +50,7 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTes
         addTestParameter("cache", cache);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         InputStream in = TestGetXMLStreamReaderWithPreserveNamespaceContext.class.getResourceAsStream("AXIOM-114.xml");
         OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocumentElement();

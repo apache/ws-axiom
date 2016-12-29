@@ -34,6 +34,7 @@ public class OMChildrenIterator extends OMAbstractIterator {
         super(currentChild);
     }
 
+    @Override
     protected OMNode getNextNode(OMNode currentNode) {
         return currentNode.getNextOMSibling();
     }

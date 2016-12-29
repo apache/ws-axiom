@@ -41,6 +41,7 @@ public class TestGetNamespaceNormalized2 extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(new StringOMDataSource(

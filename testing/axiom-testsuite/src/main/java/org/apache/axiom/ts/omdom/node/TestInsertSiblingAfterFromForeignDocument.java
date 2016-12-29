@@ -38,6 +38,7 @@ public class TestInsertSiblingAfterFromForeignDocument extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         DocumentBuilder db = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder();
         Document document1 = db.newDocument();

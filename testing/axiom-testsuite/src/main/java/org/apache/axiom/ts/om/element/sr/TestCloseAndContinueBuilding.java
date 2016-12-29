@@ -46,6 +46,7 @@ public class TestCloseAndContinueBuilding extends AxiomTestCase {
         addTestParameter("cache", cache);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new StringReader(
                 "<root><a><b>some text</b></a><c>content</c></root>")).getDocumentElement();

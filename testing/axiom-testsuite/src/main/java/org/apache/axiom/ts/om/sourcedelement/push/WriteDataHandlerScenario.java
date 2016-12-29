@@ -42,14 +42,17 @@ import org.junit.Assert;
 public class WriteDataHandlerScenario implements PushOMDataSourceScenario {
     private final DataHandler dh = new DataHandler(new RandomDataSource(1024));
     
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "writeDataHandler");
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         try {
@@ -60,6 +63,7 @@ public class WriteDataHandlerScenario implements PushOMDataSourceScenario {
         writer.writeEndElement();
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMText child = (OMText)element.getFirstOMChild();
         if (dataHandlersPreserved) {

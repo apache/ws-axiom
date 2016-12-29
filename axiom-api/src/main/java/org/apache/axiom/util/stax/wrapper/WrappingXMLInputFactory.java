@@ -70,69 +70,84 @@ public class WrappingXMLInputFactory extends XMLInputFactoryWrapper {
         return reader;
     }
 
+    @Override
     public XMLEventReader createFilteredReader(XMLEventReader reader, EventFilter filter)
             throws XMLStreamException {
         return wrap(super.createFilteredReader(reader, filter));
     }
 
+    @Override
     public XMLStreamReader createFilteredReader(XMLStreamReader reader, StreamFilter filter)
             throws XMLStreamException {
         return wrap(super.createFilteredReader(reader, filter));
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(InputStream stream, String encoding)
             throws XMLStreamException {
         return wrap(super.createXMLEventReader(stream, encoding));
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(InputStream stream) throws XMLStreamException {
         return wrap(super.createXMLEventReader(stream));
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(Reader reader) throws XMLStreamException {
         return wrap(super.createXMLEventReader(reader));
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(Source source) throws XMLStreamException {
         return wrap(super.createXMLEventReader(source));
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(String systemId, InputStream stream)
             throws XMLStreamException {
         return wrap(super.createXMLEventReader(systemId, stream));
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(String systemId, Reader reader)
             throws XMLStreamException {
         return wrap(super.createXMLEventReader(systemId, reader));
     }
 
+    @Override
     public XMLEventReader createXMLEventReader(XMLStreamReader reader) throws XMLStreamException {
         return wrap(super.createXMLEventReader(reader));
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(InputStream stream, String encoding)
             throws XMLStreamException {
         return wrap(super.createXMLStreamReader(stream, encoding));
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(InputStream stream) throws XMLStreamException {
         return wrap(super.createXMLStreamReader(stream));
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(Reader reader) throws XMLStreamException {
         return wrap(super.createXMLStreamReader(reader));
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(Source source) throws XMLStreamException {
         return wrap(super.createXMLStreamReader(source));
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream)
             throws XMLStreamException {
         return wrap(super.createXMLStreamReader(systemId, stream));
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(String systemId, Reader reader)
             throws XMLStreamException {
         return wrap(super.createXMLStreamReader(systemId, reader));

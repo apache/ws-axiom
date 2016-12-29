@@ -62,6 +62,7 @@ public class OMChildrenWithSpecificAttributeIterator extends OMFilterIterator {
         doCaseSensitiveValueChecks = val;
     }
 
+    @Override
     protected boolean matches(OMNode node) {
         if (node instanceof OMElement) {
             OMAttribute attr =
@@ -80,6 +81,7 @@ public class OMChildrenWithSpecificAttributeIterator extends OMFilterIterator {
      *
      * @return Returns Object.
      */
+    @Override
     public Object next() {
         Object result = super.next();
         if (detach) {

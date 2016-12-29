@@ -153,6 +153,7 @@ public class ScopedNamespaceContext extends AbstractNamespaceContext {
         return uriArray[index];
     }
     
+    @Override
     protected String doGetNamespaceURI(String prefix) {
         for (int i=bindings-1; i>=0; i--) {
             if (prefix.equals(prefixArray[i])) {
@@ -164,6 +165,7 @@ public class ScopedNamespaceContext extends AbstractNamespaceContext {
         return XMLConstants.NULL_NS_URI;
     }
 
+    @Override
     protected String doGetPrefix(String namespaceURI) {
         outer: for (int i=bindings-1; i>=0; i--) {
             if (namespaceURI.equals(uriArray[i])) {
@@ -180,11 +182,13 @@ public class ScopedNamespaceContext extends AbstractNamespaceContext {
         return null;
     }
 
+    @Override
     protected Iterator<String> doGetPrefixes(final String namespaceURI) {
         return new Iterator<String>() {
             private int binding = bindings;
             private String next;
 
+            @Override
             public boolean hasNext() {
                 if (next == null) {
                     outer: while (--binding >= 0) {
@@ -204,6 +208,7 @@ public class ScopedNamespaceContext extends AbstractNamespaceContext {
                 return next != null;
             }
 
+            @Override
             public String next() {
                 if (hasNext()) {
                     String result = next;
@@ -214,6 +219,7 @@ public class ScopedNamespaceContext extends AbstractNamespaceContext {
                 }
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }

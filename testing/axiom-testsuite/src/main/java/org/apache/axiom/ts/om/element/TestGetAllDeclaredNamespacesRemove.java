@@ -41,6 +41,7 @@ public class TestGetAllDeclaredNamespacesRemove extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         List<String> prefixes = Arrays.asList("a", "b", "c");

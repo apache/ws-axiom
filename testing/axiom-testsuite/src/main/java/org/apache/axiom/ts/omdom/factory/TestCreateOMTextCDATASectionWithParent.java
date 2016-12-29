@@ -36,6 +36,7 @@ public class TestCreateOMTextCDATASectionWithParent extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("test", null);

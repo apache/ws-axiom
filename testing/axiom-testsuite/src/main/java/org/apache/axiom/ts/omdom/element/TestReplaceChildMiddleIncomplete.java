@@ -39,6 +39,7 @@ public class TestReplaceChildMiddleIncomplete extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         Element element = (Element)OMXMLBuilderFactory.createOMBuilder(factory,

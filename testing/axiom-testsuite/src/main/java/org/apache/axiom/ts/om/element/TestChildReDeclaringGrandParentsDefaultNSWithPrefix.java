@@ -30,6 +30,7 @@ public class TestChildReDeclaringGrandParentsDefaultNSWithPrefix extends AxiomTe
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
         OMElement elem = fac.createOMElement("RequestSecurityToken",

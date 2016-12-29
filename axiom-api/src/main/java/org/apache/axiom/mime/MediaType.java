@@ -106,6 +106,7 @@ public final class MediaType {
         return subType;
     }
 
+    @Override
     public int hashCode() {
         int hash = 0;
         for (int i=0, l=primaryType.length(); i<l; i++) {
@@ -118,6 +119,7 @@ public final class MediaType {
         return hash;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof MediaType) {
             MediaType other = (MediaType)obj;
@@ -127,6 +129,7 @@ public final class MediaType {
         }
     }
 
+    @Override
     public String toString() {
         return primaryType + "/" + subType;
     }

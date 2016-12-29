@@ -34,6 +34,7 @@ public class TestGetFirstChildWithName extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns1 = factory.createOMNamespace("urn:ns1", "ns1");

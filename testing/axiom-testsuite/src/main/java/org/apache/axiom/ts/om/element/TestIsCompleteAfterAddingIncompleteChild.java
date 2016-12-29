@@ -36,6 +36,7 @@ public class TestIsCompleteAfterAddingIncompleteChild extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement incompleteElement = OMXMLBuilderFactory.createOMBuilder(factory,

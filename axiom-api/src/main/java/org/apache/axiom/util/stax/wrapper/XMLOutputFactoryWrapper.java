@@ -44,48 +44,59 @@ public class XMLOutputFactoryWrapper extends XMLOutputFactory {
         this.parent = parent;
     }
 
+    @Override
     public XMLEventWriter createXMLEventWriter(OutputStream stream, String encoding)
             throws XMLStreamException {
         return parent.createXMLEventWriter(stream, encoding);
     }
 
+    @Override
     public XMLEventWriter createXMLEventWriter(OutputStream stream) throws XMLStreamException {
         return parent.createXMLEventWriter(stream);
     }
 
+    @Override
     public XMLEventWriter createXMLEventWriter(Result result) throws XMLStreamException {
         return parent.createXMLEventWriter(result);
     }
 
+    @Override
     public XMLEventWriter createXMLEventWriter(Writer stream) throws XMLStreamException {
         return parent.createXMLEventWriter(stream);
     }
 
+    @Override
     public XMLStreamWriter createXMLStreamWriter(OutputStream stream, String encoding)
             throws XMLStreamException {
         return parent.createXMLStreamWriter(stream, encoding);
     }
 
+    @Override
     public XMLStreamWriter createXMLStreamWriter(OutputStream stream) throws XMLStreamException {
         return parent.createXMLStreamWriter(stream);
     }
 
+    @Override
     public XMLStreamWriter createXMLStreamWriter(Result result) throws XMLStreamException {
         return parent.createXMLStreamWriter(result);
     }
 
+    @Override
     public XMLStreamWriter createXMLStreamWriter(Writer stream) throws XMLStreamException {
         return parent.createXMLStreamWriter(stream);
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         return parent.getProperty(name);
     }
 
+    @Override
     public boolean isPropertySupported(String name) {
         return parent.isPropertySupported(name);
     }
 
+    @Override
     public void setProperty(String name, Object value) throws IllegalArgumentException {
         parent.setProperty(name, value);
     }

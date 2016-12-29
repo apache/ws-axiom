@@ -36,6 +36,7 @@ public class TestDetach extends SampleBasedSOAPTestCase {
         super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         OMDocument document = (OMDocument)envelope.getParent();
         envelope.detach();

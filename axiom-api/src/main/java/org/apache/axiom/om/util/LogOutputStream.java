@@ -49,6 +49,7 @@ public class LogOutputStream extends OutputStream {
         return count;
     }
     
+    @Override
     public void close() throws IOException {
         if (bufferIndex > 0) {
             log.debug(new String(buffer, 0, bufferIndex));
@@ -59,12 +60,12 @@ public class LogOutputStream extends OutputStream {
         log = null;
     }
 
-    
+    @Override
     public void flush() throws IOException {
         // noop
     }
 
-    
+    @Override
     public void write(byte[] b, int off, int len) throws IOException {
        
         // Adjust total count 
@@ -102,12 +103,12 @@ public class LogOutputStream extends OutputStream {
         
     }
 
+    @Override
     public void write(byte[] b) throws IOException {
         this.write(b, 0, b.length);
     }
 
-    
-
+    @Override
     public void write(int b) throws IOException {
         temp[0] = (byte) b;
         this.write(temp, 0, 1);

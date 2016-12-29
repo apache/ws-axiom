@@ -45,6 +45,7 @@ public class TestAddAttributeWithoutNamespace extends AxiomTestCase {
         noNamespaceStrategy.addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", "urn:test", "");

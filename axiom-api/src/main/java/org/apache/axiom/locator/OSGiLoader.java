@@ -27,6 +27,7 @@ final class OSGiLoader extends Loader {
         this.bundle = bundle;
     }
 
+    @Override
     Class<?> load(String className) throws ClassNotFoundException {
         return bundle.loadClass(className);
     }

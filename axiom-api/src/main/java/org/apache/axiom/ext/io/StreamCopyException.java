@@ -67,6 +67,7 @@ public class StreamCopyException extends IOException {
         return operation;
     }
 
+    @Override
     public String getMessage() {
         return operation == READ ? "Error reading from source"
                                  : "Error writing to destination";

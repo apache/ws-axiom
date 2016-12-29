@@ -37,15 +37,18 @@ class NamespaceURICorrectingNamespaceContextWrapper implements NamespaceContext 
         this.parent = parent;
     }
 
+    @Override
     public String getNamespaceURI(String prefix) {
         String namespaceURI = parent.getNamespaceURI(prefix);
         return namespaceURI == null ? XMLConstants.NULL_NS_URI : namespaceURI;
     }
 
+    @Override
     public String getPrefix(String namespaceURI) {
         return parent.getPrefix(namespaceURI);
     }
 
+    @Override
     public Iterator<?> getPrefixes(String namespaceURI) {
         return parent.getPrefixes(namespaceURI);
     }

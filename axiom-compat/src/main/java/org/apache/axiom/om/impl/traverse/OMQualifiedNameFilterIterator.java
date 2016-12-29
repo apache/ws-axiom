@@ -48,6 +48,7 @@ public class OMQualifiedNameFilterIterator extends OMFilterIterator {
         }
     }
 
+    @Override
     protected boolean matches(OMNode node) {
         if (node instanceof OMElement) {
             OMElement element = (OMElement)node;

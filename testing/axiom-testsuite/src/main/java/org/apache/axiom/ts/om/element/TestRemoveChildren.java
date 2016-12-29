@@ -42,6 +42,7 @@ public class TestRemoveChildren extends AxiomTestCase {
         addTestParameter("complete", complete);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = OMXMLBuilderFactory.createOMBuilder(factory,

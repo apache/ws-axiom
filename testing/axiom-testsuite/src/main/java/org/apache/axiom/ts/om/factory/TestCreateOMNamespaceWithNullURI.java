@@ -26,6 +26,7 @@ public class TestCreateOMNamespaceWithNullURI extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         try {
             metaFactory.getOMFactory().createOMNamespace(null, "t");

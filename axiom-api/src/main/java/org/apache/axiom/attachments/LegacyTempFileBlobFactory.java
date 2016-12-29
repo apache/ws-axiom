@@ -29,6 +29,7 @@ final class LegacyTempFileBlobFactory implements WritableBlobFactory<LegacyTempF
         this.attachmentDir = attachmentDir;
     }
 
+    @Override
     public LegacyTempFileBlob createBlob() {
         return new LegacyTempFileBlob(attachments.getLifecycleManager(), attachmentDir);
     }

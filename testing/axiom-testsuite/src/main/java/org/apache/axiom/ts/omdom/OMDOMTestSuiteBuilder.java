@@ -36,6 +36,7 @@ public class OMDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         this.metaFactory = metaFactory;
     }
 
+    @Override
     protected void addTests() {
         addTest(new org.apache.axiom.ts.omdom.attr.TestGetNamespaceNormalized(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.attr.TestSetValueOnNamespaceDeclaration(metaFactory));

@@ -32,6 +32,7 @@ public class TestUndeclarePrefix extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = metaFactory.getOMFactory().createOMElement(new QName("test"));
         element.undeclarePrefix("p");

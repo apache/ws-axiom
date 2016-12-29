@@ -38,6 +38,7 @@ public class TestGetNodeValueBinary extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         DataSource ds = new RandomDataSource(666L, 1000);

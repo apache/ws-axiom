@@ -29,6 +29,7 @@ public class TestGetVersion extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPHeaderBlock h = soapFactory.createSOAPHeaderBlock("myHeader", soapFactory.createOMNamespace("urn:test", "p"));
         assertSame(spec.getAdapter(SOAPVersion.class), h.getVersion());

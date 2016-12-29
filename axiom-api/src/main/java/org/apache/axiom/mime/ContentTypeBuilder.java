@@ -130,6 +130,7 @@ public final class ContentTypeBuilder {
      * 
      * @return the string representation of this content type
      */
+    @Override
     public String toString() {
         return build().toString();
     }

@@ -32,6 +32,7 @@ public class TestObjectEquals extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         // The implementation must not assume that namespace URI or prefixes are interned.

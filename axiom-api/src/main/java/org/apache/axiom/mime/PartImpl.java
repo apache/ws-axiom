@@ -101,6 +101,7 @@ final class PartImpl implements Part {
         this.parser = parser;
     }
     
+    @Override
     public String getHeader(String name) {
         String value = null;
         for (int i=0, l=headers.size(); i<l; i++) {
@@ -116,14 +117,17 @@ final class PartImpl implements Part {
         return value;
     }
 
+    @Override
     public List<Header> getHeaders() {
         return Collections.unmodifiableList(headers);
     }
 
+    @Override
     public String getContentID() {
         return contentID;
     }
 
+    @Override
     public ContentType getContentType() {
         if (contentType == null) {
             try {
@@ -135,6 +139,7 @@ final class PartImpl implements Part {
         return contentType;
     }
     
+    @Override
     public DataHandler getDataHandler() {
         if (dataHandler == null) {
             dataHandler = message.getDataHandlerFactory().createDataHandler(this);
@@ -246,6 +251,7 @@ final class PartImpl implements Part {
         parser = null;
     }
     
+    @Override
     public InputStream getInputStream(boolean preserve) throws IOException {
         if (!preserve && state == STATE_UNREAD) {
             checkParserState(parser.getState(), EntityState.T_BODY);
@@ -262,6 +268,7 @@ final class PartImpl implements Part {
         }
     }
     
+    @Override
     public void discard() {
         try {
             switch (state) {

@@ -36,6 +36,7 @@ public class TestCreateOMElementWithoutNamespace3 extends CreateOMElementTestCas
         super(metaFactory, variant, null);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement grandparent = factory.createOMElement("grandparent",

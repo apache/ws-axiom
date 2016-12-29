@@ -60,6 +60,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         data.encoding = encoding;
     }
    
+    @Override
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         if (data == null) {
             throw new OMException("The InputStreamDataSource does not have a backing object");
@@ -80,6 +81,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         }
     }
 
+    @Override
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         if (data == null) {
             throw new OMException("The InputStreamDataSource does not have a backing object");
@@ -87,6 +89,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         super.serialize(xmlWriter);
     }
     
+    @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         if (data == null) {
             throw new OMException("The InputStreamDataSource does not have a backing object");
@@ -94,6 +97,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         return StAXUtils.createXMLStreamReader(data.is,data.encoding);                                                                       
     }
     
+    @Override
     public InputStream getXMLInputStream(String encoding)  throws 
         UnsupportedEncodingException{
         if (data == null) {
@@ -102,10 +106,12 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         return data.is;
     }
 
+    @Override
     public Object getObject() {
        return data;
     }
 
+    @Override
     public boolean isDestructiveRead() {
         if (data == null) {
             throw new OMException("The InputStreamDataSource does not have a backing object");
@@ -113,6 +119,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         return true;
     }
 
+    @Override
     public boolean isDestructiveWrite() {
         if (data == null) {
             throw new OMException("The InputStreamDataSource does not have a backing object");
@@ -121,6 +128,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         return true;
     }
 
+    @Override
     public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
         
         // Return the byte array directly if it is the same encoding
@@ -136,6 +144,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         return baos.toByteArray();
     }
     
+    @Override
     public void close() {
         if (data.is != null) {
             try {
@@ -150,6 +159,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
     /**
      * Return a InputStreamDataSource backed by a ByteArrayInputStream
      */
+    @Override
     public OMDataSourceExt copy() {
         byte[] bytes;
         try {

@@ -31,20 +31,24 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.junit.Assert;
 
 public class WriteCommentScenario implements PushOMDataSourceScenario {
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "writeComment");
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         writer.writeComment("comment");
         writer.writeEndElement();
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMComment);

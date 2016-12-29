@@ -36,18 +36,22 @@ class MultipartWriterImpl implements MultipartWriter {
             this.parent = parent;
         }
 
+        @Override
         public void write(int b) throws IOException {
             parent.write(b);
         }
 
+        @Override
         public void write(byte[] b, int off, int len) throws IOException {
             parent.write(b, off, len);
         }
 
+        @Override
         public void write(byte[] b) throws IOException {
             parent.write(b);
         }
         
+        @Override
         public void close() throws IOException {
             if (parent instanceof Base64EncodingOutputStream) {
                 ((Base64EncodingOutputStream)parent).complete();
@@ -83,6 +87,7 @@ class MultipartWriterImpl implements MultipartWriter {
         }
     }
     
+    @Override
     public OutputStream writePart(String contentType, String contentTransferEncoding,
             String contentID, List<Header> extraHeaders) throws IOException {
         OutputStream transferEncoder;
@@ -120,11 +125,13 @@ class MultipartWriterImpl implements MultipartWriter {
         return new PartOutputStream(transferEncoder);
     }
     
+    @Override
     public OutputStream writePart(String contentType, String contentTransferEncoding,
             String contentID) throws IOException {    	
         return writePart(contentType, contentTransferEncoding, contentID, null);
     }
     
+    @Override
     public void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID, List<Header> extraHeaders)
             throws IOException {
         OutputStream partOutputStream = writePart(dataHandler.getContentType(), contentTransferEncoding, contentID, extraHeaders);
@@ -132,11 +139,13 @@ class MultipartWriterImpl implements MultipartWriter {
         partOutputStream.close();
     }
     
+    @Override
     public void writePart(DataHandler dataHandler, String contentTransferEncoding,
             String contentID) throws IOException {
         writePart(dataHandler, contentTransferEncoding, contentID, null);
     }
 
+    @Override
     public void complete() throws IOException {
         writeAscii("--");
         writeAscii(boundary);

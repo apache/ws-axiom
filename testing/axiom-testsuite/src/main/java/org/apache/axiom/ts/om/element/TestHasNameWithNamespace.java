@@ -31,6 +31,7 @@ public class TestHasNameWithNamespace extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         String localName = "TestLocalName";

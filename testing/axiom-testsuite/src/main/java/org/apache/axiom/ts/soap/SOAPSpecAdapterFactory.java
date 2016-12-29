@@ -27,9 +27,11 @@ import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 
 public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
+    @Override
     public void createAdapters(SOAPSpec spec, Adapters adapters) {
         if (spec == SOAPSpec.SOAP11) {
             adapters.add(new FactorySelector() {
+                @Override
                 public SOAPFactory getFactory(OMMetaFactory metaFactory) {
                     return metaFactory.getSOAP11Factory();
                 }
@@ -37,6 +39,7 @@ public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
             adapters.add(SOAPVersion.class, SOAP11Version.getSingleton());
         } else if (spec == SOAPSpec.SOAP12) {
             adapters.add(new FactorySelector() {
+                @Override
                 public SOAPFactory getFactory(OMMetaFactory metaFactory) {
                     return metaFactory.getSOAP12Factory();
                 }

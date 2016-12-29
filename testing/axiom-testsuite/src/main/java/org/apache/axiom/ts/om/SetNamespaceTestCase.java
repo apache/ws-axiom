@@ -86,6 +86,7 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
     protected abstract OMNamedInformationItem node(OMFactory factory, OMElement context);
     protected abstract void setNamespace(OMNamedInformationItem node, OMNamespace ns);
     
+    @Override
     protected final void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element;

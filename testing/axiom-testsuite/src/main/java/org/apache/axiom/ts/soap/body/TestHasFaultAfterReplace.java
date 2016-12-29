@@ -36,6 +36,7 @@ public class TestHasFaultAfterReplace extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPBody body = soapFactory.getDefaultFaultEnvelope().getBody();
         assertTrue(body.hasFault());

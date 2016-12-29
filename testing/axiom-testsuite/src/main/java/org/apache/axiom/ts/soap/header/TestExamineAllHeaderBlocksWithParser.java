@@ -32,6 +32,7 @@ public class TestExamineAllHeaderBlocksWithParser extends SampleBasedSOAPTestCas
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         Iterator<SOAPHeaderBlock> iterator = envelope.getHeader().examineAllHeaderBlocks();
         iterator.hasNext();

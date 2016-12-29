@@ -33,10 +33,12 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  */
 public class XOPUtils {
     private static final MimePartProvider nullMimePartProvider = new MimePartProvider() {
+        @Override
         public boolean isLoaded(String contentID) {
             throw new IllegalArgumentException("There are no MIME parts!");
         }
         
+        @Override
         public DataHandler getDataHandler(String contentID) throws IOException {
             throw new IllegalArgumentException("There are no MIME parts!");
         }

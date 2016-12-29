@@ -65,6 +65,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         exclude(org.apache.axiom.ts.om.container.TestGetXMLStreamReader.class, "(file=large.xml)");
     }
     
+    @Override
     protected void addTests() {
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithoutNamespace(metaFactory));

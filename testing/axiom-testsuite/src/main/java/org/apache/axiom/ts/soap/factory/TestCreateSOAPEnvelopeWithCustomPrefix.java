@@ -36,6 +36,7 @@ public class TestCreateSOAPEnvelopeWithCustomPrefix extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String prefix = "my-soap";
         OMNamespace ns = soapFactory.createOMNamespace(spec.getEnvelopeNamespaceURI(), prefix);

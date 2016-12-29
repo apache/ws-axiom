@@ -41,6 +41,7 @@ public class TestClone extends SOAPTestCase {
         addTestParameter("preserveModel", preserveModel);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPMessage message = soapFactory.createSOAPMessage();
         message.addChild(soapFactory.getDefaultEnvelope());

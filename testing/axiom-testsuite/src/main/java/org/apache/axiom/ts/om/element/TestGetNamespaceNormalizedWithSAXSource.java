@@ -43,6 +43,7 @@ public class TestGetNamespaceNormalizedWithSAXSource extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setNamespaceAware(true);

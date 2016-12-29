@@ -37,6 +37,7 @@ public class XOPRoundtripTest extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         DataHandler dh = new DataHandler(new TestDataSource('x', Runtime.getRuntime().maxMemory()));

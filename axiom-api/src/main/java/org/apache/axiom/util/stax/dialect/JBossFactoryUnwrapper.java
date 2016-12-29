@@ -44,6 +44,7 @@ final class JBossFactoryUnwrapper {
         try {
             actual = wrapperClass.getDeclaredField("actual");
             AccessController.doPrivileged(new PrivilegedAction<Void>() {
+                @Override
                 public Void run() {
                     actual.setAccessible(true);
                     return null;

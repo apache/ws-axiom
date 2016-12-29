@@ -46,14 +46,17 @@ import org.apache.axiom.om.OMOutputFormat;
 public abstract class AbstractOMDataSource implements OMDataSourceExt {
     private Map<String,Object> properties;
 
+    @Override
     public final Object getProperty(String key) {
         return properties == null ? null : properties.get(key);
     }
 
+    @Override
     public final boolean hasProperty(String key) {
         return properties != null && properties.containsKey(key);
     }
 
+    @Override
     public final Object setProperty(String key, Object value) {
         if (properties == null) {
             properties = new HashMap<String,Object>();
@@ -62,15 +65,18 @@ public abstract class AbstractOMDataSource implements OMDataSourceExt {
     }
 
     // Note: this method is never executed by Axiom itself
+    @Override
     public final void serialize(OutputStream out, OMOutputFormat format) throws XMLStreamException {
         OMAbstractFactory.getOMFactory().createOMElement(this).serializeAndConsume(out, format);
     }
 
     // Note: this method is never executed by Axiom itself
+    @Override
     public final void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
         OMAbstractFactory.getOMFactory().createOMElement(this).serializeAndConsume(writer, format);
     }
 
+    @Override
     public final byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         OMOutputFormat format = new OMOutputFormat();
@@ -83,6 +89,7 @@ public abstract class AbstractOMDataSource implements OMDataSourceExt {
         return baos.toByteArray();
     }
     
+    @Override
     public final InputStream getXMLInputStream(String encoding) throws UnsupportedEncodingException {
         return new ByteArrayInputStream(getXMLBytes(encoding));
     }
@@ -91,13 +98,16 @@ public abstract class AbstractOMDataSource implements OMDataSourceExt {
     // Default implementations that may be overridden by subclasses
     //
     
+    @Override
     public Object getObject() {
         return null;
     }
 
+    @Override
     public void close() {
     }
 
+    @Override
     public OMDataSourceExt copy() {
         return null;
     }

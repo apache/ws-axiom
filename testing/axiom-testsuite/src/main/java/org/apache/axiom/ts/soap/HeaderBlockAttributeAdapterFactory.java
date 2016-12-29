@@ -23,23 +23,28 @@ import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 
 public class HeaderBlockAttributeAdapterFactory implements AdapterFactory<HeaderBlockAttribute> {
+    @Override
     public void createAdapters(HeaderBlockAttribute attribute, Adapters adapters) {
         if (attribute == HeaderBlockAttribute.MUST_UNDERSTAND) {
             adapters.add(new BooleanAttributeAccessor() {
+                @Override
                 public boolean getValue(SOAPHeaderBlock headerBlock) {
                     return headerBlock.getMustUnderstand();
                 }
 
+                @Override
                 public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
                     headerBlock.setMustUnderstand(value);
                 }
             });
         } else if (attribute == HeaderBlockAttribute.RELAY) {
             adapters.add(new BooleanAttributeAccessor() {
+                @Override
                 public boolean getValue(SOAPHeaderBlock headerBlock) {
                     return headerBlock.getRelay();
                 }
 
+                @Override
                 public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
                     headerBlock.setRelay(value);
                 }

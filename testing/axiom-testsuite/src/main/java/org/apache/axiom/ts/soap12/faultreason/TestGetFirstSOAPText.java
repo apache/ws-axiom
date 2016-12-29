@@ -29,6 +29,7 @@ public class TestGetFirstSOAPText extends SOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP12);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
         SOAPFaultReason faultReason = soapFactory.createSOAPFaultReason(fault);

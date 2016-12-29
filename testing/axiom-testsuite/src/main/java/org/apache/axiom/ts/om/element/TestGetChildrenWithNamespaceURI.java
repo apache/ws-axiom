@@ -35,6 +35,7 @@ public class TestGetChildrenWithNamespaceURI extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new StringReader(
                 "<root><a xmlns='urn:ns1'/><b xmlns='urn:ns2'/><c xmlns='urn:ns1'/></root>")).getDocumentElement();

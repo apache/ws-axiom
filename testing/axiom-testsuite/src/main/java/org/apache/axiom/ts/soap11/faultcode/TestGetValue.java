@@ -37,6 +37,7 @@ public class TestGetValue extends SOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP11);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope env = soapFactory.getDefaultEnvelope();
         SOAPFault fault = soapFactory.createSOAPFault(env.getBody());

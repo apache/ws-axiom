@@ -32,6 +32,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         
         private OutputStream overflowOutputStream;
         
+        @Override
         public void write(byte[] b, int off, int len) throws IOException {
             if (state != State.UNCOMMITTED) {
                 throw new IllegalStateException();
@@ -70,14 +71,17 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             }
         }
 
+        @Override
         public void write(byte[] b) throws IOException {
             write(b, 0, b.length);
         }
 
+        @Override
         public void write(int b) throws IOException {
             write(new byte[] { (byte)b }, 0, 1);
         }
 
+        @Override
         public void close() throws IOException {
             if (overflowOutputStream != null) {
                 overflowOutputStream.close();
@@ -85,6 +89,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             state = State.COMMITTED;
         }
 
+        @Override
         public long readFrom(InputStream in, long length) throws StreamCopyException {
             return OverflowableBlobImpl.this.readFrom(in, length, false);
         }
@@ -97,10 +102,12 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         private int markChunkIndex;
         private int markChunkOffset;
         
+        @Override
         public int available() throws IOException {
             return (chunkIndex-currentChunkIndex)*chunkSize + chunkOffset - currentChunkOffset;
         }
 
+        @Override
         public int read(byte[] b, int off, int len) throws IOException {
 
             if (len == 0) {
@@ -141,29 +148,35 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             }
         }
 
+        @Override
         public int read(byte[] b) throws IOException {
             return read(b, 0, b.length);
         }
 
+        @Override
         public int read() throws IOException {
             byte[] b = new byte[1];
             return read(b) == -1 ? -1 : b[0] & 0xFF;
         }
 
+        @Override
         public boolean markSupported() {
             return true;
         }
 
+        @Override
         public void mark(int readlimit) {
             markChunkIndex = currentChunkIndex;
             markChunkOffset = currentChunkOffset;
         }
 
+        @Override
         public void reset() throws IOException {
             currentChunkIndex = markChunkIndex;
             currentChunkOffset = markChunkOffset;
         }
 
+        @Override
         public long skip(long n) throws IOException {
 
             int available = available();
@@ -175,6 +188,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             return c;
         }
         
+        @Override
         public void close() throws IOException {
         }
     }
@@ -263,6 +277,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         return outputStream;
     }
     
+    @Override
     public OutputStream getOutputStream() {
         if (state != State.NEW) {
             throw new IllegalStateException();
@@ -320,6 +335,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         return read;
     }
     
+    @Override
     public long readFrom(InputStream in) throws StreamCopyException {
         if (state != State.NEW) {
             throw new IllegalStateException();
@@ -327,6 +343,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         return readFrom(in, -1, true);
     }
 
+    @Override
     public InputStream getInputStream() throws IOException {
         if (state != State.COMMITTED) {
             throw new IllegalStateException();
@@ -337,6 +354,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         }
     }
     
+    @Override
     public void writeTo(OutputStream out) throws StreamCopyException {
         if (state != State.COMMITTED) {
             throw new IllegalStateException();
@@ -357,6 +375,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         }
     }
     
+    @Override
     public long getSize() {
         if (state != State.COMMITTED) {
             throw new IllegalStateException();
@@ -368,6 +387,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         }
     }
     
+    @Override
     public void release() throws IOException {
         if (overflowBlob != null) {
             overflowBlob.release();
@@ -376,6 +396,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         state = State.RELEASED;
     }
 
+    @Override
     public WritableBlob getOverflowBlob() {
         return overflowBlob;
     }

@@ -57,6 +57,7 @@ public class OMChildrenQNameIterator extends OMFilterIterator {
         return searchQName.equals(currentQName);
     }
 
+    @Override
     protected boolean matches(OMNode node) {
         if (node instanceof OMElement) {
             QName thisQName = ((OMElement)node).getQName();

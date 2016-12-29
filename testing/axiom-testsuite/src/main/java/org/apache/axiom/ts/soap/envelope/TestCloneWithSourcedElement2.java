@@ -35,6 +35,7 @@ public class TestCloneWithSourcedElement2 extends CloneTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope sourceEnv = soapFactory.getDefaultEnvelope();
         SOAPBody body = sourceEnv.getBody();

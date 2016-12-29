@@ -78,6 +78,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
      * @param writer
      * @throws XMLStreamException
      */
+    @Override
     public void serialize(XMLStreamReader reader, XMLStreamWriter writer)
             throws XMLStreamException {
         serialize(reader, writer, true);

@@ -73,102 +73,126 @@ class NamespaceContextCorrectingXMLStreamWriterWrapper extends AbstractXMLStream
         this.parent = parent;
     }
 
+    @Override
     protected void doWriteAttribute(String prefix, String namespaceURI, String localName,
             String value) throws XMLStreamException {
         parent.writeAttribute(prefix, namespaceURI, localName, value);
     }
 
+    @Override
     protected void doWriteAttribute(String localName, String value) throws XMLStreamException {
         parent.writeAttribute(localName, value);
     }
 
+    @Override
     protected void doWriteCData(String data) throws XMLStreamException {
         parent.writeCData(data);
     }
 
+    @Override
     protected void doWriteCharacters(char[] text, int start, int len) throws XMLStreamException {
         parent.writeCharacters(text, start, len);
     }
 
+    @Override
     protected void doWriteCharacters(String text) throws XMLStreamException {
         parent.writeCharacters(text);
     }
 
+    @Override
     protected void doWriteComment(String data) throws XMLStreamException {
         parent.writeComment(data);
     }
 
+    @Override
     protected void doWriteDefaultNamespace(String namespaceURI) throws XMLStreamException {
         parent.writeDefaultNamespace(namespaceURI);
     }
 
+    @Override
     protected void doWriteDTD(String dtd) throws XMLStreamException {
         parent.writeDTD(dtd);
     }
 
+    @Override
     protected void doWriteEmptyElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException {
         parent.writeEmptyElement(prefix, localName, namespaceURI);
     }
 
+    @Override
     protected void doWriteEmptyElement(String localName) throws XMLStreamException {
         parent.writeEmptyElement(localName);
     }
 
+    @Override
     protected void doWriteEndDocument() throws XMLStreamException {
         parent.writeEndDocument();
     }
 
+    @Override
     protected void doWriteEndElement() throws XMLStreamException {
         parent.writeEndElement();
     }
 
+    @Override
     protected void doWriteEntityRef(String name) throws XMLStreamException {
         parent.writeEntityRef(name);
     }
 
+    @Override
     protected void doWriteNamespace(String prefix, String namespaceURI) throws XMLStreamException {
         parent.writeNamespace(prefix, namespaceURI);
     }
 
+    @Override
     protected void doWriteProcessingInstruction(String target, String data)
             throws XMLStreamException {
         parent.writeProcessingInstruction(target, data);
     }
 
+    @Override
     protected void doWriteProcessingInstruction(String target) throws XMLStreamException {
         parent.writeProcessingInstruction(target);
     }
 
+    @Override
     protected void doWriteStartDocument() throws XMLStreamException {
         parent.writeStartDocument();
     }
 
+    @Override
     protected void doWriteStartDocument(String encoding, String version) throws XMLStreamException {
         parent.writeStartDocument(encoding, version);
     }
 
+    @Override
     protected void doWriteStartDocument(String version) throws XMLStreamException {
         parent.writeStartDocument(version);
     }
 
+    @Override
     protected void doWriteStartElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException {
         parent.writeStartElement(prefix, localName, namespaceURI);
     }
 
+    @Override
     protected void doWriteStartElement(String localName) throws XMLStreamException {
         parent.writeStartElement(localName);
     }
 
+    @Override
     public void close() throws XMLStreamException {
         parent.close();
     }
 
+    @Override
     public void flush() throws XMLStreamException {
         parent.flush();
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         return parent.getProperty(name);
     }

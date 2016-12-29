@@ -27,6 +27,7 @@ public class TestCreateOMNamespace extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMNamespace ns = metaFactory.getOMFactory().createOMNamespace("urn:test", "t");
         assertEquals("urn:test", ns.getNamespaceURI());

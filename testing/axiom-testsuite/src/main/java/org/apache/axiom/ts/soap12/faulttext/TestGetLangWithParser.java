@@ -32,6 +32,7 @@ public class TestGetLangWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP12, SOAPSampleSet.SIMPLE_FAULT);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultText faultText = envelope.getBody().getFault().getReason().getFirstSOAPText();
         assertTrue(

@@ -34,6 +34,7 @@ public class TestClone extends ConformanceTestCase {
         super(metaFactory, file);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMDocument original = ((OMMetaFactorySPI)metaFactory).createOMBuilder(TEST_PARSER_CONFIGURATION,
                 new InputSource(file.getUrl().toString())).getDocument();

@@ -46,6 +46,7 @@ public class TestAddAttributeReplace extends AxiomTestCase {
         strategy.addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         // Use same namespace URI but different prefixes

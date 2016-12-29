@@ -42,6 +42,7 @@ public class TestCloneIncomplete extends SOAPTestCase {
         addTestParameter("preserveModel", preserveModel);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPMessage message = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPMessage(metaFactory);
         OMCloneOptions options = new OMCloneOptions();

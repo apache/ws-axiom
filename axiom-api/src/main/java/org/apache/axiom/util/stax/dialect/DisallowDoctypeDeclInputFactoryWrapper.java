@@ -29,6 +29,7 @@ class DisallowDoctypeDeclInputFactoryWrapper extends WrappingXMLInputFactory {
         super(parent);
     }
 
+    @Override
     protected XMLStreamReader wrap(XMLStreamReader reader) {
         return new DisallowDoctypeDeclStreamReaderWrapper(reader);
     }

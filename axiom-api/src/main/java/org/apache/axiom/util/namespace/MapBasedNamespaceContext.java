@@ -43,11 +43,13 @@ public class MapBasedNamespaceContext extends AbstractNamespaceContext {
         namespaces = map;
     }
 
+    @Override
     protected String doGetNamespaceURI(String prefix) {
         String namespaceURI = namespaces.get(prefix);
         return namespaceURI == null ? XMLConstants.NULL_NS_URI : namespaceURI;
     }
 
+    @Override
     protected String doGetPrefix(String nsURI) {
         for (Map.Entry<String,String> entry : namespaces.entrySet()) {
             String uri = entry.getValue();
@@ -61,6 +63,7 @@ public class MapBasedNamespaceContext extends AbstractNamespaceContext {
         return null;
     }
 
+    @Override
     protected Iterator<String> doGetPrefixes(String nsURI) {
         Set<String> prefixes = null;
         for (Map.Entry<String,String> entry : namespaces.entrySet()) {

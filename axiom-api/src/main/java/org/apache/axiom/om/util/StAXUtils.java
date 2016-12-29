@@ -358,6 +358,7 @@ public class StAXUtils {
             final StAXParserConfiguration configuration) {
         
         return AccessController.doPrivileged(new PrivilegedAction<XMLInputFactory>() {
+            @Override
             public XMLInputFactory run() {
                 ClassLoader savedClassLoader;
                 if (classLoader == null) {
@@ -422,6 +423,7 @@ public class StAXUtils {
     private static XMLOutputFactory newXMLOutputFactory(final ClassLoader classLoader,
             final StAXWriterConfiguration configuration) {
         return AccessController.doPrivileged(new PrivilegedAction<XMLOutputFactory>() {
+            @Override
             public XMLOutputFactory run() {
                 ClassLoader savedClassLoader;
                 if (classLoader == null) {

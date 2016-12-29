@@ -38,14 +38,17 @@ public final class AxiomSemantics implements Semantics {
     
     private AxiomSemantics() {}
     
+    @Override
     public DetachPolicy getDetachPolicy() {
         return DetachPolicy.NEW_DOCUMENT;
     }
     
+    @Override
     public boolean isUseStrictNamespaceLookup() {
         return true;
     }
 
+    @Override
     public boolean isParentNode(NodeType nodeType) {
         return nodeType == NodeType.DOCUMENT || nodeType == NodeType.NS_AWARE_ELEMENT;
     }
@@ -58,6 +61,7 @@ public final class AxiomSemantics implements Semantics {
     public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(INSTANCE);
     
     public static final ClonePolicy<OMCloneOptions> CLONE_POLICY = new ClonePolicy<OMCloneOptions>() {
+        @Override
         public Class<? extends CoreNode> getTargetNodeClass(OMCloneOptions options, CoreNode node) {
             if (options != null && options.isPreserveModel()) {
                 return node.coreGetNodeClass();
@@ -68,18 +72,22 @@ public final class AxiomSemantics implements Semantics {
             }
         }
 
+        @Override
         public boolean repairNamespaces(OMCloneOptions options) {
             return true;
         }
 
+        @Override
         public boolean cloneAttributes(OMCloneOptions options) {
             return true;
         }
 
+        @Override
         public boolean cloneChildren(OMCloneOptions options, NodeType nodeType) {
             return true;
         }
 
+        @Override
         public void postProcess(OMCloneOptions options, CoreNode clone) {
             if (clone instanceof AxiomElement && ((AxiomElement)clone).isExpanded()) {
                 // Repair namespaces
@@ -96,6 +104,7 @@ public final class AxiomSemantics implements Semantics {
         }
     };
 
+    @Override
     public RuntimeException toUncheckedException(CoreModelException ex) {
         return AxiomExceptionTranslator.translate(ex);
     }

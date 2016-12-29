@@ -38,11 +38,13 @@ public class SerializeFromSAXSource extends SerializationStrategy {
         this.cache = cache;
     }
 
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("serializationStrategy", "SAXSource");
         testCase.addTestParameter("cache", cache);
     }
 
+    @Override
     public XML serialize(OMContainer container) throws Exception {
         SAXSource source = container.getSAXSource(cache);
         XMLReader xmlReader = source.getXMLReader();
@@ -58,14 +60,17 @@ public class SerializeFromSAXSource extends SerializationStrategy {
         return new XMLAsByteArray(out.toByteArray());
     }
 
+    @Override
     public boolean isPush() {
         return true;
     }
 
+    @Override
     public boolean isCaching() {
         return cache;
     }
 
+    @Override
     public boolean supportsInternalSubset() {
         return false;
     }

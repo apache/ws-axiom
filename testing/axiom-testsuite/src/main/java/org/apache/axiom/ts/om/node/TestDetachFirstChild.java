@@ -36,6 +36,7 @@ public class TestDetachFirstChild extends AxiomTestCase {
         addTestParameter("build", build);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement root = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<root><a/><b/></root>");
         if (build) {

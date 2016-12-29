@@ -58,10 +58,12 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
         }
     }
     
+    @Override
     public SOAPEnvelope getSOAPEnvelope() {
         return target.getSOAPEnvelope();
     }
 
+    @Override
     public SOAPMessage getSOAPMessage() {
         return target.getSOAPMessage();
     }
@@ -70,26 +72,32 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
         return target.getSOAPMessage();
     }
 
+    @Override
     public boolean isCompleted() {
         return target.isCompleted();
     }
 
+    @Override
     public OMDocument getDocument() {
         return target.getDocument();
     }
 
+    @Override
     public OMElement getDocumentElement() {
         return target.getDocumentElement();
     }
 
+    @Override
     public OMElement getDocumentElement(boolean discardDocument) {
         return target.getDocumentElement(discardDocument);
     }
 
+    @Override
     public void close() {
         target.close();
     }
 
+    @Override
     public void detach() {
         target.detach();
     }

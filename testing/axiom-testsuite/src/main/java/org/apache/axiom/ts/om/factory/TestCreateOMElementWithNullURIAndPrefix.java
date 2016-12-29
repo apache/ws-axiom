@@ -26,6 +26,7 @@ public class TestCreateOMElementWithNullURIAndPrefix extends AxiomTestCase {
         super(metaFactory);
     }
     
+    @Override
     protected void runTest() {
         try {
             metaFactory.getOMFactory().createOMElement("test", (String)null, (String)null);

@@ -37,6 +37,7 @@ public class TestGetChildrenWithName4 extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         // Create a document with 2 children, each named "sample" but
         // have different namespaces.

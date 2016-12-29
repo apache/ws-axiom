@@ -32,6 +32,7 @@ public class TestEqualsWithNullPrefix extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("http://www.w3.org/XML/1998/namespace", null);

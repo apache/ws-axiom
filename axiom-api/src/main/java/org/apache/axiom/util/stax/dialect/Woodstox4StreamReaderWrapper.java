@@ -33,6 +33,7 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements C
         super(reader);
     }
 
+    @Override
     public String getCharacterEncodingScheme() {
         if (getEventType() == START_DOCUMENT) {
             return super.getCharacterEncodingScheme();
@@ -41,6 +42,7 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements C
         }
     }
 
+    @Override
     public String getEncoding() {
         if (getEventType() == START_DOCUMENT) {
             return super.getEncoding();
@@ -49,6 +51,7 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements C
         }
     }
 
+    @Override
     public String getVersion() {
         if (getEventType() == START_DOCUMENT) {
             return super.getVersion();
@@ -57,6 +60,7 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements C
         }
     }
 
+    @Override
     public boolean isStandalone() {
         if (getEventType() == START_DOCUMENT) {
             return super.isStandalone();
@@ -65,6 +69,7 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements C
         }
     }
 
+    @Override
     public boolean standaloneSet() {
         if (getEventType() == START_DOCUMENT) {
             return super.standaloneSet();
@@ -73,6 +78,7 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements C
         }
     }
 
+    @Override
     public boolean isCharacters() {
         // TODO: in the dialect detection we should take into account the Woodstox version,
         //       so that we can avoid creating the wrapper for Woodstox versions where this
@@ -81,40 +87,47 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements C
         return getEventType() == CHARACTERS;
     }
 
+    @Override
     public String getPrefix() {
         // Woodstox 4.0 may return "" instead of null
         String prefix = super.getPrefix();
         return prefix == null || prefix.length() == 0 ? null : prefix;
     }
 
+    @Override
     public String getNamespaceURI() {
         // Woodstox 4.0 may return "" instead of null
         String uri = super.getNamespaceURI();
         return uri == null || uri.length() == 0 ? null : uri;
     }
 
+    @Override
     public String getNamespaceURI(String prefix) {
         // Woodstox 4.0 may return "" instead of null
         String uri = super.getNamespaceURI(prefix);
         return uri == null || uri.length() == 0 ? null : uri;
     }
 
+    @Override
     public String getNamespacePrefix(int index) {
         // Woodstox 4.0 may return "" instead of null
         String prefix = super.getNamespacePrefix(index);
         return prefix == null || prefix.length() == 0 ? null : prefix;
     }
 
+    @Override
     public String getAttributeNamespace(int index) {
         // Woodstox 4.0 may return "" instead of null
         String uri = super.getAttributeNamespace(index);
         return uri == null || uri.length() == 0 ? null : uri;
     }
 
+    @Override
     public NamespaceContext getNamespaceContext() {
         return new NamespaceURICorrectingNamespaceContextWrapper(super.getNamespaceContext());
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         if (CharacterDataReader.PROPERTY.equals(name)) {
             return this;
@@ -123,6 +136,7 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements C
         }
     }
 
+    @Override
     public void writeTextTo(Writer writer) throws XMLStreamException, IOException {
         // Allow efficient access to character data, even if coalescing is enabled
         ((XMLStreamReader2)getParent()).getText(writer, false);

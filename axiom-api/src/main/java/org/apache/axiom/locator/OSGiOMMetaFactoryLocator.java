@@ -40,10 +40,12 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator i
     }
 
     // Need to synchronize access because the implementations may be reloaded concurrently
+    @Override
     public synchronized OMMetaFactory getOMMetaFactory(String feature) {
         return super.getOMMetaFactory(feature);
     }
 
+    @Override
     public List<RegisteredImplementation> addingBundle(Bundle bundle, BundleEvent event) {
         URL descriptorUrl = bundle.getEntry(ImplementationFactory.DESCRIPTOR_RESOURCE);
         if (descriptorUrl != null) {
@@ -69,9 +71,11 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator i
         }
     }
 
+    @Override
     public void modifiedBundle(Bundle bundle, BundleEvent event, List<RegisteredImplementation> object) {
     }
 
+    @Override
     public void removedBundle(Bundle bundle, BundleEvent event, List<RegisteredImplementation> object) {
         for (RegisteredImplementation registeredImplementation : object) {
             apiBundleContext.ungetService(registeredImplementation.getReference());

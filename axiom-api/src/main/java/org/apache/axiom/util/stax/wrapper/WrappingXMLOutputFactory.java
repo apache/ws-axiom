@@ -68,36 +68,44 @@ public class WrappingXMLOutputFactory extends XMLOutputFactoryWrapper {
         return writer;
     }
 
+    @Override
     public XMLEventWriter createXMLEventWriter(OutputStream stream, String encoding)
             throws XMLStreamException {
         return wrap(super.createXMLEventWriter(stream, encoding));
     }
 
+    @Override
     public XMLEventWriter createXMLEventWriter(OutputStream stream) throws XMLStreamException {
         return wrap(super.createXMLEventWriter(stream));
     }
 
+    @Override
     public XMLEventWriter createXMLEventWriter(Result result) throws XMLStreamException {
         return wrap(super.createXMLEventWriter(result));
     }
 
+    @Override
     public XMLEventWriter createXMLEventWriter(Writer stream) throws XMLStreamException {
         return wrap(super.createXMLEventWriter(stream));
     }
 
+    @Override
     public XMLStreamWriter createXMLStreamWriter(OutputStream stream, String encoding)
             throws XMLStreamException {
         return wrap(super.createXMLStreamWriter(stream, encoding));
     }
 
+    @Override
     public XMLStreamWriter createXMLStreamWriter(OutputStream stream) throws XMLStreamException {
         return wrap(super.createXMLStreamWriter(stream));
     }
 
+    @Override
     public XMLStreamWriter createXMLStreamWriter(Result result) throws XMLStreamException {
         return wrap(super.createXMLStreamWriter(result));
     }
 
+    @Override
     public XMLStreamWriter createXMLStreamWriter(Writer stream) throws XMLStreamException {
         return wrap(super.createXMLStreamWriter(stream));
     }

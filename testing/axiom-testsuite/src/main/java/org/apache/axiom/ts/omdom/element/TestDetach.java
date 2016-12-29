@@ -35,6 +35,7 @@ public class TestDetach extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Element parent = document.createElementNS(null, "parent");

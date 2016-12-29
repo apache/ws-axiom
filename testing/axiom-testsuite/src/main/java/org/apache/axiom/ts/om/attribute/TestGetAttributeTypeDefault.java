@@ -32,6 +32,7 @@ public class TestGetAttributeTypeDefault extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");

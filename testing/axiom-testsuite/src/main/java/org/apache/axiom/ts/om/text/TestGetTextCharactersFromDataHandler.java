@@ -35,6 +35,7 @@ public class TestGetTextCharactersFromDataHandler extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         DataHandler dh = new DataHandler("test content", "text/plain; charset=utf-8");
         OMText text = metaFactory.getOMFactory().createOMText(dh, true);

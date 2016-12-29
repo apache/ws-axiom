@@ -30,6 +30,7 @@ public class TestGetRoleWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, spec, SOAPSampleSet.CUSTOM_ROLE_FAULT);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFault soapFaultWithParser = envelope.getBody().getFault();
         assertNotNull(

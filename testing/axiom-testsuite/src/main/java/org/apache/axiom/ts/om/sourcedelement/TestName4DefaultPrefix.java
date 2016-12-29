@@ -41,6 +41,7 @@ public class TestName4DefaultPrefix extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory f = metaFactory.getOMFactory();
 

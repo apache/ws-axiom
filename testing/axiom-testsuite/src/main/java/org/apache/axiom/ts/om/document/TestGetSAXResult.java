@@ -41,6 +41,7 @@ public class TestGetSAXResult extends ConformanceTestCase {
         addTestParameter("xslt", xsltImplementation.getName());
     }
     
+    @Override
     protected void runTest() throws Throwable {
         TransformerFactory transformerFactory = xsltImplementation.newTransformerFactory();
         StreamSource source = new StreamSource(file.getUrl().toString());

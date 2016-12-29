@@ -34,14 +34,17 @@ import org.junit.Assert;
  * {@link OMDataSource#serialize(XMLStreamWriter)}.
  */
 public class CloseScenario implements PushOMDataSourceScenario {
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "close");
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeEmptyElement(null, "root", null);
         try {
@@ -52,6 +55,7 @@ public class CloseScenario implements PushOMDataSourceScenario {
         }
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         // Just expand the element
         element.getFirstOMChild();

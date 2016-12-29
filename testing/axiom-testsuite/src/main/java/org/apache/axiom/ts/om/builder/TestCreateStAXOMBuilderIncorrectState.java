@@ -40,6 +40,7 @@ public class TestCreateStAXOMBuilderIncorrectState extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<root>text</root>"));
         // Position the reader on a CHARACTERS event

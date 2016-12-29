@@ -44,6 +44,7 @@ public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Charset charset = Charset.forName("ascii");
         OMFactory factory = metaFactory.getOMFactory();

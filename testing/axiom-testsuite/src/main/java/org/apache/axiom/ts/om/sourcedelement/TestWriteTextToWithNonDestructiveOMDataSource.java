@@ -39,6 +39,7 @@ public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         DataSource ds = new RandomDataSource(665544, 32, 128, 20000000);

@@ -37,6 +37,7 @@ public class TestGetOMFactoryWithParser extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPMessage message = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPMessage(metaFactory);
         assertSame(soapFactory, message.getOMFactory());

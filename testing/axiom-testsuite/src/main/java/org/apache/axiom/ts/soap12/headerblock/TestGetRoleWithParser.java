@@ -30,6 +30,7 @@ public class TestGetRoleWithParser extends SOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP12);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Iterator<SOAPHeaderBlock> iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
         assertTrue(

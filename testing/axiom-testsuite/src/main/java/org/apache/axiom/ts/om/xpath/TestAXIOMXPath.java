@@ -30,6 +30,7 @@ public class TestAXIOMXPath extends AxiomTestCase {
         addTestParameter("test", methodName.substring(4));
     }
 
+    @Override
     protected void runTest() throws Throwable {
         test.runBare();
     }

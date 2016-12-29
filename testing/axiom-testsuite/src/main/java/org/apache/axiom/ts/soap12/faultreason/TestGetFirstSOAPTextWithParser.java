@@ -30,6 +30,7 @@ public class TestGetFirstSOAPTextWithParser extends SampleBasedSOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP12, SOAPSampleSet.SIMPLE_FAULT);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultReason faultReason = envelope.getBody().getFault().getReason();
         assertFalse(

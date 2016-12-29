@@ -36,6 +36,7 @@ public class TestGetDocumentFromBuilder extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMDataSource ds = new StringOMDataSource("<root><a/></root>");

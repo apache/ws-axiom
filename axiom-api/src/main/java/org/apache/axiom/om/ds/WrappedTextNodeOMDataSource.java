@@ -33,14 +33,17 @@ public abstract class WrappedTextNodeOMDataSource extends AbstractPullOMDataSour
         this.wrapperElementName = wrapperElementName;
     }
 
+    @Override
     public String getLocalName() {
         return wrapperElementName.getLocalPart();
     }
 
+    @Override
     public String getNamespaceURI() {
         return wrapperElementName.getNamespaceURI();
     }
 
+    @Override
     public String getPrefix() {
         return wrapperElementName.getPrefix();
     }

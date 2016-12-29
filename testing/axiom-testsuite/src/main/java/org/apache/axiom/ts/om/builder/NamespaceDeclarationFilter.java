@@ -30,6 +30,7 @@ public class NamespaceDeclarationFilter extends XMLStreamReaderWrapper {
         super(parent);
     }
 
+    @Override
     public int getNamespaceCount() {
         return 0;
     }

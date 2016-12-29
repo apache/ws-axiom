@@ -33,6 +33,7 @@ public class TestExamineHeaderBlocks extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String roleNextURI = spec.getNextRoleURI();
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();

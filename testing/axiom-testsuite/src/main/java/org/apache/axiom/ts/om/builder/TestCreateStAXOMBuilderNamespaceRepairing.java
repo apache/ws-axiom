@@ -39,6 +39,7 @@ public class TestCreateStAXOMBuilderNamespaceRepairing extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader(
                 "<p:root xmlns:p='urn:ns1' xmlns:q='urn:ns2'><child q:attr='value'/></p:root>"));

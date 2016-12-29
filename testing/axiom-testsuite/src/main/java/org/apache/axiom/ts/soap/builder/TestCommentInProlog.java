@@ -35,6 +35,7 @@ public class TestCommentInProlog extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPMessage message = SOAPSampleSet.COMMENT_IN_PROLOG.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPMessage(metaFactory);
         OMNode firstChild = message.getFirstOMChild();

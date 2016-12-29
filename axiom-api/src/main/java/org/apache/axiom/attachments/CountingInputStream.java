@@ -33,6 +33,7 @@ final class CountingInputStream extends InputStream {
         return count;
     }
 
+    @Override
     public int read() throws IOException {
         int b = parent.read();
         if (b != -1) {
@@ -41,6 +42,7 @@ final class CountingInputStream extends InputStream {
         return b;
     }
 
+    @Override
     public int read(byte[] b) throws IOException {
         int read = parent.read(b);
         if (read != -1) {
@@ -49,6 +51,7 @@ final class CountingInputStream extends InputStream {
         return read;
     }
 
+    @Override
     public int read(byte[] b, int off, int len) throws IOException {
         int read = parent.read(b, off, len);
         if (read != -1) {
@@ -57,16 +60,19 @@ final class CountingInputStream extends InputStream {
         return read;
     }
 
+    @Override
     public long skip(long n) throws IOException {
         long skipped = parent.skip(n);
         count += skipped;
         return skipped;
     }
 
+    @Override
     public int available() throws IOException {
         return parent.available();
     }
 
+    @Override
     public void close() throws IOException {
         parent.close();
     }

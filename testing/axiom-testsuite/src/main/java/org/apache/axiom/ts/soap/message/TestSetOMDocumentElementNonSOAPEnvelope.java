@@ -39,6 +39,7 @@ public class TestSetOMDocumentElementNonSOAPEnvelope extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPMessage message = soapFactory.createSOAPMessage();
         OMElement element = soapFactory.createOMElement(new QName("test"));

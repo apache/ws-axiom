@@ -85,6 +85,7 @@ public class AXIOMXPath extends BaseXPath {
      * @param uri    the URI to which the prefix matches
      * @throws JaxenException if the underlying implementation throws an exception
      */
+    @Override
     public void addNamespace(String prefix, String uri) throws JaxenException {
         try {
             super.addNamespace(prefix, uri);

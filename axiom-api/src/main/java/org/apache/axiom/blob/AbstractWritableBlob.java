@@ -31,6 +31,7 @@ import org.apache.axiom.util.io.IOUtils;
  * {@link WritableBlob#writeTo(OutputStream)} using {@link WritableBlob#getInputStream()}.
  */
 public abstract class AbstractWritableBlob implements WritableBlob {
+    @Override
     public long readFrom(InputStream in) throws StreamCopyException {
         OutputStream out;
         try {
@@ -49,6 +50,7 @@ public abstract class AbstractWritableBlob implements WritableBlob {
         }
     }
 
+    @Override
     public void writeTo(OutputStream out) throws StreamCopyException {
         InputStream in;
         try {

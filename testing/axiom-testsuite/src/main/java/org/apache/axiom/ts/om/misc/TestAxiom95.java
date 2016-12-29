@@ -31,6 +31,7 @@ public class TestAxiom95 extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 TestAxiom95.class.getResourceAsStream("defaultNamespace2.xml"));

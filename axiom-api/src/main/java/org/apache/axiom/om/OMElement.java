@@ -537,6 +537,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * 
      * @return the serialized object model
      */
+    @Override
     String toString();
 
     /**
@@ -588,5 +589,6 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     /**
      * {@inheritDoc}
      */
+    @Override
     Iterator<OMNode> getDescendants(boolean includeSelf);
 }

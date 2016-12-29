@@ -48,6 +48,7 @@ public abstract class OMFilterIterator implements Iterator {
      */
     protected abstract boolean matches(OMNode node);
 
+    @Override
     public boolean hasNext() {
         if (noMoreNodes) {
             return false;
@@ -66,6 +67,7 @@ public abstract class OMFilterIterator implements Iterator {
         }
     }
 
+    @Override
     public Object next() {
         if (hasNext()) {
             OMNode result = nextNode;
@@ -76,6 +78,7 @@ public abstract class OMFilterIterator implements Iterator {
         }
     }
 
+    @Override
     public void remove() {
         parent.remove();
     }

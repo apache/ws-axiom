@@ -41,6 +41,7 @@ public final class NamespaceIterator implements Iterator<OMNamespace> {
         this.element = element;
     }
 
+    @Override
     public boolean hasNext() {
         if (!hasNextCalled) {
             while (true) {
@@ -74,6 +75,7 @@ public final class NamespaceIterator implements Iterator<OMNamespace> {
         return next != null;
     }
 
+    @Override
     public OMNamespace next() {
         if (hasNext()) {
             OMNamespace result = next;
@@ -86,6 +88,7 @@ public final class NamespaceIterator implements Iterator<OMNamespace> {
     }
 
     // TODO: document that remove is not supported
+    @Override
     public void remove() {
         throw new UnsupportedOperationException();
     }

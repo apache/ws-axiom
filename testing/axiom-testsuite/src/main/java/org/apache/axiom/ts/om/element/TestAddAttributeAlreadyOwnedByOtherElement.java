@@ -35,6 +35,7 @@ public class TestAddAttributeAlreadyOwnedByOtherElement extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element1 = factory.createOMElement(new QName("test"));

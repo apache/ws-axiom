@@ -29,6 +29,7 @@ public class TestMultipleDefaultNS extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory omFactory = metaFactory.getOMFactory();
         OMNamespace defaultNS1 = omFactory.createOMNamespace("http://defaultNS1.org", null);

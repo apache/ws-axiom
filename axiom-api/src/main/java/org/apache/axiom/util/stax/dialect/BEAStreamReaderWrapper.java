@@ -38,6 +38,7 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
         this.encodingFromStartBytes = encodingFromStartBytes;
     }
 
+    @Override
     public String getCharacterEncodingScheme() {
         if (getEventType() == START_DOCUMENT) {
             return super.getCharacterEncodingScheme();
@@ -46,6 +47,7 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getVersion() {
         if (getEventType() == START_DOCUMENT) {
             return super.getVersion();
@@ -54,6 +56,7 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public boolean isStandalone() {
         if (getEventType() == START_DOCUMENT) {
             return super.isStandalone();
@@ -62,6 +65,7 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public boolean standaloneSet() {
         if (getEventType() == START_DOCUMENT) {
             return super.standaloneSet();
@@ -70,6 +74,7 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public int next() throws XMLStreamException {
         if (!hasNext()) {
             // The reference implementation throws an XMLStreamException in this case.
@@ -85,6 +90,7 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getEncoding() {
         if (getEventType() == START_DOCUMENT) {
             String encoding = super.getEncoding();
@@ -108,6 +114,7 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getText() {
         // The reference implementation fails to normalize line endings in the prolog/epilog; we work
         // around this at least for getText since this bug causes a test failure in the Axiom unit
@@ -135,6 +142,7 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public NamespaceContext getNamespaceContext() {
         // The NamespaceContext returned by the reference doesn't handle the
         // implicit namespace bindings (for the "xml" and "xmlns" prefixes)

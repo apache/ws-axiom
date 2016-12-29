@@ -33,10 +33,12 @@ class SJSXPDialect extends AbstractStAXDialect {
         this.isUnsafeStreamResult = isUnsafeStreamResult;
     }
 
+    @Override
     public String getName() {
         return isUnsafeStreamResult ? "SJSXP (with thread safety issue)" : "SJSXP";
     }
 
+    @Override
     public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
         factory.setProperty("http://java.sun.com/xml/stream/properties/report-cdata-event",
@@ -44,6 +46,7 @@ class SJSXPDialect extends AbstractStAXDialect {
         return factory;
     }
 
+    @Override
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
         // SJSXP is particular because when SUPPORT_DTD is set to false, no DTD event is reported.
         // This means that we would not be able to throw an exception. The trick is to enable
@@ -53,6 +56,7 @@ class SJSXPDialect extends AbstractStAXDialect {
         factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
         factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
         factory.setXMLResolver(new XMLResolver() {
+            @Override
             public Object resolveEntity(String publicID, String systemID, String baseURI,
                     String namespace) throws XMLStreamException {
                 throw new XMLStreamException("DOCTYPE is not allowed");
@@ -61,11 +65,13 @@ class SJSXPDialect extends AbstractStAXDialect {
         return new DisallowDoctypeDeclInputFactoryWrapper(factory);
     }
 
+    @Override
     public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
         factory.setProperty("reuse-instance", Boolean.FALSE);
         return factory;
     }
 
+    @Override
     public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
         factory.setProperty("reuse-instance", Boolean.FALSE);
         if (isUnsafeStreamResult) {
@@ -74,18 +80,22 @@ class SJSXPDialect extends AbstractStAXDialect {
         return factory;
     }
 
+    @Override
     public XMLStreamReader normalize(XMLStreamReader reader) {
         return new SJSXPStreamReaderWrapper(reader);
     }
 
+    @Override
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
         return new SJSXPStreamWriterWrapper(writer);
     }
     
+    @Override
     public XMLInputFactory normalize(XMLInputFactory factory) {
         return new NormalizingXMLInputFactoryWrapper(factory, this);
     }
     
+    @Override
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
         return new SJSXPOutputFactoryWrapper(factory, this);
     }

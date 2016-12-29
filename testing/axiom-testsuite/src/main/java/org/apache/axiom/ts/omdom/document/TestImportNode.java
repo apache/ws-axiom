@@ -38,6 +38,7 @@ public class TestImportNode extends ConformanceTestCase {
         super(metaFactory, file);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = DOMImplementation.XERCES.parse(new InputSource(file.getUrl().toString()));
         Document doc2 = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();

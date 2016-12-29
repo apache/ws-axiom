@@ -41,6 +41,7 @@ public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
         addTestParameter("defaultNamespaceInScope", defaultNamespaceInScope);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace otherNS = factory.createOMNamespace("urn:ns2", "p");

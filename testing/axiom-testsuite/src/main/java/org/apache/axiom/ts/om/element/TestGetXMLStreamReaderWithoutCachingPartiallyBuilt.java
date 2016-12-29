@@ -37,6 +37,7 @@ public class TestGetXMLStreamReaderWithoutCachingPartiallyBuilt extends AxiomTes
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         // Note: the problem described in AXIOM-393 specifically occurred with descendants
         //       having the same name as the root element

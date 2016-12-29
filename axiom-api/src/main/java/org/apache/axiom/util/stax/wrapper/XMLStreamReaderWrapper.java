@@ -56,183 +56,228 @@ public class XMLStreamReaderWrapper implements XMLStreamReader {
         return parent;
     }
 
+    @Override
     public void close() throws XMLStreamException {
         parent.close();
     }
 
+    @Override
     public int getAttributeCount() {
         return parent.getAttributeCount();
     }
 
+    @Override
     public String getAttributeLocalName(int index) {
         return parent.getAttributeLocalName(index);
     }
 
+    @Override
     public QName getAttributeName(int index) {
         return parent.getAttributeName(index);
     }
 
+    @Override
     public String getAttributeNamespace(int index) {
         return parent.getAttributeNamespace(index);
     }
 
+    @Override
     public String getAttributePrefix(int index) {
         return parent.getAttributePrefix(index);
     }
 
+    @Override
     public String getAttributeType(int index) {
         return parent.getAttributeType(index);
     }
 
+    @Override
     public String getAttributeValue(int index) {
         return parent.getAttributeValue(index);
     }
 
+    @Override
     public String getAttributeValue(String namespaceURI, String localName) {
         return parent.getAttributeValue(namespaceURI, localName);
     }
 
+    @Override
     public String getCharacterEncodingScheme() {
         return parent.getCharacterEncodingScheme();
     }
 
+    @Override
     public String getElementText() throws XMLStreamException {
         return parent.getElementText();
     }
 
+    @Override
     public String getEncoding() {
         return parent.getEncoding();
     }
 
+    @Override
     public int getEventType() {
         return parent.getEventType();
     }
 
+    @Override
     public String getLocalName() {
         return parent.getLocalName();
     }
 
+    @Override
     public Location getLocation() {
         return parent.getLocation();
     }
 
+    @Override
     public QName getName() {
         return parent.getName();
     }
 
+    @Override
     public NamespaceContext getNamespaceContext() {
         return parent.getNamespaceContext();
     }
 
+    @Override
     public int getNamespaceCount() {
         return parent.getNamespaceCount();
     }
 
+    @Override
     public String getNamespacePrefix(int index) {
         return parent.getNamespacePrefix(index);
     }
 
+    @Override
     public String getNamespaceURI() {
         return parent.getNamespaceURI();
     }
 
+    @Override
     public String getNamespaceURI(int index) {
         return parent.getNamespaceURI(index);
     }
 
+    @Override
     public String getNamespaceURI(String prefix) {
         return parent.getNamespaceURI(prefix);
     }
 
+    @Override
     public String getPIData() {
         return parent.getPIData();
     }
 
+    @Override
     public String getPITarget() {
         return parent.getPITarget();
     }
 
+    @Override
     public String getPrefix() {
         return parent.getPrefix();
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         return parent.getProperty(name);
     }
 
+    @Override
     public String getText() {
         return parent.getText();
     }
 
+    @Override
     public char[] getTextCharacters() {
         return parent.getTextCharacters();
     }
 
+    @Override
     public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
         return parent.getTextCharacters(sourceStart, target, targetStart, length);
     }
 
+    @Override
     public int getTextLength() {
         return parent.getTextLength();
     }
 
+    @Override
     public int getTextStart() {
         return parent.getTextStart();
     }
 
+    @Override
     public String getVersion() {
         return parent.getVersion();
     }
 
+    @Override
     public boolean hasName() {
         return parent.hasName();
     }
 
+    @Override
     public boolean hasNext() throws XMLStreamException {
         return parent.hasNext();
     }
 
+    @Override
     public boolean hasText() {
         return parent.hasText();
     }
 
+    @Override
     public boolean isAttributeSpecified(int index) {
         return parent.isAttributeSpecified(index);
     }
 
+    @Override
     public boolean isCharacters() {
         return parent.isCharacters();
     }
 
+    @Override
     public boolean isEndElement() {
         return parent.isEndElement();
     }
 
+    @Override
     public boolean isStandalone() {
         return parent.isStandalone();
     }
 
+    @Override
     public boolean isStartElement() {
         return parent.isStartElement();
     }
 
+    @Override
     public boolean isWhiteSpace() {
         return parent.isWhiteSpace();
     }
 
+    @Override
     public int next() throws XMLStreamException {
         return parent.next();
     }
 
+    @Override
     public int nextTag() throws XMLStreamException {
         return parent.nextTag();
     }
 
+    @Override
     public void require(int type, String namespaceURI, String localName) throws XMLStreamException {
         parent.require(type, namespaceURI, localName);
     }
 
+    @Override
     public boolean standaloneSet() {
         return parent.standaloneSet();
     }

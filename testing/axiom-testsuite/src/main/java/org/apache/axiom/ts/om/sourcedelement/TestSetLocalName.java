@@ -44,6 +44,7 @@ public class TestSetLocalName extends AxiomTestCase {
         addTestParameter("expand", expand);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(

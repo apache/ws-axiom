@@ -41,6 +41,7 @@ public class TestCloneUnknownName extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMDataSource ds = new StringOMDataSource("<p:element xmlns:p='urn:ns'>test</p:element>");

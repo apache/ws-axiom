@@ -33,6 +33,7 @@ public class TestSerializeModifiedOMSEWithNonDestructiveDataSource extends Axiom
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMDataSourceExt ds = new StringOMDataSource("<element><child/></element>");
         assertFalse(ds.isDestructiveWrite());

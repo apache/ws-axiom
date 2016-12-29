@@ -129,6 +129,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         this(wrapperElementName, reader, 4096);
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         // We don't define any properties
         return null;
@@ -138,10 +139,12 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
     // Methods to manipulate the parser state
     //
     
+    @Override
     public boolean hasNext() throws XMLStreamException {
         return eventType != END_DOCUMENT;
     }
     
+    @Override
     public int next() throws XMLStreamException {
         // Determine next event type based on current event type. If current event type
         // is START_ELEMENT or CHARACTERS, pull new data from the reader.
@@ -175,22 +178,36 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         return eventType;
     }
     
+    @Override
     public int nextTag() throws XMLStreamException {
         // We don't have white space, comments or processing instructions
         throw new XMLStreamException("Current event is not white space");
     }
 
+    @Override
     public int getEventType() {
         return eventType;
     }
 
+    @Override
     public boolean isStartElement() { return eventType == START_ELEMENT; }
+
+    @Override
     public boolean isEndElement() { return eventType == END_ELEMENT; }
+
+    @Override
     public boolean isCharacters() { return eventType == CHARACTERS; }
+
+    @Override
     public boolean isWhiteSpace() { return false; }
+
+    @Override
     public boolean hasText() { return eventType == CHARACTERS; }
+
+    @Override
     public boolean hasName() { return eventType == START_ELEMENT || eventType == END_ELEMENT; }
     
+    @Override
     public void require(int type, String namespaceURI, String localName) throws XMLStreamException {
         if (type != eventType
              || (namespaceURI != null && !namespaceURI.equals(getNamespaceURI()))
@@ -199,11 +216,13 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         }
     }
     
+    @Override
     public Location getLocation() {
         // We do not support location information
         return DummyLocation.INSTANCE;
     }
     
+    @Override
     public void close() throws XMLStreamException {
         // Javadoc says that this method should not close the underlying input source,
         // but we need to close the reader somewhere.
@@ -219,25 +238,30 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
     // Methods related to the xml declaration.
     //
     
+    @Override
     public String getEncoding() {
         // Encoding is not known (not relevant?)
         return null;
     }
 
+    @Override
     public String getCharacterEncodingScheme() {
         // Encoding is not known (not relevant?)
         return null;
     }
 
+    @Override
     public String getVersion() {
         // Version is not relevant
         return null;
     }
 
+    @Override
     public boolean standaloneSet() {
         return false;
     }
 
+    @Override
     public boolean isStandalone() {
         return true;
     }
@@ -246,6 +270,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
     // Methods related to the namespace context
     //
     
+    @Override
     public NamespaceContext getNamespaceContext() {
         if (namespaceContext == null) {
             namespaceContext = new MapBasedNamespaceContext(Collections.singletonMap(wrapperElementName.getPrefix(), wrapperElementName.getNamespaceURI()));
@@ -253,6 +278,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         return namespaceContext;
     }
     
+    @Override
     public String getNamespaceURI(String prefix) {
         String namespaceURI = getNamespaceContext().getNamespaceURI(prefix);
         // NamespaceContext#getNamespaceURI and XMLStreamReader#getNamespaceURI have slightly
@@ -270,46 +296,55 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         }
     }
     
+    @Override
     public String getAttributeValue(String namespaceURI, String localName) {
         checkStartElement();
         return null;
     }
 
+    @Override
     public int getAttributeCount() {
         checkStartElement();
         return 0;
     }
     
+    @Override
     public QName getAttributeName(int index) {
         checkStartElement();
         throw new ArrayIndexOutOfBoundsException();
     }
 
+    @Override
     public String getAttributeLocalName(int index) {
         checkStartElement();
         throw new ArrayIndexOutOfBoundsException();
     }
 
+    @Override
     public String getAttributePrefix(int index) {
         checkStartElement();
         throw new ArrayIndexOutOfBoundsException();
     }
 
+    @Override
     public String getAttributeNamespace(int index) {
         checkStartElement();
         throw new ArrayIndexOutOfBoundsException();
     }
 
+    @Override
     public String getAttributeType(int index) {
         checkStartElement();
         throw new ArrayIndexOutOfBoundsException();
     }
 
+    @Override
     public String getAttributeValue(int index) {
         checkStartElement();
         throw new ArrayIndexOutOfBoundsException();
     }
 
+    @Override
     public boolean isAttributeSpecified(int index) {
         checkStartElement();
         throw new ArrayIndexOutOfBoundsException();
@@ -321,30 +356,36 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         }
     }
     
+    @Override
     public QName getName() {
         return null;
     }
 
+    @Override
     public String getLocalName() {
         checkElement();
         return wrapperElementName.getLocalPart();
     }
 
+    @Override
     public String getPrefix() {
         return wrapperElementName.getPrefix();
     }
 
+    @Override
     public String getNamespaceURI() {
         checkElement();
         return wrapperElementName.getNamespaceURI();
     }
     
+    @Override
     public int getNamespaceCount() {
         checkElement();
         // There is one namespace declared on the wrapper element
         return 1;
     }
 
+    @Override
     public String getNamespacePrefix(int index) {
         checkElement();
         if (index == 0) {
@@ -354,6 +395,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getNamespaceURI(int index) {
         checkElement();
         if (index == 0) {
@@ -363,6 +405,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         }
     }
     
+    @Override
     public String getElementText() throws XMLStreamException {
         if (eventType == START_ELEMENT) {
             // Actually the purpose of this class is to avoid storing
@@ -392,26 +435,31 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         }
     }
     
+    @Override
     public String getText() {
         checkCharacters();
         return new String(charData, 0, charDataLength);
     }
 
+    @Override
     public char[] getTextCharacters() {
         checkCharacters();
         return charData;
     }
 
+    @Override
     public int getTextStart() {
         checkCharacters();
         return 0;
     }
 
+    @Override
     public int getTextLength() {
         checkCharacters();
         return charDataLength;
     }
 
+    @Override
     public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length) throws XMLStreamException {
         checkCharacters();
         int c = Math.min(charDataLength-sourceStart, length);
@@ -423,10 +471,12 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
     // Methods related to processing instructions
     //
     
+    @Override
     public String getPIData() {
         throw new IllegalStateException();
     }
 
+    @Override
     public String getPITarget() {
         throw new IllegalStateException();
     }

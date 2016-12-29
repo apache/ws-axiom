@@ -27,10 +27,12 @@ import javax.xml.stream.XMLStreamWriter;
 class BEADialect extends AbstractStAXDialect {
     public static final StAXDialect INSTANCE = new BEADialect();
 
+    @Override
     public String getName() {
         return "BEA";
     }
 
+    @Override
     public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
         factory.setProperty("http://java.sun.com/xml/stream/properties/report-cdata-event",
@@ -38,24 +40,29 @@ class BEADialect extends AbstractStAXDialect {
         return factory;
     }
 
+    @Override
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
         return StAXDialectUtils.disallowDoctypeDecl(factory);
     }
 
+    @Override
     public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
         // Factories are already thread safe
         return factory;
     }
 
+    @Override
     public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
         // Factories are already thread safe
         return factory;
     }
 
+    @Override
     public XMLStreamReader normalize(XMLStreamReader reader) {
         return new BEAStreamReaderWrapper(reader, null);
     }
 
+    @Override
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
         // The stream writer implementation of the reference implementation doesn't handle masked
         // namespace bindings correctly. We wrap the writer in a
@@ -63,10 +70,12 @@ class BEADialect extends AbstractStAXDialect {
         return new NamespaceContextCorrectingXMLStreamWriterWrapper(writer);
     }
 
+    @Override
     public XMLInputFactory normalize(XMLInputFactory factory) {
         return new BEAInputFactoryWrapper(factory);
     }
 
+    @Override
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
         return new NormalizingXMLOutputFactoryWrapper(factory, this);
     }

@@ -34,6 +34,7 @@ public class TestChildReDeclaringParentsDefaultNSWithPrefix extends AxiomTestCas
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
         OMElement elem = fac.createOMElement("RequestSecurityToken",

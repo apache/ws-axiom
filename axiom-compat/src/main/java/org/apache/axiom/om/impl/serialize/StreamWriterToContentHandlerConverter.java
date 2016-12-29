@@ -53,6 +53,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      *
      * @throws SAXException
      */
+    @Override
     public void endDocument() throws SAXException {
 
         // do nothing
@@ -63,6 +64,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      *
      * @throws SAXException
      */
+    @Override
     public void startDocument() throws SAXException {
 
         // 
@@ -76,6 +78,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @param length
      * @throws SAXException
      */
+    @Override
     public void characters(char ch[], int start, int length)
             throws SAXException {
         try {
@@ -93,6 +96,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @param length
      * @throws SAXException
      */
+    @Override
     public void ignorableWhitespace(char ch[], int start, int length)
             throws SAXException {
 
@@ -105,6 +109,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @param prefix
      * @throws SAXException
      */
+    @Override
     public void endPrefixMapping(String prefix) throws SAXException {
 
         // throw new UnsupportedOperationException();
@@ -116,6 +121,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @param name
      * @throws SAXException
      */
+    @Override
     public void skippedEntity(String name) throws SAXException {
 
         // throw new UnsupportedOperationException();
@@ -126,6 +132,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      *
      * @param locator
      */
+    @Override
     public void setDocumentLocator(Locator locator) {
 
         // throw new UnsupportedOperationException();
@@ -138,6 +145,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @param data
      * @throws SAXException
      */
+    @Override
     public void processingInstruction(String target, String data)
             throws SAXException {
 
@@ -151,6 +159,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @param uri
      * @throws SAXException
      */
+    @Override
     public void startPrefixMapping(String prefix, String uri)
             throws SAXException {
         try {
@@ -169,6 +178,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @param qName
      * @throws SAXException
      */
+    @Override
     public void endElement(String namespaceURI,
                            String localName,
                            String qName)
@@ -202,6 +212,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @param atts
      * @throws SAXException
      */
+    @Override
     public void startElement(String namespaceURI,
                              String localName,
                              String qName,

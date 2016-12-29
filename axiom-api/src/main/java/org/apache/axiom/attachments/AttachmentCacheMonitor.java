@@ -256,6 +256,7 @@ public final class AttachmentCacheMonitor {
 
     private boolean deleteFile(final String fileName ) {
         return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+                @Override
                 public Boolean run() {
                     return _deleteFile(fileName);
                 }
@@ -297,6 +298,7 @@ public final class AttachmentCacheMonitor {
         /**
          * Trigger a checkForAgedFiles event
          */
+        @Override
         public void run() {
             checkForAgedFiles();
         }

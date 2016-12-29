@@ -39,13 +39,16 @@ public class TestGetReaderException extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(new AbstractPullOMDataSource() {
+            @Override
             public XMLStreamReader getReader() throws XMLStreamException {
                 throw new XMLStreamException("Test exception");
             }
             
+            @Override
             public boolean isDestructiveRead() {
                 return true;
             }

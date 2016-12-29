@@ -30,6 +30,7 @@ public class TestCreateOMElementWithInvalidNamespace extends CreateOMElementTest
         super(metaFactory, variant, parentSupplier);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         try {

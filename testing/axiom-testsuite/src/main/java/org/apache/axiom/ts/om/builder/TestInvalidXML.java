@@ -35,6 +35,7 @@ public class TestInvalidXML extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         XMLStreamReader originalReader = StAXUtils.createXMLStreamReader(
                 TestInvalidXML.class.getResourceAsStream("invalid_xml.xml"));

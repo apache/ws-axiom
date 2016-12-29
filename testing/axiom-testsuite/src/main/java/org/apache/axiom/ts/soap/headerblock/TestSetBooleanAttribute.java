@@ -37,6 +37,7 @@ public class TestSetBooleanAttribute extends BooleanAttributeTestCase {
         this.value = value;
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
         BooleanAttributeAccessor accessor = attribute.getAdapter(BooleanAttributeAccessor.class);

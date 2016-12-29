@@ -35,6 +35,7 @@ public class TestGetQNameWithNamespace extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String localName = "attr";
         String uri = "http://ns1";

@@ -25,6 +25,7 @@ final class DefaultLoader extends Loader {
         this.classLoader = classLoader;
     }
 
+    @Override
     Class<?> load(String className) throws ClassNotFoundException {
         return classLoader.loadClass(className);
     }

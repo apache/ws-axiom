@@ -41,19 +41,23 @@ public class WrappedTextNodeOMDataSourceFromReader extends WrappedTextNodeOMData
         this.reader = reader;
     }
 
+    @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         isAccessed = true;
         return new WrappedTextNodeStreamReader(wrapperElementName, reader);
     }
 
+    @Override
     public Object getObject() {
         return isAccessed ? null : reader;
     }
 
+    @Override
     public boolean isDestructiveRead() {
         return true;
     }
 
+    @Override
     public void close() {
         try {
             reader.close();

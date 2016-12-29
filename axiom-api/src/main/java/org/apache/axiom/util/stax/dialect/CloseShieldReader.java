@@ -29,41 +29,51 @@ final class CloseShieldReader extends Reader {
         this.parent = parent;
     }
 
+    @Override
     public void close() throws IOException {
     }
 
+    @Override
     public void mark(int readAheadLimit) throws IOException {
         parent.mark(readAheadLimit);
     }
 
+    @Override
     public boolean markSupported() {
         return parent.markSupported();
     }
 
+    @Override
     public int read() throws IOException {
         return parent.read();
     }
 
+    @Override
     public int read(char[] cbuf, int off, int len) throws IOException {
         return parent.read(cbuf, off, len);
     }
 
+    @Override
     public int read(char[] cbuf) throws IOException {
         return parent.read(cbuf);
     }
 
+    @Override
     public int read(CharBuffer target) throws IOException {
         return parent.read(target);
     }
 
+    @Override
     public boolean ready() throws IOException {
         return parent.ready();
     }
 
+    @Override
     public void reset() throws IOException {
         parent.reset();
     }
 
+    @Override
     public long skip(long n) throws IOException {
         return parent.skip(n);
     }

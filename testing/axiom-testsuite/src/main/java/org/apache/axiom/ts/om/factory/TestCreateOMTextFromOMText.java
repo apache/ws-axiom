@@ -33,6 +33,7 @@ public class TestCreateOMTextFromOMText extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMText orgText = factory.createOMText("text");

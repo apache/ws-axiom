@@ -87,10 +87,12 @@ public class OMXMLReader extends AbstractXMLReader {
         this.root = root;
     }
 
+    @Override
     public void parse(InputSource input) throws IOException, SAXException {
         parse();
     }
 
+    @Override
     public void parse(String systemId) throws IOException, SAXException {
         parse();
     }
@@ -274,10 +276,12 @@ public class OMXMLReader extends AbstractXMLReader {
             }
         }
 
+        @Override
         public int getLength() {
             return attributes.size();
         }
 
+        @Override
         public int getIndex(String qName) {
             for (int i=0, len=attributes.size(); i<len; i++) {
                 if (getQName(i).equals(qName)) {
@@ -287,6 +291,7 @@ public class OMXMLReader extends AbstractXMLReader {
             return -1;
         }
 
+        @Override
         public int getIndex(String uri, String localName) {
             for (int i=0, len=attributes.size(); i<len; i++) {
                 if (getURI(i).equals(uri) && getLocalName(i).equals(localName)) {
@@ -296,10 +301,12 @@ public class OMXMLReader extends AbstractXMLReader {
             return -1;
         }
 
+        @Override
         public String getLocalName(int index) {
             return ((OMAttribute)attributes.get(index)).getLocalName();
         }
 
+        @Override
         public String getQName(int index) {
             OMAttribute attribute = ((OMAttribute)attributes.get(index));
             OMNamespace ns = attribute.getNamespace();
@@ -315,34 +322,41 @@ public class OMXMLReader extends AbstractXMLReader {
             }
         }
 
+        @Override
         public String getType(int index) {
             return ((OMAttribute)attributes.get(index)).getAttributeType();
         }
 
+        @Override
         public String getType(String qName) {
             int index = getIndex(qName);
             return index == -1 ? null : getType(index);
         }
 
+        @Override
         public String getType(String uri, String localName) {
             int index = getIndex(uri, localName);
             return index == -1 ? null : getType(index);
         }
 
+        @Override
         public String getURI(int index) {
             OMNamespace ns = ((OMAttribute)attributes.get(index)).getNamespace();
             return ns == null ? "" : ns.getNamespaceURI();
         }
 
+        @Override
         public String getValue(int index) {
             return ((OMAttribute)attributes.get(index)).getAttributeValue();
         }
 
+        @Override
         public String getValue(String qName) {
             int index = getIndex(qName);
             return index == -1 ? null : getValue(index);
         }
 
+        @Override
         public String getValue(String uri, String localName) {
             int index = getIndex(uri, localName);
             return index == -1 ? null : getValue(index);

@@ -29,6 +29,7 @@ public class TestHasNameWithoutNamespace extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMElement element = metaFactory.getOMFactory().createOMElement("name", null);
         assertTrue(element.hasName(new QName("name")));

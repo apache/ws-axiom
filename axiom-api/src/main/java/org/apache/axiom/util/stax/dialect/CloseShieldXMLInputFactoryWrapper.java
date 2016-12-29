@@ -32,22 +32,27 @@ final class CloseShieldXMLInputFactoryWrapper extends XMLInputFactoryWrapper {
         super(parent);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(InputStream stream, String encoding) throws XMLStreamException {
         return super.createXMLStreamReader(new CloseShieldInputStream(stream), encoding);
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(InputStream stream) throws XMLStreamException {
         return super.createXMLStreamReader(new CloseShieldInputStream(stream));
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(Reader reader) throws XMLStreamException {
         return super.createXMLStreamReader(new CloseShieldReader(reader));
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream) throws XMLStreamException {
         return super.createXMLStreamReader(systemId, new CloseShieldInputStream(stream));
     }
 
+    @Override
     public XMLStreamReader createXMLStreamReader(String systemId, Reader reader) throws XMLStreamException {
         return super.createXMLStreamReader(systemId, new CloseShieldReader(reader));
     }

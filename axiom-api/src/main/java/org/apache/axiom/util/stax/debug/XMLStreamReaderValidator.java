@@ -55,18 +55,21 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
     }
 
  
+    @Override
     public int next() throws XMLStreamException {
         int event = super.next();
         trackEvent(event);
         return event;
     }
     
+    @Override
     public String getElementText() throws XMLStreamException {
         String text = super.getElementText();
         trackEvent(END_ELEMENT);
         return text;
     }
 
+    @Override
     public int nextTag() throws XMLStreamException {
         int event = super.nextTag();
         trackEvent(event);

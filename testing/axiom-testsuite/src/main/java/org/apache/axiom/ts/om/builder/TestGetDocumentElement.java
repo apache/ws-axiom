@@ -47,6 +47,7 @@ public class TestGetDocumentElement extends AxiomTestCase {
         addTestParameter("discardDocument", String.valueOf(discardDocument));
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory,
                 new InputSource(new StringReader("<!--comment1--><root/><!--comment2-->")));

@@ -39,10 +39,12 @@ public final class MyRolePlayer implements RolePlayer {
         }
     }
 
+    @Override
     public List<String> getRoles() {
         return roles;
     }
 
+    @Override
     public boolean isUltimateDestination() {
         return ultimateReceiver;
     }

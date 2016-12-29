@@ -33,6 +33,7 @@ import javax.xml.stream.XMLStreamReader;
  * @deprecated This class is no longer maintained.
  */
 public abstract class AbstractXMLStreamReader implements XMLStreamReader {
+    @Override
     public Location getLocation() {
         return DummyLocation.INSTANCE;
     }
@@ -41,6 +42,7 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
      * @return Returns boolean.
      * @see javax.xml.stream.XMLStreamReader#hasText()
      */
+    @Override
     public boolean hasText() {
         int event = getEventType();
         return ((event == CHARACTERS) || (event == DTD)
@@ -56,6 +58,7 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
      *
      * @throws XMLStreamException
      */
+    @Override
     public int nextTag() throws XMLStreamException {
         int eventType = next();
         while ((eventType == XMLStreamConstants.CHARACTERS && isWhiteSpace()) // skip whitespace
@@ -72,18 +75,22 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
         return eventType;
     }
 
+    @Override
     public boolean isStartElement() {
         return getEventType() == START_ELEMENT;
     }
 
+    @Override
     public boolean isEndElement() {
         return getEventType() == END_ELEMENT;
     }
 
+    @Override
     public boolean isCharacters() {
         return getEventType() == CHARACTERS;
     }
 
+    @Override
     public boolean isWhiteSpace() {
         switch (getEventType()) {
             case SPACE:
@@ -106,11 +113,13 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public boolean hasName() {
         int event = getEventType();
         return event == START_ELEMENT || event == END_ELEMENT;
     }
 
+    @Override
     public void require(int type, String uri, String localName) throws XMLStreamException {
         int actualType = getEventType();
 
@@ -152,6 +161,7 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getElementText() throws XMLStreamException {
         ///////////////////////////////////////////////////////
         //// Code block directly from the API documentation ///

@@ -91,11 +91,13 @@ public class XMLStreamWriterUtils {
         DataHandlerWriter dataHandlerWriter = internalGetDataHandlerWriter(writer);
         if (dataHandlerWriter == null) {
             return new DataHandlerWriter() {
+                @Override
                 public void writeDataHandler(DataHandler dataHandler, String contentID,
                         boolean optimize) throws IOException, XMLStreamException {
                     writeBase64(writer, dataHandler);
                 }
 
+                @Override
                 public void writeDataHandler(DataHandlerProvider dataHandlerProvider,
                         String contentID, boolean optimize) throws IOException, XMLStreamException {
                     writeBase64(writer, dataHandlerProvider.getDataHandler());

@@ -33,15 +33,18 @@ class SJSXPNamespaceContextWrapper implements NamespaceContext {
         this.parent = parent;
     }
 
+    @Override
     public String getNamespaceURI(String prefix) {
         String namespaceURI = parent.getNamespaceURI(prefix);
         return namespaceURI == null ? XMLConstants.NULL_NS_URI : namespaceURI;
     }
 
+    @Override
     public String getPrefix(String namespaceURI) {
         return parent.getPrefix(namespaceURI);
     }
 
+    @Override
     public Iterator<String> getPrefixes(String namespaceURI) {
         // SJSXP doesn't correctly handle masked namespace declarations
         List<String> prefixes = new ArrayList<String>(5);

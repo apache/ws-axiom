@@ -34,20 +34,24 @@ import org.junit.Assert;
  * Scenario that uses {@link XMLStreamWriter#writeEntityRef(String)}.
  */
 public class WriteEntityRefScenario implements PushOMDataSourceScenario {
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "writeEntityRef");
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         writer.writeEntityRef("test");
         writer.writeEndElement();
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMEntityReference);

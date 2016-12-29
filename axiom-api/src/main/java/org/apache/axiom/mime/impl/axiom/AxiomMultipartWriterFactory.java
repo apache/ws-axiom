@@ -29,6 +29,7 @@ import org.apache.axiom.mime.MultipartWriterFactory;
 public class AxiomMultipartWriterFactory implements MultipartWriterFactory {
     public static final MultipartWriterFactory INSTANCE = new AxiomMultipartWriterFactory();
 
+    @Override
     public MultipartWriter createMultipartWriter(OutputStream out, String boundary) {
         return new MultipartWriterImpl(out, boundary);
     }

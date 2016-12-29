@@ -28,6 +28,7 @@ public class TestDigestWithNamespace extends DigestTestCase {
         super(metaFactory, "MD5", "0403b2798bee0397c2755c01d560092e");
     }
 
+    @Override
     protected OMInformationItem createInformationItem() {
         OMFactory factory = metaFactory.getOMFactory();
         return factory.createOMAttribute("attr", factory.createOMNamespace("urn:ns1", "ns1"), "value");

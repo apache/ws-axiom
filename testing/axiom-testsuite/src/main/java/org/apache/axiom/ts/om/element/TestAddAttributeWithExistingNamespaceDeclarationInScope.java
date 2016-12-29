@@ -42,6 +42,7 @@ public class TestAddAttributeWithExistingNamespaceDeclarationInScope extends Axi
         strategy.addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement root = factory.createOMElement(new QName("test"));

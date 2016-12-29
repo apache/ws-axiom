@@ -41,6 +41,7 @@ public class TestCloneNonDestructive extends AxiomTestCase {
         addTestParameter("copyOMDataSources", copyOMDataSources);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMDataSource ds = new WrappedTextNodeOMDataSourceFromDataSource(new QName("wrapper"),

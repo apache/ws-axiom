@@ -79,18 +79,22 @@ public class OMFactoryImpl implements OMFactoryEx {
     protected void initNode(CoreNode node) {
     }
     
+    @Override
     public final OMMetaFactory getMetaFactory() {
         return metaFactory;
     }
 
+    @Override
     public final OMNamespace createOMNamespace(String uri, String prefix) {
         return new OMNamespaceImpl(uri, prefix);
     }
     
+    @Override
     public final OMDocument createOMDocument() {
         return createNode(AxiomDocument.class);
     }
 
+    @Override
     public final OMDocType createOMDocType(OMContainer parent, String rootName,
             String publicId, String systemId, String internalSubset) {
         AxiomDocType node = createNode(AxiomDocType.class);
@@ -135,26 +139,32 @@ public class OMFactoryImpl implements OMFactoryEx {
         return node;
     }
 
+    @Override
     public final OMText createOMText(String s, int type) {
         return createAxiomText(null, s, type);
     }
 
+    @Override
     public final OMText createOMText(String s) {
         return createAxiomText(null, s, OMNode.TEXT_NODE);
     }
 
+    @Override
     public final OMText createOMText(OMContainer parent, String text, int type) {
         return createAxiomText(parent, text, type);
     }
     
+    @Override
     public final OMText createOMText(OMContainer parent, String text) {
         return createAxiomText(parent, text, OMNode.TEXT_NODE);
     }
     
+    @Override
     public final OMText createOMText(OMContainer parent, char[] charArray, int type) {
         return createAxiomText(parent, new String(charArray), type);
     }
 
+    @Override
     public final OMText createOMText(OMContainer parent, QName text, int type) {
         if (text == null) {
             throw new IllegalArgumentException("QName text arg cannot be null!");
@@ -163,18 +173,22 @@ public class OMFactoryImpl implements OMFactoryEx {
         return createAxiomText(parent, ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart(), type);
     }
     
+    @Override
     public final OMText createOMText(OMContainer parent, QName text) {
         return createAxiomText(parent, text, OMNode.TEXT_NODE);
     }
 
+    @Override
     public final OMText createOMText(OMContainer parent, String s, String mimeType, boolean optimize) {
         return createAxiomText(parent, new TextContent(s, mimeType, optimize), OMNode.TEXT_NODE);
     }
 
+    @Override
     public final OMText createOMText(String s, String mimeType, boolean optimize) {
         return createOMText(null, s, mimeType, optimize);
     }
 
+    @Override
     public final OMText createOMText(OMContainer parent, OMText source) {
         try {
             // TODO: this doesn't necessarily produce a node with the expected OMFactory
@@ -184,14 +198,17 @@ public class OMFactoryImpl implements OMFactoryEx {
         }
     }
 
+    @Override
     public final OMText createOMText(DataHandler dataHandler, boolean optimize) {
         return createAxiomText(null, new TextContent(null, dataHandler, optimize), OMNode.TEXT_NODE);
     }
 
+    @Override
     public final OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider, boolean optimize) {
         return createAxiomText(null, new TextContent(contentID, dataHandlerProvider, optimize), OMNode.TEXT_NODE);
     }
     
+    @Override
     public final OMProcessingInstruction createOMProcessingInstruction(
             OMContainer parent, String piTarget, String piData) {
         AxiomProcessingInstruction node = createNode(AxiomProcessingInstruction.class);
@@ -207,6 +224,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         return node;
     }
 
+    @Override
     public final OMEntityReference createOMEntityReference(OMContainer parent, String name) {
         AxiomEntityReference node = createNode(AxiomEntityReference.class);
         node.coreSetName(name);
@@ -216,6 +234,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         return node;
     }
 
+    @Override
     public final OMComment createOMComment(OMContainer parent, String content) {
         AxiomComment node = createNode(AxiomComment.class);
         try {
@@ -229,6 +248,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         return node;
     }
     
+    @Override
     public final OMElement createOMElement(String localName, OMNamespace ns) {
         return createOMElement(localName, ns, null);
     }
@@ -243,10 +263,12 @@ public class OMFactoryImpl implements OMFactoryEx {
         return element;
     }
 
+    @Override
     public final OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent) {
         return createAxiomElement(AxiomElement.class, parent, localName, ns);
     }
 
+    @Override
     public final OMElement createOMElement(QName qname, OMContainer parent) {
         AxiomElement element = createNode(AxiomElement.class);
         if (parent != null) {
@@ -278,10 +300,12 @@ public class OMFactoryImpl implements OMFactoryEx {
         return element;
     }
 
+    @Override
     public final OMElement createOMElement(QName qname) {
         return createOMElement(qname, null);
     }
     
+    @Override
     public final OMElement createOMElement(String localName, String namespaceURI, String prefix) {
         if (namespaceURI == null) {
             throw new IllegalArgumentException("namespaceURI must not be null");
@@ -295,24 +319,28 @@ public class OMFactoryImpl implements OMFactoryEx {
         }
     }
 
+    @Override
     public final OMSourcedElement createOMElement(OMDataSource source) {
         AxiomSourcedElement element = createNode(AxiomSourcedElement.class);
         element.init(source);
         return element;
     }
 
+    @Override
     public final OMSourcedElement createOMElement(OMDataSource source, String localName, OMNamespace ns) {
         AxiomSourcedElement element = createNode(AxiomSourcedElement.class);
         element.init(localName, ns, source);
         return element;
     }
 
+    @Override
     public final OMSourcedElement createOMElement(OMDataSource source, QName qname) {
         AxiomSourcedElement element = createNode(AxiomSourcedElement.class);
         element.init(qname, source);
         return element;
     }
 
+    @Override
     public final OMAttribute createOMAttribute(String localName, OMNamespace ns, String value) {
         if (ns != null && ns.getPrefix() == null) {
             String namespaceURI = ns.getNamespaceURI();
@@ -346,6 +374,7 @@ public class OMFactoryImpl implements OMFactoryEx {
     }
 
     // <old-and-buggy-code>
+    @Override
     public final OMNode importNode(OMNode child) {
         int type = child.getType();
         switch (type) {

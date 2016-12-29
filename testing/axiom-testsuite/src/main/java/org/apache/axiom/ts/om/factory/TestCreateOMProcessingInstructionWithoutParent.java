@@ -27,6 +27,7 @@ public class TestCreateOMProcessingInstructionWithoutParent extends AxiomTestCas
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         OMProcessingInstruction pi = metaFactory.getOMFactory().createOMProcessingInstruction(null, "mypi", "data");
         assertNull(pi.getParent());

@@ -37,6 +37,7 @@ public class TestGetOMFactory2 extends AxiomTestCase {
         super(metaFactory);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = ((DOMMetaFactory)metaFactory).getDOMImplementation().createDocument("urn:test", "root", null);
         assertSame(metaFactory.getOMFactory(), ((OMDocument)document).getOMFactory());

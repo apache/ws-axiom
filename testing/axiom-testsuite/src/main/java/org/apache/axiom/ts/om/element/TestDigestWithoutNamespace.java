@@ -28,6 +28,7 @@ public class TestDigestWithoutNamespace extends DigestTestCase {
         super(metaFactory, "MD5", "0730b7dda59f628a10b53b5502682ceb");
     }
 
+    @Override
     protected OMInformationItem createInformationItem() {
         return metaFactory.getOMFactory().createOMElement("elementName", null);
     }

@@ -36,6 +36,7 @@ public class TestDigest extends DigestTestCase {
         addTestParameter("file", file);
     }
 
+    @Override
     protected OMInformationItem createInformationItem() throws Exception {
         InputStream in = TestDigest.class.getResourceAsStream(file);
         try {

@@ -33,6 +33,7 @@ public class TestGetFirstElementLocalNameEmptyBody extends SOAPTestCase {
         super(metaFactory, spec);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         assertNull(envelope.getBody().getFirstElementLocalName());

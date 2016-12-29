@@ -56,6 +56,7 @@ public class BAAInputStream extends InputStream {
         currBuffer = (byte[]) data.get(0);
     }
 
+    @Override
     public int read() throws IOException {
         int read = read(read_byte);
 
@@ -66,19 +67,23 @@ public class BAAInputStream extends InputStream {
         }
     }
 
+    @Override
     public int available() throws IOException {
         return size - totalIndex;
     }
 
 
+    @Override
     public synchronized void mark(int readlimit) {
         mark = totalIndex;
     }
 
+    @Override
     public boolean markSupported() {
         return true;
     }
 
+    @Override
     public int read(byte[] b, int off, int len) throws IOException {
         int total = 0;
         if (totalIndex >= size) {
@@ -106,10 +111,12 @@ public class BAAInputStream extends InputStream {
         return total;
     }
 
+    @Override
     public int read(byte[] b) throws IOException {
         return this.read(b, 0, b.length);
     }
 
+    @Override
     public synchronized void reset() throws IOException {
         i = mark / BUFFER_SIZE;
         currIndex = mark - (i * BUFFER_SIZE);

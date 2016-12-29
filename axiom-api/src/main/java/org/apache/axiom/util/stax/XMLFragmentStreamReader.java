@@ -103,6 +103,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public int getEventType() {
         switch (state) {
             case STATE_START_DOCUMENT:
@@ -119,6 +120,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public int next() throws XMLStreamException {
         switch (state) {
             case STATE_START_DOCUMENT:
@@ -149,6 +151,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public int nextTag() throws XMLStreamException {
         switch (state) {
             case STATE_START_DOCUMENT:
@@ -174,14 +177,17 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public void close() throws XMLStreamException {
         parent = null;
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         return parent.getProperty(name);
     }
 
+    @Override
     public String getCharacterEncodingScheme() {
         if (state == STATE_START_DOCUMENT) {
             return null;
@@ -190,6 +196,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getEncoding() {
         if (state == STATE_START_DOCUMENT) {
             return null;
@@ -198,22 +205,27 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getVersion() {
         return "1.0";
     }
     
+    @Override
     public boolean isStandalone() {
         return true;
     }
 
+    @Override
     public boolean standaloneSet() {
         return false;
     }
 
+    @Override
     public Location getLocation() {
         return parent.getLocation();
     }
 
+    @Override
     public int getAttributeCount() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -222,6 +234,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getAttributeLocalName(int index) {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -230,6 +243,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public QName getAttributeName(int index) {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -238,6 +252,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getAttributeNamespace(int index) {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -246,6 +261,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getAttributePrefix(int index) {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -254,6 +270,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getAttributeType(int index) {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -262,6 +279,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getAttributeValue(int index) {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -270,6 +288,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public boolean isAttributeSpecified(int index) {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -278,6 +297,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getAttributeValue(String namespaceURI, String localName) {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -286,6 +306,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getElementText() throws XMLStreamException {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -294,6 +315,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getLocalName() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -302,6 +324,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public QName getName() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -310,6 +333,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getPrefix() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -318,6 +342,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getNamespaceURI() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -326,6 +351,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public int getNamespaceCount() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -334,6 +360,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getNamespacePrefix(int index) {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -342,6 +369,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getNamespaceURI(int index) {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -350,6 +378,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getNamespaceURI(String prefix) {
         // It is not clear whether this method is allowed in all states.
         // The XMLStreamReader Javadoc suggest it is, but Woodstox doesn't
@@ -362,10 +391,12 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public NamespaceContext getNamespaceContext() {
         return parent.getNamespaceContext();
     }
 
+    @Override
     public String getPIData() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -374,6 +405,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getPITarget() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -382,6 +414,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public String getText() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -390,6 +423,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public char[] getTextCharacters() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -398,6 +432,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
@@ -407,6 +442,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public int getTextLength() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -415,6 +451,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public int getTextStart() {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
@@ -423,34 +460,42 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         }
     }
 
+    @Override
     public boolean hasName() {
         return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.hasName();
     }
 
+    @Override
     public boolean hasNext() throws XMLStreamException {
         return state != STATE_END_DOCUMENT;
     }
 
+    @Override
     public boolean hasText() {
         return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.hasText();
     }
 
+    @Override
     public boolean isCharacters() {
         return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isCharacters();
     }
 
+    @Override
     public boolean isStartElement() {
         return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isStartElement();
     }
 
+    @Override
     public boolean isEndElement() {
         return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isEndElement();
     }
 
+    @Override
     public boolean isWhiteSpace() {
         return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isWhiteSpace();
     }
 
+    @Override
     public void require(int type, String namespaceURI, String localName) throws XMLStreamException {
         switch (state) {
             case STATE_START_DOCUMENT:

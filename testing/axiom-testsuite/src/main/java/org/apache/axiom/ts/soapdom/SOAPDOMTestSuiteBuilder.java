@@ -29,6 +29,7 @@ public class SOAPDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         this.metaFactory = metaFactory;
     }
 
+    @Override
     protected void addTests() {
         addTests(SOAPSpec.SOAP11);
         addTests(SOAPSpec.SOAP12);

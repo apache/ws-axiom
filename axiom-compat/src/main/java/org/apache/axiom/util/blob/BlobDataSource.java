@@ -39,22 +39,27 @@ public class BlobDataSource implements SizeAwareDataSource {
         this.contentType = contentType;
     }
 
+    @Override
     public InputStream getInputStream() throws IOException {
         return blob.getInputStream();
     }
 
+    @Override
     public String getContentType() {
         return contentType;
     }
 
+    @Override
     public String getName() {
         return null;
     }
 
+    @Override
     public OutputStream getOutputStream() throws IOException {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public long getSize() {
         return blob.getLength();
     }

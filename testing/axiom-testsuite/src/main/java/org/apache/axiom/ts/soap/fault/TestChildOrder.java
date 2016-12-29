@@ -63,6 +63,7 @@ public class TestChildOrder extends SOAPTestCase {
         serializationStrategy.addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
         // Add the elements in the specified order.
@@ -73,6 +74,7 @@ public class TestChildOrder extends SOAPTestCase {
         // Calculate the order in which we expect to see the children. Note that a given type
         // may be added multiple times. Therefore we need to use a Set.
         SortedSet<SOAPFaultChild> outputOrder = new TreeSet<>(new Comparator<SOAPFaultChild>() {
+            @Override
             public int compare(SOAPFaultChild o1, SOAPFaultChild o2) {
                 return o1.getOrder() - o2.getOrder();
             }

@@ -31,12 +31,14 @@ import org.apache.commons.io.output.NullOutputStream;
 
 public abstract class AxiomTestCase extends MatrixTestCase {
     public static final StAXParserConfiguration TEST_PARSER_CONFIGURATION = new StAXParserConfiguration() {
+        @Override
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
             // For the tests, preserve as much of the syntactic structure of the test documents
             factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
             return dialect.enableCDataReporting(factory);
         }
         
+        @Override
         public String toString() {
             return "TEST";
         }

@@ -36,6 +36,7 @@ public class TestGetOrCreateHeaderWithParserNoHeader extends SampleBasedSOAPTest
         super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
     }
 
+    @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPHeader header = envelope.getOrCreateHeader();
         assertNotNull(header);

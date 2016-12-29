@@ -40,34 +40,42 @@ final class DetachableReader extends Reader implements Detachable {
         this.target = target;
     }
 
+    @Override
     public int read(CharBuffer target) throws IOException {
         return target.read(target);
     }
 
+    @Override
     public int read() throws IOException {
         return target.read();
     }
 
+    @Override
     public int read(char[] cbuf) throws IOException {
         return target.read(cbuf);
     }
 
+    @Override
     public int read(char[] cbuf, int off, int len) throws IOException {
         return target.read(cbuf, off, len);
     }
 
+    @Override
     public long skip(long n) throws IOException {
         return target.skip(n);
     }
 
+    @Override
     public boolean ready() throws IOException {
         return target.ready();
     }
 
+    @Override
     public void close() throws IOException {
         target.close();
     }
     
+    @Override
     public void detach() {
         MemoryBlob blob = Blobs.createMemoryBlob();
         Writer out = new OutputStreamWriter(blob.getOutputStream(), UTF8);

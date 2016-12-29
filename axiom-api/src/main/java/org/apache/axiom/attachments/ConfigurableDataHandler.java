@@ -61,6 +61,7 @@ public class ConfigurableDataHandler extends DataHandler {
 //		this.contentID = contentID;
 //	}
 
+    @Override
     public String getContentType() {
         if (contentType != null) {
             return contentType;

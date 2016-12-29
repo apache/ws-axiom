@@ -35,14 +35,17 @@ import org.junit.Assert;
  * select an appropriate prefix.
  */
 public class WriteAttributeAutoPrefixScenario implements PushOMDataSourceScenario {
+    @Override
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "writeAttributeAutoPrefix");
     }
 
+    @Override
     public Map<String,String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
+    @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         writer.writeNamespace("p", "urn:test");
@@ -51,6 +54,7 @@ public class WriteAttributeAutoPrefixScenario implements PushOMDataSourceScenari
         writer.writeEndElement();
     }
 
+    @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         Iterator<OMAttribute> it = element.getAllAttributes();
         Assert.assertTrue(it.hasNext());

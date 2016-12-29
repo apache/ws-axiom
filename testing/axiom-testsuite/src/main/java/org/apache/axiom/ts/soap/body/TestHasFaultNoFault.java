@@ -36,6 +36,7 @@ public class TestHasFaultNoFault extends SOAPTestCase {
         addTestParameter("localName", qname.getLocalPart());
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPBody body = soapFactory.getDefaultEnvelope().getBody();
         body.addChild(soapFactory.createOMElement(

@@ -61,6 +61,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws SAXPathException if the string is not a syntactically correct XPath expression
      * @see XPath
      */
+    @Override
     public XPath parseXPath(String xpath) throws SAXPathException {
         return new BaseXPath(xpath, this);
     }
@@ -71,6 +72,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the context element node
      * @return Returns the namespace URI of the element node.
      */
+    @Override
     public String getElementNamespaceUri(Object object) {
         OMElement attr = (OMElement) object;
         return attr.getQName().getNamespaceURI();
@@ -82,6 +84,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the context element node
      * @return Returns the name of the element node.
      */
+    @Override
     public String getElementName(Object object) {
         return ((OMElement) object).getLocalName();
     }
@@ -92,6 +95,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the context element node
      * @return Returns the QName of the element node.
      */
+    @Override
     public String getElementQName(Object object) {
         OMElement attr = (OMElement) object;
         String prefix = null;
@@ -111,6 +115,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the context attribute node
      * @return Returns the namespace URI of the attribute node.
      */
+    @Override
     public String getAttributeNamespaceUri(Object object) {
         OMAttribute attr = (OMAttribute) object;
         return attr.getQName().getNamespaceURI();
@@ -122,6 +127,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the context attribute node
      * @return Returns the name of the attribute node.
      */
+    @Override
     public String getAttributeName(Object object) {
         return ((OMAttribute) object).getLocalName();
     }
@@ -132,6 +138,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the context attribute node
      * @return Returns the qualified name of the attribute node.
      */
+    @Override
     public String getAttributeQName(Object object) {
         OMAttribute attr = (OMAttribute) object;
         String prefix = attr.getNamespace().getPrefix();
@@ -149,6 +156,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns <code>true</code> if the object is a document node, else <code>false</code>
      *         .
      */
+    @Override
     public boolean isDocument(Object object) {
         return object instanceof OMDocument;
     }
@@ -160,6 +168,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns <code>true</code> if the object is an element node, else <code>false</code>
      *         .
      */
+    @Override
     public boolean isElement(Object object) {
         return object instanceof OMElement;
     }
@@ -171,6 +180,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns <code>true</code> if the object is an attribute node, else <code>false</code>
      *         .
      */
+    @Override
     public boolean isAttribute(Object object) {
         return object instanceof OMAttribute;
     }
@@ -182,6 +192,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns <code>true</code> if the object is a namespace node, else <code>false</code>
      *         .
      */
+    @Override
     public boolean isNamespace(Object object) {
         return object instanceof OMNamespace;
     }
@@ -192,6 +203,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the object to test
      * @return Returns <code>true</code> if the object is a comment node, else <code>false</code> .
      */
+    @Override
     public boolean isComment(Object object) {
         return (object instanceof OMComment);
     }
@@ -202,6 +214,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the object to test
      * @return Returns <code>true</code> if the object is a text node, else <code>false</code> .
      */
+    @Override
     public boolean isText(Object object) {
         return (object instanceof OMText);
     }
@@ -213,6 +226,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns <code>true</code> if the object is a processing-instruction node, else
      *         <code>false</code> .
      */
+    @Override
     public boolean isProcessingInstruction(Object object) {
         return (object instanceof OMProcessingInstruction);
     }
@@ -224,6 +238,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the comment node
      * @return Returns the string-value of the node.
      */
+    @Override
     public String getCommentStringValue(Object object) {
         return ((OMComment) object).getValue();
     }
@@ -235,6 +250,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the comment node.
      * @return Returns the string-value of the node.
      */
+    @Override
     public String getElementStringValue(Object object) {
         if (isElement(object)) {
             return getStringValue((OMElement) object, new StringBuffer())
@@ -262,6 +278,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the attribute node
      * @return Returns the string-value of the node.
      */
+    @Override
     public String getAttributeStringValue(Object object) {
         return ((OMAttribute) object).getAttributeValue();
     }
@@ -273,6 +290,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the namespace node
      * @return Returns the string-value of the node.
      */
+    @Override
     public String getNamespaceStringValue(Object object) {
         return ((OMNamespace) object).getNamespaceURI();
     }
@@ -284,6 +302,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the text node
      * @return Returns the string-value of the node.
      */
+    @Override
     public String getTextStringValue(Object object) {
         return ((OMText) object).getText();
     }
@@ -294,6 +313,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the namespace node
      * @return Returns the prefix associated with the node.
      */
+    @Override
     public String getNamespacePrefix(Object object) {
         return ((OMNamespace) object).getPrefix();
     }
@@ -306,6 +326,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the child axis are not supported by this
      *                                  object model
      */
+    @Override
     public Iterator<?> getChildAxisIterator(Object contextNode) throws UnsupportedAxisException {
         if (contextNode instanceof OMContainer) {
             return ((OMContainer) contextNode).getChildren();
@@ -313,6 +334,7 @@ public class DocumentNavigator extends DefaultNavigator {
         return JaxenConstants.EMPTY_ITERATOR;
     }
 
+    @Override
     public Iterator<?> getDescendantAxisIterator(Object object) throws UnsupportedAxisException {
         //TODO: Fix this better?
         return super.getDescendantAxisIterator(object);
@@ -326,6 +348,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the attribute axis are not supported by
      *                                  this object model
      */
+    @Override
     public Iterator<?> getAttributeAxisIterator(Object contextNode) throws UnsupportedAxisException {
         if (isElement(contextNode)) {
             return ((OMElement) contextNode).getAllAttributes();
@@ -342,6 +365,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the namespace axis are not supported by
      *                                  this object model
      */
+    @Override
     public Iterator<?> getNamespaceAxisIterator(Object contextNode) throws UnsupportedAxisException {
         if (!(contextNode instanceof OMContainer &&
                 contextNode instanceof OMElement)) {
@@ -395,6 +419,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the self axis are not supported by this
      *                                  object model
      */
+    @Override
     public Iterator<?> getSelfAxisIterator(Object contextNode) throws UnsupportedAxisException {
         //TODO: Fix this better?
         return super.getSelfAxisIterator(contextNode);
@@ -408,6 +433,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the descendant-or-self axis are not
      *                                  supported by this object model
      */
+    @Override
     public Iterator<?> getDescendantOrSelfAxisIterator(Object contextNode)
             throws UnsupportedAxisException {
         //TODO: Fix this better?
@@ -422,6 +448,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the ancestor-or-self axis are not
      *                                  supported by this object model
      */
+    @Override
     public Iterator<?> getAncestorOrSelfAxisIterator(Object contextNode)
             throws UnsupportedAxisException {
         //TODO: Fix this better?
@@ -436,6 +463,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the parent axis are not supported by
      *                                  this object model
      */
+    @Override
     public Iterator<?> getParentAxisIterator(Object contextNode) throws UnsupportedAxisException {
         if (contextNode instanceof OMNode) {
             return new SingleObjectIterator(((OMNode) contextNode).getParent());
@@ -457,6 +485,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the ancestor axis are not supported by
      *                                  this object model
      */
+    @Override
     public Iterator<?> getAncestorAxisIterator(Object contextNode) throws UnsupportedAxisException {
         //TODO: Fix this better?
         return super.getAncestorAxisIterator(contextNode);
@@ -470,6 +499,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the following-sibling axis are not
      *                                  supported by this object model
      */
+    @Override
     public Iterator<?> getFollowingSiblingAxisIterator(Object contextNode)
             throws UnsupportedAxisException {
         List<OMNode> list = new ArrayList<OMNode>();
@@ -495,6 +525,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the preceding-sibling axis are not
      *                                  supported by this object model
      */
+    @Override
     public Iterator<?> getPrecedingSiblingAxisIterator(Object contextNode)
             throws UnsupportedAxisException {
         List<OMNode> list = new ArrayList<OMNode>();
@@ -520,6 +551,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the following axis are not supported by
      *                                  this object model
      */
+    @Override
     public Iterator<?> getFollowingAxisIterator(Object contextNode) throws UnsupportedAxisException {
         //TODO: Fix this better?
         return super.getFollowingAxisIterator(contextNode);
@@ -533,6 +565,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @throws UnsupportedAxisException if the semantics of the preceding axis are not supported by
      *                                  this object model
      */
+    @Override
     public Iterator<?> getPrecedingAxisIterator(Object contextNode) throws UnsupportedAxisException {
         //TODO: Fix this better?
         return super.getPrecedingAxisIterator(contextNode);
@@ -545,6 +578,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns the document.
      * @throws FunctionCallException if the document could not be loaded
      */
+    @Override
     public Object getDocument(String uri)
             throws FunctionCallException {
         InputStream in = null;
@@ -578,6 +612,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns element whose ID is given by elementId, or null if no such element exists in
      *         the document or if the implementation does not know about attribute types.
      */
+    @Override
     public Object getElementById(Object contextNode, String elementId) {
         //TODO: Fix this better?
         return super.getElementById(contextNode, elementId);
@@ -590,6 +625,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns the document of the context node.
      * @see #isDocument(Object)
      */
+    @Override
     public Object getDocumentNode(Object contextNode) {
         if (contextNode instanceof OMDocument) {
             return contextNode;
@@ -614,6 +650,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param element the element to consider during translation
      * @return Returns the namespace URI associated with the prefix.
      */
+    @Override
     public String translateNamespacePrefixToUri(String prefix, Object element) {
         //TODO: Fix this better?
         return super.translateNamespacePrefixToUri(prefix, element);
@@ -625,6 +662,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the context processing-instruction node
      * @return Returns the target of the processing-instruction node.
      */
+    @Override
     public String getProcessingInstructionTarget(Object object) {
         return ((OMProcessingInstruction) object).getTarget();
     }
@@ -635,6 +673,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param object the context processing-instruction node
      * @return Returns the data of the processing-instruction node.
      */
+    @Override
     public String getProcessingInstructionData(Object object) {
         return ((OMProcessingInstruction) object).getValue();
     }
@@ -646,6 +685,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @param node ????
      * @return Returns short.
      */
+    @Override
     public short getNodeType(Object node) {
         //TODO: Fix this better?
         return super.getNodeType(node);
@@ -662,6 +702,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @see #isDocument
      * @see #isElement
      */
+    @Override
     public Object getParentNode(Object contextNode) throws UnsupportedAxisException {
         if (contextNode == null ||
                 contextNode instanceof OMDocument) {
@@ -683,18 +724,22 @@ public class DocumentNavigator extends DefaultNavigator {
             this.parent = parent;
         }
 
+        @Override
         public boolean equals(String uri, String prefix) {
             return originalNsp.equals(uri, prefix);
         }
 
+        @Override
         public String getPrefix() {
             return originalNsp.getPrefix();
         }
 
+        @Override
         public String getName() {
             return originalNsp.getNamespaceURI();
         }
 
+        @Override
         public String getNamespaceURI() {
             return originalNsp.getNamespaceURI();
         }

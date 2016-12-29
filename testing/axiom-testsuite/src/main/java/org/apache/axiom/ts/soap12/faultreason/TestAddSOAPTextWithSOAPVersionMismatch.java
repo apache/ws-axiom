@@ -29,6 +29,7 @@ public class TestAddSOAPTextWithSOAPVersionMismatch extends SOAPTestCase {
         super(metaFactory, SOAPSpec.SOAP12);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPFault soap12Fault = soapFactory.createSOAPFault();
         SOAPFaultReason soap12FaultReason = soapFactory.createSOAPFaultReason(soap12Fault);

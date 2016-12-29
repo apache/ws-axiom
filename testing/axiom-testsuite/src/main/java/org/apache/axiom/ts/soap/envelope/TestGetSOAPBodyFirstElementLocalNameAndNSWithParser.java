@@ -47,6 +47,7 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTes
         addTestParameter("uri", qname.getNamespaceURI());
     }
 
+    @Override
     protected void runTest() throws Throwable {
         // Prepare the message. Note that we do this programmatically to make sure that the message
         // doesn't contain any unwanted whitespace.

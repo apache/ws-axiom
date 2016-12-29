@@ -54,6 +54,7 @@ public class BAAOutputStream extends OutputStream implements ReadFromSupport {
         index = 0;
     }
     
+    @Override
     public void write(byte[] b, int off, int len) throws IOException {
        int total = 0;
        while (total < len) {
@@ -68,12 +69,14 @@ public class BAAOutputStream extends OutputStream implements ReadFromSupport {
        }
     }
 
+    @Override
     public void write(byte[] b) throws IOException {
         this.write(b, 0, b.length);
     }
 
     
     byte[] writeByte = new byte[1];
+    @Override
     public void write(int b) throws IOException {
         writeByte[0] = (byte) b;
         this.write(writeByte, 0, 1);
@@ -96,6 +99,7 @@ public class BAAOutputStream extends OutputStream implements ReadFromSupport {
         return readFrom(is, maxRead);
     }
     
+    @Override
     public long readFrom(InputStream is, long maxRead) throws StreamCopyException {
         if (maxRead == -1) {
             maxRead = Long.MAX_VALUE;

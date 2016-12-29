@@ -36,6 +36,7 @@ public class DocumentElementExtractor extends XMLStreamReaderWrapper {
         super(parent);
     }
 
+    @Override
     public String getCharacterEncodingScheme() {
         if (event == START_DOCUMENT) {
             return null;
@@ -44,6 +45,7 @@ public class DocumentElementExtractor extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public String getEncoding() {
         if (event == START_DOCUMENT) {
             return null;
@@ -52,6 +54,7 @@ public class DocumentElementExtractor extends XMLStreamReaderWrapper {
         }
     }
 
+    @Override
     public int next() throws XMLStreamException {
         int event;
         loop: while (true) {

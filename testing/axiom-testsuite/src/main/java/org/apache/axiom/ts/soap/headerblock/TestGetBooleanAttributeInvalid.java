@@ -42,6 +42,7 @@ public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
         addTestParameter("value", value);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));
