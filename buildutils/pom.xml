@@ -37,7 +37,6 @@
         <module>shade-axiom-xml</module>
         <module>shade-osgi</module>
         <module>javadoc-postprocessor-maven-plugin</module>
-        <module>enforcer-maven-plugin</module>
     </modules>
 
     <properties>

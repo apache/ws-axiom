@@ -795,6 +795,11 @@
                     <version>0.4.1</version>
                 </plugin>
                 <plugin>
+                    <groupId>com.github.veithen.phos</groupId>
+                    <artifactId>enforcer-maven-plugin</artifactId>
+                    <version>0.1.0</version>
+                </plugin>
+                <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>2.8</version>
                     <configuration>

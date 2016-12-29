@@ -113,9 +113,8 @@
                 </dependencies>
             </plugin>
             <plugin>
-                <groupId>${project.groupId}</groupId>
+                <groupId>com.github.veithen.phos</groupId>
                 <artifactId>enforcer-maven-plugin</artifactId>
-                <version>${project.version}</version>
                 <executions>
                     <execution>
                         <goals>
