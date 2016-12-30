@@ -27,7 +27,7 @@ import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.mime.MIMEMessage;
-import org.apache.axiom.mime.MimePartProvider;
+import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -78,8 +78,8 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
     }
 
     @Override
-    public OMXMLParserWrapper createOMBuilder(Source rootPart, MimePartProvider mimePartProvider) {
-        return OM.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.DEFAULT, rootPart, mimePartProvider));
+    public OMXMLParserWrapper createOMBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor) {
+        return OM.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.DEFAULT, rootPart, attachmentAccessor));
     }
 
     @Override
@@ -103,7 +103,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
     }
 
     @Override
-    public SOAPModelBuilder createSOAPModelBuilder(Source rootPart, MimePartProvider mimePartProvider) {
-        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, rootPart, mimePartProvider));
+    public SOAPModelBuilder createSOAPModelBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor) {
+        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, rootPart, attachmentAccessor));
     }
 }

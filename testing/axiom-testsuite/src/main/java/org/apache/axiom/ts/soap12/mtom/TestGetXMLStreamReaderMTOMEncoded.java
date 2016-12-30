@@ -66,7 +66,7 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
                     String hrefValue = xmlStreamReader.getAttributeValue("", "href");
                     assertThat(hrefValue).startsWith("cid:");
                     if (hrefValue != null) {
-                        dh = xopEncodedStream.getMimePartProvider().getDataHandler(
+                        dh = xopEncodedStream.getAttachmentAccessor().getDataHandler(
                                 hrefValue.substring(4));
                     }
                 }

@@ -18,18 +18,16 @@
  */
 package org.apache.axiom.ts.om.text;
 
-import java.io.IOException;
-
 import javax.activation.DataHandler;
 
-import org.apache.axiom.mime.MimePartProvider;
+import org.apache.axiom.om.OMAttachmentAccessor;
 
-final class DummyMimePartProvider implements MimePartProvider {
+final class DummyAttachmentAccessor implements OMAttachmentAccessor {
     private final String contentID;
     private final DataHandler dataHandler;
     private boolean loaded;
 
-    DummyMimePartProvider(String contentID, DataHandler dataHandler) {
+    DummyAttachmentAccessor(String contentID, DataHandler dataHandler) {
         this.contentID = contentID;
         this.dataHandler = dataHandler;
     }
@@ -39,9 +37,9 @@ final class DummyMimePartProvider implements MimePartProvider {
     }
 
     @Override
-    public DataHandler getDataHandler(String contentID) throws IOException {
+    public DataHandler getDataHandler(String contentID) {
         if (!contentID.equals(this.contentID)) {
-            throw new IllegalArgumentException("Unknown content ID");
+            return null;
         } else {
             loaded = true;
             return dataHandler;

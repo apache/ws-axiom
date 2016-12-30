@@ -25,22 +25,28 @@ import javax.activation.DataHandler;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.xop.AbstractXOPDecodingFilterHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.mime.MimePartProvider;
+import org.apache.axiom.om.OMAttachmentAccessor;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.TextContent;
 
 final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
     private static class DataHandlerProviderImpl implements DataHandlerProvider {
-        private final MimePartProvider mimePartProvider;
+        private final OMAttachmentAccessor attachmentAccessor;
         private final String contentID;
         
-        public DataHandlerProviderImpl(MimePartProvider mimePartProvider, String contentID) {
-            this.mimePartProvider = mimePartProvider;
+        public DataHandlerProviderImpl(OMAttachmentAccessor attachmentAccessor, String contentID) {
+            this.attachmentAccessor = attachmentAccessor;
             this.contentID = contentID;
         }
 
         @Override
         public DataHandler getDataHandler() throws IOException {
-            return mimePartProvider.getDataHandler(contentID);
+            DataHandler dh = attachmentAccessor.getDataHandler(contentID);
+            if (dh == null) {
+                throw new OMException("No MIME part found for content ID '" + contentID + "'");
+            } else {
+                return dh;
+            }
         }
     }
 
@@ -48,15 +54,15 @@ final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
         AFTER_START_ELEMENT, CONTENT_SEEN, IN_XOP_INCLUDE, AFTER_XOP_INCLUDE
     }
 
-    private final MimePartProvider mimePartProvider;
+    private final OMAttachmentAccessor attachmentAccessor;
 
-    XOPDecodingFilterHandler(XmlHandler parent, MimePartProvider mimePartProvider) {
+    XOPDecodingFilterHandler(XmlHandler parent, OMAttachmentAccessor attachmentAccessor) {
         super(parent);
-        this.mimePartProvider = mimePartProvider;
+        this.attachmentAccessor = attachmentAccessor;
     }
 
     @Override
     protected Object buildCharacterData(String contentID) {
-        return new TextContent(contentID, new DataHandlerProviderImpl(mimePartProvider, contentID), true);
+        return new TextContent(contentID, new DataHandlerProviderImpl(attachmentAccessor, contentID), true);
     }
 }

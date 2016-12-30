@@ -29,6 +29,7 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.MIMEMessage;
+import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 
@@ -42,7 +43,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Map;
 
-public class Attachments {
+public class Attachments implements OMAttachmentAccessor {
     private final AttachmentsDelegate delegate;
    
     /**
@@ -220,6 +221,7 @@ public class Attachments {
      * @return the {@link DataHandler} of the MIME part referred by the content ID or
      *         <code>null</code> if the MIME part referred by the content ID does not exist
      */
+    @Override
     public DataHandler getDataHandler(String contentID) {
         return delegate.getDataHandler(contentID);
     }

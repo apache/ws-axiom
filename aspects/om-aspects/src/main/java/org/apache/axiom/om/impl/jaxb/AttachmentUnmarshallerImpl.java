@@ -18,20 +18,19 @@
  */
 package org.apache.axiom.om.impl.jaxb;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import javax.activation.DataHandler;
 import javax.xml.bind.attachment.AttachmentUnmarshaller;
 
-import org.apache.axiom.mime.MimePartProvider;
+import org.apache.axiom.om.OMAttachmentAccessor;
 
 public final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
-    private final MimePartProvider mimePartProvider;
+    private final OMAttachmentAccessor attachmentAccessor;
     
-    public AttachmentUnmarshallerImpl(MimePartProvider mimePartProvider) {
-        this.mimePartProvider = mimePartProvider;
+    public AttachmentUnmarshallerImpl(OMAttachmentAccessor attachmentAccessor) {
+        this.attachmentAccessor = attachmentAccessor;
     }
     /**
      * Extract the content ID from a URL following the cid scheme defined by RFC2392.
@@ -64,10 +63,11 @@ public final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
 
     @Override
     public DataHandler getAttachmentAsDataHandler(String cid) {
-        try {
-            return mimePartProvider.getDataHandler(getContentIDFromURL(cid));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        DataHandler dh = attachmentAccessor.getDataHandler(getContentIDFromURL(cid));
+        if (dh == null) {
+            throw new IllegalArgumentException("No MIME part found for content ID '" + cid + "'");
+        } else {
+            return dh;
         }
     }
 

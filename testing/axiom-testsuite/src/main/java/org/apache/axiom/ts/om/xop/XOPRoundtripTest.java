@@ -47,7 +47,7 @@ public class XOPRoundtripTest extends AxiomTestCase {
         OMElement element2 = OMXMLBuilderFactory.createOMBuilder(
                 factory,
                 new StAXSource(xopEncodedStream.getRootPart()),
-                xopEncodedStream.getMimePartProvider()).getDocumentElement();
+                xopEncodedStream.getAttachmentAccessor()).getDocumentElement();
         OMText child = (OMText)element2.getFirstOMChild();
         assertNotNull(child);
         assertTrue(child.isBinary());

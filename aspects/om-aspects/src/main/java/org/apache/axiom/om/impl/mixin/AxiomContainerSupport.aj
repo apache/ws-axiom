@@ -383,7 +383,7 @@ public aspect AxiomContainerSupport {
             configurator.configure(unmarshaller);
         }
         XOPEncoded<XMLStreamReader> xopEncodedStream = getXOPEncodedStreamReader(preserve);
-        unmarshaller.setAttachmentUnmarshaller(new AttachmentUnmarshallerImpl(xopEncodedStream.getMimePartProvider()));
+        unmarshaller.setAttachmentUnmarshaller(new AttachmentUnmarshallerImpl(xopEncodedStream.getAttachmentAccessor()));
         return unmarshaller.unmarshal(xopEncodedStream.getRootPart());
     }
 
@@ -393,7 +393,7 @@ public aspect AxiomContainerSupport {
             configurator.configure(unmarshaller);
         }
         XOPEncoded<XMLStreamReader> xopEncodedStream = getXOPEncodedStreamReader(preserve);
-        unmarshaller.setAttachmentUnmarshaller(new AttachmentUnmarshallerImpl(xopEncodedStream.getMimePartProvider()));
+        unmarshaller.setAttachmentUnmarshaller(new AttachmentUnmarshallerImpl(xopEncodedStream.getAttachmentAccessor()));
         return unmarshaller.unmarshal(xopEncodedStream.getRootPart(), declaredType);
     }
 }

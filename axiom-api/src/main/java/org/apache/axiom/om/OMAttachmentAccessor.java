@@ -16,28 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.mime;
-
-import java.io.IOException;
+package org.apache.axiom.om;
 
 import javax.activation.DataHandler;
 
 /**
  * Interface to look up MIME parts.
  */
-public interface MimePartProvider {
+public interface OMAttachmentAccessor {
     /**
      * Get the {@link DataHandler} for the MIME part identified by a given content ID.
      * 
      * @param contentID
-     *            a content ID referenced in an <tt>xop:Include</tt> element
-     * @return the {@link DataHandler} for the MIME part identified by the content ID; may not be
-     *         <code>null</code>
-     * @throws IllegalArgumentException
-     *             if the MIME part was not found
-     * @throws IOException
-     *             if an error occurred while loading the part
+     *            the raw content ID (without the surrounding angle brackets and <tt>cid:</tt>
+     *            prefix) of the MIME part
+     * @return the {@link DataHandler} of the MIME part referred by the content ID or
+     *         <code>null</code> if the MIME part referred by the content ID does not exist
      */
-    DataHandler getDataHandler(String contentID) throws IOException;
+    public DataHandler getDataHandler(String contentID);
 }

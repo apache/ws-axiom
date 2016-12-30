@@ -43,7 +43,7 @@ import org.apache.james.mime4j.stream.RecursionMode;
 /**
  * Represents a MIME multipart message read from a stream.
  */
-public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
+public final class MIMEMessage implements Iterable<Part> {
     public interface PartCreationListener {
         void partCreated(Part part);
     }
@@ -187,7 +187,6 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
         return contentType;
     }
 
-    @Override
     public DataHandler getDataHandler(String contentID) {
         do {
             PartImpl part = partMap.get(contentID);
@@ -195,7 +194,7 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
                 return part.getDataHandler();
             }
         } while (getNextPart() != null);
-        throw new IllegalArgumentException("No MIME part found for content ID '" + contentID + "'");
+        return null;
     }
 
     PartImpl getFirstPart() {

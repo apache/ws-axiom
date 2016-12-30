@@ -20,17 +20,17 @@ package org.apache.axiom.om.impl.stream.xop;
 
 import org.apache.axiom.core.stream.XmlFilter;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.mime.MimePartProvider;
+import org.apache.axiom.om.OMAttachmentAccessor;
 
 public final class XOPDecodingFilter implements XmlFilter {
-    private final MimePartProvider mimePartProvider;
+    private final OMAttachmentAccessor attachmentAccessor;
 
-    public XOPDecodingFilter(MimePartProvider mimePartProvider) {
-        this.mimePartProvider = mimePartProvider;
+    public XOPDecodingFilter(OMAttachmentAccessor attachmentAccessor) {
+        this.attachmentAccessor = attachmentAccessor;
     }
 
     @Override
     public XmlHandler createFilterHandler(XmlHandler parent) {
-        return new XOPDecodingFilterHandler(parent, mimePartProvider);
+        return new XOPDecodingFilterHandler(parent, attachmentAccessor);
     }
 }

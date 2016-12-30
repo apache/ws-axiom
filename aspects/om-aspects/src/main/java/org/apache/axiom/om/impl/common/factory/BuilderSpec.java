@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
 
+import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
@@ -38,8 +39,8 @@ import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.dom.DOMInput;
 import org.apache.axiom.core.stream.sax.SAXInput;
 import org.apache.axiom.mime.MIMEMessage;
-import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.mime.Part;
+import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.common.builder.Detachable;
 import org.apache.axiom.om.impl.stream.stax.pull.StAXPullInput;
@@ -198,7 +199,12 @@ final class BuilderSpec {
         return new BuilderSpec(
                 new FilteredXmlInput(
                         spec.getInput(),
-                        new XOPDecodingFilter(message)),
+                        new XOPDecodingFilter(new OMAttachmentAccessor() {
+                            @Override
+                            public DataHandler getDataHandler(String contentID) {
+                                return message.getDataHandler(contentID);
+                            }
+                        })),
                 new Detachable() {
                     @Override
                     public void detach() {
@@ -207,12 +213,12 @@ final class BuilderSpec {
                 });
     }
 
-    static BuilderSpec from(StAXParserConfiguration configuration, Source source, MimePartProvider mimePartProvider) {
+    static BuilderSpec from(StAXParserConfiguration configuration, Source source, OMAttachmentAccessor attachmentAccessor) {
         BuilderSpec spec = from(configuration, source);
         return new BuilderSpec(
                 new FilteredXmlInput(
                         spec.getInput(),
-                        new XOPDecodingFilter(mimePartProvider)),
+                        new XOPDecodingFilter(attachmentAccessor)),
                 spec.getDetachable());
     }
 

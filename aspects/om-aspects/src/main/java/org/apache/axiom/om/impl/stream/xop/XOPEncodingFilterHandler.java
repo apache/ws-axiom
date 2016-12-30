@@ -30,10 +30,11 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.xop.AbstractXOPEncodingFilterHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.mime.MimePartProvider;
+import org.apache.axiom.om.OMAttachmentAccessor;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.TextContent;
 
-public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler implements XOPHandler, MimePartProvider {
+public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler implements XOPHandler, OMAttachmentAccessor {
     private final Map<String,Object> dataHandlerObjects = new LinkedHashMap<String,Object>();
     private final ContentIDGenerator contentIDGenerator;
     private final OptimizationPolicy optimizationPolicy;
@@ -75,15 +76,18 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
     }
 
     @Override
-    public DataHandler getDataHandler(String contentID) throws IOException {
+    public DataHandler getDataHandler(String contentID) {
         Object dataHandlerObject = dataHandlerObjects.get(contentID);
         if (dataHandlerObject == null) {
-            throw new IllegalArgumentException("No DataHandler object found for content ID '" +
-                    contentID + "'");
+            return null;
         } else if (dataHandlerObject instanceof DataHandler) {
             return (DataHandler)dataHandlerObject;
         } else {
-            return ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+            try {
+                return ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+            } catch (IOException ex) {
+                throw new OMException(ex);
+            }
         }
     }
 

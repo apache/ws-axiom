@@ -44,15 +44,15 @@ public class TestCloneBinary extends AxiomTestCase {
     protected void runTest() throws Throwable {
         DataHandler dh = new DataHandler(new RandomDataSource(600613L, 4096));
         StringReader rootPart = new StringReader("<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>");
-        DummyMimePartProvider mimePartProvider = new DummyMimePartProvider("123456@example.org", dh);
+        DummyAttachmentAccessor attachmentAccessor = new DummyAttachmentAccessor("123456@example.org", dh);
         OMElement root = OMXMLBuilderFactory.createOMBuilder(
-                metaFactory.getOMFactory(), new StreamSource(rootPart), mimePartProvider).getDocumentElement();
+                metaFactory.getOMFactory(), new StreamSource(rootPart), attachmentAccessor).getDocumentElement();
         OMText text = (OMText)root.getFirstOMChild();
         OMCloneOptions options = new OMCloneOptions();
         options.setFetchDataHandlers(fetch);
         OMText clone = (OMText)text.clone(options);
         assertTrue(clone.isBinary());
-        assertEquals(fetch, mimePartProvider.isLoaded());
+        assertEquals(fetch, attachmentAccessor.isLoaded());
         assertSame(dh, clone.getDataHandler());
     }
 }

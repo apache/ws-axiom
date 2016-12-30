@@ -24,7 +24,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.mime.MIMEMessage;
-import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
@@ -123,7 +122,7 @@ public interface OMMetaFactorySPI extends OMMetaFactory {
      */
     OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, MIMEMessage message);
     
-    OMXMLParserWrapper createOMBuilder(Source rootPart, MimePartProvider mimePartProvider);
+    OMXMLParserWrapper createOMBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor);
     
     /**
      * Create an object model builder for SOAP that pulls events from a StAX stream reader. The
@@ -167,5 +166,5 @@ public interface OMMetaFactorySPI extends OMMetaFactory {
      */
     SOAPModelBuilder createSOAPModelBuilder(MIMEMessage message);
     
-    SOAPModelBuilder createSOAPModelBuilder(Source rootPart, MimePartProvider mimePartProvider);
+    SOAPModelBuilder createSOAPModelBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor);
 }
