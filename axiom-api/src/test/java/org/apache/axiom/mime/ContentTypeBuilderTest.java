@@ -67,4 +67,10 @@ public class ContentTypeBuilderTest extends TestCase {
         builder.clearParameters();
         assertNull(builder.getParameter("charset"));
     }
+
+    public void testRemoveParameter() throws Exception {
+        ContentTypeBuilder builder = new ContentTypeBuilder("text/xml; charset=utf-8; x-param=value");
+        builder.removeParameter("charset");
+        assertEquals("text/xml; x-param=\"value\"", builder.toString());
+    }
 }

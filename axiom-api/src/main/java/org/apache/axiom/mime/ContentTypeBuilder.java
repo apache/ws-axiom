@@ -109,6 +109,16 @@ public final class ContentTypeBuilder {
     }
 
     /**
+     * Remove the parameter with the specified name.
+     * 
+     * @param name
+     *            the parameter name
+     */
+    public void removeParameter(String name) {
+        parameters.remove(name.toLowerCase(Locale.ENGLISH));
+    }
+
+    /**
      * Remove all parameters.
      */
     public void clearParameters() {
