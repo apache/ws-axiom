@@ -56,6 +56,16 @@ public final class MediaType {
      */
     public static final MediaType MULTIPART_RELATED = new MediaType("multipart", "related");
     
+    /**
+     * The media type for <tt>application/octet-stream</tt>.
+     */
+    public static final MediaType APPLICATION_OCTET_STREAM = new MediaType("application", "octet-stream");
+    
+    /**
+     * The media type for <tt>text/plain</tt>.
+     */
+    public static final MediaType TEXT_PLAIN = new MediaType("text", "plain");
+    
     private final String primaryType;
     private final String subType;
     
