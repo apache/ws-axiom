@@ -19,6 +19,7 @@
 package org.apache.axiom.truth.xml;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
@@ -143,6 +144,17 @@ public final class XMLTruth {
             @Override
             public XML createXML(URL url) {
                 return xml(new StreamSource(url.toString()));
+            }
+        });
+        factories.add(new XMLFactory<File>() {
+            @Override
+            public Class<File> getExpectedType() {
+                return File.class;
+            }
+
+            @Override
+            public XML createXML(File file) {
+                return xml(new StreamSource(file.toURI().toString()));
             }
         });
         factories.add(new XMLFactory<String>() {
