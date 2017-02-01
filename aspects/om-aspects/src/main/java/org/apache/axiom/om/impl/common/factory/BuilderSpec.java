@@ -202,7 +202,8 @@ final class BuilderSpec {
                         new XOPDecodingFilter(new OMAttachmentAccessor() {
                             @Override
                             public DataHandler getDataHandler(String contentID) {
-                                return message.getDataHandler(contentID);
+                                Part part = message.getPart(contentID);
+                                return part == null ? null : part.getDataHandler();
                             }
                         })),
                 new Detachable() {

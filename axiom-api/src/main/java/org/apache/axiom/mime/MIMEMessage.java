@@ -27,8 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.activation.DataHandler;
-
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.logging.Log;
@@ -195,11 +193,19 @@ public final class MIMEMessage implements Iterable<Part> {
         return contentType;
     }
 
-    public DataHandler getDataHandler(String contentID) {
+    /**
+     * Get the MIME part with the given content ID.
+     * 
+     * @param contentID
+     *            the content ID of the part to retrieve
+     * @return the MIME part, or {@code null} if the message doesn't have a part with the given
+     *         content ID
+     */
+    public Part getPart(String contentID) {
         do {
             PartImpl part = partMap.get(contentID);
             if (part != null) {
-                return part.getDataHandler();
+                return part;
             }
         } while (getNextPart() != null);
         return null;
