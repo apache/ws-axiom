@@ -97,9 +97,6 @@
                     </dependencySourceIncludes>
                     <!-- There are no other modules that generate Javadoc we can link to -->
                     <detectOfflineLinks>false</detectOfflineLinks>
-                    <links>
-                        <link>http://jaxen.codehaus.org/apidocs/</link>
-                    </links>
                     <windowtitle>Apache Axiom</windowtitle>
                     <!-- doctitle only appears in the summary and we should include the version there -->
                     <doctitle>Apache Axiom ${project.version}</doctitle>
