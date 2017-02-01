@@ -41,7 +41,15 @@ import org.apache.james.mime4j.stream.MimeTokenStream;
 import org.apache.james.mime4j.stream.RecursionMode;
 
 /**
- * Represents a MIME multipart message read from a stream.
+ * A MIME multipart message read from a stream. This class exposes an API that represents the
+ * message as a sequence of {@link Part} instances. It implements the {@link Iterable} interface to
+ * enable access to all parts. In addition, it supports lookup by content ID. Data is read from the
+ * stream on demand. This means that the stream must be kept open until all parts have been
+ * processed or {@link #detach()} has been called. It also means that any invocation of a method on
+ * an instance of this class or an individual {@link Part} instance may trigger a
+ * {@link MIMEException} if there is an I/O error on the stream or a MIME parsing error.
+ * <p>
+ * Instances of this class are created using a fluent builder; see {@link #newBuilder()}.
  */
 public final class MIMEMessage implements Iterable<Part> {
     public interface PartCreationListener {
