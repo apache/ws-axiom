@@ -67,7 +67,7 @@ final class PartImpl implements Part {
 
     private static final Log log = LogFactory.getLog(PartImpl.class);
     
-    private final MIMEMessage message;
+    private final MultipartBody message;
     private final WritableBlobFactory<?> blobFactory;
     
     private final String contentID;
@@ -93,7 +93,7 @@ final class PartImpl implements Part {
     
     private PartImpl nextPart;
     
-    PartImpl(MIMEMessage message, WritableBlobFactory<?> blobFactory, String contentID, List<Header> headers, MimeTokenStream parser) {
+    PartImpl(MultipartBody message, WritableBlobFactory<?> blobFactory, String contentID, List<Header> headers, MimeTokenStream parser) {
         this.message = message;
         this.blobFactory = blobFactory;
         this.contentID = contentID;

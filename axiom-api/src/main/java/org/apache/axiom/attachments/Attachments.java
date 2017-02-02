@@ -28,7 +28,7 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.mime.ContentType;
-import org.apache.axiom.mime.MIMEMessage;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
@@ -119,7 +119,7 @@ public class Attachments implements OMAttachmentAccessor {
             attachmentBlobFactory = MemoryBlob.FACTORY;
         }
         
-        delegate = new MIMEMessageAdapter(inStream, contentTypeString, attachmentBlobFactory,
+        delegate = new MultipartBodyAdapter(inStream, contentTypeString, attachmentBlobFactory,
                 contentLength);
     }
 
@@ -406,7 +406,7 @@ public class Attachments implements OMAttachmentAccessor {
         throw new UnsupportedOperationException();
     }
 
-    public MIMEMessage getMIMEMessage() {
-        return delegate.getMIMEMessage();
+    public MultipartBody getMultipartBody() {
+        return delegate.getMultipartBody();
     }
 }

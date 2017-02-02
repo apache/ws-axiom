@@ -49,7 +49,7 @@ import org.apache.james.mime4j.stream.RecursionMode;
  * <p>
  * Instances of this class are created using a fluent builder; see {@link #newBuilder()}.
  */
-public final class MIMEMessage implements Iterable<Part> {
+public final class MultipartBody implements Iterable<Part> {
     public interface PartCreationListener {
         void partCreated(Part part);
     }
@@ -97,14 +97,14 @@ public final class MIMEMessage implements Iterable<Part> {
             return this;
         }
 
-        public MIMEMessage build() {
+        public MultipartBody build() {
             if (inputStream == null) {
                 throw new IllegalArgumentException("inputStream is mandatory");
             }
             if (contentType == null) {
                 throw new IllegalArgumentException("contentType is mandatory");
             }
-            return new MIMEMessage(
+            return new MultipartBody(
                     inputStream,
                     contentType,
                     attachmentBlobFactory == null ? MemoryBlob.FACTORY : attachmentBlobFactory,
@@ -113,7 +113,7 @@ public final class MIMEMessage implements Iterable<Part> {
         }
     }
 
-    private static final Log log = LogFactory.getLog(MIMEMessage.class);
+    private static final Log log = LogFactory.getLog(MultipartBody.class);
     
     /** <code>ContentType</code> of the MIME message */
     private final ContentType contentType;
@@ -137,7 +137,7 @@ public final class MIMEMessage implements Iterable<Part> {
     private final DataHandlerFactory dataHandlerFactory;
     private final PartCreationListener partCreationListener;
     
-    MIMEMessage(InputStream inStream, ContentType contentType,
+    MultipartBody(InputStream inStream, ContentType contentType,
             WritableBlobFactory<?> attachmentBlobFactory,
             DataHandlerFactory dataHandlerFactory,
             PartCreationListener partCreationListener) {

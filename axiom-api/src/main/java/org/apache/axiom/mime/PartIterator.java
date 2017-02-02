@@ -22,11 +22,11 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 final class PartIterator implements Iterator<Part> {
-    private final MIMEMessage message;
+    private final MultipartBody message;
     private PartImpl part;
     private boolean hasNextCalled;
 
-    PartIterator(MIMEMessage message) {
+    PartIterator(MultipartBody message) {
         this.message = message;
     }
 

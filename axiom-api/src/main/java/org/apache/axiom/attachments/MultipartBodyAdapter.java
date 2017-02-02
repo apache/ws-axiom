@@ -32,18 +32,18 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.DataHandlerFactory;
 import org.apache.axiom.mime.Header;
-import org.apache.axiom.mime.MIMEMessage;
-import org.apache.axiom.mime.MIMEMessage.PartCreationListener;
+import org.apache.axiom.mime.MultipartBody;
+import org.apache.axiom.mime.MultipartBody.PartCreationListener;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-final class MIMEMessageAdapter extends AttachmentsDelegate implements PartCreationListener {
-    private static final Log log = LogFactory.getLog(MIMEMessageAdapter.class);
+final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCreationListener {
+    private static final Log log = LogFactory.getLog(MultipartBodyAdapter.class);
 
-    private final MIMEMessage message;
+    private final MultipartBody message;
     private final Map<String,DataHandler> map = new LinkedHashMap<String,DataHandler>();
     private final int contentLength;
     private final CountingInputStream filterIS;
@@ -55,7 +55,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate implements PartCreati
     /** Container to hold streams for direct access */
     private IncomingAttachmentStreams streams;
 
-    MIMEMessageAdapter(InputStream inStream, String contentTypeString,
+    MultipartBodyAdapter(InputStream inStream, String contentTypeString,
             WritableBlobFactory<?> attachmentBlobFactory, int contentLength) {
         this.contentLength = contentLength;
         if (log.isDebugEnabled()) {
@@ -70,7 +70,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate implements PartCreati
             filterIS = null;
         }
 
-        this.message = MIMEMessage.newBuilder()
+        this.message = MultipartBody.newBuilder()
                 .setInputStream(inStream)
                 .setContentType(contentTypeString)
                 .setAttachmentBlobFactory(attachmentBlobFactory)
@@ -222,7 +222,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate implements PartCreati
     }
 
     @Override
-    MIMEMessage getMIMEMessage() {
+    MultipartBody getMultipartBody() {
         return message;
     }
 }

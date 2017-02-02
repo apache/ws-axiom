@@ -26,7 +26,7 @@ import java.util.Set;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.mime.ContentType;
-import org.apache.axiom.mime.MIMEMessage;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMException;
 
 /**
@@ -60,5 +60,5 @@ abstract class AttachmentsDelegate {
     abstract Set<String> getContentIDs(boolean fetchAll);
     abstract Map<String,DataHandler> getMap();
     abstract long getContentLength() throws IOException;
-    abstract MIMEMessage getMIMEMessage();
+    abstract MultipartBody getMultipartBody();
 }

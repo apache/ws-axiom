@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.axiom.mime.Header;
-import org.apache.axiom.mime.MIMEMessage;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMException;
 
@@ -42,7 +42,7 @@ public final class IncomingAttachmentStreams {
      */
     private boolean readyToGetNextStream = true;
 
-    IncomingAttachmentStreams(MIMEMessage message) {
+    IncomingAttachmentStreams(MultipartBody message) {
         rootPart = message.getRootPart();
         partIterator = message.iterator();
     }

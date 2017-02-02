@@ -38,7 +38,7 @@ import org.apache.axiom.core.stream.NamespaceRepairingFilter;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.dom.DOMInput;
 import org.apache.axiom.core.stream.sax.SAXInput;
-import org.apache.axiom.mime.MIMEMessage;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
@@ -186,7 +186,7 @@ final class BuilderSpec {
         return new BuilderSpec(new FilteredXmlInput(new SAXInput(source, expandEntityReferences), NamespaceRepairingFilter.DEFAULT), null);
     }
 
-    static BuilderSpec from(StAXParserConfiguration configuration, final MIMEMessage message) {
+    static BuilderSpec from(StAXParserConfiguration configuration, final MultipartBody message) {
         Part rootPart = message.getRootPart();
         InputSource is;
         try {

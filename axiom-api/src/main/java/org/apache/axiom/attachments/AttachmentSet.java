@@ -28,7 +28,7 @@ import java.util.Set;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.mime.ContentType;
-import org.apache.axiom.mime.MIMEMessage;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMException;
 
 /**
@@ -96,8 +96,8 @@ class AttachmentSet extends AttachmentsDelegate {
     }
 
     @Override
-    MIMEMessage getMIMEMessage() {
+    MultipartBody getMultipartBody() {
         throw new IllegalStateException(
-                "The attachments map was created programatically. MIMEMessage is not available.");
+                "The attachments map was created programatically. MultipartBody is not available.");
     }
 }
