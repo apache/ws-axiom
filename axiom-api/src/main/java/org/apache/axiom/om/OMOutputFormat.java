@@ -500,6 +500,8 @@ public class OMOutputFormat {
      * 
      * @return the current factory; if none has been set explicitly, an
      *         {@link AxiomMultipartWriterFactory} instance is returned
+     * 
+     * @deprecated
      */
     public MultipartWriterFactory getMultipartWriterFactory() {
         return multipartWriterFactory == null
@@ -513,6 +515,8 @@ public class OMOutputFormat {
      * 
      * @param multipartWriterFactory
      *            the factory
+     * 
+     * @deprecated
      */
     public void setMultipartWriterFactory(MultipartWriterFactory multipartWriterFactory) {
         this.multipartWriterFactory = multipartWriterFactory;
