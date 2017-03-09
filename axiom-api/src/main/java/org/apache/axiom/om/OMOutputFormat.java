@@ -22,8 +22,6 @@ package org.apache.axiom.om;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.axiom.mime.MultipartWriterFactory;
-import org.apache.axiom.mime.impl.axiom.AxiomMultipartWriterFactory;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.StAXWriterConfiguration;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -72,8 +70,6 @@ public class OMOutputFormat {
     
     private StAXWriterConfiguration writerConfiguration;
     
-    private MultipartWriterFactory multipartWriterFactory;
-
     // The value of this property is a Boolean.  
     // A missing value indicates the default action, which is Boolean.FALSE
     // If Boolean.TRUE, attachments that are "non textual" are written out with 
@@ -129,7 +125,6 @@ public class OMOutputFormat {
         ignoreXMLDeclaration = format.ignoreXMLDeclaration;
         autoCloseWriter = format.autoCloseWriter;
         writerConfiguration = format.writerConfiguration;
-        multipartWriterFactory = format.multipartWriterFactory;
         if (format.map != null) {
             map = new HashMap<String,Object>(format.map);
         }
@@ -476,32 +471,5 @@ public class OMOutputFormat {
      */
     public void setStAXWriterConfiguration(StAXWriterConfiguration writerConfiguration) {
         this.writerConfiguration = writerConfiguration;
-    }
-
-    /**
-     * Get the currently configured multipart writer factory.
-     * 
-     * @return the current factory; if none has been set explicitly, an
-     *         {@link AxiomMultipartWriterFactory} instance is returned
-     * 
-     * @deprecated
-     */
-    public MultipartWriterFactory getMultipartWriterFactory() {
-        return multipartWriterFactory == null
-                ? AxiomMultipartWriterFactory.INSTANCE
-                : multipartWriterFactory;
-    }
-
-    /**
-     * Set the multipart writer factory. This factory is used to create MIME packages when MTOM or
-     * SwA is enabled.
-     * 
-     * @param multipartWriterFactory
-     *            the factory
-     * 
-     * @deprecated
-     */
-    public void setMultipartWriterFactory(MultipartWriterFactory multipartWriterFactory) {
-        this.multipartWriterFactory = multipartWriterFactory;
     }
 }

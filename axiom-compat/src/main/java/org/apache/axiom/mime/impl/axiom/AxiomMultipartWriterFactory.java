@@ -25,6 +25,8 @@ import org.apache.axiom.mime.MultipartWriterFactory;
 
 /**
  * Factory for Axiom's own {@link MultipartWriter} implementation.
+ * 
+ * @deprecated
  */
 public class AxiomMultipartWriterFactory implements MultipartWriterFactory {
     public static final MultipartWriterFactory INSTANCE = new AxiomMultipartWriterFactory();

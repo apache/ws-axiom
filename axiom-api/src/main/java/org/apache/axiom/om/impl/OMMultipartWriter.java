@@ -27,7 +27,7 @@ import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.ConfigurableDataHandler;
 import org.apache.axiom.mime.Header;
-import org.apache.axiom.mime.MultipartWriter;
+import org.apache.axiom.mime.MultipartBodyWriter;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -35,20 +35,19 @@ import org.apache.axiom.soap.SOAP12Constants;
 
 /**
  * Writes a MIME multipart package as used by XOP/MTOM and SOAP with Attachments. This class wraps a
- * {@link MultipartWriter}, providing a higher level API. In particular it will configure content
+ * {@link MultipartBodyWriter}, providing a higher level API. In particular it will configure content
  * types and content transfer encodings based on information from an {@link OMOutputFormat} object.
  */
 public class OMMultipartWriter {
     private final OMOutputFormat format;
-    private final MultipartWriter writer;
+    private final MultipartBodyWriter writer;
     private final boolean useCTEBase64;
     private final String rootPartContentType;
     
     public OMMultipartWriter(OutputStream out, OMOutputFormat format) {
         this.format = format;
         
-        writer = format.getMultipartWriterFactory().createMultipartWriter(out,
-                format.getMimeBoundary());
+        writer = new MultipartBodyWriter(out, format.getMimeBoundary());
         
         useCTEBase64 = format != null && Boolean.TRUE.equals(
                 format.getProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS));
@@ -87,7 +86,7 @@ public class OMMultipartWriter {
 
     /**
      * Start writing the root part of the MIME package. This method delegates to
-     * {@link MultipartWriter#writePart(String, String, String)}, but computes the content type,
+     * {@link MultipartBodyWriter#writePart(String, String, String)}, but computes the content type,
      * content transfer encoding and content ID from the {@link OMOutputFormat}.
      * 
      * @return an output stream to write the content of the MIME part
@@ -95,12 +94,12 @@ public class OMMultipartWriter {
      *             if an I/O error occurs when writing to the underlying stream
      */
     public OutputStream writeRootPart() throws IOException {
-        return writer.writePart(rootPartContentType, "binary", format.getRootContentId());
+        return writer.writePart(rootPartContentType, "binary", format.getRootContentId(), null);
     }
 
     /**
      * Start writing an attachment part of the MIME package. This method delegates to
-     * {@link MultipartWriter#writePart(String, String, String)}, but computes the content transfer
+     * {@link MultipartBodyWriter#writePart(String, String, String)}, but computes the content transfer
      * encoding based on the content type and the {@link OMOutputFormat}.
      * 
      * @param contentType
@@ -112,12 +111,12 @@ public class OMMultipartWriter {
      *             if an I/O error occurs when writing to the underlying stream
      */
     public OutputStream writePart(String contentType, String contentID) throws IOException {
-        return writer.writePart(contentType, getContentTransferEncoding(contentType), contentID);
+        return writer.writePart(contentType, getContentTransferEncoding(contentType), contentID, null);
     }
     
     /**
      * Start writing an attachment part of the MIME package. This method delegates to
-     * {@link MultipartWriter#writePart(String, String, String, List)}, but computes the content
+     * {@link MultipartBodyWriter#writePart(String, String, String, List)}, but computes the content
      * transfer encoding based on the content type and the {@link OMOutputFormat}.
      * 
      * @param contentType
@@ -136,7 +135,7 @@ public class OMMultipartWriter {
     
     /**
      * Write a MIME part. This method delegates to
-     * {@link MultipartWriter#writePart(DataHandler, String, String, List)}, but computes the
+     * {@link MultipartBodyWriter#writePart(DataHandler, String, String, List)}, but computes the
      * appropriate content transfer encoding from the {@link OMOutputFormat}.
      * 
      * @param dataHandler
@@ -161,7 +160,7 @@ public class OMMultipartWriter {
     
     /**
      * Write a MIME part. This method delegates to
-     * {@link MultipartWriter#writePart(DataHandler, String, String)}, but computes the appropriate
+     * {@link MultipartBodyWriter#writePart(DataHandler, String, String)}, but computes the appropriate
      * content transfer encoding from the {@link OMOutputFormat}.
      * 
      * @param dataHandler
@@ -177,7 +176,7 @@ public class OMMultipartWriter {
 
     /**
      * Complete writing of the MIME multipart package. This method delegates to
-     * {@link MultipartWriter#complete()}.
+     * {@link MultipartBodyWriter#complete()}.
      * 
      * @throws IOException
      *             if an I/O error occurs when writing to the underlying stream

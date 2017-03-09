@@ -23,6 +23,8 @@ import java.io.OutputStream;
 
 /**
  * Factory for {@link MultipartWriter} instances.
+ * 
+ * @deprecated
  */
 public interface MultipartWriterFactory {
     /**

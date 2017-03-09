@@ -49,6 +49,8 @@ import javax.activation.DataHandler;
  *       It is the responsibility of the implementation to properly format the value
  *       of the <tt>Content-ID</tt> header.</li>
  * </ul>
+ * 
+ * @deprecated Use {@link MultipartBodyWriter} instead.
  */
 public interface MultipartWriter {
     /**

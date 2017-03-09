@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.mime.impl.axiom;
+package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,10 +25,9 @@ import java.util.List;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.mime.Header;
-import org.apache.axiom.mime.MultipartWriter;
 import org.apache.axiom.util.base64.Base64EncodingOutputStream;
 
-class MultipartWriterImpl implements MultipartWriter {
+public final class MultipartBodyWriter {
     class PartOutputStream extends OutputStream {
         private final OutputStream parent;
 
@@ -64,7 +63,7 @@ class MultipartWriterImpl implements MultipartWriter {
     private final String boundary;
     private final byte[] buffer = new byte[256];
 
-    public MultipartWriterImpl(OutputStream out, String boundary) {
+    public MultipartBodyWriter(OutputStream out, String boundary) {
         this.out = out;
         this.boundary = boundary;
     }
@@ -87,7 +86,24 @@ class MultipartWriterImpl implements MultipartWriter {
         }
     }
     
-    @Override
+    /**
+     * Start writing a MIME part. The methods returns an {@link OutputStream} that the caller can
+     * use to write the content of the MIME part. After writing the content,
+     * {@link OutputStream#close()} must be called to complete the writing of the MIME part.
+     * 
+     * @param contentType
+     *            the value of the <tt>Content-Type</tt> header of the MIME part
+     * @param contentTransferEncoding
+     *            the content transfer encoding to be used (see above); must not be
+     *            <code>null</code>
+     * @param contentID
+     *            the content ID of the MIME part (see above)
+     * @param extraHeaders
+     *            a list of {@link Header} objects with additional headers to write to the MIME part
+     * @return an output stream to write the content of the MIME part
+     * @throws IOException
+     *             if an I/O error occurs when writing to the underlying stream
+     */
     public OutputStream writePart(String contentType, String contentTransferEncoding,
             String contentID, List<Header> extraHeaders) throws IOException {
         OutputStream transferEncoder;
@@ -125,13 +141,22 @@ class MultipartWriterImpl implements MultipartWriter {
         return new PartOutputStream(transferEncoder);
     }
     
-    @Override
-    public OutputStream writePart(String contentType, String contentTransferEncoding,
-            String contentID) throws IOException {    	
-        return writePart(contentType, contentTransferEncoding, contentID, null);
-    }
-    
-    @Override
+    /**
+     * Write a MIME part. The content is provided by a {@link DataHandler} object, which also
+     * specifies the content type of the part.
+     * 
+     * @param dataHandler
+     *            the content of the MIME part to write
+     * @param contentTransferEncoding
+     *            the content transfer encoding to be used (see above); must not be
+     *            <code>null</code>
+     * @param contentID
+     *            the content ID of the MIME part (see above)
+     * @param extraHeaders
+     *            a list of {@link Header} objects with additional headers to write to the MIME part
+     * @throws IOException
+     *             if an I/O error occurs when writing the part to the underlying stream
+     */
     public void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID, List<Header> extraHeaders)
             throws IOException {
         OutputStream partOutputStream = writePart(dataHandler.getContentType(), contentTransferEncoding, contentID, extraHeaders);
@@ -139,13 +164,13 @@ class MultipartWriterImpl implements MultipartWriter {
         partOutputStream.close();
     }
     
-    @Override
-    public void writePart(DataHandler dataHandler, String contentTransferEncoding,
-            String contentID) throws IOException {
-        writePart(dataHandler, contentTransferEncoding, contentID, null);
-    }
-
-    @Override
+    /**
+     * Complete writing of the MIME multipart package. This method does <b>not</b> close the
+     * underlying stream.
+     * 
+     * @throws IOException
+     *             if an I/O error occurs when writing to the underlying stream
+     */
     public void complete() throws IOException {
         writeAscii("--");
         writeAscii(boundary);
