@@ -86,7 +86,7 @@ public class OMMultipartWriter {
 
     /**
      * Start writing the root part of the MIME package. This method delegates to
-     * {@link MultipartBodyWriter#writePart(String, String, String)}, but computes the content type,
+     * {@link MultipartBodyWriter#writePart(String, String, String, List)}, but computes the content type,
      * content transfer encoding and content ID from the {@link OMOutputFormat}.
      * 
      * @return an output stream to write the content of the MIME part
@@ -99,7 +99,7 @@ public class OMMultipartWriter {
 
     /**
      * Start writing an attachment part of the MIME package. This method delegates to
-     * {@link MultipartBodyWriter#writePart(String, String, String)}, but computes the content transfer
+     * {@link MultipartBodyWriter#writePart(String, String, String, List)}, but computes the content transfer
      * encoding based on the content type and the {@link OMOutputFormat}.
      * 
      * @param contentType
@@ -160,7 +160,7 @@ public class OMMultipartWriter {
     
     /**
      * Write a MIME part. This method delegates to
-     * {@link MultipartBodyWriter#writePart(DataHandler, String, String)}, but computes the appropriate
+     * {@link MultipartBodyWriter#writePart(DataHandler, String, String, List)}, but computes the appropriate
      * content transfer encoding from the {@link OMOutputFormat}.
      * 
      * @param dataHandler

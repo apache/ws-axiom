@@ -35,7 +35,7 @@ import javax.xml.stream.XMLStreamWriter;
  * When a matching element is encountered, the CustomBuilder will build an {@link OMDataSource}
  * for the builder.
  *
- * @see CustomBuilderSupport#registerCustomBuilder(Selector, CustomBuilder)
+ * @see CustomBuilderSupport#registerCustomBuilder(CustomBuilder.Selector, CustomBuilder)
  */
 public interface CustomBuilder {
     /**
