@@ -57,74 +57,78 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
 
     protected abstract boolean matches(T node) throws CoreModelException;
 
-    public final boolean hasNext() {
-        if (!hasNext) {
-            CoreNode node = currentNode;
-            if (node instanceof CoreChildNode && ((CoreChildNode)node).coreGetParent() != currentParent) {
-                throw new ConcurrentModificationException("The current node has been removed using a method other than Iterator#remove()");
-            }
-            try {
-                while (true) {
-                    // Get to the next node
-                    switch (axis) {
-                        case CHILDREN:
-                            if (node == null) {
+    private void computeNext(Axis axis) {
+        CoreNode node = currentNode;
+        if (node instanceof CoreChildNode && ((CoreChildNode)node).coreGetParent() != currentParent) {
+            throw new ConcurrentModificationException("The current node has been removed using a method other than Iterator#remove()");
+        }
+        try {
+            while (true) {
+                // Get to the next node
+                switch (axis) {
+                    case CHILDREN:
+                        if (node == null) {
+                            node = startNode.coreGetFirstChild();
+                        } else {
+                            node = ((CoreChildNode)node).coreGetNextSibling();
+                        }
+                        break;
+                    case DESCENDANTS:
+                    case DESCENDANTS_OR_SELF:
+                        if (node == null) {
+                            if (axis == Axis.DESCENDANTS) {
                                 node = startNode.coreGetFirstChild();
+                                depth++;
                             } else {
-                                node = ((CoreChildNode)node).coreGetNextSibling();
+                                node = startNode;
                             }
-                            break;
-                        case DESCENDANTS:
-                        case DESCENDANTS_OR_SELF:
-                            if (node == null) {
-                                if (axis == Axis.DESCENDANTS) {
-                                    node = startNode.coreGetFirstChild();
-                                    depth++;
-                                } else {
-                                    node = startNode;
-                                }
-                            } else {
-                                boolean visitChildren = true;
-                                while (true) {
-                                    if (visitChildren && node instanceof CoreParentNode && semantics.isParentNode(node.coreGetNodeType())) {
-                                        CoreChildNode firstChild = ((CoreParentNode)node).coreGetFirstChild();
-                                        if (firstChild != null) {
-                                            depth++;
-                                            node = firstChild;
-                                            break;
-                                        }
-                                    }
-                                    if (depth == 0) {
-                                        node = null;
+                        } else {
+                            boolean visitChildren = true;
+                            while (true) {
+                                if (visitChildren && node instanceof CoreParentNode && semantics.isParentNode(node.coreGetNodeType())) {
+                                    CoreChildNode firstChild = ((CoreParentNode)node).coreGetFirstChild();
+                                    if (firstChild != null) {
+                                        depth++;
+                                        node = firstChild;
                                         break;
                                     }
-                                    CoreChildNode nextSibling = ((CoreChildNode)node).coreGetNextSibling();
-                                    if (nextSibling != null) {
-                                        node = nextSibling;
-                                        break;
-                                    }
-                                    depth--;
-                                    node = ((CoreChildNode)node).coreGetParent();
-                                    visitChildren = false;
                                 }
+                                if (depth == 0) {
+                                    node = null;
+                                    break;
+                                }
+                                CoreChildNode nextSibling = ((CoreChildNode)node).coreGetNextSibling();
+                                if (nextSibling != null) {
+                                    node = nextSibling;
+                                    break;
+                                }
+                                depth--;
+                                node = ((CoreChildNode)node).coreGetParent();
+                                visitChildren = false;
                             }
-                    }
-                    if (node == null) {
-                        nextNode = null;
+                        }
+                }
+                if (node == null) {
+                    nextNode = null;
+                    break;
+                }
+                if (type.isInstance(node)) {
+                    T candidate = type.cast(node);
+                    if (matches(candidate)) {
+                        nextNode = candidate;
                         break;
                     }
-                    if (type.isInstance(node)) {
-                        T candidate = type.cast(node);
-                        if (matches(candidate)) {
-                            nextNode = candidate;
-                            break;
-                        }
-                    }
                 }
-            } catch (CoreModelException ex) {
-                throw semantics.toUncheckedException(ex);
             }
-            hasNext = true;
+        } catch (CoreModelException ex) {
+            throw semantics.toUncheckedException(ex);
+        }
+        hasNext = true;
+    }
+
+    public final boolean hasNext() {
+        if (!hasNext) {
+            computeNext(axis);
         }
         return nextNode != null;
     }
@@ -148,8 +152,9 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
         if (currentNode == null) {
             throw new IllegalStateException();
         }
-        // Move to next node before replacing the current one
-        hasNext();
+        // Move to next node before replacing the current one. Note that we need to always move to
+        // the next sibling or parent, even if axis is DESCENDANTS or DESCENDANTS_OR_SELF.
+        computeNext(Axis.CHILDREN);
         if (currentNode instanceof CoreChildNode) {
 //            try {
                 ((CoreChildNode)currentNode).coreDetach(semantics);
@@ -162,7 +167,8 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
 
     public final void replace(CoreChildNode newNode) throws CoreModelException {
         // Move to next node before replacing the current one
-        hasNext();
+        // TODO: this may not be the right thing to do in all cases
+        computeNext(Axis.CHILDREN);
         ((CoreChildNode)currentNode).coreReplaceWith(newNode, semantics);
     }
 }

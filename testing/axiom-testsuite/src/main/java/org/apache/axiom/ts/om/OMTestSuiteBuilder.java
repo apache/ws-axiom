@@ -313,6 +313,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetDefaultNamespace2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetDescendants(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestGetDescendants(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.element.TestGetDescendantsRemoveSubtree(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithNameOnIncompleteElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstOMChildAfterConsume(metaFactory));
