@@ -25,8 +25,30 @@ import java.util.List;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.mime.Header;
+import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64EncodingOutputStream;
 
+/**
+ * Writes a MIME multipart body as used by XOP/MTOM and SOAP with Attachments. MIME parts are
+ * written using {@link #writePart(String, String, String, List)} or
+ * {@link #writePart(DataHandler, String, String, List)}. Calls to both methods can be mixed, i.e.
+ * it is not required to use the same method for all MIME parts. Instead, the caller should choose
+ * the most convenient method for each part (depending on the form in which the content is
+ * available). After all parts have been written, {@link #complete()} must be called to write the
+ * final MIME boundary.
+ * <p>
+ * The following semantics are defined for the {@code contentTransferEncoding} and {@code contentID}
+ * arguments of the two write methods:
+ * <ul>
+ * <li>The content transfer encoding specified by the {@code contentTransferEncoding} argument is
+ * applied by the write method; the caller only provides the unencoded data. At least {@code binary}
+ * and {@code base64} are supported. If the specified encoding is not supported, the write methods
+ * may use an alternative one. In any case, the implementation ensures that the MIME part has a
+ * {@code Content-Transfer-Encoding} header appropriate for the applied encoding.</li>
+ * <li>The content ID passed as argument is always the raw ID (without the angle brackets). The
+ * implementation translates this into a properly formatted {@code Content-ID} header.</li>
+ * </ul>
+ */
 public final class MultipartBodyWriter {
     class PartOutputStream extends OutputStream {
         private final OutputStream parent;
@@ -63,6 +85,16 @@ public final class MultipartBodyWriter {
     private final String boundary;
     private final byte[] buffer = new byte[256];
 
+    /**
+     * Constructor.
+     * 
+     * @param out
+     *            the output stream to write the multipart body to
+     * @param boundary
+     *            the MIME boundary
+     * 
+     * @see UIDGenerator#generateMimeBoundary()
+     */
     public MultipartBodyWriter(OutputStream out, String boundary) {
         this.out = out;
         this.boundary = boundary;
