@@ -257,7 +257,7 @@
         <stax.impl.version>1.2.0</stax.impl.version>
         -->
         <shade.plugin.version>2.3</shade.plugin.version>
-        <jacoco.version>0.7.5.201505241946</jacoco.version>
+        <jacoco.version>0.7.9</jacoco.version>
         <spring.version>4.2.1.RELEASE</spring.version>
         <springws.version>2.2.4.RELEASE</springws.version>
         <exam.version>4.9.1</exam.version>
