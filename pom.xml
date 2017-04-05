@@ -557,7 +557,7 @@
                              the data instead of loading it into memory). Obviously, the execution time of
                              these tests also are proportional to the heap size. To accelerate the execution
                              of the tests, we should use a heap size as small as possible. -->
-                        <argLine>-Xms16m -Xmx48m ${jacoco.surefireArgLine} ${securityManagerArgs}</argLine>
+                        <argLine>-Xms16m -Xmx48m ${jacoco.surefireArgLine} ${securityManagerArgs} ${jigsawArgs}</argLine>
                         <systemProperties>
                             <property>
                                 <name>java.io.tmpdir</name>
@@ -880,7 +880,9 @@
                                         project.properties['skipJacoco'] = 'true'
                                     }
                                     
-                                    project.properties['javadoc.nolint.param'] = System.properties['java.specification.version'] == '1.7' ? '' : '-Xdoclint:none';
+                                    project.properties['javadoc.nolint.param'] = System.properties['java.specification.version'] == '1.7' ? '' : '-Xdoclint:none'
+
+                                    project.properties['jigsawArgs'] = System.properties['java.specification.version'] == '9' ? '--add-modules java.activation,java.xml.bind --add-opens java.xml/com.sun.xml.internal.stream=ALL-UNNAMED' : ''
                                 ]]></script>
                             </scripts>
                         </configuration>
