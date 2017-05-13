@@ -19,8 +19,6 @@
 package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAP11Version;
-import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.testing.multiton.AdapterFactory;
@@ -34,14 +32,14 @@ public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
                     return metaFactory.getSOAP11Factory();
                 }
             });
-            adapters.add(SOAPVersion.class, SOAP11Version.getSingleton());
+            adapters.add(SOAPVersion.class, SOAPVersion.SOAP11);
         } else if (spec == SOAPSpec.SOAP12) {
             adapters.add(new FactorySelector() {
                 public SOAPFactory getFactory(OMMetaFactory metaFactory) {
                     return metaFactory.getSOAP12Factory();
                 }
             });
-            adapters.add(SOAPVersion.class, SOAP12Version.getSingleton());
+            adapters.add(SOAPVersion.class, SOAPVersion.SOAP12);
         }
     }
 }

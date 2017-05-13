@@ -24,9 +24,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
@@ -37,7 +35,7 @@ import org.apache.axiom.soap.SOAPVersion;
  * not be part of the public API.
  */
 public abstract class SOAPHelper {
-    public static final SOAPHelper SOAP11 = new SOAPHelper(SOAP11Version.getSingleton(), "SOAP 1.1",
+    public static final SOAPHelper SOAP11 = new SOAPHelper(SOAPVersion.SOAP11, "SOAP 1.1",
             AxiomSOAP11Envelope.class,
             AxiomSOAP11Header.class,
             AxiomSOAP11HeaderBlock.class,
@@ -70,7 +68,7 @@ public abstract class SOAPHelper {
         }
     };
     
-    public static final SOAPHelper SOAP12 = new SOAPHelper(SOAP12Version.getSingleton(), "SOAP 1.2",
+    public static final SOAPHelper SOAP12 = new SOAPHelper(SOAPVersion.SOAP12, "SOAP 1.2",
             AxiomSOAP12Envelope.class,
             AxiomSOAP12Header.class,
             AxiomSOAP12HeaderBlock.class,

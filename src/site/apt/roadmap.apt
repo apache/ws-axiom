@@ -302,15 +302,12 @@ APIs that need to be overhauled
 
 * <<<SOAPVersion>>>
 
-  The <<<SOAPVersion>>> API uses a somewhat peculiar design pattern: it has two public implementation classes
-  (<<<SOAP11Version>>> and <<<SOAP12Version>>>) which do not add any methods and that have static <<<getSingleton>>>
-  methods to get the singleton instance for each of these classes. This should be changed to use a more traditional
-  pattern, namely the two singleton instances should be accessible using constants defined by <<<SOAPVersion>>>.
-  The implementing classes then no longer need to be public (they can be anonymous or have package access).
-  
-  In addition, <<<SOAPVersion>>> should be changed from an interface to an abstract class so that one can
+  <<<SOAPVersion>>> should be changed from an interface to an abstract class so that one can
   define static methods to get the SOAP version by envelope namespace or media type.
 
+  <<<SOAP11Version>>> and <<<SOAP12Version>>> should not be public, and the deprecated <<<getSingleton>>>
+  methods should be removed.
+  
 * <<<StAXParserConfiguration>>>
 
   The <<<StAXParserConfiguration>>> API relies on the assumption that the XML parser used by Axiom is
