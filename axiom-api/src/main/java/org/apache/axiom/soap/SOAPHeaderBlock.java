@@ -73,11 +73,6 @@ public interface SOAPHeaderBlock extends OMSourcedElement {
     void setMustUnderstand(boolean mustUnderstand);
 
     /**
-     * @deprecated Use {@link #setMustUnderstand(boolean)} instead.
-     */
-    void setMustUnderstand(String mustUnderstand) throws SOAPProcessingException;
-
-    /**
      * Returns the boolean value of the <tt>mustUnderstand</tt> attribute for this header block.
      * 
      * @return <code>true</code> if a <tt>mustUnderstand</tt> attribute is present and its value is

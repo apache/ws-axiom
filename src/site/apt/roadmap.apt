@@ -78,13 +78,6 @@ API inconsistencies to be eliminated
      packages (and their subpackages). However, in Axiom 1.2.x that exception is used by the MIME/attachments API
      as well.
 
-* Methods for boolean attributes in <<<SOAPHeaderBlock>>>
-
-  <<<SOAPHeaderBlock>>> has methods to get and set the boolean attributes <<<mustUnderstand>>>
-  and <<<relay>>>. However, the set of getters and setters is not the same for both attributes:
-  there is a <<<setMustUnderstand(String)>>> method, but no corresponding <<<setRelay(String)>>> method.
-  Probably the <<<setMustUnderstand(String)>>> method should just be removed.
-
 Removal of unnecessary or irrelevant APIs
 
   This section identifies APIs that have become unnecessary or irrelevant. Note that APIs that

@@ -54,16 +54,6 @@ public aspect AxiomSOAPHeaderBlockSupport {
         return SOAPHeaderBlockHelper.getMustUnderstand(this, getSOAPHelper());
     }
     
-    public final void AxiomSOAPHeaderBlock.setMustUnderstand(String mustUnderstand) throws SOAPProcessingException {
-        SOAPHelper helper = getSOAPHelper();
-        Boolean value = helper.parseBoolean(mustUnderstand);
-        if (value != null) {
-            _setAttributeValue(helper.getMustUnderstandAttributeQName(), mustUnderstand);
-        } else {
-            throw new SOAPProcessingException("Invalid value for mustUnderstand attribute");
-        }
-    }
-
     public final void AxiomSOAPHeaderBlock.setMustUnderstand(boolean mustUnderstand) {
         SOAPHelper helper = getSOAPHelper();
         _setAttributeValue(helper.getMustUnderstandAttributeQName(), helper.formatBoolean(mustUnderstand));
