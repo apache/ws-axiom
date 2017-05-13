@@ -47,7 +47,7 @@ import org.apache.james.mime4j.stream.RecursionMode;
  * an instance of this class or an individual {@link Part} instance may trigger a
  * {@link MIMEException} if there is an I/O error on the stream or a MIME parsing error.
  * <p>
- * Instances of this class are created using a fluent builder; see {@link #newBuilder()}.
+ * Instances of this class are created using a fluent builder; see {@link #builder()}.
  */
 public final class MultipartBody implements Iterable<Part> {
     public interface PartCreationListener {
@@ -167,7 +167,7 @@ public final class MultipartBody implements Iterable<Part> {
         }
     }
 
-    public static Builder newBuilder() {
+    public static Builder builder() {
         return new Builder();
     }
 

@@ -25,6 +25,8 @@ import java.util.Locale;
 /**
  * Builder for {@link ContentType} objects. This class can be used to construct {@link ContentType}
  * objects or as a mutable alternative to {@link ContentType} (which is designed to be immutable).
+ * 
+ * @deprecated Use {@link ContentType.Builder} instead.
  */
 public final class ContentTypeBuilder {
     private MediaType mediaType;

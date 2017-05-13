@@ -32,7 +32,7 @@ import javax.mail.internet.MimeMultipart;
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
-import org.apache.axiom.mime.ContentTypeBuilder;
+import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -86,10 +86,12 @@ public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends SOAPTestC
         mp.addBodyPart(bp);
         message.setContent(mp);
         message.saveChanges();
-        ContentTypeBuilder contentType = new ContentTypeBuilder(message.getContentType());
-        contentType.setParameter("type", "application/xop+xml");
-        contentType.setParameter("start", contentID);
-        contentType.setParameter("start-info", spec.getAltSpec().getContentType());
+        ContentType contentType = new ContentType(message.getContentType())
+                .toBuilder()
+                .setParameter("type", "application/xop+xml")
+                .setParameter("start", contentID)
+                .setParameter("start-info", spec.getAltSpec().getContentType())
+                .build();
         MemoryBlob blob = Blobs.createMemoryBlob();
         OutputStream out = blob.getOutputStream();
         mp.writeTo(out);

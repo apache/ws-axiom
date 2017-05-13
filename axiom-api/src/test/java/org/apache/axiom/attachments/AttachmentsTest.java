@@ -48,7 +48,7 @@ import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
-import org.apache.axiom.mime.ContentTypeBuilder;
+import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.MIMEException;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
@@ -183,10 +183,13 @@ public class AttachmentsTest extends AbstractTestCase {
         mp.writeTo(out);
         out.close();
 
-        ContentTypeBuilder contentType = new ContentTypeBuilder(message.getContentType());
-        contentType.setParameter("start", contentTypeStartParam);
-        
-        Attachments attachments = new Attachments(blob.getInputStream(), contentType.toString());
+        Attachments attachments = new Attachments(
+                blob.getInputStream(),
+                new ContentType(message.getContentType())
+                        .toBuilder()
+                        .setParameter("start", contentTypeStartParam)
+                        .build()
+                        .toString());
         assertEquals("Did not obtain correct content ID", contentId,
                 attachments.getRootPartContentID());
     }

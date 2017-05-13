@@ -70,7 +70,7 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
             filterIS = null;
         }
 
-        this.message = MultipartBody.newBuilder()
+        this.message = MultipartBody.builder()
                 .setInputStream(inStream)
                 .setContentType(contentTypeString)
                 .setAttachmentBlobFactory(attachmentBlobFactory)

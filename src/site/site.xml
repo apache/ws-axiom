@@ -68,6 +68,7 @@
             <item name="Developer guide" href="devguide/devguide.html"/>
             <item name="Design documents" collapse="true" href="design/index.html">
                 <item name="OSGi integration" href="design/osgi-integration.html"/>
+                <item name="Fluent builders" href="design/fluent-builder.html"/>
             </item>
             <item name="Articles" href="articles.html"/>
             <item name="Javadocs" href="/apidocs/index.html"/>

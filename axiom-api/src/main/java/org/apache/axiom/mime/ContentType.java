@@ -20,6 +20,7 @@ package org.apache.axiom.mime;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -61,6 +62,97 @@ import javax.activation.MimeType;
  * meaningful way to compare content types with parameters.
  */
 public final class ContentType {
+    public static final class Builder {
+        private MediaType mediaType;
+        private final LinkedHashMap<String,String> parameters = new LinkedHashMap<String,String>();
+        
+        Builder() {}
+        
+        Builder(ContentType type) {
+            mediaType = type.mediaType;
+            type.getParameters(parameters);
+        }
+        
+        /**
+         * Get the media type.
+         * 
+         * @return the media type
+         */
+        public MediaType getMediaType() {
+            return mediaType;
+        }
+
+        /**
+         * Set the media type.
+         * 
+         * @param mediaType
+         *            the media type
+         * @return the builder
+         */
+        public Builder setMediaType(MediaType mediaType) {
+            this.mediaType = mediaType;
+            return this;
+        }
+        
+        /**
+         * Get the specified parameter value.
+         * 
+         * @param name
+         *            the parameter name
+         * @return the parameter value, or <code>null</code> if no parameter with the given name was
+         *         found
+         */
+        public String getParameter(String name) {
+            return parameters.get(name.toLowerCase(Locale.ENGLISH));
+        }
+
+        /**
+         * Set the specified parameter value. If a parameter with the given name already exists, it will
+         * be replaced. Note that parameter names are case insensitive.
+         * 
+         * @param name
+         *            the parameter name
+         * @param value
+         *            the parameter value
+         * @return the builder
+         */
+        public Builder setParameter(String name, String value) {
+            parameters.put(name.toLowerCase(Locale.ENGLISH), value);
+            return this;
+        }
+
+        /**
+         * Remove the parameter with the specified name.
+         * 
+         * @param name
+         *            the parameter name
+         * @return the builder
+         */
+        public Builder removeParameter(String name) {
+            parameters.remove(name.toLowerCase(Locale.ENGLISH));
+            return this;
+        }
+
+        /**
+         * Remove all parameters.
+         * 
+         * @return the builder
+         */
+        public Builder clearParameters() {
+            parameters.clear();
+            return this;
+        }
+        
+        /**
+         * Build the {@link ContentType} object.
+         * 
+         * @return the {@link ContentType} object
+         */
+        public ContentType build() {
+            return new ContentType(mediaType, parameters);
+        }
+    }
+    
     private final MediaType mediaType;
     private final String[] parameters;
     
@@ -115,6 +207,24 @@ public final class ContentType {
             this.parameters[i++] = entry.getKey();
             this.parameters[i++] = entry.getValue();
         }
+    }
+    
+    /**
+     * Get a new builder instance.
+     * 
+     * @return the builder
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+    
+    /**
+     * Get a new builder initialized with the media type and parameters from this instance.
+     * 
+     * @return the builder
+     */
+    public Builder toBuilder() {
+        return new Builder(this);
     }
     
     /**
