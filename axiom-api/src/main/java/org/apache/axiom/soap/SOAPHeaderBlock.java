@@ -72,6 +72,9 @@ public interface SOAPHeaderBlock extends OMSourcedElement {
      */
     void setMustUnderstand(boolean mustUnderstand);
 
+    /**
+     * @deprecated Use {@link #setMustUnderstand(boolean)} instead.
+     */
     void setMustUnderstand(String mustUnderstand) throws SOAPProcessingException;
 
     /**
