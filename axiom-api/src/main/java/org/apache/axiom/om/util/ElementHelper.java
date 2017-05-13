@@ -25,9 +25,9 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.BlobOMDataSource;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -185,16 +185,15 @@ public class ElementHelper {
      *
      * @see AttributeHelper#importOMAttribute(OMAttribute, OMElement) to convert instances of
      *      OMAttribute
+     * 
+     * @deprecated Use {@link OMFactory#importInformationItem(OMInformationItem)} instead.
      */
     public static OMElement importOMElement(OMElement omElement, OMFactory omFactory) {
         // first check whether the given OMElement has the same omFactory
         if (omElement.getOMFactory().getMetaFactory() == omFactory.getMetaFactory()) {
             return omElement;
         } else {
-            OMElement documentElement = OMXMLBuilderFactory.createStAXOMBuilder(
-                    omFactory, omElement.getXMLStreamReader()).getDocumentElement();
-            documentElement.build();
-            return documentElement;
+            return (OMElement)omFactory.importInformationItem(omElement);
         }
     }
 

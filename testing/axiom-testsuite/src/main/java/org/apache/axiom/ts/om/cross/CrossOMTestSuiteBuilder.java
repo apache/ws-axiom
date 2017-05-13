@@ -18,8 +18,11 @@
  */
 package org.apache.axiom.ts.om.cross;
 
+import static org.apache.axiom.testing.multiton.Multiton.getInstances;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.xml.XMLSample;
 
 public class CrossOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final OMMetaFactory metaFactory;
@@ -33,6 +36,9 @@ public class CrossOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     @Override
     protected void addTests() {
         addTest(new TestAddChild(metaFactory, altMetaFactory));
+        for (XMLSample file : getInstances(XMLSample.class)) {
+            addTest(new TestImportInformationItem(metaFactory, altMetaFactory, file));
+        }
         addTest(new TestInsertSibling(metaFactory, altMetaFactory, false));
         addTest(new TestInsertSibling(metaFactory, altMetaFactory, true));
     }

@@ -70,7 +70,6 @@ import org.apache.axiom.om.impl.common.builder.OMXMLParserWrapperImpl;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
-import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.apache.axiom.om.impl.jaxb.AttachmentUnmarshallerImpl;
 import org.apache.axiom.om.impl.stream.NamespaceContextPreservationFilterHandler;
 import org.apache.axiom.om.impl.stream.XmlDeclarationRewriterHandler;
@@ -166,7 +165,7 @@ public aspect AxiomContainerSupport {
         if (omNode.getOMFactory().getMetaFactory().equals(getOMFactory().getMetaFactory())) {
             child = (AxiomChildNode)omNode;
         } else {
-            child = (AxiomChildNode)((OMFactoryEx)getOMFactory()).importNode(omNode);
+            child = (AxiomChildNode)getOMFactory().importInformationItem(omNode);
         }
         checkChild(omNode);
         return child;

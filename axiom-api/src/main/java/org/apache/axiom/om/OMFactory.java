@@ -375,4 +375,16 @@ public interface OMFactory {
      * @return the newly created {@link OMEntityReference} node
      */
     OMEntityReference createOMEntityReference(OMContainer parent, String name);
+
+    /**
+     * Create a copy of the given information item using this factory. This method can be used to
+     * import information items created by other Axiom implementations. A copy will be created even
+     * if the original information item was created by this factory. Both {@link OMSourcedElement}
+     * instances and model specific elements are always copied to plain {@link OMElement} instances.
+     * 
+     * @param informationItem
+     *            the information item to copy
+     * @return the imported information item
+     */
+    OMInformationItem importInformationItem(OMInformationItem informationItem);
 }

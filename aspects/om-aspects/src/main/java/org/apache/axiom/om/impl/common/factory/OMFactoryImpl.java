@@ -20,6 +20,8 @@ package org.apache.axiom.om.impl.common.factory;
 
 import static org.apache.axiom.util.xml.NSUtils.generatePrefix;
 
+import java.util.Iterator;
+
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
@@ -36,32 +38,36 @@ import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
+import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomComment;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomDocType;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomEntityReference;
+import org.apache.axiom.om.impl.intf.AxiomNamedInformationItem;
+import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.intf.AxiomText;
-import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.apache.axiom.om.impl.intf.TextContent;
 
-public class OMFactoryImpl implements OMFactoryEx {
+public class OMFactoryImpl implements OMFactory {
     private final OMMetaFactory metaFactory;
     private final NodeFactory nodeFactory;
     
@@ -373,53 +379,104 @@ public class OMFactoryImpl implements OMFactoryEx {
         return attr;
     }
 
-    // <old-and-buggy-code>
-    @Override
-    public final OMNode importNode(OMNode child) {
+    private AxiomChildNode importChildNode(OMNode child) {
         int type = child.getType();
         switch (type) {
             case OMNode.ELEMENT_NODE: {
-                OMElement childElement = (OMElement) child;
-                OMElement newElement = (OMXMLBuilderFactory.createStAXOMBuilder(this, childElement
-                        .getXMLStreamReader())).getDocumentElement();
-                newElement.buildWithAttachments();
-                return newElement;
-            }
-            case OMNode.TEXT_NODE: {
-                OMText importedText = (OMText) child;
-                OMText newText;
-                if (importedText.isBinary()) {
-                    boolean isOptimize = importedText.isOptimized();
-                    newText = createOMText(importedText
-                            .getDataHandler(), isOptimize);
-                } else {
-                    newText = createOMText(null, importedText
-                            .getText()/*, importedText.getOMNodeType()*/);
+                OMElement element = (OMElement)child;
+                AxiomElement importedElement = createNode(AxiomElement.class);
+                copyName(element, importedElement);
+                for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
+                    importedElement.coreAppendAttribute(importAttribute(it.next()));
                 }
-                return newText;
+                for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+                    OMNamespace ns = it.next();
+                    AxiomNamespaceDeclaration nsDecl = createNode(AxiomNamespaceDeclaration.class);
+                    nsDecl.coreSetDeclaredNamespace(ns.getPrefix(), ns.getNamespaceURI());
+                    importedElement.coreAppendAttribute(nsDecl);
+                }
+                importChildren(element, importedElement);
+                return importedElement;
             }
-
+            case OMNode.TEXT_NODE:
+            case OMNode.SPACE_NODE:
+            case OMNode.CDATA_SECTION_NODE: {
+                OMText text = (OMText)child;
+                Object content;
+                if (text.isBinary()) {
+                    content = new TextContent(text.getContentID(), text.getDataHandler(), text.isOptimized());
+                } else {
+                    content = text.getText();
+                }
+                return createAxiomText(null, content, type);
+            }
             case OMNode.PI_NODE: {
-                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
-                return createOMProcessingInstruction(null,
-                                                                  importedPI.getTarget(),
-                                                                  importedPI.getValue());
+                OMProcessingInstruction pi = (OMProcessingInstruction)child;
+                AxiomProcessingInstruction importedPI = createNode(AxiomProcessingInstruction.class);
+                importedPI.setTarget(pi.getTarget());
+                importedPI.setValue(pi.getValue());
+                return importedPI;
             }
             case OMNode.COMMENT_NODE: {
-                OMComment importedComment = (OMComment) child;
-                return createOMComment(null, importedComment.getValue());
+                OMComment comment = (OMComment)child;
+                AxiomComment importedComment = createNode(AxiomComment.class);
+                importedComment.setValue(comment.getValue());
+                return importedComment;
             }
-            case OMNode.DTD_NODE : {
-                OMDocType importedDocType = (OMDocType) child;
-                return createOMDocType(null, importedDocType.getRootName(),
-                        importedDocType.getPublicId(), importedDocType.getSystemId(),
-                        importedDocType.getInternalSubset());
+            case OMNode.DTD_NODE: {
+                OMDocType docType = (OMDocType)child;
+                AxiomDocType importedDocType = createNode(AxiomDocType.class);
+                importedDocType.coreSetRootName(docType.getRootName());
+                importedDocType.coreSetPublicId(docType.getPublicId());
+                importedDocType.coreSetSystemId(docType.getSystemId());
+                importedDocType.coreSetInternalSubset(docType.getInternalSubset());
+                return importedDocType;
             }
-            default: {
-                throw new UnsupportedOperationException(
-                        "Not Implemented Yet for the given node type");
+            case OMNode.ENTITY_REFERENCE_NODE:
+                AxiomEntityReference importedEntityRef = createNode(AxiomEntityReference.class);
+                importedEntityRef.coreSetName(((OMEntityReference)child).getName());
+                return importedEntityRef;
+            default:
+                throw new IllegalArgumentException("Unsupported node type");
+        }
+    }
+
+    private void copyName(OMNamedInformationItem node, AxiomNamedInformationItem importedNode) {
+        importedNode.internalSetNamespace(node.getNamespace());
+        importedNode.internalSetLocalName(node.getLocalName());
+    }
+
+    private void importChildren(OMContainer node, AxiomContainer importedNode) {
+        for (OMNode child = node.getFirstOMChild(); child != null; child = child.getNextOMSibling()) {
+            try {
+                importedNode.coreAppendChild(importChildNode(child));
+            } catch (CoreModelException ex) {
+                throw AxiomExceptionTranslator.translate(ex);
             }
         }
     }
-    // </old-and-buggy-code>
+
+    private AxiomAttribute importAttribute(OMAttribute attribute) {
+        AxiomAttribute importedAttribute = createNode(AxiomAttribute.class);
+        copyName(attribute, importedAttribute);
+        importedAttribute.setAttributeValue(attribute.getAttributeValue());
+        return importedAttribute;
+    }
+
+    @Override
+    public final OMInformationItem importInformationItem(OMInformationItem node) {
+        if (node instanceof OMNode) {
+            return importChildNode((OMNode)node);
+        } else if (node instanceof OMDocument) {
+            OMDocument document = (OMDocument)node;
+            AxiomDocument importedDocument = createNode(AxiomDocument.class);
+            // TODO: other attributes
+            importChildren(document, importedDocument);
+            return importedDocument;
+        } else if (node instanceof OMAttribute) {
+            return importAttribute((OMAttribute)node);
+        } else {
+            throw new IllegalArgumentException("Unsupported node type");
+        }
+    }
 }
