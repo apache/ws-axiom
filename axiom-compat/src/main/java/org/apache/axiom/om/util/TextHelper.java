@@ -19,19 +19,11 @@
 
 package org.apache.axiom.om.util;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import javax.activation.DataHandler;
-import javax.mail.MessagingException;
 
-import org.apache.axiom.attachments.impl.BufferUtils;
-import org.apache.axiom.attachments.lifecycle.LifecycleManager;
-import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
-import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
 import org.apache.axiom.util.base64.Base64Utils;
@@ -40,21 +32,6 @@ import org.apache.axiom.util.base64.Base64Utils;
  * @deprecated Class containing only deprecated utility methods.
  */
 public class TextHelper {
-    /**
-     * @deprecated
-     */
-    private static int DEFAULT_FILE_THRESHOLD = 100 * 1024;
-    
-    /**
-     * @deprecated
-     */
-    private static String DEFAULT_ATTACHMENT_DIR = "axiomTmp";
-    
-    /**
-     * @deprecated
-     */
-    private static int DELETE_TIME = 60 * 60; // 1 Hour
-    
     /**
      * @deprecated This method was internally used by Axiom before version 1.2.9 but is no longer
      *             required.
@@ -122,95 +99,6 @@ public class TextHelper {
         // Otherwise append the text
         buffer.append(omText.getText());
         return;
-    }
-    
-    /**
-     * @deprecated The implementation of this method is incomplete. It will be removed in Axiom 1.3.
-     */
-    public static OMText toOMText(byte[] b, int off, int length, 
-                                  OMFactory factory, 
-                                  boolean isOptimize) throws IOException, MessagingException {
-        String attachmentDir = getAttachmentDir(factory);
-        return toOMText(b, off, length, factory, isOptimize, attachmentDir);
-    }
-    
-    /**
-     * @deprecated The implementation of this method is incomplete. It will be removed in Axiom 1.3.
-     */
-    public static OMText toOMText(byte[] b, int off, int length, 
-                                      OMFactory factory, 
-                                      boolean isOptimize,
-                                      String attachmentDir) throws IOException, MessagingException {
-        OMText omText = null;
-        if (isOptimize) {
-            LifecycleManager lm = getLifecycleManager(factory);
-            int threshold = getThreshold(factory);
-            
-            // TODO Consider lowering the threshold in low memory situations ?
-            //threshold = lm.getRuntimeThreshold(threshold);
-            
-            if (length >= threshold && attachmentDir != null) {
-                
-                // Get the file accessor
-                FileAccessor fileAccessor = lm.create(attachmentDir);
-                OutputStream fos = fileAccessor.getOutputStream();
-                
-                //Copy the bytes into the file
-                ByteArrayInputStream is = new ByteArrayInputStream(b, off, length);
-                BufferUtils.inputStream2OutputStream(is, fos);
-                fos.close();
-                
-                // Delete this temp file on exit
-                lm.deleteOnExit(fileAccessor.getFile());
-                lm.deleteOnTimeInterval(DELETE_TIME, fileAccessor.getFile());
-                
-                // Create the OMText node from the datahandler
-                DataHandler dh = fileAccessor.getDataHandler(null);
-                omText = factory.createOMText(dh, isOptimize);
-            }
-        }
-        if (omText == null) {
-            omText = factory.createOMText(Base64Utils.encode(b, off, length));
-            omText.setOptimize(isOptimize);
-        }
-        return omText;
-    }
-   
-    /**
-     * @deprecated
-     */
-    private static LifecycleManager getLifecycleManager(OMFactory factory) {
-        return new LifecycleManagerImpl();
-    }
-    
-    /**
-     * @deprecated
-     */
-    private static int getThreshold(OMFactory factory) {
-       
-        int threshold = DEFAULT_FILE_THRESHOLD;
-        /* TODO Support access to threshold from the factory
-        if (factory.getProperty(FILE_THRESHOLD)) {
-            ...
-        }
-        */
-        return threshold;
-        
-    }
-    
-    /**
-     * @deprecated
-     */
-    private static String getAttachmentDir(OMFactory factory) {
-        
-        String attachmentDir = DEFAULT_ATTACHMENT_DIR;
-        /* TODO Support access to threshold from the factory
-        if (factory.getProperty(FILE_THRESHOLD)) {
-            ...
-        }
-        */
-        return attachmentDir;
-        
     }
     
 }

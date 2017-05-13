@@ -28,9 +28,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Observable;
 
-import javax.activation.DataHandler;
-
-import org.apache.axiom.attachments.CachedFileDataSource;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,23 +48,6 @@ public class FileAccessor extends Observable{
         super();
         this.manager = manager;
         this.file = file;   
-    }
-
-    /**
-     * @deprecated This method is no longer used in Axiom 1.2.13 and will be removed in Axiom 1.3.
-     */
-    public DataHandler getDataHandler(String contentType) {
-        if(log.isDebugEnabled()){
-            log.debug("getDataHandler()");
-            log.debug("accessCount =" +accessCount);
-        }
-        CachedFileDataSource dataSource = new CachedFileDataSource(file);
-        dataSource.setContentType(contentType);
-       	accessCount++;
-       	setChanged();
-       	notifyObservers();
-       	DataHandler dataHandler = new DataHandler(dataSource);
-       	return new DataHandlerExtImpl(dataHandler, manager);        
     }
 
     public String getFileName() {
