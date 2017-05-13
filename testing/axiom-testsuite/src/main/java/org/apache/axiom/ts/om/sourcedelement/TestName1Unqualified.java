@@ -20,13 +20,10 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import java.io.StringWriter;
 
-import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
@@ -58,9 +55,7 @@ public class TestName1Unqualified extends AxiomTestCase {
 
         // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
-        xmlwriter.flush();
         String result = writer.toString();
 
         assertTrue(element.getLocalName().equals("library"));
@@ -72,9 +67,7 @@ public class TestName1Unqualified extends AxiomTestCase {
 
         // Serialize again
         writer = new StringWriter();
-        xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
-        xmlwriter.flush();
         result = writer.toString();
 
         assertTrue(element.getLocalName().equals("library"));

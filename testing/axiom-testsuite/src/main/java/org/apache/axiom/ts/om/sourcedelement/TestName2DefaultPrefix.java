@@ -20,13 +20,10 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import java.io.StringWriter;
 
-import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
@@ -62,9 +59,7 @@ public class TestName2DefaultPrefix extends AxiomTestCase {
         // Serialize and consume.  This should not cause expansion and currently won't update
         // the name of the element.
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serializeAndConsume(writer);
-        xmlwriter.flush();
         String result = writer.toString();
 
         assertTrue(element.getLocalName().equals("library"));
