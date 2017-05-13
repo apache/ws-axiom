@@ -28,6 +28,9 @@ import org.apache.axiom.mime.MediaType;
  * one of these from a SOAP element, we can get at the right 
  */
 public interface SOAPVersion {
+    SOAPVersion SOAP11 = new SOAP11Version();
+    SOAPVersion SOAP12 = new SOAP12Version();
+    
     /**
      * Obtain the envelope namespace for this version of SOAP
      */

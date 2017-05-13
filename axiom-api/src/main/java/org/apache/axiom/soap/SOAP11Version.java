@@ -27,10 +27,12 @@ import org.apache.axiom.mime.MediaType;
  * Version-specific stuff for SOAP 1.1
  */
 public class SOAP11Version implements SOAPVersion, SOAP11Constants {
-    private static final SOAP11Version singleton = new SOAP11Version();
-    public static SOAP11Version getSingleton() { return singleton; }
+    /**
+     * @deprecated Use {@link SOAPVersion#SOAP11} instead.
+     */
+    public static SOAP11Version getSingleton() { return (SOAP11Version)SOAPVersion.SOAP11; }
 
-    private SOAP11Version() {
+    SOAP11Version() {
     }
 
     @Override
