@@ -22,7 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Iterator;
 
-import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
@@ -43,8 +43,8 @@ public class TestBuilderDetach extends AxiomTestCase {
     protected void runTest() throws Throwable {
         MTOMSample sample = MTOMSample.SAMPLE1;
         InstrumentedInputStream in = new InstrumentedInputStream(sample.getInputStream());
-        Attachments attachments = new Attachments(in, sample.getContentType());
-        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments);
+        MultipartBody mb = MultipartBody.builder().setInputStream(in).setContentType(sample.getContentType()).build();
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb);
         SOAPEnvelope envelope = builder.getSOAPEnvelope();
         long countBeforeDetach = in.getCount();
         builder.detach();

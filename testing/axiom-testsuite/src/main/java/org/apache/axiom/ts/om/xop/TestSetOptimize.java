@@ -29,10 +29,9 @@ import javax.mail.Multipart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
-import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
@@ -56,7 +55,7 @@ public class TestSetOptimize extends AxiomTestCase {
             OMDocument document = OMXMLBuilderFactory.createOMBuilder(
                     metaFactory.getOMFactory(),
                     StAXParserConfiguration.DEFAULT,
-                    new Attachments(in, XOP_SPEC_SAMPLE.getContentType())).getDocument();
+                    MultipartBody.builder().setInputStream(in).setContentType(XOP_SPEC_SAMPLE.getContentType()).build()).getDocument();
             for (Iterator<OMSerializable> it = document.getDescendants(false); it.hasNext(); ) {
                 OMSerializable node = it.next();
                 if (node instanceof OMText) {

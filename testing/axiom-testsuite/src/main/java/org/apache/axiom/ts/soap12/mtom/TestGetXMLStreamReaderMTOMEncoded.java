@@ -26,7 +26,7 @@ import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -49,8 +49,11 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         InputStream inStream = MTOMSample.SAMPLE2.getInputStream();
-        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE2.getContentType());
-        OMElement root = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getDocumentElement();
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(inStream)
+                .setContentType(MTOMSample.SAMPLE2.getContentType())
+                .build();
+        OMElement root = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getDocumentElement();
         
         // Use tree as input to XMLStreamReader
         // Issue XOP:Include events for optimized MTOM text nodes

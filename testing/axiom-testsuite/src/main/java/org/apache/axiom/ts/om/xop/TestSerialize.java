@@ -21,7 +21,7 @@ package org.apache.axiom.ts.om.xop;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
@@ -46,7 +46,7 @@ public class TestSerialize extends AxiomTestCase {
 
         // Read in message: SOAPPart and 2 image attachments
         InputStream inStream = testMessage.getInputStream();
-        Attachments attachments = new Attachments(inStream, testMessage.getContentType());
+        MultipartBody mb = MultipartBody.builder().setInputStream(inStream).setContentType(testMessage.getContentType()).build();
         
         OMOutputFormat oof = new OMOutputFormat();
         oof.setDoOptimize(true);
@@ -61,7 +61,7 @@ public class TestSerialize extends AxiomTestCase {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         
         OMXMLParserWrapper builder =
-            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments);
+            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb);
         OMElement om = builder.getDocumentElement();
         om.serialize(baos, oof);
         om.close(false);

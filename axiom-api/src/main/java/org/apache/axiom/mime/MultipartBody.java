@@ -133,6 +133,8 @@ public final class MultipartBody implements Iterable<Part> {
     private PartImpl firstPart;
     private PartImpl rootPart;
 
+    private int partCount;
+
     private final WritableBlobFactory<?> attachmentBlobFactory;
     private final DataHandlerFactory dataHandlerFactory;
     private final PartCreationListener partCreationListener;
@@ -211,6 +213,16 @@ public final class MultipartBody implements Iterable<Part> {
         return null;
     }
 
+    /**
+     * Get the number of parts in this multipart.
+     * 
+     * @return the number of parts
+     */
+    public int getPartCount() {
+        detach();
+        return partCount;
+    }
+
     PartImpl getFirstPart() {
         if (firstPart == null) {
             getNextPart();
@@ -277,6 +289,7 @@ public final class MultipartBody implements Iterable<Part> {
                 throw new MIMEException(ex);
             }
 
+            partCount++;
             if (partContentID != null) {
                 if (partMap.containsKey(partContentID)) {
                     throw new MIMEException(

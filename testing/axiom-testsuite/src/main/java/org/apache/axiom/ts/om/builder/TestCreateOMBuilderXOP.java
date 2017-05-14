@@ -21,7 +21,7 @@ package org.apache.axiom.ts.om.builder;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
-import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -43,8 +43,11 @@ public class TestCreateOMBuilderXOP extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Attachments attachments = new Attachments(sample.getInputStream(), sample.getContentType());
-        OMElement content = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments).getDocumentElement();
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(sample.getInputStream())
+                .setContentType(sample.getContentType())
+                .build();
+        OMElement content = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb).getDocumentElement();
         if (build) {
             content.build();
         }

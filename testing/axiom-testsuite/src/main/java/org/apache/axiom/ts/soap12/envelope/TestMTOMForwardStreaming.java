@@ -25,8 +25,8 @@ import java.util.Iterator;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
-import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
+import org.apache.axiom.mime.MultipartBody;
+import org.apache.axiom.mime.PartDataHandler;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
@@ -104,8 +104,8 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
             public void run() {
                 try {
                     try {
-                        Attachments attachments = new Attachments(pipe1In, contentType);
-                        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getSOAPEnvelope();
+                        MultipartBody mb = MultipartBody.builder().setInputStream(pipe1In).setContentType(contentType).build();
+                        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
                         // The code path executed by serializeAndConsume is significantly different if
                         // the element is built. Therefore we need two different test executions.
                         if (buildSOAPPart) {
@@ -124,17 +124,17 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
         forwarderThread.start();
         
         try {
-            Attachments attachments = new Attachments(pipe2In, contentType);
-            SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getSOAPEnvelope();
+            MultipartBody mb = MultipartBody.builder().setInputStream(pipe2In).setContentType(contentType).build();
+            SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
             OMElement bodyElement = envelope.getBody().getFirstElement();
             Iterator<OMElement> it = bodyElement.getChildElements();
             OMElement data1 = it.next();
             OMElement data2 = it.next();
             
             IOTestUtils.compareStreams(ds1.getInputStream(),
-                    ((DataHandlerExt)((OMText)data1.getFirstOMChild()).getDataHandler()).readOnce());
+                    ((PartDataHandler)((OMText)data1.getFirstOMChild()).getDataHandler()).getPart().getInputStream(false));
             IOTestUtils.compareStreams(ds2.getInputStream(),
-                    ((DataHandlerExt)((OMText)data2.getFirstOMChild()).getDataHandler()).readOnce());
+                    ((PartDataHandler)((OMText)data2.getFirstOMChild()).getDataHandler()).getPart().getInputStream(false));
         } finally {
             pipe2In.close();
         }

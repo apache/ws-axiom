@@ -18,13 +18,14 @@
  */
 package org.apache.axiom.ts.om.builder;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
-import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.blob.Blobs;
+import org.apache.axiom.blob.MemoryBlob;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -75,14 +76,18 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
         // Serialize the message
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        orgRoot.serialize(baos, format);
+        MemoryBlob blob = Blobs.createMemoryBlob();
+        OutputStream out = blob.getOutputStream();
+        orgRoot.serialize(out, format);
+        out.close();
         
         // Parse the message
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory,
                 StAXParserConfiguration.NON_COALESCING,
-                new Attachments(new ByteArrayInputStream(baos.toByteArray()),
-                        format.getContentType()));
+                MultipartBody.builder()
+                        .setInputStream(blob.getInputStream())
+                        .setContentType(format.getContentType())
+                        .build());
         OMElement root = builder.getDocumentElement();
         OMElement child1 = (OMElement)root.getFirstOMChild();
         OMText text = (OMText)child1.getFirstOMChild();

@@ -91,6 +91,11 @@ public interface Part {
     DataHandler getDataHandler();
 
     /**
+     * Make sure that this part has been fully read from the underlying stream.
+     */
+    void fetch();
+
+    /**
      * Discard the content of this part.
      */
     void discard();

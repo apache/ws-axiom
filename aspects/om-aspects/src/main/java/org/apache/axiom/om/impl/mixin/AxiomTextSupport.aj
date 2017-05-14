@@ -22,6 +22,7 @@ import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.mime.PartDataHandler;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -132,8 +133,10 @@ public aspect AxiomTextSupport {
 
     public final void AxiomText.buildWithAttachments() {
         if (isOptimized()) {
-            // The call to getDataSource ensures that the MIME part is completely read
-            getDataHandler().getDataSource();
+            DataHandler dataHandler = getDataHandler();
+            if (dataHandler instanceof PartDataHandler) {
+                ((PartDataHandler)dataHandler).getPart().fetch();
+            }
         }
     }
 

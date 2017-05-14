@@ -193,12 +193,7 @@ final class PartImpl implements Part {
         return in;
     }
     
-    /**
-     * Make sure that the MIME part has been fully read from the parser. If the part has not been
-     * read yet, then it will be buffered. This method prepares the parser for reading the next part
-     * in the stream.
-     */
-    void fetch() {
+    public void fetch() {
         switch (state) {
             case STATE_UNREAD:
                 checkParserState(parser.getState(), EntityState.T_BODY);

@@ -18,14 +18,15 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.jaxb;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
 import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.blob.Blobs;
+import org.apache.axiom.blob.MemoryBlob;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
@@ -63,14 +64,19 @@ public class TestDataHandlerSerializationWithMTOM extends AxiomTestCase {
         // Serialize the message
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        MemoryBlob blob = Blobs.createMemoryBlob();
+        OutputStream out = blob.getOutputStream();
         orgEnvelope.serialize(out, format);
+        out.close();
         assertFalse(element.isExpanded());
         
         // Parse the serialized message
-        Attachments att = new Attachments(new ByteArrayInputStream(out.toByteArray()), format.getContentType());
-        assertEquals(2, att.getAllContentIDs().length);
-        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(att).getSOAPEnvelope();
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(blob.getInputStream())
+                .setContentType(format.getContentType())
+                .build();
+        assertEquals(2, mb.getPartCount());
+        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
         OMElement contentElement = envelope.getBody().getFirstElement().getFirstChildWithName(
                 new QName("http://ws.apache.org/axiom/test/jaxb", "content"));
         OMText content = (OMText)contentElement.getFirstOMChild();

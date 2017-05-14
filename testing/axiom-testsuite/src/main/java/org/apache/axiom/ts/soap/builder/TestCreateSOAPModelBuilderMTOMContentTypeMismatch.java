@@ -29,10 +29,10 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -43,7 +43,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.apache.axiom.util.UIDGenerator;
 
 /**
- * Tests that {@link OMXMLBuilderFactory#createSOAPModelBuilder(OMMetaFactory, Attachments)}
+ * Tests that {@link OMXMLBuilderFactory#createSOAPModelBuilder(OMMetaFactory, MultipartBody)}
  * produces an error if the SOAP version used in the root part doesn't match the Content-Type of the
  * message.
  */
@@ -98,7 +98,9 @@ public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends SOAPTestC
         out.close();
         // Now attempt to create an Axiom builder
         try {
-            OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new Attachments(blob.getInputStream(), contentType.toString()));
+            OMXMLBuilderFactory.createSOAPModelBuilder(
+                    metaFactory,
+                    MultipartBody.builder().setInputStream(blob.getInputStream()).setContentType(contentType).build());
             fail("Expected SOAPProcessingException");
         } catch (SOAPProcessingException ex) {
             // Expected

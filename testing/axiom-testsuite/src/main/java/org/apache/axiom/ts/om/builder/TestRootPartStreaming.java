@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -64,7 +64,7 @@ public class TestRootPartStreaming extends AxiomTestCase {
         InstrumentedInputStream in = new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory,
                 StAXParserConfiguration.DEFAULT,
-                new Attachments(in, format.getContentType()));
+                MultipartBody.builder().setInputStream(in).setContentType(format.getContentType()).build());
         OMElement root = builder.getDocumentElement();
         long count1 = in.getCount();
         XMLStreamReader reader = root.getXMLStreamReader(false);

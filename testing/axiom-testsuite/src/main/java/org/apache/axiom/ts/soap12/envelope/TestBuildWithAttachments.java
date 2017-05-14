@@ -21,7 +21,7 @@ package org.apache.axiom.ts.soap12.envelope;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
@@ -40,8 +40,8 @@ public class TestBuildWithAttachments extends AxiomTestCase {
     protected void runTest() throws Throwable {
         MTOMSample sample = MTOMSample.SAMPLE1;
         InputStream in = sample.getInputStream();
-        Attachments attachments = new Attachments(in, sample.getContentType());
-        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getSOAPEnvelope();
+        MultipartBody mb = MultipartBody.builder().setInputStream(in).setContentType(sample.getContentType()).build();
+        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
         envelope.buildWithAttachments();
         in.close();
         Iterator<OMElement> it = envelope.getBody().getFirstElement().getChildElements();

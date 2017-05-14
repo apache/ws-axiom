@@ -23,9 +23,9 @@ import java.io.OutputStream;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
+import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -46,7 +46,10 @@ public class TestRegisterCustomBuilderForPayloadJAXBWithXOP extends RegisterCust
         format.setDoOptimize(true);
         createTestDocument(dh).serialize(out, format);
         out.close();
-        Attachments attachments = new Attachments(blob.getInputStream(), format.getContentType());
-        test(dh, OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments), false);
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(blob.getInputStream())
+                .setContentType(format.getContentType())
+                .build();
+        test(dh, OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb), false);
     }
 }

@@ -35,7 +35,6 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
-import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreChildNode;
@@ -53,6 +52,7 @@ import org.apache.axiom.core.stream.sax.XmlHandlerContentHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.stax.pull.StAXPivot;
 import org.apache.axiom.core.stream.stax.push.XMLStreamWriterNamespaceContextProvider;
+import org.apache.axiom.mime.PartDataHandler;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -314,11 +314,11 @@ public aspect AxiomContainerSupport {
                 rootPartOutputStream.close();
                 for (String contentID : encoder.getContentIDs()) {
                     DataHandler dataHandler = encoder.getDataHandler(contentID);
-                    if (cache || !(dataHandler instanceof DataHandlerExt)) {
+                    if (cache || !(dataHandler instanceof PartDataHandler)) {
                         multipartWriter.writePart(dataHandler, contentID);
                     } else {
                         OutputStream part = multipartWriter.writePart(dataHandler.getContentType(), contentID);
-                        IOUtils.copy(((DataHandlerExt)dataHandler).readOnce(), part, -1);
+                        IOUtils.copy(((PartDataHandler)dataHandler).getPart().getInputStream(false), part, -1);
                         part.close();
                     }
                 }
