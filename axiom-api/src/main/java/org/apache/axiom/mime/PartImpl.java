@@ -179,14 +179,7 @@ final class PartImpl implements Part {
     }
     
     private InputStream getDecodedInputStream() {
-        InputStream in;
-        if ("quoted-printable".equalsIgnoreCase(getHeader("Content-Transfer-Encoding"))) {
-            // Temporary workaround for AXIOM-467 while waiting for MIME4J 0.7.3:
-            // use a copy of QuotedPrintableInputStream from the 0.7 branch.
-            in = new QuotedPrintableInputStream(parser.getInputStream(), true);
-        } else {
-            in = parser.getDecodedInputStream();
-        }
+        InputStream in = parser.getDecodedInputStream();
         if (log.isDebugEnabled()) {
             in = new DebugInputStream(in, log);
         }

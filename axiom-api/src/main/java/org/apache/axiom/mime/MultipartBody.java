@@ -115,6 +115,8 @@ public final class MultipartBody implements Iterable<Part> {
 
     private static final Log log = LogFactory.getLog(MultipartBody.class);
     
+    private static final MimeConfig config = MimeConfig.custom().setStrictParsing(true).build();
+    
     /** <code>ContentType</code> of the MIME message */
     private final ContentType contentType;
     private final String rootPartContentID;
@@ -151,8 +153,6 @@ public final class MultipartBody implements Iterable<Part> {
         String start = contentType.getParameter("start");
         rootPartContentID = start == null ? null : normalizeContentID(start);
 
-        MimeConfig config = new MimeConfig();
-        config.setStrictParsing(true);
         parser = new MimeTokenStream(config);
         parser.setRecursionMode(RecursionMode.M_NO_RECURSE);
         parser.parseHeadless(inStream, contentType.toString());
