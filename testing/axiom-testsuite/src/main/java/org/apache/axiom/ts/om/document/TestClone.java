@@ -24,10 +24,9 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.om.XMLSampleAdapter;
 import org.apache.axiom.ts.xml.XMLSample;
-import org.xml.sax.InputSource;
 
 public class TestClone extends ConformanceTestCase {
     public TestClone(OMMetaFactory metaFactory, XMLSample file) {
@@ -36,8 +35,7 @@ public class TestClone extends ConformanceTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMDocument original = ((OMMetaFactorySPI)metaFactory).createOMBuilder(TEST_PARSER_CONFIGURATION,
-                new InputSource(file.getUrl().toString())).getDocument();
+        OMDocument original = file.getAdapter(XMLSampleAdapter.class).getDocument(metaFactory);
         OMDocument clone = (OMDocument)original.clone(new OMCloneOptions());
         assertAbout(xml())
                 .that(xml(OMDocument.class, clone))

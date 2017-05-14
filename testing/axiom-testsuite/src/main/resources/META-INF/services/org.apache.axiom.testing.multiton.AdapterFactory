@@ -17,6 +17,7 @@
 # under the License.
 #
 org.apache.axiom.ts.StreamTypeAdapterFactory
+org.apache.axiom.ts.om.XMLSampleAdapterFactory
 org.apache.axiom.ts.soap.HeaderBlockAttributeAdapterFactory
 org.apache.axiom.ts.soap.SOAPElementTypeAdapterFactory
 org.apache.axiom.ts.soap.SOAPSampleAdapterFactory

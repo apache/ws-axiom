@@ -16,28 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.om;
 
-import static com.google.common.truth.Truth.assertAbout;
-import static org.apache.axiom.truth.xml.XMLTruth.xml;
-
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.ConformanceTestCase;
-import org.apache.axiom.ts.om.XMLSampleAdapter;
+import org.apache.axiom.testing.multiton.AdapterFactory;
+import org.apache.axiom.testing.multiton.Adapters;
 import org.apache.axiom.ts.xml.XMLSample;
 
-public class TestCloneOMElement2 extends ConformanceTestCase {
-    public TestCloneOMElement2(OMMetaFactory metaFactory, XMLSample file) {
-        super(metaFactory, file);
-    }
-
+public class XMLSampleAdapterFactory implements AdapterFactory<XMLSample> {
     @Override
-    protected void runTest() throws Throwable {
-        OMElement original = file.getAdapter(XMLSampleAdapter.class).getDocumentElement(metaFactory);
-        OMElement clone = original.cloneOMElement();
-        assertAbout(xml())
-                .that(xml(OMElement.class, clone))
-                .hasSameContentAs(xml(OMElement.class, original));
+    public void createAdapters(XMLSample instance, Adapters adapters) {
+        adapters.add(new XMLSampleAdapter(instance));
     }
 }
