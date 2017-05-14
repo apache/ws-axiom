@@ -29,8 +29,8 @@ import javax.xml.ws.Endpoint;
 
 import junit.framework.TestCase;
 
-import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
+import org.apache.axiom.mime.MultipartBody;
+import org.apache.axiom.mime.PartDataHandler;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
@@ -65,19 +65,17 @@ public class MTOMSample extends TestCase {
         
         // Get the SOAP response
         InputStream in = connection.getInputStream();
-        Attachments attachments = new Attachments(in, connection.getContentType());
-        SOAPEnvelope response = OMXMLBuilderFactory.createSOAPModelBuilder(attachments).getSOAPEnvelope();
+        MultipartBody multipartBody = MultipartBody.builder()
+                .setInputStream(in)
+                .setContentType(connection.getContentType())
+                .build();
+        SOAPEnvelope response = OMXMLBuilderFactory.createSOAPModelBuilder(multipartBody).getSOAPEnvelope();
         OMElement retrieveContentResponse = response.getBody().getFirstElement();
         OMElement content = retrieveContentResponse.getFirstElement();
         // Extract the DataHandler representing the optimized binary data
         DataHandler dh = ((OMText)content.getFirstOMChild()).getDataHandler();
-        InputStream contentStream;
-        // If possible, stream the content of the MIME part (feature available in Axiom 1.2.13)
-        if (dh instanceof DataHandlerExt) {
-            contentStream = ((DataHandlerExt)dh).readOnce();
-        } else {
-            contentStream = dh.getInputStream();
-        }
+        // Stream the content of the MIME part
+        InputStream contentStream = ((PartDataHandler)dh).getPart().getInputStream(false);
         // Write the content to the result stream
         IOUtils.copy(contentStream, result);
         contentStream.close();

@@ -116,16 +116,15 @@ It then extracts the binary content from the response and writes it to a given `
 <!-- MACRO{snippet|id=retrieveContent|file=samples/src/test/java/org/apache/axiom/samples/MTOMSample.java} -->
 
 The sample code shows that in order to parse an MTOM message one first needs to construct an
-`Attachments` object that is then passed to the relevant method in `OMXMLBuilderFactory`.
+`MultipartBody` object that is then passed to the relevant method in `OMXMLBuilderFactory`.
 In the object model, an XOP/MTOM attachment is represented as an `OMText` node for which `isBinary()` returns
 `true`. Such a node is created for each `xop:Include` element in the original message.
 The binary data is stored in a `DataHandler` object that can be obtained by a call to the
 `getDataHandler()` method of the `OMText` node.
 
-By default attachments are loaded into memory, but the constructors of the `Attachments` class
-allow to configure caching on disk. The sample actually shows an alternative method to reduce the
-memory footprint of the MTOM processing, which is to enable streaming. This is supported starting
-with Axiom 1.2.13.
+By default attachments are loaded into memory, but the `MultipartBody` can be configured to buffer
+data on disk. The sample actually shows an alternative method to reduce the
+memory footprint of the MTOM processing, which is to enable streaming.
 
 Logging MTOM messages without inlining optimized binary data
 ------------------------------------------------------------
