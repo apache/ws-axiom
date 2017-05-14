@@ -413,58 +413,8 @@ public final class Serializer extends SerializerBase implements XmlHandler {
             int lastDirtyCharProcessed = start - 1; // last non-clean character that was processed
 													// that was processed
             final XmlWriter writer = m_writer;
-            boolean isAllWhitespace = true;
 
-            // process any leading whitspace
-            i = start;
-            while (i < end && isAllWhitespace) {
-                char ch1 = chars[i];
-
-                if (m_charInfo.shouldMapTextChar(ch1)) {
-                    // The character is supposed to be replaced by a String
-                    // so write out the clean whitespace characters accumulated
-                    // so far
-                    // then the String.
-                    writeOutCleanChars(chars, i, lastDirtyCharProcessed);
-                    String outputStringForChar = m_charInfo
-                            .getOutputStringForChar(ch1);
-                    writer.write(outputStringForChar);
-                    // We can't say that everything we are writing out is
-                    // all whitespace, we just wrote out a String.
-                    isAllWhitespace = false;
-                    lastDirtyCharProcessed = i; // mark the last non-clean
-                    // character processed
-                    i++;
-                } else {
-                    // The character is clean, but is it a whitespace ?
-                    switch (ch1) {
-                    // TODO: Any other whitespace to consider?
-                    case CharInfo.S_SPACE:
-                    case CharInfo.S_LINEFEED:
-                        // Just accumulate the clean whitespace
-                        i++;
-                        break;
-                    case CharInfo.S_CARRIAGERETURN:
-                        writeOutCleanChars(chars, i, lastDirtyCharProcessed);
-                        writer.write("&#13;");
-                        lastDirtyCharProcessed = i;
-                        i++;
-                        break;
-                    case CharInfo.S_HORIZONAL_TAB:
-                        // Just accumulate the clean whitespace
-                        i++;
-                        break;
-                    default:
-                        // The character was clean, but not a whitespace
-                        // so break the loop to continue with this character
-                        // (we don't increment index i !!)
-                        isAllWhitespace = false;
-                        break;
-                    }
-                }
-            }
-
-            for (; i < end; i++)
+            for (i = start; i < end; i++)
             {
                 char ch = chars[i];
                 
