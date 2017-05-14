@@ -76,14 +76,4 @@ public abstract class SerializerBase
      * everytime and it runs faster.
      */
     protected char[] m_charsBuff = new char[60];
-    
-    /**
-     * A utility buffer for converting Strings passed to
-     * attribute methods to character arrays.
-     * Reusing this buffer means not creating a new character array
-     * everytime and it runs faster.
-     */
-    protected char[] m_attrBuff = new char[30];
 }
-    
-
