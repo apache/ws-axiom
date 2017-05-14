@@ -38,10 +38,6 @@ import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
  * @xsl.usage internal
  */
 public final class Serializer extends SerializerBase implements XmlHandler {
-
-    private static final String COMMENT_BEGIN = "<!--";
-    private static final String COMMENT_END = "-->";
-
     private final XmlWriter m_writer;
     private final OutputStream outputStream;
     
@@ -445,17 +441,17 @@ public final class Serializer extends SerializerBase implements XmlHandler {
                         // common TAB, NEW-LINE, CARRIAGE-RETURN
                         switch (ch) {
 
-                        case CharInfo.S_HORIZONAL_TAB:
+                        case 0x09:
                             if (context == Context.ATTRIBUTE_VALUE) {
                                 replacement = "&#9;";
                             }
                             break;
-                        case CharInfo.S_LINEFEED:
+                        case 0x0A:
                             if (context == Context.ATTRIBUTE_VALUE) {
                                 replacement = "&#10;";
                             }
                             break;
-                        case CharInfo.S_CARRIAGERETURN:
+                        case 0x0D:
                             replacement = "&#13;";
                             // Leave whitespace carriage return as a real character
                             break;
@@ -476,7 +472,7 @@ public final class Serializer extends SerializerBase implements XmlHandler {
                         // More control characters, including NEL (0x85)
                         generateCharacterReference = true;
                     }
-                    else if (ch == CharInfo.S_LINE_SEPARATOR) {
+                    else if (ch == 0x2028) {
                         // LINE SEPARATOR
                         replacement = "&#8232;";
                     }
@@ -731,7 +727,7 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     public void startComment() throws StreamException {
         closeStartTag();
         try {
-            m_writer.write(COMMENT_BEGIN);
+            m_writer.write("<!--");
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
@@ -741,7 +737,7 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     @Override
     public void endComment() throws StreamException {
         try {
-            m_writer.write(COMMENT_END);
+            m_writer.write("-->");
         } catch (IOException ex) {
             throw new StreamException(ex);
         }

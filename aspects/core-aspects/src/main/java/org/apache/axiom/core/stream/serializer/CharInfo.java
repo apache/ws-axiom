@@ -50,20 +50,11 @@ final class CharInfo
     public static final String XML_ENTITIES_RESOURCE = 
                 SerializerBase.PKG_NAME+".XMLEntities";
 
-    /** The horizontal tab character, which the parser should always normalize. */
-    static final char S_HORIZONAL_TAB = 0x09;
-
-    /** The linefeed character, which the parser should always normalize. */
-    static final char S_LINEFEED = 0x0A;
-
     /** The carriage return character, which the parser should always normalize. */
-    static final char S_CARRIAGERETURN = 0x0D;
-    static final char S_SPACE = 0x20;
     static final char S_QUOTE = 0x22;
     static final char S_LT = 0x3C;
     static final char S_GT = 0x3E;
     static final char S_NEL = 0x85;    
-    static final char S_LINE_SEPARATOR = 0x2028;
     
     /** This flag is an optimization for HTML entities. It false if entities 
      * other than quot (34), amp (38), lt (60) and gt (62) are defined
