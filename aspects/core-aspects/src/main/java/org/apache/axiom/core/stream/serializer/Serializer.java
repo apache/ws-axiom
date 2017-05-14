@@ -404,7 +404,6 @@ public final class Serializer extends SerializerBase implements XmlHandler {
         try
         {
             int i;
-            int startClean;
             
             // skip any leading whitspace 
             // don't go off the end and use a hand inlined version
@@ -417,15 +416,14 @@ public final class Serializer extends SerializerBase implements XmlHandler {
             for (i = start; i < end; i++)
             {
                 char ch = chars[i];
+                String replacement = null;
+                boolean generateCharacterReference = false;
                 
                 if (m_charInfo.shouldMapTextChar(ch)) {
                     // The character is supposed to be replaced by a String
                     // e.g.   '&'  -->  "&amp;"
                     // e.g.   '<'  -->  "&lt;"
-                    writeOutCleanChars(chars, i, lastDirtyCharProcessed);
-                    String outputStringForChar = m_charInfo.getOutputStringForChar(ch);
-                    writer.write(outputStringForChar);
-                    lastDirtyCharProcessed = i;
+                    replacement = m_charInfo.getOutputStringForChar(ch);
                 }
                 else {
                     if (ch <= 0x1F) {
@@ -451,15 +449,11 @@ public final class Serializer extends SerializerBase implements XmlHandler {
                             // Leave whitespace as a real character
                             break;
                         case CharInfo.S_CARRIAGERETURN:
-                        	writeOutCleanChars(chars, i, lastDirtyCharProcessed);
-                        	writer.write("&#13;");
-                        	lastDirtyCharProcessed = i;
+                            replacement = "&#13;";
                             // Leave whitespace carriage return as a real character
                             break;
                         default:
-                            writeOutCleanChars(chars, i, lastDirtyCharProcessed);
-                            writer.writeCharacterReference(ch);
-                            lastDirtyCharProcessed = i;
+                            generateCharacterReference = true;
                             break;
 
                         }
@@ -473,22 +467,33 @@ public final class Serializer extends SerializerBase implements XmlHandler {
                     else if (ch <= 0x9F){
                         // Range 0x7F through 0x9F inclusive
                         // More control characters, including NEL (0x85)
-                        writeOutCleanChars(chars, i, lastDirtyCharProcessed);
-                        writer.writeCharacterReference(ch);
-                        lastDirtyCharProcessed = i;
+                        generateCharacterReference = true;
                     }
                     else if (ch == CharInfo.S_LINE_SEPARATOR) {
                         // LINE SEPARATOR
-                        writeOutCleanChars(chars, i, lastDirtyCharProcessed);
-                        writer.write("&#8232;");
-                        lastDirtyCharProcessed = i;
+                        replacement = "&#8232;";
                     }
+                }
+                if (replacement != null || generateCharacterReference) {
+                    int startClean;
+                    startClean = lastDirtyCharProcessed + 1;
+                    if (startClean < i)
+                    {
+                        int lengthClean = i - startClean;
+                        writer.write(chars, startClean, lengthClean);
+                    }
+                    if (replacement != null) {
+                        writer.write(replacement);
+                    } else {
+                        writer.writeCharacterReference(ch);
+                    }
+                    lastDirtyCharProcessed = i;
                 }
             }
             
             // we've reached the end. Any clean characters at the
             // end of the array than need to be written out?
-            startClean = lastDirtyCharProcessed + 1;
+            int startClean = lastDirtyCharProcessed + 1;
             if (i > startClean)
             {
                 int lengthClean = i - startClean;
@@ -501,15 +506,6 @@ public final class Serializer extends SerializerBase implements XmlHandler {
         }
     }
 
-	private void writeOutCleanChars(final char[] chars, int i, int lastProcessed) throws IOException {
-        int startClean;
-        startClean = lastProcessed + 1;
-        if (startClean < i)
-        {
-            int lengthClean = i - startClean;
-            m_writer.write(chars, startClean, lengthClean);
-        }
-    }     
     /**
      * This method checks if a given character is between C0 or C1 range
      * of Control characters.
