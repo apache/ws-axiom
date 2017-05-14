@@ -37,40 +37,48 @@ import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
  * 
  * @xsl.usage internal
  */
-public final class Serializer extends SerializerBase implements XmlHandler {
-    private final XmlWriter m_writer;
+public final class Serializer implements XmlHandler {
+    private final XmlWriter writer;
     private final OutputStream outputStream;
     
     /**
      * Add space before '/>' for XHTML.
      */
-    protected boolean m_spaceBeforeClose = false;
+    protected boolean spaceBeforeClose = false;
 
     /**
      * Tells if we're in an internal document type subset.
      */
-    protected boolean m_inDoctype = false;
+    protected boolean inDoctype = false;
 
-    protected Context context = Context.MIXED_CONTENT;
+    private Context context = Context.MIXED_CONTENT;
     private int matchedIllegalCharacters;
     private String[] elementNameStack = new String[8];
     private int depth;
     private boolean startTagOpen;
 
+    /**
+     * A utility buffer for converting Strings passed to
+     * character() methods to character arrays.
+     * Reusing this buffer means not creating a new character array
+     * everytime and it runs faster.
+     */
+    private char[] charsBuff = new char[60];
+
     public Serializer(Writer out) {
-        m_writer = new WriterXmlWriter(out);
+        writer = new WriterXmlWriter(out);
         outputStream = null;
     }
 
     public Serializer(OutputStream out, String encoding) {
-        m_writer = XmlWriter.create(out, encoding);
+        writer = XmlWriter.create(out, encoding);
         outputStream = out;
     }
 
     protected void switchContext(Context context) throws StreamException {
         this.context = context;
         try {
-            m_writer.setUnmappableCharacterHandler(context.getUnmappableCharacterHandler());
+            writer.setUnmappableCharacterHandler(context.getUnmappableCharacterHandler());
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
@@ -95,8 +103,6 @@ public final class Serializer extends SerializerBase implements XmlHandler {
         }
     }
 
-    // Implement DeclHandler
-
     /**
      *   Report an element type declaration.
      *  
@@ -110,24 +116,17 @@ public final class Serializer extends SerializerBase implements XmlHandler {
      *   @param model The content model as a normalized string.
      *   @exception StreamException The application may raise an exception.
      */
-    public void elementDecl(String name, String model) throws StreamException
-    {
-        try
-        {
-            final XmlWriter writer = m_writer;
+    public void elementDecl(String name, String model) throws StreamException {
+        try {
             DTDprolog();
-
             writer.write("<!ELEMENT ");
             writer.write(name);
             writer.write(' ');
             writer.write(model);
             writer.write(">\n");
+        } catch (IOException ex) {
+            throw new StreamException(ex);
         }
-        catch (IOException e)
-        {
-            throw new StreamException(e);
-        }
-
     }
 
     /**
@@ -143,19 +142,13 @@ public final class Serializer extends SerializerBase implements XmlHandler {
      * @see #externalEntityDecl
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
-    public void internalEntityDecl(String name, String value)
-        throws StreamException
-    {
-        try
-        {
+    public void internalEntityDecl(String name, String value) throws StreamException {
+        try {
             DTDprolog();
             outputEntityDecl(name, value);
+        } catch (IOException ex) {
+            throw new StreamException(ex);
         }
-        catch (IOException e)
-        {
-            throw new StreamException(e);
-        }
-
     }
 
     /**
@@ -166,9 +159,7 @@ public final class Serializer extends SerializerBase implements XmlHandler {
      *
      * @throws StreamException
      */
-    void outputEntityDecl(String name, String value) throws IOException
-    {
-        final XmlWriter writer = m_writer;
+    private void outputEntityDecl(String name, String value) throws IOException {
         writer.write("<!ENTITY ");
         writer.write(name);
         writer.write(" \"");
@@ -181,7 +172,6 @@ public final class Serializer extends SerializerBase implements XmlHandler {
             Boolean standalone) throws StreamException {
         switchContext(Context.TAG);
         try {
-            final XmlWriter writer = m_writer;
             writer.write("<?xml version=\"");
             writer.write(xmlVersion == null ? "1.0" : xmlVersion);
             writer.write('"');
@@ -225,50 +215,26 @@ public final class Serializer extends SerializerBase implements XmlHandler {
      *        or null if there is none.
      * @exception StreamException The application may raise an exception.
      */
-    public void attributeDecl(
-        String eName,
-        String aName,
-        String type,
-        String valueDefault,
-        String value)
-        throws StreamException
-    {
-        try
-        {
-            final XmlWriter writer = m_writer;
+    public void attributeDecl(String eName, String aName, String type, String valueDefault,
+            String value) throws StreamException {
+        try {
             DTDprolog();
-
             writer.write("<!ATTLIST ");
             writer.write(eName);
             writer.write(' ');
-
             writer.write(aName);
             writer.write(' ');
             writer.write(type);
-            if (valueDefault != null)
-            {
+            if (valueDefault != null) {
                 writer.write(' ');
                 writer.write(valueDefault);
             }
-
             //writer.write(" ");
             //writer.write(value);
             writer.write(">\n");
+        } catch (IOException ex) {
+            throw new StreamException(ex);
         }
-        catch (IOException e)
-        {
-            throw new StreamException(e);
-        }
-    }
-
-    /**
-     * Get the character stream where the events will be serialized to.
-     *
-     * @return Reference to the result Writer, or null.
-     */
-    public XmlWriter getWriter()
-    {
-        return m_writer;
     }
 
     /**
@@ -286,32 +252,22 @@ public final class Serializer extends SerializerBase implements XmlHandler {
      * @see #internalEntityDecl
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
-    public void externalEntityDecl(
-        String name,
-        String publicId,
-        String systemId)
-        throws StreamException
-    {
+    public void externalEntityDecl(String name, String publicId, String systemId) throws StreamException {
         try {
             DTDprolog();
-            
-            m_writer.write("<!ENTITY ");            
-            m_writer.write(name);
+            writer.write("<!ENTITY ");
+            writer.write(name);
             if (publicId != null) {
-                m_writer.write(" PUBLIC \"");
-                m_writer.write(publicId);
-  
+                writer.write(" PUBLIC \"");
+                writer.write(publicId);
+            } else {
+                writer.write(" SYSTEM \"");
+                writer.write(systemId);
             }
-            else {
-                m_writer.write(" SYSTEM \"");
-                m_writer.write(systemId);
-            }
-            m_writer.write("\" >\n");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            writer.write("\" >\n");
+        } catch (IOException ex) {
+            throw new StreamException(ex);
         }
-
     }
 
     /**
@@ -341,9 +297,7 @@ public final class Serializer extends SerializerBase implements XmlHandler {
      *
      * @throws StreamException
      */
-    public void characters(final char chars[], final int start, final int length)
-        throws StreamException
-    {
+    public void characters(char chars[], int start, int length) throws StreamException {
         // It does not make sense to continue with rest of the method if the number of 
         // characters to read from array is 0.
         // Section 7.6.1 of XSLT 1.0 (http://www.w3.org/TR/xslt#value-of) suggest no text node
@@ -384,27 +338,21 @@ public final class Serializer extends SerializerBase implements XmlHandler {
         if (context == Context.CDATA_SECTION || context == Context.COMMENT || context == Context.PROCESSING_INSTRUCTION) {
             // TODO: this doesn't take care of illegal characters
             try {
-                m_writer.write(chars, start, length);
+                writer.write(chars, start, length);
             } catch (IOException ex) {
                 throw new StreamException(ex);
             }
             return;
         }
 
-        try
-        {
+        try {
             int i;
             
-            // skip any leading whitspace 
-            // don't go off the end and use a hand inlined version
-            // of isWhitespace(ch)
             final int end = start + length;
             int lastDirtyCharProcessed = start - 1; // last non-clean character that was processed
 													// that was processed
-            final XmlWriter writer = m_writer;
 
-            for (i = start; i < end; i++)
-            {
+            for (i = start; i < end; i++) {
                 char ch = chars[i];
                 String replacement = null;
                 boolean generateCharacterReference = false;
@@ -458,21 +406,18 @@ public final class Serializer extends SerializerBase implements XmlHandler {
                                 replacement = "&quot;";
                             }
                     }
-                }
-                else if (ch <= 0x9F){
+                } else if (ch <= 0x9F) {
                     // Range 0x7F through 0x9F inclusive
                     // More control characters, including NEL (0x85)
                     generateCharacterReference = true;
-                }
-                else if (ch == 0x2028) {
+                } else if (ch == 0x2028) {
                     // LINE SEPARATOR
                     replacement = "&#8232;";
                 }
                 if (replacement != null || generateCharacterReference) {
                     int startClean;
                     startClean = lastDirtyCharProcessed + 1;
-                    if (startClean < i)
-                    {
+                    if (startClean < i) {
                         int lengthClean = i - startClean;
                         writer.write(chars, startClean, lengthClean);
                     }
@@ -488,59 +433,25 @@ public final class Serializer extends SerializerBase implements XmlHandler {
             // we've reached the end. Any clean characters at the
             // end of the array than need to be written out?
             int startClean = lastDirtyCharProcessed + 1;
-            if (i > startClean)
-            {
+            if (i > startClean) {
                 int lengthClean = i - startClean;
-                m_writer.write(chars, startClean, lengthClean);
+                writer.write(chars, startClean, lengthClean);
             }
-        }
-        catch (IOException e)
-        {
-            throw new StreamException(e);
+        } catch (IOException ex) {
+            throw new StreamException(ex);
         }
     }
 
-    /**
-     * This method checks if a given character is between C0 or C1 range
-     * of Control characters.
-     * This method is added to support Control Characters for XML 1.1
-     * If a given character is TAB (0x09), LF (0x0A) or CR (0x0D), this method
-     * return false. Since they are whitespace characters, no special processing is needed.
-     * 
-     * @param ch
-     * @return boolean
-     */
-    private static boolean isCharacterInC0orC1Range(char ch)
-    {
-        if(ch == 0x09 || ch == 0x0A || ch == 0x0D)
-        	return false;
-        else        	    	
-        	return (ch >= 0x7F && ch <= 0x9F)|| (ch >= 0x01 && ch <= 0x1F);
-    }
-    /**
-     * This method checks if a given character either NEL (0x85) or LSEP (0x2028)
-     * These are new end of line charcters added in XML 1.1.  These characters must be
-     * written as Numeric Character References (NCR) in XML 1.1 output document.
-     * 
-     * @param ch
-     * @return boolean
-     */
-    private static boolean isNELorLSEPCharacter(char ch)
-    {
-        return (ch == 0x85 || ch == 0x2028);
-    }
-
-    public void characters(String s) throws StreamException {
+    private void characters(String s) throws StreamException {
         characters(s, 0, s.length());
     }
 
-    public void characters(String s, int start, int length) throws StreamException {
-        if (length > m_charsBuff.length)
-        {
-            m_charsBuff = new char[length * 2 + 1];
+    void characters(String s, int start, int length) throws StreamException {
+        if (length > charsBuff.length) {
+            charsBuff = new char[length * 2 + 1];
         }
-        s.getChars(start, length, m_charsBuff, 0);
-        characters(m_charsBuff, 0, length);
+        s.getChars(start, length, charsBuff, 0);
+        characters(charsBuff, 0, length);
     }
 
     @Override
@@ -567,7 +478,6 @@ public final class Serializer extends SerializerBase implements XmlHandler {
         closeStartTag();
         try
         {
-            final XmlWriter writer = m_writer;
             switchContext(Context.TAG);
             writer.write('<');
             if (!prefix.isEmpty()) {
@@ -602,19 +512,15 @@ public final class Serializer extends SerializerBase implements XmlHandler {
 
     public void startDTD(String name, String publicId, String systemId) throws StreamException
     {
-        m_inDoctype = true;
-        try
-        {
-            final XmlWriter writer = m_writer;
+        inDoctype = true;
+        try {
             writer.write("<!DOCTYPE ");
             writer.write(name);
-
             if (publicId != null) {
                 writer.write(" PUBLIC \"");
                 writer.write(publicId);
                 writer.write('\"');
             }
-
             if (systemId != null) {
                 if (publicId == null) {
                     writer.write(" SYSTEM \"");
@@ -625,15 +531,13 @@ public final class Serializer extends SerializerBase implements XmlHandler {
                 writer.write('\"');
             }
         }
-        catch (IOException e)
-        {
-            throw new StreamException(e);
+        catch (IOException ex) {
+            throw new StreamException(ex);
         }
     }
 
-    public void writeAttribute(String prefix, String localName, String value) throws StreamException {
+    private void writeAttribute(String prefix, String localName, String value) throws StreamException {
         try {
-            final XmlWriter writer = m_writer;
             writer.write(' ');
             if (!prefix.isEmpty()) {
                 writer.write(prefix);
@@ -678,25 +582,16 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     @Override
     public void endElement() throws StreamException {
         depth--;
-        try
-        {
-            final XmlWriter writer = m_writer;
+        try {
             if (startTagOpen) {
-                if (m_spaceBeforeClose)
+                if (spaceBeforeClose) {
                     writer.write(" />");
-                else
+                } else {
                     writer.write("/>");
-                /* don't need to pop cdataSectionState because
-                 * this element ended so quickly that we didn't get
-                 * to push the state.
-                 */
-
-            }
-            else
-            {
+                }
+            } else {
                 switchContext(Context.TAG);
-                writer.write('<');
-                writer.write('/');
+                writer.write("</");
                 String prefix = elementNameStack[2*depth];
                 if (!prefix.isEmpty()) {
                     writer.write(prefix);
@@ -706,10 +601,8 @@ public final class Serializer extends SerializerBase implements XmlHandler {
                 writer.write('>');
                 switchContext(Context.MIXED_CONTENT);
             }
-        }
-        catch (IOException e)
-        {
-            throw new StreamException(e);
+        } catch (IOException ex) {
+            throw new StreamException(ex);
         }
         startTagOpen = false;
     }
@@ -718,7 +611,7 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     public void startComment() throws StreamException {
         closeStartTag();
         try {
-            m_writer.write("<!--");
+            writer.write("<!--");
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
@@ -728,7 +621,7 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     @Override
     public void endComment() throws StreamException {
         try {
-            m_writer.write("-->");
+            writer.write("-->");
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
@@ -739,7 +632,7 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     public void endCDATASection() throws StreamException
     {
         try {
-            m_writer.write(CDATA_DELIMITER_CLOSE);
+            writer.write("]]>");
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
@@ -751,41 +644,23 @@ public final class Serializer extends SerializerBase implements XmlHandler {
      * @throws StreamException The application may raise an exception.
      * @see #startDTD
      */
-    public void endDTD() throws StreamException
-    {
-        try
-        {
-            final XmlWriter writer = m_writer;
-            if (!m_inDoctype)
+    public void endDTD() throws StreamException {
+        try {
+            if (!inDoctype) {
                 writer.write("]>");
-            else
-            {
+            } else {
                 writer.write('>');
             }
+        } catch (IOException ex) {
+            throw new StreamException(ex);
         }
-        catch (IOException e)
-        {
-            throw new StreamException(e);
-        }
-
-    }
-
-    /**
-     * End the scope of a prefix-URI Namespace mapping.
-     * 
-     * @param prefix The prefix that was being mapping.
-     * @throws StreamException The client may throw
-     *            an exception during processing.
-     */
-    public void endPrefixMapping(String prefix) throws StreamException
-    { // do nothing
     }
 
     @Override
     public void startCDATASection() throws StreamException {
         closeStartTag();
         try {
-            m_writer.write(CDATA_DELIMITER_OPEN);
+            writer.write("<![CDATA[");
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
@@ -799,22 +674,15 @@ public final class Serializer extends SerializerBase implements XmlHandler {
      * @throws StreamException
      */
     private void closeStartTag() throws StreamException {
-
         if (startTagOpen) {
-
-            try
-            {
-                m_writer.write('>');
+            try {
+                writer.write('>');
                 switchContext(Context.MIXED_CONTENT);
+            } catch (IOException ex) {
+                throw new StreamException(ex);
             }
-            catch (IOException e)
-            {
-                throw new StreamException(e);
-            }
-
             startTagOpen = false;
         }
-
     }
 
     @Override
@@ -822,9 +690,9 @@ public final class Serializer extends SerializerBase implements XmlHandler {
         closeStartTag();
         switchContext(Context.TAG);
         try {
-            m_writer.write("<?");
-            m_writer.write(target);
-            m_writer.write(' ');
+            writer.write("<?");
+            writer.write(target);
+            writer.write(' ');
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
@@ -834,7 +702,7 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     @Override
     public void endProcessingInstruction() throws StreamException {
         try {
-            m_writer.write("?>");
+            writer.write("?>");
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
@@ -844,7 +712,7 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     public void writeInternalSubset(String internalSubset) throws StreamException {
         try {
             DTDprolog();
-            m_writer.write(internalSubset);
+            writer.write(internalSubset);
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
@@ -852,71 +720,48 @@ public final class Serializer extends SerializerBase implements XmlHandler {
 
     public void flushBuffer() throws StreamException {
         try {
-            m_writer.flushBuffer();
+            writer.flushBuffer();
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
     }
 
-    // Implement DTDHandler
-    /**
-     * If this method is called, the serializer is used as a
-     * DTDHandler, which changes behavior how the serializer 
-     * handles document entities. 
-     * @see org.xml.sax.DTDHandler#notationDecl(java.lang.String, java.lang.String, java.lang.String)
-     */
     public void notationDecl(String name, String pubID, String sysID) throws StreamException {
-        // TODO Auto-generated method stub
         try {
             DTDprolog();
-            
-            m_writer.write("<!NOTATION ");            
-            m_writer.write(name);
+            writer.write("<!NOTATION ");
+            writer.write(name);
             if (pubID != null) {
-                m_writer.write(" PUBLIC \"");
-                m_writer.write(pubID);
-  
+                writer.write(" PUBLIC \"");
+                writer.write(pubID);
+            } else {
+                writer.write(" SYSTEM \"");
+                writer.write(sysID);
             }
-            else {
-                m_writer.write(" SYSTEM \"");
-                m_writer.write(sysID);
-            }
-            m_writer.write("\" >\n");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            writer.write("\" >\n");
+        } catch (IOException ex) {
+            throw new StreamException(ex);
         }
     }
 
-    /**
-     * If this method is called, the serializer is used as a
-     * DTDHandler, which changes behavior how the serializer 
-     * handles document entities. 
-     * @see org.xml.sax.DTDHandler#unparsedEntityDecl(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-     */
     public void unparsedEntityDecl(String name, String pubID, String sysID, String notationName) throws StreamException {
-        // TODO Auto-generated method stub
         try {
-            DTDprolog();       
-            
-            m_writer.write("<!ENTITY ");            
-            m_writer.write(name);
+            DTDprolog();
+            writer.write("<!ENTITY ");
+            writer.write(name);
             if (pubID != null) {
-                m_writer.write(" PUBLIC \"");
-                m_writer.write(pubID);
-  
+                writer.write(" PUBLIC \"");
+                writer.write(pubID);
+            } else {
+                writer.write(" SYSTEM \"");
+                writer.write(sysID);
             }
-            else {
-                m_writer.write(" SYSTEM \"");
-                m_writer.write(sysID);
-            }
-            m_writer.write("\" NDATA ");
-            m_writer.write(notationName);
-            m_writer.write(" >\n");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }        
+            writer.write("\" NDATA ");
+            writer.write(notationName);
+            writer.write(" >\n");
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
     }
     
     /**
@@ -924,20 +769,18 @@ public final class Serializer extends SerializerBase implements XmlHandler {
      * @throws StreamException
      * @throws IOException
      */
-    private void DTDprolog() throws StreamException, IOException {
-        final XmlWriter writer = m_writer;
-        if (m_inDoctype)
-        {
+    private void DTDprolog() throws IOException {
+        if (inDoctype) {
             writer.write(" [\n");
-            m_inDoctype = false;
+            inDoctype = false;
         }
     }
     
     public void writeRaw(String s, UnmappableCharacterHandler unmappableCharacterHandler) throws StreamException {
         try {
-            m_writer.setUnmappableCharacterHandler(unmappableCharacterHandler);
-            m_writer.write(s);
-            m_writer.setUnmappableCharacterHandler(context.getUnmappableCharacterHandler());
+            writer.setUnmappableCharacterHandler(unmappableCharacterHandler);
+            writer.write(s);
+            writer.setUnmappableCharacterHandler(context.getUnmappableCharacterHandler());
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
@@ -947,7 +790,6 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     public void processEntityReference(String name, String replacementText) throws StreamException {
         closeStartTag();
         try {
-            final XmlWriter writer = m_writer;
             writer.write('&');
             writer.write(name);
             writer.write(';');
