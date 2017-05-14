@@ -42,12 +42,6 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     private final OutputStream outputStream;
     
     /**
-     * Map that tells which characters should have special treatment, and it
-     *  provides character to entity name lookup.
-     */
-    protected CharInfo m_charInfo = CharInfo.getCharInfo(CharInfo.XML_ENTITIES_RESOURCE);
-
-    /**
      * Add space before '/>' for XHTML.
      */
     protected boolean m_spaceBeforeClose = false;
@@ -415,32 +409,23 @@ public final class Serializer extends SerializerBase implements XmlHandler {
                 String replacement = null;
                 boolean generateCharacterReference = false;
                 
-                if (context == Context.MIXED_CONTENT && m_charInfo.shouldMapTextChar(ch)
-                        || context == Context.ATTRIBUTE_VALUE && m_charInfo.shouldMapAttrChar(ch)) {
-                    // The character is supposed to be replaced by a String
-                    // e.g.   '&'  -->  "&amp;"
-                    // e.g.   '<'  -->  "&lt;"
-                    replacement = m_charInfo.getOutputStringForChar(ch);
-                }
-                else {
-                    if (ch <= 0x1F) {
-                        // Range 0x00 through 0x1F inclusive
-                        //
-                        // This covers the non-whitespace control characters
-                        // in the range 0x1 to 0x1F inclusive.
-                        // It also covers the whitespace control characters in the same way:
-                        // 0x9   TAB
-                        // 0xA   NEW LINE
-                        // 0xD   CARRIAGE RETURN
-                        //
-                        // We also cover 0x0 ... It isn't valid
-                        // but we will output "&#0;" 
-                        
-                        // The default will handle this just fine, but this
-                        // is a little performance boost to handle the more
-                        // common TAB, NEW-LINE, CARRIAGE-RETURN
-                        switch (ch) {
-
+                if (ch <= 0x1F) {
+                    // Range 0x00 through 0x1F inclusive
+                    //
+                    // This covers the non-whitespace control characters
+                    // in the range 0x1 to 0x1F inclusive.
+                    // It also covers the whitespace control characters in the same way:
+                    // 0x9   TAB
+                    // 0xA   NEW LINE
+                    // 0xD   CARRIAGE RETURN
+                    //
+                    // We also cover 0x0 ... It isn't valid
+                    // but we will output "&#0;" 
+                    
+                    // The default will handle this just fine, but this
+                    // is a little performance boost to handle the more
+                    // common TAB, NEW-LINE, CARRIAGE-RETURN
+                    switch (ch) {
                         case 0x09:
                             if (context == Context.ATTRIBUTE_VALUE) {
                                 replacement = "&#9;";
@@ -458,24 +443,30 @@ public final class Serializer extends SerializerBase implements XmlHandler {
                         default:
                             generateCharacterReference = true;
                             break;
-
-                        }
                     }
-                    else if (ch < 0x7F) {  
-                        // Range 0x20 through 0x7E inclusive
-                        // Normal ASCII chars, do nothing, just add it to
-                        // the clean characters
-                            
+                }
+                else if (ch < 0x7F) {
+                    switch (ch) {
+                        case '<':
+                            replacement = "&lt;";
+                            break;
+                        case '&':
+                            replacement = "&amp;";
+                            break;
+                        case '"':
+                            if (context == Context.ATTRIBUTE_VALUE) {
+                                replacement = "&quot;";
+                            }
                     }
-                    else if (ch <= 0x9F){
-                        // Range 0x7F through 0x9F inclusive
-                        // More control characters, including NEL (0x85)
-                        generateCharacterReference = true;
-                    }
-                    else if (ch == 0x2028) {
-                        // LINE SEPARATOR
-                        replacement = "&#8232;";
-                    }
+                }
+                else if (ch <= 0x9F){
+                    // Range 0x7F through 0x9F inclusive
+                    // More control characters, including NEL (0x85)
+                    generateCharacterReference = true;
+                }
+                else if (ch == 0x2028) {
+                    // LINE SEPARATOR
+                    replacement = "&#8232;";
                 }
                 if (replacement != null || generateCharacterReference) {
                     int startClean;
