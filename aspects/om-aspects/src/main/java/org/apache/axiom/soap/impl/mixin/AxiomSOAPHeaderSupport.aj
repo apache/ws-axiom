@@ -22,13 +22,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.RolePlayer;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.MURoleChecker;
 import org.apache.axiom.soap.impl.common.RoleChecker;
 import org.apache.axiom.soap.impl.common.RolePlayerChecker;
@@ -38,6 +44,32 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 public aspect AxiomSOAPHeaderSupport {
     public final boolean AxiomSOAPHeader.isChildElementAllowed(OMElement child) {
         return child instanceof SOAPHeaderBlock;
+    }
+
+    public final SOAPHeaderBlock AxiomSOAPHeader.addHeaderBlock(String localName, OMNamespace ns)
+            throws OMException {
+        
+        if (ns == null || ns.getNamespaceURI().length() == 0) {
+            throw new OMException(
+                    "All the SOAP Header blocks should be namespace qualified");
+        }
+        
+        OMNamespace namespace = findNamespace(ns.getNamespaceURI(), ns.getPrefix());
+        if (namespace != null) {
+            ns = namespace;
+        }
+        
+        SOAPHeaderBlock soapHeaderBlock;
+        try {
+            soapHeaderBlock = ((SOAPFactory)getOMFactory()).createSOAPHeaderBlock(localName, ns, this);
+        } catch (SOAPProcessingException e) {
+            throw new OMException(e);
+        }
+        return soapHeaderBlock;
+    }
+
+    public final SOAPHeaderBlock AxiomSOAPHeader.addHeaderBlock(QName qname) throws OMException {
+        return addHeaderBlock(qname.getLocalPart(), getOMFactory().createOMNamespace(qname.getNamespaceURI(), qname.getPrefix()));
     }
 
     public final Iterator<SOAPHeaderBlock> AxiomSOAPHeader.examineAllHeaderBlocks() {

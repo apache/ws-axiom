@@ -19,40 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 
 /** A class representing the SOAP Header, primarily allowing access to the contained HeaderBlocks. */
 public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHeader {
-    public SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)
-            throws OMException {
-        
-        if (ns == null || ns.getNamespaceURI().length() == 0) {
-            throw new OMException(
-                    "All the SOAP Header blocks should be namespace qualified");
-        }
-        
-        OMNamespace namespace = findNamespace(ns.getNamespaceURI(), ns.getPrefix());
-        if (namespace != null) {
-            ns = namespace;
-        }
-        
-        SOAPHeaderBlock soapHeaderBlock;
-        try {
-            soapHeaderBlock = ((SOAPFactory)getOMFactory()).createSOAPHeaderBlock(localName, ns, this);
-        } catch (SOAPProcessingException e) {
-            throw new OMException(e);
-        }
-        return soapHeaderBlock;
-    }
 
-    public SOAPHeaderBlock addHeaderBlock(QName qname) throws OMException {
-        return addHeaderBlock(qname.getLocalPart(), getOMFactory().createOMNamespace(qname.getNamespaceURI(), qname.getPrefix()));
-    }
 }
