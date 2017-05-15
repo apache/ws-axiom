@@ -27,13 +27,9 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /** A class representing the SOAP Header, primarily allowing access to the contained HeaderBlocks. */
 public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHeader {
-    private static final Log log = LogFactory.getLog(SOAPHeaderImpl.class);
-    
     public SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)
             throws OMException {
         
@@ -58,15 +54,5 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
 
     public SOAPHeaderBlock addHeaderBlock(QName qname) throws OMException {
         return addHeaderBlock(qname.getLocalPart(), getOMFactory().createOMNamespace(qname.getNamespaceURI(), qname.getPrefix()));
-    }
-
-    public static String exceptionToString(Throwable e) {
-        java.io.StringWriter sw = new java.io.StringWriter();
-        java.io.BufferedWriter bw = new java.io.BufferedWriter(sw);
-        java.io.PrintWriter pw = new java.io.PrintWriter(bw);
-        e.printStackTrace(pw);
-        pw.close();
-        String text = sw.getBuffer().toString();
-        return text;
     }
 }
