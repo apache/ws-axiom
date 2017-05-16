@@ -36,7 +36,6 @@ public class TestGetNamespaceURIWithNullNamespace extends DialectTestCase {
         while ((eventType = reader.next()) != XMLStreamReader.END_DOCUMENT) {
             if (eventType == XMLStreamReader.START_ELEMENT) {
                 assertNull(reader.getNamespaceURI());
-                assertNull(reader.getNamespaceURI(""));
             }
         }
     }

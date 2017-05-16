@@ -332,14 +332,7 @@ public class StAXDialectDetector {
         // Try IBM's XL XP-J
         cls = loadClass(classLoader, rootUrl, "com.ibm.xml.xlxp.api.stax.StAXImplConstants");
         if (cls != null) {
-            boolean isSetPrefixBroken;
-            try {
-                cls.getField("IS_SETPREFIX_BEFORE_STARTELEMENT");
-                isSetPrefixBroken = false;
-            } catch (NoSuchFieldException ex) {
-                isSetPrefixBroken = true;
-            }
-            return new XLXP1Dialect(isSetPrefixBroken);
+            return new XLXP1Dialect();
         }
         cls = loadClass(classLoader, rootUrl, "com.ibm.xml.xlxp2.api.stax.StAXImplConstants");
         if (cls != null) {

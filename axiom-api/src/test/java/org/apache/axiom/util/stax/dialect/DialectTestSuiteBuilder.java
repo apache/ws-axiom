@@ -26,7 +26,6 @@ import javax.xml.stream.XMLStreamConstants;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.xml.StreamType;
-import org.apache.axiom.ts.xml.XMLSample;
 
 public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final List<StAXImplementation> implementations = new ArrayList<StAXImplementation>();
@@ -96,13 +95,6 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.DTD, true));
         addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.CDATA, true));
         addTest(new TestGetNamespaceContextImplicitNamespaces(staxImpl));
-        for (XMLSample sample : Multiton.getInstances(XMLSample.class)) {
-            // Some parsers have problems with external subsets; anyway the test files with
-            // DTDs are not essential for this test.
-            if (!sample.hasExternalSubset()) {
-                addTest(new TestGetNamespaceContext(staxImpl, sample));
-            }
-        }
         addTest(new TestGetNamespacePrefixDefaultNamespace(staxImpl));
         addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.START_ELEMENT, false));
         addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.END_ELEMENT, false));
@@ -118,7 +110,6 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestGetNamespaceURIWithNullNamespace(staxImpl));
         addTest(new TestGetPrefixAfterWriteDefaultNamespace(staxImpl));
         addTest(new TestGetPrefixAfterWriteNamespace(staxImpl));
-        addTest(new TestGetPrefixAfterWriteStartElement(staxImpl));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.START_ELEMENT, false));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.END_ELEMENT, false));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.PROCESSING_INSTRUCTION, true));

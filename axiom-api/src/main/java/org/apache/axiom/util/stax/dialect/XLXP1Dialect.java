@@ -25,16 +25,9 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 class XLXP1Dialect extends AbstractStAXDialect {
-    private final boolean isSetPrefixBroken;
-    
-    public XLXP1Dialect(boolean isSetPrefixBroken) {
-        this.isSetPrefixBroken = isSetPrefixBroken;
-    }
-    
     @Override
     public String getName() {
-        return isSetPrefixBroken ? "XL XP-J (StAX non-compliant versions)"
-                                 : "XL XP-J (StAX compliant versions)";
+        return "XL XP-J";
     }
 
     @Override
@@ -67,13 +60,7 @@ class XLXP1Dialect extends AbstractStAXDialect {
 
     @Override
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
-        XMLStreamWriter wrapper = new XLXPStreamWriterWrapper(writer);
-        // In early versions of XLXP the scope of the prefix bindings defined by setPrefix
-        // is incorrect
-        if (isSetPrefixBroken) {
-            wrapper = new NamespaceContextCorrectingXMLStreamWriterWrapper(wrapper);
-        }
-        return wrapper;
+        return new XLXPStreamWriterWrapper(writer);
     }
 
     @Override

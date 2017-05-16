@@ -64,10 +64,7 @@ class BEADialect extends AbstractStAXDialect {
 
     @Override
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
-        // The stream writer implementation of the reference implementation doesn't handle masked
-        // namespace bindings correctly. We wrap the writer in a
-        // NamespaceContextCorrectingXMLStreamWriterWrapper to work around this problem.
-        return new NamespaceContextCorrectingXMLStreamWriterWrapper(writer);
+        return writer;
     }
 
     @Override
