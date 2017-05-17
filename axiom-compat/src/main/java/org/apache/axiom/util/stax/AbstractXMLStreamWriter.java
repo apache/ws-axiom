@@ -32,6 +32,8 @@ import org.apache.commons.logging.LogFactory;
  * i.e. the methods related to the namespace context. Subclasses only need to implement write
  * methods that take a prefix together with the namespace URI argument. This class implements all
  * {@link XMLStreamWriter} methods that have a namespace URI argument, but no prefix argument.
+ * 
+ * @deprecated This class is no longer maintained.
  */
 public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     private static final Log log = LogFactory.getLog(AbstractXMLStreamWriter.class);
