@@ -16,17 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.stream;
 
 import java.io.IOException;
 import java.io.Writer;
+
+import org.apache.axiom.core.CoreCharacterDataNode;
 
 /**
  * Represents character data stored by a {@link CoreCharacterDataNode} instance. The content of a
  * {@link CoreCharacterDataNode} is either a {@link String} object or an instance of this interface.
  */
 public interface CharacterData {
-    <T> CharacterData clone(ClonePolicy<T> policy, T options);
     String toString();
     void writeTo(Writer writer) throws IOException;
     void appendTo(StringBuilder buffer);

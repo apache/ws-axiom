@@ -20,9 +20,9 @@ package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.Builder;
-import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.ChildNotAllowedException;
 import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CloneableCharacterData;
 import org.apache.axiom.core.Content;
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataContainer;
@@ -48,6 +48,7 @@ import org.apache.axiom.core.impl.ElementsIterator;
 import org.apache.axiom.core.impl.Flags;
 import org.apache.axiom.core.impl.NodesIterator;
 import org.apache.axiom.core.impl.TreeWalkerImpl;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
@@ -400,8 +401,8 @@ public aspect CoreParentNodeSupport {
         if (policy.cloneChildren(options, coreGetNodeType()) && targetParent.isExpanded()) {
             if (getState() == COMPACT) {
                 Object content = this.content;
-                if (content instanceof CharacterData) {
-                    content = ((CharacterData)content).clone(policy, options);
+                if (content instanceof CloneableCharacterData) {
+                    content = ((CloneableCharacterData)content).clone(policy, options);
                 }
                 targetParent.coreSetCharacterData(content, null);
             } else {

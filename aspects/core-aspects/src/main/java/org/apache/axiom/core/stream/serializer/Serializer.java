@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 
-import org.apache.axiom.core.CharacterData;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;

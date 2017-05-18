@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.core.stream.util;
 
-import org.apache.axiom.core.CharacterData;
+import org.apache.axiom.core.stream.CharacterData;
 
 public class CharacterDataAccumulator {
     private Object content;

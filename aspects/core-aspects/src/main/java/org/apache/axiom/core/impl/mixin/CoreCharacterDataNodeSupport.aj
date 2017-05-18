@@ -18,13 +18,14 @@
  */
 package org.apache.axiom.core.impl.mixin;
 
-import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CloneableCharacterData;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.Flags;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 
@@ -60,7 +61,7 @@ public aspect CoreCharacterDataNodeSupport {
     
     public final <T> void CoreCharacterDataNode.init(ClonePolicy<T> policy, T options, CoreNode other) {
         CoreCharacterDataNode o = (CoreCharacterDataNode)other;
-        data = o.data instanceof CharacterData ? ((CharacterData)o.data).clone(policy, options) : o.data;
+        data = o.data instanceof CloneableCharacterData ? ((CloneableCharacterData)o.data).clone(policy, options) : o.data;
         coreSetIgnorable(o.coreIsIgnorable());
     }
 

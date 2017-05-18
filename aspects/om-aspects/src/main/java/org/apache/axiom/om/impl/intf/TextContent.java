@@ -24,8 +24,9 @@ import java.io.Writer;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.ByteArrayDataSource;
-import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CloneableCharacterData;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
@@ -34,7 +35,7 @@ import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.base64.Base64Utils;
 
-public final class TextContent implements CharacterData {
+public final class TextContent implements CloneableCharacterData {
     private final String value;
     
     private final String mimeType;

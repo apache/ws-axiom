@@ -21,7 +21,7 @@ package org.apache.axiom.core.stream.sax;
 import java.io.IOException;
 import java.util.Stack;
 
-import org.apache.axiom.core.CharacterData;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.util.CharacterDataAccumulator;

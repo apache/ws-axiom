@@ -24,7 +24,7 @@ import java.io.Writer;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.core.CharacterData;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.stax.pull.InternalXMLStreamReader;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 
