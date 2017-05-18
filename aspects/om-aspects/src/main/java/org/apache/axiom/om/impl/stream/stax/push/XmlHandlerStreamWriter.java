@@ -18,37 +18,39 @@
  */
 package org.apache.axiom.om.impl.stream.stax.push;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.core.stream.stax.push.InternalXMLStreamWriter;
+import org.apache.axiom.core.stream.stax.push.XMLStreamWriterExtensionFactory;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public final class XmlHandlerStreamWriter implements XMLStreamWriter, DataHandlerWriter {
+public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter {
     private static final Log log = LogFactory.getLog(XmlHandlerStreamWriter.class);
 
     private final XmlHandler handler;
     private final Serializer serializer;
+    private final XMLStreamWriterExtensionFactory extensionFactory;
     private final ScopedNamespaceContext namespaceContext = new ScopedNamespaceContext();
+    private Map<String,Object> extensions;
     private boolean inStartElement;
     private boolean inEmptyElement;
 
-    public XmlHandlerStreamWriter(XmlHandler handler, Serializer serializer) {
+    public XmlHandlerStreamWriter(XmlHandler handler, Serializer serializer,
+            XMLStreamWriterExtensionFactory extensionFactory) {
         this.handler = handler;
         this.serializer = serializer;
+        this.extensionFactory = extensionFactory;
     }
     
     public XmlHandler getHandler() {
@@ -70,11 +72,23 @@ public final class XmlHandlerStreamWriter implements XMLStreamWriter, DataHandle
     
     @Override
     public Object getProperty(String name) throws IllegalArgumentException {
-        if (DataHandlerWriter.PROPERTY.equals(name)) {
-            return this;
-        } else {
-            throw new IllegalArgumentException("Unsupported property " + name);
+        if (extensions != null) {
+            Object extension = extensions.get(name);
+            if (extension != null) {
+                return extension;
+            }
         }
+        if (extensionFactory != null) {
+            Object extension = extensionFactory.createExtension(name, this);
+            if (extension != null) {
+                if (extensions == null) {
+                    extensions = new HashMap<String,Object>();
+                }
+                extensions.put(name, extension);
+                return extension;
+            }
+        }
+        throw new IllegalArgumentException("Unsupported property " + name);
     }
 
     @Override
@@ -285,14 +299,19 @@ public final class XmlHandlerStreamWriter implements XMLStreamWriter, DataHandle
 
     @Override
     public void writeCharacters(char[] text, int start, int len) throws XMLStreamException {
-        writeCharacters(new String(text, start, len));
+        writeCharacterData(new String(text, start, len));
     }
 
     @Override
     public void writeCharacters(String text) throws XMLStreamException {
+        writeCharacterData(text);
+    }
+
+    @Override
+    public void writeCharacterData(Object data) throws XMLStreamException {
         finishStartElement();
         try {
-            handler.processCharacterData(text, false);
+            handler.processCharacterData(data, false);
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }
@@ -369,27 +388,5 @@ public final class XmlHandlerStreamWriter implements XMLStreamWriter, DataHandle
     @Override
     public void close() throws XMLStreamException {
         flush();
-    }
-
-    @Override
-    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
-            throws IOException, XMLStreamException {
-        finishStartElement();
-        try {
-            handler.processCharacterData(new TextContent(contentID, dataHandler, optimize), false);
-        } catch (StreamException ex) {
-            throw toXMLStreamException(ex);
-        }
-    }
-
-    @Override
-    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
-            boolean optimize) throws IOException, XMLStreamException {
-        finishStartElement();
-        try {
-            handler.processCharacterData(new TextContent(contentID, dataHandlerProvider, optimize), false);
-        } catch (StreamException ex) {
-            throw toXMLStreamException(ex);
-        }
     }
 }

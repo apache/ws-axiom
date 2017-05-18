@@ -34,6 +34,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.stream.XmlDeclarationRewriterHandler;
+import org.apache.axiom.om.impl.stream.stax.push.AxiomXMLStreamWriterExtensionFactory;
 import org.apache.axiom.om.impl.stream.stax.push.XmlHandlerStreamWriter;
 
 final class PushOMDataSourceReader implements XmlReader {
@@ -67,7 +68,8 @@ final class PushOMDataSourceReader implements XmlReader {
             handler = new PushOMDataSourceXOPHandler(handler);
         }
         try {
-            XMLStreamWriter writer = new XmlHandlerStreamWriter(handler, null);
+            XMLStreamWriter writer = new XmlHandlerStreamWriter(handler, null,
+                    AxiomXMLStreamWriterExtensionFactory.INSTANCE);
             // Seed the namespace context with the namespace context from the parent
             OMContainer parent = root.getParent();
             if (parent instanceof OMElement) {
