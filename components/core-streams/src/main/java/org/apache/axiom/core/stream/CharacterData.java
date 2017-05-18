@@ -21,11 +21,11 @@ package org.apache.axiom.core.stream;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.apache.axiom.core.CoreCharacterDataNode;
-
+// TODO: clean up this Javadoc
 /**
- * Represents character data stored by a {@link CoreCharacterDataNode} instance. The content of a
- * {@link CoreCharacterDataNode} is either a {@link String} object or an instance of this interface.
+ * Represents character data stored by a {@link org.apache.axiom.core.CoreCharacterDataNode}
+ * instance. The content of a {@link CoreCharacterDataNode} is either a {@link String} object or an
+ * instance of this interface.
  */
 public interface CharacterData {
     String toString();
