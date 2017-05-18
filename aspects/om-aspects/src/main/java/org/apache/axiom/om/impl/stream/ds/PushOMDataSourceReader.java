@@ -27,6 +27,7 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.core.stream.XmlReader;
+import org.apache.axiom.core.stream.stax.push.XmlHandlerStreamWriter;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
@@ -35,7 +36,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.stream.XmlDeclarationRewriterHandler;
 import org.apache.axiom.om.impl.stream.stax.push.AxiomXMLStreamWriterExtensionFactory;
-import org.apache.axiom.om.impl.stream.stax.push.XmlHandlerStreamWriter;
 
 final class PushOMDataSourceReader implements XmlReader {
     private final XmlHandler handler;

@@ -16,11 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.stream.stax.push;
+package org.apache.axiom.core.stream.stax.push;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 
@@ -28,23 +32,46 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
-import org.apache.axiom.core.stream.stax.push.InternalXMLStreamWriter;
-import org.apache.axiom.core.stream.stax.push.XMLStreamWriterExtensionFactory;
-import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter {
+public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, NamespaceContext {
     private static final Log log = LogFactory.getLog(XmlHandlerStreamWriter.class);
 
     private final XmlHandler handler;
     private final Serializer serializer;
     private final XMLStreamWriterExtensionFactory extensionFactory;
-    private final ScopedNamespaceContext namespaceContext = new ScopedNamespaceContext();
     private Map<String,Object> extensions;
     private boolean inStartElement;
     private boolean inEmptyElement;
+
+    /**
+     * Array containing the prefixes for the namespace bindings.
+     */
+    private String[] prefixArray = new String[16];
+    
+    /**
+     * Array containing the URIs for the namespace bindings.
+     */
+    private String[] uriArray = new String[16];
+    
+    /**
+     * The number of currently defined namespace bindings.
+     */
+    private int bindings;
+    
+    /**
+     * Tracks the scopes defined for this namespace context. Each entry in the array identifies
+     * the first namespace binding defined in the corresponding scope and points to an entry
+     * in {@link #prefixArray}/{@link #uriArray}.
+     */
+    private int[] scopeIndexes = new int[16];
+    
+    /**
+     * The number of currently defined scopes. This is the same as the depth of the current scope,
+     * where the depth of the root scope is 0.
+     */
+    private int scopes;
 
     public XmlHandlerStreamWriter(XmlHandler handler, Serializer serializer,
             XMLStreamWriterExtensionFactory extensionFactory) {
@@ -93,7 +120,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter {
 
     @Override
     public NamespaceContext getNamespaceContext() {
-        return namespaceContext;
+        return this;
     }
 
     @Override
@@ -103,27 +130,59 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter {
     }
 
     @Override
-    public String getPrefix(String uri) throws XMLStreamException {
-        return namespaceContext.getPrefix(uri);
+    public String getPrefix(String uri) {
+        if (uri == null) {
+            throw new IllegalArgumentException("namespaceURI can't be null");
+        } else if (uri.equals(XMLConstants.XML_NS_URI)) {
+            return XMLConstants.XML_NS_PREFIX;
+        } else if (uri.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+            return XMLConstants.XMLNS_ATTRIBUTE;
+        } else {
+            outer: for (int i=bindings-1; i>=0; i--) {
+                if (uri.equals(uriArray[i])) {
+                    String prefix = prefixArray[i];
+                    // Now check that the prefix is not masked
+                    for (int j=i+1; j<bindings; j++) {
+                        if (prefix.equals(prefixArray[j])) {
+                            continue outer;
+                        }
+                    }
+                    return prefix;
+                }
+            }
+            return null;
+        }
     }
 
-    private void internalSetPrefix(String prefix, String uri) {
+    @Override
+    public void setDefaultNamespace(String uri) throws XMLStreamException {
+        setPrefix("", uri);
+    }
+
+    @Override
+    public void setPrefix(String prefix, String uri) throws XMLStreamException {
         if (inEmptyElement) {
             log.warn("The behavior of XMLStreamWriter#setPrefix and " +
                     "XMLStreamWriter#setDefaultNamespace is undefined when invoked in the " +
                     "context of an empty element");
         }
-        namespaceContext.setPrefix(prefix, uri);
+        internalSetPrefix(normalize(prefix), normalize(uri));
     }
     
-    @Override
-    public void setDefaultNamespace(String uri) throws XMLStreamException {
-        internalSetPrefix("", uri);
-    }
-
-    @Override
-    public void setPrefix(String prefix, String uri) throws XMLStreamException {
-        internalSetPrefix(prefix, uri);
+    private void internalSetPrefix(String prefix, String uri) {
+        if (bindings == prefixArray.length) {
+            int len = prefixArray.length;
+            int newLen = len*2;
+            String[] newPrefixArray = new String[newLen];
+            System.arraycopy(prefixArray, 0, newPrefixArray, 0, len);
+            String[] newUriArray = new String[newLen];
+            System.arraycopy(uriArray, 0, newUriArray, 0, len);
+            prefixArray = newPrefixArray;
+            uriArray = newUriArray;
+        }
+        prefixArray[bindings] = prefix;
+        uriArray[bindings] = uri;
+        bindings++;
     }
 
     @Override
@@ -189,7 +248,12 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter {
     public void writeStartElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException {
         doWriteStartElement(prefix, localName, namespaceURI);
-        namespaceContext.startScope();
+        if (scopes == scopeIndexes.length) {
+            int[] newScopeIndexes = new int[scopeIndexes.length*2];
+            System.arraycopy(scopeIndexes, 0, newScopeIndexes, 0, scopeIndexes.length);
+            scopeIndexes = newScopeIndexes;
+        }
+        scopeIndexes[scopes++] = bindings;
         inEmptyElement = false;
     }
 
@@ -210,7 +274,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter {
     @Override
     public void writeEndElement() throws XMLStreamException {
         doWriteEndElement();
-        namespaceContext.endScope();
+        bindings = scopeIndexes[--scopes];
         inEmptyElement = false;
     }
 
@@ -243,7 +307,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter {
     public void writeAttribute(String prefix, String namespaceURI, String localName, String value)
             throws XMLStreamException {
         try {
-            handler.processAttribute(normalize(namespaceURI), localName, normalize(prefix), value, OMConstants.XMLATTRTYPE_CDATA, true);
+            handler.processAttribute(normalize(namespaceURI), localName, normalize(prefix), value, "CDATA", true);
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }
@@ -263,7 +327,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter {
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }
-        namespaceContext.setPrefix(prefix, namespaceURI);
+        internalSetPrefix(prefix, namespaceURI);
     }
 
     @Override
@@ -272,7 +336,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter {
     }
 
     private String internalGetPrefix(String namespaceURI) throws XMLStreamException {
-        String prefix = namespaceContext.getPrefix(namespaceURI);
+        String prefix = getPrefix(namespaceURI);
         if (prefix == null) {
             throw new XMLStreamException("Unbound namespace URI '" + namespaceURI + "'");
         } else {
@@ -388,5 +452,77 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter {
     @Override
     public void close() throws XMLStreamException {
         flush();
+    }
+
+    @Override
+    public final String getNamespaceURI(String prefix) {
+        if (prefix == null) {
+            throw new IllegalArgumentException("prefix can't be null");
+        } else if (prefix.equals(XMLConstants.XML_NS_PREFIX)) {
+            return XMLConstants.XML_NS_URI;
+        } else if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
+            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
+        } else {
+            for (int i=bindings-1; i>=0; i--) {
+                if (prefix.equals(prefixArray[i])) {
+                    return uriArray[i];
+                }
+            }
+            // The Javadoc of NamespaceContext#getNamespaceURI specifies that XMLConstants.NULL_NS_URI
+            // is returned both for unbound prefixes and the null namespace
+            return XMLConstants.NULL_NS_URI;
+        }
+    }
+
+    @Override
+    public final Iterator<String> getPrefixes(final String namespaceURI) {
+        if (namespaceURI == null) {
+            throw new IllegalArgumentException("namespaceURI can't be null");
+        } else if (namespaceURI.equals(XMLConstants.XML_NS_URI)) {
+            return Collections.singleton(XMLConstants.XML_NS_PREFIX).iterator();
+        } else if (namespaceURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+            return Collections.singleton(XMLConstants.XMLNS_ATTRIBUTE).iterator();
+        } else {
+            return new Iterator<String>() {
+                private int binding = bindings;
+                private String next;
+
+                @Override
+                public boolean hasNext() {
+                    if (next == null) {
+                        outer: while (--binding >= 0) {
+                            if (namespaceURI.equals(uriArray[binding])) {
+                                String prefix = prefixArray[binding];
+                                // Now check that the prefix is not masked
+                                for (int j=binding+1; j<bindings; j++) {
+                                    if (prefix.equals(prefixArray[j])) {
+                                        continue outer;
+                                    }
+                                }
+                                next = prefix;
+                                break;
+                            }
+                        }
+                    }
+                    return next != null;
+                }
+
+                @Override
+                public String next() {
+                    if (hasNext()) {
+                        String result = next;
+                        next = null;
+                        return result;
+                    } else {
+                        throw new NoSuchElementException();
+                    }
+                }
+
+                @Override
+                public void remove() {
+                    throw new UnsupportedOperationException();
+                }
+            };
+        }
     }
 }
