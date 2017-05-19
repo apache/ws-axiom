@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -44,7 +45,6 @@ import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mappers;
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -458,7 +458,7 @@ public aspect AxiomElementSupport {
         return namespace;
     }
 
-    private static final OMNamespace XMLNS = new OMNamespaceImpl(OMConstants.XMLNS_URI, OMConstants.XMLNS_PREFIX);
+    private static final OMNamespace XMLNS = new OMNamespaceImpl(XMLConstants.XML_NS_URI, XMLConstants.XML_NS_PREFIX);
 
     /**
      * Checks for the namespace <B>only</B> in the current Element. This is also used to retrieve
@@ -478,8 +478,8 @@ public aspect AxiomElementSupport {
         }
 
         //If the prefix is available and uri is available and its the xml namespace
-        if ((prefix == null || prefix.equals(OMConstants.XMLNS_PREFIX))
-                && (uri == null || uri.equals(OMConstants.XMLNS_URI))) {
+        if ((prefix == null || prefix.equals(XMLConstants.XML_NS_PREFIX))
+                && (uri == null || uri.equals(XMLConstants.XML_NS_URI))) {
             return XMLNS;
         } else {
             return null;

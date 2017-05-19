@@ -25,7 +25,7 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
 
-public class OMBodyTest extends OMTestCase implements OMConstants {
+public class OMBodyTest extends OMTestCase {
     SOAPBody soapBody;
     private static Log log = LogFactory.getLog(OMBodyTest.class);
 

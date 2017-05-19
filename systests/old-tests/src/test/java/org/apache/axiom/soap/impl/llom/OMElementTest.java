@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -37,7 +36,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import java.util.Iterator;
 
-public class OMElementTest extends OMTestCase implements OMConstants {
+public class OMElementTest extends OMTestCase {
     private static final String WSA_URI = "http://schemas.xmlsoap.org/ws/2004/03/addressing";
     private static final String WSA_TO = "To";
     private static Log log = LogFactory.getLog(OMElementTest.class);

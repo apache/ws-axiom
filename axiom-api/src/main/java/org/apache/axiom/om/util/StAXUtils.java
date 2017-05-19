@@ -21,7 +21,6 @@ package org.apache.axiom.om.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 import org.apache.axiom.util.stax.wrapper.ImmutableXMLInputFactory;
@@ -266,7 +265,7 @@ public class StAXUtils {
     
     public static XMLStreamWriter createXMLStreamWriter(StAXWriterConfiguration configuration,
             OutputStream out) throws XMLStreamException {
-        XMLStreamWriter writer = getXMLOutputFactory(configuration).createXMLStreamWriter(out, OMConstants.DEFAULT_CHAR_SET_ENCODING);
+        XMLStreamWriter writer = getXMLOutputFactory(configuration).createXMLStreamWriter(out, "utf-8");
         if (log.isDebugEnabled()) {
             log.debug("XMLStreamWriter is " + writer.getClass().getName());
         }

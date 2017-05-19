@@ -31,7 +31,6 @@ import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
@@ -375,7 +374,7 @@ public class OMFactoryImpl implements OMFactory {
             throw AxiomExceptionTranslator.translate(ex);
         }
         attr.internalSetNamespace(ns);
-        attr.coreSetType(OMConstants.XMLATTRTYPE_CDATA);
+        attr.coreSetType("CDATA");
         return attr;
     }
 

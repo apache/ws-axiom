@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
@@ -43,6 +43,6 @@ public class TestGetAttributeValueWithXmlPrefix1 extends AxiomTestCase {
                 "xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\">" +
                 "</wsp:Policy>");
         assertEquals("Attribute value mismatch", "uri:thisBase",
-                elem.getAttributeValue(new QName(OMConstants.XMLNS_URI, "base")));
+                elem.getAttributeValue(new QName(XMLConstants.XML_NS_URI, "base")));
     }
 }

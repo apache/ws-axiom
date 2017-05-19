@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
@@ -43,8 +43,8 @@ public class TestGetAttributeWithXmlPrefix1 extends AxiomTestCase {
                 "<wsp:Policy xml:base=\"uri:thisBase\" " +
                 "xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\">" +
                 "</wsp:Policy>");
-        OMAttribute attr = elem.getAttribute(new QName(OMConstants.XMLNS_URI, "base"));
-        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI,
+        OMAttribute attr = elem.getAttribute(new QName(XMLConstants.XML_NS_URI, "base"));
+        assertEquals("Attribute namespace mismatch", XMLConstants.XML_NS_URI,
                 attr.getNamespace().getNamespaceURI());
     }
 }

@@ -20,11 +20,12 @@
 package org.apache.axiom.om.impl.serializer;
 
 import junit.framework.TestCase;
+
+import org.apache.axiom.core.stream.stax.StAX;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -77,8 +78,7 @@ public class NoNamespaceSerializerTest extends TestCase {
         readerTwo = StAXUtils.createXMLStreamReader(
                                 new InputStreamReader(
                                         new ByteArrayInputStream(xmlTextTwo.getBytes())));
-        writer = StAXUtils.createXMLStreamWriter(new ByteArrayOutputStream(),
-                OMConstants.DEFAULT_CHAR_SET_ENCODING);
+        writer = StAX.createNullXMLStreamWriter();
         builderOne =
                 OMXMLBuilderFactory.createStAXSOAPModelBuilder(readerOne);
         builderTwo =
@@ -125,8 +125,7 @@ public class NoNamespaceSerializerTest extends TestCase {
     /** Will just do a probe test to check serialize with caching on works without any exception */
     public void testSerilizationWithCacheOn() throws Exception {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
-                OMConstants.DEFAULT_CHAR_SET_ENCODING);
+        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 
         SOAPEnvelope env = (SOAPEnvelope) builderOne.getDocumentElement();
         env.serialize(writer);
@@ -136,8 +135,7 @@ public class NoNamespaceSerializerTest extends TestCase {
 
     /** Will just do a probe test to check serialize with caching off works without any exception */
     public void testSerilizationWithCacheOff() throws Exception {
-        writer = StAXUtils.createXMLStreamWriter(new ByteArrayOutputStream(),
-                OMConstants.DEFAULT_CHAR_SET_ENCODING);
+        writer = StAX.createNullXMLStreamWriter();
 
         SOAPEnvelope env = (SOAPEnvelope) builderOne.getDocumentElement();
         env.serializeAndConsume(writer);

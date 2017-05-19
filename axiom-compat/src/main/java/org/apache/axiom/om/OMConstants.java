@@ -21,7 +21,9 @@ package org.apache.axiom.om;
 
 import javax.xml.XMLConstants;
 
-/** Interface OMConstants */
+/**
+ * @deprecated
+ */
 public interface OMConstants {
     /**
      * @deprecated This constant was used in early prototypes of Axis2 and is no longer relevant.
@@ -50,7 +52,9 @@ public interface OMConstants {
     String DEFAULT_CHAR_SET_ENCODING = "utf-8";
     String DEFAULT_XML_VERSION = "1.0";
 
-
+    /**
+     * @deprecated Use {@link XMLConstants#XML_NS_URI} instead.
+     */
     String XMLNS_URI =
             "http://www.w3.org/XML/1998/namespace";
 
@@ -64,6 +68,9 @@ public interface OMConstants {
      */
     String XMLNS_NS_PREFIX = "xmlns";
 
+    /**
+     * @deprecated Use {@link XMLConstants#XML_NS_PREFIX} instead.
+     */
     String XMLNS_PREFIX =
             "xml";
     
