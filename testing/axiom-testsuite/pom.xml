@@ -98,6 +98,11 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>core-streams</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

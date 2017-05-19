@@ -18,18 +18,16 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.jaxb;
 
-import java.io.ByteArrayOutputStream;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.core.stream.stax.StAX;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.jaxb.JAXBOMDataSource;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxb.beans.DocumentBean;
 
@@ -52,7 +50,7 @@ public class TestExceptionDuringSerialization extends AxiomTestCase {
         OMSourcedElement element = omFactory.createOMElement(new JAXBOMDataSource(context, object));
         XMLStreamException exception = new XMLStreamException("TEST");
         try {
-            element.serialize(new ExceptionXMLStreamWriterWrapper(StAXUtils.createXMLStreamWriter(new ByteArrayOutputStream()), exception));
+            element.serialize(new ExceptionXMLStreamWriterWrapper(StAX.createNullXMLStreamWriter(), exception));
             fail("Expected XMLStreamException");
         } catch (XMLStreamException ex) {
             assertSame(exception, ex);

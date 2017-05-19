@@ -21,13 +21,13 @@ package org.apache.axiom.ts.om.element;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.core.stream.stax.StAX;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -60,8 +60,7 @@ public class TestSerializeAndConsumeConsumed extends AxiomTestCase {
         //try to find the children of the document element. This should produce an
         //error since the underlying stream is fully consumed without building the object tree
         try {
-            XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(System.out);
-            documentElement.serializeAndConsume(writer);
+            documentElement.serializeAndConsume(StAX.createNullXMLStreamWriter());
             fail("Expected NodeUnavailableException");
         } catch (NodeUnavailableException e) {
             //wea re cool

@@ -22,9 +22,9 @@ import java.io.ByteArrayOutputStream;
 
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.core.stream.stax.StAX;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
@@ -57,7 +57,7 @@ public class SerializeToXMLStreamWriter extends SerializationStrategy {
         if (encoding == null) {
             encoding = "UTF-8";
         }
-        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(baos, encoding);
+        XMLStreamWriter writer = StAX.createXMLStreamWriter(baos, encoding);
         if (cache) {
             container.serialize(writer);
         } else {
