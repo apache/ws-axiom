@@ -160,4 +160,18 @@ public class SerializerTest {
         handler.endCDATASection();
         handler.completed();
     }
+
+    @Test
+    public void testGTEscapedAfterSquareBrackets() throws Exception {
+        String sequence = "xxx]]>yyy";
+        for (int i=1; i<sequence.length()-1; i++) {
+            StringWriter sw = new StringWriter();
+            Serializer handler = new Serializer(sw);
+            handler.startFragment();
+            handler.processCharacterData(sequence.substring(0, i), false);
+            handler.processCharacterData(sequence.substring(i), false);
+            handler.completed();
+            assertThat(sw.toString()).matches("xxx]]&gt;yyy");
+        }
+    }
 }
