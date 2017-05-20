@@ -82,7 +82,7 @@ public final class Serializer implements XmlHandler {
         outputStream = out;
     }
 
-    protected void switchContext(Context context) throws StreamException {
+    private void switchContext(Context context) throws StreamException {
         this.context = context;
         try {
             writer.setUnmappableCharacterHandler(context.getUnmappableCharacterHandler());
