@@ -53,13 +53,6 @@ public final class Serializer implements XmlHandler {
 
     private Context context = Context.MIXED_CONTENT;
     private int matchedIllegalCharacters;
-
-    /**
-     * Tracks the number of consecutive square brackets so that the '>' in ']]>' can be replaced by
-     * a character reference.
-     */
-    private int squareBrackets;
-
     private String[] elementNameStack = new String[8];
     private int depth;
     private boolean startTagOpen;
@@ -82,7 +75,7 @@ public final class Serializer implements XmlHandler {
         outputStream = out;
     }
 
-    private void switchContext(Context context) throws StreamException {
+    protected void switchContext(Context context) throws StreamException {
         this.context = context;
         try {
             writer.setUnmappableCharacterHandler(context.getUnmappableCharacterHandler());
@@ -90,7 +83,6 @@ public final class Serializer implements XmlHandler {
             throw new StreamException(ex);
         }
         matchedIllegalCharacters = 0;
-        squareBrackets = 0;
     }
 
     /**
@@ -406,11 +398,6 @@ public final class Serializer implements XmlHandler {
                         case '<':
                             replacement = "&lt;";
                             break;
-                        case '>':
-                            if (context == Context.MIXED_CONTENT && squareBrackets >= 2) {
-                                replacement = "&gt;";
-                            }
-                            break;
                         case '&':
                             replacement = "&amp;";
                             break;
@@ -440,10 +427,6 @@ public final class Serializer implements XmlHandler {
                         writer.writeCharacterReference(ch);
                     }
                     lastDirtyCharProcessed = i;
-                } else if (ch == ']') {
-                    squareBrackets++;
-                } else {
-                    squareBrackets = 0;
                 }
             }
             
