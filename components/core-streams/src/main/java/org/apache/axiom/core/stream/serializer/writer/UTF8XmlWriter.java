@@ -21,7 +21,7 @@ package org.apache.axiom.core.stream.serializer.writer;
 import java.io.IOException;
 import java.io.OutputStream;
 
-final class UTF8XmlWriter extends AbstractXmlWriter {
+final class UTF8XmlWriter extends ASCIICompatibleXmlWriter {
     UTF8XmlWriter(OutputStream out) {
         super(out);
     }
@@ -32,10 +32,8 @@ final class UTF8XmlWriter extends AbstractXmlWriter {
     }
 
     @Override
-    protected void writeCharacter(int codePoint) throws IOException {
-        if (codePoint < 0x80) {
-            writeByte((byte)codePoint);
-        } else if (codePoint < 0x800) {
+    protected void writeNonASCIICharacter(int codePoint) throws IOException {
+        if (codePoint < 0x800) {
             writeByte((byte)(0xc0 + (codePoint >> 6)));
             writeByte((byte)(0x80 + (codePoint & 0x3f)));
         } else if (codePoint < 0x10000) {

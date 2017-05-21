@@ -21,7 +21,7 @@ package org.apache.axiom.core.stream.serializer.writer;
 import java.io.IOException;
 import java.io.OutputStream;
 
-final class Latin1XmlWriter extends AbstractXmlWriter {
+final class Latin1XmlWriter extends ASCIICompatibleXmlWriter {
     private final int maxChar;
     private UnmappableCharacterHandler unmappableCharacterHandler = UnmappableCharacterHandler.THROW_EXCEPTION;
 
@@ -36,7 +36,7 @@ final class Latin1XmlWriter extends AbstractXmlWriter {
     }
 
     @Override
-    protected void writeCharacter(int codePoint) throws IOException {
+    protected void writeNonASCIICharacter(int codePoint) throws IOException {
         if (codePoint > maxChar) {
             unmappableCharacterHandler.processUnmappableCharacter(codePoint, this);
         } else {
