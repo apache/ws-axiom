@@ -38,6 +38,12 @@ import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
  * @xsl.usage internal
  */
 public final class Serializer implements XmlHandler {
+    /**
+     * The number of characters to process at once. Chosen small enough to leverage processor caches
+     * and large enough to reduce method invocation overhead.
+     */
+    private static final int CHUNK_SIZE = 4096;
+    
     private static final int MIXED_CONTENT = 0;
     private static final int TAG = 1;
     private static final int ATTRIBUTE_VALUE = 2;
@@ -87,7 +93,7 @@ public final class Serializer implements XmlHandler {
      * Reusing this buffer means not creating a new character array
      * everytime and it runs faster.
      */
-    private char[] charsBuff = new char[60];
+    private final char[] charsBuff = new char[CHUNK_SIZE];
 
     public Serializer(Writer out) {
         writer = new WriterXmlWriter(out);
@@ -332,138 +338,129 @@ public final class Serializer implements XmlHandler {
         
         final XmlWriter writer = this.writer;
         final int context = this.context;
+        final String illegalCharacterSequence = illegalCharacterSequences[context];
         
-        String illegalCharacterSequence = illegalCharacterSequences[context];
-        if (illegalCharacterSequence != null) {
-            int matchedIllegalCharacters = this.matchedIllegalCharacters;
-            for (int i = 0; i < length; i++) {
-                while (true) {
-                    if (chars[start+i] == illegalCharacterSequence.charAt(matchedIllegalCharacters)) {
-                        if (++matchedIllegalCharacters == illegalCharacterSequence.length()) {
-                            throw new IllegalCharacterSequenceException("Illegal character sequence \"" + illegalCharacterSequence + "\"");
-                        }
-                        break;
-                    } else if (matchedIllegalCharacters > 0) {
-                        int offset = 1;
-                        loop: while (offset < matchedIllegalCharacters) {
-                            for (int j = 0; j < matchedIllegalCharacters - offset; j++) {
-                                if (illegalCharacterSequence.charAt(j) != illegalCharacterSequence.charAt(j+offset)) {
-                                    offset++;
-                                    continue loop;
-                                }
-                            }
-                            break;
-                        }
-                        matchedIllegalCharacters -= offset;
-                    } else {
-                        break;
-                    }
-                }
-            }
-            this.matchedIllegalCharacters = matchedIllegalCharacters;
-        }
-        
-        if (context == CDATA_SECTION || context == COMMENT || context == PROCESSING_INSTRUCTION) {
-            // TODO: this doesn't take care of illegal characters
-            try {
-                writer.write(chars, start, length);
-            } catch (IOException ex) {
-                throw new StreamException(ex);
-            }
-            return;
-        }
-
         try {
             int i;
             
             final int end = start + length;
             int lastDirtyCharProcessed = start - 1; // last non-clean character that was processed
 													// that was processed
+            int matchedIllegalCharacters = this.matchedIllegalCharacters;
             int squareBrackets = this.squareBrackets;
             for (i = start; i < end; i++) {
                 char ch = chars[i];
+                
+                if (illegalCharacterSequence != null) {
+                    while (true) {
+                        if (ch == illegalCharacterSequence.charAt(matchedIllegalCharacters)) {
+                            if (++matchedIllegalCharacters == illegalCharacterSequence.length()) {
+                                throw new IllegalCharacterSequenceException("Illegal character sequence \"" + illegalCharacterSequence + "\"");
+                            }
+                            break;
+                        } else if (matchedIllegalCharacters > 0) {
+                            int offset = 1;
+                            loop: while (offset < matchedIllegalCharacters) {
+                                for (int j = 0; j < matchedIllegalCharacters - offset; j++) {
+                                    if (illegalCharacterSequence.charAt(j) != illegalCharacterSequence.charAt(j+offset)) {
+                                        offset++;
+                                        continue loop;
+                                    }
+                                }
+                                break;
+                            }
+                            matchedIllegalCharacters -= offset;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                
                 String replacement = null;
                 boolean generateCharacterReference = false;
                 
-                if (ch <= 0x1F) {
-                    // Range 0x00 through 0x1F inclusive
-                    //
-                    // This covers the non-whitespace control characters
-                    // in the range 0x1 to 0x1F inclusive.
-                    // It also covers the whitespace control characters in the same way:
-                    // 0x9   TAB
-                    // 0xA   NEW LINE
-                    // 0xD   CARRIAGE RETURN
-                    //
-                    // We also cover 0x0 ... It isn't valid
-                    // but we will output "&#0;" 
+                if (context == MIXED_CONTENT || context == ATTRIBUTE_VALUE) {
+                    if (ch <= 0x1F) {
+                        // Range 0x00 through 0x1F inclusive
+                        //
+                        // This covers the non-whitespace control characters
+                        // in the range 0x1 to 0x1F inclusive.
+                        // It also covers the whitespace control characters in the same way:
+                        // 0x9   TAB
+                        // 0xA   NEW LINE
+                        // 0xD   CARRIAGE RETURN
+                        //
+                        // We also cover 0x0 ... It isn't valid
+                        // but we will output "&#0;" 
+                        
+                        // The default will handle this just fine, but this
+                        // is a little performance boost to handle the more
+                        // common TAB, NEW-LINE, CARRIAGE-RETURN
+                        switch (ch) {
+                            case 0x09:
+                                if (context == ATTRIBUTE_VALUE) {
+                                    replacement = "&#9;";
+                                }
+                                break;
+                            case 0x0A:
+                                if (context == ATTRIBUTE_VALUE) {
+                                    replacement = "&#10;";
+                                }
+                                break;
+                            case 0x0D:
+                                replacement = "&#13;";
+                                // Leave whitespace carriage return as a real character
+                                break;
+                            default:
+                                generateCharacterReference = true;
+                                break;
+                        }
+                    } else if (ch < 0x7F) {
+                        switch (ch) {
+                            case '<':
+                                replacement = "&lt;";
+                                break;
+                            case '>':
+                                if (context == MIXED_CONTENT && squareBrackets >= 2) {
+                                    replacement = "&gt;";
+                                }
+                                break;
+                            case '&':
+                                replacement = "&amp;";
+                                break;
+                            case '"':
+                                if (context == ATTRIBUTE_VALUE) {
+                                    replacement = "&quot;";
+                                }
+                        }
+                    } else if (ch <= 0x9F) {
+                        // Range 0x7F through 0x9F inclusive
+                        // More control characters, including NEL (0x85)
+                        generateCharacterReference = true;
+                    } else if (ch == 0x2028) {
+                        // LINE SEPARATOR
+                        replacement = "&#8232;";
+                    }
                     
-                    // The default will handle this just fine, but this
-                    // is a little performance boost to handle the more
-                    // common TAB, NEW-LINE, CARRIAGE-RETURN
-                    switch (ch) {
-                        case 0x09:
-                            if (context == ATTRIBUTE_VALUE) {
-                                replacement = "&#9;";
-                            }
-                            break;
-                        case 0x0A:
-                            if (context == ATTRIBUTE_VALUE) {
-                                replacement = "&#10;";
-                            }
-                            break;
-                        case 0x0D:
-                            replacement = "&#13;";
-                            // Leave whitespace carriage return as a real character
-                            break;
-                        default:
-                            generateCharacterReference = true;
-                            break;
+                    if (ch == ']') {
+                        squareBrackets++;
+                    } else {
+                        squareBrackets = 0;
                     }
                 }
-                else if (ch < 0x7F) {
-                    switch (ch) {
-                        case '<':
-                            replacement = "&lt;";
-                            break;
-                        case '>':
-                            if (context == MIXED_CONTENT && squareBrackets >= 2) {
-                                replacement = "&gt;";
-                            }
-                            break;
-                        case '&':
-                            replacement = "&amp;";
-                            break;
-                        case '"':
-                            if (context == ATTRIBUTE_VALUE) {
-                                replacement = "&quot;";
-                            }
-                    }
-                } else if (ch <= 0x9F) {
-                    // Range 0x7F through 0x9F inclusive
-                    // More control characters, including NEL (0x85)
-                    generateCharacterReference = true;
-                } else if (ch == 0x2028) {
-                    // LINE SEPARATOR
-                    replacement = "&#8232;";
-                }
-                if (replacement != null || generateCharacterReference) {
-                    int startClean;
-                    startClean = lastDirtyCharProcessed + 1;
+                
+                int startClean = lastDirtyCharProcessed + 1;
+                int lengthClean = i - startClean;
+                if (replacement != null || generateCharacterReference || lengthClean == CHUNK_SIZE) {
                     if (startClean < i) {
-                        int lengthClean = i - startClean;
                         writer.write(chars, startClean, lengthClean);
                     }
                     if (replacement != null) {
                         writer.write(replacement);
-                    } else {
+                    } else if (generateCharacterReference) {
                         writer.writeCharacterReference(ch);
                     }
                     lastDirtyCharProcessed = i;
-                } else if (ch == ']') {
-                    squareBrackets++;
-                } else {
-                    squareBrackets = 0;
                 }
             }
             
@@ -474,6 +471,7 @@ public final class Serializer implements XmlHandler {
                 int lengthClean = i - startClean;
                 writer.write(chars, startClean, lengthClean);
             }
+            this.matchedIllegalCharacters = matchedIllegalCharacters;
             this.squareBrackets = squareBrackets;
         } catch (IOException ex) {
             throw new StreamException(ex);
@@ -485,11 +483,13 @@ public final class Serializer implements XmlHandler {
     }
 
     void characters(String s, int start, int length) throws StreamException {
-        if (length > charsBuff.length) {
-            charsBuff = new char[length * 2 + 1];
+        while (length > 0) {
+            int count = Math.min(length, CHUNK_SIZE);
+            s.getChars(start, start+count, charsBuff, 0);
+            characters(charsBuff, 0, count);
+            start += count;
+            length -= count;
         }
-        s.getChars(start, length, charsBuff, 0);
-        characters(charsBuff, 0, length);
     }
 
     @Override
