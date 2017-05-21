@@ -38,6 +38,23 @@ import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
  * @xsl.usage internal
  */
 public final class Serializer implements XmlHandler {
+    private static final int MIXED_CONTENT = 0;
+    private static final int TAG = 1;
+    private static final int ATTRIBUTE_VALUE = 2;
+    private static final int COMMENT = 3;
+    private static final int PROCESSING_INSTRUCTION = 4;
+    private static final int CDATA_SECTION = 5;
+
+    private static final String[] illegalCharacterSequences = { null, null, null, "--", "?>", "]]>" };
+
+    private static final UnmappableCharacterHandler[] unmappableCharacterHandlers = {
+            UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE,
+            UnmappableCharacterHandler.THROW_EXCEPTION,
+            UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE,
+            UnmappableCharacterHandler.THROW_EXCEPTION,
+            UnmappableCharacterHandler.THROW_EXCEPTION,
+            UnmappableCharacterHandler.THROW_EXCEPTION };
+    
     private final XmlWriter writer;
     private final OutputStream outputStream;
     
@@ -51,7 +68,7 @@ public final class Serializer implements XmlHandler {
      */
     protected boolean inDoctype = false;
 
-    private Context context = Context.MIXED_CONTENT;
+    private int context = MIXED_CONTENT;
     private int matchedIllegalCharacters;
 
     /**
@@ -82,10 +99,10 @@ public final class Serializer implements XmlHandler {
         outputStream = out;
     }
 
-    private void switchContext(Context context) throws StreamException {
+    private void switchContext(int context) throws StreamException {
         this.context = context;
         try {
-            writer.setUnmappableCharacterHandler(context.getUnmappableCharacterHandler());
+            writer.setUnmappableCharacterHandler(unmappableCharacterHandlers[context]);
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
@@ -178,7 +195,7 @@ public final class Serializer implements XmlHandler {
     @Override
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
             Boolean standalone) throws StreamException {
-        switchContext(Context.TAG);
+        switchContext(TAG);
         try {
             writer.write("<?xml version=\"");
             writer.write(xmlVersion == null ? "1.0" : xmlVersion);
@@ -197,7 +214,7 @@ public final class Serializer implements XmlHandler {
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
-        switchContext(Context.MIXED_CONTENT);
+        switchContext(MIXED_CONTENT);
     }
 
     @Override
@@ -313,14 +330,14 @@ public final class Serializer implements XmlHandler {
         if (length == 0)
             return;
         
-        String illegalCharacterSequence = context.getIllegalCharacterSequence();
+        String illegalCharacterSequence = illegalCharacterSequences[context];
         if (illegalCharacterSequence != null) {
             int matchedIllegalCharacters = this.matchedIllegalCharacters;
             for (int i = 0; i < length; i++) {
                 while (true) {
                     if (chars[start+i] == illegalCharacterSequence.charAt(matchedIllegalCharacters)) {
                         if (++matchedIllegalCharacters == illegalCharacterSequence.length()) {
-                            throw new IllegalCharacterSequenceException(context);
+                            throw new IllegalCharacterSequenceException("Illegal character sequence \"" + illegalCharacterSequence + "\"");
                         }
                         break;
                     } else if (matchedIllegalCharacters > 0) {
@@ -343,7 +360,7 @@ public final class Serializer implements XmlHandler {
             this.matchedIllegalCharacters = matchedIllegalCharacters;
         }
         
-        if (context == Context.CDATA_SECTION || context == Context.COMMENT || context == Context.PROCESSING_INSTRUCTION) {
+        if (context == CDATA_SECTION || context == COMMENT || context == PROCESSING_INSTRUCTION) {
             // TODO: this doesn't take care of illegal characters
             try {
                 writer.write(chars, start, length);
@@ -383,12 +400,12 @@ public final class Serializer implements XmlHandler {
                     // common TAB, NEW-LINE, CARRIAGE-RETURN
                     switch (ch) {
                         case 0x09:
-                            if (context == Context.ATTRIBUTE_VALUE) {
+                            if (context == ATTRIBUTE_VALUE) {
                                 replacement = "&#9;";
                             }
                             break;
                         case 0x0A:
-                            if (context == Context.ATTRIBUTE_VALUE) {
+                            if (context == ATTRIBUTE_VALUE) {
                                 replacement = "&#10;";
                             }
                             break;
@@ -407,7 +424,7 @@ public final class Serializer implements XmlHandler {
                             replacement = "&lt;";
                             break;
                         case '>':
-                            if (context == Context.MIXED_CONTENT && squareBrackets >= 2) {
+                            if (context == MIXED_CONTENT && squareBrackets >= 2) {
                                 replacement = "&gt;";
                             }
                             break;
@@ -415,7 +432,7 @@ public final class Serializer implements XmlHandler {
                             replacement = "&amp;";
                             break;
                         case '"':
-                            if (context == Context.ATTRIBUTE_VALUE) {
+                            if (context == ATTRIBUTE_VALUE) {
                                 replacement = "&quot;";
                             }
                     }
@@ -495,7 +512,7 @@ public final class Serializer implements XmlHandler {
         closeStartTag();
         try
         {
-            switchContext(Context.TAG);
+            switchContext(TAG);
             writer.write('<');
             if (!prefix.isEmpty()) {
                 writer.write(prefix);
@@ -563,9 +580,9 @@ public final class Serializer implements XmlHandler {
             writer.write(localName);
             writer.write("=\"");
             if (!value.isEmpty()) {
-                switchContext(Context.ATTRIBUTE_VALUE);
+                switchContext(ATTRIBUTE_VALUE);
                 characters(value);
-                switchContext(Context.TAG);
+                switchContext(TAG);
             }
             writer.write('\"');
         } catch (IOException ex) {
@@ -607,7 +624,7 @@ public final class Serializer implements XmlHandler {
                     writer.write("/>");
                 }
             } else {
-                switchContext(Context.TAG);
+                switchContext(TAG);
                 writer.write("</");
                 String prefix = elementNameStack[2*depth];
                 if (!prefix.isEmpty()) {
@@ -616,7 +633,7 @@ public final class Serializer implements XmlHandler {
                 }
                 writer.write(elementNameStack[2*depth+1]);
                 writer.write('>');
-                switchContext(Context.MIXED_CONTENT);
+                switchContext(MIXED_CONTENT);
             }
         } catch (IOException ex) {
             throw new StreamException(ex);
@@ -632,7 +649,7 @@ public final class Serializer implements XmlHandler {
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
-        switchContext(Context.COMMENT);
+        switchContext(COMMENT);
     }
 
     @Override
@@ -642,7 +659,7 @@ public final class Serializer implements XmlHandler {
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
-        switchContext(Context.MIXED_CONTENT);
+        switchContext(MIXED_CONTENT);
     }
 
     @Override
@@ -653,7 +670,7 @@ public final class Serializer implements XmlHandler {
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
-        switchContext(Context.MIXED_CONTENT);
+        switchContext(MIXED_CONTENT);
     }
 
     /**
@@ -681,7 +698,7 @@ public final class Serializer implements XmlHandler {
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
-        switchContext(Context.CDATA_SECTION);
+        switchContext(CDATA_SECTION);
     }
 
     /**
@@ -694,7 +711,7 @@ public final class Serializer implements XmlHandler {
         if (startTagOpen) {
             try {
                 writer.write('>');
-                switchContext(Context.MIXED_CONTENT);
+                switchContext(MIXED_CONTENT);
             } catch (IOException ex) {
                 throw new StreamException(ex);
             }
@@ -705,7 +722,7 @@ public final class Serializer implements XmlHandler {
     @Override
     public void startProcessingInstruction(String target) throws StreamException {
         closeStartTag();
-        switchContext(Context.TAG);
+        switchContext(TAG);
         try {
             writer.write("<?");
             writer.write(target);
@@ -713,7 +730,7 @@ public final class Serializer implements XmlHandler {
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
-        switchContext(Context.PROCESSING_INSTRUCTION);
+        switchContext(PROCESSING_INSTRUCTION);
     }
 
     @Override
@@ -723,7 +740,7 @@ public final class Serializer implements XmlHandler {
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
-        switchContext(Context.MIXED_CONTENT);
+        switchContext(MIXED_CONTENT);
     }
 
     public void writeInternalSubset(String internalSubset) throws StreamException {
@@ -797,7 +814,7 @@ public final class Serializer implements XmlHandler {
         try {
             writer.setUnmappableCharacterHandler(unmappableCharacterHandler);
             writer.write(s);
-            writer.setUnmappableCharacterHandler(context.getUnmappableCharacterHandler());
+            writer.setUnmappableCharacterHandler(unmappableCharacterHandlers[context]);
         } catch (IOException ex) {
             throw new StreamException(ex);
         }

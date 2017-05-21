@@ -23,7 +23,7 @@ import org.apache.axiom.core.stream.StreamException;
 public class IllegalCharacterSequenceException extends StreamException {
     private static final long serialVersionUID = 1L;
 
-    IllegalCharacterSequenceException(Context context) {
-        super("Illegal character sequence \"" + context.getIllegalCharacterSequence() + "\"");
+    IllegalCharacterSequenceException(String msg) {
+        super(msg);
     }
 }
