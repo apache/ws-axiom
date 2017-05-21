@@ -330,6 +330,9 @@ public final class Serializer implements XmlHandler {
         if (length == 0)
             return;
         
+        final XmlWriter writer = this.writer;
+        final int context = this.context;
+        
         String illegalCharacterSequence = illegalCharacterSequences[context];
         if (illegalCharacterSequence != null) {
             int matchedIllegalCharacters = this.matchedIllegalCharacters;
@@ -376,7 +379,7 @@ public final class Serializer implements XmlHandler {
             final int end = start + length;
             int lastDirtyCharProcessed = start - 1; // last non-clean character that was processed
 													// that was processed
-
+            int squareBrackets = this.squareBrackets;
             for (i = start; i < end; i++) {
                 char ch = chars[i];
                 String replacement = null;
@@ -471,6 +474,7 @@ public final class Serializer implements XmlHandler {
                 int lengthClean = i - startClean;
                 writer.write(chars, startClean, lengthClean);
             }
+            this.squareBrackets = squareBrackets;
         } catch (IOException ex) {
             throw new StreamException(ex);
         }

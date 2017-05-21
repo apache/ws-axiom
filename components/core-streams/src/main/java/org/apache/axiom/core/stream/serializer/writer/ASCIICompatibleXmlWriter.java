@@ -24,7 +24,7 @@ import java.io.OutputStream;
 abstract class ASCIICompatibleXmlWriter extends XmlWriter {
     private final OutputStream out;
     private final byte[] buffer = new byte[4096];
-    private int len;
+    private int bufferPosition;
     private char highSurrogate;
     
     ASCIICompatibleXmlWriter(OutputStream out) {
@@ -34,19 +34,19 @@ abstract class ASCIICompatibleXmlWriter extends XmlWriter {
     protected abstract void writeNonASCIICharacter(int codePoint) throws IOException;
 
     protected final void writeByte(byte b) throws IOException {
-        if (len == buffer.length) {
+        if (bufferPosition == buffer.length) {
             flushBuffer();
         }
-        buffer[len++] = b;
+        buffer[bufferPosition++] = b;
     }
 
     @Override
     public final void write(char c) throws IOException {
         if (c < 128 && highSurrogate == 0) {
-            if (len == buffer.length) {
+            if (bufferPosition == buffer.length) {
                 flushBuffer();
             }
-            buffer[len++] = (byte)c;
+            buffer[bufferPosition++] = (byte)c;
         } else {
             internalWrite(c);
         }
@@ -75,37 +75,55 @@ abstract class ASCIICompatibleXmlWriter extends XmlWriter {
 
     @Override
     public final void write(String s) throws IOException {
+        final byte[] buffer = this.buffer;
+        final int bufferLength = buffer.length;
+        int bufferPosition = this.bufferPosition;
+        int highSurrogate = this.highSurrogate;
         for (int i=0, length=s.length(); i<length; i++) {
             char c = s.charAt(i);
             if (c < 128 && highSurrogate == 0) {
-                if (len == buffer.length) {
-                    flushBuffer();
+                if (bufferPosition == bufferLength) {
+                    out.write(buffer, 0, bufferLength);
+                    bufferPosition = 0;
                 }
-                buffer[len++] = (byte)c;
+                buffer[bufferPosition++] = (byte)c;
             } else {
+                this.bufferPosition = bufferPosition;
                 internalWrite(c);
+                bufferPosition = this.bufferPosition;
+                highSurrogate = this.highSurrogate;
             }
         }
+        this.bufferPosition = bufferPosition;
     }
 
     @Override
     public final void write(char[] chars, int start, int length) throws IOException {
+        final byte[] buffer = this.buffer;
+        final int bufferLength = buffer.length;
+        int bufferPosition = this.bufferPosition;
+        int highSurrogate = this.highSurrogate;
         for (int i=0; i<length; i++) {
             char c = chars[start+i];
             if (c < 128 && highSurrogate == 0) {
-                if (len == buffer.length) {
-                    flushBuffer();
+                if (bufferPosition == bufferLength) {
+                    out.write(buffer, 0, bufferLength);
+                    bufferPosition = 0;
                 }
-                buffer[len++] = (byte)c;
+                buffer[bufferPosition++] = (byte)c;
             } else {
+                this.bufferPosition = bufferPosition;
                 internalWrite(c);
+                bufferPosition = this.bufferPosition;
+                highSurrogate = this.highSurrogate;
             }
         }
+        this.bufferPosition = bufferPosition;
     }
 
     @Override
     public final void flushBuffer() throws IOException {
-        out.write(buffer, 0, len);
-        len = 0;
+        out.write(buffer, 0, bufferPosition);
+        bufferPosition = 0;
     }
 }
