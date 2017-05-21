@@ -21,7 +21,10 @@ package org.apache.axiom.buildutils.shade.osgi;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,36 +53,38 @@ import org.osgi.framework.BundleException;
  */
 public class OSGiManifestResourceTransformer implements ResourceTransformer {
     private Manifest originalManifest;
-    private final Set<String> importedPackages = new LinkedHashSet<String>();
+    private final List<ManifestElement> packageImports = new ArrayList<ManifestElement>();
     private final Set<String> packagesExportedFromIncludedJARs = new LinkedHashSet<String>();
     
     public boolean canTransformResource(String resource) {
         return resource.equals(JarFile.MANIFEST_NAME);
     }
 
-    private static List<String> extractPackages(Attributes attributes, String header) throws IOException {
-        String value = attributes.getValue(header);
+    private static List<ManifestElement> parseAttribute(Attributes attributes, String attributeName) throws IOException {
+        String value = attributes.getValue(attributeName);
         if (value == null) {
             return Collections.emptyList();
         } else {
-            ManifestElement[] elements;
             try {
-                elements = ManifestElement.parseHeader("Export-Package", value);
+                return Arrays.asList(ManifestElement.parseHeader(attributeName, value));
             } catch (BundleException ex) {
                 throw new IOException("Invalid bundle manifest", ex);
             }
-            List<String> result = new ArrayList<String>(elements.length);
-            for (ManifestElement element : elements) {
-                result.add(element.getValue());
-            }
-            return result;
         }
+    }
+
+    private static List<String> extractPackages(Attributes attributes, String attributeName) throws IOException {
+        List<String> result = new ArrayList<String>();
+        for (ManifestElement element : parseAttribute(attributes, attributeName)) {
+            result.add(element.getValue());
+        }
+        return result;
     }
     
     public void processResource(String resource, InputStream is, List<Relocator> relocators) throws IOException {
         Manifest manifest = new Manifest(is);
         Attributes attributes = manifest.getMainAttributes();
-        importedPackages.addAll(extractPackages(attributes, "Import-Package"));
+        packageImports.addAll(parseAttribute(attributes, "Import-Package"));
         // We know that the first invocation of processResource is for the project's
         // manifest (see the existing ManifestResourceTransformer's source code)
         if (originalManifest == null) {
@@ -95,9 +100,15 @@ public class OSGiManifestResourceTransformer implements ResourceTransformer {
     }
 
     public void modifyOutputStream(JarOutputStream os) throws IOException {
-        importedPackages.removeAll(packagesExportedFromIncludedJARs);
+        Set<String> importedPackages = new HashSet<>();
+        for (Iterator<ManifestElement> it = packageImports.iterator(); it.hasNext(); ) {
+            String importedPackage = it.next().getValue();
+            if (packagesExportedFromIncludedJARs.contains(importedPackage) || !importedPackages.add(importedPackage)) {
+                it.remove();
+            }
+        }
         originalManifest.getMainAttributes().putValue("Import-Package",
-                StringUtils.join(importedPackages.iterator(), ","));
+                StringUtils.join(packageImports.iterator(), ","));
         os.putNextEntry(new JarEntry(JarFile.MANIFEST_NAME));
         originalManifest.write(os);
     }
