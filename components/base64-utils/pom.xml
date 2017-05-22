@@ -27,7 +27,6 @@
     </parent>
 
     <artifactId>base64-utils</artifactId>
-    <packaging>bundle</packaging>
 
     <url>http://ws.apache.org/axiom/</url>
 </project>

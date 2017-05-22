@@ -40,11 +40,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-            </plugin>
-            <plugin>
                 <groupId>com.github.veithen.phos</groupId>
                 <artifactId>enforcer-maven-plugin</artifactId>
                 <executions>

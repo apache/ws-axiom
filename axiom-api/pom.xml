@@ -229,10 +229,14 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>*;-noimport:=true</Export-Package>
+                        <Private-Package />
+                        <Export-Package>
+                            org.apache.axiom.*;-split-package:=merge-first;-noimport:=true
+                        </Export-Package>
                         <Import-Package>
                             org.jaxen.*;resolution:=optional,
                             org.codehaus.stax2;resolution:=optional,
+                            org.apache.james.mime4j.*;version="${range;[==,=+)}",
                             *
                         </Import-Package>
                         <Bundle-Activator>org.apache.axiom.locator.Activator</Bundle-Activator>
@@ -244,36 +248,6 @@
                         <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                     </instructions>
                 </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-shade-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <artifactSet>
-                        <includes>
-                            <include>${project.groupId}:base64-utils</include>
-                        </includes>
-                    </artifactSet>
-                    <transformers>
-                        <transformer implementation="org.apache.axiom.buildutils.shade.osgi.OSGiManifestResourceTransformer" />
-                    </transformers>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <createSourcesJar>true</createSourcesJar>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>shade-osgi</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <!--
                 Attach a JAR with the test classes so that we can reuse them in

@@ -27,7 +27,6 @@
     </parent>
 
     <artifactId>fom-aspects</artifactId>
-    <packaging>bundle</packaging>
 
     <name>FOM Aspects</name>
     <url>http://ws.apache.org/axiom/</url>

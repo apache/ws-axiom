@@ -35,7 +35,6 @@
     <modules>
         <module>jar-resource-bundle</module>
         <module>shade-axiom-xml</module>
-        <module>shade-osgi</module>
         <module>javadoc-postprocessor-maven-plugin</module>
     </modules>
 

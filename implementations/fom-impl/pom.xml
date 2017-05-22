@@ -134,15 +134,24 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-shade-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Import-Package>!org.aspectj.*,*</Import-Package>
+                        <Private-Package>
+                            org.apache.axiom.core.*,
+                            org.apache.axiom.om.impl.*,
+                            org.apache.axiom.soap.impl.*,
+                            org.apache.axiom.shared.*,
+                            org.apache.axiom.fom.*,
+                            org.apache.axiom.util.xml.*,
+                            org.aspectj.lang,
+                            org.aspectj.lang.annotation
+                        </Private-Package>
+                    </instructions>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.github.veithen.alta</groupId>
