@@ -19,18 +19,22 @@
 package org.apache.axiom.core.stream.sax;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Stack;
 
 import org.apache.axiom.core.stream.CharacterData;
+import org.apache.axiom.core.stream.CharacterDataSink;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
+import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
+import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
-public class ContentHandlerXmlHandler implements XmlHandler {
+public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     private enum CharacterDataMode { PASS_THROUGH, BUFFER, SKIP, ACCUMULATE };
     
     private final ContentHandler contentHandler;
@@ -176,6 +180,16 @@ public class ContentHandlerXmlHandler implements XmlHandler {
         bufferPos += dataLen;
     }
 
+    @Override
+    public Writer getWriter() {
+        return new ContentHandlerWriter(contentHandler);
+    }
+
+    @Override
+    public AbstractBase64EncodingOutputStream getBase64EncodingOutputStream() {
+        return new Base64EncodingWriterOutputStream(getWriter());
+    }
+
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         try {
             switch (characterDataMode) {
@@ -186,7 +200,7 @@ public class ContentHandlerXmlHandler implements XmlHandler {
                         bufferPos = 0;
                     } else if (data instanceof CharacterData) {
                         try {
-                            ((CharacterData)data).writeTo(new ContentHandlerWriter(contentHandler));
+                            ((CharacterData)data).writeTo(this);
                         } catch (IOException ex) {
                             Throwable cause = ex.getCause();
                             SAXException saxException;

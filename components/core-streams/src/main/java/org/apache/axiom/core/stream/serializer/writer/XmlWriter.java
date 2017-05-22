@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
+
 public abstract class XmlWriter {
     public static XmlWriter create(OutputStream out, String encoding) {
         Charset charset = Charset.forName(encoding);
@@ -41,6 +43,8 @@ public abstract class XmlWriter {
     public abstract void write(char c) throws IOException;
     public abstract void write(String s) throws IOException;
     public abstract void write(char chars[], int start, int length) throws IOException;
+
+    public abstract AbstractBase64EncodingOutputStream getBase64EncodingOutputStream();
 
     /**
      * Write any pending data to the underlying stream, without flushing the stream itself.

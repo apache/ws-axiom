@@ -25,8 +25,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.core.stream.CharacterData;
+import org.apache.axiom.core.stream.CharacterDataSink;
 import org.apache.axiom.core.stream.stax.pull.InternalXMLStreamReader;
 import org.apache.axiom.ext.stax.CharacterDataReader;
+import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
+import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 
 final class CharacterDataReaderImpl implements CharacterDataReader {
     private final InternalXMLStreamReader reader;
@@ -36,12 +39,22 @@ final class CharacterDataReaderImpl implements CharacterDataReader {
     }
 
     @Override
-    public void writeTextTo(Writer writer) throws XMLStreamException, IOException {
+    public void writeTextTo(final Writer writer) throws XMLStreamException, IOException {
         switch (reader.getEventType()) {
             case XMLStreamReader.CHARACTERS:
                 Object data = reader.getCharacterData();
                 if (data instanceof CharacterData) {
-                    ((CharacterData)data).writeTo(writer);
+                    ((CharacterData)data).writeTo(new CharacterDataSink() {
+                        @Override
+                        public Writer getWriter() {
+                            return writer;
+                        }
+
+                        @Override
+                        public AbstractBase64EncodingOutputStream getBase64EncodingOutputStream() {
+                            return new Base64EncodingWriterOutputStream(writer);
+                        }
+                    });
                 } else {
                     writer.write(data.toString());
                 }

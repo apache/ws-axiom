@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.intf;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import javax.activation.DataHandler;
 
@@ -27,12 +26,13 @@ import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CloneableCharacterData;
 import org.apache.axiom.core.stream.CharacterData;
+import org.apache.axiom.core.stream.CharacterDataSink;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.UIDGenerator;
+import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
-import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.base64.Base64Utils;
 
 public final class TextContent implements CloneableCharacterData {
@@ -169,13 +169,14 @@ public final class TextContent implements CloneableCharacterData {
     }
 
     @Override
-    public void writeTo(Writer writer) throws IOException {
+    public void writeTo(CharacterDataSink sink) throws IOException {
         if (binary) {
-            Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(writer, 4096, true);
+            AbstractBase64EncodingOutputStream out = sink.getBase64EncodingOutputStream();
             getDataHandler().writeTo(out);
             out.complete();
         } else {
-            writer.write(value);
+            // TODO: there must be a better way to just write a String
+            sink.getWriter().write(value);
         }
     }
 

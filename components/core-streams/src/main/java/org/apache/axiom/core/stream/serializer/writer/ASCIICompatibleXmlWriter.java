@@ -21,10 +21,12 @@ package org.apache.axiom.core.stream.serializer.writer;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
+
 abstract class ASCIICompatibleXmlWriter extends XmlWriter {
     private final OutputStream out;
-    private final byte[] buffer = new byte[4096];
-    private int bufferPosition;
+    final byte[] buffer = new byte[4096];
+    int bufferPosition;
     private char highSurrogate;
     
     ASCIICompatibleXmlWriter(OutputStream out) {
@@ -119,6 +121,32 @@ abstract class ASCIICompatibleXmlWriter extends XmlWriter {
             }
         }
         this.bufferPosition = bufferPosition;
+    }
+
+    @Override
+    public AbstractBase64EncodingOutputStream getBase64EncodingOutputStream() {
+        return new AbstractBase64EncodingOutputStream() {
+            @Override
+            protected void doWrite(byte[] b) throws IOException {
+                if (buffer.length-bufferPosition < 4) {
+                    ASCIICompatibleXmlWriter.this.flushBuffer();
+                }
+                System.arraycopy(b, 0, buffer, bufferPosition, 4);
+                bufferPosition += 4;
+            }
+            
+            @Override
+            protected void flushBuffer() throws IOException {
+            }
+            
+            @Override
+            protected void doFlush() throws IOException {
+            }
+            
+            @Override
+            protected void doClose() throws IOException {
+            }
+        };
     }
 
     @Override

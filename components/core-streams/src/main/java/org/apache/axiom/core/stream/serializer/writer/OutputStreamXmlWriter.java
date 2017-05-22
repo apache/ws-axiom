@@ -26,6 +26,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CoderResult;
 
+import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
+
 final class OutputStreamXmlWriter extends XmlWriter {
     private final OutputStream out;
     private final CharBuffer encoderIn;
@@ -137,6 +139,34 @@ final class OutputStreamXmlWriter extends XmlWriter {
             offset += c;
             length -= c;
         }
+    }
+
+    @Override
+    public AbstractBase64EncodingOutputStream getBase64EncodingOutputStream() {
+        return new AbstractBase64EncodingOutputStream() {
+            @Override
+            protected void doWrite(byte[] b) throws IOException {
+                CharBuffer encoderIn = getEncoderIn();
+                if (encoderIn.remaining() < 4) {
+                    OutputStreamXmlWriter.this.flush(encoderIn);
+                }
+                for (int i=0; i<4; i++) {
+                    encoderIn.put((char)(b[i] & 0xFF));
+                }
+            }
+            
+            @Override
+            protected void flushBuffer() throws IOException {
+            }
+            
+            @Override
+            protected void doFlush() throws IOException {
+            }
+            
+            @Override
+            protected void doClose() throws IOException {
+            }
+        };
     }
 
     @Override

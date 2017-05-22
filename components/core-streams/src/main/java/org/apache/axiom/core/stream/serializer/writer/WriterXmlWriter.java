@@ -21,6 +21,9 @@ package org.apache.axiom.core.stream.serializer.writer;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
+import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
+
 public final class WriterXmlWriter extends XmlWriter {
     private final Writer out;
 
@@ -45,6 +48,11 @@ public final class WriterXmlWriter extends XmlWriter {
     @Override
     public void write(char[] chars, int start, int length) throws IOException {
         out.write(chars, start, length);
+    }
+
+    @Override
+    public AbstractBase64EncodingOutputStream getBase64EncodingOutputStream() {
+        return new Base64EncodingWriterOutputStream(out);
     }
 
     @Override

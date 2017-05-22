@@ -25,11 +25,13 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 import org.apache.axiom.core.stream.CharacterData;
+import org.apache.axiom.core.stream.CharacterDataSink;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 import org.apache.axiom.core.stream.serializer.writer.WriterXmlWriter;
 import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
+import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 
 /**
  * This abstract class is a base class for other stream 
@@ -37,7 +39,7 @@ import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
  * 
  * @xsl.usage internal
  */
-public final class Serializer implements XmlHandler {
+public final class Serializer implements XmlHandler, CharacterDataSink {
     /**
      * The number of characters to process at once. Chosen small enough to leverage processor caches
      * and large enough to reduce method invocation overhead.
@@ -493,11 +495,21 @@ public final class Serializer implements XmlHandler {
     }
 
     @Override
+    public Writer getWriter() {
+        return new SerializerWriter(this);
+    }
+
+    @Override
+    public AbstractBase64EncodingOutputStream getBase64EncodingOutputStream() {
+        return writer.getBase64EncodingOutputStream();
+    }
+
+    @Override
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         closeStartTag();
         if (data instanceof CharacterData) {
             try {
-                ((CharacterData)data).writeTo(new SerializerWriter(this));
+                ((CharacterData)data).writeTo(this);
             } catch (IOException ex) {
                 Throwable cause = ex.getCause();
                 if (cause instanceof StreamException) {

@@ -18,16 +18,11 @@
  */
 package org.apache.axiom.core.stream;
 
-import java.io.IOException;
+import java.io.Writer;
 
-// TODO: clean up this Javadoc
-/**
- * Represents character data stored by a {@link org.apache.axiom.core.CoreCharacterDataNode}
- * instance. The content of a {@link CoreCharacterDataNode} is either a {@link String} object or an
- * instance of this interface.
- */
-public interface CharacterData {
-    String toString();
-    void writeTo(CharacterDataSink sink) throws IOException;
-    void appendTo(StringBuilder buffer);
+import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
+
+public interface CharacterDataSink {
+    Writer getWriter();
+    AbstractBase64EncodingOutputStream getBase64EncodingOutputStream();
 }
