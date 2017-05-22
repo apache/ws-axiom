@@ -20,7 +20,6 @@
 package org.apache.axiom.soap.impl.common.builder;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.exception.OMBuilderException;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -59,7 +58,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
         if (elementLevel == 4) {
             if (localName.equals(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME)) {
                 if (codePresent) {
-                    throw new OMBuilderException(
+                    throw new SOAPProcessingException(
                             "Multiple Code element encountered");
                 } else {
                     elementType = AxiomSOAP12FaultCode.class;
@@ -70,7 +69,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 if (!codeprocessing && !subCodeProcessing) {
                     if (codePresent) {
                         if (reasonPresent) {
-                            throw new OMBuilderException(
+                            throw new SOAPProcessingException(
                                     "Multiple Reason Element encountered");
                         } else {
                             elementType = AxiomSOAP12FaultReason.class;
@@ -78,15 +77,15 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                             reasonProcessing = true;
                         }
                     } else {
-                        throw new OMBuilderException(
+                        throw new SOAPProcessingException(
                                 "Wrong element order encountred at " + localName);
                     }
                 } else {
                     if (codeprocessing) {
-                        throw new OMBuilderException(
+                        throw new SOAPProcessingException(
                                 "Code doesn't have a value");
                     } else {
-                        throw new OMBuilderException(
+                        throw new SOAPProcessingException(
                                 "A subcode doesn't have a Value");
                     }
                 }
@@ -95,58 +94,58 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 if (!reasonProcessing) {
                     if (reasonPresent && !rolePresent && !detailPresent) {
                         if (nodePresent) {
-                            throw new OMBuilderException(
+                            throw new SOAPProcessingException(
                                     "Multiple Node element encountered");
                         } else {
                             elementType = AxiomSOAP12FaultNode.class;
                             nodePresent = true;
                         }
                     } else {
-                        throw new OMBuilderException(
+                        throw new SOAPProcessingException(
                                 "wrong element order encountered at " + localName);
                     }
                 } else {
-                    throw new OMBuilderException(
+                    throw new SOAPProcessingException(
                             "Reason element Should have a text");
                 }
             } else if (localName.equals(SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME)) {
                 if (!reasonProcessing) {
                     if (reasonPresent && !detailPresent) {
                         if (rolePresent) {
-                            throw new OMBuilderException(
+                            throw new SOAPProcessingException(
                                     "Multiple Role element encountered");
                         } else {
                             elementType = AxiomSOAP12FaultRole.class;
                             rolePresent = true;
                         }
                     } else {
-                        throw new OMBuilderException(
+                        throw new SOAPProcessingException(
                                 "Wrong element order encountered at " + localName);
                     }
                 } else {
-                    throw new OMBuilderException(
+                    throw new SOAPProcessingException(
                             "Reason element should have a text");
                 }
             } else if (localName.equals(SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
                 if (!reasonProcessing) {
                     if (reasonPresent) {
                         if (detailPresent) {
-                            throw new OMBuilderException(
+                            throw new SOAPProcessingException(
                                     "Multiple detail element encountered");
                         } else {
                             elementType = AxiomSOAP12FaultDetail.class;
                             detailPresent = true;
                         }
                     } else {
-                        throw new OMBuilderException(
+                        throw new SOAPProcessingException(
                                 "wrong element order encountered at " + localName);
                     }
                 } else {
-                    throw new OMBuilderException(
+                    throw new SOAPProcessingException(
                             "Reason element should have a text");
                 }
             } else {
-                throw new OMBuilderException(
+                throw new SOAPProcessingException(
                         localName + " unsupported element in SOAPFault element");
             }
 
@@ -159,7 +158,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                         valuePresent = true;
                         codeprocessing = false;
                     } else {
-                        throw new OMBuilderException(
+                        throw new SOAPProcessingException(
                                 "Multiple value Encountered in code element");
                     }
 
@@ -170,16 +169,16 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                             subcodePresent = true;
                             subCodeProcessing = true;
                         } else {
-                            throw new OMBuilderException(
+                            throw new SOAPProcessingException(
                                     "Value should present before the subcode");
                         }
 
                     } else {
-                        throw new OMBuilderException(
+                        throw new SOAPProcessingException(
                                 "multiple subcode Encountered in code element");
                     }
                 } else {
-                    throw new OMBuilderException(
+                    throw new SOAPProcessingException(
                             localName + " is not supported inside the code element");
                 }
 
@@ -189,7 +188,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     elementType = AxiomSOAP12FaultText.class;
                     reasonProcessing = false;
                 } else {
-                    throw new OMBuilderException(
+                    throw new SOAPProcessingException(
                             localName + " is not supported inside the reason");
                 }
             } else if (parent.getLocalName().equals(
@@ -200,7 +199,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 detailElementNames.add(localName);
 
             } else {
-                throw new OMBuilderException(
+                throw new SOAPProcessingException(
                         parent.getLocalName() +
                                 " should not have child element");
             }
@@ -211,7 +210,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME)) {
                 if (localName.equals(SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME)) {
                     if (subcodeValuePresent) {
-                        throw new OMBuilderException(
+                        throw new SOAPProcessingException(
                                 "multiple subCode value encountered");
                     } else {
                         elementType = AxiomSOAP12FaultValue.class;
@@ -227,15 +226,15 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                             subSubcodePresent = true;
                             subCodeProcessing = true;
                         } else {
-                            throw new OMBuilderException(
+                            throw new SOAPProcessingException(
                                     "multiple subcode encountered");
                         }
                     } else {
-                        throw new OMBuilderException(
+                        throw new SOAPProcessingException(
                                 "Value should present before the subcode");
                     }
                 } else {
-                    throw new OMBuilderException(
+                    throw new SOAPProcessingException(
                             localName + " is not supported inside the subCode element");
                 }
             } else if (processingDetailElements) {
@@ -255,7 +254,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 }
 
             } else {
-                throw new OMBuilderException(
+                throw new SOAPProcessingException(
                         parent.getLocalName() +
                                 " should not have child at element level " +
                                 elementLevel);
