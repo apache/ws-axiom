@@ -45,6 +45,11 @@ public class SOAPSample extends XMLSample {
      */
     public static final SOAPSample SOAP12_FAULT = new SimpleSOAPSample(SOAPSpec.SOAP12, "test-message/soap12/fault.xml", "soap12/fault.xml");
     
+    /**
+     * A SOAP 1.2 message that uses the relay attribute.
+     */
+    public static final SOAPSample SOAP12_RELAY = new SimpleSOAPSample(SOAPSpec.SOAP12, "test-message/soap12/relay.xml", "soap12/relay.xml");
+    
     private final SOAPSpec spec;
     
     SOAPSample(SOAPSpec spec, MessageContent content, String name) {

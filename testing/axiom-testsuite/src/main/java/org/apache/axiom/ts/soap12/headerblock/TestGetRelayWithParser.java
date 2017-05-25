@@ -21,18 +21,19 @@ package org.apache.axiom.ts.soap12.headerblock;
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.SOAPSample;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-public class TestGetRelayWithParser extends SOAPTestCase {
+public class TestGetRelayWithParser extends SampleBasedSOAPTestCase {
     public TestGetRelayWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+        super(metaFactory, SOAPSample.SOAP12_RELAY);
     }
 
     @Override
-    protected void runTest() throws Throwable {
-        Iterator<SOAPHeaderBlock> iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        Iterator<SOAPHeaderBlock> iterator = envelope.getHeader().examineAllHeaderBlocks();
         assertFalse(iterator.next().getRelay());
         assertTrue(iterator.next().getRelay());
         assertFalse(iterator.next().getRelay());

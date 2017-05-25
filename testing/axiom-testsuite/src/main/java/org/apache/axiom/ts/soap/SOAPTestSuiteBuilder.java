@@ -55,8 +55,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
                 new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/soapfault.xml"),
                 new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/soapfault2.xml"),
                 new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/bodyNotQualified.xml"),
-                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/message.xml"),
-                new SimpleSOAPSample(SOAPSpec.SOAP12, "soap/soap12/message.xml"),
                 new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/faultelements-with-comment.xml"),
                 new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/additional-element-after-body.xml"),
                 new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/empty-header.xml"),

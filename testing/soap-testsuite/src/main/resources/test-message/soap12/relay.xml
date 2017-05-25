@@ -1,0 +1,25 @@
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:xml="http://www.w3.org/XML/1998/namespace">
+    <env:Header>
+        <test:echoOk xmlns:test="http://example.org/ts-tests"
+            env:role="http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver"
+            env:mustUnderstand="true" env:relay="false"
+            env:anyAttribute="any value">
+            foo
+        </test:echoOk>
+        <test1:echoOk1 xmlns:test1="http://example1.org/ts-tests"
+            env:role="http://www.w3.org/2003/05/soap-envelope/role/next"
+            env:mustUnderstand="false" env:relay="true"
+            env:anyAttribute="any value">
+            foo
+        </test1:echoOk1>
+        <test2:echoOk2 xmlns:test2="http://example2.org/ts-tests"
+            env:role="http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver"
+            env:mustUnderstand="1"
+            env:anyAttribute="any value">
+            foo
+        </test2:echoOk2>
+    </env:Header>
+    <env:Body>
+        <p:echo xmlns:p="urn:echo"/>
+    </env:Body>
+</env:Envelope>

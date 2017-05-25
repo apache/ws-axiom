@@ -18,22 +18,15 @@
  */
 package org.apache.axiom.ts.soap;
 
-import java.io.InputStream;
-
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public abstract class SOAPTestCase extends AxiomTestCase {
-    protected static final String MESSAGE = "message.xml";
-    
     protected final SOAPSpec spec;
     protected SOAPFactory soapFactory;
     protected SOAPFactory altSoapFactory;
@@ -49,17 +42,6 @@ public abstract class SOAPTestCase extends AxiomTestCase {
         super.setUp();
         soapFactory = spec.getAdapter(FactorySelector.class).getFactory(metaFactory);
         altSoapFactory = spec.getAltSpec().getAdapter(FactorySelector.class).getFactory(metaFactory);
-    }
-
-    protected SOAPModelBuilder getBuilderForTestMessage(String name) {
-        InputStream in = AbstractTestCase.getTestResource("soap/" + spec.getName() + "/" + name);
-        return OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, in, null);
-    }
-    
-    protected SOAPEnvelope getTestMessage(String name) {
-        SOAPEnvelope envelope = getBuilderForTestMessage(name).getSOAPEnvelope();
-        assertSame(spec.getEnvelopeNamespaceURI(), ((SOAPFactory)envelope.getOMFactory()).getSoapVersionURI());
-        return envelope;
     }
 
     protected SOAPHeaderBlock createSOAPHeaderBlock() {
