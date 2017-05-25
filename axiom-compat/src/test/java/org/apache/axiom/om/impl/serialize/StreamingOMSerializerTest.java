@@ -31,16 +31,16 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.stream.StreamSource;
 
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 import org.xml.sax.InputSource;
 
-public class StreamingOMSerializerTest extends AbstractTestCase {
+public class StreamingOMSerializerTest extends TestCase {
     private final XMLSample file;
 
     public StreamingOMSerializerTest(String name, XMLSample file) {
