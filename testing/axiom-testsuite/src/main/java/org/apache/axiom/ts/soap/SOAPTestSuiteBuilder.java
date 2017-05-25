@@ -27,7 +27,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
@@ -48,10 +47,10 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     static {
         goodSOAPFiles = new ArrayList<SOAPSample>();
         goodSOAPFiles.addAll(Arrays.asList(
-                new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.WHITESPACE_MESSAGE),
-                new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.MINIMAL_MESSAGE),
-                new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.REALLY_BIG_MESSAGE),
-                new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.EMPTY_BODY_MESSAGE),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/whitespacedMessage.xml"),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/minimalMessage.xml"),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/reallyReallyBigMessage.xml"),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/emtyBodymessage.xml"),
                 new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/soapfault.xml"),
                 new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/soapfault2.xml"),
                 new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/bodyNotQualified.xml"),
