@@ -16,24 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap11.headerblock;
+package org.apache.axiom.ts.soap.headerblock;
 
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-public class TestGetMustUnderstandWithParser extends SOAPTestCase {
-    public TestGetMustUnderstandWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP11);
+public class TestGetMustUnderstandWithParser extends SampleBasedSOAPTestCase {
+    public TestGetMustUnderstandWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec, SOAPSampleSet.HEADERS);
     }
 
     @Override
-    protected void runTest() throws Throwable {
-        Iterator<SOAPHeaderBlock> iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
-        iterator.next();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        Iterator<SOAPHeaderBlock> iterator = envelope.getHeader().examineAllHeaderBlocks();
         assertTrue(
                 "SOAP HeaderBlock Test With Parser : - getMustUnderstand method returns incorrect value",
                 iterator.next().getMustUnderstand());

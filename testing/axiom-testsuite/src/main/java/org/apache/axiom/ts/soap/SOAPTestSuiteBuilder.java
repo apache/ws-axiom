@@ -251,6 +251,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, Boolean.FALSE));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, null));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestCloneProcessedWithoutPreservingModel(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestGetMustUnderstandWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetRole(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetVersion(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetRole(metaFactory, spec));
@@ -314,7 +315,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap11.faultreason.TestAddSOAPText(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.faultreason.TestGetFirstSOAPText(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.faultreason.TestGetTextWithCDATA(metaFactory));
-        addTest(new org.apache.axiom.ts.soap11.headerblock.TestGetMustUnderstandWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.headerblock.TestGetRoleWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.builder.TestBuilder(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestBuildWithAttachments(metaFactory));
@@ -342,7 +342,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetValueWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faulttext.TestGetLangWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestExamineMustUnderstandHeaderBlocks(metaFactory));
-        addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetMustUnderstandWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRoleWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.mtom.TestBuilderDetach(metaFactory));
