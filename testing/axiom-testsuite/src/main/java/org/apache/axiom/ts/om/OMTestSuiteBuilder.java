@@ -218,6 +218,10 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, false, true));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsume(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestSerializeUTF16(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestSerializeWithIgnoreXMLDeclaration(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestSerializeXML11(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestSerializeXMLDeclaration(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSetOMDocumentElementNew(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSetOMDocumentElementNull(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSetOMDocumentElementReplace(metaFactory));

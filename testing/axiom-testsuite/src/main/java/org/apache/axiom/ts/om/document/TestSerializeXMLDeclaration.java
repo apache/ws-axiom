@@ -16,14 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.om.document;
 
-package org.apache.axiom.om.impl.dom;
+import static com.google.common.truth.Truth.assertThat;
 
-import org.apache.axiom.om.OMDocumentSerilizationTestBase;
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import java.io.ByteArrayOutputStream;
 
-public class DocumentImplSerializationTest extends OMDocumentSerilizationTestBase {
-    public DocumentImplSerializationTest() {
-        super(OMDOMMetaFactory.INSTANCE);
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMMetaFactory;
+
+public class TestSerializeXMLDeclaration extends XMLDeclarationSerializationTestCase {
+    public TestSerializeXMLDeclaration(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    @Override
+    protected void runTest(OMDocument document) throws Throwable {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        document.serializeAndConsume(baos);
+
+        String xmlDocument = new String(baos.toByteArray(), "utf-8");
+
+        assertThat(xmlDocument).startsWith("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
     }
 }
