@@ -27,6 +27,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 
 import javax.xml.stream.XMLStreamException;
+
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
@@ -35,15 +38,6 @@ public class OMDocumentSerilizationTestBase extends TestCase {
     private final OMMetaFactory omMetaFactory;
 
     private OMDocument document;
-    private String xmlDeclStart = "<?xml";
-    private String encoding = "encoding='UTF-8'";
-    private String encoding_UTF16 = "encoding='UTF-16'";
-    private String encoding2 = "encoding=\"UTF-8\"";
-    private String encoding2_UTF16 = "encoding=\"UTF-16\"";
-    private String version = "version='1.0'";
-    private String version_11 = "version='1.1'";
-    private String version2 = "version=\"1.0\"";
-    private String version2_11 = "version=\"1.1\"";
 
     public OMDocumentSerilizationTestBase(OMMetaFactory omMetaFactory) {
         this.omMetaFactory = omMetaFactory;
@@ -70,7 +64,7 @@ public class OMDocumentSerilizationTestBase extends TestCase {
 
         String xmlDocument = new String(baos.toByteArray());
 
-        assertTrue("XML Declaration missing", -1 < xmlDocument.indexOf(xmlDeclStart));
+        assertThat(xmlDocument).startsWith("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
     }
 
     public void testExcludeXMLDeclaration() throws XMLStreamException {
@@ -81,24 +75,7 @@ public class OMDocumentSerilizationTestBase extends TestCase {
 
         String xmlDocument = new String(baos.toByteArray());
 
-        assertTrue(
-                "XML Declaration is included when serilizing without the declaration",
-                -1 == xmlDocument.indexOf(xmlDeclStart));
-    }
-
-    public void testCharsetEncoding() throws XMLStreamException {
-        // LLOM already sets the charset encoding to UTF-8, but DOOM does not
-        document.setCharsetEncoding("UTF-8");
-        
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        document.serializeAndConsume(baos);
-
-        String xmlDocument = new String(baos.toByteArray());
-
-        assertTrue("Charset declaration missing", -1 < xmlDocument.indexOf(encoding) ||
-                -1 < xmlDocument.indexOf(encoding.toLowerCase()) ||
-                -1 < xmlDocument.indexOf(encoding2.toLowerCase()) ||
-                -1 < xmlDocument.indexOf(encoding2));
+        assertThat(xmlDocument).doesNotContain("<?xml");
     }
 
     public void testCharsetEncodingUTF_16()
@@ -109,19 +86,9 @@ public class OMDocumentSerilizationTestBase extends TestCase {
         document.serializeAndConsume(baos, format);
 
         String xmlDocument = new String(baos.toByteArray(), "UTF-16");
-        assertTrue("Charset declaration missing", -1 < xmlDocument.indexOf(encoding_UTF16) ||
-                -1 < xmlDocument.indexOf(encoding2_UTF16));
+        assertThat(xmlDocument).startsWith("<?xml version=\"1.0\" encoding=\"UTF-16\"?>");
     }
 
-
-    public void testXMLVersion() throws XMLStreamException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        document.serializeAndConsume(baos);
-
-        String xmlDocument = new String(baos.toByteArray());
-        assertTrue("Charset declaration missing", -1 < xmlDocument.indexOf(version) ||
-                -1 < xmlDocument.indexOf(version2));
-    }
 
     public void testXMLVersion_11() throws XMLStreamException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -129,7 +96,6 @@ public class OMDocumentSerilizationTestBase extends TestCase {
         document.serializeAndConsume(baos);
 
         String xmlDocument = new String(baos.toByteArray());
-        assertTrue("Charset declaration missing", -1 < xmlDocument.indexOf(version_11) ||
-                -1 < xmlDocument.indexOf(version2_11));
+        assertThat(xmlDocument).startsWith("<?xml version=\"1.1\"");
     }
 }
