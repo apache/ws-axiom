@@ -27,11 +27,20 @@ public abstract class MessageContent {
     }
     
     public static MessageContent fromClasspath(Class<?> clazz, String relativeResourceName) {
-        return fromURL(clazz.getResource(relativeResourceName));
+        URL url = clazz.getResource(relativeResourceName);
+        if (url == null) {
+            throw new IllegalArgumentException(String.format(
+                    "No such resource: %s (relative to %s)", relativeResourceName, clazz.getName()));
+        }
+        return fromURL(url);
     }
     
     public static MessageContent fromClasspath(ClassLoader classLoader, String resourceName) {
-        return fromURL(classLoader.getResource(resourceName));
+        URL url = classLoader.getResource(resourceName);
+        if (url == null) {
+            throw new IllegalArgumentException(String.format("No such resource: %s", resourceName));
+        }
+        return fromURL(url);
     }
     
     MessageContent() {}
