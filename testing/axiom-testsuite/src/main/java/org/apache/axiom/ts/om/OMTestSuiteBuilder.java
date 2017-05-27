@@ -263,6 +263,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             }
         }
         addTest(new org.apache.axiom.ts.om.element.TestCloneOMElementNamespaceRepairing(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestClose(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareDefaultNamespace1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareDefaultNamespace2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareDefaultNamespaceConflict1(metaFactory));
