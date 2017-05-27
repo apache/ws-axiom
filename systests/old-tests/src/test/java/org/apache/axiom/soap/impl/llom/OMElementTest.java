@@ -27,20 +27,11 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import java.util.Iterator;
 
 public class OMElementTest extends OMTestCase {
-    private static final String WSA_URI = "http://schemas.xmlsoap.org/ws/2004/03/addressing";
-    private static final String WSA_TO = "To";
-    private static Log log = LogFactory.getLog(OMElementTest.class);
-
     OMFactory factory = OMAbstractFactory.getOMFactory();
     private OMElement firstElement;
     private OMElement secondElement;
@@ -57,23 +48,6 @@ public class OMElementTest extends OMTestCase {
     }
     
     protected void tearDown() throws Exception {
-    }
-
-    public void testGetText() {
-        try {
-            SOAPModelBuilder soapBuilder = getOMBuilder(
-                    "soap/OMElementTest.xml");
-            SOAPEnvelope soapEnvelope = (SOAPEnvelope) soapBuilder.getDocumentElement();
-            OMElement wsaTo = soapEnvelope.getHeader().getFirstChildWithName(
-                    new QName(WSA_URI, WSA_TO));
-
-            String expectedString = "http://localhost:8081/axis/services/BankPort";
-            assertEquals("getText is not returning the correct value",
-                         wsaTo.getText().trim(),
-                         expectedString);
-        } catch (Exception e) {
-            log.info(e.getMessage());
-        }
     }
 
     public void testChildDetachment() {
