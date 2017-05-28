@@ -43,6 +43,8 @@ public abstract class XMLDeclarationSerializationTestCase extends AxiomTestCase 
 
         OMDocument document = factory.createOMDocument();
         document.addChild(documentElement);
+
+        runTest(document);
     }
 
     protected abstract void runTest(OMDocument document) throws Throwable;

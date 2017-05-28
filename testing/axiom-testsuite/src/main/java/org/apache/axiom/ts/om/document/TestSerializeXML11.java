@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMMetaFactory;
 public class TestSerializeXML11 extends XMLDeclarationSerializationTestCase {
     public TestSerializeXML11(OMMetaFactory metaFactory) {
         super(metaFactory);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
