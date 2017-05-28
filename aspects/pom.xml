@@ -76,6 +76,18 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>class-postprocessor-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>post-process</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

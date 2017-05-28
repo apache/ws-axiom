@@ -128,9 +128,7 @@
                             org.apache.axiom.soap.impl.*,
                             org.apache.axiom.dom.*,
                             org.apache.axiom.shared.*,
-                            org.apache.axiom.util.xml.*,
-                            org.aspectj.lang,
-                            org.aspectj.lang.annotation
+                            org.apache.axiom.util.xml.*
                         </Private-Package>
                     </instructions>
                 </configuration>

@@ -43,6 +43,9 @@ public class PostProcessMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        if (!classesDir.exists()) {
+            return;
+        }
         DirectoryScanner ds = new DirectoryScanner();
         ds.setIncludes(new String[] { "**/*.class" });
         ds.setBasedir(classesDir);
@@ -59,6 +62,7 @@ public class PostProcessMojo extends AbstractMojo {
                     if (relativePath.equals("org/apache/axiom/om/OMText.class")) {
                         classVisitor = new GetDataHandlerBridgeMethodInjector(classVisitor);
                     }
+                    classVisitor = new AspectJCodeRemover(classVisitor);
                     classReader.accept(classVisitor, 0);
                 } finally {
                     in.close();
