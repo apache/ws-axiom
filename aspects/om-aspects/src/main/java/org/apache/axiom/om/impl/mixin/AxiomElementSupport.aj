@@ -222,8 +222,7 @@ public aspect AxiomElementSupport {
         }
     }
     
-    // Not final because overridden in Abdera
-    public void AxiomElement.setText(String text) {
+    public final void AxiomElement.setText(String text) {
         try {
             coreSetCharacterData(text, AxiomSemantics.INSTANCE);
         } catch (CoreModelException ex) {
@@ -352,8 +351,7 @@ public aspect AxiomElementSupport {
         return (AxiomAttribute)coreGetAttribute(AxiomSemantics.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart());
     }
 
-    // TODO: overridden in fom-impl
-    public String AxiomElement.getAttributeValue(QName qname) {
+    public final String AxiomElement.getAttributeValue(QName qname) {
         OMAttribute attr = getAttribute(qname);
         return attr == null ? null : attr.getAttributeValue();
     }

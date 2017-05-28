@@ -55,7 +55,6 @@
             </includes>
             <excludes>
                 <exclude>*:axiom-all</exclude>
-                <exclude>org.apache.abdera:*</exclude>
             </excludes>
             <useProjectArtifact>false</useProjectArtifact>
             <useTransitiveFiltering>true</useTransitiveFiltering>
