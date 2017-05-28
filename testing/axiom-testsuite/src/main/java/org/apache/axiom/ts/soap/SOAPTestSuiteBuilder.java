@@ -220,6 +220,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.header.TestExamineHeaderBlocksWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestExamineMustUnderstandHeaderBlocksWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestExtractAllHeaderBlocks(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.header.TestGetHeaderBlocksWithName(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeaderBlocksWithNSURI(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeaderBlocksWithNSURIWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeadersToProcessWithNamespace(metaFactory, spec));

@@ -101,6 +101,11 @@ public aspect AxiomSOAPHeaderSupport {
                 SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
+    public final Iterator<SOAPHeaderBlock> AxiomSOAPHeader.getHeaderBlocksWithName(QName name) {
+        return coreGetElements(Axis.CHILDREN, AxiomElement.class, ElementMatcher.BY_QNAME, name.getNamespaceURI(), name.getLocalPart(),
+                SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
+    }
+
     public final ArrayList<SOAPHeaderBlock> AxiomSOAPHeader.getHeaderBlocksWithNSURI(String nsURI) {
         ArrayList<SOAPHeaderBlock> result = new ArrayList<SOAPHeaderBlock>();
         for (Iterator<SOAPHeaderBlock> it = getHeaderBlocksWithNamespaceURI(nsURI); it.hasNext(); ) {

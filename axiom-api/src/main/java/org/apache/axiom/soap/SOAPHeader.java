@@ -145,7 +145,27 @@ public interface SOAPHeader extends OMElement {
      */
     ArrayList<SOAPHeaderBlock> getHeaderBlocksWithNSURI(String nsURI);
 
+    /**
+     * Get all header blocks in the given namespace. This is similar to
+     * {@link #getChildrenWithNamespaceURI(String)}, but ensures that the returned nodes are
+     * {@link SOAPHeaderBlock} instances.
+     * 
+     * @param uri
+     *            the namespace URI
+     * @return an iterator with the matching header blocks
+     */
     Iterator<SOAPHeaderBlock> getHeaderBlocksWithNamespaceURI(String uri);
+
+    /**
+     * Get all header blocks with the given name. This is similar to
+     * {@link #getChildrenWithName(QName)}, but ensures that the returned nodes are
+     * {@link SOAPHeaderBlock} instances.
+     * 
+     * @param name
+     *            the QName specifying the namespace URI and local name to match.
+     * @return an iterator with the matching header blocks
+     */
+    Iterator<SOAPHeaderBlock> getHeaderBlocksWithName(QName name);
 
     /**
      * Get the appropriate set of headers for a RolePlayer and a particular namespace.
