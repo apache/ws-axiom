@@ -80,7 +80,7 @@ public interface WritableBlob extends Blob {
      * {@link #getOutputStream()} and copying the data from the input stream to that
      * output stream, but the implementation may achieve this result in a more efficient way.
      * <p>
-     * The blob must be in state NEW when this method is called. It will be in state UNCOMMITTED
+     * The blob must be in state NEW when this method is called. It will be in state COMMITTED
      * after this method completes successfully.
      * <p>
      * The method transfers data from the input stream to the blob until the end of the input
