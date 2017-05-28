@@ -373,14 +373,6 @@ public aspect AxiomElementSupport {
         ((AxiomAttribute)attr).coreRemove(AxiomSemantics.INSTANCE);
     }
 
-    public final OMNamespace AxiomElement.addNamespaceDeclaration(String uri, String prefix) {
-        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
-        AxiomNamespaceDeclaration decl = coreGetNodeFactory().createNode(AxiomNamespaceDeclaration.class);
-        decl.setDeclaredNamespace(ns);
-        coreAppendAttribute(decl);
-        return ns;
-    }
-    
     public final void AxiomElement.addNamespaceDeclaration(OMNamespace ns) {
         AxiomNamespaceDeclaration decl = coreGetNodeFactory().createNode(AxiomNamespaceDeclaration.class);
         decl.setDeclaredNamespace(ns);

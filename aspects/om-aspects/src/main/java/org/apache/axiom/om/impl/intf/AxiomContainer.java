@@ -23,8 +23,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 
 public interface AxiomContainer extends OMContainer, AxiomCoreParentNode {
-    void discarded();
-    
     /**
      * Check if the node can be added as a child of this container.
      * 

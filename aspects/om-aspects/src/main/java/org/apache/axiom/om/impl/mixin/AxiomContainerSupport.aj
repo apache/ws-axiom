@@ -88,10 +88,6 @@ import org.xml.sax.InputSource;
 public aspect AxiomContainerSupport {
     private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();
     
-    public final void AxiomContainer.discarded() {
-        coreSetState(DISCARDED);
-    }
-
     public final OMXMLParserWrapper AxiomContainer.getBuilder() {
         BuilderImpl builder = (BuilderImpl)coreGetBuilder();
         if (builder == null) {
