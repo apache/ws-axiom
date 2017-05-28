@@ -128,6 +128,18 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>class-postprocessor-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>post-process</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.github.veithen.alta</groupId>
                 <artifactId>alta-maven-plugin</artifactId>
                 <executions>

@@ -204,6 +204,11 @@ public class OMFactoryImpl implements OMFactory {
     }
 
     @Override
+    public final OMText createOMText(Object dataHandler, boolean optimize) {
+        return createOMText((DataHandler)dataHandler, optimize);
+    }
+
+    @Override
     public final OMText createOMText(DataHandler dataHandler, boolean optimize) {
         return createAxiomText(null, new TextContent(null, dataHandler, optimize), OMNode.TEXT_NODE);
     }

@@ -285,6 +285,11 @@ public interface OMFactory {
 
     OMText createOMText(String s, String mimeType, boolean optimize);
 
+    /**
+     * @deprecated Use {@link #createOMText(DataHandler, boolean)} instead.
+     */
+    OMText createOMText(Object dataHandler, boolean optimize);
+
     OMText createOMText(DataHandler dataHandler, boolean optimize);
 
     OMText createOMText(OMContainer parent, String s, String mimeType,
