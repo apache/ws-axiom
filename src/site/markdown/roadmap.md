@@ -223,6 +223,13 @@ of the `createOMAttribute` method in `OMFactory`.
 This class should be made immutable (which would require introducing a builder class) so that instances
 are safe to reuse.
 
+### `SOAPHeaderBlock`
+
+`SOAPHeaderBlock` has a feature that allows to use properties on the `OMDataSource` to specify
+the role, relay and mustUnderstand attributes. That shouldn't be necessary; instead `OMSourcedElement`
+should allow setting attributes without expanding the `OMDataSource`. The `setProperty` method
+can then be removed from `OMDataSource`.
+
 ## Miscellaneous
 
 ### Make non coalescing mode the default
