@@ -124,14 +124,15 @@ public final class MultipartBodyWriter {
      * {@link OutputStream#close()} must be called to complete the writing of the MIME part.
      * 
      * @param contentType
-     *            the value of the <tt>Content-Type</tt> header of the MIME part
+     *            the value of the <tt>Content-Type</tt> header of the MIME part; may be {@code null}
      * @param contentTransferEncoding
      *            the content transfer encoding to be used (see above); must not be
      *            <code>null</code>
      * @param contentID
-     *            the content ID of the MIME part (see above)
+     *            the content ID of the MIME part (see above); may be {@code null}
      * @param extraHeaders
-     *            a list of {@link Header} objects with additional headers to write to the MIME part
+     *            a list of {@link Header} objects with additional headers to write to the MIME
+     *            part; may be {@code null}
      * @return an output stream to write the content of the MIME part
      * @throws IOException
      *             if an I/O error occurs when writing to the underlying stream
@@ -148,14 +149,14 @@ public final class MultipartBodyWriter {
         }
         writeAscii("--");
         writeAscii(boundary);
-        // TODO: specify if contentType == null is legal and check what to do
+        // RFC 2046 explicitly says that Content-Type is not mandatory (and defaults to
+        // text/plain; charset=us-ascii).
         if (contentType != null) {
             writeAscii("\r\nContent-Type: ");
             writeAscii(contentType);
         }
         writeAscii("\r\nContent-Transfer-Encoding: ");
         writeAscii(contentTransferEncoding);
-        // TODO: specify that the content ID may be null
         if (contentID != null) {
             writeAscii("\r\nContent-ID: <");
             writeAscii(contentID);
