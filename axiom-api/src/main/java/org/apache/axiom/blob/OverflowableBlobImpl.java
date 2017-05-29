@@ -29,9 +29,6 @@ import org.apache.axiom.util.io.IOUtils;
 
 final class OverflowableBlobImpl implements OverflowableBlob {
     class OutputStreamImpl extends OutputStream implements ReadFromSupport {
-        
-        private OutputStream overflowOutputStream;
-        
         @Override
         public void write(byte[] b, int off, int len) throws IOException {
             if (state != State.UNCOMMITTED) {
@@ -42,7 +39,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             } else if (len > (chunks.length-chunkIndex)*chunkSize - chunkOffset) {
 
                 // The buffer will overflow. Switch to a temporary file.
-                overflowOutputStream = switchToOverflowBlob();
+                switchToOverflowBlob();
                 
                 // Write the new data to the temporary file.
                 overflowOutputStream.write(b, off, len);
@@ -229,6 +226,8 @@ final class OverflowableBlobImpl implements OverflowableBlob {
      */
     State state = State.NEW;
     
+    OutputStream overflowOutputStream;
+    
     OverflowableBlobImpl(int numberOfChunks, int chunkSize, WritableBlobFactory<?> overflowBlobFactory) {
         this.chunkSize = chunkSize;
         this.overflowBlobFactory = overflowBlobFactory;
@@ -258,23 +257,21 @@ final class OverflowableBlobImpl implements OverflowableBlob {
      * @return an open FileOutputStream to the temporary file
      * @throws IOException
      */
-    OutputStream switchToOverflowBlob() throws IOException {
+    void switchToOverflowBlob() throws IOException {
         overflowBlob = overflowBlobFactory.createBlob();
 
-        OutputStream outputStream = overflowBlob.getOutputStream();
+        overflowOutputStream = overflowBlob.getOutputStream();
         // Write the buffer to the temporary file.
         for (int i=0; i<chunkIndex; i++) {
-            outputStream.write(chunks[i]);
+            overflowOutputStream.write(chunks[i]);
         }
 
         if (chunkOffset > 0) {
-            outputStream.write(chunks[chunkIndex], 0, chunkOffset);
+            overflowOutputStream.write(chunks[chunkIndex], 0, chunkOffset);
         }
 
         // Release references to the buffer so that it can be garbage collected.
         chunks = null;
-        
-        return outputStream;
     }
     
     @Override
@@ -291,44 +288,46 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         if (state == State.COMMITTED) {
             throw new IllegalStateException();
         }
-        // TODO: this will not work if the blob is in state UNCOMMITTED and we have already switched to a temporary file
         long read = 0;
         long toRead = length == -1 ? Long.MAX_VALUE : length;
         while (toRead > 0) {
-            int c;
-            try {
-                int len = chunkSize-chunkOffset;
-                if (len > toRead) {
-                    len = (int)toRead;
-                }
-                c = in.read(getCurrentChunk(), chunkOffset, len);
-            } catch (IOException ex) {
-                throw new StreamCopyException(StreamCopyException.READ, ex);
-            }
-            if (c == -1) {
+            if (overflowOutputStream != null) {
+                read += IOUtils.copy(in, overflowOutputStream, toRead);
                 break;
-            }
-            read += c;
-            toRead -= c;
-            chunkOffset += c;
-            if (chunkOffset == chunkSize) {
-                chunkIndex++;
-                chunkOffset = 0;
-                if (chunkIndex == chunks.length) {
-                    OutputStream out;
-                    try {
-                        out = switchToOverflowBlob();
-                    } catch (IOException ex) {
-                        throw new StreamCopyException(StreamCopyException.WRITE, ex);
+            } else if (chunkIndex == chunks.length) {
+                try {
+                    switchToOverflowBlob();
+                } catch (IOException ex) {
+                    throw new StreamCopyException(StreamCopyException.WRITE, ex);
+                }
+            } else {
+                int c;
+                try {
+                    int len = chunkSize-chunkOffset;
+                    if (len > toRead) {
+                        len = (int)toRead;
                     }
-                    read += IOUtils.copy(in, out, toRead);
-                    try {
-                        out.close();
-                    } catch (IOException ex) {
-                        throw new StreamCopyException(StreamCopyException.WRITE, ex);
-                    }
+                    c = in.read(getCurrentChunk(), chunkOffset, len);
+                } catch (IOException ex) {
+                    throw new StreamCopyException(StreamCopyException.READ, ex);
+                }
+                if (c == -1) {
                     break;
                 }
+                read += c;
+                toRead -= c;
+                chunkOffset += c;
+                if (chunkOffset == chunkSize) {
+                    chunkIndex++;
+                    chunkOffset = 0;
+                }
+            }
+        }
+        if (commit && overflowOutputStream != null) {
+            try {
+                overflowOutputStream.close();
+            } catch (IOException ex) {
+                throw new StreamCopyException(StreamCopyException.WRITE, ex);
             }
         }
         state = commit ? State.COMMITTED : State.UNCOMMITTED;

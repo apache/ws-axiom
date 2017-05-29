@@ -23,32 +23,36 @@ import static com.google.common.truth.Truth.assertThat;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Random;
 
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.commons.io.IOUtils;
 
-public class TestReadFromSupport extends WritableBlobTestCase {
-    public TestReadFromSupport(WritableBlobFactory<?> factory) {
-        super(factory, State.NEW);
+public class TestReadFromSupport extends SizeSensitiveWritableBlobTestCase {
+    public TestReadFromSupport(WritableBlobFactory<?> factory, int size) {
+        super(factory, State.NEW, size);
     }
 
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
+        int chunkSize = size/4;
+        byte[] content = new byte[chunkSize*4];
+        new Random().nextBytes(content);
         OutputStream out = blob.getOutputStream();
         try {
-            out.write(new byte[] { 50, 60 });
-            ((ReadFromSupport)out).readFrom(new ByteArrayInputStream(new byte[] { 1, 2, 3, 4 }), -1);
-            ((ReadFromSupport)out).readFrom(new ByteArrayInputStream(new byte[] { 5, 6, 7, 8 }), 2);
-            out.write(new byte[] { 70, 80 });
+            out.write(Arrays.copyOfRange(content, 0, chunkSize));
+            ((ReadFromSupport)out).readFrom(new ByteArrayInputStream(Arrays.copyOfRange(content, chunkSize, chunkSize*2)), -1);
+            ((ReadFromSupport)out).readFrom(new ByteArrayInputStream(Arrays.copyOfRange(content, chunkSize*2, chunkSize*4)), chunkSize);
+            out.write(content, chunkSize*3, chunkSize);
         } finally {
             out.close();
         }
         InputStream in = blob.getInputStream();
         try {
-            assertThat(IOUtils.toByteArray(in)).isEqualTo(
-                    new byte[] { 50, 60, 1, 2, 3, 4, 5, 6, 70, 80 });
+            assertThat(IOUtils.toByteArray(in)).isEqualTo(content);
         } finally {
             in.close();
         }

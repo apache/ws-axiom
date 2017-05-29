@@ -51,9 +51,6 @@ public class WritableBlobTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestReadFromIllegalState(factory, State.UNCOMMITTED));
         addTest(new TestReadFromIllegalState(factory, State.COMMITTED));
         addTest(new TestReadFromIllegalState(factory, State.RELEASED));
-        if (outputStreamHasReadFromSupport) {
-            addTest(new TestReadFromSupport(factory));
-        }
         addTest(new TestReadFromWithError(factory));
         addTest(new TestReadZeroLength(factory));
         addTest(new TestReleaseTwice(factory));
@@ -70,6 +67,9 @@ public class WritableBlobTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private void addTests(int size) {
         addTest(new TestMarkReset(factory, size));
         addTest(new TestReadFrom(factory, size));
+        if (outputStreamHasReadFromSupport) {
+            addTest(new TestReadFromSupport(factory, size));
+        }
         addTest(new TestRandomReadWrite(factory, size));
         addTest(new TestWriteTo(factory, size));
         if (writeToUsesReadFromSupport) {
