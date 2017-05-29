@@ -188,12 +188,7 @@ final class BuilderSpec {
 
     static BuilderSpec from(StAXParserConfiguration configuration, final MultipartBody message) {
         Part rootPart = message.getRootPart();
-        InputSource is;
-        try {
-            is = new InputSource(rootPart.getInputStream(false));
-        } catch (IOException ex) {
-            throw new OMException(ex);
-        }
+        InputSource is = new InputSource(rootPart.getInputStream(false));
         is.setEncoding(rootPart.getContentType().getParameter("charset"));
         BuilderSpec spec = create(configuration, is, false);
         return new BuilderSpec(

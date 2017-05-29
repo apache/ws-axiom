@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.mime;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -77,11 +76,8 @@ public interface Part {
      *            {@code true} if the content should be preserved so that it can be read multiple
      *            times, {@code false} to discard the content when it is read
      * @return the content of the part
-     * @throws IOException
-     *             if the content couldn't be read
      */
-    // TODO: should we really use IOException here?
-    InputStream getInputStream(boolean preserve) throws IOException;
+    InputStream getInputStream(boolean preserve);
 
     /**
      * Get the content of this part as a {@link DataHandler}.

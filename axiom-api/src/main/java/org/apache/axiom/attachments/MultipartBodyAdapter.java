@@ -162,11 +162,7 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
 
     @Override
     InputStream getRootPartInputStream(boolean preserve) {
-        try {
-            return rootPart.getInputStream(preserve);
-        } catch (IOException ex) {
-            throw new OMException("Problem fetching the root part", ex);
-        }
+        return rootPart.getInputStream(preserve);
     }
 
     @Override

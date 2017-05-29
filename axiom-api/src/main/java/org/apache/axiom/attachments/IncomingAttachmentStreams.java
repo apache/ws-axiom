@@ -19,7 +19,6 @@
 
 package org.apache.axiom.attachments;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.axiom.mime.Header;
@@ -81,13 +80,7 @@ public final class IncomingAttachmentStreams {
         }
 
         if (part != null) {
-            IncomingAttachmentInputStream stream;
-
-            try {
-                stream = new IncomingAttachmentInputStream(part.getInputStream(false), this);
-            } catch (IOException ex) {
-                throw new OMException(ex);
-            }
+            IncomingAttachmentInputStream stream =  new IncomingAttachmentInputStream(part.getInputStream(false), this);
     
             for (Header header : part.getHeaders()) {
                 String name = header.getName();

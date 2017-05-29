@@ -240,7 +240,7 @@ final class PartImpl implements Part {
     }
     
     @Override
-    public InputStream getInputStream(boolean preserve) throws IOException {
+    public InputStream getInputStream(boolean preserve) {
         if (!preserve && state == STATE_UNREAD) {
             checkParserState(parser.getState(), EntityState.T_BODY);
             state = STATE_STREAMING;
@@ -248,10 +248,14 @@ final class PartImpl implements Part {
             return partInputStream;
         } else {
             WritableBlob content = getContent();
-            if (preserve) {
-                return content.getInputStream();
-            } else {
-                return new PartInputStream(content);
+            try {
+                if (preserve) {
+                    return content.getInputStream();
+                } else {
+                    return new PartInputStream(content);
+                }
+            } catch (IOException ex) {
+                throw new MIMEException("Failed to retrieve part content from blob", ex);
             }
         }
     }
