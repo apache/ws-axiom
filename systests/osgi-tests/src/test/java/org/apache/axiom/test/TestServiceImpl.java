@@ -18,19 +18,18 @@
  */
 package org.apache.axiom.test;
 
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.w3c.dom.Document;
 
 public class TestServiceImpl implements TestService {
-    private OMMetaFactory metaFactory;
+    private DOMMetaFactory metaFactory;
 
-    public void setMetaFactory(OMMetaFactory metaFactory) {
+    public void setMetaFactory(DOMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
     }
 
     @Override
     public String doSomething() throws Exception {
-        // TODO: casting metaFactory to DOMMetaFactory doesn't work because the reference is a proxy
         Document document = (Document)metaFactory.getOMFactory().createOMDocument();
         return document.createElementNS(null, "test").toString();
     }

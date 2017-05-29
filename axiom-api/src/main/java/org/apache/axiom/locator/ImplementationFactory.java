@@ -44,6 +44,7 @@ final class ImplementationFactory {
     private static final QName QNAME_IMPLEMENTATIONS = new QName(NS, "implementations");
     private static final QName QNAME_IMPLEMENTATION = new QName(NS, "implementation");
     private static final QName QNAME_FEATURE = new QName(NS, "feature");
+    private static final QName QNAME_EXTENSION_INTERFACE = new QName(NS, "extensionInterface");
     
     private static final Log log = LogFactory.getLog(ImplementationFactory.class);
     
@@ -55,7 +56,7 @@ final class ImplementationFactory {
         }
         OMMetaFactory metaFactory = (OMMetaFactory)load(loader, className);
         return metaFactory == null ? null : new Implementation(null, metaFactory,
-                new Feature[] { new Feature(OMAbstractFactory.FEATURE_DEFAULT, Integer.MAX_VALUE) });
+                new Feature[] { new Feature(OMAbstractFactory.FEATURE_DEFAULT, Integer.MAX_VALUE, new Class<?>[0]) });
     }
     
     private static Object load(Loader loader, String className) {
@@ -148,7 +149,7 @@ final class ImplementationFactory {
             if (child instanceof Element) {
                 QName childQName = getQName(child);
                 if (childQName.equals(QNAME_FEATURE)) {
-                    Feature feature = parseFeature((Element)child);
+                    Feature feature = parseFeature(loader, (Element)child);
                     if (feature != null) {
                         features.add(feature);
                     }
@@ -162,7 +163,7 @@ final class ImplementationFactory {
         return new Implementation(name, metaFactory, features.toArray(new Feature[features.size()]));
     }
 
-    private static Feature parseFeature(Element feature) {
+    private static Feature parseFeature(Loader loader, Element feature) {
         String name = feature.getAttributeNS(null, "name");
         if (name.length() == 0) {
             log.error("Encountered " + QNAME_FEATURE + " element without name attribute");
@@ -173,8 +174,27 @@ final class ImplementationFactory {
             log.error("Encountered " + QNAME_FEATURE + " element without priority attribute");
             return null;
         }
+        List<Class<?>> extensionInterfaces = new ArrayList<Class<?>>();
+        Node child = feature.getFirstChild();
+        while (child != null) {
+            if (child instanceof Element) {
+                QName childQName = getQName(child);
+                if (childQName.equals(QNAME_EXTENSION_INTERFACE)) {
+                    String className = ((Element)child).getTextContent();
+                    try {
+                        extensionInterfaces.add(loader.load(className));
+                    } catch (ClassNotFoundException ex) {
+                        log.error("The class " + className + " could not be loaded", ex);
+                    }
+                } else {
+                    log.warn("Skipping unexpected element " + childQName + "; only "
+                            + QNAME_EXTENSION_INTERFACE + " is expected");
+                }
+            }
+            child = child.getNextSibling();
+        }
         try {
-            return new Feature(name, Integer.parseInt(priority));
+            return new Feature(name, Integer.parseInt(priority), extensionInterfaces.toArray(new Class<?>[extensionInterfaces.size()]));
         } catch (NumberFormatException ex) {
             log.error("Invalid priority value '" + priority + "'; must be an integer");
             return null;

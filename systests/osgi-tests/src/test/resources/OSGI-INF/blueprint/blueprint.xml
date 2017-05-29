@@ -18,7 +18,7 @@
   ~ under the License.
   -->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-    <reference id="metaFactory" interface="org.apache.axiom.om.OMMetaFactory" filter="(implementationName=doom)"/>
+    <reference id="metaFactory" interface="org.apache.axiom.om.dom.DOMMetaFactory" filter="(feature=dom)"/>
     <service interface="org.apache.axiom.test.TestService">
         <bean class="org.apache.axiom.test.TestServiceImpl">
             <property name="metaFactory" ref="metaFactory"/>

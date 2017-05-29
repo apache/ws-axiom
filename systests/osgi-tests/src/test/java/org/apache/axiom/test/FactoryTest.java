@@ -88,6 +88,22 @@ public class FactoryTest {
         ServiceReference<?>[] omfactRefs = context
                 .getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=doom)");
         assertNotNull(omfactRefs);
+        assertEquals(2, omfactRefs.length);
+    }
+    
+    @Test
+    public void testLookupByFeature() throws Exception {
+        ServiceReference<?>[] omfactRefs = context
+                .getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(feature=dom)");
+        assertNotNull(omfactRefs);
+        assertEquals(1, omfactRefs.length);
+    }
+    
+    @Test
+    public void testLookupDOMMetaFactory() throws Exception {
+        ServiceReference<?>[] omfactRefs = context
+                .getServiceReferences("org.apache.axiom.om.dom.DOMMetaFactory", null);
+        assertNotNull(omfactRefs);
         assertEquals(1, omfactRefs.length);
     }
     

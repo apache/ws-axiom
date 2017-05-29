@@ -21,10 +21,12 @@ package org.apache.axiom.locator;
 final class Feature {
     private final String name;
     private final int priority;
+    private final Class<?>[] extensionInterfaces;
     
-    Feature(String name, int priority) {
+    Feature(String name, int priority, Class<?>[] extensionInterfaces) {
         this.name = name;
         this.priority = priority;
+        this.extensionInterfaces = extensionInterfaces;
     }
 
     String getName() {
@@ -33,6 +35,10 @@ final class Feature {
 
     int getPriority() {
         return priority;
+    }
+
+    Class<?>[] getExtensionInterfaces() {
+        return extensionInterfaces;
     }
 
     @Override

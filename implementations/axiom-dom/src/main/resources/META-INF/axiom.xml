@@ -19,7 +19,9 @@
   -->
 <implementations xmlns="http://ws.apache.org/axiom/">
     <implementation name="doom" loader="org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactoryLoader">
-        <feature name="dom" priority="100"/>
+        <feature name="dom" priority="100">
+            <extensionInterface>org.apache.axiom.om.dom.DOMMetaFactory</extensionInterface>
+        </feature>
         <feature name="default" priority="0"/>
     </implementation>
 </implementations>
