@@ -129,7 +129,7 @@ public interface OMDataSourceExt extends OMDataSource {
      *            the property name
      * @param value
      *            the property value
-     * @return the old property value or {@link null}
+     * @return the old property value or {@code null}
      */
     Object setProperty(String name, Object value);
 }
