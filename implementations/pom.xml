@@ -64,9 +64,6 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
-                        <configuration>
-                            <complianceLevel>1.6</complianceLevel>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

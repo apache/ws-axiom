@@ -252,10 +252,6 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
-                        <configuration>
-                            <!-- Use 1.5 instead of 1.6 to avoid an issue with JaCoCo -->
-                            <complianceLevel>1.5</complianceLevel>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

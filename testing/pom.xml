@@ -46,29 +46,6 @@
         <module>jaxp-testsuite</module>
     </modules>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>animal-sniffer-maven-plugin</artifactId>
-                <configuration>
-                    <signature>
-                        <groupId>org.codehaus.mojo.signature</groupId>
-                        <artifactId>java17</artifactId>
-                        <version>1.0</version>
-                    </signature>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
     <reporting>
         <plugins>
             <plugin>

@@ -714,6 +714,9 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>aspectj-maven-plugin</artifactId>
                     <version>1.8</version>
+                    <configuration>
+                        <complianceLevel>1.7</complianceLevel>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
@@ -994,8 +997,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -1014,8 +1017,8 @@
                 <configuration>
                     <signature>
                         <groupId>org.codehaus.mojo.signature</groupId>
-                        <artifactId>java16</artifactId>
-                        <version>1.1</version>
+                        <artifactId>java17</artifactId>
+                        <version>1.0</version>
                     </signature>
                 </configuration>
             </plugin>
