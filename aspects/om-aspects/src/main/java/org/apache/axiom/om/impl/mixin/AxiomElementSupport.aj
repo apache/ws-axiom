@@ -147,8 +147,7 @@ public aspect AxiomElementSupport {
         }
     }
 
-    // TODO: this is (incorrectly) overridden by the SOAPFaultReason implementations for SOAP 1.2
-    public String AxiomElement.getText() {
+    public final String AxiomElement.getText() {
         try {
             return coreGetCharacterData(ElementAction.SKIP).toString();
         } catch (CoreModelException ex) {

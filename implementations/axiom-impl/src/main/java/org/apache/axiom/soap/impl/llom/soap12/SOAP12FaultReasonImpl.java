@@ -23,14 +23,5 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
 import org.apache.axiom.soap.impl.llom.SOAPFaultReasonImpl;
 
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP12FaultReason {
-    /**
-     * getText() is overridden here in order to provide a uniform way for SOAP 1.1
-     * and SOAP 1.2 to get the "default" reason string.
-     *
-     * @return the default (local language, or first) reason string
-     */
-    public String getText() {
-        // TODO: Make this look for the correct lang for our locale first
-        return getFirstSOAPText().getText();
-    }
+
 }
