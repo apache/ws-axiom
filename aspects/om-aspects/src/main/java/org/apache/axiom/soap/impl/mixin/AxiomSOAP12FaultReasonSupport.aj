@@ -21,9 +21,11 @@ package org.apache.axiom.soap.impl.mixin;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.common.util.LocaleUtil;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
 
@@ -60,5 +62,20 @@ public aspect AxiomSOAP12FaultReasonSupport {
             }
         }
         return null;
+    }
+
+    public final String AxiomSOAP12FaultReason.getFaultReasonText(Locale locale) {
+        String text = "";
+        int maxScore = -1;
+        for (Iterator<OMElement> it = getChildElements(); it.hasNext(); ) {
+            SOAPFaultText textNode = (SOAPFaultText)it.next();
+            String lang = textNode.getLang();
+            int score = LocaleUtil.getMatchScore(locale, lang == null ? null : Locale.forLanguageTag(lang));
+            if (score > maxScore) {
+                text = textNode.getText();
+                maxScore = score;
+            }
+        }
+        return text;
     }
 }

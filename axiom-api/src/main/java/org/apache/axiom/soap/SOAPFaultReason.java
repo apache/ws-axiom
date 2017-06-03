@@ -22,6 +22,7 @@ package org.apache.axiom.soap;
 import org.apache.axiom.om.OMElement;
 
 import java.util.List;
+import java.util.Locale;
 
 public interface SOAPFaultReason extends OMElement {
     void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException;
@@ -31,4 +32,16 @@ public interface SOAPFaultReason extends OMElement {
     List<SOAPFaultText> getAllSoapTexts();
 
     SOAPFaultText getSOAPFaultText(String language);
+
+    /**
+     * Extract the fault reason text for the locale that best matches the given locale. This method
+     * works for all SOAP versions. Since SOAP 1.1 doesn't support localized fault reasons, the
+     * locale is effectively ignored in that version. For SOAP 1.2 the method extracts the text from
+     * the {@link SOAPFaultText} that best matches the given locale, falling back to English.
+     * 
+     * @param locale
+     *            the requested locale
+     * @return the reason text
+     */
+    String getFaultReasonText(Locale locale);
 }

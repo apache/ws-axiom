@@ -20,6 +20,7 @@ package org.apache.axiom.soap.impl.mixin;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
@@ -49,5 +50,9 @@ public aspect AxiomSOAP11FaultReasonSupport {
 
     public final SOAPFaultText AxiomSOAP11FaultReason.getSOAPFaultText(String language) {
         return null;
+    }
+
+    public final String AxiomSOAP11FaultReason.getFaultReasonText(Locale locale) {
+        return getText();
     }
 }

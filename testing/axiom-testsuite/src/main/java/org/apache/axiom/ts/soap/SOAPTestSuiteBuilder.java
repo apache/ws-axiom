@@ -204,6 +204,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap.faultnode.TestGetFaultNodeValueWithParser(metaFactory, spec));
             addTest(new org.apache.axiom.ts.soap.faultnode.TestSetFaultNodeValue(metaFactory, spec));
         }
+        addTest(new org.apache.axiom.ts.soap.faultreason.TestGetFaultReasonText(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultrole.TestGetRoleValue(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultrole.TestGetRoleValueWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultrole.TestSetRoleValue(metaFactory, spec));
@@ -330,6 +331,9 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestAddSOAPTextMultiple(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestAddSOAPTextWithSOAPVersionMismatch(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestGetAllSoapTextsWithParser(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.faultreason.TestGetFaultReasonText(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.faultreason.TestGetFaultReasonTextCaseSensitivity(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.faultreason.TestGetFaultReasonTextWithoutLangAttribute(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestGetFirstSOAPText(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestGetFirstSOAPTextWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetSubCodeNestedWithParser(metaFactory));
