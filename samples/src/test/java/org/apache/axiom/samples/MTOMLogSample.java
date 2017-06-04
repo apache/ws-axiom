@@ -23,6 +23,7 @@ import java.io.StringWriter;
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import junit.framework.TestCase;
 
@@ -40,14 +41,16 @@ public class MTOMLogSample extends TestCase {
     // START SNIPPET: variant2
     private void logMessage(SOAPEnvelope env) throws XMLStreamException {
         StringWriter sw = new StringWriter();
-        env.serialize(new LogWriter(StAXUtils.createXMLStreamWriter(sw)));
+        XMLStreamWriter writer = new LogWriter(StAXUtils.createXMLStreamWriter(sw));
+        env.serialize(writer);
+        writer.flush();
         log.info("Message: " + sw.toString());
     }
     // END SNIPPET: variant2
     
     public void test() throws XMLStreamException {
         SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
-        SOAPEnvelope env = factory.getDefaultEnvelope();
+        SOAPEnvelope env = factory.createDefaultSOAPMessage().getSOAPEnvelope();
         OMElement element = factory.createOMElement(new QName("urn:testService", "invokeMtom", "ns"), env.getBody());
         element.addChild(factory.createOMText(new DataHandler("test", "text/xml"), true));
         logMessage(env);
