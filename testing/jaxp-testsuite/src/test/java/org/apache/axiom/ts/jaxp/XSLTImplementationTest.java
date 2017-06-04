@@ -33,7 +33,7 @@ public class XSLTImplementationTest {
     @Test
     public void testSupportsStAXSource() {
         for (XSLTImplementation xsltImplementation : Multiton.getInstances(XSLTImplementation.class)) {
-            assertThat(xsltImplementation.supportsStAXSource()).isEqualTo(xsltImplementation.getName().equals("jre"));
+            assertThat(xsltImplementation.supportsStAXSource()).isEqualTo(xsltImplementation != XSLTImplementation.XALAN);
         }
     }
 }

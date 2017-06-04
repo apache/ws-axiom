@@ -88,13 +88,6 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements C
     }
 
     @Override
-    public String getPrefix() {
-        // Woodstox 4.0 may return "" instead of null
-        String prefix = super.getPrefix();
-        return prefix == null || prefix.length() == 0 ? null : prefix;
-    }
-
-    @Override
     public String getNamespaceURI() {
         // Woodstox 4.0 may return "" instead of null
         String uri = super.getNamespaceURI();

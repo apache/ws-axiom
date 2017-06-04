@@ -121,7 +121,6 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.ENTITY_REFERENCE, true));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.DTD, true));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.CDATA, true));
-        addTest(new TestGetPrefixWithNoPrefix(staxImpl));
         addTest(new TestGetTextInProlog(staxImpl));
         addTest(new TestGetVersion(staxImpl));
         addTest(new TestHasName(staxImpl, XMLStreamConstants.START_ELEMENT, true));

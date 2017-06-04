@@ -80,10 +80,11 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTes
         } else {
             assertEquals(qname.getNamespaceURI(), reader.getNamespaceURI());
         }
+        String readerPrefix = reader.getPrefix();
         if (qname.getPrefix().length() == 0) {
-            assertNull(reader.getPrefix());
+            assertTrue(readerPrefix == null || readerPrefix.isEmpty());
         } else {
-            assertEquals(qname.getPrefix(), reader.getPrefix());
+            assertEquals(qname.getPrefix(), readerPrefix);
         }
     }
 }

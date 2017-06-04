@@ -33,8 +33,6 @@ import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.xml.sax.ext.LexicalHandler;
 
-import net.sf.saxon.FeatureKeys;
-
 /**
  * Specifies an XSLT implementation for use in a {@link MatrixTestCase}.
  */
@@ -53,11 +51,7 @@ public abstract class XSLTImplementation extends Multiton {
     public static final XSLTImplementation SAXON = new XSLTImplementation("saxon") {
         @Override
         public TransformerFactory newTransformerFactory() {
-            TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
-            // Suppress the "Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor"
-            // message.
-            factory.setAttribute(FeatureKeys.VERSION_WARNING, Boolean.FALSE);
-            return factory;
+            return new net.sf.saxon.TransformerFactoryImpl();
         }
     };
     

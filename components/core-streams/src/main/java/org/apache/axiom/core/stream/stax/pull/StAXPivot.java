@@ -938,7 +938,8 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         switch (eventType) {
             case START_ELEMENT:
             case END_ELEMENT:
-                return emptyToNull(elementStack[3*depth+2]);
+                // Saxon assumes that getPrefix returns "" instead of null.
+                return elementStack[3*depth+2];
             default:
                 throw new IllegalStateException();
         }
