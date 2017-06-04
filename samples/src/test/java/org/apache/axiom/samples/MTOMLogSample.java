@@ -22,6 +22,7 @@ import java.io.StringWriter;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -29,7 +30,6 @@ import junit.framework.TestCase;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.commons.logging.Log;
@@ -41,7 +41,7 @@ public class MTOMLogSample extends TestCase {
     // START SNIPPET: variant2
     private void logMessage(SOAPEnvelope env) throws XMLStreamException {
         StringWriter sw = new StringWriter();
-        XMLStreamWriter writer = new LogWriter(StAXUtils.createXMLStreamWriter(sw));
+        XMLStreamWriter writer = new LogWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(sw));
         env.serialize(writer);
         writer.flush();
         log.info("Message: " + sw.toString());
