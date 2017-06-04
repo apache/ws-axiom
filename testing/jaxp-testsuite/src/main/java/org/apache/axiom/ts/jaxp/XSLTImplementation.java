@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.jaxp;
 
+import java.io.StringReader;
+
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
@@ -36,14 +39,14 @@ public abstract class XSLTImplementation extends Multiton {
             "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
     };
     
-    public static final XSLTImplementation XALAN = new XSLTImplementation("xalan", true) {
+    public static final XSLTImplementation XALAN = new XSLTImplementation("xalan") {
         @Override
         public TransformerFactory newTransformerFactory() {
             return new org.apache.xalan.processor.TransformerFactoryImpl();
         }
     };
     
-    public static final XSLTImplementation SAXON = new XSLTImplementation("saxon", false) {
+    public static final XSLTImplementation SAXON = new XSLTImplementation("saxon") {
         @Override
         public TransformerFactory newTransformerFactory() {
             TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
@@ -55,11 +58,10 @@ public abstract class XSLTImplementation extends Multiton {
     };
     
     private final String name;
-    private final boolean supportsLexicalHandlerWithStreamSource;
+    private Boolean supportsLexicalHandlerWithStreamSource;
     
-    private XSLTImplementation(String name, boolean supportsLexicalHandlerWithStreamSource) {
+    private XSLTImplementation(String name) {
         this.name = name;
-        this.supportsLexicalHandlerWithStreamSource = supportsLexicalHandlerWithStreamSource;
     }
 
     @Instances
@@ -67,7 +69,7 @@ public abstract class XSLTImplementation extends Multiton {
         for (String className : jreTransformerFactoryClassNames) {
             try {
                 final Class<? extends TransformerFactory> clazz = Class.forName(className).asSubclass(TransformerFactory.class);
-                XSLTImplementation implementation = new XSLTImplementation("jre", true) {
+                XSLTImplementation implementation = new XSLTImplementation("jre") {
                     @Override
                     public TransformerFactory newTransformerFactory() {
                         try {
@@ -98,7 +100,19 @@ public abstract class XSLTImplementation extends Multiton {
      * @return <code>true</code> if the XSLT implementation will invoke the methods on the
      *         {@link LexicalHandler} set on the {@link SAXResult}, <code>false</code> otherwise
      */
-    public final boolean supportsLexicalHandlerWithStreamSource() {
+    public final synchronized boolean supportsLexicalHandlerWithStreamSource() {
+        if (supportsLexicalHandlerWithStreamSource == null) {
+            StreamSource source = new StreamSource(new StringReader("<!DOCTYPE root><root><![CDATA[test]]></root>"));
+            TestContentHandler handler = new TestContentHandler();
+            SAXResult result = new SAXResult(handler);
+            result.setLexicalHandler(handler);
+            try {
+                newTransformerFactory().newTransformer().transform(source, result);
+            } catch (TransformerException ex) {
+                throw new RuntimeException(ex);
+            }
+            supportsLexicalHandlerWithStreamSource = handler.getLexicalEventsReceived() == 4;
+        }
         return supportsLexicalHandlerWithStreamSource;
     }
 }
