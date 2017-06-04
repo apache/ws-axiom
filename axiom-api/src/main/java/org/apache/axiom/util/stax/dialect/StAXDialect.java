@@ -250,6 +250,7 @@ public interface StAXDialect {
      * @param factory
      *            the factory to make thread safe
      * @return the thread safe factory
+     * @deprecated
      */
     XMLOutputFactory makeThreadSafe(XMLOutputFactory factory);
     
@@ -270,6 +271,7 @@ public interface StAXDialect {
      * @param factory
      *            the factory to normalize
      * @return the normalized factory
+     * @deprecated
      */
     XMLOutputFactory normalize(XMLOutputFactory factory);
 }

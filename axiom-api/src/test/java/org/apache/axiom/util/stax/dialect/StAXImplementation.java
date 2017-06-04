@@ -95,6 +95,7 @@ public final class StAXImplementation {
         return newFactory(XMLOutputFactory.class);
     }
     
+    @SuppressWarnings("deprecation")
     public XMLOutputFactory newNormalizedXMLOutputFactory() {
         XMLOutputFactory factory = newXMLOutputFactory();
         if (dialect == null) {

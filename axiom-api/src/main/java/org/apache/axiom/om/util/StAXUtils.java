@@ -86,6 +86,7 @@ public class StAXUtils {
     
     private static final Map<StAXParserConfiguration,XMLInputFactory> inputFactoryMap
             = Collections.synchronizedMap(new WeakHashMap<StAXParserConfiguration,XMLInputFactory>());
+    @SuppressWarnings("deprecation")
     private static final Map<StAXWriterConfiguration,XMLOutputFactory> outputFactoryMap
             = Collections.synchronizedMap(new WeakHashMap<StAXWriterConfiguration,XMLOutputFactory>());
     
@@ -202,6 +203,7 @@ public class StAXUtils {
      * configuration.
      * 
      * @return an {@link XMLOutputFactory} instance.
+     * @deprecated
      */
     public static XMLOutputFactory getXMLOutputFactory() {
         return getXMLOutputFactory(null);
@@ -257,12 +259,18 @@ public class StAXUtils {
         }
     }
 
+    /**
+     * @deprecated
+     */
     public static XMLStreamWriter createXMLStreamWriter(OutputStream out)
             throws XMLStreamException {
         
         return createXMLStreamWriter(null, out);
     }
     
+    /**
+     * @deprecated
+     */
     public static XMLStreamWriter createXMLStreamWriter(StAXWriterConfiguration configuration,
             OutputStream out) throws XMLStreamException {
         XMLStreamWriter writer = getXMLOutputFactory(configuration).createXMLStreamWriter(out, "utf-8");
@@ -272,12 +280,18 @@ public class StAXUtils {
         return writer;
     }
 
+    /**
+     * @deprecated
+     */
     public static XMLStreamWriter createXMLStreamWriter(OutputStream out, String encoding)
             throws XMLStreamException {
         
         return createXMLStreamWriter(null, out, encoding);
     }
     
+    /**
+     * @deprecated
+     */
     public static XMLStreamWriter createXMLStreamWriter(StAXWriterConfiguration configuration,
             OutputStream out, String encoding) throws XMLStreamException {
         XMLStreamWriter writer = getXMLOutputFactory(configuration).createXMLStreamWriter(out, encoding);
@@ -287,12 +301,18 @@ public class StAXUtils {
         return writer;
     }
 
+    /**
+     * @deprecated
+     */
     public static XMLStreamWriter createXMLStreamWriter(final Writer out)
             throws XMLStreamException {
         
         return createXMLStreamWriter(null, out);
     }
     
+    /**
+     * @deprecated
+     */
     public static XMLStreamWriter createXMLStreamWriter(StAXWriterConfiguration configuration,
             Writer out) throws XMLStreamException {
         XMLStreamWriter writer = getXMLOutputFactory(configuration).createXMLStreamWriter(out);
@@ -419,6 +439,9 @@ public class StAXUtils {
         return f;
     }
     
+    /**
+     * @deprecated
+     */
     private static XMLOutputFactory newXMLOutputFactory(final ClassLoader classLoader,
             final StAXWriterConfiguration configuration) {
         return AccessController.doPrivileged(new PrivilegedAction<XMLOutputFactory>() {
@@ -462,6 +485,7 @@ public class StAXUtils {
      * @param configuration
      *            the configuration applied to the requested factory
      * @return an {@link XMLOutputFactory} instance.
+     * @deprecated
      */
     public static XMLOutputFactory getXMLOutputFactory(StAXWriterConfiguration configuration) {
         if (configuration == null) {

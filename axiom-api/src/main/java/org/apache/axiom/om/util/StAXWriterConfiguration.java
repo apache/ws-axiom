@@ -35,6 +35,7 @@ import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
  * cache keys.
  * 
  * @see StAXParserConfiguration
+ * @deprecated
  */
 public interface StAXWriterConfiguration {
     /**

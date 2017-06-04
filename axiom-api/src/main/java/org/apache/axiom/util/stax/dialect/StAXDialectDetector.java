@@ -133,6 +133,7 @@ public class StAXDialectDetector {
      * @return the normalized factory
      * 
      * @see StAXDialect#normalize(XMLOutputFactory)
+     * @deprecated
      */
     public static XMLOutputFactory normalize(XMLOutputFactory factory) {
         return getDialect(factory).normalize(factory);

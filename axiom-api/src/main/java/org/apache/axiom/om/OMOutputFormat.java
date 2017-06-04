@@ -68,6 +68,7 @@ public class OMOutputFormat {
 
     public static final String ACTION_PROPERTY = "action";
     
+    @SuppressWarnings("deprecation")
     private StAXWriterConfiguration writerConfiguration;
     
     // The value of this property is a Boolean.  
@@ -457,6 +458,7 @@ public class OMOutputFormat {
      * 
      * @return the current configuration; {@link StAXWriterConfiguration#DEFAULT} if none has been
      *         set explicitly
+     * @deprecated
      */
     public StAXWriterConfiguration getStAXWriterConfiguration() {
         return writerConfiguration == null ? StAXWriterConfiguration.DEFAULT : writerConfiguration;
@@ -468,6 +470,7 @@ public class OMOutputFormat {
      * 
      * @param writerConfiguration
      *            the configuration
+     * @deprecated
      */
     public void setStAXWriterConfiguration(StAXWriterConfiguration writerConfiguration) {
         this.writerConfiguration = writerConfiguration;

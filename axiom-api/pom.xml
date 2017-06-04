@@ -329,7 +329,6 @@
                                 <!-- TODO -->
                                 org.apache.axiom.om.impl.OMMultipartWriter -> org.apache.axiom.om.util.CommonUtils,
                                 <!-- Incorrect layering -->
-                                org.apache.axiom.om.util.StAXWriterConfiguration -> org.apache.axiom.util.stax.dialect.StAXDialect,
                                 org.apache.axiom.om.util.StAXParserConfiguration -> org.apache.axiom.util.stax.dialect.StAXDialect
                             </ignore>
                         </configuration>
