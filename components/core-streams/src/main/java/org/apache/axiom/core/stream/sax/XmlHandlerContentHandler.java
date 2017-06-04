@@ -193,6 +193,9 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     }
 
     public void endDTD() throws SAXException {
+        if (internalSubset == null) {
+            throw new IllegalStateException("endDTD without startDTD");
+        }
         try {
             String internalSubset = this.internalSubset.toString();
             handler.processDocumentTypeDeclaration(dtdName, dtdPublicId, dtdSystemId,

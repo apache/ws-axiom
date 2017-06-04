@@ -24,6 +24,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.FeatureKeys;
 
+import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.xml.sax.ext.LexicalHandler;
 
@@ -31,6 +32,10 @@ import org.xml.sax.ext.LexicalHandler;
  * Specifies an XSLT implementation for use in a {@link MatrixTestCase}.
  */
 public abstract class XSLTImplementation extends Multiton {
+    private static final String[] jreTransformerFactoryClassNames = {
+            "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
+    };
+    
     public static final XSLTImplementation XALAN = new XSLTImplementation("xalan", true) {
         @Override
         public TransformerFactory newTransformerFactory() {
@@ -55,6 +60,29 @@ public abstract class XSLTImplementation extends Multiton {
     private XSLTImplementation(String name, boolean supportsLexicalHandlerWithStreamSource) {
         this.name = name;
         this.supportsLexicalHandlerWithStreamSource = supportsLexicalHandlerWithStreamSource;
+    }
+
+    @Instances
+    private static XSLTImplementation[] instances() {
+        for (String className : jreTransformerFactoryClassNames) {
+            try {
+                final Class<? extends TransformerFactory> clazz = Class.forName(className).asSubclass(TransformerFactory.class);
+                XSLTImplementation implementation = new XSLTImplementation("jre", true) {
+                    @Override
+                    public TransformerFactory newTransformerFactory() {
+                        try {
+                            return clazz.newInstance();
+                        } catch (InstantiationException | IllegalAccessException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                };
+                return new XSLTImplementation[] { implementation };
+            } catch (ClassNotFoundException ex) {
+                // Just continue
+            }
+        }
+        return new XSLTImplementation[0];
     }
 
     public final String getName() {

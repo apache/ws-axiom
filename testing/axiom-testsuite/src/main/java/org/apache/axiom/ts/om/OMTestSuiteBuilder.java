@@ -196,7 +196,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementAfterDetach(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementWithParser(metaFactory));
         for (XSLTImplementation xsltImplementation : getInstances(XSLTImplementation.class)) {
-            if (xsltImplementation.supportsLexicalHandlerWithStreamSource()) {
+            // TODO: the XSLT implementation in the JRE is badly broken when it comes to serializing DTDs; refine this
+            if (!xsltImplementation.getName().equals("jre") && xsltImplementation.supportsLexicalHandlerWithStreamSource()) {
                 for (XMLSample file : getInstances(XMLSample.class)) {
                     addTest(new org.apache.axiom.ts.om.document.TestGetSAXResult(metaFactory, xsltImplementation, file));
                 }
