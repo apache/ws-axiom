@@ -68,16 +68,12 @@ import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamIOException;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.xml.QNameCache;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Utility class with default implementations for some of the methods defined by the
  * {@link OMElement} interface.
  */
 public aspect AxiomElementSupport {
-    private static final Log log = LogFactory.getLog(AxiomElementSupport.class);
-    
     public final void AxiomElement.initName(String localName, OMNamespace ns, boolean generateNSDecl) {
         internalSetLocalName(localName);
         internalSetNamespace(generateNSDecl ? NSUtil.handleNamespace(this, ns, false, true) : ns);
@@ -397,12 +393,7 @@ public aspect AxiomElementSupport {
     }
 
     public final OMNamespace AxiomElement.declareNamespace(String uri, String prefix) {
-        if ("".equals(prefix)) {
-            log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
-            prefix = generatePrefix(uri);
-        }
-        OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
-        return declareNamespace(ns);
+        return declareNamespace(new OMNamespaceImpl(uri, prefix));
     }
 
     public final OMNamespace AxiomElement.declareDefaultNamespace(String uri) {

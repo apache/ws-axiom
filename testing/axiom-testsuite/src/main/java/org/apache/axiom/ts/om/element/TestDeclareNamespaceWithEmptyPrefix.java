@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -29,12 +31,14 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMElement#declareNamespace(String, String)} generates a new prefix if the
+ * Tests the behavior of {@link OMElement#declareNamespace(String, String)}
+ * with an empty prefix.
+ * generates a new prefix if the
  * specified prefix is empty. Note that this behavior will change in Axiom 1.3 (see
  * <a href="https://issues.apache.org/jira/browse/AXIOM-373">AXIOM-373</a>).
  */
-public class TestDeclareNamespaceWithGeneratedPrefix2 extends AxiomTestCase {
-    public TestDeclareNamespaceWithGeneratedPrefix2(OMMetaFactory metaFactory) {
+public class TestDeclareNamespaceWithEmptyPrefix extends AxiomTestCase {
+    public TestDeclareNamespaceWithEmptyPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
@@ -43,13 +47,12 @@ public class TestDeclareNamespaceWithGeneratedPrefix2 extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = element.declareNamespace("urn:ns", "");
-        assertEquals("urn:ns", ns.getNamespaceURI());
-        assertNotNull(ns.getPrefix());
-        assertTrue(ns.getPrefix().length() > 0);
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns");
+        assertThat(ns.getPrefix()).isEmpty();
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMNamespace ns2 = it.next();
-        assertEquals(ns, ns2);
-        assertFalse(it.hasNext());
+        assertThat(ns2).isEqualTo(ns);
+        assertThat(it.hasNext()).isFalse();
     }
 }
