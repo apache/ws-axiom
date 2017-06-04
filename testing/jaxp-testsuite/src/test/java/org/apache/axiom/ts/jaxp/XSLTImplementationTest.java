@@ -20,6 +20,7 @@ package org.apache.axiom.ts.jaxp;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import org.apache.axiom.testing.multiton.Multiton;
 import org.junit.Test;
 
 public class XSLTImplementationTest {
@@ -27,5 +28,12 @@ public class XSLTImplementationTest {
     public void testSupportsLexicalHandlerWithStreamSource() {
         assertThat(XSLTImplementation.SAXON.supportsLexicalHandlerWithStreamSource()).isFalse();
         assertThat(XSLTImplementation.XALAN.supportsLexicalHandlerWithStreamSource()).isTrue();
+    }
+
+    @Test
+    public void testSupportsStAXSource() {
+        for (XSLTImplementation xsltImplementation : Multiton.getInstances(XSLTImplementation.class)) {
+            assertThat(xsltImplementation.supportsStAXSource()).isEqualTo(xsltImplementation.getName().equals("jre"));
+        }
     }
 }

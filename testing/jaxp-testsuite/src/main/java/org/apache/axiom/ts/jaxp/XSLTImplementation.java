@@ -18,18 +18,22 @@
  */
 package org.apache.axiom.ts.jaxp;
 
+import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stax.StAXSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import net.sf.saxon.FeatureKeys;
 
 import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.xml.sax.ext.LexicalHandler;
+
+import net.sf.saxon.FeatureKeys;
 
 /**
  * Specifies an XSLT implementation for use in a {@link MatrixTestCase}.
@@ -59,6 +63,7 @@ public abstract class XSLTImplementation extends Multiton {
     
     private final String name;
     private Boolean supportsLexicalHandlerWithStreamSource;
+    private Boolean supportsStAXSource;
     
     private XSLTImplementation(String name) {
         this.name = name;
@@ -114,5 +119,19 @@ public abstract class XSLTImplementation extends Multiton {
             supportsLexicalHandlerWithStreamSource = handler.getLexicalEventsReceived() == 4;
         }
         return supportsLexicalHandlerWithStreamSource;
+    }
+
+    public final synchronized boolean supportsStAXSource() {
+        if (supportsStAXSource == null) {
+            try {
+                StAXSource source = new StAXSource(XMLInputFactory.newInstance().createXMLStreamReader(new StringReader("<root/>")));
+                StreamResult result = new StreamResult(new ByteArrayOutputStream());
+                newTransformerFactory().newTransformer().transform(source, result);
+                supportsStAXSource = true;
+            } catch (Exception ex) {
+                supportsStAXSource = false;
+            }
+        }
+        return supportsStAXSource;
     }
 }

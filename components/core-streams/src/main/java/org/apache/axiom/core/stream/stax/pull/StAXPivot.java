@@ -565,11 +565,9 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
 
     @Override
     public String getVersion() {
-        if (eventType == START_DOCUMENT) {
-            return version;
-        } else {
-            throw new IllegalStateException();
-        }
+        // Although the Javadoc clearly indicates that getVersion is only supported in state
+        // START_DOCUMENT, the XSLT implementation in the JRE calls this in other states.
+        return version;
     }
 
     @Override
@@ -791,8 +789,9 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         switch (eventType) {
             case START_ELEMENT:
             case END_ELEMENT:
-                // TODO: Woodstox seems to return an empty string instead of null
-                return emptyToNull(namespaceStack[2*(scopeStack[depth]+index)+1]);
+                // The XSLT implementation in the JRE doesn't like null values returned here.
+                // Returning empty strings is also what Woodstox does.
+                return namespaceStack[2*(scopeStack[depth]+index)+1];
             default:
                 throw new IllegalStateException();
         }
