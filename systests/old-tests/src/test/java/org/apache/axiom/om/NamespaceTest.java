@@ -23,17 +23,14 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.om.util.StAXUtils;
 import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
@@ -198,55 +195,6 @@ public class NamespaceTest extends TestCase {
         personElem.addChild(weightElem);
 
         assertAbout(xml()).that(personElem.toString()).hasSameContentAs(expectedXML);
-    }
-
-    public void testOMElementSerialize() throws Exception {
-        String content =
-                "<?xml version='1.0' encoding='UTF-8'?> \n" +
-                        "<foo:foo xmlns:foo=\"urn:foo\"> \n" +
-                        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
-                        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
-                        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
-                        "</foo:foo>";
-
-        // read and build XML content
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(new StringReader(content));
-        OMElement element = builder.getDocumentElement();
-
-        int count = 0;
-        Iterator iter = element.getChildElements();
-        while (iter.hasNext()) {
-            OMElement child = (OMElement) iter.next();
-            assertTrue(child.getNamespace().getNamespaceURI().equals("urn:bar"));
-            count++;
-        }
-        assertEquals(3, count);
-
-        // serialize it back to a String
-        StringWriter stringWriter = new StringWriter();
-        XMLStreamWriter xmlWriter = StAXUtils.createXMLStreamWriter(stringWriter);
-        element.serialize(xmlWriter);
-        xmlWriter.flush();
-        String output = stringWriter.toString();
-
-        content = output;
-        
-        element.close(false);
-
-        // reread and rebuild XML content
-        builder = OMXMLBuilderFactory.createOMBuilder(new StringReader(output));
-        element = builder.getDocumentElement();
-
-        count = 0;
-        iter = element.getChildElements();
-        while (iter.hasNext()) {
-            OMElement child = (OMElement) iter.next();
-            assertTrue(child.getNamespace().getNamespaceURI().equals("urn:bar"));
-            count++;
-        }
-        assertEquals(3, count);
-        
-        element.close(false);
     }
 
     public void testAxis2_3155() {
