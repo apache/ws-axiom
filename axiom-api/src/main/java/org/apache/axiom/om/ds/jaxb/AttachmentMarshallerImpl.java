@@ -21,7 +21,8 @@ package org.apache.axiom.om.ds.jaxb;
 import javax.activation.DataHandler;
 import javax.xml.bind.attachment.AttachmentMarshaller;
 
-import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.axiom.blob.BlobDataSource;
+import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 
 final class AttachmentMarshallerImpl extends AttachmentMarshaller {
@@ -52,7 +53,7 @@ final class AttachmentMarshallerImpl extends AttachmentMarshaller {
             System.arraycopy(data, offset, newData, 0, len);
             data = newData;
         }
-        return addMtomAttachment(new DataHandler(new ByteArrayDataSource(data, "application/octet-stream")),
+        return addMtomAttachment(new DataHandler(new BlobDataSource(Blobs.createBlob(data), "application/octet-stream")),
                 elementNamespace, elementLocalName);
     }
 

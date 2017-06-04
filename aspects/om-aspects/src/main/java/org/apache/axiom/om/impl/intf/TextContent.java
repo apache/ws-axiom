@@ -22,7 +22,8 @@ import java.io.IOException;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.axiom.blob.BlobDataSource;
+import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CloneableCharacterData;
 import org.apache.axiom.core.stream.CharacterData;
@@ -127,7 +128,7 @@ public final class TextContent implements CloneableCharacterData {
             }
             return (DataHandler)dataHandlerObject;
         } else if (binary) {
-            return new DataHandler(new ByteArrayDataSource(Base64Utils.decode(value), mimeType));
+            return new DataHandler(new BlobDataSource(Blobs.createBlob(Base64Utils.decode(value)), mimeType));
         } else {
             throw new OMException("No DataHandler available");
         }

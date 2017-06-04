@@ -306,7 +306,6 @@
                                 org.apache.axiom.attachments.lifecycle.LifecycleManager -> org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
                                 <!-- TODO -->
                                 org.apache.axiom.om.impl.OMMultipartWriter -> org.apache.axiom.attachments.ConfigurableDataHandler,
-                                org.apache.axiom.om.ds.jaxb.AttachmentMarshallerImpl -> org.apache.axiom.attachments.ByteArrayDataSource,
                                 <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
                                 org.apache.axiom.om.OMAbstractFactory -> org.apache.axiom.soap.SOAPFactory,
                                 org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.soap.SOAPFactory,
