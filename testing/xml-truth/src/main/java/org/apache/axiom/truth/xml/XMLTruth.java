@@ -31,6 +31,7 @@ import java.util.ServiceLoader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.axiom.truth.xml.spi.XML;
@@ -218,6 +219,17 @@ public final class XMLTruth {
                         return source;
                     }
                 });
+            }
+        });
+        factories.add(new XMLFactory<StAXSource>() {
+            @Override
+            public Class<StAXSource> getExpectedType() {
+                return StAXSource.class;
+            }
+
+            @Override
+            public XML createXML(StAXSource source) {
+                return xml(source.getXMLStreamReader());
             }
         });
         for (XMLFactory<?> factory : ServiceLoader.load(
