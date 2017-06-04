@@ -57,13 +57,13 @@
         <plugins>
             <plugin>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>javadoc-postprocessor-maven-plugin</artifactId>
+                <artifactId>buildutils-maven-plugin</artifactId>
                 <version>${project.version}</version>
                 <executions>
                     <execution>
                         <phase>site</phase>
                         <goals>
-                            <goal>post-process</goal>
+                            <goal>post-process-javadoc</goal>
                         </goals>
                         <configuration>
                             <javadocDirectory>${project.reporting.outputDirectory}/apidocs</javadocDirectory>

@@ -41,7 +41,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
 
-@Mojo(name="post-process")
+@Mojo(name="post-process-javadoc")
 public class PostProcessMojo extends AbstractMojo {
     @Component
     private SiteTool siteTool;

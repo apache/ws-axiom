@@ -36,7 +36,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
-@Mojo(name="post-process", defaultPhase=LifecyclePhase.PROCESS_CLASSES)
+@Mojo(name="post-process-classes", defaultPhase=LifecyclePhase.PROCESS_CLASSES)
 public class PostProcessMojo extends AbstractMojo {
     @Parameter(defaultValue="${project.build.outputDirectory}", required=true, readonly=true)
     private File classesDir;
