@@ -31,11 +31,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests the behavior of {@link OMElement#declareNamespace(String, String)}
- * with an empty prefix.
- * generates a new prefix if the
- * specified prefix is empty. Note that this behavior will change in Axiom 1.3 (see
- * <a href="https://issues.apache.org/jira/browse/AXIOM-373">AXIOM-373</a>).
+ * Tests the behavior of {@link OMElement#declareNamespace(String, String)} with an empty prefix.
  */
 public class TestDeclareNamespaceWithEmptyPrefix extends AxiomTestCase {
     public TestDeclareNamespaceWithEmptyPrefix(OMMetaFactory metaFactory) {
