@@ -262,6 +262,18 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>buildutils-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>post-process-sources-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.github.veithen.phos</groupId>
                 <artifactId>enforcer-maven-plugin</artifactId>
                 <executions>

@@ -59,6 +59,11 @@
             <artifactId>maven-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.maven.shared</groupId>
+            <artifactId>maven-artifact-transfer</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.maven.doxia</groupId>
             <artifactId>doxia-integration-tools</artifactId>
             <version>${doxia.version}</version>
