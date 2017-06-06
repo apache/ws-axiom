@@ -19,6 +19,7 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.dom.DOMDocument;
+import org.apache.axiom.dom.DOMDocumentType;
 import org.apache.axiom.dom.DOMNodeFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -45,9 +46,12 @@ public aspect DOMNodeFactorySupport {
     }
 
     public DocumentType DOMNodeFactory.createDocumentType(String qualifiedName,
-                                           String publicId, String systemId) throws DOMException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+                                           String publicId, String systemId) {
+        DOMDocumentType docType = createNode(DOMDocumentType.class);
+        docType.coreSetRootName(qualifiedName);
+        docType.coreSetPublicId(publicId);
+        docType.coreSetSystemId(systemId);
+        return docType;
     }
 
     /*

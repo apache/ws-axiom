@@ -103,11 +103,11 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
             }
             case Node.ENTITY_REFERENCE_NODE:
             case Node.ENTITY_NODE:
-            case Node.DOCUMENT_TYPE_NODE:
             case Node.NOTATION_NODE:
                 throw new UnsupportedOperationException("TODO : Implement handling of org.w3c.dom.Node type == " + type );
 
             case Node.DOCUMENT_NODE: // Can't import document nodes
+            case Node.DOCUMENT_TYPE_NODE:
             default:
                 throw newDOMException(DOMException.NOT_SUPPORTED_ERR);
         }
