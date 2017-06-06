@@ -20,6 +20,8 @@ package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -38,6 +40,12 @@ public aspect AxiomSOAPMessageSupport {
     
     public final <T> void AxiomSOAPMessage.initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other) {
         factory = (SOAPFactory)((AxiomSOAPMessage)other).getOMFactory();
+    }
+    
+    public final void AxiomSOAPMessage.checkDocumentElement(OMElement element) {
+        if (!(element instanceof SOAPEnvelope)) {
+            throw new OMException("Child not allowed; must be a SOAPEnvelope");
+        }
     }
     
     public final OMFactory AxiomSOAPMessage.getOMFactory() {
