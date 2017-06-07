@@ -154,7 +154,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
                 break;
             case START_ELEMENT:
                 charData = new char[chunkSize];
-                // No break here!
+                // Fall through.
             case CHARACTERS:
                 try {
                     charDataLength = reader.read(charData);
