@@ -1,4 +1,16 @@
 maven_jar(
+    name = "aspectj_runtime",
+    artifact = "org.aspectj:aspectjrt:1.8.7",
+    sha1 = "c4b70e763194d274477da4da9b05ea913e877268",
+)
+
+maven_jar(
+    name = "aspectj_tools",
+    artifact = "org.aspectj:aspectjtools:1.8.7",
+    sha1 = "67aa2f0aeb0e5c1ee7fadb5b0a29a999a31bb6e2",
+)
+
+maven_jar(
     name = "commons_io",
     artifact = "commons-io:commons-io:2.2",
     sha1 = "83b5b8a7ba1c08f9e8c8ff2373724e33d3c1e22a",
