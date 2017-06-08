@@ -54,6 +54,7 @@ java_library(
     srcs = glob(["src/main/java/**/*.java"]) + [
         ":identity",
     ],
+    resources = glob(["src/main/resources/**/*"]),
     deps = [
         "@commons_codec//jar",
         "@commons_io//jar",

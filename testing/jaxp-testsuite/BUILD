@@ -27,6 +27,7 @@ java_library(
         "@saxon//jar",
         "@xalan//jar",
         "@xerces//jar",
+        "@xml_apis//jar",
         "//testing/multiton",
     ],
 )

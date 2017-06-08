@@ -17,12 +17,19 @@
 # under the License.
 #
 
-package(default_visibility = ["//visibility:public"])
+genrule(
+    name = "filelist",
+    srcs = glob(["src/main/resources/org/apache/axiom/ts/xml/bulk/*.xml"]),
+    # src/*/resources is magic; see the documentation of java_library.
+    outs = ["src/generated/resources/org/apache/axiom/ts/xml/bulk/filelist"],
+    cmd = "for f in $(SRCS); do echo $$(basename $$f) >> $@; done",
+)
 
 java_library(
     name = "xml-testsuite",
     srcs = glob(["src/main/java/**/*.java"]),
-    resources = glob(["src/main/resources/**/*"]),
+    resources = glob(["src/main/resources/**/*"]) + ["filelist"],
+    visibility = ["//visibility:public"],
     deps = [
         "@commons_codec//jar",
         "@commons_io//jar",

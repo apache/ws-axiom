@@ -19,18 +19,47 @@
 
 load('//buildutils:aspectj.bzl', 'aspectj_library')
 
+java_library(
+    name = "factory",
+    srcs = glob(["src/main/java/org/apache/axiom/om/impl/llom/factory/*.java"]),
+    resources = glob(["src/main/resources/**/*"]),
+    deps = [
+        "//aspects/om-aspects",
+        "//axiom-api:locator-loader",
+    ],
+)
+
 aspectj_library(
     name = "axiom-impl",
     srcs = glob([
-        "src/main/java/**/*.java",
-        "src/main/java/**/*.aj",
+        "src/main/java/org/apache/axiom/om/impl/llom/*.java",
+        "src/main/java/org/apache/axiom/soap/impl/llom/**/*.java",
     ]),
     aspects = [
+        ":factory",
         "//aspects/core-aspects",
         "//aspects/om-aspects",
         "//aspects/shared-aspects",
     ],
+)
+
+java_test(
+    name = "om_implementation_test",
+    srcs = ["src/test/java/org/apache/axiom/om/impl/llom/OMImplementationTest.java"],
+    test_class = "org.apache.axiom.om.impl.llom.OMImplementationTest",
     deps = [
-        "//axiom-api:locator-loader",
+        ":axiom-impl",
+        "//testing/axiom-testsuite",
     ],
 )
+
+java_test(
+    name = "soap_implementation_test",
+    srcs = ["src/test/java/org/apache/axiom/soap/impl/llom/SOAPImplementationTest.java"],
+    test_class = "org.apache.axiom.soap.impl.llom.SOAPImplementationTest",
+    deps = [
+        ":axiom-impl",
+        "//testing/axiom-testsuite",
+    ],
+)
+

@@ -138,6 +138,12 @@ maven_jar(
 )
 
 maven_jar(
+    name = "xml_apis",
+    artifact = "xml-apis:xml-apis:jar:1.4.01",
+    sha1 = "3789d9fada2d3d458c4ba2de349d48780f381ee3",
+)
+
+maven_jar(
     name = "xmlbeans",
     artifact = "org.apache.xmlbeans:xmlbeans:2.3.0",
     sha1 = "8704dcf5c9f10265a08f5020b0fab70eb64ac3c4",
