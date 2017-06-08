@@ -1,3 +1,5 @@
+package(default_visibility = ["//visibility:public"])
+
 load('//buildutils:aspectj.bzl', 'aspectj_library')
 
 aspectj_library(

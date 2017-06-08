@@ -1,19 +1,18 @@
-package(default_visibility = ["//visibility:public"])
-
 load('//buildutils:aspectj.bzl', 'aspectj_library')
 
 aspectj_library(
-    name = "om-aspects",
+    name = "axiom-dom",
     srcs = glob([
         "src/main/java/**/*.java",
         "src/main/java/**/*.aj",
     ]),
-    deps = [
+    aspects = [
         "//aspects/core-aspects",
+        "//aspects/dom-aspects",
+        "//aspects/om-aspects",
         "//aspects/shared-aspects",
-        "//axiom-api",
-        "//axiom-api:util-base64",
-        "//axiom-api:util-sax",
-        "//components/base64-utils",
+    ],
+    deps = [
+        "//axiom-api:locator-loader",
     ],
 )

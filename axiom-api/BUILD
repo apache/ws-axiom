@@ -146,3 +146,11 @@ java_library(
     # TODO
     javacopts = ['-extra_checks:off'],
 )
+
+java_library(
+    name = "locator-loader",
+    srcs = glob(["src/main/java/org/apache/axiom/locator/loader/*.java"]),
+    deps = [
+        ":axiom-api",
+    ],
+)

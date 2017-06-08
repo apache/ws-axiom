@@ -1,11 +1,12 @@
 def _impl(ctx):
   class_jar = ctx.outputs.class_jar
-  deps_provider = java_common.merge([dep[java_common.provider] for dep in ctx.attr.deps + [ctx.attr._runtime]])
+  deps_provider = java_common.merge([dep[java_common.provider] for dep in ctx.attr.deps + ctx.attr.aspects + [ctx.attr._runtime]])
   ctx.action(
-      inputs=list(deps_provider.transitive_runtime_jars) + ctx.files.srcs,
+      inputs=list(deps_provider.transitive_runtime_jars) + ctx.files.aspects + ctx.files.srcs,
       outputs=[class_jar],
       arguments=[
           "-classpath", ctx.configuration.host_path_separator.join([f.path for f in deps_provider.transitive_runtime_jars]),
+          "-aspectpath", ctx.configuration.host_path_separator.join([f.path for f in ctx.files.aspects]),
           "-outjar", class_jar.path,
           "-source", "1.7",
           "-target", "1.7",
@@ -22,6 +23,9 @@ aspectj_library = rule(
             allow_files=FileType([".java", ".aj"]),
         ),
         "deps": attr.label_list(
+            allow_files=False,
+        ),
+        "aspects": attr.label_list(
             allow_files=False,
         ),
         "_ajc": attr.label(
