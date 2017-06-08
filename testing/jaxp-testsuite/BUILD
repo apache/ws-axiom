@@ -20,24 +20,13 @@
 package(default_visibility = ["//visibility:public"])
 
 java_library(
-    name = "testutils",
+    name = "jaxp-testsuite",
     srcs = glob(["src/main/java/**/*.java"]),
     deps = [
-        "@commons_io//jar",
-        "@guava//jar",
-        "@junit//jar",
-        "@osgi_core//jar",
-        "@truth//jar",
+        "@crimson//jar",
+        "@saxon//jar",
+        "@xalan//jar",
+        "@xerces//jar",
+        "//testing/multiton",
     ],
-)
-
-java_test(
-    name = "data_source_registry_test",
-    srcs = [
-        "src/test/java/org/apache/axiom/testutils/net/protocol/mem/DataSourceRegistryTest.java",
-    ],
-    deps = [
-        ":testutils",
-    ],
-    test_class = "org.apache.axiom.testutils.net.protocol.mem.DataSourceRegistryTest",
 )

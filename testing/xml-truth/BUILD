@@ -20,24 +20,18 @@
 package(default_visibility = ["//visibility:public"])
 
 java_library(
-    name = "testutils",
-    srcs = glob(["src/main/java/**/*.java"]),
-    deps = [
-        "@commons_io//jar",
-        "@guava//jar",
-        "@junit//jar",
-        "@osgi_core//jar",
-        "@truth//jar",
-    ],
+    name = "spi",
+    srcs = glob(["src/main/java/org/apache/axiom/truth/xml/spi/*.java"]),
 )
 
-java_test(
-    name = "data_source_registry_test",
-    srcs = [
-        "src/test/java/org/apache/axiom/testutils/net/protocol/mem/DataSourceRegistryTest.java",
-    ],
+java_library(
+    name = "xml-truth",
+    srcs = glob(["src/main/java/**/*.java"]),
     deps = [
-        ":testutils",
+        "@guava//jar",
+        "@stax2_api//jar",
+        "@truth//jar",
+        "@woodstox//jar",
+        ":spi",
     ],
-    test_class = "org.apache.axiom.testutils.net.protocol.mem.DataSourceRegistryTest",
 )

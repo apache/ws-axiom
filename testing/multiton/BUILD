@@ -17,6 +17,8 @@
 # under the License.
 #
 
+package(default_visibility = ["//visibility:public"])
+
 java_library(
     name = "multiton",
     srcs = glob(["src/main/java/**/*.java"]),

@@ -93,6 +93,15 @@ java_library(
 )
 
 java_library(
+    name = "util-stax-debug",
+    srcs = glob(["src/main/java/org/apache/axiom/util/stax/debug/*.java"]),
+    deps = [
+        "@commons_logging//jar",
+        ":util-stax-wrapper",
+    ],
+)
+
+java_library(
     name = "blob",
     srcs = glob(["src/main/java/org/apache/axiom/blob/*.java"]),
     deps = [
@@ -147,6 +156,8 @@ java_library(
         "src/main/java/org/apache/axiom/om/xpath/*.java",
         "src/main/java/org/apache/axiom/soap/*.java",
     ]) + [
+        "src/main/java/org/apache/axiom/om/util/AXIOMUtil.java",
+        "src/main/java/org/apache/axiom/om/util/DigestGenerator.java",
         "src/main/java/org/apache/axiom/om/util/CommonUtils.java",
         "src/main/java/org/apache/axiom/om/util/LogOutputStream.java",
     ],
