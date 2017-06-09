@@ -26,60 +26,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.domts.level1.core.attrremovechild1;
-import org.w3c.domts.level1.core.attrreplacechild1;
-import org.w3c.domts.level1.core.attrsetvaluenomodificationallowederr;
-import org.w3c.domts.level1.core.attrsetvaluenomodificationallowederrEE;
-import org.w3c.domts.level1.core.characterdataappenddatanomodificationallowederr;
-import org.w3c.domts.level1.core.characterdataappenddatanomodificationallowederrEE;
-import org.w3c.domts.level1.core.characterdatadeletedatanomodificationallowederr;
-import org.w3c.domts.level1.core.characterdatadeletedatanomodificationallowederrEE;
-import org.w3c.domts.level1.core.characterdatainsertdatanomodificationallowederr;
-import org.w3c.domts.level1.core.characterdatainsertdatanomodificationallowederrEE;
-import org.w3c.domts.level1.core.characterdatareplacedatanomodificationallowederr;
-import org.w3c.domts.level1.core.characterdatareplacedatanomodificationallowederrEE;
-import org.w3c.domts.level1.core.characterdatasetdatanomodificationallowederr;
-import org.w3c.domts.level1.core.characterdatasetdatanomodificationallowederrEE;
-import org.w3c.domts.level1.core.documentcreateentityreferenceknown;
-import org.w3c.domts.level1.core.elementremoveattributenodenomodificationallowederr;
-import org.w3c.domts.level1.core.elementremoveattributenodenomodificationallowederrEE;
-import org.w3c.domts.level1.core.elementremoveattributenomodificationallowederr;
-import org.w3c.domts.level1.core.elementremoveattributenomodificationallowederrEE;
-import org.w3c.domts.level1.core.elementsetattributenodenomodificationallowederr;
-import org.w3c.domts.level1.core.elementsetattributenodenomodificationallowederrEE;
-import org.w3c.domts.level1.core.elementsetattributenomodificationallowederrEE;
-import org.w3c.domts.level1.core.hc_textparseintolistofelements;
-import org.w3c.domts.level1.core.nodeappendchildnomodificationallowederr;
-import org.w3c.domts.level1.core.nodeinsertbeforenomodificationallowederr;
-import org.w3c.domts.level1.core.noderemovechildnomodificationallowederr;
-import org.w3c.domts.level1.core.noderemovechildnomodificationallowederrEE;
-import org.w3c.domts.level1.core.nodereplacechildnomodificationallowederr;
-import org.w3c.domts.level1.core.nodereplacechildnomodificationallowederrEE;
-import org.w3c.domts.level1.core.nodesetnodevaluenomodificationallowederr;
-import org.w3c.domts.level1.core.nodesetnodevaluenomodificationallowederrEE;
-import org.w3c.domts.level1.core.processinginstructionsetdatanomodificationallowederrEE;
-import org.w3c.domts.level1.core.textparseintolistofelements;
-import org.w3c.domts.level1.core.textsplittextnomodificationallowederr;
-import org.w3c.domts.level1.core.textsplittextnomodificationallowederrEE;
-import org.w3c.domts.level2.core.elementsetattributenodens06;
-import org.w3c.domts.level2.core.importNode11;
-import org.w3c.domts.level2.core.prefix08;
-import org.w3c.domts.level2.core.removeAttributeNS01;
-import org.w3c.domts.level2.core.removeNamedItemNS03;
-import org.w3c.domts.level2.core.setAttributeNS03;
-import org.w3c.domts.level2.core.setAttributeNodeNS02;
-import org.w3c.domts.level2.core.setNamedItemNS04;
-import org.w3c.domts.level3.core.nodecomparedocumentposition26;
-import org.w3c.domts.level3.core.nodecomparedocumentposition27;
-import org.w3c.domts.level3.core.nodecomparedocumentposition28;
-import org.w3c.domts.level3.core.nodecomparedocumentposition29;
-import org.w3c.domts.level3.core.nodegettextcontent14;
-import org.w3c.domts.level3.core.nodegettextcontent17;
-import org.w3c.domts.level3.core.nodeinsertbefore15;
-import org.w3c.domts.level3.core.noderemovechild13;
-import org.w3c.domts.level3.core.noderemovechild14;
-import org.w3c.domts.level3.core.noderemovechild15;
-import org.w3c.domts.level3.core.noderemovechild31;
 
 public final class DOMFeature {
     static final class Signature {
@@ -100,78 +46,78 @@ public final class DOMFeature {
             new Signature[] {
                     new Signature(DocumentType.class, "getEntities"),
             },
-            new Class<?>[] {
-                    attrsetvaluenomodificationallowederrEE.class,
-                    characterdataappenddatanomodificationallowederr.class,
-                    characterdataappenddatanomodificationallowederrEE.class,
-                    characterdatadeletedatanomodificationallowederr.class,
-                    characterdatadeletedatanomodificationallowederrEE.class,
-                    characterdatainsertdatanomodificationallowederr.class,
-                    characterdatainsertdatanomodificationallowederrEE.class,
-                    characterdatareplacedatanomodificationallowederr.class,
-                    characterdatareplacedatanomodificationallowederrEE.class,
-                    characterdatasetdatanomodificationallowederr.class,
-                    characterdatasetdatanomodificationallowederrEE.class,
-                    documentcreateentityreferenceknown.class,
-                    elementremoveattributenodenomodificationallowederr.class,
-                    elementremoveattributenodenomodificationallowederrEE.class,
-                    elementremoveattributenomodificationallowederr.class,
-                    elementremoveattributenomodificationallowederrEE.class,
-                    elementsetattributenodenomodificationallowederr.class,
-                    elementsetattributenodenomodificationallowederrEE.class,
-                    elementsetattributenomodificationallowederrEE.class,
-                    nodeappendchildnomodificationallowederr.class,
-                    nodeinsertbeforenomodificationallowederr.class,
-                    noderemovechildnomodificationallowederr.class,
-                    noderemovechildnomodificationallowederrEE.class,
-                    nodereplacechildnomodificationallowederr.class,
-                    nodereplacechildnomodificationallowederrEE.class,
-                    nodesetnodevaluenomodificationallowederr.class,
-                    nodesetnodevaluenomodificationallowederrEE.class,
-                    processinginstructionsetdatanomodificationallowederrEE.class,
-                    textsplittextnomodificationallowederr.class,
-                    textsplittextnomodificationallowederrEE.class,
-                    attrremovechild1.class,
-                    attrreplacechild1.class,
-                    elementsetattributenodens06.class,
-                    importNode11.class,
-                    prefix08.class,
-                    removeAttributeNS01.class,
-                    removeNamedItemNS03.class,
-                    setAttributeNS03.class,
-                    setAttributeNodeNS02.class,
-                    setNamedItemNS04.class,
-                    nodecomparedocumentposition26.class,
-                    nodecomparedocumentposition27.class,
-                    nodecomparedocumentposition28.class,
-                    nodecomparedocumentposition29.class,
-                    nodegettextcontent17.class,
-                    nodeinsertbefore15.class,
-                    noderemovechild13.class,
-                    noderemovechild14.class,
-                    noderemovechild15.class,
-                    attrsetvaluenomodificationallowederr.class,
-                    textparseintolistofelements.class,
-                    hc_textparseintolistofelements.class,
-                    noderemovechild31.class,
-                    nodegettextcontent14.class,
+            new String[] {
+                    "org.w3c.domts.level1.core.attrremovechild1",
+                    "org.w3c.domts.level1.core.attrreplacechild1",
+                    "org.w3c.domts.level1.core.attrsetvaluenomodificationallowederr",
+                    "org.w3c.domts.level1.core.attrsetvaluenomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.characterdataappenddatanomodificationallowederr",
+                    "org.w3c.domts.level1.core.characterdataappenddatanomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.characterdatadeletedatanomodificationallowederr",
+                    "org.w3c.domts.level1.core.characterdatadeletedatanomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.characterdatainsertdatanomodificationallowederr",
+                    "org.w3c.domts.level1.core.characterdatainsertdatanomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.characterdatareplacedatanomodificationallowederr",
+                    "org.w3c.domts.level1.core.characterdatareplacedatanomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.characterdatasetdatanomodificationallowederr",
+                    "org.w3c.domts.level1.core.characterdatasetdatanomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.documentcreateentityreferenceknown",
+                    "org.w3c.domts.level1.core.elementremoveattributenodenomodificationallowederr",
+                    "org.w3c.domts.level1.core.elementremoveattributenodenomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.elementremoveattributenomodificationallowederr",
+                    "org.w3c.domts.level1.core.elementremoveattributenomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.elementsetattributenodenomodificationallowederr",
+                    "org.w3c.domts.level1.core.elementsetattributenodenomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.elementsetattributenomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.hc_textparseintolistofelements",
+                    "org.w3c.domts.level1.core.nodeappendchildnomodificationallowederr",
+                    "org.w3c.domts.level1.core.nodeinsertbeforenomodificationallowederr",
+                    "org.w3c.domts.level1.core.noderemovechildnomodificationallowederr",
+                    "org.w3c.domts.level1.core.noderemovechildnomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.nodereplacechildnomodificationallowederr",
+                    "org.w3c.domts.level1.core.nodereplacechildnomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.nodesetnodevaluenomodificationallowederr",
+                    "org.w3c.domts.level1.core.nodesetnodevaluenomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.processinginstructionsetdatanomodificationallowederrEE",
+                    "org.w3c.domts.level1.core.textparseintolistofelements",
+                    "org.w3c.domts.level1.core.textsplittextnomodificationallowederr",
+                    "org.w3c.domts.level1.core.textsplittextnomodificationallowederrEE",
+                    "org.w3c.domts.level2.core.elementsetattributenodens06",
+                    "org.w3c.domts.level2.core.importNode11",
+                    "org.w3c.domts.level2.core.prefix08",
+                    "org.w3c.domts.level2.core.removeAttributeNS01",
+                    "org.w3c.domts.level2.core.removeNamedItemNS03",
+                    "org.w3c.domts.level2.core.setAttributeNS03",
+                    "org.w3c.domts.level2.core.setAttributeNodeNS02",
+                    "org.w3c.domts.level2.core.setNamedItemNS04",
+                    "org.w3c.domts.level3.core.nodecomparedocumentposition26",
+                    "org.w3c.domts.level3.core.nodecomparedocumentposition27",
+                    "org.w3c.domts.level3.core.nodecomparedocumentposition28",
+                    "org.w3c.domts.level3.core.nodecomparedocumentposition29",
+                    "org.w3c.domts.level3.core.nodegettextcontent14",
+                    "org.w3c.domts.level3.core.nodegettextcontent17",
+                    "org.w3c.domts.level3.core.nodeinsertbefore15",
+                    "org.w3c.domts.level3.core.noderemovechild13",
+                    "org.w3c.domts.level3.core.noderemovechild14",
+                    "org.w3c.domts.level3.core.noderemovechild15",
+                    "org.w3c.domts.level3.core.noderemovechild31",
             });
     public static final DOMFeature NOTATIONS = new DOMFeature(
             new Signature[] {
                     new Signature(DocumentType.class, "getNotations"),
             },
-            new Class<?>[0]);
+            new String[0]);
     public static final DOMFeature TYPE_INFO = new DOMFeature(
             new Signature[] {
                     new Signature(Attr.class, "getSchemaTypeInfo"),
                     new Signature(Element.class, "getSchemaTypeInfo"),
             },
-            new Class<?>[0]);
+            new String[0]);
     public static final DOMFeature BASE_URI = new DOMFeature(
             new Signature[] {
                     new Signature(Node.class, "getBaseURI"),
             },
-            new Class<?>[0]);
+            new String[0]);
     
     private static final DOMFeature[] allFeatures = new DOMFeature[] {
         ENTITIES,
@@ -181,11 +127,11 @@ public final class DOMFeature {
     };
     
     private final Signature[] signatures;
-    private final Set<Class<?>> testClasses;
+    private final Set<String> testClasses;
     
-    private DOMFeature(Signature[] signatures, Class<?>[] testClasses) {
+    private DOMFeature(Signature[] signatures, String[] testClasses) {
         this.signatures = signatures;
-        this.testClasses = new HashSet<Class<?>>(Arrays.asList(testClasses));
+        this.testClasses = new HashSet<>(Arrays.asList(testClasses));
     }
 
     private boolean matches(Class<?> clazz, String method) {
@@ -211,7 +157,7 @@ public final class DOMFeature {
 
     static void matchFeatures(Class<?> testClass, Set<DOMFeature> usedFeatures) {
         for (DOMFeature feature : allFeatures) {
-            if (feature.testClasses.contains(testClass)) {
+            if (feature.testClasses.contains(testClass.getName())) {
                 usedFeatures.add(feature);
             }
         }
