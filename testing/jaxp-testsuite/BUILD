@@ -23,10 +23,11 @@ java_library(
     name = "jaxp-testsuite",
     srcs = glob(["src/main/java/**/*.java"]),
     deps = [
+        # TODO: Xerces needs to come before Crimson; this shouldn't be the case
+        "@xerces//jar",
         "@crimson//jar",
         "@saxon//jar",
         "@xalan//jar",
-        "@xerces//jar",
         "@xml_apis//jar",
         "//testing/multiton",
     ],

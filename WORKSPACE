@@ -30,6 +30,12 @@ maven_jar(
 )
 
 maven_jar(
+    name = "byte_buddy",
+    artifact = "net.bytebuddy:byte-buddy:jar:1.4.26",
+    sha1 = "c56b0e90e3b6f9f117a0a0356674e86e86ba8652",
+)
+
+maven_jar(
     name = "commons_codec",
     artifact = "commons-codec:commons-codec:1.10",
     sha1 = "4b95f4897fa13f2cd904aee711aeafc0c5295cd8",
@@ -87,6 +93,12 @@ maven_jar(
     name = "mockito_core",
     artifact = "org.mockito:mockito-core:2.1.0",
     sha1 = "a8ca233b9d89b6e610b2e29a33ee78698f804843",
+)
+
+maven_jar(
+    name = "objenesis",
+    artifact = "org.objenesis:objenesis:jar:2.4",
+    sha1 = "2916b6c96b50c5b3ec4452ed99401db745aabb27",
 )
 
 maven_jar(
