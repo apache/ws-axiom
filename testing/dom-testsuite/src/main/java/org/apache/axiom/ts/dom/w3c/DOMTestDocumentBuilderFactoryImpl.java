@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom;
+package org.apache.axiom.ts.dom.w3c;
 
 import java.net.URL;
 
@@ -24,6 +24,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.axiom.ts.dom.DocumentBuilderFactoryFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.domts.DOMTestDocumentBuilderFactory;

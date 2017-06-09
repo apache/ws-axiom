@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom;
+package org.apache.axiom.ts.dom.w3c;
 
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.w3c.domts.DOMTestCase;

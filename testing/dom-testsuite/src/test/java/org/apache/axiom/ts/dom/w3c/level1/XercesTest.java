@@ -16,36 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom;
+package org.apache.axiom.ts.dom.w3c.level1;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.axiom.ts.dom.document.TestLookupNamespaceURIWithEmptyDocument;
-import org.apache.axiom.ts.dom.document.TestLookupPrefixWithEmptyDocument;
-import org.apache.axiom.ts.dom.element.TestImportNode;
-import org.apache.axiom.ts.dom.element.TestLookupNamespaceURIXercesJ1586;
+import org.apache.axiom.ts.dom.DocumentBuilderFactoryFactory;
+import org.apache.axiom.ts.dom.w3c.W3CTestCase;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 
 public class XercesTest extends TestCase {
     public static TestSuite suite() {
-        DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(new DocumentBuilderFactoryFactory() {
+        W3CDOMLevel1TestSuiteBuilder builder = new W3CDOMLevel1TestSuiteBuilder(new DocumentBuilderFactoryFactory() {
             public DocumentBuilderFactory newInstance() {
                 return new DocumentBuilderFactoryImpl();
             }
         });
         
-        // XERCESJ-1582
-        builder.exclude(TestLookupNamespaceURIWithEmptyDocument.class);
-        builder.exclude(TestLookupPrefixWithEmptyDocument.class);
-        
-        // XERCESJ-1586
-        builder.exclude(TestLookupNamespaceURIXercesJ1586.class);
-        
-        // Xerces has difficulties importing nodes from Crimson
-        builder.exclude(TestImportNode.class, "(from=crimson)");
+        builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)");
         
         return builder.build();
     }

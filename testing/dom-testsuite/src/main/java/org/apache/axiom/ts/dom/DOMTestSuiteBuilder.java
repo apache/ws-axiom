@@ -20,12 +20,6 @@ package org.apache.axiom.ts.dom;
 
 import static org.apache.axiom.testing.multiton.Multiton.getInstances;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,13 +28,6 @@ import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.apache.axiom.ts.jaxp.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
-import org.objectweb.asm.ClassReader;
-import org.w3c.domts.DOMTestCase;
-import org.w3c.domts.DOMTestDocumentBuilderFactory;
-import org.w3c.domts.DOMTestIncompatibleException;
-import org.w3c.domts.DOMTestSink;
-import org.w3c.domts.DOMTestSuite;
-import org.w3c.domts.DocumentBuilderSetting;
 
 public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final QName[] validAttrQNames = new QName[] {
@@ -58,11 +45,9 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     };
     
     private final DocumentBuilderFactoryFactory dbff;
-    private final Set<DOMFeature> unsupportedFeatures;
     
-    public DOMTestSuiteBuilder(DocumentBuilderFactoryFactory dbff, DOMFeature... unsupportedFeatures) {
+    public DOMTestSuiteBuilder(DocumentBuilderFactoryFactory dbff) {
         this.dbff = dbff;
-        this.unsupportedFeatures = new HashSet<DOMFeature>(Arrays.asList(unsupportedFeatures));
     }
     
     protected void addTests() {
@@ -208,59 +193,5 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.text.TestSetPrefix(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSplitText(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSplitTextWithoutParent(dbf));
-        
-        DOMTestDocumentBuilderFactory factory;
-        try {
-            factory = new DOMTestDocumentBuilderFactoryImpl(dbff, new DocumentBuilderSetting[] {
-                    DocumentBuilderSetting.notCoalescing,
-                    DocumentBuilderSetting.notExpandEntityReferences,
-                    DocumentBuilderSetting.notIgnoringElementContentWhitespace,
-                    DocumentBuilderSetting.namespaceAware,
-                    DocumentBuilderSetting.notValidating});
-        } catch (DOMTestIncompatibleException ex) {
-            // TODO
-            throw new Error(ex);
-        }
-        try {
-            addW3CTests(factory, new org.w3c.domts.level1.core.alltests(factory));
-            addW3CTests(factory, new org.w3c.domts.level2.core.alltests(factory));
-            addW3CTests(factory, new org.w3c.domts.level3.core.alltests(factory));
-        } catch (Exception ex) {
-            // TODO
-            throw new Error(ex);
-        }
-    }
-    
-    private void addW3CTests(final DOMTestDocumentBuilderFactory factory, DOMTestSuite suite) {
-        suite.build(new DOMTestSink() {
-            public void addTest(Class testClass) {
-                try {
-                    if (!unsupportedFeatures.isEmpty()) {
-                        Set<DOMFeature> usedFeatures = new HashSet<DOMFeature>();
-                        DOMFeature.matchFeatures(testClass, usedFeatures);
-                        ClassReader classReader = new ClassReader(testClass.getResourceAsStream(testClass.getSimpleName() + ".class"));
-                        DOMTSClassVisitor cv = new DOMTSClassVisitor(usedFeatures);
-                        classReader.accept(cv, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-                        usedFeatures.retainAll(unsupportedFeatures);
-                        if (!usedFeatures.isEmpty()) {
-                            return;
-                        }
-                    }
-                    Constructor<? extends DOMTestCase> testConstructor = ((Class<?>)testClass).asSubclass(DOMTestCase.class).getConstructor(DOMTestDocumentBuilderFactory.class);
-                    DOMTestCase test;
-                    try {
-                        test = testConstructor.newInstance(new Object[] { factory });
-                    } catch (InvocationTargetException ex) {
-                        throw ex.getTargetException();
-                    }
-                    test.setFramework(JUnitTestFramework.INSTANCE);
-                    DOMTestSuiteBuilder.this.addTest(new W3CTestCase(test));
-                }
-                catch (Throwable ex) {
-                    // TODO
-                    throw new Error(ex);
-                }
-            }
-        });
     }
 }
