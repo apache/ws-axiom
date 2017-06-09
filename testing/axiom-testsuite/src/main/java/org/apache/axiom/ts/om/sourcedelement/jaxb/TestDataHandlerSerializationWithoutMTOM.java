@@ -62,7 +62,7 @@ public class TestDataHandlerSerializationWithoutMTOM extends AxiomTestCase {
         assertFalse(element.isExpanded());
         
         SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(
-                new ByteArrayInputStream(out.toByteArray()), null).getSOAPEnvelope();
+                metaFactory, new ByteArrayInputStream(out.toByteArray()), null).getSOAPEnvelope();
         DocumentBean object = (DocumentBean)context.createUnmarshaller().unmarshal(
                 envelope.getBody().getFirstElement().getXMLStreamReader(false));
         assertEquals("some content", IOUtils.toString(object.getContent().getInputStream(), "utf-8"));
