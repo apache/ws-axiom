@@ -44,12 +44,13 @@ aspectj_library(
         "//aspects/shared-aspects",
     ],
     deps = [
+        "@woodstox//jar",
         ":factory",
-        "//axiom-api:locator-loader",
     ],
 )
+
 java_test(
-    name = "om_implementation_test",
+    name = "om-implementation-test",
     srcs = ["src/test/java/org/apache/axiom/om/impl/dom/OMImplementationTest.java"],
     test_class = "org.apache.axiom.om.impl.dom.OMImplementationTest",
     deps = [
@@ -59,7 +60,7 @@ java_test(
 )
 
 java_test(
-    name = "soap_implementation_test",
+    name = "soap-implementation-test",
     srcs = ["src/test/java/org/apache/axiom/soap/impl/dom/SOAPImplementationTest.java"],
     test_class = "org.apache.axiom.soap.impl.dom.SOAPImplementationTest",
     deps = [
@@ -67,3 +68,34 @@ java_test(
         "//testing/axiom-testsuite",
     ],
 )
+
+java_test(
+    name = "dom-implementation-test",
+    srcs = [
+        "src/test/java/org/apache/axiom/om/impl/dom/DOMTests.java",
+        "src/test/java/org/apache/axiom/om/impl/dom/DOMImplementationTest.java",
+    ],
+    test_class = "org.apache.axiom.om.impl.dom.DOMImplementationTest",
+    deps = [
+        ":axiom-dom",
+        "//testing/dom-testsuite",
+        # TODO: this shouldn't be here
+        "//testing/dom-testsuite:common",
+        "//testing/dom-testsuite:w3c",
+    ],
+)
+
+[java_test(
+    name = "w3c-dom-level%s-implementation-test" % level,
+    srcs = [
+        "src/test/java/org/apache/axiom/om/impl/dom/DOMTests.java",
+        "src/test/java/org/apache/axiom/om/impl/dom/W3CDOMLevel%sImplementationTest.java" % level,
+    ],
+    test_class = "org.apache.axiom.om.impl.dom.W3CDOMLevel%sImplementationTest" % level,
+    deps = [
+        ":axiom-dom",
+        "//testing/dom-testsuite:common",
+        "//testing/dom-testsuite:w3c",
+        "//testing/dom-testsuite:w3c-level%s" % level,
+    ],
+) for level in [1, 2, 3]]

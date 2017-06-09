@@ -21,6 +21,12 @@ package(default_visibility = ["//visibility:public"])
 
 load('//buildutils:aspectj.bzl', 'aspectj_library')
 
+# TODO: include all non mixins here
+java_library(
+    name = "classes",
+    resources = glob(["src/main/resources/**/*"]),
+)
+
 aspectj_library(
     name = "dom-aspects",
     srcs = glob([
@@ -28,6 +34,7 @@ aspectj_library(
         "src/main/java/**/*.aj",
     ]),
     deps = [
+        ":classes",
         "//aspects/core-aspects",
         "//aspects/shared-aspects",
     ],

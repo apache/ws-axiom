@@ -18,6 +18,12 @@
 #
 
 maven_jar(
+    name = "asm",
+    artifact = "org.ow2.asm:asm:5.2",
+    sha1 = "4ce3ecdc7115bcbf9d4ff4e6ec638e60760819df",
+)
+
+maven_jar(
     name = "aspectj_runtime",
     artifact = "org.aspectj:aspectjrt:1.8.7",
     sha1 = "c4b70e763194d274477da4da9b05ea913e877268",

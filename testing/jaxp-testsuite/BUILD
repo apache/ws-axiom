@@ -28,6 +28,7 @@ java_library(
         "@crimson//jar",
         "@saxon//jar",
         "@xalan//jar",
+        "@xalan_serializer//jar",
         "@xml_apis//jar",
         "//testing/multiton",
     ],

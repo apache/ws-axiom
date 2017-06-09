@@ -42,11 +42,12 @@ aspectj_library(
     ],
     deps = [
         ":factory",
+        "@woodstox//jar",
     ],
 )
 
 java_test(
-    name = "om_implementation_test",
+    name = "om-implementation-test",
     srcs = ["src/test/java/org/apache/axiom/om/impl/llom/OMImplementationTest.java"],
     test_class = "org.apache.axiom.om.impl.llom.OMImplementationTest",
     deps = [
@@ -56,7 +57,7 @@ java_test(
 )
 
 java_test(
-    name = "soap_implementation_test",
+    name = "soap-implementation-test",
     srcs = ["src/test/java/org/apache/axiom/soap/impl/llom/SOAPImplementationTest.java"],
     test_class = "org.apache.axiom.soap.impl.llom.SOAPImplementationTest",
     deps = [
