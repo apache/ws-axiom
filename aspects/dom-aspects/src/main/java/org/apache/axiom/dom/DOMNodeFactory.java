@@ -21,6 +21,6 @@ package org.apache.axiom.dom;
 import org.apache.axiom.core.NodeFactory;
 import org.w3c.dom.DOMImplementation;
 
-public interface DOMNodeFactory extends NodeFactory, DOMImplementation {
-
+public interface DOMNodeFactory extends NodeFactory {
+    DOMImplementation getDOMImplementation();
 }

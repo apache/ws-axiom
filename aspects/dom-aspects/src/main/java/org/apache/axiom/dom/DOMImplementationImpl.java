@@ -16,28 +16,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom.impl.mixin;
+package org.apache.axiom.dom;
 
-import org.apache.axiom.dom.DOMDocument;
-import org.apache.axiom.dom.DOMDocumentType;
-import org.apache.axiom.dom.DOMNodeFactory;
+import org.apache.axiom.core.NodeFactory;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 
-public aspect DOMNodeFactorySupport {
-    public boolean DOMNodeFactory.hasFeature(String feature, String version) {
+public final class DOMImplementationImpl implements DOMImplementation {
+    private final NodeFactory nodeFactory;
+
+    public DOMImplementationImpl(NodeFactory nodeFactory) {
+        this.nodeFactory = nodeFactory;
+    }
+
+    @Override
+    public boolean hasFeature(String feature, String version) {
         boolean anyVersion = version == null || version.length() == 0;
         return (feature.equalsIgnoreCase("Core") || feature.equalsIgnoreCase("XML"))
                 && (anyVersion || version.equals("1.0") || version.equals("2.0") || version.equals("3.0"));
     }
 
-    public Document DOMNodeFactory.createDocument(String namespaceURI, String qualifiedName,
+    @Override
+    public Document createDocument(String namespaceURI, String qualifiedName,
                                    DocumentType doctype) throws DOMException {
 
         // TODO Handle docType stuff
-        DOMDocument doc = createNode(DOMDocument.class);
+        DOMDocument doc = nodeFactory.createNode(DOMDocument.class);
 
         Element element = doc.createElementNS(namespaceURI, qualifiedName);
         doc.appendChild(element);
@@ -45,9 +52,10 @@ public aspect DOMNodeFactorySupport {
         return doc;
     }
 
-    public DocumentType DOMNodeFactory.createDocumentType(String qualifiedName,
+    @Override
+    public DocumentType createDocumentType(String qualifiedName,
                                            String publicId, String systemId) {
-        DOMDocumentType docType = createNode(DOMDocumentType.class);
+        DOMDocumentType docType = nodeFactory.createNode(DOMDocumentType.class);
         docType.coreSetRootName(qualifiedName);
         docType.coreSetPublicId(publicId);
         docType.coreSetSystemId(systemId);
@@ -58,7 +66,8 @@ public aspect DOMNodeFactorySupport {
      * DOM-Level 3 methods
      */
 
-    public Object DOMNodeFactory.getFeature(String feature, String version) {
+    @Override
+    public Object getFeature(String feature, String version) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }

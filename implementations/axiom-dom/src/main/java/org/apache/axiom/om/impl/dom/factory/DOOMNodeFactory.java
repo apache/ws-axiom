@@ -18,17 +18,27 @@
  */
 package org.apache.axiom.om.impl.dom.factory;
 
+import org.apache.axiom.dom.DOMImplementationImpl;
 import org.apache.axiom.dom.DOMNodeFactory;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactoryImpl;
+import org.w3c.dom.DOMImplementation;
 
 public final class DOOMNodeFactory extends AxiomNodeFactoryImpl implements DOMNodeFactory {
     public static final DOOMNodeFactory INSTANCE = new DOOMNodeFactory();
     
+    private final DOMImplementation domImplementation;
+
     private DOOMNodeFactory() {
         super(DOOMNodeFactory.class.getClassLoader(),
                 "org.apache.axiom.om.impl.dom",
                 "org.apache.axiom.soap.impl.dom",
                 "org.apache.axiom.soap.impl.dom.soap11",
                 "org.apache.axiom.soap.impl.dom.soap12");
+        domImplementation = new DOMImplementationImpl(this);
+    }
+
+    @Override
+    public DOMImplementation getDOMImplementation() {
+        return domImplementation;
     }
 }

@@ -35,7 +35,7 @@ public aspect DOMNodeSupport {
     }
 
     public final boolean DOMNode.isSupported(String feature, String version) {
-        return ((DOMNodeFactory)coreGetNodeFactory()).hasFeature(feature, version);
+        return ((DOMNodeFactory)coreGetNodeFactory()).getDOMImplementation().hasFeature(feature, version);
     }
     
     public final String DOMNode.lookupNamespaceURI(String prefix) {

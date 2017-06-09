@@ -144,7 +144,7 @@ public aspect DOMDocumentSupport {
     }
 
     public final DOMImplementation DOMDocument.getImplementation() {
-        return (DOMNodeFactory)coreGetNodeFactory();
+        return ((DOMNodeFactory)coreGetNodeFactory()).getDOMImplementation();
     }
 
     public final DOMConfiguration DOMDocument.getDomConfig() {
