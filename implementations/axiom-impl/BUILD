@@ -36,10 +36,12 @@ aspectj_library(
         "src/main/java/org/apache/axiom/soap/impl/llom/**/*.java",
     ]),
     aspects = [
-        ":factory",
         "//aspects/core-aspects",
         "//aspects/om-aspects",
         "//aspects/shared-aspects",
+    ],
+    deps = [
+        ":factory",
     ],
 )
 
