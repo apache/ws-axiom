@@ -17,7 +17,8 @@
 # under the License.
 #
 
-load('//buildutils:aspectj.bzl', 'aj_library')
+load("//buildutils:aspectj.bzl", "aj_library")
+load("//buildutils:test.bzl", "test")
 
 java_library(
     name = "factory",
@@ -49,7 +50,7 @@ aj_library(
     ],
 )
 
-java_test(
+test(
     name = "om-implementation-test",
     srcs = ["src/test/java/org/apache/axiom/om/impl/dom/OMImplementationTest.java"],
     test_class = "org.apache.axiom.om.impl.dom.OMImplementationTest",
@@ -59,7 +60,7 @@ java_test(
     ],
 )
 
-java_test(
+test(
     name = "soap-implementation-test",
     srcs = ["src/test/java/org/apache/axiom/soap/impl/dom/SOAPImplementationTest.java"],
     test_class = "org.apache.axiom.soap.impl.dom.SOAPImplementationTest",
@@ -69,7 +70,7 @@ java_test(
     ],
 )
 
-java_test(
+test(
     name = "dom-implementation-test",
     srcs = [
         "src/test/java/org/apache/axiom/om/impl/dom/DOMTests.java",
@@ -85,7 +86,7 @@ java_test(
     ],
 )
 
-[java_test(
+[test(
     name = "w3c-dom-level%s-implementation-test" % level,
     srcs = [
         "src/test/java/org/apache/axiom/om/impl/dom/DOMTests.java",
