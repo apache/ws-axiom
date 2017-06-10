@@ -23,6 +23,7 @@ java_library(
     name = "soap-testsuite",
     srcs = glob(["src/main/java/**/*.java"]),
     resources = glob(["src/main/resources/**/*"]),
+    testonly = 1,
     deps = [
         "//components/xml-utils",
         "//testing/multiton",

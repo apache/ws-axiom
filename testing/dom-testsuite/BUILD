@@ -17,6 +17,7 @@ java_library(
         "src/main/java/org/apache/axiom/ts/dom/DocumentBuilderFactoryFactory.java",
     ],
     visibility = ["//visibility:public"],
+    testonly = 1,
 )
 
 java_library(
@@ -35,18 +36,17 @@ java_library(
     ]),
     resources = glob(["src/main/resources/**/*"]),
     visibility = ["//visibility:public"],
+    testonly = 1,
     deps = [
-        "@byte_buddy//jar",
-        "@mockito_core//jar",
-        "@objenesis//jar",
         "@truth//jar",
-        "@xerces//jar",
         ":common",
         "//testing/multiton",
         "//testing/testutils",
         "//testing/jaxp-testsuite",
         "//testing/xml-testsuite",
         "//testing/xml-truth",
+        "//third_party:mockito",
+        "//third_party:xerces",
     ],
 )
 
@@ -54,12 +54,13 @@ java_library(
     name = "w3c",
     srcs = glob(["src/main/java/org/apache/axiom/ts/dom/w3c/*.java"]),
     visibility = ["//visibility:public"],
+    testonly = 1,
     deps = [
         "@asm//jar",
-        "@junit//jar",
         ":common",
         ":org-w3c-domts",
         "//testing/testutils",
+        "//third_party:junit",
     ],
 )
 
@@ -69,6 +70,7 @@ java_library(
         "src/main/java/org/apache/axiom/ts/dom/w3c/level%s/W3CDOMLevel%sTestSuiteBuilder.java" % (level, level),
     ],
     visibility = ["//visibility:public"],
+    testonly = 1,
     deps = [
         "src/w3c/dom%s-core-tests-20040405.jar" % level,
         ":common",
@@ -82,10 +84,9 @@ java_test(
         "src/test/java/org/apache/axiom/ts/dom/XercesTest.java",
     ],
     deps = [
-        "@xerces//jar",
-        "@xml_apis//jar",
         ":common",
         ":dom-testsuite",
+        "//third_party:xerces",
     ],
     test_class = "org.apache.axiom.ts.dom.XercesTest",
 )
@@ -96,11 +97,10 @@ java_test(
         "src/test/java/org/apache/axiom/ts/dom/w3c/level%s/XercesTest.java" % level,
     ],
     deps = [
-        "@xerces//jar",
-        "@xml_apis//jar",
         ":common",
         ":w3c",
         ":w3c-level%s" % level,
+        "//third_party:xerces",
     ],
     test_class = "org.apache.axiom.ts.dom.w3c.level%s.XercesTest" % level,
 ) for level in [1, 2, 3]]

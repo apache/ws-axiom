@@ -24,12 +24,11 @@ java_library(
     srcs = glob(["src/main/java/**/*.java"]),
     deps = [
         # TODO: Xerces needs to come before Crimson; this shouldn't be the case
-        "@xerces//jar",
+        "//third_party:xerces",
         "@crimson//jar",
         "@saxon//jar",
         "@xalan//jar",
         "@xalan_serializer//jar",
-        "@xml_apis//jar",
         "//testing/multiton",
     ],
 )
