@@ -17,20 +17,4 @@
 # under the License.
 #
 
-package(default_visibility = ["//visibility:public"])
-
-java_binary(
-    name = "ajc",
-    runtime_deps = [
-        "@aspectj_tools//jar",
-    ],
-    main_class = "org.aspectj.tools.ajc.Main",
-)
-
-java_binary(
-    name = "bnd",
-    runtime_deps = [
-        "@bnd//jar",
-    ],
-    main_class = "aQute.bnd.main.bnd",
-)
+VERSION = "1.3.0"

@@ -19,6 +19,8 @@
 
 package(default_visibility = ["//visibility:public"])
 
+load("//buildutils:bnd.bzl", "bundle")
+
 java_library(
     name = "ext-activation",
     srcs = glob(["src/main/java/org/apache/axiom/ext/activation/*.java"]),
@@ -178,9 +180,40 @@ java_library(
 )
 
 java_library(
+    name = "locator",
+    srcs = glob(["src/main/java/org/apache/axiom/locator/*.java"]),
+    deps = [
+        "@commons_logging//jar",
+        "@osgi_core//jar",
+        ":axiom-api",
+        ":locator-loader",
+    ],
+)
+
+java_library(
     name = "locator-loader",
     srcs = glob(["src/main/java/org/apache/axiom/locator/loader/*.java"]),
     deps = [
         ":axiom-api",
+    ],
+)
+
+bundle(
+    name = "bundle",
+    symbolic_name = "org.apache.ws.commons.axiom.axiom-api",
+    private_packages = [],
+    export_packages = [
+        "org.apache.axiom.*;-split-package:=merge-first;-noimport:=true",
+    ],
+    import_packages = [
+        "org.jaxen.*;resolution:=optional",
+        "org.codehaus.stax2;resolution:=optional",
+        "org.apache.james.mime4j.*;version=\"${range;[==,=+)}\"",
+        "*"
+    ],
+    activator = "org.apache.axiom.locator.Activator",
+    activation_policy = "lazy",
+    deps = [
+        ":locator",
     ],
 )

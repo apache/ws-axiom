@@ -36,6 +36,12 @@ maven_jar(
 )
 
 maven_jar(
+    name = "bnd",
+    artifact = "biz.aQute.bnd:biz.aQute.bnd:3.3.0",
+    sha1 = "aa45ab294fe338bf86485549e8996bee5a8765ce",
+)
+
+maven_jar(
     name = "byte_buddy",
     artifact = "net.bytebuddy:byte-buddy:jar:1.4.26",
     sha1 = "c56b0e90e3b6f9f117a0a0356674e86e86ba8652",
