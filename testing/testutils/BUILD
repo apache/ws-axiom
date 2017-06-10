@@ -22,7 +22,6 @@ package(default_visibility = ["//visibility:public"])
 java_library(
     name = "testutils",
     srcs = glob(["src/main/java/**/*.java"]),
-    testonly = 1,
     deps = [
         "@commons_io//jar",
         "@guava//jar",

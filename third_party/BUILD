@@ -19,12 +19,24 @@
 
 package(default_visibility = ["//visibility:public"])
 
+genrule(
+    name = "jacocoagent",
+    srcs = ["@jacoco_agent//jar"],
+    outs = ["jacocoagent.jar"],
+    cmd = """
+        dir=$$(pwd)
+        cd $(@D)
+        jar xf $$dir/$< jacocoagent.jar""",
+)
+
 java_library(
     name = "junit",
     exports = [
         "@junit//jar",
     ],
-    testonly = 1,
+    runtime_deps = [
+        "@hamcrest//jar",
+    ],
 )
 
 java_library(
@@ -36,7 +48,6 @@ java_library(
         "@byte_buddy//jar",
         "@objenesis//jar",
     ],
-    testonly = 1,
 )
 
 java_library(

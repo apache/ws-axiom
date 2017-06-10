@@ -55,7 +55,6 @@ java_library(
         ":identity",
     ],
     resources = glob(["src/main/resources/**/*"]),
-    testonly = 1,
     deps = [
         "@commons_codec//jar",
         "@commons_io//jar",

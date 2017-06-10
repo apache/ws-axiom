@@ -30,7 +30,6 @@ java_library(
     srcs = glob(["src/main/java/**/*.java"]),
     resources = glob(["src/main/resources/**/*"]) + ["filelist"],
     visibility = ["//visibility:public"],
-    testonly = 1,
     deps = [
         "@commons_codec//jar",
         "@commons_io//jar",

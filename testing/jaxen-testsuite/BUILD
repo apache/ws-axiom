@@ -23,7 +23,6 @@ java_library(
     name = "jaxen-testsuite",
     srcs = glob(["src/main/java/**/*.java"]),
     resources = glob(["src/main/resources/**/*"]),
-    testonly = 1,
     deps = [
         "@jaxen//jar",
         "//third_party:junit",

@@ -17,7 +17,6 @@ java_library(
         "src/main/java/org/apache/axiom/ts/dom/DocumentBuilderFactoryFactory.java",
     ],
     visibility = ["//visibility:public"],
-    testonly = 1,
 )
 
 java_library(
@@ -36,7 +35,6 @@ java_library(
     ]),
     resources = glob(["src/main/resources/**/*"]),
     visibility = ["//visibility:public"],
-    testonly = 1,
     deps = [
         "@truth//jar",
         ":common",
@@ -54,7 +52,6 @@ java_library(
     name = "w3c",
     srcs = glob(["src/main/java/org/apache/axiom/ts/dom/w3c/*.java"]),
     visibility = ["//visibility:public"],
-    testonly = 1,
     deps = [
         "@asm//jar",
         ":common",
@@ -70,7 +67,6 @@ java_library(
         "src/main/java/org/apache/axiom/ts/dom/w3c/level%s/W3CDOMLevel%sTestSuiteBuilder.java" % (level, level),
     ],
     visibility = ["//visibility:public"],
-    testonly = 1,
     deps = [
         "src/w3c/dom%s-core-tests-20040405.jar" % level,
         ":common",

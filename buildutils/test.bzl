@@ -16,12 +16,69 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-def test(**kwargs):
+
+# Keep heap size small. We have some unit tests that deal with volumes
+# of data proportional to the heap size (to test that Axiom is streaming
+# the data instead of loading it into memory). Obviously, the execution time of
+# these tests also are proportional to the heap size. To accelerate the execution
+# of the tests, we should use a heap size as small as possible.
+JVM_FLAGS = ["-Xms16m", "-Xmx48m"] 
+
+def _jacoco_impl(ctx):
+  jars = list(ctx.attr.lib[java_common.provider].transitive_runtime_jars)
+  ctx.action(
+      inputs = jars + ctx.files._agent,
+      outputs = [ctx.outputs.exec],
+      arguments = JVM_FLAGS + [
+          "-classpath", ctx.configuration.host_path_separator.join([f.path for f in jars]),
+          "-javaagent:%s=destfile=%s" % (ctx.files._agent[0].path, ctx.outputs.exec.path),
+          "org.junit.runner.JUnitCore",
+          ctx.attr.test_class,
+      ],
+      progress_message = "Generating JaCoCo coverage data for %s" % ctx.attr.test_name,
+      executable = ctx.executable._java)
+
+_jacoco = rule(
+    implementation = _jacoco_impl,
+    attrs = {
+        "test_name": attr.string(),
+        "lib": attr.label(
+            allow_files=False,
+        ),
+        "test_class": attr.string(),
+        "_java": attr.label(
+            default=Label("@local_jdk//:java"),
+            allow_files=True,
+            executable=True,
+            cfg="host",
+        ),
+        "_agent": attr.label(
+            default=Label("//third_party:jacocoagent"),
+            allow_files=False,
+        ),
+    },
+    outputs = {
+        "exec": "%{name}.exec",
+    },
+)
+
+def test(name, srcs, deps, test_class):
+  native.java_library(
+      name = "%s_lib" % name,
+      srcs = srcs,
+      deps = deps + ["//third_party:junit"],
+  )
+
   native.java_test(
-      # Keep heap size small. We have some unit tests that deal with volumes
-      # of data proportional to the heap size (to test that Axiom is streaming
-      # the data instead of loading it into memory). Obviously, the execution time of
-      # these tests also are proportional to the heap size. To accelerate the execution
-      # of the tests, we should use a heap size as small as possible.
-      jvm_flags = ["-Xms16m", "-Xmx48m"],
-      **kwargs)
+      name = name,
+      runtime_deps = ["%s_lib" % name],
+      test_class = test_class,
+      jvm_flags = JVM_FLAGS,
+  )
+
+  _jacoco(
+      name = "%s_jacoco" % name,
+      test_name = name,
+      lib = ":%s_lib" % name,
+      test_class = test_class,
+  )

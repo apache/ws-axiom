@@ -72,6 +72,18 @@ maven_jar(
 )
 
 maven_jar(
+    name = "hamcrest",
+    artifact = "org.hamcrest:hamcrest-core:jar:1.3",
+    sha1 = "42a25dc3219429f0e5d060061f71acb49bf010a0",
+)
+
+maven_jar(
+    name = "jacoco_agent",
+    artifact = "org.jacoco:org.jacoco.agent:0.7.9",
+    sha1 = "4a936caab50b117a14d9ca3a725fc9b54d0cc3d1",
+)
+
+maven_jar(
     name = "javamail",
     artifact = "org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1",
     sha1 = "43ad4090b1a07a11c82ac40c01fc4e2fbad20013",
