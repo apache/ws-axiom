@@ -17,9 +17,9 @@
 # under the License.
 #
 
-load('//buildutils:aspectj.bzl', 'aspectj_library')
+load('//buildutils:aspectj.bzl', 'aj_library')
 
-aspectj_library(
+aj_library(
     name = "shared-aspects",
     srcs = glob([
         "src/main/java/**/*.java",

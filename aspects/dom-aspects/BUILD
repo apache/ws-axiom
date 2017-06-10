@@ -19,7 +19,7 @@
 
 package(default_visibility = ["//visibility:public"])
 
-load('//buildutils:aspectj.bzl', 'aspectj_library')
+load('//buildutils:aspectj.bzl', 'aj_library')
 
 # TODO: include all non mixins here
 java_library(
@@ -27,7 +27,7 @@ java_library(
     resources = glob(["src/main/resources/**/*"]),
 )
 
-aspectj_library(
+aj_library(
     name = "dom-aspects",
     srcs = glob([
         "src/main/java/**/*.java",

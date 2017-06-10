@@ -17,7 +17,7 @@
 # under the License.
 #
 
-load('//buildutils:aspectj.bzl', 'aspectj_library')
+load('//buildutils:aspectj.bzl', 'aj_library')
 
 java_library(
     name = "factory",
@@ -29,7 +29,7 @@ java_library(
     ],
 )
 
-aspectj_library(
+aj_library(
     name = "axiom-impl",
     srcs = glob([
         "src/main/java/org/apache/axiom/om/impl/llom/*.java",

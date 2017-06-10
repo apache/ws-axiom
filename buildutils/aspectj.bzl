@@ -35,7 +35,7 @@ def _impl(ctx):
   return [java_common.merge(
       [deps_provider, java_common.create_provider(compile_time_jars=[class_jar], runtime_jars=[class_jar])])]
 
-aspectj_library = rule(
+aj_library = rule(
     implementation = _impl,
     attrs = {
         "srcs": attr.label_list(
