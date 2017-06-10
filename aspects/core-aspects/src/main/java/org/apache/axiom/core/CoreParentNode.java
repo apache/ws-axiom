@@ -18,6 +18,10 @@
  */
 package org.apache.axiom.core;
 
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlReader;
+
 /**
  * Interface for parent nodes.
  */
@@ -43,10 +47,45 @@ public interface CoreParentNode extends CoreNode {
     InputContext coreGetInputContext();
     void coreSetInputContext(InputContext context);
     int getState();
+    boolean isExpanded();
+    void forceExpand();
     void coreSetState(int state);
     void coreBuild() throws CoreModelException;
 
+    void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException;
+    void serializeEndEvent(XmlHandler handler) throws StreamException;
+    void internalAppendChildWithoutBuild(CoreChildNode child);
+
+    /**
+     * Get the first child if it is available. The child is available if it is complete or
+     * if the builder has started building the node. In the latter case,
+     * {@link OMNode#isComplete()} may return <code>false</code> when called on the child. 
+     * In contrast to {@link OMContainer#getFirstOMChild()}, this method will never modify
+     * the state of the underlying parser.
+     * 
+     * @return the first child or <code>null</code> if the container has no children or
+     *         the builder has not yet started to build the first child
+     */
+    CoreChildNode coreGetFirstChildIfAvailable();
+    
+    CoreChildNode coreGetFirstChild() throws CoreModelException;
+    CoreChildNode coreGetFirstChild(NodeFilter filter) throws CoreModelException;
+    
+    CoreChildNode coreGetLastChild() throws CoreModelException;
+    CoreChildNode coreGetLastChild(NodeFilter filter) throws CoreModelException;
+    
+    void coreAppendChild(CoreChildNode child) throws CoreModelException;
+    void coreAppendChildren(CoreDocumentFragment fragment) throws CoreModelException;
+    
+    XmlReader coreGetReader(XmlHandler handler, boolean cache, boolean incremental);
+    
     <T extends CoreNode,S> NodeIterator<S> coreGetNodes(Axis axis, Class<T> type, Mapper<S,? super T> mapper, Semantics semantics);
 
     <T extends CoreElement,S> NodeIterator<S> coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Mapper<S,? super T> mapper, Semantics semantics);
+    
+    void coreSetCharacterData(Object data, Semantics semantics) throws CoreModelException;
+    
+    void coreRemoveChildren(Semantics semantics) throws CoreModelException;
+    
+    void coreDiscard(boolean consumeInput) throws CoreModelException;
 }

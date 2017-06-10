@@ -42,17 +42,6 @@ public aspect CoreNodeSupport {
     public void CoreNode.updateFiliation(CoreNode creator) {
     }
     
-    public abstract CoreNode CoreNode.getRootOrOwnerDocument();
-
-    /**
-     * Get the owner document to which this node belongs.
-     * 
-     * @param create
-     *            indicates whether the owner document should be created if it has not been created
-     *            yet
-     * @return the owner document or <code>null</code> if the owner document has not been created
-     *         yet and <code>create</code> is <code>false</code>
-     */
     public final CoreDocument CoreNode.coreGetOwnerDocument(boolean create) {
         CoreNode root = getRootOrOwnerDocument();
         if (root instanceof CoreDocument) {

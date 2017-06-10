@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.mixin;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.intf.AxiomDocType;
@@ -38,6 +39,8 @@ public aspect AxiomDocTypeSupport {
     public final void AxiomDocType.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
             internalSerialize(new XMLStreamWriterHandler(writer), cache);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         } catch (StreamException ex) {
             throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }

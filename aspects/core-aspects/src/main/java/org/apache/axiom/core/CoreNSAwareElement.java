@@ -18,6 +18,10 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreNSAwareElement extends CoreElement, CoreNSAwareNamedNode {
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlInput;
 
+public interface CoreNSAwareElement extends CoreElement, CoreNSAwareNamedNode {
+    XmlInput getXmlInput(boolean cache, boolean incremental) throws StreamException;
+    void validateName(String staxPrefix, String staxLocalName, String staxNamespaceURI);
 }

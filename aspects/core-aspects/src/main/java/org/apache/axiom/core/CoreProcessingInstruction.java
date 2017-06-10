@@ -19,5 +19,7 @@
 package org.apache.axiom.core;
 
 public interface CoreProcessingInstruction extends CoreChildNode, CoreCharacterDataContainingParentNode {
-
+    String coreGetTarget();
+    
+    void coreSetTarget(String target);
 }

@@ -40,20 +40,10 @@ public aspect CoreChildNodeSupport {
     CoreChildNode CoreChildNode.nextSibling;
     CoreChildNode CoreChildNode.previousSibling;
     
-    /**
-     * Check if this node has a parent.
-     * 
-     * @return <code>true</code> if and only if this node currently has a parent
-     */
     public final boolean CoreChildNode.coreHasParent() {
         return getFlag(Flags.HAS_PARENT);
     }
     
-    /**
-     * Get the parent of this node.
-     * 
-     * @return the parent of this node or <code>null</code> if this node doesn't have a parent
-     */
     public final CoreParentNode CoreChildNode.coreGetParent() {
         return getFlag(Flags.HAS_PARENT) ? owner : null;
     }

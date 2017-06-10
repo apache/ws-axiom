@@ -20,6 +20,20 @@ package org.apache.axiom.core;
 
 public interface CoreChildNode extends CoreNode {
     /**
+     * Check if this node has a parent.
+     * 
+     * @return <code>true</code> if and only if this node currently has a parent
+     */
+    boolean coreHasParent();
+    
+    /**
+     * Get the parent of this node.
+     * 
+     * @return the parent of this node or <code>null</code> if this node doesn't have a parent
+     */
+    CoreParentNode coreGetParent();
+    
+    /**
      * Get the parent element of this node.
      * 
      * @return the parent element of this node or <code>null</code> if the node has no parent or if
@@ -27,7 +41,11 @@ public interface CoreChildNode extends CoreNode {
      */
     CoreElement coreGetParentElement();
 
-    CoreChildNode coreGetNextSibling();
+    CoreChildNode coreGetNextSibling() throws CoreModelException;
+    CoreChildNode coreGetPreviousSibling();
+
+    CoreChildNode coreGetNextSibling(NodeFilter filter) throws CoreModelException;
+    CoreChildNode coreGetPreviousSibling(NodeFilter filter);
 
     /**
      * Get the next sibling if it is available. The sibling is available if it is complete or if the
@@ -39,7 +57,15 @@ public interface CoreChildNode extends CoreNode {
      */
     CoreChildNode coreGetNextSiblingIfAvailable();
 
+    void coreInsertSiblingAfter(CoreChildNode sibling) throws CoreModelException;
+    void coreInsertSiblingBefore(CoreChildNode sibling) throws CoreModelException;
+    
+    void coreInsertSiblingsBefore(CoreDocumentFragment fragment);
+    
     void coreDetach(Semantics semantics);
+    void coreDetach(CoreDocument newOwnerDocument);
+
+    void coreReplaceWith(CoreChildNode newNode, Semantics semantics) throws CoreModelException;
 
     /**
      * Clone this node according to the provided policy.
@@ -50,5 +76,5 @@ public interface CoreChildNode extends CoreNode {
      *            the node to which the clone should be added; may be <code>null</code>
      * @return the clone of this node
      */
-    <T> CoreNode coreClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent);
+    <T> CoreNode coreClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException;
 }

@@ -20,6 +20,7 @@ package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.stream.StreamException;
@@ -75,7 +76,7 @@ public aspect CoreDocumentTypeDeclarationSupport {
         coreSetInternalSubset(o.coreGetInternalSubset());
     }
 
-    public final void CoreDocumentTypeDeclaration.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
+    public final void CoreDocumentTypeDeclaration.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         handler.processDocumentTypeDeclaration(coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
     }
 }

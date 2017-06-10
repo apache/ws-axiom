@@ -19,6 +19,9 @@
 package org.apache.axiom.core;
 
 public interface CoreCharacterDataNode extends CoreLeafNode, CoreCharacterDataContainer {
+    @Override
+    Object coreGetCharacterData();
+
     void coreSetCharacterData(Object data);
     
     /**

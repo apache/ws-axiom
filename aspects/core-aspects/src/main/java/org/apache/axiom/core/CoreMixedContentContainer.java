@@ -19,5 +19,5 @@
 package org.apache.axiom.core;
 
 public interface CoreMixedContentContainer extends CoreParentNode, CoreCharacterDataSinkNode {
-    Object coreGetCharacterData(ElementAction elementAction);
+    Object coreGetCharacterData(ElementAction elementAction) throws CoreModelException;
 }

@@ -73,7 +73,7 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      *            {@link AttributeMatcher#createAttribute(CoreElement, String, String, String, String)}
      *            and {@link AttributeMatcher#update(CoreAttribute, String, String)}
      */
-    void coreSetAttribute(AttributeMatcher matcher, String namespaceURI, String name, String prefix, String value);
+    void coreSetAttribute(AttributeMatcher matcher, String namespaceURI, String name, String prefix, String value) throws CoreModelException;
     
     /**
      * Add a new attribute or replace an existing attribute based on a given
@@ -134,7 +134,7 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      *         returned
      * @see Semantics#isUseStrictNamespaceLookup()
      */
-    String coreLookupNamespaceURI(String prefix, Semantics semantics);
+    String coreLookupNamespaceURI(String prefix, Semantics semantics) throws CoreModelException;
     
     /**
      * Find a prefix associated to the given namespace URI. Default namespaces are not taken into
@@ -152,5 +152,7 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      */
     // TODO: wrong Javadoc: null vs. empty string
     // TODO: we can support default namespaces!
-    String coreLookupPrefix(String namespaceURI, Semantics semantics);
+    String coreLookupPrefix(String namespaceURI, Semantics semantics) throws CoreModelException;
+    
+    <T extends CoreElement> T corePromote(Class<T> type, Semantics semantics) throws CoreModelException;
 }
