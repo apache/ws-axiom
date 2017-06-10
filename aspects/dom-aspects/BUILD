@@ -34,8 +34,10 @@ aj_library(
         "src/main/java/**/*.aj",
     ]),
     deps = [
+        # TODO: too many dependencies here because ajc doesn't understand header JARs
         ":classes",
-        "//aspects/core-aspects",
+        "//aspects/core-aspects:interface",
         "//aspects/shared-aspects",
+        "//components/xml-utils",
     ],
 )

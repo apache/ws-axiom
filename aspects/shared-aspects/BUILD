@@ -26,7 +26,7 @@ aj_library(
         "src/main/java/**/*.aj",
     ]),
     deps = [
-        "//aspects/core-aspects",
+        "//aspects/core-aspects:interface",
     ],
     visibility = ["//visibility:public"],
 )

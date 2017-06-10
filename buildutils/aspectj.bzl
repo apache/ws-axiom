@@ -19,13 +19,14 @@
 
 def _impl(ctx):
   class_jar = ctx.outputs.class_jar
-  deps_provider = java_common.merge([dep[java_common.provider] for dep in ctx.attr.deps + ctx.attr.aspects + [ctx.attr._runtime]])
+  deps_provider = java_common.merge([dep[java_common.provider] for dep in ctx.attr.deps + ctx.attr.injars + ctx.attr.aspects])
   ctx.action(
-      inputs=list(deps_provider.transitive_runtime_jars) + ctx.files.aspects + ctx.files.srcs,
+      inputs=list(deps_provider.compile_jars) + ctx.files._runtime + ctx.files.aspects + ctx.files.injars + ctx.files.srcs,
       outputs=[class_jar],
       arguments=[
-          "-classpath", ctx.configuration.host_path_separator.join([f.path for f in deps_provider.transitive_runtime_jars]),
+          "-classpath", ctx.configuration.host_path_separator.join([f.path for f in deps_provider.compile_jars + ctx.files._runtime]),
           "-aspectpath", ctx.configuration.host_path_separator.join([f.path for f in ctx.files.aspects]),
+          "-injars", ctx.configuration.host_path_separator.join([f.path for f in ctx.files.injars]),
           "-outjar", class_jar.path,
           "-source", "1.7",
           "-target", "1.7",
@@ -33,13 +34,17 @@ def _impl(ctx):
       progress_message="Building %s" % class_jar.short_path,
       executable=ctx.executable._ajc)
   return [java_common.merge(
-      [deps_provider, java_common.create_provider(compile_time_jars=[class_jar], runtime_jars=[class_jar])])]
+      [deps_provider, ctx.attr._runtime[java_common.provider],
+       java_common.create_provider(compile_time_jars=depset([class_jar]), runtime_jars=depset([class_jar]))])]
 
 aj_library = rule(
     implementation = _impl,
     attrs = {
         "srcs": attr.label_list(
             allow_files=FileType([".java", ".aj"]),
+        ),
+        "injars": attr.label_list(
+            allow_files=False,
         ),
         "deps": attr.label_list(
             allow_files=False,

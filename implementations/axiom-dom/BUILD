@@ -35,7 +35,8 @@ java_library(
 aj_library(
     name = "axiom-dom",
     srcs = glob([
-        "src/main/java/**/*.java",
+        "src/main/java/org/apache/axiom/om/impl/dom/*.java",
+        "src/main/java/org/apache/axiom/soap/impl/dom/**/*.java",
         "src/main/java/**/*.aj",
     ]),
     aspects = [

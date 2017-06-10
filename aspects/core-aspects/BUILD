@@ -17,16 +17,25 @@
 # under the License.
 #
 
+package(default_visibility = ["//visibility:public"])
+
 load('//buildutils:aspectj.bzl', 'aj_library')
 
-aj_library(
-    name = "core-aspects",
-    srcs = glob([
-        "src/main/java/**/*.java",
-        "src/main/java/**/*.aj",
-    ]),
+java_library(
+    name = "interface",
+    srcs = glob(["src/main/java/**/*.java"]),
+    neverlink = 1,
     deps = [
         "//components/core-streams",
     ],
-    visibility = ["//visibility:public"],
+)
+
+aj_library(
+    name = "core-aspects",
+    srcs = glob(["src/main/java/**/*.aj"]),
+    injars = [":interface"],
+    deps = [
+        # TODO: necessary because ajc doesn't understand header JARs
+        "//components/core-streams",
+    ],
 )
