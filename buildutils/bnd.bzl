@@ -30,6 +30,7 @@ def _impl(ctx):
       "-removeheaders": "Bnd-LastModified,Build-Jdk,Built-By,Private-Package,Include-Resource",
       "-nodefaultversion": "true",
       "-consumer-policy": "",
+      "Include-Resource": "@%s!/**" % ctx.files.resource_jar[0].path.split("/")[-1],
   }
   if ctx.attr.activator:
     instructions["Bundle-Activator"] = ctx.attr.activator
@@ -45,18 +46,19 @@ def _impl(ctx):
     args.extend(["-c", f.path])
   args.append(bnd_file.path)
   ctx.action(
-      inputs=dep_jars + [bnd_file],
+      inputs=dep_jars + ctx.files.resource_jar + [bnd_file],
       outputs=[bundle_jar],
       arguments=args,
       progress_message="Building bundle %s" % bundle_jar.short_path,
       executable=ctx.executable._bnd)
 
-bundle = rule(
+_bundle = rule(
     implementation = _impl,
     attrs = {
         "deps": attr.label_list(
             allow_files=False,
         ),
+        "resource_jar": attr.label(allow_files=False),
         "symbolic_name": attr.string(mandatory=True),
         "private_packages": attr.string_list(),
         "export_packages": attr.string_list(),
@@ -74,3 +76,13 @@ bundle = rule(
         "bundle_jar": "%{name}.jar",
     },
 )
+
+def bundle(name, resources=[], **kwargs):
+  native.java_library(
+      name = "%s_resources" % name,
+      resources = resources,
+  )
+  _bundle(
+      name = name,
+      resource_jar = ":%s_resources" % name,
+      **kwargs)

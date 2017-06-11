@@ -18,6 +18,7 @@
 #
 
 load("//buildutils:aspectj.bzl", "aj_library")
+load("//buildutils:bnd.bzl", "bundle")
 load("//buildutils:test.bzl", "test")
 
 java_library(
@@ -45,6 +46,33 @@ aj_library(
         ":factory",
         "@woodstox//jar",
     ],
+)
+
+bundle(
+    name = "bundle",
+    symbolic_name = "org.apache.ws.commons.axiom.axiom-impl",
+    private_packages = [
+        "org.apache.axiom.core.*",
+        "!org.apache.axiom.om.impl",
+        "org.apache.axiom.om.impl.llom.*;-split-package:=merge-first",
+        "org.apache.axiom.om.impl.*",
+        "org.apache.axiom.soap.impl.*;-split-package:=merge-first",
+        "org.apache.axiom.shared.*",
+        "org.apache.axiom.util.xml.*",
+        # TODO: remove this; see r1796490
+        "org.aspectj.lang",
+        "org.aspectj.lang.annotation",
+    ],
+    import_packages = [
+        "!org.aspectj.*",
+        "*",
+    ],
+    activation_policy = "lazy",
+    visibility = ["//visibility:public"],
+    deps = [
+        "axiom-impl",
+    ],
+    resources = ["src/main/resources/META-INF/axiom.xml"],
 )
 
 test(

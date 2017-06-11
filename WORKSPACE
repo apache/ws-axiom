@@ -72,6 +72,12 @@ maven_jar(
 )
 
 maven_jar(
+    name = "felix",
+    artifact = "org.apache.felix:org.apache.felix.framework:5.0.0",
+    sha1 = "9fabb10642ca45792b0041d5a660b131282869db"
+)
+
+maven_jar(
     name = "guava",
     artifact = "com.google.guava:guava:20.0",
     sha1 = "89507701249388e1ed5ddcf8c41f4ce1be7831ef",
@@ -126,15 +132,111 @@ maven_jar(
 )
 
 maven_jar(
+    name = "ops4j_io",
+    artifact = "org.ops4j.base:ops4j-base-io:1.5.0",
+    sha1 = "15acc9a1b56c8963db471cee926d7001591e6b4d",
+)
+
+maven_jar(
+    name = "ops4j_lang",
+    artifact = "org.ops4j.base:ops4j-base-lang:1.5.0",
+    sha1 = "da31d176ffa8b78c0b83e183951c86cbd7bfb0b9",
+)
+
+maven_jar(
+    name = "ops4j_store",
+    artifact = "org.ops4j.base:ops4j-base-store:1.5.0",
+    sha1 = "7c5d6ed88638a61b15b3c285b8c16eee7753de1c",
+)
+
+maven_jar(
+    name = "ops4j_util_property",
+    artifact = "org.ops4j.base:ops4j-base-util-property:1.5.0",
+    sha1 = "10a2f7cfa055e776eb996ca456747a07fdf2015e",
+)
+
+maven_jar(
     name = "osgi_core",
     artifact = "org.osgi:org.osgi.core:5.0.0",
     sha1 = "6e5e8cd3c9059c08e1085540442a490b59a7783c",
 )
 
 maven_jar(
+    name = "pax_exam",
+    artifact = "org.ops4j.pax.exam:pax-exam:4.9.1",
+    sha1 = "3311a0d0e4e949fcebd332511c8ba1911e289cf7",
+)
+
+maven_jar(
+    name = "pax_exam_container_native",
+    artifact = "org.ops4j.pax.exam:pax-exam-container-native:4.9.1",
+    sha1 = "8d8b17bba21e9c4a79633d337104515aa79089b4",
+)
+
+maven_jar(
+    name = "pax_exam_junit4",
+    artifact = "org.ops4j.pax.exam:pax-exam-junit4:4.9.1",
+    sha1 = "8341f035345f7ffa89db0b24bbd7b6ddc52c2cec",
+)
+
+maven_jar(
+    name = "pax_exam_link_assembly",
+    artifact = "org.ops4j.pax.exam:pax-exam-link-assembly:4.9.1",
+    sha1 = "b2b002626b77ce7e2aa236af12c8328df014162a",
+)
+
+maven_jar(
+    name = "pax_exam_spi",
+    artifact = "org.ops4j.pax.exam:pax-exam-spi:4.9.1",
+    sha1 = "211d0d89b05842a88451bd6bb4723270a10aae6c",
+)
+
+maven_jar(
+    name = "pax_swissbox_tracker",
+    artifact = "org.ops4j.pax.swissbox:pax-swissbox-tracker:1.8.2",
+    sha1 = "699d52d350f2377b30a1927a52c4b43ca4d8e5c5",
+)
+
+maven_jar(
+    name = "pax_tinybundles",
+    artifact = "org.ops4j.pax.tinybundles:tinybundles:2.1.1",
+    sha1 = "d894c29d13f0d7a9094793c25a0a7723b9537c0b",
+)
+
+maven_jar(
+    name = "pax_url_classpath",
+    artifact = "org.ops4j.pax.url:pax-url-classpath:2.4.5",
+    sha1 = "fa99960fad95b2f8cf64c380a74bf845d9084a27",
+)
+
+maven_jar(
+    name = "pax_url_commons",
+    artifact = "org.ops4j.pax.url:pax-url-commons:2.4.5",
+    sha1 = "342030b66367f84c82ca5b82cb7e230660156766",
+)
+
+maven_jar(
+    name = "pax_url_link",
+    artifact = "org.ops4j.pax.url:pax-url-link:2.4.5",
+    sha1 = "eb9065c74a008e641389366748dba5cc6630ce8c",
+)
+
+maven_jar(
     name = "saxon",
     artifact = "net.sf.saxon:Saxon-HE:9.7.0-18",
     sha1 = "b1742ac9973d71bc23b1e8bc3e870a0994fc0ab2",
+)
+
+maven_jar(
+    name = "slf4j_api",
+    artifact = "org.slf4j:slf4j-api:1.5.11",
+    sha1 = "d6a855b608971025b4fbb0970f829391cc6f727a",
+)
+
+maven_jar(
+    name = "slf4j_jdk14",
+    artifact = "org.slf4j:slf4j-jdk14:1.5.11",
+    sha1 = "a2106f2feaea391154e3a47d3db667b45519231f",
 )
 
 maven_jar(

@@ -51,6 +51,31 @@ java_library(
 )
 
 java_library(
+    name = "pax-exam",
+    exports = [
+        "@pax_exam//jar",
+        "@pax_exam_junit4//jar",
+        "@pax_exam_spi//jar",
+    ],
+    runtime_deps = [
+        "@felix//jar",
+        "@ops4j_io//jar",
+        "@ops4j_lang//jar",
+        "@ops4j_store//jar",
+        "@ops4j_util_property//jar",
+        "@pax_exam_container_native//jar",
+        "@pax_exam_link_assembly//jar",
+        "@pax_swissbox_tracker//jar",
+        "@pax_tinybundles//jar",
+        "@pax_url_classpath//jar",
+        "@pax_url_commons//jar",
+        "@pax_url_link//jar",
+        "@slf4j_api//jar",
+        "@slf4j_jdk14//jar",
+    ],
+)
+
+java_library(
     name = "xerces",
     exports = [
         "@xerces//jar",

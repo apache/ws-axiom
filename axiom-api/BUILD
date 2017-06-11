@@ -215,5 +215,6 @@ bundle(
     activation_policy = "lazy",
     deps = [
         ":locator",
+        ":util-sax",
     ],
 )
