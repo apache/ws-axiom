@@ -46,6 +46,12 @@ maven_jar(
 )
 
 maven_jar(
+    name = "bndlib",
+    artifact = "biz.aQute.bnd:bndlib:2.4.0",
+    sha1 = "de13867e8e5d1f9d6b5ab5cbb16b6cfdbffdc6d2",
+)
+
+maven_jar(
     name = "byte_buddy",
     artifact = "net.bytebuddy:byte-buddy:jar:1.4.26",
     sha1 = "c56b0e90e3b6f9f117a0a0356674e86e86ba8652",
@@ -189,34 +195,48 @@ maven_jar(
     sha1 = "2916b6c96b50c5b3ec4452ed99401db745aabb27",
 )
 
-maven_jar(
-    name = "ops4j_io",
-    artifact = "org.ops4j.base:ops4j-base-io:1.5.0",
-    sha1 = "15acc9a1b56c8963db471cee926d7001591e6b4d",
+new_http_archive(
+    name = "ops4j_base",
+    urls = ["https://github.com/ops4j/org.ops4j.base/archive/base-1.5.0.tar.gz"],
+    sha256 = "3cda996f13f9a6e198adb23fb49ea3adb8f8044d63d25ca047fb3ec82e1d14a2",
+    strip_prefix = "org.ops4j.base-base-1.5.0",
+    build_file = "//third_party:ops4j-base.BUILD",
 )
 
-maven_jar(
-    name = "ops4j_lang",
-    artifact = "org.ops4j.base:ops4j-base-lang:1.5.0",
-    sha1 = "da31d176ffa8b78c0b83e183951c86cbd7bfb0b9",
+new_http_archive(
+    name = "ops4j_pax_swissbox",
+    urls = ["https://github.com/ops4j/org.ops4j.pax.swissbox/archive/swissbox-1.8.3.tar.gz"],
+    sha256 = "f4cdeb09197f402b28d852c30e2ad45931b864cc5299d7a5b97a32dfae2da897",
+    strip_prefix = "org.ops4j.pax.swissbox-swissbox-1.8.3",
+    build_file = "//third_party:ops4j-pax-swissbox.BUILD", 
 )
 
-maven_jar(
-    name = "ops4j_store",
-    artifact = "org.ops4j.base:ops4j-base-store:1.5.0",
-    sha1 = "7c5d6ed88638a61b15b3c285b8c16eee7753de1c",
+new_http_archive(
+    name = "ops4j_pax_tinybundles",
+    urls = ["http://github.com/ops4j/org.ops4j.pax.tinybundles/archive/tinybundles-2.1.1.tar.gz"],
+    sha256 = "e120395b3ded08ed4886f0d3b9cfde449cbc2da795168496c83182bdefc00f78",
+    strip_prefix = "org.ops4j.pax.tinybundles-tinybundles-2.1.1",
+    build_file = "//third_party:ops4j-pax-tinybundles.BUILD",
 )
 
-maven_jar(
-    name = "ops4j_util_property",
-    artifact = "org.ops4j.base:ops4j-base-util-property:1.5.0",
-    sha1 = "10a2f7cfa055e776eb996ca456747a07fdf2015e",
+new_http_archive(
+    name = "ops4j_pax_url",
+    urls = ["https://github.com/ops4j/org.ops4j.pax.url/archive/url-2.5.2.tar.gz"],
+    sha256 = "739bceb63d0ae35a3629cbd3b92a94aa796f6bdaae9ac63b63e4ebe9737b5282",
+    strip_prefix = "org.ops4j.pax.url-url-2.5.2",
+    build_file = "//third_party:ops4j-pax-url.BUILD",
 )
 
 maven_jar(
     name = "osgi_core",
     artifact = "org.osgi:org.osgi.core:5.0.0",
     sha1 = "6e5e8cd3c9059c08e1085540442a490b59a7783c",
+)
+
+maven_jar(
+    name = "osgi_compendium",
+    artifact = "org.osgi:org.osgi.compendium:5.0.0",
+    sha1 = "9d7a9c35591f6fa1c98ac85af32775c12361aee4",
 )
 
 maven_jar(
@@ -247,36 +267,6 @@ maven_jar(
     name = "pax_exam_spi",
     artifact = "org.ops4j.pax.exam:pax-exam-spi:4.9.1",
     sha1 = "211d0d89b05842a88451bd6bb4723270a10aae6c",
-)
-
-maven_jar(
-    name = "pax_swissbox_tracker",
-    artifact = "org.ops4j.pax.swissbox:pax-swissbox-tracker:1.8.2",
-    sha1 = "699d52d350f2377b30a1927a52c4b43ca4d8e5c5",
-)
-
-maven_jar(
-    name = "pax_tinybundles",
-    artifact = "org.ops4j.pax.tinybundles:tinybundles:2.1.1",
-    sha1 = "d894c29d13f0d7a9094793c25a0a7723b9537c0b",
-)
-
-maven_jar(
-    name = "pax_url_classpath",
-    artifact = "org.ops4j.pax.url:pax-url-classpath:2.4.5",
-    sha1 = "fa99960fad95b2f8cf64c380a74bf845d9084a27",
-)
-
-maven_jar(
-    name = "pax_url_commons",
-    artifact = "org.ops4j.pax.url:pax-url-commons:2.4.5",
-    sha1 = "342030b66367f84c82ca5b82cb7e230660156766",
-)
-
-maven_jar(
-    name = "pax_url_link",
-    artifact = "org.ops4j.pax.url:pax-url-link:2.4.5",
-    sha1 = "eb9065c74a008e641389366748dba5cc6630ce8c",
 )
 
 maven_jar(
