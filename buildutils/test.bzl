@@ -62,11 +62,11 @@ _jacoco = rule(
     },
 )
 
-def test(name, srcs, test_class, deps=[], runtime_deps=[], data=[]):
+def test(name, test_class, srcs=[], deps=[], runtime_deps=[], data=[]):
   native.java_library(
       name = "%s_lib" % name,
       srcs = srcs,
-      deps = deps + ["//third_party:junit"],
+      deps = deps + ["//third_party:junit"] if deps else None,
       runtime_deps = runtime_deps,
       data = data,
   )

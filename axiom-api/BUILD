@@ -215,6 +215,7 @@ bundle(
     activation_policy = "lazy",
     deps = [
         ":locator",
+        ":util-base64",
         ":util-sax",
     ],
 )

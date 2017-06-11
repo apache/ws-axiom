@@ -95,3 +95,36 @@ test(
     ],
 )
 
+[test(
+    name = "spring-ws-%s" % name.replace(".", "-"),
+    test_class = "org.springframework.ws.%s" % name,
+    runtime_deps = [
+        "@spring_ws//:core-tests",
+        ":axiom-impl",
+        "//axiom-api:locator",
+    ],
+) for name in [
+    "soap.axiom.AxiomHandlerTest",
+    "soap.axiom.AxiomSoap11BodyTest",
+    "soap.axiom.AxiomSoap11EnvelopeTest",
+    "soap.axiom.AxiomSoap11HeaderTest",
+    "soap.axiom.AxiomSoap11MessageFactoryTest",
+    "soap.axiom.AxiomSoap11MessageTest",
+    "soap.axiom.AxiomSoap11NonCachingBodyTest",
+    "soap.axiom.AxiomSoap11NonCachingMessageTest",
+    "soap.axiom.AxiomSoap12BodyTest",
+    "soap.axiom.AxiomSoap12EnvelopeTest",
+    "soap.axiom.AxiomSoap12HeaderTest",
+    "soap.axiom.AxiomSoap12MessageFactoryTest",
+    "soap.axiom.AxiomSoap12MessageTest",
+    "soap.axiom.AxiomSoap12NonCachingBodyTest",
+    "soap.axiom.AxiomSoap12NonCachingMessageTest",
+    "soap.axiom.AxiomSoapFaultDetailTest",
+    "soap.axiom.NonCachingPayloadTest",
+    # TODO: this one doesn't work
+#    "soap.axiom.support.AxiomUtilsTest",
+    "client.core.AxiomStreamingSoap11WebServiceTemplateIntegrationTest",
+    "client.core.AxiomNonStreamingSoap11WebServiceTemplateIntegrationTest",
+    "client.core.AxiomStreamingSoap12WebServiceTemplateIntegrationTest",
+    "client.core.AxiomNonStreamingSoap12WebServiceTemplateIntegrationTest",
+]]

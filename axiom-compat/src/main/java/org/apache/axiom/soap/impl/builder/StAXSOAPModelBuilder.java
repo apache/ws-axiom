@@ -45,8 +45,12 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
         validateSOAPVersion(factory, soapVersion);
     }
     
-    public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {
+    public StAXSOAPModelBuilder(XMLStreamReader parser) {
         this(OMXMLBuilderFactory.createStAXSOAPModelBuilder(OMAbstractFactory.getMetaFactory(), parser));
+    }
+    
+    public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {
+        this(parser);
         validateSOAPVersion(null, soapVersion);
     }
     
