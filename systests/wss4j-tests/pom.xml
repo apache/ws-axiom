@@ -145,6 +145,9 @@
                         <configuration>
                             <alias>key1</alias>
                             <dname>cn=dummy</dname>
+                            <keyalg>DSA</keyalg>
+                            <keysize>1024</keysize>
+                            <sigalg>SHA1withDSA</sigalg>
                         </configuration>
                     </execution>
                     <execution>
