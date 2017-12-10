@@ -18,12 +18,28 @@
  */
 package org.apache.axiom.ts.saaj;
 
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPFactory;
+
 import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.ts.soap.SOAPSpec;
 
 public abstract class SAAJTestCase extends MatrixTestCase {
     protected final SAAJImplementation saajImplementation;
+    protected final SOAPSpec spec;
 
-    public SAAJTestCase(SAAJImplementation saajImplementation) {
+    public SAAJTestCase(SAAJImplementation saajImplementation, SOAPSpec spec) {
         this.saajImplementation = saajImplementation;
+        this.spec = spec;
+        addTestParameter("spec", spec.getName());
+    }
+    
+    protected final MessageFactory newMessageFactory() throws SOAPException {
+        return spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation);
+    }
+    
+    protected final SOAPFactory newSOAPFactory() throws SOAPException {
+        return spec.getAdapter(FactorySelector.class).newSOAPFactory(saajImplementation);
     }
 }

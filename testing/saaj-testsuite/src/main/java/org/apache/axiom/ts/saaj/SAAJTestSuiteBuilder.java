@@ -19,10 +19,10 @@
 package org.apache.axiom.ts.saaj;
 
 import javax.xml.soap.SAAJMetaFactory;
-import javax.xml.soap.SOAPConstants;
 
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.saaj.body.TestAddChildElementReification;
+import org.apache.axiom.ts.saaj.element.TestAddChildElementLocalName;
 import org.apache.axiom.ts.saaj.element.TestGetOwnerDocument;
 import org.apache.axiom.ts.saaj.element.TestSetParentElement;
 import org.apache.axiom.ts.saaj.header.TestExamineMustUnderstandHeaderElements;
@@ -37,17 +37,15 @@ public class SAAJTestSuiteBuilder extends MatrixTestSuiteBuilder {
 
     @Override
     protected void addTests() {
-        addTest(new TestExamineMustUnderstandHeaderElements(saajImplementation, SOAPSpec.SOAP11, false));
-        addTest(new TestExamineMustUnderstandHeaderElements(saajImplementation, SOAPSpec.SOAP12, false));
-        addTest(new TestExamineMustUnderstandHeaderElements(saajImplementation, SOAPSpec.SOAP11, true));
-        addTest(new TestExamineMustUnderstandHeaderElements(saajImplementation, SOAPSpec.SOAP12, true));
-        addTest(new TestSetParentElement(saajImplementation, SOAPConstants.SOAP_1_1_PROTOCOL));
-        addTest(new TestSetParentElement(saajImplementation, SOAPConstants.SOAP_1_2_PROTOCOL));
-        addTest(new TestSetParentElement(saajImplementation, SOAPConstants.DYNAMIC_SOAP_PROTOCOL));
-        addTest(new TestGetOwnerDocument(saajImplementation, SOAPConstants.SOAP_1_1_PROTOCOL));
-        addTest(new TestGetOwnerDocument(saajImplementation, SOAPConstants.SOAP_1_2_PROTOCOL));
-        addTest(new TestGetOwnerDocument(saajImplementation, SOAPConstants.DYNAMIC_SOAP_PROTOCOL));
-        addTest(new TestAddChildElementReification(saajImplementation, SOAPSpec.SOAP11));
-        addTest(new TestAddChildElementReification(saajImplementation, SOAPSpec.SOAP12));
+        addTests(SOAPSpec.SOAP11);
+        addTests(SOAPSpec.SOAP12);
+    }
+    
+    private void addTests(SOAPSpec spec) {
+        addTest(new TestExamineMustUnderstandHeaderElements(saajImplementation, spec));
+        addTest(new TestAddChildElementLocalName(saajImplementation, spec));
+        addTest(new TestSetParentElement(saajImplementation, spec));
+        addTest(new TestGetOwnerDocument(saajImplementation, spec));
+        addTest(new TestAddChildElementReification(saajImplementation, spec));
     }
 }

@@ -22,11 +22,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
-import javax.xml.soap.SOAPFactory;
 import javax.xml.soap.SOAPPart;
 
 import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
+import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -35,18 +35,13 @@ import org.w3c.dom.Node;
  * as well as the properties of the returned document.
  */
 public class TestGetOwnerDocument extends SAAJTestCase {
-    private final String protocol;
-    
-    public TestGetOwnerDocument(SAAJImplementation saajImplementation, String protocol) {
-        super(saajImplementation);
-        this.protocol = protocol;
-        addTestParameter("protocol", protocol);
+    public TestGetOwnerDocument(SAAJImplementation saajImplementation, SOAPSpec spec) {
+        super(saajImplementation, spec);
     }
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPFactory factory = saajImplementation.newSOAPFactory(protocol);
-        Document doc = factory.createElement(new QName("test")).getOwnerDocument();
+        Document doc = newSOAPFactory().createElement(new QName("test")).getOwnerDocument();
         assertThat(doc).isNotInstanceOf(SOAPPart.class);
         assertThat(doc).isNotInstanceOf(javax.xml.soap.Node.class);
         assertThat(doc.createElementNS(null, "test")).isInstanceOf(SOAPElement.class);

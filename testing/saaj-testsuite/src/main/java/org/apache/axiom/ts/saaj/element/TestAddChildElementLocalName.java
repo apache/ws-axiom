@@ -16,27 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.saaj.body;
+package org.apache.axiom.ts.saaj.element;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPBodyElement;
 import javax.xml.soap.SOAPElement;
 
 import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-public class TestAddChildElementReification extends SAAJTestCase {
-    public TestAddChildElementReification(SAAJImplementation saajImplementation, SOAPSpec spec) {
+/**
+ * Tests the behavior of {@link SOAPElement#addChildElement(String)}.
+ */
+public class TestAddChildElementLocalName extends SAAJTestCase {
+    public TestAddChildElementLocalName(SAAJImplementation saajImplementation, SOAPSpec spec) {
         super(saajImplementation, spec);
     }
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPBody body = newMessageFactory().createMessage().getSOAPBody();
-        SOAPElement child = body.addChildElement((SOAPElement)body.getOwnerDocument().createElementNS("urn:test", "p:test"));
-        assertThat(child).isInstanceOf(SOAPBodyElement.class);
+        SOAPElement root = newSOAPFactory().createElement("root", "p", "urn:test");
+        SOAPElement element = root.addChildElement("child");
+        assertThat(element.getLocalName()).isEqualTo("child");
+        assertThat(element.getNamespaceURI()).isNull();
+        assertThat(element.getPrefix()).isNull();
+        assertThat(element.getParentNode()).isSameAs(root);
     }
 }

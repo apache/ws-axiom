@@ -20,25 +20,20 @@ package org.apache.axiom.ts.saaj.element;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
-import javax.xml.soap.SOAPFactory;
 
 import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
+import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.NodeList;
 
 public class TestSetParentElement extends SAAJTestCase {
-    private final String protocol;
-    
-    public TestSetParentElement(SAAJImplementation saajImplementation, String protocol) {
-        super(saajImplementation);
-        this.protocol = protocol;
-        addTestParameter("protocol", protocol);
+    public TestSetParentElement(SAAJImplementation saajImplementation, SOAPSpec spec) {
+        super(saajImplementation, spec);
     }
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPFactory factory = saajImplementation.newSOAPFactory(protocol);
-        SOAPElement parent = factory.createElement(new QName("parent"));
+        SOAPElement parent = newSOAPFactory().createElement(new QName("parent"));
         SOAPElement child1 = parent.addChildElement(new QName("child1"));
         SOAPElement child2 = (SOAPElement)parent.getOwnerDocument().createElementNS(null, "child2");
         child2.setParentElement(parent);
