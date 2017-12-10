@@ -20,29 +20,22 @@ package org.apache.axiom.ts.saaj.body;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPBodyElement;
 import javax.xml.soap.SOAPElement;
 
-import org.apache.axiom.ts.saaj.FactorySelector;
 import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class TestAddChildElementReification extends SAAJTestCase {
-    private final SOAPSpec spec;
-
     public TestAddChildElementReification(SAAJImplementation saajImplementation, SOAPSpec spec) {
-        super(saajImplementation);
-        this.spec = spec;
-        addTestParameter("spec", spec.getName());
+        super(saajImplementation, spec);
     }
 
     @Override
     protected void runTest() throws Throwable {
-        MessageFactory mf = spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation, false);
-        SOAPBody body = mf.createMessage().getSOAPBody();
+        SOAPBody body = newMessageFactory().createMessage().getSOAPBody();
         SOAPElement child = body.addChildElement((SOAPElement)body.getOwnerDocument().createElementNS("urn:test", "p:test"));
         assertThat(child).isInstanceOf(SOAPBodyElement.class);
     }

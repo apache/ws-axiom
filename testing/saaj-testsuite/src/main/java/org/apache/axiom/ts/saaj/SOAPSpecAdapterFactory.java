@@ -21,6 +21,7 @@ package org.apache.axiom.ts.saaj;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPFactory;
 
 import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
@@ -31,21 +32,25 @@ public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
         if (spec == SOAPSpec.SOAP11) {
             adapters.add(new FactorySelector() {
                 @Override
-                public MessageFactory newMessageFactory(SAAJImplementation saajImplementation,
-                        boolean dynamic) throws SOAPException {
-                    return saajImplementation.newMessageFactory(dynamic
-                            ? SOAPConstants.DYNAMIC_SOAP_PROTOCOL
-                            : SOAPConstants.SOAP_1_1_PROTOCOL);
+                public MessageFactory newMessageFactory(SAAJImplementation saajImplementation) throws SOAPException {
+                    return saajImplementation.newMessageFactory(SOAPConstants.SOAP_1_1_PROTOCOL);
+                }
+                
+                @Override
+                public SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation) throws SOAPException {
+                    return saajImplementation.newSOAPFactory(SOAPConstants.SOAP_1_1_PROTOCOL);
                 }
             });
         } else if (spec == SOAPSpec.SOAP12) {
             adapters.add(new FactorySelector() {
                 @Override
-                public MessageFactory newMessageFactory(SAAJImplementation saajImplementation,
-                        boolean dynamic) throws SOAPException {
-                    return saajImplementation.newMessageFactory(dynamic
-                            ? SOAPConstants.DYNAMIC_SOAP_PROTOCOL
-                            : SOAPConstants.SOAP_1_2_PROTOCOL);
+                public MessageFactory newMessageFactory(SAAJImplementation saajImplementation) throws SOAPException {
+                    return saajImplementation.newMessageFactory(SOAPConstants.SOAP_1_2_PROTOCOL);
+                }
+                
+                @Override
+                public SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation) throws SOAPException {
+                    return saajImplementation.newSOAPFactory(SOAPConstants.SOAP_1_2_PROTOCOL);
                 }
             });
         }

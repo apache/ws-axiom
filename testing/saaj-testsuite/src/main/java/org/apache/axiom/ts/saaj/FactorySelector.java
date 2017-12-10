@@ -31,5 +31,6 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  */
 @AdapterType
 public interface FactorySelector {
-    MessageFactory newMessageFactory(SAAJImplementation saajImplementation, boolean dynamic) throws SOAPException;
+    MessageFactory newMessageFactory(SAAJImplementation saajImplementation) throws SOAPException;
+    SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation) throws SOAPException;
 }

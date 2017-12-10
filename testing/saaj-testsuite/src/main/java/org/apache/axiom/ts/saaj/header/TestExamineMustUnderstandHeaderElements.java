@@ -21,38 +21,28 @@ package org.apache.axiom.ts.saaj.header;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import javax.xml.soap.MessageFactory;
 import javax.xml.soap.MimeHeaders;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 
-import org.apache.axiom.ts.saaj.FactorySelector;
 import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestExamineMustUnderstandHeaderElements extends SAAJTestCase {
-    private final SOAPSpec spec;
-    private final boolean dynamic;
-    
-    public TestExamineMustUnderstandHeaderElements(SAAJImplementation saajImplementation, SOAPSpec spec, boolean dynamic) {
-        super(saajImplementation);
-        this.spec = spec;
-        this.dynamic = dynamic;
-        addTestParameter("spec", spec.getName());
-        addTestParameter("dynamic", dynamic);
+    public TestExamineMustUnderstandHeaderElements(SAAJImplementation saajImplementation, SOAPSpec spec) {
+        super(saajImplementation, spec);
     }
 
     @Override
     protected void runTest() throws Throwable {
-        MessageFactory messageFactory = spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation, dynamic);
         MimeHeaders mimeHeaders = new MimeHeaders();
         mimeHeaders.addHeader("Content-Type", spec.getContentType());
         InputStream in = SOAPSampleSet.MUST_UNDERSTAND.getMessage(spec).getInputStream();
         try {
-            SOAPMessage message = messageFactory.createMessage(mimeHeaders, in);
+            SOAPMessage message = newMessageFactory().createMessage(mimeHeaders, in);
             SOAPHeader header = message.getSOAPHeader();
             Iterator<?> it = header.examineMustUnderstandHeaderElements(null);
             assertTrue(it.hasNext());
