@@ -22,6 +22,7 @@ import javax.xml.soap.SAAJMetaFactory;
 
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.saaj.body.TestAddChildElementReification;
+import org.apache.axiom.ts.saaj.element.TestAddChildElementLocalName;
 import org.apache.axiom.ts.saaj.element.TestGetOwnerDocument;
 import org.apache.axiom.ts.saaj.element.TestSetParentElement;
 import org.apache.axiom.ts.saaj.header.TestExamineMustUnderstandHeaderElements;
@@ -42,6 +43,7 @@ public class SAAJTestSuiteBuilder extends MatrixTestSuiteBuilder {
     
     private void addTests(SOAPSpec spec) {
         addTest(new TestExamineMustUnderstandHeaderElements(saajImplementation, spec));
+        addTest(new TestAddChildElementLocalName(saajImplementation, spec));
         addTest(new TestSetParentElement(saajImplementation, spec));
         addTest(new TestGetOwnerDocument(saajImplementation, spec));
         addTest(new TestAddChildElementReification(saajImplementation, spec));
