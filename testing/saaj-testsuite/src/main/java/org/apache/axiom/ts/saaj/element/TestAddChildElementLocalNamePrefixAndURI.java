@@ -20,28 +20,37 @@ package org.apache.axiom.ts.saaj.element;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import javax.xml.XMLConstants;
 import javax.xml.soap.SOAPElement;
 
 import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.w3c.dom.Attr;
+import org.w3c.dom.NamedNodeMap;
 
 /**
- * Tests the behavior of {@link SOAPElement#addChildElement(String)}.
+ * Tests the behavior of {@link SOAPElement#addChildElement(String, String, String)}.
  */
-public class TestAddChildElementLocalName extends SAAJTestCase {
-    public TestAddChildElementLocalName(SAAJImplementation saajImplementation, SOAPSpec spec) {
+public class TestAddChildElementLocalNamePrefixAndURI extends SAAJTestCase {
+    public TestAddChildElementLocalNamePrefixAndURI(SAAJImplementation saajImplementation,
+            SOAPSpec spec) {
         super(saajImplementation, spec);
     }
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPElement root = newSOAPFactory().createElement("root", "p", "urn:test");
-        SOAPElement element = root.addChildElement("child");
+        SOAPElement root = newSOAPFactory().createElement("root", "ns1", "urn:ns1");
+        SOAPElement element = root.addChildElement("child", "ns2", "urn:ns2");
         assertThat(element.getLocalName()).isEqualTo("child");
-        assertThat(element.getNamespaceURI()).isNull();
-        assertThat(element.getPrefix()).isNull();
+        assertThat(element.getNamespaceURI()).isEqualTo("urn:ns2");
+        assertThat(element.getPrefix()).isEqualTo("ns2");
         assertThat(element.getParentNode()).isSameAs(root);
-        assertThat(element.getAttributes().getLength()).isEqualTo(0);
+        NamedNodeMap attributes = element.getAttributes();
+        assertThat(attributes.getLength()).isEqualTo(1);
+        Attr attr = (Attr)attributes.item(0);
+        assertThat(attr.getNamespaceURI()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
+        assertThat(attr.getPrefix()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE);
+        assertThat(attr.getLocalName()).isEqualTo("ns2");
     }
 }
