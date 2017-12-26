@@ -1,0 +1,4 @@
+<sch:adviceReq xsi:type="sch:ConfirmationAdviceReq" xmlns:sch="http://www.nrs.eskom.co.za/xmlvend/base/2.0/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <sch:clientID/>
+  <sch:adviceReqMsgID uniqueNumber="11"/>
+</sch:adviceReq>
