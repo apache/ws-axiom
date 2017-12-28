@@ -28,10 +28,10 @@
     <context:component-scan base-package="org.apache.axiom.ts.springws.scenario.secureecho"/>
     <sws:annotation-driven/>
     <sws:interceptors>
-        <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+        <bean class="org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor">
             <property name="validationActions" value="UsernameToken"/>
             <property name="validationCallbackHandler">
-                <bean class="org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler">
+                <bean class="org.springframework.ws.soap.security.wss4j2.callback.SimplePasswordValidationCallbackHandler">
                     <property name="users">
                         <props>
                             <prop key="user1">123456</prop>

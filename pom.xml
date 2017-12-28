@@ -258,8 +258,8 @@
         -->
         <shade.plugin.version>2.3</shade.plugin.version>
         <jacoco.version>0.7.9</jacoco.version>
-        <spring.version>4.3.9.RELEASE</spring.version>
-        <springws.version>2.4.0.RELEASE</springws.version>
+        <spring.version>5.0.1.RELEASE</spring.version>
+        <springws.version>3.0.0.RELEASE</springws.version>
         <exam.version>4.9.1</exam.version>
         
         <skipDeploy>false</skipDeploy>

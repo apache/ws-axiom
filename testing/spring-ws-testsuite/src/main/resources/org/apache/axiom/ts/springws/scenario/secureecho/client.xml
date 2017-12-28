@@ -24,7 +24,7 @@
         <constructor-arg ref="messageFactory"/>
         <property name="defaultUri" value="http://localhost:${port}/"/>
         <property name="interceptors">
-            <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+            <bean class="org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor">
                 <property name="securementActions" value="UsernameToken"/>
                 <property name="securementUsername" value="user1"/>
                 <property name="securementPassword" value="123456"/>
