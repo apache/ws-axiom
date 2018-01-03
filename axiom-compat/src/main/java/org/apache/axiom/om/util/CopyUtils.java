@@ -19,6 +19,7 @@
 package org.apache.axiom.om.util;
 
 import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
@@ -71,11 +72,16 @@ public class CopyUtils {
     }
 
     /**
-     * Simple utility that takes an XMLStreamReader and writes it
-     * to an XMLStreamWriter
+     * Simple utility that takes an XMLStreamReader and writes it to an XMLStreamWriter
+     * 
      * @param reader
      * @param writer
      * @throws XMLStreamException
+     * 
+     * @deprecated Instead use {@link OMXMLBuilderFactory#createStAXOMBuilder(XMLStreamReader)} to
+     *             create an {@link OMDocument} and then
+     *             {@link OMContainer#serializeAndConsume(XMLStreamWriter)} to write to the
+     *             {@link XMLStreamWriter}.
      */
     public static void reader2writer(XMLStreamReader reader, 
                                      XMLStreamWriter writer)
