@@ -22,6 +22,7 @@ package org.apache.axiom.om.util;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
 
 /** Helper class for attributes. */
@@ -32,6 +33,8 @@ public class AttributeHelper {
      * given omFactory.
      *
      * @see ElementHelper#importOMElement(OMElement, OMFactory) to convert instances of OMElement
+     * 
+     * @deprecated Use {@link OMFactory#importInformationItem(OMInformationItem)} instead.
      */
     public static void importOMAttribute(OMAttribute omAttribute, OMElement omElement) {
         // first check whether the given OMAttribute has the same OMFactory
