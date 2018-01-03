@@ -21,6 +21,7 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 
@@ -110,6 +111,15 @@ public interface SOAPFactory extends OMFactory {
     SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                           OMNamespace ns,
                                           OMDataSource source) throws SOAPProcessingException;
+
+    /**
+     * Create a new {@link SOAPHeaderBlock} with the same content as the given element.
+     * 
+     * @param element
+     *            the element to import as a header block
+     * @return the header block
+     */
+    SOAPHeaderBlock createSOAPHeaderBlock(OMElement element);
 
     /**
      * @param parent

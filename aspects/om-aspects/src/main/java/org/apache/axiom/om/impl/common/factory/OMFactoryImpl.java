@@ -383,25 +383,27 @@ public class OMFactoryImpl implements OMFactory {
         return attr;
     }
 
+    protected final <T extends AxiomElement> T importElement(OMElement element, Class<T> type) {
+        T importedElement = createNode(type);
+        copyName(element, importedElement);
+        for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
+            importedElement.coreAppendAttribute(importAttribute(it.next()));
+        }
+        for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+            OMNamespace ns = it.next();
+            AxiomNamespaceDeclaration nsDecl = createNode(AxiomNamespaceDeclaration.class);
+            nsDecl.coreSetDeclaredNamespace(ns.getPrefix(), ns.getNamespaceURI());
+            importedElement.coreAppendAttribute(nsDecl);
+        }
+        importChildren(element, importedElement);
+        return importedElement;
+    }
+
     private AxiomChildNode importChildNode(OMNode child) {
         int type = child.getType();
         switch (type) {
-            case OMNode.ELEMENT_NODE: {
-                OMElement element = (OMElement)child;
-                AxiomElement importedElement = createNode(AxiomElement.class);
-                copyName(element, importedElement);
-                for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
-                    importedElement.coreAppendAttribute(importAttribute(it.next()));
-                }
-                for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
-                    OMNamespace ns = it.next();
-                    AxiomNamespaceDeclaration nsDecl = createNode(AxiomNamespaceDeclaration.class);
-                    nsDecl.coreSetDeclaredNamespace(ns.getPrefix(), ns.getNamespaceURI());
-                    importedElement.coreAppendAttribute(nsDecl);
-                }
-                importChildren(element, importedElement);
-                return importedElement;
-            }
+            case OMNode.ELEMENT_NODE:
+                return importElement((OMElement)child, AxiomElement.class);
             case OMNode.TEXT_NODE:
             case OMNode.SPACE_NODE:
             case OMNode.CDATA_SECTION_NODE: {

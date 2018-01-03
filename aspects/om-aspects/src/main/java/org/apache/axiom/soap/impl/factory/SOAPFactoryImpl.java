@@ -146,6 +146,11 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     }
 
     @Override
+    public final SOAPHeaderBlock createSOAPHeaderBlock(OMElement element) {
+        return importElement(element, getSOAPHelper().getHeaderBlockClass());
+    }
+
+    @Override
     public final SOAPBody createSOAPBody(SOAPEnvelope parent) {
         SOAPHelper helper = getSOAPHelper();
         return createSOAPElement(helper.getBodyClass(), parent, helper.getBodyQName(), envelopeSequence, 1);

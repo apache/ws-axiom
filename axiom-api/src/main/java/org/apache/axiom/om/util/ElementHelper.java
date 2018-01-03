@@ -204,6 +204,8 @@ public class ElementHelper {
      * @param factory
      * @return TODO
      * @throws Exception
+     * 
+     * @deprecated Use {@link SOAPFactory#createSOAPHeaderBlock(OMElement)} instead.
      */
     public static SOAPHeaderBlock toSOAPHeaderBlock(OMElement omElement, SOAPFactory factory) throws Exception {
         if (omElement instanceof SOAPHeaderBlock)
