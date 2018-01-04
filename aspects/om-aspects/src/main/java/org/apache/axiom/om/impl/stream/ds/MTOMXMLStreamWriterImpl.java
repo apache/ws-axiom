@@ -39,7 +39,6 @@ import org.apache.axiom.om.impl.stream.XmlDeclarationRewriterHandler;
 import org.apache.axiom.om.impl.stream.XsiTypeFilterHandler;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.om.impl.stream.xop.XOPHandler;
-import org.apache.axiom.om.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -53,9 +52,6 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         if (log.isDebugEnabled()) {
             log.debug("Creating MTOMXMLStreamWriter");
             log.debug("OMFormat = " + format.toString());
-        }
-        if (log.isTraceEnabled()) {
-            log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         this.format = format;
     }

@@ -27,6 +27,8 @@ import java.io.OutputStream;
  * LogOutputStream
  * Writes to log.debug()
  * Also counts the number of bytes
+ * 
+ * @deprecated
  */
 public class LogOutputStream extends OutputStream {
 

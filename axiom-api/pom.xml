@@ -312,6 +312,17 @@
                                         </value>
                                     </visibilityRules>
                                 </layer>
+                                <layer>
+                                    <!-- Commons Logging is used internally but should not be used in the public API. -->
+                                    <packages>
+                                        <value>org.apache.commons.logging</value>
+                                    </packages>
+                                    <visibilityRules>
+                                        <value>
+                                            <allowPublicUsage>false</allowPublicUsage>
+                                        </value>
+                                    </visibilityRules>
+                                </layer>
                             </layers>
                             <ignore>
                                 <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->

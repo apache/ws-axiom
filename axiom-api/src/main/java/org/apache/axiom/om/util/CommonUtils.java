@@ -28,6 +28,8 @@ import org.apache.commons.logging.Log;
 
 /**
  * Common Utilities
+ * 
+ * @deprecated
  */
 public class CommonUtils {
 
