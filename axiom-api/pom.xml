@@ -133,8 +133,15 @@
                 <version>${project.version}</version>
                 <executions>
                     <execution>
+                        <id>post-process-classes</id>
                         <goals>
                             <goal>post-process-classes</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>post-process-sources-jar</id>
+                        <goals>
+                            <goal>post-process-sources-jar</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -260,18 +267,6 @@
                         <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                     </instructions>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>buildutils-maven-plugin</artifactId>
-                <version>${project.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>post-process-sources-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>com.github.veithen.phos</groupId>

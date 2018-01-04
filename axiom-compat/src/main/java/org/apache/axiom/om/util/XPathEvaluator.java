@@ -24,6 +24,9 @@ import org.jaxen.SimpleNamespaceContext;
 
 import java.util.List;
 
+/**
+ * @deprecated
+ */
 public class XPathEvaluator {
 
     public List evaluateXpath(String xpathExpression, Object element, String nsURI)
