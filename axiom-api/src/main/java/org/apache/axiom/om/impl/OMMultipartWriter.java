@@ -21,15 +21,16 @@ package org.apache.axiom.om.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.ConfigurableDataHandler;
+import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.MultipartBodyWriter;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 
@@ -66,8 +67,16 @@ public class OMMultipartWriter {
         }
     }
 
+    private static boolean isTextual(String contentType) {
+        try {
+            return new ContentType(contentType).isTextual();
+        } catch (ParseException ex) {
+            return false;
+        }
+    }
+
     private String getContentTransferEncoding(String contentType) {
-        if (useCTEBase64 && !CommonUtils.isTextualPart(contentType)) {
+        if (useCTEBase64 && !isTextual(contentType)) {
             return "base64";
         } else {
             return "binary";

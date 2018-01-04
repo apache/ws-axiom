@@ -19,6 +19,9 @@
 
 package org.apache.axiom.om.util;
 
+import java.text.ParseException;
+
+import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.commons.logging.Log;
@@ -165,13 +168,14 @@ public class CommonUtils {
      *
      * @param contentType
      * @return true if text, false otherwise
+     * 
+     * @deprecated Use {@link ContentType#isTextual()} instead.
      */
     public static boolean isTextualPart(String contentType) {
-        String ct = contentType.trim();
-        // REVIEW: What about content-type with a type of "message"
-        return ct.startsWith("text/") ||
-               ct.startsWith("application/soap") ||
-               ct.startsWith("application/xml") ||
-               ct.indexOf("charset") != -1;
+        try {
+            return new ContentType(contentType).isTextual();
+        } catch (ParseException ex) {
+            return false;
+        }
     }
 }

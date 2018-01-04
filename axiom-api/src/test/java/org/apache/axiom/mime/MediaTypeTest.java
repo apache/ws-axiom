@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.mime;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.text.ParseException;
 
 import junit.framework.TestCase;
@@ -91,5 +93,16 @@ public class MediaTypeTest extends TestCase {
         } catch (ParseException ex) {
             // Expected
         }
+    }
+
+    public void testIsXML() throws Exception {
+        assertThat(MediaType.TEXT_XML.isXML()).isTrue();
+        assertThat(MediaType.APPLICATION_XML.isXML()).isTrue();
+        assertThat(MediaType.APPLICATION_SOAP_XML.isXML()).isTrue();
+        assertThat(MediaType.APPLICATION_XOP_XML.isXML()).isTrue();
+        assertThat(MediaType.MULTIPART_RELATED.isXML()).isFalse();
+        assertThat(MediaType.APPLICATION_OCTET_STREAM.isXML()).isFalse();
+        assertThat(MediaType.TEXT_PLAIN.isXML()).isFalse();
+        assertThat(new MediaType("application/foo").isXML()).isFalse();
     }
 }

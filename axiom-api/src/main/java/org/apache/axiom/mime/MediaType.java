@@ -116,6 +116,41 @@ public final class MediaType {
         return subType;
     }
 
+    /**
+     * Check if this media type has the given primary type.
+     * 
+     * @param type
+     *            the primary type to check against
+     * @return whether the primary type matches
+     */
+    public boolean hasPrimaryType(String type) {
+        return primaryType.equalsIgnoreCase(type);
+    }
+
+    /**
+     * Check if this media type has the given sub type.
+     * 
+     * @param type
+     *            the sub type to check against
+     * @return whether the sub type matches
+     */
+    public boolean hasSubType(String type) {
+        return subType.equalsIgnoreCase(type);
+    }
+
+    /**
+     * Check if this media type describes XML content as defined in
+     * <a href="http://tools.ietf.org/html/rfc7303">RFC 7303</a>.
+     * 
+     * @return whether the content expected for this media type is XML
+     */
+    public boolean isXML() {
+        return equals(TEXT_XML)
+                || hasPrimaryType("application") && (
+                        hasSubType("xml")
+                        || subType.length() > 4 && subType.substring(subType.length() - 4).equalsIgnoreCase("+xml"));
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

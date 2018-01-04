@@ -334,8 +334,6 @@
                                 org.apache.axiom.om.ds.AbstractPushOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.ds.BlobOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.ds.StringOMDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                <!-- TODO -->
-                                org.apache.axiom.om.impl.OMMultipartWriter -> org.apache.axiom.om.util.CommonUtils,
                                 <!-- Incorrect layering -->
                                 org.apache.axiom.om.util.StAXParserConfiguration -> org.apache.axiom.util.stax.dialect.StAXDialect
                             </ignore>

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.mime;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.text.ParseException;
 
 import junit.framework.TestCase;
@@ -147,5 +149,17 @@ public class ContentTypeTest extends TestCase {
         ContentType ct = new ContentType(new MediaType("application", "x-some-format"),
                 "filename", "c:\\temp\\test.dat");
         assertEquals("application/x-some-format; filename=\"c:\\\\temp\\\\test.dat\"", ct.toString());
+    }
+
+    private static boolean isTextual(String contentType) throws Exception {
+        return new ContentType(contentType).isTextual();
+    }
+
+    public void testIsTextual() throws Exception {
+        assertThat(isTextual("text/xml")).isTrue();
+        assertThat(isTextual("application/xml")).isTrue();
+        assertThat(isTextual("application/soap+xml")).isTrue();
+        assertThat(isTextual("foo/bar; charset=UTF-8")).isTrue();
+        assertThat(isTextual("image/gif")).isFalse();
     }
 }

@@ -254,6 +254,16 @@ public final class ContentType {
     }
     
     /**
+     * Check if the content type is textual, i.e. if an entity with this content type should be
+     * human readable. This information may be used to select a content transfer encoding.
+     * 
+     * @return whether the content type is textual
+     */
+    public boolean isTextual() {
+        return mediaType.hasPrimaryType("text") || mediaType.isXML() || getParameter("charset") != null;
+    }
+    
+    /**
      * Create a string representation of this content type suitable as the value for a
      * <tt>Content-Type</tt> header as specified by RFC 2045. Note that this method serializes all
      * parameter values as quoted strings, even values that could be represented as tokens. This is
