@@ -196,7 +196,8 @@ backward compatibility:
 ### `SOAPVersion`
 
 `SOAPVersion` should be changed from an interface to an abstract class so that one can
-define static methods to get the SOAP version by envelope namespace or media type.
+define static methods to get the SOAP version by envelope namespace or media type. Alternatively,
+upgrade to Java 8 (which allows static methods in interfaces).
 
 `SOAP11Version` and `SOAP12Version` should not be public, and the deprecated `getSingleton`
 methods should be removed.
