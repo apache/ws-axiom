@@ -19,81 +19,27 @@
 package org.apache.axiom.blob;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.axiom.ext.io.ReadFromSupport;
-import org.apache.axiom.ext.io.StreamCopyException;
 
-final class MemoryBlobOutputStream extends OutputStream implements ReadFromSupport {
-    private final MemoryBlobImpl blob;
-    private MemoryBlobChunk chunk;
-    
-    MemoryBlobOutputStream(MemoryBlobImpl blob, MemoryBlobChunk firstChunk) {
-        this.blob = blob;
-        chunk = firstChunk;
-    }
-    
-    private void updateChunk() {
-        if (chunk.size == chunk.buffer.length) {
-            chunk = chunk.allocateNextChunk();
-        }
-    }
-    
+/**
+ * Output stream that doesn't throw {@link IOException} and that implements {@link ReadFromSupport}.
+ */
+public abstract class MemoryBlobOutputStream extends OutputStream implements ReadFromSupport {
     @Override
-    public void write(byte[] b, int off, int len) {
-        if (chunk == null) {
-            throw new IllegalStateException();
-        }
-        int total = 0;
-        while (total < len) {
-            updateChunk();
-            int c = Math.min(len-total, chunk.buffer.length-chunk.size);
-            System.arraycopy(b, off, chunk.buffer, chunk.size, c);
-            chunk.size += c;
-            total += c;
-            off += c;
-        }
+    public abstract void write(int b);
+
+    @Override
+    public abstract void write(byte[] b);
+
+    @Override
+    public abstract void write(byte[] b, int off, int len);
+
+    @Override
+    public final void flush() {
     }
 
     @Override
-    public void write(int b) {
-        if (chunk == null) {
-            throw new IllegalStateException();
-        }
-        updateChunk();
-        chunk.buffer[chunk.size++] = (byte)b;
-    }
-
-    @Override
-    public long readFrom(InputStream in, long length) throws StreamCopyException {
-        if (chunk == null) {
-            throw new IllegalStateException();
-        }
-        long read = 0;
-        long toRead = length == -1 ? Long.MAX_VALUE : length;
-        while (toRead > 0) {
-            updateChunk();
-            int c;
-            try {
-                c = in.read(chunk.buffer, chunk.size,
-                        (int)Math.min(toRead, chunk.buffer.length-chunk.size));
-            } catch (IOException ex) {
-                throw new StreamCopyException(StreamCopyException.READ, ex);
-            }
-            if (c == -1) {
-                break;
-            }
-            chunk.size += c;
-            read += c;
-            toRead -= c;
-        }
-        return read;
-    }
-    
-    @Override
-    public void close() {
-        blob.commit();
-        chunk = null;
-    }
+    public abstract void close();
 }

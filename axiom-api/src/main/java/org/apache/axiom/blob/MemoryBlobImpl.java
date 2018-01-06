@@ -44,7 +44,7 @@ final class MemoryBlobImpl implements MemoryBlob {
     }
 
     @Override
-    public OutputStream getOutputStream() {
+    public MemoryBlobOutputStream getOutputStream() {
         return internalGetOutputStream();
     }
     
@@ -52,7 +52,7 @@ final class MemoryBlobImpl implements MemoryBlob {
         if (firstChunk != null || committed) {
             throw new IllegalStateException();
         } else {
-            return new MemoryBlobOutputStream(this, firstChunk = new MemoryBlobChunk(4096));
+            return new MemoryBlobOutputStreamImpl(this, firstChunk = new MemoryBlobChunk(4096));
         }
     }
 
@@ -71,20 +71,20 @@ final class MemoryBlobImpl implements MemoryBlob {
     }
 
     @Override
-    public InputStream getInputStream() {
+    public MemoryBlobInputStream getInputStream() {
         return getInputStream(true);
     }
     
     @Override
-    public InputStream readOnce() {
+    public MemoryBlobInputStream readOnce() {
         return getInputStream(false);
     }
 
-    private InputStream getInputStream(boolean preserve) {
+    private MemoryBlobInputStream getInputStream(boolean preserve) {
         if (firstChunk == null || !committed) {
             throw new IllegalStateException();
         }
-        InputStream in = new MemoryBlobInputStream(firstChunk);
+        MemoryBlobInputStream in = new MemoryBlobInputStreamImpl(firstChunk);
         if (!preserve) {
             firstChunk = null;
         }

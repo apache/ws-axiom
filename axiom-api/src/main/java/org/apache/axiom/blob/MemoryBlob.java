@@ -19,8 +19,6 @@
 package org.apache.axiom.blob;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Blob that stores data in memory.
@@ -40,10 +38,10 @@ public interface MemoryBlob extends WritableBlob {
     };
 
     @Override
-    InputStream getInputStream();
+    MemoryBlobInputStream getInputStream();
 
     @Override
-    OutputStream getOutputStream();
+    MemoryBlobOutputStream getOutputStream();
 
     @Override
     long getSize();
@@ -57,5 +55,5 @@ public interface MemoryBlob extends WritableBlob {
      * 
      * @return the input stream to read the data from
      */
-    InputStream readOnce();
+    MemoryBlobInputStream readOnce();
 }
