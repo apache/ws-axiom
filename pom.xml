@@ -1087,6 +1087,9 @@
                      configured in individual modules -->
                 <configuration>
                     <skip>${skipJacoco}</skip>
+                    <includes>
+                        <include>org.apache.axiom.*</include>
+                    </includes>
                 </configuration>
             </plugin>
             <plugin>
