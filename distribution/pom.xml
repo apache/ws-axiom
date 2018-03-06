@@ -183,14 +183,19 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>net.ju-n.maven.plugins</groupId>
+                <groupId>net.nicoulaj.maven.plugins</groupId>
                 <artifactId>checksum-maven-plugin</artifactId>
-                <version>1.2</version>
+                <version>1.5</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>artifacts</goal>
                         </goals>
+                        <configuration>
+                            <algorithms>
+                                <algorithm>SHA-512</algorithm>
+                            </algorithms>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
