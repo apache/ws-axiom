@@ -38,6 +38,7 @@
         <module>wildfly-tests</module>
         <module>old-tests</module>
         <module>osgi-tests</module>
+        <module>psychopath-tests</module>
         <module>spring-ws-tests</module>
         <module>wss4j-tests</module>
     </modules>

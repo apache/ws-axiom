@@ -35,8 +35,6 @@ import org.w3c.dom.Document;
 /**
  * Tests that Axiom's DOM implementation is interoperable with the PsychoPath XPath 2.0 processor.
  */
-// Note: This test is placed here because PsychoPath is not available from Maven central, but only
-//       from the Eclipse P2 repositories.
 public class PsychoPathTest {
     private static ResultSequence evaluate(String xpath) throws Exception {
         InputStream is = PsychoPathTest.class.getResourceAsStream("test.xml");
