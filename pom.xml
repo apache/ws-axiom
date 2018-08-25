@@ -685,7 +685,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>1.4.1</version>
+                    <version>3.0.0-M2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -831,6 +831,12 @@
                         <requireNoRepositories>
                             <message>The POM must not include repository definitions since non Apache repositories threaten the build stability.</message>
                             <banRepositories>true</banRepositories>
+                            <!-- We need the Eclipse P2 repository for one of the Eclipse releases. If we select the
+                                 repository carefully, then it is reasonable to assume that this doesn't threaten
+                                 the build stability. -->
+                            <allowedRepositories>
+                                <allowedRepository>kepler</allowedRepository>
+                            </allowedRepositories>
                             <banPluginRepositories>true</banPluginRepositories>
                             <!-- We still need to allow the Apache snapshot repository -->
                             <allowSnapshotRepositories>true</allowSnapshotRepositories>

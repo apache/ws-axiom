@@ -73,21 +73,6 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <configuration>
-                    <rules>
-                        <requireNoRepositories>
-                            <!-- We need the Eclipse P2 repository for one of the Eclipse releases. If we select the
-                                 repository carefully, then it is reasonable to assume that this doesn't threaten
-                                 the build stability. -->
-                            <banRepositories>false</banRepositories>
-                        </requireNoRepositories>
-                    </rules>
-                </configuration>
-            </plugin>
-        </plugins>
         <extensions>
             <extension>
                 <groupId>com.github.veithen.cosmos</groupId>
