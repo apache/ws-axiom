@@ -91,6 +91,9 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <additionalOptions>
+                        <additionalOption>${jigsawArgs}</additionalOption>
+                    </additionalOptions>
                     <includeDependencySources>true</includeDependencySources>
                     <dependencySourceIncludes>
                         <dependencySourceInclude>${project.groupId}:*</dependencySourceInclude>
