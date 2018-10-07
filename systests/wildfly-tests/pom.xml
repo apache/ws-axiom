@@ -32,7 +32,7 @@
     <name>Wildfly Tests</name>
 
     <properties>
-        <wildfly.version>8.2.1.Final</wildfly.version>
+        <wildfly.version>14.0.1.Final</wildfly.version>
         <wildfly.home>${project.build.directory}/wildfly-${wildfly.version}</wildfly.home>
         <hermeticTests>false</hermeticTests>
     </properties>
@@ -52,13 +52,13 @@
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
-            <version>1.1.2.Final-wildfly-1</version>
+            <version>1.1.13.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.wildfly</groupId>
+            <groupId>org.wildfly.arquillian</groupId>
             <artifactId>wildfly-arquillian-container-managed</artifactId>
-            <version>${wildfly.version}</version>
+            <version>2.1.1.Final</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
