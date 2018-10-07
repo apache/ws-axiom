@@ -33,7 +33,7 @@
     <description>Contains test cases that verify that the Axiom OSGi bundles are usable out of the box by Eclipse plug-ins.</description>
 
     <properties>
-        <tycho-version>0.18.1</tycho-version>
+        <tycho-version>1.2.0</tycho-version>
     </properties>
 
     <dependencies>
