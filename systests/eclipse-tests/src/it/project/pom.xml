@@ -34,11 +34,11 @@
         <repository>
             <id>kepler</id>
             <layout>p2</layout>
-            <!-- Note that http://download.eclipse.org/releases/kepler is a combined repository that
+            <!-- Note that http://download.eclipse.org/releases/xyz is a combined repository that
                  also contains the services releases. It is therefore not stable, i.e. its content
                  may change over time. To avoid that, we use the repository that contains the
                  original release artifacts. -->
-            <url>http://download.eclipse.org/releases/kepler/201306260900</url>
+            <url>http://download.eclipse.org/releases/oxygen/201712201001</url>
         </repository>
     </repositories>
 
