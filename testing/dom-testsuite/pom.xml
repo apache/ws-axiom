@@ -116,33 +116,6 @@
         </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>com.github.veithen.alta</groupId>
-                <artifactId>alta-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>generate-test-resources</phase>
-                        <goals>
-                            <goal>generate-properties</goal>
-                        </goals>
-                        <configuration>
-                            <name>surefire.bootclasspath</name>
-                            <value>%file%</value>
-                            <separator>${path.separator}</separator>
-                            <artifacts>
-                                <artifact>
-                                    <groupId>xml-apis</groupId>
-                                    <artifactId>xml-apis</artifactId>
-                                </artifact>
-                                <artifact>
-                                    <groupId>xerces</groupId>
-                                    <artifactId>xercesImpl</artifactId>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
@@ -253,14 +226,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <!-- This is necessary to execute the tests with the IBM JRE: we need to endorse the particular Xerces version
-                         we want to use because the JRE already contains Xerces. -->
-                    <argLine>${jacoco.surefireArgLine} -Xbootclasspath/p:${surefire.bootclasspath}</argLine>
-                </configuration>
             </plugin>
         </plugins>
     </build>
