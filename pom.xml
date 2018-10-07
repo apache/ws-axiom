@@ -540,7 +540,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.16</version>
+                    <version>2.20.1</version>
                     <configuration>
                         <includes>
                             <include>**/*Test.java</include>
@@ -932,6 +932,7 @@
                                             out.println """  permission java.io.FilePermission "${escapeJava(project.build.directory)}", "read,write";"""
                                             out.println """  permission java.io.FilePermission "${escapeJava(project.build.directory)}\${/}-", "read,write,delete";"""
                                             out.println """  permission java.lang.RuntimePermission "*";"""
+                                            out.println """  permission java.lang.management.ManagementPermission "monitor";"""
                                             out.println """  permission java.lang.reflect.ReflectPermission "*";"""
                                             out.println """  permission java.net.NetPermission "*";"""
                                             out.println """  permission java.net.SocketPermission "localhost", "connect,listen,accept,resolve";"""
