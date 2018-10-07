@@ -61,8 +61,7 @@ public class UsesConstraintsTest {
     static class Listener implements FrameworkListener {
         private final Pattern regex = Pattern.compile(
                 "Uses constraint violation\\. Unable to resolve .* testbundle. \\[.*\\] because it is exposed to "
-                + "package 'javax\\.xml\\.stream' from .* org\\.apache\\.servicemix\\.specs\\.stax-api-1.0 .* and "
-                + "org\\.apache\\.felix\\.framework .* via two dependency chains\\."
+                + "package 'javax\\.xml\\.stream' .* via two dependency chains\\."
                 + ".*package=org\\.apache\\.axiom\\.om.*", Pattern.DOTALL); 
         private final CountDownLatch latch = new CountDownLatch(1);
         private boolean gotExpectedError;
