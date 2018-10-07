@@ -904,7 +904,7 @@
                                     
                                     project.properties['javadoc.nolint.param'] = System.properties['java.specification.version'] == '1.7' ? '' : '-Xdoclint:none'
 
-                                    project.properties['jigsawArgs'] = System.properties['java.specification.version'] == '9' ? '--add-modules java.activation,java.xml.bind --add-opens java.xml/com.sun.xml.internal.stream=ALL-UNNAMED' : ''
+                                    project.properties['jigsawArgs'] = System.properties['java.specification.version'] == '9' ? '--add-modules java.se.ee' : ''
                                 ]]></script>
                             </scripts>
                         </configuration>
