@@ -223,6 +223,11 @@ public class StAXDialectDetector {
     }
     
     private static StAXDialect detectDialectFromJarManifest(URL rootUrl) {
+        if (rootUrl.getProtocol().equals("jrt")) {
+            // We get here for the StAX implementation in the JRE for Java 9 and above. There is no
+            // manifest for the runtime classes, so stop here.
+            return null;
+        }
         Manifest manifest;
         try {
             URL metaInfUrl = new URL(rootUrl, "META-INF/MANIFEST.MF");
