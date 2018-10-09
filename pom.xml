@@ -258,7 +258,7 @@
         -->
         <aspectj.version>1.9.1</aspectj.version>
         <shade.plugin.version>2.3</shade.plugin.version>
-        <jacoco.version>0.8.0</jacoco.version>
+        <jacoco.version>0.8.2</jacoco.version>
         <spring.version>5.0.1.RELEASE</spring.version>
         <springws.version>3.0.3.RELEASE</springws.version>
         <exam.version>4.9.1</exam.version>
