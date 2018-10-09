@@ -1259,6 +1259,7 @@
                                 </goals>
                                 <configuration>
                                     <additionalOptions>
+                                        <additionalOption>${jigsawArgs}</additionalOption>
                                         <additionalOption>${javadoc.nolint.param}</additionalOption>
                                     </additionalOptions>
                                 </configuration>
