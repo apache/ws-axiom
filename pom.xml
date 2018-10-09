@@ -904,7 +904,7 @@
                                     
                                     project.properties['javadoc.nolint.param'] = System.properties['java.specification.version'] == '1.7' ? '' : '-Xdoclint:none'
 
-                                    project.properties['jigsawArgs'] = System.properties['java.specification.version'] == '9' ? '--add-modules java.se.ee' : ''
+                                    project.properties['jigsawArgs'] = System.properties['java.specification.version'].startsWith('1.') ? '' : '--add-modules java.se.ee'
                                 ]]></script>
                             </scripts>
                         </configuration>
