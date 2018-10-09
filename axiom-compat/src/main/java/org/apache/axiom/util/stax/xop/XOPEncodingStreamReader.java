@@ -81,8 +81,8 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
         }
 
         @Override
-        public Iterator<?> getPrefixes(String namespaceURI) {
-            Iterator<?> prefixes = parent.getPrefixes(namespaceURI);
+        public Iterator<String> getPrefixes(String namespaceURI) {
+            Iterator<String> prefixes = parent.getPrefixes(namespaceURI);
             if (XOPConstants.NAMESPACE_URI.equals(namespaceURI)) {
                 if (!prefixes.hasNext()) {
                     return xopPrefixList.iterator();
