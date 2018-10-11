@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.jaxb;
+package org.apache.axiom.om.util.jaxb;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -26,10 +26,10 @@ import javax.xml.bind.attachment.AttachmentUnmarshaller;
 
 import org.apache.axiom.om.OMAttachmentAccessor;
 
-public final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
+final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
     private final OMAttachmentAccessor attachmentAccessor;
     
-    public AttachmentUnmarshallerImpl(OMAttachmentAccessor attachmentAccessor) {
+    AttachmentUnmarshallerImpl(OMAttachmentAccessor attachmentAccessor) {
         this.attachmentAccessor = attachmentAccessor;
     }
     /**

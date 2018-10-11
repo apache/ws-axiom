@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.jaxb.JAXBOMDataSource;
+import org.apache.axiom.om.util.jaxb.JAXBUtils;
 
 public class JAXBCustomBuilder implements CustomBuilder {
     private final JAXBContext jaxbContext;
@@ -39,7 +40,7 @@ public class JAXBCustomBuilder implements CustomBuilder {
     @Override
     public OMDataSource create(OMElement element) throws OMException {
         try {
-            jaxbObject = element.unmarshal(jaxbContext, null, false);
+            jaxbObject = JAXBUtils.unmarshal(element, jaxbContext, null, false);
             return new JAXBOMDataSource(jaxbContext, jaxbObject);
         } catch (JAXBException ex) {
             throw new OMException(ex);

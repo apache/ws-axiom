@@ -210,6 +210,7 @@
         <module>buildutils</module>
         <module>axiom-api</module>
         <module>axiom-compat</module>
+        <module>axiom-jaxb</module>
         <module>axiom-all</module>
         <module>samples</module>
         <module>systests</module>

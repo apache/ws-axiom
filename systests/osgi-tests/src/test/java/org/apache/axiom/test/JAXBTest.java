@@ -39,7 +39,7 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
 /**
- * Tests that the APIs depending on JAXB can be used successfully.
+ * Tests that the axiom-jaxb bundle can be loaded successfully and is operational.
  */
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
@@ -50,6 +50,7 @@ public class JAXBTest {
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link"),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-jaxb.link"),
                 junitBundles());
     }
     

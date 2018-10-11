@@ -51,8 +51,8 @@ public class SJSXPTest {
                 url("link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"),
                 url("link:classpath:org.apache.servicemix.bundles.jaxp-ri.link"),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
-                url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link"),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 // For whatever reason, these packages are no longer exported by the system bundle
                 // in Felix >= 4.0.0
                 systemPackages("org.w3c.dom.html", "org.w3c.dom.ranges", "org.w3c.dom.traversal"),

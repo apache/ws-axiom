@@ -51,9 +51,9 @@ public class FactoryTest {
                 url("link:classpath:stax2-api.link"),
                 url("link:classpath:woodstox-core-asl.link"),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
-                url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-dom.link"),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 junitBundles());
     }
     

@@ -19,9 +19,6 @@
 
 package org.apache.axiom.om;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -416,36 +413,4 @@ public interface OMContainer extends OMSerializable {
      * @return an XOP encoded representation of this information item
      */
     XOPEncoded<XMLStreamReader> getXOPEncodedStreamReader(boolean cache);
-    
-    /**
-     * Unmarshall the information item using JAXB.
-     * 
-     * @param context
-     *            the JAXB context
-     * @param configurator
-     *            custom unmarshaller settings to apply; may be {@code null}
-     * @param preserve
-     *            specifies whether the content of the information item should be preserved
-     * @return the unmarshalled object
-     * @throws JAXBException
-     *             if an error occurred while unmarshalling
-     */
-    Object unmarshal(JAXBContext context, UnmarshallerConfigurator configurator, boolean preserve) throws JAXBException;
-    
-    /**
-     * Unmarshall the information item using JAXB.
-     * 
-     * @param context
-     *            the JAXB context
-     * @param configurator
-     *            custom unmarshaller settings to apply; may be {@code null}
-     * @param declaredType
-     *            a JAXB mapped class to hold the XML data.
-     * @param preserve
-     *            specifies whether the content of the information item should be preserved
-     * @return the unmarshalled object
-     * @throws JAXBException
-     *             if an error occurred while unmarshalling
-     */
-    <T> JAXBElement<T> unmarshal(JAXBContext context, UnmarshallerConfigurator configurator, Class<T> declaredType, boolean preserve) throws JAXBException;
 }

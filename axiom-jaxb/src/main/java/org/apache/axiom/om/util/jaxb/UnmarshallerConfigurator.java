@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om;
+package org.apache.axiom.om.util.jaxb;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
