@@ -458,12 +458,6 @@
                 <groupId>com.sun.xml.messaging.saaj</groupId>
                 <artifactId>saaj-impl</artifactId>
                 <version>1.3.10</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>javax.xml.soap</groupId>
-                        <artifactId>saaj-api</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>
@@ -515,6 +509,41 @@
                 <artifactId>asm</artifactId>
                 <version>5.2</version>
             </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>javax.activation-api</artifactId>
+                <version>1.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.activation</groupId>
+                <artifactId>javax.activation</artifactId>
+                <version>1.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.3.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>2.3.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>2.3.0</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.jws</groupId>
+                <artifactId>jsr181-api</artifactId>
+                <version>1.0-MR1</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.ws</groupId>
+                <artifactId>jaxws-api</artifactId>
+                <version>2.3.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -551,7 +580,7 @@
                              the data instead of loading it into memory). Obviously, the execution time of
                              these tests also are proportional to the heap size. To accelerate the execution
                              of the tests, we should use a heap size as small as possible. -->
-                        <argLine>-Xms16m -Xmx48m ${jacoco.surefireArgLine} ${securityManagerArgs} ${jigsawArgs}</argLine>
+                        <argLine>-Xms16m -Xmx48m ${jacoco.surefireArgLine} ${securityManagerArgs}</argLine>
                         <trimStackTrace>false</trimStackTrace>
                         <systemProperties>
                             <property>
@@ -905,9 +934,6 @@
                                         println 'Disabling JaCoCo because tests are skipped'
                                         project.properties['skipJacoco'] = 'true'
                                     }
-                                    
-
-                                    project.properties['jigsawArgs'] = System.properties['java.specification.version'].startsWith('1.') ? '' : '--add-modules java.se.ee'
                                 ]]></script>
                             </scripts>
                         </configuration>
@@ -1262,7 +1288,6 @@
                                 </goals>
                                 <configuration>
                                     <additionalOptions>
-                                        <additionalOption>${jigsawArgs}</additionalOption>
                                         <additionalOption>-Xdoclint:none</additionalOption>
                                     </additionalOptions>
                                 </configuration>

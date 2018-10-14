@@ -44,6 +44,7 @@ public class SystemDepsTest {
     @Configuration
     public static Option[] configuration() {
         return options(
+                url("link:classpath:com.sun.activation.javax.activation.link"),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link"),

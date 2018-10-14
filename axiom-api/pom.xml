@@ -53,6 +53,10 @@
             <artifactId>apache-mime4j-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>javax.activation-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
             <scope>provided</scope>
@@ -121,6 +125,11 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>xml-utils</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.activation</groupId>
+            <artifactId>javax.activation</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
