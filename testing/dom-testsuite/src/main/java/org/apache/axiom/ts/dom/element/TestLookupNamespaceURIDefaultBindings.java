@@ -22,11 +22,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.soap.Node;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Test that {@link Node#lookupNamespaceURI(String)} does NOT recognize the default namespace
