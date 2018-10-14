@@ -18,21 +18,19 @@
  */
 package org.apache.axiom.test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
 
-import org.apache.felix.framework.cache.BundleCache;
 import org.ops4j.pax.exam.CoreOptions;
+import org.ops4j.pax.exam.nat.internal.NativeTestContainer;
 import org.ops4j.pax.exam.options.FrameworkPropertyOption;
-import org.osgi.framework.BundleException;
+import org.ops4j.pax.exam.spi.DefaultExamSystem;
 import org.osgi.framework.Constants;
-import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 
 public class Utils {
@@ -40,17 +38,15 @@ public class Utils {
     
     private synchronized static String[] getDefaultSystemPackages() {
         if (defaultSystemPackages == null) {
-            Map<String,String> configuration = new HashMap<>();
-            configuration.put(BundleCache.CACHE_ROOTDIR_PROP, "target");
-            Framework framework = ServiceLoader.load(FrameworkFactory.class).iterator().next().newFramework(configuration);
             try {
-                framework.start();
+                NativeTestContainer testContainer = new NativeTestContainer(DefaultExamSystem.create(null), ServiceLoader.load(FrameworkFactory.class).iterator().next());
+                testContainer.start();
                 try {
-                    defaultSystemPackages = framework.getBundleContext().getProperty(Constants.FRAMEWORK_SYSTEMPACKAGES).split("\\s*,\\s*");
+                    defaultSystemPackages = testContainer.getSystemBundle().getBundleContext().getProperty(Constants.FRAMEWORK_SYSTEMPACKAGES).split("\\s*,\\s*");
                 } finally {
-                    framework.stop();
+                    testContainer.stop();
                 }
-            } catch (BundleException ex) {
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
