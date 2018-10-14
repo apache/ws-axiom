@@ -552,6 +552,7 @@
                              these tests also are proportional to the heap size. To accelerate the execution
                              of the tests, we should use a heap size as small as possible. -->
                         <argLine>-Xms16m -Xmx48m ${jacoco.surefireArgLine} ${securityManagerArgs} ${jigsawArgs}</argLine>
+                        <trimStackTrace>false</trimStackTrace>
                         <systemProperties>
                             <property>
                                 <name>java.io.tmpdir</name>
@@ -591,6 +592,7 @@
                     <version>2.19</version>
                     <configuration>
                         <argLine>${jacoco.failsafeArgLine} ${securityManagerArgs}</argLine>
+                        <trimStackTrace>false</trimStackTrace>
                         <systemProperties>
                             <property>
                                 <name>java.io.tmpdir</name>
