@@ -54,6 +54,7 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.activation.TextDataSource;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.soap.MTOMSample;
@@ -172,7 +173,7 @@ public class AttachmentsTest extends AbstractTestCase {
         MimeMessage message = new MimeMessage((Session)null);
         MimeMultipart mp = new MimeMultipart("related");
         MimeBodyPart rootPart = new MimeBodyPart();
-        rootPart.setText("<root/>", "utf-8", "xml");
+        rootPart.setDataHandler(new DataHandler(new TextDataSource("<root/>", "utf-8", "xml")));
         rootPart.addHeader("Content-Transfer-Encoding", "binary");
         rootPart.addHeader("Content-ID", "<" + contentId + ">");
         mp.addBodyPart(rootPart);
@@ -444,7 +445,7 @@ public class AttachmentsTest extends AbstractTestCase {
         // Prepare the "SOAP" part
         MimeBodyPart bp1 = new MimeBodyPart();
         // Obviously this is not SOAP, but this is irrelevant for this test
-        bp1.setText("<root/>", "utf-8", "xml");
+        bp1.setDataHandler(new DataHandler(new TextDataSource("<root/>", "utf-8", "xml")));
         bp1.addHeader("Content-Transfer-Encoding", "binary");
         bp1.addHeader("Content-ID", "part1@apache.org");
         mp.addBodyPart(bp1);
@@ -598,7 +599,7 @@ public class AttachmentsTest extends AbstractTestCase {
         // Prepare the "SOAP" part
         MimeBodyPart bp1 = new MimeBodyPart();
         // Obviously this is not SOAP, but this is irrelevant for this test
-        bp1.setText("<root/>", "utf-8", "xml");
+        bp1.setDataHandler(new DataHandler(new TextDataSource("<root/>", "utf-8", "xml")));
         bp1.addHeader("Content-Transfer-Encoding", "binary");
         bp1.addHeader("Content-ID", "part1@apache.org");
         mp.addBodyPart(bp1);
@@ -654,14 +655,14 @@ public class AttachmentsTest extends AbstractTestCase {
             MimeMultipart mp = new MimeMultipart("related");
             
             MimeBodyPart bp1 = new MimeBodyPart();
-            bp1.setText("<root/>", "utf-8", "xml");
+            bp1.setDataHandler(new DataHandler(new TextDataSource("<root/>", "utf-8", "xml")));
             bp1.addHeader("Content-Transfer-Encoding", "binary");
             mp.addBodyPart(bp1);
             
             MimeBodyPart bp2 = new MimeBodyPart();
             byte[] content = new byte[8192];
             new Random().nextBytes(content);
-            bp2.setDataHandler(new DataHandler("Test", "text/plain"));
+            bp2.setDataHandler(new DataHandler(new TextDataSource("Test", "utf-8", "plain")));
             bp2.addHeader("Content-Transfer-Encoding", "binary");
             bp2.addHeader(contentIDHeaderName, "part@apache.org");
             mp.addBodyPart(bp2);
@@ -799,14 +800,15 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testFakeRootPartContentID() throws Exception {
         MimeMessage message = new MimeMessage((Session)null);
         MimeMultipart mp = new MimeMultipart("related");
-        
+
+        DataHandler expectedRootPart = new DataHandler(new TextDataSource("<root/>", "utf-8", "xml"));
         MimeBodyPart bp1 = new MimeBodyPart();
-        bp1.setText("<root/>", "utf-8", "xml");
+        bp1.setDataHandler(expectedRootPart);
         bp1.addHeader("Content-Transfer-Encoding", "binary");
         mp.addBodyPart(bp1);
         
         MimeBodyPart bp2 = new MimeBodyPart();
-        bp2.setDataHandler(new DataHandler("Test", "text/plain"));
+        bp2.setDataHandler(new DataHandler(new TextDataSource("Test", "utf-8", "plain")));
         bp2.addHeader("Content-Transfer-Encoding", "binary");
         mp.addBodyPart(bp2);
         
@@ -823,6 +825,6 @@ public class AttachmentsTest extends AbstractTestCase {
         String rootPartContentID = attachments.getRootPartContentID();
         assertThat(rootPartContentID).isNotNull();
         DataHandler rootPart = attachments.getDataHandler(rootPartContentID);
-        assertThat(rootPart.getContent()).isEqualTo("<root/>");
+        IOTestUtils.compareStreams(rootPart.getInputStream(), expectedRootPart.getInputStream());
     }
 }

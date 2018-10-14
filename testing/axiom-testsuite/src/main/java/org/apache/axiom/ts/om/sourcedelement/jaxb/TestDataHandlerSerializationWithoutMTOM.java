@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.jaxb.JAXBOMDataSource;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.testutils.activation.TextDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxb.beans.DocumentBean;
 import org.apache.commons.io.IOUtils;
@@ -51,7 +52,7 @@ public class TestDataHandlerSerializationWithoutMTOM extends AxiomTestCase {
         // Construct the original message
         DocumentBean orgObject = new DocumentBean();
         orgObject.setId("123456");
-        orgObject.setContent(new DataHandler("some content", "text/plain; charset=utf-8"));
+        orgObject.setContent(new DataHandler(new TextDataSource("some content", "utf-8", "plain")));
         SOAPEnvelope orgEnvelope = factory.getDefaultEnvelope();
         OMSourcedElement element = factory.createOMElement(new JAXBOMDataSource(context, orgObject));
         orgEnvelope.getBody().addChild(element);

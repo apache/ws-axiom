@@ -95,11 +95,6 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>javax.activation</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>

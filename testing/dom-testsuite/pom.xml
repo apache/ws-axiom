@@ -75,6 +75,10 @@
             <artifactId>jaxp-testsuite</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>javax.activation-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

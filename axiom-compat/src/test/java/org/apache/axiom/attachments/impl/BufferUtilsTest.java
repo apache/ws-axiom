@@ -22,6 +22,8 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.util.ByteArrayDataSource;
 
+import org.apache.axiom.testutils.activation.TextDataSource;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -108,7 +110,7 @@ public class BufferUtilsTest extends TestCase {
     
     public void testObjectBackedDataHandlerExceedLimit() throws Exception {
         String str = "This is a test String";
-        DataHandler dh = new DataHandler(str, "text/plain");          
+        DataHandler dh = new DataHandler(new TextDataSource(str, "utf-8", "plain"));
         int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
         assertEquals(-1, unsupported);
         int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 10);
