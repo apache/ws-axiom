@@ -22,8 +22,6 @@ package org.apache.axiom.util.base64;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.activation.DataHandler;
-
 /**
  * Base class for {@link OutputStream} implementations that encode data in base64.
  */
@@ -40,8 +38,8 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
      * @param ignoreFlush
      *            Specifies if calls to {@link #flush()} should be ignored. Setting this to
      *            <code>true</code> is particular useful in conjunction with
-     *            {@link DataHandler#writeTo(OutputStream)}: that method may call {@link #flush()}
-     *            after writing the data, but the call to {@link DataHandler#writeTo(OutputStream)}
+     *            {@code DataHandler.writeTo(OutputStream)}: that method may call {@link #flush()}
+     *            after writing the data, but the call to {@code DataHandler.writeTo(OutputStream)}
      *            must be followed by a call to {@link #close()} or {@link #complete()} which would
      *            then output a single chunk with a few bytes. In some cases this may be
      *            inconvenient.
