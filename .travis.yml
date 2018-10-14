@@ -22,6 +22,7 @@ jdk:
   - openjdk8
   - openjdk9
   - openjdk10
+  - openjdk11
 install: true
 script: mvn -B -Papache-release -Dgpg.skip=true verify
 cache:
