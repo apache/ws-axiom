@@ -33,6 +33,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>javax.xml.soap</groupId>
+            <artifactId>saaj-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>testutils</artifactId>
             <version>${project.version}</version>
