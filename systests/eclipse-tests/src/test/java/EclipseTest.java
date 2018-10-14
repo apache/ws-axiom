@@ -17,6 +17,9 @@
  * under the License.
  */
 import static org.junit.Assert.assertEquals;
+import static org.ops4j.pax.exam.CoreOptions.junitBundles;
+import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.url;
 
 import java.io.StringReader;
 
@@ -27,13 +30,32 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Configuration;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
  * Tests that Axiom works out of the box in an Eclipse platform.
  */
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class EclipseTest {
+    @Configuration
+    public static Option[] configuration() {
+        return options(
+                // Don't start bundles. We expect Equinox to start them lazily.
+                url("link:classpath:org.apache.james.apache-mime4j-core.link").start(false),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link").start(false),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-dom.link").start(false),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link").start(false),
+                junitBundles());
+    }
+    
     @Test
     public void testLLOM() {
         OMElement element = OMXMLBuilderFactory.createOMBuilder(new StringReader("<ns:test xmlns:ns='urn:ns'>test</ns:test>")).getDocumentElement();

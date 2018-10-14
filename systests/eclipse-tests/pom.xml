@@ -27,139 +27,103 @@
     </parent>
 
     <artifactId>eclipse-tests</artifactId>
-    <packaging>pom</packaging>
 
     <name>Eclipse Tests</name>
     <description>Contains test cases that verify that the Axiom OSGi bundles are usable out of the box by Eclipse plug-ins.</description>
 
     <properties>
-        <tycho-version>1.2.0</tycho-version>
+        <!-- TODO -->
+        <hermeticTests>false</hermeticTests>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>oxygen</id>
+            <layout>p2</layout>
+            <!-- Note that http://download.eclipse.org/releases/xyz is a combined repository that
+                 also contains the services releases. It is therefore not stable, i.e. its content
+                 may change over time. To avoid that, we use the repository that contains the
+                 original release artifacts. -->
+            <url>http://download.eclipse.org/releases/oxygen/201712201001</url>
+        </repository>
+    </repositories>
+
     <dependencies>
-        <!-- We declare dependencies here to guarantee that the build order is correct.
-             The dependencies will be inherited by the test project (src/it/project). -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-impl</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-dom</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>osgi.bundle</groupId>
+            <artifactId>org.eclipse.osgi</artifactId>
+            <version>3.12.50.v20170928-1321</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-container-native</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-junit4</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-link-assembly</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.gmavenplus</groupId>
-                <artifactId>gmavenplus-plugin</artifactId>
+                <groupId>com.github.veithen.alta</groupId>
+                <artifactId>alta-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <!-- Need this to pass information to the hook scripts. Once maven-invoker-plugin 1.9 is released,
-                             we no longer need this; see MINVOKER-119. -->
-                        <id>generate-invoker-script-properties</id>
-                        <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>execute</goal>
+                            <goal>generate-test-resources</goal>
                         </goals>
-                        <inherited>false</inherited>
                         <configuration>
-                            <scripts>
-                                <script>
-                                    import java.io.*
-                                    import java.util.*
-                                    
-                                    dir = new File(project.build.directory, "it")
-                                    dir.mkdirs()
-                                    props = new Properties()
-                                    props.setProperty("version", project.version)
-                                    stream = new FileOutputStream(new File(dir, "script.properties"))
-                                    props.store(stream, null)
-                                    stream.close()
-                                </script>
-                            </scripts>
+                            <name>%bundle.symbolicName%.link</name>
+                            <value>%url%</value>
+                            <dependencySet>
+                                <scope>test</scope>
+                            </dependencySet>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-invoker-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <!-- Instead of executing the Tycho eclipse-test-plugin project directly, we use the invoker plugin.
-                             There are multiple reasons for that:
-                              * The test project depends on axiom-api, axiom-impl and axiom-dom. If they are executed
-                                in the same reactor, then Tycho will fail because axiom-api, axiom-impl and axiom-dom are
-                                plain Maven projects. The reason is that the P2 resolver has no way to know the packages
-                                exported by these projects.
-                              * In a Tycho project, the Bundle-Version in the manifest must match the POM version.
-                                On the other hand, maven-release-plugin only updates the POM. That would break
-                                the automated release process.
-                              * It prevents maven-eclipse-plugin from messing with the test project.
-                          -->
-                        <id>integration-test</id>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <inherited>false</inherited>
-                        <configuration>
-                            <streamLogs>true</streamLogs>
-                            <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-                            <goals>
-                                <goal>integration-test</goal>
-                            </goals>
-                            <skipInvocation>${skipTests}</skipInvocation>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-jacoco-exec</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <inherited>false</inherited>
-                        <configuration>
-                            <skipAttach>${skipJacoco}</skipAttach>
-                            <artifacts>
-                                <artifact>
-                                    <file>${project.build.directory}/it/project/target/jacoco.exec</file>
-                                    <classifier>jacoco</classifier>
-                                    <type>exec</type>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.rat</groupId>
-                <artifactId>apache-rat-plugin</artifactId>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <excludes>
-                        <!-- Don't need license headers for Eclipse project files -->
-                        <exclude>src/it/*/.project</exclude>
-                        <exclude>src/it/*/.classpath</exclude>
-                        <exclude>src/it/*/.settings/**</exclude>
-                        <exclude>src/it/*/build.properties</exclude>
-                        <!-- Manifests can't contain comments -->
-                        <exclude>src/it/*/META-INF/MANIFEST.MF</exclude>
-                    </excludes>
-                </configuration> 
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                </configuration>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>com.github.veithen.cosmos</groupId>
+                <artifactId>p2-maven-connector</artifactId>
+                <version>0.3</version>
+            </extension>
+        </extensions>
     </build>
 </project>

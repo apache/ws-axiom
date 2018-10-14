@@ -860,6 +860,7 @@
                                  the build stability. -->
                             <allowedRepositories>
                                 <allowedRepository>kepler</allowedRepository>
+                                <allowedRepository>oxygen</allowedRepository>
                             </allowedRepositories>
                             <banPluginRepositories>true</banPluginRepositories>
                             <!-- We still need to allow the Apache snapshot repository -->
