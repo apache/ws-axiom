@@ -925,11 +925,6 @@
                                 <script><![CDATA[
                                     import java.io.File
                                     
-                                    // Avoid chicken and egg problem with jar-resource-bundle
-                                    if (project.packaging == 'pom') {
-                                        project.properties['skipRemoteResources'] = 'true'
-                                    }
-                                    
                                     // Since we don't generate Maven sites for submodules the project URLs computed by Maven
                                     // (parent project URL + artifact ID) are wrong. Make sure that the URL is explicitly set
                                     // to the right location, at least for modules that deploy artifacts.
@@ -1052,19 +1047,11 @@
             </plugin>
             <plugin>
                 <artifactId>maven-remote-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>process</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipRemoteResources}</skip>
-                            <resourceBundles>
-                                <resourceBundle>org.apache.ws.commons.axiom:jar-resource-bundle:${project.version}</resourceBundle>
-                            </resourceBundles>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <properties>
+                        <projectName>Apache Axiom</projectName>
+                    </properties>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

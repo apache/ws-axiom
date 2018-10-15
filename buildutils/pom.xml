@@ -34,7 +34,6 @@
 
     <modules>
         <module>buildutils-maven-plugin</module>
-        <module>jar-resource-bundle</module>
         <module>shade-axiom-xml</module>
     </modules>
 
