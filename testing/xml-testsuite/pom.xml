@@ -50,6 +50,10 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>javax.activation-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
         </dependency>
