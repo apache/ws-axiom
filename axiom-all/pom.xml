@@ -76,14 +76,6 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-remote-resources-plugin</artifactId>
-                <configuration>
-                    <properties>
-                        <containsAspectJ>true</containsAspectJ>
-                    </properties>
-                </configuration>
-            </plugin>
-            <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
                 <executions>
                     <execution>
