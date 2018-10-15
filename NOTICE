@@ -10,9 +10,3 @@
 
    Please read the different LICENSE files present in the licenses directory of
    this distribution.
-
-   This product includes unmodified, binary redistributions of software (AspectJ)
-   developed for the Eclipse Foundation (http://www.eclipse.org/aspectj), which
-   is licensed under the Eclipse Public License 1.0. Source code for this project
-   can be found at http://git.eclipse.org/c/aspectj/org.aspectj.git. An original
-   copy of the license can be found at http://eclipse.org/legal/epl-v10.html.
