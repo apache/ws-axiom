@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.om.ds;
 
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
