@@ -134,6 +134,7 @@ public interface WritableBlob extends Blob {
      * automatically:
      * <p>
      * <table border="2" rules="all" cellpadding="4" cellspacing="0">
+     *   <caption>State transitions</caption>
      *   <thead>
      *     <tr><th>Precondition (state)</th><th>Postcondition (state)</th></tr>
      *   </thead>

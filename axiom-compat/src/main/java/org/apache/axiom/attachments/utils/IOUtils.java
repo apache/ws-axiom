@@ -80,7 +80,7 @@ public class IOUtils {
      * Returns the contents of the input stream as byte array.
      *
      * @param stream the <code>InputStream</code>
-     * @param length the number of bytes to copy, if length < 0, the number is unlimited
+     * @param length the number of bytes to copy, if length &lt; 0, the number is unlimited
      * @return the stream content as byte array
      */
     public static byte[] getStreamAsByteArray(InputStream stream, int length) throws IOException {
