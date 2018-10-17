@@ -34,6 +34,7 @@
     <properties>
         <wildfly.version>14.0.1.Final</wildfly.version>
         <wildfly.home>${project.build.directory}/wildfly-${wildfly.version}</wildfly.home>
+        <wildfly.jigsawArgs></wildfly.jigsawArgs>
         <hermeticTests>false</hermeticTests>
     </properties>
 
@@ -71,26 +72,6 @@
             </testResource>
         </testResources>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.gmavenplus</groupId>
-                <artifactId>gmavenplus-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>prepare-jigsaw-args</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <scripts>
-                                <script>
-                                    project.properties['wildfly.jigsawArgs'] = System.properties['java.specification.version'] == '11' ? '--add-modules java.se' : ''
-                                </script>
-                            </scripts>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
@@ -223,4 +204,15 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <activation>
+                <jdk>[11,)</jdk>
+            </activation>
+            <properties>
+                <wildfly.jigsawArgs>--add-modules java.se</wildfly.jigsawArgs>
+            </properties>
+        </profile>
+    </profiles>
 </project>
