@@ -141,15 +141,17 @@
                 </dependencies>
             </plugin>
             <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
+                <groupId>com.github.veithen.maven</groupId>
+                <artifactId>xjc-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>generate-sources</goal>
                         </goals>
                         <configuration>
-                            <schemaDirectory>src/main/schemas</schemaDirectory>
+                            <files>
+                                <file>src/main/schemas/identity.xsd</file>
+                            </files>
                         </configuration>
                     </execution>
                 </executions>
