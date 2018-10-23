@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -167,13 +168,13 @@ public class BufferUtils {
                     // If the ByteBuffer is not full, allocate a new one
                     ByteBuffer temp = ByteBuffer.allocate(bytesRead);
                     temp.put(bb.array(), 0, bytesRead);
-                    temp.position(0);
+                    ((Buffer)temp).position(0);
                     channel.write(temp);
                 } else {
                     // Write to channel
-                    bb.position(0);
+                    ((Buffer)bb).position(0);
                     channel.write(bb);
-                    bb.clear();
+                    ((Buffer)bb).clear();
                 }
                 
                 // REVIEW: Do we need to ensure that bytesWritten is 

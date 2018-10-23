@@ -20,6 +20,7 @@ package org.apache.axiom.core.stream.serializer.writer;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -46,7 +47,8 @@ final class OutputStreamXmlWriter extends XmlWriter {
 
     private void flushEncodingOut() throws IOException {
         out.write(encoderOut.array(), 0, encoderOut.position());
-        encoderOut.clear();
+        // Cast ensures compatibility with Java 8.
+        ((Buffer)encoderOut).clear();
     }
 
     private CharBuffer getEncoderIn() throws IOException {
@@ -61,7 +63,8 @@ final class OutputStreamXmlWriter extends XmlWriter {
     }
 
     private void flush(CharBuffer encoderIn) throws IOException {
-        encoderIn.flip();
+        // Cast ensures compatibility with Java 8.
+        ((Buffer)encoderIn).flip();
         while (true) {
             CoderResult coderResult = encoder.encode(encoderIn, encoderOut, false);
             if (coderResult.isUnderflow()) {
