@@ -34,7 +34,7 @@
     <dependencies>
         <dependency>
             <groupId>javax.xml.soap</groupId>
-            <artifactId>saaj-api</artifactId>
+            <artifactId>javax.xml.soap-api</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
