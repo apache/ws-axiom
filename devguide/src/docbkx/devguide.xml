@@ -562,6 +562,11 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
             <procedure>
                 <step>
                     <para>
+                        If necessary, update the copyright date in the top level <filename>NOTICE</filename> file.
+                    </para>
+                </step>
+                <step>
+                    <para>
                         Start the release process with the following command:
                     </para>
                     <screen>mvn release:prepare</screen>
