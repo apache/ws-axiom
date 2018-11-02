@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>1.2.21-SNAPSHOT</version>
+        <version>1.2.21</version>
     </parent>
 
     <artifactId>axiom-c14n</artifactId>
