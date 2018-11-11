@@ -52,19 +52,20 @@ public class MTOMSample extends TestCase {
         OMElement fileId = soapFactory.createOMElement(new QName("fileId"), retrieveContent);
         fileId.setText(id);
         
-        // Use the java.net.URL API to connect to the service
+        // Use the java.net.URL API to connect to the service and send the request
         URLConnection connection = serviceURL.openConnection();
         connection.setDoOutput(true);
-        connection.addRequestProperty("Content-Type", "text/xml; charset=UTF-8");
-        OutputStream out = connection.getOutputStream();
-        // Send the request
         OMOutputFormat format = new OMOutputFormat();
+        format.setDoOptimize(true);
         format.setCharSetEncoding("UTF-8");
+        connection.addRequestProperty("Content-Type", format.getContentType());
+        OutputStream out = connection.getOutputStream();
         request.serialize(out, format);
         out.close();
         
         // Get the SOAP response
         InputStream in = connection.getInputStream();
+        System.out.println(connection.getContentType());
         MultipartBody multipartBody = MultipartBody.builder()
                 .setInputStream(in)
                 .setContentType(connection.getContentType())
