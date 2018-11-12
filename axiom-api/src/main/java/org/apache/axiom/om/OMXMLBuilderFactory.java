@@ -20,6 +20,7 @@ package org.apache.axiom.om;
 
 import java.io.InputStream;
 import java.io.Reader;
+import java.text.ParseException;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
@@ -29,12 +30,15 @@ import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.mime.MediaType;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.Node;
@@ -714,11 +718,16 @@ public class OMXMLBuilderFactory {
      */
     public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory,
             MultipartBody message) {
-        String type = message.getRootPart().getContentType().getParameter("type");
+        MediaType type;
+        try {
+            type = new ContentType(message.getRootPart().getContentType().getParameter("type")).getMediaType();
+        } catch (ParseException ex) {
+            throw new OMException("Failed to parse root part content type", ex);
+        }
         SOAPFactory soapFactory;
-        if ("text/xml".equalsIgnoreCase(type)) {
+        if (type.equals(SOAPVersion.SOAP11.getMediaType())) {
             soapFactory = metaFactory.getSOAP11Factory();
-        } else if ("application/soap+xml".equalsIgnoreCase(type)) {
+        } else if (type.equals(SOAPVersion.SOAP12.getMediaType())) {
             soapFactory = metaFactory.getSOAP12Factory();
         } else {
             throw new OMException("Unable to determine SOAP version");

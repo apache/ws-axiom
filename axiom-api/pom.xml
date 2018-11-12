@@ -336,6 +336,7 @@
                                 org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPMessage,
                                 org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPModelBuilder,
                                 org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPProcessingException,
+                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPVersion,
                                 <!-- The public API shouldn't depend on classes in o.a.a.om.util -->
                                 org.apache.axiom.om.OMMetaFactorySPI -> org.apache.axiom.om.util.StAXParserConfiguration,
                                 org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.om.util.StAXParserConfiguration,

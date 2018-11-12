@@ -535,6 +535,16 @@
                 <artifactId>jaxb-runtime</artifactId>
                 <version>2.3.1</version>
             </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-server</artifactId>
+                <version>9.4.12.v20180830</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-webapp</artifactId>
+                <version>9.4.12.v20180830</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -738,6 +748,11 @@
                     <groupId>com.github.veithen.maven</groupId>
                     <artifactId>xjc-maven-plugin</artifactId>
                     <version>0.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.veithen.maven</groupId>
+                    <artifactId>wsimport-maven-plugin</artifactId>
+                    <version>0.3-SNAPSHOT</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>

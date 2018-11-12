@@ -35,6 +35,7 @@
         <module>compat-tests</module>
         <module>cross-om-tests</module>
         <module>eclipse-tests</module>
+        <module>jaxws-tests</module>
         <module>wildfly-tests</module>
         <module>old-tests</module>
         <module>osgi-tests</module>
