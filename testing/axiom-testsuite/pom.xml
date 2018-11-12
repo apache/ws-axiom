@@ -111,6 +111,9 @@
                         <goals>
                             <goal>xmlbeans</goal>
                         </goals>
+                        <configuration>
+                            <javaSource>1.7</javaSource>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
