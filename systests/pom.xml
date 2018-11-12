@@ -34,6 +34,7 @@
     <modules>
         <module>cross-om-tests</module>
         <module>eclipse-tests</module>
+        <module>jaxws-tests</module>
         <module>jboss-tests</module>
         <module>old-tests</module>
         <module>osgi-tests</module>
