@@ -22,7 +22,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.springws.SpringWSTestCase;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
@@ -49,14 +49,12 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
     
     @Override
     protected void setUp() throws Exception {
-        server = new Server();
-        
         // Set up a custom thread pool to improve thread names (for logging purposes)
         QueuedThreadPool threadPool = new QueuedThreadPool();
         threadPool.setName("jetty");
-        server.setThreadPool(threadPool);
+        server = new Server(threadPool);
         
-        Connector connector = new SelectChannelConnector();
+        ServerConnector connector = new ServerConnector(server);
         connector.setPort(0);
         server.setConnectors(new Connector[] { connector });
         ServletContextHandler handler = new ServletContextHandler(server, "/");
