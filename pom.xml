@@ -261,8 +261,8 @@
         <shade.plugin.version>2.3</shade.plugin.version>
         <enforcer.plugin.version>1.4.1</enforcer.plugin.version>
         <jacoco.version>0.7.5.201505241946</jacoco.version>
-        <spring.version>4.2.1.RELEASE</spring.version>
-        <springws.version>2.2.4.RELEASE</springws.version>
+        <spring.version>4.3.9.RELEASE</spring.version>
+        <springws.version>2.4.0.RELEASE</springws.version>
         <exam.version>4.7.0</exam.version>
         
         <skipDeploy>false</skipDeploy>
@@ -545,6 +545,11 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-jdk14</artifactId>
                 <version>1.5.11</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>5.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
