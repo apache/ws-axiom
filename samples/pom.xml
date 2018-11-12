@@ -71,13 +71,8 @@
              support seems to be broken (or at least to have to behave differently).
              To avoid that problem, we use CXF as the JAX-WS implementation. -->
         <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
