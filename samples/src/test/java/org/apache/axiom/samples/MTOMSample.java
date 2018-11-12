@@ -65,7 +65,6 @@ public class MTOMSample extends TestCase {
         
         // Get the SOAP response
         InputStream in = connection.getInputStream();
-        System.out.println(connection.getContentType());
         MultipartBody multipartBody = MultipartBody.builder()
                 .setInputStream(in)
                 .setContentType(connection.getContentType())
