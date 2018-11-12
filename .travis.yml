@@ -23,6 +23,7 @@ jdk:
   - openjdk9
   - openjdk10
   - openjdk11
+before_install: if [ -e $JAVA_HOME/lib/security/cacerts ]; then ln -sf /etc/ssl/certs/java/cacerts $JAVA_HOME/lib/security/cacerts; fi
 install: true
 script: mvn -B -Papache-release -Dgpg.skip=true verify
 cache:
