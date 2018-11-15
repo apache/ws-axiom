@@ -88,7 +88,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
         }
 
         if(file!=null && file.exists()){
-            table.remove(file);
+            table.remove(file.getName());
             if(log.isDebugEnabled()){
                 log.debug("invoking file.delete()");
             }
@@ -135,7 +135,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
                 log.debug("Invoking deleteOnExit() for file = "+file.getAbsolutePath());
             }
             hook.add(file);
-            table.remove(file);
+            table.remove(file.getName());
         }
         if(log.isDebugEnabled()){
             log.debug("End deleteOnExit()");
@@ -203,7 +203,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
             try{
                 Thread.sleep(interval*1000);
                 if(_file.exists()){
-                    table.remove(_file);
+                    table.remove(_file.getName());
                     _file.delete();
                 }
             }catch(InterruptedException e){
