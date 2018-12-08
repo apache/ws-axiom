@@ -26,6 +26,7 @@ jdk:
 before_install: if [ -e $JAVA_HOME/lib/security/cacerts ]; then ln -sf /etc/ssl/certs/java/cacerts $JAVA_HOME/lib/security/cacerts; fi
 install: true
 script: mvn -B -Papache-release -Dgpg.skip=true verify
+before_cache: "find $HOME/.m2 -name '*-SNAPSHOT' -a -type d -print0 | xargs -0 rm -rf"
 cache:
   directories:
     - $HOME/.m2
