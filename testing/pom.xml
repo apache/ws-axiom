@@ -46,6 +46,18 @@
         <module>jaxp-testsuite</module>
     </modules>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.veithen.maven</groupId>
+                <artifactId>jacoco-report-maven-plugin</artifactId>
+                <configuration>
+                    <includeClasses>false</includeClasses>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <reporting>
         <plugins>
             <plugin>
