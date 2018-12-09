@@ -66,6 +66,14 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-compat</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>om-aspects</artifactId>
             <version>${project.version}</version>
         </dependency>
