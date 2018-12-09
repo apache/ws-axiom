@@ -67,6 +67,13 @@
                     </signature>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.github.veithen.maven</groupId>
+                <artifactId>jacoco-report-maven-plugin</artifactId>
+                <configuration>
+                    <includeClasses>false</includeClasses>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
