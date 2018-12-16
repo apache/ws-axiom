@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.ds.jaxb.JAXBOMDataSource;
 import org.apache.axiom.om.util.jaxb.JAXBUtils;
+import org.apache.axiom.testutils.activation.TextDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxb.beans.DocumentBean;
 
@@ -40,7 +41,7 @@ public class TestUnmarshalWithDataHandler extends AxiomTestCase {
         JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
         DocumentBean orgBean = new DocumentBean();
         orgBean.setId("AB23498");
-        orgBean.setContent(new DataHandler("test content", "text/plain"));
+        orgBean.setContent(new DataHandler(new TextDataSource("test content", "utf-8", "plain")));
         OMElement element = factory.createOMElement(new JAXBOMDataSource(context, orgBean));
         DocumentBean bean = (DocumentBean)JAXBUtils.unmarshal(element, context, null, true);
         assertEquals(orgBean.getId(), bean.getId());
