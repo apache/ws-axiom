@@ -443,6 +443,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestUnmarshalWithDataHandler(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestUnmarshalWithDeclaredType(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextTo(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextToWithNonTextNodes(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.sr.TestCloseAndContinueBuilding(metaFactory, true));
