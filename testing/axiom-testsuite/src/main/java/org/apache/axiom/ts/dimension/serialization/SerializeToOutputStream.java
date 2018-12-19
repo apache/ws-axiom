@@ -25,8 +25,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
- * Serializes an {@link OMContainer} using {@link OMContainer#serialize(OutputStream)} or
- * {@link OMContainer#serializeAndConsume(OutputStream)}.
+ * Serializes an {@link OMContainer} using {@link OMContainer#serialize(OutputStream, boolean)}.
  */
 public class SerializeToOutputStream extends SerializationStrategy {
     private final boolean cache;
@@ -44,11 +43,7 @@ public class SerializeToOutputStream extends SerializationStrategy {
     @Override
     public XML serialize(OMContainer container) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        if (cache) {
-            container.serialize(baos);
-        } else {
-            container.serializeAndConsume(baos);
-        }
+        container.serialize(baos, cache);
         return new XMLAsByteArray(baos.toByteArray());
     }
 

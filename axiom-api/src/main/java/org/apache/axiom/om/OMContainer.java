@@ -32,6 +32,7 @@ import org.xml.sax.DTDHandler;
 import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Iterator;
@@ -146,32 +147,36 @@ public interface OMContainer extends OMSerializable {
     void removeChildren();
     
     /**
-     * Serialize the node with caching enabled.
+     * Serialize the node.
      * <p>
      * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
      * containing optimized binary will be inlined using base64 encoding.
      * 
      * @param output
      *            the byte stream to write the serialized infoset to
-     * @throws XMLStreamException
+     * @param cache
+     *            indicates if caching should be enabled
+     * @throws IOException if the stream throws an {@link IOException}
      */
     // TODO: need to specify which charset encoding the method will use, in particular for OMDocument nodes
-    void serialize(OutputStream output) throws XMLStreamException;
+    void serialize(OutputStream output, boolean cache) throws IOException;
 
     /**
-     * Serialize the node with caching enabled.
+     * Serialize the node.
      * <p>
      * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
      * containing optimized binary will be inlined using base64 encoding.
      * 
      * @param writer
      *            the character stream to write the serialized infoset to
-     * @throws XMLStreamException
+     * @param cache
+     *            indicates if caching should be enabled
+     * @throws IOException if the stream throws an {@link IOException}
      */
-    void serialize(Writer writer) throws XMLStreamException;
+    void serialize(Writer writer, boolean cache) throws IOException;
 
     /**
-     * Serialize the node with caching enabled.
+     * Serialize the node.
      * <p>
      * The format of the output is controlled by the provided {@link OMOutputFormat} object. In
      * particular, {@link OMOutputFormat#setDoOptimize(boolean)} can be used to instruct this method
@@ -181,75 +186,67 @@ public interface OMContainer extends OMSerializable {
      *            the byte stream to write the serialized infoset to
      * @param format
      *            the output format to use
-     * @throws XMLStreamException
+     * @param cache
+     *            indicates if caching should be enabled
+     * @throws IOException if the stream throws an {@link IOException}
      */
-    void serialize(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException;
+    void serialize(OutputStream output, OMOutputFormat format, boolean cache) throws IOException;
 
     /**
-     * Serialize the node with caching enabled.
+     * Serialize the node.
      *
      * @param writer
      *            the character stream to write the serialized infoset to
      * @param format
      *            the output format to use
-     * @throws XMLStreamException
+     * @param cache
+     *            indicates if caching should be enabled
+     * @throws IOException if the stream throws an {@link IOException}
      */
-    void serialize(Writer writer, OMOutputFormat format)
-            throws XMLStreamException;
+    // TODO: need to clarify what OMOutputFormat settings are actually taken into account
+    //       (obviously the method can't produce XOP/MTOM and the charset encoding is ignored)
+    void serialize(Writer writer, OMOutputFormat format, boolean cache) throws IOException;
 
     /**
-     * Serialize the node without caching.
-     * <p>
-     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
-     * containing optimized binary will be inlined using base64 encoding.
-     *
-     * @param output
-     *            the byte stream to write the serialized infoset to
-     * @throws XMLStreamException
+     * @deprecated Use {@link #serialize(OutputStream, boolean)} instead.
+     */
+    void serialize(OutputStream output) throws XMLStreamException;
+
+    /**
+     * @deprecated Use {@link #serialize(Writer, boolean)} instead.
+     */
+    void serialize(Writer writer) throws XMLStreamException;
+
+    /**
+     * @deprecated Use {@link #serialize(OutputStream, OMOutputFormat, boolean)} instead.
+     */
+    void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException;
+
+    /**
+     * @deprecated Use {@link #serialize(Writer, OMOutputFormat, boolean)} instead.
+     */
+    void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException;
+
+    /**
+     * @deprecated Use {@link #serialize(OutputStream, boolean)} instead.
      */
     void serializeAndConsume(OutputStream output)
             throws XMLStreamException;
 
     /**
-     * Serialize the node without caching.
-     * <p>
-     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
-     * containing optimized binary will be inlined using base64 encoding.
-     *
-     * @param writer
-     *            the character stream to write the serialized infoset to
-     * @throws XMLStreamException
+     * @deprecated Use {@link #serialize(Writer, boolean)} instead.
      */
     void serializeAndConsume(Writer writer) throws XMLStreamException;
 
     /**
-     * Serialize the node without caching.
-     * <p>
-     * The format of the output is controlled by the provided {@link OMOutputFormat} object. In
-     * particular, {@link OMOutputFormat#setDoOptimize(boolean)} can be used to instruct this method
-     * to produce an XOP/MTOM encoded MIME message.
-     *
-     * @param output
-     *            the byte stream to write the serialized infoset to
-     * @param format
-     *            the output format to use
-     * @throws XMLStreamException
+     * @deprecated Use {@link #serialize(OutputStream, OMOutputFormat, boolean)} instead.
      */
     void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
-     * Serialize the node without caching.
-     *
-     * @param writer
-     *            the character stream to write the serialized infoset to
-     * @param format
-     *            the output format to use
-     * @throws XMLStreamException
+     * @deprecated Use {@link #serialize(Writer, OMOutputFormat, boolean)} instead.
      */
-    // TODO: need to clarify what OMOutputFormat settings are actually taken into account
-    //       (obviously the method can't produce XOP/MTOM and the charset encoding is ignored)
     void serializeAndConsume(Writer writer, OMOutputFormat format)
             throws XMLStreamException;
 

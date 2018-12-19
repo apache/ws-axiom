@@ -25,8 +25,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
- * Serializes an {@link OMContainer} using {@link OMContainer#serialize(Writer)} or
- * {@link OMContainer#serializeAndConsume(Writer)}.
+ * Serializes an {@link OMContainer} using {@link OMContainer#serialize(Writer, boolean)}.
  */
 public class SerializeToWriter extends SerializationStrategy {
     private final boolean cache;
@@ -44,11 +43,7 @@ public class SerializeToWriter extends SerializationStrategy {
     @Override
     public XML serialize(OMContainer container) throws Exception {
         StringWriter sw = new StringWriter();
-        if (cache) {
-            container.serialize(sw);
-        } else {
-            container.serializeAndConsume(sw);
-        }
+        container.serialize(sw, cache);
         return new XMLAsString(sw.toString());
     }
 

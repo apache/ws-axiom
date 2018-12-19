@@ -63,11 +63,6 @@ Axiom 1.3 to meet the following requirements:
     Therefore methods defined by the Axiom API should only declare `XMLStreamException` if they interact
     directly with a StAX object supplied by application code.
 
-    A good example is the `OMContainer#serialize(OutputStream)` method. In Axiom 1.2.x this method
-    is declared to throw `XMLStreamException`. This assumes that the implementation necessarily uses
-    StAX as XML serializer. This is a wrong assumption, because the implementation is free to use its
-    own serializer. Also note that the method doesn't declare `IOException` which would be much more relevant.
-   
 *   Axiom should have well-defined (and distinct) exceptions for at least the following two error cases:
 
     *   An I/O error occurs during a deferred parsing operation. In that case, the unchecked exception should

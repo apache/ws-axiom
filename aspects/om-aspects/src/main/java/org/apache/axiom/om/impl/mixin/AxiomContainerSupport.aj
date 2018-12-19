@@ -237,7 +237,7 @@ public aspect AxiomContainerSupport {
         return result;
     }
 
-    private void AxiomContainer.serialize(XmlHandler handler, NamespaceContextProvider namespaceContextProvider, OMOutputFormat format, boolean cache) throws XMLStreamException {
+    private void AxiomContainer.serialize(XmlHandler handler, NamespaceContextProvider namespaceContextProvider, OMOutputFormat format, boolean cache) throws StreamException {
         handler = new XmlDeclarationRewriterHandler(handler, format);
         CoreElement contextElement = getContextElement();
         if (contextElement != null) {
@@ -248,22 +248,41 @@ public aspect AxiomContainerSupport {
             internalSerialize(handler, cache);
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
+        }
+    }
+
+    private void AxiomContainer.serializeAndSurfaceIOException(XmlHandler handler, NamespaceContextProvider namespaceContextProvider, OMOutputFormat format, boolean cache) throws IOException {
+        try {
+            serialize(handler, namespaceContextProvider, format, cache);
         } catch (StreamException ex) {
-            throw AxiomExceptionTranslator.toXMLStreamException(ex);
+            Throwable cause = ex.getCause();
+            if (cause instanceof IOException) {
+                throw (IOException)cause;
+            } else {
+                throw new OMException(ex);
+            }
         }
     }
 
     public abstract CoreElement AxiomContainer.getContextElement();
     
     public final void AxiomContainer.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        serialize(new XMLStreamWriterHandler(writer), new XMLStreamWriterNamespaceContextProvider(writer), new OMOutputFormat(), cache);
+        try {
+            serialize(new XMLStreamWriterHandler(writer), new XMLStreamWriterNamespaceContextProvider(writer), new OMOutputFormat(), cache);
+        } catch (StreamException ex) {
+            throw AxiomExceptionTranslator.toXMLStreamException(ex);
+        }
     }
 
-    private void AxiomContainer.serialize(Writer writer, boolean cache) throws XMLStreamException {
+    public final void AxiomContainer.serialize(Writer writer, boolean cache) throws IOException {
         serialize(writer, new OMOutputFormat(), cache);
     }
 
-    private void AxiomContainer.serialize(OutputStream out, final OMOutputFormat format, final boolean cache) throws XMLStreamException {
+    public final void AxiomContainer.serialize(OutputStream out, boolean cache) throws IOException {
+        serialize(out, new OMOutputFormat(), cache);
+    }
+
+    public final void AxiomContainer.serialize(OutputStream out, OMOutputFormat format, boolean cache) throws IOException {
         String encoding = format.getCharSetEncoding();
         if (encoding == null) { //Default encoding is UTF-8
             format.setCharSetEncoding(encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
@@ -273,11 +292,7 @@ public aspect AxiomContainerSupport {
         OutputStream rootPartOutputStream;
         if (format.isOptimized()) {
             multipartWriter = new OMMultipartWriter(out, format);
-            try {
-                rootPartOutputStream = multipartWriter.writeRootPart();
-            } catch (IOException ex) {
-                throw new XMLStreamException(ex);
-            }
+            rootPartOutputStream = multipartWriter.writeRootPart();
         } else {
             multipartWriter = null;
             rootPartOutputStream = out;
@@ -297,30 +312,26 @@ public aspect AxiomContainerSupport {
             encoder = null;
         }
         
-        serialize(handler, null, format, cache);
+        serializeAndSurfaceIOException(handler, null, format, cache);
 
         if (encoder != null) {
-            try {
-                rootPartOutputStream.close();
-                for (String contentID : encoder.getContentIDs()) {
-                    DataHandler dataHandler = encoder.getDataHandler(contentID);
-                    if (cache || !(dataHandler instanceof PartDataHandler)) {
-                        multipartWriter.writePart(dataHandler, contentID);
-                    } else {
-                        OutputStream part = multipartWriter.writePart(dataHandler.getContentType(), contentID);
-                        IOUtils.copy(((PartDataHandler)dataHandler).getPart().getInputStream(false), part, -1);
-                        part.close();
-                    }
+            rootPartOutputStream.close();
+            for (String contentID : encoder.getContentIDs()) {
+                DataHandler dataHandler = encoder.getDataHandler(contentID);
+                if (cache || !(dataHandler instanceof PartDataHandler)) {
+                    multipartWriter.writePart(dataHandler, contentID);
+                } else {
+                    OutputStream part = multipartWriter.writePart(dataHandler.getContentType(), contentID);
+                    IOUtils.copy(((PartDataHandler)dataHandler).getPart().getInputStream(false), part, -1);
+                    part.close();
                 }
-                multipartWriter.complete();
-            } catch (IOException ex) {
-                throw new XMLStreamException(ex);
             }
+            multipartWriter.complete();
         };
     }
 
-    private void AxiomContainer.serialize(Writer writer, OMOutputFormat format, boolean cache) throws XMLStreamException {
-        serialize(new Serializer(writer), null, format, cache);
+    public final void AxiomContainer.serialize(Writer writer, OMOutputFormat format, boolean cache) throws IOException {
+        serializeAndSurfaceIOException(new Serializer(writer), null, format, cache);
     }
 
     public final void AxiomContainer.serialize(OutputStream output) throws XMLStreamException {
@@ -332,27 +343,51 @@ public aspect AxiomContainerSupport {
     }
 
     public final void AxiomContainer.serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        serialize(output, format, true);
+        try {
+            serialize(output, format, true);
+        } catch (IOException ex) {
+            throw new XMLStreamException(ex);
+        }
     }
 
     public final void AxiomContainer.serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        serialize(output, format, false);
+        try {
+            serialize(output, format, false);
+        } catch (IOException ex) {
+            throw new XMLStreamException(ex);
+        }
     }
 
     public final void AxiomContainer.serialize(Writer writer) throws XMLStreamException {
-        serialize(writer, true);
+        try {
+            serialize(writer, true);
+        } catch (IOException ex) {
+            throw new XMLStreamException(ex);
+        }
     }
 
     public final void AxiomContainer.serializeAndConsume(Writer writer) throws XMLStreamException {
-        serialize(writer, false);
+        try {
+            serialize(writer, false);
+        } catch (IOException ex) {
+            throw new XMLStreamException(ex);
+        }
     }
 
     public final void AxiomContainer.serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        serialize(writer, format, true);
+        try {
+            serialize(writer, format, true);
+        } catch (IOException ex) {
+            throw new XMLStreamException(ex);
+        }
     }
 
     public final void AxiomContainer.serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        serialize(writer, format, false);
+        try {
+            serialize(writer, format, false);
+        } catch (IOException ex) {
+            throw new XMLStreamException(ex);
+        }
     }
 
     public final void AxiomContainer.close(boolean build) {
