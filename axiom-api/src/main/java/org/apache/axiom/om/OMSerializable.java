@@ -121,10 +121,10 @@ public interface OMSerializable extends OMInformationItem {
      * repairing.
      * </ul>
      * 
-     * @param xmlWriter
+     * @param writer
      * @param cache
      *            indicates if caching should be enabled
-     * @throws XMLStreamException
+     * @throws XMLStreamException if an exception was thrown by {@code writer}
      */
-    void serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException;
+    void serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException;
 }

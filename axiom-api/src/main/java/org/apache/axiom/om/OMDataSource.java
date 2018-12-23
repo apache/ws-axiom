@@ -150,11 +150,12 @@ public interface OMDataSource {
      * the data source also implements {@link OMDataSourceExt} and
      * {@link OMDataSourceExt#isDestructiveWrite()} returns <code>false</code>.
      * 
-     * @param xmlWriter
+     * @param writer
      *            destination writer
-     * @throws XMLStreamException
+     * @throws XMLStreamException if an exception was thrown by {@code writer}; implementations
+     *                            should throw unchecked exceptions in all other cases
      */
-    void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException;
+    void serialize(XMLStreamWriter writer) throws XMLStreamException;
 
     /**
      * Get parser for element data. In the general case this may require the data source to

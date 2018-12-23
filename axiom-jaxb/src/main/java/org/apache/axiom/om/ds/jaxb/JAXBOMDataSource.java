@@ -97,7 +97,7 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameA
                 }
                 cause = cause.getCause();
             }
-            throw new XMLStreamException("Error marshalling JAXB object", ex);
+            throw new OMException("Error marshalling JAXB object", ex);
         }
     }
 
