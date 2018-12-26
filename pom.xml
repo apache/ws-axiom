@@ -218,7 +218,6 @@
         <module>userguide</module>
         <module>apidocs</module>
         <module>distribution</module>
-        <module>code-coverage</module>
         <module>testing</module>
         <module>aspects</module>
         <module>implementations</module>
@@ -985,7 +984,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>check-jacoco-exec</id>
+                        <id>check-tmp-dir</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>execute</goal>
@@ -997,10 +996,6 @@
                                     
                                     if (new File(project.build.directory, 'tmp').listFiles().length > 0) {
                                         throw new Error("Temporary directory not empty");
-                                    }
-                                    
-                                    if (project.properties['skipJacoco'] == 'true' || !new File(project.build.directory, 'jacoco.exec').exists()) {
-                                        project.properties['skipJacocoAttach'] = 'true'
                                     }
                                 </script>
                             </scripts>
@@ -1151,29 +1146,6 @@
                         <goals>
                             <goal>process</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-jacoco-exec</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <skipAttach>${skipJacocoAttach}</skipAttach>
-                            <artifacts>
-                                <artifact>
-                                    <file>${project.build.directory}/jacoco.exec</file>
-                                    <classifier>jacoco</classifier>
-                                    <type>exec</type>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
