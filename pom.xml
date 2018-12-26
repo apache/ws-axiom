@@ -258,7 +258,6 @@
         -->
         <aspectj.version>1.9.1</aspectj.version>
         <shade.plugin.version>2.3</shade.plugin.version>
-        <jacoco.version>0.8.2</jacoco.version>
         <spring.version>5.0.1.RELEASE</spring.version>
         <springws.version>3.0.3.RELEASE</springws.version>
         <exam.version>4.12.0</exam.version>
@@ -580,7 +579,7 @@
                              the data instead of loading it into memory). Obviously, the execution time of
                              these tests also are proportional to the heap size. To accelerate the execution
                              of the tests, we should use a heap size as small as possible. -->
-                        <argLine>-Xms16m -Xmx48m ${jacoco.surefireArgLine} ${securityManagerArgs}</argLine>
+                        <argLine>${argLine} -Xms16m -Xmx48m ${securityManagerArgs}</argLine>
                         <trimStackTrace>false</trimStackTrace>
                         <systemProperties>
                             <property>
@@ -620,7 +619,7 @@
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>2.19</version>
                     <configuration>
-                        <argLine>${jacoco.failsafeArgLine} ${securityManagerArgs}</argLine>
+                        <argLine>${argLine} ${securityManagerArgs}</argLine>
                         <trimStackTrace>false</trimStackTrace>
                         <systemProperties>
                             <property>
@@ -1104,38 +1103,20 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
+                <version>0.8.2</version>
                 <executions>
                     <execution>
-                        <id>prepare-agent-for-surefire</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <propertyName>jacoco.surefireArgLine</propertyName>
-                            <!-- Anonymize the session ID (by default it contains the name of the host executing the build) -->
-                            <sessionId>mvn:${project.groupId}:${project.artifactId}:${project.version}:surefire</sessionId>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>prepare-agent-for-failsafe</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <propertyName>jacoco.failsafeArgLine</propertyName>
-                            <sessionId>mvn:${project.groupId}:${project.artifactId}:${project.version}:failsafe</sessionId>
+                            <skip>${skipJacoco}</skip>
+                            <includes>
+                                <include>org.apache.axiom.*</include>
+                            </includes>
                         </configuration>
                     </execution>
                 </executions>
-                <!-- Configure this on the plugin, not on the execution: it also applies to additional executions
-                     configured in individual modules -->
-                <configuration>
-                    <skip>${skipJacoco}</skip>
-                    <includes>
-                        <include>org.apache.axiom.*</include>
-                    </includes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.github.veithen.maven</groupId>
