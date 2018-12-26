@@ -1137,7 +1137,7 @@
             <plugin>
                 <groupId>com.github.veithen.maven</groupId>
                 <artifactId>jacoco-report-maven-plugin</artifactId>
-                <version>0.1-SNAPSHOT</version>
+                <version>0.1.1</version>
                 <executions>
                     <execution>
                         <goals>
