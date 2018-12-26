@@ -86,7 +86,6 @@
                             <artifactId>org.apache.ws.commons.axiom.axiom-dom</artifactId>
                         </dependency>
                     </dependencies>
-                    <argLine>${jacoco.surefireArgLine}</argLine>
                 </configuration>
             </plugin>
             <plugin>

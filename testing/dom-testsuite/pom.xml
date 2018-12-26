@@ -263,7 +263,7 @@
                 <configuration>
                     <!-- This is necessary to execute the tests with the IBM JRE: we need to endorse the particular Xerces version
                          we want to use because the JRE already contains Xerces. -->
-                    <argLine>${jacoco.surefireArgLine} -Xbootclasspath/p:${surefire.bootclasspath}</argLine>
+                    <argLine>${argLine} -Xbootclasspath/p:${surefire.bootclasspath}</argLine>
                 </configuration>
             </plugin>
         </plugins>
