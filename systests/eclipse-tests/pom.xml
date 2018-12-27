@@ -31,11 +31,6 @@
     <name>Eclipse Tests</name>
     <description>Contains test cases that verify that the Axiom OSGi bundles are usable out of the box by Eclipse plug-ins.</description>
 
-    <properties>
-        <!-- TODO -->
-        <nonHermeticTests>true</nonHermeticTests>
-    </properties>
-
     <repositories>
         <repository>
             <id>oxygen</id>
@@ -115,6 +110,14 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.veithen.maven</groupId>
+                <artifactId>hermetic-maven-plugin</artifactId>
+                <configuration>
+                    <!-- TODO -->
+                    <skip>true</skip>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>

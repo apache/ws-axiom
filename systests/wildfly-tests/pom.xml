@@ -35,7 +35,6 @@
         <wildfly.version>14.0.1.Final</wildfly.version>
         <wildfly.home>${project.build.directory}/wildfly-${wildfly.version}</wildfly.home>
         <wildfly.jigsawArgs></wildfly.jigsawArgs>
-        <nonHermeticTests>true</nonHermeticTests>
     </properties>
 
     <dependencies>
@@ -72,6 +71,13 @@
             </testResource>
         </testResources>
         <plugins>
+            <plugin>
+                <groupId>com.github.veithen.maven</groupId>
+                <artifactId>hermetic-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>

@@ -263,7 +263,6 @@
         <exam.version>4.12.0</exam.version>
         
         <skipDeploy>false</skipDeploy>
-        <hermeticTests>true</hermeticTests>
     </properties>
 
     <repositories>
