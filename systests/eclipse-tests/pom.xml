@@ -33,7 +33,7 @@
 
     <properties>
         <!-- TODO -->
-        <hermeticTests>false</hermeticTests>
+        <nonHermeticTests>true</nonHermeticTests>
     </properties>
 
     <repositories>

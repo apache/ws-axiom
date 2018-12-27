@@ -35,7 +35,7 @@
         <wildfly.version>14.0.1.Final</wildfly.version>
         <wildfly.home>${project.build.directory}/wildfly-${wildfly.version}</wildfly.home>
         <wildfly.jigsawArgs></wildfly.jigsawArgs>
-        <hermeticTests>false</hermeticTests>
+        <nonHermeticTests>true</nonHermeticTests>
     </properties>
 
     <dependencies>
