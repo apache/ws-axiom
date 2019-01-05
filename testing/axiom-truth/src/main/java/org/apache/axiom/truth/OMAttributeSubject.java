@@ -21,12 +21,12 @@ package org.apache.axiom.truth;
 import org.apache.axiom.om.OMAttribute;
 
 import com.google.common.base.Objects;
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 
 public final class OMAttributeSubject extends Subject<OMAttributeSubject,OMAttribute>{
-    OMAttributeSubject(FailureStrategy failureStrategy, OMAttribute subject) {
-        super(failureStrategy, subject);
+    OMAttributeSubject(FailureMetadata failureMetadata, OMAttribute subject) {
+        super(failureMetadata, subject);
     }
 
     public void hasValue(String expected) {

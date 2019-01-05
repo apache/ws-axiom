@@ -23,11 +23,11 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 
 public final class OMElementSubject extends AbstractOMContainerSubject<OMElementSubject,OMElement> {
-    OMElementSubject(FailureStrategy failureStrategy, OMElement subject) {
-        super(failureStrategy, subject);
+    OMElementSubject(FailureMetadata failureMetadata, OMElement subject) {
+        super(failureMetadata, subject);
     }
 
     public void hasNoNamespaceDeclarations() {

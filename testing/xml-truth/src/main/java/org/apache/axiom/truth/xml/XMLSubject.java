@@ -32,7 +32,7 @@ import org.apache.axiom.truth.xml.spi.Traverser;
 import org.apache.axiom.truth.xml.spi.TraverserException;
 import org.apache.axiom.truth.xml.spi.XML;
 
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 
 /**
@@ -51,8 +51,8 @@ public final class XMLSubject extends Subject<XMLSubject,Object> {
     private boolean expandEntityReferences;
     private boolean treatWhitespaceAsText;
     
-    XMLSubject(FailureStrategy failureStrategy, Object subject) {
-        super(failureStrategy, subject);
+    XMLSubject(FailureMetadata metadata, Object subject) {
+        super(metadata, subject);
         xml = XMLTruth.xml(subject);
     }
 

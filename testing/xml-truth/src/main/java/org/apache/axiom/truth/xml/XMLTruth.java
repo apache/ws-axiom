@@ -40,21 +40,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
-import com.google.common.truth.AbstractVerb.DelegatedVerb;
-import com.google.common.truth.FailureStrategy;
-import com.google.common.truth.SubjectFactory;
+import com.google.common.truth.FailureMetadata;
+import com.google.common.truth.Subject;
 import com.google.common.truth.Truth;
 
 /**
  * Google Truth extension for XML.
  */
 public final class XMLTruth {
-    private static final SubjectFactory<XMLSubject,Object> SUBJECT_FACTORY = new SubjectFactory<XMLSubject,Object>() {
+    private static final Subject.Factory<XMLSubject,Object> SUBJECT_FACTORY = new Subject.Factory<XMLSubject,Object>() {
         @Override
-        public XMLSubject getSubject(FailureStrategy fs, Object that) {
-            return new XMLSubject(fs, that);
+        public XMLSubject createSubject(FailureMetadata metadata, Object that) {
+            return new XMLSubject(metadata, that);
         }
-        
     };
     
     private static final List<XMLFactory<?>> factories;
@@ -241,11 +239,11 @@ public final class XMLTruth {
     private XMLTruth() {}
 
     /**
-     * Get the {@link SubjectFactory} to be used with {@link Truth#assertAbout(SubjectFactory)}.
+     * Get the {@link Subject.Factory} to be used with {@link Truth#assertAbout(Subject.Factory)}.
      * 
-     * @return a {@link SubjectFactory} for {@link XMLSubject} instances
+     * @return a {@link Subject.Factory} for {@link XMLSubject} instances
      */
-    public static SubjectFactory<XMLSubject,Object> xml() {
+    public static Subject.Factory<XMLSubject, Object> xml() {
         return SUBJECT_FACTORY;
     }
 
