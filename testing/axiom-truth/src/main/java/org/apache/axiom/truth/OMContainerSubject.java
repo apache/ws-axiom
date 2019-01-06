@@ -20,10 +20,10 @@ package org.apache.axiom.truth;
 
 import org.apache.axiom.om.OMContainer;
 
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 
 public final class OMContainerSubject extends AbstractOMContainerSubject<OMContainerSubject,OMContainer> {
-    OMContainerSubject(FailureStrategy failureStrategy, OMContainer subject) {
-        super(failureStrategy, subject);
+    OMContainerSubject(FailureMetadata failureMetadata, OMContainer subject) {
+        super(failureMetadata, subject);
     }
 }

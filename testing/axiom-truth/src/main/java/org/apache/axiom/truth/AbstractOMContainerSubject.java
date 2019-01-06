@@ -21,12 +21,12 @@ package org.apache.axiom.truth;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 
 public abstract class AbstractOMContainerSubject<S extends AbstractOMContainerSubject<S,T>,T extends OMContainer> extends Subject<S,T> {
-    public AbstractOMContainerSubject(FailureStrategy failureStrategy, T subject) {
-        super(failureStrategy, subject);
+    public AbstractOMContainerSubject(FailureMetadata failureMetadata, T subject) {
+        super(failureMetadata, subject);
     }
 
     public final void hasNumberOfChildren(int expected) {
