@@ -41,6 +41,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 import com.google.common.truth.FailureMetadata;
+import com.google.common.truth.SimpleSubjectBuilder;
 import com.google.common.truth.Subject;
 import com.google.common.truth.Truth;
 
@@ -256,7 +257,7 @@ public final class XMLTruth {
      *            the API to use (e.g. {@link Document}
      * @param object
      *            an object implementing that API
-     * @return an object that can be passed to {@link DelegatedVerb#that(Object)} or
+     * @return an object that can be passed to {@link SimpleSubjectBuilder#that(Object)} or
      *         {@link XMLSubject#hasSameContentAs(Object)}
      */
     public static <T> Object xml(Class<T> type, T object) {
