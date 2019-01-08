@@ -28,7 +28,7 @@
 
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom</artifactId>
-    <version>1.2.23-SNAPSHOT</version>
+    <version>1.2.22-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Axiom</name>
@@ -933,7 +933,7 @@
                                 <script>
                                     import java.io.File
                                     
-                                    if (new File(project.build.directory, 'tmp').listFiles().length &gt; 0) {
+                                    if (new File(project.build.directory, 'tmp').listFiles().length > 0) {
                                         throw new Error("Temporary directory not empty");
                                     }
                                 </script>
