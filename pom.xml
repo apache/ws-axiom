@@ -734,6 +734,7 @@
                     <version>3.0.1</version>
                     <configuration>
                         <detectOfflineLinks>false</detectOfflineLinks>
+                        <source>1.7</source>
                     </configuration>
                 </plugin>
                 <plugin>
