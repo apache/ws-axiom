@@ -17,6 +17,7 @@
  * under the License.
  */
 import static org.junit.Assert.assertEquals;
+import static org.ops4j.pax.exam.CoreOptions.frameworkProperty;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
@@ -29,6 +30,7 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.dom.DOMMetaFactory;
+import org.eclipse.osgi.internal.location.EquinoxLocations;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -48,6 +50,7 @@ public class EclipseTest {
     @Configuration
     public static Option[] configuration() {
         return options(
+                frameworkProperty(EquinoxLocations.PROP_HOME_LOCATION_AREA).value("target"),
                 // Don't start bundles. We expect Equinox to start them lazily.
                 url("link:classpath:org.apache.james.apache-mime4j-core.link").start(false),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link").start(false),
