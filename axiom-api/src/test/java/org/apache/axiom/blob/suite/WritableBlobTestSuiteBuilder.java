@@ -57,6 +57,7 @@ public class WritableBlobTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestReadFromWithError(factory));
         addTest(new TestReadZeroLength(factory));
         addTest(new TestReleaseTwice(factory));
+        addTest(new TestResetWithoutMark(factory));
         addTest(new TestSkip(factory));
         addTest(new TestWriteAfterCommit(factory));
         addTest(new TestWriteToIllegalState(factory, State.NEW));
