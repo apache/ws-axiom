@@ -25,7 +25,7 @@ final class MemoryBlobInputStreamImpl extends MemoryBlobInputStream {
     private int markIndex;
     
     MemoryBlobInputStreamImpl(MemoryBlobChunk firstChunk) {
-        chunk = firstChunk;
+        markChunk = chunk = firstChunk;
     }
 
     private void updateChunk() {
