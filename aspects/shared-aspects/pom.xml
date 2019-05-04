@@ -27,7 +27,6 @@
     </parent>
 
     <artifactId>shared-aspects</artifactId>
-    <packaging>bundle</packaging>
 
     <name>Shared Aspects</name>
     <description>

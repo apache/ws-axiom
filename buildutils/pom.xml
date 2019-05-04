@@ -36,7 +36,6 @@
         <module>buildutils-maven-plugin</module>
         <module>jar-resource-bundle</module>
         <module>shade-axiom-xml</module>
-        <module>shade-osgi</module>
         <module>no-package-cycles-enforcer-rule</module>
     </modules>
 

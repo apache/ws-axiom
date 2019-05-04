@@ -225,10 +225,14 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>*;-noimport:=true</Export-Package>
+                        <Private-Package />
+                        <Export-Package>
+                            org.apache.axiom.*;-split-package:=merge-first;-noimport:=true
+                        </Export-Package>
                         <Import-Package>
                             org.jaxen.*;resolution:=optional,
                             org.codehaus.stax2;resolution:=optional,
+                            org.apache.james.mime4j.*;version="${range;[==,=+)}",
                             *
                         </Import-Package>
                         <Bundle-Activator>org.apache.axiom.locator.Activator</Bundle-Activator>

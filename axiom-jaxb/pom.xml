@@ -96,7 +96,10 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>*;-noimport:=true</Export-Package>
+                        <Export-Package>
+                            org.apache.axiom.om.ds.jaxb;-noimport:=true,
+                            org.apache.axiom.om.utl.jaxb;-noimport:=true
+                        </Export-Package>
                         <Import-Package>javax.xml.bind;version="[2.1,3)",javax.xml.bind.attachment;version="[2.1,3)",*</Import-Package>
                     </instructions>
                 </configuration>

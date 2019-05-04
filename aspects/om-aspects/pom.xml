@@ -27,10 +27,6 @@
     </parent>
 
     <artifactId>om-aspects</artifactId>
-    <!-- Although om-aspects will never be used as a bundle itself, we still need the OSGi metadata
-         so that we can generate a correct manifest when the classes are included in axiom-impl and
-         axiom-dom by maven-shade-plugin. -->
-    <packaging>bundle</packaging>
 
     <name>OM Aspects</name>
     <description>Contains aspects and implementation classes shared by LLOM and DOOM.</description>
