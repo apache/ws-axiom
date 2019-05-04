@@ -55,6 +55,8 @@ import org.apache.james.mime4j.stream.RecursionMode;
 class MIMEMessage extends AttachmentsDelegate {
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
     
+    private static final MimeConfig config = MimeConfig.custom().setStrictParsing(true).build();
+
     private static final WritableBlobFactory rootPartBlobFactory = new WritableBlobFactory() {
         public WritableBlob createBlob() {
             return Blobs.createMemoryBlob();
@@ -122,8 +124,6 @@ class MIMEMessage extends AttachmentsDelegate {
             filterIS = null;
         }
         
-        MimeConfig config = new MimeConfig();
-        config.setStrictParsing(true);
         parser = new MimeTokenStream(config);
         parser.setRecursionMode(RecursionMode.M_NO_RECURSE);
         parser.parseHeadless(is, contentTypeString);
