@@ -73,7 +73,7 @@
             <item name="Articles" href="articles.html"/>
             <item name="Javadocs" href="/apidocs/index.html"/>
             <item name="FAQ" href="faq.html"/>
-            <item name="View Source" href="http://svn.apache.org/viewvc/webservices/axiom/trunk/?root=Apache-SVN"/>
+            <item name="View Source" href="https://github.com/apache/ws-axiom"/>
             <item name="Code Coverage" href="https://codecov.io/gh/apache/webservices-axiom"/>
             <item name="Privacy Policy" href="privacy-policy.html"/>
         </menu>
