@@ -297,12 +297,7 @@ public aspect CoreParentNodeSupport {
     }
     
     public final <T> NodeIterator<T> CoreParentNode.coreGetNodes(Axis axis, Class<T> type, Semantics semantics) {
-        return new AbstractNodeIterator<T>(this, axis, type, semantics) {
-            @Override
-            protected boolean matches(CoreNode node) throws CoreModelException {
-                return true;
-            }
-        };
+        return new NodesIterator<T>(this, axis, type, semantics);
     }
     
     public final <T extends CoreElement> NodeIterator<T> CoreParentNode.coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Semantics semantics) {
