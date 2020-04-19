@@ -852,7 +852,7 @@
                 <plugin>
                     <groupId>com.github.veithen.phos</groupId>
                     <artifactId>enforcer-maven-plugin</artifactId>
-                    <version>0.1.0</version>
+                    <version>0.2.1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -1007,7 +1007,7 @@
             <plugin>
                 <groupId>com.github.veithen.maven</groupId>
                 <artifactId>hermetic-maven-plugin</artifactId>
-                <version>0.3.0</version>
+                <version>0.4.1</version>
                 <executions>
                     <execution>
                         <goals>
