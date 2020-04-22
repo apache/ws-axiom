@@ -1156,6 +1156,43 @@
                     </ignorePathsToDelete>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.github.veithen.maven</groupId>
+                <artifactId>eclipse-settings-maven-plugin</artifactId>
+                <version>0.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>apply</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <bundles>
+                        <bundle>
+                            <symbolicName>org.eclipse.jdt.core</symbolicName>
+                            <properties>
+                                <property>
+                                    <name>org.eclipse.jdt.core.formatter.comment.line_length</name>
+                                    <value>100</value>
+                                </property>
+                                <property>
+                                    <name>org.eclipse.jdt.core.formatter.lineSplit</name>
+                                    <value>100</value>
+                                </property>
+                                <property>
+                                    <name>org.eclipse.jdt.core.formatter.tabulation.char</name>
+                                    <value>space</value>
+                                </property>
+                                <property>
+                                    <name>org.eclipse.jdt.core.formatter.indentation.size</name>
+                                    <value>4</value>
+                                </property>
+                            </properties>
+                        </bundle>
+                    </bundles>
+                </configuration>
+            </plugin>
         </plugins>
         <extensions>
             <extension>
