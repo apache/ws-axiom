@@ -39,7 +39,7 @@ public aspect CoreElementSupport {
         return firstAttribute;
     }
 
-    final void CoreElement.internalSetFirstAttribute(CoreAttribute firstAttribute) {
+    public final void CoreElement.internalSetFirstAttribute(CoreAttribute firstAttribute) {
         this.firstAttribute = firstAttribute;
     }
 
@@ -84,7 +84,7 @@ public aspect CoreElementSupport {
             if (previousAttr == null) {
                 coreAppendAttribute(newAttr);
             } else {
-                previousAttr.insertAttributeAfter(newAttr);
+                previousAttr.internalInsertAttributeAfter(newAttr);
             }
         } else {
             matcher.update(attr, prefix, value);
@@ -229,7 +229,8 @@ public aspect CoreElementSupport {
     public final <T extends CoreElement> T CoreElement.corePromote(Class<T> type, Semantics semantics) throws CoreModelException {
         T newElement = coreCreateNode(type);
         newElement.initName(this);
-        CoreAttribute attr = newElement.firstAttribute = firstAttribute;
+        newElement.internalSetFirstAttribute(firstAttribute);
+        CoreAttribute attr = firstAttribute;
         while (attr != null) {
             attr.internalSetOwnerElement(newElement);
             attr = attr.coreGetNextAttribute();

@@ -42,7 +42,7 @@ public aspect CoreProcessingInstructionSupport {
     }
     
     public final <T> void CoreProcessingInstruction.init(ClonePolicy<T> policy, T options, CoreNode other) {
-        target = ((CoreProcessingInstruction)other).target;
+        target = ((CoreProcessingInstruction)other).coreGetTarget();
     }
     
     public final void CoreProcessingInstruction.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {

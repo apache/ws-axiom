@@ -41,11 +41,11 @@ public aspect CoreChildNodeSupport {
     CoreChildNode CoreChildNode.previousSibling;
     
     public final boolean CoreChildNode.coreHasParent() {
-        return getFlag(Flags.HAS_PARENT);
+        return internalGetFlag(Flags.HAS_PARENT);
     }
     
     public final CoreParentNode CoreChildNode.coreGetParent() {
-        return getFlag(Flags.HAS_PARENT) ? owner : null;
+        return internalGetFlag(Flags.HAS_PARENT) ? owner : null;
     }
     
     public final CoreElement CoreChildNode.coreGetParentElement() {
@@ -57,12 +57,12 @@ public aspect CoreChildNodeSupport {
             throw new IllegalArgumentException();
         }
         owner = parent;
-        setFlag(Flags.HAS_PARENT, true);
+        internalSetFlag(Flags.HAS_PARENT, true);
     }
     
     public final void CoreChildNode.internalUnsetParent(CoreDocument newOwnerDocument) {
         owner = newOwnerDocument;
-        setFlag(Flags.HAS_PARENT, false);
+        internalSetFlag(Flags.HAS_PARENT, false);
     }
     
     public final CoreNode CoreChildNode.getRootOrOwnerDocument() {
@@ -74,7 +74,7 @@ public aspect CoreChildNodeSupport {
     }
     
     public final void CoreChildNode.coreSetOwnerDocument(CoreDocument document) {
-        if (getFlag(Flags.HAS_PARENT)) {
+        if (internalGetFlag(Flags.HAS_PARENT)) {
             throw new IllegalStateException();
         }
         owner = document;
@@ -84,7 +84,7 @@ public aspect CoreChildNodeSupport {
         return nextSibling;
     }
 
-    public final void CoreChildNode.coreSetNextSibling(CoreChildNode nextSibling) {
+    public final void CoreChildNode.internalSetNextSibling(CoreChildNode nextSibling) {
         this.nextSibling = nextSibling;
     }
     
@@ -100,7 +100,7 @@ public aspect CoreChildNodeSupport {
         return sibling;
     }
     
-    public final void CoreChildNode.coreSetPreviousSibling(CoreChildNode previousSibling) {
+    public final void CoreChildNode.internalSetPreviousSibling(CoreChildNode previousSibling) {
         this.previousSibling = previousSibling;
     }
     
@@ -116,7 +116,7 @@ public aspect CoreChildNodeSupport {
                     case CoreParentNode.INCOMPLETE:
                         if (parent.coreGetBuilder() != null) {
                             do {
-                                parent.buildNext();
+                                parent.internalBuildNext();
                             } while (parent.getState() == CoreParentNode.INCOMPLETE
                                     && (nextSibling = coreGetNextSiblingIfAvailable()) == null);
                         }
@@ -144,13 +144,13 @@ public aspect CoreChildNodeSupport {
         parent.internalCheckNewChild(sibling, null);
         sibling.internalDetach(null, parent);
         CoreChildNode nextSibling = coreGetNextSibling();
-        sibling.previousSibling = this;
+        sibling.internalSetPreviousSibling(this);
         if (nextSibling == null) {
-            parent.getContent(true).lastChild = sibling;
+            parent.internalGetContent(true).lastChild = sibling;
         } else {
-            nextSibling.previousSibling = sibling;
+            nextSibling.internalSetPreviousSibling(sibling);
         }
-        sibling.nextSibling = nextSibling;
+        sibling.internalSetNextSibling(nextSibling);
         this.nextSibling = sibling;
     }
     
@@ -163,18 +163,18 @@ public aspect CoreChildNodeSupport {
         }
         parent.internalCheckNewChild(sibling, null);
         sibling.internalDetach(null, parent);
-        sibling.nextSibling = this;
+        sibling.internalSetNextSibling(this);
         if (previousSibling == null) {
-            parent.getContent(true).firstChild = sibling;
+            parent.internalGetContent(true).firstChild = sibling;
         } else {
-            previousSibling.nextSibling = sibling;
+            previousSibling.internalSetNextSibling(sibling);
         }
-        sibling.previousSibling = previousSibling;
+        sibling.internalSetPreviousSibling(previousSibling);
         previousSibling = sibling;
     }
     
     public final void CoreChildNode.coreInsertSiblingsBefore(CoreDocumentFragment fragment) {
-        Content fragmentContent = fragment.getContent(false);
+        Content fragmentContent = fragment.internalGetContent(false);
         if (fragmentContent == null || fragmentContent.firstChild == null) {
             // Fragment is empty; nothing to do
             return;
@@ -184,15 +184,15 @@ public aspect CoreChildNodeSupport {
         CoreChildNode child = fragmentContent.firstChild;
         while (child != null) {
             child.internalSetParent(parent);
-            child = child.nextSibling;
+            child = child.coreGetNextSiblingIfAvailable();
         }
-        fragmentContent.lastChild.nextSibling = this;
+        fragmentContent.lastChild.internalSetNextSibling(this);
         if (previousSibling == null) {
-            parent.getContent(true).firstChild = fragmentContent.firstChild;
+            parent.internalGetContent(true).firstChild = fragmentContent.firstChild;
         } else {
-            previousSibling.nextSibling = fragmentContent.firstChild;
+            previousSibling.internalSetNextSibling(fragmentContent.firstChild);
         }
-        fragmentContent.firstChild.previousSibling = previousSibling;
+        fragmentContent.firstChild.internalSetPreviousSibling(previousSibling);
         previousSibling = fragmentContent.lastChild;
         fragmentContent.firstChild = null;
         fragmentContent.lastChild = null;
@@ -207,18 +207,18 @@ public aspect CoreChildNodeSupport {
         owner = newOwnerDocument;
     }
     
-    final void CoreChildNode.internalDetach(DetachPolicy detachPolicy, CoreParentNode newParent) {
+    public final void CoreChildNode.internalDetach(DetachPolicy detachPolicy, CoreParentNode newParent) {
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
             if (previousSibling == null) {
-                parent.getContent(true).firstChild = nextSibling;
+                parent.internalGetContent(true).firstChild = nextSibling;
             } else {
-                previousSibling.nextSibling = nextSibling;
+                previousSibling.internalSetNextSibling(nextSibling);
             }
             if (nextSibling == null) {
-                parent.getContent(true).lastChild = previousSibling;
+                parent.internalGetContent(true).lastChild = previousSibling;
             } else {
-                nextSibling.previousSibling = previousSibling;
+                nextSibling.internalSetPreviousSibling(previousSibling);
             }
             nextSibling = null;
             previousSibling = null;
@@ -240,17 +240,17 @@ public aspect CoreChildNodeSupport {
             parent.internalCheckNewChild(newNode, this);
             newNode.internalDetach(null, parent);
             if (previousSibling == null) {
-                parent.getContent(true).firstChild = newNode;
+                parent.internalGetContent(true).firstChild = newNode;
             } else {
-                previousSibling.nextSibling = newNode;
-                newNode.previousSibling = previousSibling;
+                previousSibling.internalSetNextSibling(newNode);
+                newNode.internalSetPreviousSibling(previousSibling);
                 previousSibling = null;
             }
             if (nextSibling == null) {
-                parent.getContent(true).lastChild = newNode;
+                parent.internalGetContent(true).lastChild = newNode;
             } else {
-                nextSibling.previousSibling = newNode;
-                newNode.nextSibling = nextSibling;
+                nextSibling.internalSetPreviousSibling(newNode);
+                newNode.internalSetNextSibling(nextSibling);
                 nextSibling = null;
             }
             internalUnsetParent(semantics.getDetachPolicy().getNewOwnerDocument(parent));

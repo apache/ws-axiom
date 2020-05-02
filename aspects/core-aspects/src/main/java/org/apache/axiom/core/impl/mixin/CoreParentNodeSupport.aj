@@ -59,11 +59,11 @@ public aspect CoreParentNodeSupport {
     
     // TODO: rename
     public final int CoreParentNode.getState() {
-        return flags & Flags.STATE_MASK;
+        return internalGetFlags(Flags.STATE_MASK);
     }
     
     public final void CoreParentNode.coreSetState(int state) {
-        flags = (flags & ~Flags.STATE_MASK) | state;
+        internalSetFlags(Flags.STATE_MASK, state);
         if (state == COMPLETE) {
             completed();
         }
@@ -90,8 +90,16 @@ public aspect CoreParentNodeSupport {
         this.context = context;
         coreSetState(context == null ? COMPLETE : INCOMPLETE);
     }
-    
-    final Content CoreParentNode.getContent(boolean create) {
+
+    public final void CoreParentNode.internalSetContent(Object content) {
+        this.content = content;
+    }
+
+    public final Object CoreParentNode.internalGetContent() {
+        return content;
+    }
+
+    public final Content CoreParentNode.internalGetContent(boolean create) {
         if (getState() == COMPACT) {
             Content content = new Content();
             CoreCharacterDataNode cdata = coreGetNodeFactory().createNode(CoreCharacterDataNode.class);
@@ -114,16 +122,16 @@ public aspect CoreParentNodeSupport {
     
     public final CoreChildNode CoreParentNode.coreGetFirstChildIfAvailable() {
         forceExpand();
-        Content content = getContent(false);
+        Content content = internalGetContent(false);
         return content == null ? null : content.firstChild;
     }
 
     public CoreChildNode CoreParentNode.coreGetLastKnownChild() {
-        Content content = getContent(false);
+        Content content = internalGetContent(false);
         return content == null ? null : content.lastChild;
     }
 
-    public void CoreParentNode.buildNext() throws CoreModelException {
+    public void CoreParentNode.internalBuildNext() throws CoreModelException {
         Builder builder = coreGetBuilder();
         if (builder == null) {
             throw new IllegalStateException("The node has no builder");
@@ -145,7 +153,7 @@ public aspect CoreParentNodeSupport {
                     throw new NodeConsumedException();
                 case CoreParentNode.INCOMPLETE:
                     do {
-                        buildNext();
+                        internalBuildNext();
                     } while ((firstChild = coreGetFirstChildIfAvailable()) == null
                             && getState() == CoreParentNode.INCOMPLETE);
             }
@@ -174,7 +182,7 @@ public aspect CoreParentNodeSupport {
         return child;
     }
     
-    final void CoreParentNode.internalCheckNewChild(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException {
+    public final void CoreParentNode.internalCheckNewChild(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException {
         // Check that the new node is not an ancestor of this node
         CoreParentNode current = this;
         do {
@@ -205,7 +213,7 @@ public aspect CoreParentNodeSupport {
     
     public final void CoreParentNode.internalAppendChildWithoutBuild(CoreChildNode child) {
         CoreParentNode parent = child.coreGetParent();
-        Content content = getContent(true);
+        Content content = internalGetContent(true);
         if (parent == this && child == content.lastChild) {
             // The child is already the last node. 
             // We don't need to detach and re-add it.
@@ -215,15 +223,15 @@ public aspect CoreParentNodeSupport {
         if (content.firstChild == null) {
             content.firstChild = child;
         } else {
-            child.previousSibling = content.lastChild;
-            content.lastChild.nextSibling = child;
+            child.internalSetPreviousSibling(content.lastChild);
+            content.lastChild.internalSetNextSibling(child);
         }
         content.lastChild = child;
     }
 
     public final void CoreParentNode.coreAppendChildren(CoreDocumentFragment fragment) throws CoreModelException {
         fragment.coreBuild();
-        Content fragmentContent = fragment.getContent(false);
+        Content fragmentContent = fragment.internalGetContent(false);
         if (fragmentContent == null || fragmentContent.firstChild == null) {
             // Fragment is empty; nothing to do
             return;
@@ -232,14 +240,14 @@ public aspect CoreParentNodeSupport {
         CoreChildNode child = fragmentContent.firstChild;
         while (child != null) {
             child.internalSetParent(this);
-            child = child.nextSibling;
+            child = child.coreGetNextSiblingIfAvailable();
         }
-        Content content = getContent(true);
+        Content content = internalGetContent(true);
         if (content.firstChild == null) {
             content.firstChild = fragmentContent.firstChild;
         } else {
-            fragmentContent.firstChild.previousSibling = content.lastChild;
-            content.lastChild.nextSibling = fragmentContent.firstChild;
+            fragmentContent.firstChild.internalSetPreviousSibling(content.lastChild);
+            content.lastChild.internalSetNextSibling(fragmentContent.firstChild);
         }
         content.lastChild = fragmentContent.lastChild;
         fragmentContent.firstChild = null;
@@ -289,9 +297,9 @@ public aspect CoreParentNodeSupport {
             if (child != null) {
                 CoreDocument newOwnerDocument = semantics.getDetachPolicy().getNewOwnerDocument(this);
                 do {
-                    CoreChildNode nextSibling = child.nextSibling;
-                    child.previousSibling = null;
-                    child.nextSibling = null;
+                    CoreChildNode nextSibling = child.coreGetNextSiblingIfAvailable();
+                    child.internalSetPreviousSibling(null);
+                    child.internalSetNextSibling(null);
                     child.internalUnsetParent(newOwnerDocument);
                     child = nextSibling;
                 } while (child != null);
@@ -303,7 +311,7 @@ public aspect CoreParentNodeSupport {
         }
     }
     
-    final Object CoreParentNode.internalGetCharacterData(ElementAction elementAction) throws CoreModelException {
+    public final Object CoreParentNode.internalGetCharacterData(ElementAction elementAction) throws CoreModelException {
         if (getState() == COMPACT) {
             return content;
         } else {
@@ -445,8 +453,8 @@ public aspect CoreParentNodeSupport {
     
     public final void CoreParentNode.coreMoveChildrenFrom(CoreParentNode other, Semantics semantics) throws CoreModelException {
         coreRemoveChildren(semantics);
-        context = other.context;
-        content = other.content;
+        context = other.coreGetInputContext();
+        content = other.internalGetContent();
         int state = other.getState();
         coreSetState(state);
         if (state != COMPACT) {
@@ -459,8 +467,8 @@ public aspect CoreParentNodeSupport {
                 context.setTarget(this);
             }
         }
-        other.context = null;
-        other.content = null;
+        other.coreSetInputContext(null);
+        other.internalSetContent(null);
         other.coreSetState(DISCARDED);
     }
 }

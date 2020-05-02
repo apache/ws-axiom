@@ -83,7 +83,7 @@ public aspect CoreAttributeSupport {
             CoreElement ownerElement = (CoreElement)owner;
             CoreAttribute previousAttr = ownerElement.coreGetFirstAttribute();
             while (previousAttr != null) {
-                CoreAttribute nextAttr = previousAttr.nextAttribute;
+                CoreAttribute nextAttr = previousAttr.coreGetNextAttribute();
                 if (nextAttr == this) {
                     break;
                 }
@@ -95,11 +95,11 @@ public aspect CoreAttributeSupport {
         }
     }
 
-    final void CoreAttribute.insertAttributeAfter(CoreAttribute attr) {
+    public final void CoreAttribute.internalInsertAttributeAfter(CoreAttribute attr) {
         // TODO: throw exception if attribute already has an owner
         attr.internalSetOwnerElement(coreGetOwnerElement());
         if (nextAttribute != null) {
-            attr.nextAttribute = nextAttribute;
+            attr.internalSetNextAttribute(nextAttribute);
         }
         nextAttribute = attr;
     }
@@ -116,7 +116,7 @@ public aspect CoreAttributeSupport {
             if (previousAttr == null) {
                 ownerElement.internalSetFirstAttribute(nextAttribute);
             } else {
-                previousAttr.nextAttribute = nextAttribute;
+                previousAttr.internalSetNextAttribute(nextAttribute);
             }
             nextAttribute = null;
             return true;
@@ -129,10 +129,10 @@ public aspect CoreAttributeSupport {
     }
 
     public final boolean CoreAttribute.coreGetSpecified() {
-        return !getFlag(Flags.DEFAULT_ATTR);
+        return !internalGetFlag(Flags.DEFAULT_ATTR);
     }
 
     public final void CoreAttribute.coreSetSpecified(boolean specified) {
-        setFlag(Flags.DEFAULT_ATTR, !specified);
+        internalSetFlag(Flags.DEFAULT_ATTR, !specified);
     }
 }

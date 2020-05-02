@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.core;
 
-import org.apache.axiom.core.impl.Flags;
-
 public interface CoreAttribute extends CoreCharacterDataContainingParentNode {
     /**
      * Get the owner element of this attribute.
@@ -65,4 +63,10 @@ public interface CoreAttribute extends CoreCharacterDataContainingParentNode {
     boolean coreGetSpecified();
 
     void coreSetSpecified(boolean specified);
+
+    void internalSetOwnerElement(CoreElement element);
+    void internalUnsetOwnerElement(CoreDocument newOwnerDocument);
+    void internalSetNextAttribute(CoreAttribute nextAttribute);
+    void internalInsertAttributeAfter(CoreAttribute attr);
+    boolean internalRemove(Semantics semantics, CoreElement newOwner);
 }

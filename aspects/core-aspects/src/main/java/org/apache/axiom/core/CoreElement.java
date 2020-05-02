@@ -155,4 +155,6 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
     String coreLookupPrefix(String namespaceURI, Semantics semantics) throws CoreModelException;
     
     <T extends CoreElement> T corePromote(Class<T> type, Semantics semantics) throws CoreModelException;
+
+    void internalSetFirstAttribute(CoreAttribute firstAttribute);
 }

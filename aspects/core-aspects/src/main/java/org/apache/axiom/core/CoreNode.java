@@ -65,4 +65,12 @@ public interface CoreNode {
     <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) throws CoreModelException;
 
     void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException;
+
+    boolean internalGetFlag(int flag);
+    void internalSetFlag(int flag, boolean value);
+    int internalGetFlags(int mask);
+    void internalSetFlags(int mask, int flags);
+    void updateFiliation(CoreNode creator);
+    <T> void initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other);
+    <T> CoreNode internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException;
 }

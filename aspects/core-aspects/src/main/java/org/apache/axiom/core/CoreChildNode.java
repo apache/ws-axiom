@@ -77,4 +77,10 @@ public interface CoreChildNode extends CoreNode {
      * @return the clone of this node
      */
     <T> CoreNode coreClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException;
+
+    void internalSetParent(CoreParentNode parent);
+    void internalUnsetParent(CoreDocument newOwnerDocument);
+    void internalDetach(DetachPolicy detachPolicy, CoreParentNode newParent);
+    void internalSetNextSibling(CoreChildNode nextSibling);
+    void internalSetPreviousSibling(CoreChildNode previousSibling);
 }

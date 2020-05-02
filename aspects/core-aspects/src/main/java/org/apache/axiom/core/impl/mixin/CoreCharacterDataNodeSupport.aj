@@ -40,11 +40,11 @@ public aspect CoreCharacterDataNodeSupport {
     }
     
     public final boolean CoreCharacterDataNode.coreIsIgnorable() {
-        return getFlag(Flags.IGNORABLE);
+        return internalGetFlag(Flags.IGNORABLE);
     }
     
     public final void CoreCharacterDataNode.coreSetIgnorable(boolean ignorable) {
-        setFlag(Flags.IGNORABLE, ignorable);
+        internalSetFlag(Flags.IGNORABLE, ignorable);
     }
     
     public final Object CoreCharacterDataNode.coreGetCharacterData() {
@@ -61,7 +61,8 @@ public aspect CoreCharacterDataNodeSupport {
     
     public final <T> void CoreCharacterDataNode.init(ClonePolicy<T> policy, T options, CoreNode other) {
         CoreCharacterDataNode o = (CoreCharacterDataNode)other;
-        data = o.data instanceof CloneableCharacterData ? ((CloneableCharacterData)o.data).clone(policy, options) : o.data;
+        Object otherData = o.coreGetCharacterData();
+        data = otherData instanceof CloneableCharacterData ? ((CloneableCharacterData)otherData).clone(policy, options) : otherData;
         coreSetIgnorable(o.coreIsIgnorable());
     }
 

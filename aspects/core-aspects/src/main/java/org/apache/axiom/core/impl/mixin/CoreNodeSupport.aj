@@ -59,16 +59,24 @@ public aspect CoreNodeSupport {
         return other.getRootOrOwnerDocument() == getRootOrOwnerDocument();
     }
 
-    final boolean CoreNode.getFlag(int flag) {
+    public final boolean CoreNode.internalGetFlag(int flag) {
         return (flags & flag) != 0;
     }
 
-    final void CoreNode.setFlag(int flag, boolean value) {
+    public final void CoreNode.internalSetFlag(int flag, boolean value) {
         if (value) {
             flags |= flag;
         } else {
             flags &= ~flag;
         }
+    }
+    
+    public final int CoreNode.internalGetFlags(int mask) {
+        return flags & mask;
+    }
+
+    public final void CoreNode.internalSetFlags(int mask, int value) {
+        flags = (flags & ~mask) | value;
     }
     
     // TODO: merge this into internalClone once it is no longer referenced elsewhere
@@ -79,7 +87,7 @@ public aspect CoreNodeSupport {
         return clone;
     }
 
-    final <T> CoreNode CoreNode.internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException {
+    public final <T> CoreNode CoreNode.internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException {
         CoreNode clone = shallowClone(policy, options);
         if (targetParent != null) {
             targetParent.coreAppendChild((CoreChildNode)clone);

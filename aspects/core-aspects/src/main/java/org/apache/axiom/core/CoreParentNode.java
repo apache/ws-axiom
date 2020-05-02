@@ -44,6 +44,7 @@ public interface CoreParentNode extends CoreNode {
     int COMPACT = 5;
     
     Builder coreGetBuilder();
+    void internalBuildNext() throws CoreModelException;
     InputContext coreGetInputContext();
     void coreSetInputContext(InputContext context);
     int getState();
@@ -88,4 +89,12 @@ public interface CoreParentNode extends CoreNode {
     void coreRemoveChildren(Semantics semantics) throws CoreModelException;
     
     void coreDiscard(boolean consumeInput) throws CoreModelException;
+
+    void coreMoveChildrenFrom(CoreParentNode other, Semantics semantics) throws CoreModelException;
+
+    void internalCheckNewChild(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException;
+    void internalSetContent(Object content);
+    Object internalGetContent();
+    Content internalGetContent(boolean create);
+    Object internalGetCharacterData(ElementAction elementAction) throws CoreModelException;
 }
