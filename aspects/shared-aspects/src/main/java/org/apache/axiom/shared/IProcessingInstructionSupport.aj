@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.shared;
 
-public aspect ProcessingInstructionSupport {
+public aspect IProcessingInstructionSupport {
     public final String IProcessingInstruction.getTarget() {
         return coreGetTarget();
     }

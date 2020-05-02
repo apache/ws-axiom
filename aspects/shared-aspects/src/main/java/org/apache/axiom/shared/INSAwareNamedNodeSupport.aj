@@ -18,16 +18,18 @@
  */
 package org.apache.axiom.shared;
 
-public aspect DocumentTypeDeclarationSupport {
-    public final String IDocumentTypeDeclaration.getPublicId() {
-        return coreGetPublicId();
+public aspect INSAwareNamedNodeSupport {
+    public final String INSAwareNamedNode.getLocalName() {
+        return coreGetLocalName();
     }
 
-    public final String IDocumentTypeDeclaration.getSystemId() {
-        return coreGetSystemId();
+    public final String INSAwareNamedNode.getNamespaceURI() {
+        String namespaceURI = coreGetNamespaceURI();
+        return namespaceURI.length() == 0 ? null : namespaceURI;
     }
 
-    public final String IDocumentTypeDeclaration.getInternalSubset() {
-        return coreGetInternalSubset();
+    public final String INSAwareNamedNode.getPrefix() {
+        String prefix = coreGetPrefix();
+        return prefix.length() == 0 ? null : prefix;
     }
 }
