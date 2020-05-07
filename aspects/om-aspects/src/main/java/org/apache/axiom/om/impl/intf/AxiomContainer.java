@@ -18,9 +18,13 @@
  */
 package org.apache.axiom.om.impl.intf;
 
+import javax.xml.stream.XMLStreamReader;
+
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 
 public interface AxiomContainer extends OMContainer, AxiomCoreParentNode {
     /**
@@ -32,4 +36,8 @@ public interface AxiomContainer extends OMContainer, AxiomCoreParentNode {
      *             if the node is not allowed as a child of the container
      */
     void checkChild(OMNode child);
+
+    AxiomChildNode prepareNewChild(OMNode omNode);
+    XMLStreamReader defaultGetXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration);
+    CoreElement getContextElement();
 }

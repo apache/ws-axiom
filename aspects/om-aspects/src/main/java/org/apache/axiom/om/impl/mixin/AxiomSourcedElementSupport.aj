@@ -152,6 +152,14 @@ public aspect AxiomSourcedElementSupport {
         definedNamespaceSet = true;
     }
 
+    public boolean AxiomSourcedElement.internalIsDefinedNamespaceSet() {
+        return definedNamespaceSet;
+    }
+
+    public OMNamespace AxiomSourcedElement.internalGetDefinedNamespace() {
+        return definedNamespace;
+    }
+
     /**
      * Generate element name for output.
      *
@@ -377,11 +385,12 @@ public aspect AxiomSourcedElementSupport {
         }
         // Otherwise create a target OMSE with the copied DataSource
         init(targetDS);
-        definedNamespaceSet = o.definedNamespaceSet;
-        if (o.definedNamespace instanceof DeferredNamespace) {
-            definedNamespace = new DeferredNamespace(this, o.definedNamespace.getNamespaceURI());
+        definedNamespaceSet = o.internalIsDefinedNamespaceSet();
+        OMNamespace otherDefinedNamespace = o.internalGetDefinedNamespace();
+        if (otherDefinedNamespace instanceof DeferredNamespace) {
+            definedNamespace = new DeferredNamespace(this, otherDefinedNamespace.getNamespaceURI());
         } else {
-            definedNamespace = o.definedNamespace;
+            definedNamespace = otherDefinedNamespace;
         }
     }
 

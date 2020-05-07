@@ -264,8 +264,6 @@ public aspect AxiomContainerSupport {
         }
     }
 
-    public abstract CoreElement AxiomContainer.getContextElement();
-    
     public final void AxiomContainer.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
             serialize(new XMLStreamWriterHandler(writer), new XMLStreamWriterNamespaceContextProvider(writer), new OMOutputFormat(), cache);

@@ -28,4 +28,6 @@ public interface AxiomSourcedElement extends OMSourcedElement, AxiomElement {
     void init(OMDataSource source);
     void init(String localName, OMNamespace ns, OMDataSource source);
     void init(QName qName, OMDataSource source);
+    boolean internalIsDefinedNamespaceSet();
+    OMNamespace internalGetDefinedNamespace();
 }

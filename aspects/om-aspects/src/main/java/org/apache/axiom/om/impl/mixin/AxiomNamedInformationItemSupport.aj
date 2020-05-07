@@ -128,8 +128,8 @@ public aspect AxiomNamedInformationItemSupport {
             localName = o.coreGetLocalName();
             namespace = o.getNamespace();
         } else {
-            localName = o.localName;
-            namespace = o.namespace;
+            localName = o.internalGetLocalName();
+            namespace = o.defaultGetNamespace();
         }
     }
     

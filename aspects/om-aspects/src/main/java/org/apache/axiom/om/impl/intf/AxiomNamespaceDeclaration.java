@@ -19,7 +19,9 @@
 package org.apache.axiom.om.impl.intf;
 
 import org.apache.axiom.core.CoreNamespaceDeclaration;
+import org.apache.axiom.om.OMNamespace;
 
 public interface AxiomNamespaceDeclaration extends AxiomInformationItem, CoreNamespaceDeclaration {
-
+    OMNamespace getDeclaredNamespace();
+    void setDeclaredNamespace(OMNamespace declaredNamespace);
 }

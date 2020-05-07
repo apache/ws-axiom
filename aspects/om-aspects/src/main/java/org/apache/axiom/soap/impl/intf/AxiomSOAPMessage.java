@@ -19,8 +19,9 @@
 package org.apache.axiom.soap.impl.intf;
 
 import org.apache.axiom.om.impl.intf.AxiomDocument;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 
 public interface AxiomSOAPMessage extends AxiomDocument, SOAPMessage {
-
+    void initSOAPFactory(SOAPFactory factory);
 }
