@@ -57,7 +57,7 @@ public class PostProcessMojo extends AbstractMojo {
                 InputStream in = new FileInputStream(file);
                 try {
                     ClassReader classReader = new ClassReader(in);
-                    classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+                    classWriter = new ClassWriter(classReader, 0);
                     ClassVisitor classVisitor = classWriter;
                     if (relativePath.equals("org/apache/axiom/om/OMText.class")) {
                         classVisitor = new GetDataHandlerBridgeMethodInjector(classVisitor);
