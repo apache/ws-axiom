@@ -24,7 +24,7 @@ import org.objectweb.asm.Opcodes;
 
 final class AspectJCodeRemover extends ClassVisitor {
     public AspectJCodeRemover(ClassVisitor cv) {
-        super(Opcodes.ASM5, cv);
+        super(Opcodes.ASM8, cv);
     }
 
     @Override

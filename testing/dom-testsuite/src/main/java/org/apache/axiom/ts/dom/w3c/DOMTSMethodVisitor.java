@@ -27,7 +27,7 @@ public class DOMTSMethodVisitor extends MethodVisitor {
     private final Set<DOMFeature> usedFeatures;
     
     DOMTSMethodVisitor(Set<DOMFeature> usedFeatures) {
-        super(Opcodes.ASM5);
+        super(Opcodes.ASM8);
         this.usedFeatures = usedFeatures;
     }
 

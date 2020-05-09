@@ -28,7 +28,7 @@ final class SourceExtractor extends ClassVisitor {
     private final String parentPath;
     
     SourceExtractor(Set<String> sources, String parentPath) {
-        super(Opcodes.ASM5);
+        super(Opcodes.ASM8);
         this.sources = sources;
         this.parentPath = parentPath;
     }
