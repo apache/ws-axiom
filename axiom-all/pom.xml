@@ -66,11 +66,6 @@
             <artifactId>axiom-jaxb</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-c14n</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
