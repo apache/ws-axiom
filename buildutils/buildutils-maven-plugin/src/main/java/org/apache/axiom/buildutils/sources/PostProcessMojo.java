@@ -49,17 +49,11 @@ import org.objectweb.asm.ClassReader;
 
 @Mojo(name="post-process-sources-jar", defaultPhase=LifecyclePhase.PACKAGE, requiresDependencyResolution=ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class PostProcessMojo extends AbstractMojo {
-    @Parameter(defaultValue="${project}", readonly=true, required=true)
+    @Parameter(property="project", readonly=true, required=true)
     private MavenProject project;
 
-    @Parameter(defaultValue="${session}", readonly=true, required=true)
+    @Parameter(property="session", readonly=true, required=true)
     private MavenSession session;
-
-    @Parameter(defaultValue="${project.build.directory}", readonly=true, required=true)
-    private File outputDirectory;
-
-    @Parameter(defaultValue="${project.build.finalName}", readonly=true, required=true)
-    private String finalName;
 
     @Component
     private ArtifactResolver artifactResolver;
@@ -81,8 +75,8 @@ public class PostProcessMojo extends AbstractMojo {
         } catch (IOException ex) {
             throw new MojoExecutionException("Error reading jar: " + ex.getMessage(), ex);
         }
-        File sourcesJar = new File(outputDirectory, finalName + "-sources.jar");
-        File postProcessedSourcesJar = new File(outputDirectory, finalName + "-post-processed-sources.jar");
+        File sourcesJar = new File(project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-sources.jar");
+        File postProcessedSourcesJar = new File(project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-post-processed-sources.jar");
         try (JarOutputStream out = new JarOutputStream(new FileOutputStream(postProcessedSourcesJar))) {
             processSourceJar(sourcesJar, sources, true, out);
             ArtifactFilter filter = new ScopeArtifactFilter(Artifact.SCOPE_RUNTIME);

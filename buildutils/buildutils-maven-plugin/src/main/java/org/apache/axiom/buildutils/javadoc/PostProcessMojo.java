@@ -49,17 +49,14 @@ public class PostProcessMojo extends AbstractMojo {
     @Parameter(property="locales")
     private String locales;
 
-    @Parameter(defaultValue="${project}", required=true, readonly=true)
+    @Parameter(property="project", required=true, readonly=true)
     private MavenProject project;
 
-    @Parameter(defaultValue="${reactorProjects}", required=true, readonly=true)
+    @Parameter(property="reactorProjects", required=true, readonly=true)
     private List<MavenProject> reactorProjects;
 
-    @Parameter(defaultValue="${localRepository}", required=true, readonly=true)
+    @Parameter(property="localRepository", required=true, readonly=true)
     private ArtifactRepository localRepository;
-
-    @Parameter(defaultValue="${project.remoteArtifactRepositories}", required=true, readonly=true)
-    private List<ArtifactRepository> repositories;
 
     @Parameter(defaultValue="${basedir}/src/site")
     private File siteDirectory;
@@ -73,7 +70,7 @@ public class PostProcessMojo extends AbstractMojo {
         try {
             decorationModel = siteTool.getDecorationModel(siteDirectory,
                     siteTool.getSiteLocales(locales).get(0),
-                    project, reactorProjects, localRepository, repositories);
+                    project, reactorProjects, localRepository, project.getRemoteArtifactRepositories());
         } catch (SiteToolException ex) {
             throw new MojoExecutionException("SiteToolException: " + ex.getMessage(), ex);
         }
