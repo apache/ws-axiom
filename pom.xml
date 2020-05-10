@@ -242,20 +242,7 @@
 
     <properties>
         <osgi.version>5.0.0</osgi.version>
-        <stax.impl.groupid>org.codehaus.woodstox</stax.impl.groupid>
-        <stax.impl.artifact>woodstox-core-asl</stax.impl.artifact>
-        <stax.impl.version>4.2.0</stax.impl.version>
         <failIfNoTests>false</failIfNoTests>
-        <!--
-        <stax.impl.groupid>com.sun.xml.stream</stax.impl.groupid>
-        <stax.impl.artifact>sjsxp</stax.impl.artifact>
-        <stax.impl.version>1.0.1</stax.impl.version>
-        -->
-        <!--
-        <stax.impl.groupid>stax</stax.impl.groupid>
-        <stax.impl.artifact>stax</stax.impl.artifact>
-        <stax.impl.version>1.2.0</stax.impl.version>
-        -->
         <aspectj.version>1.9.1</aspectj.version>
         <shade.plugin.version>2.3</shade.plugin.version>
         <spring.version>5.0.1.RELEASE</spring.version>
@@ -316,9 +303,9 @@
                 <version>1.2</version>
             </dependency>
             <dependency>
-                <groupId>${stax.impl.groupid}</groupId>
-                <artifactId>${stax.impl.artifact}</artifactId>
-                <version>${stax.impl.version}</version>
+                <groupId>org.codehaus.woodstox</groupId>
+                <artifactId>woodstox-core-asl</artifactId>
+                <version>4.2.0</version>
                 <exclusions>
                     <exclusion>
                         <groupId>stax</groupId>
