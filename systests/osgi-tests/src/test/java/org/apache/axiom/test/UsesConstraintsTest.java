@@ -104,7 +104,7 @@ public class UsesConstraintsTest {
         bundles.add(context.installBundle("link:classpath:META-INF/links/org.ops4j.pax.logging.api.link"));
         bundles.add(context.installBundle("link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"));
         bundles.add(context.installBundle("link:classpath:stax2-api.link"));
-        bundles.add(context.installBundle("link:classpath:woodstox-core-asl.link"));
+        bundles.add(context.installBundle("link:classpath:com.fasterxml.woodstox.woodstox-core.link"));
         bundles.add(context.installBundle("link:classpath:com.sun.activation.javax.activation.link"));
         bundles.add(context.installBundle("link:classpath:org.apache.james.apache-mime4j-core.link"));
         bundles.add(context.installBundle("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"));

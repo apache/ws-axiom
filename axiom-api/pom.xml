@@ -78,8 +78,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.woodstox</groupId>
-            <artifactId>woodstox-core-asl</artifactId>
+            <groupId>com.fasterxml.woodstox</groupId>
+            <artifactId>woodstox-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -219,6 +219,11 @@
                                     <artifactId>woodstox-core</artifactId>
                                     <version>5.0.1</version>
                                 </artifact>
+                                <dependency>
+                                    <groupId>com.fasterxml.woodstox</groupId>
+                                    <artifactId>woodstox-core</artifactId>
+                                    <version>6.2.0</version>
+                                </dependency>
                                 <artifact>
                                     <groupId>com.sun.xml.stream</groupId>
                                     <artifactId>sjsxp</artifactId>

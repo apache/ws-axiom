@@ -53,7 +53,7 @@ deploy the following bundles:
 | ----------------------------- | ------------------------------------------ | -------------------------------------------|
 | `org.apache.servicemix.specs` | `org.apache.servicemix.specs.stax-api-1.0` | `org.apache.servicemix.specs.stax-api-1.0` |
 | `org.codehaus.woodstox`       | `stax2-api`                                | `stax2-api`                                |
-| `org.codehaus.woodstox`       | `woodstox-core-asl`                        | `woodstox-core-asl`                        |
+| `com.fasterxml.woodstox`      | `woodstox-core`                            | `com.fasterxml.woodstox.woodstox-core`     |
 
 Note that the `geronimo-stax-api_1.0_spec` bundle doesn't work with Woodstox. See
 [here](http://veithen.github.io/2014/10/12/stax-osgi.html) for more information.

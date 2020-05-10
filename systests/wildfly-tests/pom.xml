@@ -106,7 +106,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeArtifactIds>axiom-api,axiom-impl,woodstox-core-asl,stax2-api</includeArtifactIds>
+                            <includeArtifactIds>axiom-api,axiom-impl,woodstox-core,stax2-api</includeArtifactIds>
                             <outputDirectory>${project.build.directory}/deps</outputDirectory>
                         </configuration>
                     </execution>
