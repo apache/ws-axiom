@@ -274,6 +274,7 @@ public class StAXDialectDetector {
                     return new Woodstox4Dialect(version.getComponent(1) == 0 && version.getComponent(2) < 11
                             || version.getComponent(1) == 1 && version.getComponent(2) < 3);
                 case 5:
+                case 6:
                     return new Woodstox4Dialect(false);
                 default:
                     return null;
