@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12HeaderBlock;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12HeaderBlock;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
 
 public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements AxiomSOAP12HeaderBlock {

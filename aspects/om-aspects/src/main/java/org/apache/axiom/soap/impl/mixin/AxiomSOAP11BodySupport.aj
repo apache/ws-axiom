@@ -19,7 +19,7 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP11Body;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Body;
 
 public aspect AxiomSOAP11BodySupport {
     public final Class<? extends CoreNode> AxiomSOAP11Body.coreGetNodeClass() {

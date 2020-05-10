@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultRole;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultRole;
 import org.apache.axiom.soap.impl.llom.SOAPFaultRoleImpl;
 
 public class SOAP12FaultRoleImpl extends SOAPFaultRoleImpl implements AxiomSOAP12FaultRole {

@@ -16,8 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.intf;
+package org.apache.axiom.soap.impl.intf.soap12;
 
-public interface AxiomSOAP12Body extends AxiomSOAPBody, AxiomSOAP12Element {
+import org.apache.axiom.soap.SOAPFaultText;
+
+public interface AxiomSOAP12FaultText extends AxiomSOAP12Element, SOAPFaultText {
 
 }

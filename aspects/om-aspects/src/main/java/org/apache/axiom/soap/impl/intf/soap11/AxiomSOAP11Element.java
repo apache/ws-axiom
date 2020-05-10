@@ -16,7 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.intf;
+package org.apache.axiom.soap.impl.intf.soap11;
+
+import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 
 public interface AxiomSOAP11Element extends AxiomSOAPElement {
 

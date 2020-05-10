@@ -24,7 +24,7 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultCode;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultCode;
 
 public aspect AxiomSOAP11FaultCodeSupport {
     public final boolean AxiomSOAP11FaultCode.isChildElementAllowed(OMElement child) {

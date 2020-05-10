@@ -26,7 +26,7 @@ import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12Fault;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Fault;
 
 public aspect AxiomSOAP12FaultSupport {
     private static final Sequence sequence = new Sequence(SOAPFaultCode.class, SOAPFaultReason.class,

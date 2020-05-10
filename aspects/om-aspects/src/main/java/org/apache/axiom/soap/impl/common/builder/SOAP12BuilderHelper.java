@@ -23,14 +23,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultCode;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultDetail;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultNode;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultRole;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultSubCode;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultText;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultValue;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultCode;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultDetail;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultNode;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultReason;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultRole;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultSubCode;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultText;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultValue;
 
 import java.util.Vector;
 

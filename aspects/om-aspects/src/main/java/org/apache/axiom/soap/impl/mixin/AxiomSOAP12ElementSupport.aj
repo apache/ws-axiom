@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.soap.impl.mixin;
 
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12Element;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Element;
 
 public aspect AxiomSOAP12ElementSupport {
     public final SOAPHelper AxiomSOAP12Element.getSOAPHelper() {

@@ -19,7 +19,7 @@
 package org.apache.axiom.soap.impl.dom.soap11;
 
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP11Envelope;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Envelope;
 
 public class SOAP11EnvelopeImpl extends SOAPEnvelopeImpl implements AxiomSOAP11Envelope {
 

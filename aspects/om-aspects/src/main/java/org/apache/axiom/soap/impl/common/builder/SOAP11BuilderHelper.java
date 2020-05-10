@@ -23,10 +23,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultCode;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultDetail;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultReason;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultRole;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultCode;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultDetail;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultReason;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultRole;
 import org.w3c.dom.Element;
 
 public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Constants {

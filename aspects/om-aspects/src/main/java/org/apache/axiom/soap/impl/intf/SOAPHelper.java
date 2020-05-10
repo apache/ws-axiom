@@ -28,6 +28,24 @@ import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Body;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Envelope;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Fault;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultCode;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultDetail;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultReason;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultRole;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Header;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11HeaderBlock;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Body;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Envelope;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Fault;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultCode;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultDetail;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultReason;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultRole;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Header;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12HeaderBlock;
 
 /**
  * Encapsulates certain SOAP version specific behaviors. This API defines methods that could also be

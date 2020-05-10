@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultText;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultText;
 
 public aspect AxiomSOAP12FaultTextSupport {
     private static final OMNamespace LANG_NAMESPACE = new OMNamespaceImpl(

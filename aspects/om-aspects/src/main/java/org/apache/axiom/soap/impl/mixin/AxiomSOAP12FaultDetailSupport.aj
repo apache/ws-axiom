@@ -19,7 +19,7 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultDetail;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultDetail;
 
 public aspect AxiomSOAP12FaultDetailSupport {
     public final Class<? extends CoreNode> AxiomSOAP12FaultDetail.coreGetNodeClass() {

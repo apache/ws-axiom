@@ -22,7 +22,7 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12Envelope;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Envelope;
 
 public aspect AxiomSOAP12EnvelopeSupport {
     public final Class<? extends CoreNode> AxiomSOAP12Envelope.coreGetNodeClass() {

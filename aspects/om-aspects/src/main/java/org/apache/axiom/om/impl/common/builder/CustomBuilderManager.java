@@ -30,10 +30,10 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP11HeaderBlock;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12HeaderBlock;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11HeaderBlock;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12HeaderBlock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

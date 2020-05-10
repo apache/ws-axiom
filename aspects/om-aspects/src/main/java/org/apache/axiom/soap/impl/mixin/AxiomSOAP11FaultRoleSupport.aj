@@ -19,7 +19,7 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultRole;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultRole;
 
 public aspect AxiomSOAP11FaultRoleSupport {
     public final Class<? extends CoreNode> AxiomSOAP11FaultRole.coreGetNodeClass() {

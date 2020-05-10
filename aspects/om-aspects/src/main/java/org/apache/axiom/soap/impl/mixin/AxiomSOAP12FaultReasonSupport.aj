@@ -27,7 +27,7 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.common.util.LocaleUtil;
 import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultReason;
 
 public aspect AxiomSOAP12FaultReasonSupport {
     public final Class<? extends CoreNode> AxiomSOAP12FaultReason.coreGetNodeClass() {

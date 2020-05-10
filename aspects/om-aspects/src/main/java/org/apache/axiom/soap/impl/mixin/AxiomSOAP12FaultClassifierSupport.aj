@@ -26,7 +26,7 @@ import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.impl.factory.SOAP12Factory;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultClassifier;
+import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultClassifier;
 
 public aspect AxiomSOAP12FaultClassifierSupport {
     private static final Sequence sequence = new Sequence(SOAPFaultValue.class, SOAPFaultSubCode.class);

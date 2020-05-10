@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap.impl.llom.soap11;
 
-import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultReason;
+import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultReason;
 import org.apache.axiom.soap.impl.llom.SOAPFaultReasonImpl;
 
 public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP11FaultReason {
