@@ -31,6 +31,8 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
+import org.apache.axiom.soap.impl.intf.soap11.SOAP11Helper;
+import org.apache.axiom.soap.impl.intf.soap12.SOAP12Helper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -71,10 +73,10 @@ public final class SOAPModel implements Model {
 
             // determine SOAP version and from that determine a proper factory here.
             if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                soapHelper = SOAPHelper.SOAP12;
+                soapHelper = SOAP12Helper.INSTANCE;
                 log.debug("Starting to process SOAP 1.2 message");
             } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                soapHelper = SOAPHelper.SOAP11;
+                soapHelper = SOAP11Helper.INSTANCE;
                 log.debug("Starting to process SOAP 1.1 message");
             } else {
                 throw new SOAPProcessingException(
@@ -108,7 +110,7 @@ public final class SOAPModel implements Model {
                     throw new SOAPProcessingException(localName + " is not supported here.",
                                                       getSenderFaultCode());
                 }
-            } else if (soapHelper == SOAPHelper.SOAP11 && bodyPresent) {
+            } else if (soapHelper == SOAP11Helper.INSTANCE && bodyPresent) {
                 elementType = AxiomElement.class;
             } else {
                 throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
@@ -132,9 +134,9 @@ public final class SOAPModel implements Model {
             // this is a SOAP fault
             elementType = soapHelper.getFaultClass();
             processingFault = true;
-            if (soapHelper == SOAPHelper.SOAP12) {
+            if (soapHelper == SOAP12Helper.INSTANCE) {
                 builderHelper = new SOAP12BuilderHelper();
-            } else if (soapHelper == SOAPHelper.SOAP11) {
+            } else if (soapHelper == SOAP11Helper.INSTANCE) {
                 builderHelper = new SOAP11BuilderHelper();
             }
 

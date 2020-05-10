@@ -23,29 +23,9 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
-import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Body;
-import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Envelope;
-import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Fault;
-import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultCode;
-import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultDetail;
-import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultReason;
-import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultRole;
-import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Header;
-import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11HeaderBlock;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Body;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Envelope;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Fault;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultCode;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultDetail;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultReason;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultRole;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Header;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12HeaderBlock;
 
 /**
  * Encapsulates certain SOAP version specific behaviors. This API defines methods that could also be
@@ -53,72 +33,6 @@ import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12HeaderBlock;
  * not be part of the public API.
  */
 public abstract class SOAPHelper {
-    public static final SOAPHelper SOAP11 = new SOAPHelper(SOAPVersion.SOAP11, "SOAP 1.1",
-            AxiomSOAP11Envelope.class,
-            AxiomSOAP11Header.class,
-            AxiomSOAP11HeaderBlock.class,
-            AxiomSOAP11Body.class,
-            AxiomSOAP11Fault.class,
-            AxiomSOAP11FaultCode.class,
-            AxiomSOAP11FaultReason.class,
-            AxiomSOAP11FaultRole.class,
-            AxiomSOAP11FaultDetail.class,
-            SOAP11Constants.ATTR_ACTOR, null) {
-        @Override
-        public SOAPFactory getSOAPFactory(OMMetaFactory metaFactory) {
-            return metaFactory.getSOAP11Factory();
-        }
-
-        @Override
-        public Boolean parseBoolean(String literal) {
-            if (literal.equals("1")) {
-                return Boolean.TRUE;
-            } else if (literal.equals("0")) {
-                return Boolean.FALSE;
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        public String formatBoolean(boolean value) {
-            return value ? "1" : "0";
-        }
-    };
-    
-    public static final SOAPHelper SOAP12 = new SOAPHelper(SOAPVersion.SOAP12, "SOAP 1.2",
-            AxiomSOAP12Envelope.class,
-            AxiomSOAP12Header.class,
-            AxiomSOAP12HeaderBlock.class,
-            AxiomSOAP12Body.class,
-            AxiomSOAP12Fault.class,
-            AxiomSOAP12FaultCode.class,
-            AxiomSOAP12FaultReason.class,
-            AxiomSOAP12FaultRole.class,
-            AxiomSOAP12FaultDetail.class,
-            SOAP12Constants.SOAP_ROLE, SOAP12Constants.SOAP_RELAY) {
-        @Override
-        public SOAPFactory getSOAPFactory(OMMetaFactory metaFactory) {
-            return metaFactory.getSOAP12Factory();
-        }
-
-        @Override
-        public Boolean parseBoolean(String literal) {
-            if (literal.equals("true") || literal.equals("1")) {
-                return Boolean.TRUE;
-            } else if (literal.equals("false") || literal.equals("0")) {
-                return Boolean.FALSE;
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        public String formatBoolean(boolean value) {
-            return String.valueOf(value);
-        }
-    };
-    
     private final SOAPVersion version;
     private final OMNamespace namespace;
     private final String specName;
@@ -138,7 +52,7 @@ public abstract class SOAPHelper {
     private final QName roleAttributeQName;
     private final QName relayAttributeQName;
     
-    private SOAPHelper(SOAPVersion version, String specName,
+    protected SOAPHelper(SOAPVersion version, String specName,
             Class<? extends AxiomSOAPEnvelope> envelopeClass,
             Class<? extends AxiomSOAPHeader> headerClass,
             Class<? extends AxiomSOAPHeaderBlock> headerBlockClass,

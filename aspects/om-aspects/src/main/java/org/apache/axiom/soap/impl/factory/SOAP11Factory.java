@@ -29,6 +29,7 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
+import org.apache.axiom.soap.impl.intf.soap11.SOAP11Helper;
 
 public class SOAP11Factory extends SOAPFactoryImpl {
     public SOAP11Factory(OMMetaFactory metaFactory, NodeFactory nodeFactory) {
@@ -37,7 +38,7 @@ public class SOAP11Factory extends SOAPFactoryImpl {
 
     @Override
     public final SOAPHelper getSOAPHelper() {
-        return SOAPHelper.SOAP11;
+        return SOAP11Helper.INSTANCE;
     }
 
     @Override
