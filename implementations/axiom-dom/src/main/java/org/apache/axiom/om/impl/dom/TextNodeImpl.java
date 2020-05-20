@@ -23,8 +23,4 @@ import org.apache.axiom.dom.DOMTextNode;
 import org.apache.axiom.om.impl.intf.AxiomText;
 
 public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, AxiomText {
-    public String toString() {
-        String value = getData();
-        return value != null ? value : "";
-    }
 }

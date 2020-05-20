@@ -430,4 +430,93 @@ public aspect DOMDocumentSupport {
 
     public final void DOMDocument.normalize(DOMConfigurationImpl config) {
     }
+
+    public final Node DOMDocument.importNode(Node importedNode, boolean deep) throws DOMException {
+
+        short type = importedNode.getNodeType();
+        Node newNode = null;
+        switch (type) {
+            case Node.ELEMENT_NODE: {
+                Element newElement;
+                if (importedNode.getLocalName() == null) {
+                    newElement = this.createElement(importedNode.getNodeName());
+                } else {
+                    
+                    String ns = importedNode.getNamespaceURI();
+                    ns = (ns != null) ? ns.intern() : null;
+                    newElement = createElementNS(ns, importedNode.getNodeName());
+                }
+
+                // Copy element's attributes, if any.
+                NamedNodeMap sourceAttrs = importedNode.getAttributes();
+                if (sourceAttrs != null) {
+                    int length = sourceAttrs.getLength();
+                    for (int index = 0; index < length; index++) {
+                        ((DOMElement)newElement).coreAppendAttribute((DOMAttribute)importNode(sourceAttrs.item(index), true));
+                    }
+                }
+                newNode = newElement;
+                break;
+            }
+
+            case Node.ATTRIBUTE_NODE: {
+                if (importedNode.getLocalName() == null) {
+                    newNode = createAttribute(importedNode.getNodeName());
+                } else {
+                    String ns = importedNode.getNamespaceURI();
+                    ns = (ns != null) ? ns.intern() : null;
+                    newNode = createAttributeNS(ns ,
+                                                importedNode.getNodeName());
+                }
+                ((Attr) newNode).setValue(importedNode.getNodeValue());
+                break;
+            }
+
+            case Node.TEXT_NODE: {
+                newNode = createTextNode(importedNode.getNodeValue());
+                break;
+            }
+
+            case Node.COMMENT_NODE: {
+                newNode = createComment(importedNode.getNodeValue());
+                break;
+            }
+                
+            case Node.DOCUMENT_FRAGMENT_NODE: {
+                newNode = createDocumentFragment();
+                // No name, kids carry value
+                break;
+            }
+
+            case Node.CDATA_SECTION_NODE:
+                newNode = createCDATASection(importedNode.getNodeValue());
+                break;
+            
+            case Node.PROCESSING_INSTRUCTION_NODE: {
+                ProcessingInstruction pi = (ProcessingInstruction)importedNode;
+                newNode = createProcessingInstruction(pi.getTarget(), pi.getData());
+                break;
+            }
+            case Node.ENTITY_REFERENCE_NODE:
+            case Node.ENTITY_NODE:
+            case Node.NOTATION_NODE:
+                throw new UnsupportedOperationException("TODO : Implement handling of org.w3c.dom.Node type == " + type );
+
+            case Node.DOCUMENT_NODE: // Can't import document nodes
+            case Node.DOCUMENT_TYPE_NODE:
+            default:
+                throw newDOMException(DOMException.NOT_SUPPORTED_ERR);
+        }
+
+        // If deep, replicate and attach the kids.
+        if (deep && !(importedNode instanceof Attr)) {
+            for (Node srckid = importedNode.getFirstChild(); srckid != null;
+                 srckid = srckid.getNextSibling()) {
+                newNode.appendChild(importNode(srckid, true));
+            }
+        }
+
+        return newNode;
+
+    }
 }

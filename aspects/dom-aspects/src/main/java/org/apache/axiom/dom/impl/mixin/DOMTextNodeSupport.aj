@@ -133,4 +133,9 @@ public aspect DOMTextNodeSupport {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
+
+    public String DOMTextNode.toString() {
+        String value = getData();
+        return value != null ? value : "";
+    }
 }
