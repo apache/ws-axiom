@@ -21,7 +21,7 @@ package org.apache.axiom.dom.impl.mixin;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMNSUnawareElement;;
 
-public aspect NSUnawareElementSupport {
+public aspect DOMNSUnawareElementSupport {
     public final void DOMNSUnawareElement.normalize(DOMConfigurationImpl config) {
     }
 }
