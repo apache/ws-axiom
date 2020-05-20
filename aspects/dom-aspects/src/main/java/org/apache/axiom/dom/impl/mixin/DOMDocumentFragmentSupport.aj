@@ -23,6 +23,7 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ElementAction;
+import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMDocumentFragment;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMSemantics;
@@ -93,5 +94,8 @@ public aspect DOMDocumentFragmentSupport {
         } catch (CoreModelException ex) {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
+    }
+
+    public final void DOMDocumentFragment.normalize(DOMConfigurationImpl config) {
     }
 }

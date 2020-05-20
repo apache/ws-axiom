@@ -91,17 +91,20 @@ public aspect DOMParentNodeSupport {
         }
     }
 
-    public void DOMParentNode.normalize(DOMConfigurationImpl config) {
+    public final void DOMParentNode.normalizeRecursively(DOMConfigurationImpl config) {
         try {
+            normalize(config);
             CoreChildNode child = coreGetFirstChild();
             while (child != null) {
-                ((DOMNode)child).normalize(config);
+                ((DOMNode)child).normalizeRecursively(config);
                 child = child.coreGetNextSibling();
             }
         } catch (CoreModelException ex) {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
+
+    public abstract void DOMParentNode.normalize(DOMConfigurationImpl config);
 
     private void DOMParentNode.checkNewChild(Node newChild) {
         if (newChild instanceof DOMNode) {

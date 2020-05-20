@@ -27,7 +27,7 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
 public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, AxiomElement {
     
-    public void normalize(DOMConfigurationImpl config) {
+    public final void normalize(DOMConfigurationImpl config) {
         if (config.isEnabled(DOMConfigurationImpl.NAMESPACES)) {
             OMNamespace namespace = getNamespace();
             if (namespace == null) {
@@ -41,6 +41,5 @@ public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, Ax
                 }
             }
         }
-        super.normalize(config);
     }
 }

@@ -35,5 +35,5 @@ public interface DOMNode extends Node, CoreNode {
      */
     CoreElement getNamespaceContext();
 
-    void normalize(DOMConfigurationImpl config);
+    void normalizeRecursively(DOMConfigurationImpl config);
 }

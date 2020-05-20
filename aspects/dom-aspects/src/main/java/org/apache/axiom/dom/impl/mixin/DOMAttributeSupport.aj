@@ -21,6 +21,7 @@ package org.apache.axiom.dom.impl.mixin;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMAttribute;
+import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMSemantics;
 import org.w3c.dom.DOMException;
@@ -98,5 +99,8 @@ public aspect DOMAttributeSupport {
     public final TypeInfo DOMAttribute.getSchemaTypeInfo() {
         // TODO
         throw new UnsupportedOperationException();
+    }
+
+    public final void DOMAttribute.normalize(DOMConfigurationImpl config) {
     }
 }

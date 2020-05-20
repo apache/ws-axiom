@@ -20,7 +20,6 @@ package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMNode;
@@ -29,11 +28,6 @@ import org.apache.axiom.dom.DOMSemantics;
 import org.w3c.dom.Node;
 
 public aspect DOMNodeSupport {
-    // TODO: should eventually have package access
-    public void DOMNode.normalize(DOMConfigurationImpl config) {
-        // Default: do nothing
-    }
-
     public final boolean DOMNode.isSupported(String feature, String version) {
         return ((DOMNodeFactory)coreGetNodeFactory()).getDOMImplementation().hasFeature(feature, version);
     }

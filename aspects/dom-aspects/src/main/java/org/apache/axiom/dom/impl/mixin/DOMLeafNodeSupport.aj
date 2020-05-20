@@ -21,6 +21,7 @@ package org.apache.axiom.dom.impl.mixin;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMLeafNode;
 import org.apache.axiom.dom.EmptyNodeList;
 import org.w3c.dom.DOMException;
@@ -100,5 +101,8 @@ public aspect DOMLeafNodeSupport {
     
     public final CoreElement DOMLeafNode.getNamespaceContext() {
         return coreGetParentElement();
+    }
+
+    public final void DOMLeafNode.normalizeRecursively(DOMConfigurationImpl config) {
     }
 }

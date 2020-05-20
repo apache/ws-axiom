@@ -181,7 +181,7 @@ public aspect DOMDocumentSupport {
                 || domConfig.isEnabled(DOMConfigurationImpl.WELLFORMED)) {
             throw new UnsupportedOperationException("TODO");
         } else {
-            normalize(domConfig);
+            normalizeRecursively(domConfig);
         }
     }
     
@@ -426,5 +426,8 @@ public aspect DOMDocumentSupport {
 
     public final void DOMDocument.setStrictErrorChecking(boolean strictErrorChecking) {
         this.strictErrorChecking = strictErrorChecking;
+    }
+
+    public final void DOMDocument.normalize(DOMConfigurationImpl config) {
     }
 }

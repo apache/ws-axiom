@@ -21,6 +21,7 @@ package org.apache.axiom.dom.impl.mixin;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMEntityReference;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -114,5 +115,8 @@ public aspect DOMEntityReferenceSupport {
 
     public final Node DOMEntityReference.replaceChild(Node newChild, Node oldChild) throws DOMException {
         throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+    }
+
+    public final void DOMEntityReference.normalizeRecursively(DOMConfigurationImpl config) {
     }
 }
