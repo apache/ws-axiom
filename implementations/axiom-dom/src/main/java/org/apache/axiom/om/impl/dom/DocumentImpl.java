@@ -21,8 +21,6 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
-import java.util.Hashtable;
-
 import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.w3c.dom.Attr;
@@ -33,8 +31,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 
 public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocument {
-    protected Hashtable identifiers;
-    
     public Node importNode(Node importedNode, boolean deep) throws DOMException {
 
         short type = importedNode.getNodeType();
