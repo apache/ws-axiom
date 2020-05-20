@@ -34,4 +34,6 @@ public interface DOMNode extends Node, CoreNode {
      *         namespace context of this node is defined to be empty
      */
     CoreElement getNamespaceContext();
+
+    void normalize(DOMConfigurationImpl config);
 }
