@@ -241,6 +241,8 @@
     </distributionManagement>
 
     <properties>
+        <javaVersion>1.7</javaVersion>
+
         <osgi.version>5.0.0</osgi.version>
         <failIfNoTests>false</failIfNoTests>
         <aspectj.version>1.9.1</aspectj.version>
@@ -711,7 +713,7 @@
                     <version>3.0.1</version>
                     <configuration>
                         <detectOfflineLinks>false</detectOfflineLinks>
-                        <source>1.7</source>
+                        <source>${javaVersion}</source>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -909,6 +911,15 @@
                                         println 'Disabling JaCoCo because tests are skipped'
                                         project.properties['skipJacoco'] = 'true'
                                     }
+                                    
+                                    javaVersion = project.properties['javaVersion']
+                                    if (javaVersion == '1.7') {
+                                        project.properties['signatureArtifactId'] = 'java17'
+                                        project.properties['signatureVersion'] = '1.0'
+                                    } else if (javaVersion == '1.8') {
+                                        project.properties['signatureArtifactId'] = 'java18'
+                                        project.properties['signatureVersion'] = '1.0'
+                                    }
                                 ]]></script>
                             </scripts>
                         </configuration>
@@ -977,8 +988,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${javaVersion}</source>
+                    <target>${javaVersion}</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -1009,8 +1020,8 @@
                 <configuration>
                     <signature>
                         <groupId>org.codehaus.mojo.signature</groupId>
-                        <artifactId>java17</artifactId>
-                        <version>1.0</version>
+                        <artifactId>${signatureArtifactId}</artifactId>
+                        <version>${signatureVersion}</version>
                     </signature>
                 </configuration>
             </plugin>

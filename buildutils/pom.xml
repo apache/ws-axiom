@@ -38,6 +38,7 @@
     </modules>
 
     <properties>
+        <javaVersion>1.8</javaVersion>
         <maven.version>3.0</maven.version>
     </properties>
 
