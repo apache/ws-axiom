@@ -75,9 +75,9 @@
     <build>
         <extensions>
             <extension>
-                <groupId>com.github.veithen.cosmos</groupId>
+                <groupId>com.github.veithen.maven</groupId>
                 <artifactId>p2-maven-connector</artifactId>
-                <version>0.3</version>
+                <version>0.4.0</version>
             </extension>
         </extensions>
     </build>
