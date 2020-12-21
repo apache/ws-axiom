@@ -31,18 +31,6 @@
     <name>Eclipse Tests</name>
     <description>Contains test cases that verify that the Axiom OSGi bundles are usable out of the box by Eclipse plug-ins.</description>
 
-    <repositories>
-        <repository>
-            <id>oxygen</id>
-            <layout>p2</layout>
-            <!-- Note that http://download.eclipse.org/releases/xyz is a combined repository that
-                 also contains the services releases. It is therefore not stable, i.e. its content
-                 may change over time. To avoid that, we use the repository that contains the
-                 original release artifacts. -->
-            <url>http://download.eclipse.org/releases/oxygen/201712201001</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -69,9 +57,9 @@
         </dependency>
 
         <dependency>
-            <groupId>osgi.bundle</groupId>
+            <groupId>org.eclipse.platform</groupId>
             <artifactId>org.eclipse.osgi</artifactId>
-            <version>3.12.50.v20170928-1321</version>
+            <version>3.16.100</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -118,12 +106,5 @@
                 </configuration>
             </plugin>
         </plugins>
-        <extensions>
-            <extension>
-                <groupId>com.github.veithen.cosmos</groupId>
-                <artifactId>p2-maven-connector</artifactId>
-                <version>0.3</version>
-            </extension>
-        </extensions>
     </build>
 </project>
