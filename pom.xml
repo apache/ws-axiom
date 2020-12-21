@@ -246,7 +246,7 @@
         <osgi.version>5.0.0</osgi.version>
         <failIfNoTests>false</failIfNoTests>
         <aspectj.version>1.9.1</aspectj.version>
-        <shade.plugin.version>2.3</shade.plugin.version>
+        <shade.plugin.version>3.2.4</shade.plugin.version>
         <spring.version>5.0.1.RELEASE</spring.version>
         <springws.version>3.0.3.RELEASE</springws.version>
         <exam.version>4.12.0</exam.version>
