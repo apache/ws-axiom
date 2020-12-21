@@ -39,7 +39,7 @@
 
     <properties>
         <javaVersion>1.8</javaVersion>
-        <maven.version>3.0</maven.version>
+        <maven.version>3.6.3</maven.version>
     </properties>
 
     <dependencyManagement>
