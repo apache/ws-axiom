@@ -29,6 +29,6 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
     - name: Build
-      run: mvn -B -e -Prelease -Dgpg.skip=true verify
+      run: mvn -B -e -Papache-release -Dgpg.skip=true verify
     - name: Remove Snapshots
       run: find ~/.m2/repository -name '*-SNAPSHOT' -a -type d -print0 | xargs -0 rm -rf
