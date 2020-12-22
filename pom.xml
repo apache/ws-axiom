@@ -248,7 +248,7 @@
         <aspectj.version>1.9.1</aspectj.version>
         <shade.plugin.version>3.2.4</shade.plugin.version>
         <spring.version>5.3.2</spring.version>
-        <springws.version>3.0.3.RELEASE</springws.version>
+        <springws.version>3.0.10.RELEASE</springws.version>
         <exam.version>4.13.4</exam.version>
         <slf4j.version>1.7.30</slf4j.version>
         <jetty.version>9.4.35.v20201120</jetty.version>
