@@ -40,6 +40,7 @@ public class DataSourceUtilsTest {
     @Configuration
     public static Option[] configuration() {
         return options(
+                url("link:classpath:com.sun.activation.javax.activation.link"),
                 url("link:classpath:com.sun.mail.javax.mail.link"),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
