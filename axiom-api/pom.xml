@@ -262,6 +262,7 @@
                             org.apache.axiom.*;-split-package:=merge-first;-noimport:=true
                         </Export-Package>
                         <Import-Package>
+                            javax.mail.util;resolution:=optional,
                             org.jaxen.*;resolution:=optional,
                             org.codehaus.stax2;resolution:=optional,
                             org.apache.james.mime4j.*;version="${range;[==,=+)}",
