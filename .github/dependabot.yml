@@ -25,3 +25,5 @@ updates:
         versions: ">= 10.0"
       - dependency-name: "org.eclipse.jetty:jetty-webapp"
         versions: ">= 10.0"
+      - dependency-name: "org.glassfish.jaxb:jaxb-runtime"
+        versions: ">= 3.0"
