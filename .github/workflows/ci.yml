@@ -24,7 +24,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [ 8, 9, 10 ]
+        java: [ 8, 9, 10, 11 ]
     name: "Java ${{ matrix.java }}"
     runs-on: ubuntu-18.04
     steps:
