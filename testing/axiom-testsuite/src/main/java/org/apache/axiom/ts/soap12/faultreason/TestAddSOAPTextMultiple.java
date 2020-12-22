@@ -44,8 +44,8 @@ public class TestAddSOAPTextMultiple extends SOAPTestCase {
         text2.setText("Systemfehler");
         reason.addSOAPText(text2);
         OMNode child = reason.getFirstOMChild();
-        assertThat(child).isSameAs(text1);
+        assertThat(child).isSameInstanceAs(text1);
         child = child.getNextOMSibling();
-        assertThat(child).isSameAs(text2);
+        assertThat(child).isSameInstanceAs(text2);
     }
 }

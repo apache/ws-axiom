@@ -56,6 +56,6 @@ public class TestWhitespaceAroundDocumentElement extends DOMTestCase {
         
         NodeList children = doc.getChildNodes();
         assertThat(children.getLength()).isEqualTo(2);
-        assertThat(children.item(1)).isSameAs(doc.getDocumentElement());
+        assertThat(children.item(1)).isSameInstanceAs(doc.getDocumentElement());
     }
 }

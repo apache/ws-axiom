@@ -22,7 +22,7 @@ import org.apache.axiom.om.OMContainer;
 
 import com.google.common.truth.FailureMetadata;
 
-public final class OMContainerSubject extends AbstractOMContainerSubject<OMContainerSubject,OMContainer> {
+public final class OMContainerSubject extends AbstractOMContainerSubject {
     OMContainerSubject(FailureMetadata failureMetadata, OMContainer subject) {
         super(failureMetadata, subject);
     }

@@ -53,7 +53,7 @@ public class TestDeclareNamespace extends AxiomTestCase {
         assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns2");
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertThat(it.hasNext()).isTrue();
-        assertThat(it.next()).isSameAs(ns);
+        assertThat(it.next()).isSameInstanceAs(ns);
         assertThat(it.hasNext()).isFalse();
     }
 }

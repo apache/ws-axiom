@@ -24,20 +24,21 @@ import org.apache.axiom.om.OMNode;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 
-public abstract class AbstractOMContainerSubject<S extends AbstractOMContainerSubject<S,T>,T extends OMContainer> extends Subject<S,T> {
-    public AbstractOMContainerSubject(FailureMetadata failureMetadata, T subject) {
+public abstract class AbstractOMContainerSubject extends Subject {
+    private final OMContainer subject;
+
+    public AbstractOMContainerSubject(FailureMetadata failureMetadata, OMContainer subject) {
         super(failureMetadata, subject);
+        this.subject = subject;
     }
 
     public final void hasNumberOfChildren(int expected) {
-        OMNode child = actual().getFirstOMChild();
+        OMNode child = subject.getFirstOMChild();
         int actual = 0;
         while (child != null) {
             actual++;
             child = child.getNextOMSibling();
         }
-        if (actual != expected) {
-            failWithRawMessage("number of children is %s instead of %s", actual, expected);
-        }
+        check("number of children").that(actual).isEqualTo(expected);
     }
 }

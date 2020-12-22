@@ -41,9 +41,9 @@ public class TestSetOMDocumentElementReplaceSame extends AxiomTestCase {
         OMDocument document = factory.createOMDocument();
         OMElement root = factory.createOMElement("root", null, document);
         document.setOMDocumentElement(root);
-        assertThat(document.getOMDocumentElement()).isSameAs(root);
+        assertThat(document.getOMDocumentElement()).isSameInstanceAs(root);
         assertThat(root.getPreviousOMSibling()).isNull();
         assertThat(root.getNextOMSibling()).isNull();
-        assertThat(root.getParent()).isSameAs(document);
+        assertThat(root.getParent()).isSameInstanceAs(document);
     }
 }

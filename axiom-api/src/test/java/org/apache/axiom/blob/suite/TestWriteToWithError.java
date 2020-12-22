@@ -40,7 +40,7 @@ public class TestWriteToWithError extends SizeSensitiveWritableBlobTestCase {
             fail("Expected StreamCopyException");
         } catch (StreamCopyException ex) {
             assertThat(ex.getOperation()).isEqualTo(StreamCopyException.WRITE);
-            assertThat(ex.getCause()).isSameAs(out.getException());
+            assertThat(ex.getCause()).isSameInstanceAs(out.getException());
         }
     }
 }

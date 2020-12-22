@@ -57,10 +57,10 @@ public class TestAddAttributeReplace extends AxiomTestCase {
         OMAttribute att2 = strategy.addAttribute(element, "test", ns2, "value2");
         Iterator<OMAttribute> it = element.getAllAttributes();
         assertThat(it.hasNext()).isTrue();
-        assertThat(it.next()).isSameAs(att2);
+        assertThat(it.next()).isSameInstanceAs(att2);
         assertThat(it.hasNext()).isFalse();
         assertThat(att1.getOwner()).isNull();
-        assertThat(att2.getOwner()).isSameAs(element);
+        assertThat(att2.getOwner()).isSameInstanceAs(element);
         assertThat(att1).hasValue("value1");
         assertThat(att2).hasValue("value2");
     }

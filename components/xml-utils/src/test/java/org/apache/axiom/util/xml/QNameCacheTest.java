@@ -39,13 +39,13 @@ public class QNameCacheTest {
         for (int i=0; i<2; i++) {
             qnames[i] = QNameCache.getQName("urn:test", "test", "p");
         }
-        assertThat(qnames[1]).isSameAs(qnames[0]);
+        assertThat(qnames[1]).isSameInstanceAs(qnames[0]);
     }
 
     @Test
     public void testPrefixIsRelevant() {
         QName qname1 = QNameCache.getQName("urn:ns2", "foo", "p");
         QName qname2 = QNameCache.getQName("urn:ns2", "foo", "");
-        assertThat(qname2).isNotSameAs(qname1);
+        assertThat(qname2).isNotSameInstanceAs(qname1);
     }
 }

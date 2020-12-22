@@ -47,7 +47,7 @@ public class TestInsertSibling extends CrossOMTestCase {
             child.insertSiblingAfter(orgSibling);
         }
         OMComment sibling = (OMComment)(before ? child.getPreviousOMSibling() : child.getNextOMSibling());
-        assertThat(sibling).isNotSameAs(orgSibling);
+        assertThat(sibling).isNotSameInstanceAs(orgSibling);
         assertThat(sibling.getValue()).isEqualTo("test");
     }
 }

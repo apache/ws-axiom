@@ -39,7 +39,7 @@ public class TestReadFromWithError extends WritableBlobTestCase {
             fail("Expected StreamCopyException");
         } catch (StreamCopyException ex) {
             assertThat(ex.getOperation()).isEqualTo(StreamCopyException.READ);
-            assertThat(ex.getCause()).isSameAs(in.getException());
+            assertThat(ex.getCause()).isSameInstanceAs(in.getException());
         }
     }
 }

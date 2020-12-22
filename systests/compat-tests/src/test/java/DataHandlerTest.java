@@ -31,7 +31,7 @@ public class DataHandlerTest {
         DataHandler dh = new DataHandler(new TestDataSource('x', 1000));
         SOAPEnvelope envelope = OMAbstractFactory.getMetaFactory(feature).getSOAP11Factory().createDefaultSOAPMessage().getSOAPEnvelope();
         PayloadHelper.setBinaryPayload(envelope, dh);
-        assertThat(PayloadHelper.getBinaryPayload(envelope)).isSameAs(dh);
+        assertThat(PayloadHelper.getBinaryPayload(envelope)).isSameInstanceAs(dh);
     }
 
     @Test

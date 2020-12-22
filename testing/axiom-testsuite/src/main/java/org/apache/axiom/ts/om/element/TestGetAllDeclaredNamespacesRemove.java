@@ -59,7 +59,7 @@ public class TestGetAllDeclaredNamespacesRemove extends AxiomTestCase {
                 }
                 seenPrefixes.add(prefix);
             }
-            assertThat(seenPrefixes).containsAllIn(prefixes);
+            assertThat(seenPrefixes).containsAtLeastElementsIn(prefixes);
             for (String prefix : prefixes) {
                 OMNamespace ns = element.findNamespaceURI(prefix);
                 if (prefix.equals(prefixToRemove)) {

@@ -44,6 +44,6 @@ public class TestRemoveAttributeNode extends AxiomTestCase {
         OMElement element = factory.createOMElement("test", null);
         OMAttribute attr = element.addAttribute("attr", "value", null);
         ((Element)element).removeAttributeNode((Attr)attr);
-        assertThat(((Attr)attr).getOwnerDocument()).isSameAs(((Element)element).getOwnerDocument());
+        assertThat(((Attr)attr).getOwnerDocument()).isSameInstanceAs(((Element)element).getOwnerDocument());
     }
 }

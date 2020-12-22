@@ -38,7 +38,7 @@ import com.google.common.truth.Subject;
 /**
  * Propositions for objects representing XML data.
  */
-public final class XMLSubject extends Subject<XMLSubject,Object> {
+public final class XMLSubject extends Subject {
     private final XML xml;
     private boolean ignoreComments;
     private boolean ignoreElementContentWhitespace;

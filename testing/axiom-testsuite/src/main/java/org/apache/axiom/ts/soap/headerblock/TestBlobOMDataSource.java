@@ -61,12 +61,12 @@ public class TestBlobOMDataSource extends SOAPTestCase {
         assertTrue("Expected OMSourcedElement child", firstChild instanceof SOAPHeaderBlock);
         SOAPHeaderBlock child = (SOAPHeaderBlock) firstChild;
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        assertThat(child.getDataSource()).isSameAs(ds);
+        assertThat(child.getDataSource()).isSameInstanceAs(ds);
         
         // Make sure that getting the MustUnderstand property does not cause expansion.
         assertTrue(!child.getMustUnderstand());
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        assertThat(child.getDataSource()).isSameAs(ds);
+        assertThat(child.getDataSource()).isSameInstanceAs(ds);
         
         // A BlobOMDataSource does not consume the backing object when read.
         // Thus getting the XMLStreamReader of the BlobOMDataSource should not 
@@ -82,6 +82,6 @@ public class TestBlobOMDataSource extends SOAPTestCase {
                    soapHeader.toString().indexOf(payload) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
         
-        assertThat(child.getDataSource()).isSameAs(ds);
+        assertThat(child.getDataSource()).isSameInstanceAs(ds);
     }
 }

@@ -49,7 +49,7 @@ public class TestDiscard extends AxiomTestCase {
         OMElement child2 = factory.createOMElement("child2", null, parent);
         expansionStrategy.apply(omse);
         omse.discard();
-        assertThat(child1.getNextOMSibling()).isSameAs(child2);
+        assertThat(child1.getNextOMSibling()).isSameInstanceAs(child2);
         assertThat(ds.hasUnclosedReaders()).isFalse();
         assertThat(ds.getReaderRequestCount()).isEqualTo(expansionStrategy == DONT_EXPAND ? 0 : 1);
     }

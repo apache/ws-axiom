@@ -41,7 +41,7 @@ public class TestAddChildElementLocalName extends SAAJTestCase {
         assertThat(element.getLocalName()).isEqualTo("child");
         assertThat(element.getNamespaceURI()).isNull();
         assertThat(element.getPrefix()).isNull();
-        assertThat(element.getParentNode()).isSameAs(root);
+        assertThat(element.getParentNode()).isSameInstanceAs(root);
         assertThat(element.getAttributes().getLength()).isEqualTo(0);
     }
 }

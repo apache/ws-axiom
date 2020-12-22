@@ -57,7 +57,7 @@ public class TestSetDataSource extends AxiomTestCase {
         assertTrue("Expected OMSourcedElement child", firstChild instanceof OMSourcedElement);
         OMSourcedElement child = (OMSourcedElement) firstChild;
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        assertThat(child.getDataSource()).isSameAs(nonDestructiveOMDataSource1);
+        assertThat(child.getDataSource()).isSameInstanceAs(nonDestructiveOMDataSource1);
         
         // Write out the body
         StringWriter sw = new StringWriter();

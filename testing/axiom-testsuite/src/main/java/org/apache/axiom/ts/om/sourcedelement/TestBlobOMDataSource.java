@@ -57,7 +57,7 @@ public class TestBlobOMDataSource extends AxiomTestCase {
         assertTrue("Expected OMSourcedElement child", firstChild instanceof OMSourcedElement);
         OMSourcedElement child = (OMSourcedElement) firstChild;
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        assertThat(child.getDataSource()).isSameAs(ds);
+        assertThat(child.getDataSource()).isSameInstanceAs(ds);
         
         // A BlobOMDataSource does not consume the backing object when read.
         // Thus getting the XMLStreamReader of the BlobOMDataSource should not 
@@ -81,6 +81,6 @@ public class TestBlobOMDataSource extends AxiomTestCase {
         assertTrue("OMSourcedElement is expanded after buildWithAttachments().  This is unexpected", !child.isExpanded());
         
         // Test getting the raw bytes from the BlobOMDataSource.
-        assertThat(child.getDataSource()).isSameAs(ds);
+        assertThat(child.getDataSource()).isSameInstanceAs(ds);
     }
 }

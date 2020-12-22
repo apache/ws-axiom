@@ -20,24 +20,22 @@ package org.apache.axiom.truth;
 
 import org.apache.axiom.om.OMAttribute;
 
-import com.google.common.base.Objects;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 
-public final class OMAttributeSubject extends Subject<OMAttributeSubject,OMAttribute>{
+public final class OMAttributeSubject extends Subject {
+    private final OMAttribute subject;
+
     OMAttributeSubject(FailureMetadata failureMetadata, OMAttribute subject) {
         super(failureMetadata, subject);
+        this.subject = subject;
     }
 
     public void hasValue(String expected) {
-        if (!Objects.equal(actual().getAttributeValue(), expected)) {
-            fail("has value", expected);
-        }
+        check("value").that(subject.getAttributeValue()).isEqualTo(expected);
     }
 
     public void hasPrefix(String expected) {
-        if (!Objects.equal(actual().getPrefix(), expected)) {
-            fail("has prefix", expected);
-        }
+        check("prefix").that(subject.getPrefix()).isEqualTo(expected);
     }
 }

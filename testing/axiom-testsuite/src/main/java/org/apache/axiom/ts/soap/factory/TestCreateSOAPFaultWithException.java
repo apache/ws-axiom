@@ -48,7 +48,7 @@ public class TestCreateSOAPFaultWithException extends SOAPTestCase {
         SOAPFault fault = soapFactory.createSOAPFault(body, new Exception("Testing soap fault"));
         if (body != null) {
             assertThat(body.hasFault()).isTrue();
-            assertThat(body.getFault()).isSameAs(fault);
+            assertThat(body.getFault()).isSameInstanceAs(fault);
         }
         assertThat(fault.isComplete()).isTrue();
         SOAPFaultDetail detail = fault.getDetail();

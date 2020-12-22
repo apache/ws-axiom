@@ -45,7 +45,7 @@ public class TestAddChildElementLocalNamePrefixAndURI extends SAAJTestCase {
         assertThat(element.getLocalName()).isEqualTo("child");
         assertThat(element.getNamespaceURI()).isEqualTo("urn:ns2");
         assertThat(element.getPrefix()).isEqualTo("ns2");
-        assertThat(element.getParentNode()).isSameAs(root);
+        assertThat(element.getParentNode()).isSameInstanceAs(root);
         NamedNodeMap attributes = element.getAttributes();
         assertThat(attributes.getLength()).isEqualTo(1);
         Attr attr = (Attr)attributes.item(0);

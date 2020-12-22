@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.truth;
 
+import static com.google.common.truth.Fact.simpleFact;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -25,35 +27,38 @@ import org.apache.axiom.om.OMNamespace;
 
 import com.google.common.truth.FailureMetadata;
 
-public final class OMElementSubject extends AbstractOMContainerSubject<OMElementSubject,OMElement> {
+public final class OMElementSubject extends AbstractOMContainerSubject {
+    private final OMElement subject;
+
     OMElementSubject(FailureMetadata failureMetadata, OMElement subject) {
         super(failureMetadata, subject);
+        this.subject = subject;
     }
 
     public void hasNoNamespaceDeclarations() {
-        if (actual().getAllDeclaredNamespaces().hasNext()) {
-            fail("has no namespace declarations");
+        if (subject.getAllDeclaredNamespaces().hasNext()) {
+            failWithActual(simpleFact("expected to have no namespace declarations"));
         }
     }
     
     public void hasNamespaceDeclaration(OMNamespace ns) {
-        for (Iterator<OMNamespace> it = actual().getAllDeclaredNamespaces(); it.hasNext(); ) {
+        for (Iterator<OMNamespace> it = subject.getAllDeclaredNamespaces(); it.hasNext(); ) {
             if (it.next().equals(ns)) {
                 return;
             }
         }
-        fail("has namespace declaration for namespace URI \"" + ns.getNamespaceURI()
-                + "\" and prefix \"" + ns.getPrefix() + "\"");
+        failWithActual(simpleFact("expected to have namespace declaration for namespace URI \"" + ns.getNamespaceURI()
+                + "\" and prefix \"" + ns.getPrefix() + "\""));
     }
 
     public void hasNamespaceDeclaration(String prefix, String namespaceURI) {
-        for (Iterator<OMNamespace> it = actual().getAllDeclaredNamespaces(); it.hasNext(); ) {
+        for (Iterator<OMNamespace> it = subject.getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = it.next();
             if (ns.getPrefix().equals(prefix) && ns.getNamespaceURI().equals(namespaceURI)) {
                 return;
             }
         }
-        fail("has namespace declaration for namespace URI \"" + namespaceURI
-                + "\" and prefix \"" + prefix + "\"");
+        failWithActual(simpleFact("expected to have namespace declaration for namespace URI \"" + namespaceURI
+                + "\" and prefix \"" + prefix + "\""));
     }
 }
