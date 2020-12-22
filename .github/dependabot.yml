@@ -19,5 +19,7 @@ updates:
     schedule:
       interval: "daily"
     ignore:
+      - dependency-name: "com.sun.xml.ws:jaxws-rt"
+        versions: ">= 3.0"
       - dependency-name: "org.eclipse.jetty:jetty-webapp"
         versions: ">= 10.0"
