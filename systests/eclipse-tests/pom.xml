@@ -97,9 +97,11 @@
                         <configuration>
                             <name>%bundle.symbolicName%.link</name>
                             <value>%url%</value>
-                            <dependencySet>
-                                <scope>test</scope>
-                            </dependencySet>
+                            <artifactSet>
+                                <dependencySet>
+                                    <scope>test</scope>
+                                </dependencySet>
+                            </artifactSet>
                         </configuration>
                     </execution>
                 </executions>

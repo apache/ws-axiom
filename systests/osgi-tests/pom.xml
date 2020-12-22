@@ -130,32 +130,34 @@
                         <configuration>
                             <name>%bundle.symbolicName%.link</name>
                             <value>%url%</value>
-                            <dependencySet>
-                                <scope>test</scope>
-                            </dependencySet>
-                            <artifacts>
-                                <artifact>
-                                    <groupId>org.apache.servicemix.specs</groupId>
-                                    <artifactId>org.apache.servicemix.specs.stax-api-1.0</artifactId>
-                                    <version>2.2.0</version>
-                                </artifact>
-                                <artifact>
-                                    <!-- Contains SJSXP -->
-                                    <groupId>org.apache.servicemix.bundles</groupId>
-                                    <artifactId>org.apache.servicemix.bundles.jaxp-ri</artifactId>
-                                    <version>1.4.5_1</version>
-                                </artifact>
-                                <artifact>
-                                    <groupId>org.apache.servicemix.specs</groupId>
-                                    <artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
-                                    <version>2.0.0</version>
-                                </artifact>
-                                <artifact>
-                                    <groupId>org.apache.servicemix.bundles</groupId>
-                                    <artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
-                                    <version>2.1.13_2</version>
-                                </artifact>
-                            </artifacts>
+                            <artifactSet>
+                                <dependencySet>
+                                    <scope>test</scope>
+                                </dependencySet>
+                                <artifacts>
+                                    <artifact>
+                                        <groupId>org.apache.servicemix.specs</groupId>
+                                        <artifactId>org.apache.servicemix.specs.stax-api-1.0</artifactId>
+                                        <version>2.2.0</version>
+                                    </artifact>
+                                    <artifact>
+                                        <!-- Contains SJSXP -->
+                                        <groupId>org.apache.servicemix.bundles</groupId>
+                                        <artifactId>org.apache.servicemix.bundles.jaxp-ri</artifactId>
+                                        <version>1.4.5_1</version>
+                                    </artifact>
+                                    <artifact>
+                                        <groupId>org.apache.servicemix.specs</groupId>
+                                        <artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
+                                        <version>2.0.0</version>
+                                    </artifact>
+                                    <artifact>
+                                        <groupId>org.apache.servicemix.bundles</groupId>
+                                        <artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
+                                        <version>2.1.13_2</version>
+                                    </artifact>
+                                </artifacts>
+                            </artifactSet>
                         </configuration>
                     </execution>
                 </executions>
