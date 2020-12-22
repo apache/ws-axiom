@@ -28,7 +28,7 @@ final class DOMTSClassVisitor extends ClassVisitor {
     private final Set<DOMFeature> usedFeatures;
     
     DOMTSClassVisitor(Set<DOMFeature> usedFeatures) {
-        super(Opcodes.ASM8);
+        super(Opcodes.ASM9);
         this.usedFeatures = usedFeatures;
     }
 

@@ -28,7 +28,7 @@ import org.objectweb.asm.Opcodes;
  */
 final class GetDataHandlerBridgeMethodInjector extends ClassVisitor {
     GetDataHandlerBridgeMethodInjector(ClassVisitor cv) {
-        super(Opcodes.ASM8, cv);
+        super(Opcodes.ASM9, cv);
     }
 
     @Override
