@@ -525,7 +525,7 @@
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-webapp</artifactId>
-                <version>9.4.12.v20180830</version>
+                <version>9.4.35.v20201120</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
