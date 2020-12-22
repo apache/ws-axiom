@@ -42,8 +42,7 @@
             <artifactId>shared-aspects</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <!-- TODO: decouple this from the Axiom API -->
+        <dependency><!-- TODO: decouple this from the Axiom API -->
             <groupId>${project.groupId}</groupId>
             <artifactId>om-aspects</artifactId>
             <version>${project.version}</version>

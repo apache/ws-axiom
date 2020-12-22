@@ -17,7 +17,7 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -27,18 +27,6 @@
     </parent>
 
     <artifactId>psychopath-tests</artifactId>
-
-    <repositories>
-        <repository>
-            <id>kepler</id>
-            <layout>p2</layout>
-            <!-- Note that http://download.eclipse.org/releases/kepler is a combined repository that
-                 also contains the services releases. It is therefore not stable, i.e. its content
-                 may change over time. To avoid that, we use the repository that contains the
-                 original release artifacts. -->
-            <url>http://download.eclipse.org/releases/kepler/201306260900</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -71,6 +59,18 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>kepler</id>
+            <layout>p2</layout>
+            <!-- Note that http://download.eclipse.org/releases/kepler is a combined repository that
+                 also contains the services releases. It is therefore not stable, i.e. its content
+                 may change over time. To avoid that, we use the repository that contains the
+                 original release artifacts. -->
+            <url>http://download.eclipse.org/releases/kepler/201306260900</url>
+        </repository>
+    </repositories>
 
     <build>
         <extensions>

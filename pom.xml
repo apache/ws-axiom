@@ -17,7 +17,7 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -257,38 +257,6 @@
         <skipDeploy>false</skipDeploy>
     </properties>
 
-    <repositories>
-        <!-- Need to declare this here so that Maven can download snapshot versions of the parent POM -->
-        <repository>
-            <id>apache.snapshots</id>
-            <name>Apache Snapshot Repository</name>
-            <url>http://repository.apache.org/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>apache.snapshots</id>
-            <name>Apache Snapshot Repository</name>
-            <url>http://repository.apache.org/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </pluginRepository>
-        <pluginRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -352,8 +320,7 @@
                 <artifactId>xercesImpl</artifactId>
                 <version>2.11.0</version>
             </dependency>
-            <dependency>
-                <!-- Recent versions of Xerces require this (because they need org.w3c.dom.ElementTraversal) -->
+            <dependency><!-- Recent versions of Xerces require this (because they need org.w3c.dom.ElementTraversal) -->
                 <groupId>xml-apis</groupId>
                 <artifactId>xml-apis</artifactId>
                 <version>1.4.01</version>
@@ -532,6 +499,38 @@
         </dependencies>
     </dependencyManagement>
 
+    <repositories>
+        <!-- Need to declare this here so that Maven can download snapshot versions of the parent POM -->
+        <repository>
+            <id>apache.snapshots</id>
+            <name>Apache Snapshot Repository</name>
+            <url>http://repository.apache.org/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>apache.snapshots</id>
+            <name>Apache Snapshot Repository</name>
+            <url>http://repository.apache.org/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+        <pluginRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -641,8 +640,8 @@
                             <groupId>net.sf.docbook</groupId>
                             <artifactId>docbook-xml</artifactId>
                             <version>5.0-all</version>
-                            <classifier>resources</classifier>
                             <type>zip</type>
+                            <classifier>resources</classifier>
                         </dependency>
                         <!-- Upgrade to xml-resolver 1.2. This is merely to make debugging easier (version 1.1
                              neither has debug information nor a source JAR) -->
@@ -756,8 +755,7 @@
                             <artifactId>aspectjtools</artifactId>
                             <version>${aspectj.version}</version>
                         </dependency>
-                        <dependency>
-                            <!-- Dirty hack to work around Java 9 incompatibility in the plugin -->
+                        <dependency><!-- Dirty hack to work around Java 9 incompatibility in the plugin -->
                             <groupId>com.sun</groupId>
                             <artifactId>tools</artifactId>
                             <version>${java.version}</version>
@@ -1033,8 +1031,7 @@
                     </signature>
                 </configuration>
             </plugin>
-            <plugin>
-                <!-- This serves two purposes:
+            <plugin><!-- This serves two purposes:
                       (1) we want to generate source JARs for all builds, not just release builds;
                       (2) we need (some of) the source JARs to generate the Javadoc in the apidocs module. -->
                 <artifactId>maven-source-plugin</artifactId>
@@ -1057,8 +1054,7 @@
                     <attach>true</attach>
                 </configuration>
             </plugin>
-            <plugin>
-                <!-- We need this to make sure that shade:shade is executed after source:jar-no-fork
+            <plugin><!-- We need this to make sure that shade:shade is executed after source:jar-no-fork
                      (see MSHADE-120). -->
                 <artifactId>maven-shade-plugin</artifactId>
             </plugin>
@@ -1128,7 +1124,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>tidy-maven-plugin</artifactId>
-                <version>1.0-beta-1</version>
+                <version>1.1.0</version>
                 <executions>
                     <execution>
                         <!-- The default binding to the verify phase doesn't work here because some
@@ -1326,7 +1322,7 @@ $${type_declaration}</template></templates>]]></value>
                                 <exclude>dependency-reduced-pom.xml</exclude>
                                 <exclude>.repository/**</exclude>
                             </excludes>
-                        </configuration> 
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

@@ -118,7 +118,7 @@
                                      all contain a valid license header -->
                                 <exclude>src/main/resources/**</exclude>
                             </excludes>
-                        </configuration> 
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
