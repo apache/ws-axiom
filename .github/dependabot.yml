@@ -19,8 +19,18 @@ updates:
     schedule:
       interval: "daily"
     ignore:
+      - dependency-name: "com.sun.activation:jakarta.activation"
+        versions: ">= 2.0"
+      - dependency-name: "com.sun.mail:jakarta.mail"
+        versions: ">= 2.0"
+      - dependency-name: "com.sun.xml.messaging.saaj:saaj-impl"
+        versions: ">= 2.0"
       - dependency-name: "com.sun.xml.ws:jaxws-rt"
         versions: ">= 3.0"
+      - dependency-name: "jakarta.activation:jakarta.activation-api"
+        versions: ">= 2.0"
+      - dependency-name: "jakarta.xml.soap:jakarta.xml.soap-api"
+        versions: ">= 2.0"
       - dependency-name: "org.eclipse.jetty:jetty-server"
         versions: ">= 10.0"
       - dependency-name: "org.eclipse.jetty:jetty-webapp"

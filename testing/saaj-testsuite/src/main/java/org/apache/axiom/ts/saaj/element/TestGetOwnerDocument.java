@@ -43,7 +43,6 @@ public class TestGetOwnerDocument extends SAAJTestCase {
     protected void runTest() throws Throwable {
         Document doc = newSOAPFactory().createElement(new QName("test")).getOwnerDocument();
         assertThat(doc).isNotInstanceOf(SOAPPart.class);
-        assertThat(doc).isNotInstanceOf(javax.xml.soap.Node.class);
         assertThat(doc.createElementNS(null, "test")).isInstanceOf(SOAPElement.class);
     }
 }

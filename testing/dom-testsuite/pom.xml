@@ -76,8 +76,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>javax.activation-api</artifactId>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
         </dependency>
     </dependencies>
 
