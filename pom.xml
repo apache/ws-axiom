@@ -243,7 +243,6 @@
     <properties>
         <javaVersion>1.7</javaVersion>
 
-        <osgi.version>5.0.0</osgi.version>
         <failIfNoTests>false</failIfNoTests>
         <aspectj.version>1.9.6</aspectj.version>
         <shade.plugin.version>3.2.4</shade.plugin.version>
@@ -287,13 +286,13 @@
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.core</artifactId>
-                <version>${osgi.version}</version>
+                <artifactId>org.osgi.framework</artifactId>
+                <version>1.10.0</version>
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.compendium</artifactId>
-                <version>${osgi.version}</version>
+                <artifactId>org.osgi.util.tracker</artifactId>
+                <version>1.5.3</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
