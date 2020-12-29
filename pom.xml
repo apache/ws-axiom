@@ -253,6 +253,7 @@
         <jetty.version>9.4.35.v20201120</jetty.version>
         <log4j.version>2.14.0</log4j.version>
         <groovy.version>3.0.7</groovy.version>
+        <jaxbri.version>2.3.3</jaxbri.version>
         
         <skipDeploy>false</skipDeploy>
     </properties>
@@ -473,7 +474,7 @@
             <dependency>
                 <groupId>org.glassfish.jaxb</groupId>
                 <artifactId>jaxb-runtime</artifactId>
-                <version>2.3.3</version>
+                <version>${jaxbri.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
