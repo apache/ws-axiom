@@ -100,10 +100,10 @@ public interface DataHandlerReader {
      * <p>
      * If available, the returned value MUST be a raw content ID. In particular:
      * <ul>
-     * <li>If the content ID has been extracted from an <tt>href</tt> attribute, it MUST NOT
-     * contain the <tt>cid:</tt> prefix.</li>
-     * <li>If it has been extracted from a <tt>Content-ID</tt> MIME header, it MUST NOT be
-     * enclosed in angles (<tt>&lt;&gt;</tt>).</li>
+     * <li>If the content ID has been extracted from an {@code href} attribute, it MUST NOT
+     * contain the {@code cid:} prefix.</li>
+     * <li>If it has been extracted from a {@code Content-ID} MIME header, it MUST NOT be
+     * enclosed in angles ({@code <>}).</li>
      * </ul>
      * <p>
      * A consumer MAY use the return value of this method in contexts where it is desirable to

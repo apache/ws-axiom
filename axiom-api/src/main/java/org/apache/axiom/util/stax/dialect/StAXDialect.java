@@ -137,7 +137,7 @@ import javax.xml.stream.XMLStreamWriter;
  *       {@link javax.xml.stream.XMLStreamException} in this case. This is considered as a
  *       violation of the specifications because this exception should only be used
  *       "if there is an error processing the underlying XML source", which is not the case.</li>
- *   <li>An XML document may contain a namespace declaration such as <tt>xmlns=""</tt>. In this
+ *   <li>An XML document may contain a namespace declaration such as {@code xmlns=""}. In this
  *       case, it is not clear if {@link javax.xml.stream.XMLStreamReader#getNamespaceURI(int)}
  *       should return <code>null</code> or an empty string.</li>
  *   <li>The documentation of {@link javax.xml.stream.XMLStreamWriter#setPrefix(String, String)}
@@ -200,7 +200,7 @@ public interface StAXDialect {
     
     /**
      * Configure the given factory to disallow DOCTYPE declarations. The effect of this is similar
-     * to the <tt>http://apache.org/xml/features/disallow-doctype-decl</tt> feature in Xerces. The
+     * to the {@code http://apache.org/xml/features/disallow-doctype-decl} feature in Xerces. The
      * factory instance returned by this method MUST satisfy the following requirements:
      * <ul>
      * <li>The factory or the reader implementation MUST throw an exception when requested to parse

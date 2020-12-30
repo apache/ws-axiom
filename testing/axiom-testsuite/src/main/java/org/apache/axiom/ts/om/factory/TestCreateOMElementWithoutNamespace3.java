@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
  * requested to create an element without namespace as a child of an element with a
- * <tt>xmlns=""</tt> declaration. In this case, no namespace declaration is added to the created
+ * {@code xmlns=""} declaration. In this case, no namespace declaration is added to the created
  * element.
  */
 public class TestCreateOMElementWithoutNamespace3 extends CreateOMElementTestCase {

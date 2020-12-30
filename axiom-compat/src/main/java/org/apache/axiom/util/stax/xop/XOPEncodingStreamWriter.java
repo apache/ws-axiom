@@ -33,7 +33,7 @@ import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 /**
  * {@link XMLStreamWriter} wrapper that encodes XOP. It implements the extension
  * defined by {@link DataHandlerWriter}. The {@link DataHandler}
- * objects for the parts referenced by <tt>xop:Include</tt> element information items produced by
+ * objects for the parts referenced by {@code xop:Include} element information items produced by
  * an instance of this class can be retrieved using the {@link #getDataHandler(String)} method.
  */
 public class XOPEncodingStreamWriter extends XOPEncodingStreamWrapper
@@ -47,7 +47,7 @@ public class XOPEncodingStreamWriter extends XOPEncodingStreamWrapper
      *            the XML stream to write the encoded infoset to
      * @param contentIDGenerator
      *            used to generate content IDs for the binary content encoded as
-     *            <tt>xop:Include</tt> element information items
+     *            {@code xop:Include} element information items
      * @param optimizationPolicy
      *            the policy to apply to decide which binary content to optimize
      */

@@ -38,11 +38,11 @@ import org.apache.axiom.soap.SOAPFactory;
  * </dl>
  * Implementations may define other custom features.
  * <p>
- * Axiom discovers implementations by looking for <tt>META-INF/axiom.xml</tt> resources. They
+ * Axiom discovers implementations by looking for {@code META-INF/axiom.xml} resources. They
  * specify the {@link OMMetaFactory} implementation as well as the set of features that each
  * implementation supports. If multiple implementations with the same feature are found, then Axiom
  * will select the one with the highest priority. The priority for a given feature is also declared
- * in <tt>META-INF/axiom.xml</tt>. This algorithm is used both in non OSGi and OSGi environments.
+ * in {@code META-INF/axiom.xml}. This algorithm is used both in non OSGi and OSGi environments.
  * <p>
  * In a non OSGi environment, the default Axiom implementation can be overridden using the system
  * property specified by {@link #META_FACTORY_NAME_PROPERTY}.
@@ -60,7 +60,7 @@ public class OMAbstractFactory {
     /**
      * The name of the system property that allows to override the default Axiom implementation. The
      * value must be the fully qualified name of a class implementing {@link OMMetaFactory} and that
-     * is visible to the class loader from which the <tt>axiom-api</tt> library is loaded. An
+     * is visible to the class loader from which the {@code axiom-api} library is loaded. An
      * instance of this class will be returned by {@link #getMetaFactory()}.
      * <p>
      * Note that this system property is not supported in an OSGi environment.
@@ -148,7 +148,7 @@ public class OMAbstractFactory {
      * Get the meta factory instance for the Axiom implementation with a given feature. If multiple
      * Axiom implementations declare the same feature, then the method will return the meta factory
      * for the implementation that declares the highest priority for that feature in its
-     * <tt>META-INF/axiom.xml</tt> descriptor.
+     * {@code META-INF/axiom.xml} descriptor.
      * 
      * @param feature
      *            the requested feature

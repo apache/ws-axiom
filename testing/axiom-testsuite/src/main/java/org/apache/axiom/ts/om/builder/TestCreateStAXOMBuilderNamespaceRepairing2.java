@@ -32,7 +32,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} correctly
- * performs namespace repairing in cases where a namespace declaration of the form <tt>xmlns=""</tt>
+ * performs namespace repairing in cases where a namespace declaration of the form {@code xmlns=""}
  * is required. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-408">AXIOM-408</a>.
  */

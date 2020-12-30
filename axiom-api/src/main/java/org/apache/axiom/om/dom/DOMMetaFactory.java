@@ -59,7 +59,7 @@ import org.w3c.dom.Text;
  * API, and nodes created by the implementation MUST implement both the Axiom interfaces and the DOM
  * interfaces corresponding, as specified by the following table:
  * <p>
- * <table border="2" rules="all" cellpadding="4" cellspacing="0">
+ * <table border="1">
  * <caption>Mapping between Axiom and DOM interfaces</caption>
  * <tr>
  * <th>Axiom interface</th>

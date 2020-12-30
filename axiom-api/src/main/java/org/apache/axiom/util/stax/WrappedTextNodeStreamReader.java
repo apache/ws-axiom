@@ -46,7 +46,7 @@ import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
  *   <li>END_DOCMENT</li>
  * </ul>
  * The class is implemented as a simple state machine, where the state is identified
- * by the current event type. The initial state is <tt>START_DOCUMENT</tt> and the
+ * by the current event type. The initial state is {@code START_DOCUMENT} and the
  * following transitions are triggered by {@link #next()}:
  * <ul>
  *   <li>START_DOCUMENT &rarr; START_ELEMENT</li>

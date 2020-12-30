@@ -170,13 +170,13 @@ public class XMLStreamWriterUtils {
     }
     
     /**
-     * Prepare the <tt>DOCTYPE</tt> declaration using the provided information and output it using
+     * Prepare the {@code DOCTYPE} declaration using the provided information and output it using
      * {@link XMLStreamWriter#writeDTD(String)}.
      * 
      * @param writer
-     *            the stream writer to write the <tt>DOCTYPE</tt> declaration to
+     *            the stream writer to write the {@code DOCTYPE} declaration to
      * @param rootName
-     *            the root name, i.e. the name immediately following the <tt>DOCTYPE</tt> keyword
+     *            the root name, i.e. the name immediately following the {@code DOCTYPE} keyword
      * @param publicId
      *            the public ID of the external subset, or <code>null</code> if there is no external
      *            subset or no public ID has been specified for the external subset

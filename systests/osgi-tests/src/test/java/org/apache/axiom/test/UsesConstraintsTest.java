@@ -45,13 +45,13 @@ import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 
 /**
- * Tests that the Axiom bundles have <tt>Export-Package</tt> directives with the appropriate uses
+ * Tests that the Axiom bundles have {@code Export-Package} directives with the appropriate uses
  * constraints so that the OSGi runtime can guarantee that packages are wired consistently. This is
  * a regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-457">AXIOM-457</a>.
  * <p>
- * The test installs two test bundles, one importing the <tt>javax.xml.stream</tt> package from the
+ * The test installs two test bundles, one importing the {@code javax.xml.stream} package from the
  * framework bundle (i.e. the JRE) and the other importing the same package from the ServiceMix StAX
- * API bundle. Both bundles also import <tt>org.apache.axiom.om</tt>. Since the StAX API is used in
+ * API bundle. Both bundles also import {@code org.apache.axiom.om}. Since the StAX API is used in
  * the public Axiom API, this would lead to a class loading issue (reported as a
  * {@link LinkageError} at runtime). With the appropriate uses constraints, the OSGi runtime should
  * detect this when the bundles are resolved. The test registers a {@link FrameworkListener} to

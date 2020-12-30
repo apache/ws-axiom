@@ -22,7 +22,7 @@ package org.apache.axiom.om;
 /** Interface OMDocType */
 public interface OMDocType extends OMNode {
     /**
-     * Get the root name, i.e. the name immediately following the <tt>DOCTYPE</tt> keyword.
+     * Get the root name, i.e. the name immediately following the {@code DOCTYPE} keyword.
      * 
      * @return the root name; must not be <code>null</code>
      */

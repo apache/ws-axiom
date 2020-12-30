@@ -62,7 +62,7 @@ public interface XmlHandler {
      * @param value
      *            the value of the attribute; never <code>null</code>
      * @param type
-     *            the attribute type (e.g. <tt>CDATA</tt>); never <code>null</code>
+     *            the attribute type (e.g. {@code CDATA}); never <code>null</code>
      * @throws StreamException
      */
     void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException;
@@ -75,7 +75,7 @@ public interface XmlHandler {
      * @param value
      *            the value of the attribute; never <code>null</code>
      * @param type
-     *            the attribute type (e.g. <tt>CDATA</tt>); never <code>null</code>
+     *            the attribute type (e.g. {@code CDATA}); never <code>null</code>
      * @throws StreamException
      */
     void processAttribute(String name, String value, String type, boolean specified) throws StreamException;

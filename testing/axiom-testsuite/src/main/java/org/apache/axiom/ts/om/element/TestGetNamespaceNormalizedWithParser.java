@@ -29,7 +29,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /**
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an element
  * with no namespace. The case considered in this test is an element created using a parser and that
- * has an explicit namespace declaration for the default namespace, i.e. <tt>xmlns=""</tt>. This is
+ * has an explicit namespace declaration for the default namespace, i.e. {@code xmlns=""}. This is
  * a regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalizedWithParser extends AxiomTestCase {

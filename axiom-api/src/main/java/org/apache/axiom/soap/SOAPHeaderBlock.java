@@ -73,13 +73,13 @@ public interface SOAPHeaderBlock extends OMSourcedElement {
     void setMustUnderstand(boolean mustUnderstand);
 
     /**
-     * Returns the boolean value of the <tt>mustUnderstand</tt> attribute for this header block.
+     * Returns the boolean value of the {@code mustUnderstand} attribute for this header block.
      * 
-     * @return <code>true</code> if a <tt>mustUnderstand</tt> attribute is present and its value is
-     *         equivalent to true, <code>false</code> if the <tt>mustUnderstand</tt> is not present
+     * @return <code>true</code> if a {@code mustUnderstand} attribute is present and its value is
+     *         equivalent to true, <code>false</code> if the {@code mustUnderstand} is not present
      *         or its value is equivalent to false
      * @throws SOAPProcessingException
-     *             if the <tt>mustUnderstand</tt> attribute is present, but has an invalid value
+     *             if the {@code mustUnderstand} attribute is present, but has an invalid value
      */
     boolean getMustUnderstand() throws SOAPProcessingException;
 

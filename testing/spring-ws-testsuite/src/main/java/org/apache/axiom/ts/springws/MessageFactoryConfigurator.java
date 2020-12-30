@@ -42,10 +42,10 @@ public abstract class MessageFactoryConfigurator {
     /**
      * Configure a {@link SoapMessageFactory} in the given application context. The method must
      * <ul>
-     * <li>add a bean of type {@link SoapMessageFactory} and name <tt>messageFactory</tt> to the
+     * <li>add a bean of type {@link SoapMessageFactory} and name {@code messageFactory} to the
      * context;
      * <li>configure that {@link SoapMessageFactory} to use the SOAP version specified by the
-     * <tt>soapVersion</tt> property (which specifies the name of one of the constants defined in
+     * {@code soapVersion} property (which specifies the name of one of the constants defined in
      * {@link SoapVersion}).
      * </ul>
      * 

@@ -30,7 +30,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**
  * Tests that {@link SOAPHeaderBlock#getMustUnderstand()} (resp. {@link SOAPHeaderBlock#getRelay()})
- * throws {@link SOAPProcessingException} if a <tt>mustUnderstand</tt> (resp. <tt>relay</tt>)
+ * throws {@link SOAPProcessingException} if a {@code mustUnderstand} (resp. {@code relay})
  * attribute is present but has an invalid value.
  */
 public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {

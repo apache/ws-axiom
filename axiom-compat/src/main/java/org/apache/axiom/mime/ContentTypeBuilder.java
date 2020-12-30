@@ -55,10 +55,10 @@ public final class ContentTypeBuilder {
     }
     
     /**
-     * Constructor that parses a <tt>Content-Type</tt> header value.
+     * Constructor that parses a {@code Content-Type} header value.
      * 
      * @param type
-     *            the value of the <tt>Content-Type</tt> header conforming to RFC 2045
+     *            the value of the {@code Content-Type} header conforming to RFC 2045
      * @throws ParseException
      *             if the value is invalid and could not be parsed
      */

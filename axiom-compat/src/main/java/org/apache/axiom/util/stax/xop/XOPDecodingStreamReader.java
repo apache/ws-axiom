@@ -40,15 +40,15 @@ import org.apache.commons.logging.LogFactory;
 /**
  * {@link XMLStreamReader} wrapper that decodes XOP. It uses the extension defined by
  * {@link DataHandlerReader} to expose the {@link DataHandler} objects referenced by
- * <tt>xop:Include</tt> elements encountered in the underlying stream. If the consumer uses
+ * {@code xop:Include} elements encountered in the underlying stream. If the consumer uses
  * {@link #getText()}, {@link #getTextCharacters()},
  * {@link #getTextCharacters(int, char[], int, int)} or {@link #getElementText()} when an
- * <tt>xop:Include</tt> element is present in the underlying stream, then the decoder will produce
+ * {@code xop:Include} element is present in the underlying stream, then the decoder will produce
  * a base64 representation of the data.
  * <p>
  * Note that this class only implements infoset transformation, but doesn't handle MIME processing.
  * A {@link MimePartProvider} implementation must be provided to the constructor of this class. This
- * object will be used to load MIME parts referenced by <tt>xop:Include</tt> elements encountered
+ * object will be used to load MIME parts referenced by {@code xop:Include} elements encountered
  * in the underlying stream.
  * <p>
  * This class supports deferred loading of MIME parts: If the consumer uses
@@ -93,7 +93,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
      * @param mimePartProvider
      *            An implementation of the {@link MimePartProvider} interface that will be used to
      *            load the {@link DataHandler} objects for MIME parts referenced by
-     *            <tt>xop:Include</tt> element information items encountered in the underlying
+     *            {@code xop:Include} element information items encountered in the underlying
      *            stream.
      */
     public XOPDecodingStreamReader(XMLStreamReader parent, MimePartProvider mimePartProvider) {
@@ -107,16 +107,16 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
     }
     
     /**
-     * Process an <tt>xop:Include</tt> event and return the content ID.
+     * Process an {@code xop:Include} event and return the content ID.
      * <p>
-     * Precondition: The parent reader is on the START_ELEMENT event for the <tt>xop:Include</tt>
+     * Precondition: The parent reader is on the START_ELEMENT event for the {@code xop:Include}
      * element. Note that the method doesn't check this condition.
      * <p>
      * Postcondition: The parent reader is on the event following the END_ELEMENT event for the
-     * <tt>xop:Include</tt> element, i.e. the parent reader is on the END_ELEMENT event of the
-     * element enclosing the <tt>xop:Include</tt> element.
+     * {@code xop:Include} element, i.e. the parent reader is on the END_ELEMENT event of the
+     * element enclosing the {@code xop:Include} element.
      * 
-     * @return the content ID the <tt>xop:Include</tt> refers to
+     * @return the content ID the {@code xop:Include} refers to
      * 
      * @throws XMLStreamException
      */

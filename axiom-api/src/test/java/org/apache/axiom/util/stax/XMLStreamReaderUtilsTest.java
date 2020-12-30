@@ -130,7 +130,7 @@ public class XMLStreamReaderUtilsTest extends TestCase {
     /**
      * Test that {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)}
      * correctly decodes base64 data if the parser is non coalescing and produces the data
-     * as multiple <tt>CHARACTER</tt> events. The test uses an {@link XMLStreamReader} instance
+     * as multiple {@code CHARACTER} events. The test uses an {@link XMLStreamReader} instance
      * that doesn't implement the {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
      * extension.
      * 
@@ -143,7 +143,7 @@ public class XMLStreamReaderUtilsTest extends TestCase {
     /**
      * Test that {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)}
      * correctly decodes base64 data if the parser is non coalescing and produces the data
-     * as multiple <tt>CHARACTER</tt> events. The test uses an {@link XMLStreamReader} instance
+     * as multiple {@code CHARACTER} events. The test uses an {@link XMLStreamReader} instance
      * that implements the {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
      * extension.
      * 

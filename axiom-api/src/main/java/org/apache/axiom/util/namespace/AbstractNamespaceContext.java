@@ -27,7 +27,7 @@ import javax.xml.namespace.NamespaceContext;
 
 /**
  * Partial {@link NamespaceContext} implementation that takes care of the
- * implicit namespace bindings (for the <tt>xml</tt> and <tt>xmlns</tt>
+ * implicit namespace bindings (for the {@code xml} and {@code xmlns}
  * prefixes) defined in the {@link NamespaceContext} Javadoc.
  */
 public abstract class AbstractNamespaceContext implements NamespaceContext {

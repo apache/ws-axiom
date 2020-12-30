@@ -35,7 +35,7 @@ import org.xml.sax.InputSource;
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an element
  * with no namespace. The case considered in this test is an element created using a
  * {@link SAXSource} and that has an explicit namespace declaration for the default namespace, i.e.
- * <tt>xmlns=""</tt>. This is a regression test for <a
+ * {@code xmlns=""}. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalizedWithSAXSource extends AxiomTestCase {

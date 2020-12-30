@@ -28,7 +28,7 @@ import java.util.Map;
 import javax.activation.MimeType;
 
 /**
- * Represents the (parsed) value of a <tt>Content-Type</tt> header as defined by
+ * Represents the (parsed) value of a {@code Content-Type} header as defined by
  * <a href="http://tools.ietf.org/html/rfc2045">RFC 2045</a>.
  * <p>
  * The relevant productions from RFC 2045 and RFC 822 are:
@@ -171,10 +171,10 @@ public final class ContentType {
     }
 
     /**
-     * Constructor that parses a <tt>Content-Type</tt> header value.
+     * Constructor that parses a {@code Content-Type} header value.
      * 
      * @param type
-     *            the value of the <tt>Content-Type</tt> header conforming to RFC 2045
+     *            the value of the {@code Content-Type} header conforming to RFC 2045
      * @throws ParseException
      *             if the value is invalid and could not be parsed
      */
@@ -265,7 +265,7 @@ public final class ContentType {
     
     /**
      * Create a string representation of this content type suitable as the value for a
-     * <tt>Content-Type</tt> header as specified by RFC 2045. Note that this method serializes all
+     * {@code Content-Type} header as specified by RFC 2045. Note that this method serializes all
      * parameter values as quoted strings, even values that could be represented as tokens. This is
      * compatible with R1109 in WS-I Basic Profile 1.2 and 2.0.
      * 

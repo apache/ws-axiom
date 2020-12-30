@@ -69,7 +69,7 @@ public class StAXDialectDetector {
     /**
      * Map that stores detected dialects by location. The location is the URL corresponding to the
      * root folder of the classpath entry from which the StAX implementation is loaded. Note that
-     * in the case of a JAR file, this is not the URL pointing to the JAR, but a <tt>jar:</tt>
+     * in the case of a JAR file, this is not the URL pointing to the JAR, but a {@code jar:}
      * URL that points to the root folder of the archive.
      */
     private static final Map<URL,StAXDialect> dialectByUrl =

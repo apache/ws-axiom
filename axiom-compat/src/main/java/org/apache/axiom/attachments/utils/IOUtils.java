@@ -35,7 +35,7 @@ public class IOUtils {
 
     /**
      * Reads into a byte array. Ensures that the full buffer is read. Helper method, just calls
-     * <tt>readFully(in, b, 0, b.length)</tt>
+     * {@code readFully(in, b, 0, b.length)}
      *
      * @see #readFully(java.io.InputStream, byte[], int, int)
      */
@@ -45,7 +45,7 @@ public class IOUtils {
     }
 
     /**
-     * Same as the normal <tt>in.read(b, off, len)</tt>, but tries to ensure that the entire len
+     * Same as the normal {@code in.read(b, off, len)}, but tries to ensure that the entire len
      * number of bytes is read.
      *
      * @return Returns the number of bytes read, or -1 if the end of file is reached before any

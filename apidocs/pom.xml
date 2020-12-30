@@ -168,7 +168,7 @@
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <configuration>
                             <additionalOptions>
-                                <additionalOption>-html4</additionalOption>
+                                <additionalOption>-html5</additionalOption>
                             </additionalOptions>
                         </configuration>
                     </plugin>

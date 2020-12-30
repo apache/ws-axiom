@@ -124,7 +124,7 @@ public final class MultipartBodyWriter {
      * {@link OutputStream#close()} must be called to complete the writing of the MIME part.
      * 
      * @param contentType
-     *            the value of the <tt>Content-Type</tt> header of the MIME part; may be {@code null}
+     *            the value of the {@code Content-Type} header of the MIME part; may be {@code null}
      * @param contentTransferEncoding
      *            the content transfer encoding to be used (see above); must not be
      *            <code>null</code>

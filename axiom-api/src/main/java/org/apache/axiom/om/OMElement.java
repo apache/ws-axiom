@@ -132,7 +132,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * 
      * @return The default namespace or <code>null</code> if no default namespace is in scope. This
      *         method never returns an {@link OMNamespace} object with an empty namespace URI; if
-     *         the element or one of its ancestors has a <tt>xmlns=""</tt> declaration, then
+     *         the element or one of its ancestors has a {@code xmlns=""} declaration, then
      *         <code>null</code> is returned. Note that if the method returns an {@link OMNamespace}
      *         object, then its prefix will obviously be the empty string.
      */
@@ -159,7 +159,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * Add a namespace declaration that undeclares a given prefix. Prefix undeclaring is supported
      * in XML 1.1, but forbidden in XML 1.0. If an object model on which this method has been used
      * is later serialized to an XML 1.0 document, an error will occur. When serialized to an XML
-     * 1.1 document, a namespace declaration in the form <tt>xmlns:p=""</tt> will be produced.
+     * 1.1 document, a namespace declaration in the form {@code xmlns:p=""} will be produced.
      * <p>
      * A namespace declaration with empty namespace name will be added even if no existing namespace
      * declaration for the given prefix is in scope in the context of the current element. If a
@@ -179,15 +179,15 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * Finds a namespace with the given uri and prefix, in the scope of the hierarchy.
      * <p>
      * Searches from the current element and goes up the hiararchy until a match is found. If no
-     * match is found, returns <tt>null</tt>.</p>
+     * match is found, returns {@code null}.</p>
      * <p>
-     * Either <tt>prefix</tt> or <tt>uri</tt> should be null.  Results are undefined if both are
+     * Either {@code prefix} or {@code uri} should be null.  Results are undefined if both are
      * specified.
      *
-     * @param uri    The namespace to look for.  If this is specified, <tt>prefix</tt> should be
+     * @param uri    The namespace to look for.  If this is specified, {@code prefix} should be
      *               null.
-     * @param prefix The prefix to look for.  If this is specified, <tt>uri</tt> should be null.
-     * @return Returns the matching namespace declaration, or <tt>null</tt> if none was found.
+     * @param prefix The prefix to look for.  If this is specified, {@code uri} should be null.
+     * @return Returns the matching namespace declaration, or {@code null} if none was found.
      * @see #declareNamespace(String, String)
      * @see #declareNamespace(OMNamespace)
      * @see #getAllDeclaredNamespaces()
@@ -246,7 +246,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * with an empty prefix if and only if there is a default namespace. It will never return an
      * {@link OMNamespace} object with both the prefix and the namespace URI set to the empty
      * string, even if the element or one of its ancestors has a namespace declaration of the form
-     * <tt>xmlns=""</tt>.
+     * {@code xmlns=""}.
      * <p>
      * The order in which the iterator returns the namespaces is undefined, and invoking the
      * {@link Iterator#remove()} method on the returned iterator is not supported. The iterator may
@@ -288,7 +288,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * Returns a list of OMAttributes.
      * <p>
      * Note that the iterator returned by this function will be invalidated by any
-     * <tt>addAttribute</tt> call.
+     * {@code addAttribute} call.
      * 
      * @return An iterator over the {@link OMAttribute} items associated with the element. If the
      *         element has no attributes, an empty iterator is returned.
@@ -385,7 +385,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     /**
      * Returns the first child element of the element.
      *
-     * @return Returns the first child element of the element, or <tt>null</tt> if none was found.
+     * @return Returns the first child element of the element, or {@code null} if none was found.
      */
 
     OMElement getFirstElement();
@@ -422,7 +422,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * This method iterates over all the text children of the element and concatenates
      * them to a single string. Only direct children will be considered, i.e. the text
      * is not extracted recursively. For example the return value for
-     * <tt>&lt;element&gt;A&lt;child&gt;B&lt;/child&gt;C&lt;/element&gt;</tt> will be <tt>AC</tt>.
+     * {@code <element>A<child>B</child>C</element>} will be {@code AC}.
      * <p>
      * All whitespace will be preserved.
      *

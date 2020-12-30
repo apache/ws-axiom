@@ -30,7 +30,7 @@ import org.apache.axiom.ext.activation.SizeAwareDataSource;
  */
 public class EmptyDataSource implements SizeAwareDataSource {
     /**
-     * Empty data source instance with content type <tt>application/octet-stream</tt>.
+     * Empty data source instance with content type {@code application/octet-stream}.
      */
     public static final EmptyDataSource INSTANCE = new EmptyDataSource("application/octet-stream");
     

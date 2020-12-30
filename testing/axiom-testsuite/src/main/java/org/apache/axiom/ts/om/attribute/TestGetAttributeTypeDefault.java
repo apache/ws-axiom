@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that the default attribute type for programmatically created attributes is <tt>CDATA</tt>.
+ * Tests that the default attribute type for programmatically created attributes is {@code CDATA}.
  */
 public class TestGetAttributeTypeDefault extends AxiomTestCase {
     public TestGetAttributeTypeDefault(OMMetaFactory metaFactory) {

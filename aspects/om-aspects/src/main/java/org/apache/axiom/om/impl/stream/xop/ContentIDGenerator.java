@@ -23,7 +23,7 @@ import org.apache.axiom.util.UIDGenerator;
 
 /**
  * Content ID generator interface. Implementations of this interface are used by
- * {@link XOPEncodingFilterHandler} to generate content IDs for use in <tt>xop:Include</tt>
+ * {@link XOPEncodingFilterHandler} to generate content IDs for use in {@code xop:Include}
  * elements.
  */
 public interface ContentIDGenerator {

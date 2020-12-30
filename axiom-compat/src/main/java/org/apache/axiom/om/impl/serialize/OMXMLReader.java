@@ -69,7 +69,7 @@ import org.xml.sax.ext.LexicalHandler;
  * To understand why this is important, consider the following example:
  * <pre>&lt;root xmlns:ns="urn:ns"&gt;&lt;element attr="ns:someThing"/&gt;&lt;root&gt;</pre>
  * In that case, to correctly interpret the attribute value, the SAX content handler must be
- * aware of the namespace mapping for the <tt>ns</tt> prefix, even if the serialization starts
+ * aware of the namespace mapping for the {@code ns} prefix, even if the serialization starts
  * only at the child element.
  * 
  * @deprecated This class is used internally by {@link OMSource}. Starting with Axiom 1.2.13,

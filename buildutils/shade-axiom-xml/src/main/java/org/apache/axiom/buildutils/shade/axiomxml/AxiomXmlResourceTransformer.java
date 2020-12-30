@@ -32,7 +32,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Merges <tt>META-INF/axiom.xml</tt> files.
+ * Merges {@code META-INF/axiom.xml} files.
  */
 public class AxiomXmlResourceTransformer implements ResourceTransformer {
     private static final String AXIOM_XML = "META-INF/axiom.xml";

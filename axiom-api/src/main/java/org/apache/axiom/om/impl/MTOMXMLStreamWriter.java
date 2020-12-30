@@ -46,11 +46,11 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      * or
      * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
      * to submit any binary content and let this writer decide whether the content should be written
-     * as base64 encoded character data or using <tt>xop:Include</tt>. This makes optimization
+     * as base64 encoded character data or using {@code xop:Include}. This makes optimization
      * entirely transparent for the caller and there should be no need to check if the writer is
      * producing MTOM. However, in some cases this is not possible, such as when integrating with
      * 3rd party libraries. The serialization code should then use
-     * {@link #prepareDataHandler(DataHandler)} so that it can write <tt>xop:Include</tt> elements
+     * {@link #prepareDataHandler(DataHandler)} so that it can write {@code xop:Include} elements
      * directly to the stream. In that case, the code may use the {@link #isOptimized()} method
      * check if MTOM is enabled at all.
      * 
@@ -65,7 +65,7 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      * the method returns <code>null</code> and the caller is expected to use
      * {@link #writeCharacters(String)} or {@link #writeCharacters(char[], int, int)} to write the
      * base64 encoded data to the stream. If the data should be optimized, then the method returns a
-     * content ID and the caller is expected to generate an <tt>xop:Include</tt> element referring
+     * content ID and the caller is expected to generate an {@code xop:Include} element referring
      * to that content ID.
      * <p>
      * This method should only be used to integrate Axiom with third party libraries that support
@@ -74,11 +74,11 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      * or
      * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
      * should be used to write base64Binary values and the application code should never generate
-     * <tt>xop:Include</tt> elements itself.
+     * {@code xop:Include} elements itself.
      * 
      * @param dataHandler
      *            the {@link DataHandler} that the caller intends to write to the stream
-     * @return the content ID that the caller must use in the <tt>xop:Include</tt> element or
+     * @return the content ID that the caller must use in the {@code xop:Include} element or
      *         <code>null</code> if the base64 encoded data should not be optimized
      */
     public abstract String prepareDataHandler(DataHandler dataHandler);

@@ -329,13 +329,13 @@ public interface OMFactory {
                                          String value);
 
     /**
-     * Creates DTD (<tt>DOCTYPE</tt> declaration) node.
+     * Creates DTD ({@code DOCTYPE} declaration) node.
      *
      * @param parent
      *            the parent to which the newly created text node will be added; this may be
      *            <code>null</code>
      * @param rootName
-     *            the root name, i.e. the name immediately following the <tt>DOCTYPE</tt> keyword
+     *            the root name, i.e. the name immediately following the {@code DOCTYPE} keyword
      * @param publicId
      *            the public ID of the external subset, or <code>null</code> if there is no external
      *            subset or no public ID has been specified for the external subset

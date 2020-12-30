@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMMetaFactory;
 /**
  * Loads the {@link OMMetaFactory} for a given Axiom implementation. An Axiom implementation must
  * provide an implementation of this interface. That implementation class is specified in the
- * <tt>META-INF/axiom.xml</tt> of the Axiom implementation.
+ * {@code META-INF/axiom.xml} of the Axiom implementation.
  */
 public interface OMMetaFactoryLoader {
     /**

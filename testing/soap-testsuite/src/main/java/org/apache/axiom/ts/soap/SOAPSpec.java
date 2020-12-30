@@ -208,8 +208,8 @@ public abstract class SOAPSpec extends Multiton {
     
     /**
      * Get the boolean literals recognized by this SOAP version. While SOAP 1.2 refers to the
-     * <tt>xs:boolean</tt> type and therefore recognizes <tt>true</tt>, <tt>false</tt>, <tt>1</tt>
-     * and <tt>0</tt>, SOAP 1.1 only recognizes <tt>1</tt> and <tt>0</tt>.
+     * {@code xs:boolean} type and therefore recognizes {@code true}, {@code false}, {@code 1}
+     * and {@code 0}, SOAP 1.1 only recognizes {@code 1} and {@code 0}.
      * 
      * @return an array with the recognized boolean literals
      */

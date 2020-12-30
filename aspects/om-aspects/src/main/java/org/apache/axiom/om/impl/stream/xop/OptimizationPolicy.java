@@ -77,7 +77,7 @@ public interface OptimizationPolicy {
      *            indicates whether the binary content was initially marked as eligible for
      *            optimization (see above)
      * @return <code>true</code> if the binary content should be optimized using XOP, i.e. encoded
-     *         using <tt>xop:Include</tt>
+     *         using {@code xop:Include}
      * @throws IOException
      *             if an error occurs while reading the data handler
      */
@@ -93,7 +93,7 @@ public interface OptimizationPolicy {
      *            indicates whether the binary content was initially marked as eligible for
      *            optimization (see above)
      * @return <code>true</code> if the binary content should be optimized using XOP, i.e. encoded
-     *         using <tt>xop:Include</tt>
+     *         using {@code xop:Include}
      * @throws IOException
      *             if an error occurs while reading the data handler
      */

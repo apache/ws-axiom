@@ -40,14 +40,14 @@ import javax.activation.DataHandler;
  * <ul>
  *   <li>It is the responsibility of the implementation to apply the content transfer encoding
  *       as specified by the <code>contentTransferEncoding</code> argument. The caller only
- *       provides the unencoded data. The implementation should support at least <tt>binary</tt>
- *       and <tt>base64</tt>. If it doesn't support the specified encoding, it may use an
+ *       provides the unencoded data. The implementation should support at least {@code binary}
+ *       and {@code base64}. If it doesn't support the specified encoding, it may use an
  *       alternative one. In any case, the implementation must make sure that the MIME part
- *       has a <tt>Content-Transfer-Encoding</tt> header appropriate for the applied
+ *       has a {@code Content-Transfer-Encoding} header appropriate for the applied
  *       encoding.</li>
  *   <li>The content ID passed as argument is always the raw ID (without the angle brackets).
  *       It is the responsibility of the implementation to properly format the value
- *       of the <tt>Content-ID</tt> header.</li>
+ *       of the {@code Content-ID} header.</li>
  * </ul>
  * 
  * @deprecated Use {@link MultipartBodyWriter} instead.
@@ -59,7 +59,7 @@ public interface MultipartWriter {
      * {@link OutputStream#close()} must be called to complete the writing of the MIME part.
      * 
      * @param contentType
-     *            the value of the <tt>Content-Type</tt> header of the MIME part
+     *            the value of the {@code Content-Type} header of the MIME part
      * @param contentTransferEncoding
      *            the content transfer encoding to be used (see above); must not be
      *            <code>null</code>
@@ -78,7 +78,7 @@ public interface MultipartWriter {
      * MIME part.
      * 
      * @param contentType
-     *            the value of the <tt>Content-Type</tt> header of the MIME part
+     *            the value of the {@code Content-Type} header of the MIME part
      * @param contentTransferEncoding
      *            the content transfer encoding to be used (see above); must not be
      *            <code>null</code>

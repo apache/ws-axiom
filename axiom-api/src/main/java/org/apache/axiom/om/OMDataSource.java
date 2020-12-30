@@ -99,7 +99,7 @@ public interface OMDataSource {
      * NOT use the namespace unaware methods {@link XMLStreamWriter#writeStartElement(String)} or
      * {@link XMLStreamWriter#writeEmptyElement(String)}. On the other hand, it MAY use the
      * namespace unaware {@link XMLStreamWriter#writeAttribute(String, String)} method, provided
-     * that the specified name is an <tt>NCName</tt>.
+     * that the specified name is an {@code NCName}.
      * <li>The implementation MUST ensure that the produced XML is well formed with respect to
      * namespaces, i.e. it MUST generate the required namespace declarations using
      * {@link XMLStreamWriter#writeNamespace(String, String)} and
@@ -116,7 +116,7 @@ public interface OMDataSource {
      * {@link XMLStreamWriter#getPrefix(String)} and {@link XMLStreamWriter#getNamespaceContext()}).
      * This means that the implementation MUST NOT assume that the empty prefix is bound to the
      * empty namespace URI. Therefore if the implementation outputs elements that have no namespace,
-     * it MUST generate namespace declarations of the form <tt>xmlns=""</tt> in the appropriate
+     * it MUST generate namespace declarations of the form {@code xmlns=""} in the appropriate
      * locations. In addition it MAY use the namespace context information to minimize the number of
      * generated namespace declarations (by reusing already bound prefixes).
      * <li>To produce base64 binary data (that could be optimized using XOP/MTOM), the
@@ -130,7 +130,7 @@ public interface OMDataSource {
      * content is produced by a third party library that is not aware of these APIs.
      * <li>Cast the {@link XMLStreamWriter} to an {@link MTOMXMLStreamWriter}, use
      * {@link MTOMXMLStreamWriter#prepareDataHandler(DataHandler)} and generate the
-     * necessary <tt>xop:Include</tt> elements. In this case, the implementation MAY use
+     * necessary {@code xop:Include} elements. In this case, the implementation MAY use
      * {@link MTOMXMLStreamWriter#isOptimized()} to check if XOP/MTOM is enabled at all.
      * </ul>
      * <li>The implementation MUST NOT call {@link XMLStreamWriter#close()}.

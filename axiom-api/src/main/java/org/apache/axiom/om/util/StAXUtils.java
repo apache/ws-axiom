@@ -51,27 +51,27 @@ import java.util.WeakHashMap;
  * instances. This class caches the corresponding factories, i.e. {@link XMLInputFactory}
  * and {@link XMLOutputFactory} objects.</p>
  * <p>Default properties for these factories can be specified using
- * <tt>XMLInputFactory.properties</tt> and <tt>XMLOutputFactory.properties</tt> files.
+ * {@code XMLInputFactory.properties} and {@code XMLOutputFactory.properties} files.
  * These files are loaded using the class loader that loaded the {@link StAXUtils} class.
  * Properties with boolean, integer and string values are supported.
  * Both standard StAX properties and implementation specific properties can be specified. This
  * feature should be used with care since changing some properties to non default values will break
- * Axiom. Good candidates for <tt>XMLInputFactory.properties</tt> are:</p>
+ * Axiom. Good candidates for {@code XMLInputFactory.properties} are:</p>
  * <dl>
- *   <dt><tt>javax.xml.stream.isCoalescing</tt></dt>
+ *   <dt>{@code javax.xml.stream.isCoalescing}</dt>
  *   <dd>Requires the processor to coalesce adjacent character data (text nodes and CDATA
  *       sections). This property also controls whether CDATA sections are reported or not.</dd>
- *   <dt><tt>com.ctc.wstx.inputBufferLength</tt></dt>
+ *   <dt>{@code com.ctc.wstx.inputBufferLength}</dt>
  *   <dd>Size of input buffer (in chars), to use for reading XML content from input stream/reader.
  *       This property is Woodstox specific.</dd>
- *   <dt><tt>com.ctc.wstx.minTextSegment</tt></dt>
+ *   <dt>{@code com.ctc.wstx.minTextSegment}</dt>
  *   <dd>Property to specify shortest non-complete text segment (part of CDATA section or text
  *       content) that the parser is allowed to return, if not required to coalesce text.
  *       This property is Woodstox specific.</dd>
  * </dl>
- * <p>Good candidates for <tt>XMLOutputFactory.properties</tt> are:</p>
+ * <p>Good candidates for {@code XMLOutputFactory.properties} are:</p>
  * <dl>
- *   <dt><tt>com.ctc.wstx.outputEscapeCr</tt></dt>
+ *   <dt>{@code com.ctc.wstx.outputEscapeCr}</dt>
  *   <dd>Property that determines whether Carriage Return (\r) characters are to be escaped when
  *       output or not. If enabled, all instances of of character \r are escaped using a character
  *       entity (where possible, that is, within CHARACTERS events, and attribute values).

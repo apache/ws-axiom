@@ -136,8 +136,8 @@ public final class UIDGenerator {
     /**
      * Generates a unique ID suitable for usage as a MIME content ID.
      * <p>
-     * RFC2045 (MIME) specifies that the value of the <tt>Content-ID</tt> header
-     * must match the <tt>msg-id</tt> production, which is defined by RFC2822 as
+     * RFC2045 (MIME) specifies that the value of the {@code Content-ID} header
+     * must match the {@code msg-id} production, which is defined by RFC2822 as
      * follows:
      * <pre>
      * msg-id        = [CFWS] "&lt;" id-left "@" id-right "&gt;" [CFWS]
@@ -158,7 +158,7 @@ public final class UIDGenerator {
      * synchronization.
      * 
      * @return The generated content ID. Note that this value does not include
-     *         the angle brackets of the <tt>msg-id</tt> production, but only
+     *         the angle brackets of the {@code msg-id} production, but only
      *         represents the bare content ID.
      */
     public static String generateContentId() {
@@ -181,7 +181,7 @@ public final class UIDGenerator {
      * <p>
      * It should be noted that the boundary in general will also appear as a parameter in the
      * content type of the MIME package. According to RFC2045 (which defines the
-     * <tt>Content-Type</tt> header), it will require quoting if it contains characters from
+     * {@code Content-Type} header), it will require quoting if it contains characters from
      * the following production:
      * <pre>
      * tspecials := "(" / ")" / "&lt;" / "&gt;" / "@" /
@@ -224,8 +224,8 @@ public final class UIDGenerator {
     }
     
     /**
-     * Generate a URN with <tt>uuid</tt> NID (namespace identifier). These URNs have the following
-     * form: <tt>urn:uuid:dae6fae1-93df-4824-bc70-884c9edb5973</tt>. The UUID is generated using
+     * Generate a URN with {@code uuid} NID (namespace identifier). These URNs have the following
+     * form: {@code urn:uuid:dae6fae1-93df-4824-bc70-884c9edb5973}. The UUID is generated using
      * a cryptographically strong pseudo random number generator.
      * 
      * @return the generated URN
@@ -281,7 +281,7 @@ public final class UIDGenerator {
     }
     
     /**
-     * Generate a URN with <tt>uuid</tt> NID (namespace identifier). This method does the
+     * Generate a URN with {@code uuid} NID (namespace identifier). This method does the
      * same as {@link #generateURNString()}, but returns a {@link URI} object.
      * 
      * @return the generated URN

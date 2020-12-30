@@ -30,7 +30,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.BundleTracker;
 
 /**
- * The OSGi bundle activator for the <tt>axiom-api</tt> bundle. This activator sets up an OSGi
+ * The OSGi bundle activator for the {@code axiom-api} bundle. This activator sets up an OSGi
  * specific {@link OMMetaFactoryLocator} and injects it into {@link OMAbstractFactory} using
  * {@link OMAbstractFactory#setMetaFactoryLocator(OMMetaFactoryLocator)}.
  */

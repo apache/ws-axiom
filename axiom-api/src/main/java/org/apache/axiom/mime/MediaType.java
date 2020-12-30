@@ -23,7 +23,7 @@ import java.text.ParseException;
 /**
  * Represents a media type as defined by <a href="http://tools.ietf.org/html/rfc2045">RFC 2045</a>
  * and <a href="http://tools.ietf.org/html/rfc2046">RFC 2046</a>. It specifies a primary type (e.g.
- * <tt>text</tt>) and a subtype (e.g. <tt>xml</tt>). Note that in RFC 2045, "media type" refers to
+ * {@code text}) and a subtype (e.g. {@code xml}). Note that in RFC 2045, "media type" refers to
  * what is called "primary type" here, while this class uses "media type" to refer to the
  * combination of primary and subtype.
  * <p>
@@ -32,37 +32,37 @@ import java.text.ParseException;
  */
 public final class MediaType {
     /**
-     * The media type for <tt>text/xml</tt>.
+     * The media type for {@code text/xml}.
      */
     public static final MediaType TEXT_XML = new MediaType("text", "xml");
     
     /**
-     * The media type for <tt>application/xml</tt>.
+     * The media type for {@code application/xml}.
      */
     public static final MediaType APPLICATION_XML = new MediaType("application", "xml");
     
     /**
-     * The media type for <tt>application/soap+xml</tt>.
+     * The media type for {@code application/soap+xml}.
      */
     public static final MediaType APPLICATION_SOAP_XML = new MediaType("application", "soap+xml");
     
     /**
-     * The media type for <tt>application/xop+xml</tt>.
+     * The media type for {@code application/xop+xml}.
      */
     public static final MediaType APPLICATION_XOP_XML = new MediaType("application", "xop+xml");
     
     /**
-     * The media type for <tt>multipart/related</tt>.
+     * The media type for {@code multipart/related}.
      */
     public static final MediaType MULTIPART_RELATED = new MediaType("multipart", "related");
     
     /**
-     * The media type for <tt>application/octet-stream</tt>.
+     * The media type for {@code application/octet-stream}.
      */
     public static final MediaType APPLICATION_OCTET_STREAM = new MediaType("application", "octet-stream");
     
     /**
-     * The media type for <tt>text/plain</tt>.
+     * The media type for {@code text/plain}.
      */
     public static final MediaType TEXT_PLAIN = new MediaType("text", "plain");
     

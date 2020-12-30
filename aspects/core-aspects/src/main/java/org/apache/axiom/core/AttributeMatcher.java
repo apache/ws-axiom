@@ -46,22 +46,22 @@ public interface AttributeMatcher {
     boolean matches(CoreAttribute attr, String namespaceURI, String name);
 
     /**
-     * Get the <tt>namespaceURI</tt> parameter for an existing attribute. This method is used by
+     * Get the {@code namespaceURI} parameter for an existing attribute. This method is used by
      * {@link CoreElement#coreSetAttribute(AttributeMatcher, CoreAttribute, Semantics)}
      * which passes its return value as parameter to {@link #matches(CoreAttribute, String, String)}.
      * 
      * @param attr the attribute
-     * @return the <tt>namespaceURI</tt> parameter to be passed to {@link #matches(CoreAttribute, String, String)}
+     * @return the {@code namespaceURI} parameter to be passed to {@link #matches(CoreAttribute, String, String)}
      */
     String getNamespaceURI(CoreAttribute attr);
     
     /**
-     * Get the <tt>name</tt> parameter for an existing attribute. This method is used by
+     * Get the {@code name} parameter for an existing attribute. This method is used by
      * {@link CoreElement#coreSetAttribute(AttributeMatcher, CoreAttribute, Semantics)}
      * which passes its return value as parameter to {@link #matches(CoreAttribute, String, String)}.
      * 
      * @param attr the attribute
-     * @return the <tt>name</tt> parameter to be passed to {@link #matches(CoreAttribute, String, String)}
+     * @return the {@code name} parameter to be passed to {@link #matches(CoreAttribute, String, String)}
      */
     String getName(CoreAttribute attr);
     

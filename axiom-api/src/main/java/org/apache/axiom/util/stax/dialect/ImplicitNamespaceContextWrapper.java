@@ -27,7 +27,7 @@ import org.apache.axiom.util.namespace.AbstractNamespaceContext;
 
 /**
  * {@link NamespaceContext} wrapper that adds support for the implicit namespace
- * bindings for the <tt>xml</tt> and <tt>xmlns</tt> prefixes. This wrapper may
+ * bindings for the {@code xml} and {@code xmlns} prefixes. This wrapper may
  * be used to fix the behavior of broken {@link NamespaceContext}
  * implementations.
  */

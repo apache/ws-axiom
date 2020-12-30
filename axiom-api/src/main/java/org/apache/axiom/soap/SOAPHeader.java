@@ -108,7 +108,7 @@ public interface SOAPHeader extends OMElement {
 
     /**
      * Returns an iterator over all the {@link SOAPHeaderBlock} objects in this {@link SOAPHeader}
-     * object that have the specified role and that have a <tt>MustUnderstand</tt> attribute whose
+     * object that have the specified role and that have a {@code MustUnderstand} attribute whose
      * value is equivalent to <code>true</code>.
      * 
      * @param role

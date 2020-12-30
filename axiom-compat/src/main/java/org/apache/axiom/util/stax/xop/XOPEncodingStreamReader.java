@@ -40,7 +40,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
  * information items to optimize (by looking for
  * {@link javax.xml.stream.XMLStreamConstants#CHARACTERS} events for which
  * {@link DataHandlerReader#isBinary()} returns <code>true</code>). The {@link DataHandler}
- * objects for the parts referenced by <tt>xop:Include</tt> element information items produced by
+ * objects for the parts referenced by {@code xop:Include} element information items produced by
  * an instance of this class can be retrieved using the {@link #getDataHandler(String)} method.
  * <p>
  * Note that the primary purpose of this class is not to serialize an XML infoset to an XOP package
@@ -118,7 +118,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
      *            {@link DataHandlerReader}.
      * @param contentIDGenerator
      *            used to generate content IDs for the binary content exposed as
-     *            <tt>xop:Include</tt> element information items
+     *            {@code xop:Include} element information items
      * @param optimizationPolicy
      *            the policy to apply to decide which binary content to optimize
      * 

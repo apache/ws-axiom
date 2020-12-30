@@ -28,7 +28,7 @@ public interface OMAttachmentAccessor {
      * Get the {@link DataHandler} for the MIME part identified by a given content ID.
      * 
      * @param contentID
-     *            the raw content ID (without the surrounding angle brackets and <tt>cid:</tt>
+     *            the raw content ID (without the surrounding angle brackets and {@code cid:}
      *            prefix) of the MIME part
      * @return the {@link DataHandler} of the MIME part referred by the content ID or
      *         <code>null</code> if the MIME part referred by the content ID does not exist

@@ -25,14 +25,14 @@ import javax.activation.DataHandler;
 
 /**
  * Interface used by {@link XOPDecodingStreamReader} to load MIME parts referenced by
- * <tt>xop:Include</tt> elements.
+ * {@code xop:Include} elements.
  */
 public interface MimePartProvider {
     /**
      * Get the {@link DataHandler} for the MIME part identified by a given content ID.
      * 
      * @param contentID
-     *            a content ID referenced in an <tt>xop:Include</tt> element
+     *            a content ID referenced in an {@code xop:Include} element
      * @return the {@link DataHandler} for the MIME part identified by the content ID; may not be
      *         <code>null</code>
      * @throws IllegalArgumentException

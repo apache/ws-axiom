@@ -70,11 +70,11 @@ public abstract class XOPEncodingStreamWrapper implements MimePartProvider {
     }
 
     /**
-     * Get the set of content IDs referenced in <tt>xop:Include</tt> element information items
+     * Get the set of content IDs referenced in {@code xop:Include} element information items
      * produced by this wrapper.
      * 
      * @return The set of content IDs in their order of appearance in the infoset. If no
-     *         <tt>xop:Include</tt> element information items have been produced yet, an empty
+     *         {@code xop:Include} element information items have been produced yet, an empty
      *         set will be returned.
      */
     public Set<String> getContentIDs() {

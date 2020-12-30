@@ -275,7 +275,7 @@ public interface OMContainer extends OMSerializable {
      * of the <code>cache</code> parameter, but the side effects of calling this method and
      * consuming the reader are different:
      * <p>
-     * <table border="2" rules="all" cellpadding="4" cellspacing="0">
+     * <table border="1">
      * <caption>Side effects of consuming events from the reader returned by
      * {@link #getXMLStreamReader(boolean)}</caption>
      * <tr>
@@ -362,7 +362,7 @@ public interface OMContainer extends OMSerializable {
      * <pre>&lt;root xmlns:ns="urn:ns"&gt;&lt;element attr="ns:someThing"/&gt;&lt;root&gt;</pre>
      * <p>
      * In that case, to correctly interpret the attribute value, the SAX content handler must be
-     * aware of the namespace mapping for the <tt>ns</tt> prefix, even if the serialization starts
+     * aware of the namespace mapping for the {@code ns} prefix, even if the serialization starts
      * only at the child element.
      * <p>
      * No other form of namespace repairing is performed.

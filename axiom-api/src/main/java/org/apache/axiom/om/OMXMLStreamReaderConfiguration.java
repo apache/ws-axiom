@@ -56,7 +56,7 @@ public class OMXMLStreamReaderConfiguration {
      * More precisely, if this option is enabled, then the namespace declarations reported for the
      * first {@link XMLStreamConstants#START_ELEMENT} event in the returned stream will be the same
      * as the declarations that would be returned by {@link OMElement#getNamespacesInScope()}, with
-     * the exception that a <tt>xmlns=""</tt> declaration present on the element will be preserved.
+     * the exception that a {@code xmlns=""} declaration present on the element will be preserved.
      * <p>
      * This feature is useful for code that relies on the namespace declarations reported by the
      * {@link XMLStreamReader} to reconstruct the namespace context (instead of using the namespace
@@ -76,13 +76,13 @@ public class OMXMLStreamReaderConfiguration {
      * </pre>
      * <p>
      * When {@link OMContainer#getXMLStreamReader(boolean)} is invoked on the {@link OMElement}
-     * corresponding to <tt>ns:echo</tt>, only the namespace declaration for the <tt>ns</tt> prefix
+     * corresponding to {@code ns:echo}, only the namespace declaration for the {@code ns} prefix
      * will be reported. This may cause a problem when the caller attempts to resolve the QName
-     * value <tt>xsd:string</tt> of the <tt>xsi:type</tt> attribute. If namespace context
+     * value {@code xsd:string} of the {@code xsi:type} attribute. If namespace context
      * preservation is enabled, then the {@link XMLStreamReader} returned by this method will
-     * generate additional namespace declarations for the <tt>soapenv</tt>, <tt>xsd</tt> and
-     * <tt>xsi</tt> prefixes. They are reported for the {@link XMLStreamConstants#START_ELEMENT}
-     * event representing the <tt>ns:echo</tt> element.
+     * generate additional namespace declarations for the {@code soapenv}, {@code xsd} and
+     * {@code xsi} prefixes. They are reported for the {@link XMLStreamConstants#START_ELEMENT}
+     * event representing the {@code ns:echo} element.
      * 
      * @param preserveNamespaceContext
      *            the value to set for this option

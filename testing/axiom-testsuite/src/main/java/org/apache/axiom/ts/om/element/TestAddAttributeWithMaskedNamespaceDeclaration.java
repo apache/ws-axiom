@@ -39,10 +39,10 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  *     &lt;c xmlns:p="urn:ns1" p:attr="test"/&gt;
  *   &lt;/b&gt;
  * &lt;/a&gt;</pre>
- * It only explicitly creates the namespace declarations on <tt>&lt;a&gt;</tt> and
- * <tt>&lt;b&gt;</tt>. When adding the attribute to <tt>&lt;c&gt;</tt>, Axiom must generate
- * a new namespace declaration because the declaration on <tt>&lt;a&gt;</tt> is masked
- * by the one on <tt>&lt;b&gt;</tt>.
+ * It only explicitly creates the namespace declarations on {@code <a>} and
+ * {@code <b>}. When adding the attribute to {@code <c>}, Axiom must generate
+ * a new namespace declaration because the declaration on {@code <a>} is masked
+ * by the one on {@code <b>}.
  * <p>
  * Note that because of WSTX-202, Axiom will not be able to serialize the resulting XML.
  */

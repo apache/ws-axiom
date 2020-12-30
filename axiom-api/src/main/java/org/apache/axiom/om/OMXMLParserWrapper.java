@@ -97,7 +97,7 @@ public interface OMXMLParserWrapper {
      * method depends on the type of source object passed to {@link OMXMLBuilderFactory} to create
      * the builder:
      * <p>
-     * <table border="2" rules="all" cellpadding="4" cellspacing="0">
+     * <table border="1">
      * <caption>Actions performed by the {@link #detach()} method</caption>
      * <tr>
      * <th>Source object type</th>

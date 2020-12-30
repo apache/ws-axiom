@@ -56,15 +56,15 @@ public class OMChildElementIterator implements Iterator {
 
     /**
      * Removes the last element returned by the iterator (optional operation) from the underlying
-     * collection. This method can be called only once per call to <tt>next</tt>.  The behavior of
+     * collection. This method can be called only once per call to {@code next}.  The behavior of
      * an iterator is unspecified if the underlying collection is modified while the iteration is in
      * progress in any way other than by calling this method.
      *
-     * @throws UnsupportedOperationException if the <tt>remove</tt> operation is not supported by
+     * @throws UnsupportedOperationException if the {@code remove} operation is not supported by
      *                                       this Iterator.
-     * @throws IllegalStateException         if the <tt>next</tt> method has not yet been called, or
-     *                                       the <tt>remove</tt> method has already been called
-     *                                       after the last call to the <tt>next</tt> method.
+     * @throws IllegalStateException         if the {@code next} method has not yet been called, or
+     *                                       the {@code remove} method has already been called
+     *                                       after the last call to the {@code next} method.
      */
     @Override
     public void remove() {
@@ -85,10 +85,10 @@ public class OMChildElementIterator implements Iterator {
     }
 
     /**
-     * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
-     * <tt>true</tt> if <tt>next</tt> would return an element rather than throwing an exception.)
+     * Returns {@code true} if the iteration has more elements. (In other words, returns
+     * {@code true} if {@code next} would return an element rather than throwing an exception.)
      *
-     * @return Returns <tt>true</tt> if the iterator has more elements.
+     * @return Returns {@code true} if the iterator has more elements.
      */
     @Override
     public boolean hasNext() {

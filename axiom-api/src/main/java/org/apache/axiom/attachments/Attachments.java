@@ -216,7 +216,7 @@ public class Attachments implements OMAttachmentAccessor {
      * use that interface to determine the size of the MIME part.
      * 
      * @param contentID
-     *            the raw content ID (without the surrounding angle brackets and <tt>cid:</tt>
+     *            the raw content ID (without the surrounding angle brackets and {@code cid:}
      *            prefix) of the MIME part
      * @return the {@link DataHandler} of the MIME part referred by the content ID or
      *         <code>null</code> if the MIME part referred by the content ID does not exist
@@ -303,7 +303,7 @@ public class Attachments implements OMAttachmentAccessor {
      * Get the content ID of the root part of the MIME message. This content ID is determined as
      * follows:
      * <ul>
-     * <li>If the content type of the MIME message has a <tt>start</tt> parameter, then the content
+     * <li>If the content type of the MIME message has a {@code start} parameter, then the content
      * ID will be extracted from that parameter.
      * <li>Otherwise the content ID of the first MIME part of the MIME message is returned.
      * </ul>

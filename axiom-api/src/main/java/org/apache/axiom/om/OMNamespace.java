@@ -62,7 +62,7 @@ public interface OMNamespace {
 
     /**
      * Get the namespace URI. This method never returns <code>null</code>. It may return an empty
-     * string if this instance represents a namespace declaration of type <tt>xmlns=""</tt>. This
+     * string if this instance represents a namespace declaration of type {@code xmlns=""}. This
      * may be the case for instances returned by {@link OMElement#getAllDeclaredNamespaces()}. On
      * the other hand, methods such as {@link OMNamedInformationItem#getNamespace()} will return
      * <code>null</code> for information items that have no namespace. In that case the returned

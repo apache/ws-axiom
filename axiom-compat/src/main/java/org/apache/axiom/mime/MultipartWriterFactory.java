@@ -35,7 +35,7 @@ public interface MultipartWriterFactory {
      *            The output stream to write the MIME package to.
      * @param boundary
      *            The MIME boundary to use. The value should not include the leading dashes, i.e. it
-     *            is the same value as used in the <tt>boundary</tt> content type parameter.
+     *            is the same value as used in the {@code boundary} content type parameter.
      * @return the writer instance
      */
     MultipartWriter createMultipartWriter(OutputStream out, String boundary);

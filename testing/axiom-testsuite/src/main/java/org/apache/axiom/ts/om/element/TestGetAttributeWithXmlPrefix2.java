@@ -29,7 +29,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Test that {@link OMElement#getAttribute(QName)} works properly for an attribute with the
- * <tt>xml</tt> prefix, even if this prefix is not declared explicitly. This is a regression test
+ * {@code xml} prefix, even if this prefix is not declared explicitly. This is a regression test
  * for <a href="https://issues.apache.org/jira/browse/AXIS2-329">AXIS2-329</a>.
  */
 public class TestGetAttributeWithXmlPrefix2 extends AxiomTestCase {

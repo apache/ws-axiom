@@ -49,7 +49,7 @@ import org.xml.sax.ContentHandler;
  * Example:
  * <pre>&lt;root xmlns:ns="urn:ns"&gt;&lt;element attr="ns:someThing"/&gt;&lt;root&gt;</pre>
  * In that case, when constructing an {@link SAXSource} from the child element, the namespace
- * mapping for the <tt>ns</tt> prefix should be visible to the consumer. Otherwise it would not
+ * mapping for the {@code ns} prefix should be visible to the consumer. Otherwise it would not
  * be able to interpret the attribute value correctly. This is relevant e.g. when validating
  * a part of a document against an XML schema (see
  * <a href="https://issues.apache.org/jira/browse/SYNAPSE-501">SYNAPSE-501</a>).

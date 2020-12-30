@@ -29,7 +29,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**
  * Tests that {@link SOAPHeaderBlock#getMustUnderstand()} (resp. {@link SOAPHeaderBlock#getRelay()})
- * returns <code>false</code> if the <tt>mustUnderstand</tt> (resp. <tt>relay</tt>) attribute is
+ * returns <code>false</code> if the {@code mustUnderstand} (resp. {@code relay}) attribute is
  * absent.
  */
 public class TestGetBooleanAttributeDefault extends BooleanAttributeTestCase {
