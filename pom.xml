@@ -856,8 +856,7 @@
                                  repository carefully, then it is reasonable to assume that this doesn't threaten
                                  the build stability. -->
                             <allowedRepositories>
-                                <allowedRepository>kepler</allowedRepository>
-                                <allowedRepository>oxygen</allowedRepository>
+                                <allowedRepository>eclipse_2020_12</allowedRepository>
                             </allowedRepositories>
                             <banPluginRepositories>true</banPluginRepositories>
                             <!-- We still need to allow the Apache snapshot repository -->
