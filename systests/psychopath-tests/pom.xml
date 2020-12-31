@@ -44,7 +44,7 @@
         <dependency>
             <groupId>osgi.bundle</groupId>
             <artifactId>org.eclipse.wst.xml.xpath2.processor</artifactId>
-            <version>2.1.100.v201211261519</version>
+            <version>2.1.101.v201903222120</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -62,13 +62,13 @@
 
     <repositories>
         <repository>
-            <id>kepler</id>
+            <id>eclipse_2020_12</id>
             <layout>p2</layout>
-            <!-- Note that http://download.eclipse.org/releases/kepler is a combined repository that
+            <!-- Note that http://download.eclipse.org/releases/2020-12 is a combined repository that
                  also contains the services releases. It is therefore not stable, i.e. its content
                  may change over time. To avoid that, we use the repository that contains the
                  original release artifacts. -->
-            <url>http://download.eclipse.org/releases/kepler/201306260900</url>
+            <url>http://download.eclipse.org/releases/2020-12/202010161000</url>
         </repository>
     </repositories>
 
