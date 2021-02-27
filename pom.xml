@@ -250,7 +250,7 @@
         <springws.version>3.0.10.RELEASE</springws.version>
         <exam.version>4.13.4</exam.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <jetty.version>9.4.36.v20210114</jetty.version>
+        <jetty.version>9.4.38.v20210224</jetty.version>
         <log4j.version>2.14.0</log4j.version>
         <groovy.version>3.0.7</groovy.version>
         <jaxbri.version>2.3.3</jaxbri.version>
