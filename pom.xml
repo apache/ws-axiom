@@ -980,7 +980,7 @@
             <plugin>
                 <groupId>com.github.veithen.maven</groupId>
                 <artifactId>hermetic-maven-plugin</artifactId>
-                <version>0.5.3</version>
+                <version>0.5.4</version>
                 <executions>
                     <execution>
                         <goals>
