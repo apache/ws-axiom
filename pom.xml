@@ -246,7 +246,7 @@
         <failIfNoTests>false</failIfNoTests>
         <aspectj.version>1.9.6</aspectj.version>
         <shade.plugin.version>3.2.4</shade.plugin.version>
-        <spring.version>5.3.5</spring.version>
+        <spring.version>5.3.6</spring.version>
         <springws.version>3.0.10.RELEASE</springws.version>
         <exam.version>4.13.4</exam.version>
         <slf4j.version>1.7.30</slf4j.version>
