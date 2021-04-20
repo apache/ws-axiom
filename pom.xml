@@ -252,7 +252,7 @@
         <slf4j.version>1.7.30</slf4j.version>
         <jetty.version>9.4.40.v20210413</jetty.version>
         <log4j.version>2.14.1</log4j.version>
-        <groovy.version>3.0.7</groovy.version>
+        <groovy.version>3.0.8</groovy.version>
         <jaxbri.version>2.3.3</jaxbri.version>
         
         <skipDeploy>false</skipDeploy>
