@@ -133,7 +133,7 @@ public interface WritableBlob extends Blob {
      * of the blob after the invocation (i.e. the <code>commit</code> argument) is determined
      * automatically:
      * <p>
-     * <table border="2" rules="all" cellpadding="4" cellspacing="0">
+     * <table border="1" >
      *   <caption>State transitions</caption>
      *   <thead>
      *     <tr><th>Precondition (state)</th><th>Postcondition (state)</th></tr>

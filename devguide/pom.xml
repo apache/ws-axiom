@@ -79,7 +79,7 @@
                             <admonGraphicsExtension>.png</admonGraphicsExtension>
                             <postProcess>
                                 <copy todir="${project.reporting.outputDirectory}">
-                                    <fileset dir="${project.build.directory}/docbkx/html/devguide" />
+                                    <fileset dir="${project.build.directory}/docbkx/html" />
                                 </copy>
                                 <copy todir="${project.reporting.outputDirectory}/images">
                                     <fileset dir="../src/docbkx/images">

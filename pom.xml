@@ -1207,8 +1207,8 @@ $${type_declaration}</template></templates>]]></value>
                 <reportSets>
                     <reportSet>
                         <reports>
-                            <report>issue-tracking</report>
-                            <report>project-team</report>
+                            <report>issue-management</report>
+                            <report>team</report>
                             <report>scm</report>
                         </reports>
                     </reportSet>
