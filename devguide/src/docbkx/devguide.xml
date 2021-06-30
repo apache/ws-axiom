@@ -552,7 +552,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     <para>
                         Log in to the Nexus repository (<link xlink:href="https://repository.apache.org/"/>
                         and close the staging repository. The name of the staging profile is
-                        <literal>org.apache.ws</literal>. See <link xlink:href="http://maven.apache.org/developers/release/apache-release.html"/>
+                        <literal>org.apache.ws</literal>. See <link xlink:href="https://maven.apache.org/developers/release/maven-project-release-procedure.html"/>
                         for a more thorough description of this step.
                     </para>
                 </step>
