@@ -250,7 +250,7 @@
         <javaVersion>1.7</javaVersion>
 
         <failIfNoTests>false</failIfNoTests>
-        <aspectj.version>1.9.6</aspectj.version>
+        <aspectj.version>1.9.7</aspectj.version>
         <shade.plugin.version>3.2.4</shade.plugin.version>
         <spring.version>5.3.8</spring.version>
         <springws.version>3.1.1</springws.version>
