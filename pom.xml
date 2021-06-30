@@ -109,6 +109,12 @@
             <url>http://www.apache.org/~deepal</url>
         </developer>
         <developer>
+            <name>Robert Lazarski</name>
+            <id>robertlazarski</id>
+            <email>robertlazarski AT gmail.com</email>
+            <organization>Alpha Theory</organization>
+        </developer>
+        <developer>
             <name>Chatra Nakkawita</name>
             <id>chatra</id>
             <email>chatra AT WSO2.com</email>
@@ -182,12 +188,6 @@
             <id>sanjiva</id>
             <email>sanjiva AT wso2.com</email>
             <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <name>Robert Lazarski</name>
-            <id>robertlazarski</id>
-            <email>robertlazarski AT gmail.com</email>
-            <organization>Alpha Theory</organization>
         </developer>
     </developers>
     <contributors>
