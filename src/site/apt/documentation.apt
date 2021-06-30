@@ -21,7 +21,7 @@
 
   The following documentation for the Axiom framework is available:
   
-    * A {{{./userguide.html}User Guide}} explaining how to use
+    * A {{{./userguide/userguide.html}User Guide}} explaining how to use
       Axiom in your project.
     
     * A {{{./devguide/devguide.html}Developer Guide}} containing information
