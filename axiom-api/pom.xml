@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>1.3.0-SNAPSHOT</version>
+        <version>1.3.0</version>
     </parent>
 
     <artifactId>axiom-api</artifactId>
@@ -338,28 +338,28 @@
                             </layers>
                             <ignore>
                                 <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
-                                org.apache.axiom.attachments.lifecycle.LifecycleManager -> org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
+                                org.apache.axiom.attachments.lifecycle.LifecycleManager -&gt; org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
                                 <!-- TODO -->
-                                org.apache.axiom.om.impl.OMMultipartWriter -> org.apache.axiom.attachments.ConfigurableDataHandler,
+                                org.apache.axiom.om.impl.OMMultipartWriter -&gt; org.apache.axiom.attachments.ConfigurableDataHandler,
                                 <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
-                                org.apache.axiom.om.OMAbstractFactory -> org.apache.axiom.soap.SOAPFactory,
-                                org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.soap.SOAPFactory,
-                                org.apache.axiom.om.OMMetaFactorySPI -> org.apache.axiom.soap.SOAPModelBuilder,
-                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPFactory,
-                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPMessage,
-                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPModelBuilder,
-                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPProcessingException,
-                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPVersion,
+                                org.apache.axiom.om.OMAbstractFactory -&gt; org.apache.axiom.soap.SOAPFactory,
+                                org.apache.axiom.om.OMMetaFactory -&gt; org.apache.axiom.soap.SOAPFactory,
+                                org.apache.axiom.om.OMMetaFactorySPI -&gt; org.apache.axiom.soap.SOAPModelBuilder,
+                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.soap.SOAPFactory,
+                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.soap.SOAPMessage,
+                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.soap.SOAPModelBuilder,
+                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.soap.SOAPProcessingException,
+                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.soap.SOAPVersion,
                                 <!-- The public API shouldn't depend on classes in o.a.a.om.util -->
-                                org.apache.axiom.om.OMMetaFactorySPI -> org.apache.axiom.om.util.StAXParserConfiguration,
-                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.om.util.StAXParserConfiguration,
-                                org.apache.axiom.om.OMOutputFormat -> org.apache.axiom.om.util.StAXWriterConfiguration,
+                                org.apache.axiom.om.OMMetaFactorySPI -&gt; org.apache.axiom.om.util.StAXParserConfiguration,
+                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.om.util.StAXParserConfiguration,
+                                org.apache.axiom.om.OMOutputFormat -&gt; org.apache.axiom.om.util.StAXWriterConfiguration,
                                 <!-- StAXUtils is in the wrong package (should be o.a.a.util.stax) -->
-                                org.apache.axiom.om.ds.AbstractPushOMDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                org.apache.axiom.om.ds.BlobOMDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                org.apache.axiom.om.ds.StringOMDataSource -> org.apache.axiom.om.util.StAXUtils,
+                                org.apache.axiom.om.ds.AbstractPushOMDataSource -&gt; org.apache.axiom.om.util.StAXUtils,
+                                org.apache.axiom.om.ds.BlobOMDataSource -&gt; org.apache.axiom.om.util.StAXUtils,
+                                org.apache.axiom.om.ds.StringOMDataSource -&gt; org.apache.axiom.om.util.StAXUtils,
                                 <!-- Incorrect layering -->
-                                org.apache.axiom.om.util.StAXParserConfiguration -> org.apache.axiom.util.stax.dialect.StAXDialect
+                                org.apache.axiom.om.util.StAXParserConfiguration -&gt; org.apache.axiom.util.stax.dialect.StAXDialect
                             </ignore>
                         </configuration>
                     </execution>

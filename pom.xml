@@ -28,7 +28,7 @@
 
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0</version>
     <packaging>pom</packaging>
 
     <name>Axiom</name>
@@ -234,7 +234,8 @@
         <connection>scm:git:https://gitbox.apache.org/repos/asf/ws-axiom.git</connection>
         <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/ws-axiom.git</developerConnection>
         <url>https://gitbox.apache.org/repos/asf?p=ws-axiom.git;a=summary</url>
-    </scm>
+      <tag>1.3.0</tag>
+  </scm>
     <issueManagement>
         <system>JIRA</system>
         <url>http://issues.apache.org/jira/browse/AXIOM</url>
@@ -926,7 +927,7 @@
                                 <script>
                                     import java.io.File
                                     
-                                    if (new File(project.build.directory, 'tmp').listFiles().length > 0) {
+                                    if (new File(project.build.directory, 'tmp').listFiles().length &gt; 0) {
                                         throw new Error("Temporary directory not empty");
                                     }
                                 </script>
