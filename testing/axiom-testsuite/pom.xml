@@ -36,7 +36,7 @@
     <url>http://ws.apache.org/axiom/</url>
 
     <properties>
-        <xmlbeans.version>2.6.0</xmlbeans.version>
+        <xmlbeans.version>5.0.1</xmlbeans.version>
     </properties>
 
     <dependencies>
