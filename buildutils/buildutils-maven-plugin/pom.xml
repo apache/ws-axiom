@@ -32,7 +32,7 @@
     <url>http://ws.apache.org/axiom/</url>
 
     <properties>
-        <doxia.version>1.9.2</doxia.version>
+        <doxia.version>1.10</doxia.version>
     </properties>
 
     <dependencyManagement>
