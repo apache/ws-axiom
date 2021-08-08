@@ -260,7 +260,7 @@
         <jetty.version>9.4.43.v20210629</jetty.version>
         <log4j.version>2.14.1</log4j.version>
         <groovy.version>3.0.8</groovy.version>
-        <jaxbri.version>2.3.4</jaxbri.version>
+        <jaxbri.version>2.3.5</jaxbri.version>
         
         <skipDeploy>false</skipDeploy>
     </properties>
@@ -727,7 +727,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>aspectj-maven-plugin</artifactId>
-                    <version>1.11</version>
+                    <version>1.14.0</version>
                     <configuration>
                         <complianceLevel>1.7</complianceLevel>
                     </configuration>
