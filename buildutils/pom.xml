@@ -39,7 +39,7 @@
 
     <properties>
         <javaVersion>1.8</javaVersion>
-        <maven.version>3.8.1</maven.version>
+        <maven.version>3.8.2</maven.version>
         <maven-plugin-tools.version>3.6.1</maven-plugin-tools.version>
     </properties>
 
