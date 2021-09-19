@@ -863,7 +863,7 @@
                                  repository carefully, then it is reasonable to assume that this doesn't threaten
                                  the build stability. -->
                             <allowedRepositories>
-                                <allowedRepository>eclipse_2020_12</allowedRepository>
+                                <allowedRepository>eclipse_2021_09</allowedRepository>
                             </allowedRepositories>
                             <banPluginRepositories>true</banPluginRepositories>
                             <!-- We still need to allow the Apache snapshot repository -->

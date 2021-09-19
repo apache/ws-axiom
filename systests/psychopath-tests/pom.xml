@@ -62,13 +62,13 @@
 
     <repositories>
         <repository>
-            <id>eclipse_2020_12</id>
+            <id>eclipse_2021_09</id>
             <layout>p2</layout>
-            <!-- Note that http://download.eclipse.org/releases/2020-12 is a combined repository that
+            <!-- Note that http://download.eclipse.org/releases/2021-09 is a combined repository that
                  also contains the services releases. It is therefore not stable, i.e. its content
                  may change over time. To avoid that, we use the repository that contains the
                  original release artifacts. -->
-            <url>http://download.eclipse.org/releases/2020-12/202010161000</url>
+            <url>https://download.eclipse.org/releases/2021-09/202107161000/</url>
         </repository>
     </repositories>
 
