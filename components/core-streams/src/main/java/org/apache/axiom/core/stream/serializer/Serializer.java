@@ -334,7 +334,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
         // It does not make sense to continue with rest of the method if the number of 
         // characters to read from array is 0.
         // Section 7.6.1 of XSLT 1.0 (http://www.w3.org/TR/xslt#value-of) suggest no text node
-        // is created if string is empty.	
+        // is created if string is empty.
         if (length == 0)
             return;
         
@@ -347,7 +347,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
             
             final int end = start + length;
             int lastDirtyCharProcessed = start - 1; // last non-clean character that was processed
-													// that was processed
+                                                    // that was processed
             int matchedIllegalCharacters = this.matchedIllegalCharacters;
             int squareBrackets = this.squareBrackets;
             for (i = start; i < end; i++) {
