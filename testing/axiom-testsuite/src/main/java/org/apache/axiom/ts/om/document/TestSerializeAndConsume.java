@@ -42,7 +42,7 @@ public class TestSerializeAndConsume extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory,
                 new StringReader("<elem>text</elem>")).getDocument();
-        document.serializeAndConsume(new NullOutputStream());
+        document.serializeAndConsume(NullOutputStream.NULL_OUTPUT_STREAM);
         assertConsumed(document);
     }
 }

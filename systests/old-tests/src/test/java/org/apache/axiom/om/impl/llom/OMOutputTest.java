@@ -78,7 +78,7 @@ public class OMOutputTest extends TestCase {
         OMOutputFormat baseOutputFormat = new OMOutputFormat();
         baseOutputFormat.setDoOptimize(false);
 
-        envelope.serializeAndConsume(new NullOutputStream(), baseOutputFormat);
-        envelope.serializeAndConsume(new NullOutputStream(), mtomOutputFormat);
+        envelope.serializeAndConsume(NullOutputStream.NULL_OUTPUT_STREAM, baseOutputFormat);
+        envelope.serializeAndConsume(NullOutputStream.NULL_OUTPUT_STREAM, mtomOutputFormat);
     }
 }

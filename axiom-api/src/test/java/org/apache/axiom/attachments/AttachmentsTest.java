@@ -521,7 +521,7 @@ public class AttachmentsTest extends AbstractTestCase {
         DataHandler dh = attachments.getDataHandler("__WLS__1188904239162__SOAP__");
         assertTrue(dh instanceof DataHandlerExt);
         InputStream content = dh.getInputStream();
-        IOUtils.copy(content, new NullOutputStream());
+        IOUtils.copy(content, NullOutputStream.NULL_OUTPUT_STREAM);
         content.close();
         
         assertEquals(1, manager.getFileCount());
@@ -548,14 +548,14 @@ public class AttachmentsTest extends AbstractTestCase {
         // Read the attachment once to make sure it is buffered
         DataHandler dh = attachments.getDataHandler("__WLS__1188904239162__SOAP__");
         InputStream content = dh.getInputStream();
-        IOUtils.copy(content, new NullOutputStream());
+        IOUtils.copy(content, NullOutputStream.NULL_OUTPUT_STREAM);
         content.close();
         
         assertEquals(1, manager.getFileCount());
 
         // Now consume the content of the attachment
         content = ((DataHandlerExt)dh).readOnce();
-        IOUtils.copy(content, new NullOutputStream());
+        IOUtils.copy(content, NullOutputStream.NULL_OUTPUT_STREAM);
         content.close();
         
         // The temporary file should have been deleted
