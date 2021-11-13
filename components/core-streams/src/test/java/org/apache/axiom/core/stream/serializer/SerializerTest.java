@@ -42,6 +42,24 @@ public class SerializerTest {
     }
 
     /**
+     * Tests the scenario described in AXIOM-509.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testMixedContentAfterEmptyElement() throws Exception {
+        StringWriter sw = new StringWriter();
+        Serializer handler = new Serializer(sw);
+        handler.startFragment();
+        handler.startElement("", "test", "");
+        handler.attributesCompleted();
+        handler.endElement();
+        handler.processCharacterData("R&D", false);
+        handler.completed();
+        assertThat(sw.toString()).matches("<test ?/>R&amp;D");
+    }
+
+    /**
      * Test that characters are converted to entities only when necessary.
      * 
      * @throws Exception

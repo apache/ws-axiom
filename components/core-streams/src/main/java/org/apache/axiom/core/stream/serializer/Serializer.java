@@ -649,8 +649,8 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                 }
                 writer.write(elementNameStack[2*depth+1]);
                 writer.write('>');
-                switchContext(MIXED_CONTENT);
             }
+            switchContext(MIXED_CONTENT);
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
