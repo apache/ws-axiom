@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 
@@ -101,13 +103,17 @@ public class OMAbstractFactory {
         // reflection avoids introducing a circular dependency between the org.apache.axiom.om
         // and org.apache.axiom.locator packages.
         try {
-            defaultMetaFactoryLocator = (OMMetaFactoryLocator)Class.forName(DEFAULT_LOCATOR_CLASS_NAME).newInstance();
+            defaultMetaFactoryLocator = (OMMetaFactoryLocator)Class.forName(DEFAULT_LOCATOR_CLASS_NAME).getDeclaredConstructor().newInstance();
         } catch (InstantiationException ex) {
             throw new InstantiationError(ex.getMessage());
         } catch (IllegalAccessException ex) {
             throw new IllegalAccessError(ex.getMessage());
         } catch (ClassNotFoundException ex) {
             throw new NoClassDefFoundError(ex.getMessage());
+        } catch (NoSuchMethodException ex) {
+            throw new NoSuchMethodError(ex.getMessage());
+        } catch (InvocationTargetException ex) {
+            throw new RuntimeException(ex.getCause());
         }
     }
     

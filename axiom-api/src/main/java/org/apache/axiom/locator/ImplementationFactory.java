@@ -68,7 +68,7 @@ final class ImplementationFactory {
             return null;
         }
         try {
-            return clazz.newInstance();
+            return clazz.getDeclaredConstructor().newInstance();
         } catch (Exception ex) {
             log.error("The class " + className + " could not be instantiated", ex);
             return null;

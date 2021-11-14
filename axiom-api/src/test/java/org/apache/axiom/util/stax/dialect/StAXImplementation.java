@@ -64,7 +64,7 @@ public final class StAXImplementation {
         }
         T factory;
         try {
-            factory = classLoader.loadClass(className).asSubclass(type).newInstance();
+            factory = classLoader.loadClass(className).asSubclass(type).getDeclaredConstructor().newInstance();
         } catch (Exception ex) {
             throw new FactoryConfigurationError(ex);
         }

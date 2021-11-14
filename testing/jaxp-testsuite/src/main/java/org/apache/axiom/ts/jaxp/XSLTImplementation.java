@@ -72,8 +72,8 @@ public abstract class XSLTImplementation extends Multiton {
                     @Override
                     public TransformerFactory newTransformerFactory() {
                         try {
-                            return clazz.newInstance();
-                        } catch (InstantiationException | IllegalAccessException ex) {
+                            return clazz.getDeclaredConstructor().newInstance();
+                        } catch (ReflectiveOperationException ex) {
                             throw new RuntimeException(ex);
                         }
                     }
