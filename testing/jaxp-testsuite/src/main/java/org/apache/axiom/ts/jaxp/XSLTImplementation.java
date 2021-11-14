@@ -29,7 +29,6 @@ import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.xml.sax.ext.LexicalHandler;
 
@@ -37,10 +36,13 @@ import org.xml.sax.ext.LexicalHandler;
  * Specifies an XSLT implementation for use in a {@link MatrixTestCase}.
  */
 public abstract class XSLTImplementation extends Multiton {
-    private static final String[] jreTransformerFactoryClassNames = {
-            "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
+    public static final XSLTImplementation JRE = new XSLTImplementation("jre") {
+        @Override
+        public TransformerFactory newTransformerFactory() {
+            return TransformerFactory.newDefaultInstance();
+        }
     };
-    
+
     public static final XSLTImplementation XALAN = new XSLTImplementation("xalan") {
         @Override
         public TransformerFactory newTransformerFactory() {
@@ -61,29 +63,6 @@ public abstract class XSLTImplementation extends Multiton {
     
     private XSLTImplementation(String name) {
         this.name = name;
-    }
-
-    @Instances
-    private static XSLTImplementation[] instances() {
-        for (String className : jreTransformerFactoryClassNames) {
-            try {
-                final Class<? extends TransformerFactory> clazz = Class.forName(className).asSubclass(TransformerFactory.class);
-                XSLTImplementation implementation = new XSLTImplementation("jre") {
-                    @Override
-                    public TransformerFactory newTransformerFactory() {
-                        try {
-                            return clazz.getDeclaredConstructor().newInstance();
-                        } catch (ReflectiveOperationException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
-                };
-                return new XSLTImplementation[] { implementation };
-            } catch (ClassNotFoundException ex) {
-                // Just continue
-            }
-        }
-        return new XSLTImplementation[0];
     }
 
     public final String getName() {
