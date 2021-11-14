@@ -849,8 +849,8 @@
                 <configuration>
                     <rules>
                         <requireJavaVersion>
-                            <!-- We require Java 8 for the build, but we enforce Java 7 compatibility using Animal Sniffer -->
-                            <version>1.8.0</version>
+                            <!-- We require Java 11 for the build, but we configure the compiler to enforce compatibility with older versions. -->
+                            <version>11</version>
                         </requireJavaVersion>
                         <requireMavenVersion>
                             <!-- Require a recent Maven version for consistent build results -->
@@ -906,11 +906,9 @@
                                     
                                     javaVersion = project.properties['javaVersion']
                                     if (javaVersion == '1.7') {
-                                        project.properties['signatureArtifactId'] = 'java17'
-                                        project.properties['signatureVersion'] = '1.0'
+                                        project.properties['javaRelease'] = '7'
                                     } else if (javaVersion == '1.8') {
-                                        project.properties['signatureArtifactId'] = 'java18'
-                                        project.properties['signatureVersion'] = '1.0'
+                                        project.properties['javaRelease'] = '8'
                                     }
                                 ]]></script>
                             </scripts>
@@ -980,8 +978,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>${javaVersion}</source>
-                    <target>${javaVersion}</target>
+                    <release>${javaRelease}</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -995,28 +992,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>animal-sniffer-maven-plugin</artifactId>
-                <version>1.20</version>
-                <executions>
-                    <execution>
-                        <id>check</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <signature>
-                        <groupId>org.codehaus.mojo.signature</groupId>
-                        <artifactId>${signatureArtifactId}</artifactId>
-                        <version>${signatureVersion}</version>
-                    </signature>
-                    <checkTestClasses>false</checkTestClasses>
-                </configuration>
             </plugin>
             <plugin><!-- This serves two purposes:
                       (1) we want to generate source JARs for all builds, not just release builds;

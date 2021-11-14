@@ -31,6 +31,10 @@
 
     <name>Axiom OSGi Tests</name>
 
+    <properties>
+        <javaVersion>1.8</javaVersion>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
