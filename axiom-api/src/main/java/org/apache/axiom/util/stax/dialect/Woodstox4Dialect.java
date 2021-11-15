@@ -25,19 +25,13 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 class Woodstox4Dialect extends AbstractStAXDialect {
-    private final boolean wstx276;
+    public static final Woodstox4Dialect INSTANCE = new Woodstox4Dialect();
 
-    Woodstox4Dialect(boolean wstx276) {
-        this.wstx276 = wstx276;
-    }
+    private Woodstox4Dialect() {}
 
     @Override
     public String getName() {
-        StringBuilder result = new StringBuilder("Woodstox 4.x");
-        if (wstx276) {
-            result.append(" [WSTX-276]");
-        }
-        return result.toString();
+        return "Woodstox";
     }
 
     @Override
@@ -80,11 +74,7 @@ class Woodstox4Dialect extends AbstractStAXDialect {
         // Woodstox 3 used to report whitespace in prolog, but this is no longer the case by default
         // in Woodstox 4. The following property changes that behavior.
         factory.setProperty("org.codehaus.stax2.reportPrologWhitespace", Boolean.TRUE);
-        factory = new NormalizingXMLInputFactoryWrapper(factory, this);
-        if (wstx276) {
-            factory = new CloseShieldXMLInputFactoryWrapper(factory);
-        }
-        return factory;
+        return new NormalizingXMLInputFactoryWrapper(factory, this);
     }
 
     @Override

@@ -269,14 +269,10 @@ public class StAXDialectDetector {
         if (title != null && title.toLowerCase(Locale.ENGLISH).contains("woodstox")) {
             Version version = new Version(versionString);
             switch (version.getComponent(0)) {
-                case 3:
-                    return Woodstox3Dialect.INSTANCE;
                 case 4:
-                    return new Woodstox4Dialect(version.getComponent(1) == 0 && version.getComponent(2) < 11
-                            || version.getComponent(1) == 1 && version.getComponent(2) < 3);
                 case 5:
                 case 6:
-                    return new Woodstox4Dialect(false);
+                    return Woodstox4Dialect.INSTANCE;
                 default:
                     return null;
             }
