@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.jaxp;
+package org.apache.axiom.ts.jaxp.xslt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;

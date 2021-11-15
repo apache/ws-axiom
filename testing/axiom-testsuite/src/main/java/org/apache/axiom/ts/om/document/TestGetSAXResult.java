@@ -28,7 +28,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.ConformanceTestCase;
-import org.apache.axiom.ts.jaxp.XSLTImplementation;
+import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestGetSAXResult extends ConformanceTestCase {

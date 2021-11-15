@@ -28,7 +28,7 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPFaultChild;
 import org.apache.axiom.ts.soap.SOAPSpec;

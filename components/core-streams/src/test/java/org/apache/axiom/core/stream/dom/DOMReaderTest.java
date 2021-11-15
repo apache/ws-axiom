@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

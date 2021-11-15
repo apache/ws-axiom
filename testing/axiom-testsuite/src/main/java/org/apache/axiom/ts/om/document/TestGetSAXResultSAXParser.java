@@ -30,7 +30,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.jaxp.SAXImplementation;
+import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;

@@ -27,7 +27,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
-import org.apache.axiom.ts.jaxp.XSLTImplementation;
+import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

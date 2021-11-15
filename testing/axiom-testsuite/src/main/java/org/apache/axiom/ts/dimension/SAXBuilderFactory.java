@@ -27,7 +27,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
-import org.apache.axiom.ts.jaxp.SAXImplementation;
+import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.xml.sax.InputSource;
 
 /**

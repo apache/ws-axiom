@@ -34,7 +34,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
-import org.apache.axiom.ts.jaxp.XSLTImplementation;
+import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
 

@@ -32,7 +32,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

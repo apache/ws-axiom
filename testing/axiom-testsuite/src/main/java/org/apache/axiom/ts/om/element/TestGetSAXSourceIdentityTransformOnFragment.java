@@ -31,7 +31,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.jaxp.XSLTImplementation;
+import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.xml.sax.ContentHandler;
 
 /**

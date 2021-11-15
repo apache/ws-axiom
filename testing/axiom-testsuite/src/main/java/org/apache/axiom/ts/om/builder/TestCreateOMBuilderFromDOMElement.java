@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

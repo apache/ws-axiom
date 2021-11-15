@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.ts.ConformanceTestCase;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

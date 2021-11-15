@@ -30,7 +30,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.ConformanceTestCase;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;

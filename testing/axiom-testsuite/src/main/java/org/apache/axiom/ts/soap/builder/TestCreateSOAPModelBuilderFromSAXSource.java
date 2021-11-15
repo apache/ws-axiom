@@ -31,7 +31,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.ts.jaxp.SAXImplementation;
+import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;

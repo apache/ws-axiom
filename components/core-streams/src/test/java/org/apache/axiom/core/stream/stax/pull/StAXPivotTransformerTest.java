@@ -31,7 +31,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.axiom.core.stream.dom.DOMInput;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
-import org.apache.axiom.ts.jaxp.XSLTImplementation;
+import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 

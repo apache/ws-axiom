@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.jaxp;
+package org.apache.axiom.ts.jaxp.dom;
 
 import java.io.IOException;
 import java.io.InputStream;

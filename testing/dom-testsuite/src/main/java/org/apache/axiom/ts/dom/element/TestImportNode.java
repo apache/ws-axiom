@@ -24,7 +24,7 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

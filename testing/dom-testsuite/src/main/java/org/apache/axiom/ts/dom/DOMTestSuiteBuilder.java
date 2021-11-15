@@ -25,8 +25,8 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
-import org.apache.axiom.ts.jaxp.XSLTImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
+import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {

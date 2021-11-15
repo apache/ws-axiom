@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testing.multiton.Multiton;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
 

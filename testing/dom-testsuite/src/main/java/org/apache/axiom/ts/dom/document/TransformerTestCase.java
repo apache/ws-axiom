@@ -21,7 +21,7 @@ package org.apache.axiom.ts.dom.document;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
-import org.apache.axiom.ts.jaxp.XSLTImplementation;
+import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 
 public abstract class TransformerTestCase extends DOMTestCase {
     protected final XSLTImplementation xsltImplementation;

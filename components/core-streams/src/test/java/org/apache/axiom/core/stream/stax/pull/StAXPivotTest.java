@@ -22,7 +22,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.core.stream.dom.DOMInput;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;

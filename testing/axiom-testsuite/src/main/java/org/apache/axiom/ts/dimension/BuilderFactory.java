@@ -30,8 +30,8 @@ import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
-import org.apache.axiom.ts.jaxp.SAXImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
+import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.xml.sax.InputSource;
 
 /**

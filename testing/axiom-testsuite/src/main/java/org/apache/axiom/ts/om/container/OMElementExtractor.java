@@ -29,8 +29,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
-import org.apache.axiom.ts.jaxp.DOMImplementation;
-import org.apache.axiom.ts.jaxp.XSLTImplementation;
+import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
+import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 

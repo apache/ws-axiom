@@ -16,24 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.jaxp;
+package org.apache.axiom.ts.jaxp.xslt;
 
-import static com.google.common.truth.Truth.assertThat;
+import org.xml.sax.ext.DefaultHandler2;
 
-import org.apache.axiom.testing.multiton.Multiton;
-import org.junit.Test;
+final class TestContentHandler extends DefaultHandler2 {
+    private int lexicalEventsReceived;
 
-public class XSLTImplementationTest {
-    @Test
-    public void testSupportsLexicalHandlerWithStreamSource() {
-        assertThat(XSLTImplementation.SAXON.supportsLexicalHandlerWithStreamSource()).isFalse();
-        assertThat(XSLTImplementation.XALAN.supportsLexicalHandlerWithStreamSource()).isTrue();
+    @Override
+    public void startDTD(String name, String publicId, String systemId) {
+        lexicalEventsReceived++;
     }
 
-    @Test
-    public void testSupportsStAXSource() {
-        for (XSLTImplementation xsltImplementation : Multiton.getInstances(XSLTImplementation.class)) {
-            assertThat(xsltImplementation.supportsStAXSource()).isEqualTo(xsltImplementation != XSLTImplementation.XALAN);
-        }
+    @Override
+    public void endDTD() {
+        lexicalEventsReceived++;
+    }
+
+    @Override
+    public void startCDATA() {
+        lexicalEventsReceived++;
+    }
+
+    @Override
+    public void endCDATA() {
+        lexicalEventsReceived++;
+    }
+
+    public int getLexicalEventsReceived() {
+        return lexicalEventsReceived;
     }
 }
