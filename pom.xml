@@ -990,6 +990,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <inherited>true</inherited>
                 <configuration>
+                    <source>${javaVersion}</source>
+                    <target>${javaVersion}</target>
                     <release>${javaRelease}</release>
                 </configuration>
             </plugin>
