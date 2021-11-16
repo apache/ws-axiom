@@ -88,7 +88,14 @@ public aspect CoreParentNodeSupport {
 
     public final void CoreParentNode.coreSetInputContext(InputContext context) {
         this.context = context;
-        coreSetState(context == null ? COMPLETE : INCOMPLETE);
+        if (context == null) {
+            switch (getState()) {
+                case INCOMPLETE: coreSetState(COMPLETE); break;
+                case DISCARDING: coreSetState(DISCARDED); break;
+            }
+        } else {
+            coreSetState(INCOMPLETE);
+        }
     }
 
     public final void CoreParentNode.internalSetContent(Object content) {

@@ -76,7 +76,13 @@ public final class TreeWalkerImpl implements XmlReader {
     private static final int STATE_STREAMING = 7;
     
     private static final int STATE_ATTRIBUTE = 8;
-    
+
+    /**
+     * Indicates that the current node is a compact parent node and that the event for its content
+     * has been generated.
+     */
+    private static final int STATE_CONTENT_VISITED = 9;
+
     private final XmlHandler handler;
     private final CoreParentNode root;
     private final boolean preserve;
@@ -134,8 +140,10 @@ public final class TreeWalkerImpl implements XmlReader {
             } else if (state == STATE_NOT_VISITED || state == STATE_ATTRIBUTES_VISITED) {
                 final CoreParentNode parent = (CoreParentNode)previousNode;
                 int nodeState = parent.getState();
-                if (preserve || nodeState == CoreParentNode.COMPLETE || nodeState == CoreParentNode.COMPACT) {
-                    // TODO: bad because it will expand the node if the state is COMPACT
+                if (nodeState == CoreParentNode.COMPACT) {
+                    nextNode = previousNode;
+                    state = STATE_CONTENT_VISITED;
+                } else if (preserve || nodeState == CoreParentNode.COMPLETE) {
                     CoreChildNode child = parent.coreGetFirstChild();
                     if (child == null) {
                         nextNode = parent;
@@ -158,6 +166,9 @@ public final class TreeWalkerImpl implements XmlReader {
                         state = STATE_NOT_VISITED;
                     }
                 }
+            } else if (state == STATE_CONTENT_VISITED) {
+                nextNode = previousNode;
+                state = STATE_VISITED;
             } else if (previousNode instanceof CoreChildNode) {
                 final CoreChildNode previousChildNode = (CoreChildNode)previousNode;
                 if (preserve) {
@@ -260,6 +271,9 @@ public final class TreeWalkerImpl implements XmlReader {
                         state = STATE_VISITED;
                         reader = null;
                     }
+                    break;
+                case STATE_CONTENT_VISITED:
+                    handler.processCharacterData(((CoreParentNode)nextNode).internalGetContent(), false);
                     break;
                 default:
                     throw new IllegalStateException();

@@ -96,7 +96,6 @@ final class BuildableContext extends Context implements InputContext {
     }
 
     private Context endContext() throws StreamException {
-        target.coreSetState(CoreParentNode.COMPLETE);
         target.coreSetInputContext(null);
         if (pendingCharacterData != null) {
             try {
@@ -116,12 +115,7 @@ final class BuildableContext extends Context implements InputContext {
             if (passThroughHandler != NullXmlHandler.INSTANCE) {
                 builderHandler.decrementActiveContextCount();
             }
-            // TODO: handle this in a better way
-            boolean updateState = target.getState() == CoreParentNode.DISCARDING;
             target.coreSetInputContext(null);
-            if (updateState) {
-                target.coreSetState(CoreParentNode.DISCARDED);
-            }
             passThroughHandler = null;
             target = null;
             return parentContext;
