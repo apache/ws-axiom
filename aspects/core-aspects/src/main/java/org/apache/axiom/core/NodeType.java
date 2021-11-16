@@ -87,6 +87,7 @@ public enum NodeType {
     ENTITY_REFERENCE(CoreEntityReference.class);
 
     static {
+        // TODO: add missing node types here (once we have tests that exercise the code)
         COMMENT.allowedChildTypes = EnumSet.of(CHARACTER_DATA);
         DOCUMENT.allowedChildTypes = EnumSet.of(CHARACTER_DATA, COMMENT, DOCUMENT_TYPE_DECLARATION, NS_AWARE_ELEMENT, NS_UNAWARE_ELEMENT, PROCESSING_INSTRUCTION);
         DOCUMENT_FRAGMENT.allowedChildTypes = EnumSet.allOf(NodeType.class);
