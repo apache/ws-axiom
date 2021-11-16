@@ -38,6 +38,9 @@ import org.apache.axiom.testing.multiton.Adapters;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter.Getter;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter.Setter;
 
+import com.google.auto.service.AutoService;
+
+@AutoService(AdapterFactory.class)
 public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElementType> {
     @Override
     public void createAdapters(SOAPElementType type, Adapters adapters) {

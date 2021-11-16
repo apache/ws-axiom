@@ -22,6 +22,9 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 
+import com.google.auto.service.AutoService;
+
+@AutoService(AdapterFactory.class)
 public class HeaderBlockAttributeAdapterFactory implements AdapterFactory<HeaderBlockAttribute> {
     @Override
     public void createAdapters(HeaderBlockAttribute attribute, Adapters adapters) {

@@ -29,6 +29,9 @@ import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 import org.apache.axiom.ts.xml.StreamType;
 
+import com.google.auto.service.AutoService;
+
+@AutoService(AdapterFactory.class)
 public class StreamTypeAdapterFactory implements AdapterFactory<StreamType> {
     @Override
     public void createAdapters(StreamType instance, Adapters adapters) {

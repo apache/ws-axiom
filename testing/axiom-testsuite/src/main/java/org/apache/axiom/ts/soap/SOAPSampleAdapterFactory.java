@@ -21,6 +21,9 @@ package org.apache.axiom.ts.soap;
 import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 
+import com.google.auto.service.AutoService;
+
+@AutoService(AdapterFactory.class)
 public class SOAPSampleAdapterFactory implements AdapterFactory<SOAPSample> {
     @Override
     public void createAdapters(SOAPSample sample, Adapters adapters) {

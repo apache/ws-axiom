@@ -27,6 +27,9 @@ import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
+import com.google.auto.service.AutoService;
+
+@AutoService(AdapterFactory.class)
 public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
     public void createAdapters(SOAPSpec spec, Adapters adapters) {
         if (spec == SOAPSpec.SOAP11) {

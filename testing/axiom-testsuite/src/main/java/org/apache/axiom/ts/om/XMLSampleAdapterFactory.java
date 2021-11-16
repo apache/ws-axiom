@@ -22,6 +22,9 @@ import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 import org.apache.axiom.ts.xml.XMLSample;
 
+import com.google.auto.service.AutoService;
+
+@AutoService(AdapterFactory.class)
 public class XMLSampleAdapterFactory implements AdapterFactory<XMLSample> {
     @Override
     public void createAdapters(XMLSample instance, Adapters adapters) {

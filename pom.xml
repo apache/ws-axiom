@@ -261,6 +261,7 @@
         <log4j.version>2.14.1</log4j.version>
         <groovy.version>3.0.9</groovy.version>
         <jaxbri.version>2.3.5</jaxbri.version>
+        <auto-service.version>1.0.1</auto-service.version>
         
         <skipDeploy>false</skipDeploy>
     </properties>
@@ -504,6 +505,11 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-webapp</artifactId>
                 <version>${jetty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.auto.service</groupId>
+                <artifactId>auto-service-annotations</artifactId>
+                <version>${auto-service.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -993,6 +999,13 @@
                     <source>${javaVersion}</source>
                     <target>${javaVersion}</target>
                     <release>${javaRelease}</release>
+                    <annotationProcessorPaths>
+                        <annotationProcessorPath>
+                            <groupId>com.google.auto.service</groupId>
+                            <artifactId>auto-service</artifactId>
+                            <version>${auto-service.version}</version>
+                        </annotationProcessorPath>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
