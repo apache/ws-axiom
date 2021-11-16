@@ -101,6 +101,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jaxp-testsuite</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <scope>test</scope>
@@ -126,6 +132,11 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service-annotations</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -146,52 +157,6 @@
                         <goals>
                             <goal>post-process-sources-jar</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.github.veithen.alta</groupId>
-                <artifactId>alta-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>generate-test-resources</phase>
-                        <goals>
-                            <goal>generate-files</goal>
-                        </goals>
-                        <configuration>
-                            <name>parsers.list</name>
-                            <value>%file%</value>
-                            <separator>${line.separator}</separator>
-                            <artifactSet>
-                                <artifacts>
-                                    <artifact>
-                                        <groupId>org.codehaus.woodstox</groupId>
-                                        <artifactId>woodstox-core-asl</artifactId>
-                                        <version>4.4.1</version>
-                                    </artifact>
-                                    <artifact>
-                                        <groupId>com.fasterxml.woodstox</groupId>
-                                        <artifactId>woodstox-core</artifactId>
-                                        <version>5.3.0</version>
-                                    </artifact>
-                                    <dependency>
-                                        <groupId>com.fasterxml.woodstox</groupId>
-                                        <artifactId>woodstox-core</artifactId>
-                                        <version>6.2.6</version>
-                                    </dependency>
-                                    <artifact>
-                                        <groupId>com.sun.xml.stream</groupId>
-                                        <artifactId>sjsxp</artifactId>
-                                        <version>1.0.1</version>
-                                    </artifact>
-                                    <artifact>
-                                        <groupId>stax</groupId>
-                                        <artifactId>stax</artifactId>
-                                        <version>1.2.0</version>
-                                    </artifact>
-                                </artifacts>
-                            </artifactSet>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -322,90 +287,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <!-- This profile adds IBM's XLXP StAX implementation to the dialect test suite
-                 if the was61.root property is set to the root directory of a WAS 6.1
-                 installation that includes the Web Services feature pack -->
-            <id>was61</id>
-            <activation>
-                <property>
-                    <name>was61.root</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>copy-xlxp-from-was61</id>
-                                <phase>generate-test-resources</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${project.build.directory}/parsers</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>${was61.root}/plugins</directory>
-                                            <includes>
-                                                <include>com.ibm.ws.runtime_6.1.0.jar</include>
-                                            </includes>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <!-- This profile adds IBM's XLXP StAX implementation to the dialect test suite
-                 if the was7.root property is set to the root directory of a WAS 7.0 installation -->
-            <id>was7</id>
-            <activation>
-                <property>
-                    <name>was7.root</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>copy-xlxp-from-was7</id>
-                                <phase>generate-test-resources</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${project.build.directory}/parsers</outputDirectory>
-                                    <resources>
-                                        <!-- XLXP 1 -->
-                                        <resource>
-                                            <directory>${was7.root}/java/jre/lib</directory>
-                                            <includes>
-                                                <include>xml.jar</include>
-                                            </includes>
-                                        </resource>
-                                        <!-- XLXP 2 -->
-                                        <resource>
-                                            <directory>${was7.root}/plugins</directory>
-                                            <includes>
-                                                <include>com.ibm.ws.prereq.xlxp.jar</include>
-                                            </includes>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

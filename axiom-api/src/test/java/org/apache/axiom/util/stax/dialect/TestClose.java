@@ -30,7 +30,7 @@ import org.apache.axiom.ts.xml.XMLSample;
 public class TestClose extends DialectTestCase {
     private final StreamType streamType;
     
-    public TestClose(StAXImplementation staxImpl, StreamType streamType) {
+    public TestClose(StAXImplementationAdapter staxImpl, StreamType streamType) {
         super(staxImpl);
         this.streamType = streamType;
         addTestParameter("type", streamType.getType().getSimpleName());

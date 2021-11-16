@@ -27,7 +27,7 @@ import org.apache.axiom.testutils.concurrent.Action;
 import org.apache.axiom.testutils.concurrent.ConcurrentTestUtils;
 
 public class TestCreateXMLStreamReaderThreadSafety extends DialectTestCase {
-    public TestCreateXMLStreamReaderThreadSafety(StAXImplementation staxImpl) {
+    public TestCreateXMLStreamReaderThreadSafety(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 

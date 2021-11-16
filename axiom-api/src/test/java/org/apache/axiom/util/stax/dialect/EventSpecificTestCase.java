@@ -33,7 +33,7 @@ import org.apache.axiom.util.xml.stream.XMLEventUtils;
 public abstract class EventSpecificTestCase extends DialectTestCase {
     private final int event;
     
-    public EventSpecificTestCase(StAXImplementation staxImpl, int event) {
+    public EventSpecificTestCase(StAXImplementationAdapter staxImpl, int event) {
         super(staxImpl);
         this.event = event;
         addTestParameter("event", XMLEventUtils.getEventTypeString(event));

@@ -18,15 +18,16 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+import org.apache.axiom.testing.multiton.AdapterFactory;
+import org.apache.axiom.testing.multiton.Adapters;
+import org.apache.axiom.ts.jaxp.stax.StAXImplementation;
 
-public class TestGetNamespaceURIIllegalStateException extends IllegalStateExceptionTestCase {
-    public TestGetNamespaceURIIllegalStateException(StAXImplementationAdapter staxImpl, int event, boolean expectException) {
-        super(staxImpl, event, expectException);
-    }
+import com.google.auto.service.AutoService;
 
-    protected void invoke(XMLStreamReader reader) throws XMLStreamException {
-        reader.getNamespaceURI();
+@AutoService(AdapterFactory.class)
+public final class StAXImplementationAdapterFactory implements AdapterFactory<StAXImplementation> {
+    @Override
+    public void createAdapters(StAXImplementation instance, Adapters adapters) {
+        adapters.add(new StAXImplementationAdapter(instance));
     }
 }

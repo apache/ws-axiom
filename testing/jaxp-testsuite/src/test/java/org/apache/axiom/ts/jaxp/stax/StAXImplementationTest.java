@@ -16,17 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.stax.dialect;
+package org.apache.axiom.ts.jaxp.stax;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+import org.apache.axiom.testing.multiton.Multiton;
+import org.junit.Test;
 
-public class TestGetNamespaceURIIllegalStateException extends IllegalStateExceptionTestCase {
-    public TestGetNamespaceURIIllegalStateException(StAXImplementationAdapter staxImpl, int event, boolean expectException) {
-        super(staxImpl, event, expectException);
-    }
-
-    protected void invoke(XMLStreamReader reader) throws XMLStreamException {
-        reader.getNamespaceURI();
+public class StAXImplementationTest {
+    @Test
+    public void testInstances() {
+        for (StAXImplementation implementation : Multiton.getInstances(StAXImplementation.class)) {
+            implementation.newXMLInputFactory();
+            implementation.newXMLOutputFactory();
+        }
     }
 }

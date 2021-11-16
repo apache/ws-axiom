@@ -30,7 +30,7 @@ import javax.xml.stream.XMLStreamReader;
  * {@link TestIsCharacters}.
  */
 public class TestIsCharactersOnCDATASection extends DialectTestCase {
-    public TestIsCharactersOnCDATASection(StAXImplementation staxImpl) {
+    public TestIsCharactersOnCDATASection(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 

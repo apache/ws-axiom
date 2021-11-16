@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.stax.dialect;
+package org.apache.axiom.ts.jaxp.stax;
 
 import java.io.IOException;
 import java.net.URL;

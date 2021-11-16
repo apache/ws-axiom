@@ -18,29 +18,21 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.jaxp.stax.StAXImplementation;
 import org.apache.axiom.ts.xml.StreamType;
 
 public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
-    private final List<StAXImplementation> implementations = new ArrayList<StAXImplementation>();
-    
-    public void addImplementation(StAXImplementation implementation) {
-        implementations.add(implementation);
-    }
-    
     protected void addTests() {
-        for (StAXImplementation impl : implementations) {
-            addTests(impl);
+        for (StAXImplementation impl : Multiton.getInstances(StAXImplementation.class)) {
+            addTests(impl.getAdapter(StAXImplementationAdapter.class));
         }
     }
 
-    private void addTests(StAXImplementation staxImpl) {
+    private void addTests(StAXImplementationAdapter staxImpl) {
         for (StreamType streamType : Multiton.getInstances(StreamType.class)) {
             addTest(new TestClose(staxImpl, streamType));
         }

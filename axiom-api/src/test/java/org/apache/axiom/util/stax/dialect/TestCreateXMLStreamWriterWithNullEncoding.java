@@ -21,7 +21,7 @@ package org.apache.axiom.util.stax.dialect;
 import javax.xml.stream.XMLOutputFactory;
 
 public class TestCreateXMLStreamWriterWithNullEncoding extends DialectTestCase {
-    public TestCreateXMLStreamWriterWithNullEncoding(StAXImplementation staxImpl) {
+    public TestCreateXMLStreamWriterWithNullEncoding(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 

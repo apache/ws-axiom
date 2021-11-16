@@ -24,7 +24,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestGetTextInProlog extends DialectTestCase {
-    public TestGetTextInProlog(StAXImplementation staxImpl) {
+    public TestGetTextInProlog(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 

@@ -24,7 +24,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestIsStandalone extends DialectTestCase {
-    public TestIsStandalone(StAXImplementation staxImpl) {
+    public TestIsStandalone(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 

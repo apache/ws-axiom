@@ -22,7 +22,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestGetLocalNameIllegalStateException extends IllegalStateExceptionTestCase {
-    public TestGetLocalNameIllegalStateException(StAXImplementation staxImpl, int event, boolean expectException) {
+    public TestGetLocalNameIllegalStateException(StAXImplementationAdapter staxImpl, int event, boolean expectException) {
         super(staxImpl, event, expectException);
     }
 

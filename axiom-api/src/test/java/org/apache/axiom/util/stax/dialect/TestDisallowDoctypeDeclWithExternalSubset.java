@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestDisallowDoctypeDeclWithExternalSubset extends DialectTestCase {
-    public TestDisallowDoctypeDeclWithExternalSubset(StAXImplementation staxImpl) {
+    public TestDisallowDoctypeDeclWithExternalSubset(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 

@@ -24,7 +24,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestGetAttributeNamespaceWithNoPrefix extends DialectTestCase {
-    public TestGetAttributeNamespaceWithNoPrefix(StAXImplementation staxImpl) {
+    public TestGetAttributeNamespaceWithNoPrefix(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 

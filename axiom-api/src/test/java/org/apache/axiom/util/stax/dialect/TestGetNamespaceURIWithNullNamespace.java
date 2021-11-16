@@ -24,7 +24,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestGetNamespaceURIWithNullNamespace extends DialectTestCase {
-    public TestGetNamespaceURIWithNullNamespace(StAXImplementation staxImpl) {
+    public TestGetNamespaceURIWithNullNamespace(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 

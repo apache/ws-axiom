@@ -22,7 +22,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestGetPrefixIllegalStateException extends IllegalStateExceptionTestCase {
-    public TestGetPrefixIllegalStateException(StAXImplementation staxImpl, int event, boolean expectException) {
+    public TestGetPrefixIllegalStateException(StAXImplementationAdapter staxImpl, int event, boolean expectException) {
         super(staxImpl, event, expectException);
     }
 

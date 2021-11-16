@@ -28,7 +28,7 @@ import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestDTDReader extends DialectTestCase {
-    public TestDTDReader(StAXImplementation staxImpl) {
+    public TestDTDReader(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 

@@ -36,7 +36,7 @@ public class TestGetEncodingFromDetection extends DialectTestCase {
     private final String javaEncoding;
     private final Set<String> xmlEncodings;
 
-    public TestGetEncodingFromDetection(StAXImplementation staxImpl, String javaEncoding, String... xmlEncodings) {
+    public TestGetEncodingFromDetection(StAXImplementationAdapter staxImpl, String javaEncoding, String... xmlEncodings) {
         super(staxImpl);
         this.javaEncoding = javaEncoding;
         this.xmlEncodings = new HashSet<String>(Arrays.asList(xmlEncodings));

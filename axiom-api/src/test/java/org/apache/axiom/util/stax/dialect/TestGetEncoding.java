@@ -24,7 +24,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestGetEncoding extends DialectTestCase {
-    public TestGetEncoding(StAXImplementation staxImpl) {
+    public TestGetEncoding(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 

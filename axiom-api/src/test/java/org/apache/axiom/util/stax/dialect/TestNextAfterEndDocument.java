@@ -30,7 +30,7 @@ import javax.xml.stream.XMLStreamReader;
  * has already been reached.
  */
 public class TestNextAfterEndDocument extends DialectTestCase {
-    public TestNextAfterEndDocument(StAXImplementation staxImpl) {
+    public TestNextAfterEndDocument(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 

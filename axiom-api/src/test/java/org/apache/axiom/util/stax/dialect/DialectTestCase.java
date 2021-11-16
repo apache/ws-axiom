@@ -21,9 +21,9 @@ package org.apache.axiom.util.stax.dialect;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 public abstract class DialectTestCase extends MatrixTestCase {
-    protected final StAXImplementation staxImpl;
+    protected final StAXImplementationAdapter staxImpl;
     
-    public DialectTestCase(StAXImplementation staxImpl) {
+    public DialectTestCase(StAXImplementationAdapter staxImpl) {
         this.staxImpl = staxImpl;
         addTestParameter("implementation", staxImpl.getName());
     }

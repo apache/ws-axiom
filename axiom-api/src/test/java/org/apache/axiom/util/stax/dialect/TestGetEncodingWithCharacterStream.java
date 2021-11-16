@@ -28,7 +28,7 @@ import javax.xml.stream.XMLStreamReader;
  * created from a character stream.
  */
 public class TestGetEncodingWithCharacterStream extends DialectTestCase {
-    public TestGetEncodingWithCharacterStream(StAXImplementation staxImpl) {
+    public TestGetEncodingWithCharacterStream(StAXImplementationAdapter staxImpl) {
         super(staxImpl);
     }
 
