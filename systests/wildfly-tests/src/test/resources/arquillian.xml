@@ -25,7 +25,7 @@
             <property name="jbossHome">${wildfly.home}</property>
             <!-- Arquillian gets confused if there is an extra space at the beginning of the arg line.
                  Therefore we need to add a dummy argument to avoid that problem if JaCoCo is skipped. -->
-            <property name="javaVmArguments">-Ddummy ${argLine} ${wildfly.jigsawArgs} -Dwildfly.management.port=${wildfly.managementPort} -Dwildfly.http.port=${wildfly.httpPort}</property>
+            <property name="javaVmArguments">-Ddummy ${argLine} ${wildfly.jigsawArgs} -Djboss.management.http.port=${wildfly.managementPort} -Djboss.http.port=${wildfly.httpPort} -Djboss.ajp.port=0 -Djboss.https.port=0 -Djboss.management.https.port=0</property>
             <property name="managementPort">${wildfly.managementPort}</property>
         </configuration>
     </container>

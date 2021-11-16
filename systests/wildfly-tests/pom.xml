@@ -32,7 +32,7 @@
     <name>Wildfly Tests</name>
 
     <properties>
-        <wildfly.version>14.0.1.Final</wildfly.version>
+        <wildfly.version>25.0.1.Final</wildfly.version>
         <wildfly.home>${project.build.directory}/wildfly-${wildfly.version}</wildfly.home>
         <wildfly.jigsawArgs />
     </properties>
@@ -131,7 +131,6 @@
                                     <outputDirectory>target</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
-                            <excludes>*/standalone/configuration/standalone.xml</excludes>
                         </configuration>
                     </execution>
                 </executions>
@@ -154,26 +153,6 @@
                                 <portName>wildfly.managementPort</portName>
                                 <portName>wildfly.httpPort</portName>
                             </portNames>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-wildfly-configuration</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${wildfly.home}/standalone/configuration</outputDirectory>
-                            <resources>          
-                                <resource>
-                                    <directory>src/test/conf</directory>
-                                </resource>
-                            </resources>
                         </configuration>
                     </execution>
                 </executions>
