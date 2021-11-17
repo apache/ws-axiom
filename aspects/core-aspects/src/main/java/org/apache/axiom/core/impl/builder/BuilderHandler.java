@@ -106,12 +106,9 @@ final class BuilderHandler implements XmlHandler {
     
     void decrementActiveContextCount() {
         if (--activeContextCount == 0) {
-            scheduleDeferredAction(new DeferredAction() {
-                @Override
-                public void run() throws DeferredParsingException {
-                    while (!done) {
-                        builder.next();
-                    }
+            scheduleDeferredAction(() -> {
+                while (!done) {
+                    builder.next();
                 }
             });
         }

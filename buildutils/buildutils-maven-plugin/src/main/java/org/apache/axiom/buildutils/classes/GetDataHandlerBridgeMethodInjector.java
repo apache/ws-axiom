@@ -39,7 +39,7 @@ final class GetDataHandlerBridgeMethodInjector extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         if (name.equals("getDataHandler") && desc.equals("()Ljavax/activation/DataHandler;")) {
-            super.visitMethod(access | Opcodes.ACC_BRIDGE, name, "()Ljava/lang/Object;", null, exceptions);
+            super.visitMethod(access | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC, name, "()Ljava/lang/Object;", null, exceptions);
         }
         return super.visitMethod(access, name, desc, signature, exceptions);
     }

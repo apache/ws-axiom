@@ -77,42 +77,39 @@ final class CustomBuilderManager implements BuilderListener {
         lastCandidateElement = null;
         lastCandidateDepth = -1;
         if (node instanceof AxiomElement && (node instanceof AxiomSOAPHeaderBlock || !(node instanceof AxiomSOAPElement))) {
-            final AxiomElement element = (AxiomElement)node;
+            AxiomElement element = (AxiomElement)node;
             if (registrations != null) {
                 for (int i=firstCustomBuilder; i<registrations.size(); i++) {
                     CustomBuilderRegistration registration = registrations.get(i);
-                    final String namespaceURI = element.coreGetNamespaceURI();
-                    final String localName = element.coreGetLocalName();
+                    String namespaceURI = element.coreGetNamespaceURI();
+                    String localName = element.coreGetLocalName();
                     if (registration.getSelector().accepts(element.getParent(), depth, namespaceURI, localName)) {
-                        final CustomBuilder customBuilder = registration.getCustomBuilder();
+                        CustomBuilder customBuilder = registration.getCustomBuilder();
                         if (log.isDebugEnabled()) {
                             log.debug("Custom builder " + customBuilder + " accepted element {" + namespaceURI + "}" + localName + " at depth " + depth);
                         }
-                        return new DeferredAction() {
-                            @Override
-                            public void run() {
-                                if (log.isDebugEnabled()) {
-                                    log.debug("Invoking custom builder " + customBuilder);
-                                }
-                                OMDataSource dataSource = customBuilder.create(element);
-                                Class<? extends AxiomSourcedElement> type;
-                                if (element instanceof AxiomSOAP11HeaderBlock) {
-                                    type = AxiomSOAP11HeaderBlock.class;
-                                } else if (element instanceof AxiomSOAP12HeaderBlock) {
-                                    type = AxiomSOAP12HeaderBlock.class;
-                                } else {
-                                    type = AxiomSourcedElement.class;
-                                }
-                                if (log.isDebugEnabled()) {
-                                    log.debug("Replacing element with new sourced element of type " + type);
-                                }
-                                AxiomSourcedElement newElement = element.coreCreateNode(type);
-                                newElement.init(localName, new OMNamespaceImpl(namespaceURI, null), dataSource);
-                                try {
-                                    element.coreReplaceWith(newElement, AxiomSemantics.INSTANCE);
-                                } catch (CoreModelException ex) {
-                                    throw AxiomExceptionTranslator.translate(ex);
-                                }
+                        return () -> {
+                            if (log.isDebugEnabled()) {
+                                log.debug("Invoking custom builder " + customBuilder);
+                            }
+                            OMDataSource dataSource = customBuilder.create(element);
+                            Class<? extends AxiomSourcedElement> type;
+                            if (element instanceof AxiomSOAP11HeaderBlock) {
+                                type = AxiomSOAP11HeaderBlock.class;
+                            } else if (element instanceof AxiomSOAP12HeaderBlock) {
+                                type = AxiomSOAP12HeaderBlock.class;
+                            } else {
+                                type = AxiomSourcedElement.class;
+                            }
+                            if (log.isDebugEnabled()) {
+                                log.debug("Replacing element with new sourced element of type " + type);
+                            }
+                            AxiomSourcedElement newElement = element.coreCreateNode(type);
+                            newElement.init(localName, new OMNamespaceImpl(namespaceURI, null), dataSource);
+                            try {
+                                element.coreReplaceWith(newElement, AxiomSemantics.INSTANCE);
+                            } catch (CoreModelException ex) {
+                                throw AxiomExceptionTranslator.translate(ex);
                             }
                         };
                     }

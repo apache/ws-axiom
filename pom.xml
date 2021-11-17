@@ -248,7 +248,7 @@
     </distributionManagement>
 
     <properties>
-        <javaVersion>1.7</javaVersion>
+        <javaVersion>1.8</javaVersion>
 
         <failIfNoTests>false</failIfNoTests>
         <aspectj.version>1.9.7</aspectj.version>
@@ -747,7 +747,7 @@
                     <artifactId>aspectj-maven-plugin</artifactId>
                     <version>1.14.0</version>
                     <configuration>
-                        <complianceLevel>1.7</complianceLevel>
+                        <complianceLevel>${javaVersion}</complianceLevel>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -923,9 +923,7 @@
                                     }
                                     
                                     javaVersion = project.properties['javaVersion']
-                                    if (javaVersion == '1.7') {
-                                        project.properties['javaRelease'] = '7'
-                                    } else if (javaVersion == '1.8') {
+                                    if (javaVersion == '1.8') {
                                         project.properties['javaRelease'] = '8'
                                     } else {
                                         project.properties['javaRelease'] = javaVersion;
