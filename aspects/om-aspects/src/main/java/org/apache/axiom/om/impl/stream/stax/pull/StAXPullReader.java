@@ -67,7 +67,7 @@ import java.io.Closeable;
  * To avoid this, the builder remembers exceptions thrown by the parser and rethrows
  * them during a call to next().
  */
-public final class StAXPullReader implements XmlReader {
+final class StAXPullReader implements XmlReader {
     private static final Log log = LogFactory.getLog(StAXPullReader.class);
     
     /** Field parser */
@@ -98,7 +98,7 @@ public final class StAXPullReader implements XmlReader {
     
     private boolean start = true;
     
-    public StAXPullReader(XMLStreamReader parser, XmlHandler handler,
+    StAXPullReader(XMLStreamReader parser, XmlHandler handler,
             Closeable closeable, boolean autoClose) {
         if (parser.getEventType() != XMLStreamReader.START_DOCUMENT) {
             throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
