@@ -927,6 +927,8 @@
                                         project.properties['javaRelease'] = '7'
                                     } else if (javaVersion == '1.8') {
                                         project.properties['javaRelease'] = '8'
+                                    } else {
+                                        project.properties['javaRelease'] = javaVersion;
                                     }
                                 ]]></script>
                             </scripts>
