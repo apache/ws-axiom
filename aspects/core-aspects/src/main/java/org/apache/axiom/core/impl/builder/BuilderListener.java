@@ -36,9 +36,9 @@ public interface BuilderListener {
      *            the node that has been added
      * @param depth
      *            the depth of the node, with 0 corresponding to the document
-     * @return a runnable to be executed when the object model can safely be accessed again
+     * @return an action to be executed when the object model can safely be accessed again
      */
     // TODO: specify if what happens for attributes (including depth)
     // TODO: an ancestor of the node may have been detached or moved; specify what this means for the depth
-    Runnable nodeAdded(CoreNode node, int depth);
+    DeferredAction nodeAdded(CoreNode node, int depth);
 }

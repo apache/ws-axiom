@@ -24,8 +24,6 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.om.DeferredParsingException;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
@@ -127,7 +125,7 @@ final class StAXPullReader implements XmlReader {
                             dataHandlerReader.getDataHandler(),
                             dataHandlerReader.isOptimized());
                 } catch (XMLStreamException ex) {
-                    throw new OMException(ex);
+                    throw new StreamException(ex);
                 }
             }
             handler.processCharacterData(data, false);
@@ -280,9 +278,8 @@ final class StAXPullReader implements XmlReader {
      * This may force the parser to get information from 
      * the network.
      * @return doctype subset
-     * @throws OMException
      */
-    private String getDTDText() throws OMException { 
+    private String getDTDText() {
         String text = null;
         try {
             text = parser.getText();
@@ -310,9 +307,9 @@ final class StAXPullReader implements XmlReader {
      * Pushes the virtual parser ahead one token.
      * If a look ahead token was calculated it is returned.
      * @return next token
-     * @throws DeferredParsingException
+     * @throws StreamException
      */
-    private int parserNext() {
+    private int parserNext() throws StreamException {
         if (start) {
             start = false;
             return parser.getEventType();
@@ -339,7 +336,7 @@ final class StAXPullReader implements XmlReader {
                 }
                 return event;
             } catch (XMLStreamException ex) {
-                throw new DeferredParsingException(ex);
+                throw new StreamException(ex);
             }
         }
     }

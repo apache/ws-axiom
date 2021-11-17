@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.impl.builder.BuilderListener;
+import org.apache.axiom.core.impl.builder.DeferredAction;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
@@ -56,19 +57,23 @@ final class CustomBuilderManager implements BuilderListener {
         // executed before the custom builder registration may have checked if the payload is a
         // SOAP fault).
         if (lastCandidateElement != null) {
-            Runnable action = getAction(lastCandidateElement, lastCandidateDepth, registrations.size()-1);
+            DeferredAction action = getAction(lastCandidateElement, lastCandidateDepth, registrations.size()-1);
             if (action != null) {
-                action.run();
+                try {
+                    action.run();
+                } catch (CoreModelException ex) {
+                    throw AxiomExceptionTranslator.translate(ex);
+                }
             }
         }
     }
     
     @Override
-    public Runnable nodeAdded(CoreNode node, int depth) {
+    public DeferredAction nodeAdded(CoreNode node, int depth) {
         return getAction(node, depth, 0);
     }
     
-    private Runnable getAction(CoreNode node, int depth, int firstCustomBuilder) {
+    private DeferredAction getAction(CoreNode node, int depth, int firstCustomBuilder) {
         lastCandidateElement = null;
         lastCandidateDepth = -1;
         if (node instanceof AxiomElement && (node instanceof AxiomSOAPHeaderBlock || !(node instanceof AxiomSOAPElement))) {
@@ -83,7 +88,7 @@ final class CustomBuilderManager implements BuilderListener {
                         if (log.isDebugEnabled()) {
                             log.debug("Custom builder " + customBuilder + " accepted element {" + namespaceURI + "}" + localName + " at depth " + depth);
                         }
-                        return new Runnable() {
+                        return new DeferredAction() {
                             @Override
                             public void run() {
                                 if (log.isDebugEnabled()) {

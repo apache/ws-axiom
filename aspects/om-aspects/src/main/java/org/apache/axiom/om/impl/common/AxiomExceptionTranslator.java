@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.core.NodeConsumedException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.om.NodeUnavailableException;
@@ -32,6 +33,8 @@ public class AxiomExceptionTranslator {
     public static OMException translate(CoreModelException ex) {
         if (ex instanceof NodeConsumedException) {
             return new NodeUnavailableException();
+        } else if (ex instanceof DeferredParsingException) {
+            throw new org.apache.axiom.om.DeferredParsingException(((DeferredParsingException) ex).getStreamException());
         } else {
             return new OMException(ex);
         }

@@ -22,6 +22,7 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.impl.builder.BuilderImpl;
 import org.apache.axiom.core.impl.builder.BuilderListener;
+import org.apache.axiom.core.impl.builder.DeferredAction;
 import org.apache.axiom.core.impl.builder.PlainXMLModel;
 import org.apache.axiom.core.stream.FilteredXmlInput;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -54,7 +55,7 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
                 private AxiomSOAPMessage message;
                 
                 @Override
-                public Runnable nodeAdded(CoreNode node, int depth) {
+                public DeferredAction nodeAdded(CoreNode node, int depth) {
                     if (node instanceof AxiomSOAPMessage) {
                         message = (AxiomSOAPMessage)node;
                     } else if (message != null && node instanceof AxiomSOAPEnvelope) {

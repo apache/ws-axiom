@@ -51,7 +51,7 @@ final class BuilderHandler implements XmlHandler {
     public int depth;
     
     private ArrayList<BuilderListener> listeners;
-    private Queue<Runnable> deferredActions;
+    private Queue<DeferredAction> deferredActions;
 
     BuilderHandler(NodeFactory nodeFactory, Model model, CoreNSAwareElement root, Builder builder) {
         this.nodeFactory = nodeFactory;
@@ -76,7 +76,7 @@ final class BuilderHandler implements XmlHandler {
         }
         if (listeners != null) {
             for (int i=0, size=listeners.size(); i<size; i++) {
-                Runnable action = listeners.get(i).nodeAdded(node, depth);
+                DeferredAction action = listeners.get(i).nodeAdded(node, depth);
                 if (action != null) {
                     scheduleDeferredAction(action);
                 }
@@ -84,16 +84,16 @@ final class BuilderHandler implements XmlHandler {
         }
     }
 
-    private void scheduleDeferredAction(Runnable action) {
+    private void scheduleDeferredAction(DeferredAction action) {
         if (deferredActions == null) {
-            deferredActions = new LinkedList<Runnable>();
+            deferredActions = new LinkedList<>();
         }
         deferredActions.add(action);
     }
 
-    void executeDeferredActions() {
+    void executeDeferredActions() throws DeferredParsingException {
         if (deferredActions != null) {
-            Runnable action;
+            DeferredAction action;
             while ((action = deferredActions.poll()) != null) {
                 action.run();
             }
@@ -106,16 +106,11 @@ final class BuilderHandler implements XmlHandler {
     
     void decrementActiveContextCount() {
         if (--activeContextCount == 0) {
-            scheduleDeferredAction(new Runnable() {
+            scheduleDeferredAction(new DeferredAction() {
                 @Override
-                public void run() {
+                public void run() throws DeferredParsingException {
                     while (!done) {
-                        try {
-                            builder.next();
-                        } catch (DeferredParsingException ex) {
-                            // TODO: proper exception
-                            throw new RuntimeException(ex.getStreamException());
-                        }
+                        builder.next();
                     }
                 }
             });
