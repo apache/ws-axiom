@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.om.impl.stream.stax.pull;
 
-import org.apache.axiom.core.stream.stax.pull.InternalXMLStreamReader;
-import org.apache.axiom.core.stream.stax.pull.XMLStreamReaderExtensionFactory;
+import org.apache.axiom.core.stream.stax.pull.output.InternalXMLStreamReader;
+import org.apache.axiom.core.stream.stax.pull.output.XMLStreamReaderExtensionFactory;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;

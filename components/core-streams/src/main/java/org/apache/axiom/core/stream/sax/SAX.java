@@ -19,6 +19,7 @@
 package org.apache.axiom.core.stream.sax;
 
 import org.apache.axiom.core.stream.NullXmlHandler;
+import org.apache.axiom.core.stream.sax.input.XmlHandlerContentHandler;
 import org.xml.sax.ContentHandler;
 
 public final class SAX {

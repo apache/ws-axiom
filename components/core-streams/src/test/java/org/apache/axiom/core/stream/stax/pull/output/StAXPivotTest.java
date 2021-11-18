@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.stax.pull;
+package org.apache.axiom.core.stream.stax.pull.output;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.axiom.core.stream.dom.DOMInput;
+import org.apache.axiom.core.stream.dom.input.DOMInput;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.junit.Before;
 import org.junit.Test;

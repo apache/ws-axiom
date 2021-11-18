@@ -24,7 +24,7 @@ import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.sax.ContentHandlerXmlHandler;
+import org.apache.axiom.core.stream.sax.output.ContentHandlerXmlHandler;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.stream.NamespaceContextPreservationFilterHandler;
 import org.apache.axiom.util.sax.AbstractXMLReader;

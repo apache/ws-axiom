@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.stax.pull;
+package org.apache.axiom.core.stream.stax.pull.output;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.testing.multiton.Multiton.getInstances;
@@ -28,7 +28,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.axiom.core.stream.dom.DOMInput;
+import org.apache.axiom.core.stream.dom.input.DOMInput;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;

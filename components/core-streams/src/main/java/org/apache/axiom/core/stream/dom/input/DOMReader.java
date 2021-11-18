@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.dom;
+package org.apache.axiom.core.stream.dom.input;
 
 import javax.xml.XMLConstants;
 

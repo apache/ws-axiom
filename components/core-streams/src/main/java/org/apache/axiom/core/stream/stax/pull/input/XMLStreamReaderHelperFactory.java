@@ -16,38 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.stax.pull;
+package org.apache.axiom.core.stream.stax.pull.input;
 
-import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamReader;
 
-/**
- * Dummy {@link Location} implementation. It always returns -1 for the location
- * and <code>null</code> for the publicId and systemId. It may be used by
- * {@link javax.xml.stream.XMLStreamReader} implementations that don't support
- * the concept of location.
- */
-class DummyLocation implements Location {
-    static final DummyLocation INSTANCE = new DummyLocation();
-
-    private DummyLocation() {}
-    
-    public int getLineNumber() {
-        return -1;
-    }
-
-    public int getColumnNumber() {
-        return -1;
-    }
-
-    public int getCharacterOffset() {
-        return 0;
-    }
-
-    public String getPublicId() {
-        return null;
-    }
-
-    public String getSystemId() {
-        return null;
-    }
+public interface XMLStreamReaderHelperFactory {
+    XMLStreamReaderHelper createHelper(XMLStreamReader reader);
 }

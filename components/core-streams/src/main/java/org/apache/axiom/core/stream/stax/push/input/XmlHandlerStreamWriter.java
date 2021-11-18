@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.stax.push;
+package org.apache.axiom.core.stream.stax.push.input;
 
 import java.util.Collections;
 import java.util.HashMap;

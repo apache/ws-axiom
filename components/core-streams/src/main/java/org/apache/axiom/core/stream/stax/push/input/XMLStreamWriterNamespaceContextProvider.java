@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.stax.push;
+package org.apache.axiom.core.stream.stax.push.input;
 
 import org.apache.axiom.core.stream.NamespaceContextProvider;
 import org.apache.axiom.core.stream.StreamException;

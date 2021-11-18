@@ -23,7 +23,7 @@ import java.io.IOException;
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.axiom.core.stream.stax.push.InternalXMLStreamWriter;
+import org.apache.axiom.core.stream.stax.push.input.InternalXMLStreamWriter;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.impl.intf.TextContent;

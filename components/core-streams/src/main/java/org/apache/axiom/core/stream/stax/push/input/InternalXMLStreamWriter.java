@@ -16,8 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.stax.push;
+package org.apache.axiom.core.stream.stax.push.input;
 
-public interface XMLStreamWriterExtensionFactory {
-    Object createExtension(String propertyName, InternalXMLStreamWriter writer);
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
+public interface InternalXMLStreamWriter extends XMLStreamWriter {
+    void writeCharacterData(Object data) throws XMLStreamException;
 }

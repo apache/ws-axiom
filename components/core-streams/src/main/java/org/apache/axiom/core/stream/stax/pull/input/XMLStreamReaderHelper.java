@@ -16,8 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.stax.pull;
+package org.apache.axiom.core.stream.stax.pull.input;
 
-public interface XMLStreamReaderExtensionFactory {
-    Object createExtension(String propertyName, InternalXMLStreamReader reader);
+import org.apache.axiom.core.stream.CharacterData;
+import org.apache.axiom.core.stream.StreamException;
+
+public class XMLStreamReaderHelper {
+    public DTDInfo getDTDInfo() throws StreamException {
+        throw new UnsupportedOperationException();
+    }
+
+    public CharacterData getCharacterData() throws StreamException {
+        return null;
+    }
 }

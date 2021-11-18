@@ -30,7 +30,7 @@ import org.apache.axiom.core.stream.FilteredXmlInput;
 import org.apache.axiom.core.stream.NamespaceRepairingFilter;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlInput;
-import org.apache.axiom.core.stream.stax.pull.StAXPullInput;
+import org.apache.axiom.core.stream.stax.pull.input.StAXPullInput;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;

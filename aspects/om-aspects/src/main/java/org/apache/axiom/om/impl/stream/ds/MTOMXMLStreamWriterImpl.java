@@ -32,7 +32,7 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.core.stream.serializer.Serializer;
-import org.apache.axiom.core.stream.stax.push.XmlHandlerStreamWriter;
+import org.apache.axiom.core.stream.stax.push.input.XmlHandlerStreamWriter;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.stream.XmlDeclarationRewriterHandler;

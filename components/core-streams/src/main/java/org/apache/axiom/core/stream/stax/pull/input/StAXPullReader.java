@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.core.stream.stax.pull;
+package org.apache.axiom.core.stream.stax.pull.input;
 
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;

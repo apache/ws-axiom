@@ -28,7 +28,7 @@ import java.io.StringWriter;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.core.stream.XmlReader;
-import org.apache.axiom.core.stream.dom.DOMInput;
+import org.apache.axiom.core.stream.dom.input.DOMInput;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.xml.XMLSample;

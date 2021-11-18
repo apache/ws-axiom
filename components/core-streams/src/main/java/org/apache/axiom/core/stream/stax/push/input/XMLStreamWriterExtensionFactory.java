@@ -16,13 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.stax.pull;
+package org.apache.axiom.core.stream.stax.push.input;
 
-import javax.xml.stream.XMLStreamReader;
-
-public interface InternalXMLStreamReader extends XMLStreamReader {
-    String getRootName();
-    String getPublicId();
-    String getSystemId();
-    Object getCharacterData();
+public interface XMLStreamWriterExtensionFactory {
+    Object createExtension(String propertyName, InternalXMLStreamWriter writer);
 }

@@ -16,39 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.dom;
+
+package org.apache.axiom.core.stream.sax.input;
+
+import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
-import org.w3c.dom.EntityReference;
-import org.w3c.dom.Node;
 
-public class DOMInput implements XmlInput {
-    private final Node node;
+public final class SAXInput implements XmlInput {
     private final boolean expandEntityReferences;
+    private final SAXSource source;
     
-    /**
-     * Constructor.
-     * 
-     * @param node
-     *            The root node of the tree from which events will be generated.
-     * @param expandEntityReferences
-     *            Determines how {@link EntityReference} nodes are handled by this instance. When
-     *            set to {@code false}, a single
-     *            {@link XmlHandler#processEntityReference(String, String)} event will be emitted
-     *            for each {@link EntityReference}. When set to {@code true}, no
-     *            {@link XmlHandler#processEntityReference(String, String)} events are generated.
-     *            Instead, the implementation will traverse the descendants of the
-     *            {@link EntityReference} nodes (which effectively expands these entity references).
-     */
-    public DOMInput(Node node, boolean expandEntityReferences) {
-        this.node = node;
+    public SAXInput(SAXSource source, boolean expandEntityReferences) {
         this.expandEntityReferences = expandEntityReferences;
+        this.source = source;
     }
-
+    
     @Override
     public XmlReader createReader(XmlHandler handler) {
-        return new DOMReader(handler, node, expandEntityReferences);
+        return new SAXReader(handler, source, expandEntityReferences);
     }
 }

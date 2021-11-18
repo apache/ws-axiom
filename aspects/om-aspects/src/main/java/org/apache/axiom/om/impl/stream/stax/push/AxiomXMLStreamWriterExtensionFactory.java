@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.om.impl.stream.stax.push;
 
-import org.apache.axiom.core.stream.stax.push.InternalXMLStreamWriter;
-import org.apache.axiom.core.stream.stax.push.XMLStreamWriterExtensionFactory;
+import org.apache.axiom.core.stream.stax.push.input.InternalXMLStreamWriter;
+import org.apache.axiom.core.stream.stax.push.input.XMLStreamWriterExtensionFactory;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 
 public final class AxiomXMLStreamWriterExtensionFactory implements XMLStreamWriterExtensionFactory {

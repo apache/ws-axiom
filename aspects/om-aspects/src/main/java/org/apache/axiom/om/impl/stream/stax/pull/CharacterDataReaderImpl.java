@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.CharacterDataSink;
-import org.apache.axiom.core.stream.stax.pull.InternalXMLStreamReader;
+import org.apache.axiom.core.stream.stax.pull.output.InternalXMLStreamReader;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
