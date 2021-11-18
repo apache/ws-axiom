@@ -30,6 +30,7 @@ import org.apache.axiom.core.stream.FilteredXmlInput;
 import org.apache.axiom.core.stream.NamespaceRepairingFilter;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlInput;
+import org.apache.axiom.core.stream.stax.pull.StAXPullInput;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
@@ -44,7 +45,7 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.stream.ds.PushOMDataSourceInput;
-import org.apache.axiom.om.impl.stream.stax.pull.StAXPullInput;
+import org.apache.axiom.om.impl.stream.stax.pull.AxiomXMLStreamReaderHelperFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -215,7 +216,7 @@ public aspect AxiomSourcedElementSupport {
                 } catch (XMLStreamException ex) {
                     throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
                 }
-                builder = new BuilderImpl(new FilteredXmlInput(new StAXPullInput(readerFromDS), NamespaceRepairingFilter.DEFAULT), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this);
+                builder = new BuilderImpl(new FilteredXmlInput(new StAXPullInput(readerFromDS, AxiomXMLStreamReaderHelperFactory.INSTANCE), NamespaceRepairingFilter.DEFAULT), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this);
             }
             isExpanded = true;
             coreSetState(ATTRIBUTES_PENDING);
@@ -414,7 +415,7 @@ public aspect AxiomSourcedElementSupport {
         }
         if (pull) {
             try {
-                return new StAXPullInput(dataSource.getReader());
+                return new StAXPullInput(dataSource.getReader(), AxiomXMLStreamReaderHelperFactory.INSTANCE);
             } catch (XMLStreamException ex) {
                 throw new StreamException(ex);
             }

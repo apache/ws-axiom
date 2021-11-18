@@ -38,12 +38,13 @@ import org.apache.axiom.core.stream.NamespaceRepairingFilter;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.dom.DOMInput;
 import org.apache.axiom.core.stream.sax.SAXInput;
+import org.apache.axiom.core.stream.stax.pull.StAXPullInput;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.common.builder.Detachable;
-import org.apache.axiom.om.impl.stream.stax.pull.StAXPullInput;
+import org.apache.axiom.om.impl.stream.stax.pull.AxiomXMLStreamReaderHelperFactory;
 import org.apache.axiom.om.impl.stream.xop.XOPDecodingFilter;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
@@ -121,7 +122,7 @@ final class BuilderSpec {
         } catch (IOException ex) {
             throw new OMException(ex);
         }
-        return new BuilderSpec(new StAXPullInput(reader, true, closeable), detachable);
+        return new BuilderSpec(new StAXPullInput(reader, AxiomXMLStreamReaderHelperFactory.INSTANCE, true, closeable), detachable);
     }
     
     static BuilderSpec from(XMLStreamReader reader) {
@@ -136,7 +137,7 @@ final class BuilderSpec {
                 throw new OMException("The supplied XMLStreamReader is in an unexpected state ("
                         + XMLEventUtils.getEventTypeString(eventType) + ")");
         }
-        return new BuilderSpec(new FilteredXmlInput(new StAXPullInput(reader, false, null), NamespaceRepairingFilter.DEFAULT), null);
+        return new BuilderSpec(new FilteredXmlInput(new StAXPullInput(reader, AxiomXMLStreamReaderHelperFactory.INSTANCE, false, null), NamespaceRepairingFilter.DEFAULT), null);
     }
 
     static BuilderSpec from(StAXParserConfiguration configuration,
@@ -163,7 +164,7 @@ final class BuilderSpec {
             try {
                 return new BuilderSpec(
                         new FilteredXmlInput(
-                                new StAXPullInput(StAXUtils.getXMLInputFactory().createXMLStreamReader(source), true, null),
+                                new StAXPullInput(StAXUtils.getXMLInputFactory().createXMLStreamReader(source), AxiomXMLStreamReaderHelperFactory.INSTANCE, true, null),
                                 NamespaceRepairingFilter.DEFAULT),
                         null);
             } catch (XMLStreamException ex) {

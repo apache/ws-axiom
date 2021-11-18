@@ -16,33 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.stream.stax.pull;
-
-import java.io.Closeable;
+package org.apache.axiom.core.stream.stax.pull;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.XmlInput;
-import org.apache.axiom.core.stream.XmlReader;
-
-public final class StAXPullInput implements XmlInput {
-    private final XMLStreamReader reader;
-    private final boolean autoClose;
-    private final Closeable closeable;
-    
-    public StAXPullInput(XMLStreamReader reader, boolean autoClose, Closeable closeable) {
-        this.reader = reader;
-        this.autoClose = autoClose;
-        this.closeable = closeable;
-    }
-
-    public StAXPullInput(XMLStreamReader reader) {
-        this(reader, true, null);
-    }
-
-    @Override
-    public XmlReader createReader(XmlHandler handler) {
-        return new StAXPullReader(reader, handler, closeable, autoClose);
-    }
+public interface XMLStreamReaderHelperFactory {
+    XMLStreamReaderHelper createHelper(XMLStreamReader reader);
 }

@@ -17,15 +17,12 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.stream.stax.pull;
+package org.apache.axiom.core.stream.stax.pull;
 
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
-import org.apache.axiom.ext.stax.DTDReader;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -70,6 +67,7 @@ final class StAXPullReader implements XmlReader {
     
     /** Field parser */
     private XMLStreamReader reader;
+    private XMLStreamReaderHelper helper;
 
     private final XmlHandler handler;
     private final Closeable closeable;
@@ -83,12 +81,6 @@ final class StAXPullReader implements XmlReader {
     private boolean isClosed = false;              // Indicate if parser is closed
 
     /**
-     * Reference to the {@link DataHandlerReader} extension of the parser, or <code>null</code> if
-     * the parser doesn't support this extension.
-     */
-    private DataHandlerReader dataHandlerReader;
-    
-    /**
      * Stores exceptions thrown by the parser. Used to avoid accessing the parser
      * again after is has thrown a parse exception.
      */
@@ -96,16 +88,16 @@ final class StAXPullReader implements XmlReader {
     
     private boolean start = true;
     
-    StAXPullReader(XMLStreamReader reader, XmlHandler handler,
+    StAXPullReader(XMLStreamReader reader, XMLStreamReaderHelper helper, XmlHandler handler,
             Closeable closeable, boolean autoClose) {
         if (reader.getEventType() != XMLStreamReader.START_DOCUMENT) {
             throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
         }
         this.reader = reader;
+        this.helper = helper;
         this.handler = handler;
         this.closeable = closeable;
         this.autoClose = autoClose;
-        dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
     }
     
     private static String normalize(String s) {
@@ -113,47 +105,36 @@ final class StAXPullReader implements XmlReader {
     }
     
     private void processText(int textType) throws StreamException {
-        if (textType == XMLStreamConstants.CHARACTERS && dataHandlerReader != null && dataHandlerReader.isBinary()) {
-            TextContent data;
-            if (dataHandlerReader.isDeferred()) {
-                data = new TextContent(dataHandlerReader.getContentID(),
-                        dataHandlerReader.getDataHandlerProvider(),
-                        dataHandlerReader.isOptimized());
-            } else {
-                try {
-                    data = new TextContent(dataHandlerReader.getContentID(),
-                            dataHandlerReader.getDataHandler(),
-                            dataHandlerReader.isOptimized());
-                } catch (XMLStreamException ex) {
-                    throw new StreamException(ex);
-                }
+        if (textType == XMLStreamConstants.CHARACTERS) {
+            CharacterData data = helper.getCharacterData();
+            if (data != null) {
+                handler.processCharacterData(data, false);
+                return;
             }
-            handler.processCharacterData(data, false);
-        } else {
-            // Some parsers (like Woodstox) parse text nodes lazily and may throw a
-            // RuntimeException in getText()
-            String text;
-            try {
-                text = reader.getText();
-            } catch (RuntimeException ex) {
-                parserException = ex;
-                throw ex;
-            }
-            switch (textType) {
-                case XMLStreamConstants.CHARACTERS:
-                    handler.processCharacterData(text, false);
-                    break;
-                case XMLStreamConstants.SPACE:
-                    handler.processCharacterData(text, true);
-                    break;
-                case XMLStreamConstants.CDATA:
-                    handler.startCDATASection();
-                    handler.processCharacterData(text, false);
-                    handler.endCDATASection();
-                    break;
-                default:
-                    throw new IllegalStateException();
-            }
+        }
+        // Some parsers (like Woodstox) parse text nodes lazily and may throw a
+        // RuntimeException in getText()
+        String text;
+        try {
+            text = reader.getText();
+        } catch (RuntimeException ex) {
+            parserException = ex;
+            throw ex;
+        }
+        switch (textType) {
+            case XMLStreamConstants.CHARACTERS:
+                handler.processCharacterData(text, false);
+                break;
+            case XMLStreamConstants.SPACE:
+                handler.processCharacterData(text, true);
+                break;
+            case XMLStreamConstants.CDATA:
+                handler.startCDATASection();
+                handler.processCharacterData(text, false);
+                handler.endCDATASection();
+                break;
+            default:
+                throw new IllegalStateException();
         }
     }
 
@@ -179,6 +160,7 @@ final class StAXPullReader implements XmlReader {
             // Release the parser so that it can be GC'd or reused. This is important because the
             // object model keeps a reference to the builder even after the builder is complete.
             reader = null;
+            helper = null;
         }
     }
 
@@ -254,22 +236,14 @@ final class StAXPullReader implements XmlReader {
     }
     
     private void processDTD() throws StreamException {
-        DTDReader dtdReader;
-        try {
-            dtdReader = (DTDReader)reader.getProperty(DTDReader.PROPERTY);
-        } catch (IllegalArgumentException ex) {
-            dtdReader = null;
-        }
-        if (dtdReader == null) {
-            throw new StreamException("Cannot process DTD events because the XMLStreamReader doesn't support the DTDReader extension");
-        }
+        DTDInfo dtdInfo = helper.getDTDInfo();
         String internalSubset = getDTDText();
         // Woodstox returns an empty string if there is no internal subset
         if (internalSubset != null && internalSubset.length() == 0) {
             internalSubset = null;
         }
-        handler.processDocumentTypeDeclaration(dtdReader.getRootName(), dtdReader.getPublicId(),
-                dtdReader.getSystemId(), internalSubset);
+        handler.processDocumentTypeDeclaration(dtdInfo.getRootName(), dtdInfo.getPublicId(),
+                dtdInfo.getSystemId(), internalSubset);
     }
     
     /**
