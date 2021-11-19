@@ -18,8 +18,11 @@
  */
 package org.apache.axiom.core.stream.stax.pull.output;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
@@ -88,5 +91,28 @@ public class StAXPivotTest {
                 XmlHandler::attributesCompleted);
         pivot.next();
         pivot.require(XMLStreamConstants.START_ELEMENT, "urn:wrong_uri", "test");
+    }
+
+    @Test
+    public void testCDATASection() throws Exception {
+        StAXPivot pivot = createStAXPivot(
+                Action.DEFAULT_START_DOCUMENT,
+                h -> {
+                    h.startElement("", "root", "");
+                    h.attributesCompleted();
+                },
+                h -> {
+                    h.startCDATASection();
+                    h.processCharacterData("test", false);
+                    h.endCDATASection();
+                },
+                XmlHandler::endElement,
+                XmlHandler::completed);
+        assertThat(pivot.getEventType()).isEqualTo(XMLStreamReader.START_DOCUMENT);
+        assertThat(pivot.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(pivot.next()).isEqualTo(XMLStreamReader.CDATA);
+        assertThat(pivot.getText()).isEqualTo("test");
+        assertThat(pivot.next()).isEqualTo(XMLStreamReader.END_ELEMENT);
+        assertThat(pivot.next()).isEqualTo(XMLStreamReader.END_DOCUMENT);
     }
 }
