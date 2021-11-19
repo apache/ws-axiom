@@ -21,28 +21,26 @@ package org.apache.axiom.core.stream.stax.pull.output;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.axiom.core.stream.dom.input.DOMInput;
-import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
-import org.junit.Before;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public class StAXPivotTest {
-    private StAXPivot pivot;
-
-    @Before
-    public void setUp() throws Exception {
-        Document document = DOMImplementation.XERCES.newDocument();
-        Element element = document.createElementNS("urn:test", "p:test");
-        document.appendChild(element);
-        element.appendChild(document.createEntityReference("ent"));
-        pivot = new StAXPivot(null);
-        pivot.setReader(new DOMInput(document, false).createReader(pivot));
+    private static StAXPivot createStAXPivot(Action... actions) throws StreamException {
+        StAXPivot pivot = new StAXPivot(null);
+        pivot.setReader(new FakeReader(pivot, actions));
+        return pivot;
     }
-    
+
     @Test
     public void testSuccess() throws Exception {
+        StAXPivot pivot = createStAXPivot(
+                Action.DEFAULT_START_DOCUMENT,
+                h -> h.startElement("urn:test", "test", "p"),
+                XmlHandler::attributesCompleted,
+                h -> h.processEntityReference("ent", "foobar"),
+                XmlHandler::endElement,
+                XmlHandler::completed);
         pivot.require(XMLStreamConstants.START_DOCUMENT, null, null);
         pivot.next();
         pivot.require(XMLStreamConstants.START_ELEMENT, "urn:test", "test");
@@ -56,27 +54,38 @@ public class StAXPivotTest {
     
     @Test(expected=XMLStreamException.class)
     public void testEventTypeMismatch() throws Exception {
+        StAXPivot pivot = createStAXPivot(Action.DEFAULT_START_DOCUMENT);
         pivot.require(XMLStreamConstants.CHARACTERS, null, null);
     }
     
     @Test(expected=XMLStreamException.class)
     public void testLocalNameOnStartDocument() throws Exception {
+        StAXPivot pivot = createStAXPivot(Action.DEFAULT_START_DOCUMENT);
         pivot.require(XMLStreamConstants.START_DOCUMENT, null, "test");
     }
     
     @Test(expected=XMLStreamException.class)
     public void testLocalNameMismatchOnStartElement() throws Exception {
+        StAXPivot pivot = createStAXPivot(
+                Action.DEFAULT_START_DOCUMENT,
+                h -> h.startElement("urn:test", "test", "p"),
+                XmlHandler::attributesCompleted);
         pivot.next();
         pivot.require(XMLStreamConstants.START_ELEMENT, "urn:test", "wrong_name");
     }
     
     @Test(expected=XMLStreamException.class)
     public void testNamespaceURIOnStartDocument() throws Exception {
+        StAXPivot pivot = createStAXPivot(Action.DEFAULT_START_DOCUMENT);
         pivot.require(XMLStreamConstants.START_DOCUMENT, "http://example.org", null);
     }
     
     @Test(expected=XMLStreamException.class)
     public void testNamespaceURIMismatchOnStartElement() throws Exception {
+        StAXPivot pivot = createStAXPivot(
+                Action.DEFAULT_START_DOCUMENT,
+                h -> h.startElement("urn:test", "test", "p"),
+                XmlHandler::attributesCompleted);
         pivot.next();
         pivot.require(XMLStreamConstants.START_ELEMENT, "urn:wrong_uri", "test");
     }
