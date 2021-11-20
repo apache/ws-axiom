@@ -143,10 +143,18 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     private static final int STATE_COLLECT_TEXT = 2;
     
     /**
+     * Used in a CDATA section to indicate that the character data inside the CDATA section should
+     * be coalesced with the character data around the CDATA section. This state is used to
+     * implement {@link XMLStreamReader#getElementText()}. At the end of the CDATA section, the
+     * state transitions back to {@link #STATE_COLLECT_TEXT}.
+     */
+    private static final int STATE_COALESCE_CDATA_SECTION = 3;
+    
+    /**
      * Indicates that all events should be skipped until a start or end element event is
      * encountered. This state is used to implement {@link XMLStreamReader#nextTag()}.
      */
-    private static final int STATE_NEXT_TAG = 3;
+    private static final int STATE_NEXT_TAG = 4;
     
     /**
      * Indicates that all content (character data) in a comment or processing instruction should be
@@ -155,12 +163,12 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
      * is used to store the previous state, so that the state can be restored when the end of the
      * comment or processing instruction is reached.
      */
-    private static final int STATE_SKIP_CONTENT = 4;
+    private static final int STATE_SKIP_CONTENT = 5;
     
     /**
      * Indicates that an error has occurred an that the instance is no longer usable.
      */
-    private static final int STATE_ERROR = 5;
+    private static final int STATE_ERROR = 6;
     
     private final XMLStreamReaderExtensionFactory extensionFactory;
     private XmlReader reader;
@@ -347,6 +355,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
                 state = STATE_EVENT_COMPLETE;
                 return;
             case STATE_COLLECT_TEXT:
+            case STATE_COALESCE_CDATA_SECTION:
                 accumulator.append(data);
                 return;
             case STATE_NEXT_TAG:
@@ -424,23 +433,48 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
 
     @Override
     public void startCDATASection() throws StreamException {
-        checkState();
-        eventType = CDATA;
-        startCollectingText();
+        switch (state) {
+            case STATE_DEFAULT:
+                eventType = CDATA;
+                startCollectingText();
+                break;
+            case STATE_COLLECT_TEXT:
+                state = STATE_COALESCE_CDATA_SECTION;
+                break;
+            default:
+                throw new IllegalStateException();
+        }
     }
 
     @Override
     public void endCDATASection() throws StreamException {
-        text = stopCollectingText();
+        switch (state) {
+            case STATE_COLLECT_TEXT:
+                text = stopCollectingText();
+                break;
+            case STATE_COALESCE_CDATA_SECTION:
+                state = STATE_COLLECT_TEXT;
+                break;
+            default:
+                throw new IllegalStateException();
+        }
     }
 
     @Override
     public void processEntityReference(String name, String replacementText) throws StreamException {
-        checkState();
-        eventType = ENTITY_REFERENCE;
-        this.name = name;
-        text = replacementText;
-        state = STATE_EVENT_COMPLETE;
+        switch (state) {
+            case STATE_DEFAULT:
+                eventType = ENTITY_REFERENCE;
+                this.name = name;
+                text = replacementText;
+                state = STATE_EVENT_COMPLETE;
+                break;
+            case STATE_COLLECT_TEXT:
+                accumulator.append(replacementText);
+                break;
+            default:
+                throw new IllegalStateException();
+        }
     }
 
     @Override
@@ -591,8 +625,14 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public String getElementText() throws XMLStreamException {
         startCollectingText();
-        next();
-        return stopCollectingText();
+        switch (next()) {
+            case END_ELEMENT:
+                return stopCollectingText();
+            case START_ELEMENT:
+                throw new XMLStreamException("Element text content may not contain START_ELEMENT");
+            default:
+                throw new IllegalStateException();
+        }
     }
 
     @Override
