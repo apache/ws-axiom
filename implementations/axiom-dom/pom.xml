@@ -97,17 +97,6 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>org/apache/axiom/om/impl/dom/*</exclude>
-                        <exclude>org/apache/axiom/soap/impl/dom/*</exclude>
-                        <exclude>org/apache/axiom/soap/impl/dom/soap11/*</exclude>
-                        <exclude>org/apache/axiom/soap/impl/dom/soap12/*</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>axiom-weaver-maven-plugin</artifactId>
                 <version>${project.version}</version>

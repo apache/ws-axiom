@@ -85,15 +85,6 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>org/apache/axiom/om/impl/llom/*</exclude>
-                        <exclude>org/apache/axiom/soap/impl/llom/**/*</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>axiom-weaver-maven-plugin</artifactId>
                 <version>${project.version}</version>
