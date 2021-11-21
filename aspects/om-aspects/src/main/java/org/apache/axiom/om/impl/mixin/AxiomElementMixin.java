@@ -68,12 +68,13 @@ import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamIOException;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.xml.QNameCache;
+import org.apache.axiom.weaver.annotation.Mixin;
 
 /**
  * Utility class with default implementations for some of the methods defined by the
  * {@link OMElement} interface.
  */
-@org.apache.axiom.weaver.annotation.Mixin(AxiomElement.class)
+@Mixin(AxiomElement.class)
 public abstract class AxiomElementMixin implements AxiomElement {
     public final void initName(String localName, OMNamespace ns, boolean generateNSDecl) {
         internalSetLocalName(localName);

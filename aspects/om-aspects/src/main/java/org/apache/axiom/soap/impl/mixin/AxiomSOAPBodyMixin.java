@@ -25,8 +25,9 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAPBody.class)
+@Mixin(AxiomSOAPBody.class)
 public abstract class AxiomSOAPBodyMixin implements AxiomSOAPBody {
     public final boolean isChildElementAllowed(OMElement child) {
         return !(child instanceof AxiomSOAPElement) || child instanceof SOAPFault;

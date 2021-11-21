@@ -24,8 +24,9 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAPElement.class)
+@Mixin(AxiomSOAPElement.class)
 public abstract class AxiomSOAPElementMixin implements AxiomSOAPElement {
     public final OMFactory getOMFactory() {
         return getSOAPHelper().getSOAPFactory(getMetaFactory());

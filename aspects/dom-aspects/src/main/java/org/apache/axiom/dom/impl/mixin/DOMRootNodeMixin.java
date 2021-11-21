@@ -19,9 +19,10 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.dom.DOMRootNode;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMRootNode.class)
+@Mixin(DOMRootNode.class)
 public abstract class DOMRootNodeMixin implements DOMRootNode {
     public final Node getNextSibling() {
         return null;

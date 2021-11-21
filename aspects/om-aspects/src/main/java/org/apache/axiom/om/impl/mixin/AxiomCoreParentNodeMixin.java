@@ -25,8 +25,9 @@ import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.intf.AxiomCoreParentNode;
 import org.apache.axiom.om.impl.intf.AxiomSerializable;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomCoreParentNode.class)
+@Mixin(AxiomCoreParentNode.class)
 public abstract class AxiomCoreParentNodeMixin implements AxiomCoreParentNode {
     public final boolean isComplete() {
         try {

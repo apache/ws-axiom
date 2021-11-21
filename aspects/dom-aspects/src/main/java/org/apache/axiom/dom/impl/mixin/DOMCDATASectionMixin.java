@@ -19,9 +19,10 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.dom.DOMCDATASection;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMCDATASection.class)
+@Mixin(DOMCDATASection.class)
 public abstract class DOMCDATASectionMixin implements DOMCDATASection {
     public final short getNodeType() {
         return Node.CDATA_SECTION_NODE;

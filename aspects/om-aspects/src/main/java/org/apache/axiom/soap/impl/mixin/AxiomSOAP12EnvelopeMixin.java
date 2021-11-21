@@ -23,8 +23,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Envelope;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAP12Envelope.class)
+@Mixin(AxiomSOAP12Envelope.class)
 public abstract class AxiomSOAP12EnvelopeMixin implements AxiomSOAP12Envelope {
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12Envelope.class;

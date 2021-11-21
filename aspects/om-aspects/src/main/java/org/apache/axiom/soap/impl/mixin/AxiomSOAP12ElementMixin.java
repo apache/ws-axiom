@@ -21,8 +21,9 @@ package org.apache.axiom.soap.impl.mixin;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Element;
 import org.apache.axiom.soap.impl.intf.soap12.SOAP12Helper;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAP12Element.class)
+@Mixin(AxiomSOAP12Element.class)
 public abstract class AxiomSOAP12ElementMixin implements AxiomSOAP12Element {
     public final SOAPHelper getSOAPHelper() {
         return SOAP12Helper.INSTANCE;

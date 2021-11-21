@@ -21,8 +21,9 @@ package org.apache.axiom.soap.impl.mixin;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultNode;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAP12FaultNode.class)
+@Mixin(AxiomSOAP12FaultNode.class)
 public abstract class AxiomSOAP12FaultNodeMixin implements AxiomSOAP12FaultNode {
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12FaultNode.class;

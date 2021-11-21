@@ -25,8 +25,9 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreCDATASection.class)
+@Mixin(CoreCDATASection.class)
 public abstract class CoreCDATASectionMixin implements CoreCDATASection {
     public final NodeType coreGetNodeType() {
         return NodeType.CDATA_SECTION;

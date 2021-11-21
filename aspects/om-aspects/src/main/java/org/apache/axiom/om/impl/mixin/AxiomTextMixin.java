@@ -31,8 +31,9 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomText;
 import org.apache.axiom.om.impl.intf.TextContent;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomText.class)
+@Mixin(AxiomText.class)
 public abstract class AxiomTextMixin implements AxiomText {
     private TextContent getTextContent(boolean force) {
         try {

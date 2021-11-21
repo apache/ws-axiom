@@ -77,9 +77,10 @@ import org.apache.axiom.om.impl.stream.xop.OptimizationPolicy;
 import org.apache.axiom.om.impl.stream.xop.OptimizationPolicyImpl;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.util.io.IOUtils;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.xml.sax.InputSource;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomContainer.class)
+@Mixin(AxiomContainer.class)
 public abstract class AxiomContainerMixin implements AxiomContainer {
     private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();
     

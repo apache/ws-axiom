@@ -19,8 +19,9 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.dom.DOMTypedAttribute;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMTypedAttribute.class)
+@Mixin(DOMTypedAttribute.class)
 public abstract class DOMTypedAttributeMixin implements DOMTypedAttribute {
     public final String getName() {
         return internalGetName();

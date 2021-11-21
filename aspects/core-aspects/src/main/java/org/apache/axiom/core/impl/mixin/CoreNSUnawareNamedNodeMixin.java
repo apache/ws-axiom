@@ -20,8 +20,9 @@ package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.CoreNSUnawareNamedNode;
 import org.apache.axiom.core.CoreNamedNode;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreNSUnawareNamedNode.class)
+@Mixin(CoreNSUnawareNamedNode.class)
 public abstract class CoreNSUnawareNamedNodeMixin implements CoreNSUnawareNamedNode {
     private String name;
 

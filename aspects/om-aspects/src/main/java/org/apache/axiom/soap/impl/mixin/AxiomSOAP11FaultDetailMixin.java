@@ -20,8 +20,9 @@ package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultDetail;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAP11FaultDetail.class)
+@Mixin(AxiomSOAP11FaultDetail.class)
 public abstract class AxiomSOAP11FaultDetailMixin implements AxiomSOAP11FaultDetail {
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP11FaultDetail.class;

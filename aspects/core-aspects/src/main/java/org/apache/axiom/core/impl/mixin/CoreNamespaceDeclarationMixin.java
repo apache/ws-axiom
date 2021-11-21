@@ -25,8 +25,9 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreNamespaceDeclaration.class)
+@Mixin(CoreNamespaceDeclaration.class)
 public abstract class CoreNamespaceDeclarationMixin implements CoreNamespaceDeclaration {
     public final NodeType coreGetNodeType() {
         return NodeType.NAMESPACE_DECLARATION;

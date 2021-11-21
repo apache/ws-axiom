@@ -21,8 +21,9 @@ package org.apache.axiom.core.impl.mixin;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreLeafNode;
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreLeafNode.class)
+@Mixin(CoreLeafNode.class)
 public abstract class CoreLeafNodeMixin implements CoreLeafNode {
     public final <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) {
     }

@@ -21,8 +21,9 @@ package org.apache.axiom.core.impl.mixin;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreTypedAttribute;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreTypedAttribute.class)
+@Mixin(CoreTypedAttribute.class)
 public abstract class CoreTypedAttributeMixin implements CoreTypedAttribute {
     private String type;
     

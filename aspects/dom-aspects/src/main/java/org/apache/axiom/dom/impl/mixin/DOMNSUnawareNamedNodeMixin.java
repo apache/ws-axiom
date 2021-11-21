@@ -20,9 +20,10 @@ package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMNSUnawareNamedNode;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMNSUnawareNamedNode.class)
+@Mixin(DOMNSUnawareNamedNode.class)
 public abstract class DOMNSUnawareNamedNodeMixin implements DOMNSUnawareNamedNode {
     public final String getNamespaceURI() {
         return null;

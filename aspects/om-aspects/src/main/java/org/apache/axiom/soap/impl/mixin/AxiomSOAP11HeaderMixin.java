@@ -20,8 +20,9 @@ package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Header;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAP11Header.class)
+@Mixin(AxiomSOAP11Header.class)
 public abstract class AxiomSOAP11HeaderMixin implements AxiomSOAP11Header {
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP11Header.class;

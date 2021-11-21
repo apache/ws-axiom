@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.shared;
 
-@org.apache.axiom.weaver.annotation.Mixin(INSAwareNamedNode.class)
+import org.apache.axiom.weaver.annotation.Mixin;
+
+@Mixin(INSAwareNamedNode.class)
 public abstract class INSAwareNamedNodeMixin implements INSAwareNamedNode {
     public final String getLocalName() {
         return coreGetLocalName();

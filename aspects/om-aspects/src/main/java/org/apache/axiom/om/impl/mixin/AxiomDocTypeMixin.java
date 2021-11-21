@@ -26,8 +26,9 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.intf.AxiomDocType;
 import org.apache.axiom.om.impl.stream.stax.push.XMLStreamWriterHandler;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomDocType.class)
+@Mixin(AxiomDocType.class)
 public abstract class AxiomDocTypeMixin implements AxiomDocType {
     public final int getType() {
         return DTD_NODE;

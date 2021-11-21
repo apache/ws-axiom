@@ -25,8 +25,9 @@ import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreProcessingInstruction.class)
+@Mixin(CoreProcessingInstruction.class)
 public abstract class CoreProcessingInstructionMixin implements CoreProcessingInstruction {
     private String target;
 

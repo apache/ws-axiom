@@ -27,12 +27,13 @@ import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMDocumentFragment;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMSemantics;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMDocumentFragment.class)
+@Mixin(DOMDocumentFragment.class)
 public abstract class DOMDocumentFragmentMixin implements DOMDocumentFragment {
     public final Document getOwnerDocument() {
         return (Document)coreGetOwnerDocument(true);

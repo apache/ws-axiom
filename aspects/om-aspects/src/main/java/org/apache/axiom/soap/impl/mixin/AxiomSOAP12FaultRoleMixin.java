@@ -20,8 +20,9 @@ package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultRole;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAP12FaultRole.class)
+@Mixin(AxiomSOAP12FaultRole.class)
 public abstract class AxiomSOAP12FaultRoleMixin implements AxiomSOAP12FaultRole {
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12FaultRole.class;

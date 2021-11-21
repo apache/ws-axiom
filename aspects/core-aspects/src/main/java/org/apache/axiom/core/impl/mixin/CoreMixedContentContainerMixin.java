@@ -21,8 +21,9 @@ package org.apache.axiom.core.impl.mixin;
 import org.apache.axiom.core.CoreMixedContentContainer;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ElementAction;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreMixedContentContainer.class)
+@Mixin(CoreMixedContentContainer.class)
 public abstract class CoreMixedContentContainerMixin implements CoreMixedContentContainer {
     public final Object coreGetCharacterData(ElementAction elementAction) throws CoreModelException {
         return internalGetCharacterData(elementAction);

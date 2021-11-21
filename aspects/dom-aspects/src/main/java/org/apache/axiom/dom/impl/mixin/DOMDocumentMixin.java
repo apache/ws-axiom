@@ -53,6 +53,7 @@ import org.apache.axiom.dom.DOMText;
 import org.apache.axiom.dom.ElementsByTagName;
 import org.apache.axiom.dom.ElementsByTagNameNS;
 import org.apache.axiom.dom.NSUtil;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
@@ -70,7 +71,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMDocument.class)
+@Mixin(DOMDocument.class)
 public abstract class DOMDocumentMixin implements DOMDocument {
     private final DOMConfigurationImpl domConfig = new DOMConfigurationImpl();
 

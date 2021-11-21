@@ -30,8 +30,9 @@ import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.common.SOAPHeaderBlockHelper;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAPHeaderBlock.class)
+@Mixin(AxiomSOAPHeaderBlock.class)
 public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock {
     private boolean processed;
 

@@ -27,8 +27,9 @@ import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Fault;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAP11Fault.class)
+@Mixin(AxiomSOAP11Fault.class)
 public abstract class AxiomSOAP11FaultMixin implements AxiomSOAP11Fault {
     private static final Sequence sequence = new Sequence(SOAPFaultCode.class, SOAPFaultReason.class,
             SOAPFaultRole.class, SOAPFaultDetail.class);

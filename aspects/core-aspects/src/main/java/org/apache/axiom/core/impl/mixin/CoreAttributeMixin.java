@@ -25,8 +25,9 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.Flags;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreAttribute.class)
+@Mixin(CoreAttribute.class)
 public abstract class CoreAttributeMixin implements CoreAttribute {
     /**
      * The owner of the attribute. This is either a {@link CoreDocument} if the attribute is not linked

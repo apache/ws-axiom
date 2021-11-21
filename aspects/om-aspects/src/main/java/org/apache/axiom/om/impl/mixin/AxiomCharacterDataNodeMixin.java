@@ -23,8 +23,9 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomCharacterDataNode.class)
+@Mixin(AxiomCharacterDataNode.class)
 public abstract class AxiomCharacterDataNodeMixin implements AxiomCharacterDataNode {
     public final int getType() {
         return coreIsIgnorable() ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;

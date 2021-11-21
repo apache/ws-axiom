@@ -26,8 +26,9 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomComment;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomComment.class)
+@Mixin(AxiomComment.class)
 public abstract class AxiomCommentMixin implements AxiomComment {
     public final int getType() {
         return OMNode.COMMENT_NODE;

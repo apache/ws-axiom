@@ -36,6 +36,7 @@ import org.apache.axiom.dom.DOMSemantics;
 import org.apache.axiom.dom.ElementsByTagName;
 import org.apache.axiom.dom.ElementsByTagNameNS;
 import org.apache.axiom.dom.NSUtil;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -44,7 +45,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.TypeInfo;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMElement.class)
+@Mixin(DOMElement.class)
 public abstract class DOMElementMixin implements DOMElement {
     public final Document getOwnerDocument() {
         return (Document)coreGetOwnerDocument(true);

@@ -40,8 +40,9 @@ import org.apache.axiom.soap.impl.common.RoleChecker;
 import org.apache.axiom.soap.impl.common.RolePlayerChecker;
 import org.apache.axiom.soap.impl.common.SOAPHeaderBlockMapper;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAPHeader.class)
+@Mixin(AxiomSOAPHeader.class)
 public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
     public final boolean isChildElementAllowed(OMElement child) {
         return child instanceof SOAPHeaderBlock;

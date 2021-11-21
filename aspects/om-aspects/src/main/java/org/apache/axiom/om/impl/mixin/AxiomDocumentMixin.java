@@ -33,8 +33,9 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSerializable;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomDocument.class)
+@Mixin(AxiomDocument.class)
 public abstract class AxiomDocumentMixin implements AxiomDocument {
     public final OMElement getOMDocumentElement() {
         try {

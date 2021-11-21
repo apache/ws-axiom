@@ -29,8 +29,9 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomNamedInformationItem;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.util.xml.QNameCache;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomNamedInformationItem.class)
+@Mixin(AxiomNamedInformationItem.class)
 public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInformationItem {
     /**
      * The namespace of the information item. Possible values:

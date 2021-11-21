@@ -25,8 +25,9 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomInformationItem;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomInformationItem.class)
+@Mixin(AxiomInformationItem.class)
 public abstract class AxiomInformationItemMixin implements AxiomInformationItem {
     public OMFactory getOMFactory() {
         return getMetaFactory().getOMFactory();

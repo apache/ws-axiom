@@ -25,8 +25,9 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomProcessingInstruction.class)
+@Mixin(AxiomProcessingInstruction.class)
 public abstract class AxiomProcessingInstructionMixin implements AxiomProcessingInstruction {
     public final int getType() {
         return PI_NODE;

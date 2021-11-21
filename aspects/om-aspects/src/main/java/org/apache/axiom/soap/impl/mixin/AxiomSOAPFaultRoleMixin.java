@@ -20,8 +20,9 @@ package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultRole;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAPFaultRole.class)
+@Mixin(AxiomSOAPFaultRole.class)
 public abstract class AxiomSOAPFaultRoleMixin implements AxiomSOAPFaultRole {
     public final boolean isChildElementAllowed(OMElement child) {
         return false;

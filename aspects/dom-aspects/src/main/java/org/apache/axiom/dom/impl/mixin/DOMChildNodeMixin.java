@@ -22,9 +22,10 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMChildNode;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DocumentWhitespaceFilter;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMChildNode.class)
+@Mixin(DOMChildNode.class)
 public abstract class DOMChildNodeMixin implements DOMChildNode {
     public final Node getParentNode() {
         return (Node)coreGetParent();

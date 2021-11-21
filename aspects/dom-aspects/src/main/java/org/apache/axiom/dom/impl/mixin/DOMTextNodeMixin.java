@@ -26,10 +26,11 @@ import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMSemantics;
 import org.apache.axiom.dom.DOMText;
 import org.apache.axiom.dom.DOMTextNode;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Text;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMTextNode.class)
+@Mixin(DOMTextNode.class)
 public abstract class DOMTextNodeMixin implements DOMTextNode {
     private DOMTextNode getWholeTextStartNode() {
         DOMTextNode first = this;

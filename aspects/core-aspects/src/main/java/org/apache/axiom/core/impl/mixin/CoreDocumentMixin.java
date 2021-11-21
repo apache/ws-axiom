@@ -28,8 +28,9 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreDocument.class)
+@Mixin(CoreDocument.class)
 public abstract class CoreDocumentMixin implements CoreDocument {
     private String inputEncoding;
     private String xmlVersion = "1.0";

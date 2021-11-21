@@ -22,9 +22,10 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMProcessingInstruction;
 import org.apache.axiom.dom.DOMSemantics;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMProcessingInstruction.class)
+@Mixin(DOMProcessingInstruction.class)
 public abstract class DOMProcessingInstructionMixin implements DOMProcessingInstruction {
     public final short getNodeType() {
         return Node.PROCESSING_INSTRUCTION_NODE;

@@ -24,6 +24,7 @@ import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMSemantics;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,7 +32,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.TypeInfo;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMAttribute.class)
+@Mixin(DOMAttribute.class)
 public abstract class DOMAttributeMixin implements DOMAttribute {
     public final Document getOwnerDocument() {
         return (Document)coreGetOwnerDocument(true);

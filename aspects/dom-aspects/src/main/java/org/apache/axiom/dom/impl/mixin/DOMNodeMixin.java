@@ -29,13 +29,14 @@ import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMNode;
 import org.apache.axiom.dom.DOMNodeFactory;
 import org.apache.axiom.dom.DOMSemantics;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.UserDataHandler;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMNode.class)
+@Mixin(DOMNode.class)
 public abstract class DOMNodeMixin implements DOMNode {
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()

@@ -20,8 +20,9 @@ package org.apache.axiom.om.impl.mixin;
 
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.intf.AxiomCoreLeafNode;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomCoreLeafNode.class)
+@Mixin(AxiomCoreLeafNode.class)
 public abstract class AxiomCoreLeafNodeMixin implements AxiomCoreLeafNode {
     public final OMXMLParserWrapper coreGetBuilder() {
         return null;

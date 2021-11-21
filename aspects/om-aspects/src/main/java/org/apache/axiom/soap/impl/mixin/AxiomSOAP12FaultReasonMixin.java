@@ -28,8 +28,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.common.util.LocaleUtil;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultReason;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAP12FaultReason.class)
+@Mixin(AxiomSOAP12FaultReason.class)
 public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultReason {
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12FaultReason.class;

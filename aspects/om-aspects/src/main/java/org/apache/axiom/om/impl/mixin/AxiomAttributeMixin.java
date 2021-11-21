@@ -26,8 +26,9 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.NSUtil;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomAttribute.class)
+@Mixin(AxiomAttribute.class)
 public abstract class AxiomAttributeMixin implements AxiomAttribute {
     public final OMElement getOwner() {
         return (OMElement)coreGetOwnerElement();

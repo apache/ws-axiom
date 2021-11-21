@@ -27,8 +27,9 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.impl.factory.SOAP12Factory;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultClassifier;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAP12FaultClassifier.class)
+@Mixin(AxiomSOAP12FaultClassifier.class)
 public abstract class AxiomSOAP12FaultClassifierMixin implements AxiomSOAP12FaultClassifier {
     private static final Sequence sequence = new Sequence(SOAPFaultValue.class, SOAPFaultSubCode.class);
     

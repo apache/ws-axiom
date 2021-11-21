@@ -24,8 +24,9 @@ import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlInput;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreNSAwareElement.class)
+@Mixin(CoreNSAwareElement.class)
 public abstract class CoreNSAwareElementMixin implements CoreNSAwareElement {
     public final NodeType coreGetNodeType() {
         return NodeType.NS_AWARE_ELEMENT;

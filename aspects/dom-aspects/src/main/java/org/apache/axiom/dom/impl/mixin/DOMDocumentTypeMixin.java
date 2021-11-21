@@ -19,9 +19,10 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.dom.DOMDocumentType;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.NamedNodeMap;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMDocumentType.class)
+@Mixin(DOMDocumentType.class)
 public abstract class DOMDocumentTypeMixin implements DOMDocumentType {
     public final short getNodeType() {
         return DOCUMENT_TYPE_NODE;

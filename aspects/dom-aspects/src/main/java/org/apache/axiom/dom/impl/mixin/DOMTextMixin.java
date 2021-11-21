@@ -19,9 +19,10 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.dom.DOMText;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMText.class)
+@Mixin(DOMText.class)
 public abstract class DOMTextMixin implements DOMText {
     public final String getNodeName() {
         return "#text";

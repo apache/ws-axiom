@@ -34,8 +34,9 @@ import org.apache.axiom.core.NodeFilter;
 import org.apache.axiom.core.SelfRelationshipException;
 import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.Flags;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreChildNode.class)
+@Mixin(CoreChildNode.class)
 public abstract class CoreChildNodeMixin implements CoreChildNode {
     private CoreParentNode owner;
     CoreChildNode nextSibling;

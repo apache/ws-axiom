@@ -20,8 +20,9 @@ package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11HeaderBlock;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAP11HeaderBlock.class)
+@Mixin(AxiomSOAP11HeaderBlock.class)
 public abstract class AxiomSOAP11HeaderBlockMixin implements AxiomSOAP11HeaderBlock {
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP11HeaderBlock.class;

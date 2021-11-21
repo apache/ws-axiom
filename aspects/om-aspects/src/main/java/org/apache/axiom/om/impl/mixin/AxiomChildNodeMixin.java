@@ -27,8 +27,9 @@ import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomChildNode.class)
+@Mixin(AxiomChildNode.class)
 public abstract class AxiomChildNodeMixin implements AxiomChildNode {
     public final OMContainer getParent() {
         CoreParentNode parent = coreGetParent();

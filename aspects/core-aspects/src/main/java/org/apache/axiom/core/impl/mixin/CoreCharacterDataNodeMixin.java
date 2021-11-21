@@ -28,8 +28,9 @@ import org.apache.axiom.core.impl.Flags;
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreCharacterDataNode.class)
+@Mixin(CoreCharacterDataNode.class)
 public abstract class CoreCharacterDataNodeMixin implements CoreCharacterDataNode {
     /**
      * Either a {@link String} or a {@link CharacterData} object.

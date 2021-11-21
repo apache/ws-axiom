@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.shared;
 
-@org.apache.axiom.weaver.annotation.Mixin(IProcessingInstruction.class)
+import org.apache.axiom.weaver.annotation.Mixin;
+
+@Mixin(IProcessingInstruction.class)
 public abstract class IProcessingInstructionMixin implements IProcessingInstruction {
     public final String getTarget() {
         return coreGetTarget();

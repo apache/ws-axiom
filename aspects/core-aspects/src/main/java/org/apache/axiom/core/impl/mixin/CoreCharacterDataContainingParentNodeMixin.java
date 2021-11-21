@@ -21,8 +21,9 @@ package org.apache.axiom.core.impl.mixin;
 import org.apache.axiom.core.CoreCharacterDataContainingParentNode;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ElementAction;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreCharacterDataContainingParentNode.class)
+@Mixin(CoreCharacterDataContainingParentNode.class)
 public abstract class CoreCharacterDataContainingParentNodeMixin implements CoreCharacterDataContainingParentNode {
     public final Object coreGetCharacterData() throws CoreModelException {
         Object characterData = internalGetCharacterData(ElementAction.RETURN_NULL);

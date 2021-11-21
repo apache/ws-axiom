@@ -23,8 +23,9 @@ import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreNSUnawareAttribute.class)
+@Mixin(CoreNSUnawareAttribute.class)
 public abstract class CoreNSUnawareAttributeMixin implements CoreNSUnawareAttribute {
     public final NodeType coreGetNodeType() {
         return NodeType.NS_UNAWARE_ATTRIBUTE;

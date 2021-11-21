@@ -19,9 +19,10 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.dom.DOMComment;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMComment.class)
+@Mixin(DOMComment.class)
 public abstract class DOMCommentMixin implements DOMComment {
     public final String getNodeName() {
         return "#comment";

@@ -19,9 +19,10 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.dom.DOMConfigurationImpl;
-import org.apache.axiom.dom.DOMNSUnawareElement;;
+import org.apache.axiom.dom.DOMNSUnawareElement;
+import org.apache.axiom.weaver.annotation.Mixin;;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMNSUnawareElement.class)
+@Mixin(DOMNSUnawareElement.class)
 public abstract class DOMNSUnawareElementMixin implements DOMNSUnawareElement {
     public final void normalize(DOMConfigurationImpl config) {
     }

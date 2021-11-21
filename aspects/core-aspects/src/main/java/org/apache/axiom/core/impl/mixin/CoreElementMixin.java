@@ -30,8 +30,9 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.AttributeIterator;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreElement.class)
+@Mixin(CoreElement.class)
 public abstract class CoreElementMixin implements CoreElement {
     private CoreAttribute firstAttribute;
 

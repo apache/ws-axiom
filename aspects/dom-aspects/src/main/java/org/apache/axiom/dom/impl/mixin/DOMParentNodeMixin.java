@@ -29,11 +29,12 @@ import org.apache.axiom.dom.DOMNode;
 import org.apache.axiom.dom.DOMParentNode;
 import org.apache.axiom.dom.DOMSemantics;
 import org.apache.axiom.dom.DocumentWhitespaceFilter;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMParentNode.class)
+@Mixin(DOMParentNode.class)
 public abstract class DOMParentNodeMixin implements DOMParentNode {
     public final NodeList getChildNodes() {
         return this;

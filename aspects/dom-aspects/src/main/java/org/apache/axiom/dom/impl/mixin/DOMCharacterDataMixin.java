@@ -24,9 +24,10 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMCharacterData;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMSemantics;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMCharacterData.class)
+@Mixin(DOMCharacterData.class)
 public abstract class DOMCharacterDataMixin implements DOMCharacterData {
     public final String getData() {
         try {

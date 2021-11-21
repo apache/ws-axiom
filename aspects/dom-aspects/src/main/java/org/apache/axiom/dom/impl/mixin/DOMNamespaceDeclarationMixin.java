@@ -22,9 +22,10 @@ import javax.xml.XMLConstants;
 
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMNamespaceDeclaration;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMNamespaceDeclaration.class)
+@Mixin(DOMNamespaceDeclaration.class)
 public abstract class DOMNamespaceDeclarationMixin implements DOMNamespaceDeclaration {
     public final String getNamespaceURI() {
         return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;

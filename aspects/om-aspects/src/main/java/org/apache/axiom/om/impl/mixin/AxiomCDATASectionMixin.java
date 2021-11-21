@@ -25,8 +25,9 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomCDATASection.class)
+@Mixin(AxiomCDATASection.class)
 public abstract class AxiomCDATASectionMixin implements AxiomCDATASection {
     public final int getType() {
         return OMNode.CDATA_SECTION_NODE;

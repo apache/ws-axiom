@@ -24,8 +24,9 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Envelope;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSOAP11Envelope.class)
+@Mixin(AxiomSOAP11Envelope.class)
 public abstract class AxiomSOAP11EnvelopeMixin implements AxiomSOAP11Envelope {
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP11Envelope.class;

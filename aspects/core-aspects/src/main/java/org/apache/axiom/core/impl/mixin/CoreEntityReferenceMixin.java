@@ -24,8 +24,9 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(CoreEntityReference.class)
+@Mixin(CoreEntityReference.class)
 public abstract class CoreEntityReferenceMixin implements CoreEntityReference {
     private String name;
     private String replacementText;

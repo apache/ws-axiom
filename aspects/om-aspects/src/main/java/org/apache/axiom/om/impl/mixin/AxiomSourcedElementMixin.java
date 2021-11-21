@@ -46,6 +46,7 @@ import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.stream.ds.PushOMDataSourceInput;
 import org.apache.axiom.om.impl.stream.stax.pull.AxiomXMLStreamReaderHelperFactory;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -65,7 +66,7 @@ import javax.xml.stream.XMLStreamReader;
  * #forceExpand()} method) before the base class method is called. This will typically involve a
  * heavy overhead penalty, so should be avoided if possible.</p>
  */
-@org.apache.axiom.weaver.annotation.Mixin(AxiomSourcedElement.class)
+@Mixin(AxiomSourcedElement.class)
 public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
     
     /** Data source for element data. */

@@ -23,8 +23,9 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.intf.AxiomEntityReference;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-@org.apache.axiom.weaver.annotation.Mixin(AxiomEntityReference.class)
+@Mixin(AxiomEntityReference.class)
 public abstract class AxiomEntityReferenceMixin implements AxiomEntityReference {
     public final int getType() {
         return OMNode.ENTITY_REFERENCE_NODE;

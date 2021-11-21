@@ -24,13 +24,14 @@ import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMLeafNode;
 import org.apache.axiom.dom.EmptyNodeList;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-@org.apache.axiom.weaver.annotation.Mixin(DOMLeafNode.class)
+@Mixin(DOMLeafNode.class)
 public abstract class DOMLeafNodeMixin implements DOMLeafNode {
     public final Document getOwnerDocument() {
         return (Document)coreGetOwnerDocument(true);
