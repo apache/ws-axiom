@@ -16,14 +16,14 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-CDATASectionImpl
-CharacterDataImpl
-NamespaceDeclaration
-OMAttributeImpl
-OMCommentImpl
-OMDocTypeImpl
-OMDocumentImpl
-OMElementImpl
-OMEntityReferenceImpl
-OMProcessingInstructionImpl
-OMSourcedElementImpl
+AxiomAttributeImpl
+AxiomCDATASectionImpl
+AxiomCharacterDataNodeImpl
+AxiomCommentImpl
+AxiomDocTypeImpl
+AxiomDocumentImpl
+AxiomElementImpl
+AxiomEntityReferenceImpl
+AxiomNamespaceDeclarationImpl
+AxiomProcessingInstructionImpl
+AxiomSourcedElementImpl

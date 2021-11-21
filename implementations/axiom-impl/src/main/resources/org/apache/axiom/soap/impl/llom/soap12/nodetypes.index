@@ -16,16 +16,16 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-SOAP12BodyImpl
-SOAP12EnvelopeImpl
-SOAP12FaultCodeImpl
-SOAP12FaultDetailImpl
-SOAP12FaultImpl
-SOAP12FaultNodeImpl
-SOAP12FaultReasonImpl
-SOAP12FaultRoleImpl
-SOAP12FaultSubCodeImpl
-SOAP12FaultTextImpl
-SOAP12FaultValueImpl
-SOAP12HeaderBlockImpl
-SOAP12HeaderImpl
+AxiomSOAP12BodyImpl
+AxiomSOAP12EnvelopeImpl
+AxiomSOAP12FaultCodeImpl
+AxiomSOAP12FaultDetailImpl
+AxiomSOAP12FaultImpl
+AxiomSOAP12FaultNodeImpl
+AxiomSOAP12FaultReasonImpl
+AxiomSOAP12FaultRoleImpl
+AxiomSOAP12FaultSubCodeImpl
+AxiomSOAP12FaultTextImpl
+AxiomSOAP12FaultValueImpl
+AxiomSOAP12HeaderBlockImpl
+AxiomSOAP12HeaderImpl

@@ -59,7 +59,9 @@ public class PostProcessMojo extends AbstractMojo {
                     ClassReader classReader = new ClassReader(in);
                     classWriter = new ClassWriter(classReader, 0);
                     ClassVisitor classVisitor = classWriter;
-                    if (relativePath.equals("org/apache/axiom/om/OMText.class")) {
+                    if (relativePath.equals("org/apache/axiom/om/OMText.class")
+                            || relativePath.equals("org/apache/axiom/om/impl/llom/AxiomCharacterDataNodeImpl.class")
+                            || relativePath.equals("org/apache/axiom/om/impl/dom/DOMTextNodeImpl.class")) {
                         classVisitor = new GetDataHandlerBridgeMethodInjector(classVisitor);
                     }
                     classVisitor = new AspectJCodeRemover(classVisitor);

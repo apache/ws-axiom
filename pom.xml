@@ -228,6 +228,8 @@
         <module>aspects</module>
         <module>implementations</module>
         <module>components</module>
+        <module>axiom-weaver</module>
+        <module>axiom-weaver-annotations</module>
     </modules>
 
     <scm>
@@ -262,6 +264,7 @@
         <groovy.version>3.0.9</groovy.version>
         <jaxbri.version>2.3.5</jaxbri.version>
         <auto-service.version>1.0.1</auto-service.version>
+        <asm.version>9.2</asm.version>
         
         <skipDeploy>false</skipDeploy>
     </properties>
@@ -474,7 +477,22 @@
             <dependency>
                 <groupId>org.ow2.asm</groupId>
                 <artifactId>asm</artifactId>
-                <version>9.2</version>
+                <version>${asm.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm-tree</artifactId>
+                <version>${asm.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm-util</artifactId>
+                <version>${asm.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm-commons</artifactId>
+                <version>${asm.version}</version>
             </dependency>
             <dependency>
                 <groupId>jakarta.activation</groupId>
@@ -520,6 +538,13 @@
             <id>apache.snapshots</id>
             <name>Apache Snapshot Repository</name>
             <url>https://repository.apache.org/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>

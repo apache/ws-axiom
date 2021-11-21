@@ -16,17 +16,17 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-CDATASectionImpl
-CommentImpl
-DocumentFragmentImpl
-DocumentImpl
-DocumentTypeImpl
-EntityReferenceImpl
-NamespaceDeclaration
-NSAwareAttribute
-NSAwareElement
-NSUnawareAttribute
-NSUnawareElement
-OMSourcedElementImpl
-ProcessingInstructionImpl
-TextImpl
+DOOMCDATASectionImpl
+DOOMCommentImpl
+DOOMDocumentFragmentImpl
+DOOMDocumentImpl
+DOOMDocumentTypeImpl
+DOOMEntityReferenceImpl
+DOOMNamespaceDeclarationImpl
+DOOMNSAwareAttributeImpl
+DOOMNSAwareElementImpl
+DOOMNSUnawareAttributeImpl
+DOOMNSUnawareElementImpl
+DOOMProcessingInstructionImpl
+DOOMSourcedElementImpl
+DOOMTextImpl

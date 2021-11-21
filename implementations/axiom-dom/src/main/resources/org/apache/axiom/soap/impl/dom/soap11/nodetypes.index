@@ -16,12 +16,12 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-SOAP11BodyImpl
-SOAP11EnvelopeImpl
-SOAP11FaultCodeImpl
-SOAP11FaultDetailImpl
-SOAP11FaultImpl
-SOAP11FaultReasonImpl
-SOAP11FaultRoleImpl
-SOAP11HeaderBlockImpl
-SOAP11HeaderImpl
+DOOMSOAP11BodyImpl
+DOOMSOAP11EnvelopeImpl
+DOOMSOAP11FaultCodeImpl
+DOOMSOAP11FaultDetailImpl
+DOOMSOAP11FaultImpl
+DOOMSOAP11FaultReasonImpl
+DOOMSOAP11FaultRoleImpl
+DOOMSOAP11HeaderBlockImpl
+DOOMSOAP11HeaderImpl

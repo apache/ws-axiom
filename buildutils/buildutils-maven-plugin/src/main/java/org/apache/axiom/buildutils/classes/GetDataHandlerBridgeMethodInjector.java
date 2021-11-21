@@ -27,6 +27,8 @@ import org.objectweb.asm.Opcodes;
  * with previous versions of {@code OMText}.
  */
 final class GetDataHandlerBridgeMethodInjector extends ClassVisitor {
+    private String className;
+
     GetDataHandlerBridgeMethodInjector(ClassVisitor cv) {
         super(Opcodes.ASM9, cv);
     }
@@ -34,12 +36,21 @@ final class GetDataHandlerBridgeMethodInjector extends ClassVisitor {
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
+        className = name;
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         if (name.equals("getDataHandler") && desc.equals("()Ljavax/activation/DataHandler;")) {
-            super.visitMethod(access | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC, name, "()Ljava/lang/Object;", null, exceptions);
+            MethodVisitor mv = super.visitMethod((access | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC) & ~Opcodes.ACC_FINAL, name, "()Ljava/lang/Object;", null, exceptions);
+            if ((access & Opcodes.ACC_ABSTRACT) == 0) {
+                mv.visitCode();
+                mv.visitVarInsn(Opcodes.ALOAD, 0);
+                mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, name, desc, false);
+                mv.visitInsn(Opcodes.ARETURN);
+                mv.visitMaxs(1, 1);
+                mv.visitEnd();
+            }
         }
         return super.visitMethod(access, name, desc, signature, exceptions);
     }

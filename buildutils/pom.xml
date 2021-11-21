@@ -33,6 +33,7 @@
     <url>http://ws.apache.org/axiom/</url>
 
     <modules>
+        <module>axiom-weaver-maven-plugin</module>
         <module>buildutils-maven-plugin</module>
         <module>shade-axiom-xml</module>
     </modules>
