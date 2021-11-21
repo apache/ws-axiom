@@ -40,6 +40,7 @@ public final class NamespaceDeclarationMatcher implements AttributeMatcher {
         this.semantics = semantics;
     }
 
+    @Override
     public boolean matches(CoreAttribute attr, String namespaceURI, String name) {
         if (attr instanceof CoreNamespaceDeclaration) {
             String prefix = ((CoreNamespaceDeclaration)attr).coreGetDeclaredPrefix();
@@ -49,20 +50,24 @@ public final class NamespaceDeclarationMatcher implements AttributeMatcher {
         }
     }
 
+    @Override
     public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) {
         CoreNamespaceDeclaration decl = element.coreCreateNode(CoreNamespaceDeclaration.class);
         decl.coreSetDeclaredNamespace(name, value);
         return decl;
     }
 
+    @Override
     public String getNamespaceURI(CoreAttribute attr) {
         return null;
     }
 
+    @Override
     public String getName(CoreAttribute attr) {
         return ((CoreNamespaceDeclaration)attr).coreGetDeclaredPrefix();
     }
 
+    @Override
     public void update(CoreAttribute attr, String prefix, String value) throws CoreModelException {
         attr.coreSetCharacterData(value, semantics);
     }

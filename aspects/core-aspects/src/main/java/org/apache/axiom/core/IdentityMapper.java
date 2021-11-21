@@ -19,6 +19,7 @@
 package org.apache.axiom.core;
 
 final class IdentityMapper<S,T extends S> implements Mapper<S,T> {
+    @Override
     public S map(T object) {
         return object;
     }

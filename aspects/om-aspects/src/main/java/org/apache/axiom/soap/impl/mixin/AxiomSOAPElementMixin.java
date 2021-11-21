@@ -28,10 +28,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomSOAPElement.class)
 public abstract class AxiomSOAPElementMixin implements AxiomSOAPElement {
+    @Override
     public final OMFactory getOMFactory() {
         return getSOAPHelper().getSOAPFactory(getMetaFactory());
     }
 
+    @Override
     public final void checkChild(OMNode child) {
         if (child instanceof OMElement && !isChildElementAllowed((OMElement)child)) {
             throw new SOAPProcessingException(child.getClass().getName() + " is not allowed as a child of " + getClass().getName());

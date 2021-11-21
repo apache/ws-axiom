@@ -24,29 +24,36 @@ import org.w3c.dom.NamedNodeMap;
 
 @Mixin(DOMDocumentType.class)
 public abstract class DOMDocumentTypeMixin implements DOMDocumentType {
+    @Override
     public final short getNodeType() {
         return DOCUMENT_TYPE_NODE;
     }
 
+    @Override
     public final String getNodeName() {
         return getName();
     }
 
+    @Override
     public final String getNodeValue() {
         return null;
     }
 
+    @Override
     public final void setNodeValue(String nodeValue) {
     }
 
+    @Override
     public final String getName() {
         return coreGetRootName();
     }
 
+    @Override
     public final NamedNodeMap getEntities() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final NamedNodeMap getNotations() {
         throw new UnsupportedOperationException();
     }

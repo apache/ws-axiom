@@ -34,42 +34,52 @@ public abstract class CoreDocumentTypeDeclarationMixin implements CoreDocumentTy
     private String systemId;
     private String internalSubset;
     
+    @Override
     public final NodeType coreGetNodeType() {
         return NodeType.DOCUMENT_TYPE_DECLARATION;
     }
     
+    @Override
     public final String coreGetRootName() {
         return rootName;
     }
     
+    @Override
     public final void coreSetRootName(String rootName) {
         this.rootName = rootName;
     }
     
+    @Override
     public final String coreGetPublicId() {
         return publicId;
     }
     
+    @Override
     public final void coreSetPublicId(String publicId) {
         this.publicId = publicId;
     }
     
+    @Override
     public final String coreGetSystemId() {
         return systemId;
     }
     
+    @Override
     public final void coreSetSystemId(String systemId) {
         this.systemId = systemId;
     }
     
+    @Override
     public final String coreGetInternalSubset() {
         return internalSubset;
     }
     
+    @Override
     public final void coreSetInternalSubset(String internalSubset) {
         this.internalSubset = internalSubset;
     }
     
+    @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
         CoreDocumentTypeDeclaration o = (CoreDocumentTypeDeclaration)other;
         coreSetRootName(o.coreGetRootName());
@@ -78,6 +88,7 @@ public abstract class CoreDocumentTypeDeclarationMixin implements CoreDocumentTy
         coreSetInternalSubset(o.coreGetInternalSubset());
     }
 
+    @Override
     public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         handler.processDocumentTypeDeclaration(coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
     }

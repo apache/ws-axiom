@@ -29,6 +29,7 @@ public abstract class AxiomSOAP12FaultValueMixin implements AxiomSOAP12FaultValu
         return false;
     }
 
+    @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12FaultValue.class;
     }

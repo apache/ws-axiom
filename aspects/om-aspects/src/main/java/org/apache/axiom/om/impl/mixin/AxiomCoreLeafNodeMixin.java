@@ -28,10 +28,12 @@ public abstract class AxiomCoreLeafNodeMixin implements AxiomCoreLeafNode {
         return null;
     }
 
+    @Override
     public final boolean isComplete() {
         return true;
     }
 
+    @Override
     public void build() {
         // Do nothing; a leaf node is always complete
     }

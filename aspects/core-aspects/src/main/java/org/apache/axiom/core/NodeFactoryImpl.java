@@ -62,6 +62,7 @@ public abstract class NodeFactoryImpl implements NodeFactory {
             }
         }
         implementations = TopologicalSort.sort(implementations, new EdgeRelation<Class<?>>() {
+            @Override
             public boolean isEdge(Class<?> from, Class<?> to) {
                 return to.isAssignableFrom(from);
             }
@@ -109,6 +110,7 @@ public abstract class NodeFactoryImpl implements NodeFactory {
         }
     }
     
+    @Override
     public final <T extends CoreNode> T createNode(Class<T> type) {
         Constructor<?> constructor = constructorMap.get(type);
         if (constructor == null) {

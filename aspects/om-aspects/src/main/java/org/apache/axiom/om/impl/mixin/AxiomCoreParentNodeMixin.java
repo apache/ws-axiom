@@ -29,6 +29,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomCoreParentNode.class)
 public abstract class AxiomCoreParentNodeMixin implements AxiomCoreParentNode {
+    @Override
     public final boolean isComplete() {
         try {
             switch (getState()) {
@@ -53,6 +54,7 @@ public abstract class AxiomCoreParentNodeMixin implements AxiomCoreParentNode {
         }
     }
     
+    @Override
     public final void build() {
         try {
             switch (getState()) {

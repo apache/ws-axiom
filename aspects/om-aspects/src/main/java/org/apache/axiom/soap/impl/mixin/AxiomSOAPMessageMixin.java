@@ -32,14 +32,17 @@ import org.apache.axiom.weaver.annotation.Mixin;
 public abstract class AxiomSOAPMessageMixin implements AxiomSOAPMessage {
     private SOAPFactory factory;
 
+    @Override
     public Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAPMessage.class;
     }
 
+    @Override
     public final void initSOAPFactory(SOAPFactory factory) {
         this.factory = factory;
     }
     
+    @Override
     public final <T> void initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other) {
         factory = (SOAPFactory)((AxiomSOAPMessage)other).getOMFactory();
     }
@@ -50,6 +53,7 @@ public abstract class AxiomSOAPMessageMixin implements AxiomSOAPMessage {
         }
     }
     
+    @Override
     public final OMFactory getOMFactory() {
         if (factory == null) {
             // Force expansion up to the SOAP envelope; this will initialize the factory
@@ -58,10 +62,12 @@ public abstract class AxiomSOAPMessageMixin implements AxiomSOAPMessage {
         return factory;
     }
     
+    @Override
     public final SOAPEnvelope getSOAPEnvelope() {
         return (SOAPEnvelope)getOMDocumentElement();
     }
 
+    @Override
     public final void setSOAPEnvelope(SOAPEnvelope envelope) {
         setOMDocumentElement(envelope);
     }

@@ -27,6 +27,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomSOAP12Envelope.class)
 public abstract class AxiomSOAP12EnvelopeMixin implements AxiomSOAP12Envelope {
+    @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12Envelope.class;
     }

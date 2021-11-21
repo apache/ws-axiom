@@ -76,6 +76,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
  */
 @Mixin(AxiomElement.class)
 public abstract class AxiomElementMixin implements AxiomElement {
+    @Override
     public final void initName(String localName, OMNamespace ns, boolean generateNSDecl) {
         internalSetLocalName(localName);
         internalSetNamespace(generateNSDecl ? NSUtil.handleNamespace(this, ns, false, true) : ns);
@@ -85,20 +86,24 @@ public abstract class AxiomElementMixin implements AxiomElement {
         forceExpand();
     }
     
+    @Override
     public final int getType() {
         return OMNode.ELEMENT_NODE;
     }
     
+    @Override
     public final void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
         forceExpand();
         internalSetNamespace(namespace);
     }
 
+    @Override
     public final void setNamespace(OMNamespace namespace, boolean decl) {
         forceExpand();
         internalSetNamespace(NSUtil.handleNamespace(this, namespace, false, decl));
     }
 
+    @Override
     public final OMElement getFirstElement() {
         OMNode node = getFirstOMChild();
         while (node != null) {
@@ -111,15 +116,18 @@ public abstract class AxiomElementMixin implements AxiomElement {
         return null;
     }
 
+    @Override
     public final Iterator<OMElement> getChildElements() {
         return coreGetElements(Axis.CHILDREN, AxiomElement.class, ElementMatcher.ANY, null, null,
                 Mappers.<OMElement>identity(), AxiomSemantics.INSTANCE);
     }
 
+    @Override
     public final Iterator<OMNamespace> getNamespacesInScope() {
         return new NamespaceIterator(this);
     }
 
+    @Override
     public NamespaceContext getNamespaceContext(boolean detached) {
         if (detached) {
             Map<String,String> namespaces = new HashMap<String,String>();
@@ -133,6 +141,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
     
+    @Override
     public final QName resolveQName(String qname) {
         int idx = qname.indexOf(':');
         if (idx == -1) {
@@ -145,6 +154,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
 
+    @Override
     public final String getText() {
         try {
             return coreGetCharacterData(ElementAction.SKIP).toString();
@@ -153,11 +163,13 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
     
+    @Override
     public final QName getTextAsQName() {
         String childText = getText().trim();
         return childText.length() == 0 ? null : resolveQName(childText);
     }
 
+    @Override
     public Reader getTextAsStream(boolean cache) {
         // If the element is not an OMSourcedElement and has not more than one child, then the most
         // efficient way to get the Reader is to build a StringReader
@@ -195,6 +207,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
     
+    @Override
     public void writeTextTo(Writer out, boolean cache) throws IOException {
         try {
             XMLStreamReader reader = getXMLStreamReader(cache);
@@ -219,6 +232,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
     
+    @Override
     public final void setText(String text) {
         try {
             coreSetCharacterData(text, AxiomSemantics.INSTANCE);
@@ -227,6 +241,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
 
+    @Override
     public final void setText(QName qname) {
         removeChildren();
         // Add a new text node
@@ -237,6 +252,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
 
+    @Override
     public final void discard() {
         try {
             coreDiscard(true);
@@ -246,6 +262,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
     
+    @Override
     public <T extends OMElement> void insertChild(Sequence sequence, int pos, T newChild, boolean allowReplace) {
         if (!sequence.item(pos).isInstance(newChild)) {
             throw new IllegalArgumentException();
@@ -289,6 +306,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         addChild(newChild);
     }
 
+    @Override
     public final OMNamespace handleNamespace(String namespaceURI, String prefix) {
         if (prefix.length() == 0 && namespaceURI.length() == 0) {
             OMNamespace namespace = getDefaultNamespace();
@@ -310,6 +328,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         coreSetAttribute(AxiomSemantics.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, AxiomSemantics.INSTANCE);
     }
     
+    @Override
     public final OMAttribute addAttribute(OMAttribute attr){
         // If the attribute already has an owner element then clone the attribute (except if it is owned
         // by the this element)
@@ -325,6 +344,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         return attr;
     }
 
+    @Override
     public final OMAttribute addAttribute(String localName, String value, OMNamespace ns) {
         OMNamespace namespace = null;
         if (ns != null) {
@@ -340,20 +360,24 @@ public abstract class AxiomElementMixin implements AxiomElement {
         return addAttribute(getOMFactory().createOMAttribute(localName, namespace, value));
     }
 
+    @Override
     public final Iterator<OMAttribute> getAllAttributes() {
         return coreGetAttributesByType(AxiomAttribute.class, Mappers.<OMAttribute>identity(), AxiomSemantics.INSTANCE);
     }
     
+    @Override
     public final OMAttribute getAttribute(QName qname) {
         return (AxiomAttribute)coreGetAttribute(AxiomSemantics.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart());
     }
 
+    @Override
     public final String getAttributeValue(QName qname) {
         OMAttribute attr = getAttribute(qname);
         return attr == null ? null : attr.getAttributeValue();
     }
 
     // TODO: complete the implementation (i.e. support value == null and the no namespace case) and add the method to the OMElement API
+    @Override
     public final void _setAttributeValue(QName qname, String value) {
         OMAttribute attr = getAttribute(qname);
         if (attr != null) {
@@ -363,6 +387,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
     
+    @Override
     public final void removeAttribute(OMAttribute attr) {
         if (attr.getOwner() != this) {
             throw new OMException("The attribute is not owned by this element");
@@ -370,16 +395,19 @@ public abstract class AxiomElementMixin implements AxiomElement {
         ((AxiomAttribute)attr).coreRemove(AxiomSemantics.INSTANCE);
     }
 
+    @Override
     public final void addNamespaceDeclaration(OMNamespace ns) {
         AxiomNamespaceDeclaration decl = coreGetNodeFactory().createNode(AxiomNamespaceDeclaration.class);
         decl.setDeclaredNamespace(ns);
         coreSetAttribute(AxiomSemantics.NAMESPACE_DECLARATION_MATCHER, decl, AxiomSemantics.INSTANCE);
     }
     
+    @Override
     public final Iterator<OMNamespace> getAllDeclaredNamespaces() {
         return coreGetAttributesByType(AxiomNamespaceDeclaration.class, NamespaceDeclarationMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
+    @Override
     public final OMNamespace declareNamespace(OMNamespace namespace) {
         String prefix = namespace.getPrefix();
         String namespaceURI = namespace.getNamespaceURI();
@@ -394,10 +422,12 @@ public abstract class AxiomElementMixin implements AxiomElement {
         return namespace;
     }
 
+    @Override
     public final OMNamespace declareNamespace(String uri, String prefix) {
         return declareNamespace(new OMNamespaceImpl(uri, prefix));
     }
 
+    @Override
     public final OMNamespace declareDefaultNamespace(String uri) {
         OMNamespace elementNamespace = getNamespace();
         if (elementNamespace == null && uri.length() > 0
@@ -410,10 +440,12 @@ public abstract class AxiomElementMixin implements AxiomElement {
         return namespace;
     }
 
+    @Override
     public final void undeclarePrefix(String prefix) {
         addNamespaceDeclaration(new OMNamespaceImpl("", prefix));
     }
 
+    @Override
     public final OMNamespace findNamespace(String uri, String prefix) {
 
         // check in the current element
@@ -468,6 +500,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
 
+    @Override
     public final OMNamespace findNamespaceURI(String prefix) {
         if (prefix == null) {
             throw new IllegalArgumentException();
@@ -498,16 +531,19 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
 
+    @Override
     public final OMNamespace getDefaultNamespace() {
         return findNamespaceURI("");
     }
 
+    @Override
     public final String toStringWithConsume() throws XMLStreamException {
         StringWriter sw = new StringWriter();
         serializeAndConsume(sw);
         return sw.toString();
     }
 
+    @Override
     public final String toString() {
         StringWriter sw = new StringWriter();
         try {
@@ -518,10 +554,12 @@ public abstract class AxiomElementMixin implements AxiomElement {
         return sw.toString();
     }
 
+    @Override
     public final OMElement cloneOMElement() {
         return (OMElement)clone(null);
     }
 
+    @Override
     public final void buildWithAttachments() {
         if (getState() == INCOMPLETE) {
             build();
@@ -535,25 +573,31 @@ public abstract class AxiomElementMixin implements AxiomElement {
         }
     }
 
+    @Override
     public void checkChild(OMNode child) {
     }
 
+    @Override
     public final void setNamespace(OMNamespace namespace) {
         setNamespace(namespace, true);
     }
 
+    @Override
     public final void setLineNumber(int lineNumber) {
     }
 
+    @Override
     public final int getLineNumber() {
         return 0;
     }
 
+    @Override
     public final CoreElement getContextElement() {
         CoreParentNode parent = coreGetParent();
         return parent instanceof CoreElement ? (CoreElement)parent : null;
     }
 
+    @Override
     public Iterator<OMNode> getDescendants(boolean includeSelf) {
         return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, AxiomChildNode.class, Mappers.<OMNode>identity(), AxiomSemantics.INSTANCE);
     }

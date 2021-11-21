@@ -24,14 +24,17 @@ import org.w3c.dom.Node;
 
 @Mixin(DOMCDATASection.class)
 public abstract class DOMCDATASectionMixin implements DOMCDATASection {
+    @Override
     public final short getNodeType() {
         return Node.CDATA_SECTION_NODE;
     }
 
+    @Override
     public final String getNodeName() {
         return "#cdata-section";
     }
 
+    @Override
     public final boolean isElementContentWhitespace() {
         return false;
     }

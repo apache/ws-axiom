@@ -55,6 +55,7 @@ public final class AttributeIterator<T extends CoreAttribute,S> implements Itera
         }
     }
     
+    @Override
     public final boolean hasNext() {
         if (!nextAttributeSet) {
             CoreAttribute attribute = currentAttribute;
@@ -67,6 +68,7 @@ public final class AttributeIterator<T extends CoreAttribute,S> implements Itera
         return nextAttribute != null;
     }
 
+    @Override
     public final S next() {
         if (hasNext()) {
             CoreAttribute attribute = nextAttribute;
@@ -79,6 +81,7 @@ public final class AttributeIterator<T extends CoreAttribute,S> implements Itera
         }
     }
 
+    @Override
     public final void remove() {
         if (currentAttribute == null) {
             throw new IllegalStateException();

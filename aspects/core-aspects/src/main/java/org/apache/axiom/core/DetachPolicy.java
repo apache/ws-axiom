@@ -23,12 +23,14 @@ package org.apache.axiom.core;
  */
 public interface DetachPolicy {
     DetachPolicy NEW_DOCUMENT = new DetachPolicy() {
+        @Override
         public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
             return null;
         }
     };
     
     DetachPolicy SAME_DOCUMENT = new DetachPolicy() {
+        @Override
         public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
             return owner.coreGetOwnerDocument(true);
         }

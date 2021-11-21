@@ -42,24 +42,29 @@ public abstract class AxiomSOAPFaultMixin implements AxiomSOAPFault {
                 || child instanceof SOAPFaultReason || child instanceof SOAPFaultRole || child instanceof SOAPFaultNode;
     }
 
+    @Override
     public final void setCode(SOAPFaultCode soapFaultCode) {
         insertChild(getSequence(), 0, soapFaultCode, true);
     }
 
+    @Override
     public final void setReason(SOAPFaultReason reason) {
         insertChild(getSequence(), 1, reason, true);
     }
 
+    @Override
     public final void setRole(SOAPFaultRole role) {
         Sequence sequence = getSequence();
         insertChild(sequence, sequence.index(SOAPFaultRole.class), role, true);
     }
 
+    @Override
     public final void setDetail(SOAPFaultDetail detail) {
         Sequence sequence = getSequence();
         insertChild(sequence, sequence.index(SOAPFaultDetail.class), detail, true);
     }
 
+    @Override
     public final void setException(Exception e) {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
@@ -75,6 +80,7 @@ public abstract class AxiomSOAPFaultMixin implements AxiomSOAPFault {
         faultDetailEnty.setText(sw.getBuffer().toString());
     }
 
+    @Override
     public final Exception getException() {
         SOAPFaultDetail detail = getDetail();
         if (detail == null) {

@@ -47,49 +47,61 @@ import org.w3c.dom.TypeInfo;
 
 @Mixin(DOMElement.class)
 public abstract class DOMElementMixin implements DOMElement {
+    @Override
     public final Document getOwnerDocument() {
         return (Document)coreGetOwnerDocument(true);
     }
 
+    @Override
     public final short getNodeType() {
         return Node.ELEMENT_NODE;
     }
     
+    @Override
     public final String getNodeName() {
         return getTagName();
     }
 
+    @Override
     public final String getNodeValue() {
         return null;
     }
 
+    @Override
     public final void setNodeValue(String nodeValue) {
     }
 
+    @Override
     public final String getTagName() {
         return internalGetName();
     }
     
+    @Override
     public final TypeInfo getSchemaTypeInfo() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final CoreElement getNamespaceContext() {
         return this;
     }
 
+    @Override
     public final boolean hasAttributes() {
         return coreGetFirstAttribute() != null;
     }
 
+    @Override
     public final NamedNodeMap getAttributes() {
         return new AttributesNamedNodeMap(this);
     }
     
+    @Override
     public final Attr getAttributeNode(String name) {
         return (DOMAttribute)coreGetAttribute(DOMSemantics.DOM1_ATTRIBUTE_MATCHER, null, name);
     }
 
+    @Override
     public final Attr getAttributeNodeNS(String namespaceURI, String localName) {
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
             return (DOMAttribute)coreGetAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName);
@@ -98,24 +110,29 @@ public abstract class DOMElementMixin implements DOMElement {
         }
     }
     
+    @Override
     public final String getAttribute(String name) {
         Attr attr = getAttributeNode(name);
         return attr != null ? attr.getValue() : "";
     }
 
+    @Override
     public final String getAttributeNS(String namespaceURI, String localName) {
         Attr attr = getAttributeNodeNS(namespaceURI, localName);
         return attr != null ? attr.getValue() : "";
     }
 
+    @Override
     public final boolean hasAttribute(String name) {
         return getAttributeNode(name) != null;
     }
 
+    @Override
     public final boolean hasAttributeNS(String namespaceURI, String localName) {
         return getAttributeNodeNS(namespaceURI, localName) != null;
     }
 
+    @Override
     public final void setAttribute(String name, String value) {
         try {
             NSUtil.validateName(name);
@@ -125,6 +142,7 @@ public abstract class DOMElementMixin implements DOMElement {
         }
     }
 
+    @Override
     public final void setAttributeNS(String namespaceURI, String qualifiedName, String value) throws DOMException {
         try {
             int i = NSUtil.validateQualifiedName(qualifiedName);
@@ -149,10 +167,12 @@ public abstract class DOMElementMixin implements DOMElement {
         }
     }
 
+    @Override
     public final Attr setAttributeNode(Attr newAttr) throws DOMException {
         return setAttributeNodeNS(newAttr);
     }
     
+    @Override
     public final Attr setAttributeNodeNS(Attr _newAttr) throws DOMException {
         if (!(_newAttr instanceof DOMAttribute)) {
             throw DOMExceptionUtil.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
@@ -182,6 +202,7 @@ public abstract class DOMElementMixin implements DOMElement {
         }
     }
 
+    @Override
     public final Attr removeAttributeNode(Attr oldAttr) throws DOMException {
         if (oldAttr instanceof DOMAttribute) {
             DOMAttribute attr = (DOMAttribute)oldAttr;
@@ -196,11 +217,13 @@ public abstract class DOMElementMixin implements DOMElement {
         }
     }
 
+    @Override
     public final void removeAttribute(String name) throws DOMException {
         // Specs: "If no attribute with this name is found, this method has no effect."
         coreRemoveAttribute(DOMSemantics.DOM1_ATTRIBUTE_MATCHER, null, name, DOMSemantics.INSTANCE);
     }
 
+    @Override
     public final void removeAttributeNS(String namespaceURI, String localName) throws DOMException {
         // Specs: "If no attribute with this local name and namespace URI is found, this method has no effect."
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
@@ -210,6 +233,7 @@ public abstract class DOMElementMixin implements DOMElement {
         }
     }
     
+    @Override
     public final String getTextContent() {
         try {
             return coreGetCharacterData(ElementAction.RECURSE).toString();
@@ -218,6 +242,7 @@ public abstract class DOMElementMixin implements DOMElement {
         }
     }
 
+    @Override
     public final void setTextContent(String textContent) {
         try {
             coreSetCharacterData(textContent, DOMSemantics.INSTANCE);
@@ -226,14 +251,17 @@ public abstract class DOMElementMixin implements DOMElement {
         }
     }
 
+    @Override
     public final NodeList getElementsByTagName(String tagname) {
         return new ElementsByTagName(this, tagname);
     }
 
+    @Override
     public final NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
         return new ElementsByTagNameNS(this, namespaceURI, localName);
     }
 
+    @Override
     public final void setIdAttribute(String name, boolean isId) throws DOMException {
         CoreAttribute attr = coreGetAttribute(DOMSemantics.DOM1_ATTRIBUTE_MATCHER, null, name);
         if (attr == null) {
@@ -243,6 +271,7 @@ public abstract class DOMElementMixin implements DOMElement {
         }
     }
 
+    @Override
     public final void setIdAttributeNS(String namespaceURI, String localName, boolean isId) throws DOMException {
         // Here, we assume that a namespace declaration can never be an ID attribute
         CoreAttribute attr = coreGetAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, NSUtil.normalizeNamespaceURI(namespaceURI), localName);
@@ -253,6 +282,7 @@ public abstract class DOMElementMixin implements DOMElement {
         }
     }
 
+    @Override
     public final void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
         if (idAttr.getOwnerElement() != this) {
             throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);

@@ -27,22 +27,27 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomEntityReference.class)
 public abstract class AxiomEntityReferenceMixin implements AxiomEntityReference {
+    @Override
     public final int getType() {
         return OMNode.ENTITY_REFERENCE_NODE;
     }
 
+    @Override
     public final void serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         writer.writeEntityRef(coreGetName());
     }
 
+    @Override
     public final String getName() {
         return coreGetName();
     }
 
+    @Override
     public final String getReplacementText() {
         return coreGetReplacementText();
     }
     
+    @Override
     public final void buildWithAttachments() {
     }
 }

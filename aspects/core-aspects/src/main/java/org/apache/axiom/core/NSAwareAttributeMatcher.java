@@ -62,6 +62,7 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
         this.updatePrefix = updatePrefix;
     }
     
+    @Override
     public boolean matches(CoreAttribute attr, String namespaceURI, String name) {
         if (attr instanceof CoreNSAwareAttribute) {
             CoreNSAwareAttribute nsAwareAttr = (CoreNSAwareAttribute)attr;
@@ -76,14 +77,17 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
         }
     }
 
+    @Override
     public String getNamespaceURI(CoreAttribute attr) {
         return ((CoreNSAwareAttribute)attr).coreGetNamespaceURI();
     }
 
+    @Override
     public String getName(CoreAttribute attr) {
         return ((CoreNSAwareAttribute)attr).coreGetLocalName();
     }
 
+    @Override
     public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) throws CoreModelException {
         CoreNSAwareAttribute attr = element.coreCreateNode(CoreNSAwareAttribute.class);
         attr.coreSetName(namespaceURI, name, prefix);
@@ -91,6 +95,7 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
         return attr;
     }
 
+    @Override
     public void update(CoreAttribute attr, String prefix, String value) throws CoreModelException {
         attr.coreSetCharacterData(value, semantics);
         if (updatePrefix && attr instanceof CoreNSAwareAttribute) {

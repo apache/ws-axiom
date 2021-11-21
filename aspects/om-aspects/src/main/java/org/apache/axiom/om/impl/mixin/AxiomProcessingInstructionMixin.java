@@ -29,14 +29,17 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomProcessingInstruction.class)
 public abstract class AxiomProcessingInstructionMixin implements AxiomProcessingInstruction {
+    @Override
     public final int getType() {
         return PI_NODE;
     }
 
+    @Override
     public final void setTarget(String target) {
         coreSetTarget(target);
     }
 
+    @Override
     public final String getValue() {
         try {
             return coreGetCharacterData().toString();
@@ -45,6 +48,7 @@ public abstract class AxiomProcessingInstructionMixin implements AxiomProcessing
         }
     }
 
+    @Override
     public final void setValue(String value) {
         try {
             coreSetCharacterData(value, AxiomSemantics.INSTANCE);
@@ -53,6 +57,7 @@ public abstract class AxiomProcessingInstructionMixin implements AxiomProcessing
         }
     }
 
+    @Override
     public final void serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
             writer.writeProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
@@ -61,6 +66,7 @@ public abstract class AxiomProcessingInstructionMixin implements AxiomProcessing
         }
     }
     
+    @Override
     public final void buildWithAttachments() {
     }
 }

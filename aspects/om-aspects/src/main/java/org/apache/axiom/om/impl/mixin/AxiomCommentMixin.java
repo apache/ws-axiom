@@ -30,10 +30,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomComment.class)
 public abstract class AxiomCommentMixin implements AxiomComment {
+    @Override
     public final int getType() {
         return OMNode.COMMENT_NODE;
     }
 
+    @Override
     public String getValue() {
         try {
             return coreGetCharacterData().toString();
@@ -42,6 +44,7 @@ public abstract class AxiomCommentMixin implements AxiomComment {
         }
     }
 
+    @Override
     public void setValue(String text) {
         try {
             coreSetCharacterData(text, AxiomSemantics.INSTANCE);
@@ -50,6 +53,7 @@ public abstract class AxiomCommentMixin implements AxiomComment {
         }
     }
 
+    @Override
     public final void serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
             writer.writeComment(coreGetCharacterData().toString());
@@ -58,6 +62,7 @@ public abstract class AxiomCommentMixin implements AxiomComment {
         }
     }
     
+    @Override
     public final void buildWithAttachments() {
     }
 }

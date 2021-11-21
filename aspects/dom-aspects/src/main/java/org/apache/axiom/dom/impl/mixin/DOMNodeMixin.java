@@ -41,10 +41,12 @@ public abstract class DOMNodeMixin implements DOMNode {
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()
 
+    @Override
     public final boolean isSupported(String feature, String version) {
         return ((DOMNodeFactory)coreGetNodeFactory()).getDOMImplementation().hasFeature(feature, version);
     }
     
+    @Override
     public final String lookupNamespaceURI(String prefix) {
         try {
             CoreElement context = getNamespaceContext();
@@ -63,6 +65,7 @@ public abstract class DOMNodeMixin implements DOMNode {
         }
     }
 
+    @Override
     public final String lookupPrefix(String namespaceURI) {
         try {
             CoreElement context = getNamespaceContext();
@@ -80,6 +83,7 @@ public abstract class DOMNodeMixin implements DOMNode {
         }
     }
 
+    @Override
     public final boolean isDefaultNamespace(String namespaceURI) {
         try {
             CoreElement context = getNamespaceContext();
@@ -95,6 +99,7 @@ public abstract class DOMNodeMixin implements DOMNode {
         }
     }
 
+    @Override
     public final Node cloneNode(boolean deep) {
         try {
             DOMNode clone = (DOMNode)coreClone(deep ? DOMSemantics.DEEP_CLONE : DOMSemantics.SHALLOW_CLONE, null);
@@ -107,6 +112,7 @@ public abstract class DOMNodeMixin implements DOMNode {
         }
     }
 
+    @Override
     public void normalize() {
         //Parent node should override this 
     }
@@ -115,11 +121,13 @@ public abstract class DOMNodeMixin implements DOMNode {
      * DOM-Level 3 methods
      */
 
+    @Override
     public String getBaseURI() {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
 
+    @Override
     public short compareDocumentPosition(Node other) throws DOMException {
         // This is not yet implemented. In the meantime, we throw a DOMException
         // and not an UnsupportedOperationException, since this works better with
@@ -127,6 +135,7 @@ public abstract class DOMNodeMixin implements DOMNode {
         throw newDOMException(DOMException.NOT_SUPPORTED_ERR);
     }
 
+    @Override
     public boolean isSameNode(Node node) {
         // TODO : check
         return this == node;
@@ -169,6 +178,7 @@ public abstract class DOMNodeMixin implements DOMNode {
      */
 
     //TODO : sumedha, complete
+    @Override
     public boolean isEqualNode(Node node) {
         final boolean equal = true;
         final boolean notEqual = false;
@@ -309,6 +319,7 @@ public abstract class DOMNodeMixin implements DOMNode {
         return equal;
     }
 
+    @Override
     public Object getFeature(String feature, String version) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
@@ -329,6 +340,7 @@ public abstract class DOMNodeMixin implements DOMNode {
      * @return previous Object if one is set before.
      */
     
+    @Override
     public Object setUserData(String key, Object value, UserDataHandler userDataHandler) {
         if (userData == null) {
             userData = new Hashtable();
@@ -336,6 +348,7 @@ public abstract class DOMNodeMixin implements DOMNode {
         return userData.put(key, value);
     }
 
+    @Override
     public Object getUserData(String key) {
         if (userData != null) {
             return userData.get(key);

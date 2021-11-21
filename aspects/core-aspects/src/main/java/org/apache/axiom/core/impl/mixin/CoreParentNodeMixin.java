@@ -60,10 +60,12 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     private Object content;
     
     // TODO: rename
+    @Override
     public final int getState() {
         return internalGetFlags(Flags.STATE_MASK);
     }
     
+    @Override
     public final void coreSetState(int state) {
         internalSetFlags(Flags.STATE_MASK, state);
         if (state == COMPLETE) {
@@ -73,21 +75,26 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     
     public void completed() {}
     
+    @Override
     public boolean isExpanded() {
         return true;
     }
     
+    @Override
     public void forceExpand() {}
 
+    @Override
     public final Builder coreGetBuilder() {
         forceExpand();
         return context == null ? null : context.getBuilder();
     }
 
+    @Override
     public final InputContext coreGetInputContext() {
         return context;
     }
 
+    @Override
     public final void coreSetInputContext(InputContext context) {
         this.context = context;
         if (context == null) {
@@ -100,14 +107,17 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
     }
 
+    @Override
     public final void internalSetContent(Object content) {
         this.content = content;
     }
 
+    @Override
     public final Object internalGetContent() {
         return content;
     }
 
+    @Override
     public final Content internalGetContent(boolean create) {
         if (getState() == COMPACT) {
             Content content = new Content();
@@ -129,6 +139,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
     }
     
+    @Override
     public final CoreChildNode coreGetFirstChildIfAvailable() {
         forceExpand();
         Content content = internalGetContent(false);
@@ -140,6 +151,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         return content == null ? null : content.lastChild;
     }
 
+    @Override
     public void internalBuildNext() throws CoreModelException {
         Builder builder = coreGetBuilder();
         if (builder == null) {
@@ -153,6 +165,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }         
     }
     
+    @Override
     public CoreChildNode coreGetFirstChild() throws CoreModelException {
         CoreChildNode firstChild = coreGetFirstChildIfAvailable();
         if (firstChild == null) {
@@ -170,6 +183,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         return firstChild;
     }
 
+    @Override
     public final CoreChildNode coreGetFirstChild(NodeFilter filter) throws CoreModelException {
         CoreChildNode child = coreGetFirstChild();
         while (child != null && !filter.accept(child)) {
@@ -178,11 +192,13 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         return child;
     }
     
+    @Override
     public final CoreChildNode coreGetLastChild() throws CoreModelException {
         coreBuild();
         return coreGetLastKnownChild();
     }
 
+    @Override
     public final CoreChildNode coreGetLastChild(NodeFilter filter) throws CoreModelException {
         CoreChildNode child = coreGetLastChild();
         while (child != null && !filter.accept(child)) {
@@ -191,6 +207,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         return child;
     }
     
+    @Override
     public final void internalCheckNewChild(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException {
         // Check that the new node is not an ancestor of this node
         CoreParentNode current = this;
@@ -213,6 +230,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     void internalCheckNewChild0(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException {
     }
     
+    @Override
     public final void coreAppendChild(CoreChildNode child) throws CoreModelException {
         internalCheckNewChild(child, null);
         forceExpand();
@@ -220,6 +238,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         internalAppendChildWithoutBuild(child);
     }
     
+    @Override
     public final void internalAppendChildWithoutBuild(CoreChildNode child) {
         CoreParentNode parent = child.coreGetParent();
         Content content = internalGetContent(true);
@@ -238,6 +257,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         content.lastChild = child;
     }
 
+    @Override
     public final void coreAppendChildren(CoreDocumentFragment fragment) throws CoreModelException {
         fragment.coreBuild();
         Content fragmentContent = fragment.internalGetContent(false);
@@ -263,6 +283,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         fragmentContent.lastChild = null;
     }
 
+    @Override
     public final void coreDiscard(boolean consumeInput) throws CoreModelException {
         if (!isExpanded()) {
             return;
@@ -285,6 +306,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
     }
 
+    @Override
     public final void coreRemoveChildren(Semantics semantics) throws CoreModelException {
         if (getState() == COMPACT) {
             coreSetState(COMPLETE);
@@ -320,6 +342,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
     }
     
+    @Override
     public final Object internalGetCharacterData(ElementAction elementAction) throws CoreModelException {
         if (getState() == COMPACT) {
             return content;
@@ -387,6 +410,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
     }
     
+    @Override
     public final void coreSetCharacterData(Object data, Semantics semantics) throws CoreModelException {
         coreRemoveChildren(semantics);
         if (data != null && (data instanceof CharacterData || ((String)data).length() > 0)) {
@@ -395,14 +419,17 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
     }
     
+    @Override
     public final <T extends CoreNode,S> NodeIterator<S> coreGetNodes(Axis axis, Class<T> type, Mapper<S,? super T> mapper, Semantics semantics) {
         return new NodesIterator<T,S>(this, axis, type, mapper, semantics);
     }
     
+    @Override
     public final <T extends CoreElement,S> NodeIterator<S> coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Mapper<S,? super T> mapper, Semantics semantics) {
         return new ElementsIterator<T,S>(this, axis, type, matcher, namespaceURI, name, mapper, semantics);
     }
 
+    @Override
     public final <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) throws CoreModelException {
         CoreParentNode targetParent = (CoreParentNode)clone;
         if (policy.cloneChildren(options, coreGetNodeType()) && targetParent.isExpanded()) {
@@ -422,18 +449,22 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
     }
 
+    @Override
     public void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void serializeEndEvent(XmlHandler handler) throws StreamException {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final XmlReader coreGetReader(XmlHandler handler, boolean cache, boolean incremental) {
         return new TreeWalkerImpl(handler, this, cache, incremental);
     }
     
+    @Override
     public void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         try {
             XmlReader reader = coreGetReader(handler, cache, false);
@@ -445,6 +476,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
     }
     
+    @Override
     public final void coreBuild() throws CoreModelException {
         switch (getState()) {
             case DISCARDING:
@@ -460,6 +492,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
     }
     
+    @Override
     public final void coreMoveChildrenFrom(CoreParentNode other, Semantics semantics) throws CoreModelException {
         coreRemoveChildren(semantics);
         context = other.coreGetInputContext();

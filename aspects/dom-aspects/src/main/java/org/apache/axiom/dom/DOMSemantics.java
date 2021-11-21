@@ -45,14 +45,17 @@ public final class DOMSemantics implements Semantics {
     
     private DOMSemantics() {}
     
+    @Override
     public DetachPolicy getDetachPolicy() {
         return DetachPolicy.SAME_DOCUMENT;
     }
     
+    @Override
     public boolean isUseStrictNamespaceLookup() {
         return false;
     }
 
+    @Override
     public boolean isParentNode(NodeType nodeType) {
         return parentNodeTypes.contains(nodeType);
     }
@@ -74,20 +77,24 @@ public final class DOMSemantics implements Semantics {
      * </dl>
      */
     public static final AttributeMatcher DOM1_ATTRIBUTE_MATCHER = new AttributeMatcher() {
+        @Override
         public boolean matches(CoreAttribute attr, String namespaceURI, String name) {
             // Note: a lookup using DOM 1 methods may return any kind of attribute, including
             // namespace declarations
             return name.equals(((DOMAttribute)attr).getName());
         }
 
+        @Override
         public String getNamespaceURI(CoreAttribute attr) {
             return null;
         }
 
+        @Override
         public String getName(CoreAttribute attr) {
             return ((DOMAttribute)attr).getName();
         }
 
+        @Override
         public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) throws CoreModelException {
             CoreNSUnawareAttribute attr = element.coreCreateNode(CoreNSUnawareAttribute.class);
             attr.coreSetName(name);
@@ -96,6 +103,7 @@ public final class DOMSemantics implements Semantics {
             return attr;
         }
 
+        @Override
         public void update(CoreAttribute attr, String prefix, String value) throws CoreModelException {
             attr.coreSetCharacterData(value, INSTANCE);
         }
@@ -106,49 +114,60 @@ public final class DOMSemantics implements Semantics {
     public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(INSTANCE);
     
     public static final ClonePolicy<Void> DEEP_CLONE = new ClonePolicy<Void>() {
+        @Override
         public Class<? extends CoreNode> getTargetNodeClass(Void options, CoreNode node) {
             // This is not specified by the API, but it's compatible with versions before 1.2.14
             return node.coreGetNodeClass();
         }
 
+        @Override
         public boolean repairNamespaces(Void options) {
             return false;
         }
 
+        @Override
         public boolean cloneAttributes(Void options) {
             return true;
         }
 
+        @Override
         public boolean cloneChildren(Void options, NodeType nodeType) {
             return true;
         }
 
+        @Override
         public void postProcess(Void options, CoreNode clone) {
         }
     };
 
     public static final ClonePolicy<Void> SHALLOW_CLONE = new ClonePolicy<Void>() {
+        @Override
         public Class<? extends CoreNode> getTargetNodeClass(Void options, CoreNode node) {
             // This is not specified by the API, but it's compatible with versions before 1.2.14
             return node.coreGetNodeClass();
         }
 
+        @Override
         public boolean repairNamespaces(Void options) {
             return false;
         }
 
+        @Override
         public boolean cloneAttributes(Void options) {
             return true;
         }
 
+        @Override
         public boolean cloneChildren(Void options, NodeType nodeType) {
             return nodeType == NodeType.NS_UNAWARE_ATTRIBUTE || nodeType == NodeType.NS_AWARE_ATTRIBUTE;
         }
 
+        @Override
         public void postProcess(Void options, CoreNode clone) {
         }
     };
 
+    @Override
     public RuntimeException toUncheckedException(CoreModelException ex) {
         return DOMExceptionUtil.toUncheckedException(ex);
     }

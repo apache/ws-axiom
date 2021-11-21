@@ -24,10 +24,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomLeafNode.class)
 public abstract class AxiomLeafNodeMixin implements AxiomLeafNode {
+    @Override
     public final void discard() throws OMException {
         detach();
     }
 
+    @Override
     public final void close(boolean build) {
         // No-op on leaf nodes
     }

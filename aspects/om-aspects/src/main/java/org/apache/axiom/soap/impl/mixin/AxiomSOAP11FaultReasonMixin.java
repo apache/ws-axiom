@@ -30,6 +30,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomSOAP11FaultReason.class)
 public abstract class AxiomSOAP11FaultReasonMixin implements AxiomSOAP11FaultReason {
+    @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP11FaultReason.class;
     }
@@ -38,22 +39,27 @@ public abstract class AxiomSOAP11FaultReasonMixin implements AxiomSOAP11FaultRea
         return false;
     }
 
+    @Override
     public final void addSOAPText(SOAPFaultText soapFaultText) {
         throw new UnsupportedOperationException("addSOAPText() not allowed for SOAP 1.1!");
     }
 
+    @Override
     public final SOAPFaultText getFirstSOAPText() {
         throw new UnsupportedOperationException("getFirstSOAPText() not allowed for SOAP 1.1!");
     }
 
+    @Override
     public final List<SOAPFaultText> getAllSoapTexts() {
         return Collections.emptyList();
     }
 
+    @Override
     public final SOAPFaultText getSOAPFaultText(String language) {
         return null;
     }
 
+    @Override
     public final String getFaultReasonText(Locale locale) {
         return getText();
     }

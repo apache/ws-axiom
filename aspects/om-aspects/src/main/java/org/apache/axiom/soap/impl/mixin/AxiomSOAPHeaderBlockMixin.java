@@ -40,35 +40,43 @@ public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock 
         return true;
     }
 
+    @Override
     public final SOAPVersion getVersion() {
         return getSOAPHelper().getVersion();
     }
 
+    @Override
     public final boolean isProcessed() {
         return processed;
     }
 
+    @Override
     public final void setProcessed() {
         processed = true;
     }
 
+    @Override
     public final boolean getMustUnderstand() throws SOAPProcessingException {
         return SOAPHeaderBlockHelper.getMustUnderstand(this, getSOAPHelper());
     }
     
+    @Override
     public final void setMustUnderstand(boolean mustUnderstand) {
         SOAPHelper helper = getSOAPHelper();
         _setAttributeValue(helper.getMustUnderstandAttributeQName(), helper.formatBoolean(mustUnderstand));
     }
 
+    @Override
     public final String getRole() {
         return SOAPHeaderBlockHelper.getRole(this, getSOAPHelper());
     }
     
+    @Override
     public final void setRole(String role) {
         _setAttributeValue(getSOAPHelper().getRoleAttributeQName(), role);
     }
     
+    @Override
     public final boolean getRelay() {
         SOAPHelper helper = getSOAPHelper();
         QName attributeQName = helper.getRelayAttributeQName();
@@ -79,6 +87,7 @@ public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock 
         }
     }
     
+    @Override
     public final void setRelay(boolean relay) {
         SOAPHelper helper = getSOAPHelper();
         QName attributeQName = helper.getRelayAttributeQName();
@@ -89,6 +98,7 @@ public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock 
         }
     }
 
+    @Override
     public final <T> void initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other) {
         // Copy the processed flag.  The other SOAPHeaderBlock information 
         // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.

@@ -72,6 +72,7 @@ final class BuildableContext extends Context implements InputContext {
         return builderHandler.builder;
     }
 
+    @Override
     public void setPassThroughHandler(XmlHandler passThroughHandler) {
         if (this.passThroughHandler != null) {
             throw new IllegalStateException("A pass-through handler has already been set for this context");
@@ -156,6 +157,7 @@ final class BuildableContext extends Context implements InputContext {
         startDocument(null, "1.0", null, true);
     }
 
+    @Override
     void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
             String internalSubset) throws StreamException {
         if (passThroughHandler != null) {

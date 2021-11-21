@@ -52,11 +52,13 @@ public abstract class AxiomTextMixin implements AxiomText {
         }
     }
     
+    @Override
     public final boolean isBinary() {
         TextContent textContent = getTextContent(false);
         return textContent != null && textContent.isBinary();
     }
 
+    @Override
     public final void setBinary(boolean binary) {
         TextContent textContent = getTextContent(binary);
         if (textContent != null) {
@@ -64,11 +66,13 @@ public abstract class AxiomTextMixin implements AxiomText {
         }
     }
 
+    @Override
     public final boolean isOptimized() {
         TextContent textContent = getTextContent(false);
         return textContent != null && textContent.isOptimize();
     }
 
+    @Override
     public final void setOptimize(boolean optimize) {
         TextContent textContent = getTextContent(optimize);
         if (textContent != null) {
@@ -76,6 +80,7 @@ public abstract class AxiomTextMixin implements AxiomText {
         }
     }
     
+    @Override
     public final String getText() throws OMException {
         try {
             return coreGetCharacterData().toString();
@@ -84,6 +89,7 @@ public abstract class AxiomTextMixin implements AxiomText {
         }
     }
 
+    @Override
     public final char[] getTextCharacters() {
         try {
             Object content = coreGetCharacterData();
@@ -97,14 +103,17 @@ public abstract class AxiomTextMixin implements AxiomText {
         }
     }
 
+    @Override
     public final boolean isCharacters() {
         return false;
     }
 
+    @Override
     public final QName getTextAsQName() throws OMException {
         return ((OMElement)getParent()).resolveQName(getText());
     }
 
+    @Override
     public final OMNamespace getNamespace() {
         // Note: efficiency is not important here; the method is deprecated anyway
         QName qname = getTextAsQName();
@@ -116,6 +125,7 @@ public abstract class AxiomTextMixin implements AxiomText {
         }
     }
 
+    @Override
     public final DataHandler getDataHandler() {
         try {
             Object content = coreGetCharacterData();
@@ -129,10 +139,12 @@ public abstract class AxiomTextMixin implements AxiomText {
         }
     }
 
+    @Override
     public final String getContentID() {
         return getTextContent(true).getContentID();
     }
 
+    @Override
     public final void buildWithAttachments() {
         if (isOptimized()) {
             DataHandler dataHandler = getDataHandler();
@@ -142,6 +154,7 @@ public abstract class AxiomTextMixin implements AxiomText {
         }
     }
 
+    @Override
     public final void setContentID(String cid) {
         getTextContent(true).setContentID(cid);
     }

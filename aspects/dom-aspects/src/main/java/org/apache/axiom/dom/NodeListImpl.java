@@ -33,6 +33,7 @@ public abstract class NodeListImpl implements NodeList {
      *
      * @see org.w3c.dom.NodeList#getLength()
      */
+    @Override
     public int getLength() {
         Iterator<? extends Node> children = createIterator();
         int count = 0;
@@ -48,6 +49,7 @@ public abstract class NodeListImpl implements NodeList {
      *
      * @see org.w3c.dom.NodeList#item(int)
      */
+    @Override
     public Node item(int index) {
         Iterator<? extends Node> children = createIterator();
         int count = 0;

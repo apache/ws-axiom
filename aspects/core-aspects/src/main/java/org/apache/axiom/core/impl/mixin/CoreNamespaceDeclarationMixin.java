@@ -29,15 +29,18 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(CoreNamespaceDeclaration.class)
 public abstract class CoreNamespaceDeclarationMixin implements CoreNamespaceDeclaration {
+    @Override
     public final NodeType coreGetNodeType() {
         return NodeType.NAMESPACE_DECLARATION;
     }
     
+    @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
         // TODO: this is correct but bad for performance with the Axiom API
         coreSetDeclaredNamespace(((CoreNamespaceDeclaration)other).coreGetDeclaredPrefix(), "");
     }
     
+    @Override
     public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         handler.processNamespaceDeclaration(coreGetDeclaredPrefix(), coreGetCharacterData().toString());
     }

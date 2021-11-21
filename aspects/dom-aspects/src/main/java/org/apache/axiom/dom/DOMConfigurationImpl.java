@@ -94,6 +94,7 @@ public final class DOMConfigurationImpl implements DOMConfiguration {
     private int params = CDATA_SECTIONS | COMMENTS | ELEMENT_CONTENT_WHITESPACE | ENTITIES
             | NAMESPACES | NAMESPACE_DECLARATIONS | SPLIT_CDATA_SECTIONS | WELLFORMED;
     
+    @Override
     public void setParameter(String name, Object value) throws DOMException {
         Integer mask = (Integer)paramMap.get(name);
         if (mask != null) {
@@ -119,6 +120,7 @@ public final class DOMConfigurationImpl implements DOMConfiguration {
         return (params & param) != 0;
     }
     
+    @Override
     public Object getParameter(String name) throws DOMException {
         Integer mask = (Integer)paramMap.get(name);
         if (mask != null) {
@@ -129,11 +131,13 @@ public final class DOMConfigurationImpl implements DOMConfiguration {
         }
     }
 
+    @Override
     public boolean canSetParameter(String name, Object value) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    @Override
     public DOMStringList getParameterNames() {
         // TODO Auto-generated method stub
         return null;

@@ -27,10 +27,12 @@ import org.w3c.dom.Node;
 
 @Mixin(DOMProcessingInstruction.class)
 public abstract class DOMProcessingInstructionMixin implements DOMProcessingInstruction {
+    @Override
     public final short getNodeType() {
         return Node.PROCESSING_INSTRUCTION_NODE;
     }
 
+    @Override
     public final String getData() {
         try {
             return coreGetCharacterData().toString();
@@ -39,6 +41,7 @@ public abstract class DOMProcessingInstructionMixin implements DOMProcessingInst
         }
     }
     
+    @Override
     public final void setData(String data) {
         try {
             coreSetCharacterData(data, DOMSemantics.INSTANCE);
@@ -47,14 +50,17 @@ public abstract class DOMProcessingInstructionMixin implements DOMProcessingInst
         }
     }
     
+    @Override
     public final String getNodeName() {
         return coreGetTarget();
     }
 
+    @Override
     public final String getNodeValue() {
         return getData();
     }
 
+    @Override
     public final void setNodeValue(String nodeValue) {
         setData(nodeValue);
     }

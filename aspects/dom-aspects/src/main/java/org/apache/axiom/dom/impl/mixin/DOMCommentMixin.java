@@ -24,10 +24,12 @@ import org.w3c.dom.Node;
 
 @Mixin(DOMComment.class)
 public abstract class DOMCommentMixin implements DOMComment {
+    @Override
     public final String getNodeName() {
         return "#comment";
     }
 
+    @Override
     public final short getNodeType() {
         return Node.COMMENT_NODE;
     }

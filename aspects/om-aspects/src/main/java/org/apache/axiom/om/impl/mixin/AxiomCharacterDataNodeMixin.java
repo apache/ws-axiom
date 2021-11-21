@@ -27,10 +27,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomCharacterDataNode.class)
 public abstract class AxiomCharacterDataNodeMixin implements AxiomCharacterDataNode {
+    @Override
     public final int getType() {
         return coreIsIgnorable() ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
     }
 
+    @Override
     public final void serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         writer.writeCharacters(coreGetCharacterData().toString());
     }

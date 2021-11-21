@@ -51,6 +51,7 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
     
     private String localName;
     
+    @Override
     public final void initName(String namespaceURI, String localName, String prefix, Object namespaceHelper) {
         this.localName = localName;
         namespace = ((OMNamespaceCache)namespaceHelper).getOMNamespace(namespaceURI, prefix);
@@ -61,37 +62,45 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
      * 
      * @param namespace
      */
+    @Override
     public final void internalSetNamespace(OMNamespace namespace) {
         this.namespace = namespace;
     }
 
+    @Override
     public final String internalGetLocalName() {
         return localName;
     }
 
+    @Override
     public final void internalSetLocalName(String localName) {
         this.localName = localName;
     }
 
+    @Override
     public OMNamespace getNamespace() {
         return defaultGetNamespace();
     }
     
+    @Override
     public final OMNamespace defaultGetNamespace() {
         return namespace;
     }
 
     abstract void beforeSetLocalName();
     
+    @Override
     public final void setLocalName(String localName) {
         beforeSetLocalName();
         this.localName = localName;
     }
 
+    @Override
     public QName getQName() {
         return defaultGetQName();
     }
     
+    @Override
     public final QName defaultGetQName() {
         return QNameCache.getQName(
                 namespace == null ? "" : namespace.getNamespaceURI(),
@@ -99,6 +108,7 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
                 namespace == null ? "" : namespace.getPrefix());
     }
     
+    @Override
     public final boolean hasName(QName name) {
         if (name.getLocalPart().equals(getLocalName())) {
             OMNamespace ns = getNamespace();
@@ -109,21 +119,25 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
         }
     }
 
+    @Override
     public final String coreGetNamespaceURI() {
         OMNamespace namespace = getNamespace();
         return namespace == null ? "" : namespace.getNamespaceURI();
     }
     
+    @Override
     public final String coreGetPrefix() {
         OMNamespace namespace = getNamespace();
         return namespace == null ? "" : namespace.getPrefix();
     }
     
+    @Override
     public final void coreSetName(String namespaceURI, String localName, String prefix) {
         this.localName = localName;
         namespace = namespaceURI.length() == 0 && prefix.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, prefix);
     }
 
+    @Override
     public final void initName(CoreNamedNode other) {
         AxiomNamedInformationItem o = (AxiomNamedInformationItem)other;
         if (o instanceof AxiomSourcedElement && ((AxiomElement)this).isExpanded()) {
@@ -139,6 +153,7 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
         throw new IllegalStateException();
     }
     
+    @Override
     public final String coreGetLocalName() {
         if (localName == null) {
             updateLocalName();
@@ -146,6 +161,7 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
         return localName;
     }
     
+    @Override
     public final void coreSetPrefix(String prefix) {
         OMNamespace ns = getNamespace();
         if (ns == null) {

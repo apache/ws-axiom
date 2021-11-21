@@ -29,6 +29,7 @@ public final class DocumentWhitespaceFilter implements NodeFilter {
     
     private DocumentWhitespaceFilter() {}
 
+    @Override
     public boolean accept(CoreNode node) {
         return node.coreGetNodeType() != NodeType.CHARACTER_DATA
                 || !(((CoreCharacterDataNode)node).coreGetParent() instanceof CoreDocument);

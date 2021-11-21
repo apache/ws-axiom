@@ -24,6 +24,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomSOAP12FaultCode.class)
 public abstract class AxiomSOAP12FaultCodeMixin implements AxiomSOAP12FaultCode {
+    @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12FaultCode.class;
     }

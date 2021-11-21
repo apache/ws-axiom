@@ -37,14 +37,17 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
     
     private CoreAttribute nextAttribute;
 
+    @Override
     public final CoreElement coreGetOwnerElement() {
         return owner instanceof CoreElement ? (CoreElement)owner : null;
     }
 
+    @Override
     public final boolean coreHasOwnerElement() {
         return owner instanceof CoreElement;
     }
 
+    @Override
     public final void internalSetOwnerElement(CoreElement element) {
         if (element == null) {
             throw new IllegalArgumentException();
@@ -52,10 +55,12 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
         owner = element;
     }
     
+    @Override
     public final void internalUnsetOwnerElement(CoreDocument newOwnerDocument) {
         owner = newOwnerDocument;
     }
     
+    @Override
     public final CoreNode getRootOrOwnerDocument() {
         if (owner == null) {
             return this;
@@ -64,6 +69,7 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
         }
     }
 
+    @Override
     public final void coreSetOwnerDocument(CoreDocument document) {
         if (owner instanceof CoreElement) {
             // TODO
@@ -72,14 +78,17 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
         owner = document;
     }
 
+    @Override
     public final CoreAttribute coreGetNextAttribute() {
         return nextAttribute;
     }
 
+    @Override
     public final void internalSetNextAttribute(CoreAttribute nextAttribute) {
         this.nextAttribute = nextAttribute;
     }
     
+    @Override
     public final CoreAttribute coreGetPreviousAttribute() {
         if (owner instanceof CoreElement) {
             CoreElement ownerElement = (CoreElement)owner;
@@ -97,6 +106,7 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
         }
     }
 
+    @Override
     public final void internalInsertAttributeAfter(CoreAttribute attr) {
         // TODO: throw exception if attribute already has an owner
         attr.internalSetOwnerElement(coreGetOwnerElement());
@@ -106,10 +116,12 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
         nextAttribute = attr;
     }
 
+    @Override
     public final boolean coreRemove(Semantics semantics) {
         return internalRemove(semantics, null);
     }
     
+    @Override
     public final boolean internalRemove(Semantics semantics, CoreElement newOwner) {
         if (owner instanceof CoreElement) {
             CoreElement ownerElement = (CoreElement)owner;
@@ -130,10 +142,12 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
         }
     }
 
+    @Override
     public final boolean coreGetSpecified() {
         return !internalGetFlag(Flags.DEFAULT_ATTR);
     }
 
+    @Override
     public final void coreSetSpecified(boolean specified) {
         internalSetFlag(Flags.DEFAULT_ATTR, !specified);
     }

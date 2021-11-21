@@ -29,10 +29,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomCDATASection.class)
 public abstract class AxiomCDATASectionMixin implements AxiomCDATASection {
+    @Override
     public final int getType() {
         return OMNode.CDATA_SECTION_NODE;
     }
 
+    @Override
     public final void serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
             writer.writeCData(coreGetCharacterData().toString());

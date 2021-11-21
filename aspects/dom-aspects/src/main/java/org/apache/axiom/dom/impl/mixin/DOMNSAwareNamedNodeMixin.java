@@ -26,6 +26,7 @@ import org.w3c.dom.DOMException;
 
 @Mixin(DOMNSAwareNamedNode.class)
 public abstract class DOMNSAwareNamedNodeMixin implements DOMNSAwareNamedNode {
+    @Override
     public final void setPrefix(String prefix) throws DOMException {
         if (prefix == null) {
             prefix = "";
@@ -36,6 +37,7 @@ public abstract class DOMNSAwareNamedNodeMixin implements DOMNSAwareNamedNode {
         coreSetPrefix(prefix);
     }
     
+    @Override
     public final String internalGetName() {
         String prefix = coreGetPrefix();
         String localName = coreGetLocalName();

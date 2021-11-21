@@ -29,10 +29,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomInformationItem.class)
 public abstract class AxiomInformationItemMixin implements AxiomInformationItem {
+    @Override
     public OMFactory getOMFactory() {
         return getMetaFactory().getOMFactory();
     }
     
+    @Override
     public final OMInformationItem clone(OMCloneOptions options) {
         try {
             return (OMInformationItem)coreClone(AxiomSemantics.CLONE_POLICY, options);

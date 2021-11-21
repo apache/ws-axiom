@@ -23,10 +23,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(DOMTypedAttribute.class)
 public abstract class DOMTypedAttributeMixin implements DOMTypedAttribute {
+    @Override
     public final String getName() {
         return internalGetName();
     }
 
+    @Override
     public final boolean isId() {
         return "ID".equals(coreGetType());
     }

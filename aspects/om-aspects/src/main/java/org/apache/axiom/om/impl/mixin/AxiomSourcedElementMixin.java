@@ -96,10 +96,12 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
                 : new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
     }
     
+    @Override
     public Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSourcedElement.class;
     }
     
+    @Override
     public void init(OMDataSource source) {
         dataSource = source;
         isExpanded = false;
@@ -113,6 +115,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
      * @param factory
      * @param source
      */
+    @Override
     public void init(String localName, OMNamespace ns, OMDataSource source) {
         if (source == null) {
             throw new IllegalArgumentException("OMDataSource can't be null");
@@ -144,6 +147,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
      * @param factory
      * @param source
      */
+    @Override
     public void init(QName qName, OMDataSource source) {
         if (source == null) {
             throw new IllegalArgumentException("OMDataSource can't be null");
@@ -155,10 +159,12 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         definedNamespaceSet = true;
     }
 
+    @Override
     public boolean internalIsDefinedNamespaceSet() {
         return definedNamespaceSet;
     }
 
+    @Override
     public OMNamespace internalGetDefinedNamespace() {
         return definedNamespace;
     }
@@ -188,6 +194,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
      * Set parser for OM, if not previously set. Since the builder is what actually constructs the
      * tree on demand, this first creates a builder
      */
+    @Override
     public void forceExpand() {
         // The dataSource != null is required because this method may be called indirectly
         // by the constructor before the data source is set. After the constructor has completed,
@@ -243,6 +250,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
      * @param staxLocalName
      * @param staxNamespaceURI
      */
+    @Override
     public void validateName(String staxPrefix, String staxLocalName, String staxNamespaceURI) {
         if (internalGetLocalName() == null) {
             // The local name was not known in advance; initialize it from the reader
@@ -281,10 +289,12 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
      *
      * @return <code>true</code> if expanded, <code>false</code> if not
      */
+    @Override
     public boolean isExpanded() {
         return isExpanded;
     }
 
+    @Override
     public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
         if (log.isDebugEnabled()) {
             log.debug("getting XMLStreamReader for " + getPrintableName()
@@ -315,6 +325,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         }
     }
 
+    @Override
     public OMNamespace getNamespace() throws OMException {
         if (isExpanded()) {
             return defaultGetNamespace();
@@ -353,6 +364,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         }
     }
 
+    @Override
     public QName getQName() {
         if (isExpanded()) {
             return defaultGetQName();
@@ -397,6 +409,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         }
     }
 
+    @Override
     public final XmlInput getXmlInput(boolean cache, boolean incremental) throws StreamException {
         if (isExpanded()) {
             return null;
@@ -432,6 +445,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
      *
      * @return the internal datasource
      */
+    @Override
     public OMDataSource getDataSource() {
         return dataSource;
     }
@@ -439,6 +453,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
     /**
      * setOMDataSource
      */
+    @Override
     public OMDataSource setDataSource(OMDataSource dataSource) {
         try {
             if (!isExpanded()) {
@@ -468,6 +483,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         }
     }
     
+    @Override
     public Object getObject(Class<? extends OMDataSourceExt> dataSourceClass) {
         if (dataSource == null || isExpanded || !dataSourceClass.isInstance(dataSource)) {
             return null;

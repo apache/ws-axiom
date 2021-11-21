@@ -32,6 +32,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomSOAP12FaultReason.class)
 public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultReason {
+    @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12FaultReason.class;
     }
@@ -40,14 +41,17 @@ public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultRea
         return child instanceof SOAPFaultText;
     }
     
+    @Override
     public final void addSOAPText(SOAPFaultText soapFaultText) {
         addChild(soapFaultText);
     }
 
+    @Override
     public final SOAPFaultText getFirstSOAPText() {
         return (SOAPFaultText)getFirstElement();
     }
 
+    @Override
     public final List<SOAPFaultText> getAllSoapTexts() {
         List<SOAPFaultText> faultTexts = new ArrayList<SOAPFaultText>();
         for (Iterator<OMElement> it = getChildElements(); it.hasNext(); ) {
@@ -56,6 +60,7 @@ public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultRea
         return faultTexts;
     }
 
+    @Override
     public final SOAPFaultText getSOAPFaultText(String language) {
         for (Iterator<OMElement> it = getChildElements(); it.hasNext(); ) {
             SOAPFaultText text = (SOAPFaultText)it.next();
@@ -66,6 +71,7 @@ public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultRea
         return null;
     }
 
+    @Override
     public final String getFaultReasonText(Locale locale) {
         String text = "";
         int maxScore = -1;

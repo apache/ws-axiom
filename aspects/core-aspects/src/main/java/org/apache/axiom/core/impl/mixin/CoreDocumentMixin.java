@@ -37,20 +37,24 @@ public abstract class CoreDocumentMixin implements CoreDocument {
     private String xmlEncoding;
     private Boolean standalone;
     
+    @Override
     public final NodeType coreGetNodeType() {
         return NodeType.DOCUMENT;
     }
     
+    @Override
     public final CoreNode getRootOrOwnerDocument() {
         return this;
     }
     
+    @Override
     public final void coreSetOwnerDocument(CoreDocument document) {
         if (document != this) {
             throw new IllegalArgumentException();
         }
     }
     
+    @Override
     public final CoreElement coreGetDocumentElement() throws CoreModelException {
         CoreChildNode child = coreGetFirstChild();
         while (child != null) {
@@ -62,38 +66,47 @@ public abstract class CoreDocumentMixin implements CoreDocument {
         return null;
     }
     
+    @Override
     public final String coreGetInputEncoding() {
         return inputEncoding;
     }
     
+    @Override
     public final void coreSetInputEncoding(String inputEncoding) {
         this.inputEncoding = inputEncoding;
     }
     
+    @Override
     public final String coreGetXmlVersion() {
         return xmlVersion;
     }
     
+    @Override
     public final void coreSetXmlVersion(String xmlVersion) {
         this.xmlVersion = xmlVersion;
     }
     
+    @Override
     public final String coreGetXmlEncoding() {
         return xmlEncoding;
     }
     
+    @Override
     public final void coreSetXmlEncoding(String xmlEncoding) {
         this.xmlEncoding = xmlEncoding;
     }
     
+    @Override
     public final Boolean coreGetStandalone() {
         return standalone;
     }
     
+    @Override
     public final void coreSetStandalone(Boolean standalone) {
         this.standalone = standalone;
     }
     
+    @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
         CoreDocument o = (CoreDocument)other;
         coreSetXmlVersion(o.coreGetXmlVersion());
@@ -102,10 +115,12 @@ public abstract class CoreDocumentMixin implements CoreDocument {
         coreSetInputEncoding(o.coreGetInputEncoding());
     }
 
+    @Override
     public final void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
         handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreGetStandalone());
     }
     
+    @Override
     public final void serializeEndEvent(XmlHandler handler) throws StreamException {
         handler.completed();
     }

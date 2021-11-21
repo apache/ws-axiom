@@ -24,14 +24,17 @@ import org.w3c.dom.Node;
 
 @Mixin(DOMText.class)
 public abstract class DOMTextMixin implements DOMText {
+    @Override
     public final String getNodeName() {
         return "#text";
     }
 
+    @Override
     public final short getNodeType() {
         return Node.TEXT_NODE;
     }
 
+    @Override
     public final boolean isElementContentWhitespace() {
         return coreIsIgnorable();
     }

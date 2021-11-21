@@ -25,6 +25,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomSOAP11Element.class)
 public abstract class AxiomSOAP11ElementMixin implements AxiomSOAP11Element {
+    @Override
     public final SOAPHelper getSOAPHelper() {
         return SOAP11Helper.INSTANCE;
     }

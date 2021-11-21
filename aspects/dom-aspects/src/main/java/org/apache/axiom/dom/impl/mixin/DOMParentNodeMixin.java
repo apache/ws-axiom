@@ -36,10 +36,12 @@ import org.w3c.dom.NodeList;
 
 @Mixin(DOMParentNode.class)
 public abstract class DOMParentNodeMixin implements DOMParentNode {
+    @Override
     public final NodeList getChildNodes() {
         return this;
     }
 
+    @Override
     public final int getLength() {
         int count = 0;
         Node child = getFirstChild();
@@ -50,6 +52,7 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
         return count;
     }
 
+    @Override
     public final Node item(int index) {
         int count = 0;
         Node child = getFirstChild();
@@ -64,6 +67,7 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
         return null;
     }
 
+    @Override
     public final Node getFirstChild() {
         try {
             return (Node)coreGetFirstChild(DocumentWhitespaceFilter.INSTANCE);
@@ -72,6 +76,7 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
         }
     }
 
+    @Override
     public final Node getLastChild() {
         try {
             return (Node)coreGetLastChild(DocumentWhitespaceFilter.INSTANCE);
@@ -80,10 +85,12 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
         }
     }
 
+    @Override
     public final boolean hasChildNodes() {
         return getFirstChild() != null;
     }
 
+    @Override
     public final Node removeChild(Node oldChild) throws DOMException {
         if (oldChild.getParentNode() == this) {
             ((CoreChildNode)oldChild).coreDetach(DOMSemantics.INSTANCE);
@@ -93,6 +100,7 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
         }
     }
 
+    @Override
     public final void normalizeRecursively(DOMConfigurationImpl config) {
         try {
             normalize(config);
@@ -123,6 +131,7 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
     void checkNewChild0(DOMNode newChild) {
     }
 
+    @Override
     public final Node appendChild(Node newChild) {
         try {
             checkNewChild(newChild);
@@ -140,6 +149,7 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
     }
     
     // TODO: should be final
+    @Override
     public Node insertBefore(Node newChild, Node refChild) {
         try {
             if (refChild == null) {
@@ -163,6 +173,7 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
         }
     }
 
+    @Override
     public final Node replaceChild(Node newChild, Node _oldChild) {
         try {
             if (!(_oldChild instanceof CoreChildNode)) {

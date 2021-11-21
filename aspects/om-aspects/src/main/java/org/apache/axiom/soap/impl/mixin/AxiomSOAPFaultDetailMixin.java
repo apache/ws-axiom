@@ -31,10 +31,12 @@ public abstract class AxiomSOAPFaultDetailMixin implements AxiomSOAPFaultDetail 
         return !(child instanceof AxiomSOAPElement);
     }
     
+    @Override
     public final void addDetailEntry(OMElement detailElement) {
         addChild(detailElement);
     }
 
+    @Override
     public final Iterator<OMElement> getAllDetailEntries() {
         return getChildElements();
     }

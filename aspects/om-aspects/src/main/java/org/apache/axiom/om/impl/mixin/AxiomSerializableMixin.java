@@ -26,10 +26,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomSerializable.class)
 public abstract class AxiomSerializableMixin implements AxiomSerializable {
+    @Override
     public final void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         serialize(xmlWriter, true);
     }
 
+    @Override
     public final void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
         serialize(xmlWriter, false);
     }

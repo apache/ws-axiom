@@ -28,6 +28,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(CoreNSUnawareElement.class)
 public abstract class CoreNSUnawareElementMixin implements CoreNSUnawareElement {
+    @Override
     public final NodeType coreGetNodeType() {
         return NodeType.NS_UNAWARE_ELEMENT;
     }
@@ -44,6 +45,7 @@ public abstract class CoreNSUnawareElementMixin implements CoreNSUnawareElement 
         ((CoreNSUnawareElement)clone).coreSetName(coreGetName());
     }
 
+    @Override
     public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         // TODO
         throw new UnsupportedOperationException();

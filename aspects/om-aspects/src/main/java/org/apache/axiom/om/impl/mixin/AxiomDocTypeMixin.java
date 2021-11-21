@@ -30,14 +30,17 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomDocType.class)
 public abstract class AxiomDocTypeMixin implements AxiomDocType {
+    @Override
     public final int getType() {
         return DTD_NODE;
     }
 
+    @Override
     public final String getRootName() {
         return coreGetRootName();
     }
 
+    @Override
     public final void serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
             internalSerialize(new XMLStreamWriterHandler(writer), cache);
@@ -48,6 +51,7 @@ public abstract class AxiomDocTypeMixin implements AxiomDocType {
         }
     }
     
+    @Override
     public final void buildWithAttachments() {
     }
 }

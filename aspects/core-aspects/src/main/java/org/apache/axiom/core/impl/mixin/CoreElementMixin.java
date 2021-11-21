@@ -36,15 +36,18 @@ import org.apache.axiom.weaver.annotation.Mixin;
 public abstract class CoreElementMixin implements CoreElement {
     private CoreAttribute firstAttribute;
 
+    @Override
     public final CoreAttribute coreGetFirstAttribute() {
         forceExpand();
         return firstAttribute;
     }
 
+    @Override
     public final void internalSetFirstAttribute(CoreAttribute firstAttribute) {
         this.firstAttribute = firstAttribute;
     }
 
+    @Override
     public final CoreAttribute coreGetLastAttribute() {
         CoreAttribute previousAttribute = null;
         CoreAttribute attribute = firstAttribute;
@@ -55,6 +58,7 @@ public abstract class CoreElementMixin implements CoreElement {
         return previousAttribute;
     }
 
+    @Override
     public final CoreAttribute coreGetAttribute(AttributeMatcher matcher, String namespaceURI, String name) {
         CoreAttribute attr = coreGetFirstAttribute();
         while (attr != null && !matcher.matches(attr, namespaceURI, name)) {
@@ -63,6 +67,7 @@ public abstract class CoreElementMixin implements CoreElement {
         return attr;
     }
 
+    @Override
     public final void coreAppendAttribute(CoreAttribute attr) {
         // TODO: we should probably check if the attribute is already owned by the element
         attr.internalRemove(null, this);
@@ -74,6 +79,7 @@ public abstract class CoreElementMixin implements CoreElement {
         }
     }
 
+    @Override
     public final void coreSetAttribute(AttributeMatcher matcher, String namespaceURI, String name, String prefix, String value) throws CoreModelException {
         CoreAttribute attr = firstAttribute;
         CoreAttribute previousAttr = null;
@@ -93,6 +99,7 @@ public abstract class CoreElementMixin implements CoreElement {
         }
     }
     
+    @Override
     public final CoreAttribute coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, Semantics semantics) {
         if (attr.coreGetOwnerElement() == this) {
             // TODO: document this and add assertion
@@ -126,6 +133,7 @@ public abstract class CoreElementMixin implements CoreElement {
         return existingAttr;
     }
 
+    @Override
     public final boolean coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name, Semantics semantics) {
         CoreAttribute att = coreGetAttribute(matcher, namespaceURI, name);
         if (att != null) {
@@ -136,12 +144,14 @@ public abstract class CoreElementMixin implements CoreElement {
         }
     }
 
+    @Override
     public final <T extends CoreAttribute,S> Iterator<S> coreGetAttributesByType(Class<T> type, Mapper<S,? super T> mapper, Semantics semantics) {
         return AttributeIterator.create(this, type, mapper, semantics);
     }
 
     public abstract String getImplicitNamespaceURI(String prefix);
     
+    @Override
     public final String coreLookupNamespaceURI(String prefix, Semantics semantics) throws CoreModelException {
         if (!semantics.isUseStrictNamespaceLookup()) {
             String namespaceURI = getImplicitNamespaceURI(prefix);
@@ -169,6 +179,7 @@ public abstract class CoreElementMixin implements CoreElement {
 
     public abstract String getImplicitPrefix(String namespaceURI);
     
+    @Override
     public final String coreLookupPrefix(String namespaceURI, Semantics semantics) throws CoreModelException {
         if (namespaceURI == null) {
             throw new IllegalArgumentException("namespaceURI must not be null");
@@ -209,6 +220,7 @@ public abstract class CoreElementMixin implements CoreElement {
         }
     }
 
+    @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) throws CoreModelException {
         CoreElement o = (CoreElement)other;
         initSource(policy, options, o);
@@ -228,6 +240,7 @@ public abstract class CoreElementMixin implements CoreElement {
     public <T> void initSource(ClonePolicy<T> policy, T options, CoreElement other) {
     }
     
+    @Override
     public final <T extends CoreElement> T corePromote(Class<T> type, Semantics semantics) throws CoreModelException {
         T newElement = coreCreateNode(type);
         newElement.initName(this);

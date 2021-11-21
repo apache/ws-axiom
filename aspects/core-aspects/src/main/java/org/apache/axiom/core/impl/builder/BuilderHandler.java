@@ -136,21 +136,25 @@ final class BuilderHandler implements XmlHandler {
         context.startFragment();
     }
 
+    @Override
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
             String internalSubset) throws StreamException {
         context.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
     
+    @Override
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         depth++;
         context = context.startElement(namespaceURI, localName, prefix);
     }
     
+    @Override
     public void endElement() throws StreamException {
         context = context.endElement();
         depth--;
     }
 
+    @Override
     public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
         context.processAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
@@ -160,14 +164,17 @@ final class BuilderHandler implements XmlHandler {
         context.processAttribute(name, value, type, specified);
     }
     
+    @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         context.processNamespaceDeclaration(prefix, namespaceURI);
     }
     
+    @Override
     public void attributesCompleted() throws StreamException {
         context.attributesCompleted();
     }
     
+    @Override
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         context.processCharacterData(data, ignorable);
     }
@@ -202,10 +209,12 @@ final class BuilderHandler implements XmlHandler {
         context = context.endCDATASection();
     }
     
+    @Override
     public void processEntityReference(String name, String replacementText) throws StreamException {
         context.processEntityReference(name, replacementText);
     }
     
+    @Override
     public void completed() throws StreamException {
         if (depth != 0) {
             throw new IllegalStateException();

@@ -28,10 +28,12 @@ public abstract class AxiomSOAPFaultRoleMixin implements AxiomSOAPFaultRole {
         return false;
     }
 
+    @Override
     public final void setRoleValue(String uri) {
         setText(uri);
     }
 
+    @Override
     public final String getRoleValue() {
         return getText();
     }

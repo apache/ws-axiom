@@ -25,22 +25,27 @@ import org.w3c.dom.DOMException;
 
 @Mixin(DOMNSUnawareNamedNode.class)
 public abstract class DOMNSUnawareNamedNodeMixin implements DOMNSUnawareNamedNode {
+    @Override
     public final String getNamespaceURI() {
         return null;
     }
     
+    @Override
     public final String getPrefix() {
         return null;
     }
     
+    @Override
     public final void setPrefix(String prefix) throws DOMException {
         throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
     
+    @Override
     public final String getLocalName() {
         return null;
     }
     
+    @Override
     public final String internalGetName() {
         return coreGetName();
     }

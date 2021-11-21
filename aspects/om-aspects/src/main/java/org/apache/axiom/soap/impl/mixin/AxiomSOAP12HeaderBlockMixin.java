@@ -24,6 +24,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomSOAP12HeaderBlock.class)
 public abstract class AxiomSOAP12HeaderBlockMixin implements AxiomSOAP12HeaderBlock {
+    @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12HeaderBlock.class;
     }

@@ -29,17 +29,21 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(CoreComment.class)
 public abstract class CoreCommentMixin implements CoreComment {
+    @Override
     public final NodeType coreGetNodeType() {
         return NodeType.COMMENT;
     }
     
+    @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
     }
     
+    @Override
     public final void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
         handler.startComment();
     }
 
+    @Override
     public final void serializeEndEvent(XmlHandler handler) throws StreamException {
         handler.endComment();
     }

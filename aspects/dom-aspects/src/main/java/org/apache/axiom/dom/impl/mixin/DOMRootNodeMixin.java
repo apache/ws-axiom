@@ -24,14 +24,17 @@ import org.w3c.dom.Node;
 
 @Mixin(DOMRootNode.class)
 public abstract class DOMRootNodeMixin implements DOMRootNode {
+    @Override
     public final Node getNextSibling() {
         return null;
     }
 
+    @Override
     public final Node getPreviousSibling() {
         return null;
     }
     
+    @Override
     public final Node getParentNode() {
         return null;
     }

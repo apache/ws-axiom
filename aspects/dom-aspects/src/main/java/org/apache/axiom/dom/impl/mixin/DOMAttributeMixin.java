@@ -34,42 +34,52 @@ import org.w3c.dom.TypeInfo;
 
 @Mixin(DOMAttribute.class)
 public abstract class DOMAttributeMixin implements DOMAttribute {
+    @Override
     public final Document getOwnerDocument() {
         return (Document)coreGetOwnerDocument(true);
     }
 
+    @Override
     public final short getNodeType() {
         return Node.ATTRIBUTE_NODE;
     }
 
+    @Override
     public final String getNodeValue() throws DOMException {
         return getValue();
     }
 
+    @Override
     public final void setNodeValue(String nodeValue) throws DOMException {
         setValue(nodeValue);
     }
 
+    @Override
     public final String getNodeName() {
         return getName();
     }
     
+    @Override
     public final boolean hasAttributes() {
         return false;
     }
 
+    @Override
     public final NamedNodeMap getAttributes() {
         return null;
     }
     
+    @Override
     public final String getTextContent() {
         return getValue();
     }
 
+    @Override
     public final void setTextContent(String textContent) {
         setValue(textContent);
     }
     
+    @Override
     public final String getValue() {
         try {
             return coreGetCharacterData().toString();
@@ -78,6 +88,7 @@ public abstract class DOMAttributeMixin implements DOMAttribute {
         }
     }
     
+    @Override
     public final void setValue(String value) {
         try {
             coreSetCharacterData(value, DOMSemantics.INSTANCE);
@@ -86,18 +97,22 @@ public abstract class DOMAttributeMixin implements DOMAttribute {
         }
     }
     
+    @Override
     public final CoreElement getNamespaceContext() {
         return coreGetOwnerElement();
     }
 
+    @Override
     public final Element getOwnerElement() {
         return (Element)coreGetOwnerElement();
     }
 
+    @Override
     public final boolean getSpecified() {
         return coreGetSpecified();
     }
 
+    @Override
     public final TypeInfo getSchemaTypeInfo() {
         // TODO
         throw new UnsupportedOperationException();

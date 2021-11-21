@@ -62,6 +62,7 @@ public abstract class DOMTextNodeMixin implements DOMTextNode {
         }
     }
 
+    @Override
     public final String getWholeText() {
         try {
             DOMTextNode first = getWholeTextStartNode();
@@ -86,6 +87,7 @@ public abstract class DOMTextNodeMixin implements DOMTextNode {
         }
     }
 
+    @Override
     public final Text replaceWholeText(String content) throws DOMException {
         try {
             DOMText newText;
@@ -115,6 +117,7 @@ public abstract class DOMTextNodeMixin implements DOMTextNode {
         }
     }
 
+    @Override
     public final Text splitText(int offset) throws DOMException {
         try {
             String value = getData();
@@ -136,6 +139,7 @@ public abstract class DOMTextNodeMixin implements DOMTextNode {
         }
     }
 
+    @Override
     public String toString() {
         String value = getData();
         return value != null ? value : "";

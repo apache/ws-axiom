@@ -37,30 +37,37 @@ public abstract class CoreCharacterDataNodeMixin implements CoreCharacterDataNod
      */
     private Object data;
     
+    @Override
     public final NodeType coreGetNodeType() {
         return NodeType.CHARACTER_DATA;
     }
     
+    @Override
     public final boolean coreIsIgnorable() {
         return internalGetFlag(Flags.IGNORABLE);
     }
     
+    @Override
     public final void coreSetIgnorable(boolean ignorable) {
         internalSetFlag(Flags.IGNORABLE, ignorable);
     }
     
+    @Override
     public final Object coreGetCharacterData() {
         return data == null ? "" : data;
     }
     
+    @Override
     public final void coreSetCharacterData(Object data) {
         this.data = data;
     }
     
+    @Override
     public final void coreSetCharacterData(Object data, Semantics semantics) {
         this.data = data;
     }
     
+    @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
         CoreCharacterDataNode o = (CoreCharacterDataNode)other;
         Object otherData = o.coreGetCharacterData();
@@ -68,6 +75,7 @@ public abstract class CoreCharacterDataNodeMixin implements CoreCharacterDataNod
         coreSetIgnorable(o.coreIsIgnorable());
     }
 
+    @Override
     public final void internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
         handler.processCharacterData(coreGetCharacterData(), coreIsIgnorable());
     }

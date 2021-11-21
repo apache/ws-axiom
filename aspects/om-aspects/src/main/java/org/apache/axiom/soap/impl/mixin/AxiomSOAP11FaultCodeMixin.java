@@ -33,30 +33,37 @@ public abstract class AxiomSOAP11FaultCodeMixin implements AxiomSOAP11FaultCode 
         return false;
     }
 
+    @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP11FaultCode.class;
     }
 
+    @Override
     public final SOAPFaultValue getValue() {
         return null;
     }
 
+    @Override
     public final void setValue(SOAPFaultValue value) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final SOAPFaultSubCode getSubCode() {
         return null;
     }
 
+    @Override
     public final void setSubCode(SOAPFaultSubCode subCode) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final QName getValueAsQName() {
         return getTextAsQName();
     }
 
+    @Override
     public final void setValue(QName value) {
         setText(value);
     }

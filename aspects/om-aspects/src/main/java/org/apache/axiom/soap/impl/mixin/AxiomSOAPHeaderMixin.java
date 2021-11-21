@@ -48,6 +48,7 @@ public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
         return child instanceof SOAPHeaderBlock;
     }
 
+    @Override
     public final SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)
             throws OMException {
         
@@ -70,44 +71,53 @@ public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
         return soapHeaderBlock;
     }
 
+    @Override
     public final SOAPHeaderBlock addHeaderBlock(QName qname) throws OMException {
         return addHeaderBlock(qname.getLocalPart(), getOMFactory().createOMNamespace(qname.getNamespaceURI(), qname.getPrefix()));
     }
 
+    @Override
     public final Iterator<SOAPHeaderBlock> examineAllHeaderBlocks() {
         return coreGetElements(Axis.CHILDREN, AxiomElement.class, ElementMatcher.ANY, null, null,
                 SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
+    @Override
     public final Iterator<SOAPHeaderBlock> examineHeaderBlocks(String role) {
         return coreGetElements(Axis.CHILDREN, AxiomElement.class, new RoleChecker(getSOAPHelper(), role), null, null,
                 SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
+    @Override
     public final Iterator<SOAPHeaderBlock> examineMustUnderstandHeaderBlocks(String role) {
         return coreGetElements(Axis.CHILDREN, AxiomElement.class, new MURoleChecker(getSOAPHelper(), role), null, null,
                 SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
+    @Override
     public final Iterator<SOAPHeaderBlock> getHeadersToProcess(RolePlayer rolePlayer) {
         return getHeadersToProcess(rolePlayer, null);
     }
 
+    @Override
     public final Iterator<SOAPHeaderBlock> getHeadersToProcess(RolePlayer rolePlayer, String namespace) {
         return coreGetElements(Axis.CHILDREN, AxiomElement.class, new RolePlayerChecker(getSOAPHelper(), rolePlayer, namespace), null, null,
                 SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
+    @Override
     public final Iterator<SOAPHeaderBlock> getHeaderBlocksWithNamespaceURI(String uri) {
         return coreGetElements(Axis.CHILDREN, AxiomElement.class, ElementMatcher.BY_NAMESPACE_URI, uri, null,
                 SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
+    @Override
     public final Iterator<SOAPHeaderBlock> getHeaderBlocksWithName(QName name) {
         return coreGetElements(Axis.CHILDREN, AxiomElement.class, ElementMatcher.BY_QNAME, name.getNamespaceURI(), name.getLocalPart(),
                 SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
+    @Override
     public final ArrayList<SOAPHeaderBlock> getHeaderBlocksWithNSURI(String nsURI) {
         ArrayList<SOAPHeaderBlock> result = new ArrayList<SOAPHeaderBlock>();
         for (Iterator<SOAPHeaderBlock> it = getHeaderBlocksWithNamespaceURI(nsURI); it.hasNext(); ) {
@@ -126,10 +136,12 @@ public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
         return result.iterator();
     }
 
+    @Override
     public final Iterator<SOAPHeaderBlock> extractHeaderBlocks(String role) {
         return extract(examineHeaderBlocks(role));
     }
 
+    @Override
     public final Iterator<SOAPHeaderBlock> extractAllHeaderBlocks() {
         return extract(examineAllHeaderBlocks());
     }

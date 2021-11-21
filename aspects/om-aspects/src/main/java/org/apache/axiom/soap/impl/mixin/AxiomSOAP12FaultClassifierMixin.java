@@ -37,27 +37,33 @@ public abstract class AxiomSOAP12FaultClassifierMixin implements AxiomSOAP12Faul
         return child instanceof SOAPFaultValue || child instanceof SOAPFaultSubCode;
     }
     
+    @Override
     public final SOAPFaultValue getValue() {
         return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
     }
 
+    @Override
     public final void setValue(SOAPFaultValue value) {
         insertChild(sequence, 0, value, true);
     }
     
+    @Override
     public final SOAPFaultSubCode getSubCode() {
         return (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
     }
     
+    @Override
     public final void setSubCode(SOAPFaultSubCode subCode) {
         insertChild(sequence, 1, subCode, true);
     }
 
+    @Override
     public final QName getValueAsQName() {
         SOAPFaultValue value = getValue();
         return value == null ? null : value.getTextAsQName();
     }
     
+    @Override
     public final void setValue(QName value) {
         SOAPFaultValue valueElement = getValue();
         if (valueElement == null) {

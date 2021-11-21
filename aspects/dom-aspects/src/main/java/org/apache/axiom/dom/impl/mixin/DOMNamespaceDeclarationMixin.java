@@ -27,25 +27,30 @@ import org.w3c.dom.DOMException;
 
 @Mixin(DOMNamespaceDeclaration.class)
 public abstract class DOMNamespaceDeclarationMixin implements DOMNamespaceDeclaration {
+    @Override
     public final String getNamespaceURI() {
         return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
     }
 
+    @Override
     public final String getPrefix() {
         return coreGetDeclaredPrefix().length() == 0 ? null : XMLConstants.XMLNS_ATTRIBUTE;
     }
 
+    @Override
     public final void setPrefix(String prefix) throws DOMException {
         // Other DOM implementations allow changing the prefix, but this means that a namespace
         // declaration is transformed into a normal attribute. We don't support this.
         throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
 
+    @Override
     public final String getLocalName() {
         String declaredPrefix = coreGetDeclaredPrefix();
         return declaredPrefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : declaredPrefix;
     }
 
+    @Override
     public final String getName() {
         String declaredPrefix = coreGetDeclaredPrefix();
         if (declaredPrefix.length() == 0) {
@@ -55,6 +60,7 @@ public abstract class DOMNamespaceDeclarationMixin implements DOMNamespaceDeclar
         }
     }
 
+    @Override
     public final boolean isId() {
         return false;
     }

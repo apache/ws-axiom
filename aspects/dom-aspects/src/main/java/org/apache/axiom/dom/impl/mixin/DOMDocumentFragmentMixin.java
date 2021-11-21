@@ -35,53 +35,66 @@ import org.w3c.dom.Node;
 
 @Mixin(DOMDocumentFragment.class)
 public abstract class DOMDocumentFragmentMixin implements DOMDocumentFragment {
+    @Override
     public final Document getOwnerDocument() {
         return (Document)coreGetOwnerDocument(true);
     }
 
+    @Override
     public final short getNodeType() {
         return Node.DOCUMENT_FRAGMENT_NODE;
     }
 
+    @Override
     public final String getNodeName() {
         return "#document-fragment";
     }
 
+    @Override
     public final String getNodeValue() {
         return null;
     }
 
+    @Override
     public final void setNodeValue(String nodeValue) {
     }
 
+    @Override
     public final CoreElement getNamespaceContext() {
         return null;
     }
 
+    @Override
     public final String getPrefix() {
         return null;
     }
 
+    @Override
     public final void setPrefix(String prefix) throws DOMException {
         throw newDOMException(DOMException.NAMESPACE_ERR);
     }
 
+    @Override
     public final String getNamespaceURI() {
         return null;
     }
 
+    @Override
     public final String getLocalName() {
         return null;
     }
 
+    @Override
     public final boolean hasAttributes() {
         return false;
     }
 
+    @Override
     public final NamedNodeMap getAttributes() {
         return null;
     }
     
+    @Override
     public final String getTextContent() {
         try {
             return coreGetCharacterData(ElementAction.RECURSE).toString();
@@ -90,6 +103,7 @@ public abstract class DOMDocumentFragmentMixin implements DOMDocumentFragment {
         }
     }
 
+    @Override
     public final void setTextContent(String textContent) {
         try {
             coreSetCharacterData(textContent, DOMSemantics.INSTANCE);

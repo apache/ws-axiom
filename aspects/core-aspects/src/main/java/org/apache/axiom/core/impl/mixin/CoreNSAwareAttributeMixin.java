@@ -27,10 +27,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(CoreNSAwareAttribute.class)
 public abstract class CoreNSAwareAttributeMixin implements CoreNSAwareAttribute {
+    @Override
     public final NodeType coreGetNodeType() {
         return NodeType.NS_AWARE_ATTRIBUTE;
     }
 
+    @Override
     public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         handler.processAttribute(coreGetNamespaceURI(), coreGetLocalName(), coreGetPrefix(), coreGetCharacterData().toString(), coreGetType(), coreGetSpecified());
     }

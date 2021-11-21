@@ -24,6 +24,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomSOAP12FaultRole.class)
 public abstract class AxiomSOAP12FaultRoleMixin implements AxiomSOAP12FaultRole {
+    @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12FaultRole.class;
     }

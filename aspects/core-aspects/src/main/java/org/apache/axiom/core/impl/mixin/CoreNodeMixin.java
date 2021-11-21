@@ -31,19 +31,23 @@ public abstract class CoreNodeMixin implements CoreNode {
     int flags;
 
     // Default implementation; may be overridden
+    @Override
     public Class<? extends CoreNode> coreGetNodeClass() {
         return coreGetNodeType().getInterface();
     }
     
+    @Override
     public final <T extends CoreNode> T coreCreateNode(Class<T> type) {
         T node = coreGetNodeFactory().createNode(type);
         node.updateFiliation(this);
         return node;
     }
     
+    @Override
     public void updateFiliation(CoreNode creator) {
     }
     
+    @Override
     public final CoreDocument coreGetOwnerDocument(boolean create) {
         CoreNode root = getRootOrOwnerDocument();
         if (root instanceof CoreDocument) {
@@ -57,14 +61,17 @@ public abstract class CoreNodeMixin implements CoreNode {
         }
     }
     
+    @Override
     public final boolean coreHasSameOwnerDocument(CoreNode other) {
         return other.getRootOrOwnerDocument() == getRootOrOwnerDocument();
     }
 
+    @Override
     public final boolean internalGetFlag(int flag) {
         return (flags & flag) != 0;
     }
 
+    @Override
     public final void internalSetFlag(int flag, boolean value) {
         if (value) {
             flags |= flag;
@@ -73,10 +80,12 @@ public abstract class CoreNodeMixin implements CoreNode {
         }
     }
     
+    @Override
     public final int internalGetFlags(int mask) {
         return flags & mask;
     }
 
+    @Override
     public final void internalSetFlags(int mask, int value) {
         flags = (flags & ~mask) | value;
     }
@@ -89,6 +98,7 @@ public abstract class CoreNodeMixin implements CoreNode {
         return clone;
     }
 
+    @Override
     public final <T> CoreNode internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException {
         CoreNode clone = shallowClone(policy, options);
         if (targetParent != null) {
@@ -99,10 +109,12 @@ public abstract class CoreNodeMixin implements CoreNode {
         return clone;
     }
     
+    @Override
     public final <T> CoreNode coreClone(ClonePolicy<T> policy, T options) throws CoreModelException {
         return internalClone(policy, options, null);
     }
     
+    @Override
     public <T> void initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other) {
     }
 }

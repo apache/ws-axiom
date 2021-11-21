@@ -25,6 +25,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomSOAP12FaultNode.class)
 public abstract class AxiomSOAP12FaultNodeMixin implements AxiomSOAP12FaultNode {
+    @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12FaultNode.class;
     }
@@ -33,10 +34,12 @@ public abstract class AxiomSOAP12FaultNodeMixin implements AxiomSOAP12FaultNode 
         return false;
     }
 
+    @Override
     public final void setFaultNodeValue(String uri) {
         setText(uri);
     }
 
+    @Override
     public final String getFaultNodeValue() {
         return getText();
     }

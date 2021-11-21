@@ -28,6 +28,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(CoreNSAwareElement.class)
 public abstract class CoreNSAwareElementMixin implements CoreNSAwareElement {
+    @Override
     public final NodeType coreGetNodeType() {
         return NodeType.NS_AWARE_ELEMENT;
     }
@@ -40,18 +41,22 @@ public abstract class CoreNSAwareElementMixin implements CoreNSAwareElement {
         return namespaceURI.equals(coreGetNamespaceURI()) ? coreGetPrefix() : null;
     }
     
+    @Override
     public XmlInput getXmlInput(boolean cache, boolean incremental) throws StreamException {
         return null;
     }
     
+    @Override
     public final void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
         handler.startElement(coreGetNamespaceURI(), coreGetLocalName(), coreGetPrefix());
     }
 
+    @Override
     public final void serializeEndEvent(XmlHandler handler) throws StreamException {
         handler.endElement();
     }
 
+    @Override
     public void validateName(String staxPrefix, String staxLocalName, String staxNamespaceURI) {
     }
 }

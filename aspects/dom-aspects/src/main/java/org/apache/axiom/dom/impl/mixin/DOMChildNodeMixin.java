@@ -27,10 +27,12 @@ import org.w3c.dom.Node;
 
 @Mixin(DOMChildNode.class)
 public abstract class DOMChildNodeMixin implements DOMChildNode {
+    @Override
     public final Node getParentNode() {
         return (Node)coreGetParent();
     }
     
+    @Override
     public final Node getNextSibling() {
         try {
             return (Node)coreGetNextSibling(DocumentWhitespaceFilter.INSTANCE);
@@ -39,6 +41,7 @@ public abstract class DOMChildNodeMixin implements DOMChildNode {
         }
     }
     
+    @Override
     public final Node getPreviousSibling() {
         return (Node)coreGetPreviousSibling(DocumentWhitespaceFilter.INSTANCE);
     }

@@ -29,6 +29,7 @@ import org.w3c.dom.DOMException;
 
 @Mixin(DOMCharacterData.class)
 public abstract class DOMCharacterDataMixin implements DOMCharacterData {
+    @Override
     public final String getData() {
         try {
             return coreGetCharacterData().toString();
@@ -37,6 +38,7 @@ public abstract class DOMCharacterDataMixin implements DOMCharacterData {
         }
     }
 
+    @Override
     public final void setData(String data) {
         try {
             coreSetCharacterData(data, DOMSemantics.INSTANCE);
@@ -45,27 +47,33 @@ public abstract class DOMCharacterDataMixin implements DOMCharacterData {
         }
     }
 
+    @Override
     public final String getNodeValue() {
         return getData();
     }
 
+    @Override
     public final void setNodeValue(String nodeValue) {
         setData(nodeValue);
     }
 
+    @Override
     public final int getLength() {
         String data = getData();
         return data != null ? data.length() : 0;
     }
     
+    @Override
     public final void appendData(String arg) {
         setData(getData() + arg);
     }
 
+    @Override
     public final void deleteData(int offset, int count) {
         replaceData(offset, count, null);
     }
 
+    @Override
     public final void replaceData(int offset, int count, String arg) {
         String data = getData();
         int length = data.length();
@@ -81,6 +89,7 @@ public abstract class DOMCharacterDataMixin implements DOMCharacterData {
         }
     }
 
+    @Override
     public final void insertData(int offset, String arg) {
         String data = getData();
         if (offset < 0 || offset > data.length()) {
@@ -89,6 +98,7 @@ public abstract class DOMCharacterDataMixin implements DOMCharacterData {
         setData(new StringBuilder(data).insert(offset, arg).toString());
     }
 
+    @Override
     public final String substringData(int offset, int count) {
         String data = getData();
         int length = data.length();

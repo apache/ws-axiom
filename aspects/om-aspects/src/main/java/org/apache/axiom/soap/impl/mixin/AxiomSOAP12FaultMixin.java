@@ -34,34 +34,42 @@ public abstract class AxiomSOAP12FaultMixin implements AxiomSOAP12Fault {
     private static final Sequence sequence = new Sequence(SOAPFaultCode.class, SOAPFaultReason.class,
             SOAPFaultNode.class, SOAPFaultRole.class, SOAPFaultDetail.class);
 
+    @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12Fault.class;
     }
     
+    @Override
     public final Sequence getSequence() {
         return sequence;
     }
     
+    @Override
     public final void setNode(SOAPFaultNode node) {
         insertChild(sequence, 2, node, true);
     }
 
+    @Override
     public final SOAPFaultCode getCode() {
         return (SOAPFaultCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_CODE);
     }
 
+    @Override
     public final SOAPFaultReason getReason() {
         return (SOAPFaultReason)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_REASON);
     }
 
+    @Override
     public final SOAPFaultNode getNode() {
         return (SOAPFaultNode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_NODE);
     }
 
+    @Override
     public final SOAPFaultRole getRole() {
         return (SOAPFaultRole)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_ROLE);
     }
 
+    @Override
     public final SOAPFaultDetail getDetail() {
         return (SOAPFaultDetail)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_DETAIL);
     }

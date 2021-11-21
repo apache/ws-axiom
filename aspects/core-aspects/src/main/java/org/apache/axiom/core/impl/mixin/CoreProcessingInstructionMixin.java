@@ -31,26 +31,32 @@ import org.apache.axiom.weaver.annotation.Mixin;
 public abstract class CoreProcessingInstructionMixin implements CoreProcessingInstruction {
     private String target;
 
+    @Override
     public final NodeType coreGetNodeType() {
         return NodeType.PROCESSING_INSTRUCTION;
     }
     
+    @Override
     public final String coreGetTarget() {
         return target;
     }
     
+    @Override
     public final void coreSetTarget(String target) {
         this.target = target;
     }
     
+    @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
         target = ((CoreProcessingInstruction)other).coreGetTarget();
     }
     
+    @Override
     public final void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
         handler.startProcessingInstruction(coreGetTarget());
     }
 
+    @Override
     public final void serializeEndEvent(XmlHandler handler) throws StreamException {
         handler.endProcessingInstruction();
     }

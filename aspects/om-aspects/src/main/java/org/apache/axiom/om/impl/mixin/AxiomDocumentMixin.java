@@ -37,6 +37,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomDocument.class)
 public abstract class AxiomDocumentMixin implements AxiomDocument {
+    @Override
     public final OMElement getOMDocumentElement() {
         try {
             return (OMElement)coreGetDocumentElement();
@@ -45,6 +46,7 @@ public abstract class AxiomDocumentMixin implements AxiomDocument {
         }
     }
 
+    @Override
     public final void setOMDocumentElement(OMElement documentElement) {
         try {
             if (documentElement == null) {
@@ -61,31 +63,38 @@ public abstract class AxiomDocumentMixin implements AxiomDocument {
         }
     }
 
+    @Override
     public final String getCharsetEncoding() {
         String inputEncoding = coreGetInputEncoding();
         return inputEncoding == null ? "UTF-8" : inputEncoding;
     }
 
+    @Override
     public final void setCharsetEncoding(String charsetEncoding) {
         coreSetInputEncoding(charsetEncoding);
     }
 
+    @Override
     public final String getXMLVersion() {
         return coreGetXmlVersion();
     }
 
+    @Override
     public final void setXMLVersion(String xmlVersion) {
         coreSetXmlVersion(xmlVersion);
     }
 
+    @Override
     public final String getXMLEncoding() {
         return coreGetXmlEncoding();
     }
 
+    @Override
     public final void setXMLEncoding(String xmlEncoding) {
         coreSetXmlEncoding(xmlEncoding);
     }
 
+    @Override
     public final String isStandalone() {
         Boolean standalone = coreGetStandalone();
         if (standalone == null) {
@@ -95,10 +104,12 @@ public abstract class AxiomDocumentMixin implements AxiomDocument {
         }
     }
 
+    @Override
     public final void setStandalone(String standalone) {
         coreSetStandalone("yes".equalsIgnoreCase(standalone));
     }
 
+    @Override
     public final void checkChild(OMNode child) {
         if (child instanceof OMElement) {
             if (getOMDocumentElement() != null) {
@@ -112,10 +123,12 @@ public abstract class AxiomDocumentMixin implements AxiomDocument {
     public void checkDocumentElement(OMElement element) {
     }
 
+    @Override
     public final CoreElement getContextElement() {
         return null;
     }
 
+    @Override
     public Iterator<OMSerializable> getDescendants(boolean includeSelf) {
         return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, AxiomSerializable.class, Mappers.<OMSerializable>identity(), AxiomSemantics.INSTANCE);
     }

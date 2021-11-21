@@ -29,17 +29,21 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(CoreCDATASection.class)
 public abstract class CoreCDATASectionMixin implements CoreCDATASection {
+    @Override
     public final NodeType coreGetNodeType() {
         return NodeType.CDATA_SECTION;
     }
     
+    @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
     }
 
+    @Override
     public final void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
         handler.startCDATASection();
     }
     
+    @Override
     public final void serializeEndEvent(XmlHandler handler) throws StreamException {
         handler.endCDATASection();
     }

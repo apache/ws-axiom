@@ -32,6 +32,7 @@ public final class AttributesNamedNodeMap implements NamedNodeMap {
         this.element = element;
     }
 
+    @Override
     public int getLength() {
         int length = 0;
         CoreAttribute attr = element.coreGetFirstAttribute();
@@ -42,6 +43,7 @@ public final class AttributesNamedNodeMap implements NamedNodeMap {
         return length;
     }
     
+    @Override
     public Node item(int index) {
         // TODO: wrong result for negative indexes
         CoreAttribute attr = element.coreGetFirstAttribute();
@@ -51,14 +53,17 @@ public final class AttributesNamedNodeMap implements NamedNodeMap {
         return (Node)attr;
     }
 
+    @Override
     public Node getNamedItem(String name) {
         return element.getAttributeNode(name);
     }
 
+    @Override
     public Node getNamedItemNS(String namespaceURI, String localName) throws DOMException {
         return element.getAttributeNodeNS(namespaceURI, localName);
     }
 
+    @Override
     public Node setNamedItem(Node arg) throws DOMException {
         if (arg instanceof CoreTypedAttribute) {
             return element.setAttributeNode((Attr)arg);
@@ -67,6 +72,7 @@ public final class AttributesNamedNodeMap implements NamedNodeMap {
         }
     }
 
+    @Override
     public Node setNamedItemNS(Node arg) throws DOMException {
         if (arg instanceof CoreTypedAttribute) {
             return element.setAttributeNodeNS((Attr)arg);
@@ -75,6 +81,7 @@ public final class AttributesNamedNodeMap implements NamedNodeMap {
         }
     }
 
+    @Override
     public Node removeNamedItem(String name) throws DOMException {
         // TODO: try to merge with corresponding method in ElementImpl
         Attr attr = element.getAttributeNode(name);
@@ -86,6 +93,7 @@ public final class AttributesNamedNodeMap implements NamedNodeMap {
         }
     }
 
+    @Override
     public Node removeNamedItemNS(String namespaceURI, String localName) throws DOMException {
         // TODO: try to merge with corresponding method in ElementImpl
         Attr attr = element.getAttributeNodeNS(namespaceURI, localName);

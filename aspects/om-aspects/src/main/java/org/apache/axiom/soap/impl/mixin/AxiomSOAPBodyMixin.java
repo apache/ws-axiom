@@ -33,29 +33,35 @@ public abstract class AxiomSOAPBodyMixin implements AxiomSOAPBody {
         return !(child instanceof AxiomSOAPElement) || child instanceof SOAPFault;
     }
     
+    @Override
     public final SOAPFault addFault(Exception e) throws OMException {
         return ((SOAPFactory)getOMFactory()).createSOAPFault(this, e);
     }
 
+    @Override
     public final boolean hasFault() {
         return getFirstElement() instanceof SOAPFault;
     }
 
+    @Override
     public final OMNamespace getFirstElementNS() {
         OMElement element = getFirstElement();
         return element == null ? null : element.getNamespace();
     }
     
+    @Override
     public final String getFirstElementLocalName() {
         OMElement element = getFirstElement();
         return element == null ? null : element.getLocalName();
     }
 
+    @Override
     public final SOAPFault getFault() {
         OMElement element = getFirstElement();
         return element instanceof SOAPFault ? (SOAPFault)element : null;
     }
 
+    @Override
     public final void addFault(SOAPFault soapFault) {
         if (hasFault()) {
             throw new OMException(

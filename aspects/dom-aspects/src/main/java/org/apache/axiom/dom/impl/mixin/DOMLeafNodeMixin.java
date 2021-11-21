@@ -33,78 +33,97 @@ import org.w3c.dom.NodeList;
 
 @Mixin(DOMLeafNode.class)
 public abstract class DOMLeafNodeMixin implements DOMLeafNode {
+    @Override
     public final Document getOwnerDocument() {
         return (Document)coreGetOwnerDocument(true);
     }
 
+    @Override
     public final String getPrefix() {
         return null;
     }
 
+    @Override
     public final void setPrefix(String prefix) throws DOMException {
         throw newDOMException(DOMException.NAMESPACE_ERR);
     }
 
+    @Override
     public final String getNamespaceURI() {
         return null;
     }
 
+    @Override
     public final String getLocalName() {
         return null;
     }
 
+    @Override
     public final boolean hasChildNodes() {
         return false;
     }
     
+    @Override
     public final Node getFirstChild() {
         return null;
     }
 
+    @Override
     public final Node getLastChild() {
         return null;
     }
 
+    @Override
     public final NodeList getChildNodes() {
         return EmptyNodeList.INSTANCE;
     }
 
+    @Override
     public final Node appendChild(Node newChild) throws DOMException {
         throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
     }
 
+    @Override
     public final Node removeChild(Node oldChild) throws DOMException {
         throw newDOMException(DOMException.NOT_FOUND_ERR);
     }
 
+    @Override
     public final Node insertBefore(Node newChild, Node refChild) throws DOMException {
         throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
     }
 
+    @Override
     public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
         throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
     }
 
+    @Override
     public final boolean hasAttributes() {
         return false;
     }
 
+    @Override
     public final NamedNodeMap getAttributes() {
         return null;
     }
 
+    @Override
     public final String getTextContent() {
         return getNodeValue();
     }
 
+    @Override
     public final void setTextContent(String textContent) {
         setNodeValue(textContent);
     }
     
+    @Override
     public final CoreElement getNamespaceContext() {
         return coreGetParentElement();
     }
 
+    @Override
     public final void normalizeRecursively(DOMConfigurationImpl config) {
     }
 }

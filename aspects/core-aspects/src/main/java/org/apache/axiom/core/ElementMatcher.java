@@ -26,6 +26,7 @@ public interface ElementMatcher<T extends CoreElement> {
      * Matches any {@link CoreElement}.
      */
     ElementMatcher<CoreElement> ANY = new ElementMatcher<CoreElement>() {
+        @Override
         public boolean matches(CoreElement element, String namespaceURI, String name) {
             return true;
         }
@@ -35,6 +36,7 @@ public interface ElementMatcher<T extends CoreElement> {
      * Matches {@link CoreNSAwareElement} nodes by qualified name, i.e. namespace URI and local name.
      */
     ElementMatcher<CoreNSAwareElement> BY_QNAME = new ElementMatcher<CoreNSAwareElement>() {
+        @Override
         public boolean matches(CoreNSAwareElement element, String namespaceURI, String name) {
             return name.equals(element.coreGetLocalName())
                     && namespaceURI.equals(element.coreGetNamespaceURI());
@@ -45,6 +47,7 @@ public interface ElementMatcher<T extends CoreElement> {
      * Matches {@link CoreNSAwareElement} nodes by namespace URI.
      */
     ElementMatcher<CoreNSAwareElement> BY_NAMESPACE_URI = new ElementMatcher<CoreNSAwareElement>() {
+        @Override
         public boolean matches(CoreNSAwareElement element, String namespaceURI, String name) {
             return namespaceURI.equals(element.coreGetNamespaceURI());
         }
@@ -54,6 +57,7 @@ public interface ElementMatcher<T extends CoreElement> {
      * Matches {@link CoreNSAwareElement} nodes by local name.
      */
     ElementMatcher<CoreNSAwareElement> BY_LOCAL_NAME = new ElementMatcher<CoreNSAwareElement>() {
+        @Override
         public boolean matches(CoreNSAwareElement element, String namespaceURI, String name) {
             return name.equals(element.coreGetLocalName());
         }
@@ -63,6 +67,7 @@ public interface ElementMatcher<T extends CoreElement> {
      * Matches elements (of any kind) by tag name.
      */
     ElementMatcher<CoreElement> BY_NAME = new ElementMatcher<CoreElement>() {
+        @Override
         public boolean matches(CoreElement element, String namespaceURI, String name) {
             if (element instanceof CoreNSUnawareElement) {
                 return name.equals(((CoreNSUnawareElement)element).coreGetName());

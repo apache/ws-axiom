@@ -78,57 +78,71 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     private String documentURI;
     private boolean strictErrorChecking = true;
 
+    @Override
     public final Document getOwnerDocument() {
         return null;
     }
 
+    @Override
     public final String getNodeName() {
         return "#document";
     }
 
+    @Override
     public final short getNodeType() {
         return Node.DOCUMENT_NODE;
     }
 
+    @Override
     public final String getNodeValue() {
         return null;
     }
 
+    @Override
     public final void setNodeValue(String nodeValue) {
     }
 
+    @Override
     public final String getPrefix() {
         return null;
     }
 
+    @Override
     public final void setPrefix(String prefix) throws DOMException {
         throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
 
+    @Override
     public final String getNamespaceURI() {
         return null;
     }
 
+    @Override
     public final String getLocalName() {
         return null;
     }
 
+    @Override
     public final boolean hasAttributes() {
         return false;
     }
 
+    @Override
     public final NamedNodeMap getAttributes() {
         return null;
     }
 
+    @Override
     public final String getTextContent() {
         return null;
     }
 
+    @Override
     public final void setTextContent(String textContent) {
         // no-op
     }
 
+    @Override
     public final Element getDocumentElement() {
         try {
             return (Element)coreGetDocumentElement();
@@ -137,6 +151,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
     }
     
+    @Override
     public final CoreElement getNamespaceContext() {
         try {
             return coreGetDocumentElement();
@@ -145,39 +160,48 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
     }
 
+    @Override
     public final DOMImplementation getImplementation() {
         return ((DOMNodeFactory)coreGetNodeFactory()).getDOMImplementation();
     }
 
+    @Override
     public final DOMConfiguration getDomConfig() {
         return domConfig;
     }
 
+    @Override
     public final String getInputEncoding() {
         return coreGetInputEncoding();
     }
 
+    @Override
     public final String getXmlVersion() {
         return coreGetXmlVersion();
     }
 
+    @Override
     public final void setXmlVersion(String version) {
         coreSetXmlVersion(version);
     }
 
+    @Override
     public final String getXmlEncoding() {
         return coreGetXmlEncoding();
     }
 
+    @Override
     public final boolean getXmlStandalone() {
         Boolean standalone = coreGetStandalone();
         return standalone != null && standalone;
     }
 
+    @Override
     public final void setXmlStandalone(boolean standalone) {
         coreSetStandalone(standalone);
     }
 
+    @Override
     public final void normalizeDocument() {
         if (domConfig.isEnabled(DOMConfigurationImpl.SPLIT_CDATA_SECTIONS)
                 || domConfig.isEnabled(DOMConfigurationImpl.WELLFORMED)) {
@@ -187,6 +211,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
     }
     
+    @Override
     public final Text createTextNode(String data) {
         DOMText text = coreGetNodeFactory().createNode(DOMText.class);
         text.coreSetOwnerDocument(this);
@@ -194,6 +219,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         return text;
     }
 
+    @Override
     public final CDATASection createCDATASection(String data) {
         try {
             DOMCDATASection cdataSection = coreGetNodeFactory().createNode(DOMCDATASection.class);
@@ -205,6 +231,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
     }
     
+    @Override
     public final Element createElement(String tagName) {
         DOMNSUnawareElement element = coreGetNodeFactory().createNode(DOMNSUnawareElement.class);
         element.coreSetOwnerDocument(this);
@@ -212,6 +239,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         return element;
     }
 
+    @Override
     public final Attr createAttribute(String name) {
         NSUtil.validateName(name);
         DOMNSUnawareAttribute attr = coreGetNodeFactory().createNode(DOMNSUnawareAttribute.class);
@@ -221,6 +249,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         return attr;
     }
 
+    @Override
     public final Element createElementNS(String namespaceURI, String qualifiedName) {
         int i = NSUtil.validateQualifiedName(qualifiedName);
         String prefix;
@@ -240,6 +269,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         return element;
     }
 
+    @Override
     public final Attr createAttributeNS(String namespaceURI, String qualifiedName) {
         int i = NSUtil.validateQualifiedName(qualifiedName);
         String prefix;
@@ -267,6 +297,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
     }
 
+    @Override
     public final ProcessingInstruction createProcessingInstruction(String target, String data) {
         try {
             DOMProcessingInstruction pi = coreGetNodeFactory().createNode(DOMProcessingInstruction.class);
@@ -279,6 +310,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
     }
 
+    @Override
     public final EntityReference createEntityReference(String name) throws DOMException {
         DOMEntityReference node = coreGetNodeFactory().createNode(DOMEntityReference.class);
         node.coreSetOwnerDocument(this);
@@ -286,6 +318,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         return node;
     }
 
+    @Override
     public final Comment createComment(String data) {
         try {
             DOMComment node = coreGetNodeFactory().createNode(DOMComment.class);
@@ -297,21 +330,25 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
     }
 
+    @Override
     public final DocumentFragment createDocumentFragment() {
         DOMDocumentFragment fragment = coreGetNodeFactory().createNode(DOMDocumentFragment.class);
         fragment.coreSetOwnerDocument(this);
         return fragment;
     }
 
+    @Override
     public final NodeList getElementsByTagName(String tagname) {
         return new ElementsByTagName(this, tagname);
     }
 
+    @Override
     public final NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
         return new ElementsByTagNameNS(this, namespaceURI, localName);
     }
     
     // TODO: need unit test to check that this method works as expected on an OMSourcedElement
+    @Override
     public final Node renameNode(Node node, String namespaceURI, String qualifiedName) {
         if (!(node instanceof DOMNode && ((DOMNode)node).coreHasSameOwnerDocument(this))) {
             throw DOMExceptionUtil.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
@@ -357,6 +394,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
     }
 
+    @Override
     public final DocumentType getDoctype() {
         try {
             CoreChildNode child = coreGetFirstChild();
@@ -375,6 +413,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
     }
 
+    @Override
     public final Node adoptNode(Node node) throws DOMException {
         if (node instanceof DOMNode) {
             DOMNode childNode = (DOMNode)node;
@@ -398,6 +437,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
     }
 
+    @Override
     public final Element getElementById(String elementId) {
         try {
             for (Iterator<DOMElement> it = coreGetNodes(Axis.DESCENDANTS, DOMElement.class, Mappers.<DOMElement>identity(), DOMSemantics.INSTANCE); it.hasNext(); ) {
@@ -414,18 +454,22 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
     }
 
+    @Override
     public final String getDocumentURI() {
         return documentURI;
     }
 
+    @Override
     public final void setDocumentURI(String documentURI) {
         this.documentURI = documentURI;
     }
 
+    @Override
     public final boolean getStrictErrorChecking() {
         return strictErrorChecking;
     }
 
+    @Override
     public final void setStrictErrorChecking(boolean strictErrorChecking) {
         this.strictErrorChecking = strictErrorChecking;
     }
@@ -433,6 +477,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     public final void normalize(DOMConfigurationImpl config) {
     }
 
+    @Override
     public final Node importNode(Node importedNode, boolean deep) throws DOMException {
 
         short type = importedNode.getNodeType();

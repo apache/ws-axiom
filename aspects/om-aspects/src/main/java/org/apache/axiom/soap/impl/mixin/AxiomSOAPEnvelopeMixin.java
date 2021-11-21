@@ -30,21 +30,25 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomSOAPEnvelope.class)
 public abstract class AxiomSOAPEnvelopeMixin implements AxiomSOAPEnvelope {
+    @Override
     public final SOAPVersion getVersion() {
         return getSOAPHelper().getVersion();
     }
 
+    @Override
     public final SOAPHeader getHeader() {
         // The soap header is the first element in the envelope.
         OMElement e = getFirstElement();
         return e instanceof SOAPHeader ? (SOAPHeader)e : null;
     }
 
+    @Override
     public final SOAPHeader getOrCreateHeader() {
         SOAPHeader header = getHeader();
         return header != null ? header : ((SOAPFactory)getOMFactory()).createSOAPHeader(this);
     }
 
+    @Override
     public final SOAPBody getBody() {
         OMElement element = getFirstElement();
         if (element instanceof SOAPBody) {
@@ -61,16 +65,19 @@ public abstract class AxiomSOAPEnvelopeMixin implements AxiomSOAPEnvelope {
         return null;
     }
 
+    @Override
     public final boolean hasFault() {
         SOAPBody body = getBody();
         return (body == null) ? false : body.hasFault();
     }
 
+    @Override
     public final String getSOAPBodyFirstElementLocalName() {
         SOAPBody body = getBody();
         return (body == null) ? null : body.getFirstElementLocalName();
     }
 
+    @Override
     public final OMNamespace getSOAPBodyFirstElementNS() {
         SOAPBody body = getBody();
         return (body == null) ? null : body.getFirstElementNS();

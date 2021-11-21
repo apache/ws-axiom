@@ -126,6 +126,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
         hasNext = true;
     }
 
+    @Override
     public final boolean hasNext() {
         if (!hasNext) {
             computeNext(axis);
@@ -133,6 +134,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
         return nextNode != null;
     }
 
+    @Override
     public final S next() {
         if (hasNext()) {
             currentNode = nextNode;
@@ -148,6 +150,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
         }
     }
 
+    @Override
     public final void remove() {
         if (currentNode == null) {
             throw new IllegalStateException();
@@ -165,6 +168,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
         currentNode = null;
     }
 
+    @Override
     public final void replace(CoreChildNode newNode) throws CoreModelException {
         // Move to next node before replacing the current one
         // TODO: this may not be the right thing to do in all cases

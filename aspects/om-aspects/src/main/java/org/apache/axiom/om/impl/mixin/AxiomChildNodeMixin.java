@@ -31,11 +31,13 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin(AxiomChildNode.class)
 public abstract class AxiomChildNodeMixin implements AxiomChildNode {
+    @Override
     public final OMContainer getParent() {
         CoreParentNode parent = coreGetParent();
         return parent instanceof OMContainer ? (OMContainer)parent : null;
     }
     
+    @Override
     public final OMNode getNextOMSibling() {
         try {
             return (OMNode)coreGetNextSibling();
@@ -44,10 +46,12 @@ public abstract class AxiomChildNodeMixin implements AxiomChildNode {
         }
     }
 
+    @Override
     public final OMNode getPreviousOMSibling() {
         return (OMNode)coreGetPreviousSibling();
     }
 
+    @Override
     public final void insertSiblingAfter(OMNode sibling) throws OMException {
         try {
             AxiomContainer parent = (AxiomContainer)getParent();
@@ -60,6 +64,7 @@ public abstract class AxiomChildNodeMixin implements AxiomChildNode {
         }
     }
 
+    @Override
     public final void insertSiblingBefore(OMNode sibling) throws OMException {
         try {
             AxiomContainer parent = (AxiomContainer)getParent();
@@ -72,6 +77,7 @@ public abstract class AxiomChildNodeMixin implements AxiomChildNode {
         }
     }
     
+    @Override
     public final OMNode detach() {
         if (!coreHasParent()) {
             throw new OMException(

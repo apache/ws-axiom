@@ -33,15 +33,18 @@ public abstract class AxiomNamespaceDeclarationMixin implements AxiomNamespaceDe
     
     private OMNamespace declaredNamespace;
     
+    @Override
     public final void init(String prefix, String namespaceURI, Object namespaceHelper) {
         OMNamespace ns = ((OMNamespaceCache)namespaceHelper).getOMNamespace(namespaceURI, prefix);
         setDeclaredNamespace(ns == null ? DEFAULT_NS : ns);
     }
 
+    @Override
     public final String coreGetDeclaredPrefix() {
         return declaredNamespace.getPrefix();
     }
 
+    @Override
     public final OMNamespace getDeclaredNamespace() {
         try {
             String namespaceURI = coreGetCharacterData().toString();
@@ -54,10 +57,12 @@ public abstract class AxiomNamespaceDeclarationMixin implements AxiomNamespaceDe
         }
     }
     
+    @Override
     public final void coreSetDeclaredNamespace(String prefix, String namespaceURI) {
         setDeclaredNamespace(new OMNamespaceImpl(namespaceURI, prefix));
     }
     
+    @Override
     public final void setDeclaredNamespace(OMNamespace declaredNamespace) {
         try {
             this.declaredNamespace = declaredNamespace;

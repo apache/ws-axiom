@@ -26,10 +26,12 @@ public final class EmptyNodeList implements NodeList {
     
     private EmptyNodeList() {}
 
+    @Override
     public int getLength() {
         return 0;
     }
 
+    @Override
     public Node item(int index) {
         return null;
     }
