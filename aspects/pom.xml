@@ -59,7 +59,6 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>translate-mixins</goal>
                             <goal>post-process-classes</goal>
                         </goals>
                     </execution>
