@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.om.impl.intf;
 
+import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.shared.IProcessingInstruction;
 
-public interface AxiomProcessingInstruction extends OMProcessingInstruction, AxiomLeafNode, IProcessingInstruction, AxiomCoreParentNode {
+public interface AxiomProcessingInstruction extends OMProcessingInstruction, AxiomLeafNode, CoreProcessingInstruction, AxiomCoreParentNode {
 
 }

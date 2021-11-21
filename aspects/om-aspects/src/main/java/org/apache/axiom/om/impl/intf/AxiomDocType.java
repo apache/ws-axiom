@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.om.impl.intf;
 
+import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.shared.IDocumentTypeDeclaration;
 
-public interface AxiomDocType extends OMDocType, AxiomCoreLeafNode, IDocumentTypeDeclaration {
+public interface AxiomDocType extends OMDocType, AxiomCoreLeafNode, CoreDocumentTypeDeclaration {
 
 }

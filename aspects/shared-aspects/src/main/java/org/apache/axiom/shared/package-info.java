@@ -17,8 +17,8 @@
  * under the License.
  */
 @org.apache.axiom.weaver.annotation.WeavablePackage(mixins={
-        IDocumentTypeDeclarationMixin.class,
-        INSAwareNamedNodeMixin.class,
-        IProcessingInstructionMixin.class,
+        DocumentTypeDeclarationMixin.class,
+        NSAwareNamedNodeMixin.class,
+        ProcessingInstructionMixin.class,
 })
 package org.apache.axiom.shared;

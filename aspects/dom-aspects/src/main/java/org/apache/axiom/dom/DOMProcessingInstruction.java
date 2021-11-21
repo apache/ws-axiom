@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.dom;
 
-import org.apache.axiom.shared.IProcessingInstruction;
+import org.apache.axiom.core.CoreProcessingInstruction;
 import org.w3c.dom.ProcessingInstruction;
 
-public interface DOMProcessingInstruction extends DOMLeafNode, ProcessingInstruction, IProcessingInstruction {
+public interface DOMProcessingInstruction extends DOMLeafNode, ProcessingInstruction, CoreProcessingInstruction {
 
 }

@@ -20,11 +20,11 @@ package org.apache.axiom.om.impl.intf;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.core.CoreNSAwareNamedNode;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.shared.INSAwareNamedNode;
 
-public interface AxiomNamedInformationItem extends OMNamedInformationItem, AxiomInformationItem, INSAwareNamedNode {
+public interface AxiomNamedInformationItem extends OMNamedInformationItem, AxiomInformationItem, CoreNSAwareNamedNode {
     void internalSetNamespace(OMNamespace namespace);
     String internalGetLocalName();
     void internalSetLocalName(String localName);

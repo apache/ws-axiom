@@ -18,10 +18,11 @@
  */
 package org.apache.axiom.shared;
 
+import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(IProcessingInstruction.class)
-public abstract class IProcessingInstructionMixin implements IProcessingInstruction {
+@Mixin(CoreProcessingInstruction.class)
+public abstract class ProcessingInstructionMixin implements CoreProcessingInstruction {
     public final String getTarget() {
         return coreGetTarget();
     }

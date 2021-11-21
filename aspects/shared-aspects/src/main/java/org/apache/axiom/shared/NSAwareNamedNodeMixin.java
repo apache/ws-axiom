@@ -19,7 +19,21 @@
 package org.apache.axiom.shared;
 
 import org.apache.axiom.core.CoreNSAwareNamedNode;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-public interface INSAwareNamedNode extends CoreNSAwareNamedNode {
+@Mixin(CoreNSAwareNamedNode.class)
+public abstract class NSAwareNamedNodeMixin implements CoreNSAwareNamedNode {
+    public final String getLocalName() {
+        return coreGetLocalName();
+    }
 
+    public final String getNamespaceURI() {
+        String namespaceURI = coreGetNamespaceURI();
+        return namespaceURI.length() == 0 ? null : namespaceURI;
+    }
+
+    public final String getPrefix() {
+        String prefix = coreGetPrefix();
+        return prefix.length() == 0 ? null : prefix;
+    }
 }

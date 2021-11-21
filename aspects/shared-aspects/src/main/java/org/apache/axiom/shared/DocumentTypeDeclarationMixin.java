@@ -18,8 +18,20 @@
  */
 package org.apache.axiom.shared;
 
-import org.apache.axiom.core.CoreProcessingInstruction;
+import org.apache.axiom.core.CoreDocumentTypeDeclaration;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-public interface IProcessingInstruction extends CoreProcessingInstruction {
+@Mixin(CoreDocumentTypeDeclaration.class)
+public abstract class DocumentTypeDeclarationMixin implements CoreDocumentTypeDeclaration {
+    public final String getPublicId() {
+        return coreGetPublicId();
+    }
 
+    public final String getSystemId() {
+        return coreGetSystemId();
+    }
+
+    public final String getInternalSubset() {
+        return coreGetInternalSubset();
+    }
 }

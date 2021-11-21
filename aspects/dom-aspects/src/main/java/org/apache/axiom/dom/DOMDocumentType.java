@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.dom;
 
-import org.apache.axiom.shared.IDocumentTypeDeclaration;
+import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.w3c.dom.DocumentType;
 
-public interface DOMDocumentType extends DOMLeafNode, DocumentType, IDocumentTypeDeclaration {
+public interface DOMDocumentType extends DOMLeafNode, DocumentType, CoreDocumentTypeDeclaration {
 
 }
