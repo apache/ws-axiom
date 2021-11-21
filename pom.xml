@@ -225,7 +225,7 @@
         <module>apidocs</module>
         <module>distribution</module>
         <module>testing</module>
-        <module>aspects</module>
+        <module>mixins</module>
         <module>implementations</module>
         <module>components</module>
         <module>axiom-weaver</module>

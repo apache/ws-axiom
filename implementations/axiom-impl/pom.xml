@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>om-aspects</artifactId>
+            <artifactId>om-mixins</artifactId>
             <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
