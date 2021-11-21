@@ -180,7 +180,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Import-Package>!org.aspectj.*,*</Import-Package>
+                        <Import-Package>*</Import-Package>
                         <Private-Package>
                             org.apache.axiom.core.*,
                             !org.apache.axiom.om.impl,

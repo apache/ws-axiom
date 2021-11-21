@@ -253,7 +253,6 @@
         <javaVersion>1.8</javaVersion>
 
         <failIfNoTests>false</failIfNoTests>
-        <aspectj.version>1.9.7</aspectj.version>
         <shade.plugin.version>3.2.4</shade.plugin.version>
         <spring.version>5.3.9</spring.version>
         <springws.version>3.1.1</springws.version>
@@ -413,11 +412,6 @@
                 <groupId>org.springframework.ws</groupId>
                 <artifactId>spring-ws-security</artifactId>
                 <version>${springws.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjrt</artifactId>
-                <version>${aspectj.version}</version>
             </dependency>
             <dependency>
                 <groupId>jakarta.xml.soap</groupId>
@@ -763,33 +757,6 @@
                     <groupId>com.github.veithen.maven</groupId>
                     <artifactId>wsimport-maven-plugin</artifactId>
                     <version>0.2.2</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>aspectj-maven-plugin</artifactId>
-                    <version>1.14.0</version>
-                    <configuration>
-                        <complianceLevel>${javaVersion}</complianceLevel>
-                    </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.aspectj</groupId>
-                            <artifactId>aspectjrt</artifactId>
-                            <version>${aspectj.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.aspectj</groupId>
-                            <artifactId>aspectjtools</artifactId>
-                            <version>${aspectj.version}</version>
-                        </dependency>
-                        <dependency><!-- Dirty hack to work around Java 9 incompatibility in the plugin -->
-                            <groupId>com.sun</groupId>
-                            <artifactId>tools</artifactId>
-                            <version>${java.version}</version>
-                            <scope>system</scope>
-                            <systemPath>${project.basedir}/pom.xml</systemPath>
-                        </dependency>
-                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>

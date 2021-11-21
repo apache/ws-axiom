@@ -34,6 +34,10 @@
     </description>
     <url>http://ws.apache.org/axiom/</url>
 
+    <properties>
+        <aspectj.version>1.9.7</aspectj.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -61,6 +65,7 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
         <dependency>
             <groupId>org.ow2.asm</groupId>
@@ -223,6 +228,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.14.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -230,6 +236,28 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <complianceLevel>${javaVersion}</complianceLevel>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjrt</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjtools</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                    <dependency><!-- Dirty hack to work around Java 9 incompatibility in the plugin -->
+                        <groupId>com.sun</groupId>
+                        <artifactId>tools</artifactId>
+                        <version>${java.version}</version>
+                        <scope>system</scope>
+                        <systemPath>${project.basedir}/pom.xml</systemPath>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
