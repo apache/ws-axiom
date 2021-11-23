@@ -16,22 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver;
+package org.apache.axiom.weaver.mixin;
 
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-final class WeighingMethodVisitor extends MethodVisitor {
-    private final Counter counter;
-    
-    WeighingMethodVisitor(Counter counter) {
-        super(Opcodes.ASM9);
-        this.counter = counter;
-    }
-
-    @Override
-    public void visitLineNumber(int line, Label start) {
-        counter.increment();
-    }
+public abstract class MixinInnerClass {
+    public abstract ClassDefinition createClassDefinition(String targetClassName);
 }

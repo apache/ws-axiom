@@ -23,6 +23,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.axiom.weaver.mixin.ClassDefinition;
+import org.apache.axiom.weaver.mixin.InitializerMethod;
+import org.apache.axiom.weaver.mixin.Mixin;
+import org.apache.axiom.weaver.mixin.MixinMethod;
+import org.apache.axiom.weaver.mixin.StaticInitializerMethod;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -107,7 +112,8 @@ final class ImplementationClassDefinition extends ClassDefinition {
         mv.visitEnd();
     }
 
-    void accept(ClassVisitor cv) {
+    @Override
+    public void accept(ClassVisitor cv) {
         cv.visit(version, access, className, null, superName, ifaceNames);
         generateConstructor(cv);
         generateStaticInitializer(cv);

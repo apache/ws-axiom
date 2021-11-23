@@ -16,16 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver;
+package org.apache.axiom.weaver.mixin;
 
-final class StaticInitializerMethod {
-    private final MethodBody body;
+import com.github.veithen.jrel.association.OneToManyAssociation;
 
-    StaticInitializerMethod(MethodBody body) {
-        this.body = body;
-    }
+final class Relations {
+    private Relations() {}
 
-    MethodBody getBody() {
-        return body;
-    }
+    static final OneToManyAssociation<Mixin,MixinMethod> MIXIN_METHODS = new OneToManyAssociation<>(Mixin.class, MixinMethod.class);
 }

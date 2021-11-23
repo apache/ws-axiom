@@ -16,11 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver;
+package org.apache.axiom.weaver.mixin;
 
-final class Counter {
-    private int value;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
-    void increment() { value++; }
-    int get() { return value; }
+final class WeighingMethodVisitor extends MethodVisitor {
+    private final Counter counter;
+    
+    WeighingMethodVisitor(Counter counter) {
+        super(Opcodes.ASM9);
+        this.counter = counter;
+    }
+
+    @Override
+    public void visitLineNumber(int line, Label start) {
+        counter.increment();
+    }
 }

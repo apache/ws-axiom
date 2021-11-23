@@ -21,6 +21,8 @@ package org.apache.axiom.weaver;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.axiom.weaver.mixin.ClassDefinition;
+
 final class WeavingClassLoader extends ClassLoader {
     private final Map<String, ClassDefinition> classDefinitions = new HashMap<String, ClassDefinition>();
 

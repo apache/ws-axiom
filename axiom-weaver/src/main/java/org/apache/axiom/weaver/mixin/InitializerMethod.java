@@ -16,16 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver;
+package org.apache.axiom.weaver.mixin;
 
-import org.objectweb.asm.MethodVisitor;
+public final class InitializerMethod {
+    private final MethodBody body;
 
-abstract class MethodBody {
-    abstract void apply(String targetClassName, MethodVisitor mv);
+    public InitializerMethod(MethodBody body) {
+        this.body = body;
+    }
 
-    final int getWeight() {
-        Counter counter = new Counter();
-        apply("Dummy", new WeighingMethodVisitor(counter));
-        return counter.get();
+    public MethodBody getBody() {
+        return body;
     }
 }

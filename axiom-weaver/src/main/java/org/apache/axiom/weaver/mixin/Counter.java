@@ -16,23 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver;
+package org.apache.axiom.weaver.mixin;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+final class Counter {
+    private int value;
 
-final class WeighingClassVisitor extends ClassVisitor {
-    private final Counter counter;
-
-    WeighingClassVisitor(Counter counter) {
-        super(Opcodes.ASM9);
-        this.counter = counter;
-    }
-
-    @Override
-    public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
-            String[] exceptions) {
-        return new WeighingMethodVisitor(counter);
-    }
+    void increment() { value++; }
+    int get() { return value; }
 }

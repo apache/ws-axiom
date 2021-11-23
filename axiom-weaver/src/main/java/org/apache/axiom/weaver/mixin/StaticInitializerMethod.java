@@ -16,34 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver;
+package org.apache.axiom.weaver.mixin;
 
-import java.io.PrintWriter;
+public final class StaticInitializerMethod {
+    private final MethodBody body;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.util.TraceClassVisitor;
-
-public abstract class ClassDefinition {
-    protected final String className;
-
-    ClassDefinition(String className) {
-        this.className = className;
+    public StaticInitializerMethod(MethodBody body) {
+        this.body = body;
     }
 
-    abstract void accept(ClassVisitor cv);
-
-    public final String getClassName() {
-        return className;
-    }
-
-    public final void dump(PrintWriter out) {
-        accept(new TraceClassVisitor(new PrintWriter(out)));
-    }
-
-    public final byte[] toByteArray() {
-        ClassWriter cw = new ClassWriter(/* ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES */ 0);
-        accept(cw);
-        return cw.toByteArray();
+    public MethodBody getBody() {
+        return body;
     }
 }

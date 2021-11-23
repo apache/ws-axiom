@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver;
+package org.apache.axiom.weaver.mixin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import org.objectweb.asm.tree.FieldNode;
 
 import com.github.veithen.jrel.association.MutableReferences;
 
-final class Mixin {
+public final class Mixin {
     private final int bytecodeVersion;
     private final String name;
     private final Class<?> targetInterface;
@@ -39,7 +39,7 @@ final class Mixin {
     private final int weight;
     private final List<MixinInnerClass> innerClasses;
 
-    Mixin(int bytecodeVersion, String name, Class<?> targetInterface, Set<Class<?>> addedInterfaces, List<FieldNode> fields, InitializerMethod initializerMethod, StaticInitializerMethod staticInitializerMethod, List<MixinMethod> methods, List<MixinInnerClass> innerClasses) {
+    public Mixin(int bytecodeVersion, String name, Class<?> targetInterface, Set<Class<?>> addedInterfaces, List<FieldNode> fields, InitializerMethod initializerMethod, StaticInitializerMethod staticInitializerMethod, List<MixinMethod> methods, List<MixinInnerClass> innerClasses) {
         this.bytecodeVersion = bytecodeVersion;
         this.name = name;
         this.targetInterface = targetInterface;
@@ -67,54 +67,54 @@ final class Mixin {
         this.weight = weight;
     }
 
-    int getBytecodeVersion() {
+    public int getBytecodeVersion() {
         return bytecodeVersion;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    Class<?> getTargetInterface() {
+    public Class<?> getTargetInterface() {
         return targetInterface;
     }
 
-    Set<Class<?>> getAddedInterfaces() {
+    public Set<Class<?>> getAddedInterfaces() {
         return addedInterfaces;
     }
 
-    boolean contributesCode() {
+    public boolean contributesCode() {
         // TODO: also attributes
         return !methods.isEmpty();
     }
 
-    int getWeight() {
+    public int getWeight() {
         return weight;
     }
 
-    MutableReferences<MixinMethod> getMethods() {
+    public MutableReferences<MixinMethod> getMethods() {
         return methods;
     }
 
-    boolean appliesAfter(Mixin other) {
+    public boolean appliesAfter(Mixin other) {
         return other.targetInterface.isAssignableFrom(targetInterface);
     }
 
-    void apply(String targetClassName, ClassVisitor cv) {
+    public void apply(String targetClassName, ClassVisitor cv) {
         for (FieldNode field : fields) {
             field.accept(cv);
         }
     }
 
-    InitializerMethod getInitializerMethod() {
+    public InitializerMethod getInitializerMethod() {
         return initializerMethod;
     }
 
-    StaticInitializerMethod getStaticInitializerMethod() {
+    public StaticInitializerMethod getStaticInitializerMethod() {
         return staticInitializerMethod;
     }
 
-    List<ClassDefinition> createInnerClassDefinitions(String targetClassName) {
+    public List<ClassDefinition> createInnerClassDefinitions(String targetClassName) {
         List<ClassDefinition> classDefinitions = new ArrayList<>();
         for (MixinInnerClass innerClass : innerClasses) {
             classDefinitions.add(innerClass.createClassDefinition(targetClassName));

@@ -85,20 +85,6 @@
                         <goals>
                             <goal>enforce</goal>
                         </goals>
-                        <configuration>
-                            <layers>
-                                <layer>
-                                    <packages>
-                                        <value>org.objectweb.asm</value>
-                                    </packages>
-                                    <visibilityRules>
-                                        <value>
-                                            <allowPublicUsage>false</allowPublicUsage>
-                                        </value>
-                                    </visibilityRules>
-                                </layer>
-                            </layers>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

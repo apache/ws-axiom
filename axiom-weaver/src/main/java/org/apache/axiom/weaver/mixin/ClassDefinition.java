@@ -16,13 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver;
+package org.apache.axiom.weaver.mixin;
 
-import com.github.veithen.jrel.association.ManyToOneAssociation;
-import com.github.veithen.jrel.association.Navigability;
+import java.io.PrintWriter;
 
-final class Relations {
-    private Relations() {}
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.util.TraceClassVisitor;
 
-    static final ManyToOneAssociation<ImplementationNode,Weaver> WEAVER = new ManyToOneAssociation<>(ImplementationNode.class, Weaver.class, Navigability.BIDIRECTIONAL);
+public abstract class ClassDefinition {
+    protected final String className;
+
+    public ClassDefinition(String className) {
+        this.className = className;
+    }
+
+    public abstract void accept(ClassVisitor cv);
+
+    public final String getClassName() {
+        return className;
+    }
+
+    public final void dump(PrintWriter out) {
+        accept(new TraceClassVisitor(new PrintWriter(out)));
+    }
+
+    public final byte[] toByteArray() {
+        ClassWriter cw = new ClassWriter(/* ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES */ 0);
+        accept(cw);
+        return cw.toByteArray();
+    }
 }

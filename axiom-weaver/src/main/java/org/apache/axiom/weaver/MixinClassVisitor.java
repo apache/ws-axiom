@@ -24,6 +24,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
+import org.apache.axiom.weaver.mixin.ClassDefinition;
+import org.apache.axiom.weaver.mixin.InitializerMethod;
+import org.apache.axiom.weaver.mixin.MethodBody;
+import org.apache.axiom.weaver.mixin.Mixin;
+import org.apache.axiom.weaver.mixin.MixinInnerClass;
+import org.apache.axiom.weaver.mixin.MixinMethod;
+import org.apache.axiom.weaver.mixin.StaticInitializerMethod;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -117,7 +124,7 @@ final class MixinClassVisitor extends ClassVisitor {
         Function<String, Remapper> remapperFactory = this.remapperFactory;
         MethodBody body = new MethodBody() {
             @Override
-            void apply(String targetClassName, MethodVisitor mv) {
+            public void apply(String targetClassName, MethodVisitor mv) {
                 method.accept(new MethodRemapper(mv, remapperFactory.apply(targetClassName)));
             }
         };
@@ -144,11 +151,11 @@ final class MixinClassVisitor extends ClassVisitor {
             classFetcher.fetch(innerClassName, innerClass);
             innerClasses.add(new MixinInnerClass() {
                 @Override
-                ClassDefinition createClassDefinition(String targetClassName) {
+                public ClassDefinition createClassDefinition(String targetClassName) {
                     Remapper remapper = remapperFactory.apply(targetClassName);
                     return new ClassDefinition(remapper.map(innerClass.name)) {
                         @Override
-                        void accept(ClassVisitor cv) {
+                        public void accept(ClassVisitor cv) {
                             innerClass.accept(new ClassRemapper(cv, remapper));
                         }
                     };

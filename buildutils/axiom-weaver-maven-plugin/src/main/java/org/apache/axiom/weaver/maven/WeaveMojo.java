@@ -26,10 +26,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
 
-import org.apache.axiom.weaver.ClassDefinition;
 import org.apache.axiom.weaver.ImplementationClassNameMapper;
 import org.apache.axiom.weaver.Weaver;
 import org.apache.axiom.weaver.WeaverException;
+import org.apache.axiom.weaver.mixin.ClassDefinition;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;

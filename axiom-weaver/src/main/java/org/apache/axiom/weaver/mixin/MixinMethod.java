@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver;
+package org.apache.axiom.weaver.mixin;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
 import com.github.veithen.jrel.association.MutableReference;
 
-final class MixinMethod {
+public final class MixinMethod {
     private final MutableReference<Mixin> mixin = Relations.MIXIN_METHODS.getConverse().newReferenceHolder(this);
     private final int access;
     private final String name;
@@ -32,7 +32,7 @@ final class MixinMethod {
     private final String[] exceptions;
     private final MethodBody body;
 
-    MixinMethod(int access, String name, String descriptor, String signature, String[] exceptions, MethodBody body) {
+    public MixinMethod(int access, String name, String descriptor, String signature, String[] exceptions, MethodBody body) {
         this.access = access;
         this.name = name;
         this.descriptor = descriptor;
@@ -41,19 +41,19 @@ final class MixinMethod {
         this.body = body;
     }
 
-    Mixin getMixin() {
+    public Mixin getMixin() {
         return mixin.get();
     }
 
-    String getSignature() {
+    public String getSignature() {
         return name + descriptor;
     }
 
-    MethodBody getBody() {
+    public MethodBody getBody() {
         return body;
     }
 
-    void apply(String targetClassName, ClassVisitor cv) {
+    public void apply(String targetClassName, ClassVisitor cv) {
         MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
         if (mv != null) {
             body.apply(targetClassName, mv);

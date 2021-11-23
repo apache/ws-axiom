@@ -24,6 +24,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.axiom.weaver.mixin.ClassDefinition;
+import org.apache.axiom.weaver.mixin.Mixin;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
