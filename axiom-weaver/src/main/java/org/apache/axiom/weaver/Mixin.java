@@ -23,49 +23,41 @@ import java.util.List;
 import java.util.Set;
 
 import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.commons.ClassRemapper;
-import org.objectweb.asm.commons.Remapper;
-import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.MethodNode;
 
 import com.github.veithen.jrel.association.MutableReferences;
 
 final class Mixin {
     private final int bytecodeVersion;
-    private final String className;
+    private final String name;
     private final Class<?> targetInterface;
     private final Set<Class<?>> addedInterfaces;
     private final List<FieldNode> fields;
-    private final MethodNode initMethod;
-    private final MethodNode clinitMethod;
+    private final InitializerMethod initializerMethod;
+    private final StaticInitializerMethod staticInitializerMethod;
     private final MutableReferences<MixinMethod> methods = Relations.MIXIN_METHODS.newReferenceHolder(this);
     private final int weight;
-    private final List<ClassNode> innerClasses;
+    private final List<MixinInnerClass> innerClasses;
 
-    Mixin(int bytecodeVersion, String className, Class<?> targetInterface, Set<Class<?>> addedInterfaces, List<FieldNode> fields, MethodNode initMethod, MethodNode clinitMethod, List<MixinMethod> methods, int weight, List<ClassNode> innerClasses) {
+    Mixin(int bytecodeVersion, String name, Class<?> targetInterface, Set<Class<?>> addedInterfaces, List<FieldNode> fields, InitializerMethod initializerMethod, StaticInitializerMethod staticInitializerMethod, List<MixinMethod> methods, int weight, List<MixinInnerClass> innerClasses) {
         this.bytecodeVersion = bytecodeVersion;
-        this.className = className;
+        this.name = name;
         this.targetInterface = targetInterface;
         this.addedInterfaces = addedInterfaces;
         this.fields = fields;
-        this.initMethod = initMethod;
-        this.clinitMethod = clinitMethod;
+        this.initializerMethod = initializerMethod;
+        this.staticInitializerMethod = staticInitializerMethod;
         this.methods.addAll(methods);
         this.weight = weight;
         this.innerClasses = innerClasses;
-    }
-
-    String getClassName() {
-        return className;
     }
 
     int getBytecodeVersion() {
         return bytecodeVersion;
     }
 
-    String getSimpleName() {
-        return className.substring(className.lastIndexOf('/')+1);
+    String getName() {
+        return name;
     }
 
     Class<?> getTargetInterface() {
@@ -93,50 +85,24 @@ final class Mixin {
         return other.targetInterface.isAssignableFrom(targetInterface);
     }
 
-    Remapper createRemapper(String targetClassName) {
-        return new Remapper() {
-            @Override
-            public String map(String internalName) {
-                if (internalName.equals(className)) {
-                    return targetClassName;
-                }
-                if (internalName.length() > className.length() && internalName.startsWith(className) && internalName.charAt(className.length()) == '$') {
-                    return targetClassName + internalName.substring(className.length());
-                }
-                return internalName;
-            }
-        };
-    }
-
     void apply(String targetClassName, ClassVisitor cv) {
-        cv = new ClassRemapper(cv, createRemapper(targetClassName));
         for (FieldNode field : fields) {
             field.accept(cv);
         }
-        initMethod.accept(cv);
-        if (clinitMethod != null) {
-            clinitMethod.accept(cv);
-        }
     }
 
-    String getInitMethodName() {
-        return initMethod.name;
+    InitializerMethod getInitializerMethod() {
+        return initializerMethod;
     }
 
-    String getStaticInitializerMethodName() {
-        return clinitMethod == null ? null : clinitMethod.name;
+    StaticInitializerMethod getStaticInitializerMethod() {
+        return staticInitializerMethod;
     }
 
     List<ClassDefinition> createInnerClassDefinitions(String targetClassName) {
-        final Remapper remapper = createRemapper(targetClassName);
         List<ClassDefinition> classDefinitions = new ArrayList<>();
-        for (final ClassNode innerClass : innerClasses) {
-            classDefinitions.add(new ClassDefinition(remapper.map(innerClass.name)) {
-                @Override
-                void accept(ClassVisitor cv) {
-                    innerClass.accept(new ClassRemapper(cv, remapper));
-                }
-            });
+        for (MixinInnerClass innerClass : innerClasses) {
+            classDefinitions.add(innerClass.createClassDefinition(targetClassName));
         }
         return classDefinitions;
     }

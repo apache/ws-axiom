@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
@@ -30,6 +31,9 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.commons.ClassRemapper;
+import org.objectweb.asm.commons.MethodRemapper;
+import org.objectweb.asm.commons.Remapper;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -38,14 +42,15 @@ final class MixinClassVisitor extends ClassVisitor {
     private final ClassFetcher classFetcher;
     private int bytecodeVersion;
     private String className;
+    private Function<String, Remapper> remapperFactory;
     private Class<?> targetInterface;
     private final Set<Class<?>> addedInterfaces = new HashSet<>();
     private final List<FieldNode> fields = new ArrayList<>();
     private final List<MixinMethod> methods = new ArrayList<>();
     private int weight;
     private final List<String> innerClassNames = new ArrayList<>();
-    private MethodNode initMethod;
-    private MethodNode clinitMethod;
+    private InitializerMethod initializerMethod;
+    private StaticInitializerMethod staticInitializerMethod;
 
     MixinClassVisitor(ClassFetcher classFetcher) {
         super(Opcodes.ASM9);
@@ -57,6 +62,18 @@ final class MixinClassVisitor extends ClassVisitor {
             String[] interfaces) {
         bytecodeVersion = version;
         className = name;
+        remapperFactory = (targetClassName) -> new Remapper() {
+            @Override
+            public String map(String internalName) {
+                if (internalName.equals(name)) {
+                    return targetClassName;
+                }
+                if (internalName.length() > name.length() && internalName.startsWith(name) && internalName.charAt(name.length()) == '$') {
+                    return targetClassName + internalName.substring(name.length());
+                }
+                return internalName;
+            }
+        };
         for (String iface : interfaces) {
             addedInterfaces.add(classFetcher.loadClass(iface.replace('/', '.')));
         }
@@ -98,18 +115,36 @@ final class MixinClassVisitor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
             String[] exceptions) {
+        MethodNode method = new MethodNode(Opcodes.ASM9, access, name, descriptor, signature, exceptions);
         if (name.equals("<init>")) {
             if (!descriptor.equals("()V")) {
                 throw new WeaverException("Expected only a default constructor");
             }
-            initMethod = new MethodNode(Opcodes.ASM9, Opcodes.ACC_PRIVATE, "init$" + className.replace('/', '_'), descriptor, signature, exceptions);
-            return new ConstructorToMethodConverter(initMethod);
+            Function<String, Remapper> remapperFactory = this.remapperFactory;
+            initializerMethod = new InitializerMethod() {
+                @Override
+                public void apply(String targetClassName, MethodVisitor mv) {
+                    method.accept(new MethodRemapper(mv, remapperFactory.apply(targetClassName)));
+                }
+            };
+            return new ConstructorToMethodConverter(method);
         } else if (name.equals("<clinit>")) {
-            clinitMethod = new MethodNode(Opcodes.ASM9, Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC, "clinit$" + className.replace('/', '_'), descriptor, signature, exceptions);
-            return clinitMethod;
+            Function<String, Remapper> remapperFactory = this.remapperFactory;
+            staticInitializerMethod = new StaticInitializerMethod() {
+                @Override
+                public void apply(String targetClassName, MethodVisitor mv) {
+                    method.accept(new MethodRemapper(mv, remapperFactory.apply(targetClassName)));
+                }
+            };
+            return method;
         } else {
-            MethodNode method = new MethodNode(Opcodes.ASM9, access, name, descriptor, signature, exceptions);
-            methods.add(new MixinMethod(method));
+            Function<String, Remapper> remapperFactory = this.remapperFactory;
+            methods.add(new MixinMethod(access, name, descriptor, signature, exceptions) {
+                @Override
+                public void apply(String targetClassName, MethodVisitor mv) {
+                    method.accept(new MethodRemapper(mv, remapperFactory.apply(targetClassName)));
+                }
+            });
             return new MethodVisitor(Opcodes.ASM9, method) {
                 @Override
                 public void visitLineNumber(int line, Label start) {
@@ -121,13 +156,25 @@ final class MixinClassVisitor extends ClassVisitor {
     }
 
     Mixin getMixin() {
-        List<ClassNode> innerClasses = new ArrayList<>();
+        List<MixinInnerClass> innerClasses = new ArrayList<>();
+        Function<String, Remapper> remapperFactory = this.remapperFactory;
         for (String innerClassName : innerClassNames) {
             ClassNode innerClass = new ClassNode();
             classFetcher.fetch(innerClassName, innerClass);
-            innerClasses.add(innerClass);
+            innerClasses.add(new MixinInnerClass() {
+                @Override
+                ClassDefinition createClassDefinition(String targetClassName) {
+                    Remapper remapper = remapperFactory.apply(targetClassName);
+                    return new ClassDefinition(remapper.map(innerClass.name)) {
+                        @Override
+                        void accept(ClassVisitor cv) {
+                            innerClass.accept(new ClassRemapper(cv, remapper));
+                        }
+                    };
+                }
+            });
         }
         // TODO: include inner classes in the weight
-        return new Mixin(bytecodeVersion, className, targetInterface, addedInterfaces, fields, initMethod, clinitMethod, methods, weight, innerClasses);
+        return new Mixin(bytecodeVersion, className.substring(className.lastIndexOf('/')+1), targetInterface, addedInterfaces, fields, initializerMethod, staticInitializerMethod, methods, weight, innerClasses);
     }
 }

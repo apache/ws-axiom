@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.weaver;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.objectweb.asm.ClassVisitor;
@@ -33,6 +35,8 @@ final class ImplementationClassDefinition extends ClassDefinition {
     private final String[] ifaceNames;
     private final Mixin[] mixins;
     private final MixinMethod[] methods;
+    private final List<Named<InitializerMethod>> initializerMethods = new ArrayList<>();
+    private final List<Named<StaticInitializerMethod>> staticInitializerMethods = new ArrayList<>();
 
     ImplementationClassDefinition(int version, int access, String className, String superName,
             String[] ifaceNames, Mixin[] mixins) {
@@ -43,6 +47,7 @@ final class ImplementationClassDefinition extends ClassDefinition {
         this.ifaceNames = ifaceNames;
         this.mixins = mixins;
         Map<String, MixinMethod> methodMap = new LinkedHashMap<>();
+        UniqueNameGenerator methodNameGenerator = new UniqueNameGenerator();
         for (Mixin mixin : mixins) {
             for (MixinMethod method : mixin.getMethods()) {
                 String signature = method.getSignature();
@@ -58,6 +63,14 @@ final class ImplementationClassDefinition extends ClassDefinition {
                 }
                 methodMap.put(signature, method);
             }
+            InitializerMethod initializerMethod = mixin.getInitializerMethod();
+            if (initializerMethod != null) {
+                initializerMethods.add(new Named<>(initializerMethod, methodNameGenerator.generateUniqueName("init$" + mixin.getName())));
+            }
+            StaticInitializerMethod staticInitializerMethod = mixin.getStaticInitializerMethod();
+            if (staticInitializerMethod != null) {
+                staticInitializerMethods.add(new Named<>(staticInitializerMethod, methodNameGenerator.generateUniqueName("clinit$" + mixin.getName())));
+            }
         }
         methods = methodMap.values().toArray(new MixinMethod[methodMap.size()]);
     }
@@ -69,9 +82,9 @@ final class ImplementationClassDefinition extends ClassDefinition {
         mv.visitCode();
         mv.visitIntInsn(Opcodes.ALOAD, 0);
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superName, "<init>", "()V", false);
-        for (Mixin mixin : mixins) {
+        for (Named<InitializerMethod> method : initializerMethods) {
             mv.visitIntInsn(Opcodes.ALOAD, 0);
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, mixin.getInitMethodName(), "()V", false);
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, method.getName(), "()V", false);
         }
         mv.visitInsn(Opcodes.RETURN);
         mv.visitMaxs(1, 1);
@@ -79,25 +92,15 @@ final class ImplementationClassDefinition extends ClassDefinition {
     }
 
     private void generateStaticInitializer(ClassVisitor cv) {
-        boolean needed = false;
-        for (Mixin mixin : mixins) {
-            if (mixin.getStaticInitializerMethodName() != null) {
-                needed = true;
-                break;
-            }
-        }
-        if (!needed) {
+        if (staticInitializerMethods.isEmpty()) {
             return;
         }
         MethodVisitor mv = cv.visitMethod(
                 Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,
                 "<clinit>", "()V", null, null);
         mv.visitCode();
-        for (Mixin mixin : mixins) {
-            String methodName = mixin.getStaticInitializerMethodName();
-            if (methodName != null) {
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, className, methodName, "()V", false);
-            }
+        for (Named<StaticInitializerMethod> method : staticInitializerMethods) {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, className, method.getName(), "()V", false);
         }
         mv.visitInsn(Opcodes.RETURN);
         mv.visitMaxs(0, 0);
@@ -110,6 +113,18 @@ final class ImplementationClassDefinition extends ClassDefinition {
         generateStaticInitializer(cv);
         for (Mixin mixin : mixins) {
             mixin.apply(className, cv);
+        }
+        for (Named<InitializerMethod> method : initializerMethods) {
+            MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PRIVATE, method.getName(), "()V", null, null);
+            if (mv != null) {
+                method.get().apply(className, mv);
+            }
+        }
+        for (Named<StaticInitializerMethod> method : staticInitializerMethods) {
+            MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC, method.getName(), "()V", null, null);
+            if (mv != null) {
+                method.get().apply(className, mv);
+            }
         }
         for (MixinMethod method : methods) {
             method.apply(className, cv);

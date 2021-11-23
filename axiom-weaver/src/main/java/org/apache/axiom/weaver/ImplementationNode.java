@@ -120,7 +120,7 @@ final class ImplementationNode {
             builder.append("</i><br/>");
         }
         for (Mixin mixin : mixins) {
-            builder.append(mixin.getSimpleName());
+            builder.append(mixin.getName());
             builder.append("<br/>");
         }
         builder.append("[w:");

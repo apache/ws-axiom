@@ -19,28 +19,40 @@
 package org.apache.axiom.weaver;
 
 import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.commons.ClassRemapper;
-import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.MethodVisitor;
 
 import com.github.veithen.jrel.association.MutableReference;
 
-final class MixinMethod {
+abstract class MixinMethod {
     private final MutableReference<Mixin> mixin = Relations.MIXIN_METHODS.getConverse().newReferenceHolder(this);
-    private final MethodNode methodNode;
+    private final int access;
+    private final String name;
+    private final String descriptor;
+    private final String signature;
+    private final String[] exceptions;
 
-    MixinMethod(MethodNode methodNode) {
-        this.methodNode = methodNode;
+    MixinMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+        this.access = access;
+        this.name = name;
+        this.descriptor = descriptor;
+        this.signature = signature;
+        this.exceptions = exceptions;
     }
 
-    Mixin getMixin() {
+    final Mixin getMixin() {
         return mixin.get();
     }
 
-    String getSignature() {
-        return methodNode.name + methodNode.desc;
+    final String getSignature() {
+        return name + descriptor;
     }
 
-    void apply(final String targetClassName, ClassVisitor cv) {
-        methodNode.accept(new ClassRemapper(cv, mixin.get().createRemapper(targetClassName)));
+    final void apply(String targetClassName, ClassVisitor cv) {
+        MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
+        if (mv != null) {
+            apply(targetClassName, mv);
+        }
     }
+
+    abstract void apply(String targetClassName, MethodVisitor mv);
 }
