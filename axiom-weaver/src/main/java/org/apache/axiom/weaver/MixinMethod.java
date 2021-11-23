@@ -49,6 +49,10 @@ final class MixinMethod {
         return name + descriptor;
     }
 
+    MethodBody getBody() {
+        return body;
+    }
+
     void apply(String targetClassName, ClassVisitor cv) {
         MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
         if (mv != null) {

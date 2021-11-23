@@ -27,7 +27,6 @@ import java.util.function.Function;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -47,7 +46,6 @@ final class MixinClassVisitor extends ClassVisitor {
     private final Set<Class<?>> addedInterfaces = new HashSet<>();
     private final List<FieldNode> fields = new ArrayList<>();
     private final List<MixinMethod> methods = new ArrayList<>();
-    private int weight;
     private final List<String> innerClassNames = new ArrayList<>();
     private InitializerMethod initializerMethod;
     private StaticInitializerMethod staticInitializerMethod;
@@ -134,13 +132,7 @@ final class MixinClassVisitor extends ClassVisitor {
             return method;
         } else {
             methods.add(new MixinMethod(access, name, descriptor, signature, exceptions, body));
-            return new MethodVisitor(Opcodes.ASM9, method) {
-                @Override
-                public void visitLineNumber(int line, Label start) {
-                    super.visitLineNumber(line, start);
-                    weight++;
-                }
-            };
+            return method;
         }
     }
 
@@ -163,7 +155,6 @@ final class MixinClassVisitor extends ClassVisitor {
                 }
             });
         }
-        // TODO: include inner classes in the weight
-        return new Mixin(bytecodeVersion, className.substring(className.lastIndexOf('/')+1), targetInterface, addedInterfaces, fields, initializerMethod, staticInitializerMethod, methods, weight, innerClasses);
+        return new Mixin(bytecodeVersion, className.substring(className.lastIndexOf('/')+1), targetInterface, addedInterfaces, fields, initializerMethod, staticInitializerMethod, methods, innerClasses);
     }
 }

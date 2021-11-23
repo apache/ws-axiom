@@ -18,14 +18,9 @@
  */
 package org.apache.axiom.weaver;
 
-import org.objectweb.asm.MethodVisitor;
+final class Counter {
+    private int value;
 
-abstract class MethodBody {
-    abstract void apply(String targetClassName, MethodVisitor mv);
-
-    final int getWeight() {
-        Counter counter = new Counter();
-        apply("Dummy", new WeighingMethodVisitor(counter));
-        return counter.get();
-    }
+    void increment() { value++; }
+    int get() { return value; }
 }

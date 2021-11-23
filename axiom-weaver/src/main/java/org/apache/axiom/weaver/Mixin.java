@@ -39,7 +39,7 @@ final class Mixin {
     private final int weight;
     private final List<MixinInnerClass> innerClasses;
 
-    Mixin(int bytecodeVersion, String name, Class<?> targetInterface, Set<Class<?>> addedInterfaces, List<FieldNode> fields, InitializerMethod initializerMethod, StaticInitializerMethod staticInitializerMethod, List<MixinMethod> methods, int weight, List<MixinInnerClass> innerClasses) {
+    Mixin(int bytecodeVersion, String name, Class<?> targetInterface, Set<Class<?>> addedInterfaces, List<FieldNode> fields, InitializerMethod initializerMethod, StaticInitializerMethod staticInitializerMethod, List<MixinMethod> methods, List<MixinInnerClass> innerClasses) {
         this.bytecodeVersion = bytecodeVersion;
         this.name = name;
         this.targetInterface = targetInterface;
@@ -48,8 +48,23 @@ final class Mixin {
         this.initializerMethod = initializerMethod;
         this.staticInitializerMethod = staticInitializerMethod;
         this.methods.addAll(methods);
-        this.weight = weight;
         this.innerClasses = innerClasses;
+        int weight = 0;
+        if (initializerMethod != null) {
+            weight += initializerMethod.getBody().getWeight();
+        }
+        if (staticInitializerMethod != null) {
+            weight += staticInitializerMethod.getBody().getWeight();
+        }
+        for (MixinMethod method : methods) {
+            weight += method.getBody().getWeight();
+        }
+        for (MixinInnerClass innerClass : innerClasses) {
+            Counter counter = new Counter();
+            innerClass.createClassDefinition("Dummy").accept(new WeighingClassVisitor(counter));
+            weight += counter.get();
+        }
+        this.weight = weight;
     }
 
     int getBytecodeVersion() {

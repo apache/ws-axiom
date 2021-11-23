@@ -18,14 +18,21 @@
  */
 package org.apache.axiom.weaver;
 
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
-abstract class MethodBody {
-    abstract void apply(String targetClassName, MethodVisitor mv);
+final class WeighingClassVisitor extends ClassVisitor {
+    private final Counter counter;
 
-    final int getWeight() {
-        Counter counter = new Counter();
-        apply("Dummy", new WeighingMethodVisitor(counter));
-        return counter.get();
+    WeighingClassVisitor(Counter counter) {
+        super(Opcodes.ASM9);
+        this.counter = counter;
+    }
+
+    @Override
+    public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
+            String[] exceptions) {
+        return new WeighingMethodVisitor(counter);
     }
 }
