@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver;
+package org.apache.axiom.weaver.mixin.clazz;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
+import org.apache.axiom.weaver.classio.ClassFetcher;
 import org.apache.axiom.weaver.mixin.ClassDefinition;
 import org.apache.axiom.weaver.mixin.InitializerMethod;
 import org.apache.axiom.weaver.mixin.MethodBody;
@@ -94,7 +95,7 @@ final class MixinClassVisitor extends ClassVisitor {
                         String ifaceName = ((Type)value).getClassName();
                         targetInterface = classFetcher.loadClass(ifaceName);
                         if (!targetInterface.isInterface()) {
-                            throw new WeaverException(ifaceName + " is not an interface");
+                            throw new MixinFactoryException(ifaceName + " is not an interface");
                         }
                     }
                 }
@@ -130,7 +131,7 @@ final class MixinClassVisitor extends ClassVisitor {
         };
         if (name.equals("<init>")) {
             if (!descriptor.equals("()V")) {
-                throw new WeaverException("Expected only a default constructor");
+                throw new MixinFactoryException("Expected only a default constructor");
             }
             initializerMethod = new InitializerMethod(body);
             return new ConstructorToMethodConverter(method);

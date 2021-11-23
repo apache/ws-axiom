@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver;
+package org.apache.axiom.weaver.mixin.clazz;
 
 import org.objectweb.asm.Handle;
 import org.objectweb.asm.Label;

@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.apache.axiom.weaver.mixin.ClassDefinition;
 import org.apache.axiom.weaver.mixin.Mixin;
+import org.apache.axiom.weaver.mixin.clazz.MixinFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -47,13 +48,8 @@ public final class Weaver {
     }
 
     public void loadWeavablePackage(ClassLoader classLoader, String packageName) {
-        List<String> mixins = new ArrayList<>();
-        ClassFetcher cf = new ClassFetcher(classLoader);
-        cf.fetch(packageName + ".package-info", new PackageInfoVisitor(mixins));
-        for (String mixin : mixins) {
-            MixinClassVisitor cv = new MixinClassVisitor(cf);
-            cf.fetch(mixin, cv);
-            addMixin(cv.getMixin());
+        for (Mixin mixin : MixinFactory.loadMixins(new ClassFetcherImpl(classLoader), packageName)) {
+            addMixin(mixin);
         }
     }
 
