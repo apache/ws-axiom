@@ -116,35 +116,24 @@ final class MixinClassVisitor extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
             String[] exceptions) {
         MethodNode method = new MethodNode(Opcodes.ASM9, access, name, descriptor, signature, exceptions);
+        Function<String, Remapper> remapperFactory = this.remapperFactory;
+        MethodBody body = new MethodBody() {
+            @Override
+            void apply(String targetClassName, MethodVisitor mv) {
+                method.accept(new MethodRemapper(mv, remapperFactory.apply(targetClassName)));
+            }
+        };
         if (name.equals("<init>")) {
             if (!descriptor.equals("()V")) {
                 throw new WeaverException("Expected only a default constructor");
             }
-            Function<String, Remapper> remapperFactory = this.remapperFactory;
-            initializerMethod = new InitializerMethod() {
-                @Override
-                public void apply(String targetClassName, MethodVisitor mv) {
-                    method.accept(new MethodRemapper(mv, remapperFactory.apply(targetClassName)));
-                }
-            };
+            initializerMethod = new InitializerMethod(body);
             return new ConstructorToMethodConverter(method);
         } else if (name.equals("<clinit>")) {
-            Function<String, Remapper> remapperFactory = this.remapperFactory;
-            staticInitializerMethod = new StaticInitializerMethod() {
-                @Override
-                public void apply(String targetClassName, MethodVisitor mv) {
-                    method.accept(new MethodRemapper(mv, remapperFactory.apply(targetClassName)));
-                }
-            };
+            staticInitializerMethod = new StaticInitializerMethod(body);
             return method;
         } else {
-            Function<String, Remapper> remapperFactory = this.remapperFactory;
-            methods.add(new MixinMethod(access, name, descriptor, signature, exceptions) {
-                @Override
-                public void apply(String targetClassName, MethodVisitor mv) {
-                    method.accept(new MethodRemapper(mv, remapperFactory.apply(targetClassName)));
-                }
-            });
+            methods.add(new MixinMethod(access, name, descriptor, signature, exceptions, body));
             return new MethodVisitor(Opcodes.ASM9, method) {
                 @Override
                 public void visitLineNumber(int line, Label start) {

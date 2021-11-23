@@ -23,36 +23,36 @@ import org.objectweb.asm.MethodVisitor;
 
 import com.github.veithen.jrel.association.MutableReference;
 
-abstract class MixinMethod {
+final class MixinMethod {
     private final MutableReference<Mixin> mixin = Relations.MIXIN_METHODS.getConverse().newReferenceHolder(this);
     private final int access;
     private final String name;
     private final String descriptor;
     private final String signature;
     private final String[] exceptions;
+    private final MethodBody body;
 
-    MixinMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+    MixinMethod(int access, String name, String descriptor, String signature, String[] exceptions, MethodBody body) {
         this.access = access;
         this.name = name;
         this.descriptor = descriptor;
         this.signature = signature;
         this.exceptions = exceptions;
+        this.body = body;
     }
 
-    final Mixin getMixin() {
+    Mixin getMixin() {
         return mixin.get();
     }
 
-    final String getSignature() {
+    String getSignature() {
         return name + descriptor;
     }
 
-    final void apply(String targetClassName, ClassVisitor cv) {
+    void apply(String targetClassName, ClassVisitor cv) {
         MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
         if (mv != null) {
-            apply(targetClassName, mv);
+            body.apply(targetClassName, mv);
         }
     }
-
-    abstract void apply(String targetClassName, MethodVisitor mv);
 }

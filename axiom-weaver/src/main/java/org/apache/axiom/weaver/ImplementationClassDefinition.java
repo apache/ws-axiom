@@ -117,13 +117,13 @@ final class ImplementationClassDefinition extends ClassDefinition {
         for (Named<InitializerMethod> method : initializerMethods) {
             MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PRIVATE, method.getName(), "()V", null, null);
             if (mv != null) {
-                method.get().apply(className, mv);
+                method.get().getBody().apply(className, mv);
             }
         }
         for (Named<StaticInitializerMethod> method : staticInitializerMethods) {
             MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC, method.getName(), "()V", null, null);
             if (mv != null) {
-                method.get().apply(className, mv);
+                method.get().getBody().apply(className, mv);
             }
         }
         for (MixinMethod method : methods) {

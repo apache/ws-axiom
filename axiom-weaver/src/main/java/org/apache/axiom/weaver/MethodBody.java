@@ -18,14 +18,8 @@
  */
 package org.apache.axiom.weaver;
 
-final class InitializerMethod {
-    private final MethodBody body;
+import org.objectweb.asm.MethodVisitor;
 
-    InitializerMethod(MethodBody body) {
-        this.body = body;
-    }
-
-    MethodBody getBody() {
-        return body;
-    }
+abstract class MethodBody {
+    abstract void apply(String targetClassName, MethodVisitor mv);
 }
