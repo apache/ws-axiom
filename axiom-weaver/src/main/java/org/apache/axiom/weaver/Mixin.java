@@ -19,9 +19,7 @@
 package org.apache.axiom.weaver;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.objectweb.asm.ClassVisitor;
@@ -95,21 +93,17 @@ final class Mixin {
         return other.targetInterface.isAssignableFrom(targetInterface);
     }
 
-    private String getTargetInnerClassName(ClassNode innerClass, String targetClassName) {
-        return targetClassName + innerClass.name.substring(innerClass.name.indexOf('$'));
-    }
-
     Remapper createRemapper(String targetClassName) {
-        final Map<String, String> map = new HashMap<>();
-        map.put(className, targetClassName);
-        for (ClassNode innerClass : innerClasses) {
-            map.put(innerClass.name, getTargetInnerClassName(innerClass, targetClassName));
-        }
         return new Remapper() {
             @Override
             public String map(String internalName) {
-                String mappedName = map.get(internalName);
-                return mappedName != null ? mappedName : internalName;
+                if (internalName.equals(className)) {
+                    return targetClassName;
+                }
+                if (internalName.length() > className.length() && internalName.startsWith(className) && internalName.charAt(className.length()) == '$') {
+                    return targetClassName + internalName.substring(className.length());
+                }
+                return internalName;
             }
         };
     }
@@ -137,7 +131,7 @@ final class Mixin {
         final Remapper remapper = createRemapper(targetClassName);
         List<ClassDefinition> classDefinitions = new ArrayList<>();
         for (final ClassNode innerClass : innerClasses) {
-            classDefinitions.add(new ClassDefinition(getTargetInnerClassName(innerClass, targetClassName)) {
+            classDefinitions.add(new ClassDefinition(remapper.map(innerClass.name)) {
                 @Override
                 void accept(ClassVisitor cv) {
                     innerClass.accept(new ClassRemapper(cv, remapper));
