@@ -25,7 +25,7 @@ import org.apache.axiom.dom.DOMSemantics;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@Mixin(DOMProcessingInstruction.class)
+@Mixin
 public abstract class DOMProcessingInstructionMixin implements DOMProcessingInstruction {
     @Override
     public final short getNodeType() {

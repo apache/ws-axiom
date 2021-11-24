@@ -20,7 +20,7 @@ package org.apache.axiom.weaver.innerclass;
 
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(Iface.class)
+@Mixin
 public abstract class IfaceMixin implements Iface {
     @Override
     public void doSomething() {

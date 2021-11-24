@@ -73,14 +73,6 @@ public final class Weaver {
             Set<Mixin> mixins = mixinsByInterface.get(iface);
             if (mixins == null) {
                 mixins = new HashSet<>();
-            } else {
-                for (Mixin mixin : mixins) {
-                    for (Class<?> addedIface : mixin.getAddedInterfaces()) {
-                        if (addedIface != iface) {
-                            parents.add(addInterface(addedIface));
-                        }
-                    }
-                }
             }
             node = new ImplementationNode(nextId++, parents, iface, mixins);
             nodeByInterface.put(iface, node);

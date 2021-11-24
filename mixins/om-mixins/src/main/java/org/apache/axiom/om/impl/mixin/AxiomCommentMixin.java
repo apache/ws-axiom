@@ -28,7 +28,7 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomComment;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomComment.class)
+@Mixin
 public abstract class AxiomCommentMixin implements AxiomComment {
     @Override
     public final int getType() {

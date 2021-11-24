@@ -34,7 +34,7 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-@Mixin(DOMParentNode.class)
+@Mixin
 public abstract class DOMParentNodeMixin implements DOMParentNode {
     @Override
     public final NodeList getChildNodes() {

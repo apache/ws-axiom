@@ -23,7 +23,7 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreCharacterDataContainingParentNode.class)
+@Mixin
 public abstract class CoreCharacterDataContainingParentNodeMixin implements CoreCharacterDataContainingParentNode {
     @Override
     public final Object coreGetCharacterData() throws CoreModelException {

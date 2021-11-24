@@ -22,7 +22,7 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11HeaderBlock;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAP11HeaderBlock.class)
+@Mixin
 public abstract class AxiomSOAP11HeaderBlockMixin implements AxiomSOAP11HeaderBlock {
     @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {

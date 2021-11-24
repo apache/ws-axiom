@@ -20,7 +20,7 @@ package org.apache.axiom.weaver.clinit;
 
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(Iface.class)
+@Mixin
 public abstract class IfaceMixin1 implements Iface {
     private static final Object object = new Object();
 

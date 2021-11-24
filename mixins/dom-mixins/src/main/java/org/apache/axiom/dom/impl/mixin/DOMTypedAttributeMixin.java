@@ -21,7 +21,7 @@ package org.apache.axiom.dom.impl.mixin;
 import org.apache.axiom.dom.DOMTypedAttribute;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(DOMTypedAttribute.class)
+@Mixin
 public abstract class DOMTypedAttributeMixin implements DOMTypedAttribute {
     @Override
     public final String getName() {

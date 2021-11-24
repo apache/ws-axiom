@@ -26,7 +26,7 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAPElement.class)
+@Mixin
 public abstract class AxiomSOAPElementMixin implements AxiomSOAPElement {
     @Override
     public final OMFactory getOMFactory() {

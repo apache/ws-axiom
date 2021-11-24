@@ -21,7 +21,7 @@ package org.apache.axiom.shared;
 import org.apache.axiom.core.CoreNSAwareNamedNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreNSAwareNamedNode.class)
+@Mixin
 public abstract class NSAwareNamedNodeMixin implements CoreNSAwareNamedNode {
     public final String getLocalName() {
         return coreGetLocalName();

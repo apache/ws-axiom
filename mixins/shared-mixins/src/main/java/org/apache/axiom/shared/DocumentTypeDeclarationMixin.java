@@ -21,7 +21,7 @@ package org.apache.axiom.shared;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreDocumentTypeDeclaration.class)
+@Mixin
 public abstract class DocumentTypeDeclarationMixin implements CoreDocumentTypeDeclaration {
     public final String getPublicId() {
         return coreGetPublicId();

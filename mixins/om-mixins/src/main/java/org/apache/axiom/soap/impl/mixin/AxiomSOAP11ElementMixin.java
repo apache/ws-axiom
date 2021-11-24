@@ -23,7 +23,7 @@ import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Element;
 import org.apache.axiom.soap.impl.intf.soap11.SOAP11Helper;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAP11Element.class)
+@Mixin
 public abstract class AxiomSOAP11ElementMixin implements AxiomSOAP11Element {
     @Override
     public final SOAPHelper getSOAPHelper() {

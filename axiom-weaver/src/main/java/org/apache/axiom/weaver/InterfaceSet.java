@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.weaver;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -55,7 +54,7 @@ final class InterfaceSet implements Iterable<Class<?>> {
         }
     }
 
-    void removeAll(Collection<Class<?>> ifaces) {
-        interfaces.removeAll(ifaces);
+    void remove(Class<?> iface) {
+        interfaces.remove(iface);
     }
 }

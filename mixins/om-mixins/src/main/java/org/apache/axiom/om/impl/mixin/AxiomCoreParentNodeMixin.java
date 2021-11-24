@@ -27,7 +27,7 @@ import org.apache.axiom.om.impl.intf.AxiomSerializable;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomCoreParentNode.class)
+@Mixin
 public abstract class AxiomCoreParentNodeMixin implements AxiomCoreParentNode {
     @Override
     public final boolean isComplete() {

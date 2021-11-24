@@ -25,7 +25,7 @@ import org.apache.axiom.dom.DocumentWhitespaceFilter;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@Mixin(DOMChildNode.class)
+@Mixin
 public abstract class DOMChildNodeMixin implements DOMChildNode {
     @Override
     public final Node getParentNode() {

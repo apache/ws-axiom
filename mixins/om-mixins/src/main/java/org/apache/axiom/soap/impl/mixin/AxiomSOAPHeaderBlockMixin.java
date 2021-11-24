@@ -32,7 +32,7 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAPHeaderBlock.class)
+@Mixin
 public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock {
     private boolean processed;
 

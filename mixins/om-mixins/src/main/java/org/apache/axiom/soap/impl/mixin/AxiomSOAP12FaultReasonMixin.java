@@ -30,7 +30,7 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultReason;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAP12FaultReason.class)
+@Mixin
 public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultReason {
     @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {

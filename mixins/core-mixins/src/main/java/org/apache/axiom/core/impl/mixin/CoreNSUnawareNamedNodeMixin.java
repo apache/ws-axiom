@@ -22,7 +22,7 @@ import org.apache.axiom.core.CoreNSUnawareNamedNode;
 import org.apache.axiom.core.CoreNamedNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreNSUnawareNamedNode.class)
+@Mixin
 public abstract class CoreNSUnawareNamedNodeMixin implements CoreNSUnawareNamedNode {
     private String name;
 

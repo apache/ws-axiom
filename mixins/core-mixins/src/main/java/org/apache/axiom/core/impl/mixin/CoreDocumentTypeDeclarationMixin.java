@@ -27,7 +27,7 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreDocumentTypeDeclaration.class)
+@Mixin
 public abstract class CoreDocumentTypeDeclarationMixin implements CoreDocumentTypeDeclaration {
     private String rootName;
     private String publicId;

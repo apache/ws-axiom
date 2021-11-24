@@ -27,7 +27,7 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAPBody.class)
+@Mixin
 public abstract class AxiomSOAPBodyMixin implements AxiomSOAPBody {
     public final boolean isChildElementAllowed(OMElement child) {
         return !(child instanceof AxiomSOAPElement) || child instanceof SOAPFault;

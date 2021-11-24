@@ -22,7 +22,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.AxiomLeafNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomLeafNode.class)
+@Mixin
 public abstract class AxiomLeafNodeMixin implements AxiomLeafNode {
     @Override
     public final void discard() throws OMException {

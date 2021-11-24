@@ -29,7 +29,7 @@ import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomChildNode.class)
+@Mixin
 public abstract class AxiomChildNodeMixin implements AxiomChildNode {
     @Override
     public final OMContainer getParent() {

@@ -23,7 +23,7 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreTypedAttribute;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreTypedAttribute.class)
+@Mixin
 public abstract class CoreTypedAttributeMixin implements CoreTypedAttribute {
     private String type;
     

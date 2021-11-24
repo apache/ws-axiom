@@ -54,7 +54,7 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreParentNode.class)
+@Mixin
 public abstract class CoreParentNodeMixin implements CoreParentNode {
     private InputContext context;
     private Object content;

@@ -22,7 +22,7 @@ import org.apache.axiom.dom.DOMText;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@Mixin(DOMText.class)
+@Mixin
 public abstract class DOMTextMixin implements DOMText {
     @Override
     public final String getNodeName() {

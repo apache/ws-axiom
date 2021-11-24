@@ -32,7 +32,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.TypeInfo;
 
-@Mixin(DOMAttribute.class)
+@Mixin
 public abstract class DOMAttributeMixin implements DOMAttribute {
     @Override
     public final Document getOwnerDocument() {

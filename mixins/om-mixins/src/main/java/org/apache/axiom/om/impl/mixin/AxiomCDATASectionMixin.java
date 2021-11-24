@@ -27,7 +27,7 @@ import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomCDATASection.class)
+@Mixin
 public abstract class AxiomCDATASectionMixin implements AxiomCDATASection {
     @Override
     public final int getType() {

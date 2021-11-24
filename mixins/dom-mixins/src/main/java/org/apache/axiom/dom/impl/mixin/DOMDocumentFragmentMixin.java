@@ -33,7 +33,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-@Mixin(DOMDocumentFragment.class)
+@Mixin
 public abstract class DOMDocumentFragmentMixin implements DOMDocumentFragment {
     @Override
     public final Document getOwnerDocument() {

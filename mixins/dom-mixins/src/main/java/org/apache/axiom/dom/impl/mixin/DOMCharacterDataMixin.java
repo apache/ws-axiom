@@ -27,7 +27,7 @@ import org.apache.axiom.dom.DOMSemantics;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 
-@Mixin(DOMCharacterData.class)
+@Mixin
 public abstract class DOMCharacterDataMixin implements DOMCharacterData {
     @Override
     public final String getData() {

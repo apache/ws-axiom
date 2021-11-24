@@ -80,7 +80,7 @@ import org.apache.axiom.util.io.IOUtils;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.xml.sax.InputSource;
 
-@Mixin(AxiomContainer.class)
+@Mixin
 public abstract class AxiomContainerMixin implements AxiomContainer {
     private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();
     

@@ -24,7 +24,7 @@ import org.apache.axiom.dom.DOMNSAwareNamedNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 
-@Mixin(DOMNSAwareNamedNode.class)
+@Mixin
 public abstract class DOMNSAwareNamedNodeMixin implements DOMNSAwareNamedNode {
     @Override
     public final void setPrefix(String prefix) throws DOMException {

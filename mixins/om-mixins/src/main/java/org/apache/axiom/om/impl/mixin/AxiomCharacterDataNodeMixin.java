@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomCharacterDataNode.class)
+@Mixin
 public abstract class AxiomCharacterDataNodeMixin implements AxiomCharacterDataNode {
     @Override
     public final int getType() {

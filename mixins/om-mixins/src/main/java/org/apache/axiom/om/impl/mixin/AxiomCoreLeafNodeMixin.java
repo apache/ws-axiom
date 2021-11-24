@@ -22,7 +22,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.intf.AxiomCoreLeafNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomCoreLeafNode.class)
+@Mixin
 public abstract class AxiomCoreLeafNodeMixin implements AxiomCoreLeafNode {
     public final OMXMLParserWrapper coreGetBuilder() {
         return null;

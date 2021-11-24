@@ -24,7 +24,7 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.impl.intf.AxiomSerializable;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSerializable.class)
+@Mixin
 public abstract class AxiomSerializableMixin implements AxiomSerializable {
     @Override
     public final void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {

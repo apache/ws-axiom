@@ -28,7 +28,7 @@ import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultText;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAP12FaultText.class)
+@Mixin
 public abstract class AxiomSOAP12FaultTextMixin implements AxiomSOAP12FaultText {
     private static final OMNamespace LANG_NAMESPACE = new OMNamespaceImpl(
             SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,

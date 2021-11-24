@@ -71,7 +71,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
-@Mixin(DOMDocument.class)
+@Mixin
 public abstract class DOMDocumentMixin implements DOMDocument {
     private final DOMConfigurationImpl domConfig = new DOMConfigurationImpl();
 

@@ -36,7 +36,7 @@ import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.Flags;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreChildNode.class)
+@Mixin
 public abstract class CoreChildNodeMixin implements CoreChildNode {
     private CoreParentNode owner;
     CoreChildNode nextSibling;

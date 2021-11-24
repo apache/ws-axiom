@@ -21,7 +21,7 @@ package org.apache.axiom.shared;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreProcessingInstruction.class)
+@Mixin
 public abstract class ProcessingInstructionMixin implements CoreProcessingInstruction {
     public final String getTarget() {
         return coreGetTarget();

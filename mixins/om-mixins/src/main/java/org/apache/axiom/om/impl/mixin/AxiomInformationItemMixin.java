@@ -27,7 +27,7 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomInformationItem;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomInformationItem.class)
+@Mixin
 public abstract class AxiomInformationItemMixin implements AxiomInformationItem {
     @Override
     public OMFactory getOMFactory() {

@@ -26,7 +26,7 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreNSAwareElement.class)
+@Mixin
 public abstract class CoreNSAwareElementMixin implements CoreNSAwareElement {
     @Override
     public final NodeType coreGetNodeType() {

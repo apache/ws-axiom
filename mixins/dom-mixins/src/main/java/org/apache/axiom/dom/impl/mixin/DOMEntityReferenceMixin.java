@@ -30,7 +30,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-@Mixin(DOMEntityReference.class)
+@Mixin
 public abstract class DOMEntityReferenceMixin implements DOMEntityReference {
     @Override
     public final Document getOwnerDocument() {

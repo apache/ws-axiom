@@ -66,7 +66,7 @@ import javax.xml.stream.XMLStreamReader;
  * #forceExpand()} method) before the base class method is called. This will typically involve a
  * heavy overhead penalty, so should be avoided if possible.</p>
  */
-@Mixin(AxiomSourcedElement.class)
+@Mixin
 public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
     
     /** Data source for element data. */

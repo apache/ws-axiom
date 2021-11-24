@@ -28,7 +28,7 @@ import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAPEnvelope.class)
+@Mixin
 public abstract class AxiomSOAPEnvelopeMixin implements AxiomSOAPEnvelope {
     @Override
     public final SOAPVersion getVersion() {

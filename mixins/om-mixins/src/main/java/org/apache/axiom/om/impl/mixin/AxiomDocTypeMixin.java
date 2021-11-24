@@ -28,7 +28,7 @@ import org.apache.axiom.om.impl.intf.AxiomDocType;
 import org.apache.axiom.om.impl.stream.stax.push.XMLStreamWriterHandler;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomDocType.class)
+@Mixin
 public abstract class AxiomDocTypeMixin implements AxiomDocType {
     @Override
     public final int getType() {

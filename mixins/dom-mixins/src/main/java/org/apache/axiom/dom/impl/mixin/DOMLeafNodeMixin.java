@@ -31,7 +31,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-@Mixin(DOMLeafNode.class)
+@Mixin
 public abstract class DOMLeafNodeMixin implements DOMLeafNode {
     @Override
     public final Document getOwnerDocument() {

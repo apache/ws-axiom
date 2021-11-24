@@ -31,7 +31,7 @@ import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.util.xml.QNameCache;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomNamedInformationItem.class)
+@Mixin
 public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInformationItem {
     /**
      * The namespace of the information item. Possible values:

@@ -74,7 +74,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
  * Utility class with default implementations for some of the methods defined by the
  * {@link OMElement} interface.
  */
-@Mixin(AxiomElement.class)
+@Mixin
 public abstract class AxiomElementMixin implements AxiomElement {
     @Override
     public final void initName(String localName, OMNamespace ns, boolean generateNSDecl) {

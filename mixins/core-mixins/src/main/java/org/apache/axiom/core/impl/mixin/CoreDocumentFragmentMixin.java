@@ -28,7 +28,7 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreDocumentFragment.class)
+@Mixin
 public abstract class CoreDocumentFragmentMixin implements CoreDocumentFragment {
     private CoreDocument ownerDocument;
     

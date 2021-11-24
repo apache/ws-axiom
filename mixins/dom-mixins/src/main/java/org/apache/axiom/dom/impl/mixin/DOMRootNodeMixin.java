@@ -22,7 +22,7 @@ import org.apache.axiom.dom.DOMRootNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@Mixin(DOMRootNode.class)
+@Mixin
 public abstract class DOMRootNodeMixin implements DOMRootNode {
     @Override
     public final Node getNextSibling() {

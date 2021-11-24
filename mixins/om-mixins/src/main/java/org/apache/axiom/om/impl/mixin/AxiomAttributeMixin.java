@@ -28,7 +28,7 @@ import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomAttribute.class)
+@Mixin
 public abstract class AxiomAttributeMixin implements AxiomAttribute {
     @Override
     public final OMElement getOwner() {

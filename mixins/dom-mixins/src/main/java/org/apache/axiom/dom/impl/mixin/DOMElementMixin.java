@@ -45,7 +45,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.TypeInfo;
 
-@Mixin(DOMElement.class)
+@Mixin
 public abstract class DOMElementMixin implements DOMElement {
     @Override
     public final Document getOwnerDocument() {

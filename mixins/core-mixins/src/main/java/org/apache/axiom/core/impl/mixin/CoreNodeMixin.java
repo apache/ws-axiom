@@ -26,7 +26,7 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreNode.class)
+@Mixin
 public abstract class CoreNodeMixin implements CoreNode {
     int flags;
 

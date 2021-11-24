@@ -23,7 +23,7 @@ import org.apache.axiom.dom.DOMNSUnawareNamedNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 
-@Mixin(DOMNSUnawareNamedNode.class)
+@Mixin
 public abstract class DOMNSUnawareNamedNodeMixin implements DOMNSUnawareNamedNode {
     @Override
     public final String getNamespaceURI() {

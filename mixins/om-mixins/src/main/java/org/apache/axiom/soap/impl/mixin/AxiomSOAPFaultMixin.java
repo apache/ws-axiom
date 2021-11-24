@@ -35,7 +35,7 @@ import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPFault;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAPFault.class)
+@Mixin
 public abstract class AxiomSOAPFaultMixin implements AxiomSOAPFault {
     public final boolean isChildElementAllowed(OMElement child) {
         return child instanceof SOAPFaultCode || child instanceof SOAPFaultDetail

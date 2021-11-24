@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomEntityReference.class)
+@Mixin
 public abstract class AxiomEntityReferenceMixin implements AxiomEntityReference {
     @Override
     public final int getType() {

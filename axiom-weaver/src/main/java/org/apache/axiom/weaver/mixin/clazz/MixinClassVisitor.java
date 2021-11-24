@@ -19,9 +19,7 @@
 package org.apache.axiom.weaver.mixin.clazz;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 
 import org.apache.axiom.weaver.classio.ClassFetcher;
@@ -37,7 +35,6 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.ClassRemapper;
 import org.objectweb.asm.commons.MethodRemapper;
 import org.objectweb.asm.commons.Remapper;
@@ -50,8 +47,8 @@ final class MixinClassVisitor extends ClassVisitor {
     private int bytecodeVersion;
     private String className;
     private Function<String, Remapper> remapperFactory;
+    private boolean hasMixinAnnotation;
     private Class<?> targetInterface;
-    private final Set<Class<?>> addedInterfaces = new HashSet<>();
     private final List<FieldNode> fields = new ArrayList<>();
     private final List<MixinMethod> methods = new ArrayList<>();
     private final List<String> innerClassNames = new ArrayList<>();
@@ -80,29 +77,18 @@ final class MixinClassVisitor extends ClassVisitor {
                 return internalName;
             }
         };
-        for (String iface : interfaces) {
-            addedInterfaces.add(classFetcher.loadClass(iface.replace('/', '.')));
+        if (interfaces.length != 1) {
+            throw new MixinFactoryException("Mixins are expected to implement one and only one interface");
         }
+        targetInterface = classFetcher.loadClass(interfaces[0].replace('/', '.'));
     }
 
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
         if (descriptor.equals("Lorg/apache/axiom/weaver/annotation/Mixin;")) {
-            return new AnnotationVisitor(Opcodes.ASM9) {
-                @Override
-                public void visit(String name, Object value) {
-                    if (name.equals("value")) {
-                        String ifaceName = ((Type)value).getClassName();
-                        targetInterface = classFetcher.loadClass(ifaceName);
-                        if (!targetInterface.isInterface()) {
-                            throw new MixinFactoryException(ifaceName + " is not an interface");
-                        }
-                    }
-                }
-            };
-        } else {
-            return null;
+            hasMixinAnnotation = true;
         }
+        return null;
     }
 
     @Override
@@ -145,6 +131,9 @@ final class MixinClassVisitor extends ClassVisitor {
     }
 
     Mixin getMixin() {
+        if (!hasMixinAnnotation) {
+            throw new MixinFactoryException("Class didn't have a @Mixin annotation");
+        }
         List<MixinInnerClass> innerClasses = new ArrayList<>();
         Function<String, Remapper> remapperFactory = this.remapperFactory;
         for (String innerClassName : innerClassNames) {
@@ -163,6 +152,6 @@ final class MixinClassVisitor extends ClassVisitor {
                 }
             });
         }
-        return new Mixin(bytecodeVersion, className.substring(className.lastIndexOf('/')+1), targetInterface, addedInterfaces, fields, initializerMethod, staticInitializerMethod, methods, innerClasses);
+        return new Mixin(bytecodeVersion, className.substring(className.lastIndexOf('/')+1), targetInterface, fields, initializerMethod, staticInitializerMethod, methods, innerClasses);
     }
 }

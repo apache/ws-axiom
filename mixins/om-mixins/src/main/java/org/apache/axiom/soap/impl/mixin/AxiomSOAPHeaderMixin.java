@@ -42,7 +42,7 @@ import org.apache.axiom.soap.impl.common.SOAPHeaderBlockMapper;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAPHeader.class)
+@Mixin
 public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
     public final boolean isChildElementAllowed(OMElement child) {
         return child instanceof SOAPHeaderBlock;

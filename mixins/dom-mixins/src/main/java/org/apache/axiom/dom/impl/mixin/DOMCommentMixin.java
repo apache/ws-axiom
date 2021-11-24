@@ -22,7 +22,7 @@ import org.apache.axiom.dom.DOMComment;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@Mixin(DOMComment.class)
+@Mixin
 public abstract class DOMCommentMixin implements DOMComment {
     @Override
     public final String getNodeName() {

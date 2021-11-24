@@ -20,7 +20,6 @@ package org.apache.axiom.weaver.mixin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.tree.FieldNode;
@@ -31,7 +30,6 @@ public final class Mixin {
     private final int bytecodeVersion;
     private final String name;
     private final Class<?> targetInterface;
-    private final Set<Class<?>> addedInterfaces;
     private final List<FieldNode> fields;
     private final InitializerMethod initializerMethod;
     private final StaticInitializerMethod staticInitializerMethod;
@@ -39,11 +37,10 @@ public final class Mixin {
     private final int weight;
     private final List<MixinInnerClass> innerClasses;
 
-    public Mixin(int bytecodeVersion, String name, Class<?> targetInterface, Set<Class<?>> addedInterfaces, List<FieldNode> fields, InitializerMethod initializerMethod, StaticInitializerMethod staticInitializerMethod, List<MixinMethod> methods, List<MixinInnerClass> innerClasses) {
+    public Mixin(int bytecodeVersion, String name, Class<?> targetInterface, List<FieldNode> fields, InitializerMethod initializerMethod, StaticInitializerMethod staticInitializerMethod, List<MixinMethod> methods, List<MixinInnerClass> innerClasses) {
         this.bytecodeVersion = bytecodeVersion;
         this.name = name;
         this.targetInterface = targetInterface;
-        this.addedInterfaces = addedInterfaces;
         this.fields = fields;
         this.initializerMethod = initializerMethod;
         this.staticInitializerMethod = staticInitializerMethod;
@@ -77,15 +74,6 @@ public final class Mixin {
 
     public Class<?> getTargetInterface() {
         return targetInterface;
-    }
-
-    public Set<Class<?>> getAddedInterfaces() {
-        return addedInterfaces;
-    }
-
-    public boolean contributesCode() {
-        // TODO: also attributes
-        return !methods.isEmpty();
     }
 
     public int getWeight() {

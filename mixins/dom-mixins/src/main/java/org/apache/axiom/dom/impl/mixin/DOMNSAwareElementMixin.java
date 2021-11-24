@@ -23,7 +23,7 @@ import org.apache.axiom.dom.DOMNSAwareElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(DOMNSAwareElement.class)
+@Mixin
 public abstract class DOMNSAwareElementMixin implements DOMNSAwareElement {
     public final void normalize(DOMConfigurationImpl config) {
         // TODO: this should not rely on the Axiom API

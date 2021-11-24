@@ -23,7 +23,7 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreMixedContentContainer.class)
+@Mixin
 public abstract class CoreMixedContentContainerMixin implements CoreMixedContentContainer {
     @Override
     public final Object coreGetCharacterData(ElementAction elementAction) throws CoreModelException {

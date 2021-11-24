@@ -27,7 +27,7 @@ import org.apache.axiom.om.impl.common.builder.OMNamespaceCache;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomNamespaceDeclaration.class)
+@Mixin
 public abstract class AxiomNamespaceDeclarationMixin implements AxiomNamespaceDeclaration {
     private static final OMNamespace DEFAULT_NS = new OMNamespaceImpl("", "");
     

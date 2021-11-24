@@ -36,7 +36,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.UserDataHandler;
 
-@Mixin(DOMNode.class)
+@Mixin
 public abstract class DOMNodeMixin implements DOMNode {
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()

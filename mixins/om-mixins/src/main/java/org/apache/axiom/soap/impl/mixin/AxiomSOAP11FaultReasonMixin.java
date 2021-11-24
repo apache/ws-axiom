@@ -28,7 +28,7 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultReason;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAP11FaultReason.class)
+@Mixin
 public abstract class AxiomSOAP11FaultReasonMixin implements AxiomSOAP11FaultReason {
     @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {

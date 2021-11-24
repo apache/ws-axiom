@@ -22,7 +22,7 @@ import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMNSUnawareElement;
 import org.apache.axiom.weaver.annotation.Mixin;;
 
-@Mixin(DOMNSUnawareElement.class)
+@Mixin
 public abstract class DOMNSUnawareElementMixin implements DOMNSUnawareElement {
     public final void normalize(DOMConfigurationImpl config) {
     }

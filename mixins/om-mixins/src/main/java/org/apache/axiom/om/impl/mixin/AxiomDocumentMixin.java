@@ -35,7 +35,7 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSerializable;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomDocument.class)
+@Mixin
 public abstract class AxiomDocumentMixin implements AxiomDocument {
     @Override
     public final OMElement getOMDocumentElement() {

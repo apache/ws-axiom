@@ -25,7 +25,7 @@ import org.apache.axiom.om.impl.llom.factory.LLOMNodeFactory;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomInformationItem.class)
+@Mixin
 public abstract class AxiomInformationItemMixin implements AxiomInformationItem {
     public final NodeFactory coreGetNodeFactory() {
         return LLOMNodeFactory.INSTANCE;

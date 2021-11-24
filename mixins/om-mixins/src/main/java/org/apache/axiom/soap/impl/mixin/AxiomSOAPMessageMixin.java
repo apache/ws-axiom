@@ -28,7 +28,7 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAPMessage.class)
+@Mixin
 public abstract class AxiomSOAPMessageMixin implements AxiomSOAPMessage {
     private SOAPFactory factory;
 

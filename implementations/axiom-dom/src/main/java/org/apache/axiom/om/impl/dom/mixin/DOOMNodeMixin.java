@@ -25,7 +25,7 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.om.impl.dom.intf.DOOMNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(DOOMNode.class)
+@Mixin
 public abstract class DOOMNodeMixin implements DOOMNode {
     public final NodeFactory coreGetNodeFactory() {
         return DOOMNodeFactory.INSTANCE;

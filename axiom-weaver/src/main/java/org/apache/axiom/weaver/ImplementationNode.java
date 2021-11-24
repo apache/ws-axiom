@@ -62,15 +62,8 @@ final class ImplementationNode {
         this.id = id;
         this.primaryInterface = iface;
         ifaces.add(iface);
-        for (Mixin mixin : mixins) {
-            // Mixins that only add interfaces have already been applied at this stage.
-            if (mixin.contributesCode()) {
-                this.mixins.add(mixin);
-            }
-        }
-        for (ImplementationNode parent : parents) {
-            this.parents.add(parent);
-        }
+        this.mixins.addAll(mixins);
+        this.parents.addAll(parents);
     }
 
     void requireImplementation() {
@@ -93,17 +86,6 @@ final class ImplementationNode {
             weight += mixin.getWeight();
         }
         return weight;
-    }
-
-    private boolean isInterfaceInheritance(ImplementationNode parent) {
-        for (Class<?> parentInterface : parent.ifaces) {
-            for (Class<?> iface : ifaces) {
-                if (parentInterface.isAssignableFrom(iface)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     void dump(StringBuilder builder, ImplementationClassNameMapper implementationClassNameMapper) {
@@ -140,9 +122,6 @@ final class ImplementationNode {
             builder.append(id);
             builder.append(" -> n");
             builder.append(parent.id);
-            if (!isInterfaceInheritance(parent)) {
-                builder.append(" [style=dashed]");
-            }
             builder.append(";\n");
         }
     }
@@ -261,10 +240,10 @@ final class ImplementationNode {
         }
         for (Mixin mixin : commonMixins) {
             mixins.add(mixin);
-            ifaces.addAll(mixin.getAddedInterfaces());
+            ifaces.add(mixin.getTargetInterface());
             for (ImplementationNode child : children) {
                 child.mixins.remove(mixin);
-                child.ifaces.removeAll(mixin.getAddedInterfaces());
+                child.ifaces.remove(mixin.getTargetInterface());
             }
         }
         return true;

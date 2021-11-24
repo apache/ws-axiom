@@ -23,7 +23,7 @@ import org.apache.axiom.core.CoreLeafNode;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreLeafNode.class)
+@Mixin
 public abstract class CoreLeafNodeMixin implements CoreLeafNode {
     @Override
     public final <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) {

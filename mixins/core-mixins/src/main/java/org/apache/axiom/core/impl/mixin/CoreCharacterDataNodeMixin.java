@@ -30,7 +30,7 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreCharacterDataNode.class)
+@Mixin
 public abstract class CoreCharacterDataNodeMixin implements CoreCharacterDataNode {
     /**
      * Either a {@link String} or a {@link CharacterData} object.

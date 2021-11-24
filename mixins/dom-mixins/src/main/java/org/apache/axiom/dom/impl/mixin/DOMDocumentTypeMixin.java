@@ -22,7 +22,7 @@ import org.apache.axiom.dom.DOMDocumentType;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.NamedNodeMap;
 
-@Mixin(DOMDocumentType.class)
+@Mixin
 public abstract class DOMDocumentTypeMixin implements DOMDocumentType {
     @Override
     public final short getNodeType() {

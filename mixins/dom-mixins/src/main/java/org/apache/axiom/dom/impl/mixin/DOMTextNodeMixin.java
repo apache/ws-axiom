@@ -30,7 +30,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Text;
 
-@Mixin(DOMTextNode.class)
+@Mixin
 public abstract class DOMTextNodeMixin implements DOMTextNode {
     private DOMTextNode getWholeTextStartNode() {
         DOMTextNode first = this;

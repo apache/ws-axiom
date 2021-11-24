@@ -22,7 +22,7 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Body;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAP11Body.class)
+@Mixin
 public abstract class AxiomSOAP11BodyMixin implements AxiomSOAP11Body {
     @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {

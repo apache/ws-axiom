@@ -22,7 +22,7 @@ import org.apache.axiom.dom.DOMCDATASection;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Node;
 
-@Mixin(DOMCDATASection.class)
+@Mixin
 public abstract class DOMCDATASectionMixin implements DOMCDATASection {
     @Override
     public final short getNodeType() {

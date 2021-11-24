@@ -27,7 +27,7 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomProcessingInstruction.class)
+@Mixin
 public abstract class AxiomProcessingInstructionMixin implements AxiomProcessingInstruction {
     @Override
     public final int getType() {

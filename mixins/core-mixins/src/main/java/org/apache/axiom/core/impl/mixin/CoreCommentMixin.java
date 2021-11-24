@@ -27,7 +27,7 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(CoreComment.class)
+@Mixin
 public abstract class CoreCommentMixin implements CoreComment {
     @Override
     public final NodeType coreGetNodeType() {

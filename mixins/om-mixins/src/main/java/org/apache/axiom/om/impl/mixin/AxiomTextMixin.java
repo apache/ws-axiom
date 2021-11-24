@@ -33,7 +33,7 @@ import org.apache.axiom.om.impl.intf.AxiomText;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomText.class)
+@Mixin
 public abstract class AxiomTextMixin implements AxiomText {
     private TextContent getTextContent(boolean force) {
         try {

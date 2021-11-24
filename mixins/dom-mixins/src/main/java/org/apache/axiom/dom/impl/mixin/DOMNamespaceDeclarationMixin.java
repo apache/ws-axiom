@@ -25,7 +25,7 @@ import org.apache.axiom.dom.DOMNamespaceDeclaration;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 
-@Mixin(DOMNamespaceDeclaration.class)
+@Mixin
 public abstract class DOMNamespaceDeclarationMixin implements DOMNamespaceDeclaration {
     @Override
     public final String getNamespaceURI() {

@@ -23,7 +23,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultValue;
 import org.apache.axiom.weaver.annotation.Mixin;
 
-@Mixin(AxiomSOAP12FaultValue.class)
+@Mixin
 public abstract class AxiomSOAP12FaultValueMixin implements AxiomSOAP12FaultValue {
     public final boolean isChildElementAllowed(OMElement child) {
         return false;
