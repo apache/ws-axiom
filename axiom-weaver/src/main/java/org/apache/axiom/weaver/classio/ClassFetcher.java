@@ -22,5 +22,6 @@ import org.objectweb.asm.ClassVisitor;
 
 public interface ClassFetcher {
     Class<?> loadClass(String name);
+
     void fetch(String className, ClassVisitor classVisitor);
 }

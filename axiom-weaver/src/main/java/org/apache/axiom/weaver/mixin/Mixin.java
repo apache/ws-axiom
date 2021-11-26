@@ -33,11 +33,20 @@ public final class Mixin {
     private final List<FieldNode> fields;
     private final InitializerMethod initializerMethod;
     private final StaticInitializerMethod staticInitializerMethod;
-    private final MutableReferences<MixinMethod> methods = Relations.MIXIN_METHODS.newReferenceHolder(this);
+    private final MutableReferences<MixinMethod> methods =
+            Relations.MIXIN_METHODS.newReferenceHolder(this);
     private final int weight;
     private final List<MixinInnerClass> innerClasses;
 
-    public Mixin(int bytecodeVersion, String name, Class<?> targetInterface, List<FieldNode> fields, InitializerMethod initializerMethod, StaticInitializerMethod staticInitializerMethod, List<MixinMethod> methods, List<MixinInnerClass> innerClasses) {
+    public Mixin(
+            int bytecodeVersion,
+            String name,
+            Class<?> targetInterface,
+            List<FieldNode> fields,
+            InitializerMethod initializerMethod,
+            StaticInitializerMethod staticInitializerMethod,
+            List<MixinMethod> methods,
+            List<MixinInnerClass> innerClasses) {
         this.bytecodeVersion = bytecodeVersion;
         this.name = name;
         this.targetInterface = targetInterface;

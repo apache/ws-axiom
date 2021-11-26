@@ -25,6 +25,10 @@ import com.github.veithen.jrel.association.Navigability;
 final class Relations {
     private Relations() {}
 
-    static final ManyToManyAssociation<ImplementationNode,InterfaceNode> IMPLEMENTS = new ManyToManyAssociation<>(ImplementationNode.class, InterfaceNode.class, Navigability.BIDIRECTIONAL);
-    static final ManyToOneAssociation<ImplementationNode,Weaver> WEAVER = new ManyToOneAssociation<>(ImplementationNode.class, Weaver.class, Navigability.BIDIRECTIONAL);
+    static final ManyToManyAssociation<ImplementationNode, InterfaceNode> IMPLEMENTS =
+            new ManyToManyAssociation<>(
+                    ImplementationNode.class, InterfaceNode.class, Navigability.BIDIRECTIONAL);
+    static final ManyToOneAssociation<ImplementationNode, Weaver> WEAVER =
+            new ManyToOneAssociation<>(
+                    ImplementationNode.class, Weaver.class, Navigability.BIDIRECTIONAL);
 }

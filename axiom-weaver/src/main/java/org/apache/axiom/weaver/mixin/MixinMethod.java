@@ -24,7 +24,8 @@ import org.objectweb.asm.MethodVisitor;
 import com.github.veithen.jrel.association.MutableReference;
 
 public final class MixinMethod {
-    private final MutableReference<Mixin> mixin = Relations.MIXIN_METHODS.getConverse().newReferenceHolder(this);
+    private final MutableReference<Mixin> mixin =
+            Relations.MIXIN_METHODS.getConverse().newReferenceHolder(this);
     private final int access;
     private final String name;
     private final String descriptor;
@@ -32,7 +33,13 @@ public final class MixinMethod {
     private final String[] exceptions;
     private final MethodBody body;
 
-    public MixinMethod(int access, String name, String descriptor, String signature, String[] exceptions, MethodBody body) {
+    public MixinMethod(
+            int access,
+            String name,
+            String descriptor,
+            String signature,
+            String[] exceptions,
+            MethodBody body) {
         this.access = access;
         this.name = name;
         this.descriptor = descriptor;

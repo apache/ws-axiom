@@ -25,11 +25,14 @@ import com.github.veithen.jrel.association.MutableReferences;
 import com.github.veithen.jrel.association.Navigability;
 
 final class InterfaceNode {
-    private static final ManyToManyAssociation<InterfaceNode,InterfaceNode> EXTENDS = new ManyToManyAssociation<>(InterfaceNode.class, InterfaceNode.class, Navigability.UNIDIRECTIONAL);
+    private static final ManyToManyAssociation<InterfaceNode, InterfaceNode> EXTENDS =
+            new ManyToManyAssociation<>(
+                    InterfaceNode.class, InterfaceNode.class, Navigability.UNIDIRECTIONAL);
 
     private final Class<?> iface;
     private final MutableReferences<InterfaceNode> parents = EXTENDS.newReferenceHolder(this);
-    private final MutableReferences<ImplementationNode> implementations = Relations.IMPLEMENTS.getConverse().newReferenceHolder(this);
+    private final MutableReferences<ImplementationNode> implementations =
+            Relations.IMPLEMENTS.getConverse().newReferenceHolder(this);
 
     InterfaceNode(Class<?> iface, Set<InterfaceNode> parents) {
         this.iface = iface;

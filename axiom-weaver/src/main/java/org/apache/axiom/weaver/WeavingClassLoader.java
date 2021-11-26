@@ -24,7 +24,8 @@ import java.util.Map;
 import org.apache.axiom.weaver.mixin.ClassDefinition;
 
 final class WeavingClassLoader extends ClassLoader {
-    private final Map<String, ClassDefinition> classDefinitions = new HashMap<String, ClassDefinition>();
+    private final Map<String, ClassDefinition> classDefinitions =
+            new HashMap<String, ClassDefinition>();
 
     WeavingClassLoader(ClassLoader parent, ClassDefinition[] classDefinitions) {
         super(parent);
@@ -39,8 +40,9 @@ final class WeavingClassLoader extends ClassLoader {
         if (classDefinition == null) {
             throw new ClassNotFoundException(name);
         }
-//        classDefinition.dump(new PrintWriter(System.out));
+        //        classDefinition.dump(new PrintWriter(System.out));
         byte[] bytes = classDefinition.toByteArray();
-        return defineClass(classDefinition.getClassName().replace('/', '.'), bytes, 0, bytes.length);
+        return defineClass(
+                classDefinition.getClassName().replace('/', '.'), bytes, 0, bytes.length);
     }
 }

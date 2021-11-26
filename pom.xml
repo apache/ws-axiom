@@ -840,6 +840,25 @@
                         <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>com.coveo</groupId>
+                    <artifactId>fmt-maven-plugin</artifactId>
+                    <version>2.13</version>
+                    <configuration>
+                        <!-- AOSP changes the indentation (from 2 to 4) and the import order. Since we
+                             don't want Android conventions for import ordering, we skip sorting
+                             imports. -->
+                        <style>aosp</style>
+                        <skipSortingImports>true</skipSortingImports>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.google.googlejavaformat</groupId>
+                            <artifactId>google-java-format</artifactId>
+                            <version>1.13.0</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>

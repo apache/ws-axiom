@@ -20,5 +20,6 @@ package org.apache.axiom.weaver.clinit;
 
 public interface Iface {
     Object getObject();
+
     int getInt();
 }

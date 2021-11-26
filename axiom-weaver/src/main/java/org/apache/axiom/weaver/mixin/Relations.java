@@ -23,5 +23,6 @@ import com.github.veithen.jrel.association.OneToManyAssociation;
 final class Relations {
     private Relations() {}
 
-    static final OneToManyAssociation<Mixin,MixinMethod> MIXIN_METHODS = new OneToManyAssociation<>(Mixin.class, MixinMethod.class);
+    static final OneToManyAssociation<Mixin, MixinMethod> MIXIN_METHODS =
+            new OneToManyAssociation<>(Mixin.class, MixinMethod.class);
 }

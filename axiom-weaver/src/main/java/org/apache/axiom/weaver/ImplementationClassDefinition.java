@@ -43,8 +43,13 @@ final class ImplementationClassDefinition extends ClassDefinition {
     private final List<Named<InitializerMethod>> initializerMethods = new ArrayList<>();
     private final List<Named<StaticInitializerMethod>> staticInitializerMethods = new ArrayList<>();
 
-    ImplementationClassDefinition(int version, int access, String className, String superName,
-            String[] ifaceNames, Mixin[] mixins) {
+    ImplementationClassDefinition(
+            int version,
+            int access,
+            String className,
+            String superName,
+            String[] ifaceNames,
+            Mixin[] mixins) {
         super(className);
         this.version = version;
         this.access = access;
@@ -58,7 +63,8 @@ final class ImplementationClassDefinition extends ClassDefinition {
                 String signature = method.getSignature();
                 // TODO: check that the method being replaced is not final
                 MixinMethod existingMethod = methodMap.get(signature);
-                if (existingMethod != null && !method.getMixin().appliesAfter(existingMethod.getMixin())) {
+                if (existingMethod != null
+                        && !method.getMixin().appliesAfter(existingMethod.getMixin())) {
                     if (existingMethod.getMixin().appliesAfter(method.getMixin())) {
                         // Keep the existing method.
                         continue;
@@ -70,20 +76,25 @@ final class ImplementationClassDefinition extends ClassDefinition {
             }
             InitializerMethod initializerMethod = mixin.getInitializerMethod();
             if (initializerMethod != null) {
-                initializerMethods.add(new Named<>(initializerMethod, methodNameGenerator.generateUniqueName("init$" + mixin.getName())));
+                initializerMethods.add(
+                        new Named<>(
+                                initializerMethod,
+                                methodNameGenerator.generateUniqueName("init$" + mixin.getName())));
             }
             StaticInitializerMethod staticInitializerMethod = mixin.getStaticInitializerMethod();
             if (staticInitializerMethod != null) {
-                staticInitializerMethods.add(new Named<>(staticInitializerMethod, methodNameGenerator.generateUniqueName("clinit$" + mixin.getName())));
+                staticInitializerMethods.add(
+                        new Named<>(
+                                staticInitializerMethod,
+                                methodNameGenerator.generateUniqueName(
+                                        "clinit$" + mixin.getName())));
             }
         }
         methods = methodMap.values().toArray(new MixinMethod[methodMap.size()]);
     }
 
     private void generateConstructor(ClassVisitor cv) {
-        MethodVisitor mv = cv.visitMethod(
-                Opcodes.ACC_PUBLIC,
-                "<init>", "()V", null, null);
+        MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
         mv.visitCode();
         mv.visitIntInsn(Opcodes.ALOAD, 0);
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superName, "<init>", "()V", false);
@@ -100,9 +111,9 @@ final class ImplementationClassDefinition extends ClassDefinition {
         if (staticInitializerMethods.isEmpty()) {
             return;
         }
-        MethodVisitor mv = cv.visitMethod(
-                Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,
-                "<clinit>", "()V", null, null);
+        MethodVisitor mv =
+                cv.visitMethod(
+                        Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "<clinit>", "()V", null, null);
         mv.visitCode();
         for (Named<StaticInitializerMethod> method : staticInitializerMethods) {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, className, method.getName(), "()V", false);
@@ -121,13 +132,20 @@ final class ImplementationClassDefinition extends ClassDefinition {
             mixin.apply(className, cv);
         }
         for (Named<InitializerMethod> method : initializerMethods) {
-            MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PRIVATE, method.getName(), "()V", null, null);
+            MethodVisitor mv =
+                    cv.visitMethod(Opcodes.ACC_PRIVATE, method.getName(), "()V", null, null);
             if (mv != null) {
                 method.get().getBody().apply(className, mv);
             }
         }
         for (Named<StaticInitializerMethod> method : staticInitializerMethods) {
-            MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC, method.getName(), "()V", null, null);
+            MethodVisitor mv =
+                    cv.visitMethod(
+                            Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC,
+                            method.getName(),
+                            "()V",
+                            null,
+                            null);
             if (mv != null) {
                 method.get().getBody().apply(className, mv);
             }

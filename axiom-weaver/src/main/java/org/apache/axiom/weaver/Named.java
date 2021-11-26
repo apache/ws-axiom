@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.weaver;
 
-final class Named<T>  {
+final class Named<T> {
     private final T object;
     private final String name;
 

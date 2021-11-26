@@ -21,6 +21,11 @@ package org.apache.axiom.weaver.mixin;
 final class Counter {
     private int value;
 
-    void increment() { value++; }
-    int get() { return value; }
+    void increment() {
+        value++;
+    }
+
+    int get() {
+        return value;
+    }
 }

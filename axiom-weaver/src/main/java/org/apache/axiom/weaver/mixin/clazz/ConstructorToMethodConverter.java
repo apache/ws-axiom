@@ -28,9 +28,9 @@ import org.objectweb.asm.Opcodes;
  * superclass. Note that this is only meaningful if the constructor is a default constructor (i.e.
  * has no parameters) and calls the default constructor of the superclass. By definition, this is
  * the case for mixins.
- * <p>
- * The class actually looks for the following sequence of instructions and removes them:
- * 
+ *
+ * <p>The class actually looks for the following sequence of instructions and removes them:
+ *
  * <pre>
  *    ALOAD 0
  *    INVOKESPECIAL java/lang/Object.&lt;init> ()V
@@ -42,16 +42,14 @@ final class ConstructorToMethodConverter extends MethodVisitor {
      * {@link #callRemoved} is <code>false</code>.
      */
     private boolean lastWasALoad0;
-    
-    /**
-     * Flag indicating that the call to the constructor of the superclass has been removed.
-     */
+
+    /** Flag indicating that the call to the constructor of the superclass has been removed. */
     private boolean callRemoved;
-    
+
     public ConstructorToMethodConverter(MethodVisitor mv) {
         super(Opcodes.ASM9, mv);
     }
-    
+
     private void reset() {
         if (lastWasALoad0) {
             super.visitVarInsn(Opcodes.ALOAD, 0);
@@ -108,7 +106,8 @@ final class ConstructorToMethodConverter extends MethodVisitor {
     }
 
     @Override
-    public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
+    public void visitLocalVariable(
+            String name, String desc, String signature, Label start, Label end, int index) {
         reset();
         super.visitLocalVariable(name, desc, signature, start, end, index);
     }
@@ -120,7 +119,8 @@ final class ConstructorToMethodConverter extends MethodVisitor {
     }
 
     @Override
-    public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+    public void visitMethodInsn(
+            int opcode, String owner, String name, String descriptor, boolean isInterface) {
         if (lastWasALoad0 && opcode == Opcodes.INVOKESPECIAL) {
             lastWasALoad0 = false;
             callRemoved = true;
@@ -165,9 +165,13 @@ final class ConstructorToMethodConverter extends MethodVisitor {
     }
 
     @Override
-    public void visitInvokeDynamicInsn(String name, String descriptor, Handle bootstrapMethodHandle,
+    public void visitInvokeDynamicInsn(
+            String name,
+            String descriptor,
+            Handle bootstrapMethodHandle,
             Object... bootstrapMethodArguments) {
         reset();
-        super.visitInvokeDynamicInsn(name, descriptor, bootstrapMethodHandle, bootstrapMethodArguments);
+        super.visitInvokeDynamicInsn(
+                name, descriptor, bootstrapMethodHandle, bootstrapMethodArguments);
     }
 }

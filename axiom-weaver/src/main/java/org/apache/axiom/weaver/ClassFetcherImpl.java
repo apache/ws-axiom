@@ -43,7 +43,8 @@ final class ClassFetcherImpl implements ClassFetcher {
 
     @Override
     public void fetch(String className, ClassVisitor classVisitor) {
-        try (InputStream in = classLoader.getResourceAsStream(className.replace('.', '/') + ".class")) {
+        try (InputStream in =
+                classLoader.getResourceAsStream(className.replace('.', '/') + ".class")) {
             if (in == null) {
                 throw new WeaverException("Class " + className + " not found");
             }

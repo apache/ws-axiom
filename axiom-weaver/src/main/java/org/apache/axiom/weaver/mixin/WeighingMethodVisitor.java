@@ -24,7 +24,7 @@ import org.objectweb.asm.Opcodes;
 
 final class WeighingMethodVisitor extends MethodVisitor {
     private final Counter counter;
-    
+
     WeighingMethodVisitor(Counter counter) {
         super(Opcodes.ASM9);
         this.counter = counter;

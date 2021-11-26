@@ -29,6 +29,11 @@ public class InnerClassTest {
         Weaver weaver = new Weaver(new SimpleImplementationClassNameMapper("impl"));
         weaver.loadWeavablePackage(cl, "org.apache.axiom.weaver.innerclass");
         weaver.addInterfaceToImplement(Iface.class);
-        weaver.toClassLoader(cl).loadClass("impl.IfaceImpl").asSubclass(Iface.class).getConstructor().newInstance().doSomething();
+        weaver.toClassLoader(cl)
+                .loadClass("impl.IfaceImpl")
+                .asSubclass(Iface.class)
+                .getConstructor()
+                .newInstance()
+                .doSomething();
     }
 }

@@ -40,27 +40,44 @@ import com.github.veithen.jrel.composition.CompositionRelation;
 import com.github.veithen.jrel.transitive.TransitiveClosure;
 
 final class ImplementationNode {
-    private static final ManyToManyAssociation<ImplementationNode,ImplementationNode> PARENT = new ManyToManyAssociation<>(ImplementationNode.class, ImplementationNode.class, Navigability.BIDIRECTIONAL);
-    private static final ManyToManyAssociation<ImplementationNode,MixinNode> MIXIN = new ManyToManyAssociation<>(ImplementationNode.class, MixinNode.class, Navigability.UNIDIRECTIONAL);
-    private static final TransitiveClosure<ImplementationNode> ANCESTOR = new TransitiveClosure<>(PARENT, false);
-    private static final TransitiveClosure<ImplementationNode> ANCESTOR_OR_SELF = new TransitiveClosure<>(PARENT, true);
-    private static final CompositionRelation<ImplementationNode,ImplementationNode,MixinNode> TRANSITIVE_MIXIN = new CompositionRelation<>(ANCESTOR_OR_SELF, MIXIN);
+    private static final ManyToManyAssociation<ImplementationNode, ImplementationNode> PARENT =
+            new ManyToManyAssociation<>(
+                    ImplementationNode.class, ImplementationNode.class, Navigability.BIDIRECTIONAL);
+    private static final ManyToManyAssociation<ImplementationNode, MixinNode> MIXIN =
+            new ManyToManyAssociation<>(
+                    ImplementationNode.class, MixinNode.class, Navigability.UNIDIRECTIONAL);
+    private static final TransitiveClosure<ImplementationNode> ANCESTOR =
+            new TransitiveClosure<>(PARENT, false);
+    private static final TransitiveClosure<ImplementationNode> ANCESTOR_OR_SELF =
+            new TransitiveClosure<>(PARENT, true);
+    private static final CompositionRelation<ImplementationNode, ImplementationNode, MixinNode>
+            TRANSITIVE_MIXIN = new CompositionRelation<>(ANCESTOR_OR_SELF, MIXIN);
 
     private final MutableReference<Weaver> weaver = Relations.WEAVER.newReferenceHolder(this);
     private final int id;
     private final InterfaceNode primaryInterface;
     private final MutableReferences<ImplementationNode> parents = PARENT.newReferenceHolder(this);
-    private final MutableReferences<ImplementationNode> children = PARENT.getConverse().newReferenceHolder(this);
-    private final MutableReferences<InterfaceNode> ifaces = Relations.IMPLEMENTS.newReferenceHolder(this);
+    private final MutableReferences<ImplementationNode> children =
+            PARENT.getConverse().newReferenceHolder(this);
+    private final MutableReferences<InterfaceNode> ifaces =
+            Relations.IMPLEMENTS.newReferenceHolder(this);
     private final MutableReferences<MixinNode> mixins = MIXIN.newReferenceHolder(this);
     private final References<ImplementationNode> ancestors = ANCESTOR.newReferenceHolder(this);
-    private final References<ImplementationNode> ancestorsOrSelf = ANCESTOR_OR_SELF.newReferenceHolder(this);
-    private final References<ImplementationNode> descendantsOrSelf = ANCESTOR_OR_SELF.getConverse().newReferenceHolder(this);
-    private final References<MixinNode> transitiveMixins = TRANSITIVE_MIXIN.newReferenceHolder(this);
+    private final References<ImplementationNode> ancestorsOrSelf =
+            ANCESTOR_OR_SELF.newReferenceHolder(this);
+    private final References<ImplementationNode> descendantsOrSelf =
+            ANCESTOR_OR_SELF.getConverse().newReferenceHolder(this);
+    private final References<MixinNode> transitiveMixins =
+            TRANSITIVE_MIXIN.newReferenceHolder(this);
     private final Supplier<String> className;
     private boolean requireImplementation;
 
-    ImplementationNode(int id, Set<ImplementationNode> parents, InterfaceNode iface, Set<MixinNode> mixins, Supplier<String> className) {
+    ImplementationNode(
+            int id,
+            Set<ImplementationNode> parents,
+            InterfaceNode iface,
+            Set<MixinNode> mixins,
+            Supplier<String> className) {
         this.id = id;
         this.primaryInterface = iface;
         ifaces.add(iface);
@@ -129,7 +146,9 @@ final class ImplementationNode {
         if (showImplName) {
             String implementationClassName = getClassName();
             builder.append("<b>");
-            builder.append(implementationClassName.substring(implementationClassName.lastIndexOf('/')+1));
+            builder.append(
+                    implementationClassName.substring(
+                            implementationClassName.lastIndexOf('/') + 1));
             builder.append("</b><br/>");
         }
         for (Class<?> iface : getInterfaces()) {
@@ -214,7 +233,8 @@ final class ImplementationNode {
             for (ImplementationNode child : children) {
                 child.ifaces.addAll(ifaces);
                 child.mixins.addAll(mixins);
-                parentLoop: for (ImplementationNode parent : parents) {
+                parentLoop:
+                for (ImplementationNode parent : parents) {
                     for (ImplementationNode existingParent : child.parents) {
                         if (existingParent != this && existingParent.ancestors.contains(parent)) {
                             continue parentLoop;
@@ -331,13 +351,14 @@ final class ImplementationNode {
         for (Class<?> iface : getInterfaces()) {
             ifaceNames.add(Type.getInternalName(iface));
         }
-        classDefinitions.add(new ImplementationClassDefinition(
-                version,
-                access,
-                className,
-                parents.isEmpty() ? null : parents.iterator().next().getClassName(),
-                ifaceNames.toArray(new String[ifaceNames.size()]),
-                mixins.toArray(new Mixin[mixins.size()])));
+        classDefinitions.add(
+                new ImplementationClassDefinition(
+                        version,
+                        access,
+                        className,
+                        parents.isEmpty() ? null : parents.iterator().next().getClassName(),
+                        ifaceNames.toArray(new String[ifaceNames.size()]),
+                        mixins.toArray(new Mixin[mixins.size()])));
         return classDefinitions;
     }
 }

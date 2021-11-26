@@ -42,7 +42,8 @@ public abstract class ClassDefinition {
     }
 
     public final byte[] toByteArray() {
-        ClassWriter cw = new ClassWriter(/* ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES */ 0);
+        ClassWriter cw =
+                new ClassWriter(/* ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES */ 0);
         accept(cw);
         return cw.toByteArray();
     }

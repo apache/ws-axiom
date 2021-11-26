@@ -16,7 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-@org.apache.axiom.weaver.annotation.WeavablePackage(mixins={
-        IfaceMixin.class,
-})
+@org.apache.axiom.weaver.annotation.WeavablePackage(
+        mixins = {
+            IfaceMixin.class,
+        })
 package org.apache.axiom.weaver.ctor;

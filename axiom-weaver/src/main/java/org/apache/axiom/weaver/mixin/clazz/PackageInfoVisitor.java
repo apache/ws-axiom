@@ -45,7 +45,7 @@ final class PackageInfoVisitor extends ClassVisitor {
                         return new AnnotationVisitor(Opcodes.ASM9) {
                             @Override
                             public void visit(String name, Object value) {
-                                mixins.add(((Type)value).getClassName());
+                                mixins.add(((Type) value).getClassName());
                             }
                         };
                     } else {

@@ -61,24 +61,34 @@ final class MixinClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public void visit(int version, int access, String name, String signature, String superName,
+    public void visit(
+            int version,
+            int access,
+            String name,
+            String signature,
+            String superName,
             String[] interfaces) {
         bytecodeVersion = version;
         className = name;
-        remapperFactory = (targetClassName) -> new Remapper() {
-            @Override
-            public String map(String internalName) {
-                if (internalName.equals(name)) {
-                    return targetClassName;
-                }
-                if (internalName.length() > name.length() && internalName.startsWith(name) && internalName.charAt(name.length()) == '$') {
-                    return targetClassName + internalName.substring(name.length());
-                }
-                return internalName;
-            }
-        };
+        remapperFactory =
+                (targetClassName) ->
+                        new Remapper() {
+                            @Override
+                            public String map(String internalName) {
+                                if (internalName.equals(name)) {
+                                    return targetClassName;
+                                }
+                                if (internalName.length() > name.length()
+                                        && internalName.startsWith(name)
+                                        && internalName.charAt(name.length()) == '$') {
+                                    return targetClassName + internalName.substring(name.length());
+                                }
+                                return internalName;
+                            }
+                        };
         if (interfaces.length != 1) {
-            throw new MixinFactoryException("Mixins are expected to implement one and only one interface");
+            throw new MixinFactoryException(
+                    "Mixins are expected to implement one and only one interface");
         }
         targetInterface = classFetcher.loadClass(interfaces[0].replace('/', '.'));
     }
@@ -97,24 +107,27 @@ final class MixinClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public FieldVisitor visitField(int access, String name, String descriptor, String signature,
-            Object value) {
+    public FieldVisitor visitField(
+            int access, String name, String descriptor, String signature, Object value) {
         FieldNode field = new FieldNode(Opcodes.ASM9, access, name, descriptor, signature, value);
         fields.add(field);
         return field;
     }
 
     @Override
-    public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
-            String[] exceptions) {
-        MethodNode method = new MethodNode(Opcodes.ASM9, access, name, descriptor, signature, exceptions);
+    public MethodVisitor visitMethod(
+            int access, String name, String descriptor, String signature, String[] exceptions) {
+        MethodNode method =
+                new MethodNode(Opcodes.ASM9, access, name, descriptor, signature, exceptions);
         Function<String, Remapper> remapperFactory = this.remapperFactory;
-        MethodBody body = new MethodBody() {
-            @Override
-            public void apply(String targetClassName, MethodVisitor mv) {
-                method.accept(new MethodRemapper(mv, remapperFactory.apply(targetClassName)));
-            }
-        };
+        MethodBody body =
+                new MethodBody() {
+                    @Override
+                    public void apply(String targetClassName, MethodVisitor mv) {
+                        method.accept(
+                                new MethodRemapper(mv, remapperFactory.apply(targetClassName)));
+                    }
+                };
         if (name.equals("<init>")) {
             if (!descriptor.equals("()V")) {
                 throw new MixinFactoryException("Expected only a default constructor");
@@ -139,19 +152,28 @@ final class MixinClassVisitor extends ClassVisitor {
         for (String innerClassName : innerClassNames) {
             ClassNode innerClass = new ClassNode();
             classFetcher.fetch(innerClassName, innerClass);
-            innerClasses.add(new MixinInnerClass() {
-                @Override
-                public ClassDefinition createClassDefinition(String targetClassName) {
-                    Remapper remapper = remapperFactory.apply(targetClassName);
-                    return new ClassDefinition(remapper.map(innerClass.name)) {
+            innerClasses.add(
+                    new MixinInnerClass() {
                         @Override
-                        public void accept(ClassVisitor cv) {
-                            innerClass.accept(new ClassRemapper(cv, remapper));
+                        public ClassDefinition createClassDefinition(String targetClassName) {
+                            Remapper remapper = remapperFactory.apply(targetClassName);
+                            return new ClassDefinition(remapper.map(innerClass.name)) {
+                                @Override
+                                public void accept(ClassVisitor cv) {
+                                    innerClass.accept(new ClassRemapper(cv, remapper));
+                                }
+                            };
                         }
-                    };
-                }
-            });
+                    });
         }
-        return new Mixin(bytecodeVersion, className.substring(className.lastIndexOf('/')+1), targetInterface, fields, initializerMethod, staticInitializerMethod, methods, innerClasses);
+        return new Mixin(
+                bytecodeVersion,
+                className.substring(className.lastIndexOf('/') + 1),
+                targetInterface,
+                fields,
+                initializerMethod,
+                staticInitializerMethod,
+                methods,
+                innerClasses);
     }
 }

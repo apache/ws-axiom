@@ -31,7 +31,12 @@ public class StaticInitializerTest {
         Weaver weaver = new Weaver(new SimpleImplementationClassNameMapper("impl"));
         weaver.loadWeavablePackage(cl, "org.apache.axiom.weaver.clinit");
         weaver.addInterfaceToImplement(Iface.class);
-        Iface instance = weaver.toClassLoader(cl).loadClass("impl.IfaceImpl").asSubclass(Iface.class).getConstructor().newInstance();
+        Iface instance =
+                weaver.toClassLoader(cl)
+                        .loadClass("impl.IfaceImpl")
+                        .asSubclass(Iface.class)
+                        .getConstructor()
+                        .newInstance();
         assertThat(instance.getObject()).isNotNull();
         assertThat(instance.getInt()).isEqualTo(-1);
     }
