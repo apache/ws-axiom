@@ -83,7 +83,11 @@ public final class Weaver {
                     mixinNodes.add(new MixinNode(mixin, interfaceNode));
                 }
             }
-            ImplementationNode implementationNode = new ImplementationNode(nextId++, parentImplementations, interfaceNode, mixinNodes);
+            ImplementationNode implementationNode = new ImplementationNode(
+                    nextId++, parentImplementations, interfaceNode, mixinNodes,
+                    // The class name is evaluated lazily so that mapper only needs to produce
+                    // values for classes that are actually generated.
+                    () -> implementationClassNameMapper.getImplementationClassName(iface).replace('.', '/'));
             implementationNodes.put(iface, implementationNode);
             nodes.add(implementationNode);
         }
@@ -123,7 +127,7 @@ public final class Weaver {
             StringBuilder builder = new StringBuilder(prefix);
             builder.append("digraph G {\n  rankdir = BT;\n  node [shape=box];\n");
             for (ImplementationNode node : nodes) {
-                node.dump(builder, showImplName ? implementationClassNameMapper : null);
+                node.dump(builder, showImplName);
             }
             builder.append("}");
             log.debug(builder.toString());
@@ -168,15 +172,14 @@ public final class Weaver {
             if (implementationNodes.size() == 1) {
                 implementationClassNames.put(
                         interfaceNode.getInterface(),
-                        implementationClassNameMapper.getImplementationClassName(
-                                implementationNodes.iterator().next().getPrimaryInterface().getInterface()).replace('.', '/'));
+                        implementationNodes.iterator().next().getClassName());
             }
         });
         log.debug(implementationClassNames);
 
         List<ClassDefinition> result = new ArrayList<>();
         for (ImplementationNode node : nodes) {
-            result.addAll(node.toClassDefinitions(implementationClassNameMapper));
+            result.addAll(node.toClassDefinitions());
         }
         return result.toArray(new ClassDefinition[result.size()]);
     }

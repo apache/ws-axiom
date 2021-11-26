@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.apache.axiom.weaver.mixin.ClassDefinition;
 import org.apache.axiom.weaver.mixin.Mixin;
@@ -56,14 +57,16 @@ final class ImplementationNode {
     private final References<ImplementationNode> ancestorsOrSelf = ANCESTOR_OR_SELF.newReferenceHolder(this);
     private final References<ImplementationNode> descendantsOrSelf = ANCESTOR_OR_SELF.getConverse().newReferenceHolder(this);
     private final References<MixinNode> transitiveMixins = TRANSITIVE_MIXIN.newReferenceHolder(this);
+    private final Supplier<String> className;
     private boolean requireImplementation;
 
-    ImplementationNode(int id, Set<ImplementationNode> parents, InterfaceNode iface, Set<MixinNode> mixins) {
+    ImplementationNode(int id, Set<ImplementationNode> parents, InterfaceNode iface, Set<MixinNode> mixins, Supplier<String> className) {
         this.id = id;
         this.primaryInterface = iface;
         ifaces.add(iface);
         this.mixins.addAll(mixins);
         this.parents.addAll(parents);
+        this.className = className;
     }
 
     InterfaceNode getPrimaryInterface() {
@@ -72,6 +75,10 @@ final class ImplementationNode {
 
     void requireImplementation() {
         requireImplementation = true;
+    }
+
+    String getClassName() {
+        return className.get();
     }
 
     Set<ImplementationNode> getRequiredDescendantsOrSelf() {
@@ -115,14 +122,14 @@ final class ImplementationNode {
         return interfaces;
     }
 
-    void dump(StringBuilder builder, ImplementationClassNameMapper implementationClassNameMapper) {
+    void dump(StringBuilder builder, boolean showImplName) {
         builder.append("  n");
         builder.append(id);
         builder.append(" [label=<");
-        if (implementationClassNameMapper != null) {
-            String implementationClassName = implementationClassNameMapper.getImplementationClassName(primaryInterface.getInterface());
+        if (showImplName) {
+            String implementationClassName = getClassName();
             builder.append("<b>");
-            builder.append(implementationClassName.substring(implementationClassName.lastIndexOf('.')+1));
+            builder.append(implementationClassName.substring(implementationClassName.lastIndexOf('/')+1));
             builder.append("</b><br/>");
         }
         for (Class<?> iface : getInterfaces()) {
@@ -295,9 +302,9 @@ final class ImplementationNode {
         return builder.toString();
     }
 
-    List<ClassDefinition> toClassDefinitions(ImplementationClassNameMapper implementationClassNameMapper) {
+    List<ClassDefinition> toClassDefinitions() {
         List<ClassDefinition> classDefinitions = new ArrayList<>();
-        String className = implementationClassNameMapper.getImplementationClassName(primaryInterface.getInterface()).replace('.', '/');
+        String className = getClassName();
         int version = 0;
         List<Mixin> mixins = new ArrayList<>();
         for (MixinNode mixinNode : this.mixins) {
@@ -328,7 +335,7 @@ final class ImplementationNode {
                 version,
                 access,
                 className,
-                parents.isEmpty() ? null : implementationClassNameMapper.getImplementationClassName(parents.iterator().next().primaryInterface.getInterface()).replace('.', '/'),
+                parents.isEmpty() ? null : parents.iterator().next().getClassName(),
                 ifaceNames.toArray(new String[ifaceNames.size()]),
                 mixins.toArray(new Mixin[mixins.size()])));
         return classDefinitions;
