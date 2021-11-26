@@ -38,7 +38,8 @@ public final class Weaver {
     private static final Log log = LogFactory.getLog(Weaver.class);
 
     private final ImplementationClassNameMapper implementationClassNameMapper;
-    private final Map<Class<?>, ImplementationNode> nodeByInterface = new HashMap<>();
+    private final Map<Class<?>, InterfaceNode> interfaceNodes = new HashMap<>();
+    private final Map<Class<?>, ImplementationNode> implementationNodes = new HashMap<>();
     private final Map<Class<?>, Set<Mixin>> mixinsByInterface = new HashMap<>();
     private final MutableReferences<ImplementationNode> nodes = Relations.WEAVER.getConverse().newReferenceHolder(this);
     private int nextId = 1;
@@ -63,26 +64,34 @@ public final class Weaver {
         mixins.add(mixin);
     }
 
-    private ImplementationNode addInterface(Class<?> iface) {
-        ImplementationNode node = nodeByInterface.get(iface);
-        if (node == null) {
-            Set<ImplementationNode> parents = new HashSet<>();
+    private InterfaceNode addInterface(Class<?> iface) {
+        InterfaceNode interfaceNode = interfaceNodes.get(iface);
+        if (interfaceNode == null) {
+            Set<InterfaceNode> parentInterfaces = new HashSet<>();
+            Set<ImplementationNode> parentImplementations = new HashSet<>();
             for (Class<?> superClass : iface.getInterfaces()) {
-                parents.add(addInterface(superClass));
+                InterfaceNode parentInterface = addInterface(superClass);
+                parentInterfaces.add(parentInterface);
+                parentImplementations.addAll(parentInterface.getImplementations());
             }
+            interfaceNode = new InterfaceNode(iface, parentInterfaces);
+            interfaceNodes.put(iface, interfaceNode);
+            Set<MixinNode> mixinNodes = new HashSet<>();
             Set<Mixin> mixins = mixinsByInterface.get(iface);
-            if (mixins == null) {
-                mixins = new HashSet<>();
+            if (mixins != null) {
+                for (Mixin mixin : mixins) {
+                    mixinNodes.add(new MixinNode(mixin, interfaceNode));
+                }
             }
-            node = new ImplementationNode(nextId++, parents, iface, mixins);
-            nodeByInterface.put(iface, node);
-            nodes.add(node);
+            ImplementationNode implementationNode = new ImplementationNode(nextId++, parentImplementations, interfaceNode, mixinNodes);
+            implementationNodes.put(iface, implementationNode);
+            nodes.add(implementationNode);
         }
-        return node;
+        return interfaceNode;
     }
 
     public void addInterfaceToImplement(Class<?> iface) {
-        addInterface(iface).requireImplementation();
+        addInterface(iface).getImplementations().forEach(ImplementationNode::requireImplementation);
     }
 
     private void compact() {
@@ -152,6 +161,19 @@ public final class Weaver {
         promoteCommonMixins();
         compact();
         dump("Final graph:\n", true);
+
+        Map<Class<?>, String> implementationClassNames = new HashMap<>();
+        interfaceNodes.values().forEach(interfaceNode -> {
+            Set<ImplementationNode> implementationNodes = interfaceNode.getImplementations();
+            if (implementationNodes.size() == 1) {
+                implementationClassNames.put(
+                        interfaceNode.getInterface(),
+                        implementationClassNameMapper.getImplementationClassName(
+                                implementationNodes.iterator().next().getPrimaryInterface().getInterface()).replace('.', '/'));
+            }
+        });
+        log.debug(implementationClassNames);
+
         List<ClassDefinition> result = new ArrayList<>();
         for (ImplementationNode node : nodes) {
             result.addAll(node.toClassDefinitions(implementationClassNameMapper));

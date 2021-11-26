@@ -18,13 +18,33 @@
  */
 package org.apache.axiom.weaver;
 
+import java.util.Set;
+
 import com.github.veithen.jrel.association.ManyToManyAssociation;
-import com.github.veithen.jrel.association.ManyToOneAssociation;
+import com.github.veithen.jrel.association.MutableReferences;
 import com.github.veithen.jrel.association.Navigability;
 
-final class Relations {
-    private Relations() {}
+final class InterfaceNode {
+    private static final ManyToManyAssociation<InterfaceNode,InterfaceNode> EXTENDS = new ManyToManyAssociation<>(InterfaceNode.class, InterfaceNode.class, Navigability.UNIDIRECTIONAL);
 
-    static final ManyToManyAssociation<ImplementationNode,InterfaceNode> IMPLEMENTS = new ManyToManyAssociation<>(ImplementationNode.class, InterfaceNode.class, Navigability.BIDIRECTIONAL);
-    static final ManyToOneAssociation<ImplementationNode,Weaver> WEAVER = new ManyToOneAssociation<>(ImplementationNode.class, Weaver.class, Navigability.BIDIRECTIONAL);
+    private final Class<?> iface;
+    private final MutableReferences<InterfaceNode> parents = EXTENDS.newReferenceHolder(this);
+    private final MutableReferences<ImplementationNode> implementations = Relations.IMPLEMENTS.getConverse().newReferenceHolder(this);
+
+    InterfaceNode(Class<?> iface, Set<InterfaceNode> parents) {
+        this.iface = iface;
+        this.parents.addAll(parents);
+    }
+
+    Class<?> getInterface() {
+        return iface;
+    }
+
+    Set<InterfaceNode> getParents() {
+        return parents.asSet();
+    }
+
+    Set<ImplementationNode> getImplementations() {
+        return implementations.asSet();
+    }
 }

@@ -40,30 +40,34 @@ import com.github.veithen.jrel.transitive.TransitiveClosure;
 
 final class ImplementationNode {
     private static final ManyToManyAssociation<ImplementationNode,ImplementationNode> PARENT = new ManyToManyAssociation<>(ImplementationNode.class, ImplementationNode.class, Navigability.BIDIRECTIONAL);
-    private static final ManyToManyAssociation<ImplementationNode,Mixin> MIXIN = new ManyToManyAssociation<>(ImplementationNode.class, Mixin.class, Navigability.UNIDIRECTIONAL);
+    private static final ManyToManyAssociation<ImplementationNode,MixinNode> MIXIN = new ManyToManyAssociation<>(ImplementationNode.class, MixinNode.class, Navigability.UNIDIRECTIONAL);
     private static final TransitiveClosure<ImplementationNode> ANCESTOR = new TransitiveClosure<>(PARENT, false);
     private static final TransitiveClosure<ImplementationNode> ANCESTOR_OR_SELF = new TransitiveClosure<>(PARENT, true);
-    private static final CompositionRelation<ImplementationNode,ImplementationNode,Mixin> TRANSITIVE_MIXIN = new CompositionRelation<>(ANCESTOR_OR_SELF, MIXIN);
+    private static final CompositionRelation<ImplementationNode,ImplementationNode,MixinNode> TRANSITIVE_MIXIN = new CompositionRelation<>(ANCESTOR_OR_SELF, MIXIN);
 
     private final MutableReference<Weaver> weaver = Relations.WEAVER.newReferenceHolder(this);
     private final int id;
-    private final Class<?> primaryInterface;
+    private final InterfaceNode primaryInterface;
     private final MutableReferences<ImplementationNode> parents = PARENT.newReferenceHolder(this);
     private final MutableReferences<ImplementationNode> children = PARENT.getConverse().newReferenceHolder(this);
-    private final InterfaceSet ifaces = new InterfaceSet();
-    private final MutableReferences<Mixin> mixins = MIXIN.newReferenceHolder(this);
+    private final MutableReferences<InterfaceNode> ifaces = Relations.IMPLEMENTS.newReferenceHolder(this);
+    private final MutableReferences<MixinNode> mixins = MIXIN.newReferenceHolder(this);
     private final References<ImplementationNode> ancestors = ANCESTOR.newReferenceHolder(this);
     private final References<ImplementationNode> ancestorsOrSelf = ANCESTOR_OR_SELF.newReferenceHolder(this);
     private final References<ImplementationNode> descendantsOrSelf = ANCESTOR_OR_SELF.getConverse().newReferenceHolder(this);
-    private final References<Mixin> transitiveMixins = TRANSITIVE_MIXIN.newReferenceHolder(this);
+    private final References<MixinNode> transitiveMixins = TRANSITIVE_MIXIN.newReferenceHolder(this);
     private boolean requireImplementation;
 
-    ImplementationNode(int id, Set<ImplementationNode> parents, Class<?> iface, Set<Mixin> mixins) {
+    ImplementationNode(int id, Set<ImplementationNode> parents, InterfaceNode iface, Set<MixinNode> mixins) {
         this.id = id;
         this.primaryInterface = iface;
         ifaces.add(iface);
         this.mixins.addAll(mixins);
         this.parents.addAll(parents);
+    }
+
+    InterfaceNode getPrimaryInterface() {
+        return primaryInterface;
     }
 
     void requireImplementation() {
@@ -82,10 +86,33 @@ final class ImplementationNode {
 
     private int getWeight() {
         int weight = 0;
-        for (Mixin mixin : transitiveMixins) {
+        for (MixinNode mixin : transitiveMixins) {
             weight += mixin.getWeight();
         }
         return weight;
+    }
+
+    private Set<Class<?>> getInterfaces() {
+        Set<Class<?>> interfaces = new LinkedHashSet<>();
+        for (InterfaceNode ifaceNode : ifaces) {
+            Class<?> iface = ifaceNode.getInterface();
+            if (interfaces.contains(iface)) {
+                continue;
+            }
+            for (Class<?> i : interfaces) {
+                if (iface.isAssignableFrom(i)) {
+                    continue;
+                }
+            }
+            for (Iterator<Class<?>> it = interfaces.iterator(); it.hasNext(); ) {
+                Class<?> i = it.next();
+                if (i.isAssignableFrom(iface)) {
+                    it.remove();
+                }
+            }
+            interfaces.add(iface);
+        }
+        return interfaces;
     }
 
     void dump(StringBuilder builder, ImplementationClassNameMapper implementationClassNameMapper) {
@@ -93,17 +120,17 @@ final class ImplementationNode {
         builder.append(id);
         builder.append(" [label=<");
         if (implementationClassNameMapper != null) {
-            String implementationClassName = implementationClassNameMapper.getImplementationClassName(primaryInterface);
+            String implementationClassName = implementationClassNameMapper.getImplementationClassName(primaryInterface.getInterface());
             builder.append("<b>");
             builder.append(implementationClassName.substring(implementationClassName.lastIndexOf('.')+1));
             builder.append("</b><br/>");
         }
-        for (Class<?> iface : ifaces) {
+        for (Class<?> iface : getInterfaces()) {
             builder.append("<i>");
             builder.append(iface.getSimpleName());
             builder.append("</i><br/>");
         }
-        for (Mixin mixin : mixins) {
+        for (MixinNode mixin : mixins) {
             builder.append(mixin.getName());
             builder.append("<br/>");
         }
@@ -151,6 +178,7 @@ final class ImplementationNode {
                 target.children.addAll(node.children);
                 node.parents.clear();
                 node.children.clear();
+                node.ifaces.clear();
                 node.weaver.set(null);
             }
         }
@@ -164,6 +192,7 @@ final class ImplementationNode {
             }
             parents.clear();
             children.clear();
+            ifaces.clear();
             weaver.set(null);
         }
     }
@@ -189,6 +218,7 @@ final class ImplementationNode {
             }
             parents.clear();
             children.clear();
+            ifaces.clear();
             weaver.set(null);
             return true;
         } else {
@@ -225,7 +255,7 @@ final class ImplementationNode {
         if (requireImplementation || children.isEmpty()) {
             return false;
         }
-        Set<Mixin> commonMixins = new LinkedHashSet<>();
+        Set<MixinNode> commonMixins = new LinkedHashSet<>();
         boolean first = true;
         for (ImplementationNode child : children) {
             if (first) {
@@ -238,7 +268,7 @@ final class ImplementationNode {
         if (commonMixins.isEmpty()) {
             return false;
         }
-        for (Mixin mixin : commonMixins) {
+        for (MixinNode mixin : commonMixins) {
             mixins.add(mixin);
             ifaces.add(mixin.getTargetInterface());
             for (ImplementationNode child : children) {
@@ -253,7 +283,7 @@ final class ImplementationNode {
     public String toString() {
         StringBuilder builder = new StringBuilder("<");
         boolean first = true;
-        for (Class<?> iface : ifaces) {
+        for (Class<?> iface : getInterfaces()) {
             if (first) {
                 first = false;
             } else {
@@ -267,15 +297,18 @@ final class ImplementationNode {
 
     List<ClassDefinition> toClassDefinitions(ImplementationClassNameMapper implementationClassNameMapper) {
         List<ClassDefinition> classDefinitions = new ArrayList<>();
-        String className = implementationClassNameMapper.getImplementationClassName(primaryInterface).replace('.', '/');
+        String className = implementationClassNameMapper.getImplementationClassName(primaryInterface.getInterface()).replace('.', '/');
         int version = 0;
-        for (Mixin mixin : mixins) {
+        List<Mixin> mixins = new ArrayList<>();
+        for (MixinNode mixinNode : this.mixins) {
+            Mixin mixin = mixinNode.getMixin();
             if (version == 0) {
                 version = mixin.getBytecodeVersion();
             } else if (mixin.getBytecodeVersion() != version) {
                 throw new WeaverException("Inconsistent bytecode versions");
             }
             classDefinitions.addAll(mixin.createInnerClassDefinitions(className));
+            mixins.add(mixin);
         }
         if (version == 0) {
             version = Opcodes.V1_7;
@@ -288,14 +321,14 @@ final class ImplementationNode {
             access |= Opcodes.ACC_FINAL;
         }
         List<String> ifaceNames = new ArrayList<>();
-        for (Class<?> iface : ifaces) {
+        for (Class<?> iface : getInterfaces()) {
             ifaceNames.add(Type.getInternalName(iface));
         }
         classDefinitions.add(new ImplementationClassDefinition(
                 version,
                 access,
                 className,
-                parents.isEmpty() ? null : implementationClassNameMapper.getImplementationClassName(parents.iterator().next().primaryInterface).replace('.', '/'),
+                parents.isEmpty() ? null : implementationClassNameMapper.getImplementationClassName(parents.iterator().next().primaryInterface.getInterface()).replace('.', '/'),
                 ifaceNames.toArray(new String[ifaceNames.size()]),
                 mixins.toArray(new Mixin[mixins.size()])));
         return classDefinitions;

@@ -18,13 +18,30 @@
  */
 package org.apache.axiom.weaver;
 
-import com.github.veithen.jrel.association.ManyToManyAssociation;
-import com.github.veithen.jrel.association.ManyToOneAssociation;
-import com.github.veithen.jrel.association.Navigability;
+import org.apache.axiom.weaver.mixin.Mixin;
 
-final class Relations {
-    private Relations() {}
+final class MixinNode {
+    private final Mixin mixin;
+    private final InterfaceNode targetInterface;
 
-    static final ManyToManyAssociation<ImplementationNode,InterfaceNode> IMPLEMENTS = new ManyToManyAssociation<>(ImplementationNode.class, InterfaceNode.class, Navigability.BIDIRECTIONAL);
-    static final ManyToOneAssociation<ImplementationNode,Weaver> WEAVER = new ManyToOneAssociation<>(ImplementationNode.class, Weaver.class, Navigability.BIDIRECTIONAL);
+    MixinNode(Mixin mixin, InterfaceNode targetInterface) {
+        this.mixin = mixin;
+        this.targetInterface = targetInterface;
+    }
+
+    Mixin getMixin() {
+        return mixin;
+    }
+
+    InterfaceNode getTargetInterface() {
+        return targetInterface;
+    }
+
+    int getWeight() {
+        return mixin.getWeight();
+    }
+
+    String getName() {
+        return mixin.getName();
+    }
 }
