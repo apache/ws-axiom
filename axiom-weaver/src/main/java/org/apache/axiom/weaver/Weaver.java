@@ -29,6 +29,7 @@ import org.apache.axiom.weaver.mixin.ClassDefinition;
 import org.apache.axiom.weaver.mixin.Mixin;
 import org.apache.axiom.weaver.mixin.WeavingContext;
 import org.apache.axiom.weaver.mixin.clazz.MixinFactory;
+import org.apache.axiom.weaver.mixin.factory.FactoryMixinFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -66,6 +67,7 @@ public final class Weaver {
     private InterfaceNode addInterface(Class<?> iface) {
         InterfaceNode interfaceNode = interfaceNodes.get(iface);
         if (interfaceNode == null) {
+            FactoryMixinFactory.createFactoryMixin(iface).ifPresent(this::addMixin);
             Set<InterfaceNode> parentInterfaces = new HashSet<>();
             Set<ImplementationNode> parentImplementations = new HashSet<>();
             for (Class<?> superClass : iface.getInterfaces()) {
