@@ -27,6 +27,8 @@ import java.util.function.Supplier;
 
 import org.apache.axiom.weaver.mixin.ClassDefinition;
 import org.apache.axiom.weaver.mixin.Mixin;
+import org.apache.axiom.weaver.mixin.TargetContext;
+import org.apache.axiom.weaver.mixin.WeavingContext;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
@@ -322,9 +324,9 @@ final class ImplementationNode {
         return builder.toString();
     }
 
-    List<ClassDefinition> toClassDefinitions() {
+    List<ClassDefinition> toClassDefinitions(WeavingContext weavingContext) {
         List<ClassDefinition> classDefinitions = new ArrayList<>();
-        String className = getClassName();
+        TargetContext targetContext = new TargetContextImpl(weavingContext, getClassName());
         int version = 0;
         List<Mixin> mixins = new ArrayList<>();
         for (MixinNode mixinNode : this.mixins) {
@@ -334,7 +336,7 @@ final class ImplementationNode {
             } else if (mixin.getBytecodeVersion() != version) {
                 throw new WeaverException("Inconsistent bytecode versions");
             }
-            classDefinitions.addAll(mixin.createInnerClassDefinitions(className));
+            classDefinitions.addAll(mixin.createInnerClassDefinitions(targetContext));
             mixins.add(mixin);
         }
         if (version == 0) {
@@ -353,9 +355,9 @@ final class ImplementationNode {
         }
         classDefinitions.add(
                 new ImplementationClassDefinition(
+                        targetContext,
                         version,
                         access,
-                        className,
                         parents.isEmpty() ? null : parents.iterator().next().getClassName(),
                         ifaceNames.toArray(new String[ifaceNames.size()]),
                         mixins.toArray(new Mixin[mixins.size()])));

@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.apache.axiom.weaver.mixin.ClassDefinition;
 import org.apache.axiom.weaver.mixin.Mixin;
+import org.apache.axiom.weaver.mixin.WeavingContext;
 import org.apache.axiom.weaver.mixin.clazz.MixinFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -187,11 +188,11 @@ public final class Weaver {
                                         implementationNodes.iterator().next().getClassName());
                             }
                         });
-        log.debug(implementationClassNames);
+        WeavingContext context = new WeavingContextImpl(implementationClassNames);
 
         List<ClassDefinition> result = new ArrayList<>();
         for (ImplementationNode node : nodes) {
-            result.addAll(node.toClassDefinitions());
+            result.addAll(node.toClassDefinitions(context));
         }
         return result.toArray(new ClassDefinition[result.size()]);
     }

@@ -18,14 +18,13 @@
  */
 package org.apache.axiom.weaver.mixin;
 
-import org.objectweb.asm.MethodVisitor;
+final class DummyWeavingContext implements WeavingContext {
+    static final DummyWeavingContext INSTANCE = new DummyWeavingContext();
 
-public abstract class MethodBody {
-    public abstract void apply(TargetContext context, MethodVisitor mv);
+    private DummyWeavingContext() {}
 
-    public final int getWeight() {
-        Counter counter = new Counter();
-        apply(DummyTargetContext.INSTANCE, new WeighingMethodVisitor(counter));
-        return counter.get();
+    @Override
+    public String getImplementationClassName(Class<?> iface) {
+        return "Dummy";
     }
 }

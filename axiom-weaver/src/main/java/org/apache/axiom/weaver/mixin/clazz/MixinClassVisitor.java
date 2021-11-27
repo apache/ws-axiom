@@ -30,6 +30,7 @@ import org.apache.axiom.weaver.mixin.Mixin;
 import org.apache.axiom.weaver.mixin.MixinInnerClass;
 import org.apache.axiom.weaver.mixin.MixinMethod;
 import org.apache.axiom.weaver.mixin.StaticInitializerMethod;
+import org.apache.axiom.weaver.mixin.TargetContext;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -123,9 +124,10 @@ final class MixinClassVisitor extends ClassVisitor {
         MethodBody body =
                 new MethodBody() {
                     @Override
-                    public void apply(String targetClassName, MethodVisitor mv) {
+                    public void apply(TargetContext context, MethodVisitor mv) {
                         method.accept(
-                                new MethodRemapper(mv, remapperFactory.apply(targetClassName)));
+                                new MethodRemapper(
+                                        mv, remapperFactory.apply(context.getTargetClassName())));
                     }
                 };
         if (name.equals("<init>")) {
@@ -155,8 +157,9 @@ final class MixinClassVisitor extends ClassVisitor {
             innerClasses.add(
                     new MixinInnerClass() {
                         @Override
-                        public ClassDefinition createClassDefinition(String targetClassName) {
-                            Remapper remapper = remapperFactory.apply(targetClassName);
+                        public ClassDefinition createClassDefinition(TargetContext targetContext) {
+                            Remapper remapper =
+                                    remapperFactory.apply(targetContext.getTargetClassName());
                             return new ClassDefinition(remapper.map(innerClass.name)) {
                                 @Override
                                 public void accept(ClassVisitor cv) {

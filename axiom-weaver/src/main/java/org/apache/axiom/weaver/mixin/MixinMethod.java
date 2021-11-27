@@ -60,10 +60,10 @@ public final class MixinMethod {
         return body;
     }
 
-    public void apply(String targetClassName, ClassVisitor cv) {
+    public void apply(TargetContext context, ClassVisitor cv) {
         MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
         if (mv != null) {
-            body.apply(targetClassName, mv);
+            body.apply(context, mv);
         }
     }
 }

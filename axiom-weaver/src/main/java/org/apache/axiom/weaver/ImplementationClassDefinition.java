@@ -28,12 +28,14 @@ import org.apache.axiom.weaver.mixin.InitializerMethod;
 import org.apache.axiom.weaver.mixin.Mixin;
 import org.apache.axiom.weaver.mixin.MixinMethod;
 import org.apache.axiom.weaver.mixin.StaticInitializerMethod;
+import org.apache.axiom.weaver.mixin.TargetContext;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 final class ImplementationClassDefinition extends ClassDefinition {
+    private final TargetContext targetContext;
     private final int version;
     private final int access;
     private final String superName;
@@ -44,13 +46,14 @@ final class ImplementationClassDefinition extends ClassDefinition {
     private final List<Named<StaticInitializerMethod>> staticInitializerMethods = new ArrayList<>();
 
     ImplementationClassDefinition(
+            TargetContext targetContext,
             int version,
             int access,
-            String className,
             String superName,
             String[] ifaceNames,
             Mixin[] mixins) {
-        super(className);
+        super(targetContext.getTargetClassName());
+        this.targetContext = targetContext;
         this.version = version;
         this.access = access;
         this.superName = superName != null ? superName : Type.getInternalName(Object.class);
@@ -135,7 +138,7 @@ final class ImplementationClassDefinition extends ClassDefinition {
             MethodVisitor mv =
                     cv.visitMethod(Opcodes.ACC_PRIVATE, method.getName(), "()V", null, null);
             if (mv != null) {
-                method.get().getBody().apply(className, mv);
+                method.get().getBody().apply(targetContext, mv);
             }
         }
         for (Named<StaticInitializerMethod> method : staticInitializerMethods) {
@@ -147,11 +150,11 @@ final class ImplementationClassDefinition extends ClassDefinition {
                             null,
                             null);
             if (mv != null) {
-                method.get().getBody().apply(className, mv);
+                method.get().getBody().apply(targetContext, mv);
             }
         }
         for (MixinMethod method : methods) {
-            method.apply(className, cv);
+            method.apply(targetContext, cv);
         }
         cv.visitEnd();
     }

@@ -19,5 +19,5 @@
 package org.apache.axiom.weaver.mixin;
 
 public abstract class MixinInnerClass {
-    public abstract ClassDefinition createClassDefinition(String targetClassName);
+    public abstract ClassDefinition createClassDefinition(TargetContext context);
 }

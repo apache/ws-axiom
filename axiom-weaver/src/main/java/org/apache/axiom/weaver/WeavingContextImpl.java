@@ -16,16 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver.mixin;
+package org.apache.axiom.weaver;
 
-import org.objectweb.asm.MethodVisitor;
+import java.util.Map;
 
-public abstract class MethodBody {
-    public abstract void apply(TargetContext context, MethodVisitor mv);
+import org.apache.axiom.weaver.mixin.WeavingContext;
 
-    public final int getWeight() {
-        Counter counter = new Counter();
-        apply(DummyTargetContext.INSTANCE, new WeighingMethodVisitor(counter));
-        return counter.get();
+final class WeavingContextImpl implements WeavingContext {
+    private final Map<Class<?>, String> implementationClassNames;
+
+    WeavingContextImpl(Map<Class<?>, String> implementationClassNames) {
+        this.implementationClassNames = implementationClassNames;
+    }
+
+    @Override
+    public String getImplementationClassName(Class<?> iface) {
+        return implementationClassNames.get(iface);
     }
 }

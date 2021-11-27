@@ -67,7 +67,9 @@ public final class Mixin {
         }
         for (MixinInnerClass innerClass : innerClasses) {
             Counter counter = new Counter();
-            innerClass.createClassDefinition("Dummy").accept(new WeighingClassVisitor(counter));
+            innerClass
+                    .createClassDefinition(DummyTargetContext.INSTANCE)
+                    .accept(new WeighingClassVisitor(counter));
             weight += counter.get();
         }
         this.weight = weight;
@@ -111,10 +113,10 @@ public final class Mixin {
         return staticInitializerMethod;
     }
 
-    public List<ClassDefinition> createInnerClassDefinitions(String targetClassName) {
+    public List<ClassDefinition> createInnerClassDefinitions(TargetContext targetContext) {
         List<ClassDefinition> classDefinitions = new ArrayList<>();
         for (MixinInnerClass innerClass : innerClasses) {
-            classDefinitions.add(innerClass.createClassDefinition(targetClassName));
+            classDefinitions.add(innerClass.createClassDefinition(targetContext));
         }
         return classDefinitions;
     }
