@@ -26,8 +26,8 @@ public class InnerClassTest {
     @Test
     public void testInnerclass() throws Exception {
         ClassLoader cl = InnerClassTest.class.getClassLoader();
-        Weaver weaver = new Weaver(new SimpleImplementationClassNameMapper("impl"));
-        weaver.loadWeavablePackage(cl, "org.apache.axiom.weaver.innerclass");
+        Weaver weaver = new Weaver(cl, new SimpleImplementationClassNameMapper("impl"));
+        weaver.loadWeavablePackage("org.apache.axiom.weaver.innerclass");
         weaver.addInterfaceToImplement(Iface.class);
         weaver.toClassLoader(cl)
                 .loadClass("impl.IfaceImpl")

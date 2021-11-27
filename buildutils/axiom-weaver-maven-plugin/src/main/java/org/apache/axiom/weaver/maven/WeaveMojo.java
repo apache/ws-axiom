@@ -58,7 +58,7 @@ public final class WeaveMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         URLClassLoader classLoader = createClassLoader();
         try {
-            Weaver weaver = new Weaver(new ImplementationClassNameMapper() {
+            Weaver weaver = new Weaver(classLoader, new ImplementationClassNameMapper() {
                 @Override
                 public String getImplementationClassName(Class<?> iface) {
                     String packageName = iface.getPackage().getName();
@@ -71,7 +71,7 @@ public final class WeaveMojo extends AbstractMojo {
                 }
             });
             for (String packageName : weavablePackages) {
-                weaver.loadWeavablePackage(classLoader, packageName);
+                weaver.loadWeavablePackage(packageName);
             }
             for (String interfaceName : interfaces) {
                 try {

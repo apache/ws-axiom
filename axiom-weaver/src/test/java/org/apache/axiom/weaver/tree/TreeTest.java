@@ -26,7 +26,7 @@ public class TreeTest {
     @Test
     public void testInnerclass() throws Exception {
         ClassLoader cl = TreeTest.class.getClassLoader();
-        Weaver weaver = new Weaver(new SimpleImplementationClassNameMapper("impl"));
+        Weaver weaver = new Weaver(cl, new SimpleImplementationClassNameMapper("impl"));
         weaver.addInterfaceToImplement(Root.class);
         weaver.addInterfaceToImplement(Directory.class);
         weaver.addInterfaceToImplement(Leaf.class);

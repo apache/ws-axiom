@@ -18,34 +18,27 @@
  */
 package org.apache.axiom.weaver.mixin.factory;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.axiom.weaver.classio.ClassFetcher;
-import org.apache.axiom.weaver.mixin.Mixin;
 import org.apache.axiom.weaver.mixin.MixinMethod;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public final class FactoryMixinFactory {
-    private FactoryMixinFactory() {}
+final class ClassVisitorImpl extends ClassVisitor {
+    private final ClassFetcher classFetcher;
+    private final List<MixinMethod> mixinMethods;
 
-    public static Optional<Mixin> createFactoryMixin(ClassFetcher classFetcher, Class<?> iface) {
-        List<MixinMethod> mixinMethods = new ArrayList<>();
-        classFetcher.fetch(iface.getName(), new ClassVisitorImpl(classFetcher, mixinMethods));
-        if (mixinMethods.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(
-                new Mixin(
-                        Opcodes.V1_8,
-                        iface.getSimpleName() + "FactoryMixin",
-                        iface,
-                        Collections.emptyList(),
-                        null,
-                        null,
-                        mixinMethods,
-                        Collections.emptyList()));
+    ClassVisitorImpl(ClassFetcher classFetcher, List<MixinMethod> mixinMethods) {
+        super(Opcodes.ASM9);
+        this.classFetcher = classFetcher;
+        this.mixinMethods = mixinMethods;
+    }
+
+    @Override
+    public MethodVisitor visitMethod(
+            int access, String name, String descriptor, String signature, String[] exceptions) {
+        return new MethodVisitorImpl(name, descriptor, classFetcher, mixinMethods);
     }
 }

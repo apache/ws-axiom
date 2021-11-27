@@ -19,7 +19,7 @@
 package org.apache.axiom.weaver.annotation;
 
 import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  * interface and the method must not have any arguments. The weaver will generate code that
  * creates a new instance of the class implementing the interface.
  */
-@Retention(RUNTIME)
+@Retention(CLASS)
 @Target(METHOD)
 public @interface FactoryMethod {
 }

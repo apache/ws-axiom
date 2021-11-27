@@ -28,8 +28,8 @@ public class StaticInitializerTest {
     @Test
     public void test() throws Exception {
         ClassLoader cl = StaticInitializerTest.class.getClassLoader();
-        Weaver weaver = new Weaver(new SimpleImplementationClassNameMapper("impl"));
-        weaver.loadWeavablePackage(cl, "org.apache.axiom.weaver.clinit");
+        Weaver weaver = new Weaver(cl, new SimpleImplementationClassNameMapper("impl"));
+        weaver.loadWeavablePackage("org.apache.axiom.weaver.clinit");
         weaver.addInterfaceToImplement(Iface.class);
         Iface instance =
                 weaver.toClassLoader(cl)

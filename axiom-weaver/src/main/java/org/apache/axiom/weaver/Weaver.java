@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.axiom.weaver.classio.ClassFetcher;
 import org.apache.axiom.weaver.mixin.ClassDefinition;
 import org.apache.axiom.weaver.mixin.Mixin;
 import org.apache.axiom.weaver.mixin.WeavingContext;
@@ -39,6 +40,7 @@ import com.github.veithen.jrel.collection.LinkedIdentityHashSet;
 public final class Weaver {
     private static final Log log = LogFactory.getLog(Weaver.class);
 
+    private final ClassFetcher classFetcher;
     private final ImplementationClassNameMapper implementationClassNameMapper;
     private final Map<Class<?>, InterfaceNode> interfaceNodes = new HashMap<>();
     private final Map<Class<?>, ImplementationNode> implementationNodes = new HashMap<>();
@@ -47,13 +49,14 @@ public final class Weaver {
             Relations.WEAVER.getConverse().newReferenceHolder(this);
     private int nextId = 1;
 
-    public Weaver(ImplementationClassNameMapper implementationClassNameMapper) {
+    public Weaver(
+            ClassLoader classLoader, ImplementationClassNameMapper implementationClassNameMapper) {
+        classFetcher = new ClassFetcherImpl(classLoader);
         this.implementationClassNameMapper = implementationClassNameMapper;
     }
 
-    public void loadWeavablePackage(ClassLoader classLoader, String packageName) {
-        for (Mixin mixin :
-                MixinFactory.loadMixins(new ClassFetcherImpl(classLoader), packageName)) {
+    public void loadWeavablePackage(String packageName) {
+        for (Mixin mixin : MixinFactory.loadMixins(classFetcher, packageName)) {
             addMixin(mixin);
         }
     }
@@ -67,7 +70,7 @@ public final class Weaver {
     private InterfaceNode addInterface(Class<?> iface) {
         InterfaceNode interfaceNode = interfaceNodes.get(iface);
         if (interfaceNode == null) {
-            FactoryMixinFactory.createFactoryMixin(iface).ifPresent(this::addMixin);
+            FactoryMixinFactory.createFactoryMixin(classFetcher, iface).ifPresent(this::addMixin);
             Set<InterfaceNode> parentInterfaces = new HashSet<>();
             Set<ImplementationNode> parentImplementations = new HashSet<>();
             for (Class<?> superClass : iface.getInterfaces()) {
