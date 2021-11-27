@@ -19,6 +19,8 @@
 package org.apache.axiom.core;
 
 public interface NodeFactory {
+    NodeFactory2 getFactory2();
+
     /**
      * Create the namespace helper object that will be passed to
      * {@link CoreNSAwareNamedNode#initName(String, String, String, Object)}.

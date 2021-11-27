@@ -30,6 +30,7 @@ public final class DOOMNodeFactory extends AxiomNodeFactoryImpl implements DOMNo
 
     private DOOMNodeFactory() {
         super(DOOMNodeFactory.class.getClassLoader(),
+                "org.apache.axiom.om.impl.dom.NodeFactory2Impl",
                 "org.apache.axiom.om.impl.dom",
                 "org.apache.axiom.soap.impl.dom",
                 "org.apache.axiom.soap.impl.dom.soap11",

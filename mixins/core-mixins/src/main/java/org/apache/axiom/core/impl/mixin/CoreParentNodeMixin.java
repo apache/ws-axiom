@@ -121,7 +121,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     public final Content internalGetContent(boolean create) {
         if (getState() == COMPACT) {
             Content content = new Content();
-            CoreCharacterDataNode cdata = coreGetNodeFactory().createNode(CoreCharacterDataNode.class);
+            CoreCharacterDataNode cdata = coreGetNodeFactory().getFactory2().createCharacterDataNode();
             cdata.internalSetParent(this);
             cdata.coreSetCharacterData(this.content);
             content.firstChild = cdata;

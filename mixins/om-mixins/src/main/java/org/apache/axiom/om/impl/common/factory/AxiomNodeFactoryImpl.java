@@ -22,8 +22,8 @@ import org.apache.axiom.core.NodeFactoryImpl;
 import org.apache.axiom.om.impl.common.builder.OMNamespaceCache;
 
 public abstract class AxiomNodeFactoryImpl extends NodeFactoryImpl {
-    public AxiomNodeFactoryImpl(ClassLoader cl, String... packages) {
-        super(cl, packages);
+    public AxiomNodeFactoryImpl(ClassLoader cl, String factory2ClassName, String... packages) {
+        super(cl, factory2ClassName, packages);
     }
 
     @Override

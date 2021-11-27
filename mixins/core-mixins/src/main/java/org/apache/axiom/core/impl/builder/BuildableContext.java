@@ -128,7 +128,7 @@ final class BuildableContext extends Context implements InputContext {
     
     private void addChild(CoreChildNode node) {
         if (pendingCharacterData != null) {
-            CoreCharacterDataNode cdataNode = builderHandler.nodeFactory.createNode(CoreCharacterDataNode.class);
+            CoreCharacterDataNode cdataNode = builderHandler.nodeFactory.getFactory2().createCharacterDataNode();
             cdataNode.coreSetCharacterData(pendingCharacterData);
             target.internalAppendChildWithoutBuild(cdataNode);
             pendingCharacterData = null;
@@ -163,7 +163,7 @@ final class BuildableContext extends Context implements InputContext {
         if (passThroughHandler != null) {
             passThroughHandler.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
         } else {
-            CoreDocumentTypeDeclaration node = builderHandler.nodeFactory.createNode(CoreDocumentTypeDeclaration.class);
+            CoreDocumentTypeDeclaration node = builderHandler.nodeFactory.getFactory2().createDocumentTypeDeclaration();
             node.coreSetRootName(rootName);
             node.coreSetPublicId(publicId);
             node.coreSetSystemId(systemId);
@@ -203,7 +203,7 @@ final class BuildableContext extends Context implements InputContext {
         if (passThroughHandler != null) {
             passThroughHandler.processAttribute(namespaceURI, localName, prefix, value, type, specified);
         } else {
-            CoreNSAwareAttribute attr = builderHandler.nodeFactory.createNode(CoreNSAwareAttribute.class);
+            CoreNSAwareAttribute attr = builderHandler.nodeFactory.getFactory2().createNSAwareAttribute();
             attr.initName(namespaceURI, localName, prefix, builderHandler.namespaceHelper);
             try {
                 attr.coreSetCharacterData(value, null);
@@ -221,7 +221,7 @@ final class BuildableContext extends Context implements InputContext {
         if (passThroughHandler != null) {
             passThroughHandler.processAttribute(name, value, type, specified);
         } else {
-            CoreNSUnawareAttribute attr = builderHandler.nodeFactory.createNode(CoreNSUnawareAttribute.class);
+            CoreNSUnawareAttribute attr = builderHandler.nodeFactory.getFactory2().createNSUnawareAttribute();
             attr.coreSetName(name);
             try {
                 attr.coreSetCharacterData(value, null);
@@ -239,7 +239,7 @@ final class BuildableContext extends Context implements InputContext {
         if (passThroughHandler != null) {
             passThroughHandler.processNamespaceDeclaration(prefix, namespaceURI);
         } else {
-            CoreNamespaceDeclaration decl = builderHandler.nodeFactory.createNode(CoreNamespaceDeclaration.class);
+            CoreNamespaceDeclaration decl = builderHandler.nodeFactory.getFactory2().createNamespaceDeclaration();
             decl.init(prefix, namespaceURI, builderHandler.namespaceHelper);
             ((CoreElement)target).coreAppendAttribute(decl);
         }
@@ -261,7 +261,7 @@ final class BuildableContext extends Context implements InputContext {
         } else if (!ignorable && pendingCharacterData == null && target.coreGetFirstChildIfAvailable() == null) {
             pendingCharacterData = data;
         } else {
-            CoreCharacterDataNode node = builderHandler.nodeFactory.createNode(CoreCharacterDataNode.class);
+            CoreCharacterDataNode node = builderHandler.nodeFactory.getFactory2().createCharacterDataNode();
             node.coreSetCharacterData(data);
             node.coreSetIgnorable(ignorable);
             addChild(node);
@@ -275,7 +275,7 @@ final class BuildableContext extends Context implements InputContext {
             passThroughHandler.startProcessingInstruction(piTarget);
             return this;
         } else {
-            CoreProcessingInstruction node = builderHandler.nodeFactory.createNode(CoreProcessingInstruction.class);
+            CoreProcessingInstruction node = builderHandler.nodeFactory.getFactory2().createProcessingInstruction();
             node.coreSetTarget(piTarget);
             addChild(node);
             return newContext(node);
@@ -299,7 +299,7 @@ final class BuildableContext extends Context implements InputContext {
             passThroughHandler.startComment();
             return this;
         } else {
-            CoreComment node = builderHandler.nodeFactory.createNode(CoreComment.class);
+            CoreComment node = builderHandler.nodeFactory.getFactory2().createComment();
             addChild(node);
             return newContext(node);
         }
@@ -322,7 +322,7 @@ final class BuildableContext extends Context implements InputContext {
             passThroughHandler.startCDATASection();
             return this;
         } else {
-            CoreCDATASection node = builderHandler.nodeFactory.createNode(CoreCDATASection.class);
+            CoreCDATASection node = builderHandler.nodeFactory.getFactory2().createCDATASection();
             addChild(node);
             return newContext(node);
         }
@@ -343,7 +343,7 @@ final class BuildableContext extends Context implements InputContext {
         if (passThroughHandler != null) {
             passThroughHandler.processEntityReference(name, replacementText);
         } else {
-            CoreEntityReference node = builderHandler.nodeFactory.createNode(CoreEntityReference.class);
+            CoreEntityReference node = builderHandler.nodeFactory.getFactory2().createEntityReference();
             node.coreSetName(name);
             node.coreSetReplacementText(replacementText);
             addChild(node);

@@ -34,9 +34,15 @@ import org.apache.axiom.core.util.EdgeRelation;
 import org.apache.axiom.core.util.TopologicalSort;
 
 public abstract class NodeFactoryImpl implements NodeFactory {
+    private final NodeFactory2 factory2;
     private final Map<Class<?>,Constructor<?>> constructorMap;
     
-    public NodeFactoryImpl(ClassLoader cl, String... packages) {
+    public NodeFactoryImpl(ClassLoader cl, String factory2ClassName, String... packages) {
+        try {
+            factory2 = cl.loadClass(factory2ClassName).asSubclass(NodeFactory2.class).getDeclaredConstructor().newInstance();
+        } catch (ReflectiveOperationException ex) {
+            throw new NodeFactoryException("Failed to instantiate NodeFactory2 implementation", ex);
+        }
         List<Class<?>> implementations = new ArrayList<Class<?>>();
         for (String pkg : packages) {
             try {
@@ -110,6 +116,11 @@ public abstract class NodeFactoryImpl implements NodeFactory {
         }
     }
     
+    @Override
+    public NodeFactory2 getFactory2() {
+        return factory2;
+    }
+
     @Override
     public final <T extends CoreNode> T createNode(Class<T> type) {
         Constructor<?> constructor = constructorMap.get(type);

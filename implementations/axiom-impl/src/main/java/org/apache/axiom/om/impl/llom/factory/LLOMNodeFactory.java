@@ -25,6 +25,7 @@ public final class LLOMNodeFactory extends AxiomNodeFactoryImpl {
     
     private LLOMNodeFactory() {
         super(LLOMNodeFactory.class.getClassLoader(),
+                "org.apache.axiom.om.impl.llom.NodeFactory2Impl",
                 "org.apache.axiom.om.impl.llom",
                 "org.apache.axiom.soap.impl.llom",
                 "org.apache.axiom.soap.impl.llom.soap11",
