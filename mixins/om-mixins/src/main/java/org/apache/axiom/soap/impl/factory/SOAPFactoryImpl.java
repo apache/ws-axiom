@@ -75,7 +75,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     }
     
     protected final <T extends AxiomSOAPElement> T createSOAPElement(Class<T> type, OMElement parent, QName qname, Sequence sequence, int pos) {
-        T element = createNode(type);
+        T element = nodeFactory.createNode(type);
         if (parent != null) {
             if (sequence != null) {
                 ((AxiomElement)parent).insertChild(sequence, pos, element, false);
@@ -95,7 +95,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     @Override
     public final SOAPMessage createSOAPMessage() {
-        AxiomSOAPMessage message = createNode(AxiomSOAPMessage.class);
+        AxiomSOAPMessage message = nodeFactory.createNode(AxiomSOAPMessage.class);
         message.initSOAPFactory(this);
         return message;
     }
@@ -133,14 +133,14 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     @Override
     public final SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
-        AxiomSOAPHeaderBlock element = createNode(getSOAPHelper().getHeaderBlockClass());
+        AxiomSOAPHeaderBlock element = nodeFactory.createNode(getSOAPHelper().getHeaderBlockClass());
         element.init(source);
         return element;
     }
 
     @Override
     public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, OMDataSource ds) {
-        AxiomSOAPHeaderBlock element = createNode(getSOAPHelper().getHeaderBlockClass());
+        AxiomSOAPHeaderBlock element = nodeFactory.createNode(getSOAPHelper().getHeaderBlockClass());
         element.init(localName, ns, ds);
         return element;
     }

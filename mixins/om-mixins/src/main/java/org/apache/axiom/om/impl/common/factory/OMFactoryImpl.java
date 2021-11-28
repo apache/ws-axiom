@@ -26,7 +26,6 @@ import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMAttribute;
@@ -68,22 +67,13 @@ import org.apache.axiom.om.impl.intf.TextContent;
 
 public class OMFactoryImpl implements OMFactory {
     private final OMMetaFactory metaFactory;
-    private final NodeFactory nodeFactory;
+    protected final NodeFactory nodeFactory;
     
     public OMFactoryImpl(OMMetaFactory metaFactory, NodeFactory nodeFactory) {
         this.metaFactory = metaFactory;
         this.nodeFactory = nodeFactory;
     }
 
-    protected final <T extends CoreNode> T createNode(Class<T> type) {
-        T node = nodeFactory.createNode(type);
-        initNode(node);
-        return node;
-    }
-    
-    protected void initNode(CoreNode node) {
-    }
-    
     @Override
     public final OMMetaFactory getMetaFactory() {
         return metaFactory;
@@ -96,13 +86,13 @@ public class OMFactoryImpl implements OMFactory {
     
     @Override
     public final OMDocument createOMDocument() {
-        return createNode(AxiomDocument.class);
+        return nodeFactory.createNode(AxiomDocument.class);
     }
 
     @Override
     public final OMDocType createOMDocType(OMContainer parent, String rootName,
             String publicId, String systemId, String internalSubset) {
-        AxiomDocType node = createNode(AxiomDocType.class);
+        AxiomDocType node = nodeFactory.createNode(AxiomDocType.class);
         node.coreSetRootName(rootName);
         node.coreSetPublicId(publicId);
         node.coreSetSystemId(systemId);
@@ -117,17 +107,17 @@ public class OMFactoryImpl implements OMFactory {
         AxiomText node;
         switch (type) {
             case OMNode.TEXT_NODE: {
-                node = createNode(AxiomCharacterDataNode.class);
+                node = nodeFactory.createNode(AxiomCharacterDataNode.class);
                 break;
             }
             case OMNode.SPACE_NODE: {
-                AxiomCharacterDataNode cdata = createNode(AxiomCharacterDataNode.class);
+                AxiomCharacterDataNode cdata = nodeFactory.createNode(AxiomCharacterDataNode.class);
                 cdata.coreSetIgnorable(true);
                 node = cdata;
                 break;
             }
             case OMNode.CDATA_SECTION_NODE: {
-                node = createNode(AxiomCDATASection.class);
+                node = nodeFactory.createNode(AxiomCDATASection.class);
                 break;
             }
             default:
@@ -221,7 +211,7 @@ public class OMFactoryImpl implements OMFactory {
     @Override
     public final OMProcessingInstruction createOMProcessingInstruction(
             OMContainer parent, String piTarget, String piData) {
-        AxiomProcessingInstruction node = createNode(AxiomProcessingInstruction.class);
+        AxiomProcessingInstruction node = nodeFactory.createNode(AxiomProcessingInstruction.class);
         node.coreSetTarget(piTarget);
         try {
             node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
@@ -236,7 +226,7 @@ public class OMFactoryImpl implements OMFactory {
 
     @Override
     public final OMEntityReference createOMEntityReference(OMContainer parent, String name) {
-        AxiomEntityReference node = createNode(AxiomEntityReference.class);
+        AxiomEntityReference node = nodeFactory.createNode(AxiomEntityReference.class);
         node.coreSetName(name);
         if (parent != null) {
             ((AxiomContainer)parent).addChild(node);
@@ -246,7 +236,7 @@ public class OMFactoryImpl implements OMFactory {
 
     @Override
     public final OMComment createOMComment(OMContainer parent, String content) {
-        AxiomComment node = createNode(AxiomComment.class);
+        AxiomComment node = nodeFactory.createNode(AxiomComment.class);
         try {
             node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         } catch (CoreModelException ex) {
@@ -265,7 +255,7 @@ public class OMFactoryImpl implements OMFactory {
 
     protected final <T extends AxiomElement> T createAxiomElement(Class<T> type,
             OMContainer parent, String localName, OMNamespace ns) {
-        T element = createNode(type);
+        T element = nodeFactory.createNode(type);
         if (parent != null) {
             ((AxiomContainer)parent).addChild(element);
         }
@@ -280,7 +270,7 @@ public class OMFactoryImpl implements OMFactory {
 
     @Override
     public final OMElement createOMElement(QName qname, OMContainer parent) {
-        AxiomElement element = createNode(AxiomElement.class);
+        AxiomElement element = nodeFactory.createNode(AxiomElement.class);
         if (parent != null) {
             parent.addChild(element);
         }
@@ -331,21 +321,21 @@ public class OMFactoryImpl implements OMFactory {
 
     @Override
     public final OMSourcedElement createOMElement(OMDataSource source) {
-        AxiomSourcedElement element = createNode(AxiomSourcedElement.class);
+        AxiomSourcedElement element = nodeFactory.createNode(AxiomSourcedElement.class);
         element.init(source);
         return element;
     }
 
     @Override
     public final OMSourcedElement createOMElement(OMDataSource source, String localName, OMNamespace ns) {
-        AxiomSourcedElement element = createNode(AxiomSourcedElement.class);
+        AxiomSourcedElement element = nodeFactory.createNode(AxiomSourcedElement.class);
         element.init(localName, ns, source);
         return element;
     }
 
     @Override
     public final OMSourcedElement createOMElement(OMDataSource source, QName qname) {
-        AxiomSourcedElement element = createNode(AxiomSourcedElement.class);
+        AxiomSourcedElement element = nodeFactory.createNode(AxiomSourcedElement.class);
         element.init(qname, source);
         return element;
     }
@@ -371,7 +361,7 @@ public class OMFactoryImpl implements OMFactory {
                 throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
             }
         }
-        AxiomAttribute attr = createNode(AxiomAttribute.class);
+        AxiomAttribute attr = nodeFactory.createNode(AxiomAttribute.class);
         attr.internalSetLocalName(localName);
         try {
             attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
@@ -384,14 +374,14 @@ public class OMFactoryImpl implements OMFactory {
     }
 
     protected final <T extends AxiomElement> T importElement(OMElement element, Class<T> type) {
-        T importedElement = createNode(type);
+        T importedElement = nodeFactory.createNode(type);
         copyName(element, importedElement);
         for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
             importedElement.coreAppendAttribute(importAttribute(it.next()));
         }
         for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = it.next();
-            AxiomNamespaceDeclaration nsDecl = createNode(AxiomNamespaceDeclaration.class);
+            AxiomNamespaceDeclaration nsDecl = nodeFactory.createNode(AxiomNamespaceDeclaration.class);
             nsDecl.coreSetDeclaredNamespace(ns.getPrefix(), ns.getNamespaceURI());
             importedElement.coreAppendAttribute(nsDecl);
         }
@@ -418,20 +408,20 @@ public class OMFactoryImpl implements OMFactory {
             }
             case OMNode.PI_NODE: {
                 OMProcessingInstruction pi = (OMProcessingInstruction)child;
-                AxiomProcessingInstruction importedPI = createNode(AxiomProcessingInstruction.class);
+                AxiomProcessingInstruction importedPI = nodeFactory.createNode(AxiomProcessingInstruction.class);
                 importedPI.setTarget(pi.getTarget());
                 importedPI.setValue(pi.getValue());
                 return importedPI;
             }
             case OMNode.COMMENT_NODE: {
                 OMComment comment = (OMComment)child;
-                AxiomComment importedComment = createNode(AxiomComment.class);
+                AxiomComment importedComment = nodeFactory.createNode(AxiomComment.class);
                 importedComment.setValue(comment.getValue());
                 return importedComment;
             }
             case OMNode.DTD_NODE: {
                 OMDocType docType = (OMDocType)child;
-                AxiomDocType importedDocType = createNode(AxiomDocType.class);
+                AxiomDocType importedDocType = nodeFactory.createNode(AxiomDocType.class);
                 importedDocType.coreSetRootName(docType.getRootName());
                 importedDocType.coreSetPublicId(docType.getPublicId());
                 importedDocType.coreSetSystemId(docType.getSystemId());
@@ -439,7 +429,7 @@ public class OMFactoryImpl implements OMFactory {
                 return importedDocType;
             }
             case OMNode.ENTITY_REFERENCE_NODE:
-                AxiomEntityReference importedEntityRef = createNode(AxiomEntityReference.class);
+                AxiomEntityReference importedEntityRef = nodeFactory.createNode(AxiomEntityReference.class);
                 importedEntityRef.coreSetName(((OMEntityReference)child).getName());
                 return importedEntityRef;
             default:
@@ -463,7 +453,7 @@ public class OMFactoryImpl implements OMFactory {
     }
 
     private AxiomAttribute importAttribute(OMAttribute attribute) {
-        AxiomAttribute importedAttribute = createNode(AxiomAttribute.class);
+        AxiomAttribute importedAttribute = nodeFactory.createNode(AxiomAttribute.class);
         copyName(attribute, importedAttribute);
         importedAttribute.setAttributeValue(attribute.getAttributeValue());
         return importedAttribute;
@@ -475,7 +465,7 @@ public class OMFactoryImpl implements OMFactory {
             return importChildNode((OMNode)node);
         } else if (node instanceof OMDocument) {
             OMDocument document = (OMDocument)node;
-            AxiomDocument importedDocument = createNode(AxiomDocument.class);
+            AxiomDocument importedDocument = nodeFactory.createNode(AxiomDocument.class);
             // TODO: other attributes
             importChildren(document, importedDocument);
             return importedDocument;
