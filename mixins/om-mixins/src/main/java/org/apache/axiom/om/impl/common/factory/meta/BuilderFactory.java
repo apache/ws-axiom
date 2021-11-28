@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.factory;
+package org.apache.axiom.om.impl.common.factory.meta;
 
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFactory;

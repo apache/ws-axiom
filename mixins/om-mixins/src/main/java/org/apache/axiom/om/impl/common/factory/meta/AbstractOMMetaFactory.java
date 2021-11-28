@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.factory;
+package org.apache.axiom.om.impl.common.factory.meta;
 
-import static org.apache.axiom.om.impl.common.factory.BuilderFactory.OM;
-import static org.apache.axiom.om.impl.common.factory.BuilderFactory.SOAP;
+import static org.apache.axiom.om.impl.common.factory.meta.BuilderFactory.OM;
+import static org.apache.axiom.om.impl.common.factory.meta.BuilderFactory.SOAP;
 
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
@@ -28,11 +28,16 @@ import javax.xml.transform.sax.SAXSource;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMAttachmentAccessor;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
 import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.soap.impl.factory.SOAP11Factory;
+import org.apache.axiom.soap.impl.factory.SOAP12Factory;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
@@ -42,9 +47,30 @@ import org.xml.sax.InputSource;
  */
 public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
     private final NodeFactory nodeFactory;
+    private final OMFactory omFactory;
+    private final SOAPFactory soap11Factory;
+    private final SOAPFactory soap12Factory;
     
     public AbstractOMMetaFactory(NodeFactory nodeFactory) {
         this.nodeFactory = nodeFactory;
+        omFactory = new OMFactoryImpl(this, nodeFactory);
+        soap11Factory = new SOAP11Factory(this, nodeFactory);
+        soap12Factory = new SOAP12Factory(this, nodeFactory);
+    }
+    
+    @Override
+    public final OMFactory getOMFactory() {
+        return omFactory;
+    }
+
+    @Override
+    public final SOAPFactory getSOAP11Factory() {
+        return soap11Factory;
+    }
+
+    @Override
+    public final SOAPFactory getSOAP12Factory() {
+        return soap12Factory;
     }
     
     @Override

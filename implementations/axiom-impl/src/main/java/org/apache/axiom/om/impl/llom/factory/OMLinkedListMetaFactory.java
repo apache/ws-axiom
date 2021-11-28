@@ -19,12 +19,7 @@
 
 package org.apache.axiom.om.impl.llom.factory;
 
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
-import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.factory.SOAP11Factory;
-import org.apache.axiom.soap.impl.factory.SOAP12Factory;
+import org.apache.axiom.om.impl.common.factory.meta.AbstractOMMetaFactory;
 
 /**
  * Meta factory for the linked list OM implementation.
@@ -32,26 +27,7 @@ import org.apache.axiom.soap.impl.factory.SOAP12Factory;
 public class OMLinkedListMetaFactory extends AbstractOMMetaFactory {
     public static final OMLinkedListMetaFactory INSTANCE = new OMLinkedListMetaFactory();
     
-    private final OMFactory omFactory = new OMFactoryImpl(this, LLOMNodeFactory.INSTANCE);
-    private final SOAPFactory soap11Factory = new SOAP11Factory(this, LLOMNodeFactory.INSTANCE);
-    private final SOAPFactory soap12Factory = new SOAP12Factory(this, LLOMNodeFactory.INSTANCE);
-    
     private OMLinkedListMetaFactory() {
         super(LLOMNodeFactory.INSTANCE);
-    }
-    
-    @Override
-    public OMFactory getOMFactory() {
-        return omFactory;
-    }
-    
-    @Override
-    public SOAPFactory getSOAP11Factory() {
-        return soap11Factory;
-    }
-    
-    @Override
-    public SOAPFactory getSOAP12Factory() {
-        return soap12Factory;
     }
 }
