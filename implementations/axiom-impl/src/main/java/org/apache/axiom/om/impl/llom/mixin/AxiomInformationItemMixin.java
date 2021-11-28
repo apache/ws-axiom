@@ -27,10 +27,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomInformationItemMixin implements AxiomInformationItem {
+    @Override
     public final NodeFactory coreGetNodeFactory() {
         return LLOMNodeFactory.INSTANCE;
     }
 
+    @Override
     public final OMMetaFactory getMetaFactory() {
         return OMLinkedListMetaFactory.INSTANCE;
     }
