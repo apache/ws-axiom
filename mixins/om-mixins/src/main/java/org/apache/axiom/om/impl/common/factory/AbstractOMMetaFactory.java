@@ -48,62 +48,62 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
     }
     
     @Override
-    public OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
+    public final OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(parser));
     }
 
     @Override
-    public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputSource is) {
+    public final OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputSource is) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(configuration, is));
     }
     
     @Override
-    public OMXMLParserWrapper createOMBuilder(Source source) {
+    public final OMXMLParserWrapper createOMBuilder(Source source) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.DEFAULT, source));
     }
 
     @Override
-    public OMXMLParserWrapper createOMBuilder(Node node, boolean expandEntityReferences) {
+    public final OMXMLParserWrapper createOMBuilder(Node node, boolean expandEntityReferences) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(node, expandEntityReferences));
     }
 
     @Override
-    public OMXMLParserWrapper createOMBuilder(SAXSource source, boolean expandEntityReferences) {
+    public final OMXMLParserWrapper createOMBuilder(SAXSource source, boolean expandEntityReferences) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(source, expandEntityReferences));
     }
 
     @Override
-    public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, MultipartBody message) {
+    public final OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, MultipartBody message) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(configuration, message));
     }
 
     @Override
-    public OMXMLParserWrapper createOMBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor) {
+    public final OMXMLParserWrapper createOMBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.DEFAULT, rootPart, attachmentAccessor));
     }
 
     @Override
-    public SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
+    public final SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
         return SOAP.createBuilder(nodeFactory, BuilderSpec.from(parser));
     }
 
     @Override
-    public SOAPModelBuilder createSOAPModelBuilder(InputSource is) {
+    public final SOAPModelBuilder createSOAPModelBuilder(InputSource is) {
         return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, is));
     }
 
     @Override
-    public SOAPModelBuilder createSOAPModelBuilder(Source source) {
+    public final SOAPModelBuilder createSOAPModelBuilder(Source source) {
         return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, source));
     }
 
     @Override
-    public SOAPModelBuilder createSOAPModelBuilder(MultipartBody message) {
+    public final SOAPModelBuilder createSOAPModelBuilder(MultipartBody message) {
         return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, message));
     }
 
     @Override
-    public SOAPModelBuilder createSOAPModelBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor) {
+    public final SOAPModelBuilder createSOAPModelBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor) {
         return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, rootPart, attachmentAccessor));
     }
 }
