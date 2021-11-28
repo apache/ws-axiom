@@ -28,6 +28,7 @@ public final class DOMTests {
     private DOMTests() {}
     
     public static final DocumentBuilderFactoryFactory FACTORY = new DocumentBuilderFactoryFactory() {
+        @Override
         public DocumentBuilderFactory newInstance() {
             return OMDOMMetaFactory.INSTANCE.newDocumentBuilderFactory();
         }

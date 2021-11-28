@@ -55,6 +55,7 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
      *
      * @see javax.xml.parsers.DocumentBuilder#isNamespaceAware()
      */
+    @Override
     public boolean isNamespaceAware() {
         return true;
     }
@@ -65,14 +66,17 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
      *
      * @see javax.xml.parsers.DocumentBuilder#isValidating()
      */
+    @Override
     public boolean isValidating() {
         return true;
     }
 
+    @Override
     public Schema getSchema() {
         return schema;
     }
 
+    @Override
     public DOMImplementation getDOMImplementation() {
         return Factories.DOM_NODE_FACTORY;
     }
@@ -82,18 +86,22 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
      *
      * @see javax.xml.parsers.DocumentBuilder#newDocument()
      */
+    @Override
     public Document newDocument() {
         return Factories.DOM_NODE_FACTORY.createDocument();
     }
 
+    @Override
     public void setEntityResolver(EntityResolver er) {
         // TODO
     }
 
+    @Override
     public void setErrorHandler(ErrorHandler eh) {
         // TODO 
     }
 
+    @Override
     public Document parse(InputSource inputSource) throws SAXException, IOException {
         OMDocument document = ((OMMetaFactorySPI)factory.getMetaFactory()).createOMBuilder(parserConfiguration,
                 inputSource).getDocument();
@@ -101,11 +109,13 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
         return (Document)document;
     }
 
+    @Override
     public Document parse(InputStream is) throws SAXException, IOException {
         return parse(new InputSource(is));
     }
 
     /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.File) */
+    @Override
     public Document parse(File file) throws SAXException, IOException {
         FileInputStream in = new FileInputStream(file);
         try {
@@ -115,12 +125,14 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
         }
     }
 
+    @Override
     public Document parse(InputStream is, String systemId) throws SAXException, IOException {
         InputSource inputSource = new InputSource(is);
         inputSource.setSystemId(systemId);
         return parse(inputSource);
     }
 
+    @Override
     public Document parse(String uri) throws SAXException, IOException {
         return parse(new InputSource(uri));
     }

@@ -27,6 +27,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class DOOMNodeMixin implements DOOMNode {
+    @Override
     public final NodeFactory coreGetNodeFactory() {
         return DOOMNodeFactory.INSTANCE;
     }

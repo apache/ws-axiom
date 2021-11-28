@@ -37,36 +37,43 @@ final class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
         this.factory = factory;
     }
     
+    @Override
     public DocumentBuilder newDocumentBuilder()
             throws ParserConfigurationException {
         return new DOOMDocumentBuilder(factory, new DOMStAXParserConfiguration(isCoalescing(), isExpandEntityReferences()), schema);
     }
 
+    @Override
     public Object getAttribute(String name) throws IllegalArgumentException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
 
+    @Override
     public void setAttribute(String name, Object value)
             throws IllegalArgumentException {
         // // TODO
         // throw new UnsupportedOperationException("TODO");
     }
 
+    @Override
     public void setFeature(String name, boolean value)
             throws ParserConfigurationException {
         // TODO TODO OS
     }
 
+    @Override
     public boolean getFeature(String name) throws ParserConfigurationException {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
 
+    @Override
     public Schema getSchema() {
         return schema;
     }
 
+    @Override
     public void setSchema(Schema schema) {
         this.schema = schema;
     }

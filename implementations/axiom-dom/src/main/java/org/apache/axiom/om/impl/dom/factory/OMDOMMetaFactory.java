@@ -44,22 +44,27 @@ public class OMDOMMetaFactory extends AbstractOMMetaFactory implements DOMMetaFa
         super(DOOMNodeFactory.INSTANCE);
     }
     
+    @Override
     public OMFactory getOMFactory() {
         return omFactory;
     }
 
+    @Override
     public SOAPFactory getSOAP11Factory() {
         return soap11Factory;
     }
 
+    @Override
     public SOAPFactory getSOAP12Factory() {
         return soap12Factory;
     }
 
+    @Override
     public DocumentBuilderFactory newDocumentBuilderFactory() {
         return new DOOMDocumentBuilderFactory(omFactory);
     }
 
+    @Override
     public DOMImplementation getDOMImplementation() {
         return Factories.DOM_NODE_FACTORY;
     }

@@ -32,6 +32,7 @@ final class DOMStAXParserConfiguration implements StAXParserConfiguration {
         this.expandEntityReferences = expandEntityReferences;
     }
 
+    @Override
     public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
         if (!coalescing) {
             factory = StAXParserConfiguration.PRESERVE_CDATA_SECTIONS.configure(factory, dialect);
@@ -40,10 +41,12 @@ final class DOMStAXParserConfiguration implements StAXParserConfiguration {
         return factory;
     }
 
+    @Override
     public int hashCode() {
         return (coalescing ? 1 : 0) | (expandEntityReferences ? 2 : 0);
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
@@ -55,6 +58,7 @@ final class DOMStAXParserConfiguration implements StAXParserConfiguration {
         }
     }
 
+    @Override
     public String toString() {
         return "DOM(coalescing=" + coalescing + ",expandEntityReferences=" + expandEntityReferences + ")";
     }
