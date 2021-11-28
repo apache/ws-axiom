@@ -78,7 +78,9 @@ public final class Weaver {
                 parentInterfaces.add(parentInterface);
                 parentImplementations.addAll(parentInterface.getImplementations());
             }
-            interfaceNode = new InterfaceNode(iface, parentInterfaces);
+            InterfaceClassVisitor cv = new InterfaceClassVisitor();
+            classFetcher.fetch(iface.getName(), cv);
+            interfaceNode = new InterfaceNode(iface, parentInterfaces, cv.isSingleton());
             interfaceNodes.put(iface, interfaceNode);
             Set<MixinNode> mixinNodes = new HashSet<>();
             Set<Mixin> mixins = mixinsByInterface.get(iface);

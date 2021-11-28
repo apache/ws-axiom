@@ -16,19 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver.tree;
+package org.apache.axiom.weaver;
 
-import org.apache.axiom.weaver.annotation.FactoryMethod;
-import org.apache.axiom.weaver.annotation.Singleton;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Opcodes;
 
-@Singleton
-public interface Factory {
-    @FactoryMethod
-    Root createRoot();
+final class InterfaceClassVisitor extends ClassVisitor {
+    private boolean singleton;
 
-    @FactoryMethod
-    Directory createDirectory();
+    InterfaceClassVisitor() {
+        super(Opcodes.ASM9);
+    }
 
-    @FactoryMethod
-    Leaf createLeaf();
+    @Override
+    public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+        if (descriptor.equals("Lorg/apache/axiom/weaver/annotation/Singleton;")) {
+            singleton = true;
+        }
+        return null;
+    }
+
+    boolean isSingleton() {
+        return singleton;
+    }
 }

@@ -32,11 +32,11 @@ public class TreeTest {
         weaver.addInterfaceToImplement(Leaf.class);
         weaver.addInterfaceToImplement(Factory.class);
         Factory factory =
-                weaver.toClassLoader(cl)
-                        .loadClass("impl.FactoryImpl")
-                        .asSubclass(Factory.class)
-                        .getConstructor()
-                        .newInstance();
+                (Factory)
+                        weaver.toClassLoader(cl)
+                                .loadClass("impl.FactoryImpl")
+                                .getField("INSTANCE")
+                                .get(null);
         factory.createRoot();
     }
 }

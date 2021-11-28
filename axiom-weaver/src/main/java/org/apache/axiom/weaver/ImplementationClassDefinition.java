@@ -40,6 +40,7 @@ final class ImplementationClassDefinition extends ClassDefinition {
     private final int access;
     private final String superName;
     private final String[] ifaceNames;
+    private final boolean singleton;
     private final Mixin[] mixins;
     private final MixinMethod[] methods;
     private final List<Named<InitializerMethod>> initializerMethods = new ArrayList<>();
@@ -51,6 +52,7 @@ final class ImplementationClassDefinition extends ClassDefinition {
             int access,
             String superName,
             String[] ifaceNames,
+            boolean singleton,
             Mixin[] mixins) {
         super(targetContext.getTargetClassName());
         this.targetContext = targetContext;
@@ -58,6 +60,7 @@ final class ImplementationClassDefinition extends ClassDefinition {
         this.access = access;
         this.superName = superName != null ? superName : Type.getInternalName(Object.class);
         this.ifaceNames = ifaceNames;
+        this.singleton = singleton;
         this.mixins = mixins;
         Map<String, MixinMethod> methodMap = new LinkedHashMap<>();
         UniqueNameGenerator methodNameGenerator = new UniqueNameGenerator();
@@ -97,7 +100,13 @@ final class ImplementationClassDefinition extends ClassDefinition {
     }
 
     private void generateConstructor(ClassVisitor cv) {
-        MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
+        MethodVisitor mv =
+                cv.visitMethod(
+                        singleton ? Opcodes.ACC_PRIVATE : Opcodes.ACC_PUBLIC,
+                        "<init>",
+                        "()V",
+                        null,
+                        null);
         mv.visitCode();
         mv.visitIntInsn(Opcodes.ALOAD, 0);
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superName, "<init>", "()V", false);
@@ -111,7 +120,7 @@ final class ImplementationClassDefinition extends ClassDefinition {
     }
 
     private void generateStaticInitializer(ClassVisitor cv) {
-        if (staticInitializerMethods.isEmpty()) {
+        if (staticInitializerMethods.isEmpty() && !singleton) {
             return;
         }
         MethodVisitor mv =
@@ -121,14 +130,37 @@ final class ImplementationClassDefinition extends ClassDefinition {
         for (Named<StaticInitializerMethod> method : staticInitializerMethods) {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, className, method.getName(), "()V", false);
         }
+        if (singleton) {
+            mv.visitTypeInsn(Opcodes.NEW, targetContext.getTargetClassName());
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitMethodInsn(
+                    Opcodes.INVOKESPECIAL,
+                    targetContext.getTargetClassName(),
+                    "<init>",
+                    "()V",
+                    false);
+            mv.visitFieldInsn(
+                    Opcodes.PUTSTATIC,
+                    targetContext.getTargetClassName(),
+                    "INSTANCE",
+                    "L" + targetContext.getTargetClassName() + ";");
+        }
         mv.visitInsn(Opcodes.RETURN);
-        mv.visitMaxs(0, 0);
+        mv.visitMaxs(singleton ? 2 : 0, 0);
         mv.visitEnd();
     }
 
     @Override
     public void accept(ClassVisitor cv) {
         cv.visit(version, access, className, null, superName, ifaceNames);
+        if (singleton) {
+            cv.visitField(
+                    Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL,
+                    "INSTANCE",
+                    "L" + targetContext.getTargetClassName() + ";",
+                    null,
+                    null);
+        }
         generateConstructor(cv);
         generateStaticInitializer(cv);
         for (Mixin mixin : mixins) {

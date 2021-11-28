@@ -19,8 +19,10 @@
 package org.apache.axiom.core;
 
 import org.apache.axiom.weaver.annotation.FactoryMethod;
+import org.apache.axiom.weaver.annotation.Singleton;
 
 // TODO: this should be fused into NodeFactory
+@Singleton
 public interface NodeFactory2 {
     @FactoryMethod
     CoreDocument createDocument();

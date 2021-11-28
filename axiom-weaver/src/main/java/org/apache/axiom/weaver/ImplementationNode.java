@@ -360,6 +360,7 @@ final class ImplementationNode {
                         access,
                         parents.isEmpty() ? null : parents.iterator().next().getClassName(),
                         ifaceNames.toArray(new String[ifaceNames.size()]),
+                        primaryInterface.isSingleton(),
                         mixins.toArray(new Mixin[mixins.size()])));
         return classDefinitions;
     }

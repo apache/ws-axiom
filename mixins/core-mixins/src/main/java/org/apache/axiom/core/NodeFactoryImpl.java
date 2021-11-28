@@ -39,7 +39,7 @@ public abstract class NodeFactoryImpl implements NodeFactory {
     
     public NodeFactoryImpl(ClassLoader cl, String factory2ClassName, String... packages) {
         try {
-            factory2 = cl.loadClass(factory2ClassName).asSubclass(NodeFactory2.class).getDeclaredConstructor().newInstance();
+            factory2 = (NodeFactory2)cl.loadClass(factory2ClassName).getDeclaredField("INSTANCE").get(null);
         } catch (ReflectiveOperationException ex) {
             throw new NodeFactoryException("Failed to instantiate NodeFactory2 implementation", ex);
         }

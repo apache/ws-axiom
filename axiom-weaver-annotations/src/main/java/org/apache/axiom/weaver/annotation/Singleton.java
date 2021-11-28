@@ -16,19 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.weaver.tree;
+package org.apache.axiom.weaver.annotation;
 
-import org.apache.axiom.weaver.annotation.FactoryMethod;
-import org.apache.axiom.weaver.annotation.Singleton;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 
-@Singleton
-public interface Factory {
-    @FactoryMethod
-    Root createRoot();
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-    @FactoryMethod
-    Directory createDirectory();
+@Retention(CLASS)
+@Target(TYPE)
+public @interface Singleton {
 
-    @FactoryMethod
-    Leaf createLeaf();
 }

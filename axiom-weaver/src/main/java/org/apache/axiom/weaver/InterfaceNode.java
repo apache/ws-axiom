@@ -31,12 +31,14 @@ final class InterfaceNode {
 
     private final Class<?> iface;
     private final MutableReferences<InterfaceNode> parents = EXTENDS.newReferenceHolder(this);
+    private final boolean singleton;
     private final MutableReferences<ImplementationNode> implementations =
             Relations.IMPLEMENTS.getConverse().newReferenceHolder(this);
 
-    InterfaceNode(Class<?> iface, Set<InterfaceNode> parents) {
+    InterfaceNode(Class<?> iface, Set<InterfaceNode> parents, boolean singleton) {
         this.iface = iface;
         this.parents.addAll(parents);
+        this.singleton = singleton;
     }
 
     Class<?> getInterface() {
@@ -45,6 +47,10 @@ final class InterfaceNode {
 
     Set<InterfaceNode> getParents() {
         return parents.asSet();
+    }
+
+    boolean isSingleton() {
+        return singleton;
     }
 
     Set<ImplementationNode> getImplementations() {
