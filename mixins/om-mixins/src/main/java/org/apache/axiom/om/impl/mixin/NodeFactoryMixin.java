@@ -16,16 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.factory;
+package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.NodeFactory2;
 import org.apache.axiom.core.NodeFactoryImpl;
 import org.apache.axiom.om.impl.common.builder.OMNamespaceCache;
+import org.apache.axiom.weaver.annotation.Mixin;
 
-public abstract class AxiomNodeFactoryImpl extends NodeFactoryImpl {
-    public AxiomNodeFactoryImpl(ClassLoader cl, String factory2ClassName, String... packages) {
-        super(cl, factory2ClassName, packages);
-    }
-
+@Mixin
+public abstract class NodeFactoryMixin implements NodeFactory2 {
     @Override
     public final OMNamespaceCache createNamespaceHelper() {
         return new OMNamespaceCache();

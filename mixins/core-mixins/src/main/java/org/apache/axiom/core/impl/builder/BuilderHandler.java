@@ -57,7 +57,7 @@ final class BuilderHandler implements XmlHandler {
         this.nodeFactory = nodeFactory;
         this.model = model;
         this.builder = builder;
-        namespaceHelper = nodeFactory.createNamespaceHelper();
+        namespaceHelper = nodeFactory.getFactory2().createNamespaceHelper();
         rootContext = root == null ? new BuildableContext(this, null, 0) : new UnwrappingContext(this, root);
         context = rootContext;
         activeContextCount = 1;

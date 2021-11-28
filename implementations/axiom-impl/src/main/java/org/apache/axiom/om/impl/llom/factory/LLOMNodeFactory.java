@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.om.impl.llom.factory;
 
-import org.apache.axiom.om.impl.common.factory.AxiomNodeFactoryImpl;
+import org.apache.axiom.core.NodeFactoryImpl;
 
-public final class LLOMNodeFactory extends AxiomNodeFactoryImpl {
+public final class LLOMNodeFactory extends NodeFactoryImpl {
     public static LLOMNodeFactory INSTANCE = new LLOMNodeFactory();
     
     private LLOMNodeFactory() {

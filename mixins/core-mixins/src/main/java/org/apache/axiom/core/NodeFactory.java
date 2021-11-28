@@ -20,14 +20,6 @@ package org.apache.axiom.core;
 
 public interface NodeFactory {
     NodeFactory2 getFactory2();
-
-    /**
-     * Create the namespace helper object that will be passed to
-     * {@link CoreNSAwareNamedNode#initName(String, String, String, Object)}.
-     * 
-     * @return the namespace helper
-     */
-    Object createNamespaceHelper();
     
     <T extends CoreNode> T createNode(Class<T> type);
 }

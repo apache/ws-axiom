@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.om.impl.dom.factory;
 
-import org.apache.axiom.om.impl.common.factory.AxiomNodeFactoryImpl;
+import org.apache.axiom.core.NodeFactoryImpl;
 
-public final class DOOMNodeFactory extends AxiomNodeFactoryImpl {
+public final class DOOMNodeFactory extends NodeFactoryImpl {
     public static final DOOMNodeFactory INSTANCE = new DOOMNodeFactory();
     
     private DOOMNodeFactory() {

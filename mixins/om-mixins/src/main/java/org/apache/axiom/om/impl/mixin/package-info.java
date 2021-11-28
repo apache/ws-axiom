@@ -37,5 +37,6 @@
         AxiomSerializableMixin.class,
         AxiomSourcedElementMixin.class,
         AxiomTextMixin.class,
+        NodeFactoryMixin.class,
 })
 package org.apache.axiom.om.impl.mixin;
