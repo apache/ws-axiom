@@ -22,7 +22,7 @@ import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.DeferredParsingException;
-import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.NodeFactory2;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
@@ -32,7 +32,7 @@ public final class BuilderImpl implements Builder {
     private final BuilderHandler builderHandler;
     private Object facade;
 
-    public BuilderImpl(XmlInput input, NodeFactory nodeFactory, Model model,
+    public BuilderImpl(XmlInput input, NodeFactory2 nodeFactory, Model model,
             CoreNSAwareElement root) {
         builderHandler = new BuilderHandler(nodeFactory, model, root, this);
         reader = input.createReader(builderHandler);

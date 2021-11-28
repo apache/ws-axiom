@@ -24,6 +24,7 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
 
 public final class SOAPHeaderBlockMapper implements Mapper<SOAPHeaderBlock,AxiomElement> {
     public static final SOAPHeaderBlockMapper INSTANCE = new SOAPHeaderBlockMapper();
@@ -36,7 +37,9 @@ public final class SOAPHeaderBlockMapper implements Mapper<SOAPHeaderBlock,Axiom
             return (SOAPHeaderBlock)element;
         } else {
             try {
-                return element.corePromote(((AxiomSOAPHeader)element.coreGetParent()).getSOAPHelper().getHeaderBlockClass(), AxiomSemantics.INSTANCE);
+                AxiomSOAPHeaderBlock newElement = ((AxiomSOAPHeader)element.coreGetParent()).getSOAPHelper().getHeaderBlockType().create(element.getNodeFactory());
+                element.corePromote(newElement, AxiomSemantics.INSTANCE);
+                return newElement;
             } catch (CoreModelException ex) {
                 throw AxiomSemantics.INSTANCE.toUncheckedException(ex);
             }

@@ -241,8 +241,7 @@ public abstract class CoreElementMixin implements CoreElement {
     }
     
     @Override
-    public final <T extends CoreElement> T corePromote(Class<T> type, Semantics semantics) throws CoreModelException {
-        T newElement = coreCreateNode(type);
+    public final void corePromote(CoreElement newElement, Semantics semantics) throws CoreModelException {
         newElement.initName(this);
         newElement.internalSetFirstAttribute(firstAttribute);
         CoreAttribute attr = firstAttribute;
@@ -253,6 +252,5 @@ public abstract class CoreElementMixin implements CoreElement {
         firstAttribute = null;
         newElement.coreMoveChildrenFrom(this, semantics);
         coreReplaceWith(newElement, semantics);
-        return newElement;
     }
 }

@@ -19,6 +19,7 @@
 package org.apache.axiom.soap.impl.intf.soap12;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
@@ -29,15 +30,15 @@ public final class SOAP12Helper extends SOAPHelper {
 
     private SOAP12Helper() {
         super(SOAPVersion.SOAP12, "SOAP 1.2",
-            AxiomSOAP12Envelope.class,
-            AxiomSOAP12Header.class,
-            AxiomSOAP12HeaderBlock.class,
-            AxiomSOAP12Body.class,
-            AxiomSOAP12Fault.class,
-            AxiomSOAP12FaultCode.class,
-            AxiomSOAP12FaultReason.class,
-            AxiomSOAP12FaultRole.class,
-            AxiomSOAP12FaultDetail.class,
+            AxiomNodeFactory::createSOAP12Envelope,
+            AxiomNodeFactory::createSOAP12Header,
+            AxiomNodeFactory::createSOAP12HeaderBlock,
+            AxiomNodeFactory::createSOAP12Body,
+            AxiomNodeFactory::createSOAP12Fault,
+            AxiomNodeFactory::createSOAP12FaultCode,
+            AxiomNodeFactory::createSOAP12FaultReason,
+            AxiomNodeFactory::createSOAP12FaultRole,
+            AxiomNodeFactory::createSOAP12FaultDetail,
             SOAP12Constants.SOAP_ROLE, SOAP12Constants.SOAP_RELAY);
     }
 

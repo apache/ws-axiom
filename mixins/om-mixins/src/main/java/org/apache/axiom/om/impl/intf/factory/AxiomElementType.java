@@ -16,25 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.impl.builder;
+package org.apache.axiom.om.impl.intf.factory;
 
-import org.apache.axiom.core.CoreDocument;
-import org.apache.axiom.core.CoreNSAwareElement;
-import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 
-public final class PlainXMLModel implements Model {
-    public static final PlainXMLModel INSTANCE = new PlainXMLModel();
-
-    private PlainXMLModel() {}
-
-    @Override
-    public CoreDocument createDocument() {
-        return null;
-    }
-
-    @Override
-    public CoreNSAwareElement createElement(CoreParentNode parent, int elementLevel,
-            String namespaceURI, String localName) {
-        return null;
-    }
+public interface AxiomElementType<T extends AxiomElement> {
+    T create(AxiomNodeFactory nodeFactory);
 }

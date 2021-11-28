@@ -21,7 +21,12 @@ package org.apache.axiom.om.impl.intf;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
+import org.apache.axiom.weaver.annotation.Inject;
 
 public interface AxiomInformationItem extends OMInformationItem, CoreNode {
+    @Inject
+    AxiomNodeFactory getNodeFactory();
+
     OMMetaFactory getMetaFactory();
 }

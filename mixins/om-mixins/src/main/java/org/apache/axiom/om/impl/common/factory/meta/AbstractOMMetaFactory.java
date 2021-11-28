@@ -25,7 +25,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 
-import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMFactory;
@@ -33,6 +32,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
+import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
@@ -46,12 +46,12 @@ import org.xml.sax.InputSource;
  * ({@link org.apache.axiom.core.impl.builder.BuilderImpl} and its subclasses).
  */
 public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
-    private final NodeFactory nodeFactory;
+    private final AxiomNodeFactory nodeFactory;
     private final OMFactory omFactory;
     private final SOAPFactory soap11Factory;
     private final SOAPFactory soap12Factory;
     
-    public AbstractOMMetaFactory(NodeFactory nodeFactory) {
+    public AbstractOMMetaFactory(AxiomNodeFactory nodeFactory) {
         this.nodeFactory = nodeFactory;
         omFactory = new OMFactoryImpl(this, nodeFactory);
         soap11Factory = new SOAP11Factory(this, nodeFactory);

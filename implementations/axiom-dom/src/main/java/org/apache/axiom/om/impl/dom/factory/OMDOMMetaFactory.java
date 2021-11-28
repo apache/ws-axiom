@@ -23,16 +23,27 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.common.factory.meta.AbstractOMMetaFactory;
+import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
 import org.w3c.dom.DOMImplementation;
 
 /**
  * Meta factory for the DOOM implementation.
  */
 public class OMDOMMetaFactory extends AbstractOMMetaFactory implements DOMMetaFactory {
+    private static final AxiomNodeFactory NODE_FACTORY;
+
+    static {
+        try {
+            NODE_FACTORY = (AxiomNodeFactory)OMDOMMetaFactory.class.getClassLoader().loadClass("org.apache.axiom.om.impl.dom.factory.AxiomNodeFactoryImpl").getField("INSTANCE").get(null);
+        } catch (ReflectiveOperationException ex) {
+            throw new Error(ex);
+        }
+    }
+
     public static final OMDOMMetaFactory INSTANCE = new OMDOMMetaFactory();
     
     private OMDOMMetaFactory() {
-        super(DOOMNodeFactory.INSTANCE);
+        super(NODE_FACTORY);
     }
 
     @Override

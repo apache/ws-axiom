@@ -216,7 +216,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
             if (OMDataSourceUtil.isPushDataSource(dataSource)) {
                 // Disable namespace repairing because the OMDataSource is required to produce well formed
                 // XML with respect to namespaces.
-                builder = new BuilderImpl(new PushOMDataSourceInput(this, dataSource), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this);
+                builder = new BuilderImpl(new PushOMDataSourceInput(this, dataSource), coreGetNodeFactory().getFactory2(), PlainXMLModel.INSTANCE, this);
             } else {
                 // Get the XMLStreamReader
                 XMLStreamReader readerFromDS;
@@ -225,7 +225,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
                 } catch (XMLStreamException ex) {
                     throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
                 }
-                builder = new BuilderImpl(new FilteredXmlInput(new StAXPullInput(readerFromDS, AxiomXMLStreamReaderHelperFactory.INSTANCE), NamespaceRepairingFilter.DEFAULT), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this);
+                builder = new BuilderImpl(new FilteredXmlInput(new StAXPullInput(readerFromDS, AxiomXMLStreamReaderHelperFactory.INSTANCE), NamespaceRepairingFilter.DEFAULT), coreGetNodeFactory().getFactory2(), PlainXMLModel.INSTANCE, this);
             }
             isExpanded = true;
             coreSetState(ATTRIBUTES_PENDING);

@@ -23,17 +23,23 @@ import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreParentNode;
 
 public interface Model {
-    Class<? extends CoreDocument> getDocumentType();
+    /**
+     * Create the document node suitable for this model.
+     * 
+     * @return the document node, or {@code null} if a plain {@link CoreDocument} should be used
+     */
+    CoreDocument createDocument();
     
     /**
-     * Determine the element type to use for the current element.
+     * Create a model specific element node. The implementation must only create the element, but
+     * not set any of its properties.
      * 
      * @param parent
      *            the parent for the element
      * @param elementName
      *            the local name for the element
-     * @return the type of element to create; must not be <code>null</code>
+     * @return the element node, or {@code null} if a plain {@link CoreNSAwareElement} should be used
      */
-    Class<? extends CoreNSAwareElement> determineElementType(CoreParentNode parent, int elementLevel,
+    CoreNSAwareElement createElement(CoreParentNode parent, int elementLevel,
             String namespaceURI, String localName);
 }

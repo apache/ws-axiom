@@ -70,4 +70,30 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.veithen.phos</groupId>
+                <artifactId>enforcer-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <ignore>
+                                <!-- TODO: inject the reference to the singleton into mixins directly -->
+                                org.apache.axiom.om.impl.intf.AxiomInformationItem -&gt; org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory,
+                                <!-- TODO: figure out how to break those cycles properly -->
+                                org.apache.axiom.soap.impl.intf.SOAPHelper -&gt; org.apache.axiom.om.impl.intf.factory.AxiomElementType,
+                                org.apache.axiom.soap.impl.intf.soap11.SOAP11Helper -&gt; org.apache.axiom.om.impl.intf.factory.AxiomElementType,
+                                org.apache.axiom.soap.impl.intf.soap12.SOAP12Helper -&gt; org.apache.axiom.om.impl.intf.factory.AxiomElementType
+                            </ignore>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

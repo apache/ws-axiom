@@ -20,14 +20,25 @@
 package org.apache.axiom.om.impl.llom.factory;
 
 import org.apache.axiom.om.impl.common.factory.meta.AbstractOMMetaFactory;
+import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
 
 /**
  * Meta factory for the linked list OM implementation.
  */
 public class OMLinkedListMetaFactory extends AbstractOMMetaFactory {
+    private static final AxiomNodeFactory NODE_FACTORY;
+
+    static {
+        try {
+            NODE_FACTORY = (AxiomNodeFactory)OMLinkedListMetaFactory.class.getClassLoader().loadClass("org.apache.axiom.om.impl.llom.factory.AxiomNodeFactoryImpl").getField("INSTANCE").get(null);
+        } catch (ReflectiveOperationException ex) {
+            throw new Error(ex);
+        }
+    }
+
     public static final OMLinkedListMetaFactory INSTANCE = new OMLinkedListMetaFactory();
     
     private OMLinkedListMetaFactory() {
-        super(LLOMNodeFactory.INSTANCE);
+        super(NODE_FACTORY);
     }
 }

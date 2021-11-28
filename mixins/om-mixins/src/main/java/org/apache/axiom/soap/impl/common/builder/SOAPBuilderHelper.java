@@ -21,9 +21,10 @@ package org.apache.axiom.soap.impl.common.builder;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.om.impl.intf.factory.AxiomElementType;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPBuilderHelper {
-    public abstract Class<? extends AxiomElement> handleEvent(OMElement element, int elementLevel,
+    public abstract AxiomElementType<? extends AxiomElement> handleEvent(OMElement element, int elementLevel,
             String namespaceURI, String localName) throws SOAPProcessingException;
 }

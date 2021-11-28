@@ -114,6 +114,7 @@
                                 <interface>org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration</interface>
                                 <interface>org.apache.axiom.om.impl.intf.AxiomProcessingInstruction</interface>
                                 <interface>org.apache.axiom.om.impl.intf.AxiomSourcedElement</interface>
+                                <interface>org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory</interface>
                                 <interface>org.apache.axiom.soap.impl.intf.AxiomSOAPMessage</interface>
                                 <interface>org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Body</interface>
                                 <interface>org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Envelope</interface>
@@ -146,6 +147,10 @@
                                 <packageMapping>
                                     <interfacePackage>org.apache.axiom.om.impl.intf</interfacePackage>
                                     <outputPackage>org.apache.axiom.om.impl.llom</outputPackage>
+                                </packageMapping>
+                                <packageMapping>
+                                    <interfacePackage>org.apache.axiom.om.impl.intf.factory</interfacePackage>
+                                    <outputPackage>org.apache.axiom.om.impl.llom.factory</outputPackage>
                                 </packageMapping>
                                 <packageMapping>
                                     <interfacePackage>org.apache.axiom.soap.impl.intf</interfacePackage>
@@ -192,6 +197,25 @@
                         </Private-Package>
                     </instructions>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.veithen.phos</groupId>
+                <artifactId>enforcer-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <ignore>
+                                <!-- TODO: inject the reference to the singleton into mixins directly -->
+                                org.apache.axiom.om.impl.llom.CoreNodeImpl -&gt; org.apache.axiom.om.impl.llom.factory.AxiomNodeFactoryImpl,
+                                org.apache.axiom.om.impl.llom.CoreNodeImpl -&gt; org.apache.axiom.om.impl.llom.factory.LLOMNodeFactory,
+                                org.apache.axiom.om.impl.llom.CoreNodeImpl -&gt; org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory
+                            </ignore>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

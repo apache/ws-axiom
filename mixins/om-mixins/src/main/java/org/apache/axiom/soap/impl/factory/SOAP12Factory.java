@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.soap.impl.factory;
 
-import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
@@ -31,14 +31,10 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultNode;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultSubCode;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultText;
-import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultValue;
 import org.apache.axiom.soap.impl.intf.soap12.SOAP12Helper;
 
 public class SOAP12Factory extends SOAPFactoryImpl {
-    public SOAP12Factory(OMMetaFactory metaFactory, NodeFactory nodeFactory) {
+    public SOAP12Factory(OMMetaFactory metaFactory, AxiomNodeFactory nodeFactory) {
         super(metaFactory, nodeFactory);
     }
 
@@ -48,7 +44,7 @@ public class SOAP12Factory extends SOAPFactoryImpl {
     }
 
     public final SOAPFaultValue internalCreateSOAPFaultValue(SOAPFaultClassifier parent) {
-        return createSOAPElement(AxiomSOAP12FaultValue.class, parent, SOAP12Constants.QNAME_FAULT_VALUE);
+        return createSOAPElement(AxiomNodeFactory::createSOAP12FaultValue, parent, SOAP12Constants.QNAME_FAULT_VALUE);
     }
 
     @Override
@@ -67,7 +63,7 @@ public class SOAP12Factory extends SOAPFactoryImpl {
     }
 
     private SOAPFaultSubCode internalCreateSOAPFaultSubCode(SOAPFaultClassifier parent) {
-        return createSOAPElement(AxiomSOAP12FaultSubCode.class, parent, SOAP12Constants.QNAME_FAULT_SUBCODE);
+        return createSOAPElement(AxiomNodeFactory::createSOAP12FaultSubCode, parent, SOAP12Constants.QNAME_FAULT_SUBCODE);
     }
 
     @Override
@@ -87,7 +83,7 @@ public class SOAP12Factory extends SOAPFactoryImpl {
 
     @Override
     public final SOAPFaultText createSOAPFaultText(SOAPFaultReason parent) {
-        return createSOAPElement(AxiomSOAP12FaultText.class, parent, SOAP12Constants.QNAME_FAULT_TEXT);
+        return createSOAPElement(AxiomNodeFactory::createSOAP12FaultText, parent, SOAP12Constants.QNAME_FAULT_TEXT);
     }
 
     @Override
@@ -97,7 +93,7 @@ public class SOAP12Factory extends SOAPFactoryImpl {
 
     @Override
     public final SOAPFaultNode createSOAPFaultNode(SOAPFault parent) {
-        return createSOAPElement(AxiomSOAP12FaultNode.class, parent, SOAP12Constants.QNAME_FAULT_NODE);
+        return createSOAPElement(AxiomNodeFactory::createSOAP12FaultNode, parent, SOAP12Constants.QNAME_FAULT_NODE);
     }
 
     @Override

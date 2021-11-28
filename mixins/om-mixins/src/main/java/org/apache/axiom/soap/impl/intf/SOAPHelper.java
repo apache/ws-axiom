@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.intf.factory.AxiomElementType;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
@@ -36,52 +37,52 @@ public abstract class SOAPHelper {
     private final SOAPVersion version;
     private final OMNamespace namespace;
     private final String specName;
-    private final Class<? extends AxiomSOAPEnvelope> envelopeClass;
-    private final Class<? extends AxiomSOAPHeader> headerClass;
+    private final AxiomElementType<? extends AxiomSOAPEnvelope> envelopeType;
+    private final AxiomElementType<? extends AxiomSOAPHeader> headerType;
     private final QName headerQName;
-    private final Class<? extends AxiomSOAPHeaderBlock> headerBlockClass;
-    private final Class<? extends AxiomSOAPBody> bodyClass;
+    private final AxiomElementType<? extends AxiomSOAPHeaderBlock> headerBlockType;
+    private final AxiomElementType<? extends AxiomSOAPBody> bodyType;
     private final QName bodyQName;
-    private final Class<? extends AxiomSOAPFault> faultClass;
+    private final AxiomElementType<? extends AxiomSOAPFault> faultType;
     private final QName faultQName;
-    private final Class<? extends AxiomSOAPFaultCode> faultCodeClass;
-    private final Class<? extends AxiomSOAPFaultReason> faultReasonClass;
-    private final Class<? extends AxiomSOAPFaultRole> faultRoleClass;
-    private final Class<? extends AxiomSOAPFaultDetail> faultDetailClass;
+    private final AxiomElementType<? extends AxiomSOAPFaultCode> faultCodeType;
+    private final AxiomElementType<? extends AxiomSOAPFaultReason> faultReasonType;
+    private final AxiomElementType<? extends AxiomSOAPFaultRole> faultRoleType;
+    private final AxiomElementType<? extends AxiomSOAPFaultDetail> faultDetailType;
     private final QName mustUnderstandAttributeQName;
     private final QName roleAttributeQName;
     private final QName relayAttributeQName;
     
     protected SOAPHelper(SOAPVersion version, String specName,
-            Class<? extends AxiomSOAPEnvelope> envelopeClass,
-            Class<? extends AxiomSOAPHeader> headerClass,
-            Class<? extends AxiomSOAPHeaderBlock> headerBlockClass,
-            Class<? extends AxiomSOAPBody> bodyClass,
-            Class<? extends AxiomSOAPFault> faultClass,
-            Class<? extends AxiomSOAPFaultCode> faultCodeClass,
-            Class<? extends AxiomSOAPFaultReason> faultReasonClass,
-            Class<? extends AxiomSOAPFaultRole> faultRoleClass,
-            Class<? extends AxiomSOAPFaultDetail> faultDetailClass,
+            AxiomElementType<? extends AxiomSOAPEnvelope> envelopeType,
+            AxiomElementType<? extends AxiomSOAPHeader> headerType,
+            AxiomElementType<? extends AxiomSOAPHeaderBlock> headerBlockType,
+            AxiomElementType<? extends AxiomSOAPBody> bodyType,
+            AxiomElementType<? extends AxiomSOAPFault> faultType,
+            AxiomElementType<? extends AxiomSOAPFaultCode> faultCodeType,
+            AxiomElementType<? extends AxiomSOAPFaultReason> faultReasonType,
+            AxiomElementType<? extends AxiomSOAPFaultRole> faultRoleType,
+            AxiomElementType<? extends AxiomSOAPFaultDetail> faultDetailType,
             String roleAttributeLocalName, String relayAttributeLocalName) {
         this.version = version;
         namespace = new OMNamespaceImpl(version.getEnvelopeURI(),
                 SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         this.specName = specName;
-        this.envelopeClass = envelopeClass;
-        this.headerClass = headerClass;
+        this.envelopeType = envelopeType;
+        this.headerType = headerType;
         headerQName = new QName(version.getEnvelopeURI(), SOAPConstants.HEADER_LOCAL_NAME,
                 SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-        this.headerBlockClass = headerBlockClass;
-        this.bodyClass = bodyClass;
+        this.headerBlockType = headerBlockType;
+        this.bodyType = bodyType;
         bodyQName = new QName(version.getEnvelopeURI(), SOAPConstants.BODY_LOCAL_NAME,
                 SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-        this.faultClass = faultClass;
+        this.faultType = faultType;
         faultQName = new QName(version.getEnvelopeURI(), SOAPConstants.SOAPFAULT_LOCAL_NAME,
                 SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-        this.faultCodeClass = faultCodeClass;
-        this.faultReasonClass = faultReasonClass;
-        this.faultRoleClass = faultRoleClass;
-        this.faultDetailClass = faultDetailClass;
+        this.faultCodeType = faultCodeType;
+        this.faultReasonType = faultReasonType;
+        this.faultRoleType = faultRoleType;
+        this.faultDetailType = faultDetailType;
         mustUnderstandAttributeQName = new QName(
                 version.getEnvelopeURI(), SOAPConstants.ATTR_MUSTUNDERSTAND, SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         roleAttributeQName = new QName(
@@ -108,64 +109,64 @@ public abstract class SOAPHelper {
         return specName;
     }
 
-    public final Class<? extends AxiomSOAPEnvelope> getEnvelopeClass() {
-        return envelopeClass;
+    public final AxiomElementType<? extends AxiomSOAPEnvelope> getEnvelopeType() {
+        return envelopeType;
     }
 
-    public final Class<? extends AxiomSOAPHeader> getHeaderClass() {
-        return headerClass;
+    public final AxiomElementType<? extends AxiomSOAPHeader> getHeaderType() {
+        return headerType;
     }
 
     public final QName getHeaderQName() {
         return headerQName;
     }
 
-    public final Class<? extends AxiomSOAPHeaderBlock> getHeaderBlockClass() {
-        return headerBlockClass;
+    public final AxiomElementType<? extends AxiomSOAPHeaderBlock> getHeaderBlockType() {
+        return headerBlockType;
     }
 
-    public final Class<? extends AxiomSOAPBody> getBodyClass() {
-        return bodyClass;
+    public final AxiomElementType<? extends AxiomSOAPBody> getBodyType() {
+        return bodyType;
     }
 
     public final QName getBodyQName() {
         return bodyQName;
     }
 
-    public final Class<? extends AxiomSOAPFault> getFaultClass() {
-        return faultClass;
+    public final AxiomElementType<? extends AxiomSOAPFault> getFaultType() {
+        return faultType;
     }
 
     public final QName getFaultQName() {
         return faultQName;
     }
 
-    public final Class<? extends AxiomSOAPFaultCode> getFaultCodeClass() {
-        return faultCodeClass;
+    public final AxiomElementType<? extends AxiomSOAPFaultCode> getFaultCodeType() {
+        return faultCodeType;
     }
 
     public final QName getFaultCodeQName() {
         return version.getFaultCodeQName();
     }
 
-    public final Class<? extends AxiomSOAPFaultReason> getFaultReasonClass() {
-        return faultReasonClass;
+    public final AxiomElementType<? extends AxiomSOAPFaultReason> getFaultReasonType() {
+        return faultReasonType;
     }
 
     public final QName getFaultReasonQName() {
         return version.getFaultReasonQName();
     }
 
-    public final Class<? extends AxiomSOAPFaultRole> getFaultRoleClass() {
-        return faultRoleClass;
+    public final AxiomElementType<? extends AxiomSOAPFaultRole> getFaultRoleType() {
+        return faultRoleType;
     }
 
     public final QName getFaultRoleQName() {
         return version.getFaultRoleQName();
     }
 
-    public final Class<? extends AxiomSOAPFaultDetail> getFaultDetailClass() {
-        return faultDetailClass;
+    public final AxiomElementType<? extends AxiomSOAPFaultDetail> getFaultDetailType() {
+        return faultDetailType;
     }
 
     public final QName getFaultDetailQName() {
