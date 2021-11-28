@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.weaver.tree;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import org.apache.axiom.weaver.SimpleImplementationClassNameMapper;
 import org.apache.axiom.weaver.Weaver;
 import org.junit.Test;
@@ -37,6 +39,7 @@ public class TreeTest {
                                 .loadClass("impl.FactoryImpl")
                                 .getField("INSTANCE")
                                 .get(null);
-        factory.createRoot();
+        Root root = factory.createRoot();
+        assertThat(root.getFactory()).isSameInstanceAs(factory);
     }
 }

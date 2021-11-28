@@ -66,6 +66,6 @@ public class OMDOMMetaFactory extends AbstractOMMetaFactory implements DOMMetaFa
     }
 
     public DOMImplementation getDOMImplementation() {
-        return DOOMNodeFactory.INSTANCE.getDOMImplementation();
+        return Factories.DOM_NODE_FACTORY;
     }
 }

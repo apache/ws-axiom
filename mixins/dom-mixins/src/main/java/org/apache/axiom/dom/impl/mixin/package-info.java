@@ -27,6 +27,7 @@
         DOMDocumentTypeMixin.class,
         DOMElementMixin.class,
         DOMEntityReferenceMixin.class,
+        DOMImplementationMixin.class,
         DOMLeafNodeMixin.class,
         DOMNSAwareElementMixin.class,
         DOMNSAwareNamedNodeMixin.class,

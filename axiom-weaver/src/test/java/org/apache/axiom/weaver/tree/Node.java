@@ -16,19 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom.factory;
+package org.apache.axiom.weaver.tree;
 
-import org.apache.axiom.om.impl.common.factory.AxiomNodeFactoryImpl;
+import org.apache.axiom.weaver.annotation.Inject;
 
-public final class DOOMNodeFactory extends AxiomNodeFactoryImpl {
-    public static final DOOMNodeFactory INSTANCE = new DOOMNodeFactory();
-    
-    private DOOMNodeFactory() {
-        super(DOOMNodeFactory.class.getClassLoader(),
-                "org.apache.axiom.om.impl.dom.NodeFactory2Impl",
-                "org.apache.axiom.om.impl.dom",
-                "org.apache.axiom.soap.impl.dom",
-                "org.apache.axiom.soap.impl.dom.soap11",
-                "org.apache.axiom.soap.impl.dom.soap12");
-    }
+public interface Node {
+    @Inject
+    Factory getFactory();
 }

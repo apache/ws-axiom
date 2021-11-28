@@ -20,9 +20,13 @@ package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.weaver.annotation.Inject;
 import org.w3c.dom.Node;
 
 public interface DOMNode extends Node, CoreNode {
+    @Inject
+    DOMNodeFactory getDOMNodeFactory();
+
     /**
      * Get the element that defines this node's namespace context. The returned element is used by
      * the implementations of {@link Node#lookupNamespaceURI(String)},

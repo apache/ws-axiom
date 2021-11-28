@@ -16,22 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.dom.impl.mixin;
 
-import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.dom.DOMDocument;
+import org.apache.axiom.dom.DOMDocumentType;
+import org.apache.axiom.dom.DOMNodeFactory;
+import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 
-public final class DOMImplementationImpl implements DOMImplementation {
-    private final NodeFactory nodeFactory;
-
-    public DOMImplementationImpl(NodeFactory nodeFactory) {
-        this.nodeFactory = nodeFactory;
-    }
-
+@Mixin
+public abstract class DOMImplementationMixin implements DOMNodeFactory {
     @Override
     public boolean hasFeature(String feature, String version) {
         boolean anyVersion = version == null || version.length() == 0;
@@ -44,7 +41,7 @@ public final class DOMImplementationImpl implements DOMImplementation {
                                    DocumentType doctype) throws DOMException {
 
         // TODO Handle docType stuff
-        DOMDocument doc = nodeFactory.createNode(DOMDocument.class);
+        DOMDocument doc = createDocument();
 
         Element element = doc.createElementNS(namespaceURI, qualifiedName);
         doc.appendChild(element);
@@ -55,7 +52,7 @@ public final class DOMImplementationImpl implements DOMImplementation {
     @Override
     public DocumentType createDocumentType(String qualifiedName,
                                            String publicId, String systemId) {
-        DOMDocumentType docType = nodeFactory.createNode(DOMDocumentType.class);
+        DOMDocumentType docType = createDocumentType();
         docType.coreSetRootName(qualifiedName);
         docType.coreSetPublicId(publicId);
         docType.coreSetSystemId(systemId);

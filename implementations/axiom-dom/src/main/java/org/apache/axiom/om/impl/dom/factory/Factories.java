@@ -18,17 +18,18 @@
  */
 package org.apache.axiom.om.impl.dom.factory;
 
-import org.apache.axiom.om.impl.common.factory.AxiomNodeFactoryImpl;
+import org.apache.axiom.dom.DOMNodeFactory;
 
-public final class DOOMNodeFactory extends AxiomNodeFactoryImpl {
-    public static final DOOMNodeFactory INSTANCE = new DOOMNodeFactory();
-    
-    private DOOMNodeFactory() {
-        super(DOOMNodeFactory.class.getClassLoader(),
-                "org.apache.axiom.om.impl.dom.NodeFactory2Impl",
-                "org.apache.axiom.om.impl.dom",
-                "org.apache.axiom.soap.impl.dom",
-                "org.apache.axiom.soap.impl.dom.soap11",
-                "org.apache.axiom.soap.impl.dom.soap12");
+final class Factories {
+    static final DOMNodeFactory DOM_NODE_FACTORY;
+
+    static {
+        try {
+            DOM_NODE_FACTORY = (DOMNodeFactory)Factories.class.getClassLoader().loadClass("org.apache.axiom.om.impl.dom.DOMNodeFactoryImpl").getField("INSTANCE").get(null);
+        } catch (ReflectiveOperationException ex) {
+            throw new Error(ex);
+        }
     }
+
+    private Factories() {}
 }

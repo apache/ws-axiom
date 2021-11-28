@@ -18,4 +18,4 @@
  */
 package org.apache.axiom.weaver.tree;
 
-public interface ChildNode {}
+public interface ChildNode extends Node {}

@@ -27,7 +27,6 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMNode;
-import org.apache.axiom.dom.DOMNodeFactory;
 import org.apache.axiom.dom.DOMSemantics;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
@@ -43,7 +42,7 @@ public abstract class DOMNodeMixin implements DOMNode {
 
     @Override
     public final boolean isSupported(String feature, String version) {
-        return ((DOMNodeFactory)coreGetNodeFactory()).getDOMImplementation().hasFeature(feature, version);
+        return getDOMNodeFactory().hasFeature(feature, version);
     }
     
     @Override

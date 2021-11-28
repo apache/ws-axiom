@@ -19,11 +19,9 @@
 
 package org.apache.axiom.om.impl.dom.factory;
 
-import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactorySPI;
-import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -76,7 +74,7 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
     }
 
     public DOMImplementation getDOMImplementation() {
-        return ((DOMMetaFactory)factory.getMetaFactory()).getDOMImplementation();
+        return Factories.DOM_NODE_FACTORY;
     }
 
     /**
@@ -85,7 +83,7 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
      * @see javax.xml.parsers.DocumentBuilder#newDocument()
      */
     public Document newDocument() {
-        return DOOMNodeFactory.INSTANCE.createNode(DOMDocument.class);
+        return Factories.DOM_NODE_FACTORY.createDocument();
     }
 
     public void setEntityResolver(EntityResolver er) {

@@ -46,7 +46,6 @@ import org.apache.axiom.dom.DOMNSUnawareAttribute;
 import org.apache.axiom.dom.DOMNSUnawareElement;
 import org.apache.axiom.dom.DOMNamespaceDeclaration;
 import org.apache.axiom.dom.DOMNode;
-import org.apache.axiom.dom.DOMNodeFactory;
 import org.apache.axiom.dom.DOMProcessingInstruction;
 import org.apache.axiom.dom.DOMSemantics;
 import org.apache.axiom.dom.DOMText;
@@ -162,7 +161,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
 
     @Override
     public final DOMImplementation getImplementation() {
-        return ((DOMNodeFactory)coreGetNodeFactory()).getDOMImplementation();
+        return getDOMNodeFactory();
     }
 
     @Override
@@ -213,7 +212,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     
     @Override
     public final Text createTextNode(String data) {
-        DOMText text = coreGetNodeFactory().createNode(DOMText.class);
+        DOMText text = getDOMNodeFactory().createText();
         text.coreSetOwnerDocument(this);
         text.coreSetCharacterData(data);
         return text;
@@ -222,7 +221,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     @Override
     public final CDATASection createCDATASection(String data) {
         try {
-            DOMCDATASection cdataSection = coreGetNodeFactory().createNode(DOMCDATASection.class);
+            DOMCDATASection cdataSection = getDOMNodeFactory().createCDATASection();
             cdataSection.coreSetOwnerDocument(this);
             cdataSection.coreSetCharacterData(data, DOMSemantics.INSTANCE);
             return cdataSection;
@@ -233,7 +232,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     
     @Override
     public final Element createElement(String tagName) {
-        DOMNSUnawareElement element = coreGetNodeFactory().createNode(DOMNSUnawareElement.class);
+        DOMNSUnawareElement element = getDOMNodeFactory().createNSUnawareElement();
         element.coreSetOwnerDocument(this);
         element.coreSetName(tagName);
         return element;
@@ -242,7 +241,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     @Override
     public final Attr createAttribute(String name) {
         NSUtil.validateName(name);
-        DOMNSUnawareAttribute attr = coreGetNodeFactory().createNode(DOMNSUnawareAttribute.class);
+        DOMNSUnawareAttribute attr = getDOMNodeFactory().createNSUnawareAttribute();
         attr.coreSetOwnerDocument(this);
         attr.coreSetName(name);
         attr.coreSetType("CDATA");
@@ -263,7 +262,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
         namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
         NSUtil.validateNamespace(namespaceURI, prefix);
-        DOMNSAwareElement element = coreGetNodeFactory().createNode(DOMNSAwareElement.class);
+        DOMNSAwareElement element = getDOMNodeFactory().createNSAwareElement();
         element.coreSetOwnerDocument(this);
         element.coreSetName(namespaceURI, localName, prefix);
         return element;
@@ -282,14 +281,14 @@ public abstract class DOMDocumentMixin implements DOMDocument {
             localName = qualifiedName.substring(i+1);
         }
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            DOMNamespaceDeclaration decl = coreGetNodeFactory().createNode(DOMNamespaceDeclaration.class);
+            DOMNamespaceDeclaration decl = getDOMNodeFactory().createNamespaceDeclaration();
             decl.coreSetOwnerDocument(this);
             decl.coreSetDeclaredNamespace(NSUtil.getDeclaredPrefix(localName, prefix), "");
             return decl;
         } else {
             namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
             NSUtil.validateAttributeName(namespaceURI, localName, prefix);
-            DOMNSAwareAttribute attr = coreGetNodeFactory().createNode(DOMNSAwareAttribute.class);
+            DOMNSAwareAttribute attr = getDOMNodeFactory().createNSAwareAttribute();
             attr.coreSetOwnerDocument(this);
             attr.coreSetName(namespaceURI, localName, prefix);
             // TODO: set type?
@@ -300,7 +299,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     @Override
     public final ProcessingInstruction createProcessingInstruction(String target, String data) {
         try {
-            DOMProcessingInstruction pi = coreGetNodeFactory().createNode(DOMProcessingInstruction.class);
+            DOMProcessingInstruction pi = getDOMNodeFactory().createProcessingInstruction();
             pi.coreSetOwnerDocument(this);
             pi.coreSetTarget(target);
             pi.coreSetCharacterData(data, DOMSemantics.INSTANCE);
@@ -312,7 +311,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
 
     @Override
     public final EntityReference createEntityReference(String name) throws DOMException {
-        DOMEntityReference node = coreGetNodeFactory().createNode(DOMEntityReference.class);
+        DOMEntityReference node = getDOMNodeFactory().createEntityReference();
         node.coreSetOwnerDocument(this);
         node.coreSetName(name);
         return node;
@@ -321,7 +320,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     @Override
     public final Comment createComment(String data) {
         try {
-            DOMComment node = coreGetNodeFactory().createNode(DOMComment.class);
+            DOMComment node = getDOMNodeFactory().createComment();
             node.coreSetOwnerDocument(this);
             node.coreSetCharacterData(data, DOMSemantics.INSTANCE);
             return node;
@@ -332,7 +331,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
 
     @Override
     public final DocumentFragment createDocumentFragment() {
-        DOMDocumentFragment fragment = coreGetNodeFactory().createNode(DOMDocumentFragment.class);
+        DOMDocumentFragment fragment = getDOMNodeFactory().createDocumentFragment();
         fragment.coreSetOwnerDocument(this);
         return fragment;
     }
@@ -375,7 +374,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
                 return node;
             case NS_AWARE_ATTRIBUTE:
                 if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-                    DOMNamespaceDeclaration decl = coreGetNodeFactory().createNode(DOMNamespaceDeclaration.class);
+                    DOMNamespaceDeclaration decl = getDOMNodeFactory().createNamespaceDeclaration();
                     decl.coreSetOwnerDocument(this);
                     // TODO: we should have a generic method to move the content over to the new node
                     decl.coreSetDeclaredNamespace(NSUtil.getDeclaredPrefix(localName, prefix), ((DOMNSAwareAttribute)node).getValue());

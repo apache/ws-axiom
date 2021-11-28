@@ -116,6 +116,7 @@
                             </weavablePackages>
                             <interfaces>
                                 <interface>org.apache.axiom.core.NodeFactory2</interface>
+                                <interface>org.apache.axiom.dom.DOMNodeFactory</interface>
                                 <interface>org.apache.axiom.om.impl.dom.intf.DOOMCDATASection</interface>
                                 <interface>org.apache.axiom.om.impl.dom.intf.DOOMComment</interface>
                                 <interface>org.apache.axiom.om.impl.dom.intf.DOOMDocument</interface>

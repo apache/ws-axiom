@@ -21,6 +21,7 @@ package org.apache.axiom.weaver.mixin.factory;
 import java.util.List;
 
 import org.apache.axiom.weaver.classio.ClassFetcher;
+import org.apache.axiom.weaver.mixin.MethodBody;
 import org.apache.axiom.weaver.mixin.MixinMethod;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -47,10 +48,21 @@ final class MethodVisitorImpl extends MethodVisitor {
 
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-        if (!descriptor.equals("Lorg/apache/axiom/weaver/annotation/FactoryMethod;")) {
+        MethodBody methodBody;
+        // TODO: check that the method has the expected signature
+        if (descriptor.equals("Lorg/apache/axiom/weaver/annotation/FactoryMethod;")) {
+            methodBody =
+                    new FactoryMethodBody(
+                            classFetcher.loadClass(
+                                    Type.getReturnType(methodDescriptor).getClassName()));
+        } else if (descriptor.equals("Lorg/apache/axiom/weaver/annotation/Inject;")) {
+            methodBody =
+                    new InjectMethodBody(
+                            classFetcher.loadClass(
+                                    Type.getReturnType(methodDescriptor).getClassName()));
+        } else {
             return null;
         }
-        // TODO: check that the method has the expected signature
         mixinMethods.add(
                 new MixinMethod(
                         Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL,
@@ -58,9 +70,7 @@ final class MethodVisitorImpl extends MethodVisitor {
                         methodDescriptor,
                         null,
                         null,
-                        new FactoryMethodBody(
-                                classFetcher.loadClass(
-                                        Type.getReturnType(methodDescriptor).getClassName()))));
+                        methodBody));
         return null;
     }
 }
