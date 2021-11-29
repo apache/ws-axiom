@@ -20,7 +20,7 @@ package org.apache.axiom.om.impl.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactoryLoader;
 import org.apache.axiom.ts.dom.DocumentBuilderFactoryFactory;
 import org.apache.axiom.ts.dom.w3c.DOMFeature;
 
@@ -30,7 +30,7 @@ public final class DOMTests {
     public static final DocumentBuilderFactoryFactory FACTORY = new DocumentBuilderFactoryFactory() {
         @Override
         public DocumentBuilderFactory newInstance() {
-            return OMDOMMetaFactory.INSTANCE.newDocumentBuilderFactory();
+            return new OMDOMMetaFactoryLoader().load(null).newDocumentBuilderFactory();
         }
     };
     

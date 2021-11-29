@@ -33,6 +33,7 @@
         AxiomLeafNodeMixin.class,
         AxiomNamedInformationItemMixin.class,
         AxiomNamespaceDeclarationMixin.class,
+        AxiomNodeFactoryMixin.class,
         AxiomProcessingInstructionMixin.class,
         AxiomSerializableMixin.class,
         AxiomSourcedElementMixin.class,

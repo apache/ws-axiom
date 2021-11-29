@@ -28,5 +28,6 @@ public interface AxiomInformationItem extends OMInformationItem, CoreNode {
     @Inject
     AxiomNodeFactory getNodeFactory();
 
+    @Inject
     OMMetaFactory getMetaFactory();
 }

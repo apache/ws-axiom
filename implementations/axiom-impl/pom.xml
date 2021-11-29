@@ -210,8 +210,7 @@
                             <ignore>
                                 <!-- TODO: inject the reference to the singleton into mixins directly -->
                                 org.apache.axiom.om.impl.llom.CoreNodeImpl -&gt; org.apache.axiom.om.impl.llom.factory.AxiomNodeFactoryImpl,
-                                org.apache.axiom.om.impl.llom.CoreNodeImpl -&gt; org.apache.axiom.om.impl.llom.factory.LLOMNodeFactory,
-                                org.apache.axiom.om.impl.llom.CoreNodeImpl -&gt; org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory
+                                org.apache.axiom.om.impl.llom.CoreNodeImpl -&gt; org.apache.axiom.om.impl.llom.factory.LLOMNodeFactory
                             </ignore>
                         </configuration>
                     </execution>

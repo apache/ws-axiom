@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.intf.factory;
 
 import org.apache.axiom.core.NodeFactory2;
+import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
@@ -58,7 +59,7 @@ import org.apache.axiom.weaver.annotation.Inject;
 import org.apache.axiom.weaver.annotation.Singleton;
 
 @Singleton
-public interface AxiomNodeFactory {
+public interface AxiomNodeFactory extends OMMetaFactorySPI {
     @Inject
     NodeFactory2 getCoreNodeFactory();
 

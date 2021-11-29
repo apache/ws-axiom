@@ -21,11 +21,16 @@ package org.apache.axiom.om.impl.dom.factory;
 import java.util.Map;
 
 import org.apache.axiom.locator.loader.OMMetaFactoryLoader;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.dom.DOMMetaFactory;
+import org.apache.axiom.om.impl.dom.intf.factory.DOOMNodeFactory;
 
 public class OMDOMMetaFactoryLoader implements OMMetaFactoryLoader {
     @Override
-    public OMMetaFactory load(Map<String,Object> properties) {
-        return OMDOMMetaFactory.INSTANCE;
+    public DOMMetaFactory load(Map<String,Object> properties) {
+        try {
+            return (DOOMNodeFactory)OMDOMMetaFactoryLoader.class.getClassLoader().loadClass("org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl").getField("INSTANCE").get(null);
+        } catch (ReflectiveOperationException ex) {
+            throw new Error(ex);
+        }
     }
 }

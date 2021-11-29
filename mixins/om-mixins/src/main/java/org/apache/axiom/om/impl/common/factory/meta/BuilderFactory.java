@@ -35,18 +35,18 @@ import org.apache.axiom.soap.impl.common.builder.SOAPModelBuilderImpl;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 
-abstract class BuilderFactory<T extends OMXMLParserWrapper> {
-    final static BuilderFactory<OMXMLParserWrapper> OM = new BuilderFactory<OMXMLParserWrapper>() {
+public abstract class BuilderFactory<T extends OMXMLParserWrapper> {
+    public final static BuilderFactory<OMXMLParserWrapper> OM = new BuilderFactory<OMXMLParserWrapper>() {
         @Override
-        OMXMLParserWrapper createBuilder(AxiomNodeFactory nodeFactory, BuilderSpec spec) {
+        public OMXMLParserWrapper createBuilder(AxiomNodeFactory nodeFactory, BuilderSpec spec) {
             return new OMXMLParserWrapperImpl(new BuilderImpl(spec.getInput(), nodeFactory.getCoreNodeFactory(),
                     PlainXMLModel.INSTANCE, null), spec.getDetachable());
         }
     };
 
-    final static BuilderFactory<SOAPModelBuilder> SOAP = new BuilderFactory<SOAPModelBuilder>() {
+    public final static BuilderFactory<SOAPModelBuilder> SOAP = new BuilderFactory<SOAPModelBuilder>() {
         @Override
-        SOAPModelBuilder createBuilder(AxiomNodeFactory nodeFactory, BuilderSpec spec) {
+        public SOAPModelBuilder createBuilder(AxiomNodeFactory nodeFactory, BuilderSpec spec) {
             BuilderImpl builder = new BuilderImpl(new FilteredXmlInput(spec.getInput(), SOAPFilter.INSTANCE), nodeFactory.getCoreNodeFactory(), new SOAPModel(nodeFactory), null);
             // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
             // SOAPEnvelope. Register a post-processor that does the necessary updates on the
@@ -68,5 +68,5 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
         }
     };
 
-    abstract T createBuilder(AxiomNodeFactory nodeFactory, BuilderSpec spec);
+    public abstract T createBuilder(AxiomNodeFactory nodeFactory, BuilderSpec spec);
 }

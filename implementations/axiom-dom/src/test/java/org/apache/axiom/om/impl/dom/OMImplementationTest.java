@@ -21,7 +21,7 @@ package org.apache.axiom.om.impl.dom;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactoryLoader;
 import org.apache.axiom.ts.om.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
@@ -29,7 +29,7 @@ import org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSourc
 
 public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
-        OMTestSuiteBuilder builder = new OMTestSuiteBuilder(OMDOMMetaFactory.INSTANCE);
+        OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMDOMMetaFactoryLoader().load(null));
         
         // TODO: investigate why this is not working with DOOM
         builder.exclude(TestGetChildrenWithName4.class);

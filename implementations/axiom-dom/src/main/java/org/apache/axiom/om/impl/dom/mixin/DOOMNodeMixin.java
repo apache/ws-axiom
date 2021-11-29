@@ -19,9 +19,7 @@
 package org.apache.axiom.om.impl.dom.mixin;
 
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.dom.factory.DOOMNodeFactory;
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.om.impl.dom.intf.DOOMNode;
 import org.apache.axiom.weaver.annotation.Mixin;
 
@@ -30,9 +28,5 @@ public abstract class DOOMNodeMixin implements DOOMNode {
     @Override
     public final NodeFactory coreGetNodeFactory() {
         return DOOMNodeFactory.INSTANCE;
-    }
-    
-    public final OMMetaFactory getMetaFactory() {
-        return OMDOMMetaFactory.INSTANCE;
     }
 }

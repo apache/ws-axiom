@@ -18,15 +18,15 @@
  */
 package org.apache.axiom.soap.impl.dom;
 
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactoryLoader;
+import org.apache.axiom.ts.soapdom.SOAPDOMTestSuiteBuilder;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.ts.soapdom.SOAPDOMTestSuiteBuilder;
-
 public class SOAPDOMImplementationTest extends TestCase {
     public static TestSuite suite() {
-        SOAPDOMTestSuiteBuilder builder = new SOAPDOMTestSuiteBuilder(OMDOMMetaFactory.INSTANCE);
+        SOAPDOMTestSuiteBuilder builder = new SOAPDOMTestSuiteBuilder(new OMDOMMetaFactoryLoader().load(null));
         return builder.build();
     }
 }

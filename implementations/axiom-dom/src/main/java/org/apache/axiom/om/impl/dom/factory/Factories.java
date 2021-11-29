@@ -20,7 +20,7 @@ package org.apache.axiom.om.impl.dom.factory;
 
 import org.apache.axiom.dom.DOMNodeFactory;
 
-final class Factories {
+public final class Factories {
     static final DOMNodeFactory DOM_NODE_FACTORY;
 
     static {

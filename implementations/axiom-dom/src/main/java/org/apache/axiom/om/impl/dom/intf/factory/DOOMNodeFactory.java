@@ -16,29 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.om.impl.dom.intf.factory;
 
-package org.apache.axiom.om.impl.llom.factory;
-
-import org.apache.axiom.om.impl.common.factory.meta.AbstractOMMetaFactory;
+import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
+import org.apache.axiom.weaver.annotation.Inject;
+import org.apache.axiom.weaver.annotation.Singleton;
+import org.w3c.dom.DOMImplementation;
 
-/**
- * Meta factory for the linked list OM implementation.
- */
-public class OMLinkedListMetaFactory extends AbstractOMMetaFactory {
-    private static final AxiomNodeFactory NODE_FACTORY;
-
-    static {
-        try {
-            NODE_FACTORY = (AxiomNodeFactory)OMLinkedListMetaFactory.class.getClassLoader().loadClass("org.apache.axiom.om.impl.llom.factory.AxiomNodeFactoryImpl").getField("INSTANCE").get(null);
-        } catch (ReflectiveOperationException ex) {
-            throw new Error(ex);
-        }
-    }
-
-    public static final OMLinkedListMetaFactory INSTANCE = new OMLinkedListMetaFactory();
-    
-    private OMLinkedListMetaFactory() {
-        super(NODE_FACTORY);
-    }
+@Singleton
+public interface DOOMNodeFactory extends AxiomNodeFactory, DOMMetaFactory {
+    @Override
+    @Inject
+    DOMImplementation getDOMImplementation();
 }

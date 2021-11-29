@@ -16,17 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom.factory;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.dom.DOMMetaFactory;
+package org.apache.axiom.om.impl.dom.mixin;
 
-import junit.framework.TestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-public class DOMFeatureTest extends TestCase {
-    public void test() {
-        OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
-        assertTrue(metaFactory instanceof DOMMetaFactory);
+import org.apache.axiom.om.impl.dom.factory.DOOMDocumentBuilderFactory;
+import org.apache.axiom.om.impl.dom.intf.factory.DOOMNodeFactory;
+import org.apache.axiom.weaver.annotation.Mixin;
+
+@Mixin
+public abstract class DOOMNodeFactoryMixin implements DOOMNodeFactory {
+    @Override
+    public DocumentBuilderFactory newDocumentBuilderFactory() {
+        return new DOOMDocumentBuilderFactory(getOMFactory());
     }
 }

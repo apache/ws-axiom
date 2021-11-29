@@ -22,7 +22,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
 import org.apache.axiom.om.impl.intf.AxiomElement;
@@ -50,8 +49,8 @@ import org.apache.axiom.soap.impl.intf.SOAPHelper;
 public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFactory {
     private static final Sequence envelopeSequence = new Sequence(SOAPHeader.class, SOAPBody.class);
     
-    public SOAPFactoryImpl(OMMetaFactory metaFactory, AxiomNodeFactory nodeFactory) {
-        super(metaFactory, nodeFactory);
+    public SOAPFactoryImpl(AxiomNodeFactory nodeFactory) {
+        super(nodeFactory);
     }
     
     public abstract SOAPHelper getSOAPHelper();

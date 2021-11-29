@@ -53,7 +53,7 @@ import org.apache.axiom.util.xml.stream.XMLEventUtils;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-final class BuilderSpec {
+public final class BuilderSpec {
     private final XmlInput input;
     private final Detachable detachable;
 
@@ -125,7 +125,7 @@ final class BuilderSpec {
         return new BuilderSpec(new StAXPullInput(reader, AxiomXMLStreamReaderHelperFactory.INSTANCE, true, closeable), detachable);
     }
     
-    static BuilderSpec from(XMLStreamReader reader) {
+    public static BuilderSpec from(XMLStreamReader reader) {
         int eventType = reader.getEventType();
         switch (eventType) {
             case XMLStreamReader.START_DOCUMENT:
@@ -140,12 +140,12 @@ final class BuilderSpec {
         return new BuilderSpec(new FilteredXmlInput(new StAXPullInput(reader, AxiomXMLStreamReaderHelperFactory.INSTANCE, false, null), NamespaceRepairingFilter.DEFAULT), null);
     }
 
-    static BuilderSpec from(StAXParserConfiguration configuration,
+    public static BuilderSpec from(StAXParserConfiguration configuration,
             InputSource is) {
         return create(configuration, is, true);
     }
 
-    static BuilderSpec from(StAXParserConfiguration configuration, Source source) {
+    public static BuilderSpec from(StAXParserConfiguration configuration, Source source) {
         if (source instanceof SAXSource) {
             return from((SAXSource)source, true);
         } else if (source instanceof DOMSource) {
@@ -173,7 +173,7 @@ final class BuilderSpec {
         }
     }
 
-    static BuilderSpec from(Node node, boolean expandEntityReferences) {
+    public static BuilderSpec from(Node node, boolean expandEntityReferences) {
         return new BuilderSpec(
                 new FilteredXmlInput(
                         new FilteredXmlInput(
@@ -183,11 +183,11 @@ final class BuilderSpec {
                 null);
     }
 
-    static BuilderSpec from(SAXSource source, boolean expandEntityReferences) {
+    public static BuilderSpec from(SAXSource source, boolean expandEntityReferences) {
         return new BuilderSpec(new FilteredXmlInput(new SAXInput(source, expandEntityReferences), NamespaceRepairingFilter.DEFAULT), null);
     }
 
-    static BuilderSpec from(StAXParserConfiguration configuration, final MultipartBody message) {
+    public static BuilderSpec from(StAXParserConfiguration configuration, final MultipartBody message) {
         Part rootPart = message.getRootPart();
         InputSource is = new InputSource(rootPart.getInputStream(false));
         is.setEncoding(rootPart.getContentType().getParameter("charset"));
@@ -210,7 +210,7 @@ final class BuilderSpec {
                 });
     }
 
-    static BuilderSpec from(StAXParserConfiguration configuration, Source source, OMAttachmentAccessor attachmentAccessor) {
+    public static BuilderSpec from(StAXParserConfiguration configuration, Source source, OMAttachmentAccessor attachmentAccessor) {
         BuilderSpec spec = from(configuration, source);
         return new BuilderSpec(
                 new FilteredXmlInput(

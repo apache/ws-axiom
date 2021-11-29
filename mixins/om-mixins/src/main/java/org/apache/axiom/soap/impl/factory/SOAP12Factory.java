@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.soap.impl.factory;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -34,8 +33,8 @@ import org.apache.axiom.soap.impl.intf.SOAPHelper;
 import org.apache.axiom.soap.impl.intf.soap12.SOAP12Helper;
 
 public class SOAP12Factory extends SOAPFactoryImpl {
-    public SOAP12Factory(OMMetaFactory metaFactory, AxiomNodeFactory nodeFactory) {
-        super(metaFactory, nodeFactory);
+    public SOAP12Factory(AxiomNodeFactory nodeFactory) {
+        super(nodeFactory);
     }
 
     @Override

@@ -19,10 +19,8 @@
 package org.apache.axiom.om.impl.llom.mixin;
 
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.intf.AxiomInformationItem;
 import org.apache.axiom.om.impl.llom.factory.LLOMNodeFactory;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
@@ -30,10 +28,5 @@ public abstract class AxiomInformationItemMixin implements AxiomInformationItem 
     @Override
     public final NodeFactory coreGetNodeFactory() {
         return LLOMNodeFactory.INSTANCE;
-    }
-
-    @Override
-    public final OMMetaFactory getMetaFactory() {
-        return OMLinkedListMetaFactory.INSTANCE;
     }
 }

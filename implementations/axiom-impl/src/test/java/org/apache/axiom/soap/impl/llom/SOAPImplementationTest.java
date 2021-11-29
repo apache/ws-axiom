@@ -21,12 +21,12 @@ package org.apache.axiom.soap.impl.llom;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactoryLoader;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
-        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(OMLinkedListMetaFactory.INSTANCE);
+        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMLinkedListMetaFactoryLoader().load(null));
         
         return builder.build();
     }

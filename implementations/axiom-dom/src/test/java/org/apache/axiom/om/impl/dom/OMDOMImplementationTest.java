@@ -21,12 +21,12 @@ package org.apache.axiom.om.impl.dom;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactoryLoader;
 import org.apache.axiom.ts.omdom.OMDOMTestSuiteBuilder;
 
 public class OMDOMImplementationTest extends TestCase {
     public static TestSuite suite() {
-        OMDOMTestSuiteBuilder builder = new OMDOMTestSuiteBuilder(OMDOMMetaFactory.INSTANCE);
+        OMDOMTestSuiteBuilder builder = new OMDOMTestSuiteBuilder(new OMDOMMetaFactoryLoader().load(null));
         return builder.build();
     }
 }

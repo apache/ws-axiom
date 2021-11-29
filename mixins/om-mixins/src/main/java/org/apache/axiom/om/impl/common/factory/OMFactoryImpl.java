@@ -66,17 +66,15 @@ import org.apache.axiom.om.impl.intf.factory.AxiomElementType;
 import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
 
 public class OMFactoryImpl implements OMFactory {
-    private final OMMetaFactory metaFactory;
     protected final AxiomNodeFactory nodeFactory;
     
-    public OMFactoryImpl(OMMetaFactory metaFactory, AxiomNodeFactory nodeFactory) {
-        this.metaFactory = metaFactory;
+    public OMFactoryImpl(AxiomNodeFactory nodeFactory) {
         this.nodeFactory = nodeFactory;
     }
 
     @Override
     public final OMMetaFactory getMetaFactory() {
-        return metaFactory;
+        return nodeFactory;
     }
 
     @Override

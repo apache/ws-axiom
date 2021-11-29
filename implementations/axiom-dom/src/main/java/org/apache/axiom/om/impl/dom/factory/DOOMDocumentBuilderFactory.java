@@ -29,11 +29,11 @@ import org.apache.axiom.om.OMFactory;
 /**
  * Document builder factory that conforms to JAXP.
  */
-final class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
+public final class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
     private final OMFactory factory;
     private Schema schema;
     
-    DOOMDocumentBuilderFactory(OMFactory factory) {
+    public DOOMDocumentBuilderFactory(OMFactory factory) {
         this.factory = factory;
     }
     
