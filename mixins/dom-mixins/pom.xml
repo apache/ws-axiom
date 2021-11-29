@@ -37,11 +37,6 @@
             <artifactId>core-mixins</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>shared-mixins</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency><!-- TODO: decouple this from the Axiom API -->
             <groupId>${project.groupId}</groupId>
             <artifactId>om-mixins</artifactId>
