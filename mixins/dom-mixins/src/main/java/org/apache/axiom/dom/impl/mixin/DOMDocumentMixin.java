@@ -212,7 +212,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     
     @Override
     public final Text createTextNode(String data) {
-        DOMText text = getDOMNodeFactory().createText();
+        DOMText text = getDOMNodeFactory().createCharacterDataNode();
         text.coreSetOwnerDocument(this);
         text.coreSetCharacterData(data);
         return text;

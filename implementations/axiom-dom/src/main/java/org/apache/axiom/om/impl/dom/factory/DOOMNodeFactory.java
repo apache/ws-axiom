@@ -25,7 +25,7 @@ public final class DOOMNodeFactory extends NodeFactoryImpl {
     
     private DOOMNodeFactory() {
         super(DOOMNodeFactory.class.getClassLoader(),
-                "org.apache.axiom.om.impl.dom.NodeFactory2Impl",
+                "org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl",
                 "org.apache.axiom.om.impl.dom",
                 "org.apache.axiom.soap.impl.dom",
                 "org.apache.axiom.soap.impl.dom.soap11",

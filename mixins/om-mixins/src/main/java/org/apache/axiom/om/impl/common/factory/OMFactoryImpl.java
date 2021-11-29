@@ -90,7 +90,7 @@ public class OMFactoryImpl implements OMFactory {
     @Override
     public final OMDocType createOMDocType(OMContainer parent, String rootName,
             String publicId, String systemId, String internalSubset) {
-        AxiomDocType node = nodeFactory.createDocType();
+        AxiomDocType node = nodeFactory.createDocumentTypeDeclaration();
         node.coreSetRootName(rootName);
         node.coreSetPublicId(publicId);
         node.coreSetSystemId(systemId);
@@ -263,12 +263,12 @@ public class OMFactoryImpl implements OMFactory {
 
     @Override
     public final OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent) {
-        return createAxiomElement(AxiomNodeFactory::createElement, parent, localName, ns);
+        return createAxiomElement(AxiomNodeFactory::createNSAwareElement, parent, localName, ns);
     }
 
     @Override
     public final OMElement createOMElement(QName qname, OMContainer parent) {
-        AxiomElement element = nodeFactory.createElement();
+        AxiomElement element = nodeFactory.createNSAwareElement();
         if (parent != null) {
             parent.addChild(element);
         }
@@ -359,7 +359,7 @@ public class OMFactoryImpl implements OMFactory {
                 throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
             }
         }
-        AxiomAttribute attr = nodeFactory.createAttribute();
+        AxiomAttribute attr = nodeFactory.createNSAwareAttribute();
         attr.internalSetLocalName(localName);
         try {
             attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
@@ -391,7 +391,7 @@ public class OMFactoryImpl implements OMFactory {
         int type = child.getType();
         switch (type) {
             case OMNode.ELEMENT_NODE:
-                return importElement((OMElement)child, AxiomNodeFactory::createElement);
+                return importElement((OMElement)child, AxiomNodeFactory::createNSAwareElement);
             case OMNode.TEXT_NODE:
             case OMNode.SPACE_NODE:
             case OMNode.CDATA_SECTION_NODE: {
@@ -419,7 +419,7 @@ public class OMFactoryImpl implements OMFactory {
             }
             case OMNode.DTD_NODE: {
                 OMDocType docType = (OMDocType)child;
-                AxiomDocType importedDocType = nodeFactory.createDocType();
+                AxiomDocType importedDocType = nodeFactory.createDocumentTypeDeclaration();
                 importedDocType.coreSetRootName(docType.getRootName());
                 importedDocType.coreSetPublicId(docType.getPublicId());
                 importedDocType.coreSetSystemId(docType.getSystemId());
@@ -451,7 +451,7 @@ public class OMFactoryImpl implements OMFactory {
     }
 
     private AxiomAttribute importAttribute(OMAttribute attribute) {
-        AxiomAttribute importedAttribute = nodeFactory.createAttribute();
+        AxiomAttribute importedAttribute = nodeFactory.createNSAwareAttribute();
         copyName(attribute, importedAttribute);
         importedAttribute.setAttributeValue(attribute.getAttributeValue());
         return importedAttribute;

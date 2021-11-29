@@ -187,7 +187,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 }
             } else if (parent.getLocalName().equals(
                     SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
-                elementType = AxiomNodeFactory::createElement;
+                elementType = AxiomNodeFactory::createNSAwareElement;
                 processingDetailElements = true;
                 detailElementNames = new Vector<String>();
                 detailElementNames.add(localName);
@@ -243,7 +243,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 }
                 if (localNameExist) {
                     detailElementNames.setSize(detailElementLevel);
-                    elementType = AxiomNodeFactory::createElement;
+                    elementType = AxiomNodeFactory::createNSAwareElement;
                     detailElementNames.add(localName);
                 }
 

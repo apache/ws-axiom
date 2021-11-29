@@ -92,7 +92,7 @@ public abstract class DOMTextNodeMixin implements DOMTextNode {
         try {
             DOMText newText;
             if (content.length() > 0) {
-                newText = getDOMNodeFactory().createText();
+                newText = getDOMNodeFactory().createCharacterDataNode();
                 newText.coreSetCharacterData(content);
             } else {
                 newText = null;

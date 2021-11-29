@@ -51,7 +51,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
             } else if (SOAP_FAULT_DETAIL_LOCAL_NAME.equals(localName)) {
                 elementType = AxiomNodeFactory::createSOAP11FaultDetail;
             } else {
-                elementType = AxiomNodeFactory::createElement;
+                elementType = AxiomNodeFactory::createNSAwareElement;
             }
 
         } else if (elementLevel == 5) {
@@ -75,11 +75,11 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
                 throw new SOAPProcessingException(
                         "faultactor element should not have children");
             } else {
-                elementType = AxiomNodeFactory::createElement;
+                elementType = AxiomNodeFactory::createNSAwareElement;
             }
 
         } else if (elementLevel > 5) {
-            elementType = AxiomNodeFactory::createElement;
+            elementType = AxiomNodeFactory::createNSAwareElement;
         }
 
         return elementType;

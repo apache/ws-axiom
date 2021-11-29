@@ -25,7 +25,7 @@ public final class Factories {
 
     static {
         try {
-            DOM_NODE_FACTORY = (DOMNodeFactory)Factories.class.getClassLoader().loadClass("org.apache.axiom.om.impl.dom.DOMNodeFactoryImpl").getField("INSTANCE").get(null);
+            DOM_NODE_FACTORY = (DOMNodeFactory)Factories.class.getClassLoader().loadClass("org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl").getField("INSTANCE").get(null);
         } catch (ReflectiveOperationException ex) {
             throw new Error(ex);
         }

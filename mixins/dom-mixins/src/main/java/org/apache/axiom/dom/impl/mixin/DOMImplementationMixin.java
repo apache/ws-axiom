@@ -52,7 +52,7 @@ public abstract class DOMImplementationMixin implements DOMNodeFactory {
     @Override
     public DocumentType createDocumentType(String qualifiedName,
                                            String publicId, String systemId) {
-        DOMDocumentType docType = createDocumentType();
+        DOMDocumentType docType = createDocumentTypeDeclaration();
         docType.coreSetRootName(qualifiedName);
         docType.coreSetPublicId(publicId);
         docType.coreSetSystemId(systemId);

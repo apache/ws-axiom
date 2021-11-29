@@ -55,45 +55,51 @@ import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultValue;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Header;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12HeaderBlock;
 import org.apache.axiom.weaver.annotation.FactoryMethod;
-import org.apache.axiom.weaver.annotation.Inject;
 import org.apache.axiom.weaver.annotation.Singleton;
 
 @Singleton
-public interface AxiomNodeFactory extends OMMetaFactorySPI {
-    @Inject
-    NodeFactory2 getCoreNodeFactory();
-
+public interface AxiomNodeFactory extends NodeFactory2, OMMetaFactorySPI {
     @FactoryMethod
+    @Override
     AxiomDocument createDocument();
 
     @FactoryMethod
-    AxiomDocType createDocType();
+    @Override
+    AxiomDocType createDocumentTypeDeclaration();
 
     @FactoryMethod
+    @Override
     AxiomCharacterDataNode createCharacterDataNode();
 
     @FactoryMethod
+    @Override
     AxiomCDATASection createCDATASection();
 
     @FactoryMethod
+    @Override
     AxiomProcessingInstruction createProcessingInstruction();
 
     @FactoryMethod
+    @Override
     AxiomEntityReference createEntityReference();
 
     @FactoryMethod
+    @Override
     AxiomComment createComment();
 
     @FactoryMethod
-    AxiomElement createElement();
+    @Override
+    AxiomElement createNSAwareElement();
 
     @FactoryMethod
     AxiomSourcedElement createSourcedElement();
 
     @FactoryMethod
-    AxiomAttribute createAttribute();
+    @Override
+    AxiomAttribute createNSAwareAttribute();
 
     @FactoryMethod
+    @Override
     AxiomNamespaceDeclaration createNamespaceDeclaration();
 
     @FactoryMethod

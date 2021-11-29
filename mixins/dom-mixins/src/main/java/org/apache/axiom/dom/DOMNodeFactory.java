@@ -18,46 +18,59 @@
  */
 package org.apache.axiom.dom;
 
+import org.apache.axiom.core.NodeFactory2;
 import org.apache.axiom.weaver.annotation.FactoryMethod;
 import org.apache.axiom.weaver.annotation.Singleton;
 import org.w3c.dom.DOMImplementation;
 
 @Singleton
-public interface DOMNodeFactory extends DOMImplementation {
+public interface DOMNodeFactory extends NodeFactory2, DOMImplementation {
     @FactoryMethod
+    @Override
     DOMDocument createDocument();
 
     @FactoryMethod
-    DOMDocumentType createDocumentType();
+    @Override
+    DOMDocumentType createDocumentTypeDeclaration();
 
     @FactoryMethod
-    DOMText createText();
+    @Override
+    DOMText createCharacterDataNode();
 
     @FactoryMethod
+    @Override
     DOMCDATASection createCDATASection();
 
     @FactoryMethod
+    @Override
     DOMNSUnawareElement createNSUnawareElement();
 
     @FactoryMethod
+    @Override
     DOMNSUnawareAttribute createNSUnawareAttribute();
 
     @FactoryMethod
+    @Override
     DOMNSAwareElement createNSAwareElement();
 
     @FactoryMethod
+    @Override
     DOMNSAwareAttribute createNSAwareAttribute();
 
     @FactoryMethod
+    @Override
     DOMNamespaceDeclaration createNamespaceDeclaration();
 
     @FactoryMethod
+    @Override
     DOMProcessingInstruction createProcessingInstruction();
 
     @FactoryMethod
+    @Override
     DOMEntityReference createEntityReference();
 
     @FactoryMethod
+    @Override
     DOMComment createComment();
 
     @FactoryMethod

@@ -101,7 +101,6 @@
                                 <weavablePackage>org.apache.axiom.om.impl.llom.mixin</weavablePackage>
                             </weavablePackages>
                             <interfaces>
-                                <interface>org.apache.axiom.core.NodeFactory2</interface>
                                 <interface>org.apache.axiom.om.impl.intf.AxiomAttribute</interface>
                                 <interface>org.apache.axiom.om.impl.intf.AxiomCDATASection</interface>
                                 <interface>org.apache.axiom.om.impl.intf.AxiomCharacterDataNode</interface>
