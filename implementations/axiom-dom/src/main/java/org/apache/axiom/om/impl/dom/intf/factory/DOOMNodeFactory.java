@@ -33,16 +33,10 @@ import org.apache.axiom.om.impl.dom.intf.DOOMSourcedElement;
 import org.apache.axiom.om.impl.dom.intf.DOOMText;
 import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
 import org.apache.axiom.weaver.annotation.FactoryMethod;
-import org.apache.axiom.weaver.annotation.Inject;
 import org.apache.axiom.weaver.annotation.Singleton;
-import org.w3c.dom.DOMImplementation;
 
 @Singleton
 public interface DOOMNodeFactory extends AxiomNodeFactory, DOMNodeFactory, DOMMetaFactory {
-    @Override
-    @Inject
-    DOMImplementation getDOMImplementation();
-
     @FactoryMethod
     @Override
     DOOMDocument createDocument();

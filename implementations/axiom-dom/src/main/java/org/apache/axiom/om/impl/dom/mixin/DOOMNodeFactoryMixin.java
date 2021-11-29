@@ -24,9 +24,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.om.impl.dom.factory.DOOMDocumentBuilderFactory;
 import org.apache.axiom.om.impl.dom.intf.factory.DOOMNodeFactory;
 import org.apache.axiom.weaver.annotation.Mixin;
+import org.w3c.dom.DOMImplementation;
 
 @Mixin
 public abstract class DOOMNodeFactoryMixin implements DOOMNodeFactory {
+    @Override
+    public DOMImplementation getDOMImplementation() {
+        return this;
+    }
+
     @Override
     public DocumentBuilderFactory newDocumentBuilderFactory() {
         return new DOOMDocumentBuilderFactory(getOMFactory());
