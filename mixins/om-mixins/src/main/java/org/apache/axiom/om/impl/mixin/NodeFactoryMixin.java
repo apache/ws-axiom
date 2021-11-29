@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.mixin;
 
 import org.apache.axiom.core.NodeFactory2;
-import org.apache.axiom.core.NodeFactoryImpl;
 import org.apache.axiom.om.impl.common.builder.OMNamespaceCache;
 import org.apache.axiom.weaver.annotation.Mixin;
 
