@@ -83,6 +83,23 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
     }
     
     @Override
+    public final String getLocalName() {
+        return coreGetLocalName();
+    }
+
+    @Override
+    public final String getNamespaceURI() {
+        String namespaceURI = coreGetNamespaceURI();
+        return namespaceURI.length() == 0 ? null : namespaceURI;
+    }
+
+    @Override
+    public final String getPrefix() {
+        String prefix = coreGetPrefix();
+        return prefix.length() == 0 ? null : prefix;
+    }
+
+    @Override
     public final OMNamespace defaultGetNamespace() {
         return namespace;
     }

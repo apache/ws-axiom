@@ -35,6 +35,11 @@ public abstract class AxiomProcessingInstructionMixin implements AxiomProcessing
     }
 
     @Override
+    public final String getTarget() {
+        return coreGetTarget();
+    }
+
+    @Override
     public final void setTarget(String target) {
         coreSetTarget(target);
     }

@@ -33,6 +33,11 @@ public abstract class DOMProcessingInstructionMixin implements DOMProcessingInst
     }
 
     @Override
+    public final String getTarget() {
+        return coreGetTarget();
+    }
+
+    @Override
     public final String getData() {
         try {
             return coreGetCharacterData().toString();

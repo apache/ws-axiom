@@ -16,22 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.shared;
+package org.apache.axiom.weaver.mixin;
 
-import org.apache.axiom.core.CoreDocumentTypeDeclaration;
-import org.apache.axiom.weaver.annotation.Mixin;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
-@Mixin
-public abstract class DocumentTypeDeclarationMixin implements CoreDocumentTypeDeclaration {
-    public final String getPublicId() {
-        return coreGetPublicId();
+final class LineNumberFilter extends MethodVisitor {
+    LineNumberFilter(MethodVisitor methodVisitor) {
+        super(Opcodes.ASM9, methodVisitor);
     }
 
-    public final String getSystemId() {
-        return coreGetSystemId();
-    }
-
-    public final String getInternalSubset() {
-        return coreGetInternalSubset();
-    }
+    @Override
+    public void visitLineNumber(int line, Label start) {}
 }

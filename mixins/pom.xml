@@ -36,7 +36,6 @@
         <module>core-mixins</module>
         <module>dom-mixins</module>
         <module>om-mixins</module>
-        <module>shared-mixins</module>
     </modules>
 
     <build>

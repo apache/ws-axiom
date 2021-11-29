@@ -41,6 +41,21 @@ public abstract class AxiomDocTypeMixin implements AxiomDocType {
     }
 
     @Override
+    public final String getPublicId() {
+        return coreGetPublicId();
+    }
+
+    @Override
+    public final String getSystemId() {
+        return coreGetSystemId();
+    }
+
+    @Override
+    public final String getInternalSubset() {
+        return coreGetInternalSubset();
+    }
+
+    @Override
     public final void serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
             internalSerialize(new XMLStreamWriterHandler(writer), cache);

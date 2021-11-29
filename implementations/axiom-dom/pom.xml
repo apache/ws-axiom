@@ -108,7 +108,6 @@
                         <configuration>
                             <weavablePackages>
                                 <weavablePackage>org.apache.axiom.core.impl.mixin</weavablePackage>
-                                <weavablePackage>org.apache.axiom.shared</weavablePackage>
                                 <weavablePackage>org.apache.axiom.om.impl.mixin</weavablePackage>
                                 <weavablePackage>org.apache.axiom.soap.impl.mixin</weavablePackage>
                                 <weavablePackage>org.apache.axiom.dom.impl.mixin</weavablePackage>
@@ -234,7 +233,6 @@
                             org.apache.axiom.om.impl.*,
                             org.apache.axiom.soap.impl.*,
                             org.apache.axiom.dom.*,
-                            org.apache.axiom.shared.*,
                             org.apache.axiom.util.xml.*
                         </Private-Package>
                     </instructions>

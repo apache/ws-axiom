@@ -49,6 +49,21 @@ public abstract class DOMDocumentTypeMixin implements DOMDocumentType {
     }
 
     @Override
+    public final String getPublicId() {
+        return coreGetPublicId();
+    }
+
+    @Override
+    public final String getSystemId() {
+        return coreGetSystemId();
+    }
+
+    @Override
+    public final String getInternalSubset() {
+        return coreGetInternalSubset();
+    }
+
+    @Override
     public final NamedNodeMap getEntities() {
         throw new UnsupportedOperationException();
     }

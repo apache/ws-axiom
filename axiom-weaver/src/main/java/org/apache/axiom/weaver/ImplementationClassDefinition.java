@@ -29,12 +29,16 @@ import org.apache.axiom.weaver.mixin.Mixin;
 import org.apache.axiom.weaver.mixin.MixinMethod;
 import org.apache.axiom.weaver.mixin.StaticInitializerMethod;
 import org.apache.axiom.weaver.mixin.TargetContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 final class ImplementationClassDefinition extends ClassDefinition {
+    private static final Log log = LogFactory.getLog(ImplementationClassDefinition.class);
+
     private final TargetContext targetContext;
     private final int version;
     private final int access;
@@ -75,7 +79,31 @@ final class ImplementationClassDefinition extends ClassDefinition {
                         // Keep the existing method.
                         continue;
                     } else {
-                        throw new WeaverException("Method collision");
+                        String body1 = existingMethod.getBody().toString(targetContext);
+                        String body2 = method.getBody().toString(targetContext);
+                        // Allow two mixins to define identical methods. This is useful for DOOM
+                        // because some methods are defined in the same way by DOM and Axiom.
+                        if (body1.equals(body2)) {
+                            log.info(
+                                    "Ignoring identical mixin method for "
+                                            + signature
+                                            + " in "
+                                            + targetContext.getTargetClassName());
+                            continue;
+                        }
+                        throw new WeaverException(
+                                "Method collision for "
+                                        + signature
+                                        + " in "
+                                        + targetContext.getTargetClassName()
+                                        + "\n--- Method defined by "
+                                        + existingMethod.getMixin().getName()
+                                        + ":\n"
+                                        + body1
+                                        + "\n--- Method defined by "
+                                        + method.getMixin().getName()
+                                        + ":\n"
+                                        + body2);
                     }
                 }
                 methodMap.put(signature, method);
