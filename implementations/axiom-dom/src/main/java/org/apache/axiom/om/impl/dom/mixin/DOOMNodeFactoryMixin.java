@@ -35,6 +35,6 @@ public abstract class DOOMNodeFactoryMixin implements DOOMNodeFactory {
 
     @Override
     public DocumentBuilderFactory newDocumentBuilderFactory() {
-        return new DOOMDocumentBuilderFactory(getOMFactory());
+        return new DOOMDocumentBuilderFactory(this);
     }
 }

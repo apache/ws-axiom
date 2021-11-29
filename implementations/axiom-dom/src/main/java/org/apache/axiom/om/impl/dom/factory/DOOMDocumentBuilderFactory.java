@@ -24,16 +24,16 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 
-import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.impl.dom.intf.factory.DOOMNodeFactory;
 
 /**
  * Document builder factory that conforms to JAXP.
  */
 public final class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
-    private final OMFactory factory;
+    private final DOOMNodeFactory factory;
     private Schema schema;
     
-    public DOOMDocumentBuilderFactory(OMFactory factory) {
+    public DOOMDocumentBuilderFactory(DOOMNodeFactory factory) {
         this.factory = factory;
     }
     

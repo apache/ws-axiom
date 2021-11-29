@@ -20,8 +20,7 @@
 package org.apache.axiom.om.impl.dom.factory;
 
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactorySPI;
+import org.apache.axiom.om.impl.dom.intf.factory.DOOMNodeFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -39,11 +38,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 final class DOOMDocumentBuilder extends DocumentBuilder {
-    private final OMFactory factory;
+    private final DOOMNodeFactory factory;
     private final StAXParserConfiguration parserConfiguration;
     private final Schema schema;
     
-    DOOMDocumentBuilder(OMFactory factory, StAXParserConfiguration parserConfiguration, Schema schema) {
+    DOOMDocumentBuilder(DOOMNodeFactory factory, StAXParserConfiguration parserConfiguration, Schema schema) {
         this.factory = factory;
         this.parserConfiguration = parserConfiguration;
         this.schema = schema;
@@ -78,7 +77,7 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
 
     @Override
     public DOMImplementation getDOMImplementation() {
-        return Factories.DOM_NODE_FACTORY;
+        return factory;
     }
 
     /**
@@ -88,7 +87,7 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
      */
     @Override
     public Document newDocument() {
-        return Factories.DOM_NODE_FACTORY.createDocument();
+        return factory.createDocument();
     }
 
     @Override
@@ -103,7 +102,7 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
 
     @Override
     public Document parse(InputSource inputSource) throws SAXException, IOException {
-        OMDocument document = ((OMMetaFactorySPI)factory.getMetaFactory()).createOMBuilder(parserConfiguration,
+        OMDocument document = factory.createOMBuilder(parserConfiguration,
                 inputSource).getDocument();
         document.close(true);
         return (Document)document;
