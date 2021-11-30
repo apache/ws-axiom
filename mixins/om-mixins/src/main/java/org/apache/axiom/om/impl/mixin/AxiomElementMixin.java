@@ -397,7 +397,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
 
     @Override
     public final void addNamespaceDeclaration(OMNamespace ns) {
-        AxiomNamespaceDeclaration decl = coreGetNodeFactory().createNode(AxiomNamespaceDeclaration.class);
+        AxiomNamespaceDeclaration decl = getNodeFactory().createNamespaceDeclaration();
         decl.setDeclaredNamespace(ns);
         coreSetAttribute(AxiomSemantics.NAMESPACE_DECLARATION_MATCHER, decl, AxiomSemantics.INSTANCE);
     }

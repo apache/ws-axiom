@@ -41,8 +41,6 @@ public interface CoreNode {
     
     NodeFactory coreGetNodeFactory();
     
-    <T extends CoreNode> T coreCreateNode(Class<T> type);
-    
     /**
      * Get the node type.
      * 
@@ -70,7 +68,6 @@ public interface CoreNode {
     void internalSetFlag(int flag, boolean value);
     int internalGetFlags(int mask);
     void internalSetFlags(int mask, int flags);
-    void updateFiliation(CoreNode creator);
     <T> void initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other);
     <T> CoreNode internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException;
 }

@@ -88,8 +88,8 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
     }
 
     @Override
-    public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) throws CoreModelException {
-        CoreNSAwareAttribute attr = element.coreCreateNode(CoreNSAwareAttribute.class);
+    public CoreAttribute createAttribute(NodeFactory2 nodeFactory, String namespaceURI, String name, String prefix, String value) throws CoreModelException {
+        CoreNSAwareAttribute attr = nodeFactory.createNSAwareAttribute();
         attr.coreSetName(namespaceURI, name, prefix);
         attr.coreSetCharacterData(value, null);
         return attr;

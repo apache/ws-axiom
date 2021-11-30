@@ -31,6 +31,8 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.intf.factory.AxiomElementType;
+import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11HeaderBlock;
@@ -93,18 +95,18 @@ final class CustomBuilderManager implements BuilderListener {
                                 log.debug("Invoking custom builder " + customBuilder);
                             }
                             OMDataSource dataSource = customBuilder.create(element);
-                            Class<? extends AxiomSourcedElement> type;
+                            AxiomElementType<? extends AxiomSourcedElement> type;
                             if (element instanceof AxiomSOAP11HeaderBlock) {
-                                type = AxiomSOAP11HeaderBlock.class;
+                                type = AxiomNodeFactory::createSOAP11HeaderBlock;
                             } else if (element instanceof AxiomSOAP12HeaderBlock) {
-                                type = AxiomSOAP12HeaderBlock.class;
+                                type = AxiomNodeFactory::createSOAP12HeaderBlock;
                             } else {
-                                type = AxiomSourcedElement.class;
+                                type = AxiomNodeFactory::createSourcedElement;
                             }
+                            AxiomSourcedElement newElement = type.create((AxiomNodeFactory)element.coreGetNodeFactory().getFactory2());
                             if (log.isDebugEnabled()) {
-                                log.debug("Replacing element with new sourced element of type " + type);
+                                log.debug("Replacing element with new sourced element of type " + newElement.getClass().getName());
                             }
-                            AxiomSourcedElement newElement = element.coreCreateNode(type);
                             newElement.init(localName, new OMNamespaceImpl(namespaceURI, null), dataSource);
                             try {
                                 element.coreReplaceWith(newElement, AxiomSemantics.INSTANCE);

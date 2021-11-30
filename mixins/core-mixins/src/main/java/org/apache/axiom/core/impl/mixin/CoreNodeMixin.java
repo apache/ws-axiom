@@ -37,17 +37,6 @@ public abstract class CoreNodeMixin implements CoreNode {
     }
     
     @Override
-    public final <T extends CoreNode> T coreCreateNode(Class<T> type) {
-        T node = coreGetNodeFactory().createNode(type);
-        node.updateFiliation(this);
-        return node;
-    }
-    
-    @Override
-    public void updateFiliation(CoreNode creator) {
-    }
-    
-    @Override
     public final CoreDocument coreGetOwnerDocument(boolean create) {
         CoreNode root = getRootOrOwnerDocument();
         if (root instanceof CoreDocument) {

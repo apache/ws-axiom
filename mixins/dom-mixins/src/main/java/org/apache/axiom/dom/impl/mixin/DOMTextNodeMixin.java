@@ -126,7 +126,7 @@ public abstract class DOMTextNodeMixin implements DOMTextNode {
             }
             String newValue = value.substring(offset);
             deleteData(offset, value.length());
-            DOMText newText = coreCreateNode(DOMText.class);
+            DOMText newText = getDOMNodeFactory().createCharacterDataNode();
             newText.coreSetCharacterData(newValue);
             if (coreHasParent()) {
                 coreInsertSiblingAfter(newText);

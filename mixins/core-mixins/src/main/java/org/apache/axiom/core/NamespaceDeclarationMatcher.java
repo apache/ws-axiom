@@ -51,8 +51,8 @@ public final class NamespaceDeclarationMatcher implements AttributeMatcher {
     }
 
     @Override
-    public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) {
-        CoreNamespaceDeclaration decl = element.coreCreateNode(CoreNamespaceDeclaration.class);
+    public CoreAttribute createAttribute(NodeFactory2 nodeFactory, String namespaceURI, String name, String prefix, String value) {
+        CoreNamespaceDeclaration decl = nodeFactory.createNamespaceDeclaration();
         decl.coreSetDeclaredNamespace(name, value);
         return decl;
     }

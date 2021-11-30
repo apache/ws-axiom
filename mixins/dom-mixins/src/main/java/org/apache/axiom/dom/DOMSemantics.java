@@ -24,13 +24,13 @@ import java.util.Set;
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
-import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
+import org.apache.axiom.core.NodeFactory2;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.Semantics;
 
@@ -95,8 +95,8 @@ public final class DOMSemantics implements Semantics {
         }
 
         @Override
-        public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) throws CoreModelException {
-            CoreNSUnawareAttribute attr = element.coreCreateNode(CoreNSUnawareAttribute.class);
+        public CoreAttribute createAttribute(NodeFactory2 nodeFactory, String namespaceURI, String name, String prefix, String value) throws CoreModelException {
+            CoreNSUnawareAttribute attr = nodeFactory.createNSUnawareAttribute();
             attr.coreSetName(name);
             attr.coreSetCharacterData(value, null);
             // TODO: set type?
