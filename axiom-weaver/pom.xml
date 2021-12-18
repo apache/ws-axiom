@@ -88,8 +88,8 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.coveo</groupId>
-                <artifactId>fmt-maven-plugin</artifactId>
+                <groupId>com.github.veithen.maven</groupId>
+                <artifactId>java-format-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
