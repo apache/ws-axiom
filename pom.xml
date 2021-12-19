@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws</groupId>
         <artifactId>ws-parent</artifactId>
-        <version>3</version>
+        <version>4-SNAPSHOT</version>
     </parent>
 
     <groupId>org.apache.ws.commons.axiom</groupId>
@@ -266,6 +266,8 @@
         <asm.version>9.2</asm.version>
         
         <skipDeploy>false</skipDeploy>
+
+        <project.build.outputTimestamp>2021-12-19T15:46:00Z</project.build.outputTimestamp>
     </properties>
 
     <dependencyManagement>
