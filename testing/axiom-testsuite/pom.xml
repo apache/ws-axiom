@@ -36,7 +36,7 @@
     <url>http://ws.apache.org/axiom/</url>
 
     <properties>
-        <xmlbeans.version>2.6.0</xmlbeans.version>
+        <xmlbeans.version>5.0.2</xmlbeans.version>
     </properties>
 
     <dependencies>
@@ -92,6 +92,11 @@
             <artifactId>xmlbeans</artifactId>
             <version>${xmlbeans.version}</version>
         </dependency>
+        <!-- Used by xmlbeans -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>jaxp-testsuite</artifactId>
@@ -120,24 +125,48 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>xmlbeans-maven-plugin</artifactId>
-                <version>2.3.3</version>
+                <groupId>org.apache.xmlbeans</groupId>
+                <artifactId>xmlbeans</artifactId>
+                <version>${xmlbeans.version}</version>
                 <executions>
                     <execution>
+                        <id>xmlbeans-order</id>
                         <goals>
-                            <goal>xmlbeans</goal>
+                            <goal>compile</goal>
                         </goals>
                         <configuration>
-                            <javaSource>1.7</javaSource>
+                            <name>order</name>
+                            <sourceSchemas>order.xsd</sourceSchemas>
+                            <javaTargetDir>${project.build.directory}/generated-sources/xmlbeans/order</javaTargetDir>
+                            <classTargetDir>${project.build.directory}/generated-resources/xmlbeans/order</classTargetDir>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>xmlbeans-xmlvend</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <name>xmlvend</name>
+                            <sourceSchemas>xmlvend.xsd</sourceSchemas>
+                            <javaTargetDir>${project.build.directory}/generated-sources/xmlbeans/xmlvend</javaTargetDir>
+                            <classTargetDir>${project.build.directory}/generated-resources/xmlbeans/xmlvend</classTargetDir>
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <repackage>org.apache.axiom.ts.xmlbeans</repackage>
+                </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>org.apache.xmlbeans</groupId>
-                        <artifactId>xmlbeans</artifactId>
-                        <version>${xmlbeans.version}</version>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                        <version>${log4j.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-core</artifactId>
+                        <version>${log4j.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -151,7 +180,7 @@
                         </goals>
                         <configuration>
                             <files>
-                                <file>src/main/schemas/identity.xsd</file>
+                                <file>src/main/schema/identity.xsd</file>
                             </files>
                         </configuration>
                     </execution>
