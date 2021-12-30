@@ -20,7 +20,6 @@ package org.apache.axiom.weaver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,7 +62,7 @@ public final class Weaver {
 
     private void addMixin(Mixin mixin) {
         mixinsByInterface
-                .computeIfAbsent(mixin.getTargetInterface(), k -> new HashSet<>())
+                .computeIfAbsent(mixin.getTargetInterface(), k -> new LinkedIdentityHashSet<>())
                 .add(mixin);
     }
 
@@ -71,8 +70,8 @@ public final class Weaver {
         InterfaceNode interfaceNode = interfaceNodes.get(iface);
         if (interfaceNode == null) {
             FactoryMixinFactory.createFactoryMixin(classFetcher, iface).ifPresent(this::addMixin);
-            Set<InterfaceNode> parentInterfaces = new HashSet<>();
-            Set<ImplementationNode> parentImplementations = new HashSet<>();
+            Set<InterfaceNode> parentInterfaces = new LinkedIdentityHashSet<>();
+            Set<ImplementationNode> parentImplementations = new LinkedIdentityHashSet<>();
             for (Class<?> superClass : iface.getInterfaces()) {
                 InterfaceNode parentInterface = addInterface(superClass);
                 parentInterfaces.add(parentInterface);
@@ -82,7 +81,7 @@ public final class Weaver {
             classFetcher.fetch(iface.getName(), cv);
             interfaceNode = new InterfaceNode(iface, parentInterfaces, cv.isSingleton());
             interfaceNodes.put(iface, interfaceNode);
-            Set<MixinNode> mixinNodes = new HashSet<>();
+            Set<MixinNode> mixinNodes = new LinkedIdentityHashSet<>();
             Set<Mixin> mixins = mixinsByInterface.get(iface);
             if (mixins != null) {
                 for (Mixin mixin : mixins) {

@@ -284,7 +284,7 @@ final class ImplementationNode {
         if (requireImplementation || children.isEmpty()) {
             return false;
         }
-        Set<MixinNode> commonMixins = new LinkedHashSet<>();
+        Set<MixinNode> commonMixins = new LinkedIdentityHashSet<>();
         boolean first = true;
         for (ImplementationNode child : children) {
             if (first) {
