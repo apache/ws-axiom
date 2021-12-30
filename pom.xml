@@ -579,9 +579,7 @@
                     <configuration>
                         <instructions>
                             <_removeheaders>
-                                <!-- Remove these headers to make the output deterministic -->
-                                Bnd-LastModified,Build-Jdk,Built-By,
-                                <!-- There are not OSGi headers and shouldn't appear in the manifest -->
+                                <!-- These are not OSGi headers and shouldn't appear in the manifest -->
                                 Private-Package,Include-Resource
                             </_removeheaders>
                             <_nodefaultversion>true</_nodefaultversion>
