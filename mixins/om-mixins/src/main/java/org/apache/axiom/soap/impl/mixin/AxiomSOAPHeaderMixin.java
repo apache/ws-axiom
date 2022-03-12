@@ -39,6 +39,7 @@ import org.apache.axiom.soap.impl.common.MURoleChecker;
 import org.apache.axiom.soap.impl.common.RoleChecker;
 import org.apache.axiom.soap.impl.common.RolePlayerChecker;
 import org.apache.axiom.soap.impl.common.SOAPHeaderBlockMapper;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 import org.apache.axiom.weaver.annotation.Mixin;
 
@@ -46,7 +47,10 @@ import org.apache.axiom.weaver.annotation.Mixin;
 public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
     @Override
     public final boolean isChildElementAllowed(OMElement child) {
-        return child instanceof SOAPHeaderBlock;
+        // Axiom 1.2.x allowed adding plain OMElements as children to SOAPHeaders. Note that the
+        // Iterator<SOAPHeaderBlock> instances will automatically replace such elements by
+        // SOAPHeaderBlocks.
+        return child instanceof SOAPHeaderBlock || !(child instanceof AxiomSOAPElement);
     }
 
     @Override
