@@ -39,6 +39,7 @@ public class OMElementTest extends OMTestCase {
     /*
      * @see TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         OMNamespace testingNamespace = factory.createOMNamespace(
                 "http://testing.ws.org", "ws");
@@ -47,6 +48,7 @@ public class OMElementTest extends OMTestCase {
                 "http://moretesting.ws.org", "ws"), firstElement);
     }
     
+    @Override
     protected void tearDown() throws Exception {
     }
 

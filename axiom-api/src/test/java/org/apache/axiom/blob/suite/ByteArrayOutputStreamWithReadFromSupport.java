@@ -40,6 +40,7 @@ public class ByteArrayOutputStreamWithReadFromSupport extends OutputStream imple
         buffer[size++] = (byte)b;
     }
     
+    @Override
     public long readFrom(InputStream inputStream, long length) throws StreamCopyException {
         readFromCalled = true;
         long read = 0;

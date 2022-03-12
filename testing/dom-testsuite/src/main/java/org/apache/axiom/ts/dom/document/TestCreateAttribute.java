@@ -31,6 +31,7 @@ public class TestCreateAttribute extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String attrName = "attrIdentifier";
         Document doc = dbf.newDocumentBuilder().newDocument();

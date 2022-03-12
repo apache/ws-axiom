@@ -38,6 +38,7 @@ public abstract class MIMESample extends MessageSample {
         this.contentType = contentType;
     }
 
+    @Override
     public final String getContentType() {
         return contentType;
     }

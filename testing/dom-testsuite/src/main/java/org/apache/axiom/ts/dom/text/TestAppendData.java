@@ -30,6 +30,7 @@ public class TestAppendData extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Exception {
         Document document = dbf.newDocumentBuilder().newDocument();
         String localName = "TestLocalName";

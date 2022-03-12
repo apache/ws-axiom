@@ -36,6 +36,7 @@ public class TestCreateAttributeNSInvalid extends DOMTestCase {
         addTestParameter("name", DOMUtils.getQualifiedName(qname));
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         try {

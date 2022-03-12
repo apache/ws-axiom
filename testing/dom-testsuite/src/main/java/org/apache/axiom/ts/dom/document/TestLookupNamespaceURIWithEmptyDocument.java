@@ -32,6 +32,7 @@ public class TestLookupNamespaceURIWithEmptyDocument extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         assertNull(document.lookupNamespaceURI("p"));

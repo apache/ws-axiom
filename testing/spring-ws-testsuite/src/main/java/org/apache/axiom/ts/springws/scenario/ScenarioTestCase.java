@@ -61,6 +61,7 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setContextClass(GenericWebApplicationContext.class);
         servlet.setContextInitializers(new ApplicationContextInitializer<ConfigurableApplicationContext>() {
+            @Override
             public void initialize(ConfigurableApplicationContext applicationContext) {
                 configureContext((GenericWebApplicationContext)applicationContext, config.getServerMessageFactoryConfigurator(),
                         new ClassPathResource("server.xml", ScenarioTestCase.this.getClass()));

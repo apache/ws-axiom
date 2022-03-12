@@ -39,14 +39,17 @@ public class AxiomXmlResourceTransformer implements ResourceTransformer {
     
     private Document mergedAxiomXml;
 
+    @Override
     public boolean canTransformResource(String resource) {
         return resource.equals(AXIOM_XML);
     }
 
+    @Override
     public boolean hasTransformedResource() {
         return mergedAxiomXml != null;
     }
 
+    @Override
     public void processResource(String resource, InputStream is, List<Relocator> relocators) throws IOException {
         Document axiomXml = DOMUtils.parse(is);
         is.close();
@@ -70,6 +73,7 @@ public class AxiomXmlResourceTransformer implements ResourceTransformer {
         }
     }
 
+    @Override
     public void modifyOutputStream(JarOutputStream os) throws IOException {
         os.putNextEntry(new JarEntry(AXIOM_XML));
         DOMUtils.serialize(mergedAxiomXml, os);

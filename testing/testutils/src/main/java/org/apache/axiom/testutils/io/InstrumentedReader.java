@@ -41,15 +41,18 @@ public final class InstrumentedReader extends ProxyReader implements Instrumente
         }
     }
     
+    @Override
     public long getCount() {
         return count;
     }
 
+    @Override
     public void close() throws IOException {
         closed = true;
         super.close();
     }
 
+    @Override
     public boolean isClosed() {
         return closed;
     }

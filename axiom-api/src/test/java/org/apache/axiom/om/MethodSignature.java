@@ -37,6 +37,7 @@ public class MethodSignature {
         parameterTypes = method.getParameterTypes();
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof MethodSignature) {
             MethodSignature other = (MethodSignature)obj;
@@ -46,6 +47,7 @@ public class MethodSignature {
         }
     }
 
+    @Override
     public int hashCode() {
         int hashCode = name.hashCode();
         for (int i=0; i<parameterTypes.length; i++) {
@@ -54,6 +56,7 @@ public class MethodSignature {
         return hashCode;
     }
     
+    @Override
     public String toString() {
         StringBuilder buffer = new StringBuilder();
         buffer.append(name);

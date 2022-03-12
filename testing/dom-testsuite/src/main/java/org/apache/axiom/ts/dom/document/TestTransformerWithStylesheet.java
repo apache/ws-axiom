@@ -35,6 +35,7 @@ public class TestTransformerWithStylesheet extends TransformerTestCase {
         super(dbf, xsltImplementation);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Document input = builder.parse(TestTransformerWithStylesheet.class.getResourceAsStream("input.xml"));

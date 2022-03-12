@@ -38,6 +38,7 @@ public class TestTransformerWithIdentityStylesheet extends TransformerTestCase {
         super(dbf, xsltImplementation);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         

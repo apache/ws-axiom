@@ -37,6 +37,7 @@ public class TestReplaceChildMiddleWithDocumentFragment extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         

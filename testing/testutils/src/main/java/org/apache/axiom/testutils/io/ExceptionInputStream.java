@@ -41,6 +41,7 @@ public class ExceptionInputStream extends ProxyInputStream {
         remaining = maxBytes;
     }
 
+    @Override
     public int read() throws IOException {
         if (remaining == 0) {
             throw exception = new IOException("Maximum number of bytes read");
@@ -53,10 +54,12 @@ public class ExceptionInputStream extends ProxyInputStream {
         return b;
     }
 
+    @Override
     public int read(byte[] b) throws IOException {
         return read(b, 0, b.length);
     }
 
+    @Override
     public int read(byte[] b, int off, int len) throws IOException {
         if (remaining == 0) {
             throw exception = new IOException("Maximum number of bytes read");

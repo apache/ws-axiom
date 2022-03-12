@@ -86,6 +86,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
         }
     }
 
+    @Override
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
         if (lexicalHandler != null) {
             try {
@@ -97,6 +98,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
         }
     }
 
+    @Override
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         elementURI = namespaceURI;
         elementLocalName = localName;
@@ -109,6 +111,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
         scopeStack[depth++] = bindings;
     }
 
+    @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         if (bindings == prefixStack.length) {
             String[] newPrefixStack = new String[prefixStack.length*2];
@@ -124,6 +127,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
         // TODO: depending on the http://xml.org/sax/features/xmlns-uris feature, we also need to add an attribute
     }
 
+    @Override
     public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
         attributes.addAttribute(namespaceURI, localName, getQName(prefix, localName), type, value);
     }
@@ -135,6 +139,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void attributesCompleted() throws StreamException {
         try {
             contentHandler.startElement(elementURI, elementLocalName, elementQName, attributes);
@@ -150,6 +155,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
         }
     }
 
+    @Override
     public void endElement() throws StreamException {
         try {
             String elementQName = elementNameStack.pop();
@@ -190,6 +196,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
         return new Base64EncodingWriterOutputStream(getWriter());
     }
 
+    @Override
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         try {
             switch (characterDataMode) {
@@ -291,6 +298,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
         }
     }
 
+    @Override
     public void processEntityReference(String name, String replacementText) throws StreamException {
         try {
             contentHandler.skippedEntity(name);
@@ -299,6 +307,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
         }
     }
 
+    @Override
     public void completed() throws StreamException {
         try {
             contentHandler.endDocument();

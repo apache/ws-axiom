@@ -34,6 +34,7 @@ public class LogWriter extends XMLStreamWriterWrapper implements DataHandlerWrit
         super(parent);
     }
 
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         if (name.equals(DataHandlerWriter.PROPERTY)) {
             return this;
@@ -42,11 +43,13 @@ public class LogWriter extends XMLStreamWriterWrapper implements DataHandlerWrit
         }
     }
 
+    @Override
     public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
             throws IOException, XMLStreamException {
         super.writeCharacters("[base64 encoded data]");
     }
 
+    @Override
     public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
             boolean optimize) throws IOException, XMLStreamException {
         super.writeCharacters("[base64 encoded data]");

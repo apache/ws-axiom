@@ -41,6 +41,7 @@ public class XMLStreamWriterNamespaceContextProvider implements NamespaceContext
      * @param namespace
      * @return true if the prefix is associated with the namespace in the current context
      */
+    @Override
     public boolean isBound(String prefix, String namespace) throws StreamException {
         try {
             // The "xml" prefix is always (implicitly) associated. Returning true here makes sure that

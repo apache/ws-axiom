@@ -34,48 +34,59 @@ final class CrimsonSAXParserFactoryWrapper extends SAXParserFactory {
         this.parent = parent;
     }
 
+    @Override
     public SAXParser newSAXParser() throws ParserConfigurationException, SAXException {
         return new CrimsonSAXParserWrapper(parent.newSAXParser());
     }
 
+    @Override
     public void setNamespaceAware(boolean awareness) {
         parent.setNamespaceAware(awareness);
     }
 
+    @Override
     public void setValidating(boolean validating) {
         parent.setValidating(validating);
     }
 
+    @Override
     public boolean isNamespaceAware() {
         return parent.isNamespaceAware();
     }
 
+    @Override
     public boolean isValidating() {
         return parent.isValidating();
     }
 
+    @Override
     public void setFeature(String name, boolean value) throws ParserConfigurationException,
             SAXNotRecognizedException, SAXNotSupportedException {
         parent.setFeature(name, value);
     }
 
+    @Override
     public boolean getFeature(String name) throws ParserConfigurationException,
             SAXNotRecognizedException, SAXNotSupportedException {
         return parent.getFeature(name);
     }
 
+    @Override
     public Schema getSchema() {
         return parent.getSchema();
     }
 
+    @Override
     public void setSchema(Schema schema) {
         parent.setSchema(schema);
     }
 
+    @Override
     public void setXIncludeAware(boolean state) {
         parent.setXIncludeAware(state);
     }
 
+    @Override
     public boolean isXIncludeAware() {
         return parent.isXIncludeAware();
     }

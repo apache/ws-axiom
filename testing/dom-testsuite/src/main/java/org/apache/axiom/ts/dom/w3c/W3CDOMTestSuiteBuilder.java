@@ -43,6 +43,7 @@ public abstract class W3CDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         this.unsupportedFeatures = new HashSet<DOMFeature>(Arrays.asList(unsupportedFeatures));
     }
     
+    @Override
     protected final void addTests() {
         final DOMTestDocumentBuilderFactory factory;
         try {
@@ -66,6 +67,7 @@ public abstract class W3CDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         }
         
         suite.build(new DOMTestSink() {
+            @Override
             public void addTest(Class testClass) {
                 try {
                     if (!unsupportedFeatures.isEmpty()) {

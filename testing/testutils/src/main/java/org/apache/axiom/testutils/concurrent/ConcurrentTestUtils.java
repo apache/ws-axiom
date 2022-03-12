@@ -29,6 +29,7 @@ public class ConcurrentTestUtils {
         final List<Throwable> results = new ArrayList<>(threadCount);
         for (int i=0; i<threadCount; i++) {
             new Thread(new Runnable() {
+                @Override
                 public void run() {
                     Throwable result;
                     try {

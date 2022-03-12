@@ -26,6 +26,7 @@ public class TestGetPrefixIllegalStateException extends IllegalStateExceptionTes
         super(staxImpl, event, expectException);
     }
 
+    @Override
     protected void invoke(XMLStreamReader reader) throws XMLStreamException {
         reader.getPrefix();
     }

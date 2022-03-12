@@ -31,10 +31,12 @@ public class TestCreateXMLStreamWriterThreadSafety extends DialectTestCase {
         super(staxImpl);
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     protected void runTest() throws Throwable {
         final XMLOutputFactory factory = staxImpl.getDialect().makeThreadSafe(staxImpl.newNormalizedXMLOutputFactory());
         ConcurrentTestUtils.testThreadSafety(new Action() {
+            @Override
             public void execute() throws Exception {
                 String text = String.valueOf((int)(Math.random() * 10000));
                 StringWriter out = new StringWriter();

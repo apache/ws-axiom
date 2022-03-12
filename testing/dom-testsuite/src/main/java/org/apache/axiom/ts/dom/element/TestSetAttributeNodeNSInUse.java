@@ -31,6 +31,7 @@ public class TestSetAttributeNodeNSInUse extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element1 = document.createElementNS(null, "test");

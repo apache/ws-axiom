@@ -32,6 +32,7 @@ import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 public class XercesTest extends TestCase {
     public static TestSuite suite() {
         DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(new DocumentBuilderFactoryFactory() {
+            @Override
             public DocumentBuilderFactory newInstance() {
                 return new DocumentBuilderFactoryImpl();
             }

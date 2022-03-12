@@ -26,6 +26,7 @@ import com.google.auto.service.AutoService;
 
 @AutoService(AdapterFactory.class)
 public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
+    @Override
     public void createAdapters(SOAPSpec spec, Adapters adapters) {
         adapters.add(new SOAPSpecAdapter(spec == SOAPSpec.SOAP11 ? "SOAP_11" : "SOAP_12"));
     }

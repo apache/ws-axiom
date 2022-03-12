@@ -38,6 +38,7 @@ public class TestCloneNodeWithAttributes extends DOMTestCase {
         addTestParameter("deep", deep);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:ns1", "p:elem");

@@ -27,6 +27,7 @@ import org.apache.axiom.testing.multiton.Multiton;
  */
 public abstract class HeaderBlockAttribute extends Multiton {
     public static final HeaderBlockAttribute MUST_UNDERSTAND = new HeaderBlockAttribute() {
+        @Override
         public String getName(SOAPSpec spec) {
             return "mustUnderstand";
         }
@@ -36,12 +37,14 @@ public abstract class HeaderBlockAttribute extends Multiton {
             return true;
         }
 
+        @Override
         public boolean isSupported(SOAPSpec spec) {
             return true;
         }
     };
     
     public static final HeaderBlockAttribute ROLE = new HeaderBlockAttribute() {
+        @Override
         public String getName(SOAPSpec spec) {
             return spec == SOAPSpec.SOAP11 ? "actor" : "role";
         }
@@ -51,12 +54,14 @@ public abstract class HeaderBlockAttribute extends Multiton {
             return false;
         }
 
+        @Override
         public boolean isSupported(SOAPSpec spec) {
             return true;
         }
     };
     
     public static final HeaderBlockAttribute RELAY = new HeaderBlockAttribute() {
+        @Override
         public String getName(SOAPSpec spec) {
             return "relay";
         }
@@ -66,6 +71,7 @@ public abstract class HeaderBlockAttribute extends Multiton {
             return true;
         }
 
+        @Override
         public boolean isSupported(SOAPSpec spec) {
             return spec == SOAPSpec.SOAP12;
         }

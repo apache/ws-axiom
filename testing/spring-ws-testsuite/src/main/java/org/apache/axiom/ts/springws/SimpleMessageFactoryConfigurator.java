@@ -30,6 +30,7 @@ public final class SimpleMessageFactoryConfigurator extends MessageFactoryConfig
         this.resource = resource;
     }
 
+    @Override
     public void configure(GenericApplicationContext context) {
         new XmlBeanDefinitionReader(context).loadBeanDefinitions(resource);
     }

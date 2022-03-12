@@ -39,15 +39,18 @@ public final class InstrumentedOutputStream extends ProxyOutputStream implements
         count += n;
     }
     
+    @Override
     public long getCount() {
         return count;
     }
 
+    @Override
     public void close() throws IOException {
         closed = true;
         super.close();
     }
 
+    @Override
     public boolean isClosed() {
         return closed;
     }

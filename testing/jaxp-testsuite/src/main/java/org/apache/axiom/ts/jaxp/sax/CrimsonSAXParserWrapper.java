@@ -42,82 +42,101 @@ final class CrimsonSAXParserWrapper extends SAXParser {
         this.parent = parent;
     }
 
+    @Override
     public void reset() {
         parent.reset();
     }
 
+    @Override
     public void parse(InputStream is, HandlerBase hb) throws SAXException, IOException {
         parent.parse(is, hb);
     }
 
+    @Override
     public void parse(InputStream is, HandlerBase hb, String systemId)
             throws SAXException, IOException {
         parent.parse(is, hb, systemId);
     }
 
+    @Override
     public void parse(InputStream is, DefaultHandler dh) throws SAXException, IOException {
         parent.parse(is, dh);
     }
 
+    @Override
     public void parse(InputStream is, DefaultHandler dh, String systemId)
             throws SAXException, IOException {
         parent.parse(is, dh, systemId);
     }
 
+    @Override
     public void parse(String uri, HandlerBase hb) throws SAXException, IOException {
         parent.parse(uri, hb);
     }
 
+    @Override
     public void parse(String uri, DefaultHandler dh) throws SAXException, IOException {
         parent.parse(uri, dh);
     }
 
+    @Override
     public void parse(File f, HandlerBase hb) throws SAXException, IOException {
         parent.parse(f, hb);
     }
 
+    @Override
     public void parse(File f, DefaultHandler dh) throws SAXException, IOException {
         parent.parse(f, dh);
     }
 
+    @Override
     public void parse(InputSource is, HandlerBase hb) throws SAXException, IOException {
         parent.parse(is, hb);
     }
 
+    @Override
     public void parse(InputSource is, DefaultHandler dh) throws SAXException, IOException {
         parent.parse(is, dh);
     }
 
+    @Override
     public Parser getParser() throws SAXException {
         return parent.getParser();
     }
 
+    @Override
     public XMLReader getXMLReader() throws SAXException {
         return new CrimsonXMLReaderWrapper(parent.getXMLReader());
     }
 
+    @Override
     public boolean isNamespaceAware() {
         return parent.isNamespaceAware();
     }
 
+    @Override
     public boolean isValidating() {
         return parent.isValidating();
     }
 
+    @Override
     public void setProperty(String name, Object value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         parent.setProperty(name, value);
     }
 
+    @Override
     public Object getProperty(String name)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         return parent.getProperty(name);
     }
 
+    @Override
     public Schema getSchema() {
         return parent.getSchema();
     }
 
+    @Override
     public boolean isXIncludeAware() {
         return parent.isXIncludeAware();
     }

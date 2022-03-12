@@ -38,18 +38,22 @@ public class TestDataSource implements DataSource {
         this.length = length;
     }
 
+    @Override
     public String getName() {
         return null;
     }
     
+    @Override
     public String getContentType() {
         return null;
     }
     
+    @Override
     public InputStream getInputStream() throws IOException {
         return new InputStream() {
             private long position;
             
+            @Override
             public int read() throws IOException {
                 if (position == length) {
                     return -1;
@@ -61,6 +65,7 @@ public class TestDataSource implements DataSource {
         };
     }
     
+    @Override
     public OutputStream getOutputStream() throws IOException {
         throw new UnsupportedOperationException();
     }

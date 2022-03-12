@@ -29,6 +29,7 @@ public abstract class IllegalStateExceptionTestCase extends EventSpecificTestCas
         this.expectException = expectException;
     }
 
+    @Override
     protected final void runTest(XMLStreamReader reader) throws Throwable {
         boolean exception;
         try {

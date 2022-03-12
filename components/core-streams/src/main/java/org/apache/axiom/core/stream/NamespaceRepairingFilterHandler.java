@@ -73,6 +73,7 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
         }
     }
     
+    @Override
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         super.startElement(namespaceURI, localName, prefix);
         if (scopes == scopeStack.length) {
@@ -84,11 +85,13 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
         ensureNamespaceDeclared(prefix, namespaceURI);
     }
     
+    @Override
     public void endElement() throws StreamException {
         bindings = scopeStack[--scopes];
         super.endElement();
     }
 
+    @Override
     public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
         super.processAttribute(namespaceURI, localName, prefix, value, type, specified);
         if (!namespaceURI.isEmpty()) {
@@ -96,6 +99,7 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
         }
     }
     
+    @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         if (removeRedundantDeclarations) {
             ensureNamespaceDeclared(prefix, namespaceURI);

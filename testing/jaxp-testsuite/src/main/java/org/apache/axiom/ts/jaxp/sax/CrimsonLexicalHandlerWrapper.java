@@ -28,34 +28,41 @@ final class CrimsonLexicalHandlerWrapper implements LexicalHandler {
         this.parent = parent;
     }
 
+    @Override
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
         parent.startDTD(name, publicId, systemId);
     }
 
+    @Override
     public void endDTD() throws SAXException {
         parent.endDTD();
     }
 
+    @Override
     public void startEntity(String name) throws SAXException {
         if (!name.equals("lt")) {
             parent.startEntity(name);
         }
     }
 
+    @Override
     public void endEntity(String name) throws SAXException {
         if (!name.equals("lt")) {
             parent.endEntity(name);
         }
     }
 
+    @Override
     public void startCDATA() throws SAXException {
         parent.startCDATA();
     }
 
+    @Override
     public void endCDATA() throws SAXException {
         parent.endCDATA();
     }
 
+    @Override
     public void comment(char[] ch, int start, int length) throws SAXException {
         parent.comment(ch, start, length);
     }

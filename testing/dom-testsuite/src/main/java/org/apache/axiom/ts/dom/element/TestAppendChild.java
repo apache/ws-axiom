@@ -30,6 +30,7 @@ public class TestAppendChild extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String elementName = "TestElem";
         String childElemName = "TestChildElem";

@@ -28,6 +28,7 @@ public class TestSetPrefixScope extends DialectTestCase {
         super(staxImpl);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         XMLOutputFactory factory = staxImpl.newNormalizedXMLOutputFactory();
         XMLStreamWriter writer = factory.createXMLStreamWriter(new ByteArrayOutputStream());

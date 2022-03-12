@@ -27,12 +27,14 @@ import org.xml.sax.InputSource;
 
 public interface Normalizer<T> {
     Normalizer<String> LOWER_CASE = new Normalizer<String>() {
+        @Override
         public String normalize(String value) {
             return value == null ? null : value.toLowerCase(Locale.ENGLISH);
         }
     };
     
     Normalizer<String> DTD = new Normalizer<String>() {
+        @Override
         public String normalize(String content) throws Exception {
             if (content == null || content.trim().length() == 0) {
                 return null;
@@ -44,6 +46,7 @@ public interface Normalizer<T> {
     };
     
     Normalizer<String> EMPTY_STRING_TO_NULL = new Normalizer<String>() {
+        @Override
         public String normalize(String value) {
             return "".equals(value) ? null : value;
         }

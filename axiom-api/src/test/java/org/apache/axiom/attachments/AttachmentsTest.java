@@ -622,6 +622,7 @@ public class AttachmentsTest extends AbstractTestCase {
         PipedInputStream pipeIn = new PipedInputStream(pipeOut);
         
         Thread producerThread = new Thread(new Runnable() {
+            @Override
             public void run() {
                 try {
                     try {

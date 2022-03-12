@@ -26,6 +26,7 @@ public class TestGetLocalNameIllegalStateException extends IllegalStateException
         super(staxImpl, event, expectException);
     }
 
+    @Override
     protected void invoke(XMLStreamReader reader) throws XMLStreamException {
         reader.getLocalName();
     }

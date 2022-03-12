@@ -47,19 +47,23 @@ public class RandomDataSource implements DataSource {
         this(System.currentTimeMillis(), length);
     }
 
+    @Override
     public String getName() {
         return null;
     }
     
+    @Override
     public String getContentType() {
         return "application/octet-stream";
     }
     
+    @Override
     public InputStream getInputStream() throws IOException {
         final Random random = new Random(seed);
         return new InputStream() {
             private long position;
             
+            @Override
             public int read() throws IOException {
                 if (position == length) {
                     return -1;
@@ -71,6 +75,7 @@ public class RandomDataSource implements DataSource {
         };
     }
     
+    @Override
     public OutputStream getOutputStream() throws IOException {
         throw new UnsupportedOperationException();
     }

@@ -29,6 +29,7 @@ public class TestCreateCDATASection extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         CDATASection cdataSection = document.createCDATASection("content");

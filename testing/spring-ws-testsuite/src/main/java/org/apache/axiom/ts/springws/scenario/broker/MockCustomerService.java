@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.springws.scenario.broker;
 
 public class MockCustomerService implements CustomerService {
+    @Override
     public void validateCustomer(int customerId) throws UnknownCustomerException {
         if (customerId != 47892) {
             throw new UnknownCustomerException("Customer " + customerId + " unknown");

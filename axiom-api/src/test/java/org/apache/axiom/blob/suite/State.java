@@ -38,6 +38,7 @@ public abstract class State implements Dimension {
         public CleanupCallback transition(final WritableBlob blob) throws IOException {
             final OutputStream out = blob.getOutputStream();
             return new CleanupCallback() {
+                @Override
                 public void cleanup() throws IOException {
                     out.close();
                 }
@@ -68,6 +69,7 @@ public abstract class State implements Dimension {
         this.name = name;
     }
 
+    @Override
     public final void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("state", name);
     }

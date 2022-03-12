@@ -31,6 +31,7 @@ public class TestReplaceDataAppend extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Text text = doc.createTextNode("AB");

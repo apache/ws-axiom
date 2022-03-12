@@ -39,15 +39,18 @@ public final class InstrumentedWriter extends ProxyWriter implements Instrumente
         count += n;
     }
     
+    @Override
     public long getCount() {
         return count;
     }
 
+    @Override
     public void close() throws IOException {
         closed = true;
         super.close();
     }
 
+    @Override
     public boolean isClosed() {
         return closed;
     }

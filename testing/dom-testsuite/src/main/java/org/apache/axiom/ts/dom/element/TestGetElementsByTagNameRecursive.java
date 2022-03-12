@@ -30,6 +30,7 @@ public class TestGetElementsByTagNameRecursive extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(
                 TestGetElementsByTagNameRecursive.class.getResourceAsStream("numbers.xml"));

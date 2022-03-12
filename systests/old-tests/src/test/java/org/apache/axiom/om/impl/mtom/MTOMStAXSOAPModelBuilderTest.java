@@ -43,6 +43,7 @@ import junit.framework.TestCase;
 
 public class MTOMStAXSOAPModelBuilderTest extends TestCase {
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
     }

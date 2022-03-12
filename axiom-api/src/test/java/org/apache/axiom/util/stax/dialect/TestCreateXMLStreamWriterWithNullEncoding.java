@@ -25,6 +25,7 @@ public class TestCreateXMLStreamWriterWithNullEncoding extends DialectTestCase {
         super(staxImpl);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         XMLOutputFactory factory = staxImpl.newNormalizedXMLOutputFactory();
         // This should cause an exception

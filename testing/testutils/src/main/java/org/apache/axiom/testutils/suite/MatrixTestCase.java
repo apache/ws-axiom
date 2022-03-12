@@ -51,5 +51,6 @@ public abstract class MatrixTestCase extends TestCase {
     }
 
     // Force subclasses to override the runTest method:
+    @Override
     protected abstract void runTest() throws Throwable;
 }

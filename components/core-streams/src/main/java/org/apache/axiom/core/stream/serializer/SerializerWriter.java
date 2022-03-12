@@ -34,6 +34,7 @@ final class SerializerWriter extends Writer {
         this.serializer = serializer;
     }
 
+    @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
         try {
             serializer.characters(cbuf, off, len);
@@ -51,9 +52,11 @@ final class SerializerWriter extends Writer {
         }
     }
 
+    @Override
     public void close() throws IOException {
     }
 
+    @Override
     public void flush() throws IOException {
     }
 }

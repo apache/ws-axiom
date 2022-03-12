@@ -31,6 +31,7 @@ public class TestCreateElement extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String tagName = "LocalName";
         Document doc = dbf.newDocumentBuilder().newDocument();

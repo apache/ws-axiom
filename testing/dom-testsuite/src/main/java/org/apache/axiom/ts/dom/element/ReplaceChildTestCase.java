@@ -34,6 +34,7 @@ public abstract class ReplaceChildTestCase extends DOMTestCase {
         addTestParameter("newChildHasSiblings", newChildHasSiblings);
     }
 
+    @Override
     protected final void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element newChild = doc.createElementNS(null, "newChild");

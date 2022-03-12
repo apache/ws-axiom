@@ -31,6 +31,7 @@ public class TestGetTextContent extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(
                 new StringReader("<a>1<!--c--><b>2</b>3</a>")));

@@ -38,21 +38,25 @@ final class CrimsonXMLReaderWrapper implements XMLReader {
         this.parent = parent;
     }
 
+    @Override
     public boolean getFeature(String name)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         return parent.getFeature(name);
     }
 
+    @Override
     public void setFeature(String name, boolean value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         parent.setFeature(name, value);
     }
 
+    @Override
     public Object getProperty(String name)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         return parent.getProperty(name);
     }
 
+    @Override
     public void setProperty(String name, Object value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         if ("http://xml.org/sax/properties/lexical-handler".equals(name)) {
@@ -61,42 +65,52 @@ final class CrimsonXMLReaderWrapper implements XMLReader {
         parent.setProperty(name, value);
     }
 
+    @Override
     public void setEntityResolver(EntityResolver resolver) {
         parent.setEntityResolver(resolver);
     }
 
+    @Override
     public EntityResolver getEntityResolver() {
         return parent.getEntityResolver();
     }
 
+    @Override
     public void setDTDHandler(DTDHandler handler) {
         parent.setDTDHandler(handler);
     }
 
+    @Override
     public DTDHandler getDTDHandler() {
         return parent.getDTDHandler();
     }
 
+    @Override
     public void setContentHandler(ContentHandler handler) {
         parent.setContentHandler(handler);
     }
 
+    @Override
     public ContentHandler getContentHandler() {
         return parent.getContentHandler();
     }
 
+    @Override
     public void setErrorHandler(ErrorHandler handler) {
         parent.setErrorHandler(handler);
     }
 
+    @Override
     public ErrorHandler getErrorHandler() {
         return parent.getErrorHandler();
     }
 
+    @Override
     public void parse(InputSource input) throws IOException, SAXException {
         parent.parse(input);
     }
 
+    @Override
     public void parse(String systemId) throws IOException, SAXException {
         parent.parse(systemId);
     }

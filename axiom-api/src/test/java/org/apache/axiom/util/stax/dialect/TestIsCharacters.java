@@ -25,6 +25,7 @@ public class TestIsCharacters extends BooleanPropertyTestCase {
         super(staxImpl, event, expected);
     }
 
+    @Override
     protected boolean invoke(XMLStreamReader reader) {
         return reader.isCharacters();
     }

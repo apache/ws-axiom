@@ -40,6 +40,7 @@ public abstract class OMTestCase extends TestCase {
         soapFactory = OMAbstractFactory.getSOAP11Factory();
     }
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         builder = OMXMLBuilderFactory.createSOAPModelBuilder(
@@ -47,6 +48,7 @@ public abstract class OMTestCase extends TestCase {
         soapEnvelope = (SOAPEnvelope) builder.getDocumentElement();
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         soapEnvelope.close(false);

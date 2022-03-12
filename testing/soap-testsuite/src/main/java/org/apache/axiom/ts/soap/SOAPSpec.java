@@ -52,10 +52,12 @@ public abstract class SOAPSpec extends Multiton {
             new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"),
             new String[] { "soap-1.1.xsd" },
             true) {
+        @Override
         public SOAPSpec getAltSpec() {
             return SOAPSpec.SOAP12;
         }
 
+        @Override
         public String getCanonicalRepresentation(boolean value) {
             return value ? "1" : "0";
         }
@@ -78,10 +80,12 @@ public abstract class SOAPSpec extends Multiton {
             new QName("http://www.w3.org/2003/05/soap-envelope", "Receiver"),
             new String[] { "xml.xsd", "soap-1.2.xsd" },
             false) {
+        @Override
         public SOAPSpec getAltSpec() {
             return SOAPSpec.SOAP11;
         }
 
+        @Override
         public String getCanonicalRepresentation(boolean value) {
             return String.valueOf(value);
         }

@@ -33,6 +33,7 @@ public class TestCloneNodeDeep extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         DocumentFragment fragment = document.createDocumentFragment();

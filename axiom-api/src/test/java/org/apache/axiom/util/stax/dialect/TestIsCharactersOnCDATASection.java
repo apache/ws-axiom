@@ -34,6 +34,7 @@ public class TestIsCharactersOnCDATASection extends DialectTestCase {
         super(staxImpl);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);

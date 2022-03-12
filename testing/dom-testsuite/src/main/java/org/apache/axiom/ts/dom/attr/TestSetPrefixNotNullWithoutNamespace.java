@@ -35,6 +35,7 @@ public class TestSetPrefixNotNullWithoutNamespace extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Attr attr = document.createAttributeNS(null, "test");

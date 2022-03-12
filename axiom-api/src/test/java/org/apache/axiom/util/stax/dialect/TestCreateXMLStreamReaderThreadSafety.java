@@ -31,9 +31,11 @@ public class TestCreateXMLStreamReaderThreadSafety extends DialectTestCase {
         super(staxImpl);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         final XMLInputFactory factory = staxImpl.getDialect().makeThreadSafe(staxImpl.newNormalizedXMLInputFactory());
         ConcurrentTestUtils.testThreadSafety(new Action() {
+            @Override
             public void execute() throws Exception {
                 String text = String.valueOf((int)(Math.random() * 10000));
                 String xml = "<root>" + text + "</root>";

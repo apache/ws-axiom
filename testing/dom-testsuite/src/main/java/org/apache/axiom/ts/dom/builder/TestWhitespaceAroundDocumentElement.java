@@ -40,6 +40,7 @@ public class TestWhitespaceAroundDocumentElement extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(" <!-- --> <root/> ")));
         Node child = doc.getFirstChild();

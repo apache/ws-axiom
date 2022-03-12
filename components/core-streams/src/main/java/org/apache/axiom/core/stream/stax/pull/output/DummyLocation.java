@@ -31,22 +31,27 @@ class DummyLocation implements Location {
 
     private DummyLocation() {}
     
+    @Override
     public int getLineNumber() {
         return -1;
     }
 
+    @Override
     public int getColumnNumber() {
         return -1;
     }
 
+    @Override
     public int getCharacterOffset() {
         return 0;
     }
 
+    @Override
     public String getPublicId() {
         return null;
     }
 
+    @Override
     public String getSystemId() {
         return null;
     }

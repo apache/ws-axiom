@@ -33,6 +33,7 @@ public class TestNormalizeDocumentNamespace extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:ns", "root");

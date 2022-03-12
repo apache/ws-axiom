@@ -29,12 +29,14 @@ import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
 public class MyLifecycleManager extends LifecycleManagerImpl {
     private final Set<File> files = new HashSet<File>();
 
+    @Override
     public FileAccessor create(String attachmentDir) throws IOException {
         FileAccessor accessor = super.create(attachmentDir);
         files.add(accessor.getFile());
         return accessor;
     }
 
+    @Override
     public void delete(File file) throws IOException {
         super.delete(file);
         files.remove(file);

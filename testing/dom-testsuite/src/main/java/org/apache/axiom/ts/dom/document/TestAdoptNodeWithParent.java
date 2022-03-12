@@ -36,6 +36,7 @@ public class TestAdoptNodeWithParent extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Document document1 = builder.newDocument();

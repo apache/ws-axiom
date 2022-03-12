@@ -29,6 +29,7 @@ public class TestGetPrefixWithDefaultNamespace extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element element = doc.createElementNS("urn:test", "test");

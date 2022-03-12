@@ -30,6 +30,7 @@ public class TestDisallowDoctypeDeclWithDenialOfService extends DialectTestCase 
         super(staxImpl);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         factory = staxImpl.getDialect().disallowDoctypeDecl(factory);

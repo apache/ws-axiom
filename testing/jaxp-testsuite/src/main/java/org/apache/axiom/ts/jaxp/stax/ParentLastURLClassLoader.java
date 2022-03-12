@@ -29,6 +29,7 @@ public class ParentLastURLClassLoader extends URLClassLoader {
         super(urls, parent);
     }
 
+    @Override
     public URL getResource(String name) {
         URL url = findResource(name);
         if (url == null) {
@@ -37,6 +38,7 @@ public class ParentLastURLClassLoader extends URLClassLoader {
         return url;
     }
     
+    @Override
     public Enumeration<URL> getResources(String name) throws IOException {
         // Make sure that we return our own resources first. Otherwise, if an API performs
         // JDK 1.3 service discovery using getResources instead of getResource, we would
@@ -53,6 +55,7 @@ public class ParentLastURLClassLoader extends URLClassLoader {
         return resources.elements();
     }
 
+    @Override
     protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
         if (name.startsWith("javax.")) {
             return super.loadClass(name, resolve);

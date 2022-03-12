@@ -26,6 +26,7 @@ public class TestGetNameIllegalStateException extends IllegalStateExceptionTestC
         super(staxImpl, event, expectException);
     }
 
+    @Override
     protected void invoke(XMLStreamReader reader) throws XMLStreamException {
         reader.getName();
     }

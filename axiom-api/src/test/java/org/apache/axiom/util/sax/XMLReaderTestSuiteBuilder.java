@@ -28,6 +28,7 @@ public class XMLReaderTestSuiteBuilder extends MatrixTestSuiteBuilder {
         this.xmlReader = xmlReader;
     }
 
+    @Override
     protected void addTests() {
         addTest(new TestGetSetFeature(xmlReader, "http://xml.org/sax/features/namespaces"));
         addTest(new TestGetSetFeature(xmlReader, "http://xml.org/sax/features/namespace-prefixes"));

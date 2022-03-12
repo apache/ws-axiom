@@ -36,6 +36,7 @@ public class TestClose extends DialectTestCase {
         addTestParameter("type", streamType.getType().getSimpleName());
     }
 
+    @Override
     protected void runTest() throws Throwable {
         InstrumentedStream in = streamType.instrumentStream(streamType.getStream(XMLSample.SIMPLE));
         XMLStreamReader reader = streamType.createXMLStreamReader(staxImpl.newNormalizedXMLInputFactory(), in);

@@ -36,6 +36,7 @@ public class TestAppendChildCyclic extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element grandparent = document.createElementNS(null, "grandparent");

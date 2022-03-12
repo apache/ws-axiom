@@ -29,6 +29,7 @@ public class TestWithParser2 extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().parse(TestWithParser2.class.getResource("test2.xml").toString());
         DocumentType doctype = document.getDoctype();

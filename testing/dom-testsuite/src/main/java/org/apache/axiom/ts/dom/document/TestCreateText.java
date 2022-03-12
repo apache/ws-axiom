@@ -29,6 +29,7 @@ public class TestCreateText extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String textValue = "temp text value";
         

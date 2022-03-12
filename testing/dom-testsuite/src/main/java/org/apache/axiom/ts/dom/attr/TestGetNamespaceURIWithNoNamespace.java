@@ -31,6 +31,7 @@ public class TestGetNamespaceURIWithNoNamespace extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Attr attr = doc.createAttributeNS(null, "test");

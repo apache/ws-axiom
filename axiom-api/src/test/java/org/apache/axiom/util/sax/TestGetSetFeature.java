@@ -31,6 +31,7 @@ public class TestGetSetFeature extends MatrixTestCase {
         addTestParameter("feature", feature);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         xmlReader.setFeature(feature, true);
         assertTrue(xmlReader.getFeature(feature));

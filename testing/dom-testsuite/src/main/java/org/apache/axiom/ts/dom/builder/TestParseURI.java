@@ -39,6 +39,7 @@ public class TestParseURI extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         InstrumentedDataSource ds = new InstrumentedDataSource(new URLDataSource(
                 XMLSample.SIMPLE.getUrl()));

@@ -35,6 +35,7 @@ public class TestAttributes2 extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(
                 "<root><child xmlns=\"\"/></root>")));

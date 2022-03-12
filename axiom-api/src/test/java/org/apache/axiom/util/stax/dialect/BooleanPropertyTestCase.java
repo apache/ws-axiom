@@ -28,6 +28,7 @@ public abstract class BooleanPropertyTestCase extends EventSpecificTestCase {
         this.expected = expected;
     }
 
+    @Override
     protected void runTest(XMLStreamReader reader) throws Throwable {
         assertEquals(expected, invoke(reader));
     }

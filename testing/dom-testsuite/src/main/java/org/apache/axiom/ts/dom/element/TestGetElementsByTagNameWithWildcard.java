@@ -29,6 +29,7 @@ public class TestGetElementsByTagNameWithWildcard extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element root = doc.createElement("root");

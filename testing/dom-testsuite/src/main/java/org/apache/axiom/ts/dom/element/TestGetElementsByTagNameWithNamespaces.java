@@ -29,6 +29,7 @@ public class TestGetElementsByTagNameWithNamespaces extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element root = doc.createElementNS("urn:ns1", "ns1:root");

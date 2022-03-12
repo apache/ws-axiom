@@ -41,10 +41,12 @@ public class PartOnFileTest extends TestCase {
 
     File temp;
 
+    @Override
     public void setUp() throws Exception {
         createTemporaryDirectory();
     }
 
+    @Override
     public void tearDown() throws Exception {
         deleteTemporaryDirectory();
     }

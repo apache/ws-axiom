@@ -99,9 +99,11 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
     
+    @Override
     public void setDocumentLocator(Locator locator) {
     }
 
+    @Override
     public void startDocument() throws SAXException {
         try {
             handler.startDocument(null, "1.0", null, null);
@@ -110,6 +112,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void endDocument() throws SAXException {
         try {
             handler.completed();
@@ -118,6 +121,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
         dtdName = name;
         dtdPublicId = publicId;
@@ -126,6 +130,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         internalSubsetSerializer = new Serializer(internalSubset);
     }
 
+    @Override
     public void elementDecl(String name, String model) throws SAXException {
         if (!inExternalSubset) {
             try {
@@ -136,6 +141,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void attributeDecl(String eName, String aName, String type, String mode, String value)
             throws SAXException {
         if (!inExternalSubset) {
@@ -147,6 +153,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void externalEntityDecl(String name, String publicId, String systemId) throws SAXException {
         if (!inExternalSubset) {
             try {
@@ -157,6 +164,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void internalEntityDecl(String name, String value) throws SAXException {
         if (entities == null) {
             entities = new HashMap<String,String>();
@@ -171,6 +179,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void notationDecl(String name, String publicId, String systemId) throws SAXException {
         if (!inExternalSubset) {
             try {
@@ -181,6 +190,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void unparsedEntityDecl(String name, String publicId, String systemId, String notationName)
             throws SAXException {
         if (!inExternalSubset) {
@@ -192,6 +202,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void endDTD() throws SAXException {
         if (internalSubset == null) {
             throw new IllegalStateException("endDTD without startDTD");
@@ -213,6 +224,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
      * @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String,
      *      java.lang.String)
      */
+    @Override
     public void startPrefixMapping(String prefix, String uri)
             throws SAXException {
         if (!inEntityReference) {
@@ -228,6 +240,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void endPrefixMapping(String prefix) throws SAXException {
     }
 
@@ -237,6 +250,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
      *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
+    @Override
     public void startElement(String namespaceURI, String localName,
                              String qName, Attributes atts) throws SAXException {
         if (inEntityReference) {
@@ -280,6 +294,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
      * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
      *      java.lang.String, java.lang.String)
      */
+    @Override
     public void endElement(String uri, String localName, String qName)
             throws SAXException {
         if (!inEntityReference) {
@@ -291,6 +306,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void startCDATA() throws SAXException {
         if (!inEntityReference) {
             try {
@@ -301,6 +317,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void endCDATA() throws SAXException {
         if (!inEntityReference) {
             try {
@@ -311,6 +328,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void characters(char[] ch, int start, int length)
             throws SAXException {
         if (!inEntityReference) {
@@ -322,6 +340,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
     
+    @Override
     public void ignorableWhitespace(char[] ch, int start, int length)
             throws SAXException {
         if (!inEntityReference) {
@@ -333,6 +352,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void processingInstruction(String piTarget, String data)
             throws SAXException {
         if (!inEntityReference) {
@@ -346,6 +366,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void comment(char[] ch, int start, int length) throws SAXException {
         if (!inEntityReference) {
             try {
@@ -358,6 +379,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void skippedEntity(String name) throws SAXException {
         try {
             handler.processEntityReference(name, null);
@@ -366,6 +388,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void startEntity(String name) throws SAXException {
         if (inEntityReference) {
             entityReferenceDepth++;
@@ -382,6 +405,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
     }
 
+    @Override
     public void endEntity(String name) throws SAXException {
         if (inEntityReference) {
             entityReferenceDepth--;

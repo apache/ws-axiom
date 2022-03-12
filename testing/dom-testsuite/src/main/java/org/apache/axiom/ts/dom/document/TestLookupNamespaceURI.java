@@ -36,6 +36,7 @@ public class TestLookupNamespaceURI extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element documentElement = document.createElementNS("urn:test", "ns:root");

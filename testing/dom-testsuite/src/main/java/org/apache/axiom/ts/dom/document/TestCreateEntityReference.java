@@ -30,6 +30,7 @@ public class TestCreateEntityReference extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         EntityReference entref = document.createEntityReference("myentity");

@@ -66,6 +66,7 @@ public class UsesConstraintsTest {
         private final CountDownLatch latch = new CountDownLatch(1);
         private boolean gotExpectedError;
         
+        @Override
         public void frameworkEvent(FrameworkEvent event) {
             switch (event.getType()) {
                 case FrameworkEvent.STARTED:

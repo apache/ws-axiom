@@ -34,6 +34,7 @@ public class TestValidator extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         SchemaFactory factory = new XMLSchemaFactory();
         DocumentBuilder builder = dbf.newDocumentBuilder();

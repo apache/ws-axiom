@@ -25,6 +25,7 @@ public class TestHasName extends BooleanPropertyTestCase {
         super(staxImpl, event, expected);
     }
 
+    @Override
     protected boolean invoke(XMLStreamReader reader) {
         return reader.hasName();
     }

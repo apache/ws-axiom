@@ -33,6 +33,7 @@ public class TestGetDomConfigDefaults extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         DOMConfiguration domConfig = document.getDomConfig();

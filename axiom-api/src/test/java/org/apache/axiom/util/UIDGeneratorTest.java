@@ -52,6 +52,7 @@ public class UIDGeneratorTest extends TestCase {
         Thread[] threads = new Thread[100];
         for (int i = 0; i < threads.length; i++) {
             threads[i] = new Thread(new Runnable() {
+                @Override
                 public void run() {
                     for (int i=0; i<1000; i++) {
                         String id = UIDGenerator.generateUID();
@@ -82,6 +83,7 @@ public class UIDGeneratorTest extends TestCase {
         for (int i = 0; i < threads.length; i++) {
             final String[] threadURNs = urns[i];
             threads[i] = new Thread(new Runnable() {
+                @Override
                 public void run() {
                     for (int i=0; i<threadURNs.length; i++) {
                         threadURNs[i] = UIDGenerator.generateURNString();

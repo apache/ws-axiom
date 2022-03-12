@@ -36,6 +36,7 @@ public class TestCloneNode extends DOMTestCase {
         addTestParameter("file", file.getName());
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().parse(file.getUrl().toString());
         Document document2 = (Document)document.cloneNode(true);

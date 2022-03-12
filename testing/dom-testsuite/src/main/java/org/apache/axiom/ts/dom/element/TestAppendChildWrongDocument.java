@@ -37,6 +37,7 @@ public class TestAppendChildWrongDocument extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
         Document document1 = documentBuilder.newDocument();

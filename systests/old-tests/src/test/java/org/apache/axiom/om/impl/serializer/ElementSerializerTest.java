@@ -44,6 +44,7 @@ public class ElementSerializerTest extends TestCase {
     private XMLStreamWriter writer;
     private OMXMLParserWrapper builder;
 
+    @Override
     protected void setUp() throws Exception {
         reader = StAXUtils.createXMLStreamReader(SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
         writer = StAX.createNullXMLStreamWriter();
@@ -117,6 +118,7 @@ public class ElementSerializerTest extends TestCase {
         root.serialize(writer);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         reader.close();
     }

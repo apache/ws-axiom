@@ -30,6 +30,7 @@ public class TestGetElementsByTagNameNS extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String childElementQN = "test:Child";
         String childElementLN = "Child";

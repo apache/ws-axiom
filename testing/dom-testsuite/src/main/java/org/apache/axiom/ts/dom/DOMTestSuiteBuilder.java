@@ -50,6 +50,7 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         this.dbff = dbff;
     }
     
+    @Override
     protected void addTests() {
         DocumentBuilderFactory dbf = dbff.newInstance();
         dbf.setNamespaceAware(true);

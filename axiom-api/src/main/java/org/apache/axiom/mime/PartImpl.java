@@ -186,6 +186,7 @@ final class PartImpl implements Part {
         return in;
     }
     
+    @Override
     public void fetch() {
         switch (state) {
             case STATE_UNREAD:

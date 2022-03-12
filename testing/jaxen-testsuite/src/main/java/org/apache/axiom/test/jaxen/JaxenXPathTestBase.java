@@ -54,6 +54,7 @@ public abstract class JaxenXPathTestBase extends XPathTestBase {
     
     protected abstract Navigator createNavigator();
     
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         for (Iterator it = documents.iterator(); it.hasNext(); ) {
@@ -62,15 +63,18 @@ public abstract class JaxenXPathTestBase extends XPathTestBase {
         documents.clear();
     }
 
+    @Override
     protected final Object getDocument(String url) throws Exception {
         // This method is actually never used in XPathTestBase; it only uses Navigator#getDocument
         return null;
     }
 
+    @Override
     protected final Navigator getNavigator() {
         return new NavigatorWrapper(createNavigator()) {
             // We need to tweak the getDocument method a bit to load the document from the right
             // place.
+            @Override
             public Object getDocument(String uri) throws FunctionCallException {
                 try {
                     URL url = new URL(TESTS_ROOT + uri);

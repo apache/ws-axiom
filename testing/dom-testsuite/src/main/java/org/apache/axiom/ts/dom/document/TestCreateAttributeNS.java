@@ -36,6 +36,7 @@ public class TestCreateAttributeNS extends DOMTestCase {
         addTestParameter("name", DOMUtils.getQualifiedName(qname));
     }
 
+    @Override
     protected void runTest() throws Throwable {
         String localName = qname.getLocalPart();
         String uri = DOMUtils.getNamespaceURI(qname);

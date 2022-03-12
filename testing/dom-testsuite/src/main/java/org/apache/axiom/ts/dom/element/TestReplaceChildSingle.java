@@ -34,6 +34,7 @@ public class TestReplaceChildSingle extends ReplaceChildTestCase {
         super(dbf, newChildHasSiblings);
     }
 
+    @Override
     protected void runTest(Document doc, Node newChild) {
         Element parent = doc.createElementNS(null, "parent");
         Element oldChild = doc.createElementNS(null, "oldChild");

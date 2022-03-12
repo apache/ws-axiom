@@ -33,6 +33,7 @@ public class TestRemoveLastChild extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Element element = builder.parse(new InputSource(new StringReader(

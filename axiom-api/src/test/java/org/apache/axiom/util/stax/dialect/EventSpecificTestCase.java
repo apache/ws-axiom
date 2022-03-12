@@ -39,6 +39,7 @@ public abstract class EventSpecificTestCase extends DialectTestCase {
         addTestParameter("event", XMLEventUtils.getEventTypeString(event));
     }
 
+    @Override
     protected final void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
         factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);

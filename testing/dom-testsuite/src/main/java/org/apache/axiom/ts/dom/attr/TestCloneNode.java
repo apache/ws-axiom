@@ -34,6 +34,7 @@ public class TestCloneNode extends DOMTestCase {
         addTestParameter("deep", deep);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Attr attr = document.createAttributeNS(null, "attr");

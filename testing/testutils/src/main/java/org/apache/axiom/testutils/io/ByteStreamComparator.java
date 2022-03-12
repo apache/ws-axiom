@@ -58,6 +58,7 @@ public class ByteStreamComparator extends OutputStream {
         this(in, "s1", "s2");
     }
 
+    @Override
     public void write(byte[] buffer, int off, int len) throws IOException {
         while (len > 0) {
             int c = in.read(compareBuffer, 0, Math.min(compareBuffer.length, len));
@@ -75,15 +76,18 @@ public class ByteStreamComparator extends OutputStream {
         }
     }
 
+    @Override
     public void flush() throws IOException {
     }
 
+    @Override
     public void close() throws IOException {
         if (in.read() != -1) {
             fail("The two streams have different lengths: len(" + name1 + ") > len(" + name2 + ") = " + position);
         }
     }
 
+    @Override
     public void write(int b) throws IOException {
         write(new byte[] { (byte)b });
     }

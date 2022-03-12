@@ -36,6 +36,7 @@ public class TestLookupNamespaceURIImplicit extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
 
         String ns1 = "http://apache/axiom/dom/ns1";

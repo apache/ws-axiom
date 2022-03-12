@@ -32,6 +32,7 @@ public class OMBodyTest extends OMTestCase {
     /*
      * @see TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         soapBody = soapEnvelope.getBody();

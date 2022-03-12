@@ -740,7 +740,7 @@
                     <configuration>
                         <compilerArgs combine.children="append">
                             <compilerArg>-XDcompilePolicy=simple</compilerArg>
-                            <compilerArg>-Xplugin:ErrorProne</compilerArg>
+                            <compilerArg>-Xplugin:ErrorProne -XepExcludedPaths:.*/org/jaxen/.* -Xep:MissingOverride:ERROR</compilerArg>
                         </compilerArgs>
                         <annotationProcessorPaths combine.children="append">
                             <annotationProcessorPath>

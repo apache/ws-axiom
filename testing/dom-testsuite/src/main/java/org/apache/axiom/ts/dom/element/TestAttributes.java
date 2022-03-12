@@ -31,6 +31,7 @@ public class TestAttributes extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(
                 TestAttributes.class.getResourceAsStream("attributetest.xml"));

@@ -26,6 +26,7 @@ import org.apache.axiom.ts.jaxp.stax.StAXImplementation;
 import org.apache.axiom.ts.xml.StreamType;
 
 public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
+    @Override
     protected void addTests() {
         for (StAXImplementation impl : Multiton.getInstances(StAXImplementation.class)) {
             addTests(impl.getAdapter(StAXImplementationAdapter.class));

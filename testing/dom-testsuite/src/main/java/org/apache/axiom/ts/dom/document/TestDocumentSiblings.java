@@ -30,6 +30,7 @@ public class TestDocumentSiblings extends DOMTestCase {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element elem = doc.createElement("test");

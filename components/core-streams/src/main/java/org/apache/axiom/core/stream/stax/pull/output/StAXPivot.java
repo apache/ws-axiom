@@ -90,6 +90,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
                     private int binding = bindings;
                     private String next;
 
+                    @Override
                     public boolean hasNext() {
                         if (next == null) {
                             outer: while (--binding >= 0) {
@@ -109,6 +110,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
                         return next != null;
                     }
 
+                    @Override
                     public String next() {
                         if (hasNext()) {
                             String result = next;
@@ -119,6 +121,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
                         }
                     }
 
+                    @Override
                     public void remove() {
                         throw new UnsupportedOperationException();
                     }

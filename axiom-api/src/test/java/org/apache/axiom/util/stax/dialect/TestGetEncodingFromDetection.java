@@ -43,6 +43,7 @@ public class TestGetEncodingFromDetection extends DialectTestCase {
         addTestParameter("javaEncoding", javaEncoding);
     }
     
+    @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new ByteArrayInputStream(

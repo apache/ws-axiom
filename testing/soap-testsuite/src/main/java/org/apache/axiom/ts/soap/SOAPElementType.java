@@ -27,42 +27,49 @@ import org.apache.axiom.testing.multiton.Multiton;
 
 public abstract class SOAPElementType extends Multiton {
     public static final SOAPElementType ENVELOPE = new SOAPElementType() {
+        @Override
         public QName getQName(SOAPSpec spec) {
             return spec.getEnvelopeQName();
         }
     };
     
     public static final SOAPElementType HEADER = new SOAPElementType() {
+        @Override
         public QName getQName(SOAPSpec spec) {
             return spec.getHeaderQName();
         }
     };
     
     public static final SOAPElementType BODY = new SOAPElementType() {
+        @Override
         public QName getQName(SOAPSpec spec) {
             return spec.getBodyQName();
         }
     };
     
     public static final SOAPElementType FAULT = new SOAPElementType() {
+        @Override
         public QName getQName(SOAPSpec spec) {
             return spec.getFaultQName();
         }
     };
     
     public static final SOAPElementType VALUE = new SOAPElementType() {
+        @Override
         public QName getQName(SOAPSpec spec) {
             return spec.getFaultValueQName();
         }
     };
     
     public static final SOAPElementType SUB_CODE = new SOAPElementType() {
+        @Override
         public QName getQName(SOAPSpec spec) {
             return spec.getFaultSubCodeQName();
         }
     };
     
     public static final SOAPElementType TEXT = new SOAPElementType() {
+        @Override
         public QName getQName(SOAPSpec spec) {
             return spec.getFaultTextQName();
         }
