@@ -473,6 +473,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         this.strictErrorChecking = strictErrorChecking;
     }
 
+    @Override
     public final void normalize(DOMConfigurationImpl config) {
     }
 

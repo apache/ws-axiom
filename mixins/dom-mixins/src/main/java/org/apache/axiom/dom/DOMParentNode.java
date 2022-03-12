@@ -22,5 +22,5 @@ import org.apache.axiom.core.CoreParentNode;
 import org.w3c.dom.NodeList;
 
 public interface DOMParentNode extends DOMNode, NodeList, CoreParentNode {
-
+    void normalize(DOMConfigurationImpl config);
 }

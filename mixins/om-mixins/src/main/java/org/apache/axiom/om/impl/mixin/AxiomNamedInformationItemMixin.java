@@ -106,8 +106,6 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
         return namespace;
     }
 
-    abstract void beforeSetLocalName();
-
     @Override
     public final void setLocalName(String localName) {
         beforeSetLocalName();

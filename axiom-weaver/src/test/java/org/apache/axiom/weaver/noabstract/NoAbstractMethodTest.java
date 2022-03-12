@@ -16,27 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.mixin;
+package org.apache.axiom.weaver.noabstract;
 
-import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.soap.SOAPBody;
-import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
-import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Envelope;
-import org.apache.axiom.weaver.annotation.Mixin;
+import static org.junit.Assert.assertThrows;
 
-@Mixin
-public abstract class AxiomSOAP11EnvelopeMixin implements AxiomSOAP11Envelope {
-    @Override
-    public final Class<? extends CoreNode> coreGetNodeClass() {
-        return AxiomSOAP11Envelope.class;
-    }
+import org.apache.axiom.weaver.SimpleImplementationClassNameMapper;
+import org.apache.axiom.weaver.Weaver;
+import org.apache.axiom.weaver.innerclass.InnerClassTest;
+import org.apache.axiom.weaver.mixin.clazz.MixinFactoryException;
+import org.junit.Test;
 
-    @Override
-    public final boolean isChildElementAllowed(OMElement child) {
-        return !(child instanceof AxiomSOAPElement)
-                || child instanceof SOAPHeader
-                || child instanceof SOAPBody;
+public class NoAbstractMethodTest {
+    @Test
+    public void testMixinWithAbstractMethod() {
+        ClassLoader cl = InnerClassTest.class.getClassLoader();
+        Weaver weaver = new Weaver(cl, new SimpleImplementationClassNameMapper("impl"));
+        assertThrows(
+                MixinFactoryException.class,
+                () -> weaver.loadWeavablePackage("org.apache.axiom.weaver.noabstract"));
     }
 }

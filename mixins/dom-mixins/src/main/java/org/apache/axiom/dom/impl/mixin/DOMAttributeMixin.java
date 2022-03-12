@@ -118,6 +118,7 @@ public abstract class DOMAttributeMixin implements DOMAttribute {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final void normalize(DOMConfigurationImpl config) {
     }
 }

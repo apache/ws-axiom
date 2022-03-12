@@ -33,10 +33,12 @@ public abstract class CoreNSUnawareElementMixin implements CoreNSUnawareElement 
         return NodeType.NS_UNAWARE_ELEMENT;
     }
 
+    @Override
     public final String getImplicitNamespaceURI(String prefix) {
         return null;
     }
 
+    @Override
     public final String getImplicitPrefix(String namespaceURI) {
         return null;
     }

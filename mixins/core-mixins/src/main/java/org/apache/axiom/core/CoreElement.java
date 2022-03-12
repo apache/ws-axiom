@@ -142,4 +142,8 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
     void corePromote(CoreElement newElement, Semantics semantics) throws CoreModelException;
 
     void internalSetFirstAttribute(CoreAttribute firstAttribute);
+
+    String getImplicitNamespaceURI(String prefix);
+
+    String getImplicitPrefix(String namespaceURI);
 }

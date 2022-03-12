@@ -24,6 +24,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomSOAPFaultRoleMixin implements AxiomSOAPFaultRole {
+    @Override
     public final boolean isChildElementAllowed(OMElement child) {
         return false;
     }

@@ -32,6 +32,7 @@ public abstract class AxiomSOAP12EnvelopeMixin implements AxiomSOAP12Envelope {
         return AxiomSOAP12Envelope.class;
     }
 
+    @Override
     public final boolean isChildElementAllowed(OMElement child) {
         return child instanceof SOAPHeader || child instanceof SOAPBody;
     }

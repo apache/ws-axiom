@@ -158,8 +158,6 @@ public abstract class CoreElementMixin implements CoreElement {
         return AttributeIterator.create(this, type, mapper, semantics);
     }
 
-    public abstract String getImplicitNamespaceURI(String prefix);
-
     @Override
     public final String coreLookupNamespaceURI(String prefix, Semantics semantics)
             throws CoreModelException {
@@ -188,8 +186,6 @@ public abstract class CoreElementMixin implements CoreElement {
             return null;
         }
     }
-
-    public abstract String getImplicitPrefix(String namespaceURI);
 
     @Override
     public final String coreLookupPrefix(String namespaceURI, Semantics semantics)

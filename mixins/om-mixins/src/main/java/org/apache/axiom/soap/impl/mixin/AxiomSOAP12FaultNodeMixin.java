@@ -30,6 +30,7 @@ public abstract class AxiomSOAP12FaultNodeMixin implements AxiomSOAP12FaultNode 
         return AxiomSOAP12FaultNode.class;
     }
 
+    @Override
     public final boolean isChildElementAllowed(OMElement child) {
         return false;
     }

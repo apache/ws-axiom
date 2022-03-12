@@ -82,7 +82,8 @@ public abstract class AxiomElementMixin implements AxiomElement {
         internalSetNamespace(generateNSDecl ? NSUtil.handleNamespace(this, ns, false, true) : ns);
     }
 
-    final void beforeSetLocalName() {
+    @Override
+    public final void beforeSetLocalName() {
         forceExpand();
     }
 

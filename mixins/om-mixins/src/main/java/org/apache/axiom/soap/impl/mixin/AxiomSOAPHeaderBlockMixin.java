@@ -36,6 +36,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock {
     private boolean processed;
 
+    @Override
     public final boolean isChildElementAllowed(OMElement child) {
         return true;
     }

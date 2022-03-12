@@ -24,6 +24,7 @@ import org.apache.axiom.weaver.annotation.Mixin;;
 
 @Mixin
 public abstract class DOMNSUnawareElementMixin implements DOMNSUnawareElement {
+    @Override
     public final void normalize(DOMConfigurationImpl config) {
     }
 }

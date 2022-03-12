@@ -121,6 +121,17 @@ final class MixinClassVisitor extends ClassVisitor {
         MethodNode method =
                 new MethodNode(Opcodes.ASM9, access, name, descriptor, signature, exceptions);
         Function<String, Remapper> remapperFactory = this.remapperFactory;
+        if ((access & Opcodes.ACC_ABSTRACT) != 0) {
+            // An abstract method defined by a mixin could only be implemented by another mixin.
+            // There are two problems with that:
+            // - Development tools would not be able to determine that a method in one mixin
+            //   overrides a method in another mixin.
+            // - If the method is not public, then the classes the two mixins are applied to must
+            //   be in the same package, but that's not necessarily the case.
+            // Instead of declaring an abstract method in a mixin, that method should be declared
+            // by an interface.
+            throw new MixinFactoryException("Found an abstract method in mixin " + className);
+        }
         MethodBody body =
                 new MethodBody() {
                     @Override

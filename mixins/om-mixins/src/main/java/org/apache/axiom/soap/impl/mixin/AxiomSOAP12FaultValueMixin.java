@@ -25,6 +25,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomSOAP12FaultValueMixin implements AxiomSOAP12FaultValue {
+    @Override
     public final boolean isChildElementAllowed(OMElement child) {
         return false;
     }

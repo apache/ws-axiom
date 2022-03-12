@@ -27,6 +27,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomSOAPFaultDetailMixin implements AxiomSOAPFaultDetail {
+    @Override
     public final boolean isChildElementAllowed(OMElement child) {
         return !(child instanceof AxiomSOAPElement);
     }

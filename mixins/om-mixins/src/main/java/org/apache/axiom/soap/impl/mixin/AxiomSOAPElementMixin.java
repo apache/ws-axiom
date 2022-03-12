@@ -54,6 +54,4 @@ public abstract class AxiomSOAPElementMixin implements AxiomSOAPElement {
             }
         }
     }
-
-    public abstract boolean isChildElementAllowed(OMElement child);
 }

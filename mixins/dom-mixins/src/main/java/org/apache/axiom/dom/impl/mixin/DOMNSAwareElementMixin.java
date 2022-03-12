@@ -25,6 +25,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class DOMNSAwareElementMixin implements DOMNSAwareElement {
+    @Override
     public final void normalize(DOMConfigurationImpl config) {
         // TODO: this should not rely on the Axiom API
         if (config.isEnabled(DOMConfigurationImpl.NAMESPACES)) {

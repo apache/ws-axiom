@@ -45,6 +45,7 @@ public abstract class AxiomSOAP12FaultTextMixin implements AxiomSOAP12FaultText 
         return AxiomSOAP12FaultText.class;
     }
 
+    @Override
     public final boolean isChildElementAllowed(OMElement child) {
         return false;
     }

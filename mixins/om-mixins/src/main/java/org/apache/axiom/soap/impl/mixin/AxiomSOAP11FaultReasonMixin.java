@@ -35,6 +35,7 @@ public abstract class AxiomSOAP11FaultReasonMixin implements AxiomSOAP11FaultRea
         return AxiomSOAP11FaultReason.class;
     }
 
+    @Override
     public final boolean isChildElementAllowed(OMElement child) {
         return false;
     }

@@ -16,13 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.intf;
-
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.intf.AxiomElement;
-
-public interface AxiomSOAPElement extends AxiomElement {
-    SOAPHelper getSOAPHelper();
-
-    boolean isChildElementAllowed(OMElement child);
-}
+@org.apache.axiom.weaver.annotation.WeavablePackage(
+        mixins = {
+            IfaceMixin.class,
+        })
+package org.apache.axiom.weaver.noabstract;

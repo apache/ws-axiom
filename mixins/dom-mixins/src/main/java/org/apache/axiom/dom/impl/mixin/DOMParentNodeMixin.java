@@ -114,8 +114,6 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
         }
     }
 
-    public abstract void normalize(DOMConfigurationImpl config);
-
     private void checkNewChild(Node newChild) {
         if (newChild instanceof DOMNode) {
             DOMNode newDomChild = (DOMNode)newChild;

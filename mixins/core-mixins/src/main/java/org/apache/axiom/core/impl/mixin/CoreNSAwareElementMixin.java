@@ -33,10 +33,12 @@ public abstract class CoreNSAwareElementMixin implements CoreNSAwareElement {
         return NodeType.NS_AWARE_ELEMENT;
     }
 
+    @Override
     public final String getImplicitNamespaceURI(String prefix) {
         return prefix.equals(coreGetPrefix()) ? coreGetNamespaceURI() : null;
     }
 
+    @Override
     public final String getImplicitPrefix(String namespaceURI) {
         return namespaceURI.equals(coreGetNamespaceURI()) ? coreGetPrefix() : null;
     }

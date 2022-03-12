@@ -34,6 +34,7 @@ public abstract class AxiomSOAP12FaultClassifierMixin implements AxiomSOAP12Faul
     private static final Sequence sequence =
             new Sequence(SOAPFaultValue.class, SOAPFaultSubCode.class);
 
+    @Override
     public final boolean isChildElementAllowed(OMElement child) {
         return child instanceof SOAPFaultValue || child instanceof SOAPFaultSubCode;
     }

@@ -35,7 +35,8 @@ public abstract class AxiomAttributeMixin implements AxiomAttribute {
         return (OMElement) coreGetOwnerElement();
     }
 
-    final void beforeSetLocalName() {}
+    @Override
+    public void beforeSetLocalName() {}
 
     @Override
     public final void setNamespace(OMNamespace namespace, boolean decl) {

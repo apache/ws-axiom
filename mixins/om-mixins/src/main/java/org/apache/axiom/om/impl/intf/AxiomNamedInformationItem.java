@@ -35,4 +35,6 @@ public interface AxiomNamedInformationItem
     OMNamespace defaultGetNamespace();
 
     QName defaultGetQName();
+
+    void beforeSetLocalName();
 }

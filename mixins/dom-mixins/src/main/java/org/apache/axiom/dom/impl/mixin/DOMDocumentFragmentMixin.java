@@ -112,6 +112,7 @@ public abstract class DOMDocumentFragmentMixin implements DOMDocumentFragment {
         }
     }
 
+    @Override
     public final void normalize(DOMConfigurationImpl config) {
     }
 }
