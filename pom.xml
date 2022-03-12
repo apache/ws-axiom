@@ -254,14 +254,14 @@
 
         <failIfNoTests>false</failIfNoTests>
         <shade.plugin.version>3.2.4</shade.plugin.version>
-        <spring.version>5.3.9</spring.version>
-        <springws.version>3.1.1</springws.version>
-        <exam.version>4.13.4</exam.version>
-        <slf4j.version>1.7.32</slf4j.version>
-        <jetty.version>9.4.43.v20210629</jetty.version>
-        <log4j.version>2.17.1</log4j.version>
-        <groovy.version>3.0.9</groovy.version>
-        <jaxbri.version>2.3.5</jaxbri.version>
+        <spring.version>5.3.16</spring.version>
+        <springws.version>3.1.2</springws.version>
+        <exam.version>4.13.5</exam.version>
+        <slf4j.version>1.7.36</slf4j.version>
+        <jetty.version>9.4.45.v20220203</jetty.version>
+        <log4j.version>2.17.2</log4j.version>
+        <groovy.version>4.0.1</groovy.version>
+        <jaxbri.version>2.3.6</jaxbri.version>
         <auto-service.version>1.0.1</auto-service.version>
         <asm.version>9.2</asm.version>
         
@@ -285,7 +285,7 @@
             <dependency>
                 <groupId>com.fasterxml.woodstox</groupId>
                 <artifactId>woodstox-core</artifactId>
-                <version>6.2.6</version>
+                <version>6.2.8</version>
             </dependency>
             <dependency>
                 <groupId>jaxen</groupId>
@@ -305,7 +305,7 @@
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.util.tracker</artifactId>
-                <version>1.5.3</version>
+                <version>1.5.4</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -331,7 +331,7 @@
             <dependency>
                 <groupId>xerces</groupId>
                 <artifactId>xercesImpl</artifactId>
-                <version>2.12.1</version>
+                <version>2.12.2</version>
                 <exclusions>
                     <exclusion>
                         <groupId>xml-apis</groupId>
@@ -438,7 +438,7 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>3.12.4</version>
+                <version>4.4.0</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.xml.ws</groupId>
@@ -448,7 +448,7 @@
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.framework</artifactId>
-                <version>7.0.1</version>
+                <version>7.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.ops4j.pax.exam</groupId>
@@ -498,12 +498,12 @@
             <dependency>
                 <groupId>jakarta.activation</groupId>
                 <artifactId>jakarta.activation-api</artifactId>
-                <version>1.2.1</version>
+                <version>1.2.2</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.activation</groupId>
                 <artifactId>jakarta.activation</artifactId>
-                <version>1.2.1</version>
+                <version>1.2.2</version>
             </dependency>
             <dependency>
                 <groupId>jakarta.xml.bind</groupId>
@@ -575,7 +575,7 @@
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <version>5.1.3</version>
+                    <version>5.1.4</version>
                     <configuration>
                         <instructions>
                             <_removeheaders>
@@ -653,7 +653,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.3.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-shade-plugin</artifactId>
@@ -685,7 +685,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.3.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
@@ -706,15 +706,15 @@
                 <plugin>
                     <groupId>org.codehaus.gmavenplus</groupId>
                     <artifactId>gmavenplus-plugin</artifactId>
-                    <version>1.13.0</version>
+                    <version>1.13.1</version>
                     <dependencies>
                         <dependency>
-                            <groupId>org.codehaus.groovy</groupId>
+                            <groupId>org.apache.groovy</groupId>
                             <artifactId>groovy</artifactId>
                             <version>${groovy.version}</version>
                         </dependency>
                         <dependency>
-                            <groupId>org.codehaus.groovy</groupId>
+                            <groupId>org.apache.groovy</groupId>
                             <artifactId>groovy-ant</artifactId>
                             <version>${groovy.version}</version>
                         </dependency>
@@ -735,11 +735,11 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <version>3.10.1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.2.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
@@ -747,7 +747,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.3.1</version>
+                    <version>3.3.2</version>
                     <configuration>
                         <detectOfflineLinks>false</detectOfflineLinks>
                         <source>${javaVersion}</source>
@@ -840,7 +840,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>3.1.2</version>
+                    <version>3.2.2</version>
                     <configuration>
                         <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
                     </configuration>
@@ -848,7 +848,7 @@
                 <plugin>
                     <groupId>com.github.veithen.maven</groupId>
                     <artifactId>java-format-maven-plugin</artifactId>
-                    <version>0.1.0</version>
+                    <version>0.2.0</version>
                     <configuration>
                         <!-- AOSP changes the indentation (from 2 to 4) and the import order. Since we
                              don't want Android conventions for import ordering, we skip sorting
@@ -1017,7 +1017,7 @@
             <plugin>
                 <groupId>com.github.veithen.maven</groupId>
                 <artifactId>hermetic-maven-plugin</artifactId>
-                <version>0.6.1</version>
+                <version>0.6.2</version>
                 <executions>
                     <execution>
                         <goals>
