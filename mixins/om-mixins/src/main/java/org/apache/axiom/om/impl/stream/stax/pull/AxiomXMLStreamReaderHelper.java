@@ -39,7 +39,6 @@ final class AxiomXMLStreamReaderHelper extends XMLStreamReaderHelper {
      */
     private final DataHandlerReader dataHandlerReader;
 
-
     AxiomXMLStreamReaderHelper(XMLStreamReader reader) {
         this.reader = reader;
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
@@ -49,26 +48,30 @@ final class AxiomXMLStreamReaderHelper extends XMLStreamReaderHelper {
     public DTDInfo getDTDInfo() throws StreamException {
         DTDReader dtdReader;
         try {
-            dtdReader = (DTDReader)reader.getProperty(DTDReader.PROPERTY);
+            dtdReader = (DTDReader) reader.getProperty(DTDReader.PROPERTY);
         } catch (IllegalArgumentException ex) {
             dtdReader = null;
         }
         if (dtdReader == null) {
-            throw new StreamException("Cannot process DTD events because the XMLStreamReader doesn't support the DTDReader extension");
+            throw new StreamException(
+                    "Cannot process DTD events because the XMLStreamReader doesn't support the DTDReader extension");
         }
-        return new DTDInfo(dtdReader.getRootName(), dtdReader.getPublicId(), dtdReader.getSystemId());
+        return new DTDInfo(
+                dtdReader.getRootName(), dtdReader.getPublicId(), dtdReader.getSystemId());
     }
 
     @Override
     public CharacterData getCharacterData() throws StreamException {
         if (dataHandlerReader != null && dataHandlerReader.isBinary()) {
             if (dataHandlerReader.isDeferred()) {
-                return new TextContent(dataHandlerReader.getContentID(),
+                return new TextContent(
+                        dataHandlerReader.getContentID(),
                         dataHandlerReader.getDataHandlerProvider(),
                         dataHandlerReader.isOptimized());
             } else {
                 try {
-                    return new TextContent(dataHandlerReader.getContentID(),
+                    return new TextContent(
+                            dataHandlerReader.getContentID(),
                             dataHandlerReader.getDataHandler(),
                             dataHandlerReader.isOptimized());
                 } catch (XMLStreamException ex) {

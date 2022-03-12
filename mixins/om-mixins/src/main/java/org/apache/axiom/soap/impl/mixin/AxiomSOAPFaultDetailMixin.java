@@ -30,7 +30,7 @@ public abstract class AxiomSOAPFaultDetailMixin implements AxiomSOAPFaultDetail 
     public final boolean isChildElementAllowed(OMElement child) {
         return !(child instanceof AxiomSOAPElement);
     }
-    
+
     @Override
     public final void addDetailEntry(OMElement detailElement) {
         addChild(detailElement);

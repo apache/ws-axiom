@@ -42,7 +42,7 @@ public final class SAXResultContentHandler implements XmlHandler {
         this.root = root;
         factory = root.getOMFactory();
     }
-    
+
     private String stopBuffering() {
         String content = buffer.toString();
         buffer.clear();
@@ -51,10 +51,11 @@ public final class SAXResultContentHandler implements XmlHandler {
     }
 
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
+    public void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
         target = root;
     }
-    
+
     @Override
     public void startFragment() throws StreamException {
         // TODO
@@ -62,12 +63,11 @@ public final class SAXResultContentHandler implements XmlHandler {
     }
 
     @Override
-    public void completed() {
-    }
+    public void completed() {}
 
     @Override
-    public void processDocumentTypeDeclaration(String rootName, String publicId,
-            String systemId, String internalSubset) {
+    public void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset) {
         if (target instanceof OMDocument) {
             factory.createOMDocType(target, rootName, publicId, systemId, internalSubset);
         }
@@ -76,18 +76,25 @@ public final class SAXResultContentHandler implements XmlHandler {
     @Override
     public void startElement(String namespaceURI, String localName, String prefix) {
         // TODO: inefficient: we should not create a new OMNamespace instance every time
-        target = factory.createOMElement(localName, factory.createOMNamespace(namespaceURI, prefix), target);
+        target =
+                factory.createOMElement(
+                        localName, factory.createOMNamespace(namespaceURI, prefix), target);
     }
 
     @Override
     public void endElement() {
-        target = ((OMNode)target).getParent();
+        target = ((OMNode) target).getParent();
     }
 
     @Override
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value,
-            String type, boolean specified) {
-        OMElement element = (OMElement)target;
+    public void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified) {
+        OMElement element = (OMElement) target;
         OMNamespace ns;
         if (namespaceURI.length() > 0) {
             ns = element.findNamespace(namespaceURI, prefix);
@@ -111,22 +118,22 @@ public final class SAXResultContentHandler implements XmlHandler {
     @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI) {
         if (prefix.isEmpty()) {
-            ((OMElement)target).declareDefaultNamespace(namespaceURI);
+            ((OMElement) target).declareDefaultNamespace(namespaceURI);
         } else {
-            ((OMElement)target).declareNamespace(namespaceURI, prefix);
+            ((OMElement) target).declareNamespace(namespaceURI, prefix);
         }
     }
 
     @Override
-    public void attributesCompleted() {
-    }
+    public void attributesCompleted() {}
 
     @Override
     public void processCharacterData(Object data, boolean ignorable) {
         if (buffering) {
             buffer.append(data);
         } else {
-            factory.createOMText(target, data.toString(), ignorable ? OMNode.SPACE_NODE : OMNode.TEXT_NODE);
+            factory.createOMText(
+                    target, data.toString(), ignorable ? OMNode.SPACE_NODE : OMNode.TEXT_NODE);
         }
     }
 

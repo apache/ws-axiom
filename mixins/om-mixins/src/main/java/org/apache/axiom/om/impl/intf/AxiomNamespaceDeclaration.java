@@ -23,5 +23,6 @@ import org.apache.axiom.om.OMNamespace;
 
 public interface AxiomNamespaceDeclaration extends AxiomInformationItem, CoreNamespaceDeclaration {
     OMNamespace getDeclaredNamespace();
+
     void setDeclaredNamespace(OMNamespace declaredNamespace);
 }

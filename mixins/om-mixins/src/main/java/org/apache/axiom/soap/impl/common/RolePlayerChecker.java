@@ -41,13 +41,10 @@ public class RolePlayerChecker implements ElementMatcher<AxiomElement> {
     /**
      * Constructor.
      *
-     * @param soapHelper
-     *            the helper corresponding to the SOAP version
-     * @param rolePlayer
-     *            the RolePlayer to check against, or {@code null} to match only header blocks for
-     *            the ultimate destination.
-     * @param namespace
-     *            the namespace URI to check for, or {@code null} to match any header block
+     * @param soapHelper the helper corresponding to the SOAP version
+     * @param rolePlayer the RolePlayer to check against, or {@code null} to match only header
+     *     blocks for the ultimate destination.
+     * @param namespace the namespace URI to check for, or {@code null} to match any header block
      */
     public RolePlayerChecker(SOAPHelper soapHelper, RolePlayer rolePlayer, String namespace) {
         this.soapHelper = soapHelper;
@@ -69,9 +66,10 @@ public class RolePlayerChecker implements ElementMatcher<AxiomElement> {
         SOAPVersion version = soapHelper.getVersion();
 
         // 1. If role is ultimatedest, go by what the rolePlayer says
-        if (role == null || role.equals("") ||
-                (version instanceof SOAP12Version &&
-                        role.equals(SOAP12Constants.SOAP_ROLE_ULTIMATE_RECEIVER))) {
+        if (role == null
+                || role.equals("")
+                || (version instanceof SOAP12Version
+                        && role.equals(SOAP12Constants.SOAP_ROLE_ULTIMATE_RECEIVER))) {
             return (rolePlayer == null || rolePlayer.isUltimateDestination());
         }
 
@@ -79,8 +77,7 @@ public class RolePlayerChecker implements ElementMatcher<AxiomElement> {
         if (role.equals(version.getNextRoleURI())) return true;
 
         // 3. If role is none, always return false
-        if (version instanceof SOAP12Version &&
-                role.equals(SOAP12Constants.SOAP_ROLE_NONE)) {
+        if (version instanceof SOAP12Version && role.equals(SOAP12Constants.SOAP_ROLE_NONE)) {
             return false;
         }
 

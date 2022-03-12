@@ -46,13 +46,13 @@ public abstract class AxiomNodeFactoryMixin implements AxiomNodeFactory {
     private final OMFactory omFactory;
     private final SOAPFactory soap11Factory;
     private final SOAPFactory soap12Factory;
-    
+
     public AxiomNodeFactoryMixin() {
         omFactory = new OMFactoryImpl(this);
         soap11Factory = new SOAP11Factory(this);
         soap12Factory = new SOAP12Factory(this);
     }
-    
+
     @Override
     public final OMFactory getOMFactory() {
         return omFactory;
@@ -67,17 +67,18 @@ public abstract class AxiomNodeFactoryMixin implements AxiomNodeFactory {
     public final SOAPFactory getSOAP12Factory() {
         return soap12Factory;
     }
-    
+
     @Override
     public final OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
         return OM.createBuilder(this, BuilderSpec.from(parser));
     }
 
     @Override
-    public final OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputSource is) {
+    public final OMXMLParserWrapper createOMBuilder(
+            StAXParserConfiguration configuration, InputSource is) {
         return OM.createBuilder(this, BuilderSpec.from(configuration, is));
     }
-    
+
     @Override
     public final OMXMLParserWrapper createOMBuilder(Source source) {
         return OM.createBuilder(this, BuilderSpec.from(StAXParserConfiguration.DEFAULT, source));
@@ -89,18 +90,23 @@ public abstract class AxiomNodeFactoryMixin implements AxiomNodeFactory {
     }
 
     @Override
-    public final OMXMLParserWrapper createOMBuilder(SAXSource source, boolean expandEntityReferences) {
+    public final OMXMLParserWrapper createOMBuilder(
+            SAXSource source, boolean expandEntityReferences) {
         return OM.createBuilder(this, BuilderSpec.from(source, expandEntityReferences));
     }
 
     @Override
-    public final OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, MultipartBody message) {
+    public final OMXMLParserWrapper createOMBuilder(
+            StAXParserConfiguration configuration, MultipartBody message) {
         return OM.createBuilder(this, BuilderSpec.from(configuration, message));
     }
 
     @Override
-    public final OMXMLParserWrapper createOMBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor) {
-        return OM.createBuilder(this, BuilderSpec.from(StAXParserConfiguration.DEFAULT, rootPart, attachmentAccessor));
+    public final OMXMLParserWrapper createOMBuilder(
+            Source rootPart, OMAttachmentAccessor attachmentAccessor) {
+        return OM.createBuilder(
+                this,
+                BuilderSpec.from(StAXParserConfiguration.DEFAULT, rootPart, attachmentAccessor));
     }
 
     @Override
@@ -124,7 +130,9 @@ public abstract class AxiomNodeFactoryMixin implements AxiomNodeFactory {
     }
 
     @Override
-    public final SOAPModelBuilder createSOAPModelBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor) {
-        return SOAP.createBuilder(this, BuilderSpec.from(StAXParserConfiguration.SOAP, rootPart, attachmentAccessor));
+    public final SOAPModelBuilder createSOAPModelBuilder(
+            Source rootPart, OMAttachmentAccessor attachmentAccessor) {
+        return SOAP.createBuilder(
+                this, BuilderSpec.from(StAXParserConfiguration.SOAP, rootPart, attachmentAccessor));
     }
 }

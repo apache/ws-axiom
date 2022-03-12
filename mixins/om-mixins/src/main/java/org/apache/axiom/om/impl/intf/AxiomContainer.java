@@ -29,15 +29,16 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 public interface AxiomContainer extends OMContainer, AxiomCoreParentNode {
     /**
      * Check if the node can be added as a child of this container.
-     * 
-     * @param child
-     *            the child that will be added
-     * @throws OMException
-     *             if the node is not allowed as a child of the container
+     *
+     * @param child the child that will be added
+     * @throws OMException if the node is not allowed as a child of the container
      */
     void checkChild(OMNode child);
 
     AxiomChildNode prepareNewChild(OMNode omNode);
-    XMLStreamReader defaultGetXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration);
+
+    XMLStreamReader defaultGetXMLStreamReader(
+            boolean cache, OMXMLStreamReaderConfiguration configuration);
+
     CoreElement getContextElement();
 }

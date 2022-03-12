@@ -18,6 +18,4 @@
  */
 package org.apache.axiom.om.impl.intf;
 
-public interface AxiomCoreLeafNode extends AxiomLeafNode {
-
-}
+public interface AxiomCoreLeafNode extends AxiomLeafNode {}

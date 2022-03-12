@@ -24,10 +24,20 @@ import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 
-public interface AxiomElement extends OMElement, AxiomContainer, AxiomChildNode, AxiomNamedInformationItem, CoreNSAwareElement {
+public interface AxiomElement
+        extends OMElement,
+                AxiomContainer,
+                AxiomChildNode,
+                AxiomNamedInformationItem,
+                CoreNSAwareElement {
     void addNamespaceDeclaration(OMNamespace ns);
-    <T extends OMElement> void insertChild(Sequence sequence, int pos, T newChild, boolean allowReplace);
+
+    <T extends OMElement> void insertChild(
+            Sequence sequence, int pos, T newChild, boolean allowReplace);
+
     void _setAttributeValue(QName qname, String value);
+
     OMNamespace handleNamespace(String namespaceURI, String prefix);
+
     void initName(String localName, OMNamespace ns, boolean generateNSDecl);
 }

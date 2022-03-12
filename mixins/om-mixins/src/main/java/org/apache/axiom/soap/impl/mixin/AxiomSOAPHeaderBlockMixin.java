@@ -59,23 +59,24 @@ public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock 
     public final boolean getMustUnderstand() throws SOAPProcessingException {
         return SOAPHeaderBlockHelper.getMustUnderstand(this, getSOAPHelper());
     }
-    
+
     @Override
     public final void setMustUnderstand(boolean mustUnderstand) {
         SOAPHelper helper = getSOAPHelper();
-        _setAttributeValue(helper.getMustUnderstandAttributeQName(), helper.formatBoolean(mustUnderstand));
+        _setAttributeValue(
+                helper.getMustUnderstandAttributeQName(), helper.formatBoolean(mustUnderstand));
     }
 
     @Override
     public final String getRole() {
         return SOAPHeaderBlockHelper.getRole(this, getSOAPHelper());
     }
-    
+
     @Override
     public final void setRole(String role) {
         _setAttributeValue(getSOAPHelper().getRoleAttributeQName(), role);
     }
-    
+
     @Override
     public final boolean getRelay() {
         SOAPHelper helper = getSOAPHelper();
@@ -83,10 +84,11 @@ public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock 
         if (attributeQName == null) {
             throw new UnsupportedOperationException("Not supported for " + helper.getSpecName());
         } else {
-            return SOAPHeaderBlockHelper.getBooleanAttributeValue(this, helper, RELAY_PROPERTY, attributeQName);
+            return SOAPHeaderBlockHelper.getBooleanAttributeValue(
+                    this, helper, RELAY_PROPERTY, attributeQName);
         }
     }
-    
+
     @Override
     public final void setRelay(boolean relay) {
         SOAPHelper helper = getSOAPHelper();
@@ -100,10 +102,14 @@ public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock 
 
     @Override
     public final <T> void initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other) {
-        // Copy the processed flag.  The other SOAPHeaderBlock information 
+        // Copy the processed flag.  The other SOAPHeaderBlock information
         // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
-        Boolean processedFlag = options instanceof SOAPCloneOptions ? ((SOAPCloneOptions)options).getProcessedFlag() : null;
-        if ((processedFlag == null && ((SOAPHeaderBlock)other).isProcessed()) || (processedFlag != null && processedFlag.booleanValue())) {
+        Boolean processedFlag =
+                options instanceof SOAPCloneOptions
+                        ? ((SOAPCloneOptions) options).getProcessedFlag()
+                        : null;
+        if ((processedFlag == null && ((SOAPHeaderBlock) other).isProcessed())
+                || (processedFlag != null && processedFlag.booleanValue())) {
             setProcessed();
         }
     }

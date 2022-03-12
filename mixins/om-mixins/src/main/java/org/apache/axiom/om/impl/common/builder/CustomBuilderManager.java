@@ -42,11 +42,11 @@ import org.apache.commons.logging.LogFactory;
 
 final class CustomBuilderManager implements BuilderListener {
     private static final Log log = LogFactory.getLog(CustomBuilderManager.class);
-    
+
     private ArrayList<CustomBuilderRegistration> registrations;
     private AxiomElement lastCandidateElement;
     private int lastCandidateDepth = -1;
-    
+
     void register(CustomBuilder.Selector selector, CustomBuilder customBuilder) {
         if (registrations == null) {
             registrations = new ArrayList<CustomBuilderRegistration>();
@@ -59,7 +59,8 @@ final class CustomBuilderManager implements BuilderListener {
         // executed before the custom builder registration may have checked if the payload is a
         // SOAP fault).
         if (lastCandidateElement != null) {
-            DeferredAction action = getAction(lastCandidateElement, lastCandidateDepth, registrations.size()-1);
+            DeferredAction action =
+                    getAction(lastCandidateElement, lastCandidateDepth, registrations.size() - 1);
             if (action != null) {
                 try {
                     action.run();
@@ -69,26 +70,37 @@ final class CustomBuilderManager implements BuilderListener {
             }
         }
     }
-    
+
     @Override
     public DeferredAction nodeAdded(CoreNode node, int depth) {
         return getAction(node, depth, 0);
     }
-    
+
     private DeferredAction getAction(CoreNode node, int depth, int firstCustomBuilder) {
         lastCandidateElement = null;
         lastCandidateDepth = -1;
-        if (node instanceof AxiomElement && (node instanceof AxiomSOAPHeaderBlock || !(node instanceof AxiomSOAPElement))) {
-            AxiomElement element = (AxiomElement)node;
+        if (node instanceof AxiomElement
+                && (node instanceof AxiomSOAPHeaderBlock || !(node instanceof AxiomSOAPElement))) {
+            AxiomElement element = (AxiomElement) node;
             if (registrations != null) {
-                for (int i=firstCustomBuilder; i<registrations.size(); i++) {
+                for (int i = firstCustomBuilder; i < registrations.size(); i++) {
                     CustomBuilderRegistration registration = registrations.get(i);
                     String namespaceURI = element.coreGetNamespaceURI();
                     String localName = element.coreGetLocalName();
-                    if (registration.getSelector().accepts(element.getParent(), depth, namespaceURI, localName)) {
+                    if (registration
+                            .getSelector()
+                            .accepts(element.getParent(), depth, namespaceURI, localName)) {
                         CustomBuilder customBuilder = registration.getCustomBuilder();
                         if (log.isDebugEnabled()) {
-                            log.debug("Custom builder " + customBuilder + " accepted element {" + namespaceURI + "}" + localName + " at depth " + depth);
+                            log.debug(
+                                    "Custom builder "
+                                            + customBuilder
+                                            + " accepted element {"
+                                            + namespaceURI
+                                            + "}"
+                                            + localName
+                                            + " at depth "
+                                            + depth);
                         }
                         return () -> {
                             if (log.isDebugEnabled()) {
@@ -103,11 +115,17 @@ final class CustomBuilderManager implements BuilderListener {
                             } else {
                                 type = AxiomNodeFactory::createSourcedElement;
                             }
-                            AxiomSourcedElement newElement = type.create((AxiomNodeFactory)element.coreGetNodeFactory().getFactory2());
+                            AxiomSourcedElement newElement =
+                                    type.create(
+                                            (AxiomNodeFactory)
+                                                    element.coreGetNodeFactory().getFactory2());
                             if (log.isDebugEnabled()) {
-                                log.debug("Replacing element with new sourced element of type " + newElement.getClass().getName());
+                                log.debug(
+                                        "Replacing element with new sourced element of type "
+                                                + newElement.getClass().getName());
                             }
-                            newElement.init(localName, new OMNamespaceImpl(namespaceURI, null), dataSource);
+                            newElement.init(
+                                    localName, new OMNamespaceImpl(namespaceURI, null), dataSource);
                             try {
                                 element.coreReplaceWith(newElement, AxiomSemantics.INSTANCE);
                             } catch (CoreModelException ex) {
@@ -117,7 +135,8 @@ final class CustomBuilderManager implements BuilderListener {
                     }
                 }
             }
-            // Save a reference to the element so that we can process it when another custom builder is registered
+            // Save a reference to the element so that we can process it when another custom builder
+            // is registered
             lastCandidateElement = element;
             lastCandidateDepth = depth;
         }

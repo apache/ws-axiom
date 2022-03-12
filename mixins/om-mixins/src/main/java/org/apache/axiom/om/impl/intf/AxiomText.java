@@ -21,6 +21,4 @@ package org.apache.axiom.om.impl.intf;
 import org.apache.axiom.core.CoreCharacterDataContainer;
 import org.apache.axiom.om.OMText;
 
-public interface AxiomText extends OMText, AxiomLeafNode, CoreCharacterDataContainer {
-
-}
+public interface AxiomText extends OMText, AxiomLeafNode, CoreCharacterDataContainer {}

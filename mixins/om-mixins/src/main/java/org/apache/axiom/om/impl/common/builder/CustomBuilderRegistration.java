@@ -24,7 +24,7 @@ import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
 final class CustomBuilderRegistration {
     private final CustomBuilder.Selector selector;
     private final CustomBuilder customBuilder;
-    
+
     CustomBuilderRegistration(Selector selector, CustomBuilder customBuilder) {
         this.selector = selector;
         this.customBuilder = customBuilder;

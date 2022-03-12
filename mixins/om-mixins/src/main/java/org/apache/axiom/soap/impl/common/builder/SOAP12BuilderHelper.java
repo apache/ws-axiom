@@ -45,15 +45,15 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
     private Vector<String> detailElementNames;
 
     @Override
-    public AxiomElementType<? extends AxiomElement> handleEvent(OMElement parent, int elementLevel,
-            String namespaceURI, String localName) throws SOAPProcessingException {
+    public AxiomElementType<? extends AxiomElement> handleEvent(
+            OMElement parent, int elementLevel, String namespaceURI, String localName)
+            throws SOAPProcessingException {
         AxiomElementType<? extends AxiomElement> elementType = null;
 
         if (elementLevel == 4) {
             if (localName.equals(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME)) {
                 if (codePresent) {
-                    throw new SOAPProcessingException(
-                            "Multiple Code element encountered");
+                    throw new SOAPProcessingException("Multiple Code element encountered");
                 } else {
                     elementType = AxiomNodeFactory::createSOAP12FaultCode;
                     codePresent = true;
@@ -76,11 +76,9 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     }
                 } else {
                     if (codeprocessing) {
-                        throw new SOAPProcessingException(
-                                "Code doesn't have a value");
+                        throw new SOAPProcessingException("Code doesn't have a value");
                     } else {
-                        throw new SOAPProcessingException(
-                                "A subcode doesn't have a Value");
+                        throw new SOAPProcessingException("A subcode doesn't have a Value");
                     }
                 }
 
@@ -88,8 +86,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 if (!reasonProcessing) {
                     if (reasonPresent && !rolePresent && !detailPresent) {
                         if (nodePresent) {
-                            throw new SOAPProcessingException(
-                                    "Multiple Node element encountered");
+                            throw new SOAPProcessingException("Multiple Node element encountered");
                         } else {
                             elementType = AxiomNodeFactory::createSOAP12FaultNode;
                             nodePresent = true;
@@ -99,15 +96,13 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                                 "wrong element order encountered at " + localName);
                     }
                 } else {
-                    throw new SOAPProcessingException(
-                            "Reason element Should have a text");
+                    throw new SOAPProcessingException("Reason element Should have a text");
                 }
             } else if (localName.equals(SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME)) {
                 if (!reasonProcessing) {
                     if (reasonPresent && !detailPresent) {
                         if (rolePresent) {
-                            throw new SOAPProcessingException(
-                                    "Multiple Role element encountered");
+                            throw new SOAPProcessingException("Multiple Role element encountered");
                         } else {
                             elementType = AxiomNodeFactory::createSOAP12FaultRole;
                             rolePresent = true;
@@ -117,8 +112,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                                 "Wrong element order encountered at " + localName);
                     }
                 } else {
-                    throw new SOAPProcessingException(
-                            "Reason element should have a text");
+                    throw new SOAPProcessingException("Reason element should have a text");
                 }
             } else if (localName.equals(SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
                 if (!reasonProcessing) {
@@ -135,8 +129,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                                 "wrong element order encountered at " + localName);
                     }
                 } else {
-                    throw new SOAPProcessingException(
-                            "Reason element should have a text");
+                    throw new SOAPProcessingException("Reason element should have a text");
                 }
             } else {
                 throw new SOAPProcessingException(
@@ -144,8 +137,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
             }
 
         } else if (elementLevel == 5) {
-            if (parent.getLocalName().equals(
-                    SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME)) {
+            if (parent.getLocalName().equals(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME)) {
                 if (localName.equals(SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME)) {
                     if (!valuePresent) {
                         elementType = AxiomNodeFactory::createSOAP12FaultValue;
@@ -176,8 +168,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                             localName + " is not supported inside the code element");
                 }
 
-            } else if (parent.getLocalName().equals(
-                    SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME)) {
+            } else if (parent.getLocalName().equals(SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME)) {
                 if (localName.equals(SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME)) {
                     elementType = AxiomNodeFactory::createSOAP12FaultText;
                     reasonProcessing = false;
@@ -185,8 +176,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     throw new SOAPProcessingException(
                             localName + " is not supported inside the reason");
                 }
-            } else if (parent.getLocalName().equals(
-                    SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
+            } else if (parent.getLocalName().equals(SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
                 elementType = AxiomNodeFactory::createNSAwareElement;
                 processingDetailElements = true;
                 detailElementNames = new Vector<String>();
@@ -194,18 +184,14 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
 
             } else {
                 throw new SOAPProcessingException(
-                        parent.getLocalName() +
-                                " should not have child element");
+                        parent.getLocalName() + " should not have child element");
             }
 
-
         } else if (elementLevel > 5) {
-            if (parent.getLocalName().equals(
-                    SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME)) {
+            if (parent.getLocalName().equals(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME)) {
                 if (localName.equals(SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME)) {
                     if (subcodeValuePresent) {
-                        throw new SOAPProcessingException(
-                                "multiple subCode value encountered");
+                        throw new SOAPProcessingException("multiple subCode value encountered");
                     } else {
                         elementType = AxiomNodeFactory::createSOAP12FaultValue;
                         subcodeValuePresent = true;
@@ -220,8 +206,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                             subSubcodePresent = true;
                             subCodeProcessing = true;
                         } else {
-                            throw new SOAPProcessingException(
-                                    "multiple subcode encountered");
+                            throw new SOAPProcessingException("multiple subcode encountered");
                         }
                     } else {
                         throw new SOAPProcessingException(
@@ -235,8 +220,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 int detailElementLevel = 0;
                 boolean localNameExist = false;
                 for (int i = 0; i < detailElementNames.size(); i++) {
-                    if (parent.getLocalName().equals(
-                            detailElementNames.get(i))) {
+                    if (parent.getLocalName().equals(detailElementNames.get(i))) {
                         localNameExist = true;
                         detailElementLevel = i + 1;
                     }
@@ -249,9 +233,9 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
 
             } else {
                 throw new SOAPProcessingException(
-                        parent.getLocalName() +
-                                " should not have child at element level " +
-                                elementLevel);
+                        parent.getLocalName()
+                                + " should not have child at element level "
+                                + elementLevel);
             }
         }
         return elementType;

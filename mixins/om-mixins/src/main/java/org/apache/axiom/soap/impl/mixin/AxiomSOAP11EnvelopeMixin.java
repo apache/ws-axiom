@@ -32,8 +32,10 @@ public abstract class AxiomSOAP11EnvelopeMixin implements AxiomSOAP11Envelope {
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP11Envelope.class;
     }
-    
+
     public final boolean isChildElementAllowed(OMElement child) {
-        return !(child instanceof AxiomSOAPElement) || child instanceof SOAPHeader || child instanceof SOAPBody;
+        return !(child instanceof AxiomSOAPElement)
+                || child instanceof SOAPHeader
+                || child instanceof SOAPBody;
     }
 }

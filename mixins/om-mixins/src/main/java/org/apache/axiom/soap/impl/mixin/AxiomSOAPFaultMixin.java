@@ -38,8 +38,11 @@ import org.apache.axiom.weaver.annotation.Mixin;
 @Mixin
 public abstract class AxiomSOAPFaultMixin implements AxiomSOAPFault {
     public final boolean isChildElementAllowed(OMElement child) {
-        return child instanceof SOAPFaultCode || child instanceof SOAPFaultDetail
-                || child instanceof SOAPFaultReason || child instanceof SOAPFaultRole || child instanceof SOAPFaultNode;
+        return child instanceof SOAPFaultCode
+                || child instanceof SOAPFaultDetail
+                || child instanceof SOAPFaultReason
+                || child instanceof SOAPFaultRole
+                || child instanceof SOAPFaultNode;
     }
 
     @Override
@@ -69,14 +72,15 @@ public abstract class AxiomSOAPFaultMixin implements AxiomSOAPFault {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
         sw.flush();
-        SOAPFactory factory = (SOAPFactory)getOMFactory();
+        SOAPFactory factory = (SOAPFactory) getOMFactory();
         SOAPFaultDetail detail = getDetail();
         if (detail == null) {
             detail = factory.createSOAPFaultDetail(this);
             setDetail(detail);
         }
-        OMElement faultDetailEnty = factory.createOMElement(
-                SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, null, detail);
+        OMElement faultDetailEnty =
+                factory.createOMElement(
+                        SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, null, detail);
         faultDetailEnty.setText(sw.getBuffer().toString());
     }
 
@@ -86,8 +90,10 @@ public abstract class AxiomSOAPFaultMixin implements AxiomSOAPFault {
         if (detail == null) {
             return null;
         } else {
-            OMElement exceptionElement = getDetail().getFirstChildWithName(
-                    new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
+            OMElement exceptionElement =
+                    getDetail()
+                            .getFirstChildWithName(
+                                    new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
             if (exceptionElement != null) {
                 return new Exception(exceptionElement.getText());
             } else {

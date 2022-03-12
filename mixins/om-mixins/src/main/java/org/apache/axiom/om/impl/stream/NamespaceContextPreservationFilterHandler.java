@@ -37,14 +37,16 @@ public final class NamespaceContextPreservationFilterHandler extends XmlHandlerW
     // for the same prefix on an ancestor of the element.
     private Set<String> prefixesAlreadyBound;
     private boolean done = false;
-    
-    public NamespaceContextPreservationFilterHandler(XmlHandler parent, CoreElement contextElement) {
+
+    public NamespaceContextPreservationFilterHandler(
+            XmlHandler parent, CoreElement contextElement) {
         super(parent);
         this.contextElement = contextElement;
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix)
+            throws StreamException {
         super.startElement(namespaceURI, localName, prefix);
         if (!done) {
             prefixesAlreadyBound = new HashSet<String>();
@@ -52,7 +54,8 @@ public final class NamespaceContextPreservationFilterHandler extends XmlHandlerW
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI)
+            throws StreamException {
         super.processNamespaceDeclaration(prefix, namespaceURI);
         if (!done) {
             prefixesAlreadyBound.add(prefix);
@@ -68,10 +71,11 @@ public final class NamespaceContextPreservationFilterHandler extends XmlHandlerW
                     CoreAttribute attr = current.coreGetFirstAttribute();
                     while (attr != null) {
                         if (attr instanceof CoreNamespaceDeclaration) {
-                            CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration)attr;
+                            CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration) attr;
                             String prefix = decl.coreGetDeclaredPrefix();
                             if (prefixesAlreadyBound.add(prefix)) {
-                                super.processNamespaceDeclaration(prefix, decl.coreGetCharacterData().toString());
+                                super.processNamespaceDeclaration(
+                                        prefix, decl.coreGetCharacterData().toString());
                             }
                         }
                         attr = attr.coreGetNextAttribute();
@@ -80,7 +84,7 @@ public final class NamespaceContextPreservationFilterHandler extends XmlHandlerW
                     if (!(parent instanceof CoreElement)) {
                         break;
                     }
-                    current = (CoreElement)parent;
+                    current = (CoreElement) parent;
                 }
                 prefixesAlreadyBound = null;
                 done = true;

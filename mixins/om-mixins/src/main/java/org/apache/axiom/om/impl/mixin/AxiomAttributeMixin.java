@@ -32,22 +32,22 @@ import org.apache.axiom.weaver.annotation.Mixin;
 public abstract class AxiomAttributeMixin implements AxiomAttribute {
     @Override
     public final OMElement getOwner() {
-        return (OMElement)coreGetOwnerElement();
+        return (OMElement) coreGetOwnerElement();
     }
 
-    final void beforeSetLocalName() {
-    }
-    
+    final void beforeSetLocalName() {}
+
     @Override
     public final void setNamespace(OMNamespace namespace, boolean decl) {
-        internalSetNamespace(NSUtil.handleNamespace((AxiomElement)getOwner(), namespace, true, decl));
+        internalSetNamespace(
+                NSUtil.handleNamespace((AxiomElement) getOwner(), namespace, true, decl));
     }
-    
+
     @Override
     public final void setOMNamespace(OMNamespace omNamespace) {
         internalSetNamespace(omNamespace);
     }
-    
+
     @Override
     public final String getAttributeValue() {
         try {
@@ -56,7 +56,7 @@ public abstract class AxiomAttributeMixin implements AxiomAttribute {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
     public final void setAttributeValue(String value) {
         try {
@@ -65,7 +65,7 @@ public abstract class AxiomAttributeMixin implements AxiomAttribute {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
     public final String getAttributeType() {
         return coreGetType();
@@ -75,7 +75,7 @@ public abstract class AxiomAttributeMixin implements AxiomAttribute {
     public final void setAttributeType(String type) {
         coreSetType(type);
     }
-    
+
     public final void build() {
         // TODO
     }

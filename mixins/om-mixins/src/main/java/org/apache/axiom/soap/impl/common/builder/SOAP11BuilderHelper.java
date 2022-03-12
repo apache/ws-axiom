@@ -32,8 +32,9 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
     private boolean faultstringPresent = false;
 
     @Override
-    public AxiomElementType<? extends AxiomElement> handleEvent(OMElement parent, int elementLevel,
-            String namespaceURI, String localName) throws SOAPProcessingException {
+    public AxiomElementType<? extends AxiomElement> handleEvent(
+            OMElement parent, int elementLevel, String namespaceURI, String localName)
+            throws SOAPProcessingException {
         AxiomElementType<? extends AxiomElement> elementType = null;
 
         if (elementLevel == 4) {
@@ -64,16 +65,11 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
             }
 
             if (parentTagName.equals(SOAP_FAULT_CODE_LOCAL_NAME)) {
-                throw new SOAPProcessingException(
-                        "faultcode element should not have children");
-            } else if (parentTagName.equals(
-                    SOAP_FAULT_STRING_LOCAL_NAME)) {
-                throw new SOAPProcessingException(
-                        "faultstring element should not have children");
-            } else if (parentTagName.equals(
-                    SOAP_FAULT_ACTOR_LOCAL_NAME)) {
-                throw new SOAPProcessingException(
-                        "faultactor element should not have children");
+                throw new SOAPProcessingException("faultcode element should not have children");
+            } else if (parentTagName.equals(SOAP_FAULT_STRING_LOCAL_NAME)) {
+                throw new SOAPProcessingException("faultstring element should not have children");
+            } else if (parentTagName.equals(SOAP_FAULT_ACTOR_LOCAL_NAME)) {
+                throw new SOAPProcessingException("faultactor element should not have children");
             } else {
                 elementType = AxiomNodeFactory::createNSAwareElement;
             }

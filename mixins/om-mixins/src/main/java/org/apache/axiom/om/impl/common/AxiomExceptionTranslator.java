@@ -29,21 +29,22 @@ import org.apache.axiom.om.OMException;
 
 public class AxiomExceptionTranslator {
     private AxiomExceptionTranslator() {}
-    
+
     public static OMException translate(CoreModelException ex) {
         if (ex instanceof NodeConsumedException) {
             return new NodeUnavailableException();
         } else if (ex instanceof DeferredParsingException) {
-            throw new org.apache.axiom.om.DeferredParsingException(((DeferredParsingException) ex).getStreamException());
+            throw new org.apache.axiom.om.DeferredParsingException(
+                    ((DeferredParsingException) ex).getStreamException());
         } else {
             return new OMException(ex);
         }
     }
-    
+
     public static XMLStreamException toXMLStreamException(StreamException ex) {
         Throwable cause = ex.getCause();
         if (cause instanceof XMLStreamException) {
-            return (XMLStreamException)cause;
+            return (XMLStreamException) cause;
         } else {
             return new XMLStreamException(ex);
         }

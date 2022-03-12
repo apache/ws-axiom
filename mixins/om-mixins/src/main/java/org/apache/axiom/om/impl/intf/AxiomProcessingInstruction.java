@@ -21,6 +21,8 @@ package org.apache.axiom.om.impl.intf;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.om.OMProcessingInstruction;
 
-public interface AxiomProcessingInstruction extends OMProcessingInstruction, AxiomLeafNode, CoreProcessingInstruction, AxiomCoreParentNode {
-
-}
+public interface AxiomProcessingInstruction
+        extends OMProcessingInstruction,
+                AxiomLeafNode,
+                CoreProcessingInstruction,
+                AxiomCoreParentNode {}

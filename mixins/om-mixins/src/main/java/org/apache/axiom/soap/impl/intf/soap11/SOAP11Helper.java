@@ -29,7 +29,9 @@ public final class SOAP11Helper extends SOAPHelper {
     public static final SOAP11Helper INSTANCE = new SOAP11Helper();
 
     private SOAP11Helper() {
-        super(SOAPVersion.SOAP11, "SOAP 1.1",
+        super(
+                SOAPVersion.SOAP11,
+                "SOAP 1.1",
                 AxiomNodeFactory::createSOAP11Envelope,
                 AxiomNodeFactory::createSOAP11Header,
                 AxiomNodeFactory::createSOAP11HeaderBlock,
@@ -39,7 +41,8 @@ public final class SOAP11Helper extends SOAPHelper {
                 AxiomNodeFactory::createSOAP11FaultReason,
                 AxiomNodeFactory::createSOAP11FaultRole,
                 AxiomNodeFactory::createSOAP11FaultDetail,
-                SOAP11Constants.ATTR_ACTOR, null);
+                SOAP11Constants.ATTR_ACTOR,
+                null);
     }
 
     @Override

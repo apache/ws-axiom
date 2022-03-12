@@ -20,6 +20,4 @@ package org.apache.axiom.soap.impl.intf.soap12;
 
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 
-public interface AxiomSOAP12Element extends AxiomSOAPElement {
-
-}
+public interface AxiomSOAP12Element extends AxiomSOAPElement {}

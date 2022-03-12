@@ -65,13 +65,13 @@ public abstract class AxiomProcessingInstructionMixin implements AxiomProcessing
     @Override
     public final void serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
-            writer.writeProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
+            writer.writeProcessingInstruction(
+                    coreGetTarget() + " ", coreGetCharacterData().toString());
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
-    public final void buildWithAttachments() {
-    }
+    public final void buildWithAttachments() {}
 }

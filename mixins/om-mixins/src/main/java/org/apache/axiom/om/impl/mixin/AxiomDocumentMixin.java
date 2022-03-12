@@ -40,7 +40,7 @@ public abstract class AxiomDocumentMixin implements AxiomDocument {
     @Override
     public final OMElement getOMDocumentElement() {
         try {
-            return (OMElement)coreGetDocumentElement();
+            return (OMElement) coreGetDocumentElement();
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }
@@ -52,11 +52,12 @@ public abstract class AxiomDocumentMixin implements AxiomDocument {
             if (documentElement == null) {
                 throw new IllegalArgumentException("documentElement must not be null");
             }
-            AxiomElement existingDocumentElement = (AxiomElement)coreGetDocumentElement();
+            AxiomElement existingDocumentElement = (AxiomElement) coreGetDocumentElement();
             if (existingDocumentElement == null) {
                 addChild(documentElement);
             } else {
-                existingDocumentElement.coreReplaceWith((AxiomElement)documentElement, AxiomSemantics.INSTANCE);
+                existingDocumentElement.coreReplaceWith(
+                        (AxiomElement) documentElement, AxiomSemantics.INSTANCE);
             }
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
@@ -115,13 +116,12 @@ public abstract class AxiomDocumentMixin implements AxiomDocument {
             if (getOMDocumentElement() != null) {
                 throw new OMException("Document element already exists");
             } else {
-                checkDocumentElement((OMElement)child);
+                checkDocumentElement((OMElement) child);
             }
         }
     }
 
-    public void checkDocumentElement(OMElement element) {
-    }
+    public void checkDocumentElement(OMElement element) {}
 
     @Override
     public final CoreElement getContextElement() {
@@ -130,6 +130,10 @@ public abstract class AxiomDocumentMixin implements AxiomDocument {
 
     @Override
     public Iterator<OMSerializable> getDescendants(boolean includeSelf) {
-        return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, AxiomSerializable.class, Mappers.<OMSerializable>identity(), AxiomSemantics.INSTANCE);
+        return coreGetNodes(
+                includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS,
+                AxiomSerializable.class,
+                Mappers.<OMSerializable>identity(),
+                AxiomSemantics.INSTANCE);
     }
 }

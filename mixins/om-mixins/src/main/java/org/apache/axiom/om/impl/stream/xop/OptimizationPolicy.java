@@ -30,72 +30,72 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
  * using XOP. The implementation takes the decision based on the submitted binary content and the
  * "eligible for optimization" flag. Depending on the context of use, this flag is provided by the
  * return value of {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader#isOptimized()} or
- * the <code>optimize</code> argument of
- * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerWriter#writeDataHandler(DataHandler, String, boolean)}
- * or
- * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerWriter#writeDataHandler(DataHandlerProvider, String, boolean)}.
+ * the <code>optimize</code> argument of {@link
+ * org.apache.axiom.ext.stax.datahandler.DataHandlerWriter#writeDataHandler(DataHandler, String,
+ * boolean)} or {@link
+ * org.apache.axiom.ext.stax.datahandler.DataHandlerWriter#writeDataHandler(DataHandlerProvider,
+ * String, boolean)}.
  */
 public interface OptimizationPolicy {
     /**
      * Policy implementation that optimizes all binary content marked as eligible for optimization.
      */
-    OptimizationPolicy DEFAULT = new OptimizationPolicy() {
-        @Override
-        public boolean isOptimized(DataHandler dataHandler, boolean optimize) {
-            return optimize;
-        }
+    OptimizationPolicy DEFAULT =
+            new OptimizationPolicy() {
+                @Override
+                public boolean isOptimized(DataHandler dataHandler, boolean optimize) {
+                    return optimize;
+                }
 
-        @Override
-        public boolean isOptimized(DataHandlerProvider dataHandlerProvider, boolean optimize) {
-            return optimize;
-        }
-    };
-    
+                @Override
+                public boolean isOptimized(
+                        DataHandlerProvider dataHandlerProvider, boolean optimize) {
+                    return optimize;
+                }
+            };
+
     /**
      * Policy implementation that optimizes all binary content, regardless of whether is has been
      * marked as eligible for optimization.
      */
-    OptimizationPolicy ALL = new OptimizationPolicy() {
-        @Override
-        public boolean isOptimized(DataHandler dataHandler, boolean optimize) {
-            return true;
-        }
+    OptimizationPolicy ALL =
+            new OptimizationPolicy() {
+                @Override
+                public boolean isOptimized(DataHandler dataHandler, boolean optimize) {
+                    return true;
+                }
 
-        @Override
-        public boolean isOptimized(DataHandlerProvider dataHandlerProvider, boolean optimize) {
-            return true;
-        }
-    };
-    
+                @Override
+                public boolean isOptimized(
+                        DataHandlerProvider dataHandlerProvider, boolean optimize) {
+                    return true;
+                }
+            };
+
     /**
      * Determine whether the binary content supplied by a given {@link DataHandler} should be
      * optimized.
-     * 
-     * @param dataHandler
-     *            the binary content
-     * @param optimize
-     *            indicates whether the binary content was initially marked as eligible for
-     *            optimization (see above)
+     *
+     * @param dataHandler the binary content
+     * @param optimize indicates whether the binary content was initially marked as eligible for
+     *     optimization (see above)
      * @return <code>true</code> if the binary content should be optimized using XOP, i.e. encoded
-     *         using {@code xop:Include}
-     * @throws IOException
-     *             if an error occurs while reading the data handler
+     *     using {@code xop:Include}
+     * @throws IOException if an error occurs while reading the data handler
      */
     boolean isOptimized(DataHandler dataHandler, boolean optimize) throws IOException;
-    
+
     /**
      * Determine whether the binary content supplied by a given {@link DataHandlerProvider} should
      * be optimized.
-     * 
-     * @param dataHandlerProvider
-     *            the binary content
-     * @param optimize
-     *            indicates whether the binary content was initially marked as eligible for
-     *            optimization (see above)
+     *
+     * @param dataHandlerProvider the binary content
+     * @param optimize indicates whether the binary content was initially marked as eligible for
+     *     optimization (see above)
      * @return <code>true</code> if the binary content should be optimized using XOP, i.e. encoded
-     *         using {@code xop:Include}
-     * @throws IOException
-     *             if an error occurs while reading the data handler
+     *     using {@code xop:Include}
+     * @throws IOException if an error occurs while reading the data handler
      */
-    boolean isOptimized(DataHandlerProvider dataHandlerProvider, boolean optimize) throws IOException;
+    boolean isOptimized(DataHandlerProvider dataHandlerProvider, boolean optimize)
+            throws IOException;
 }

@@ -34,12 +34,15 @@ import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.TextContent;
 
-public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler implements XOPHandler, OMAttachmentAccessor {
-    private final Map<String,Object> dataHandlerObjects = new LinkedHashMap<String,Object>();
+public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler
+        implements XOPHandler, OMAttachmentAccessor {
+    private final Map<String, Object> dataHandlerObjects = new LinkedHashMap<String, Object>();
     private final ContentIDGenerator contentIDGenerator;
     private final OptimizationPolicy optimizationPolicy;
 
-    public XOPEncodingFilterHandler(XmlHandler parent, ContentIDGenerator contentIDGenerator,
+    public XOPEncodingFilterHandler(
+            XmlHandler parent,
+            ContentIDGenerator contentIDGenerator,
             OptimizationPolicy optimizationPolicy) {
         super(parent);
         this.contentIDGenerator = contentIDGenerator;
@@ -66,10 +69,10 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
     /**
      * Get the set of content IDs referenced in {@code xop:Include} element information items
      * produced by this wrapper.
-     * 
-     * @return The set of content IDs in their order of appearance in the infoset. If no
-     *         {@code xop:Include} element information items have been produced yet, an empty
-     *         set will be returned.
+     *
+     * @return The set of content IDs in their order of appearance in the infoset. If no {@code
+     *     xop:Include} element information items have been produced yet, an empty set will be
+     *     returned.
      */
     public Set<String> getContentIDs() {
         return Collections.unmodifiableSet(dataHandlerObjects.keySet());
@@ -81,10 +84,10 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
         if (dataHandlerObject == null) {
             return null;
         } else if (dataHandlerObject instanceof DataHandler) {
-            return (DataHandler)dataHandlerObject;
+            return (DataHandler) dataHandlerObject;
         } else {
             try {
-                return ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+                return ((DataHandlerProvider) dataHandlerObject).getDataHandler();
             } catch (IOException ex) {
                 throw new OMException(ex);
             }
@@ -94,21 +97,27 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
     @Override
     protected String processCharacterData(Object data) throws StreamException {
         if (data instanceof TextContent) {
-            TextContent textContent = (TextContent)data;
+            TextContent textContent = (TextContent) data;
             if (textContent.isBinary()) {
                 Object dataHandlerObject = textContent.getDataHandlerObject();
                 boolean optimize;
                 try {
                     if (dataHandlerObject instanceof DataHandlerProvider) {
-                        optimize = optimizationPolicy.isOptimized((DataHandlerProvider)dataHandlerObject, textContent.isOptimize());
+                        optimize =
+                                optimizationPolicy.isOptimized(
+                                        (DataHandlerProvider) dataHandlerObject,
+                                        textContent.isOptimize());
                     } else {
-                        optimize = optimizationPolicy.isOptimized((DataHandler)dataHandlerObject, textContent.isOptimize());
+                        optimize =
+                                optimizationPolicy.isOptimized(
+                                        (DataHandler) dataHandlerObject, textContent.isOptimize());
                     }
                 } catch (IOException ex) {
                     throw new StreamException(ex);
                 }
                 if (optimize) {
-                    String contentID = contentIDGenerator.generateContentID(textContent.getContentID());
+                    String contentID =
+                            contentIDGenerator.generateContentID(textContent.getContentID());
                     dataHandlerObjects.put(contentID, dataHandlerObject);
                     return contentID;
                 }

@@ -26,7 +26,7 @@ public final class ContentIDGeneratorImpl implements ContentIDGenerator {
     public ContentIDGeneratorImpl(OMOutputFormat format) {
         this.format = format;
     }
-    
+
     @Override
     public String generateContentID(String existingContentID) {
         return existingContentID != null ? existingContentID : format.getNextContentId();

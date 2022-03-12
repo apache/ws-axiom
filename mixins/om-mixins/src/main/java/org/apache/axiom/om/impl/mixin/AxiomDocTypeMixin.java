@@ -65,8 +65,7 @@ public abstract class AxiomDocTypeMixin implements AxiomDocType {
             throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }
     }
-    
+
     @Override
-    public final void buildWithAttachments() {
-    }
+    public final void buildWithAttachments() {}
 }

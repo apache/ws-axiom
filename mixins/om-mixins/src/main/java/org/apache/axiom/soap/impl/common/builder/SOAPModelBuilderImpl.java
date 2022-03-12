@@ -27,21 +27,19 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
 
-/**
- * Internal implementation class.
- */
+/** Internal implementation class. */
 public class SOAPModelBuilderImpl extends OMXMLParserWrapperImpl implements SOAPModelBuilder {
     public SOAPModelBuilderImpl(BuilderImpl builder, Detachable detachable) {
         super(builder, detachable);
     }
-    
+
     @Override
     public SOAPEnvelope getSOAPEnvelope() throws OMException {
-        return (SOAPEnvelope)getDocumentElement();
+        return (SOAPEnvelope) getDocumentElement();
     }
 
     @Override
     public SOAPMessage getSOAPMessage() {
-        return (SOAPMessage)getDocument();
+        return (SOAPMessage) getDocument();
     }
 }

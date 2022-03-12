@@ -61,8 +61,7 @@ public abstract class AxiomCommentMixin implements AxiomComment {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
-    public final void buildWithAttachments() {
-    }
+    public final void buildWithAttachments() {}
 }

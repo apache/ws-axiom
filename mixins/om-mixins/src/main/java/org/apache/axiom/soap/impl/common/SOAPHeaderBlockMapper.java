@@ -26,18 +26,22 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
 
-public final class SOAPHeaderBlockMapper implements Mapper<SOAPHeaderBlock,AxiomElement> {
+public final class SOAPHeaderBlockMapper implements Mapper<SOAPHeaderBlock, AxiomElement> {
     public static final SOAPHeaderBlockMapper INSTANCE = new SOAPHeaderBlockMapper();
-    
+
     private SOAPHeaderBlockMapper() {}
-    
+
     @Override
     public SOAPHeaderBlock map(AxiomElement element) {
         if (element instanceof SOAPHeaderBlock) {
-            return (SOAPHeaderBlock)element;
+            return (SOAPHeaderBlock) element;
         } else {
             try {
-                AxiomSOAPHeaderBlock newElement = ((AxiomSOAPHeader)element.coreGetParent()).getSOAPHelper().getHeaderBlockType().create(element.getNodeFactory());
+                AxiomSOAPHeaderBlock newElement =
+                        ((AxiomSOAPHeader) element.coreGetParent())
+                                .getSOAPHelper()
+                                .getHeaderBlockType()
+                                .create(element.getNodeFactory());
                 element.corePromote(newElement, AxiomSemantics.INSTANCE);
                 return newElement;
             } catch (CoreModelException ex) {

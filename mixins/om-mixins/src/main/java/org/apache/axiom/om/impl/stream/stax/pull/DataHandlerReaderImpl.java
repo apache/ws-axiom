@@ -38,7 +38,7 @@ final class DataHandlerReaderImpl implements DataHandlerReader {
     public boolean isBinary() {
         if (reader.getEventType() == XMLStreamReader.CHARACTERS) {
             Object data = reader.getCharacterData();
-            return data instanceof TextContent && ((TextContent)data).isBinary();
+            return data instanceof TextContent && ((TextContent) data).isBinary();
         } else {
             return false;
         }
@@ -46,26 +46,28 @@ final class DataHandlerReaderImpl implements DataHandlerReader {
 
     @Override
     public boolean isOptimized() {
-        return ((TextContent)reader.getCharacterData()).isOptimize();
+        return ((TextContent) reader.getCharacterData()).isOptimize();
     }
 
     @Override
     public boolean isDeferred() {
-        return ((TextContent)reader.getCharacterData()).getDataHandlerObject() instanceof DataHandlerProvider;
+        return ((TextContent) reader.getCharacterData()).getDataHandlerObject()
+                instanceof DataHandlerProvider;
     }
 
     @Override
     public String getContentID() {
-        return ((TextContent)reader.getCharacterData()).getContentID();
+        return ((TextContent) reader.getCharacterData()).getContentID();
     }
 
     @Override
     public DataHandler getDataHandler() throws XMLStreamException {
-        return ((TextContent)reader.getCharacterData()).getDataHandler();
+        return ((TextContent) reader.getCharacterData()).getDataHandler();
     }
 
     @Override
     public DataHandlerProvider getDataHandlerProvider() {
-        return (DataHandlerProvider)((TextContent)reader.getCharacterData()).getDataHandlerObject();
+        return (DataHandlerProvider)
+                ((TextContent) reader.getCharacterData()).getDataHandlerObject();
     }
 }

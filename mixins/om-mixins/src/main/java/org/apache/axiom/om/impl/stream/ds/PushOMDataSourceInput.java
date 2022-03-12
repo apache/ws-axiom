@@ -37,15 +37,15 @@ public final class PushOMDataSourceInput implements XmlInput {
         this.root = root;
         this.dataSource = dataSource;
     }
-    
+
     @Override
     public XmlReader createReader(XmlHandler handler) {
         XmlHandler unwrappedHandler = handler;
         while (unwrappedHandler instanceof XmlHandlerWrapper) {
-            unwrappedHandler = ((XmlHandlerWrapper)unwrappedHandler).getParent();
+            unwrappedHandler = ((XmlHandlerWrapper) unwrappedHandler).getParent();
         }
         if (unwrappedHandler instanceof XMLStreamWriterHandler) {
-            XMLStreamWriter writer = ((XMLStreamWriterHandler)unwrappedHandler).getWriter();
+            XMLStreamWriter writer = ((XMLStreamWriterHandler) unwrappedHandler).getWriter();
             // This condition is to cover the case where the following conditions are met:
             //  - The OMDataSource uses MTOMXMLStreamWriter to add optimized binary data.
             //  - The tree is serialized to an XMLStreamWriter that implements the

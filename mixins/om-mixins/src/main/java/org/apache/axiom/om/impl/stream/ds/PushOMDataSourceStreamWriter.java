@@ -25,8 +25,8 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
 
 /**
- * {@link XMLStreamWriter} wrapper that throws exceptions for invocations of methods that
- * {@link OMDataSource#serialize(XMLStreamWriter)} is not allowed to call.
+ * {@link XMLStreamWriter} wrapper that throws exceptions for invocations of methods that {@link
+ * OMDataSource#serialize(XMLStreamWriter)} is not allowed to call.
  */
 public final class PushOMDataSourceStreamWriter extends XMLStreamWriterWrapper {
     PushOMDataSourceStreamWriter(XMLStreamWriter parent) {
@@ -40,22 +40,26 @@ public final class PushOMDataSourceStreamWriter extends XMLStreamWriterWrapper {
 
     @Override
     public void writeStartDocument() {
-        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument()");
+        throw new UnsupportedOperationException(
+                "OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument()");
     }
 
     @Override
     public void writeStartDocument(String encoding, String version) {
-        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument(String, String)");
+        throw new UnsupportedOperationException(
+                "OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument(String, String)");
     }
 
     @Override
     public void writeStartDocument(String version) {
-        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument(String)");
+        throw new UnsupportedOperationException(
+                "OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument(String)");
     }
 
     @Override
     public void writeEndDocument() {
-        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeEndDocument()");
+        throw new UnsupportedOperationException(
+                "OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeEndDocument()");
     }
 
     @Override
@@ -65,12 +69,14 @@ public final class PushOMDataSourceStreamWriter extends XMLStreamWriterWrapper {
 
     @Override
     public void writeStartElement(String localName) throws XMLStreamException {
-        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartElement(String)");
+        throw new UnsupportedOperationException(
+                "OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartElement(String)");
     }
 
     @Override
     public void writeEmptyElement(String localName) throws XMLStreamException {
-        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeEmptyElement(String)");
+        throw new UnsupportedOperationException(
+                "OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeEmptyElement(String)");
     }
 
     @Override
@@ -80,6 +86,7 @@ public final class PushOMDataSourceStreamWriter extends XMLStreamWriterWrapper {
 
     @Override
     public void close() throws XMLStreamException {
-        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT call XMLStreamWriter#close()");
+        throw new UnsupportedOperationException(
+                "OMDataSource#serialize(XMLStreamWriter) MUST NOT call XMLStreamWriter#close()");
     }
 }

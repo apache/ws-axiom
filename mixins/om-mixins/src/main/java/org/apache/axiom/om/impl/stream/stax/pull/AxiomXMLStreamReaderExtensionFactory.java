@@ -25,10 +25,11 @@ import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 
 public final class AxiomXMLStreamReaderExtensionFactory implements XMLStreamReaderExtensionFactory {
-    public static final AxiomXMLStreamReaderExtensionFactory INSTANCE = new AxiomXMLStreamReaderExtensionFactory();
+    public static final AxiomXMLStreamReaderExtensionFactory INSTANCE =
+            new AxiomXMLStreamReaderExtensionFactory();
 
     private AxiomXMLStreamReaderExtensionFactory() {}
-    
+
     @Override
     public Object createExtension(String propertyName, InternalXMLStreamReader reader) {
         if (propertyName.equals(DataHandlerReader.PROPERTY)) {

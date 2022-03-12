@@ -32,10 +32,10 @@ public abstract class AxiomSOAPBodyMixin implements AxiomSOAPBody {
     public final boolean isChildElementAllowed(OMElement child) {
         return !(child instanceof AxiomSOAPElement) || child instanceof SOAPFault;
     }
-    
+
     @Override
     public final SOAPFault addFault(Exception e) throws OMException {
-        return ((SOAPFactory)getOMFactory()).createSOAPFault(this, e);
+        return ((SOAPFactory) getOMFactory()).createSOAPFault(this, e);
     }
 
     @Override
@@ -48,7 +48,7 @@ public abstract class AxiomSOAPBodyMixin implements AxiomSOAPBody {
         OMElement element = getFirstElement();
         return element == null ? null : element.getNamespace();
     }
-    
+
     @Override
     public final String getFirstElementLocalName() {
         OMElement element = getFirstElement();
@@ -58,7 +58,7 @@ public abstract class AxiomSOAPBodyMixin implements AxiomSOAPBody {
     @Override
     public final SOAPFault getFault() {
         OMElement element = getFirstElement();
-        return element instanceof SOAPFault ? (SOAPFault)element : null;
+        return element instanceof SOAPFault ? (SOAPFault) element : null;
     }
 
     @Override

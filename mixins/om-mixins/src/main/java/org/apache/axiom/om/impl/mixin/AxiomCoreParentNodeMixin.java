@@ -39,7 +39,8 @@ public abstract class AxiomCoreParentNodeMixin implements AxiomCoreParentNode {
                     if (isExpanded()) {
                         CoreChildNode child = coreGetFirstChild();
                         while (child != null) {
-                            if (!(child instanceof AxiomSourcedElement || ((AxiomSerializable)child).isComplete())) {
+                            if (!(child instanceof AxiomSourcedElement
+                                    || ((AxiomSerializable) child).isComplete())) {
                                 return false;
                             }
                             child = child.coreGetNextSibling();
@@ -53,7 +54,7 @@ public abstract class AxiomCoreParentNodeMixin implements AxiomCoreParentNode {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
     public final void build() {
         try {
@@ -67,14 +68,15 @@ public abstract class AxiomCoreParentNodeMixin implements AxiomCoreParentNode {
                     }
                     // Fall through
                 case INCOMPLETE:
-                    // First do the children that have already been created; only they need recursion.
+                    // First do the children that have already been created; only they need
+                    // recursion.
                     CoreChildNode child = coreGetFirstChildIfAvailable();
                     while (child != null) {
                         // Historically, Axiom skipped OMSourcedElements in the tree. Quote: "The
                         // OMSourcedElement has its own isolated builder/reader during the
                         // expansion process."
                         if (!(child instanceof AxiomSourcedElement)) {
-                            ((AxiomSerializable)child).build();
+                            ((AxiomSerializable) child).build();
                         }
                         child = child.coreGetNextSibling();
                     }

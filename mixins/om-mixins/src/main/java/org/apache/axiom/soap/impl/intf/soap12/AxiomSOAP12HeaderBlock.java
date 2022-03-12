@@ -20,6 +20,4 @@ package org.apache.axiom.soap.impl.intf.soap12;
 
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
 
-public interface AxiomSOAP12HeaderBlock extends AxiomSOAPHeaderBlock, AxiomSOAP12Element {
-
-}
+public interface AxiomSOAP12HeaderBlock extends AxiomSOAPHeaderBlock, AxiomSOAP12Element {}

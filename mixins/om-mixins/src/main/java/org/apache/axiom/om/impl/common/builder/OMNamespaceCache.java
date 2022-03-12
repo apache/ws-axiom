@@ -24,7 +24,7 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 public final class OMNamespaceCache {
     private OMNamespace[] items = new OMNamespace[16];
     private int size;
-    
+
     public OMNamespace getOMNamespace(String uri, String prefix) {
         if (uri.isEmpty() && prefix.isEmpty()) {
             return null;
@@ -41,9 +41,9 @@ public final class OMNamespaceCache {
                 index = 0;
             }
         }
-        if (items.length < size*4/3) {
+        if (items.length < size * 4 / 3) {
             OMNamespace[] oldItems = items;
-            items = new OMNamespace[items.length*2];
+            items = new OMNamespace[items.length * 2];
             for (OMNamespace ns : oldItems) {
                 if (ns != null) {
                     items[freeIndex(ns.getNamespaceURI(), ns.getPrefix())] = ns;
@@ -56,11 +56,11 @@ public final class OMNamespaceCache {
         size++;
         return ns;
     }
-    
+
     private int index(String uri, String prefix) {
-        return (uri.hashCode() ^ prefix.hashCode()) & (items.length-1);
+        return (uri.hashCode() ^ prefix.hashCode()) & (items.length - 1);
     }
-    
+
     private int freeIndex(String uri, String prefix) {
         int index = index(uri, prefix);
         while (items[index] != null) {

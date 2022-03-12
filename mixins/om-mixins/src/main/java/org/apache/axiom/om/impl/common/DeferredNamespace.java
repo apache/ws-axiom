@@ -23,9 +23,9 @@ import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 public final class DeferredNamespace implements OMNamespace {
     private final AxiomSourcedElement element;
-    
+
     final String uri;
-    
+
     public DeferredNamespace(AxiomSourcedElement element, String ns) {
         this.element = element;
         this.uri = ns;
@@ -34,9 +34,8 @@ public final class DeferredNamespace implements OMNamespace {
     @Override
     public boolean equals(String uri, String prefix) {
         String thisPrefix = getPrefix();
-        return (this.uri.equals(uri) &&
-                (thisPrefix == null ? prefix == null :
-                        thisPrefix.equals(prefix)));
+        return (this.uri.equals(uri)
+                && (thisPrefix == null ? prefix == null : thisPrefix.equals(prefix)));
     }
 
     @Override
@@ -57,23 +56,22 @@ public final class DeferredNamespace implements OMNamespace {
         OMNamespace actualNS = element.getNamespace();
         return actualNS == null ? "" : actualNS.getPrefix();
     }
-    
+
     @Override
     public int hashCode() {
         String thisPrefix = getPrefix();
         return uri.hashCode() ^ (thisPrefix != null ? thisPrefix.hashCode() : 0);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof OMNamespace)) {
             return false;
         }
-        OMNamespace other = (OMNamespace)obj;
+        OMNamespace other = (OMNamespace) obj;
         String otherPrefix = other.getPrefix();
         String thisPrefix = getPrefix();
-        return (uri.equals(other.getNamespaceURI()) &&
-                (thisPrefix == null ? otherPrefix == null :
-                        thisPrefix.equals(otherPrefix)));
+        return (uri.equals(other.getNamespaceURI())
+                && (thisPrefix == null ? otherPrefix == null : thisPrefix.equals(otherPrefix)));
     }
 }

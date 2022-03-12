@@ -63,15 +63,18 @@ public final class SOAPModel implements Model {
     }
 
     @Override
-    public CoreNSAwareElement createElement(CoreParentNode parent,
-            int elementLevel, String namespaceURI, String localName) {
+    public CoreNSAwareElement createElement(
+            CoreParentNode parent, int elementLevel, String namespaceURI, String localName) {
         if (elementLevel == 1) {
 
             // Now I've found a SOAP Envelope, now create SOAPEnvelope here.
 
             if (!localName.equals(SOAPConstants.SOAPENVELOPE_LOCAL_NAME)) {
-                throw new SOAPProcessingException("First Element must contain the local name, "
-                        + SOAPConstants.SOAPENVELOPE_LOCAL_NAME + " , but found " + localName,
+                throw new SOAPProcessingException(
+                        "First Element must contain the local name, "
+                                + SOAPConstants.SOAPENVELOPE_LOCAL_NAME
+                                + " , but found "
+                                + localName,
                         SOAPConstants.FAULT_CODE_SENDER);
             }
 
@@ -84,8 +87,8 @@ public final class SOAPModel implements Model {
                 log.debug("Starting to process SOAP 1.1 message");
             } else {
                 throw new SOAPProcessingException(
-                        "Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
-                                " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
+                        "Only SOAP 1.1 or SOAP 1.2 messages are supported in the" + " system",
+                        SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
             }
 
             return soapHelper.getEnvelopeType().create(nodeFactory);
@@ -94,47 +97,49 @@ public final class SOAPModel implements Model {
                 // this is either a header or a body
                 if (localName.equals(SOAPConstants.HEADER_LOCAL_NAME)) {
                     if (headerPresent) {
-                        throw new SOAPProcessingException("Multiple headers encountered!",
-                                                          getSenderFaultCode());
+                        throw new SOAPProcessingException(
+                                "Multiple headers encountered!", getSenderFaultCode());
                     }
                     if (bodyPresent) {
-                        throw new SOAPProcessingException("Header Body wrong order!",
-                                                          getSenderFaultCode());
+                        throw new SOAPProcessingException(
+                                "Header Body wrong order!", getSenderFaultCode());
                     }
                     headerPresent = true;
                     return soapHelper.getHeaderType().create(nodeFactory);
                 } else if (localName.equals(SOAPConstants.BODY_LOCAL_NAME)) {
                     if (bodyPresent) {
-                        throw new SOAPProcessingException("Multiple body elements encountered",
-                                                          getSenderFaultCode());
+                        throw new SOAPProcessingException(
+                                "Multiple body elements encountered", getSenderFaultCode());
                     }
                     bodyPresent = true;
                     return soapHelper.getBodyType().create(nodeFactory);
                 } else {
-                    throw new SOAPProcessingException(localName + " is not supported here.",
-                                                      getSenderFaultCode());
+                    throw new SOAPProcessingException(
+                            localName + " is not supported here.", getSenderFaultCode());
                 }
             } else if (soapHelper == SOAP11Helper.INSTANCE && bodyPresent) {
                 return null;
             } else {
-                throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
-                        + namespaceURI + "}" + localName);
+                throw new SOAPProcessingException(
+                        "Disallowed element found inside Envelope : {"
+                                + namespaceURI
+                                + "}"
+                                + localName);
             }
         } else if ((elementLevel == 3)
-                &&
-                ((OMElement)parent).getLocalName().equals(SOAPConstants.HEADER_LOCAL_NAME)) {
+                && ((OMElement) parent).getLocalName().equals(SOAPConstants.HEADER_LOCAL_NAME)) {
 
             // this is a headerblock
             try {
                 return soapHelper.getHeaderBlockType().create(nodeFactory);
             } catch (SOAPProcessingException e) {
-                throw new SOAPProcessingException("Can not create SOAPHeader block",
-                                                  getReceiverFaultCode(), e);
+                throw new SOAPProcessingException(
+                        "Can not create SOAPHeader block", getReceiverFaultCode(), e);
             }
-        } else if ((elementLevel == 3) &&
-                ((OMElement)parent).getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME) &&
-                localName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME) &&
-                soapHelper.getEnvelopeURI().equals(namespaceURI)) {
+        } else if ((elementLevel == 3)
+                && ((OMElement) parent).getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME)
+                && localName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME)
+                && soapHelper.getEnvelopeURI().equals(namespaceURI)) {
             // this is a SOAP fault
             processingFault = true;
             if (soapHelper == SOAP12Helper.INSTANCE) {
@@ -145,7 +150,9 @@ public final class SOAPModel implements Model {
             return soapHelper.getFaultType().create(nodeFactory);
 
         } else if (elementLevel > 3 && processingFault) {
-            return builderHelper.handleEvent((OMElement)parent, elementLevel, namespaceURI, localName).create(nodeFactory);
+            return builderHelper
+                    .handleEvent((OMElement) parent, elementLevel, namespaceURI, localName)
+                    .create(nodeFactory);
         } else {
             // this is neither of above. Just create an element
             return null;

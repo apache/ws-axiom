@@ -30,14 +30,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * {@link OptimizationPolicy} implementation that takes a decision based on the
- * settings in {@link OMOutputFormat}.
- * <p>
- * For internal use only.
+ * {@link OptimizationPolicy} implementation that takes a decision based on the settings in {@link
+ * OMOutputFormat}.
+ *
+ * <p>For internal use only.
  */
 public final class OptimizationPolicyImpl implements OptimizationPolicy {
     private static final Log log = LogFactory.getLog(OptimizationPolicyImpl.class);
-    
+
     private final OMOutputFormat format;
 
     public OptimizationPolicyImpl(OMOutputFormat format) {
@@ -64,7 +64,7 @@ public final class OptimizationPolicyImpl implements OptimizationPolicy {
     @Override
     public boolean isOptimized(DataHandlerProvider dataHandlerProvider, boolean optimize)
             throws IOException {
-        
+
         if (!optimize) {
             return false;
         } else if (format.getOptimizedThreshold() == 0) {

@@ -55,26 +55,26 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * <p>Element backed by an arbitrary data source. When necessary, this element will be expanded by
- * creating a parser from the data source.</p>
- * <p/>
- * <p>Whenever methods are added to the base {@link OMElementImpl}
- * class the corresponding methods must be added to this class (there's a unit test to verify that
- * this has been done, just to make sure nothing gets accidentally broken). If the method only
- * requires the element name and/or namespace information, the base class method can be called
- * directly. Otherwise, the element must be expanded into a full OM tree (by calling the {@link
- * #forceExpand()} method) before the base class method is called. This will typically involve a
- * heavy overhead penalty, so should be avoided if possible.</p>
+ * Element backed by an arbitrary data source. When necessary, this element will be expanded by
+ * creating a parser from the data source.
+ *
+ * <p>Whenever methods are added to the base {@link OMElementImpl} class the corresponding methods
+ * must be added to this class (there's a unit test to verify that this has been done, just to make
+ * sure nothing gets accidentally broken). If the method only requires the element name and/or
+ * namespace information, the base class method can be called directly. Otherwise, the element must
+ * be expanded into a full OM tree (by calling the {@link #forceExpand()} method) before the base
+ * class method is called. This will typically involve a heavy overhead penalty, so should be
+ * avoided if possible.
  */
 @Mixin
 public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
-    
+
     /** Data source for element data. */
     private OMDataSource dataSource;
 
     /** Namespace for element, needed in order to bypass base class handling. */
     private OMNamespace definedNamespace;
-    
+
     /**
      * Flag indicating whether the {@link #definedNamespace} attribute has been set. If this flag is
      * <code>true</code> and {@link #definedNamespace} is <code>null</code> then the element has no
@@ -88,25 +88,27 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
     private boolean isExpanded = true;
 
     private static final Log log = LogFactory.getLog(AxiomSourcedElementMixin.class);
-    
-    private static final Log forceExpandLog = LogFactory.getLog(AxiomSourcedElementMixin.class.getName() + ".forceExpand");
-    
+
+    private static final Log forceExpandLog =
+            LogFactory.getLog(AxiomSourcedElementMixin.class.getName() + ".forceExpand");
+
     private static OMNamespace getOMNamespace(QName qName) {
-        return qName.getNamespaceURI().length() == 0 ? null
+        return qName.getNamespaceURI().length() == 0
+                ? null
                 : new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
     }
-    
+
     @Override
     public Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSourcedElement.class;
     }
-    
+
     @Override
     public void init(OMDataSource source) {
         dataSource = source;
         isExpanded = false;
     }
-    
+
     /**
      * Constructor.
      *
@@ -202,9 +204,8 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         if (!isExpanded && dataSource != null) {
 
             if (log.isDebugEnabled()) {
-                log.debug("forceExpand: expanding element " +
-                        getPrintableName());
-                if(forceExpandLog.isDebugEnabled()){
+                log.debug("forceExpand: expanding element " + getPrintableName());
+                if (forceExpandLog.isDebugEnabled()) {
                     // When using an OMSourcedElement, it can be particularly difficult to
                     // determine why an expand occurs... a stack trace should help debugging this
                     Exception e = new Exception("Debug Stack Trace");
@@ -214,18 +215,36 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
 
             Builder builder;
             if (OMDataSourceUtil.isPushDataSource(dataSource)) {
-                // Disable namespace repairing because the OMDataSource is required to produce well formed
+                // Disable namespace repairing because the OMDataSource is required to produce well
+                // formed
                 // XML with respect to namespaces.
-                builder = new BuilderImpl(new PushOMDataSourceInput(this, dataSource), coreGetNodeFactory().getFactory2(), PlainXMLModel.INSTANCE, this);
+                builder =
+                        new BuilderImpl(
+                                new PushOMDataSourceInput(this, dataSource),
+                                coreGetNodeFactory().getFactory2(),
+                                PlainXMLModel.INSTANCE,
+                                this);
             } else {
                 // Get the XMLStreamReader
                 XMLStreamReader readerFromDS;
                 try {
-                    readerFromDS = dataSource.getReader();  
+                    readerFromDS = dataSource.getReader();
                 } catch (XMLStreamException ex) {
-                    throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
+                    throw new OMException(
+                            "Error obtaining parser from data source for element "
+                                    + getPrintableName(),
+                            ex);
                 }
-                builder = new BuilderImpl(new FilteredXmlInput(new StAXPullInput(readerFromDS, AxiomXMLStreamReaderHelperFactory.INSTANCE), NamespaceRepairingFilter.DEFAULT), coreGetNodeFactory().getFactory2(), PlainXMLModel.INSTANCE, this);
+                builder =
+                        new BuilderImpl(
+                                new FilteredXmlInput(
+                                        new StAXPullInput(
+                                                readerFromDS,
+                                                AxiomXMLStreamReaderHelperFactory.INSTANCE),
+                                        NamespaceRepairingFilter.DEFAULT),
+                                coreGetNodeFactory().getFactory2(),
+                                PlainXMLModel.INSTANCE,
+                                this);
             }
             isExpanded = true;
             coreSetState(ATTRIBUTES_PENDING);
@@ -238,14 +257,14 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
             }
         }
     }
-    
+
     /**
      * Validates that the actual name of the element obtained from StAX matches the information
-     * specified when the sourced element was constructed or retrieved through the
-     * {@link QNameAwareOMDataSource} interface. Also updates the local name if necessary. Note that
-     * the namespace information is not updated; this is the responsibility of the builder (and is
-     * done at the same time as namespace repairing).
-     * 
+     * specified when the sourced element was constructed or retrieved through the {@link
+     * QNameAwareOMDataSource} interface. Also updates the local name if necessary. Note that the
+     * namespace information is not updated; this is the responsibility of the builder (and is done
+     * at the same time as namespace repairing).
+     *
      * @param staxPrefix
      * @param staxLocalName
      * @param staxNamespaceURI
@@ -258,18 +277,25 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         } else {
             // Make sure element local name and namespace matches what was expected
             if (!staxLocalName.equals(internalGetLocalName())) {
-                throw new OMException("Element name from data source is " +
-                        staxLocalName + ", not the expected " + internalGetLocalName());
+                throw new OMException(
+                        "Element name from data source is "
+                                + staxLocalName
+                                + ", not the expected "
+                                + internalGetLocalName());
             }
         }
         if (definedNamespaceSet) {
             if (staxNamespaceURI == null) {
                 staxNamespaceURI = "";
             }
-            String namespaceURI = definedNamespace == null ? "" : definedNamespace.getNamespaceURI();
+            String namespaceURI =
+                    definedNamespace == null ? "" : definedNamespace.getNamespaceURI();
             if (!staxNamespaceURI.equals(namespaceURI)) {
-                throw new OMException("Element namespace from data source is " +
-                        staxNamespaceURI + ", not the expected " + namespaceURI);
+                throw new OMException(
+                        "Element namespace from data source is "
+                                + staxNamespaceURI
+                                + ", not the expected "
+                                + namespaceURI);
             }
             if (!(definedNamespace instanceof DeferredNamespace)) {
                 if (staxPrefix == null) {
@@ -277,13 +303,17 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
                 }
                 String prefix = definedNamespace == null ? "" : definedNamespace.getPrefix();
                 if (!staxPrefix.equals(prefix)) {
-                    throw new OMException("Element prefix from data source is '" +
-                            staxPrefix + "', not the expected '" + prefix + "'");
+                    throw new OMException(
+                            "Element prefix from data source is '"
+                                    + staxPrefix
+                                    + "', not the expected '"
+                                    + prefix
+                                    + "'");
                 }
             }
         }
     }
-    
+
     /**
      * Check if element has been expanded into tree.
      *
@@ -295,22 +325,26 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
     }
 
     @Override
-    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
+    public XMLStreamReader getXMLStreamReader(
+            boolean cache, OMXMLStreamReaderConfiguration configuration) {
         if (log.isDebugEnabled()) {
-            log.debug("getting XMLStreamReader for " + getPrintableName()
-                    + " with cache=" + cache);
+            log.debug("getting XMLStreamReader for " + getPrintableName() + " with cache=" + cache);
         }
         if (isExpanded) {
             return defaultGetXMLStreamReader(cache, configuration);
         } else {
-            if ((cache && OMDataSourceUtil.isDestructiveRead(dataSource)) || OMDataSourceUtil.isPushDataSource(dataSource)) {
+            if ((cache && OMDataSourceUtil.isDestructiveRead(dataSource))
+                    || OMDataSourceUtil.isPushDataSource(dataSource)) {
                 forceExpand();
                 return defaultGetXMLStreamReader(true, configuration);
             } else {
                 try {
-                    return dataSource.getReader();  
+                    return dataSource.getReader();
                 } catch (XMLStreamException ex) {
-                    throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
+                    throw new OMException(
+                            "Error obtaining parser from data source for element "
+                                    + getPrintableName(),
+                            ex);
                 }
             }
         }
@@ -318,7 +352,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
 
     public final void updateLocalName() {
         if (dataSource instanceof QNameAwareOMDataSource) {
-            internalSetLocalName(((QNameAwareOMDataSource)dataSource).getLocalName());
+            internalSetLocalName(((QNameAwareOMDataSource) dataSource).getLocalName());
         }
         if (internalGetLocalName() == null) {
             forceExpand();
@@ -333,7 +367,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
             return definedNamespace;
         } else {
             if (dataSource instanceof QNameAwareOMDataSource) {
-                String namespaceURI = ((QNameAwareOMDataSource)dataSource).getNamespaceURI();
+                String namespaceURI = ((QNameAwareOMDataSource) dataSource).getNamespaceURI();
                 if (namespaceURI != null) {
                     if (namespaceURI.length() == 0) {
                         // No namespace case. definedNamespace is already null, so we only need
@@ -342,7 +376,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
                         // namespace URI.
                         definedNamespaceSet = true;
                     } else {
-                        String prefix = ((QNameAwareOMDataSource)dataSource).getPrefix();
+                        String prefix = ((QNameAwareOMDataSource) dataSource).getPrefix();
                         if (prefix == null) {
                             // Prefix is unknown
                             definedNamespace = new DeferredNamespace(this, namespaceURI);
@@ -377,21 +411,21 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
     }
 
     public <T> void initSource(ClonePolicy<T> policy, T options, CoreElement other) {
-        AxiomSourcedElement o = (AxiomSourcedElement)other;
+        AxiomSourcedElement o = (AxiomSourcedElement) other;
         // If already expanded or this is not an OMDataSourceExt, then
         // create a copy of the OM Tree
         OMDataSource ds = o.getDataSource();
-        if (!(options instanceof OMCloneOptions) || !((OMCloneOptions)options).isCopyOMDataSources() ||
-            ds == null || 
-            o.isExpanded() || 
-            !(ds instanceof OMDataSourceExt)) {
+        if (!(options instanceof OMCloneOptions)
+                || !((OMCloneOptions) options).isCopyOMDataSources()
+                || ds == null
+                || o.isExpanded()
+                || !(ds instanceof OMDataSourceExt)) {
             return;
         }
-        
+
         // If copying is destructive, then copy the OM tree
         OMDataSourceExt sourceDS = (OMDataSourceExt) ds;
-        if (sourceDS.isDestructiveRead() ||
-            sourceDS.isDestructiveWrite()) {
+        if (sourceDS.isDestructiveRead() || sourceDS.isDestructiveWrite()) {
             return;
         }
         OMDataSourceExt targetDS = ((OMDataSourceExt) ds).copy();
@@ -425,12 +459,15 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         } else {
             pull = incremental;
         }
-        if (cache && (pull && OMDataSourceUtil.isDestructiveRead(dataSource) || !pull && OMDataSourceUtil.isDestructiveWrite(dataSource))) {
+        if (cache
+                && (pull && OMDataSourceUtil.isDestructiveRead(dataSource)
+                        || !pull && OMDataSourceUtil.isDestructiveWrite(dataSource))) {
             return null;
         }
         if (pull) {
             try {
-                return new StAXPullInput(dataSource.getReader(), AxiomXMLStreamReaderHelperFactory.INSTANCE);
+                return new StAXPullInput(
+                        dataSource.getReader(), AxiomXMLStreamReaderHelperFactory.INSTANCE);
             } catch (XMLStreamException ex) {
                 throw new StreamException(ex);
             }
@@ -440,8 +477,8 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
     }
 
     /**
-     * Provide access to the data source encapsulated in OMSourcedElement. 
-     * This is usesful when we want to access the raw data in the data source.
+     * Provide access to the data source encapsulated in OMSourcedElement. This is usesful when we
+     * want to access the raw data in the data source.
      *
      * @return the internal datasource
      */
@@ -449,17 +486,15 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
     public OMDataSource getDataSource() {
         return dataSource;
     }
-    
-    /**
-     * setOMDataSource
-     */
+
+    /** setOMDataSource */
     @Override
     public OMDataSource setDataSource(OMDataSource dataSource) {
         try {
             if (!isExpanded()) {
                 OMDataSource oldDS = this.dataSource;
                 this.dataSource = dataSource;
-                return oldDS;  // Caller is responsible for closing the data source
+                return oldDS; // Caller is responsible for closing the data source
             } else {
                 OMDataSource oldDS = this.dataSource;
                 coreSetInputContext(null);
@@ -477,18 +512,18 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
     public void completed() {
         if (dataSource != null) {
             if (dataSource instanceof OMDataSourceExt) {
-                ((OMDataSourceExt)dataSource).close();
+                ((OMDataSourceExt) dataSource).close();
             }
             dataSource = null;
         }
     }
-    
+
     @Override
     public Object getObject(Class<? extends OMDataSourceExt> dataSourceClass) {
         if (dataSource == null || isExpanded || !dataSourceClass.isInstance(dataSource)) {
             return null;
         } else {
-            return ((OMDataSourceExt)dataSource).getObject();
+            return ((OMDataSourceExt) dataSource).getObject();
         }
     }
 }

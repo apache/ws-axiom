@@ -35,31 +35,33 @@ import org.apache.axiom.weaver.annotation.Mixin;
 public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInformationItem {
     /**
      * The namespace of the information item. Possible values:
+     *
      * <ul>
-     * <li><code>null</code> (if the information item has no namespace)
-     * <li>any {@link OMNamespace} instance, with the following exceptions:
-     * <ul>
-     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
-     * <li>for elements: an {@link OMNamespace} instance with both prefix and namespace URI set to
-     * the empty string
-     * <li>for attributes: an {@link OMNamespace} instance with an empty prefix (because an
-     * unprefixed attribute never has a namespace)
-     * </ul>
+     *   <li><code>null</code> (if the information item has no namespace)
+     *   <li>any {@link OMNamespace} instance, with the following exceptions:
+     *       <ul>
+     *         <li>an {@link OMNamespace} instance with a <code>null</code> prefix
+     *         <li>for elements: an {@link OMNamespace} instance with both prefix and namespace URI
+     *             set to the empty string
+     *         <li>for attributes: an {@link OMNamespace} instance with an empty prefix (because an
+     *             unprefixed attribute never has a namespace)
+     *       </ul>
      * </ul>
      */
     private OMNamespace namespace;
-    
+
     private String localName;
-    
+
     @Override
-    public final void initName(String namespaceURI, String localName, String prefix, Object namespaceHelper) {
+    public final void initName(
+            String namespaceURI, String localName, String prefix, Object namespaceHelper) {
         this.localName = localName;
-        namespace = ((OMNamespaceCache)namespaceHelper).getOMNamespace(namespaceURI, prefix);
+        namespace = ((OMNamespaceCache) namespaceHelper).getOMNamespace(namespaceURI, prefix);
     }
-    
+
     /**
      * Set the namespace of the node without adding a corresponding namespace declaration.
-     * 
+     *
      * @param namespace
      */
     @Override
@@ -81,7 +83,7 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
     public OMNamespace getNamespace() {
         return defaultGetNamespace();
     }
-    
+
     @Override
     public final String getLocalName() {
         return coreGetLocalName();
@@ -105,7 +107,7 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
     }
 
     abstract void beforeSetLocalName();
-    
+
     @Override
     public final void setLocalName(String localName) {
         beforeSetLocalName();
@@ -116,7 +118,7 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
     public QName getQName() {
         return defaultGetQName();
     }
-    
+
     @Override
     public final QName defaultGetQName() {
         return QNameCache.getQName(
@@ -124,7 +126,7 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
                 localName,
                 namespace == null ? "" : namespace.getPrefix());
     }
-    
+
     @Override
     public final boolean hasName(QName name) {
         if (name.getLocalPart().equals(getLocalName())) {
@@ -141,23 +143,26 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
         OMNamespace namespace = getNamespace();
         return namespace == null ? "" : namespace.getNamespaceURI();
     }
-    
+
     @Override
     public final String coreGetPrefix() {
         OMNamespace namespace = getNamespace();
         return namespace == null ? "" : namespace.getPrefix();
     }
-    
+
     @Override
     public final void coreSetName(String namespaceURI, String localName, String prefix) {
         this.localName = localName;
-        namespace = namespaceURI.length() == 0 && prefix.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, prefix);
+        namespace =
+                namespaceURI.length() == 0 && prefix.length() == 0
+                        ? null
+                        : new OMNamespaceImpl(namespaceURI, prefix);
     }
 
     @Override
     public final void initName(CoreNamedNode other) {
-        AxiomNamedInformationItem o = (AxiomNamedInformationItem)other;
-        if (o instanceof AxiomSourcedElement && ((AxiomElement)this).isExpanded()) {
+        AxiomNamedInformationItem o = (AxiomNamedInformationItem) other;
+        if (o instanceof AxiomSourcedElement && ((AxiomElement) this).isExpanded()) {
             localName = o.coreGetLocalName();
             namespace = o.getNamespace();
         } else {
@@ -165,11 +170,11 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
             namespace = o.defaultGetNamespace();
         }
     }
-    
+
     public void updateLocalName() {
         throw new IllegalStateException();
     }
-    
+
     @Override
     public final String coreGetLocalName() {
         if (localName == null) {
@@ -177,7 +182,7 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
         }
         return localName;
     }
-    
+
     @Override
     public final void coreSetPrefix(String prefix) {
         OMNamespace ns = getNamespace();

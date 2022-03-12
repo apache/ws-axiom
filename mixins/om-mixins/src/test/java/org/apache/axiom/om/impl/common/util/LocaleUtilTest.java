@@ -26,7 +26,8 @@ import org.junit.Test;
 
 public class LocaleUtilTest {
     private static void assertCloserMatch(Locale requested, Locale closer, Locale other) {
-        assertThat(LocaleUtil.getMatchScore(requested, closer)).isGreaterThan(LocaleUtil.getMatchScore(requested, other));
+        assertThat(LocaleUtil.getMatchScore(requested, closer))
+                .isGreaterThan(LocaleUtil.getMatchScore(requested, other));
     }
 
     @Test

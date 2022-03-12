@@ -29,17 +29,20 @@ public final class SOAP12Helper extends SOAPHelper {
     public static final SOAP12Helper INSTANCE = new SOAP12Helper();
 
     private SOAP12Helper() {
-        super(SOAPVersion.SOAP12, "SOAP 1.2",
-            AxiomNodeFactory::createSOAP12Envelope,
-            AxiomNodeFactory::createSOAP12Header,
-            AxiomNodeFactory::createSOAP12HeaderBlock,
-            AxiomNodeFactory::createSOAP12Body,
-            AxiomNodeFactory::createSOAP12Fault,
-            AxiomNodeFactory::createSOAP12FaultCode,
-            AxiomNodeFactory::createSOAP12FaultReason,
-            AxiomNodeFactory::createSOAP12FaultRole,
-            AxiomNodeFactory::createSOAP12FaultDetail,
-            SOAP12Constants.SOAP_ROLE, SOAP12Constants.SOAP_RELAY);
+        super(
+                SOAPVersion.SOAP12,
+                "SOAP 1.2",
+                AxiomNodeFactory::createSOAP12Envelope,
+                AxiomNodeFactory::createSOAP12Header,
+                AxiomNodeFactory::createSOAP12HeaderBlock,
+                AxiomNodeFactory::createSOAP12Body,
+                AxiomNodeFactory::createSOAP12Fault,
+                AxiomNodeFactory::createSOAP12FaultCode,
+                AxiomNodeFactory::createSOAP12FaultReason,
+                AxiomNodeFactory::createSOAP12FaultRole,
+                AxiomNodeFactory::createSOAP12FaultDetail,
+                SOAP12Constants.SOAP_ROLE,
+                SOAP12Constants.SOAP_RELAY);
     }
 
     @Override

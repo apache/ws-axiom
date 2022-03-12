@@ -22,34 +22,31 @@ package org.apache.axiom.om.impl.stream.xop;
 import org.apache.axiom.util.UIDGenerator;
 
 /**
- * Content ID generator interface. Implementations of this interface are used by
- * {@link XOPEncodingFilterHandler} to generate content IDs for use in {@code xop:Include}
- * elements.
+ * Content ID generator interface. Implementations of this interface are used by {@link
+ * XOPEncodingFilterHandler} to generate content IDs for use in {@code xop:Include} elements.
  */
 public interface ContentIDGenerator {
-    /**
-     * Default content ID generator that preserves any existing content ID.
-     */
-    ContentIDGenerator DEFAULT = new ContentIDGenerator() {
-        @Override
-        public String generateContentID(String existingContentID) {
-            if (existingContentID == null) {
-                return UIDGenerator.generateContentId();
-            } else {
-                return existingContentID;
-            }
-        }
-    };
-    
+    /** Default content ID generator that preserves any existing content ID. */
+    ContentIDGenerator DEFAULT =
+            new ContentIDGenerator() {
+                @Override
+                public String generateContentID(String existingContentID) {
+                    if (existingContentID == null) {
+                        return UIDGenerator.generateContentId();
+                    } else {
+                        return existingContentID;
+                    }
+                }
+            };
+
     /**
      * Generate a content ID.
-     * 
-     * @param existingContentID
-     *            An existing content ID for the {@link javax.activation.DataHandler} being
-     *            processed, as returned by
-     *            {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader#getContentID()},
-     *            or <code>null</code> if no existing content ID is known. The implementation is
-     *            free to use this information or not.
+     *
+     * @param existingContentID An existing content ID for the {@link javax.activation.DataHandler}
+     *     being processed, as returned by {@link
+     *     org.apache.axiom.ext.stax.datahandler.DataHandlerReader#getContentID()}, or <code>null
+     *     </code> if no existing content ID is known. The implementation is free to use this
+     *     information or not.
      * @return the content ID; may not be <code>null</code>
      */
     String generateContentID(String existingContentID);

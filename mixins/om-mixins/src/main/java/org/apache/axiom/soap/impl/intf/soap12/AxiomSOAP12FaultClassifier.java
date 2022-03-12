@@ -20,6 +20,4 @@ package org.apache.axiom.soap.impl.intf.soap12;
 
 import org.apache.axiom.soap.SOAPFaultClassifier;
 
-public interface AxiomSOAP12FaultClassifier extends SOAPFaultClassifier, AxiomSOAP12Element {
-
-}
+public interface AxiomSOAP12FaultClassifier extends SOAPFaultClassifier, AxiomSOAP12Element {}

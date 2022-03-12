@@ -16,28 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-@org.apache.axiom.weaver.annotation.WeavablePackage(mixins={
-        AxiomAttributeMixin.class,
-        AxiomCDATASectionMixin.class,
-        AxiomCharacterDataNodeMixin.class,
-        AxiomChildNodeMixin.class,
-        AxiomCommentMixin.class,
-        AxiomContainerMixin.class,
-        AxiomCoreLeafNodeMixin.class,
-        AxiomCoreParentNodeMixin.class,
-        AxiomDocTypeMixin.class,
-        AxiomDocumentMixin.class,
-        AxiomElementMixin.class,
-        AxiomEntityReferenceMixin.class,
-        AxiomInformationItemMixin.class,
-        AxiomLeafNodeMixin.class,
-        AxiomNamedInformationItemMixin.class,
-        AxiomNamespaceDeclarationMixin.class,
-        AxiomNodeFactoryMixin.class,
-        AxiomProcessingInstructionMixin.class,
-        AxiomSerializableMixin.class,
-        AxiomSourcedElementMixin.class,
-        AxiomTextMixin.class,
-        NodeFactoryMixin.class,
-})
+@org.apache.axiom.weaver.annotation.WeavablePackage(
+        mixins = {
+            AxiomAttributeMixin.class,
+            AxiomCDATASectionMixin.class,
+            AxiomCharacterDataNodeMixin.class,
+            AxiomChildNodeMixin.class,
+            AxiomCommentMixin.class,
+            AxiomContainerMixin.class,
+            AxiomCoreLeafNodeMixin.class,
+            AxiomCoreParentNodeMixin.class,
+            AxiomDocTypeMixin.class,
+            AxiomDocumentMixin.class,
+            AxiomElementMixin.class,
+            AxiomEntityReferenceMixin.class,
+            AxiomInformationItemMixin.class,
+            AxiomLeafNodeMixin.class,
+            AxiomNamedInformationItemMixin.class,
+            AxiomNamespaceDeclarationMixin.class,
+            AxiomNodeFactoryMixin.class,
+            AxiomProcessingInstructionMixin.class,
+            AxiomSerializableMixin.class,
+            AxiomSourcedElementMixin.class,
+            AxiomTextMixin.class,
+            NodeFactoryMixin.class,
+        })
 package org.apache.axiom.om.impl.mixin;

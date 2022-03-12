@@ -33,11 +33,11 @@ public abstract class AxiomInformationItemMixin implements AxiomInformationItem 
     public OMFactory getOMFactory() {
         return getMetaFactory().getOMFactory();
     }
-    
+
     @Override
     public final OMInformationItem clone(OMCloneOptions options) {
         try {
-            return (OMInformationItem)coreClone(AxiomSemantics.CLONE_POLICY, options);
+            return (OMInformationItem) coreClone(AxiomSemantics.CLONE_POLICY, options);
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }

@@ -23,7 +23,7 @@ import org.apache.axiom.core.stream.XmlHandler;
 
 public final class SOAPFilter implements XmlFilter {
     public static final SOAPFilter INSTANCE = new SOAPFilter();
-    
+
     private SOAPFilter() {}
 
     @Override

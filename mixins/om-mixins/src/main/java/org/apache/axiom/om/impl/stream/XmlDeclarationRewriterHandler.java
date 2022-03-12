@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMOutputFormat;
 
 public final class XmlDeclarationRewriterHandler extends XmlHandlerWrapper {
     private final OMOutputFormat format;
-    
+
     public XmlDeclarationRewriterHandler(XmlHandler parent, OMOutputFormat format) {
         super(parent);
         this.format = format;
@@ -36,8 +36,9 @@ public final class XmlDeclarationRewriterHandler extends XmlHandlerWrapper {
     }
 
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            Boolean standalone) throws StreamException {
+    public void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+            throws StreamException {
         if (format.isIgnoreXMLDeclaration()) {
             super.startFragment();
         } else {

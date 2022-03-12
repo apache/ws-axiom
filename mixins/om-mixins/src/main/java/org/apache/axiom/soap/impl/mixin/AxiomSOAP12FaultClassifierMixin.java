@@ -31,27 +31,28 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomSOAP12FaultClassifierMixin implements AxiomSOAP12FaultClassifier {
-    private static final Sequence sequence = new Sequence(SOAPFaultValue.class, SOAPFaultSubCode.class);
-    
+    private static final Sequence sequence =
+            new Sequence(SOAPFaultValue.class, SOAPFaultSubCode.class);
+
     public final boolean isChildElementAllowed(OMElement child) {
         return child instanceof SOAPFaultValue || child instanceof SOAPFaultSubCode;
     }
-    
+
     @Override
     public final SOAPFaultValue getValue() {
-        return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
+        return (SOAPFaultValue) getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
     }
 
     @Override
     public final void setValue(SOAPFaultValue value) {
         insertChild(sequence, 0, value, true);
     }
-    
+
     @Override
     public final SOAPFaultSubCode getSubCode() {
-        return (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
+        return (SOAPFaultSubCode) getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
     }
-    
+
     @Override
     public final void setSubCode(SOAPFaultSubCode subCode) {
         insertChild(sequence, 1, subCode, true);
@@ -62,12 +63,12 @@ public abstract class AxiomSOAP12FaultClassifierMixin implements AxiomSOAP12Faul
         SOAPFaultValue value = getValue();
         return value == null ? null : value.getTextAsQName();
     }
-    
+
     @Override
     public final void setValue(QName value) {
         SOAPFaultValue valueElement = getValue();
         if (valueElement == null) {
-            valueElement = ((SOAP12Factory)getOMFactory()).internalCreateSOAPFaultValue(this);
+            valueElement = ((SOAP12Factory) getOMFactory()).internalCreateSOAPFaultValue(this);
         }
         valueElement.setText(value);
     }

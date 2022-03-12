@@ -33,7 +33,7 @@ import org.apache.axiom.om.impl.common.builder.Detachable;
 
 final class DetachableReader extends Reader implements Detachable {
     private static final Charset UTF8 = Charset.forName("UTF-8");
-    
+
     private Reader target;
 
     DetachableReader(Reader target) {
@@ -74,7 +74,7 @@ final class DetachableReader extends Reader implements Detachable {
     public void close() throws IOException {
         target.close();
     }
-    
+
     @Override
     public void detach() {
         MemoryBlob blob = Blobs.createMemoryBlob();

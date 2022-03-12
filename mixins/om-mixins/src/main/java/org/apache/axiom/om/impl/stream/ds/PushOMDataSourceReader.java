@@ -47,7 +47,7 @@ final class PushOMDataSourceReader implements XmlReader {
         this.root = root;
         this.dataSource = dataSource;
     }
-    
+
     @Override
     public boolean proceed() throws StreamException {
         // TODO: we might want to unwrap the NamespaceRepairingFilter (and some other filters) here
@@ -56,10 +56,10 @@ final class PushOMDataSourceReader implements XmlReader {
         XmlHandler current = handler;
         while (current instanceof XmlHandlerWrapper) {
             if (current instanceof XmlDeclarationRewriterHandler) {
-                format = ((XmlDeclarationRewriterHandler)current).getFormat();
+                format = ((XmlDeclarationRewriterHandler) current).getFormat();
                 break;
             }
-            current = ((XmlHandlerWrapper)current).getParent();
+            current = ((XmlHandlerWrapper) current).getParent();
         }
         if (format == null) {
             // This is for the OMSourcedElement expansion case
@@ -68,23 +68,26 @@ final class PushOMDataSourceReader implements XmlReader {
             handler = new PushOMDataSourceXOPHandler(handler);
         }
         try {
-            XMLStreamWriter writer = new XmlHandlerStreamWriter(handler, null,
-                    AxiomXMLStreamWriterExtensionFactory.INSTANCE);
+            XMLStreamWriter writer =
+                    new XmlHandlerStreamWriter(
+                            handler, null, AxiomXMLStreamWriterExtensionFactory.INSTANCE);
             // Seed the namespace context with the namespace context from the parent
             OMContainer parent = root.getParent();
             if (parent instanceof OMElement) {
-                for (Iterator<OMNamespace> it = ((OMElement)parent).getNamespacesInScope(); it.hasNext(); ) {
+                for (Iterator<OMNamespace> it = ((OMElement) parent).getNamespacesInScope();
+                        it.hasNext(); ) {
                     OMNamespace ns = it.next();
                     writer.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
                 }
             }
             handler.startFragment();
-            dataSource.serialize(new MTOMXMLStreamWriterImpl(new PushOMDataSourceStreamWriter(writer), format));
+            dataSource.serialize(
+                    new MTOMXMLStreamWriterImpl(new PushOMDataSourceStreamWriter(writer), format));
             handler.completed();
         } catch (XMLStreamException ex) {
             Throwable cause = ex.getCause();
             if (cause instanceof StreamException) {
-                throw (StreamException)cause;
+                throw (StreamException) cause;
             } else {
                 throw new StreamException(ex);
             }
@@ -93,6 +96,5 @@ final class PushOMDataSourceReader implements XmlReader {
     }
 
     @Override
-    public void dispose() {
-    }
+    public void dispose() {}
 }

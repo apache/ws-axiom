@@ -26,12 +26,14 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 public final class NSUtil {
     private NSUtil() {}
 
-    public static OMNamespace handleNamespace(AxiomElement context, OMNamespace ns, boolean attr, boolean decl) {
+    public static OMNamespace handleNamespace(
+            AxiomElement context, OMNamespace ns, boolean attr, boolean decl) {
         String namespaceURI = ns == null ? "" : ns.getNamespaceURI();
         String prefix = ns == null ? "" : ns.getPrefix();
         if (namespaceURI.length() == 0) {
             if (prefix != null && prefix.length() != 0) {
-                throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
+                throw new IllegalArgumentException(
+                        "Cannot bind a prefix to the empty namespace name");
             }
             if (!attr && decl) {
                 // Special case: no namespace; we need to generate a namespace declaration only if
@@ -44,7 +46,8 @@ public final class NSUtil {
             return null;
         } else {
             if (attr && prefix != null && prefix.length() == 0) {
-                throw new IllegalArgumentException("An attribute with a namespace must be prefixed");
+                throw new IllegalArgumentException(
+                        "An attribute with a namespace must be prefixed");
             }
             boolean addNSDecl = false;
             if (context != null && (decl || prefix == null)) {

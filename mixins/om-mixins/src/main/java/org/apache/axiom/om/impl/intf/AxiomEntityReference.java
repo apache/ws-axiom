@@ -21,6 +21,5 @@ package org.apache.axiom.om.impl.intf;
 import org.apache.axiom.core.CoreEntityReference;
 import org.apache.axiom.om.OMEntityReference;
 
-public interface AxiomEntityReference extends OMEntityReference, AxiomCoreLeafNode, CoreEntityReference {
-
-}
+public interface AxiomEntityReference
+        extends OMEntityReference, AxiomCoreLeafNode, CoreEntityReference {}

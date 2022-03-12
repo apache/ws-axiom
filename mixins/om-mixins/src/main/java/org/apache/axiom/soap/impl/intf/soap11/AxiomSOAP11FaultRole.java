@@ -20,6 +20,4 @@ package org.apache.axiom.soap.impl.intf.soap11;
 
 import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultRole;
 
-public interface AxiomSOAP11FaultRole extends AxiomSOAPFaultRole, AxiomSOAP11Element {
-
-}
+public interface AxiomSOAP11FaultRole extends AxiomSOAPFaultRole, AxiomSOAP11Element {}

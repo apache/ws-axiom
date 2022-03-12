@@ -26,18 +26,18 @@ import org.apache.axiom.om.OMElement;
 
 public final class Sequence {
     private List<Class<? extends OMElement>> types;
-    
+
     public Sequence(Class<?>... types) {
         this.types = new ArrayList<Class<? extends OMElement>>(types.length);
         for (Class<?> type : types) {
             this.types.add(type.asSubclass(OMElement.class));
         }
     }
-    
+
     public Class<? extends OMElement> item(int index) {
         return types.get(index);
     }
-    
+
     public int index(Class<? extends OMElement> type) {
         int index = types.indexOf(type);
         if (index == -1) {

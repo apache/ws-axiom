@@ -30,12 +30,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 @Mixin
 public abstract class AxiomNamespaceDeclarationMixin implements AxiomNamespaceDeclaration {
     private static final OMNamespace DEFAULT_NS = new OMNamespaceImpl("", "");
-    
+
     private OMNamespace declaredNamespace;
-    
+
     @Override
     public final void init(String prefix, String namespaceURI, Object namespaceHelper) {
-        OMNamespace ns = ((OMNamespaceCache)namespaceHelper).getOMNamespace(namespaceURI, prefix);
+        OMNamespace ns = ((OMNamespaceCache) namespaceHelper).getOMNamespace(namespaceURI, prefix);
         setDeclaredNamespace(ns == null ? DEFAULT_NS : ns);
     }
 
@@ -49,19 +49,20 @@ public abstract class AxiomNamespaceDeclarationMixin implements AxiomNamespaceDe
         try {
             String namespaceURI = coreGetCharacterData().toString();
             if (!namespaceURI.equals(declaredNamespace.getNamespaceURI())) {
-                declaredNamespace = new OMNamespaceImpl(namespaceURI, declaredNamespace.getPrefix());
+                declaredNamespace =
+                        new OMNamespaceImpl(namespaceURI, declaredNamespace.getPrefix());
             }
             return declaredNamespace;
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
     public final void coreSetDeclaredNamespace(String prefix, String namespaceURI) {
         setDeclaredNamespace(new OMNamespaceImpl(namespaceURI, prefix));
     }
-    
+
     @Override
     public final void setDeclaredNamespace(OMNamespace declaredNamespace) {
         try {
@@ -71,7 +72,7 @@ public abstract class AxiomNamespaceDeclarationMixin implements AxiomNamespaceDe
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     public final void build() {
         // TODO
     }

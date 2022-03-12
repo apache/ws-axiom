@@ -34,13 +34,13 @@ public abstract class AxiomChildNodeMixin implements AxiomChildNode {
     @Override
     public final OMContainer getParent() {
         CoreParentNode parent = coreGetParent();
-        return parent instanceof OMContainer ? (OMContainer)parent : null;
+        return parent instanceof OMContainer ? (OMContainer) parent : null;
     }
-    
+
     @Override
     public final OMNode getNextOMSibling() {
         try {
-            return (OMNode)coreGetNextSibling();
+            return (OMNode) coreGetNextSibling();
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }
@@ -48,13 +48,13 @@ public abstract class AxiomChildNodeMixin implements AxiomChildNode {
 
     @Override
     public final OMNode getPreviousOMSibling() {
-        return (OMNode)coreGetPreviousSibling();
+        return (OMNode) coreGetPreviousSibling();
     }
 
     @Override
     public final void insertSiblingAfter(OMNode sibling) throws OMException {
         try {
-            AxiomContainer parent = (AxiomContainer)getParent();
+            AxiomContainer parent = (AxiomContainer) getParent();
             if (parent == null) {
                 throw new OMException("Parent can not be null");
             }
@@ -67,7 +67,7 @@ public abstract class AxiomChildNodeMixin implements AxiomChildNode {
     @Override
     public final void insertSiblingBefore(OMNode sibling) throws OMException {
         try {
-            AxiomContainer parent = (AxiomContainer)getParent();
+            AxiomContainer parent = (AxiomContainer) getParent();
             if (parent == null) {
                 throw new OMException("Parent can not be null");
             }
@@ -76,12 +76,11 @@ public abstract class AxiomChildNodeMixin implements AxiomChildNode {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
     public final OMNode detach() {
         if (!coreHasParent()) {
-            throw new OMException(
-                    "Nodes that don't have a parent can not be detached");
+            throw new OMException("Nodes that don't have a parent can not be detached");
         }
         coreDetach(AxiomSemantics.INSTANCE);
         return this;

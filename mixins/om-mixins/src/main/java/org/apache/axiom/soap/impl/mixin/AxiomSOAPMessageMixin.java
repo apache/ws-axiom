@@ -41,18 +41,18 @@ public abstract class AxiomSOAPMessageMixin implements AxiomSOAPMessage {
     public final void initSOAPFactory(SOAPFactory factory) {
         this.factory = factory;
     }
-    
+
     @Override
     public final <T> void initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other) {
-        factory = (SOAPFactory)((AxiomSOAPMessage)other).getOMFactory();
+        factory = (SOAPFactory) ((AxiomSOAPMessage) other).getOMFactory();
     }
-    
+
     public final void checkDocumentElement(OMElement element) {
         if (!(element instanceof SOAPEnvelope)) {
             throw new OMException("Child not allowed; must be a SOAPEnvelope");
         }
     }
-    
+
     @Override
     public final OMFactory getOMFactory() {
         if (factory == null) {
@@ -61,10 +61,10 @@ public abstract class AxiomSOAPMessageMixin implements AxiomSOAPMessage {
         }
         return factory;
     }
-    
+
     @Override
     public final SOAPEnvelope getSOAPEnvelope() {
-        return (SOAPEnvelope)getOMDocumentElement();
+        return (SOAPEnvelope) getOMDocumentElement();
     }
 
     @Override

@@ -49,7 +49,7 @@ public class XMLReaderImpl extends AbstractXMLReader {
     public void parse(String systemId) throws IOException, SAXException {
         parse();
     }
-    
+
     private void parse() throws SAXException {
         XmlHandler handler = new ContentHandlerXmlHandler(contentHandler, lexicalHandler);
         CoreElement contextElement = root.getContextElement();
@@ -63,9 +63,9 @@ public class XMLReaderImpl extends AbstractXMLReader {
         } catch (StreamException ex) {
             Throwable cause = ex.getCause();
             if (cause instanceof SAXException) {
-                throw (SAXException)cause;
-            } else if (cause instanceof Exception){
-                throw new SAXException((Exception)cause);
+                throw (SAXException) cause;
+            } else if (cause instanceof Exception) {
+                throw new SAXException((Exception) cause);
             } else {
                 throw new SAXException(ex);
             }

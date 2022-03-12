@@ -20,6 +20,4 @@ package org.apache.axiom.soap.impl.intf.soap12;
 
 import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultDetail;
 
-public interface AxiomSOAP12FaultDetail extends AxiomSOAPFaultDetail, AxiomSOAP12Element {
-
-}
+public interface AxiomSOAP12FaultDetail extends AxiomSOAPFaultDetail, AxiomSOAP12Element {}

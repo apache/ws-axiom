@@ -46,8 +46,7 @@ public abstract class AxiomEntityReferenceMixin implements AxiomEntityReference 
     public final String getReplacementText() {
         return coreGetReplacementText();
     }
-    
+
     @Override
-    public final void buildWithAttachments() {
-    }
+    public final void buildWithAttachments() {}
 }

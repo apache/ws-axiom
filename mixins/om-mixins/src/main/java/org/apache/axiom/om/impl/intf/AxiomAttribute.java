@@ -21,6 +21,5 @@ package org.apache.axiom.om.impl.intf;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.om.OMAttribute;
 
-public interface AxiomAttribute extends OMAttribute, CoreNSAwareAttribute, AxiomNamedInformationItem {
-
-}
+public interface AxiomAttribute
+        extends OMAttribute, CoreNSAwareAttribute, AxiomNamedInformationItem {}

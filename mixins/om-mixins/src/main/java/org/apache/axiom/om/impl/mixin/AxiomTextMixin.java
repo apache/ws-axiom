@@ -39,9 +39,9 @@ public abstract class AxiomTextMixin implements AxiomText {
         try {
             Object content = coreGetCharacterData();
             if (content instanceof TextContent) {
-                return (TextContent)content;
+                return (TextContent) content;
             } else if (force) {
-                TextContent textContent = new TextContent((String)content);
+                TextContent textContent = new TextContent((String) content);
                 coreSetCharacterData(textContent, AxiomSemantics.INSTANCE);
                 return textContent;
             } else {
@@ -51,7 +51,7 @@ public abstract class AxiomTextMixin implements AxiomText {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
     public final boolean isBinary() {
         TextContent textContent = getTextContent(false);
@@ -79,7 +79,7 @@ public abstract class AxiomTextMixin implements AxiomText {
             textContent.setOptimize(optimize);
         }
     }
-    
+
     @Override
     public final String getText() throws OMException {
         try {
@@ -94,9 +94,9 @@ public abstract class AxiomTextMixin implements AxiomText {
         try {
             Object content = coreGetCharacterData();
             if (content instanceof TextContent) {
-                return ((TextContent)content).toCharArray();
+                return ((TextContent) content).toCharArray();
             } else {
-                return ((String)content).toCharArray();
+                return ((String) content).toCharArray();
             }
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
@@ -110,7 +110,7 @@ public abstract class AxiomTextMixin implements AxiomText {
 
     @Override
     public final QName getTextAsQName() throws OMException {
-        return ((OMElement)getParent()).resolveQName(getText());
+        return ((OMElement) getParent()).resolveQName(getText());
     }
 
     @Override
@@ -121,7 +121,9 @@ public abstract class AxiomTextMixin implements AxiomText {
             return null;
         } else {
             String namespaceURI = qname.getNamespaceURI();
-            return namespaceURI.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, qname.getPrefix());
+            return namespaceURI.length() == 0
+                    ? null
+                    : new OMNamespaceImpl(namespaceURI, qname.getPrefix());
         }
     }
 
@@ -130,7 +132,7 @@ public abstract class AxiomTextMixin implements AxiomText {
         try {
             Object content = coreGetCharacterData();
             if (content instanceof TextContent) {
-                return ((TextContent)content).getDataHandler();
+                return ((TextContent) content).getDataHandler();
             } else {
                 throw new OMException("No DataHandler available");
             }
@@ -149,7 +151,7 @@ public abstract class AxiomTextMixin implements AxiomText {
         if (isOptimized()) {
             DataHandler dataHandler = getDataHandler();
             if (dataHandler instanceof PartDataHandler) {
-                ((PartDataHandler)dataHandler).getPart().fetch();
+                ((PartDataHandler) dataHandler).getPart().fetch();
             }
         }
     }

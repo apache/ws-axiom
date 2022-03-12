@@ -31,19 +31,23 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomSOAP11FaultMixin implements AxiomSOAP11Fault {
-    private static final Sequence sequence = new Sequence(SOAPFaultCode.class, SOAPFaultReason.class,
-            SOAPFaultRole.class, SOAPFaultDetail.class);
+    private static final Sequence sequence =
+            new Sequence(
+                    SOAPFaultCode.class,
+                    SOAPFaultReason.class,
+                    SOAPFaultRole.class,
+                    SOAPFaultDetail.class);
 
     @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP11Fault.class;
     }
-    
+
     @Override
     public final Sequence getSequence() {
         return sequence;
     }
-    
+
     @Override
     public final void setNode(SOAPFaultNode node) {
         throw new UnsupportedOperationException("SOAP 1.1 has no SOAP Fault Node");
@@ -51,12 +55,12 @@ public abstract class AxiomSOAP11FaultMixin implements AxiomSOAP11Fault {
 
     @Override
     public final SOAPFaultCode getCode() {
-        return (SOAPFaultCode)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_CODE);
+        return (SOAPFaultCode) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_CODE);
     }
 
     @Override
     public final SOAPFaultReason getReason() {
-        return (SOAPFaultReason)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_REASON);
+        return (SOAPFaultReason) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_REASON);
     }
 
     @Override
@@ -66,11 +70,11 @@ public abstract class AxiomSOAP11FaultMixin implements AxiomSOAP11Fault {
 
     @Override
     public final SOAPFaultRole getRole() {
-        return (SOAPFaultRole)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_ROLE);
+        return (SOAPFaultRole) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_ROLE);
     }
 
     @Override
     public final SOAPFaultDetail getDetail() {
-        return (SOAPFaultDetail)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_DETAIL);
+        return (SOAPFaultDetail) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_DETAIL);
     }
 }

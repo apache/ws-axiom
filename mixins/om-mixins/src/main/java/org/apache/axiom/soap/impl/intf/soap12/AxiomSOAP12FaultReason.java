@@ -20,6 +20,4 @@ package org.apache.axiom.soap.impl.intf.soap12;
 
 import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultReason;
 
-public interface AxiomSOAP12FaultReason extends AxiomSOAPFaultReason, AxiomSOAP12Element {
-
-}
+public interface AxiomSOAP12FaultReason extends AxiomSOAPFaultReason, AxiomSOAP12Element {}

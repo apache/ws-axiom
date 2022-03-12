@@ -23,7 +23,7 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
 /**
- * A Checker to make sure headers match a given role.  If the role we're looking for is null, then
+ * A Checker to make sure headers match a given role. If the role we're looking for is null, then
  * everything matches.
  */
 public class RoleChecker implements ElementMatcher<AxiomElement> {

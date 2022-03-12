@@ -33,7 +33,7 @@ final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
     private static class DataHandlerProviderImpl implements DataHandlerProvider {
         private final OMAttachmentAccessor attachmentAccessor;
         private final String contentID;
-        
+
         public DataHandlerProviderImpl(OMAttachmentAccessor attachmentAccessor, String contentID) {
             this.attachmentAccessor = attachmentAccessor;
             this.contentID = contentID;
@@ -51,7 +51,10 @@ final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
     }
 
     private enum State {
-        AFTER_START_ELEMENT, CONTENT_SEEN, IN_XOP_INCLUDE, AFTER_XOP_INCLUDE
+        AFTER_START_ELEMENT,
+        CONTENT_SEEN,
+        IN_XOP_INCLUDE,
+        AFTER_XOP_INCLUDE
     }
 
     private final OMAttachmentAccessor attachmentAccessor;
@@ -63,6 +66,7 @@ final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
 
     @Override
     protected Object buildCharacterData(String contentID) {
-        return new TextContent(contentID, new DataHandlerProviderImpl(attachmentAccessor, contentID), true);
+        return new TextContent(
+                contentID, new DataHandlerProviderImpl(attachmentAccessor, contentID), true);
     }
 }

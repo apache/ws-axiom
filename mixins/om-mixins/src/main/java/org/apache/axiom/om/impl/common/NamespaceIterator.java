@@ -27,9 +27,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 
-/**
- * Iterator implementation used by {@link OMElement#getNamespacesInScope()}.
- */
+/** Iterator implementation used by {@link OMElement#getNamespacesInScope()}. */
 public final class NamespaceIterator implements Iterator<OMNamespace> {
     private final Set<String> seenPrefixes = new HashSet<String>();
     private OMElement element;
@@ -50,12 +48,13 @@ public final class NamespaceIterator implements Iterator<OMNamespace> {
                 } else if (declaredNamespaces.hasNext()) {
                     OMNamespace namespace = declaredNamespaces.next();
                     // We only return a namespace declaration if it has not been overridden (i.e. if
-                    // we have not seen another declaration with the same prefix yet) and if the namespace
-                    // URI is not empty. The second part of the condition covers the case of namespace
-                    // declarations such as xmlns="" (for which no OMNamespace object is returned, as
-                    // described in the Javadoc of the getNamespacesInScope method) as well as undeclared
-                    // prefixes (XML 1.1 only).
-                    if (seenPrefixes.add(namespace.getPrefix()) && namespace.getNamespaceURI().length() > 0) {
+                    // we have not seen another declaration with the same prefix yet) and if the
+                    // namespace URI is not empty. The second part of the condition covers the case
+                    // of namespace declarations such as xmlns="" (for which no OMNamespace object
+                    // is returned, as described in the Javadoc of the getNamespacesInScope method)
+                    // as well as undeclared prefixes (XML 1.1 only).
+                    if (seenPrefixes.add(namespace.getPrefix())
+                            && namespace.getNamespaceURI().length() > 0) {
                         next = namespace;
                         break;
                     }
@@ -63,7 +62,7 @@ public final class NamespaceIterator implements Iterator<OMNamespace> {
                     declaredNamespaces = null;
                     OMContainer parent = element.getParent();
                     if (parent instanceof OMElement) {
-                        element = (OMElement)parent;
+                        element = (OMElement) parent;
                     } else {
                         next = null;
                         break;

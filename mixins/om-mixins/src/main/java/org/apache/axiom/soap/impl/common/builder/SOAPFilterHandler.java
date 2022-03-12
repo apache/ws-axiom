@@ -29,18 +29,22 @@ final class SOAPFilterHandler extends XmlHandlerWrapper {
     }
 
     @Override
-    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
-            String internalSubset) throws StreamException {
-        throw new SOAPProcessingException("SOAP message MUST NOT contain a Document Type Declaration(DTD)");
+    public void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset)
+            throws StreamException {
+        throw new SOAPProcessingException(
+                "SOAP message MUST NOT contain a Document Type Declaration(DTD)");
     }
 
     @Override
     public void startProcessingInstruction(String target) throws StreamException {
-        throw new SOAPProcessingException("SOAP message MUST NOT contain Processing Instructions(PI)");
+        throw new SOAPProcessingException(
+                "SOAP message MUST NOT contain Processing Instructions(PI)");
     }
 
     @Override
     public void processEntityReference(String name, String replacementText) throws StreamException {
-        throw new SOAPProcessingException("A SOAP message cannot contain entity references because it must not have a DTD");
+        throw new SOAPProcessingException(
+                "A SOAP message cannot contain entity references because it must not have a DTD");
     }
 }

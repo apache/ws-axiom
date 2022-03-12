@@ -46,7 +46,7 @@ public class OMXMLParserWrapperImpl implements OMXMLParserWrapper, CustomBuilder
     public final void registerCustomBuilder(Selector selector, CustomBuilder customBuilder) {
         customBuilderManager.register(selector, customBuilder);
     }
-    
+
     @Override
     public final boolean isCompleted() {
         return builder.isCompleted();
@@ -55,12 +55,12 @@ public class OMXMLParserWrapperImpl implements OMXMLParserWrapper, CustomBuilder
     @Override
     public final OMDocument getDocument() {
         try {
-            return (AxiomDocument)builder.getDocument();
+            return (AxiomDocument) builder.getDocument();
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
     public final OMElement getDocumentElement() {
         return getDocumentElement(false);
@@ -73,7 +73,7 @@ public class OMXMLParserWrapperImpl implements OMXMLParserWrapper, CustomBuilder
             OMElement element = document.getOMDocumentElement();
             if (discardDocument) {
                 element.detach();
-                ((AxiomDocument)document).coreDiscard(false);
+                ((AxiomDocument) document).coreDiscard(false);
             }
             return element;
         } catch (CoreModelException ex) {

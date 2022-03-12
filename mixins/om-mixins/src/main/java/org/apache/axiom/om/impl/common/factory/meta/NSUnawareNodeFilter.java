@@ -28,7 +28,7 @@ import org.apache.axiom.core.stream.XmlHandler;
  */
 final class NSUnawareNodeFilter implements XmlFilter {
     static final NSUnawareNodeFilter INSTANCE = new NSUnawareNodeFilter();
-    
+
     private NSUnawareNodeFilter() {}
 
     @Override

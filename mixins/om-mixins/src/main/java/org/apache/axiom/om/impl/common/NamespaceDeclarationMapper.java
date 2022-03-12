@@ -22,11 +22,11 @@ import org.apache.axiom.core.Mapper;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 
-public class NamespaceDeclarationMapper implements Mapper<OMNamespace,AxiomNamespaceDeclaration> {
+public class NamespaceDeclarationMapper implements Mapper<OMNamespace, AxiomNamespaceDeclaration> {
     public static final NamespaceDeclarationMapper INSTANCE = new NamespaceDeclarationMapper();
-    
+
     private NamespaceDeclarationMapper() {}
-    
+
     @Override
     public OMNamespace map(AxiomNamespaceDeclaration namespaceDeclaration) {
         return namespaceDeclaration.getDeclaredNamespace();

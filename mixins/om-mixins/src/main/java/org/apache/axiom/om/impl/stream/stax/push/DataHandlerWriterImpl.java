@@ -42,8 +42,9 @@ public final class DataHandlerWriterImpl implements DataHandlerWriter {
     }
 
     @Override
-    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
-            boolean optimize) throws IOException, XMLStreamException {
+    public void writeDataHandler(
+            DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize)
+            throws IOException, XMLStreamException {
         writer.writeCharacterData(new TextContent(contentID, dataHandlerProvider, optimize));
     }
 }

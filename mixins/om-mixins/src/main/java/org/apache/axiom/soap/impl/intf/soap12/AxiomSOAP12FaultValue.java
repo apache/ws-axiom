@@ -20,6 +20,4 @@ package org.apache.axiom.soap.impl.intf.soap12;
 
 import org.apache.axiom.soap.SOAPFaultValue;
 
-public interface AxiomSOAP12FaultValue extends AxiomSOAP12Element, SOAPFaultValue {
-
-}
+public interface AxiomSOAP12FaultValue extends AxiomSOAP12Element, SOAPFaultValue {}

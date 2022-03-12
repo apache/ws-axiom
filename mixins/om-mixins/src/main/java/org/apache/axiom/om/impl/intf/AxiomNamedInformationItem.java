@@ -24,10 +24,15 @@ import org.apache.axiom.core.CoreNSAwareNamedNode;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
 
-public interface AxiomNamedInformationItem extends OMNamedInformationItem, AxiomInformationItem, CoreNSAwareNamedNode {
+public interface AxiomNamedInformationItem
+        extends OMNamedInformationItem, AxiomInformationItem, CoreNSAwareNamedNode {
     void internalSetNamespace(OMNamespace namespace);
+
     String internalGetLocalName();
+
     void internalSetLocalName(String localName);
+
     OMNamespace defaultGetNamespace();
+
     QName defaultGetQName();
 }

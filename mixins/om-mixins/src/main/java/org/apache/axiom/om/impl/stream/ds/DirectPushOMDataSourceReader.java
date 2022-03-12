@@ -45,6 +45,5 @@ final class DirectPushOMDataSourceReader implements XmlReader {
     }
 
     @Override
-    public void dispose() {
-    }
+    public void dispose() {}
 }

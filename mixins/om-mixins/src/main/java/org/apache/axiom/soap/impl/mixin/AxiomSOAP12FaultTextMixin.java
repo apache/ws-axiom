@@ -30,14 +30,16 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomSOAP12FaultTextMixin implements AxiomSOAP12FaultText {
-    private static final OMNamespace LANG_NAMESPACE = new OMNamespaceImpl(
-            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
-            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
-    private static final QName LANG_QNAME = new QName(
-            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
-            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
-            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
-    
+    private static final OMNamespace LANG_NAMESPACE =
+            new OMNamespaceImpl(
+                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+    private static final QName LANG_QNAME =
+            new QName(
+                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
+                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+
     @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {
         return AxiomSOAP12FaultText.class;
@@ -51,7 +53,7 @@ public abstract class AxiomSOAP12FaultTextMixin implements AxiomSOAP12FaultText 
     public final void setLang(String lang) {
         addAttribute(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME, lang, LANG_NAMESPACE);
     }
-    
+
     @Override
     public final String getLang() {
         return getAttributeValue(LANG_QNAME);

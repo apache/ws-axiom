@@ -30,8 +30,9 @@ import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.stream.xop.XOPHandler;
 import org.apache.axiom.util.UIDGenerator;
 
-final class PushOMDataSourceXOPHandler extends AbstractXOPDecodingFilterHandler implements XOPHandler {
-    private final Map<String,DataHandler> dataHandlers = new HashMap<String,DataHandler>();
+final class PushOMDataSourceXOPHandler extends AbstractXOPDecodingFilterHandler
+        implements XOPHandler {
+    private final Map<String, DataHandler> dataHandlers = new HashMap<String, DataHandler>();
 
     PushOMDataSourceXOPHandler(XmlHandler parent) {
         super(parent);

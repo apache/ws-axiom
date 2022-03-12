@@ -25,14 +25,17 @@ import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 
 public final class OMDataSourceUtil {
     private OMDataSourceUtil() {}
-    
+
     public static boolean isPullDataSource(OMDataSource dataSource) {
         return dataSource instanceof AbstractPullOMDataSource;
     }
 
     public static boolean isPushDataSource(OMDataSource dataSource) {
         return dataSource instanceof AbstractPushOMDataSource
-                || dataSource.getClass().getName().equals("org.apache.axis2.jaxws.message.databinding.impl.JAXBBlockImpl");
+                || dataSource
+                        .getClass()
+                        .getName()
+                        .equals("org.apache.axis2.jaxws.message.databinding.impl.JAXBBlockImpl");
     }
 
     public static boolean isDestructiveWrite(OMDataSource dataSource) {
@@ -42,7 +45,7 @@ public final class OMDataSourceUtil {
             return true;
         }
     }
-    
+
     public static boolean isDestructiveRead(OMDataSource dataSource) {
         if (dataSource instanceof OMDataSourceExt) {
             return ((OMDataSourceExt) dataSource).isDestructiveRead();

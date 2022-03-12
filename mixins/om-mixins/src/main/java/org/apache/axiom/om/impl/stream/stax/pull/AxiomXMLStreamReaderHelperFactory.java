@@ -24,10 +24,11 @@ import org.apache.axiom.core.stream.stax.pull.input.XMLStreamReaderHelper;
 import org.apache.axiom.core.stream.stax.pull.input.XMLStreamReaderHelperFactory;
 
 public final class AxiomXMLStreamReaderHelperFactory implements XMLStreamReaderHelperFactory {
-    public static final AxiomXMLStreamReaderHelperFactory INSTANCE = new AxiomXMLStreamReaderHelperFactory();
+    public static final AxiomXMLStreamReaderHelperFactory INSTANCE =
+            new AxiomXMLStreamReaderHelperFactory();
 
     private AxiomXMLStreamReaderHelperFactory() {}
- 
+
     @Override
     public XMLStreamReaderHelper createHelper(XMLStreamReader reader) {
         return new AxiomXMLStreamReaderHelper(reader);

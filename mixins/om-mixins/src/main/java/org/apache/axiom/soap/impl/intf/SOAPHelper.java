@@ -52,8 +52,10 @@ public abstract class SOAPHelper {
     private final QName mustUnderstandAttributeQName;
     private final QName roleAttributeQName;
     private final QName relayAttributeQName;
-    
-    protected SOAPHelper(SOAPVersion version, String specName,
+
+    protected SOAPHelper(
+            SOAPVersion version,
+            String specName,
             AxiomElementType<? extends AxiomSOAPEnvelope> envelopeType,
             AxiomElementType<? extends AxiomSOAPHeader> headerType,
             AxiomElementType<? extends AxiomSOAPHeaderBlock> headerBlockType,
@@ -63,40 +65,62 @@ public abstract class SOAPHelper {
             AxiomElementType<? extends AxiomSOAPFaultReason> faultReasonType,
             AxiomElementType<? extends AxiomSOAPFaultRole> faultRoleType,
             AxiomElementType<? extends AxiomSOAPFaultDetail> faultDetailType,
-            String roleAttributeLocalName, String relayAttributeLocalName) {
+            String roleAttributeLocalName,
+            String relayAttributeLocalName) {
         this.version = version;
-        namespace = new OMNamespaceImpl(version.getEnvelopeURI(),
-                SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+        namespace =
+                new OMNamespaceImpl(
+                        version.getEnvelopeURI(), SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         this.specName = specName;
         this.envelopeType = envelopeType;
         this.headerType = headerType;
-        headerQName = new QName(version.getEnvelopeURI(), SOAPConstants.HEADER_LOCAL_NAME,
-                SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+        headerQName =
+                new QName(
+                        version.getEnvelopeURI(),
+                        SOAPConstants.HEADER_LOCAL_NAME,
+                        SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         this.headerBlockType = headerBlockType;
         this.bodyType = bodyType;
-        bodyQName = new QName(version.getEnvelopeURI(), SOAPConstants.BODY_LOCAL_NAME,
-                SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+        bodyQName =
+                new QName(
+                        version.getEnvelopeURI(),
+                        SOAPConstants.BODY_LOCAL_NAME,
+                        SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         this.faultType = faultType;
-        faultQName = new QName(version.getEnvelopeURI(), SOAPConstants.SOAPFAULT_LOCAL_NAME,
-                SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+        faultQName =
+                new QName(
+                        version.getEnvelopeURI(),
+                        SOAPConstants.SOAPFAULT_LOCAL_NAME,
+                        SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         this.faultCodeType = faultCodeType;
         this.faultReasonType = faultReasonType;
         this.faultRoleType = faultRoleType;
         this.faultDetailType = faultDetailType;
-        mustUnderstandAttributeQName = new QName(
-                version.getEnvelopeURI(), SOAPConstants.ATTR_MUSTUNDERSTAND, SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-        roleAttributeQName = new QName(
-                version.getEnvelopeURI(), roleAttributeLocalName, SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-        relayAttributeQName = relayAttributeLocalName == null ? null :
-            new QName(version.getEnvelopeURI(), relayAttributeLocalName, SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+        mustUnderstandAttributeQName =
+                new QName(
+                        version.getEnvelopeURI(),
+                        SOAPConstants.ATTR_MUSTUNDERSTAND,
+                        SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+        roleAttributeQName =
+                new QName(
+                        version.getEnvelopeURI(),
+                        roleAttributeLocalName,
+                        SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+        relayAttributeQName =
+                relayAttributeLocalName == null
+                        ? null
+                        : new QName(
+                                version.getEnvelopeURI(),
+                                relayAttributeLocalName,
+                                SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
     }
-    
+
     public final SOAPVersion getVersion() {
         return version;
     }
-    
+
     public abstract SOAPFactory getSOAPFactory(OMMetaFactory metaFactory);
-    
+
     public final String getEnvelopeURI() {
         return version.getEnvelopeURI();
     }
@@ -186,5 +210,6 @@ public abstract class SOAPHelper {
     }
 
     public abstract Boolean parseBoolean(String literal);
+
     public abstract String formatBoolean(boolean value);
 }

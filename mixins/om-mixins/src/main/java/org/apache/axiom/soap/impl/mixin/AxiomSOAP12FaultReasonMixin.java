@@ -40,7 +40,7 @@ public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultRea
     public final boolean isChildElementAllowed(OMElement child) {
         return child instanceof SOAPFaultText;
     }
-    
+
     @Override
     public final void addSOAPText(SOAPFaultText soapFaultText) {
         addChild(soapFaultText);
@@ -48,14 +48,14 @@ public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultRea
 
     @Override
     public final SOAPFaultText getFirstSOAPText() {
-        return (SOAPFaultText)getFirstElement();
+        return (SOAPFaultText) getFirstElement();
     }
 
     @Override
     public final List<SOAPFaultText> getAllSoapTexts() {
         List<SOAPFaultText> faultTexts = new ArrayList<SOAPFaultText>();
         for (Iterator<OMElement> it = getChildElements(); it.hasNext(); ) {
-            faultTexts.add((SOAPFaultText)it.next());
+            faultTexts.add((SOAPFaultText) it.next());
         }
         return faultTexts;
     }
@@ -63,7 +63,7 @@ public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultRea
     @Override
     public final SOAPFaultText getSOAPFaultText(String language) {
         for (Iterator<OMElement> it = getChildElements(); it.hasNext(); ) {
-            SOAPFaultText text = (SOAPFaultText)it.next();
+            SOAPFaultText text = (SOAPFaultText) it.next();
             if (language == null || language.equals(text.getLang())) {
                 return text;
             }
@@ -76,9 +76,11 @@ public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultRea
         String text = "";
         int maxScore = -1;
         for (Iterator<OMElement> it = getChildElements(); it.hasNext(); ) {
-            SOAPFaultText textNode = (SOAPFaultText)it.next();
+            SOAPFaultText textNode = (SOAPFaultText) it.next();
             String lang = textNode.getLang();
-            int score = LocaleUtil.getMatchScore(locale, lang == null ? null : Locale.forLanguageTag(lang));
+            int score =
+                    LocaleUtil.getMatchScore(
+                            locale, lang == null ? null : Locale.forLanguageTag(lang));
             if (score > maxScore) {
                 text = textNode.getText();
                 maxScore = score;

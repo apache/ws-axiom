@@ -20,9 +20,7 @@ package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.om.OMException;
 
-/**
- * For internal use only.
- */
+/** For internal use only. */
 public interface Detachable {
     void detach() throws OMException;
 }

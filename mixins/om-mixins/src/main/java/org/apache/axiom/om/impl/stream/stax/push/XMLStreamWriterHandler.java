@@ -39,7 +39,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
     private final CharacterDataAccumulator buffer = new CharacterDataAccumulator();
     private boolean buffering;
     private String piTarget;
-    
+
     public XMLStreamWriterHandler(XMLStreamWriter writer) {
         this.writer = writer;
     }
@@ -56,8 +56,9 @@ public class XMLStreamWriterHandler implements XmlHandler {
     }
 
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            Boolean standalone) throws StreamException {
+    public void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+            throws StreamException {
         try {
             if (xmlEncoding == null) {
                 writer.writeStartDocument(xmlVersion);
@@ -68,13 +69,14 @@ public class XMLStreamWriterHandler implements XmlHandler {
             throw new StreamException(ex);
         }
     }
-    
-    @Override
-    public void startFragment() throws StreamException {
-    }
 
     @Override
-    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
+    public void startFragment() throws StreamException {}
+
+    @Override
+    public void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset)
+            throws StreamException {
         StringWriter sw = new StringWriter();
         Serializer serializer = new Serializer(sw);
         serializer.startFragment();
@@ -88,7 +90,8 @@ public class XMLStreamWriterHandler implements XmlHandler {
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix)
+            throws StreamException {
         try {
             writer.writeStartElement(prefix, localName, namespaceURI);
         } catch (XMLStreamException ex) {
@@ -97,7 +100,8 @@ public class XMLStreamWriterHandler implements XmlHandler {
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI)
+            throws StreamException {
         try {
             if (prefix.length() != 0) {
                 writer.writeNamespace(prefix, namespaceURI);
@@ -110,7 +114,14 @@ public class XMLStreamWriterHandler implements XmlHandler {
     }
 
     @Override
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
+    public void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified)
+            throws StreamException {
         try {
             writer.writeAttribute(prefix, namespaceURI, localName, value);
         } catch (XMLStreamException ex) {
@@ -119,7 +130,8 @@ public class XMLStreamWriterHandler implements XmlHandler {
     }
 
     @Override
-    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
+    public void processAttribute(String name, String value, String type, boolean specified)
+            throws StreamException {
         try {
             writer.writeAttribute(name, value);
         } catch (XMLStreamException ex) {
@@ -149,13 +161,21 @@ public class XMLStreamWriterHandler implements XmlHandler {
         }
         try {
             if (data instanceof TextContent) {
-                TextContent textContent = (TextContent)data;
+                TextContent textContent = (TextContent) data;
                 if (textContent.isBinary()) {
                     Object dataHandlerObject = textContent.getDataHandlerObject();
                     if (dataHandlerObject instanceof DataHandlerProvider) {
-                        getDataHandlerWriter().writeDataHandler((DataHandlerProvider)dataHandlerObject, textContent.getContentID(), textContent.isOptimize());
+                        getDataHandlerWriter()
+                                .writeDataHandler(
+                                        (DataHandlerProvider) dataHandlerObject,
+                                        textContent.getContentID(),
+                                        textContent.isOptimize());
                     } else {
-                        getDataHandlerWriter().writeDataHandler(textContent.getDataHandler(), textContent.getContentID(), textContent.isOptimize());
+                        getDataHandlerWriter()
+                                .writeDataHandler(
+                                        textContent.getDataHandler(),
+                                        textContent.getContentID(),
+                                        textContent.isOptimize());
                     }
                     return;
                 }
@@ -167,7 +187,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
             throw new StreamException(ex);
         }
     }
-    
+
     @Override
     public void startCDATASection() throws StreamException {
         buffering = true;
@@ -231,7 +251,8 @@ public class XMLStreamWriterHandler implements XmlHandler {
 
     @Override
     public void completed() throws StreamException {
-        // TODO: the original StAX serialization code newer called writeEndDocument; this is probably a mistake
+        // TODO: the original StAX serialization code newer called writeEndDocument; this is
+        // probably a mistake
     }
 
     @Override

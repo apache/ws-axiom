@@ -82,15 +82,16 @@ import org.xml.sax.InputSource;
 
 @Mixin
 public abstract class AxiomContainerMixin implements AxiomContainer {
-    private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();
-    
+    private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration =
+            new OMXMLStreamReaderConfiguration();
+
     @Override
     public final OMXMLParserWrapper getBuilder() {
-        BuilderImpl builder = (BuilderImpl)coreGetBuilder();
+        BuilderImpl builder = (BuilderImpl) coreGetBuilder();
         if (builder == null) {
             return null;
         } else {
-            OMXMLParserWrapper facade = (OMXMLParserWrapper)builder.getFacade();
+            OMXMLParserWrapper facade = (OMXMLParserWrapper) builder.getFacade();
             if (facade == null) {
                 facade = new OMXMLParserWrapperImpl(builder, null);
             }
@@ -102,7 +103,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     public final XMLStreamReader getXMLStreamReader() {
         return getXMLStreamReader(true);
     }
-    
+
     @Override
     public final XMLStreamReader getXMLStreamReaderWithoutCaching() {
         return getXMLStreamReader(false);
@@ -112,14 +113,16 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     public final XMLStreamReader getXMLStreamReader(boolean cache) {
         return getXMLStreamReader(cache, defaultReaderConfiguration);
     }
-    
+
     @Override
-    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
+    public XMLStreamReader getXMLStreamReader(
+            boolean cache, OMXMLStreamReaderConfiguration configuration) {
         return defaultGetXMLStreamReader(cache, configuration);
     }
-    
+
     @Override
-    public final XMLStreamReader defaultGetXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
+    public final XMLStreamReader defaultGetXMLStreamReader(
+            boolean cache, OMXMLStreamReaderConfiguration configuration) {
         StAXPivot pivot = new StAXPivot(AxiomXMLStreamReaderExtensionFactory.INSTANCE);
         XmlHandler handler = pivot;
         if (configuration.isNamespaceURIInterning()) {
@@ -130,7 +133,8 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
             if (configuration.isPreserveNamespaceContext()) {
                 handler = new NamespaceContextPreservationFilterHandler(handler, contextElement);
             } else {
-                for (Iterator<OMNamespace> it = ((OMElement)contextElement).getNamespacesInScope(); it.hasNext(); ) {
+                for (Iterator<OMNamespace> it = ((OMElement) contextElement).getNamespacesInScope();
+                        it.hasNext(); ) {
                     OMNamespace ns = it.next();
                     pivot.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
                 }
@@ -144,11 +148,13 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
         }
         return pivot;
     }
-    
+
     @Override
     public final XOPEncoded<XMLStreamReader> getXOPEncodedStreamReader(boolean cache) {
         StAXPivot pivot = new StAXPivot(AxiomXMLStreamReaderExtensionFactory.INSTANCE);
-        XOPEncodingFilterHandler encoder = new XOPEncodingFilterHandler(pivot, ContentIDGenerator.DEFAULT, OptimizationPolicy.ALL);
+        XOPEncodingFilterHandler encoder =
+                new XOPEncodingFilterHandler(
+                        pivot, ContentIDGenerator.DEFAULT, OptimizationPolicy.ALL);
         try {
             pivot.setReader(coreGetReader(encoder, cache, true));
         } catch (StreamException ex) {
@@ -156,16 +162,16 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
         }
         return new XOPEncoded<XMLStreamReader>(pivot, encoder);
     }
-    
+
     @Override
     public final AxiomChildNode prepareNewChild(OMNode omNode) {
         AxiomChildNode child;
         // Careful here: if the child was created by another Axiom implementation, it doesn't
         // necessarily implement AxiomChildNode
         if (omNode.getOMFactory().getMetaFactory().equals(getOMFactory().getMetaFactory())) {
-            child = (AxiomChildNode)omNode;
+            child = (AxiomChildNode) omNode;
         } else {
-            child = (AxiomChildNode)getOMFactory().importInformationItem(omNode);
+            child = (AxiomChildNode) getOMFactory().importInformationItem(omNode);
         }
         checkChild(omNode);
         return child;
@@ -179,16 +185,16 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
     public OMNode getFirstOMChild() {
         try {
-            return (OMNode)coreGetFirstChild();
+            return (OMNode) coreGetFirstChild();
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
     public void removeChildren() {
         try {
@@ -197,41 +203,61 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
+
     @Override
     public Iterator<OMNode> getChildren() {
-        return coreGetNodes(Axis.CHILDREN, AxiomChildNode.class, Mappers.<OMNode>identity(), AxiomSemantics.INSTANCE);
+        return coreGetNodes(
+                Axis.CHILDREN,
+                AxiomChildNode.class,
+                Mappers.<OMNode>identity(),
+                AxiomSemantics.INSTANCE);
     }
 
     @Override
     public Iterator<OMElement> getChildrenWithLocalName(String localName) {
-        return coreGetElements(Axis.CHILDREN, AxiomElement.class,
-                ElementMatcher.BY_LOCAL_NAME, null, localName,
-                Mappers.<OMElement>identity(), AxiomSemantics.INSTANCE);
+        return coreGetElements(
+                Axis.CHILDREN,
+                AxiomElement.class,
+                ElementMatcher.BY_LOCAL_NAME,
+                null,
+                localName,
+                Mappers.<OMElement>identity(),
+                AxiomSemantics.INSTANCE);
     }
 
     @Override
     public Iterator<OMElement> getChildrenWithNamespaceURI(String uri) {
-        return coreGetElements(Axis.CHILDREN, AxiomElement.class,
-                ElementMatcher.BY_NAMESPACE_URI, uri, null,
-                Mappers.<OMElement>identity(), AxiomSemantics.INSTANCE);
+        return coreGetElements(
+                Axis.CHILDREN,
+                AxiomElement.class,
+                ElementMatcher.BY_NAMESPACE_URI,
+                uri,
+                null,
+                Mappers.<OMElement>identity(),
+                AxiomSemantics.INSTANCE);
     }
 
     @Override
     public Iterator<OMElement> getChildrenWithName(QName name) {
-        return coreGetElements(Axis.CHILDREN, AxiomElement.class,
-                ElementMatcher.BY_QNAME, name.getNamespaceURI(), name.getLocalPart(),
-                Mappers.<OMElement>identity(), AxiomSemantics.INSTANCE);
+        return coreGetElements(
+                Axis.CHILDREN,
+                AxiomElement.class,
+                ElementMatcher.BY_QNAME,
+                name.getNamespaceURI(),
+                name.getLocalPart(),
+                Mappers.<OMElement>identity(),
+                AxiomSemantics.INSTANCE);
     }
-    
+
     @Override
     public final OMElement getFirstChildWithName(QName name) throws OMException {
         try {
             CoreChildNode child = coreGetFirstChild();
             while (child != null) {
                 if (child instanceof AxiomElement) {
-                    AxiomElement element = (AxiomElement)child;
-                    if (name.getLocalPart().equals(element.coreGetLocalName()) && name.getNamespaceURI().equals(element.coreGetNamespaceURI())) {
+                    AxiomElement element = (AxiomElement) child;
+                    if (name.getLocalPart().equals(element.coreGetLocalName())
+                            && name.getNamespaceURI().equals(element.coreGetNamespaceURI())) {
                         return element;
                     }
                 }
@@ -250,14 +276,20 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
 
     @Override
     public final SAXResult getSAXResult() {
-        XmlHandlerContentHandler handler = new XmlHandlerContentHandler(new SAXResultContentHandler(this), true);
+        XmlHandlerContentHandler handler =
+                new XmlHandlerContentHandler(new SAXResultContentHandler(this), true);
         SAXResult result = new SAXResult();
         result.setHandler(handler);
         result.setLexicalHandler(handler);
         return result;
     }
 
-    private void serialize(XmlHandler handler, NamespaceContextProvider namespaceContextProvider, OMOutputFormat format, boolean cache) throws StreamException {
+    private void serialize(
+            XmlHandler handler,
+            NamespaceContextProvider namespaceContextProvider,
+            OMOutputFormat format,
+            boolean cache)
+            throws StreamException {
         handler = new XmlDeclarationRewriterHandler(handler, format);
         CoreElement contextElement = getContextElement();
         if (contextElement != null) {
@@ -271,13 +303,18 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
         }
     }
 
-    private void serializeAndSurfaceIOException(XmlHandler handler, NamespaceContextProvider namespaceContextProvider, OMOutputFormat format, boolean cache) throws IOException {
+    private void serializeAndSurfaceIOException(
+            XmlHandler handler,
+            NamespaceContextProvider namespaceContextProvider,
+            OMOutputFormat format,
+            boolean cache)
+            throws IOException {
         try {
             serialize(handler, namespaceContextProvider, format, cache);
         } catch (StreamException ex) {
             Throwable cause = ex.getCause();
             if (cause instanceof IOException) {
-                throw (IOException)cause;
+                throw (IOException) cause;
             } else {
                 throw new OMException(ex);
             }
@@ -287,7 +324,11 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     @Override
     public final void serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
-            serialize(new XMLStreamWriterHandler(writer), new XMLStreamWriterNamespaceContextProvider(writer), new OMOutputFormat(), cache);
+            serialize(
+                    new XMLStreamWriterHandler(writer),
+                    new XMLStreamWriterNamespaceContextProvider(writer),
+                    new OMOutputFormat(),
+                    cache);
         } catch (StreamException ex) {
             throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }
@@ -304,9 +345,10 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     @Override
-    public final void serialize(OutputStream out, OMOutputFormat format, boolean cache) throws IOException {
+    public final void serialize(OutputStream out, OMOutputFormat format, boolean cache)
+            throws IOException {
         String encoding = format.getCharSetEncoding();
-        if (encoding == null) { //Default encoding is UTF-8
+        if (encoding == null) { // Default encoding is UTF-8
             format.setCharSetEncoding(encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
         }
 
@@ -319,21 +361,23 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
             multipartWriter = null;
             rootPartOutputStream = out;
         }
-        
+
         Serializer serializer = new Serializer(rootPartOutputStream, encoding);
-        
+
         XmlHandler handler;
         XOPEncodingFilterHandler encoder;
         if (format.isOptimized()) {
-            handler = encoder = new XOPEncodingFilterHandler(
-                    serializer, 
-                    new ContentIDGeneratorImpl(format),
-                    new OptimizationPolicyImpl(format));
+            handler =
+                    encoder =
+                            new XOPEncodingFilterHandler(
+                                    serializer,
+                                    new ContentIDGeneratorImpl(format),
+                                    new OptimizationPolicyImpl(format));
         } else {
             handler = serializer;
             encoder = null;
         }
-        
+
         serializeAndSurfaceIOException(handler, null, format, cache);
 
         if (encoder != null) {
@@ -343,17 +387,23 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
                 if (cache || !(dataHandler instanceof PartDataHandler)) {
                     multipartWriter.writePart(dataHandler, contentID);
                 } else {
-                    OutputStream part = multipartWriter.writePart(dataHandler.getContentType(), contentID);
-                    IOUtils.copy(((PartDataHandler)dataHandler).getPart().getInputStream(false), part, -1);
+                    OutputStream part =
+                            multipartWriter.writePart(dataHandler.getContentType(), contentID);
+                    IOUtils.copy(
+                            ((PartDataHandler) dataHandler).getPart().getInputStream(false),
+                            part,
+                            -1);
                     part.close();
                 }
             }
             multipartWriter.complete();
-        };
+        }
+        ;
     }
 
     @Override
-    public final void serialize(Writer writer, OMOutputFormat format, boolean cache) throws IOException {
+    public final void serialize(Writer writer, OMOutputFormat format, boolean cache)
+            throws IOException {
         serializeAndSurfaceIOException(new Serializer(writer), null, format, cache);
     }
 
@@ -368,7 +418,8 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     @Override
-    public final void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
+    public final void serialize(OutputStream output, OMOutputFormat format)
+            throws XMLStreamException {
         try {
             serialize(output, format, true);
         } catch (IOException ex) {
@@ -377,7 +428,8 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     @Override
-    public final void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
+    public final void serializeAndConsume(OutputStream output, OMOutputFormat format)
+            throws XMLStreamException {
         try {
             serialize(output, format, false);
         } catch (IOException ex) {
@@ -413,7 +465,8 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     @Override
-    public final void serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
+    public final void serializeAndConsume(Writer writer, OMOutputFormat format)
+            throws XMLStreamException {
         try {
             serialize(writer, format, false);
         } catch (IOException ex) {
@@ -427,7 +480,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
         if (build) {
             this.build();
         }
-        
+
         if (builder != null) {
             builder.close();
         }

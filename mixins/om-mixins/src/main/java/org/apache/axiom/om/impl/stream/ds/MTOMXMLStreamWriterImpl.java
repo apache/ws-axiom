@@ -55,21 +55,21 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         }
         this.format = format;
     }
-    
+
     /**
      * Get the {@link XmlHandler} events are serialized to.
-     * 
+     *
      * @return the {@link XmlHandler} or {@code null} if the {@link XMLStreamWriter} is not
-     *         connected to a {@link XmlHandler} (e.g. because the {@link XMLStreamWriter} is user
-     *         supplied)
+     *     connected to a {@link XmlHandler} (e.g. because the {@link XMLStreamWriter} is user
+     *     supplied)
      */
     private XmlHandler getHandler() {
         XMLStreamWriter xmlWriter = this.xmlWriter;
         if (xmlWriter instanceof PushOMDataSourceStreamWriter) {
-            xmlWriter = ((PushOMDataSourceStreamWriter)xmlWriter).getParent();
+            xmlWriter = ((PushOMDataSourceStreamWriter) xmlWriter).getParent();
         }
         if (xmlWriter instanceof XmlHandlerStreamWriter) {
-            return ((XmlHandlerStreamWriter)xmlWriter).getHandler();
+            return ((XmlHandlerStreamWriter) xmlWriter).getHandler();
         } else {
             return null;
         }
@@ -123,15 +123,12 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * Flush is overridden to trigger the attachment serialization
-     */
+    /** Flush is overridden to trigger the attachment serialization */
     @Override
     public void flush() throws XMLStreamException {
         log.debug("Calling MTOMXMLStreamWriter.flush");
         xmlWriter.flush();
     }
-    
 
     @Override
     public void writeAttribute(String string, String string1) throws XMLStreamException {
@@ -256,9 +253,9 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         XmlHandler handler = getHandler();
         while (handler instanceof XmlHandlerWrapper) {
             if (handler instanceof XOPHandler) {
-                return ((XOPHandler)handler).prepareDataHandler(dataHandler);
+                return ((XOPHandler) handler).prepareDataHandler(dataHandler);
             }
-            handler = ((XmlHandlerWrapper)handler).getParent();
+            handler = ((XmlHandlerWrapper) handler).getParent();
         }
         // TODO: hack for compatibility with Axis2
         // If we don't serialize to a MIME package, we should return null here because the
@@ -268,7 +265,7 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         // elements...
         return format.getNextContentId();
     }
-    
+
     @Override
     public String getCharSetEncoding() {
         return format.getCharSetEncoding();
@@ -280,7 +277,7 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     }
 
     @Override
-    public OutputStream getOutputStream() throws XMLStreamException {  
+    public OutputStream getOutputStream() throws XMLStreamException {
         OutputStream outputStream;
         XmlHandler handler = getHandler();
         // Remove wrappers that can be safely removed
@@ -289,18 +286,18 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
                 || handler instanceof XsiTypeFilterHandler
                 || handler instanceof XmlDeclarationRewriterHandler
                 || handler instanceof XOPEncodingFilterHandler) {
-            handler = ((XmlHandlerWrapper)handler).getParent();
+            handler = ((XmlHandlerWrapper) handler).getParent();
         }
         if (handler instanceof Serializer) {
             try {
-                outputStream = ((Serializer)handler).getOutputStream();
+                outputStream = ((Serializer) handler).getOutputStream();
             } catch (StreamException ex) {
                 throw new XMLStreamException(ex);
             }
         } else {
             outputStream = null;
         }
-        
+
         if (log.isDebugEnabled()) {
             if (outputStream == null) {
                 log.debug("Direct access to the output stream is not available.");

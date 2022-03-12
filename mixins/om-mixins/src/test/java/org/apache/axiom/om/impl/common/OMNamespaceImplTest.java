@@ -35,28 +35,29 @@ public class OMNamespaceImplTest extends TestCase {
         Field[] clsField = OMNamespaceImpl.class.getDeclaredFields();
         for (int i = 0; i < clsField.length; i++) {
             String fieldData = clsField[i].toString();
-            if ((fieldData.indexOf("prefix") != -1)
-                    || (fieldData.indexOf("uri") != -1)) {
-                assertTrue("The field should have been private, "
-                        + " but instead contained: " + fieldData + ".",
-                           fieldData.indexOf("private") != -1);
+            if ((fieldData.indexOf("prefix") != -1) || (fieldData.indexOf("uri") != -1)) {
+                assertTrue(
+                        "The field should have been private, "
+                                + " but instead contained: "
+                                + fieldData
+                                + ".",
+                        fieldData.indexOf("private") != -1);
             }
         }
 
-        String[] method = new String[] { "setPrefix", "setUri", "setName" };
+        String[] method = new String[] {"setPrefix", "setUri", "setName"};
         for (int i = 0; i < method.length; i++) {
             try {
-                OMNamespaceImpl.class.getMethod(method[i],
-                                                new Class[] { String.class });
-                fail("A NoSuchMethodException should have been thrown"
-                        + " when trying to get method \"" + method[i]
-                        + "\".");
+                OMNamespaceImpl.class.getMethod(method[i], new Class[] {String.class});
+                fail(
+                        "A NoSuchMethodException should have been thrown"
+                                + " when trying to get method \""
+                                + method[i]
+                                + "\".");
             } catch (NoSuchMethodException e) {
                 // These methods should not exist, so this is
                 // expected.
             }
         }
-
     }
-
 }

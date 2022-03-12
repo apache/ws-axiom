@@ -35,18 +35,19 @@ public final class SOAPHeaderBlockHelper {
         // First, try getting the information from the property.
         // Fallback to getting the information from the attribute.
         if (block instanceof OMSourcedElement && !block.isExpanded()) {
-            OMDataSource ds = ((OMSourcedElement)block).getDataSource();
+            OMDataSource ds = ((OMSourcedElement) block).getDataSource();
             if (ds instanceof OMDataSourceExt) {
-                OMDataSourceExt dsExt = (OMDataSourceExt)ds;
+                OMDataSourceExt dsExt = (OMDataSourceExt) ds;
                 if (dsExt.hasProperty(key)) {
-                    return (String)dsExt.getProperty(key);
+                    return (String) dsExt.getProperty(key);
                 }
             }
         }
         return block.getAttributeValue(qname);
     }
-    
-    public static boolean getBooleanAttributeValue(AxiomElement block, SOAPHelper soapHelper, String key, QName qname) {
+
+    public static boolean getBooleanAttributeValue(
+            AxiomElement block, SOAPHelper soapHelper, String key, QName qname) {
         String literal = getAttributeValue(block, key, qname);
         if (literal != null) {
             Boolean value = soapHelper.parseBoolean(literal);
@@ -54,18 +55,26 @@ public final class SOAPHeaderBlockHelper {
                 return value.booleanValue();
             } else {
                 throw new SOAPProcessingException(
-                        "Invalid value for attribute " + qname.getLocalPart() + " in header block " + block.getQName());
+                        "Invalid value for attribute "
+                                + qname.getLocalPart()
+                                + " in header block "
+                                + block.getQName());
             }
         } else {
             return false;
         }
     }
-    
+
     public static String getRole(AxiomElement block, SOAPHelper soapHelper) {
-        return getAttributeValue(block, SOAPHeaderBlock.ROLE_PROPERTY, soapHelper.getRoleAttributeQName());
+        return getAttributeValue(
+                block, SOAPHeaderBlock.ROLE_PROPERTY, soapHelper.getRoleAttributeQName());
     }
 
     public static boolean getMustUnderstand(AxiomElement block, SOAPHelper soapHelper) {
-        return getBooleanAttributeValue(block, soapHelper, SOAPHeaderBlock.MUST_UNDERSTAND_PROPERTY, soapHelper.getMustUnderstandAttributeQName());
+        return getBooleanAttributeValue(
+                block,
+                soapHelper,
+                SOAPHeaderBlock.MUST_UNDERSTAND_PROPERTY,
+                soapHelper.getMustUnderstandAttributeQName());
     }
 }

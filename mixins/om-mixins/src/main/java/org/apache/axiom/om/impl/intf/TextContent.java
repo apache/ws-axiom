@@ -38,12 +38,12 @@ import org.apache.axiom.util.base64.Base64Utils;
 
 public final class TextContent implements CloneableCharacterData {
     private final String value;
-    
+
     private final String mimeType;
-    
+
     /** Field contentID for the mime part used when serializing Binary stuff as MTOM optimized. */
     private String contentID;
-    
+
     /**
      * Contains a {@link DataHandler} or {@link DataHandlerProvider} object if the text node
      * represents base64 encoded binary data.
@@ -52,19 +52,19 @@ public final class TextContent implements CloneableCharacterData {
 
     private boolean optimize;
     private boolean binary;
-    
+
     public TextContent(String value) {
         this.value = value;
         this.mimeType = null;
     }
-    
+
     public TextContent(String value, String mimeType, boolean optimize) {
         this.value = value;
         this.mimeType = mimeType;
         binary = true;
         this.optimize = optimize;
     }
-    
+
     public TextContent(String contentID, Object dataHandlerObject, boolean optimize) {
         this.value = null;
         mimeType = null;
@@ -73,7 +73,7 @@ public final class TextContent implements CloneableCharacterData {
         binary = true;
         this.optimize = optimize;
     }
-    
+
     private TextContent(TextContent other) {
         this.value = other.value;
         this.mimeType = other.mimeType;
@@ -121,19 +121,20 @@ public final class TextContent implements CloneableCharacterData {
         if (dataHandlerObject != null) {
             if (dataHandlerObject instanceof DataHandlerProvider) {
                 try {
-                    dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+                    dataHandlerObject = ((DataHandlerProvider) dataHandlerObject).getDataHandler();
                 } catch (IOException ex) {
                     throw new OMException(ex);
                 }
             }
-            return (DataHandler)dataHandlerObject;
+            return (DataHandler) dataHandlerObject;
         } else if (binary) {
-            return new DataHandler(new BlobDataSource(Blobs.createBlob(Base64Utils.decode(value)), mimeType));
+            return new DataHandler(
+                    new BlobDataSource(Blobs.createBlob(Base64Utils.decode(value)), mimeType));
         } else {
             throw new OMException("No DataHandler available");
         }
     }
-    
+
     @Override
     public String toString() {
         if (dataHandlerObject != null) {
@@ -146,7 +147,7 @@ public final class TextContent implements CloneableCharacterData {
             return value;
         }
     }
-    
+
     public char[] toCharArray() {
         if (dataHandlerObject != null) {
             try {
@@ -161,7 +162,9 @@ public final class TextContent implements CloneableCharacterData {
 
     @Override
     public <T> CharacterData clone(ClonePolicy<T> policy, T options) {
-        if (binary && options instanceof OMCloneOptions && ((OMCloneOptions)options).isFetchDataHandlers()) {
+        if (binary
+                && options instanceof OMCloneOptions
+                && ((OMCloneOptions) options).isFetchDataHandlers()) {
             // Force loading of the reference to the DataHandler and ensure that its content is
             // completely fetched into memory (or temporary storage).
             getDataHandler().getDataSource();
@@ -184,7 +187,8 @@ public final class TextContent implements CloneableCharacterData {
     @Override
     public void appendTo(StringBuilder buffer) {
         if (binary) {
-            Base64EncodingStringBufferOutputStream out = new Base64EncodingStringBufferOutputStream(buffer);
+            Base64EncodingStringBufferOutputStream out =
+                    new Base64EncodingStringBufferOutputStream(buffer);
             try {
                 getDataHandler().writeTo(out);
                 out.complete();

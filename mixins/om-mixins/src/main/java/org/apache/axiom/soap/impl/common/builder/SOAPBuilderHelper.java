@@ -25,6 +25,7 @@ import org.apache.axiom.om.impl.intf.factory.AxiomElementType;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPBuilderHelper {
-    public abstract AxiomElementType<? extends AxiomElement> handleEvent(OMElement element, int elementLevel,
-            String namespaceURI, String localName) throws SOAPProcessingException;
+    public abstract AxiomElementType<? extends AxiomElement> handleEvent(
+            OMElement element, int elementLevel, String namespaceURI, String localName)
+            throws SOAPProcessingException;
 }

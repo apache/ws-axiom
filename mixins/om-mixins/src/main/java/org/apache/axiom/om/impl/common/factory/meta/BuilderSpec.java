@@ -62,8 +62,8 @@ public final class BuilderSpec {
         this.detachable = detachable;
     }
 
-    private static BuilderSpec create(StAXParserConfiguration configuration,
-            InputSource is, boolean makeDetachable) {
+    private static BuilderSpec create(
+            StAXParserConfiguration configuration, InputSource is, boolean makeDetachable) {
         XMLStreamReader reader;
         Detachable detachable;
         Closeable closeable;
@@ -73,7 +73,8 @@ public final class BuilderSpec {
                 String encoding = is.getEncoding();
                 InputStream in = is.getByteStream();
                 if (makeDetachable) {
-                    DetachableInputStream detachableInputStream = new DetachableInputStream(in, false);
+                    DetachableInputStream detachableInputStream =
+                            new DetachableInputStream(in, false);
                     in = detachableInputStream;
                     detachable = detachableInputStream;
                 } else {
@@ -108,7 +109,8 @@ public final class BuilderSpec {
                 String systemId = is.getSystemId();
                 InputStream in = new URL(systemId).openConnection().getInputStream();
                 if (makeDetachable) {
-                    DetachableInputStream detachableInputStream = new DetachableInputStream(in, true);
+                    DetachableInputStream detachableInputStream =
+                            new DetachableInputStream(in, true);
                     in = detachableInputStream;
                     detachable = detachableInputStream;
                 } else {
@@ -122,9 +124,12 @@ public final class BuilderSpec {
         } catch (IOException ex) {
             throw new OMException(ex);
         }
-        return new BuilderSpec(new StAXPullInput(reader, AxiomXMLStreamReaderHelperFactory.INSTANCE, true, closeable), detachable);
+        return new BuilderSpec(
+                new StAXPullInput(
+                        reader, AxiomXMLStreamReaderHelperFactory.INSTANCE, true, closeable),
+                detachable);
     }
-    
+
     public static BuilderSpec from(XMLStreamReader reader) {
         int eventType = reader.getEventType();
         switch (eventType) {
@@ -134,24 +139,30 @@ public final class BuilderSpec {
                 reader = new XMLFragmentStreamReader(reader);
                 break;
             default:
-                throw new OMException("The supplied XMLStreamReader is in an unexpected state ("
-                        + XMLEventUtils.getEventTypeString(eventType) + ")");
+                throw new OMException(
+                        "The supplied XMLStreamReader is in an unexpected state ("
+                                + XMLEventUtils.getEventTypeString(eventType)
+                                + ")");
         }
-        return new BuilderSpec(new FilteredXmlInput(new StAXPullInput(reader, AxiomXMLStreamReaderHelperFactory.INSTANCE, false, null), NamespaceRepairingFilter.DEFAULT), null);
+        return new BuilderSpec(
+                new FilteredXmlInput(
+                        new StAXPullInput(
+                                reader, AxiomXMLStreamReaderHelperFactory.INSTANCE, false, null),
+                        NamespaceRepairingFilter.DEFAULT),
+                null);
     }
 
-    public static BuilderSpec from(StAXParserConfiguration configuration,
-            InputSource is) {
+    public static BuilderSpec from(StAXParserConfiguration configuration, InputSource is) {
         return create(configuration, is, true);
     }
 
     public static BuilderSpec from(StAXParserConfiguration configuration, Source source) {
         if (source instanceof SAXSource) {
-            return from((SAXSource)source, true);
+            return from((SAXSource) source, true);
         } else if (source instanceof DOMSource) {
-            return from(((DOMSource)source).getNode(), true);
+            return from(((DOMSource) source).getNode(), true);
         } else if (source instanceof StreamSource) {
-            StreamSource streamSource = (StreamSource)source;
+            StreamSource streamSource = (StreamSource) source;
             InputSource is = new InputSource();
             is.setByteStream(streamSource.getInputStream());
             is.setCharacterStream(streamSource.getReader());
@@ -159,12 +170,17 @@ public final class BuilderSpec {
             is.setSystemId(streamSource.getSystemId());
             return from(configuration, is);
         } else if (source instanceof StAXSource) {
-            return from(((StAXSource)source).getXMLStreamReader());
+            return from(((StAXSource) source).getXMLStreamReader());
         } else {
             try {
                 return new BuilderSpec(
                         new FilteredXmlInput(
-                                new StAXPullInput(StAXUtils.getXMLInputFactory().createXMLStreamReader(source), AxiomXMLStreamReaderHelperFactory.INSTANCE, true, null),
+                                new StAXPullInput(
+                                        StAXUtils.getXMLInputFactory()
+                                                .createXMLStreamReader(source),
+                                        AxiomXMLStreamReaderHelperFactory.INSTANCE,
+                                        true,
+                                        null),
                                 NamespaceRepairingFilter.DEFAULT),
                         null);
             } catch (XMLStreamException ex) {
@@ -184,10 +200,15 @@ public final class BuilderSpec {
     }
 
     public static BuilderSpec from(SAXSource source, boolean expandEntityReferences) {
-        return new BuilderSpec(new FilteredXmlInput(new SAXInput(source, expandEntityReferences), NamespaceRepairingFilter.DEFAULT), null);
+        return new BuilderSpec(
+                new FilteredXmlInput(
+                        new SAXInput(source, expandEntityReferences),
+                        NamespaceRepairingFilter.DEFAULT),
+                null);
     }
 
-    public static BuilderSpec from(StAXParserConfiguration configuration, final MultipartBody message) {
+    public static BuilderSpec from(
+            StAXParserConfiguration configuration, final MultipartBody message) {
         Part rootPart = message.getRootPart();
         InputSource is = new InputSource(rootPart.getInputStream(false));
         is.setEncoding(rootPart.getContentType().getParameter("charset"));
@@ -195,13 +216,14 @@ public final class BuilderSpec {
         return new BuilderSpec(
                 new FilteredXmlInput(
                         spec.getInput(),
-                        new XOPDecodingFilter(new OMAttachmentAccessor() {
-                            @Override
-                            public DataHandler getDataHandler(String contentID) {
-                                Part part = message.getPart(contentID);
-                                return part == null ? null : part.getDataHandler();
-                            }
-                        })),
+                        new XOPDecodingFilter(
+                                new OMAttachmentAccessor() {
+                                    @Override
+                                    public DataHandler getDataHandler(String contentID) {
+                                        Part part = message.getPart(contentID);
+                                        return part == null ? null : part.getDataHandler();
+                                    }
+                                })),
                 new Detachable() {
                     @Override
                     public void detach() {
@@ -210,12 +232,13 @@ public final class BuilderSpec {
                 });
     }
 
-    public static BuilderSpec from(StAXParserConfiguration configuration, Source source, OMAttachmentAccessor attachmentAccessor) {
+    public static BuilderSpec from(
+            StAXParserConfiguration configuration,
+            Source source,
+            OMAttachmentAccessor attachmentAccessor) {
         BuilderSpec spec = from(configuration, source);
         return new BuilderSpec(
-                new FilteredXmlInput(
-                        spec.getInput(),
-                        new XOPDecodingFilter(attachmentAccessor)),
+                new FilteredXmlInput(spec.getInput(), new XOPDecodingFilter(attachmentAccessor)),
                 spec.getDetachable());
     }
 
