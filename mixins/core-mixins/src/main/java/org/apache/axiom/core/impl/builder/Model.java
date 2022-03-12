@@ -25,21 +25,20 @@ import org.apache.axiom.core.CoreParentNode;
 public interface Model {
     /**
      * Create the document node suitable for this model.
-     * 
+     *
      * @return the document node, or {@code null} if a plain {@link CoreDocument} should be used
      */
     CoreDocument createDocument();
-    
+
     /**
      * Create a model specific element node. The implementation must only create the element, but
      * not set any of its properties.
-     * 
-     * @param parent
-     *            the parent for the element
-     * @param elementName
-     *            the local name for the element
-     * @return the element node, or {@code null} if a plain {@link CoreNSAwareElement} should be used
+     *
+     * @param parent the parent for the element
+     * @param elementName the local name for the element
+     * @return the element node, or {@code null} if a plain {@link CoreNSAwareElement} should be
+     *     used
      */
-    CoreNSAwareElement createElement(CoreParentNode parent, int elementLevel,
-            String namespaceURI, String localName);
+    CoreNSAwareElement createElement(
+            CoreParentNode parent, int elementLevel, String namespaceURI, String localName);
 }

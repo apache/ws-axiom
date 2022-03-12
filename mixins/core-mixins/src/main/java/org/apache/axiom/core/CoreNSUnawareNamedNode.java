@@ -18,10 +18,9 @@
  */
 package org.apache.axiom.core;
 
-/**
- * Represents a namespace unaware named information item.
- */
+/** Represents a namespace unaware named information item. */
 public interface CoreNSUnawareNamedNode extends CoreNamedNode {
     String coreGetName();
+
     void coreSetName(String name);
 }

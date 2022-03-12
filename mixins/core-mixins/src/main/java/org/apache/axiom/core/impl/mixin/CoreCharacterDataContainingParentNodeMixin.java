@@ -24,7 +24,8 @@ import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
-public abstract class CoreCharacterDataContainingParentNodeMixin implements CoreCharacterDataContainingParentNode {
+public abstract class CoreCharacterDataContainingParentNodeMixin
+        implements CoreCharacterDataContainingParentNode {
     @Override
     public final Object coreGetCharacterData() throws CoreModelException {
         Object characterData = internalGetCharacterData(ElementAction.RETURN_NULL);

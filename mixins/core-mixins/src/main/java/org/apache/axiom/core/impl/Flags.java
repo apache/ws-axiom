@@ -24,10 +24,10 @@ import org.apache.axiom.core.CoreParentNode;
 
 public final class Flags {
     private Flags() {}
-    
+
     /**
-     * Defines the bit mask for the part of the flags that indicate the state of a
-     * {@link CoreParentNode}.
+     * Defines the bit mask for the part of the flags that indicate the state of a {@link
+     * CoreParentNode}.
      */
     public static final int STATE_MASK = 7;
 
@@ -37,9 +37,9 @@ public final class Flags {
      * to a document node (which may be the parent or simply the owner document).
      */
     public static final int HAS_PARENT = 8;
-    
+
     public static final int DEFAULT_ATTR = 16;
-    
+
     /**
      * Used to store the information returned by {@link CoreCharacterDataNode#coreIsIgnorable()}.
      */

@@ -24,50 +24,57 @@ import org.apache.axiom.core.stream.XmlHandler;
 public interface CoreNode {
     /**
      * Get the owner document to which this node belongs.
-     * 
-     * @param create
-     *            indicates whether the owner document should be created if it has not been created
-     *            yet
+     *
+     * @param create indicates whether the owner document should be created if it has not been
+     *     created yet
      * @return the owner document or <code>null</code> if the owner document has not been created
-     *         yet and <code>create</code> is <code>false</code>
+     *     yet and <code>create</code> is <code>false</code>
      */
     CoreDocument coreGetOwnerDocument(boolean create);
-    
+
     CoreNode getRootOrOwnerDocument();
-    
+
     boolean coreHasSameOwnerDocument(CoreNode other);
-    
+
     void coreSetOwnerDocument(CoreDocument document);
-    
+
     NodeFactory coreGetNodeFactory();
-    
+
     /**
      * Get the node type.
-     * 
+     *
      * @return the node type
      */
     NodeType coreGetNodeType();
-    
+
     Class<? extends CoreNode> coreGetNodeClass();
 
     /**
      * Clone this node according to the provided policy.
-     * 
-     * @param policy
-     *            the policy to use when cloning this node (and its children)
+     *
+     * @param policy the policy to use when cloning this node (and its children)
      * @return the clone of this node
      */
     <T> CoreNode coreClone(ClonePolicy<T> policy, T options) throws CoreModelException;
-    
-    <T> void init(ClonePolicy<T> policy, T options, CoreNode other) throws CoreModelException;
-    <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) throws CoreModelException;
 
-    void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException;
+    <T> void init(ClonePolicy<T> policy, T options, CoreNode other) throws CoreModelException;
+
+    <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone)
+            throws CoreModelException;
+
+    void internalSerialize(XmlHandler handler, boolean cache)
+            throws CoreModelException, StreamException;
 
     boolean internalGetFlag(int flag);
+
     void internalSetFlag(int flag, boolean value);
+
     int internalGetFlags(int mask);
+
     void internalSetFlags(int mask, int flags);
+
     <T> void initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other);
-    <T> CoreNode internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException;
+
+    <T> CoreNode internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent)
+            throws CoreModelException;
 }

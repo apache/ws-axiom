@@ -30,14 +30,14 @@ public abstract class CoreNSUnawareNamedNodeMixin implements CoreNSUnawareNamedN
     public final String coreGetName() {
         return name;
     }
-    
+
     @Override
     public final void coreSetName(String name) {
         this.name = name;
     }
-    
+
     @Override
     public final void initName(CoreNamedNode other) {
-        coreSetName(((CoreNSUnawareNamedNode)other).coreGetName());
+        coreSetName(((CoreNSUnawareNamedNode) other).coreGetName());
     }
 }

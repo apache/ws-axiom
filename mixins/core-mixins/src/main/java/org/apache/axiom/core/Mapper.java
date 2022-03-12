@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.core;
 
-public interface Mapper<S,T> {
+public interface Mapper<S, T> {
     S map(T object);
 }

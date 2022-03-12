@@ -35,24 +35,25 @@ public abstract class CoreProcessingInstructionMixin implements CoreProcessingIn
     public final NodeType coreGetNodeType() {
         return NodeType.PROCESSING_INSTRUCTION;
     }
-    
+
     @Override
     public final String coreGetTarget() {
         return target;
     }
-    
+
     @Override
     public final void coreSetTarget(String target) {
         this.target = target;
     }
-    
+
     @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
-        target = ((CoreProcessingInstruction)other).coreGetTarget();
+        target = ((CoreProcessingInstruction) other).coreGetTarget();
     }
-    
+
     @Override
-    public final void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
+    public final void serializeStartEvent(XmlHandler handler)
+            throws CoreModelException, StreamException {
         handler.startProcessingInstruction(coreGetTarget());
     }
 

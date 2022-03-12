@@ -35,12 +35,12 @@ public abstract class CoreNodeMixin implements CoreNode {
     public Class<? extends CoreNode> coreGetNodeClass() {
         return coreGetNodeType().getInterface();
     }
-    
+
     @Override
     public final CoreDocument coreGetOwnerDocument(boolean create) {
         CoreNode root = getRootOrOwnerDocument();
         if (root instanceof CoreDocument) {
-            return (CoreDocument)root;
+            return (CoreDocument) root;
         } else if (create) {
             CoreDocument ownerDocument = root.coreGetNodeFactory().getFactory2().createDocument();
             root.coreSetOwnerDocument(ownerDocument);
@@ -49,7 +49,7 @@ public abstract class CoreNodeMixin implements CoreNode {
             return null;
         }
     }
-    
+
     @Override
     public final boolean coreHasSameOwnerDocument(CoreNode other) {
         return other.getRootOrOwnerDocument() == getRootOrOwnerDocument();
@@ -68,7 +68,7 @@ public abstract class CoreNodeMixin implements CoreNode {
             flags &= ~flag;
         }
     }
-    
+
     @Override
     public final int internalGetFlags(int mask) {
         return flags & mask;
@@ -78,9 +78,10 @@ public abstract class CoreNodeMixin implements CoreNode {
     public final void internalSetFlags(int mask, int value) {
         flags = (flags & ~mask) | value;
     }
-    
+
     // TODO: merge this into internalClone once it is no longer referenced elsewhere
-    public final <T> CoreNode shallowClone(ClonePolicy<T> policy, T options) throws CoreModelException {
+    public final <T> CoreNode shallowClone(ClonePolicy<T> policy, T options)
+            throws CoreModelException {
         CoreNode clone = coreGetNodeFactory().createNode(policy.getTargetNodeClass(options, this));
         clone.init(policy, options, this);
         clone.initAncillaryData(policy, options, this);
@@ -88,22 +89,24 @@ public abstract class CoreNodeMixin implements CoreNode {
     }
 
     @Override
-    public final <T> CoreNode internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException {
+    public final <T> CoreNode internalClone(
+            ClonePolicy<T> policy, T options, CoreParentNode targetParent)
+            throws CoreModelException {
         CoreNode clone = shallowClone(policy, options);
         if (targetParent != null) {
-            targetParent.coreAppendChild((CoreChildNode)clone);
+            targetParent.coreAppendChild((CoreChildNode) clone);
         }
         policy.postProcess(options, clone);
         cloneChildrenIfNecessary(policy, options, clone);
         return clone;
     }
-    
+
     @Override
-    public final <T> CoreNode coreClone(ClonePolicy<T> policy, T options) throws CoreModelException {
+    public final <T> CoreNode coreClone(ClonePolicy<T> policy, T options)
+            throws CoreModelException {
         return internalClone(policy, options, null);
     }
-    
+
     @Override
-    public <T> void initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other) {
-    }
+    public <T> void initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other) {}
 }

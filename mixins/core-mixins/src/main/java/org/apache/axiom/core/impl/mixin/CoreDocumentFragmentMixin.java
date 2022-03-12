@@ -31,12 +31,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 @Mixin
 public abstract class CoreDocumentFragmentMixin implements CoreDocumentFragment {
     private CoreDocument ownerDocument;
-    
+
     @Override
     public final NodeType coreGetNodeType() {
         return NodeType.DOCUMENT_FRAGMENT;
     }
-    
+
     @Override
     public final CoreNode getRootOrOwnerDocument() {
         if (ownerDocument == null) {
@@ -45,18 +45,18 @@ public abstract class CoreDocumentFragmentMixin implements CoreDocumentFragment 
             return ownerDocument;
         }
     }
-    
+
     @Override
     public final void coreSetOwnerDocument(CoreDocument document) {
         ownerDocument = document;
     }
-    
-    @Override
-    public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
-    }
 
     @Override
-    public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+    public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {}
+
+    @Override
+    public final void internalSerialize(XmlHandler handler, boolean cache)
+            throws CoreModelException, StreamException {
         // TODO
         throw new UnsupportedOperationException();
     }

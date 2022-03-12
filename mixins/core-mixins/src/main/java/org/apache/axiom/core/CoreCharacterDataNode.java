@@ -23,15 +23,15 @@ public interface CoreCharacterDataNode extends CoreLeafNode, CoreCharacterDataCo
     Object coreGetCharacterData();
 
     void coreSetCharacterData(Object data);
-    
+
     /**
-     * Check whether this text node contains element content whitespace (also called
-     * "ignorable whitespace").
-     * 
+     * Check whether this text node contains element content whitespace (also called "ignorable
+     * whitespace").
+     *
      * @return <code>true</code> if the text node contains ignorable whitespace, <code>false</code>
-     *         otherwise
+     *     otherwise
      */
     boolean coreIsIgnorable();
-    
+
     void coreSetIgnorable(boolean ignorable);
 }

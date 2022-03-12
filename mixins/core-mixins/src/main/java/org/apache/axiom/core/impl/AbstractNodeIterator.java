@@ -30,24 +30,27 @@ import org.apache.axiom.core.Mapper;
 import org.apache.axiom.core.NodeIterator;
 import org.apache.axiom.core.Semantics;
 
-public abstract class AbstractNodeIterator<T extends CoreNode,S> implements NodeIterator<S> {
+public abstract class AbstractNodeIterator<T extends CoreNode, S> implements NodeIterator<S> {
     private final CoreParentNode startNode;
     private final Axis axis;
     private final Class<T> type;
-    private final Mapper<S,? super T> mapper;
+    private final Mapper<S, ? super T> mapper;
     private final Semantics semantics;
     private T currentNode;
-    
-    /**
-     * The parent of the current node. This is used to detect concurrent modifications.
-     */
+
+    /** The parent of the current node. This is used to detect concurrent modifications. */
     private CoreParentNode currentParent;
-    
+
     private T nextNode;
     private boolean hasNext;
     private int depth;
-    
-    public AbstractNodeIterator(CoreParentNode startNode, Axis axis, Class<T> type, Mapper<S,? super T> mapper, Semantics semantics) {
+
+    public AbstractNodeIterator(
+            CoreParentNode startNode,
+            Axis axis,
+            Class<T> type,
+            Mapper<S, ? super T> mapper,
+            Semantics semantics) {
         this.startNode = startNode;
         this.axis = axis;
         this.type = type;
@@ -59,8 +62,10 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
 
     private void computeNext(Axis axis) {
         CoreNode node = currentNode;
-        if (node instanceof CoreChildNode && ((CoreChildNode)node).coreGetParent() != currentParent) {
-            throw new ConcurrentModificationException("The current node has been removed using a method other than Iterator#remove()");
+        if (node instanceof CoreChildNode
+                && ((CoreChildNode) node).coreGetParent() != currentParent) {
+            throw new ConcurrentModificationException(
+                    "The current node has been removed using a method other than Iterator#remove()");
         }
         try {
             while (true) {
@@ -70,7 +75,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
                         if (node == null) {
                             node = startNode.coreGetFirstChild();
                         } else {
-                            node = ((CoreChildNode)node).coreGetNextSibling();
+                            node = ((CoreChildNode) node).coreGetNextSibling();
                         }
                         break;
                     case DESCENDANTS:
@@ -85,8 +90,11 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
                         } else {
                             boolean visitChildren = true;
                             while (true) {
-                                if (visitChildren && node instanceof CoreParentNode && semantics.isParentNode(node.coreGetNodeType())) {
-                                    CoreChildNode firstChild = ((CoreParentNode)node).coreGetFirstChild();
+                                if (visitChildren
+                                        && node instanceof CoreParentNode
+                                        && semantics.isParentNode(node.coreGetNodeType())) {
+                                    CoreChildNode firstChild =
+                                            ((CoreParentNode) node).coreGetFirstChild();
                                     if (firstChild != null) {
                                         depth++;
                                         node = firstChild;
@@ -97,13 +105,14 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
                                     node = null;
                                     break;
                                 }
-                                CoreChildNode nextSibling = ((CoreChildNode)node).coreGetNextSibling();
+                                CoreChildNode nextSibling =
+                                        ((CoreChildNode) node).coreGetNextSibling();
                                 if (nextSibling != null) {
                                     node = nextSibling;
                                     break;
                                 }
                                 depth--;
-                                node = ((CoreChildNode)node).coreGetParent();
+                                node = ((CoreChildNode) node).coreGetParent();
                                 visitChildren = false;
                             }
                         }
@@ -138,7 +147,10 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
     public final S next() {
         if (hasNext()) {
             currentNode = nextNode;
-            currentParent = currentNode instanceof CoreChildNode ? ((CoreChildNode)currentNode).coreGetParent() : null;
+            currentParent =
+                    currentNode instanceof CoreChildNode
+                            ? ((CoreChildNode) currentNode).coreGetParent()
+                            : null;
             hasNext = false;
             S mapped = mapper.map(currentNode);
             if (mapped != currentNode && mapped instanceof CoreNode) {
@@ -159,11 +171,11 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
         // the next sibling or parent, even if axis is DESCENDANTS or DESCENDANTS_OR_SELF.
         computeNext(Axis.CHILDREN);
         if (currentNode instanceof CoreChildNode) {
-//            try {
-                ((CoreChildNode)currentNode).coreDetach(semantics);
-//            } catch (CoreModelException ex) {
-//                throw exceptionTranslator.toUncheckedException(ex);
-//            }
+            //            try {
+            ((CoreChildNode) currentNode).coreDetach(semantics);
+            //            } catch (CoreModelException ex) {
+            //                throw exceptionTranslator.toUncheckedException(ex);
+            //            }
         }
         currentNode = null;
     }
@@ -173,6 +185,6 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
         // Move to next node before replacing the current one
         // TODO: this may not be the right thing to do in all cases
         computeNext(Axis.CHILDREN);
-        ((CoreChildNode)currentNode).coreReplaceWith(newNode, semantics);
+        ((CoreChildNode) currentNode).coreReplaceWith(newNode, semantics);
     }
 }

@@ -18,6 +18,4 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreLeafNode extends CoreChildNode {
-
-}
+public interface CoreLeafNode extends CoreChildNode {}

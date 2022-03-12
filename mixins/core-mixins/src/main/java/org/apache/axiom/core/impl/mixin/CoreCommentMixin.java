@@ -33,13 +33,13 @@ public abstract class CoreCommentMixin implements CoreComment {
     public final NodeType coreGetNodeType() {
         return NodeType.COMMENT;
     }
-    
+
     @Override
-    public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
-    }
-    
+    public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {}
+
     @Override
-    public final void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
+    public final void serializeStartEvent(XmlHandler handler)
+            throws CoreModelException, StreamException {
         handler.startComment();
     }
 

@@ -18,4 +18,8 @@
  */
 package org.apache.axiom.core;
 
-public enum ElementAction { SKIP, RECURSE, RETURN_NULL }
+public enum ElementAction {
+    SKIP,
+    RECURSE,
+    RETURN_NULL
+}

@@ -30,35 +30,35 @@ import org.apache.axiom.weaver.annotation.Mixin;
 public abstract class CoreEntityReferenceMixin implements CoreEntityReference {
     private String name;
     private String replacementText;
-    
+
     @Override
     public final NodeType coreGetNodeType() {
         return NodeType.ENTITY_REFERENCE;
     }
-    
+
     @Override
     public final String coreGetName() {
         return name;
     }
-    
+
     @Override
     public final void coreSetName(String name) {
         this.name = name;
     }
-    
+
     @Override
     public final String coreGetReplacementText() {
         return replacementText;
     }
-    
+
     @Override
     public final void coreSetReplacementText(String replacementText) {
         this.replacementText = replacementText;
     }
-    
+
     @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
-        CoreEntityReference o = (CoreEntityReference)other;
+        CoreEntityReference o = (CoreEntityReference) other;
         coreSetName(o.coreGetName());
         coreSetReplacementText(o.coreGetReplacementText());
     }

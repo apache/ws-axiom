@@ -27,11 +27,9 @@ public interface InputContext {
      * Enables pass-through mode for this context. In this mode, events for the parent information
      * item linked to this context (and its descendants) are passed directly to the specified
      * handler instead of building nodes for them.
-     * 
-     * @param handler
-     *            the handler to send events to
-     * @throws IllegalStateException
-     *             if a pass-through handler has already been set for this context
+     *
+     * @param handler the handler to send events to
+     * @throws IllegalStateException if a pass-through handler has already been set for this context
      */
     void setPassThroughHandler(XmlHandler passThroughHandler);
 

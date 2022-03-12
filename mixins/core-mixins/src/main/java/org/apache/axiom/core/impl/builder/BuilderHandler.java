@@ -42,23 +42,27 @@ final class BuilderHandler implements XmlHandler {
     // returns the state of completion
     private boolean done;
     private CoreDocument document;
-    
+
     /**
      * Tracks the depth of the node identified by {@link #target}. By definition, the document has
      * depth 0. Note that if caching is disabled, then this depth may be different from the actual
      * depth reached by the underlying parser.
      */
     public int depth;
-    
+
     private ArrayList<BuilderListener> listeners;
     private Queue<DeferredAction> deferredActions;
 
-    BuilderHandler(NodeFactory2 nodeFactory, Model model, CoreNSAwareElement root, Builder builder) {
+    BuilderHandler(
+            NodeFactory2 nodeFactory, Model model, CoreNSAwareElement root, Builder builder) {
         this.nodeFactory = nodeFactory;
         this.model = model;
         this.builder = builder;
         namespaceHelper = nodeFactory.createNamespaceHelper();
-        rootContext = root == null ? new BuildableContext(this, null, 0) : new UnwrappingContext(this, root);
+        rootContext =
+                root == null
+                        ? new BuildableContext(this, null, 0)
+                        : new UnwrappingContext(this, root);
         context = rootContext;
         activeContextCount = 1;
     }
@@ -69,13 +73,13 @@ final class BuilderHandler implements XmlHandler {
         }
         listeners.add(listener);
     }
-    
+
     void nodeAdded(CoreNode node) {
         if (node instanceof CoreDocument) {
-            document = (CoreDocument)node;
+            document = (CoreDocument) node;
         }
         if (listeners != null) {
-            for (int i=0, size=listeners.size(); i<size; i++) {
+            for (int i = 0, size = listeners.size(); i < size; i++) {
                 DeferredAction action = listeners.get(i).nodeAdded(node, depth);
                 if (action != null) {
                     scheduleDeferredAction(action);
@@ -99,25 +103,26 @@ final class BuilderHandler implements XmlHandler {
             }
         }
     }
-    
+
     void incrementActiveContextCount() {
         activeContextCount++;
     }
-    
+
     void decrementActiveContextCount() {
         if (--activeContextCount == 0) {
-            scheduleDeferredAction(() -> {
-                while (!done) {
-                    builder.next();
-                }
-            });
+            scheduleDeferredAction(
+                    () -> {
+                        while (!done) {
+                            builder.next();
+                        }
+                    });
         }
     }
-    
+
     boolean isCompleted() {
         return done;
     }
-    
+
     CoreDocument getDocument() {
         if (rootContext instanceof UnwrappingContext) {
             throw new UnsupportedOperationException("There is no document linked to this builder");
@@ -125,29 +130,32 @@ final class BuilderHandler implements XmlHandler {
             return document;
         }
     }
-    
+
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
+    public void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
         context.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
     }
-    
+
     @Override
     public void startFragment() throws StreamException {
         context.startFragment();
     }
 
     @Override
-    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
-            String internalSubset) throws StreamException {
+    public void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset)
+            throws StreamException {
         context.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
-    
+
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix)
+            throws StreamException {
         depth++;
         context = context.startElement(namespaceURI, localName, prefix);
     }
-    
+
     @Override
     public void endElement() throws StreamException {
         context = context.endElement();
@@ -155,30 +163,39 @@ final class BuilderHandler implements XmlHandler {
     }
 
     @Override
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
+    public void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified)
+            throws StreamException {
         context.processAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
-    
+
     @Override
-    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
+    public void processAttribute(String name, String value, String type, boolean specified)
+            throws StreamException {
         context.processAttribute(name, value, type, specified);
     }
-    
+
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI)
+            throws StreamException {
         context.processNamespaceDeclaration(prefix, namespaceURI);
     }
-    
+
     @Override
     public void attributesCompleted() throws StreamException {
         context.attributesCompleted();
     }
-    
+
     @Override
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         context.processCharacterData(data, ignorable);
     }
-    
+
     @Override
     public void startProcessingInstruction(String target) throws StreamException {
         context = context.startProcessingInstruction(target);
@@ -198,7 +215,7 @@ final class BuilderHandler implements XmlHandler {
     public void endComment() throws StreamException {
         context = context.endComment();
     }
-    
+
     @Override
     public void startCDATASection() throws StreamException {
         context = context.startCDATASection();
@@ -208,12 +225,12 @@ final class BuilderHandler implements XmlHandler {
     public void endCDATASection() throws StreamException {
         context = context.endCDATASection();
     }
-    
+
     @Override
     public void processEntityReference(String name, String replacementText) throws StreamException {
         context.processEntityReference(name, replacementText);
     }
-    
+
     @Override
     public void completed() throws StreamException {
         if (depth != 0) {

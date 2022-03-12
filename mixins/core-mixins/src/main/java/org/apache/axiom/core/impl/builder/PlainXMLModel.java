@@ -33,8 +33,8 @@ public final class PlainXMLModel implements Model {
     }
 
     @Override
-    public CoreNSAwareElement createElement(CoreParentNode parent, int elementLevel,
-            String namespaceURI, String localName) {
+    public CoreNSAwareElement createElement(
+            CoreParentNode parent, int elementLevel, String namespaceURI, String localName) {
         return null;
     }
 }

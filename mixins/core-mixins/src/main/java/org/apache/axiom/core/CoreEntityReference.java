@@ -20,7 +20,10 @@ package org.apache.axiom.core;
 
 public interface CoreEntityReference extends CoreLeafNode {
     String coreGetName();
+
     void coreSetName(String name);
+
     String coreGetReplacementText();
+
     void coreSetReplacementText(String replacementText);
 }

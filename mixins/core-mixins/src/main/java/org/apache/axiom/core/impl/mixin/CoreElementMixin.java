@@ -59,7 +59,8 @@ public abstract class CoreElementMixin implements CoreElement {
     }
 
     @Override
-    public final CoreAttribute coreGetAttribute(AttributeMatcher matcher, String namespaceURI, String name) {
+    public final CoreAttribute coreGetAttribute(
+            AttributeMatcher matcher, String namespaceURI, String name) {
         CoreAttribute attr = coreGetFirstAttribute();
         while (attr != null && !matcher.matches(attr, namespaceURI, name)) {
             attr = attr.coreGetNextAttribute();
@@ -80,7 +81,9 @@ public abstract class CoreElementMixin implements CoreElement {
     }
 
     @Override
-    public final void coreSetAttribute(AttributeMatcher matcher, String namespaceURI, String name, String prefix, String value) throws CoreModelException {
+    public final void coreSetAttribute(
+            AttributeMatcher matcher, String namespaceURI, String name, String prefix, String value)
+            throws CoreModelException {
         CoreAttribute attr = firstAttribute;
         CoreAttribute previousAttr = null;
         while (attr != null && !matcher.matches(attr, namespaceURI, name)) {
@@ -88,7 +91,9 @@ public abstract class CoreElementMixin implements CoreElement {
             attr = attr.coreGetNextAttribute();
         }
         if (attr == null) {
-            CoreAttribute newAttr = matcher.createAttribute(coreGetNodeFactory().getFactory2(), namespaceURI, name, prefix, value);
+            CoreAttribute newAttr =
+                    matcher.createAttribute(
+                            coreGetNodeFactory().getFactory2(), namespaceURI, name, prefix, value);
             if (previousAttr == null) {
                 coreAppendAttribute(newAttr);
             } else {
@@ -98,16 +103,17 @@ public abstract class CoreElementMixin implements CoreElement {
             matcher.update(attr, prefix, value);
         }
     }
-    
+
     @Override
-    public final CoreAttribute coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, Semantics semantics) {
+    public final CoreAttribute coreSetAttribute(
+            AttributeMatcher matcher, CoreAttribute attr, Semantics semantics) {
         if (attr.coreGetOwnerElement() == this) {
             // TODO: document this and add assertion
             return attr;
         }
         attr.internalRemove(null, this);
         String namespaceURI = matcher.getNamespaceURI(attr);
-        String name = matcher.getName(attr); 
+        String name = matcher.getName(attr);
         CoreAttribute existingAttr = coreGetFirstAttribute();
         CoreAttribute previousAttr = null;
         while (existingAttr != null && !matcher.matches(existingAttr, namespaceURI, name)) {
@@ -126,7 +132,8 @@ public abstract class CoreElementMixin implements CoreElement {
             } else {
                 previousAttr.internalSetNextAttribute(attr);
             }
-            existingAttr.internalUnsetOwnerElement(semantics.getDetachPolicy().getNewOwnerDocument(this));
+            existingAttr.internalUnsetOwnerElement(
+                    semantics.getDetachPolicy().getNewOwnerDocument(this));
             attr.internalSetNextAttribute(existingAttr.coreGetNextAttribute());
             existingAttr.internalSetNextAttribute(null);
         }
@@ -134,7 +141,8 @@ public abstract class CoreElementMixin implements CoreElement {
     }
 
     @Override
-    public final boolean coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name, Semantics semantics) {
+    public final boolean coreRemoveAttribute(
+            AttributeMatcher matcher, String namespaceURI, String name, Semantics semantics) {
         CoreAttribute att = coreGetAttribute(matcher, namespaceURI, name);
         if (att != null) {
             att.coreRemove(semantics);
@@ -145,23 +153,27 @@ public abstract class CoreElementMixin implements CoreElement {
     }
 
     @Override
-    public final <T extends CoreAttribute,S> Iterator<S> coreGetAttributesByType(Class<T> type, Mapper<S,? super T> mapper, Semantics semantics) {
+    public final <T extends CoreAttribute, S> Iterator<S> coreGetAttributesByType(
+            Class<T> type, Mapper<S, ? super T> mapper, Semantics semantics) {
         return AttributeIterator.create(this, type, mapper, semantics);
     }
 
     public abstract String getImplicitNamespaceURI(String prefix);
-    
+
     @Override
-    public final String coreLookupNamespaceURI(String prefix, Semantics semantics) throws CoreModelException {
+    public final String coreLookupNamespaceURI(String prefix, Semantics semantics)
+            throws CoreModelException {
         if (!semantics.isUseStrictNamespaceLookup()) {
             String namespaceURI = getImplicitNamespaceURI(prefix);
             if (namespaceURI != null) {
                 return namespaceURI;
             }
         }
-        for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
+        for (CoreAttribute attr = coreGetFirstAttribute();
+                attr != null;
+                attr = attr.coreGetNextAttribute()) {
             if (attr instanceof CoreNamespaceDeclaration) {
-                CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration)attr;
+                CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration) attr;
                 if (prefix.equals(decl.coreGetDeclaredPrefix())) {
                     return decl.coreGetCharacterData().toString();
                 }
@@ -178,9 +190,10 @@ public abstract class CoreElementMixin implements CoreElement {
     }
 
     public abstract String getImplicitPrefix(String namespaceURI);
-    
+
     @Override
-    public final String coreLookupPrefix(String namespaceURI, Semantics semantics) throws CoreModelException {
+    public final String coreLookupPrefix(String namespaceURI, Semantics semantics)
+            throws CoreModelException {
         if (namespaceURI == null) {
             throw new IllegalArgumentException("namespaceURI must not be null");
         }
@@ -190,9 +203,11 @@ public abstract class CoreElementMixin implements CoreElement {
                 return prefix;
             }
         }
-        for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
+        for (CoreAttribute attr = coreGetFirstAttribute();
+                attr != null;
+                attr = attr.coreGetNextAttribute()) {
             if (attr instanceof CoreNamespaceDeclaration) {
-                CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration)attr;
+                CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration) attr;
                 if (decl.coreGetCharacterData().toString().equals(namespaceURI)) {
                     return decl.coreGetDeclaredPrefix();
                 }
@@ -203,12 +218,15 @@ public abstract class CoreElementMixin implements CoreElement {
             String prefix = parentElement.coreLookupPrefix(namespaceURI, semantics);
             // The prefix declared on one of the ancestors may be masked by another
             // namespace declaration on this element (or one of its descendants).
-            if (!semantics.isUseStrictNamespaceLookup() && getImplicitNamespaceURI(prefix) != null) {
+            if (!semantics.isUseStrictNamespaceLookup()
+                    && getImplicitNamespaceURI(prefix) != null) {
                 return null;
             }
-            for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
+            for (CoreAttribute attr = coreGetFirstAttribute();
+                    attr != null;
+                    attr = attr.coreGetNextAttribute()) {
                 if (attr instanceof CoreNamespaceDeclaration) {
-                    CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration)attr;
+                    CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration) attr;
                     if (decl.coreGetDeclaredPrefix().equals(prefix)) {
                         return null;
                     }
@@ -221,27 +239,28 @@ public abstract class CoreElementMixin implements CoreElement {
     }
 
     @Override
-    public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) throws CoreModelException {
-        CoreElement o = (CoreElement)other;
+    public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other)
+            throws CoreModelException {
+        CoreElement o = (CoreElement) other;
         initSource(policy, options, o);
         initName(o);
         if (isExpanded()) {
             CoreAttribute attr = o.coreGetFirstAttribute();
             while (attr != null) {
-                coreAppendAttribute((CoreAttribute)attr.coreClone(policy, options));
+                coreAppendAttribute((CoreAttribute) attr.coreClone(policy, options));
                 // TODO: needed?
-//                clonedAttr.coreSetSpecified(attr.coreGetSpecified());
+                //                clonedAttr.coreSetSpecified(attr.coreGetSpecified());
                 attr = attr.coreGetNextAttribute();
             }
         }
     }
 
     // This is basically a hook for OMSourcedElement
-    public <T> void initSource(ClonePolicy<T> policy, T options, CoreElement other) {
-    }
-    
+    public <T> void initSource(ClonePolicy<T> policy, T options, CoreElement other) {}
+
     @Override
-    public final void corePromote(CoreElement newElement, Semantics semantics) throws CoreModelException {
+    public final void corePromote(CoreElement newElement, Semantics semantics)
+            throws CoreModelException {
         newElement.initName(this);
         newElement.internalSetFirstAttribute(firstAttribute);
         CoreAttribute attr = firstAttribute;

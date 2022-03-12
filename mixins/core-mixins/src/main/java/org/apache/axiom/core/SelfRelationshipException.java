@@ -25,8 +25,7 @@ package org.apache.axiom.core;
 public class SelfRelationshipException extends HierarchyException {
     private static final long serialVersionUID = 1L;
 
-    public SelfRelationshipException() {
-    }
+    public SelfRelationshipException() {}
 
     public SelfRelationshipException(String message) {
         super(message);

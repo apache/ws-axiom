@@ -18,19 +18,17 @@
  */
 package org.apache.axiom.core;
 
-/**
- * Represents a namespace declaration information item.
- */
+/** Represents a namespace declaration information item. */
 public interface CoreNamespaceDeclaration extends CoreAttribute {
     void init(String prefix, String namespaceURI, Object namespaceHelper);
-    
+
     /**
      * Get the prefix declared by this namespace declaration.
-     * 
+     *
      * @return the prefix, or the empty string if this namespace declaration defines the default
-     *         namespace
+     *     namespace
      */
     String coreGetDeclaredPrefix();
-    
+
     void coreSetDeclaredNamespace(String prefix, String namespaceURI);
 }

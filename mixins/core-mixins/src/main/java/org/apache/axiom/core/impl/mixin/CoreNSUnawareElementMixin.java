@@ -32,7 +32,7 @@ public abstract class CoreNSUnawareElementMixin implements CoreNSUnawareElement 
     public final NodeType coreGetNodeType() {
         return NodeType.NS_UNAWARE_ELEMENT;
     }
-    
+
     public final String getImplicitNamespaceURI(String prefix) {
         return null;
     }
@@ -40,13 +40,14 @@ public abstract class CoreNSUnawareElementMixin implements CoreNSUnawareElement 
     public final String getImplicitPrefix(String namespaceURI) {
         return null;
     }
-    
+
     final void copyName(CoreElement clone) {
-        ((CoreNSUnawareElement)clone).coreSetName(coreGetName());
+        ((CoreNSUnawareElement) clone).coreSetName(coreGetName());
     }
 
     @Override
-    public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+    public final void internalSerialize(XmlHandler handler, boolean cache)
+            throws CoreModelException, StreamException {
         // TODO
         throw new UnsupportedOperationException();
     }

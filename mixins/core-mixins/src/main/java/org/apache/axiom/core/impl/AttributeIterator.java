@@ -27,23 +27,28 @@ import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.core.Semantics;
 
-public final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> {
+public final class AttributeIterator<T extends CoreAttribute, S> implements Iterator<S> {
     private final Class<T> type;
-    private final Mapper<S,? super T> mapper;
+    private final Mapper<S, ? super T> mapper;
     private final Semantics semantics;
     private CoreAttribute currentAttribute;
     private CoreAttribute nextAttribute;
     private boolean nextAttributeSet;
-    
-    private AttributeIterator(CoreAttribute firstAttribute, Class<T> type, Mapper<S,? super T> mapper, Semantics semantics) {
+
+    private AttributeIterator(
+            CoreAttribute firstAttribute,
+            Class<T> type,
+            Mapper<S, ? super T> mapper,
+            Semantics semantics) {
         this.type = type;
         this.mapper = mapper;
         this.semantics = semantics;
         nextAttribute = firstAttribute;
         nextAttributeSet = true;
     }
-    
-    public static <T extends CoreAttribute,S> Iterator<S> create(CoreElement element, Class<T> type, Mapper<S,? super T> mapper, Semantics semantics) {
+
+    public static <T extends CoreAttribute, S> Iterator<S> create(
+            CoreElement element, Class<T> type, Mapper<S, ? super T> mapper, Semantics semantics) {
         CoreAttribute attribute = element.coreGetFirstAttribute();
         while (attribute != null && !type.isInstance(attribute)) {
             attribute = attribute.coreGetNextAttribute();
@@ -51,10 +56,10 @@ public final class AttributeIterator<T extends CoreAttribute,S> implements Itera
         if (attribute == null) {
             return Collections.<S>emptyList().iterator();
         } else {
-            return new AttributeIterator<T,S>(attribute, type, mapper, semantics);
+            return new AttributeIterator<T, S>(attribute, type, mapper, semantics);
         }
     }
-    
+
     @Override
     public final boolean hasNext() {
         if (!nextAttributeSet) {

@@ -27,8 +27,7 @@ package org.apache.axiom.core;
 public class ChildNotAllowedException extends HierarchyException {
     private static final long serialVersionUID = 1L;
 
-    public ChildNotAllowedException() {
-    }
+    public ChildNotAllowedException() {}
 
     public ChildNotAllowedException(String message) {
         super(message);

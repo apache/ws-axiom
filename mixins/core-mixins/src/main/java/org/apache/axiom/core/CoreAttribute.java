@@ -21,42 +21,42 @@ package org.apache.axiom.core;
 public interface CoreAttribute extends CoreCharacterDataContainingParentNode {
     /**
      * Get the owner element of this attribute.
-     * 
+     *
      * @return the owner element of the attribute
      */
     CoreElement coreGetOwnerElement();
-    
+
     /**
      * Check if this node has an owner element.
-     * 
+     *
      * @return <code>true</code> if and only if this node currently has an owner element
      */
     boolean coreHasOwnerElement();
-    
+
     /**
      * Remove this attribute from its owner element.
-     * 
-     * @param semantics
-     *            the API semantics to use; determines the new owner document for the attribute
+     *
+     * @param semantics the API semantics to use; determines the new owner document for the
+     *     attribute
      * @return <code>true</code> if the attribute had an owner element and has been removed from
-     *         that element; <code>false</code> if the attribute didn't have an owner element and no
-     *         changes have been made
+     *     that element; <code>false</code> if the attribute didn't have an owner element and no
+     *     changes have been made
      */
     boolean coreRemove(Semantics semantics);
-    
+
     /**
      * Get the attribute immediately following the current attribute.
-     * 
+     *
      * @return the next attribute, or <code>null</code> if the attribute is the last attribute of
-     *         its owner element or if the attribute has no owner element
+     *     its owner element or if the attribute has no owner element
      */
     CoreAttribute coreGetNextAttribute();
-    
+
     /**
      * Get the attribute immediately preceding the current attribute.
-     * 
+     *
      * @return the previous attribute, or <code>null</code> if the attribute is the first attribute
-     *         of its owner element or if the attribute has no owner element
+     *     of its owner element or if the attribute has no owner element
      */
     CoreAttribute coreGetPreviousAttribute();
 
@@ -65,8 +65,12 @@ public interface CoreAttribute extends CoreCharacterDataContainingParentNode {
     void coreSetSpecified(boolean specified);
 
     void internalSetOwnerElement(CoreElement element);
+
     void internalUnsetOwnerElement(CoreDocument newOwnerDocument);
+
     void internalSetNextAttribute(CoreAttribute nextAttribute);
+
     void internalInsertAttributeAfter(CoreAttribute attr);
+
     boolean internalRemove(Semantics semantics, CoreElement newOwner);
 }

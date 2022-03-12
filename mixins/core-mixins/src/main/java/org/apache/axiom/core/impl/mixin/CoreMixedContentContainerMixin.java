@@ -26,7 +26,8 @@ import org.apache.axiom.weaver.annotation.Mixin;
 @Mixin
 public abstract class CoreMixedContentContainerMixin implements CoreMixedContentContainer {
     @Override
-    public final Object coreGetCharacterData(ElementAction elementAction) throws CoreModelException {
+    public final Object coreGetCharacterData(ElementAction elementAction)
+            throws CoreModelException {
         return internalGetCharacterData(elementAction);
     }
 }

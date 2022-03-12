@@ -18,12 +18,9 @@
  */
 package org.apache.axiom.core;
 
-/**
- * Indicates that a requested node has been consumed and is no longer available.
- */
+/** Indicates that a requested node has been consumed and is no longer available. */
 public class NodeConsumedException extends DeferredBuildingException {
     private static final long serialVersionUID = 1L;
 
-    public NodeConsumedException() {
-    }
+    public NodeConsumedException() {}
 }

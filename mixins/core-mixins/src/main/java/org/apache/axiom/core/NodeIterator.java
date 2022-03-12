@@ -23,28 +23,29 @@ import java.util.Iterator;
 
 /**
  * Extended iterator interface used by various methods in {@link CoreParentNode}. It defines an
- * additional method that allows to replace the child node returned by the last call to
- * {@link #next()}.
- * <p>
- * All implementations of this interface must satisfy the following requirements:
+ * additional method that allows to replace the child node returned by the last call to {@link
+ * #next()}.
+ *
+ * <p>All implementations of this interface must satisfy the following requirements:
+ *
  * <ol>
- * <li>The implementation MUST properly implement the {@link #remove()} method, i.e. it is not
- * allowed to throw {@link UnsupportedOperationException}.
- * <li>A {@link ConcurrentModificationException} MUST be thrown when the iterator is used after the
- * last node returned by {@link Iterator#next()} has been removed using a method other than
- * {@link Iterator#remove()} (e.g. {@link CoreChildNode#coreDetach(Semantics)}).
- * <li>If a {@link CoreModelException} occurs inside {@link Iterator#hasNext()},
- * {@link Iterator#next()} or {@link Iterator#remove()}, then the implementation MUST use the
- * supplied {@link ExceptionTranslator} to translate that checked exception into an unchecked
- * exception.
+ *   <li>The implementation MUST properly implement the {@link #remove()} method, i.e. it is not
+ *       allowed to throw {@link UnsupportedOperationException}.
+ *   <li>A {@link ConcurrentModificationException} MUST be thrown when the iterator is used after
+ *       the last node returned by {@link Iterator#next()} has been removed using a method other
+ *       than {@link Iterator#remove()} (e.g. {@link CoreChildNode#coreDetach(Semantics)}).
+ *   <li>If a {@link CoreModelException} occurs inside {@link Iterator#hasNext()}, {@link
+ *       Iterator#next()} or {@link Iterator#remove()}, then the implementation MUST use the
+ *       supplied {@link ExceptionTranslator} to translate that checked exception into an unchecked
+ *       exception.
  * </ol>
  */
 public interface NodeIterator<T> extends Iterator<T> {
     /**
      * Replace the current node.
-     * 
-     * This method only has an effect if the current node is a {@link CoreChildNode}.
-     * 
+     *
+     * <p>This method only has an effect if the current node is a {@link CoreChildNode}.
+     *
      * @param newNode
      * @throws CoreModelException
      */

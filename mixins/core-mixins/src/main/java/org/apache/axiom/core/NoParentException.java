@@ -25,8 +25,7 @@ package org.apache.axiom.core;
 public class NoParentException extends HierarchyException {
     private static final long serialVersionUID = 1L;
 
-    public NoParentException() {
-    }
+    public NoParentException() {}
 
     public NoParentException(String message) {
         super(message);

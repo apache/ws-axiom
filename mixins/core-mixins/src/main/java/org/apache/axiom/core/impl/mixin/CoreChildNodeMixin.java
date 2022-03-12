@@ -41,22 +41,22 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
     private CoreParentNode owner;
     CoreChildNode nextSibling;
     CoreChildNode previousSibling;
-    
+
     @Override
     public final boolean coreHasParent() {
         return internalGetFlag(Flags.HAS_PARENT);
     }
-    
+
     @Override
     public final CoreParentNode coreGetParent() {
         return internalGetFlag(Flags.HAS_PARENT) ? owner : null;
     }
-    
+
     @Override
     public final CoreElement coreGetParentElement() {
-        return owner instanceof CoreElement ? (CoreElement)owner : null;
+        return owner instanceof CoreElement ? (CoreElement) owner : null;
     }
-    
+
     @Override
     public void internalSetParent(CoreParentNode parent) {
         if (parent == null) {
@@ -65,13 +65,13 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
         owner = parent;
         internalSetFlag(Flags.HAS_PARENT, true);
     }
-    
+
     @Override
     public final void internalUnsetParent(CoreDocument newOwnerDocument) {
         owner = newOwnerDocument;
         internalSetFlag(Flags.HAS_PARENT, false);
     }
-    
+
     @Override
     public final CoreNode getRootOrOwnerDocument() {
         if (owner == null) {
@@ -80,7 +80,7 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
             return owner.getRootOrOwnerDocument();
         }
     }
-    
+
     @Override
     public final void coreSetOwnerDocument(CoreDocument document) {
         if (internalGetFlag(Flags.HAS_PARENT)) {
@@ -88,7 +88,7 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
         }
         owner = document;
     }
-    
+
     @Override
     public final CoreChildNode coreGetNextSiblingIfAvailable() {
         return nextSibling;
@@ -98,12 +98,12 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
     public final void internalSetNextSibling(CoreChildNode nextSibling) {
         this.nextSibling = nextSibling;
     }
-    
+
     @Override
     public final CoreChildNode coreGetPreviousSibling() {
         return previousSibling;
     }
-    
+
     @Override
     public final CoreChildNode coreGetPreviousSibling(NodeFilter filter) {
         CoreChildNode sibling = coreGetPreviousSibling();
@@ -112,12 +112,12 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
         }
         return sibling;
     }
-    
+
     @Override
     public final void internalSetPreviousSibling(CoreChildNode previousSibling) {
         this.previousSibling = previousSibling;
     }
-    
+
     @Override
     public final CoreChildNode coreGetNextSibling() throws CoreModelException {
         CoreChildNode nextSibling = coreGetNextSiblingIfAvailable();
@@ -149,7 +149,7 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
         }
         return sibling;
     }
-    
+
     @Override
     public final void coreInsertSiblingAfter(CoreChildNode sibling) throws CoreModelException {
         CoreParentNode parent = coreGetParent();
@@ -170,7 +170,7 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
         sibling.internalSetNextSibling(nextSibling);
         this.nextSibling = sibling;
     }
-    
+
     @Override
     public final void coreInsertSiblingBefore(CoreChildNode sibling) throws CoreModelException {
         CoreParentNode parent = coreGetParent();
@@ -190,7 +190,7 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
         sibling.internalSetPreviousSibling(previousSibling);
         previousSibling = sibling;
     }
-    
+
     @Override
     public final void coreInsertSiblingsBefore(CoreDocumentFragment fragment) {
         Content fragmentContent = fragment.internalGetContent(false);
@@ -216,18 +216,18 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
         fragmentContent.firstChild = null;
         fragmentContent.lastChild = null;
     }
-    
+
     @Override
     public final void coreDetach(Semantics semantics) {
         internalDetach(semantics.getDetachPolicy(), null);
     }
-    
+
     @Override
     public final void coreDetach(CoreDocument newOwnerDocument) {
         internalDetach(DetachPolicy.NEW_DOCUMENT, null);
         owner = newOwnerDocument;
     }
-    
+
     @Override
     public final void internalDetach(DetachPolicy detachPolicy, CoreParentNode newParent) {
         CoreParentNode parent = coreGetParent();
@@ -254,7 +254,8 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
     }
 
     @Override
-    public final void coreReplaceWith(CoreChildNode newNode, Semantics semantics) throws CoreModelException {
+    public final void coreReplaceWith(CoreChildNode newNode, Semantics semantics)
+            throws CoreModelException {
         if (newNode == this) {
             return;
         }
@@ -281,7 +282,9 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
     }
 
     @Override
-    public final <T> CoreNode coreClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException {
+    public final <T> CoreNode coreClone(
+            ClonePolicy<T> policy, T options, CoreParentNode targetParent)
+            throws CoreModelException {
         return internalClone(policy, options, targetParent);
     }
 }

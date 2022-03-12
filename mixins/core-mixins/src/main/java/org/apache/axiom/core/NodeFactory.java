@@ -20,6 +20,6 @@ package org.apache.axiom.core;
 
 public interface NodeFactory {
     NodeFactory2 getFactory2();
-    
+
     <T extends CoreNode> T createNode(Class<T> type);
 }

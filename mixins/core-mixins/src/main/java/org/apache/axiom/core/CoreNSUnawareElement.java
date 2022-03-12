@@ -18,6 +18,4 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreNSUnawareElement extends CoreElement, CoreNSUnawareNamedNode {
-
-}
+public interface CoreNSUnawareElement extends CoreElement, CoreNSUnawareNamedNode {}

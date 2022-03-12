@@ -32,8 +32,8 @@ public final class BuilderImpl implements Builder {
     private final BuilderHandler builderHandler;
     private Object facade;
 
-    public BuilderImpl(XmlInput input, NodeFactory2 nodeFactory, Model model,
-            CoreNSAwareElement root) {
+    public BuilderImpl(
+            XmlInput input, NodeFactory2 nodeFactory, Model model, CoreNSAwareElement root) {
         builderHandler = new BuilderHandler(nodeFactory, model, root, this);
         reader = input.createReader(builderHandler);
     }
@@ -41,7 +41,7 @@ public final class BuilderImpl implements Builder {
     public void addListener(BuilderListener listener) {
         builderHandler.addListener(listener);
     }
-    
+
     public Object getFacade() {
         return facade;
     }
@@ -75,7 +75,7 @@ public final class BuilderImpl implements Builder {
         }
         return document;
     }
-    
+
     @Override
     public void close() {
         reader.dispose();

@@ -20,9 +20,7 @@ package org.apache.axiom.core;
 
 import org.apache.axiom.core.stream.CharacterData;
 
-/**
- * {@link CharacterData} that should be cloned when the owning node is cloned.
- */
+/** {@link CharacterData} that should be cloned when the owning node is cloned. */
 public interface CloneableCharacterData extends CharacterData {
     <T> CharacterData clone(ClonePolicy<T> policy, T options);
 }

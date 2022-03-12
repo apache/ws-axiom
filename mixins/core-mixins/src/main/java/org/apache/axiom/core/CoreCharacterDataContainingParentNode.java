@@ -18,6 +18,5 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreCharacterDataContainingParentNode extends CoreCharacterDataContainer, CoreParentNode {
-
-}
+public interface CoreCharacterDataContainingParentNode
+        extends CoreCharacterDataContainer, CoreParentNode {}

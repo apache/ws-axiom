@@ -32,7 +32,7 @@ public abstract class CoreNSAwareElementMixin implements CoreNSAwareElement {
     public final NodeType coreGetNodeType() {
         return NodeType.NS_AWARE_ELEMENT;
     }
-    
+
     public final String getImplicitNamespaceURI(String prefix) {
         return prefix.equals(coreGetPrefix()) ? coreGetNamespaceURI() : null;
     }
@@ -40,14 +40,15 @@ public abstract class CoreNSAwareElementMixin implements CoreNSAwareElement {
     public final String getImplicitPrefix(String namespaceURI) {
         return namespaceURI.equals(coreGetNamespaceURI()) ? coreGetPrefix() : null;
     }
-    
+
     @Override
     public XmlInput getXmlInput(boolean cache, boolean incremental) throws StreamException {
         return null;
     }
-    
+
     @Override
-    public final void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
+    public final void serializeStartEvent(XmlHandler handler)
+            throws CoreModelException, StreamException {
         handler.startElement(coreGetNamespaceURI(), coreGetLocalName(), coreGetPrefix());
     }
 
@@ -57,6 +58,5 @@ public abstract class CoreNSAwareElementMixin implements CoreNSAwareElement {
     }
 
     @Override
-    public void validateName(String staxPrefix, String staxLocalName, String staxNamespaceURI) {
-    }
+    public void validateName(String staxPrefix, String staxLocalName, String staxNamespaceURI) {}
 }

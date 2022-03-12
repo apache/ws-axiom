@@ -33,48 +33,61 @@ abstract class Context {
 
     protected final BuildableContext newContext(CoreParentNode target) {
         if (nestedContext == null) {
-            nestedContext = new BuildableContext(builderHandler, this, depth+1);
+            nestedContext = new BuildableContext(builderHandler, this, depth + 1);
         }
         nestedContext.init(target);
         target.coreSetInputContext(nestedContext);
         builderHandler.incrementActiveContextCount();
         return nestedContext;
     }
-    
-    abstract void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone);
-    
+
+    abstract void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone);
+
     abstract void startFragment();
-    
-    abstract void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
-            String internalSubset) throws StreamException;
-    
-    abstract Context startElement(String namespaceURI, String localName, String prefix) throws StreamException;
-    
+
+    abstract void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset)
+            throws StreamException;
+
+    abstract Context startElement(String namespaceURI, String localName, String prefix)
+            throws StreamException;
+
     abstract Context endElement() throws StreamException;
-    
-    abstract void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException;
-    
-    abstract void processAttribute(String name, String value, String type, boolean specified) throws StreamException;
-    
-    abstract void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException;
-    
+
+    abstract void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified)
+            throws StreamException;
+
+    abstract void processAttribute(String name, String value, String type, boolean specified)
+            throws StreamException;
+
+    abstract void processNamespaceDeclaration(String prefix, String namespaceURI)
+            throws StreamException;
+
     abstract void attributesCompleted() throws StreamException;
-    
+
     abstract void processCharacterData(Object data, boolean ignorable) throws StreamException;
-    
+
     abstract Context startProcessingInstruction(String piTarget) throws StreamException;
-    
+
     abstract Context endProcessingInstruction() throws StreamException;
-    
+
     abstract Context startComment() throws StreamException;
-    
+
     abstract Context endComment() throws StreamException;
-    
+
     abstract Context startCDATASection() throws StreamException;
-    
+
     abstract Context endCDATASection() throws StreamException;
-    
-    abstract void processEntityReference(String name, String replacementText) throws StreamException;
-    
+
+    abstract void processEntityReference(String name, String replacementText)
+            throws StreamException;
+
     abstract void completed() throws StreamException;
 }

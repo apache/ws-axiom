@@ -18,22 +18,14 @@
  */
 package org.apache.axiom.core;
 
-/**
- * Identifies a node-set relative to a given node.
- */
+/** Identifies a node-set relative to a given node. */
 public enum Axis {
-    /**
-     * The children of the node.
-     */
+    /** The children of the node. */
     CHILDREN,
-    
-    /**
-     * The descendants of the node.
-     */
+
+    /** The descendants of the node. */
     DESCENDANTS,
-    
-    /**
-     * The descendants of the node and the node itself.
-     */
+
+    /** The descendants of the node and the node itself. */
     DESCENDANTS_OR_SELF
 }

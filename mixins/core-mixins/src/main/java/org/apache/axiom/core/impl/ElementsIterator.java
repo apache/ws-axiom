@@ -26,12 +26,20 @@ import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.core.Semantics;
 
-public final class ElementsIterator<T extends CoreElement,S> extends AbstractNodeIterator<T,S> {
+public final class ElementsIterator<T extends CoreElement, S> extends AbstractNodeIterator<T, S> {
     private final ElementMatcher<? super T> matcher;
     private final String namespaceURI;
     private final String name;
 
-    public ElementsIterator(CoreParentNode startNode, Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Mapper<S,? super T> mapper, Semantics semantics) {
+    public ElementsIterator(
+            CoreParentNode startNode,
+            Axis axis,
+            Class<T> type,
+            ElementMatcher<? super T> matcher,
+            String namespaceURI,
+            String name,
+            Mapper<S, ? super T> mapper,
+            Semantics semantics) {
         super(startNode, axis, type, mapper, semantics);
         this.matcher = matcher;
         this.namespaceURI = namespaceURI;

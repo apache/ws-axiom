@@ -20,6 +20,8 @@ package org.apache.axiom.core;
 
 public interface Builder {
     void next() throws DeferredParsingException;
+
     boolean isCompleted();
+
     void close();
 }

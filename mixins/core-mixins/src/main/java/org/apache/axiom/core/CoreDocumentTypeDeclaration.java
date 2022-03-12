@@ -20,11 +20,18 @@ package org.apache.axiom.core;
 
 public interface CoreDocumentTypeDeclaration extends CoreLeafNode {
     String coreGetRootName();
+
     void coreSetRootName(String rootName);
+
     String coreGetPublicId();
+
     void coreSetPublicId(String publicId);
+
     String coreGetSystemId();
+
     void coreSetSystemId(String systemId);
+
     String coreGetInternalSubset();
+
     void coreSetInternalSubset(String internalSubset);
 }

@@ -20,13 +20,20 @@ package org.apache.axiom.core;
 
 public interface CoreDocument extends CoreParentNode {
     String coreGetInputEncoding();
+
     void coreSetInputEncoding(String inputEncoding);
+
     String coreGetXmlVersion();
+
     void coreSetXmlVersion(String xmlVersion);
+
     String coreGetXmlEncoding();
+
     void coreSetXmlEncoding(String xmlEncoding);
+
     Boolean coreGetStandalone();
+
     void coreSetStandalone(Boolean standalone);
-    
+
     CoreElement coreGetDocumentElement() throws CoreModelException;
 }

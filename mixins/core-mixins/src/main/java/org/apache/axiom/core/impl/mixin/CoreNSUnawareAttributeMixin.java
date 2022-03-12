@@ -33,7 +33,8 @@ public abstract class CoreNSUnawareAttributeMixin implements CoreNSUnawareAttrib
     }
 
     @Override
-    public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+    public final void internalSerialize(XmlHandler handler, boolean cache)
+            throws CoreModelException, StreamException {
         // TODO
         throw new UnsupportedOperationException();
     }

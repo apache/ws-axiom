@@ -22,17 +22,17 @@ import org.apache.axiom.core.stream.StreamException;
 
 /**
  * Indicates that a parsing error occurred. This exception may be thrown by any core model method
- * that accesses parts of the tree that have not been visited before. This exception wraps a
- * {@link StreamException} that further describes the parsing error. The {@link StreamException}
- * itself typically wraps an exception specific to the underlying parser, e.g. a
- * {@link javax.xml.stream.XMLStreamException}.
+ * that accesses parts of the tree that have not been visited before. This exception wraps a {@link
+ * StreamException} that further describes the parsing error. The {@link StreamException} itself
+ * typically wraps an exception specific to the underlying parser, e.g. a {@link
+ * javax.xml.stream.XMLStreamException}.
  */
 public class DeferredParsingException extends DeferredBuildingException {
     private static final long serialVersionUID = 1L;
 
     /**
      * Constructor.
-     * 
+     *
      * @param cause the cause
      */
     public DeferredParsingException(StreamException cause) {
@@ -46,13 +46,13 @@ public class DeferredParsingException extends DeferredBuildingException {
         }
         return super.initCause(cause);
     }
-    
+
     /**
      * Get the {@link StreamException} wrapped by this exception.
-     * 
+     *
      * @return the wrapped exception
      */
     public StreamException getStreamException() {
-        return (StreamException)getCause();
+        return (StreamException) getCause();
     }
 }

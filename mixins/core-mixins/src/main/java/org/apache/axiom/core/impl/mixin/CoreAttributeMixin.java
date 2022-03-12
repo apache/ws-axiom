@@ -30,16 +30,16 @@ import org.apache.axiom.weaver.annotation.Mixin;
 @Mixin
 public abstract class CoreAttributeMixin implements CoreAttribute {
     /**
-     * The owner of the attribute. This is either a {@link CoreDocument} if the attribute is not linked
-     * to an element, or a {@link CoreElement} if the attribute has been added to an element.
+     * The owner of the attribute. This is either a {@link CoreDocument} if the attribute is not
+     * linked to an element, or a {@link CoreElement} if the attribute has been added to an element.
      */
     private CoreParentNode owner;
-    
+
     private CoreAttribute nextAttribute;
 
     @Override
     public final CoreElement coreGetOwnerElement() {
-        return owner instanceof CoreElement ? (CoreElement)owner : null;
+        return owner instanceof CoreElement ? (CoreElement) owner : null;
     }
 
     @Override
@@ -54,12 +54,12 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
         }
         owner = element;
     }
-    
+
     @Override
     public final void internalUnsetOwnerElement(CoreDocument newOwnerDocument) {
         owner = newOwnerDocument;
     }
-    
+
     @Override
     public final CoreNode getRootOrOwnerDocument() {
         if (owner == null) {
@@ -73,7 +73,7 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
     public final void coreSetOwnerDocument(CoreDocument document) {
         if (owner instanceof CoreElement) {
             // TODO
-//            throw new IllegalStateException();
+            //            throw new IllegalStateException();
         }
         owner = document;
     }
@@ -87,11 +87,11 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
     public final void internalSetNextAttribute(CoreAttribute nextAttribute) {
         this.nextAttribute = nextAttribute;
     }
-    
+
     @Override
     public final CoreAttribute coreGetPreviousAttribute() {
         if (owner instanceof CoreElement) {
-            CoreElement ownerElement = (CoreElement)owner;
+            CoreElement ownerElement = (CoreElement) owner;
             CoreAttribute previousAttr = ownerElement.coreGetFirstAttribute();
             while (previousAttr != null) {
                 CoreAttribute nextAttr = previousAttr.coreGetNextAttribute();
@@ -120,13 +120,16 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
     public final boolean coreRemove(Semantics semantics) {
         return internalRemove(semantics, null);
     }
-    
+
     @Override
     public final boolean internalRemove(Semantics semantics, CoreElement newOwner) {
         if (owner instanceof CoreElement) {
-            CoreElement ownerElement = (CoreElement)owner;
+            CoreElement ownerElement = (CoreElement) owner;
             CoreAttribute previousAttr = coreGetPreviousAttribute();
-            owner = newOwner != null ? newOwner : semantics.getDetachPolicy().getNewOwnerDocument(ownerElement);
+            owner =
+                    newOwner != null
+                            ? newOwner
+                            : semantics.getDetachPolicy().getNewOwnerDocument(ownerElement);
             if (previousAttr == null) {
                 ownerElement.internalSetFirstAttribute(nextAttribute);
             } else {

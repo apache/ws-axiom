@@ -18,9 +18,5 @@
  */
 package org.apache.axiom.core;
 
-/**
- * Represents a namespace aware attribute information item.
- */
-public interface CoreNSAwareAttribute extends CoreTypedAttribute, CoreNSAwareNamedNode {
-
-}
+/** Represents a namespace aware attribute information item. */
+public interface CoreNSAwareAttribute extends CoreTypedAttribute, CoreNSAwareNamedNode {}

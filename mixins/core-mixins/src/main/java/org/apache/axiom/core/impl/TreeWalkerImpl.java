@@ -35,46 +35,44 @@ import org.apache.axiom.core.stream.XmlReader;
 
 public final class TreeWalkerImpl implements XmlReader {
     private static final int STATE_NONE = 0;
-    
+
     /**
      * Indicates that the serializer is synthesizing a start fragment event. This state can only be
      * reached if the root node is not a document.
      */
     private static final int STATE_START_FRAGMENT = 1;
-    
-    /**
-     * Indicates that the current node is a leaf node.
-     */
+
+    /** Indicates that the current node is a leaf node. */
     private static final int STATE_LEAF = 2;
-    
+
     /**
      * Indicates that the current node is a parent node and that events for child nodes have not yet
      * been generated.
      */
     private static final int STATE_NOT_VISITED = 3;
-    
+
     /**
      * Indicates that the current node is an element and that events for its attribute nodes have
      * already been generated.
      */
     private static final int STATE_ATTRIBUTES_VISITED = 4;
-    
+
     /**
      * Indicates that the current node is a parent node and that events for child nodes have already
      * been generated.
      */
     private static final int STATE_VISITED = 5;
-    
+
     /**
-     * Indicates that the current node is a parent node for which the builder has been
-     * put into pass through mode. In this state, events are not synthesized from the
-     * object model but passed through from the underlying XML source used to build the
-     * tree. This state is only reachable if {@link #preserve} is <code>true</code>.
+     * Indicates that the current node is a parent node for which the builder has been put into pass
+     * through mode. In this state, events are not synthesized from the object model but passed
+     * through from the underlying XML source used to build the tree. This state is only reachable
+     * if {@link #preserve} is <code>true</code>.
      */
     private static final int STATE_PASS_THROUGH = 6;
-    
+
     private static final int STATE_STREAMING = 7;
-    
+
     private static final int STATE_ATTRIBUTE = 8;
 
     /**
@@ -88,22 +86,23 @@ public final class TreeWalkerImpl implements XmlReader {
     private final boolean preserve;
     private final boolean incremental;
     private CoreNode node;
-    
+
     /**
-     * The stream from which events are included. This is only set if {@link #state} is
-     * {@link #STATE_STREAMING}.
+     * The stream from which events are included. This is only set if {@link #state} is {@link
+     * #STATE_STREAMING}.
      */
     private XmlReader reader;
-    
+
     private int state = STATE_NONE;
-    
-    public TreeWalkerImpl(XmlHandler handler, CoreParentNode root, boolean preserve, boolean incremental) {
+
+    public TreeWalkerImpl(
+            XmlHandler handler, CoreParentNode root, boolean preserve, boolean incremental) {
         this.handler = handler;
         this.root = root;
         this.preserve = preserve;
         this.incremental = incremental;
     }
-    
+
     @Override
     public boolean proceed() throws StreamException {
         if (incremental && !handler.drain()) {
@@ -127,7 +126,7 @@ public final class TreeWalkerImpl implements XmlReader {
             } else if (state == STATE_VISITED && previousNode == root) {
                 nextNode = null;
             } else if (state == STATE_NOT_VISITED && previousNode instanceof CoreElement) {
-                final CoreElement element = (CoreElement)previousNode;
+                final CoreElement element = (CoreElement) previousNode;
                 // TODO: handle case with preserve == false
                 CoreAttribute firstAttribute = element.coreGetFirstAttribute();
                 if (firstAttribute == null) {
@@ -138,7 +137,7 @@ public final class TreeWalkerImpl implements XmlReader {
                     state = STATE_NOT_VISITED;
                 }
             } else if (state == STATE_NOT_VISITED || state == STATE_ATTRIBUTES_VISITED) {
-                final CoreParentNode parent = (CoreParentNode)previousNode;
+                final CoreParentNode parent = (CoreParentNode) previousNode;
                 int nodeState = parent.getState();
                 if (nodeState == CoreParentNode.COMPACT) {
                     nextNode = previousNode;
@@ -156,7 +155,8 @@ public final class TreeWalkerImpl implements XmlReader {
                     CoreChildNode child = parent.coreGetFirstChildIfAvailable();
                     if (child == null) {
                         nextNode = parent;
-                        if (nodeState == CoreParentNode.DISCARDING || nodeState == CoreParentNode.DISCARDED) {
+                        if (nodeState == CoreParentNode.DISCARDING
+                                || nodeState == CoreParentNode.DISCARDED) {
                             throw new NodeConsumedException();
                         }
                         parent.coreGetInputContext().setPassThroughHandler(handler);
@@ -170,7 +170,7 @@ public final class TreeWalkerImpl implements XmlReader {
                 nextNode = previousNode;
                 state = STATE_VISITED;
             } else if (previousNode instanceof CoreChildNode) {
-                final CoreChildNode previousChildNode = (CoreChildNode)previousNode;
+                final CoreChildNode previousChildNode = (CoreChildNode) previousNode;
                 if (preserve) {
                     CoreChildNode sibling = previousChildNode.coreGetNextSibling();
                     if (sibling == null) {
@@ -186,16 +186,18 @@ public final class TreeWalkerImpl implements XmlReader {
                         CoreParentNode parent = previousChildNode.coreGetParent();
                         nextNode = parent;
                         int nodeState = parent.getState();
-                        
+
                         // TODO: <hack>
-                        if (nodeState == CoreParentNode.INCOMPLETE && parent.coreGetInputContext() == null) {
+                        if (nodeState == CoreParentNode.INCOMPLETE
+                                && parent.coreGetInputContext() == null) {
                             nodeState = CoreParentNode.COMPLETE;
                         }
                         // </hack>
-                        
+
                         if (nodeState == CoreParentNode.COMPLETE) {
                             state = STATE_VISITED;
-                        } else if (nodeState == CoreParentNode.DISCARDING || nodeState == CoreParentNode.DISCARDED) {
+                        } else if (nodeState == CoreParentNode.DISCARDING
+                                || nodeState == CoreParentNode.DISCARDED) {
                             throw new NodeConsumedException();
                         } else {
                             parent.coreGetInputContext().setPassThroughHandler(handler);
@@ -207,7 +209,7 @@ public final class TreeWalkerImpl implements XmlReader {
                     }
                 }
             } else {
-                final CoreAttribute attribute = (CoreAttribute)previousNode;
+                final CoreAttribute attribute = (CoreAttribute) previousNode;
                 // TODO: handle case with preserve == false
                 CoreAttribute nextAttribute = attribute.coreGetNextAttribute();
                 if (nextAttribute == null) {
@@ -218,14 +220,17 @@ public final class TreeWalkerImpl implements XmlReader {
                     state = STATE_NOT_VISITED;
                 }
             }
-            
+
             // More closely examine the case where we move to a node that has not
             // been visited yet. It may be a sourced element or a leaf node
             if (state == STATE_NOT_VISITED) {
                 if (nextNode instanceof CoreNSAwareElement) {
-                    XmlInput input = ((CoreNSAwareElement)nextNode).getXmlInput(preserve, incremental);
+                    XmlInput input =
+                            ((CoreNSAwareElement) nextNode).getXmlInput(preserve, incremental);
                     if (input != null) {
-                        reader = input.createReader(new DocumentElementExtractingFilterHandler(handler));
+                        reader =
+                                input.createReader(
+                                        new DocumentElementExtractingFilterHandler(handler));
                         state = STATE_STREAMING;
                     }
                 } else if (nextNode instanceof CoreLeafNode) {
@@ -234,19 +239,19 @@ public final class TreeWalkerImpl implements XmlReader {
                     state = STATE_ATTRIBUTE;
                 }
             }
-            
+
             switch (state) {
                 case STATE_START_FRAGMENT:
                     handler.startFragment();
                     break;
                 case STATE_LEAF:
-                    ((CoreLeafNode)nextNode).internalSerialize(handler, preserve);
+                    ((CoreLeafNode) nextNode).internalSerialize(handler, preserve);
                     break;
                 case STATE_ATTRIBUTE:
-                    ((CoreAttribute)nextNode).internalSerialize(handler, preserve);
+                    ((CoreAttribute) nextNode).internalSerialize(handler, preserve);
                     break;
                 case STATE_NOT_VISITED:
-                    ((CoreParentNode)nextNode).serializeStartEvent(handler);
+                    ((CoreParentNode) nextNode).serializeStartEvent(handler);
                     break;
                 case STATE_ATTRIBUTES_VISITED:
                     handler.attributesCompleted();
@@ -255,17 +260,18 @@ public final class TreeWalkerImpl implements XmlReader {
                     if (nextNode == null) {
                         handler.completed();
                     } else {
-                        ((CoreParentNode)nextNode).serializeEndEvent(handler);
+                        ((CoreParentNode) nextNode).serializeEndEvent(handler);
                     }
                     break;
-                case STATE_PASS_THROUGH: {
-                    CoreParentNode parent = (CoreParentNode)nextNode;
-                    parent.coreGetInputContext().getBuilder().next();
-                    if (parent.coreGetInputContext() == null) {
-                        state = STATE_VISITED;
+                case STATE_PASS_THROUGH:
+                    {
+                        CoreParentNode parent = (CoreParentNode) nextNode;
+                        parent.coreGetInputContext().getBuilder().next();
+                        if (parent.coreGetInputContext() == null) {
+                            state = STATE_VISITED;
+                        }
+                        break;
                     }
-                    break;
-                }
                 case STATE_STREAMING:
                     if (reader.proceed()) {
                         state = STATE_VISITED;
@@ -273,7 +279,8 @@ public final class TreeWalkerImpl implements XmlReader {
                     }
                     break;
                 case STATE_CONTENT_VISITED:
-                    handler.processCharacterData(((CoreParentNode)nextNode).internalGetContent(), false);
+                    handler.processCharacterData(
+                            ((CoreParentNode) nextNode).internalGetContent(), false);
                     break;
                 default:
                     throw new IllegalStateException();
@@ -288,7 +295,10 @@ public final class TreeWalkerImpl implements XmlReader {
     @Override
     public void dispose() {
         if (!preserve && node != null) {
-            CoreParentNode parent = node instanceof CoreParentNode ? (CoreParentNode)node : ((CoreChildNode)node).coreGetParent();
+            CoreParentNode parent =
+                    node instanceof CoreParentNode
+                            ? (CoreParentNode) node
+                            : ((CoreChildNode) node).coreGetParent();
             while (true) {
                 InputContext context = parent.coreGetInputContext();
                 if (context != null) {
@@ -297,7 +307,7 @@ public final class TreeWalkerImpl implements XmlReader {
                 if (parent == root) {
                     break;
                 }
-                parent = ((CoreChildNode)parent).coreGetParent();
+                parent = ((CoreChildNode) parent).coreGetParent();
             }
         }
         if (reader != null) {

@@ -38,13 +38,13 @@ public class CoreModelStreamException extends StreamException {
         }
         return super.initCause(cause);
     }
-    
+
     /**
      * Get the {@link CoreModelException} wrapped by this exception.
-     * 
+     *
      * @return the wrapped exception
      */
     public CoreModelException getCoreModelException() {
-        return (CoreModelException)getCause();
+        return (CoreModelException) getCause();
     }
 }

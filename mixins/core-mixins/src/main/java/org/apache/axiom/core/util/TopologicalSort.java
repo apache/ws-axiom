@@ -24,13 +24,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Implements topological sorting.
- */
+/** Implements topological sorting. */
 public final class TopologicalSort {
     private TopologicalSort() {}
-    
-    private static <T> void visit(Collection<T> vertices, EdgeRelation<? super T> edgeRelation, List<T> result, Set<T> visited, T vertex) {
+
+    private static <T> void visit(
+            Collection<T> vertices,
+            EdgeRelation<? super T> edgeRelation,
+            List<T> result,
+            Set<T> visited,
+            T vertex) {
         if (visited.add(vertex)) {
             for (T vertex2 : vertices) {
                 if (vertex2 != vertex && edgeRelation.isEdge(vertex, vertex2)) {
@@ -40,18 +43,15 @@ public final class TopologicalSort {
             result.add(vertex);
         }
     }
-    
+
     /**
      * Apply topological ordering to a given collection.
-     * 
-     * @param <T>
-     *            the vertex type
-     * @param vertices
-     *            the vertices of the directed acyclic graph
-     * @param edgeRelation
-     *            the relation defining the edges of the graph
+     *
+     * @param <T> the vertex type
+     * @param vertices the vertices of the directed acyclic graph
+     * @param edgeRelation the relation defining the edges of the graph
      * @return the topologically sorted list of vertices, where the vertices with no incoming edges
-     *         come first
+     *     come first
      */
     public static <T> List<T> sort(Collection<T> vertices, EdgeRelation<? super T> edgeRelation) {
         List<T> result = new ArrayList<T>(vertices.size());

@@ -18,33 +18,32 @@
  */
 package org.apache.axiom.core;
 
-/**
- * Determines how nodes are detached from an object model tree.
- */
+/** Determines how nodes are detached from an object model tree. */
 public interface DetachPolicy {
-    DetachPolicy NEW_DOCUMENT = new DetachPolicy() {
-        @Override
-        public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
-            return null;
-        }
-    };
-    
-    DetachPolicy SAME_DOCUMENT = new DetachPolicy() {
-        @Override
-        public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
-            return owner.coreGetOwnerDocument(true);
-        }
-    };
-    
+    DetachPolicy NEW_DOCUMENT =
+            new DetachPolicy() {
+                @Override
+                public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
+                    return null;
+                }
+            };
+
+    DetachPolicy SAME_DOCUMENT =
+            new DetachPolicy() {
+                @Override
+                public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
+                    return owner.coreGetOwnerDocument(true);
+                }
+            };
+
     /**
      * Get the new owner document for the node (or group of child nodes) to be detached. This method
      * is called before any node is detached.
-     * 
-     * @param owner
-     *            The owner of the node (or group of child nodes) to be detached. For child nodes,
-     *            this is the parent node. For attributes, this is the owner element.
+     *
+     * @param owner The owner of the node (or group of child nodes) to be detached. For child nodes,
+     *     this is the parent node. For attributes, this is the owner element.
      * @return the new owner document or <code>null</code> to (lazily) create a new owner document
-     *         for the node(s)
+     *     for the node(s)
      */
     CoreDocument getNewOwnerDocument(CoreParentNode owner);
 }

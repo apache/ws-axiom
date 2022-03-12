@@ -58,13 +58,13 @@ import org.apache.axiom.weaver.annotation.Mixin;
 public abstract class CoreParentNodeMixin implements CoreParentNode {
     private InputContext context;
     private Object content;
-    
+
     // TODO: rename
     @Override
     public final int getState() {
         return internalGetFlags(Flags.STATE_MASK);
     }
-    
+
     @Override
     public final void coreSetState(int state) {
         internalSetFlags(Flags.STATE_MASK, state);
@@ -72,14 +72,14 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             completed();
         }
     }
-    
+
     public void completed() {}
-    
+
     @Override
     public boolean isExpanded() {
         return true;
     }
-    
+
     @Override
     public void forceExpand() {}
 
@@ -99,8 +99,12 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         this.context = context;
         if (context == null) {
             switch (getState()) {
-                case INCOMPLETE: coreSetState(COMPLETE); break;
-                case DISCARDING: coreSetState(DISCARDED); break;
+                case INCOMPLETE:
+                    coreSetState(COMPLETE);
+                    break;
+                case DISCARDING:
+                    coreSetState(DISCARDED);
+                    break;
             }
         } else {
             coreSetState(INCOMPLETE);
@@ -121,7 +125,8 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     public final Content internalGetContent(boolean create) {
         if (getState() == COMPACT) {
             Content content = new Content();
-            CoreCharacterDataNode cdata = coreGetNodeFactory().getFactory2().createCharacterDataNode();
+            CoreCharacterDataNode cdata =
+                    coreGetNodeFactory().getFactory2().createCharacterDataNode();
             cdata.internalSetParent(this);
             cdata.coreSetCharacterData(this.content);
             content.firstChild = cdata;
@@ -130,7 +135,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             coreSetState(COMPLETE);
             return content;
         } else {
-            Content content = (Content)this.content;
+            Content content = (Content) this.content;
             if (content == null && create) {
                 content = new Content();
                 this.content = content;
@@ -138,7 +143,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             return content;
         }
     }
-    
+
     @Override
     public final CoreChildNode coreGetFirstChildIfAvailable() {
         forceExpand();
@@ -162,9 +167,9 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             // If the builder is suddenly complete, but the completion status of the node
             // doesn't change, then this means that we built the wrong nodes
             throw new IllegalStateException("Builder is already complete");
-        }         
+        }
     }
-    
+
     @Override
     public CoreChildNode coreGetFirstChild() throws CoreModelException {
         CoreChildNode firstChild = coreGetFirstChildIfAvailable();
@@ -191,7 +196,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
         return child;
     }
-    
+
     @Override
     public final CoreChildNode coreGetLastChild() throws CoreModelException {
         coreBuild();
@@ -206,9 +211,10 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
         return child;
     }
-    
+
     @Override
-    public final void internalCheckNewChild(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException {
+    public final void internalCheckNewChild(CoreChildNode newChild, CoreChildNode replacedChild)
+            throws CoreModelException {
         // Check that the new node is not an ancestor of this node
         CoreParentNode current = this;
         do {
@@ -216,7 +222,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                 throw new CyclicRelationshipException();
             }
             if (current instanceof CoreChildNode) {
-                current = ((CoreChildNode)current).coreGetParent();
+                current = ((CoreChildNode) current).coreGetParent();
             } else {
                 break;
             }
@@ -226,10 +232,10 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
         internalCheckNewChild0(newChild, replacedChild);
     }
-    
-    void internalCheckNewChild0(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException {
-    }
-    
+
+    void internalCheckNewChild0(CoreChildNode newChild, CoreChildNode replacedChild)
+            throws CoreModelException {}
+
     @Override
     public final void coreAppendChild(CoreChildNode child) throws CoreModelException {
         internalCheckNewChild(child, null);
@@ -237,13 +243,13 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         coreBuild();
         internalAppendChildWithoutBuild(child);
     }
-    
+
     @Override
     public final void internalAppendChildWithoutBuild(CoreChildNode child) {
         CoreParentNode parent = child.coreGetParent();
         Content content = internalGetContent(true);
         if (parent == this && child == content.lastChild) {
-            // The child is already the last node. 
+            // The child is already the last node.
             // We don't need to detach and re-add it.
             return;
         }
@@ -291,7 +297,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         CoreChildNode child = coreGetFirstChildIfAvailable();
         while (child != null) {
             if (child instanceof CoreParentNode) {
-                ((CoreParentNode)child).coreDiscard(consumeInput);
+                ((CoreParentNode) child).coreDiscard(consumeInput);
             }
             child = child.coreGetNextSiblingIfAvailable();
         }
@@ -312,13 +318,14 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             coreSetState(COMPLETE);
             content = null;
         } else {
-            // We need to call this first because if may modify the state (applies to OMSourcedElements)
+            // We need to call this first because if may modify the state (applies to
+            // OMSourcedElements)
             CoreChildNode child = coreGetFirstChildIfAvailable();
             boolean updateState;
             if (getState() == INCOMPLETE) {
                 CoreChildNode lastChild = coreGetLastKnownChild();
                 if (lastChild instanceof CoreParentNode) {
-                    ((CoreParentNode)lastChild).coreBuild();
+                    ((CoreParentNode) lastChild).coreBuild();
                 }
                 context.discard();
                 updateState = true;
@@ -326,7 +333,8 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                 updateState = false;
             }
             if (child != null) {
-                CoreDocument newOwnerDocument = semantics.getDetachPolicy().getNewOwnerDocument(this);
+                CoreDocument newOwnerDocument =
+                        semantics.getDetachPolicy().getNewOwnerDocument(this);
                 do {
                     CoreChildNode nextSibling = child.coreGetNextSiblingIfAvailable();
                     child.internalSetPreviousSibling(null);
@@ -341,9 +349,10 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             }
         }
     }
-    
+
     @Override
-    public final Object internalGetCharacterData(ElementAction elementAction) throws CoreModelException {
+    public final Object internalGetCharacterData(ElementAction elementAction)
+            throws CoreModelException {
         if (getState() == COMPACT) {
             return content;
         } else {
@@ -360,7 +369,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                         case RETURN_NULL:
                             return null;
                         case RECURSE:
-                            CoreChildNode firstChild = ((CoreElement)child).coreGetFirstChild();
+                            CoreChildNode firstChild = ((CoreElement) child).coreGetFirstChild();
                             if (firstChild != null) {
                                 child = firstChild;
                                 depth++;
@@ -371,14 +380,18 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                             // Just continue
                     }
                 } else {
-                    if (child instanceof CoreCharacterDataNode || child instanceof CoreCDATASection) {
-                        Object textValue = ((CoreCharacterDataContainer)child).coreGetCharacterData();
-                        if (textValue instanceof CharacterData || ((String)textValue).length() != 0) {
+                    if (child instanceof CoreCharacterDataNode
+                            || child instanceof CoreCDATASection) {
+                        Object textValue =
+                                ((CoreCharacterDataContainer) child).coreGetCharacterData();
+                        if (textValue instanceof CharacterData
+                                || ((String) textValue).length() != 0) {
                             if (textContent == null) {
                                 // This is the first non empty text node. Just save the string.
                                 textContent = textValue;
                             } else {
-                                // We've already seen a non empty text node before. Concatenate using
+                                // We've already seen a non empty text node before. Concatenate
+                                // using
                                 // a StringBuilder.
                                 if (buffer == null) {
                                     // This is the first text node we need to append. Initialize the
@@ -393,7 +406,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                 CoreChildNode nextSibling = child.coreGetNextSibling();
                 if (depth > 0 && nextSibling == null) {
                     depth--;
-                    child = (CoreChildNode)child.coreGetParent();
+                    child = (CoreChildNode) child.coreGetParent();
                     visited = true;
                 } else {
                     child = nextSibling;
@@ -409,34 +422,45 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             }
         }
     }
-    
+
     @Override
-    public final void coreSetCharacterData(Object data, Semantics semantics) throws CoreModelException {
+    public final void coreSetCharacterData(Object data, Semantics semantics)
+            throws CoreModelException {
         coreRemoveChildren(semantics);
-        if (data != null && (data instanceof CharacterData || ((String)data).length() > 0)) {
+        if (data != null && (data instanceof CharacterData || ((String) data).length() > 0)) {
             coreSetState(COMPACT);
             content = data;
         }
     }
-    
+
     @Override
-    public final <T extends CoreNode,S> NodeIterator<S> coreGetNodes(Axis axis, Class<T> type, Mapper<S,? super T> mapper, Semantics semantics) {
-        return new NodesIterator<T,S>(this, axis, type, mapper, semantics);
-    }
-    
-    @Override
-    public final <T extends CoreElement,S> NodeIterator<S> coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Mapper<S,? super T> mapper, Semantics semantics) {
-        return new ElementsIterator<T,S>(this, axis, type, matcher, namespaceURI, name, mapper, semantics);
+    public final <T extends CoreNode, S> NodeIterator<S> coreGetNodes(
+            Axis axis, Class<T> type, Mapper<S, ? super T> mapper, Semantics semantics) {
+        return new NodesIterator<T, S>(this, axis, type, mapper, semantics);
     }
 
     @Override
-    public final <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) throws CoreModelException {
-        CoreParentNode targetParent = (CoreParentNode)clone;
+    public final <T extends CoreElement, S> NodeIterator<S> coreGetElements(
+            Axis axis,
+            Class<T> type,
+            ElementMatcher<? super T> matcher,
+            String namespaceURI,
+            String name,
+            Mapper<S, ? super T> mapper,
+            Semantics semantics) {
+        return new ElementsIterator<T, S>(
+                this, axis, type, matcher, namespaceURI, name, mapper, semantics);
+    }
+
+    @Override
+    public final <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone)
+            throws CoreModelException {
+        CoreParentNode targetParent = (CoreParentNode) clone;
         if (policy.cloneChildren(options, coreGetNodeType()) && targetParent.isExpanded()) {
             if (getState() == COMPACT) {
                 Object content = this.content;
                 if (content instanceof CloneableCharacterData) {
-                    content = ((CloneableCharacterData)content).clone(policy, options);
+                    content = ((CloneableCharacterData) content).clone(policy, options);
                 }
                 targetParent.coreSetCharacterData(content, null);
             } else {
@@ -463,9 +487,10 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     public final XmlReader coreGetReader(XmlHandler handler, boolean cache, boolean incremental) {
         return new TreeWalkerImpl(handler, this, cache, incremental);
     }
-    
+
     @Override
-    public void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+    public void internalSerialize(XmlHandler handler, boolean cache)
+            throws CoreModelException, StreamException {
         try {
             XmlReader reader = coreGetReader(handler, cache, false);
             while (!reader.proceed()) {
@@ -475,7 +500,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             throw ex.getCoreModelException();
         }
     }
-    
+
     @Override
     public final void coreBuild() throws CoreModelException {
         switch (getState()) {
@@ -491,9 +516,10 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                 }
         }
     }
-    
+
     @Override
-    public final void coreMoveChildrenFrom(CoreParentNode other, Semantics semantics) throws CoreModelException {
+    public final void coreMoveChildrenFrom(CoreParentNode other, Semantics semantics)
+            throws CoreModelException {
         coreRemoveChildren(semantics);
         context = other.coreGetInputContext();
         content = other.internalGetContent();
@@ -505,7 +531,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                 child.internalSetParent(this);
                 child = child.coreGetNextSiblingIfAvailable();
             }
-            if (context != null ) {
+            if (context != null) {
                 context.setTarget(this);
             }
         }

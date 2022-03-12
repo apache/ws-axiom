@@ -33,7 +33,14 @@ public abstract class CoreNSAwareAttributeMixin implements CoreNSAwareAttribute 
     }
 
     @Override
-    public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
-        handler.processAttribute(coreGetNamespaceURI(), coreGetLocalName(), coreGetPrefix(), coreGetCharacterData().toString(), coreGetType(), coreGetSpecified());
+    public final void internalSerialize(XmlHandler handler, boolean cache)
+            throws CoreModelException, StreamException {
+        handler.processAttribute(
+                coreGetNamespaceURI(),
+                coreGetLocalName(),
+                coreGetPrefix(),
+                coreGetCharacterData().toString(),
+                coreGetType(),
+                coreGetSpecified());
     }
 }

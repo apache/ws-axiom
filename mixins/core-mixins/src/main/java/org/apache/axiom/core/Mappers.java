@@ -21,17 +21,17 @@ package org.apache.axiom.core;
 public final class Mappers {
     @SuppressWarnings("rawtypes")
     private static final IdentityMapper IDENTITY = new IdentityMapper();
-    
+
     private Mappers() {}
-    
+
     @SuppressWarnings("unchecked")
-    public static <S,T extends S> Mapper<S,T> upcast() {
+    public static <S, T extends S> Mapper<S, T> upcast() {
         // This is an optimization for the following type safe instruction:
         // return new IdentityMapper<S,T>();
         return IDENTITY;
     }
-    
-    public static <T> Mapper<T,T> identity() {
+
+    public static <T> Mapper<T, T> identity() {
         return upcast();
     }
 }

@@ -24,26 +24,25 @@ import org.apache.axiom.core.stream.StreamException;
 
 final class UnwrappingContext extends Context {
     private final CoreNSAwareElement root;
-    
+
     UnwrappingContext(BuilderHandler builderHandler, CoreNSAwareElement root) {
         super(builderHandler, 0);
         this.root = root;
     }
 
     @Override
-    void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            Boolean standalone) {
-    }
+    void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {}
 
     @Override
-    void startFragment() {
-    }
+    void startFragment() {}
 
     @Override
-    void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
-            String internalSubset) throws StreamException {
+    void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset)
+            throws StreamException {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -65,35 +64,41 @@ final class UnwrappingContext extends Context {
     }
 
     @Override
-    void processAttribute(String namespaceURI, String localName, String prefix, String value,
-            String type, boolean specified) throws StreamException {
+    void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified)
+            throws StreamException {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     void processAttribute(String name, String value, String type, boolean specified)
             throws StreamException {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     void attributesCompleted() throws StreamException {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     void processCharacterData(Object data, boolean ignorable) throws StreamException {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -135,12 +140,12 @@ final class UnwrappingContext extends Context {
     @Override
     void processEntityReference(String name, String replacementText) throws StreamException {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     void completed() throws StreamException {
         // TODO Auto-generated method stub
-        
+
     }
 }

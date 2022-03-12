@@ -26,20 +26,20 @@ import org.apache.axiom.weaver.annotation.Mixin;
 @Mixin
 public abstract class CoreTypedAttributeMixin implements CoreTypedAttribute {
     private String type;
-    
+
     @Override
     public final String coreGetType() {
         return type;
     }
-    
+
     @Override
     public final void coreSetType(String type) {
         this.type = type;
     }
-    
+
     @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
-        CoreTypedAttribute o = (CoreTypedAttribute)other;
+        CoreTypedAttribute o = (CoreTypedAttribute) other;
         initName(o);
         coreSetType(o.coreGetType());
     }

@@ -25,8 +25,7 @@ package org.apache.axiom.core;
 public class CyclicRelationshipException extends HierarchyException {
     private static final long serialVersionUID = 1L;
 
-    public CyclicRelationshipException() {
-    }
+    public CyclicRelationshipException() {}
 
     public CyclicRelationshipException(String message) {
         super(message);
