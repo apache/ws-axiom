@@ -35,7 +35,7 @@ public class TestExamineAllHeaderBlocksWithParser extends SampleBasedSOAPTestCas
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         Iterator<SOAPHeaderBlock> iterator = envelope.getHeader().examineAllHeaderBlocks();
-        iterator.hasNext();
+        assertTrue(iterator.hasNext());
         SOAPHeaderBlock headerBlock = iterator.next();
         assertEquals("MessageID", headerBlock.getLocalName());
         assertTrue(iterator.hasNext());

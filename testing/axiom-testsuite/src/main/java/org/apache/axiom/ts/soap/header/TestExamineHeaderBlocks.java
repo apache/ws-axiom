@@ -42,7 +42,7 @@ public class TestExamineHeaderBlocks extends SOAPTestCase {
         soapHeader.addHeaderBlock("echoOk1", namespace).setRole("urn:test-role");
         soapHeader.addHeaderBlock("echoOk2", namespace).setRole(roleNextURI);
         Iterator<SOAPHeaderBlock> iterator = soapHeader.examineHeaderBlocks(roleNextURI);
-        iterator.hasNext();
+        assertTrue(iterator.hasNext());
         SOAPHeaderBlock headerBlockWithRole = iterator.next();
         assertEquals(
                 "SOAP Header Test : - headerBlockWithRole local name mismatch",

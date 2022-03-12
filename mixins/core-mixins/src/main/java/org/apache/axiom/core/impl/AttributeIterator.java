@@ -87,6 +87,7 @@ public final class AttributeIterator<T extends CoreAttribute, S> implements Iter
     }
 
     @Override
+    @SuppressWarnings("ReturnValueIgnored")
     public final void remove() {
         if (currentAttribute == null) {
             throw new IllegalStateException();

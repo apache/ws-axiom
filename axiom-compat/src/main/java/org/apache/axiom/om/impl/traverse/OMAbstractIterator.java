@@ -90,6 +90,7 @@ public abstract class OMAbstractIterator implements Iterator {
     }
 
     @Override
+    @SuppressWarnings("ReturnValueIgnored")
     public void remove() {
         if (!nextCalled) {
             throw new IllegalStateException("next() has not yet been called");

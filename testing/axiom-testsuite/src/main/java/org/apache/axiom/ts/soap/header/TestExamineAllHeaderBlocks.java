@@ -41,7 +41,7 @@ public class TestExamineAllHeaderBlocks extends SOAPTestCase {
         soapHeader.addHeaderBlock("echoOk1", namespace);
         soapHeader.addHeaderBlock("echoOk2", namespace);
         Iterator<SOAPHeaderBlock> iterator = soapHeader.examineAllHeaderBlocks();
-        iterator.hasNext();
+        assertTrue(iterator.hasNext());
         SOAPHeaderBlock headerBlock1 = iterator.next();
         assertNotNull(
                 "SOAP Header Test : - After calling addHeaderBlock method twice, examineAllHeaderBlocks method returns empty iterator",

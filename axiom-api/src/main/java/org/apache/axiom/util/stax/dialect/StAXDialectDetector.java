@@ -307,7 +307,8 @@ public class StAXDialectDetector {
             return null;
         }
     }
-    
+
+    @SuppressWarnings("ReturnValueIgnored")
     private static StAXDialect detectDialectFromClasses(ClassLoader classLoader, URL rootUrl) {
         Class<?> cls;
         

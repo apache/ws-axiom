@@ -52,7 +52,7 @@ public class TestExamineMustUnderstandHeaderBlocks extends SOAPTestCase {
 
         Iterator iterator = soapHeader.examineMustUnderstandHeaderBlocks(
                 "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
-        iterator.hasNext();
+        assertTrue(iterator.hasNext());
         SOAPHeaderBlock headerBlock = (SOAPHeaderBlock) iterator.next();
         assertFalse(
                 "SOAP Header Test : - examineMustUnderstandHeaderBlocks method returns empty iterator",
