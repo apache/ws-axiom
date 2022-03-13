@@ -737,19 +737,6 @@
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.10.1</version>
-                    <configuration>
-                        <compilerArgs combine.children="append">
-                            <compilerArg>-XDcompilePolicy=simple</compilerArg>
-                            <compilerArg>-Xplugin:ErrorProne -XepExcludedPaths:.*/org/jaxen/.* -Xep:MissingOverride:ERROR</compilerArg>
-                        </compilerArgs>
-                        <annotationProcessorPaths combine.children="append">
-                            <annotationProcessorPath>
-                                <groupId>com.google.errorprone</groupId>
-                                <artifactId>error_prone_core</artifactId>
-                                <version>${errorprone.version}</version>
-                            </annotationProcessorPath>
-                        </annotationProcessorPaths>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
@@ -1014,12 +1001,20 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <inherited>true</inherited>
                 <configuration>
                     <source>${javaVersion}</source>
                     <target>${javaVersion}</target>
                     <release>${javaRelease}</release>
-                    <annotationProcessorPaths>
+                    <compilerArgs combine.children="append">
+                        <compilerArg>-XDcompilePolicy=simple</compilerArg>
+                        <compilerArg>-Xplugin:ErrorProne -XepExcludedPaths:.*/org/jaxen/.* -Xep:MissingOverride:ERROR</compilerArg>
+                    </compilerArgs>
+                    <annotationProcessorPaths combine.children="append">
+                        <annotationProcessorPath>
+                            <groupId>com.google.errorprone</groupId>
+                            <artifactId>error_prone_core</artifactId>
+                            <version>${errorprone.version}</version>
+                        </annotationProcessorPath>
                         <annotationProcessorPath>
                             <groupId>com.google.auto.service</groupId>
                             <artifactId>auto-service</artifactId>
