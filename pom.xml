@@ -1297,6 +1297,7 @@ $${type_declaration}</template></templates>]]></value>
                                     <goal>jar</goal>
                                 </goals>
                                 <configuration>
+				    <source>8</source>
                                     <additionalOptions>
                                         <additionalOption>-Xdoclint:none</additionalOption>
                                     </additionalOptions>
