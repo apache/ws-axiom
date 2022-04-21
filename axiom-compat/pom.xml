@@ -100,22 +100,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>buildutils-maven-plugin</artifactId>
-                <version>${project.version}</version>
-                <executions>
-                    <execution>
-                        <phase>site</phase>
-                        <goals>
-                            <goal>post-process-javadoc</goal>
-                        </goals>
-                        <configuration>
-                            <javadocDirectory>${project.reporting.outputDirectory}/apidocs</javadocDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>com.github.veithen.maven</groupId>
                 <artifactId>jacoco-report-maven-plugin</artifactId>
                 <configuration>

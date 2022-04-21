@@ -24,16 +24,6 @@
         <href>http://ws.apache.org/axiom/index.html</href>
     </bannerLeft>
     <body>
-        <head>
-            <![CDATA[
-            <script async='' src='//www.google-analytics.com/analytics.js'> </script>
-            <script>
-              window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-              ga('create', 'UA-56790914-3', {'cookieDomain': 'ws.apache.org', 'cookiePath': '/axiom' });
-              ga('send', 'pageview');
-            </script>
-            ]]>
-        </head>
         <menu name="About">
             <item name="Introduction" href="index.html"/>
             <item name="Mailing Lists" href="/mail-lists.html"/>
@@ -76,7 +66,7 @@
             <item name="FAQ" href="faq.html"/>
             <item name="View Source" href="https://github.com/apache/ws-axiom"/>
             <item name="Code Coverage" href="https://codecov.io/gh/apache/webservices-axiom"/>
-            <item name="Privacy Policy" href="privacy-policy.html"/>
+            <item name="Privacy Policy" href="https://privacy.apache.org/policies/privacy-policy-public.html"/>
         </menu>
         <menu name="Modules">
             <item name="Implementations" href="implementations/index.html"/>
