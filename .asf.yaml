@@ -16,3 +16,4 @@ notifications:
   commits: commits@ws.apache.org
   pullrequests: dev@ws.apache.org
   jobs: dev@ws.apache.org
+  jira_options: link label comment
