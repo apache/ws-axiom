@@ -41,15 +41,20 @@ final class GetDataHandlerBridgeMethodInjector extends ClassVisitor {
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-        if (name.equals("getDataHandler") && desc.equals("()Ljavax/activation/DataHandler;")) {
-            MethodVisitor mv = super.visitMethod((access | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC) & ~Opcodes.ACC_FINAL, name, "()Ljava/lang/Object;", null, exceptions);
-            if ((access & Opcodes.ACC_ABSTRACT) == 0) {
-                mv.visitCode();
-                mv.visitVarInsn(Opcodes.ALOAD, 0);
-                mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, name, desc, false);
-                mv.visitInsn(Opcodes.ARETURN);
-                mv.visitMaxs(1, 1);
-                mv.visitEnd();
+        if (name.equals("getDataHandler")) {
+            if (desc.equals("()Ljavax/activation/DataHandler;")) {
+                MethodVisitor mv = super.visitMethod((access | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC) & ~Opcodes.ACC_FINAL, name, "()Ljava/lang/Object;", null, exceptions);
+                if ((access & Opcodes.ACC_ABSTRACT) == 0) {
+                    mv.visitCode();
+                    mv.visitVarInsn(Opcodes.ALOAD, 0);
+                    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, name, desc, false);
+                    mv.visitInsn(Opcodes.ARETURN);
+                    mv.visitMaxs(1, 1);
+                    mv.visitEnd();
+                }
+            } else if ((access & Opcodes.ACC_BRIDGE) != 0 && desc.equals("()Ljava/lang/Object;")) {
+                // Skip any existing bridge method so that the transformation is idempotent. That's important when rebuilding without cleaning.
+                return null;
             }
         }
         return super.visitMethod(access, name, desc, signature, exceptions);
