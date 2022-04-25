@@ -26,7 +26,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
 
-import org.apache.axiom.weaver.ImplementationClassNameMapper;
 import org.apache.axiom.weaver.Weaver;
 import org.apache.axiom.weaver.WeaverException;
 import org.apache.axiom.weaver.mixin.ClassDefinition;
@@ -64,23 +63,18 @@ public final class WeaveMojo extends AbstractMojo {
             Weaver weaver =
                     new Weaver(
                             classLoader,
-                            new ImplementationClassNameMapper() {
-                                @Override
-                                public String getImplementationClassName(Class<?> iface) {
-                                    String packageName = iface.getPackage().getName();
-                                    for (PackageMapping packageMapping : packageMappings) {
-                                        if (packageName.equals(
-                                                packageMapping.getInterfacePackage())) {
-                                            return packageMapping.getOutputPackage()
-                                                    + "."
-                                                    + iface.getSimpleName()
-                                                    + "Impl";
-                                        }
+                            (iface) -> {
+                                String packageName = iface.getPackage().getName();
+                                for (PackageMapping packageMapping : packageMappings) {
+                                    if (packageName.equals(packageMapping.getInterfacePackage())) {
+                                        return packageMapping.getOutputPackage()
+                                                + "."
+                                                + iface.getSimpleName()
+                                                + "Impl";
                                     }
-                                    throw new WeaverException(
-                                            "No package mapping defined for package "
-                                                    + packageName);
                                 }
+                                throw new WeaverException(
+                                        "No package mapping defined for package " + packageName);
                             });
             for (String packageName : weavablePackages) {
                 weaver.loadWeavablePackage(packageName);
