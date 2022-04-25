@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
 
 public final class DOMUtils {
     private DOMUtils() {}
-    
+
     public static Document parse(InputStream is) throws IOException {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -46,10 +46,12 @@ public final class DOMUtils {
             throw toIOException(ex);
         }
     }
-    
+
     public static void serialize(Document document, OutputStream os) throws IOException {
         try {
-            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(os));
+            TransformerFactory.newInstance()
+                    .newTransformer()
+                    .transform(new DOMSource(document), new StreamResult(os));
         } catch (TransformerException ex) {
             throw toIOException(ex);
         }

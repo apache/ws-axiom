@@ -31,12 +31,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/**
- * Merges {@code META-INF/axiom.xml} files.
- */
+/** Merges {@code META-INF/axiom.xml} files. */
 public class AxiomXmlResourceTransformer implements ResourceTransformer {
     private static final String AXIOM_XML = "META-INF/axiom.xml";
-    
+
     private Document mergedAxiomXml;
 
     @Override
@@ -50,12 +48,14 @@ public class AxiomXmlResourceTransformer implements ResourceTransformer {
     }
 
     @Override
-    public void processResource(String resource, InputStream is, List<Relocator> relocators) throws IOException {
+    public void processResource(String resource, InputStream is, List<Relocator> relocators)
+            throws IOException {
         Document axiomXml = DOMUtils.parse(is);
         is.close();
-        NodeList implementations = axiomXml.getElementsByTagNameNS("http://ws.apache.org/axiom/", "implementation");
-        for (int i=0; i<implementations.getLength(); i++) {
-            Element implementation = (Element)implementations.item(i);
+        NodeList implementations =
+                axiomXml.getElementsByTagNameNS("http://ws.apache.org/axiom/", "implementation");
+        for (int i = 0; i < implementations.getLength(); i++) {
+            Element implementation = (Element) implementations.item(i);
             String loader = implementation.getAttributeNS(null, "loader");
             for (Relocator relocator : relocators) {
                 if (relocator.canRelocateClass(loader)) {
@@ -67,8 +67,12 @@ public class AxiomXmlResourceTransformer implements ResourceTransformer {
         if (mergedAxiomXml == null) {
             mergedAxiomXml = axiomXml;
         } else {
-            for (Node node = axiomXml.getDocumentElement().getFirstChild(); node != null; node = node.getNextSibling()) {
-                mergedAxiomXml.getDocumentElement().appendChild(mergedAxiomXml.importNode(node, true));
+            for (Node node = axiomXml.getDocumentElement().getFirstChild();
+                    node != null;
+                    node = node.getNextSibling()) {
+                mergedAxiomXml
+                        .getDocumentElement()
+                        .appendChild(mergedAxiomXml.importNode(node, true));
             }
         }
     }

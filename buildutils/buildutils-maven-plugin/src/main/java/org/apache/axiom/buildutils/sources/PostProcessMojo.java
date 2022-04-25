@@ -47,16 +47,18 @@ import org.apache.maven.shared.transfer.artifact.resolve.ArtifactResolverExcepti
 import org.apache.maven.shared.utils.io.IOUtil;
 import org.objectweb.asm.ClassReader;
 
-@Mojo(name="post-process-sources-jar", defaultPhase=LifecyclePhase.PACKAGE, requiresDependencyResolution=ResolutionScope.COMPILE_PLUS_RUNTIME)
+@Mojo(
+        name = "post-process-sources-jar",
+        defaultPhase = LifecyclePhase.PACKAGE,
+        requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class PostProcessMojo extends AbstractMojo {
-    @Parameter(property="project", readonly=true, required=true)
+    @Parameter(property = "project", readonly = true, required = true)
     private MavenProject project;
 
-    @Parameter(property="session", readonly=true, required=true)
+    @Parameter(property = "session", readonly = true, required = true)
     private MavenSession session;
 
-    @Component
-    private ArtifactResolver artifactResolver;
+    @Component private ArtifactResolver artifactResolver;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -64,20 +66,32 @@ public class PostProcessMojo extends AbstractMojo {
             return;
         }
         Set<String> sources = new HashSet<>();
-        try (JarInputStream in = new JarInputStream(new FileInputStream(project.getArtifact().getFile()))) {
+        try (JarInputStream in =
+                new JarInputStream(new FileInputStream(project.getArtifact().getFile()))) {
             JarEntry entry;
             while ((entry = in.getNextJarEntry()) != null) {
                 String name = entry.getName();
                 if (name.endsWith(".class")) {
-                    new ClassReader(in).accept(new SourceExtractor(sources, name.substring(0, name.lastIndexOf('/')+1)), ClassReader.SKIP_CODE);
+                    new ClassReader(in)
+                            .accept(
+                                    new SourceExtractor(
+                                            sources, name.substring(0, name.lastIndexOf('/') + 1)),
+                                    ClassReader.SKIP_CODE);
                 }
             }
         } catch (IOException ex) {
             throw new MojoExecutionException("Error reading jar: " + ex.getMessage(), ex);
         }
-        File sourcesJar = new File(project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-sources.jar");
-        File postProcessedSourcesJar = new File(project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-post-processed-sources.jar");
-        try (JarOutputStream out = new JarOutputStream(new FileOutputStream(postProcessedSourcesJar))) {
+        File sourcesJar =
+                new File(
+                        project.getBuild().getDirectory(),
+                        project.getBuild().getFinalName() + "-sources.jar");
+        File postProcessedSourcesJar =
+                new File(
+                        project.getBuild().getDirectory(),
+                        project.getBuild().getFinalName() + "-post-processed-sources.jar");
+        try (JarOutputStream out =
+                new JarOutputStream(new FileOutputStream(postProcessedSourcesJar))) {
             processSourceJar(sourcesJar, sources, true, out);
             ArtifactFilter filter = new ScopeArtifactFilter(Artifact.SCOPE_RUNTIME);
             for (Artifact artifact : project.getArtifacts()) {
@@ -93,7 +107,11 @@ public class PostProcessMojo extends AbstractMojo {
                     coordinate.setClassifier("sources");
                     Artifact resolvedArtifact;
                     try {
-                        resolvedArtifact = artifactResolver.resolveArtifact(session.getProjectBuildingRequest(), coordinate).getArtifact();
+                        resolvedArtifact =
+                                artifactResolver
+                                        .resolveArtifact(
+                                                session.getProjectBuildingRequest(), coordinate)
+                                        .getArtifact();
                     } catch (ArtifactResolverException ex) {
                         getLog().warn("Could not get sources for " + artifact);
                         continue;
@@ -110,7 +128,9 @@ public class PostProcessMojo extends AbstractMojo {
         postProcessedSourcesJar.renameTo(sourcesJar);
     }
 
-    private void processSourceJar(File file, Set<String> sources, boolean includeAll, JarOutputStream out) throws MojoExecutionException {
+    private void processSourceJar(
+            File file, Set<String> sources, boolean includeAll, JarOutputStream out)
+            throws MojoExecutionException {
         try (JarInputStream in = new JarInputStream(new FileInputStream(file))) {
             JarEntry entry;
             while ((entry = in.getNextJarEntry()) != null) {

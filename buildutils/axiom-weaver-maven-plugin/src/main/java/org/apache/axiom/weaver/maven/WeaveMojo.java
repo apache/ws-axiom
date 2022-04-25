@@ -40,36 +40,48 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
-@Mojo(name="weave", defaultPhase=LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution=ResolutionScope.COMPILE)
+@Mojo(
+        name = "weave",
+        defaultPhase = LifecyclePhase.PROCESS_CLASSES,
+        requiresDependencyResolution = ResolutionScope.COMPILE)
 public final class WeaveMojo extends AbstractMojo {
-    @Parameter(property="project", required=true, readonly=true)
+    @Parameter(property = "project", required = true, readonly = true)
     private MavenProject project;
 
-    @Parameter(required=true)
+    @Parameter(required = true)
     private PackageMapping[] packageMappings;
 
-    @Parameter(required=true)
+    @Parameter(required = true)
     private String[] weavablePackages;
 
-    @Parameter(required=true)
+    @Parameter(required = true)
     private String[] interfaces;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         URLClassLoader classLoader = createClassLoader();
         try {
-            Weaver weaver = new Weaver(classLoader, new ImplementationClassNameMapper() {
-                @Override
-                public String getImplementationClassName(Class<?> iface) {
-                    String packageName = iface.getPackage().getName();
-                    for (PackageMapping packageMapping : packageMappings) {
-                        if (packageName.equals(packageMapping.getInterfacePackage())) {
-                            return packageMapping.getOutputPackage() + "." + iface.getSimpleName() + "Impl";
-                        }
-                    }
-                    throw new WeaverException("No package mapping defined for package " + packageName);
-                }
-            });
+            Weaver weaver =
+                    new Weaver(
+                            classLoader,
+                            new ImplementationClassNameMapper() {
+                                @Override
+                                public String getImplementationClassName(Class<?> iface) {
+                                    String packageName = iface.getPackage().getName();
+                                    for (PackageMapping packageMapping : packageMappings) {
+                                        if (packageName.equals(
+                                                packageMapping.getInterfacePackage())) {
+                                            return packageMapping.getOutputPackage()
+                                                    + "."
+                                                    + iface.getSimpleName()
+                                                    + "Impl";
+                                        }
+                                    }
+                                    throw new WeaverException(
+                                            "No package mapping defined for package "
+                                                    + packageName);
+                                }
+                            });
             for (String packageName : weavablePackages) {
                 weaver.loadWeavablePackage(packageName);
             }
@@ -81,7 +93,10 @@ public final class WeaveMojo extends AbstractMojo {
                 }
             }
             for (ClassDefinition classDefinition : weaver.generate()) {
-                File outputFile = new File(project.getBuild().getOutputDirectory(), classDefinition.getClassName() + ".class");
+                File outputFile =
+                        new File(
+                                project.getBuild().getOutputDirectory(),
+                                classDefinition.getClassName() + ".class");
                 outputFile.getParentFile().mkdirs();
                 try (FileOutputStream out = new FileOutputStream(outputFile)) {
                     out.write(classDefinition.toByteArray());
@@ -106,7 +121,7 @@ public final class WeaveMojo extends AbstractMojo {
             throw new MojoExecutionException("Failed to get copile classpath elements", ex);
         }
         URL[] urls = new URL[paths.size()];
-        int i=0;
+        int i = 0;
         for (String path : paths) {
             try {
                 urls[i++] = new File(path).toURI().toURL();

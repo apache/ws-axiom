@@ -26,7 +26,7 @@ import org.objectweb.asm.Opcodes;
 final class SourceExtractor extends ClassVisitor {
     private final Set<String> sources;
     private final String parentPath;
-    
+
     SourceExtractor(Set<String> sources, String parentPath) {
         super(Opcodes.ASM9);
         this.sources = sources;

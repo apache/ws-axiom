@@ -34,16 +34,30 @@ final class GetDataHandlerBridgeMethodInjector extends ClassVisitor {
     }
 
     @Override
-    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+    public void visit(
+            int version,
+            int access,
+            String name,
+            String signature,
+            String superName,
+            String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
         className = name;
     }
 
     @Override
-    public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+    public MethodVisitor visitMethod(
+            int access, String name, String desc, String signature, String[] exceptions) {
         if (name.equals("getDataHandler")) {
             if (desc.equals("()Ljavax/activation/DataHandler;")) {
-                MethodVisitor mv = super.visitMethod((access | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC) & ~Opcodes.ACC_FINAL, name, "()Ljava/lang/Object;", null, exceptions);
+                MethodVisitor mv =
+                        super.visitMethod(
+                                (access | Opcodes.ACC_BRIDGE | Opcodes.ACC_SYNTHETIC)
+                                        & ~Opcodes.ACC_FINAL,
+                                name,
+                                "()Ljava/lang/Object;",
+                                null,
+                                exceptions);
                 if ((access & Opcodes.ACC_ABSTRACT) == 0) {
                     mv.visitCode();
                     mv.visitVarInsn(Opcodes.ALOAD, 0);
@@ -53,11 +67,11 @@ final class GetDataHandlerBridgeMethodInjector extends ClassVisitor {
                     mv.visitEnd();
                 }
             } else if ((access & Opcodes.ACC_BRIDGE) != 0 && desc.equals("()Ljava/lang/Object;")) {
-                // Skip any existing bridge method so that the transformation is idempotent. That's important when rebuilding without cleaning.
+                // Skip any existing bridge method so that the transformation is idempotent. That's
+                // important when rebuilding without cleaning.
                 return null;
             }
         }
         return super.visitMethod(access, name, desc, signature, exceptions);
     }
-
 }

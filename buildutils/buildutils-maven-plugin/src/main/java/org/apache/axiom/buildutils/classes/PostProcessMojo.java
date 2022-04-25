@@ -36,9 +36,9 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
-@Mojo(name="post-process-classes", defaultPhase=LifecyclePhase.PROCESS_CLASSES)
+@Mojo(name = "post-process-classes", defaultPhase = LifecyclePhase.PROCESS_CLASSES)
 public class PostProcessMojo extends AbstractMojo {
-    @Parameter(property="project.build.outputDirectory", required=true, readonly=true)
+    @Parameter(property = "project.build.outputDirectory", required = true, readonly = true)
     private File classesDir;
 
     @Override
@@ -47,7 +47,7 @@ public class PostProcessMojo extends AbstractMojo {
             return;
         }
         DirectoryScanner ds = new DirectoryScanner();
-        ds.setIncludes(new String[] { "**/*.class" });
+        ds.setIncludes(new String[] {"**/*.class"});
         ds.setBasedir(classesDir);
         ds.scan();
         for (String relativePath : ds.getIncludedFiles()) {
@@ -60,8 +60,10 @@ public class PostProcessMojo extends AbstractMojo {
                     classWriter = new ClassWriter(classReader, 0);
                     ClassVisitor classVisitor = classWriter;
                     if (relativePath.equals("org/apache/axiom/om/OMText.class")
-                            || relativePath.equals("org/apache/axiom/om/impl/llom/AxiomCharacterDataNodeImpl.class")
-                            || relativePath.equals("org/apache/axiom/om/impl/dom/DOMTextNodeImpl.class")) {
+                            || relativePath.equals(
+                                    "org/apache/axiom/om/impl/llom/AxiomCharacterDataNodeImpl.class")
+                            || relativePath.equals(
+                                    "org/apache/axiom/om/impl/dom/DOMTextNodeImpl.class")) {
                         classVisitor = new GetDataHandlerBridgeMethodInjector(classVisitor);
                     }
                     classReader.accept(classVisitor, 0);
@@ -69,7 +71,8 @@ public class PostProcessMojo extends AbstractMojo {
                     in.close();
                 }
             } catch (IOException ex) {
-                throw new MojoExecutionException("Failed to read " + relativePath + ": " + ex.getMessage(), ex);
+                throw new MojoExecutionException(
+                        "Failed to read " + relativePath + ": " + ex.getMessage(), ex);
             }
             try {
                 OutputStream out = new FileOutputStream(file);
@@ -79,7 +82,8 @@ public class PostProcessMojo extends AbstractMojo {
                     out.close();
                 }
             } catch (IOException ex) {
-                throw new MojoExecutionException("Failed to write " + relativePath + ": " + ex.getMessage(), ex);
+                throw new MojoExecutionException(
+                        "Failed to write " + relativePath + ": " + ex.getMessage(), ex);
             }
         }
     }
