@@ -65,7 +65,7 @@
             <item name="Javadocs" href="/apidocs/index.html"/>
             <item name="FAQ" href="faq.html"/>
             <item name="View Source" href="https://github.com/apache/ws-axiom"/>
-            <item name="Code Coverage" href="https://codecov.io/gh/apache/webservices-axiom"/>
+            <item name="Code Coverage" href="https://codecov.io/gh/apache/ws-axiom"/>
             <item name="Privacy Policy" href="https://privacy.apache.org/policies/privacy-policy-public.html"/>
         </menu>
         <menu name="Modules">
