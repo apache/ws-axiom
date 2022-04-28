@@ -35,7 +35,7 @@
     <url>http://ws.apache.org/axiom/</url>
 
     <properties>
-        <aspectj.version>1.9.7</aspectj.version>
+        <aspectj.version>1.9.9.1</aspectj.version>
     </properties>
 
     <dependencies>
