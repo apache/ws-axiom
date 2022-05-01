@@ -105,6 +105,9 @@
                     <windowtitle>Apache Axiom</windowtitle>
                     <!-- doctitle only appears in the summary and we should include the version there -->
                     <doctitle>Apache Axiom ${project.version}</doctitle>
+                    <additionalOptions>
+                        <additionalOption>-html5</additionalOption>
+                    </additionalOptions>
                 </configuration>
             </plugin>
             <plugin>
@@ -140,24 +143,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <activation>
-                <jdk>[9,)</jdk>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <additionalOptions>
-                                <additionalOption>-html5</additionalOption>
-                            </additionalOptions>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
