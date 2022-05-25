@@ -630,7 +630,7 @@ mvn scm-publish:publish-scm -Dscmpublish.skipCheckin=true</screen>
                 <step>
                     <para>
                         Promote the artifacts in the staging repository. See
-                        <link xlink:href="http://maven.apache.org/developers/release/apache-release.html"/>
+                        <link xlink:href="https://central.sonatype.org/publish/release/#close-and-drop-or-release-your-staging-repository"/>
                         for detailed instructions for this step.
                     </para>
                 </step>
