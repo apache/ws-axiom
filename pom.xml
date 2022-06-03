@@ -1017,6 +1017,7 @@
                     <source>${javaVersion}</source>
                     <target>${javaVersion}</target>
                     <release>${javaRelease}</release>
+                    <showWarnings>true</showWarnings>
                     <compilerArgs combine.children="append">
                         <compilerArg>-XDcompilePolicy=simple</compilerArg>
                         <compilerArg>-Xplugin:ErrorProne -XepExcludedPaths:.*/org/jaxen/.* -Xep:MissingOverride:ERROR</compilerArg>
