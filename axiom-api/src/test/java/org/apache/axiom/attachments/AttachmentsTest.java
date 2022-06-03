@@ -618,21 +618,18 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // We use a pipe (with a producer running in a separate thread) because obviously we can't
         // store the multipart in memory.
-        final PipedOutputStream pipeOut = new PipedOutputStream();
+        PipedOutputStream pipeOut = new PipedOutputStream();
         PipedInputStream pipeIn = new PipedInputStream(pipeOut);
         
-        Thread producerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        Thread producerThread = new Thread(() -> {
+            try {
                 try {
-                    try {
-                        mp.writeTo(pipeOut);
-                    } finally {
-                        pipeOut.close();
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                    mp.writeTo(pipeOut);
+                } finally {
+                    pipeOut.close();
                 }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
         producerThread.start();

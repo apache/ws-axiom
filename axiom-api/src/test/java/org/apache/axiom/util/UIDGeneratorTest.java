@@ -47,19 +47,16 @@ public class UIDGeneratorTest extends TestCase {
     }
     
     public void testGenerateUIDThreadSafety() {
-        final Set<String> generatedIds = Collections.synchronizedSet(new HashSet<String>());
-        final AtomicInteger errorCount = new AtomicInteger(0);
+        Set<String> generatedIds = Collections.synchronizedSet(new HashSet<String>());
+        AtomicInteger errorCount = new AtomicInteger(0);
         Thread[] threads = new Thread[100];
         for (int i = 0; i < threads.length; i++) {
-            threads[i] = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    for (int i=0; i<1000; i++) {
-                        String id = UIDGenerator.generateUID();
-                        if (!generatedIds.add(id)) {
-                            System.out.println("ERROR - Same UID has been generated before. UID: " + id);
-                            errorCount.incrementAndGet();
-                        }
+            threads[i] = new Thread(() -> {
+                for (int j=0; j<1000; j++) {
+                    String id = UIDGenerator.generateUID();
+                    if (!generatedIds.add(id)) {
+                        System.out.println("ERROR - Same UID has been generated before. UID: " + id);
+                        errorCount.incrementAndGet();
                     }
                 }
             });
@@ -79,15 +76,12 @@ public class UIDGeneratorTest extends TestCase {
     
     public void testGenerateURNString() {
         Thread[] threads = new Thread[100];
-        final String[][] urns = new String[threads.length][1000];
+        String[][] urns = new String[threads.length][1000];
         for (int i = 0; i < threads.length; i++) {
-            final String[] threadURNs = urns[i];
-            threads[i] = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    for (int i=0; i<threadURNs.length; i++) {
-                        threadURNs[i] = UIDGenerator.generateURNString();
-                    }
+            String[] threadURNs = urns[i];
+            threads[i] = new Thread(() -> {
+                for (int j=0; j<threadURNs.length; j++) {
+                    threadURNs[j] = UIDGenerator.generateURNString();
                 }
             });
             threads[i].start();

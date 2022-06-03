@@ -24,26 +24,23 @@ import java.util.List;
 
 public class ConcurrentTestUtils {
 
-    public static void testThreadSafety(final Action action) throws Throwable {
+    public static void testThreadSafety(Action action) throws Throwable {
         int threadCount = 10;
-        final List<Throwable> results = new ArrayList<>(threadCount);
+        List<Throwable> results = new ArrayList<>(threadCount);
         for (int i=0; i<threadCount; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Throwable result;
-                    try {
-                        for (int i=0; i<1000; i++) {
-                            action.execute();
-                        }
-                        result = null;
-                    } catch (Throwable ex) {
-                        result = ex;
+            new Thread(() -> {
+                Throwable result;
+                try {
+                    for (int j=0; j<1000; j++) {
+                        action.execute();
                     }
-                    synchronized (results) {
-                        results.add(result);
-                        results.notifyAll();
-                    }
+                    result = null;
+                } catch (Throwable ex) {
+                    result = ex;
+                }
+                synchronized (results) {
+                    results.add(result);
+                    results.notifyAll();
                 }
             }).start();
         }

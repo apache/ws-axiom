@@ -71,68 +71,62 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
         OMElement orgData2 = factory.createOMElement("data", null, orgBodyElement);
         orgData2.addChild(factory.createOMText(new DataHandler(ds2), true));
 
-        final OMOutputFormat format = new OMOutputFormat();
+        OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
         format.setSOAP11(false);
-        final String contentType = format.getContentType();
+        String contentType = format.getContentType();
 
-        final PipedOutputStream pipe1Out = new PipedOutputStream();
-        final PipedInputStream pipe1In = new PipedInputStream(pipe1Out);
+        PipedOutputStream pipe1Out = new PipedOutputStream();
+        PipedInputStream pipe1In = new PipedInputStream(pipe1Out);
 
         // Create the producer thread (simulating the client sending the MTOM message)
         Thread producerThread =
                 new Thread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
+                        () -> {
+                            try {
                                 try {
-                                    try {
-                                        orgEnvelope.serialize(pipe1Out, format);
-                                    } finally {
-                                        pipe1Out.close();
-                                    }
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
+                                    orgEnvelope.serialize(pipe1Out, format);
+                                } finally {
+                                    pipe1Out.close();
                                 }
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
                             }
                         });
         producerThread.start();
 
-        final PipedOutputStream pipe2Out = new PipedOutputStream();
+        PipedOutputStream pipe2Out = new PipedOutputStream();
         PipedInputStream pipe2In = new PipedInputStream(pipe2Out);
 
         // Create the forwarder thread (simulating the mediation engine that forwards the message)
         Thread forwarderThread =
                 new Thread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
+                        () -> {
+                            try {
                                 try {
-                                    try {
-                                        MultipartBody mb =
-                                                MultipartBody.builder()
-                                                        .setInputStream(pipe1In)
-                                                        .setContentType(contentType)
-                                                        .build();
-                                        SOAPEnvelope envelope =
-                                                OMXMLBuilderFactory.createSOAPModelBuilder(
-                                                                metaFactory, mb)
-                                                        .getSOAPEnvelope();
-                                        // The code path executed by serializeAndConsume is
-                                        // significantly different if
-                                        // the element is built. Therefore we need two different
-                                        // test executions.
-                                        if (buildSOAPPart) {
-                                            envelope.build();
-                                        }
-                                        // Usage of serializeAndConsume should enable streaming
-                                        envelope.serializeAndConsume(pipe2Out, format);
-                                    } finally {
-                                        pipe2Out.close();
+                                    MultipartBody mb =
+                                            MultipartBody.builder()
+                                                    .setInputStream(pipe1In)
+                                                    .setContentType(contentType)
+                                                    .build();
+                                    SOAPEnvelope envelope =
+                                            OMXMLBuilderFactory.createSOAPModelBuilder(
+                                                            metaFactory, mb)
+                                                    .getSOAPEnvelope();
+                                    // The code path executed by serializeAndConsume is
+                                    // significantly different if
+                                    // the element is built. Therefore we need two different
+                                    // test executions.
+                                    if (buildSOAPPart) {
+                                        envelope.build();
                                     }
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
+                                    // Usage of serializeAndConsume should enable streaming
+                                    envelope.serializeAndConsume(pipe2Out, format);
+                                } finally {
+                                    pipe2Out.close();
                                 }
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
                             }
                         });
         forwarderThread.start();
