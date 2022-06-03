@@ -82,13 +82,7 @@ public class TestChildOrder extends SOAPTestCase {
         // Calculate the order in which we expect to see the children. Note that a given type
         // may be added multiple times. Therefore we need to use a Set.
         SortedSet<SOAPFaultChild> outputOrder =
-                new TreeSet<>(
-                        new Comparator<SOAPFaultChild>() {
-                            @Override
-                            public int compare(SOAPFaultChild o1, SOAPFaultChild o2) {
-                                return o1.getOrder() - o2.getOrder();
-                            }
-                        });
+                new TreeSet<>(Comparator.comparingInt(SOAPFaultChild::getOrder));
         outputOrder.addAll(Arrays.asList(inputOrder));
         // Check the result using the given serialization strategy
         Document document =
