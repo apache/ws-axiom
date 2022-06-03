@@ -30,8 +30,12 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class TestSetBooleanAttribute extends BooleanAttributeTestCase {
     private final boolean value;
-    
-    public TestSetBooleanAttribute(OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute, boolean value) {
+
+    public TestSetBooleanAttribute(
+            OMMetaFactory metaFactory,
+            SOAPSpec spec,
+            HeaderBlockAttribute attribute,
+            boolean value) {
         super(metaFactory, spec, attribute);
         addTestParameter("value", value);
         this.value = value;

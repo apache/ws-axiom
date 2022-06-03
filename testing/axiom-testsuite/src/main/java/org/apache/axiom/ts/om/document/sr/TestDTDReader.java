@@ -40,12 +40,13 @@ public class TestDTDReader extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMDocument document = factory.createOMDocument();
-        factory.createOMDocType(document, "root", "-//MY//DTD", "my.dtd", "<!ELEMENT root (#PCDATA)>");
+        factory.createOMDocType(
+                document, "root", "-//MY//DTD", "my.dtd", "<!ELEMENT root (#PCDATA)>");
         factory.createOMElement("root", null, document);
         XMLStreamReader reader = document.getXMLStreamReader();
         // Note that according to the specification of the DTDReader interface, it is
         // allowed to look up the extension before reaching the DTD event.
-        DTDReader dtdReader = (DTDReader)reader.getProperty(DTDReader.PROPERTY);
+        DTDReader dtdReader = (DTDReader) reader.getProperty(DTDReader.PROPERTY);
         assertNotNull(dtdReader);
         assertEquals(XMLStreamReader.DTD, reader.next());
         assertEquals("root", dtdReader.getRootName());

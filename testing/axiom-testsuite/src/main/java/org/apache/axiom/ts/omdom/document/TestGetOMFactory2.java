@@ -28,9 +28,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 
 /**
- * Tests that {@link OMInformationItem#getOMFactory()} returns the expected instance for a
- * {@link Document} created with the
- * {@link DOMImplementation#createDocument(String, String, DocumentType)}.
+ * Tests that {@link OMInformationItem#getOMFactory()} returns the expected instance for a {@link
+ * Document} created with the {@link DOMImplementation#createDocument(String, String,
+ * DocumentType)}.
  */
 public class TestGetOMFactory2 extends AxiomTestCase {
     public TestGetOMFactory2(OMMetaFactory metaFactory) {
@@ -39,7 +39,10 @@ public class TestGetOMFactory2 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document document = ((DOMMetaFactory)metaFactory).getDOMImplementation().createDocument("urn:test", "root", null);
-        assertSame(metaFactory.getOMFactory(), ((OMDocument)document).getOMFactory());
+        Document document =
+                ((DOMMetaFactory) metaFactory)
+                        .getDOMImplementation()
+                        .createDocument("urn:test", "root", null);
+        assertSame(metaFactory.getOMFactory(), ((OMDocument) document).getOMFactory());
     }
 }

@@ -24,9 +24,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests the behavior of {@link OMElement#setText(String)} when invoked on an empty element.
- */
+/** Tests the behavior of {@link OMElement#setText(String)} when invoked on an empty element. */
 public class TestSetText extends AxiomTestCase {
     public TestSetText(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -37,15 +35,15 @@ public class TestSetText extends AxiomTestCase {
         OMElement element = metaFactory.getOMFactory().createOMElement("test", null);
         String text = "The quick brown fox jumps over the lazy dog";
         element.setText(text);
-        
+
         // Check that OMElement#getText() returns a matching value
         assertEquals("Text value mismatch", text, element.getText());
-        
+
         // Check that OMElement#setText() has created the expected nodes
         OMNode child = element.getFirstOMChild();
         assertTrue(child instanceof OMText);
         assertSame(element, child.getParent());
-        assertEquals(text, ((OMText)child).getText());
+        assertEquals(text, ((OMText) child).getText());
         assertNull(child.getNextOMSibling());
     }
 }

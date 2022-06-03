@@ -28,7 +28,7 @@ import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestCloseWithStream extends AxiomTestCase {
     private final StreamType streamType;
-    
+
     public TestCloseWithStream(OMMetaFactory metaFactory, StreamType streamType) {
         super(metaFactory);
         this.streamType = streamType;
@@ -39,7 +39,10 @@ public class TestCloseWithStream extends AxiomTestCase {
     protected void runTest() throws Throwable {
         InstrumentedStream in = streamType.instrumentStream(streamType.getStream(XMLSample.SIMPLE));
         try {
-            OMXMLParserWrapper builder = streamType.getAdapter(StreamTypeAdapter.class).createOMBuilder(metaFactory.getOMFactory(), in);
+            OMXMLParserWrapper builder =
+                    streamType
+                            .getAdapter(StreamTypeAdapter.class)
+                            .createOMBuilder(metaFactory.getOMFactory(), in);
             builder.getDocument().build();
             builder.close();
             // OMXMLParserWrapper#close() does _not_ close the underlying input stream

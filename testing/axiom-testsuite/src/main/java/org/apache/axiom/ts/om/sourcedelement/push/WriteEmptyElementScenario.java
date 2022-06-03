@@ -28,9 +28,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.junit.Assert;
 
-/**
- * Scenario that uses {@link XMLStreamWriter#writeEmptyElement(String, String, String)}.
- */
+/** Scenario that uses {@link XMLStreamWriter#writeEmptyElement(String, String, String)}. */
 public class WriteEmptyElementScenario implements PushOMDataSourceScenario {
     @Override
     public void addTestParameters(MatrixTestCase testCase) {
@@ -38,7 +36,7 @@ public class WriteEmptyElementScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 

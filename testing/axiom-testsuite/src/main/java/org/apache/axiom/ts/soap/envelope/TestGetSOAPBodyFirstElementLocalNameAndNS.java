@@ -29,8 +29,9 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestGetSOAPBodyFirstElementLocalNameAndNS extends SOAPTestCase {
     private final QName qname;
-    
-    public TestGetSOAPBodyFirstElementLocalNameAndNS(OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
+
+    public TestGetSOAPBodyFirstElementLocalNameAndNS(
+            OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
         super(metaFactory, spec);
         this.qname = qname;
         addTestParameter("prefix", qname.getPrefix());
@@ -40,7 +41,9 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNS extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
-        OMElement bodyElement = soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
+        OMElement bodyElement =
+                soapFactory.createOMElement(
+                        qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
         envelope.getBody().addChild(bodyElement);
         assertEquals(qname.getLocalPart(), envelope.getSOAPBodyFirstElementLocalName());
         OMNamespace ns = envelope.getSOAPBodyFirstElementNS();

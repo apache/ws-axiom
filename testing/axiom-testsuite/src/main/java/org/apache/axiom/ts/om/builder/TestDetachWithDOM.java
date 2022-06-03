@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
 
 public class TestDetachWithDOM extends AxiomTestCase {
     private final boolean useDOMSource;
-    
+
     public TestDetachWithDOM(OMMetaFactory metaFactory, boolean useDOMSource) {
         super(metaFactory);
         this.useDOMSource = useDOMSource;
@@ -47,7 +47,9 @@ public class TestDetachWithDOM extends AxiomTestCase {
         root.appendChild(document.createElementNS("", "a"));
         OMXMLParserWrapper builder;
         if (useDOMSource) {
-            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new DOMSource(root));
+            builder =
+                    OMXMLBuilderFactory.createOMBuilder(
+                            metaFactory.getOMFactory(), new DOMSource(root));
         } else {
             builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), root, false);
         }

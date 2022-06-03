@@ -23,17 +23,14 @@ import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testutils.suite.Dimension;
 
-/**
- * Defines a strategy to serialize an {@link OMContainer} instance to XML.
- */
+/** Defines a strategy to serialize an {@link OMContainer} instance to XML. */
 public abstract class SerializationStrategy extends Multiton implements Dimension {
     SerializationStrategy() {}
-    
+
     /**
      * Serialize the given {@link OMContainer}.
-     * 
-     * @param container
-     *            the container to serialize to XML
+     *
+     * @param container the container to serialize to XML
      * @return the serialized XML
      * @throws Exception
      */
@@ -41,29 +38,29 @@ public abstract class SerializationStrategy extends Multiton implements Dimensio
 
     /**
      * Determine if this serialization strategy works in pull or push mode.
-     * 
+     *
      * @return <code>true</code> if the serialization is driven by Axiom, <code>false</code> if the
-     *         serialization is driven by the application code
+     *     serialization is driven by the application code
      */
     public abstract boolean isPush();
-    
+
     /**
      * Determine if this serialization strategy consumes the content of the {@link OMContainer}.
-     * 
+     *
      * @return <code>true</code> if the strategy preserves the content, <code>false</code> if it
-     *         consumes the content
+     *     consumes the content
      */
     public abstract boolean isCaching();
-    
+
     /**
      * Determine if this serialization strategy is able to correctly serialize the internal subset
      * of a DOCTYPE declaration.
-     * 
+     *
      * @return <code>true</code> if this strategy correctly serializes the internal subset of a DTD,
-     *         <code>false</code> otherwise
+     *     <code>false</code> otherwise
      */
     public abstract boolean supportsInternalSubset();
-    
+
     @Instances
     private static SerializationStrategy[] instances() {
         return new SerializationStrategy[] {
@@ -76,6 +73,7 @@ public abstract class SerializationStrategy extends Multiton implements Dimensio
             new SerializeFromXMLStreamReader(true),
             new SerializeFromXMLStreamReader(false),
             new SerializeFromSAXSource(true),
-            new SerializeFromSAXSource(false) };
+            new SerializeFromSAXSource(false)
+        };
     }
 }

@@ -35,7 +35,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * Tests the behavior of {@link OMContainer#addChild(OMNode)} if the parent has not been built
  * completely. In this case, the parent must be built before the new child is added (so that the
  * result of {@link OMContainer#addChild(OMNode)} is independent of the completeness of the parent).
- * 
+ *
  * @see org.apache.axiom.ts.om.element.TestAddChildIncomplete
  */
 public class TestAddChildIncomplete extends AxiomTestCase {
@@ -46,13 +46,16 @@ public class TestAddChildIncomplete extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDocument parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<!--a--><b/><!--c-->")).getDocument();
+        OMDocument parent =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory, new StringReader("<!--a--><b/><!--c-->"))
+                        .getDocument();
         parent.addChild(factory.createOMComment(null, "d"));
         Iterator<OMNode> it = parent.getChildren();
-        assertEquals("a", ((OMComment)it.next()).getValue());
-        assertEquals("b", ((OMElement)it.next()).getLocalName());
-        assertEquals("c", ((OMComment)it.next()).getValue());
-        assertEquals("d", ((OMComment)it.next()).getValue());
+        assertEquals("a", ((OMComment) it.next()).getValue());
+        assertEquals("b", ((OMElement) it.next()).getLocalName());
+        assertEquals("c", ((OMComment) it.next()).getValue());
+        assertEquals("d", ((OMComment) it.next()).getValue());
         assertFalse(it.hasNext());
     }
 }

@@ -38,10 +38,12 @@ public class TestClone extends SOAPTestCase {
     }
 
     private void checkProcessed(SOAPHeader clonedHeader, SOAPHeaderBlock orgHeaderBlock) {
-        SOAPHeaderBlock clonedHeaderBlock = (SOAPHeaderBlock)clonedHeader.getFirstChildWithName(orgHeaderBlock.getQName());
-        assertThat(clonedHeaderBlock.isProcessed()).isEqualTo(processed == null ? orgHeaderBlock.isProcessed() : processed);
+        SOAPHeaderBlock clonedHeaderBlock =
+                (SOAPHeaderBlock) clonedHeader.getFirstChildWithName(orgHeaderBlock.getQName());
+        assertThat(clonedHeaderBlock.isProcessed())
+                .isEqualTo(processed == null ? orgHeaderBlock.isProcessed() : processed);
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.createSOAPHeader();
@@ -52,7 +54,7 @@ public class TestClone extends SOAPTestCase {
         SOAPCloneOptions options = new SOAPCloneOptions();
         options.setPreserveModel(true);
         options.setProcessedFlag(processed);
-        SOAPHeader clonedHeader = (SOAPHeader)header.clone(options);
+        SOAPHeader clonedHeader = (SOAPHeader) header.clone(options);
         checkProcessed(clonedHeader, unprocessedHeaderBlock);
         checkProcessed(clonedHeader, processedHeaderBlock);
     }

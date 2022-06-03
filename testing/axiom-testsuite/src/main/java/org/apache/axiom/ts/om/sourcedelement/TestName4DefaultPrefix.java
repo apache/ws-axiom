@@ -29,9 +29,9 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
  * Tests the OMSourcedElement localName, namespace and prefix settings before and after
- * serialization Document: testDocument (which uses the default namespace) Type of
- * Serialization: Serialize and consume Tests that the namespace and localName are not affected
- * by the serializeAndConsume
+ * serialization Document: testDocument (which uses the default namespace) Type of Serialization:
+ * Serialize and consume Tests that the namespace and localName are not affected by the
+ * serializeAndConsume
  */
 public class TestName4DefaultPrefix extends AxiomTestCase {
     public TestName4DefaultPrefix(OMMetaFactory metaFactory) {
@@ -42,15 +42,18 @@ public class TestName4DefaultPrefix extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory f = metaFactory.getOMFactory();
 
-        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default
+        // prefix
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
-                f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "DUMMYNAME", ns);
+                f.createOMElement(
+                        new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "DUMMYNAME", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
-        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        // Test getting the namespace, localpart and prefix.  This should used not result in
+        // expansion
         assertTrue(element.getLocalName().equals("DUMMYNAME"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
         assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
@@ -64,8 +67,8 @@ public class TestName4DefaultPrefix extends AxiomTestCase {
         assertTrue(element.getLocalName().equals("DUMMYNAME"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
         assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
-        assertTrue(result.indexOf("DUMMY") <
-                0);   // Make sure that the serialized string does not contain the DUMMY values
+        // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("DUMMY") < 0);
 
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
     }

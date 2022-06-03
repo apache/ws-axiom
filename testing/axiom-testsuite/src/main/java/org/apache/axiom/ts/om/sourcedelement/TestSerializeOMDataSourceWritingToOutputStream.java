@@ -40,19 +40,19 @@ import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializeToOutputStream;
 
 /**
- * Tests serialization with an {@link OMDataSource} that uses
- * {@link MTOMXMLStreamWriter#getOutputStream()}.
+ * Tests serialization with an {@link OMDataSource} that uses {@link
+ * MTOMXMLStreamWriter#getOutputStream()}.
  */
 public class TestSerializeOMDataSourceWritingToOutputStream extends AxiomTestCase {
     private static final class OMDataSourceImpl extends AbstractPushOMDataSource {
         private boolean outputStreamUsed;
-        
+
         @Override
         public void serialize(XMLStreamWriter writer) throws XMLStreamException {
             OutputStream out;
             String encoding;
             if (writer instanceof MTOMXMLStreamWriter) {
-                MTOMXMLStreamWriter writer2 = (MTOMXMLStreamWriter)writer;
+                MTOMXMLStreamWriter writer2 = (MTOMXMLStreamWriter) writer;
                 out = writer2.getOutputStream();
                 encoding = writer2.getCharSetEncoding();
             } else {
@@ -72,7 +72,7 @@ public class TestSerializeOMDataSourceWritingToOutputStream extends AxiomTestCas
                 writer.writeEndElement();
             }
         }
-        
+
         @Override
         public boolean isDestructiveWrite() {
             return false;
@@ -82,12 +82,14 @@ public class TestSerializeOMDataSourceWritingToOutputStream extends AxiomTestCas
             return outputStreamUsed;
         }
     }
-    
+
     private final SerializationStrategy serializationStrategy;
     private final boolean serializeParent;
 
-    public TestSerializeOMDataSourceWritingToOutputStream(OMMetaFactory metaFactory,
-            SerializationStrategy serializationStrategy, boolean serializeParent) {
+    public TestSerializeOMDataSourceWritingToOutputStream(
+            OMMetaFactory metaFactory,
+            SerializationStrategy serializationStrategy,
+            boolean serializeParent) {
         super(metaFactory);
         this.serializationStrategy = serializationStrategy;
         this.serializeParent = serializeParent;
@@ -110,9 +112,11 @@ public class TestSerializeOMDataSourceWritingToOutputStream extends AxiomTestCas
         }
         assertAbout(xml())
                 .that(serializationStrategy.serialize(elementToSerialize).getInputSource())
-                .hasSameContentAs(serializeParent
-                        ? "<root><test xmlns='urn:test'/></root>"
-                        : "<test xmlns='urn:test'/>");
-        assertThat(ds.isOutputStreamUsed()).isEqualTo(serializationStrategy instanceof SerializeToOutputStream);
+                .hasSameContentAs(
+                        serializeParent
+                                ? "<root><test xmlns='urn:test'/></root>"
+                                : "<test xmlns='urn:test'/>");
+        assertThat(ds.isOutputStreamUsed())
+                .isEqualTo(serializationStrategy instanceof SerializeToOutputStream);
     }
 }

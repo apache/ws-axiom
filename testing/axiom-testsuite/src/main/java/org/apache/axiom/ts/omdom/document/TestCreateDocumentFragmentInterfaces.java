@@ -26,8 +26,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 
 /**
- * Tests that the {@link DocumentFragment} instances created by
- * {@link Document#createDocumentFragment()} don't implement any Axiom interfaces.
+ * Tests that the {@link DocumentFragment} instances created by {@link
+ * Document#createDocumentFragment()} don't implement any Axiom interfaces.
  */
 public class TestCreateDocumentFragmentInterfaces extends AxiomTestCase {
     public TestCreateDocumentFragmentInterfaces(OMMetaFactory metaFactory) {
@@ -36,7 +36,11 @@ public class TestCreateDocumentFragmentInterfaces extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document document = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Document document =
+                ((DOMMetaFactory) metaFactory)
+                        .newDocumentBuilderFactory()
+                        .newDocumentBuilder()
+                        .newDocument();
         DocumentFragment fragment = document.createDocumentFragment();
         assertFalse(fragment instanceof OMInformationItem);
     }

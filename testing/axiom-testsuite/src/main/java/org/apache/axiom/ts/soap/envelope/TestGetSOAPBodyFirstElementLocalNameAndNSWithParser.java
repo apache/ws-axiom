@@ -32,15 +32,16 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Tests the behavior of {@link SOAPEnvelope#getSOAPBodyFirstElementLocalName()} and
- * {@link SOAPEnvelope#getSOAPBodyFirstElementNS()} for a {@link SOAPEnvelope} constructed from a
- * parser. In this case, the Axiom implementation may choose to use a special optimization to get
- * the name of the element without actually instantiating the corresponding {@link OMElement}.
+ * Tests the behavior of {@link SOAPEnvelope#getSOAPBodyFirstElementLocalName()} and {@link
+ * SOAPEnvelope#getSOAPBodyFirstElementNS()} for a {@link SOAPEnvelope} constructed from a parser.
+ * In this case, the Axiom implementation may choose to use a special optimization to get the name
+ * of the element without actually instantiating the corresponding {@link OMElement}.
  */
 public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTestCase {
     private final QName qname;
-    
-    public TestGetSOAPBodyFirstElementLocalNameAndNSWithParser(OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
+
+    public TestGetSOAPBodyFirstElementLocalNameAndNSWithParser(
+            OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
         super(metaFactory, spec);
         this.qname = qname;
         addTestParameter("prefix", qname.getPrefix());
@@ -52,10 +53,16 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTes
         // Prepare the message. Note that we do this programmatically to make sure that the message
         // doesn't contain any unwanted whitespace.
         SOAPEnvelope orgEnvelope = soapFactory.createDefaultSOAPMessage().getSOAPEnvelope();
-        orgEnvelope.getBody().addChild(soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
+        orgEnvelope
+                .getBody()
+                .addChild(
+                        soapFactory.createOMElement(
+                                qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
         String message = orgEnvelope.toString();
-        
-        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new StringReader(message)).getSOAPEnvelope();
+
+        SOAPEnvelope envelope =
+                OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new StringReader(message))
+                        .getSOAPEnvelope();
         assertEquals(qname.getLocalPart(), envelope.getSOAPBodyFirstElementLocalName());
         OMNamespace ns = envelope.getSOAPBodyFirstElementNS();
         if (qname.getNamespaceURI().length() == 0) {
@@ -64,7 +71,7 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTes
             assertEquals(qname.getNamespaceURI(), ns.getNamespaceURI());
             assertEquals(qname.getPrefix(), ns.getPrefix());
         }
-        
+
         // Also request an XMLStreamReader. The LLOM implementation triggers some special processing
         // in this case (because the getSOAPBodyFirstElementXXX calls put the builder in lookahead
         // mode). This is a regression test for r631687 (AXIOM-282).

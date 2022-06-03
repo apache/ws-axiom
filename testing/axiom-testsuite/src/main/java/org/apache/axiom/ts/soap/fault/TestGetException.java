@@ -37,7 +37,9 @@ public class TestGetException extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
         SOAPFaultDetail detail = soapFactory.createSOAPFaultDetail(fault);
-        OMElement detailEntry = soapFactory.createOMElement(new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
+        OMElement detailEntry =
+                soapFactory.createOMElement(
+                        new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
         detailEntry.setText("This is an exception message");
         detail.addDetailEntry(detailEntry);
         Exception exception = fault.getException();

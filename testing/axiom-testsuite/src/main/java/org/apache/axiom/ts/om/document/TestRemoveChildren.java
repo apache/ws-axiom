@@ -32,14 +32,13 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests {@link OMContainer#removeChildren()} on an {@link OMContainer}.
- */
+/** Tests {@link OMContainer#removeChildren()} on an {@link OMContainer}. */
 public class TestRemoveChildren extends AxiomTestCase {
     private final boolean complete;
     private final boolean accessDocumentElement;
 
-    public TestRemoveChildren(OMMetaFactory metaFactory, boolean complete, boolean accessDocumentElement) {
+    public TestRemoveChildren(
+            OMMetaFactory metaFactory, boolean complete, boolean accessDocumentElement) {
         super(metaFactory);
         this.complete = complete;
         this.accessDocumentElement = accessDocumentElement;
@@ -50,12 +49,14 @@ public class TestRemoveChildren extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory,
-                new StringReader("<?pi data?><root>text</root>")).getDocument();
+        OMDocument document =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory, new StringReader("<?pi data?><root>text</root>"))
+                        .getDocument();
         if (complete) {
             document.build();
         }
-        OMProcessingInstruction firstChild = (OMProcessingInstruction)document.getFirstOMChild();
+        OMProcessingInstruction firstChild = (OMProcessingInstruction) document.getFirstOMChild();
         OMElement documentElement;
         if (accessDocumentElement) {
             documentElement = document.getOMDocumentElement();
@@ -81,8 +82,6 @@ public class TestRemoveChildren extends AxiomTestCase {
         // Check that the document is in a clean state and that we are able to add
         // new children.
         document.addChild(factory.createOMElement("newroot", null));
-        assertAbout(xml())
-                .that(xml(OMDocument.class, document))
-                .hasSameContentAs("<newroot/>");
+        assertAbout(xml()).that(xml(OMDocument.class, document)).hasSameContentAs("<newroot/>");
     }
 }

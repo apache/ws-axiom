@@ -26,7 +26,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 public abstract class BooleanAttributeTestCase extends SOAPTestCase {
     protected final HeaderBlockAttribute attribute;
 
-    public BooleanAttributeTestCase(OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
+    public BooleanAttributeTestCase(
+            OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
         super(metaFactory, spec);
         this.attribute = attribute;
         addTestParameter("attribute", attribute.getName(spec));

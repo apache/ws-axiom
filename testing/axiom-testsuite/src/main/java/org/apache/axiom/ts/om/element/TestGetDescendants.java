@@ -28,7 +28,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetDescendants extends AxiomTestCase {
     private final boolean includeSelf;
-    
+
     public TestGetDescendants(OMMetaFactory metaFactory, boolean includeSelf) {
         super(metaFactory);
         this.includeSelf = includeSelf;
@@ -37,19 +37,21 @@ public class TestGetDescendants extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
-                "<root><a><b><c><d/><e/></c></b><f/></a><g/></root>");
+        OMElement element =
+                AXIOMUtil.stringToOM(
+                        metaFactory.getOMFactory(),
+                        "<root><a><b><c><d/><e/></c></b><f/></a><g/></root>");
         // We intentionally get the descendants of <a> so that we can test containment
         // (the iterator must never return <g>, which is a sibling of <a>).
         Iterator<OMNode> it = element.getFirstElement().getDescendants(includeSelf);
         if (includeSelf) {
-            assertEquals("a", ((OMElement)it.next()).getLocalName());
+            assertEquals("a", ((OMElement) it.next()).getLocalName());
         }
-        assertEquals("b", ((OMElement)it.next()).getLocalName());
-        assertEquals("c", ((OMElement)it.next()).getLocalName());
-        assertEquals("d", ((OMElement)it.next()).getLocalName());
-        assertEquals("e", ((OMElement)it.next()).getLocalName());
-        assertEquals("f", ((OMElement)it.next()).getLocalName());
+        assertEquals("b", ((OMElement) it.next()).getLocalName());
+        assertEquals("c", ((OMElement) it.next()).getLocalName());
+        assertEquals("d", ((OMElement) it.next()).getLocalName());
+        assertEquals("e", ((OMElement) it.next()).getLocalName());
+        assertEquals("f", ((OMElement) it.next()).getLocalName());
         assertFalse(it.hasNext());
     }
 }

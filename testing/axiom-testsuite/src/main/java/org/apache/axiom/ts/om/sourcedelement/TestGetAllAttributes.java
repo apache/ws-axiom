@@ -42,8 +42,8 @@ public class TestGetAllAttributes extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(
-                new PullOMDataSource("<root attr='value'/>"), "root", null);
+        OMSourcedElement element =
+                factory.createOMElement(new PullOMDataSource("<root attr='value'/>"), "root", null);
         Iterator<OMAttribute> attributes = element.getAllAttributes();
         assertThat(attributes.hasNext()).isTrue();
         OMAttribute attr = attributes.next();

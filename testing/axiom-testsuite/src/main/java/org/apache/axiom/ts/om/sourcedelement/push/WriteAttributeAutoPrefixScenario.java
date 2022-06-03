@@ -41,7 +41,7 @@ public class WriteAttributeAutoPrefixScenario implements PushOMDataSourceScenari
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 

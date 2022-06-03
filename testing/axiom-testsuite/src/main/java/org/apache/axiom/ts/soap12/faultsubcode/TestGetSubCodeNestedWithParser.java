@@ -32,12 +32,14 @@ public class TestGetSubCodeNestedWithParser extends SampleBasedSOAPTestCase {
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        SOAPFaultSubCode subCode = envelope.getBody().getFault().getCode().getSubCode().getSubCode();
+        SOAPFaultSubCode subCode =
+                envelope.getBody().getFault().getCode().getSubCode().getSubCode();
         assertNotNull(
                 "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode With Parser : - getSubCode method returns null",
                 subCode.getSubCode());
         assertEquals(
                 "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode With Parser : - SubCode local name mismatch",
-                SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, subCode.getSubCode().getLocalName());
+                SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME,
+                subCode.getSubCode().getLocalName());
     }
 }

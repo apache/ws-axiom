@@ -33,14 +33,14 @@ import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestGetSAXResult extends ConformanceTestCase {
     private final XSLTImplementation xsltImplementation;
-    
-    public TestGetSAXResult(OMMetaFactory metaFactory,
-            XSLTImplementation xsltImplementation, XMLSample file) {
+
+    public TestGetSAXResult(
+            OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, XMLSample file) {
         super(metaFactory, file);
         this.xsltImplementation = xsltImplementation;
         addTestParameter("xslt", xsltImplementation.getName());
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         TransformerFactory transformerFactory = xsltImplementation.newTransformerFactory();

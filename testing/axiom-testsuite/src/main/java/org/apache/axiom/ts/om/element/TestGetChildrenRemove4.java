@@ -35,8 +35,11 @@ public class TestGetChildrenRemove4 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<root>a<b/><!--c--><d/>e</root>")).getDocumentElement();
+        OMElement elt =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader("<root>a<b/><!--c--><d/>e</root>"))
+                        .getDocumentElement();
         Iterator<OMNode> iter = elt.getChildren();
         int firstChildrenCount = 0;
         int secondChildrenCount = 0;
@@ -45,20 +48,19 @@ public class TestGetChildrenRemove4 extends AxiomTestCase {
             firstChildrenCount++;
         }
 
-        //remove the last node
+        // remove the last node
         iter.remove();
 
-        //reloop and check the count
-        //Note- here we should get a fresh iterator since there is no method to
-        //reset the iterator
-        iter = elt.getChildren(); //reset the iterator
+        // reloop and check the count
+        // Note- here we should get a fresh iterator since there is no method to
+        // reset the iterator
+        iter = elt.getChildren(); // reset the iterator
         while (iter.hasNext()) {
             assertNotNull(iter.next());
             secondChildrenCount++;
         }
-        assertEquals("children count must reduce from 1",
-                     firstChildrenCount - 1,
-                     secondChildrenCount);
+        assertEquals(
+                "children count must reduce from 1", firstChildrenCount - 1, secondChildrenCount);
 
         elt.close(false);
     }

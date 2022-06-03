@@ -26,8 +26,8 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.w3c.dom.CDATASection;
 
 /**
- * Tests that {@link OMFactory#createOMText(String, int)} creates a node that implements
- * {@link CDATASection} if the specified type is {@link OMNode#CDATA_SECTION_NODE}.
+ * Tests that {@link OMFactory#createOMText(String, int)} creates a node that implements {@link
+ * CDATASection} if the specified type is {@link OMNode#CDATA_SECTION_NODE}.
  */
 public class TestCreateOMTextCDATASection extends AxiomTestCase {
     public TestCreateOMTextCDATASection(OMMetaFactory metaFactory) {
@@ -36,7 +36,10 @@ public class TestCreateOMTextCDATASection extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMText text = metaFactory.getOMFactory().createOMText("cdata section content", OMNode.CDATA_SECTION_NODE);
+        OMText text =
+                metaFactory
+                        .getOMFactory()
+                        .createOMText("cdata section content", OMNode.CDATA_SECTION_NODE);
         assertTrue(text instanceof CDATASection);
     }
 }

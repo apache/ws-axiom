@@ -34,38 +34,38 @@ import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.xml.sax.InputSource;
 
-/**
- * Defines a strategy to create an {@link OMXMLParserWrapper} from a given test file.
- */
+/** Defines a strategy to create an {@link OMXMLParserWrapper} from a given test file. */
 public abstract class BuilderFactory extends Multiton implements Dimension {
     /**
      * Creates an {@link OMXMLParserWrapper} directly from the given {@link InputSource}, i.e. let
      * instantiate an appropriate parser.
      */
-    public static final BuilderFactory PARSER = new BuilderFactory() {
-        @Override
-        public boolean isDeferredParsing() {
-            return true;
-        }
+    public static final BuilderFactory PARSER =
+            new BuilderFactory() {
+                @Override
+                public boolean isDeferredParsing() {
+                    return true;
+                }
 
-        @Override
-        public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
-        }
+                @Override
+                public void configureXMLStreamReaderComparator(
+                        XMLStreamReaderComparator comparator) {}
 
-        @Override
-        public void addTestParameters(MatrixTestCase testCase) {
-            testCase.addTestParameter("source", "parser");
-        }
+                @Override
+                public void addTestParameters(MatrixTestCase testCase) {
+                    testCase.addTestParameter("source", "parser");
+                }
 
-        @Override
-        public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
-            return ((OMMetaFactorySPI)metaFactory).createOMBuilder(AxiomTestCase.TEST_PARSER_CONFIGURATION,
-                    inputSource);
-        }
-    };
+                @Override
+                public OMXMLParserWrapper getBuilder(
+                        OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
+                    return ((OMMetaFactorySPI) metaFactory)
+                            .createOMBuilder(AxiomTestCase.TEST_PARSER_CONFIGURATION, inputSource);
+                }
+            };
 
     BuilderFactory() {}
-    
+
     @Instances
     private static BuilderFactory[] instances() {
         List<BuilderFactory> instances = new ArrayList<>();
@@ -77,17 +77,18 @@ public abstract class BuilderFactory extends Multiton implements Dimension {
         }
         return instances.toArray(new BuilderFactory[instances.size()]);
     }
-    
+
     /**
      * Determines if the builder created by this strategy supports deferred parsing.
-     * 
+     *
      * @return <code>true</code> if the builder supports deferred parsing, <code>false</code> if the
-     *         builder doesn't support deferred parsing and will build the document all in once
-     *         (this is the case for SAX only)
+     *     builder doesn't support deferred parsing and will build the document all in once (this is
+     *     the case for SAX only)
      */
     public abstract boolean isDeferredParsing();
-    
+
     public abstract void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator);
-    
-    public abstract OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception;
+
+    public abstract OMXMLParserWrapper getBuilder(
+            OMMetaFactory metaFactory, InputSource inputSource) throws Exception;
 }

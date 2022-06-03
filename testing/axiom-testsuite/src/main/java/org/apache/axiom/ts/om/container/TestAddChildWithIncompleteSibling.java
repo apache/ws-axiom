@@ -34,14 +34,15 @@ import org.apache.axiom.ts.AxiomTestCase;
 /**
  * Tests that {@link OMContainer#addChild(OMNode)} works properly on a container that has been
  * created programmatically, but that has a child that is itself incomplete.
- * <p>
- * This is a regression test for an issue in older Axiom versions (where the
- * {@link OMContainer#build()}) method would fail on {@link OMDocument} instances.
+ *
+ * <p>This is a regression test for an issue in older Axiom versions (where the {@link
+ * OMContainer#build()}) method would fail on {@link OMDocument} instances.
  */
 public class TestAddChildWithIncompleteSibling extends AxiomTestCase {
     private final OMContainerFactory containerFactory;
-    
-    public TestAddChildWithIncompleteSibling(OMMetaFactory metaFactory, OMContainerFactory containerFactory) {
+
+    public TestAddChildWithIncompleteSibling(
+            OMMetaFactory metaFactory, OMContainerFactory containerFactory) {
         super(metaFactory);
         this.containerFactory = containerFactory;
         containerFactory.addTestParameters(this);
@@ -51,7 +52,9 @@ public class TestAddChildWithIncompleteSibling extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMContainer container = containerFactory.create(factory);
-        container.addChild(OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>")).getDocumentElement(true));
+        container.addChild(
+                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>"))
+                        .getDocumentElement(true));
         assertThat(container.isComplete()).isFalse();
         container.addChild(factory.createOMText("test"));
         assertThat(container).hasNumberOfChildren(2);

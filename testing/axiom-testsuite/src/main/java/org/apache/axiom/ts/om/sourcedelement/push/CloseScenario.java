@@ -30,8 +30,8 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.junit.Assert;
 
 /**
- * Scenario that calls {@link XMLStreamWriter#close()} which is forbidden by the contract of
- * {@link OMDataSource#serialize(XMLStreamWriter)}.
+ * Scenario that calls {@link XMLStreamWriter#close()} which is forbidden by the contract of {@link
+ * OMDataSource#serialize(XMLStreamWriter)}.
  */
 public class CloseScenario implements PushOMDataSourceScenario {
     @Override
@@ -40,7 +40,7 @@ public class CloseScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 

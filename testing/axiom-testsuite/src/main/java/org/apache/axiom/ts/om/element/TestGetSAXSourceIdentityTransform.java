@@ -37,7 +37,8 @@ public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
     private final XSLTImplementation xsltImplementation;
     private final boolean cache;
 
-    public TestGetSAXSourceIdentityTransform(OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, boolean cache) {
+    public TestGetSAXSourceIdentityTransform(
+            OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, boolean cache) {
         super(metaFactory);
         this.xsltImplementation = xsltImplementation;
         this.cache = cache;
@@ -48,21 +49,22 @@ public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
     private InputStream getInput() {
         return TestGetSAXSourceIdentityTransform.class.getResourceAsStream("test.xml");
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer();
-        
+
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, getInput()).getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(factory, getInput()).getDocumentElement();
         OMDocument outputDocument = factory.createOMDocument();
         transformer.transform(element.getSAXSource(cache), outputDocument.getSAXResult());
-        
+
         assertAbout(xml())
                 .that(xml(OMDocument.class, outputDocument))
                 .ignoringWhitespaceInPrologAndEpilog()
                 .hasSameContentAs(getInput());
-        
+
         element.close(false);
     }
 }

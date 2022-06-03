@@ -40,12 +40,13 @@ public class TestWrappedTextNodeOMDataSourceFromReader extends AxiomTestCase {
     protected void runTest() throws Throwable {
         Random random = new Random();
         StringBuilder buffer = new StringBuilder(40000);
-        for (int i=0; i<40000; i++) {
-            buffer.append((char)(32 + random.nextInt(96)));
+        for (int i = 0; i < 40000; i++) {
+            buffer.append((char) (32 + random.nextInt(96)));
         }
         String testData = buffer.toString();
         QName qname = new QName("data");
-        OMDataSource ds = new WrappedTextNodeOMDataSourceFromReader(qname, new StringReader(testData));
+        OMDataSource ds =
+                new WrappedTextNodeOMDataSourceFromReader(qname, new StringReader(testData));
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(ds, qname);
         assertEquals(testData, element.getText());

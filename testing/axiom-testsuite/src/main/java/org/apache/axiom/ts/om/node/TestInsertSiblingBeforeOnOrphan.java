@@ -25,9 +25,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests that {@link OMNode#insertSiblingAfter(OMNode)} fails if the node doesn't have a parent.
- */
+/** Tests that {@link OMNode#insertSiblingAfter(OMNode)} fails if the node doesn't have a parent. */
 public class TestInsertSiblingBeforeOnOrphan extends AxiomTestCase {
     public TestInsertSiblingBeforeOnOrphan(OMMetaFactory metaFactory) {
         super(metaFactory);

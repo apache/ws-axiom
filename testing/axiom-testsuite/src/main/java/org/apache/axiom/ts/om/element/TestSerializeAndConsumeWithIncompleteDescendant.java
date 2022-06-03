@@ -30,9 +30,9 @@ import org.apache.axiom.ts.AxiomTestCase;
 /**
  * Tests that {@link OMElement#serializeAndConsume(java.io.Writer)} consumes incomplete descendants,
  * even if the element itself is complete (more precisely, created programmatically). This situation
- * may occur when an element obtained from
- * {@link org.apache.axiom.om.OMXMLParserWrapper#getDocumentElement(boolean)} (with
- * <code>discardDocument</code> set to true) is added to an existing tree.
+ * may occur when an element obtained from {@link
+ * org.apache.axiom.om.OMXMLParserWrapper#getDocumentElement(boolean)} (with <code>discardDocument
+ * </code> set to true) is added to an existing tree.
  */
 public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCase {
     public TestSerializeAndConsumeWithIncompleteDescendant(OMMetaFactory metaFactory) {
@@ -42,8 +42,9 @@ public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCa
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement incompleteElement = OMXMLBuilderFactory.createOMBuilder(factory,
-                new StringReader("<elem>text</elem>")).getDocumentElement(true);
+        OMElement incompleteElement =
+                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<elem>text</elem>"))
+                        .getDocumentElement(true);
         OMElement root = factory.createOMElement("root", null);
         OMElement child = factory.createOMElement("child", null, root);
         child.addChild(incompleteElement);

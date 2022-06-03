@@ -41,8 +41,11 @@ public class TestDeclareNamespace extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(
-                new PullOMDataSource("<root xmlns:p='urn:ns1'><child/></root>"), "root", null);
+        OMSourcedElement element =
+                factory.createOMElement(
+                        new PullOMDataSource("<root xmlns:p='urn:ns1'><child/></root>"),
+                        "root",
+                        null);
         // Declare a namespace before expansion
         element.declareNamespace("urn:ns2", "p");
         // Force expansion; this should not overwrite the namespace declaration we just added

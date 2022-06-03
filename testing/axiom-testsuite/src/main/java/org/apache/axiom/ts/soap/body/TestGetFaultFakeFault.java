@@ -25,9 +25,9 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Tests the behavior of {@link SOAPBody#getFault()} if the {@link SOAPBody} contains a plain
- * {@link OMElement} with a name corresponding to a SOAP fault. In this case, the method is expected
- * to return <code>null</code>.
+ * Tests the behavior of {@link SOAPBody#getFault()} if the {@link SOAPBody} contains a plain {@link
+ * OMElement} with a name corresponding to a SOAP fault. In this case, the method is expected to
+ * return <code>null</code>.
  */
 public class TestGetFaultFakeFault extends SOAPTestCase {
     public TestGetFaultFakeFault(OMMetaFactory metaFactory, SOAPSpec spec) {

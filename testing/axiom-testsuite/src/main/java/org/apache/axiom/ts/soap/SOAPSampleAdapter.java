@@ -39,19 +39,22 @@ public final class SOAPSampleAdapter {
     SOAPSampleAdapter(SOAPSample sample) {
         this.sample = sample;
     }
-    
+
     public SOAPModelBuilder getBuilder(OMMetaFactory metaFactory) {
-        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(new InputSource(sample.getInputStream()));
+        return ((OMMetaFactorySPI) metaFactory)
+                .createSOAPModelBuilder(new InputSource(sample.getInputStream()));
     }
-    
+
     public SOAPMessage getSOAPMessage(OMMetaFactory metaFactory) {
         return getBuilder(metaFactory).getSOAPMessage();
     }
-    
+
     public SOAPEnvelope getSOAPEnvelope(OMMetaFactory metaFactory) {
         SOAPEnvelope envelope = getBuilder(metaFactory).getSOAPEnvelope();
         // TODO: this is not the right place to assert this
-        Assert.assertSame(sample.getSOAPSpec().getEnvelopeNamespaceURI(), ((SOAPFactory)envelope.getOMFactory()).getSoapVersionURI());
+        Assert.assertSame(
+                sample.getSOAPSpec().getEnvelopeNamespaceURI(),
+                ((SOAPFactory) envelope.getOMFactory()).getSoapVersionURI());
         return envelope;
     }
 }

@@ -31,11 +31,11 @@ import org.w3c.dom.EntityReference;
 import org.w3c.dom.Text;
 
 /**
- * Tests that the {@link OMAttribute} instances created by
- * {@link OMFactory#createOMAttribute(String, OMNamespace, String)} only implement the expected
- * interfaces. An {@link OMAttribute} is neither an {@link OMNode} nor an {@link OMContainer}. For
- * the latter this is in contrast to DOM where an {@link Attr} node is a parent node (containing
- * {@link Text} and {@link EntityReference} nodes).
+ * Tests that the {@link OMAttribute} instances created by {@link
+ * OMFactory#createOMAttribute(String, OMNamespace, String)} only implement the expected interfaces.
+ * An {@link OMAttribute} is neither an {@link OMNode} nor an {@link OMContainer}. For the latter
+ * this is in contrast to DOM where an {@link Attr} node is a parent node (containing {@link Text}
+ * and {@link EntityReference} nodes).
  */
 public class TestCreateOMAttributeInterfaces extends AxiomTestCase {
     public TestCreateOMAttributeInterfaces(OMMetaFactory metaFactory) {

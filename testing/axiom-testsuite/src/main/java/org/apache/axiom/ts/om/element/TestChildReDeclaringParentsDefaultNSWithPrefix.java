@@ -37,18 +37,20 @@ public class TestChildReDeclaringParentsDefaultNSWithPrefix extends AxiomTestCas
     @Override
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
-        OMElement elem = fac.createOMElement("RequestSecurityToken",
-                fac.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
+        OMElement elem =
+                fac.createOMElement(
+                        "RequestSecurityToken",
+                        fac.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
         fac.createOMElement(new QName("TokenType"), elem).setText("test");
         fac.createOMElement(new QName("RequestType"), elem).setText("test1");
 
         fac.createOMElement(
-                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
-                elem);
+                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"), elem);
         String xml = elem.toString();
 
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new ByteArrayInputStream(xml.getBytes()));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), new ByteArrayInputStream(xml.getBytes()));
 
         builder.getDocumentElement().build();
 
@@ -60,8 +62,9 @@ public class TestChildReDeclaringParentsDefaultNSWithPrefix extends AxiomTestCas
         String assertText3 =
                 "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"></wst:Entropy>";
 
-        assertTrue((xml.indexOf(assertText1) != -1) ||
-                (xml.indexOf(assertText2) != -1) ||
-                (xml.indexOf(assertText3) != -1));
+        assertTrue(
+                (xml.indexOf(assertText1) != -1)
+                        || (xml.indexOf(assertText2) != -1)
+                        || (xml.indexOf(assertText3) != -1));
     }
 }

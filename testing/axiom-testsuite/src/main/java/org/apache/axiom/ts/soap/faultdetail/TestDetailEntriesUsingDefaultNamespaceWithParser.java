@@ -27,11 +27,10 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-/**
- * Tests parsing of a SOAP fault that has detail entries that use a default namespace.
- */
+/** Tests parsing of a SOAP fault that has detail entries that use a default namespace. */
 public class TestDetailEntriesUsingDefaultNamespaceWithParser extends SampleBasedSOAPTestCase {
-    public TestDetailEntriesUsingDefaultNamespaceWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
+    public TestDetailEntriesUsingDefaultNamespaceWithParser(
+            OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.FAULT_DETAIL_DEFAULT_NAMESPACE);
     }
 

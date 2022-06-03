@@ -23,7 +23,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestAXIOMXPath extends AxiomTestCase {
     private final AXIOMXPathTestCase test;
-    
+
     public TestAXIOMXPath(OMMetaFactory metaFactory, String methodName) {
         super(metaFactory);
         test = new AXIOMXPathTestCase(methodName, metaFactory);

@@ -37,8 +37,11 @@ public class TestGetChildrenWithLocalName extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                XMLSample.SIMPLE.getInputStream()).getDocumentElement().getFirstElement();
+        OMElement elt =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(), XMLSample.SIMPLE.getInputStream())
+                        .getDocumentElement()
+                        .getFirstElement();
         Iterator<OMElement> it = elt.getChildrenWithLocalName("subelement");
         assertThat(it.hasNext()).isTrue();
         OMElement child = it.next();

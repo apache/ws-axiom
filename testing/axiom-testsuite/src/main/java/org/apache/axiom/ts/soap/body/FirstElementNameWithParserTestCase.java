@@ -44,9 +44,9 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
     protected final QName qname;
     private final boolean supportsOptimization;
-    
-    public FirstElementNameWithParserTestCase(OMMetaFactory metaFactory,
-            SOAPSpec spec, QName qname, boolean supportsOptimization) {
+
+    public FirstElementNameWithParserTestCase(
+            OMMetaFactory metaFactory, SOAPSpec spec, QName qname, boolean supportsOptimization) {
         super(metaFactory, spec);
         this.qname = qname;
         addTestParameter("prefix", qname.getPrefix());
@@ -58,36 +58,47 @@ public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
     @Override
     protected final void runTest() throws Throwable {
         SOAPEnvelope orgEnvelope = soapFactory.getDefaultEnvelope();
-        orgEnvelope.getBody().addChild(soapFactory.createOMElement(
-                qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
-        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                new StringReader(orgEnvelope.toString()));
+        orgEnvelope
+                .getBody()
+                .addChild(
+                        soapFactory.createOMElement(
+                                qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
+        SOAPModelBuilder builder =
+                OMXMLBuilderFactory.createSOAPModelBuilder(
+                        metaFactory, new StringReader(orgEnvelope.toString()));
         SOAPBody body = builder.getSOAPEnvelope().getBody();
         runTest(body);
         if (supportsOptimization) {
             // The expectation is that even after looking at the payload element name, registering
             // a custom builder still transforms the element.
-            ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, new CustomBuilder() {
-                @Override
-                public OMDataSource create(OMElement element) throws OMException {
-                    try {
-                        element.getXMLStreamReaderWithoutCaching().close();
-                    } catch (XMLStreamException ex) {
-                        throw new OMException(ex);
-                    }
-                    return new AbstractPushOMDataSource() {
-                        @Override
-                        public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-                            xmlWriter.writeEmptyElement(qname.getPrefix(), qname.getLocalPart(), qname.getNamespaceURI());
-                        }
-                        
-                        @Override
-                        public boolean isDestructiveWrite() {
-                            return false;
-                        }
-                    };
-                }
-            });
+            ((CustomBuilderSupport) builder)
+                    .registerCustomBuilder(
+                            CustomBuilder.Selector.PAYLOAD,
+                            new CustomBuilder() {
+                                @Override
+                                public OMDataSource create(OMElement element) throws OMException {
+                                    try {
+                                        element.getXMLStreamReaderWithoutCaching().close();
+                                    } catch (XMLStreamException ex) {
+                                        throw new OMException(ex);
+                                    }
+                                    return new AbstractPushOMDataSource() {
+                                        @Override
+                                        public void serialize(XMLStreamWriter xmlWriter)
+                                                throws XMLStreamException {
+                                            xmlWriter.writeEmptyElement(
+                                                    qname.getPrefix(),
+                                                    qname.getLocalPart(),
+                                                    qname.getNamespaceURI());
+                                        }
+
+                                        @Override
+                                        public boolean isDestructiveWrite() {
+                                            return false;
+                                        }
+                                    };
+                                }
+                            });
             assertThat(body.getFirstElement()).isInstanceOf(OMSourcedElement.class);
         }
     }

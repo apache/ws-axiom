@@ -30,7 +30,7 @@ import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-//SOAP Fault Detail Test (Programaticaly Created)
+// SOAP Fault Detail Test (Programaticaly Created)
 public class TestAddDetailEntry extends SOAPTestCase {
     public TestAddDetailEntry(OMMetaFactory omMetaFactory, SOAPSpec spec) {
         super(omMetaFactory, spec);
@@ -43,10 +43,8 @@ public class TestAddDetailEntry extends SOAPTestCase {
         SOAPFault fault = soapFactory.createSOAPFault(body);
         SOAPFaultDetail soapFaultDetail = soapFactory.createSOAPFaultDetail(fault);
         OMNamespace omNamespace = soapFactory.createOMNamespace("http://www.test.org", "test");
-        soapFaultDetail.addDetailEntry(
-                soapFactory.createOMElement("DetailEntry1", omNamespace));
-        soapFaultDetail.addDetailEntry(
-                soapFactory.createOMElement("DetailEntry2", omNamespace));
+        soapFaultDetail.addDetailEntry(soapFactory.createOMElement("DetailEntry1", omNamespace));
+        soapFaultDetail.addDetailEntry(soapFactory.createOMElement("DetailEntry2", omNamespace));
         Iterator<OMElement> iterator = soapFaultDetail.getAllDetailEntries();
         OMElement detailEntry1 = iterator.next();
         assertNotNull(
@@ -54,20 +52,24 @@ public class TestAddDetailEntry extends SOAPTestCase {
                 detailEntry1);
         assertEquals(
                 "SOAP Fault Detail Test : - detailEntry1 local name mismatch",
-                "DetailEntry1", detailEntry1.getLocalName());
+                "DetailEntry1",
+                detailEntry1.getLocalName());
         assertEquals(
                 "SOAP Fault Detail Test : - detailEntry1 namespace uri mismatch",
-                "http://www.test.org", detailEntry1.getNamespace().getNamespaceURI());
+                "http://www.test.org",
+                detailEntry1.getNamespace().getNamespaceURI());
         OMElement detailEntry2 = iterator.next();
         assertNotNull(
                 "SOAP Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns an iterator with only one object",
                 detailEntry2);
         assertEquals(
                 "SOAP Fault Detail Test : - detailEntry2 local name mismatch",
-                "DetailEntry2", detailEntry2.getLocalName());
+                "DetailEntry2",
+                detailEntry2.getLocalName());
         assertEquals(
                 "SOAP Fault Detail Test : - detailEntry2 namespace uri mismatch",
-                "http://www.test.org", detailEntry2.getNamespace().getNamespaceURI());
+                "http://www.test.org",
+                detailEntry2.getNamespace().getNamespaceURI());
         assertFalse(
                 "SOAP Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns an iterator with three objects",
                 iterator.hasNext());

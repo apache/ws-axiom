@@ -31,9 +31,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-/**
- * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-474">AXIOM-474</a>.
- */
+/** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-474">AXIOM-474</a>. */
 public class TestSerializeAsChild extends SOAPTestCase {
     public TestSerializeAsChild(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
@@ -42,7 +40,8 @@ public class TestSerializeAsChild extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createDefaultSOAPMessage().getSOAPEnvelope();
-        soapFactory.createOMElement("echo", soapFactory.createOMNamespace("urn:test", "p"), envelope.getBody());
+        soapFactory.createOMElement(
+                "echo", soapFactory.createOMNamespace("urn:test", "p"), envelope.getBody());
         OMElement log = soapFactory.createOMElement("log", null);
         OMElement entry = soapFactory.createOMElement("entry", null, log);
         entry.addChild(envelope);
@@ -50,6 +49,8 @@ public class TestSerializeAsChild extends SOAPTestCase {
         OutputStream out = blob.getOutputStream();
         envelope.serialize(out);
         out.close();
-        assertAbout(xml()).that(blob.getInputStream()).hasSameContentAs(xml(OMElement.class, envelope));
+        assertAbout(xml())
+                .that(blob.getInputStream())
+                .hasSameContentAs(xml(OMElement.class, envelope));
     }
 }

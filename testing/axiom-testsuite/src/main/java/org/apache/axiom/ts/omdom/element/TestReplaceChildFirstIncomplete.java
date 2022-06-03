@@ -40,14 +40,17 @@ public class TestReplaceChildFirstIncomplete extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        Element element = (Element)OMXMLBuilderFactory.createOMBuilder(factory,
-                new StringReader("<root><a/><b/><c/></root>")).getDocumentElement();
-        Element a = (Element)element.getFirstChild();
+        Element element =
+                (Element)
+                        OMXMLBuilderFactory.createOMBuilder(
+                                        factory, new StringReader("<root><a/><b/><c/></root>"))
+                                .getDocumentElement();
+        Element a = (Element) element.getFirstChild();
         Element a2 = element.getOwnerDocument().createElementNS(null, "a2");
         element.replaceChild(a2, a);
-        Element b = (Element)a2.getNextSibling();
+        Element b = (Element) a2.getNextSibling();
         assertNotNull(b);
-        Element c = (Element)b.getNextSibling();
+        Element c = (Element) b.getNextSibling();
         assertNotNull(c);
         // Check the other sibling relations
         assertNull(a2.getPreviousSibling());

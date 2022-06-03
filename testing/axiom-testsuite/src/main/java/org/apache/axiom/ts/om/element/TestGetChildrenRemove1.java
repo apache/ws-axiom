@@ -35,16 +35,19 @@ public class TestGetChildrenRemove1 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<root><child/></root>")).getDocumentElement();
+        OMElement elt =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader("<root><child/></root>"))
+                        .getDocumentElement();
         Iterator<OMNode> iter = elt.getChildren();
 
-        //this is supposed to throw an illegal state exception
+        // this is supposed to throw an illegal state exception
         try {
             iter.remove();
             fail("remove should throw an exception");
         } catch (IllegalStateException e) {
-            //ok. this is what should happen
+            // ok. this is what should happen
         }
 
         elt.close(false);

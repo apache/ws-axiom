@@ -33,8 +33,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Tests {@link SOAPFactory#createSOAPFaultSubCode(SOAPFaultCode)} when used with a
- * {@link SOAPFaultCode} that has already a {@link SOAPFaultValue} child.
+ * Tests {@link SOAPFactory#createSOAPFaultSubCode(SOAPFaultCode)} when used with a {@link
+ * SOAPFaultCode} that has already a {@link SOAPFaultValue} child.
  */
 public class TestCreateSOAPFaultSubCode extends SOAPTestCase {
     public TestCreateSOAPFaultSubCode(OMMetaFactory metaFactory) {

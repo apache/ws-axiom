@@ -29,9 +29,9 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests the behavior of
- * {@link OMElement#getXMLStreamReader(boolean, OMXMLStreamReaderConfiguration)} with
- * {@link OMXMLStreamReaderConfiguration#isNamespaceURIInterning()} set to <code>true</code>.
+ * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean,
+ * OMXMLStreamReaderConfiguration)} with {@link
+ * OMXMLStreamReaderConfiguration#isNamespaceURIInterning()} set to <code>true</code>.
  */
 public class TestGetXMLStreamReaderWithNamespaceURIInterning extends AxiomTestCase {
     public TestGetXMLStreamReaderWithNamespaceURIInterning(OMMetaFactory metaFactory) {
@@ -47,14 +47,14 @@ public class TestGetXMLStreamReaderWithNamespaceURIInterning extends AxiomTestCa
         OMElement root = factory.createOMElement("root", ns1);
         root.addAttribute("attr", "value", ns2);
         factory.createOMElement("child", ns2, root);
-        
+
         OMXMLStreamReaderConfiguration configuration = new OMXMLStreamReaderConfiguration();
         configuration.setNamespaceURIInterning(true);
         XMLStreamReader reader = root.getXMLStreamReader(true, configuration);
         reader.nextTag();
         assertInterned(reader.getNamespaceURI());
         assertInterned(reader.getAttributeNamespace(0));
-        for (int i=0; i<reader.getNamespaceCount(); i++) {
+        for (int i = 0; i < reader.getNamespaceCount(); i++) {
             assertInterned(reader.getNamespaceURI(i));
         }
         reader.nextTag();
@@ -62,7 +62,7 @@ public class TestGetXMLStreamReaderWithNamespaceURIInterning extends AxiomTestCa
         NamespaceContext nc = reader.getNamespaceContext();
         assertInterned(nc.getNamespaceURI("p"));
     }
-    
+
     private static void assertInterned(String s) {
         assertSame("String not interned", s.intern(), s);
     }

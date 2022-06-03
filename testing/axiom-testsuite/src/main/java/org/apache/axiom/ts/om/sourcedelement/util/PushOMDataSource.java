@@ -33,7 +33,7 @@ public final class PushOMDataSource extends AbstractPushOMDataSource {
     private final String data;
     private final boolean destructive;
     private boolean destroyed;
-    
+
     public PushOMDataSource(OMFactory factory, String data, boolean destructive) {
         this.factory = factory;
         this.data = data;
@@ -48,7 +48,8 @@ public final class PushOMDataSource extends AbstractPushOMDataSource {
         if (destructive) {
             destroyed = true;
         }
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(data));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(data));
         builder.getDocumentElement().serializeAndConsume(writer);
         builder.close();
     }

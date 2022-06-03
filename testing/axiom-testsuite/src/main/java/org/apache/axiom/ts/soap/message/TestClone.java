@@ -29,12 +29,13 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Tests that the clone of a {@link SOAPMessage} created by {@link OMInformationItem#clone(OMCloneOptions)}
- * is a {@link SOAPMessage} if and only if {@link OMCloneOptions#isPreserveModel()} is <code>true</code>.
+ * Tests that the clone of a {@link SOAPMessage} created by {@link
+ * OMInformationItem#clone(OMCloneOptions)} is a {@link SOAPMessage} if and only if {@link
+ * OMCloneOptions#isPreserveModel()} is <code>true</code>.
  */
 public class TestClone extends SOAPTestCase {
     private final boolean preserveModel;
-    
+
     public TestClone(OMMetaFactory metaFactory, SOAPSpec spec, boolean preserveModel) {
         super(metaFactory, spec);
         this.preserveModel = preserveModel;
@@ -54,7 +55,7 @@ public class TestClone extends SOAPTestCase {
             assertTrue(clone instanceof OMDocument);
             assertFalse(clone instanceof SOAPMessage);
         }
-        OMElement envelope = ((OMDocument)clone).getOMDocumentElement();
+        OMElement envelope = ((OMDocument) clone).getOMDocumentElement();
         if (preserveModel) {
             assertTrue(envelope instanceof SOAPEnvelope);
         } else {

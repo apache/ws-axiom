@@ -36,33 +36,33 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
     private final boolean invalid;
     private final String expectedPrefix;
     private final boolean expectNSDecl;
-    
+
     /**
      * Constructor.
-     * 
-     * @param metaFactory
-     *            the meta factory
-     * @param namespaceURI
-     *            the namespace URI to set or <code>null</code> to set a <code>null</code>
-     *            {@link OMNamespace}
-     * @param prefix
-     *            the prefix to set or <code>null</code> to generate a prefix
-     * @param prefixInScope
-     *            the prefix of an existing namespace declaration in scope for the given namespace
-     *            URI, or <code>null</code> if no matching namespace declaration is in scope
-     * @param invalid
-     *            flag indicating whether the namespace is invalid and
-     *            {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)} is expected to
-     *            throw an {@link IllegalArgumentException}
-     * @param expectedPrefix
-     *            the expected prefix of the attribute after the invocation of
-     *            {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)}, or null if the
-     *            method is expected to generate a prefix
-     * @param expectNSDecl
-     *            indicates whether {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)}
-     *            is expected to generate a namespace declaration on the owner element
+     *
+     * @param metaFactory the meta factory
+     * @param namespaceURI the namespace URI to set or <code>null</code> to set a <code>null</code>
+     *     {@link OMNamespace}
+     * @param prefix the prefix to set or <code>null</code> to generate a prefix
+     * @param prefixInScope the prefix of an existing namespace declaration in scope for the given
+     *     namespace URI, or <code>null</code> if no matching namespace declaration is in scope
+     * @param invalid flag indicating whether the namespace is invalid and {@link
+     *     OMNamedInformationItem#setNamespace(OMNamespace, boolean)} is expected to throw an {@link
+     *     IllegalArgumentException}
+     * @param expectedPrefix the expected prefix of the attribute after the invocation of {@link
+     *     OMNamedInformationItem#setNamespace(OMNamespace, boolean)}, or null if the method is
+     *     expected to generate a prefix
+     * @param expectNSDecl indicates whether {@link OMNamedInformationItem#setNamespace(OMNamespace,
+     *     boolean)} is expected to generate a namespace declaration on the owner element
      */
-    public SetNamespaceTestCase(OMMetaFactory metaFactory, String namespaceURI, String prefix, String prefixInScope, boolean invalid, String expectedPrefix, boolean expectNSDecl) {
+    public SetNamespaceTestCase(
+            OMMetaFactory metaFactory,
+            String namespaceURI,
+            String prefix,
+            String prefixInScope,
+            boolean invalid,
+            String expectedPrefix,
+            boolean expectNSDecl) {
         super(metaFactory);
         this.namespaceURI = namespaceURI;
         this.prefix = prefix;
@@ -83,9 +83,11 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
     }
 
     protected abstract boolean context();
+
     protected abstract OMNamedInformationItem node(OMFactory factory, OMElement context);
+
     protected abstract void setNamespace(OMNamedInformationItem node, OMNamespace ns);
-    
+
     @Override
     protected final void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
@@ -107,7 +109,8 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
             element = null;
         }
         node = node(factory, element);
-        OMNamespace ns = namespaceURI == null ? null : factory.createOMNamespace(namespaceURI, prefix);
+        OMNamespace ns =
+                namespaceURI == null ? null : factory.createOMNamespace(namespaceURI, prefix);
         try {
             setNamespace(node, ns);
             if (invalid) {

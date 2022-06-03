@@ -43,11 +43,15 @@ public class TestCreateOMBuilderXOP extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        MultipartBody mb = MultipartBody.builder()
-                .setInputStream(sample.getInputStream())
-                .setContentType(sample.getContentType())
-                .build();
-        OMElement content = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb).getDocumentElement();
+        MultipartBody mb =
+                MultipartBody.builder()
+                        .setInputStream(sample.getInputStream())
+                        .setContentType(sample.getContentType())
+                        .build();
+        OMElement content =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb)
+                        .getDocumentElement();
         if (build) {
             content.build();
         }

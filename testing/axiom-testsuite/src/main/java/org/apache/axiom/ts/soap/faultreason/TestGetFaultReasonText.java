@@ -37,6 +37,7 @@ public class TestGetFaultReasonText extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultReason reason = envelope.getBody().getFault().getReason();
-        assertThat(reason.getFaultReasonText(Locale.ENGLISH)).isEqualTo("Request execution failure caused by system error");
+        assertThat(reason.getFaultReasonText(Locale.ENGLISH))
+                .isEqualTo("Request execution failure caused by system error");
     }
 }

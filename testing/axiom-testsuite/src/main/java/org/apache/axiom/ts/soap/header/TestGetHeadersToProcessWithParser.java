@@ -39,7 +39,7 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPHeader soapHeader = envelope.getHeader();
 
-        String roles [] = { "http://example.org/myCustomRole" };
+        String roles[] = {"http://example.org/myCustomRole"};
         RolePlayer rp = new MyRolePlayer(true, roles);
 
         Iterator<SOAPHeaderBlock> headers = soapHeader.getHeadersToProcess(rp);

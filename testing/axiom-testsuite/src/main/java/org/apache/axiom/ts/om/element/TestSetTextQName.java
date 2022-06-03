@@ -29,8 +29,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests the behavior of {@link OMElement#setText(QName)}, in particular that it adds a
- * namespace declaration if necessary.
+ * Tests the behavior of {@link OMElement#setText(QName)}, in particular that it adds a namespace
+ * declaration if necessary.
  */
 public class TestSetTextQName extends AxiomTestCase {
     public TestSetTextQName(OMMetaFactory metaFactory) {

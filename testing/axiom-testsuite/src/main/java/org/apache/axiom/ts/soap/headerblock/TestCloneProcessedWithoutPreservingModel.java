@@ -30,8 +30,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 /**
  * Test cloning a {@link SOAPHeaderBlock} flagged as processed, but without preserving the model. In
  * this case the result is a plain {@link OMElement} instance and the processed flag is ignored.
- * <p>
- * This is a regression test for an issue in older Axiom versions.
+ *
+ * <p>This is a regression test for an issue in older Axiom versions.
  */
 public class TestCloneProcessedWithoutPreservingModel extends SOAPTestCase {
     public TestCloneProcessedWithoutPreservingModel(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -40,10 +40,11 @@ public class TestCloneProcessedWithoutPreservingModel extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPHeaderBlock headerBlock = soapFactory.createSOAPHeaderBlock("test",
-                soapFactory.createOMNamespace("urn:test", "p"));
+        SOAPHeaderBlock headerBlock =
+                soapFactory.createSOAPHeaderBlock(
+                        "test", soapFactory.createOMNamespace("urn:test", "p"));
         headerBlock.setProcessed();
-        OMElement clone = (OMElement)headerBlock.clone(new SOAPCloneOptions());
+        OMElement clone = (OMElement) headerBlock.clone(new SOAPCloneOptions());
         assertThat(clone).isNotInstanceOf(SOAPHeaderBlock.class);
     }
 }

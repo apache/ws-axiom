@@ -33,8 +33,8 @@ public class TestGetNamespacesInScopeWithDefaultNamespace extends AxiomTestCase 
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
-                "<a xmlns='urn:test'><b/></a>");
+        OMElement element =
+                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<a xmlns='urn:test'><b/></a>");
         Iterator<OMNamespace> it = element.getFirstElement().getNamespacesInScope();
         assertTrue(it.hasNext());
         OMNamespace ns = it.next();

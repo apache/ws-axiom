@@ -31,7 +31,8 @@ public class TestGetFaultNodeValueWithParser extends SampleBasedSOAPTestCase {
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        assertEquals("http://gateway.corp.example.org/",
+        assertEquals(
+                "http://gateway.corp.example.org/",
                 envelope.getBody().getFault().getNode().getFaultNodeValue());
     }
 }

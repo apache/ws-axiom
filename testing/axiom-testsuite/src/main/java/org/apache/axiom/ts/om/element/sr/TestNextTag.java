@@ -32,8 +32,9 @@ public class TestNextTag extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
-                "<a> <b> </b> <?pi?> <!--comment--> <c/> </a>");
+        OMElement element =
+                AXIOMUtil.stringToOM(
+                        metaFactory.getOMFactory(), "<a> <b> </b> <?pi?> <!--comment--> <c/> </a>");
         XMLStreamReader stream = element.getXMLStreamReaderWithoutCaching();
         assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
         stream.nextTag();

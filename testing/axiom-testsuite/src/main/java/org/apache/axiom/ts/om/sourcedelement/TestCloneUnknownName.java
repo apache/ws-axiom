@@ -30,11 +30,11 @@ import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests the behavior of {@link OMInformationItem#clone(OMCloneOptions)} on an
- * {@link OMSourcedElement} backed by a non destructive {@link OMDataSource} if the name of the
- * element is unknown and the {@link OMCloneOptions#setCopyOMDataSources(boolean)} option is
- * enabled. In this case, the call to {@link OMInformationItem#clone(OMCloneOptions)} should not
- * cause expansion of the original {@link OMSourcedElement}.
+ * Tests the behavior of {@link OMInformationItem#clone(OMCloneOptions)} on an {@link
+ * OMSourcedElement} backed by a non destructive {@link OMDataSource} if the name of the element is
+ * unknown and the {@link OMCloneOptions#setCopyOMDataSources(boolean)} option is enabled. In this
+ * case, the call to {@link OMInformationItem#clone(OMCloneOptions)} should not cause expansion of
+ * the original {@link OMSourcedElement}.
  */
 public class TestCloneUnknownName extends AxiomTestCase {
     public TestCloneUnknownName(OMMetaFactory metaFactory) {
@@ -48,7 +48,7 @@ public class TestCloneUnknownName extends AxiomTestCase {
         OMSourcedElement element = factory.createOMElement(ds);
         OMCloneOptions options = new OMCloneOptions();
         options.setCopyOMDataSources(true);
-        OMElement clone = (OMElement)element.clone(options);
+        OMElement clone = (OMElement) element.clone(options);
         assertTrue(clone instanceof OMSourcedElement);
         assertFalse(element.isExpanded());
         OMNamespace expectedNS = factory.createOMNamespace("urn:ns", "p");

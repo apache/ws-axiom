@@ -50,7 +50,9 @@ public class TestExceptionDuringSerialization extends AxiomTestCase {
         OMSourcedElement element = omFactory.createOMElement(new JAXBOMDataSource(context, object));
         XMLStreamException exception = new XMLStreamException("TEST");
         try {
-            element.serialize(new ExceptionXMLStreamWriterWrapper(StAX.createNullXMLStreamWriter(), exception));
+            element.serialize(
+                    new ExceptionXMLStreamWriterWrapper(
+                            StAX.createNullXMLStreamWriter(), exception));
             fail("Expected XMLStreamException");
         } catch (XMLStreamException ex) {
             assertSame(exception, ex);

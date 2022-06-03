@@ -36,16 +36,20 @@ public class TestSetLang extends SOAPTestCase {
         faultText.setLang("en");
         assertEquals(
                 "SOAP Fault Text Test : - After calling setLang method, Lang attribute value mismatch",
-                "en", faultText.getLang());
+                "en",
+                faultText.getLang());
         OMAttribute langAttribute = faultText.getAllAttributes().next();
         assertEquals(
                 "SOAP Fault Text Test : - After calling setLang method, Lang attribute local name mismaatch",
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME, langAttribute.getLocalName());
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
+                langAttribute.getLocalName());
         assertEquals(
                 "SOAP Fault Text Test : - After calling setLang method, Lang attribute namespace prefix mismatch",
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX, langAttribute.getNamespace().getPrefix());
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX,
+                langAttribute.getNamespace().getPrefix());
         assertEquals(
                 "SOAP Fault Text Test : - After calling setLang method, Lang attribute namespace uri mismatch",
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI, langAttribute.getNamespace().getNamespaceURI());
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+                langAttribute.getNamespace().getNamespaceURI());
     }
 }

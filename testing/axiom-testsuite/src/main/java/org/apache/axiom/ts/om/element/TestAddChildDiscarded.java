@@ -41,7 +41,10 @@ public class TestAddChildDiscarded extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/></root>")).getDocumentElement();
+        OMElement parent =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory, new StringReader("<root><a/><b/></root>"))
+                        .getDocumentElement();
         // Partially build the parent
         parent.getFirstOMChild();
         parent.discard();

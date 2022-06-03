@@ -34,7 +34,7 @@ public class TestCreateOMAttribute extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMAttribute attr = factory.createOMAttribute("attr", null, "value");
         assertTrue(attr instanceof Attr);
-        Attr domAttr = (Attr)attr;
+        Attr domAttr = (Attr) attr;
         assertNull(domAttr.getOwnerElement());
         assertNotNull(domAttr.getOwnerDocument());
         assertEquals("attr", domAttr.getLocalName());

@@ -36,7 +36,8 @@ public class TestSerialize extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMProcessingInstruction pi = metaFactory.getOMFactory().createOMProcessingInstruction(null, "target", "data");
+        OMProcessingInstruction pi =
+                metaFactory.getOMFactory().createOMProcessingInstruction(null, "target", "data");
         XMLStreamWriter writer = mock(XMLStreamWriter.class);
         pi.serialize(writer);
         verify(writer).writeProcessingInstruction(pi.getTarget() + " ", pi.getValue());

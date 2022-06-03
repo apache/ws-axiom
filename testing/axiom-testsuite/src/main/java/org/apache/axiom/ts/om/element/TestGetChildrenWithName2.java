@@ -43,7 +43,9 @@ public class TestGetChildrenWithName2 extends AxiomTestCase {
         OMElement e = factory.createOMElement("Employee", testNamespace, documentElement);
         e.setText("Apache Developer");
 
-        Iterator<OMElement> childrenIter = documentElement.getChildrenWithName(new QName("http://test.ws.org", "Employee", "test"));
+        Iterator<OMElement> childrenIter =
+                documentElement.getChildrenWithName(
+                        new QName("http://test.ws.org", "Employee", "test"));
 
         int childCount = getChildrenCount(childrenIter);
         assertEquals("Iterator must return 1 child with the given qname", childCount, 1);

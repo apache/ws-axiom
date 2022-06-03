@@ -32,17 +32,16 @@ import org.xml.sax.InputSource;
 public interface XML {
     /**
      * Get an {@link InputSource} object for the XML data.
-     * 
+     *
      * @return the XML data as an {@link InputSource} object
      */
     InputSource getInputSource();
-    
+
     /**
      * Dump the XML data to the given stream.
-     * 
-     * @param out
-     *            the stream to write the XML data to
-     * @throws IOException 
+     *
+     * @param out the stream to write the XML data to
+     * @throws IOException
      */
     void dump(PrintStream out) throws IOException;
 }

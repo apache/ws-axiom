@@ -30,13 +30,14 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
 /**
- * Tests that adding an attribute doesn't create an additional namespace declaration if
- * a corresponding declaration is already in scope.
+ * Tests that adding an attribute doesn't create an additional namespace declaration if a
+ * corresponding declaration is already in scope.
  */
 public class TestAddAttributeWithExistingNamespaceDeclarationInScope extends AxiomTestCase {
     private final AddAttributeStrategy strategy;
-    
-    public TestAddAttributeWithExistingNamespaceDeclarationInScope(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
+
+    public TestAddAttributeWithExistingNamespaceDeclarationInScope(
+            OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
         this.strategy = strategy;
         strategy.addTestParameters(this);

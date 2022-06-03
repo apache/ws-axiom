@@ -27,12 +27,13 @@ import org.apache.axiom.om.OMNamespace;
 
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} if no
- * namespace prefix is given and an existing namespace declaration is in scope. In this case,
- * <code>createOMElement</code> must use the existing prefix. Note that this only applies if a
- * parent is specified for the {@link OMElement} to be created.
+ * namespace prefix is given and an existing namespace declaration is in scope. In this case, <code>
+ * createOMElement</code> must use the existing prefix. Note that this only applies if a parent is
+ * specified for the {@link OMElement} to be created.
  */
 public class TestCreateOMElementWithNamespaceInScope1 extends CreateOMElementTestCase {
-    public TestCreateOMElementWithNamespaceInScope1(OMMetaFactory metaFactory, CreateOMElementVariant variant) {
+    public TestCreateOMElementWithNamespaceInScope1(
+            OMMetaFactory metaFactory, CreateOMElementVariant variant) {
         super(metaFactory, variant, null);
     }
 

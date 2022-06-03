@@ -30,7 +30,8 @@ import org.w3c.dom.Element;
 public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration extends AxiomTestCase {
     private final String prefix;
 
-    public TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration(OMMetaFactory metaFactory, String prefix) {
+    public TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration(
+            OMMetaFactory metaFactory, String prefix) {
         super(metaFactory);
         this.prefix = prefix;
         addTestParameter("prefix", prefix);
@@ -40,7 +41,9 @@ public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration extends
     protected void runTest() throws Throwable {
         Element domElement = DOMImplementation.XERCES.newDocument().createElementNS(null, "test");
         domElement.setAttribute(prefix.isEmpty() ? "xmlns" : "xmlns:" + prefix, "urn:ns1");
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domElement, false).getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domElement, false)
+                        .getDocumentElement();
         assertThat(element).hasNamespaceDeclaration(prefix, "urn:ns1");
     }
 }

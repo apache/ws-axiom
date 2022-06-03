@@ -46,7 +46,8 @@ public class TestDTD extends SOAPTestCase {
         XMLStreamReader parser = StAXUtils.createXMLStreamReader(new StringReader(message));
         ;
         try {
-            SOAPModelBuilder builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(metaFactory, parser);
+            SOAPModelBuilder builder =
+                    OMXMLBuilderFactory.createStAXSOAPModelBuilder(metaFactory, parser);
             // The processing must fail before we can get the SOAPEnvelope
             builder.getSOAPEnvelope();
             fail("Expected SOAPProcessingException");

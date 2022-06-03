@@ -38,6 +38,6 @@ public class TestCloneOMElement extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         OMElement clone = element.cloneOMElement();
-        assertNotSame(((Element)element).getOwnerDocument(), ((Element)clone).getOwnerDocument());
+        assertNotSame(((Element) element).getOwnerDocument(), ((Element) clone).getOwnerDocument());
     }
 }

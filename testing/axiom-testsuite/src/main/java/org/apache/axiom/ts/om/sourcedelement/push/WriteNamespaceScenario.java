@@ -37,7 +37,7 @@ import org.junit.Assert;
 public class WriteNamespaceScenario implements PushOMDataSourceScenario {
     private final String prefix;
     private final String namespaceURI;
-    
+
     public WriteNamespaceScenario(String prefix, String namespaceURI) {
         this.prefix = prefix;
         this.namespaceURI = namespaceURI;
@@ -51,7 +51,7 @@ public class WriteNamespaceScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 

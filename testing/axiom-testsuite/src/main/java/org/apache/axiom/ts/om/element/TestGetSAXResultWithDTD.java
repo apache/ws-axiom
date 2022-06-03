@@ -53,6 +53,6 @@ public class TestGetSAXResultWithDTD extends AxiomTestCase {
         contentHandler.endDocument();
         OMNode child = root.getFirstOMChild();
         assertTrue(child instanceof OMElement);
-        assertEquals("test", ((OMElement)child).getLocalName());
+        assertEquals("test", ((OMElement) child).getLocalName());
     }
 }

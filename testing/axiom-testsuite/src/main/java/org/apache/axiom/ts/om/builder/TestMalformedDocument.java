@@ -26,9 +26,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Test that a document that is not well formed triggers an appropriate error.
- */
+/** Test that a document that is not well formed triggers an appropriate error. */
 public class TestMalformedDocument extends AxiomTestCase {
     public TestMalformedDocument(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -36,8 +34,11 @@ public class TestMalformedDocument extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMDocument document = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<Root><Child attr='a' attr='a'/></Root>")).getDocument();
+        OMDocument document =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader("<Root><Child attr='a' attr='a'/></Root>"))
+                        .getDocument();
         try {
             document.serialize(new ByteArrayOutputStream());
             fail("Expected exception");

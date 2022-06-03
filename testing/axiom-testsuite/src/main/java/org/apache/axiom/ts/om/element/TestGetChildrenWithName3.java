@@ -28,9 +28,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-166">AXIOM-166</a>.
- */
+/** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-166">AXIOM-166</a>. */
 public class TestGetChildrenWithName3 extends AxiomTestCase {
     public TestGetChildrenWithName3(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -46,7 +44,9 @@ public class TestGetChildrenWithName3 extends AxiomTestCase {
         OMElement e = factory.createOMElement("Employee", testNamespace, documentElement);
         e.setText("Apache Developer");
 
-        Iterator<OMElement> childrenIter = documentElement.getChildrenWithName(new QName("http://test.ws.org", "Employee", "test"));
+        Iterator<OMElement> childrenIter =
+                documentElement.getChildrenWithName(
+                        new QName("http://test.ws.org", "Employee", "test"));
         OMElement employee = childrenIter.next(); // should walk past OMText
         assertEquals("Employee test was incorrect", employee.getText(), "Apache Developer");
     }

@@ -36,8 +36,7 @@ public class TestAddSOAPTextWithSOAPVersionMismatch extends SOAPTestCase {
         SOAPFault soap11Fault = altSoapFactory.createSOAPFault();
         SOAPFaultReason soap11FaultReason = altSoapFactory.createSOAPFaultReason(soap11Fault);
         try {
-            soap12FaultReason.addSOAPText(
-                    altSoapFactory.createSOAPFaultText(soap11FaultReason));
+            soap12FaultReason.addSOAPText(altSoapFactory.createSOAPFaultText(soap11FaultReason));
             fail("SOAP11FaultText should not be added to SOAP12FaultReason");
         } catch (Exception e) {
             assertTrue(true);

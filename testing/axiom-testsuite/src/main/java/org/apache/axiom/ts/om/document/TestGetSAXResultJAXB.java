@@ -54,14 +54,14 @@ public class TestGetSAXResultJAXB extends AxiomTestCase {
         Order order = new Order();
         order.setCustomerId("73107481");
         order.setItems(items);
-        
+
         Marshaller marshaller = JAXBContext.newInstance(Order.class).createMarshaller();
         StringWriter out = new StringWriter();
         marshaller.marshal(order, out);
-        
+
         OMDocument document = metaFactory.getOMFactory().createOMDocument();
         marshaller.marshal(order, document.getSAXResult().getHandler());
-        
+
         assertAbout(xml()).that(xml(OMDocument.class, document)).hasSameContentAs(out.toString());
     }
 }

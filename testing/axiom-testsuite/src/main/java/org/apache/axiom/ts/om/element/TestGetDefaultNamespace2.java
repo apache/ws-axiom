@@ -28,11 +28,11 @@ import org.apache.axiom.ts.AxiomTestCase;
  * Tests the behavior of {@link OMElement#getDefaultNamespace()} in the special case where the
  * element has no namespace and was created as a child element of an element having a default
  * namespace with a non empty namespace URI. In this case the element must have a namespace
- * declaration that overrides the default namespace. Therefore
- * {@link OMElement#getDefaultNamespace()} must return null.
- * <p>
- * This is a regression test for
- * <a href="https://issues.apache.org/jira/browse/AXIOM-400">AXIOM-400</a>.
+ * declaration that overrides the default namespace. Therefore {@link
+ * OMElement#getDefaultNamespace()} must return null.
+ *
+ * <p>This is a regression test for <a
+ * href="https://issues.apache.org/jira/browse/AXIOM-400">AXIOM-400</a>.
  */
 public class TestGetDefaultNamespace2 extends AxiomTestCase {
     public TestGetDefaultNamespace2(OMMetaFactory metaFactory) {

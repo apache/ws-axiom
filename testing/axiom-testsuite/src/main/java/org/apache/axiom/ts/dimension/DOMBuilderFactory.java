@@ -32,7 +32,7 @@ import org.xml.sax.InputSource;
  */
 final class DOMBuilderFactory extends BuilderFactory {
     private final DOMImplementation implementation;
-    
+
     DOMBuilderFactory(DOMImplementation implementation) {
         this.implementation = implementation;
     }
@@ -62,10 +62,9 @@ final class DOMBuilderFactory extends BuilderFactory {
     }
 
     @Override
-    public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
+    public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource)
+            throws Exception {
         return OMXMLBuilderFactory.createOMBuilder(
-                metaFactory.getOMFactory(),
-                implementation.parse(inputSource, false),
-                false);
+                metaFactory.getOMFactory(), implementation.parse(inputSource, false), false);
     }
 }

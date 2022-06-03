@@ -38,7 +38,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  */
 public class TestAddAttribute extends AxiomTestCase {
     private final AddAttributeStrategy strategy;
-    
+
     public TestAddAttribute(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
         this.strategy = strategy;
@@ -48,8 +48,11 @@ public class TestAddAttribute extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(
-                new PullOMDataSource("<root attr='orgvalue'><child/></root>"), "root", null);
+        OMSourcedElement element =
+                factory.createOMElement(
+                        new PullOMDataSource("<root attr='orgvalue'><child/></root>"),
+                        "root",
+                        null);
         // Add an attribute before expansion
         OMAttribute attr = strategy.addAttribute(element, "attr", null, "newvalue");
         // Force expansion; this should not overwrite the attribute we just added

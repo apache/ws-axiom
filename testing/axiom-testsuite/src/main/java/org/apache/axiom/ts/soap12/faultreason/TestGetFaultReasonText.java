@@ -36,8 +36,10 @@ public class TestGetFaultReasonText extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultReason reason = envelope.getBody().getFault().getReason();
-        assertThat(reason.getFaultReasonText(Locale.GERMAN)).isEqualTo("Senderseitige Zeitüberschreitung");
-        assertThat(reason.getFaultReasonText(Locale.GERMANY)).isEqualTo("Senderseitige Zeitüberschreitung");
+        assertThat(reason.getFaultReasonText(Locale.GERMAN))
+                .isEqualTo("Senderseitige Zeitüberschreitung");
+        assertThat(reason.getFaultReasonText(Locale.GERMANY))
+                .isEqualTo("Senderseitige Zeitüberschreitung");
         assertThat(reason.getFaultReasonText(Locale.ENGLISH)).isEqualTo("Sender Timeout");
         assertThat(reason.getFaultReasonText(Locale.FRENCH)).isEqualTo("Sender Timeout");
     }

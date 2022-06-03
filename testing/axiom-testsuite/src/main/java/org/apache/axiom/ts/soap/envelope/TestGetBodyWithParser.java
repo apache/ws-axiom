@@ -34,9 +34,13 @@ public class TestGetBodyWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPBody body = envelope.getBody();
-        assertEquals("Body Test : - Body local name mismatch",
-                SOAPConstants.BODY_LOCAL_NAME, body.getLocalName());
-        assertEquals("Body Test : - Body namespace mismatch",
-                spec.getEnvelopeNamespaceURI(), body.getNamespace().getNamespaceURI());
+        assertEquals(
+                "Body Test : - Body local name mismatch",
+                SOAPConstants.BODY_LOCAL_NAME,
+                body.getLocalName());
+        assertEquals(
+                "Body Test : - Body namespace mismatch",
+                spec.getEnvelopeNamespaceURI(),
+                body.getNamespace().getNamespaceURI());
     }
 }

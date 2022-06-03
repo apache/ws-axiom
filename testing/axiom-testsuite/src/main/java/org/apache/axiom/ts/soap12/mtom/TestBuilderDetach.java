@@ -43,7 +43,11 @@ public class TestBuilderDetach extends AxiomTestCase {
     protected void runTest() throws Throwable {
         MTOMSample sample = MTOMSample.SAMPLE1;
         InstrumentedInputStream in = new InstrumentedInputStream(sample.getInputStream());
-        MultipartBody mb = MultipartBody.builder().setInputStream(in).setContentType(sample.getContentType()).build();
+        MultipartBody mb =
+                MultipartBody.builder()
+                        .setInputStream(in)
+                        .setContentType(sample.getContentType())
+                        .build();
         SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb);
         SOAPEnvelope envelope = builder.getSOAPEnvelope();
         long countBeforeDetach = in.getCount();
@@ -54,7 +58,7 @@ public class TestBuilderDetach extends AxiomTestCase {
         for (Iterator<OMNode> it = envelope.getDescendants(false); it.hasNext(); ) {
             OMNode node = it.next();
             if (node instanceof OMText) {
-                OMText text = (OMText)node;
+                OMText text = (OMText) node;
                 if (text.isBinary()) {
                     IOTestUtils.compareStreams(
                             sample.getPart(text.getContentID()),

@@ -35,12 +35,16 @@ public class TestWSCommons202 extends SOAPTestCase {
         soapFaultDetail.setText("a");
 
         assertTrue(soapFaultDetail.getText().trim().equals("a"));
-        assertTrue("Text serialization has problems. It had serialized same text twice", soapFaultDetail.toString().indexOf("aa") == -1);
+        assertTrue(
+                "Text serialization has problems. It had serialized same text twice",
+                soapFaultDetail.toString().indexOf("aa") == -1);
 
         OMElement omElement = soapFactory.createOMElement("DummyElement", null);
         soapFaultDetail.addChild(omElement);
         omElement.setText("Some text is here");
 
-        assertTrue("Children of SOAP Fault Detail element are not serialized properly", soapFaultDetail.toString().indexOf("Some text is here") != -1);
+        assertTrue(
+                "Children of SOAP Fault Detail element are not serialized properly",
+                soapFaultDetail.toString().indexOf("Some text is here") != -1);
     }
 }

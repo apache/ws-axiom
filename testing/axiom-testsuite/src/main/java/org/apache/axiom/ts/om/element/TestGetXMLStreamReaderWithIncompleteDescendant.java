@@ -32,19 +32,19 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that the sequence of events produced by the {@link XMLStreamReader} returned by
- * {@link OMContainer#getXMLStreamReader(boolean)} is correct for a programmatically created
- * {@link OMElement} that has an incomplete descendant (produced by
- * {@link OMXMLParserWrapper#getDocumentElement(boolean)} with <code>discardDocument</code> set to
- * true).
- * <p>
- * This is a regression test for <a
+ * Tests that the sequence of events produced by the {@link XMLStreamReader} returned by {@link
+ * OMContainer#getXMLStreamReader(boolean)} is correct for a programmatically created {@link
+ * OMElement} that has an incomplete descendant (produced by {@link
+ * OMXMLParserWrapper#getDocumentElement(boolean)} with <code>discardDocument</code> set to true).
+ *
+ * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-431">AXIOM-431</a>.
  */
 public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCase {
     private final boolean cache;
-    
-    public TestGetXMLStreamReaderWithIncompleteDescendant(OMMetaFactory metaFactory, boolean cache) {
+
+    public TestGetXMLStreamReaderWithIncompleteDescendant(
+            OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
         addTestParameter("cache", cache);
@@ -54,7 +54,9 @@ public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCas
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement root = factory.createOMElement(new QName("root"));
-        OMElement child = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>")).getDocumentElement(true);
+        OMElement child =
+                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>"))
+                        .getDocumentElement(true);
         root.addChild(child);
         assertFalse(child.isComplete());
         XMLStreamReader stream = root.getXMLStreamReader(cache);

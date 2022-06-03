@@ -41,23 +41,31 @@ import org.w3c.dom.Node;
  * Tests that the children added using methods such as {@link SOAPFault#setCode(SOAPFaultCode)} and
  * {@link SOAPFault#setReason(SOAPFaultReason)} appear in the order required by the SOAP specs when
  * the {@link SOAPFault} is serialized.
- * <p>
- * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-392">AXIOM-392</a>.
+ *
+ * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-392">AXIOM-392</a>.
  */
 public class TestChildOrder extends SOAPTestCase {
     private final SOAPFaultChild[] inputOrder;
     private final SerializationStrategy serializationStrategy;
 
-    public TestChildOrder(OMMetaFactory metaFactory, SOAPSpec spec, SOAPFaultChild[] inputOrder, SerializationStrategy serializationStrategy) {
+    public TestChildOrder(
+            OMMetaFactory metaFactory,
+            SOAPSpec spec,
+            SOAPFaultChild[] inputOrder,
+            SerializationStrategy serializationStrategy) {
         super(metaFactory, spec);
         this.inputOrder = inputOrder;
         this.serializationStrategy = serializationStrategy;
         StringBuilder buffer = new StringBuilder();
-        for (int i=0; i<inputOrder.length; i++) {
-            if (i>0) {
+        for (int i = 0; i < inputOrder.length; i++) {
+            if (i > 0) {
                 buffer.append(',');
             }
-            buffer.append(inputOrder[i].getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
+            buffer.append(
+                    inputOrder[i]
+                            .getAdapter(SOAPElementTypeAdapter.class)
+                            .getType()
+                            .getSimpleName());
         }
         addTestParameter("inputOrder", buffer.toString());
         serializationStrategy.addTestParameters(this);
@@ -67,21 +75,25 @@ public class TestChildOrder extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
         // Add the elements in the specified order.
-        for (int i=0; i<inputOrder.length; i++) {
+        for (int i = 0; i < inputOrder.length; i++) {
             SOAPElementTypeAdapter adapter = inputOrder[i].getAdapter(SOAPElementTypeAdapter.class);
             adapter.getSetter().invoke(fault, adapter.create(soapFactory));
         }
         // Calculate the order in which we expect to see the children. Note that a given type
         // may be added multiple times. Therefore we need to use a Set.
-        SortedSet<SOAPFaultChild> outputOrder = new TreeSet<>(new Comparator<SOAPFaultChild>() {
-            @Override
-            public int compare(SOAPFaultChild o1, SOAPFaultChild o2) {
-                return o1.getOrder() - o2.getOrder();
-            }
-        });
+        SortedSet<SOAPFaultChild> outputOrder =
+                new TreeSet<>(
+                        new Comparator<SOAPFaultChild>() {
+                            @Override
+                            public int compare(SOAPFaultChild o1, SOAPFaultChild o2) {
+                                return o1.getOrder() - o2.getOrder();
+                            }
+                        });
         outputOrder.addAll(Arrays.asList(inputOrder));
         // Check the result using the given serialization strategy
-        Document document = DOMImplementation.XERCES.parse(serializationStrategy.serialize(fault).getInputSource());
+        Document document =
+                DOMImplementation.XERCES.parse(
+                        serializationStrategy.serialize(fault).getInputSource());
         Element domFault = document.getDocumentElement();
         Node child = domFault.getFirstChild();
         for (SOAPFaultChild type : outputOrder) {

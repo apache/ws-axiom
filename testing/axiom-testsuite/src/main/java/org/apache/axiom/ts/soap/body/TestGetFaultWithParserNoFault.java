@@ -24,9 +24,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-/**
- * Tests {@link SOAPBody#getFault()} in the case where the body doesn't contain a SOAP fault.
- */
+/** Tests {@link SOAPBody#getFault()} in the case where the body doesn't contain a SOAP fault. */
 public class TestGetFaultWithParserNoFault extends FirstElementNameWithParserTestCase {
     public TestGetFaultWithParserNoFault(OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
         super(metaFactory, spec, qname, false);

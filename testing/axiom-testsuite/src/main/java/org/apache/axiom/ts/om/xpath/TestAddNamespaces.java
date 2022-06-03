@@ -34,10 +34,14 @@ public class TestAddNamespaces extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement root1 = AXIOMUtil.stringToOM(factory,
-                "<ns1:root xmlns:ns1='urn:ns1'><ns1:child xmlns:ns2='urn:ns2'/></root>");
-        OMElement root2 = AXIOMUtil.stringToOM(factory,
-                "<root xmlns='urn:ns1'><child xmlns='urn:ns2'>text</child></root>");
+        OMElement root1 =
+                AXIOMUtil.stringToOM(
+                        factory,
+                        "<ns1:root xmlns:ns1='urn:ns1'><ns1:child xmlns:ns2='urn:ns2'/></root>");
+        OMElement root2 =
+                AXIOMUtil.stringToOM(
+                        factory,
+                        "<root xmlns='urn:ns1'><child xmlns='urn:ns2'>text</child></root>");
         AXIOMXPath xpath = new AXIOMXPath("/ns1:root/ns2:child");
         xpath.addNamespaces(root1.getFirstElement());
         assertEquals("text", xpath.stringValueOf(root2.getParent()));

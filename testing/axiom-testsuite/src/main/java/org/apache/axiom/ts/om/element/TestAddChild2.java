@@ -51,9 +51,9 @@ public class TestAddChild2 extends AxiomTestCase {
         while (it.hasNext()) {
             OMElement child = it.next();
             assertEquals("Child local name mismatch", childLocalName, child.getLocalName());
-            assertEquals("Child namespace mismatch", namespace,
-                         child.getNamespace().getNamespaceURI());
-            count ++;
+            assertEquals(
+                    "Child namespace mismatch", namespace, child.getNamespace().getNamespaceURI());
+            count++;
         }
         assertEquals("In correct number of children", 1, count);
     }

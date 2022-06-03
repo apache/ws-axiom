@@ -40,20 +40,22 @@ public class TestGetXMLStreamReaderCDATAEventFromElement extends AxiomTestCase {
         OMElement element = omfactory.createOMElement("test", null);
         OMText cdata = omfactory.createOMText("hello world", OMNode.CDATA_SECTION_NODE);
         element.addChild(cdata);
-        
+
         // Get the XMLStreamReader for the element. This will return an OMStAXWrapper.
         XMLStreamReader reader2 = element.getXMLStreamReader();
         // Check the sequence of events
         int event = reader2.next();
         assertEquals(XMLStreamReader.START_ELEMENT, event);
-        
+
         while (reader2.hasNext() && event != XMLStreamReader.CDATA) {
-           event = reader2.next();
+            event = reader2.next();
         }
-        
+
         assertEquals(XMLStreamReader.CDATA, event);
         assertEquals("hello world", reader2.getText()); // AXIOM-146
-        assertTrue(Arrays.equals("hello world".toCharArray(), reader2.getTextCharacters())); // AXIOM-144
+        assertTrue(
+                Arrays.equals(
+                        "hello world".toCharArray(), reader2.getTextCharacters())); // AXIOM-144
         assertEquals(XMLStreamReader.END_ELEMENT, reader2.next());
     }
 }

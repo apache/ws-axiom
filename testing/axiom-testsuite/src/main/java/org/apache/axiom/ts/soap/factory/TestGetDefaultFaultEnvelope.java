@@ -23,9 +23,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-/**
- * Tests the behavior of {@link org.apache.axiom.soap.SOAPFactory#getDefaultFaultEnvelope()}.
- */
+/** Tests the behavior of {@link org.apache.axiom.soap.SOAPFactory#getDefaultFaultEnvelope()}. */
 public class TestGetDefaultFaultEnvelope extends SOAPTestCase {
     public TestGetDefaultFaultEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
@@ -35,8 +33,8 @@ public class TestGetDefaultFaultEnvelope extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
 
-        assertNotNull("Default FaultEnvelope must have a SOAPFault in it",
-                      envelope.getBody().getFault());
+        assertNotNull(
+                "Default FaultEnvelope must have a SOAPFault in it", envelope.getBody().getFault());
         assertNotNull(
                 "Default FaultEnvelope must have a SOAPFaultCode in it",
                 envelope.getBody().getFault().getCode());

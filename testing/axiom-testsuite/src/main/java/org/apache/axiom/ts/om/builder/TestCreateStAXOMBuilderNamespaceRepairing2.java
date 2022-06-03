@@ -31,9 +31,9 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} correctly
- * performs namespace repairing in cases where a namespace declaration of the form {@code xmlns=""}
- * is required. This is a regression test for <a
+ * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} correctly performs
+ * namespace repairing in cases where a namespace declaration of the form {@code xmlns=""} is
+ * required. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-408">AXIOM-408</a>.
  */
 public class TestCreateStAXOMBuilderNamespaceRepairing2 extends AxiomTestCase {
@@ -43,18 +43,22 @@ public class TestCreateStAXOMBuilderNamespaceRepairing2 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader(
-                "<test xmlns='urn:test'><arg0 xmlns=''>dGVzdA==</arg0></test>"));
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(),
-                new NamespaceDeclarationFilter(reader)).getDocumentElement();
-        
+        XMLStreamReader reader =
+                StAXUtils.createXMLStreamReader(
+                        new StringReader(
+                                "<test xmlns='urn:test'><arg0 xmlns=''>dGVzdA==</arg0></test>"));
+        OMElement element =
+                OMXMLBuilderFactory.createStAXOMBuilder(
+                                metaFactory.getOMFactory(), new NamespaceDeclarationFilter(reader))
+                        .getDocumentElement();
+
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         OMNamespace ns = it.next();
         assertEquals("", ns.getPrefix());
         assertEquals("urn:test", ns.getNamespaceURI());
         assertFalse(it.hasNext());
-        
+
         OMElement child = element.getFirstElement();
         it = child.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());

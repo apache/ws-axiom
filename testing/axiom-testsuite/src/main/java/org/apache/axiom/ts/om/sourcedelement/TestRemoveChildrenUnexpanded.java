@@ -41,8 +41,9 @@ public class TestRemoveChildrenUnexpanded extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(new StringOMDataSource(
-                "<element attr='value'><a/></element>"));
+        OMSourcedElement element =
+                factory.createOMElement(
+                        new StringOMDataSource("<element attr='value'><a/></element>"));
         element.removeChildren();
         // Check that the attribute has been added
         Iterator<OMAttribute> it = element.getAllAttributes();

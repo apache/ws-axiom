@@ -29,13 +29,11 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests the behavior of {@link OMNode#detach()}.
- */
+/** Tests the behavior of {@link OMNode#detach()}. */
 public class TestDetach extends AxiomTestCase {
     private final boolean document;
     private final boolean build;
-    
+
     public TestDetach(OMMetaFactory metaFactory, boolean document, boolean build) {
         super(metaFactory);
         this.document = document;
@@ -49,27 +47,31 @@ public class TestDetach extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMContainer root;
         if (document) {
-            root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(
-                    "<!--a--><b/><!--c-->")).getDocument();
+            root =
+                    OMXMLBuilderFactory.createOMBuilder(
+                                    factory, new StringReader("<!--a--><b/><!--c-->"))
+                            .getDocument();
         } else {
-            root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(
-                    "<root><!--a--><b/><!--c--></root>")).getDocumentElement();
+            root =
+                    OMXMLBuilderFactory.createOMBuilder(
+                                    factory, new StringReader("<root><!--a--><b/><!--c--></root>"))
+                            .getDocumentElement();
         }
         if (build) {
             root.build();
         } else {
             assertFalse(root.isComplete());
         }
-        OMComment a = (OMComment)root.getFirstOMChild();
+        OMComment a = (OMComment) root.getFirstOMChild();
         assertEquals("a", a.getValue());
-        OMElement b = (OMElement)a.getNextOMSibling();
+        OMElement b = (OMElement) a.getNextOMSibling();
         assertEquals("b", b.getLocalName());
         OMNode returnValue = b.detach();
         assertSame(b, returnValue); // Detach is expected to do a "return this"
         assertNull(b.getParent());
         assertNull(b.getPreviousOMSibling());
         assertNull(b.getNextOMSibling());
-        OMComment c = (OMComment)a.getNextOMSibling();
+        OMComment c = (OMComment) a.getNextOMSibling();
         assertEquals("c", c.getValue());
         assertSame(c, a.getNextOMSibling());
         assertSame(a, c.getPreviousOMSibling());

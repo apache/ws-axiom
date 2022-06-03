@@ -23,9 +23,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-95">AXIOM-95</a>.
- */
+/** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-95">AXIOM-95</a>. */
 public class TestAxiom95 extends AxiomTestCase {
     public TestAxiom95(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -33,14 +31,15 @@ public class TestAxiom95 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                TestAxiom95.class.getResourceAsStream("defaultNamespace2.xml"));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(),
+                        TestAxiom95.class.getResourceAsStream("defaultNamespace2.xml"));
 
         String serializedXML = builder.getDocumentElement().toString();
 
-//        System.out.println("serializedXML = " + serializedXML);
+        //        System.out.println("serializedXML = " + serializedXML);
 
         assertTrue(serializedXML.indexOf("xmlns=\"\"") == -1);
     }
 }
-

@@ -30,12 +30,12 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
  * Tests that calling {@link XMLStreamReader#close()} on an {@link XMLStreamReader} returned by
- * {@link OMContainer#getXMLStreamReaderWithoutCaching()} for an OM tree containing an
- * {@link AbstractPullOMDataSource} closes all readers requested from the data source.
+ * {@link OMContainer#getXMLStreamReaderWithoutCaching()} for an OM tree containing an {@link
+ * AbstractPullOMDataSource} closes all readers requested from the data source.
  */
 public class TestCloseWithoutCaching extends AxiomTestCase {
     private final int events;
-    
+
     public TestCloseWithoutCaching(OMMetaFactory metaFactory, int events) {
         super(metaFactory);
         this.events = events;
@@ -49,7 +49,7 @@ public class TestCloseWithoutCaching extends AxiomTestCase {
         PullOMDataSource ds = new PullOMDataSource("<child>content</child>");
         root.addChild(factory.createOMElement(ds));
         XMLStreamReader reader = root.getXMLStreamReaderWithoutCaching();
-        for (int i=0; i<events; i++) {
+        for (int i = 0; i < events; i++) {
             reader.next();
         }
         reader.close();

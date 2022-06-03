@@ -36,7 +36,7 @@ public class TestClone extends ConformanceTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMDocument original = file.getAdapter(XMLSampleAdapter.class).getDocument(metaFactory);
-        OMDocument clone = (OMDocument)original.clone(new OMCloneOptions());
+        OMDocument clone = (OMDocument) original.clone(new OMCloneOptions());
         assertAbout(xml())
                 .that(xml(OMDocument.class, clone))
                 .hasSameContentAs(xml(OMDocument.class, original));

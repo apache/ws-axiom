@@ -38,7 +38,8 @@ public class TestGetHeaderBlocksWithNSURIWithParser extends SampleBasedSOAPTestC
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        ArrayList<SOAPHeaderBlock> headerBlocks = envelope.getHeader().getHeaderBlocksWithNSURI("urn:ns2");
+        ArrayList<SOAPHeaderBlock> headerBlocks =
+                envelope.getHeader().getHeaderBlocksWithNSURI("urn:ns2");
         assertThat(headerBlocks).hasSize(2);
         assertThat(headerBlocks.get(0).getQName()).isEqualTo(new QName("urn:ns2", "h4"));
         assertThat(headerBlocks.get(1).getQName()).isEqualTo(new QName("urn:ns2", "h6"));

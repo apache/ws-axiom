@@ -35,8 +35,12 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  */
 public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
     private final String value;
-    
-    public TestGetBooleanAttributeInvalid(OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute, String value) {
+
+    public TestGetBooleanAttributeInvalid(
+            OMMetaFactory metaFactory,
+            SOAPSpec spec,
+            HeaderBlockAttribute attribute,
+            String value) {
         super(metaFactory, spec, attribute);
         this.value = value;
         addTestParameter("value", value);

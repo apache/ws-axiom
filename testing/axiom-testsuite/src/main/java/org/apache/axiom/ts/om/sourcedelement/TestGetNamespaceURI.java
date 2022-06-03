@@ -24,7 +24,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 
 public class TestGetNamespaceURI extends LazyNameTestCase {
-    public TestGetNamespaceURI(OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
+    public TestGetNamespaceURI(
+            OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
         super(metaFactory, variant, qname);
     }
 

@@ -43,7 +43,8 @@ public class TestAddAttributeReuseExistingPrefix extends AxiomTestCase {
         OMElement parent = factory.createOMElement("parent", null);
         OMElement element = factory.createOMElement("element", null, parent);
         parent.declareNamespace("urn:test", "p");
-        OMAttribute attr = element.addAttribute("attr", "test", factory.createOMNamespace("urn:test", null));
+        OMAttribute attr =
+                element.addAttribute("attr", "test", factory.createOMNamespace("urn:test", null));
         assertThat(attr).hasPrefix("p");
         assertThat(element).hasNoNamespaceDeclarations();
     }

@@ -36,8 +36,9 @@ public class TestClose extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement rootElement = XMLSample.SIMPLE.getAdapter(XMLSampleAdapter.class).getDocumentElement(metaFactory);
-        
+        OMElement rootElement =
+                XMLSample.SIMPLE.getAdapter(XMLSampleAdapter.class).getDocumentElement(metaFactory);
+
         // get the first OMElement child
         OMNode omnode = rootElement.getFirstOMChild();
         while (!(omnode instanceof OMElement)) {
@@ -46,7 +47,7 @@ public class TestClose extends AxiomTestCase {
         // Close the element after building the element
         OMElement omElement = (OMElement) omnode;
         omElement.close(true);
-        
+
         Iterator<OMNode> children = ((OMElement) omnode).getChildren();
         int childrenCount = 0;
         while (children.hasNext()) {
@@ -54,7 +55,7 @@ public class TestClose extends AxiomTestCase {
                 childrenCount++;
             }
         }
-        
+
         assertThat(childrenCount).isEqualTo(2);
     }
 }

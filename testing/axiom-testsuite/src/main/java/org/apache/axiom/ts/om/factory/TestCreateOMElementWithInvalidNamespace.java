@@ -26,7 +26,10 @@ import org.apache.axiom.om.OMMetaFactory;
  * Neither XML 1.0 nor XML 1.1 allow binding a prefix to the empty namespace name.
  */
 public class TestCreateOMElementWithInvalidNamespace extends CreateOMElementTestCase {
-    public TestCreateOMElementWithInvalidNamespace(OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
+    public TestCreateOMElementWithInvalidNamespace(
+            OMMetaFactory metaFactory,
+            CreateOMElementVariant variant,
+            CreateOMElementParentSupplier parentSupplier) {
         super(metaFactory, variant, parentSupplier);
     }
 

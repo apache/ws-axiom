@@ -37,8 +37,12 @@ public class TestGetNamespaceNormalized extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document doc = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Document doc =
+                ((DOMMetaFactory) metaFactory)
+                        .newDocumentBuilderFactory()
+                        .newDocumentBuilder()
+                        .newDocument();
         Attr attr = doc.createAttributeNS(null, "attr");
-        assertNull(((OMAttribute)attr).getNamespace());
+        assertNull(((OMAttribute) attr).getNamespace());
     }
 }

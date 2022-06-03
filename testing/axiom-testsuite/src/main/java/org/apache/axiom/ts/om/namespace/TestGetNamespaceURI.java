@@ -23,9 +23,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests the behavior of {@link OMNamespace#getNamespaceURI()}.
- */
+/** Tests the behavior of {@link OMNamespace#getNamespaceURI()}. */
 public class TestGetNamespaceURI extends AxiomTestCase {
     public TestGetNamespaceURI(OMMetaFactory metaFactory) {
         super(metaFactory);

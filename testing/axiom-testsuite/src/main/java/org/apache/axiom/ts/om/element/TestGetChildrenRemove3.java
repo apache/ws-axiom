@@ -35,8 +35,11 @@ public class TestGetChildrenRemove3 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<root>a<b/><!--c--><d/>e</root>")).getDocumentElement();
+        OMElement elt =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader("<root>a<b/><!--c--><d/>e</root>"))
+                        .getDocumentElement();
         Iterator<OMNode> iter = elt.getChildren();
         while (iter.hasNext()) {
             iter.next();
@@ -44,7 +47,7 @@ public class TestGetChildrenRemove3 extends AxiomTestCase {
         }
         iter = elt.getChildren();
         if (iter.hasNext()) {
-            //we shouldn't reach here!
+            // we shouldn't reach here!
             fail("No children should remain after removing all!");
         }
 

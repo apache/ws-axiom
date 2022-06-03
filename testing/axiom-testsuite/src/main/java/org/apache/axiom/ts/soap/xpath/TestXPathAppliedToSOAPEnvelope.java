@@ -26,13 +26,12 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-/**
- * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-141">AXIOM-141</a>.
- */
+/** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-141">AXIOM-141</a>. */
 public class TestXPathAppliedToSOAPEnvelope extends SOAPTestCase {
     private boolean createDocument;
-    
-    public TestXPathAppliedToSOAPEnvelope(OMMetaFactory metaFactory, SOAPSpec spec, boolean createDocument) {
+
+    public TestXPathAppliedToSOAPEnvelope(
+            OMMetaFactory metaFactory, SOAPSpec spec, boolean createDocument) {
         super(metaFactory, spec);
         this.createDocument = createDocument;
         addTestParameter("createDocument", createDocument);

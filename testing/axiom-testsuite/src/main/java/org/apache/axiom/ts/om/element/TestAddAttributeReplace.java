@@ -34,12 +34,12 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
 /**
- * Test that adding an attribute has the expected effect when an
- * attribute with the same name and namespace URI already exists.
+ * Test that adding an attribute has the expected effect when an attribute with the same name and
+ * namespace URI already exists.
  */
 public class TestAddAttributeReplace extends AxiomTestCase {
     private final AddAttributeStrategy strategy;
-    
+
     public TestAddAttributeReplace(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
         this.strategy = strategy;

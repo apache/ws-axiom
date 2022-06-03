@@ -30,12 +30,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests {@link OMElement#getNamespaceContext(boolean)}.
- */
+/** Tests {@link OMElement#getNamespaceContext(boolean)}. */
 public class TestGetNamespaceContext extends AxiomTestCase {
     private final boolean detached;
-    
+
     public TestGetNamespaceContext(OMMetaFactory metaFactory, boolean detached) {
         super(metaFactory);
         this.detached = detached;
@@ -45,7 +43,9 @@ public class TestGetNamespaceContext extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         InputStream in = TestGetNamespaceContext.class.getResourceAsStream("namespacecontext.xml");
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocumentElement();
+        OMElement root =
+                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
+                        .getDocumentElement();
         OMElement inner = root.getFirstElement().getFirstElement();
         NamespaceContext context = inner.getNamespaceContext(detached);
         assertEquals("urn:test2", context.getNamespaceURI("p"));
@@ -53,17 +53,17 @@ public class TestGetNamespaceContext extends AxiomTestCase {
         assertEquals("urn:test3", context.getNamespaceURI("r"));
         assertEquals("urn:test4", context.getNamespaceURI(""));
         assertEquals("", context.getNamespaceURI("unbound"));
-        
+
         assertNull(context.getPrefix("urn:test1"));
         assertEquals("p", context.getPrefix("urn:test2"));
         String prefix = context.getPrefix("urn:test3");
         assertTrue(prefix.equals("q") || prefix.equals("r"));
         assertEquals("", context.getPrefix("urn:test4"));
         assertNull(context.getPrefix("unbound"));
-        
+
         Iterator<?> it = context.getPrefixes("urn:test1");
         assertFalse(it.hasNext());
-        
+
         it = context.getPrefixes("urn:test2");
         assertTrue(it.hasNext());
         assertEquals("p", it.next());
@@ -72,7 +72,7 @@ public class TestGetNamespaceContext extends AxiomTestCase {
         it = context.getPrefixes("urn:test3");
         Set<String> prefixes = new HashSet<>();
         while (it.hasNext()) {
-            prefixes.add((String)it.next());
+            prefixes.add((String) it.next());
         }
         assertEquals(2, prefixes.size());
         assertTrue(prefixes.contains("q"));

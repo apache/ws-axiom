@@ -48,7 +48,8 @@ import org.apache.axiom.util.UIDGenerator;
  * message.
  */
 public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends SOAPTestCase {
-    public TestCreateSOAPModelBuilderMTOMContentTypeMismatch(OMMetaFactory metaFactory, SOAPSpec spec) {
+    public TestCreateSOAPModelBuilderMTOMContentTypeMismatch(
+            OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
 
@@ -56,42 +57,49 @@ public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends SOAPTestC
     protected void runTest() throws Throwable {
         final SOAPSample sample = SOAPSampleSet.NO_HEADER.getMessage(spec);
         // Generate an MTOM message with the wrong content type
-        MimeMessage message = new MimeMessage((Session)null);
+        MimeMessage message = new MimeMessage((Session) null);
         MimeMultipart mp = new MimeMultipart("related");
         MimeBodyPart bp = new MimeBodyPart();
         String contentID = "<" + UIDGenerator.generateContentId() + ">";
-        bp.setDataHandler(new DataHandler(new DataSource() {
-            @Override
-            public String getContentType() {
-                return "application/xop+xml; charset=\"" + sample.getEncoding() + "\"; type=\"" + spec.getAltSpec().getContentType() + "\"";
-            }
-            
-            @Override
-            public InputStream getInputStream() throws IOException {
-                return sample.getInputStream();
-            }
-            
-            @Override
-            public String getName() {
-                return null;
-            }
-            
-            @Override
-            public OutputStream getOutputStream() {
-                throw new UnsupportedOperationException();
-            }
-        }));
+        bp.setDataHandler(
+                new DataHandler(
+                        new DataSource() {
+                            @Override
+                            public String getContentType() {
+                                return "application/xop+xml; charset=\""
+                                        + sample.getEncoding()
+                                        + "\"; type=\""
+                                        + spec.getAltSpec().getContentType()
+                                        + "\"";
+                            }
+
+                            @Override
+                            public InputStream getInputStream() throws IOException {
+                                return sample.getInputStream();
+                            }
+
+                            @Override
+                            public String getName() {
+                                return null;
+                            }
+
+                            @Override
+                            public OutputStream getOutputStream() {
+                                throw new UnsupportedOperationException();
+                            }
+                        }));
         bp.addHeader("Content-Transfer-Encoding", "binary");
         bp.addHeader("Content-ID", contentID);
         mp.addBodyPart(bp);
         message.setContent(mp);
         message.saveChanges();
-        ContentType contentType = new ContentType(message.getContentType())
-                .toBuilder()
-                .setParameter("type", "application/xop+xml")
-                .setParameter("start", contentID)
-                .setParameter("start-info", spec.getAltSpec().getContentType())
-                .build();
+        ContentType contentType =
+                new ContentType(message.getContentType())
+                        .toBuilder()
+                                .setParameter("type", "application/xop+xml")
+                                .setParameter("start", contentID)
+                                .setParameter("start-info", spec.getAltSpec().getContentType())
+                                .build();
         MemoryBlob blob = Blobs.createMemoryBlob();
         OutputStream out = blob.getOutputStream();
         mp.writeTo(out);
@@ -100,7 +108,10 @@ public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends SOAPTestC
         try {
             OMXMLBuilderFactory.createSOAPModelBuilder(
                     metaFactory,
-                    MultipartBody.builder().setInputStream(blob.getInputStream()).setContentType(contentType).build());
+                    MultipartBody.builder()
+                            .setInputStream(blob.getInputStream())
+                            .setContentType(contentType)
+                            .build());
             fail("Expected SOAPProcessingException");
         } catch (SOAPProcessingException ex) {
             // Expected

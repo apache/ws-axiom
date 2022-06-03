@@ -40,9 +40,12 @@ import org.xml.sax.InputSource;
 public class TestSerialize extends ConformanceTestCase {
     private final OMContainerExtractor containerExtractor;
     private final SerializationStrategy serializationStrategy;
-    
-    public TestSerialize(OMMetaFactory metaFactory, XMLSample file,
-            OMContainerExtractor containerExtractor, SerializationStrategy serializationStrategy) {
+
+    public TestSerialize(
+            OMMetaFactory metaFactory,
+            XMLSample file,
+            OMContainerExtractor containerExtractor,
+            SerializationStrategy serializationStrategy) {
         super(metaFactory, file);
         this.containerExtractor = containerExtractor;
         this.serializationStrategy = serializationStrategy;
@@ -52,12 +55,14 @@ public class TestSerialize extends ConformanceTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = file.getAdapter(XMLSampleAdapter.class).getBuilder(metaFactory);
+        OMXMLParserWrapper builder =
+                file.getAdapter(XMLSampleAdapter.class).getBuilder(metaFactory);
         try {
             OMContainer container = containerExtractor.getContainer(builder);
             // We need to clone the InputSource objects so that we can dump their contents
             // if the test fails
-            InputSource control[] = duplicateInputSource(containerExtractor.getControl(file.getInputStream()));
+            InputSource control[] =
+                    duplicateInputSource(containerExtractor.getControl(file.getInputStream()));
             XML actual = serializationStrategy.serialize(container);
             try {
                 // Configure the InputSources such that external entities can be resolved
@@ -67,7 +72,7 @@ public class TestSerialize extends ConformanceTestCase {
                 actualIS.setSystemId(systemId);
                 assertAbout(xml())
                         .that(actualIS)
-                        .ignoringElementContentWhitespace()  // TODO: shouldn't be necessary
+                        .ignoringElementContentWhitespace() // TODO: shouldn't be necessary
                         .hasSameContentAs(control[0]);
             } catch (Throwable ex) {
                 System.out.println("Control:");
@@ -81,7 +86,7 @@ public class TestSerialize extends ConformanceTestCase {
             } else {
                 // TODO: need to investigate why assertConsumed is not working here
                 assertFalse(container.isComplete());
-//                assertConsumed(element);
+                //                assertConsumed(element);
             }
         } finally {
             builder.close();
@@ -93,10 +98,12 @@ public class TestSerialize extends ConformanceTestCase {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         IOUtils.copy(is.getByteStream(), baos);
         byte[] content = baos.toByteArray();
-        return new InputSource[] { new InputSource(new ByteArrayInputStream(content)),
-                new InputSource(new ByteArrayInputStream(content)) };
+        return new InputSource[] {
+            new InputSource(new ByteArrayInputStream(content)),
+            new InputSource(new ByteArrayInputStream(content))
+        };
     }
-    
+
     private void dumpInputSource(InputSource is) throws IOException {
         // TODO: also handle character streams
         IOUtils.copy(is.getByteStream(), System.out);

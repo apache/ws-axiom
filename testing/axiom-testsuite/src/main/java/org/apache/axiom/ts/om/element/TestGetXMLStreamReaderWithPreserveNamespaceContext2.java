@@ -29,11 +29,11 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests the behavior of
- * {@link OMElement#getXMLStreamReader(boolean, OMXMLStreamReaderConfiguration)} when
- * {@link OMXMLStreamReaderConfiguration#isPreserveNamespaceContext()} is {@code true} and there are
- * masked or redundant namespace declarations. This is a regression test for
- * <a href="https://issues.apache.org/jira/browse/AXIOM-485">AXIOM-485</a>.
+ * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean,
+ * OMXMLStreamReaderConfiguration)} when {@link
+ * OMXMLStreamReaderConfiguration#isPreserveNamespaceContext()} is {@code true} and there are masked
+ * or redundant namespace declarations. This is a regression test for <a
+ * href="https://issues.apache.org/jira/browse/AXIOM-485">AXIOM-485</a>.
  */
 public class TestGetXMLStreamReaderWithPreserveNamespaceContext2 extends AxiomTestCase {
     public TestGetXMLStreamReaderWithPreserveNamespaceContext2(OMMetaFactory metaFactory) {
@@ -42,8 +42,12 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext2 extends AxiomTe
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                TestGetXMLStreamReaderWithPreserveNamespaceContext2.class.getResourceAsStream("AXIOM-485.xml")).getDocumentElement();
+        OMElement root =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                TestGetXMLStreamReaderWithPreserveNamespaceContext2.class
+                                        .getResourceAsStream("AXIOM-485.xml"))
+                        .getDocumentElement();
         OMElement child = root.getFirstElement();
         OMXMLStreamReaderConfiguration configuration = new OMXMLStreamReaderConfiguration();
         configuration.setPreserveNamespaceContext(true);

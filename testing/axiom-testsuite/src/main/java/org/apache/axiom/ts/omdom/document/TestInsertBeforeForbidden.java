@@ -32,7 +32,7 @@ import org.w3c.dom.Document;
 
 public class TestInsertBeforeForbidden extends AxiomTestCase {
     private final boolean build;
-    
+
     public TestInsertBeforeForbidden(OMMetaFactory metaFactory, boolean build) {
         super(metaFactory);
         this.build = build;
@@ -41,13 +41,15 @@ public class TestInsertBeforeForbidden extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMDocument omDocument = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<!--test--><test/>")).getDocument();
+        OMDocument omDocument =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(), new StringReader("<!--test--><test/>"))
+                        .getDocument();
         if (build) {
             omDocument.build();
         }
-        Document document = (Document)omDocument;
-        Comment comment = (Comment)document.getFirstChild();
+        Document document = (Document) omDocument;
+        Comment comment = (Comment) document.getFirstChild();
         try {
             document.insertBefore(document.createElementNS(null, "test"), comment);
             fail("Expected DOMException");

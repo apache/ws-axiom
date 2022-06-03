@@ -33,7 +33,7 @@ public class TestAddChild extends CrossOMTestCase {
         OMElement parent = metaFactory.getOMFactory().createOMElement("parent", null);
         OMElement orgChild = altMetaFactory.getOMFactory().createOMElement("child", null);
         parent.addChild(orgChild);
-        OMElement child = (OMElement)parent.getFirstOMChild();
+        OMElement child = (OMElement) parent.getFirstOMChild();
         assertThat(child).isNotSameInstanceAs(orgChild);
         assertThat(child.getLocalName()).isEqualTo("child");
     }

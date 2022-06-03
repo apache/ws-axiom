@@ -29,9 +29,7 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-/**
- * Tests the behavior of {@link SOAPHeader#getHeadersToProcess(RolePlayer, String)}
- */
+/** Tests the behavior of {@link SOAPHeader#getHeadersToProcess(RolePlayer, String)} */
 public class TestGetHeadersToProcessWithNamespace extends SOAPTestCase {
     public TestGetHeadersToProcessWithNamespace(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
@@ -44,7 +42,7 @@ public class TestGetHeadersToProcessWithNamespace extends SOAPTestCase {
         OMNamespace ns1 = soapFactory.createOMNamespace("urn:ns1", "ns1");
         OMNamespace ns2 = soapFactory.createOMNamespace("urn:ns2", "ns2");
         String myRole = "urn:myRole";
-        String otherRole ="urn:otherRole";
+        String otherRole = "urn:otherRole";
         SOAPHeaderBlock headerBlock1 = header.addHeaderBlock("header1", ns1);
         headerBlock1.setRole(myRole);
         SOAPHeaderBlock headerBlock2 = header.addHeaderBlock("header2", ns2);
@@ -53,7 +51,9 @@ public class TestGetHeadersToProcessWithNamespace extends SOAPTestCase {
         headerBlock3.setRole(myRole);
         SOAPHeaderBlock headerBlock4 = header.addHeaderBlock("header4", ns1);
         headerBlock4.setRole(otherRole);
-        Iterator<SOAPHeaderBlock> it = header.getHeadersToProcess(new MyRolePlayer(false, new String[] { myRole }), ns1.getNamespaceURI());
+        Iterator<SOAPHeaderBlock> it =
+                header.getHeadersToProcess(
+                        new MyRolePlayer(false, new String[] {myRole}), ns1.getNamespaceURI());
         assertTrue(it.hasNext());
         assertSame(headerBlock1, it.next());
         assertTrue(it.hasNext());

@@ -38,6 +38,7 @@ public class TestGetCodeWithParser extends SampleBasedSOAPTestCase {
                 soapFaultWithParser.getCode());
         assertEquals(
                 "Fault Test with parser: - Fault code local name mismatch",
-                spec.getFaultCodeQName(), soapFaultWithParser.getCode().getQName());
+                spec.getFaultCodeQName(),
+                soapFaultWithParser.getCode().getQName());
     }
 }

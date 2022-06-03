@@ -23,9 +23,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests the behavior of {@link OMElement#getTextAsQName()} if the element is empty.
- */
+/** Tests the behavior of {@link OMElement#getTextAsQName()} if the element is empty. */
 public class TestGetTextAsQNameEmpty extends AxiomTestCase {
     public TestGetTextAsQNameEmpty(OMMetaFactory metaFactory) {
         super(metaFactory);

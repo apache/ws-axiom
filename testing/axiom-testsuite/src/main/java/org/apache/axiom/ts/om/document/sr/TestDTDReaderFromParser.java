@@ -35,7 +35,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestDTDReaderFromParser extends AxiomTestCase {
     private final boolean build;
     private final boolean cache;
-    
+
     public TestDTDReaderFromParser(OMMetaFactory metaFactory, boolean build, boolean cache) {
         super(metaFactory);
         this.build = build;
@@ -46,22 +46,26 @@ public class TestDTDReaderFromParser extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                StAXParserConfiguration.STANDALONE,
-                TestDTDReaderFromParser.class.getResourceAsStream("/web_w_dtd.xml")).getDocument();
+        OMDocument doc =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                StAXParserConfiguration.STANDALONE,
+                                TestDTDReaderFromParser.class.getResourceAsStream("/web_w_dtd.xml"))
+                        .getDocument();
         if (build) {
             doc.build();
         }
         XMLStreamReader reader = doc.getXMLStreamReader(cache);
         // Note that according to the specification of the DTDReader interface, it is
         // allowed to look up the extension before reaching the DTD event.
-        DTDReader dtdReader = (DTDReader)reader.getProperty(DTDReader.PROPERTY);
+        DTDReader dtdReader = (DTDReader) reader.getProperty(DTDReader.PROPERTY);
         assertNotNull(dtdReader);
         while (reader.next() != XMLStreamReader.DTD) {
             // Just loop
         }
         assertEquals("web-app", dtdReader.getRootName());
-        assertEquals("-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN", dtdReader.getPublicId());
+        assertEquals(
+                "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN", dtdReader.getPublicId());
         assertEquals("http://java.sun.com/dtd/web-app_2_3.dtd", dtdReader.getSystemId());
     }
 }

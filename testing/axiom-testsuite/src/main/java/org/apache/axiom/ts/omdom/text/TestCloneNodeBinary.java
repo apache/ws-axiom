@@ -36,9 +36,9 @@ public class TestCloneNodeBinary extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         DataSource ds = new RandomDataSource(666L, 1000);
-        Text text = (Text)factory.createOMText(new DataHandler(ds), false);
+        Text text = (Text) factory.createOMText(new DataHandler(ds), false);
         String base64 = text.getData();
         assertTrue(base64.length() > 0);
-        assertEquals(base64, ((Text)text.cloneNode(true)).getData());
+        assertEquals(base64, ((Text) text.cloneNode(true)).getData());
     }
 }

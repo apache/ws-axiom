@@ -44,7 +44,7 @@ public class TestCloneOMElement extends SampleBasedSOAPTestCase {
         // cloneOMElement creates plain OMElements
         assertFalse(firstClonedBodyElement instanceof SOAPBody);
         assertFalse(secondClonedBodyElement instanceof SOAPBody);
-        
+
         // first check whether both have the same information
         assertAbout(xml())
                 .that(xml(OMElement.class, firstClonedBodyElement))

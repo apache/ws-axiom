@@ -35,7 +35,9 @@ public class TestCreateOMBuilderFromDOMWithNSUnawarePrefixedAttribute extends Ax
         Element domElement = DOMImplementation.XERCES.newDocument().createElementNS(null, "test");
         domElement.setAttribute("p:attr", "value");
         try {
-            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domElement, false).getDocument().build();
+            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domElement, false)
+                    .getDocument()
+                    .build();
             fail("Expected OMException");
         } catch (OMException ex) {
             // Expected

@@ -27,7 +27,7 @@ import org.apache.axiom.ts.xml.XMLSample;
 public class CrossOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final OMMetaFactory metaFactory;
     private final OMMetaFactory altMetaFactory;
-    
+
     public CrossOMTestSuiteBuilder(OMMetaFactory metaFactory, OMMetaFactory altMetaFactory) {
         this.metaFactory = metaFactory;
         this.altMetaFactory = altMetaFactory;

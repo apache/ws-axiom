@@ -36,11 +36,13 @@ public class TestCloneWithSourcedElement1 extends CloneTestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope sourceEnv = soapFactory.getDefaultEnvelope();
         SOAPBody body = sourceEnv.getBody();
-        
+
         // Create a payload
-        OMDataSource bads = new StringOMDataSource("<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>");
+        OMDataSource bads =
+                new StringOMDataSource(
+                        "<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>");
         OMNamespace ns = body.getOMFactory().createOMNamespace("urn://test", "tns");
-        OMSourcedElement omse =body.getOMFactory().createOMElement(bads, "payload", ns);
+        OMSourcedElement omse = body.getOMFactory().createOMElement(bads, "payload", ns);
         body.addChild(omse);
         copyAndCheck(sourceEnv);
         assertFalse(omse.isExpanded());

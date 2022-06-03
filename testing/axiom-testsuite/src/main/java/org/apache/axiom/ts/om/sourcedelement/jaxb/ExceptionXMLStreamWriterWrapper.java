@@ -25,7 +25,7 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
 
 public class ExceptionXMLStreamWriterWrapper extends XMLStreamWriterWrapper {
     private final XMLStreamException exception;
-    
+
     public ExceptionXMLStreamWriterWrapper(XMLStreamWriter parent, XMLStreamException exception) {
         super(parent);
         this.exception = exception;

@@ -30,8 +30,8 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
- * Tests that {@link OMElement#getAttributeValue(QName)} causes expansion of
- * {@link OMSourcedElement} instances.
+ * Tests that {@link OMElement#getAttributeValue(QName)} causes expansion of {@link
+ * OMSourcedElement} instances.
  */
 public class TestGetAttributeValue extends AxiomTestCase {
     public TestGetAttributeValue(OMMetaFactory metaFactory) {
@@ -41,8 +41,8 @@ public class TestGetAttributeValue extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(
-                new PullOMDataSource("<root attr='value'/>"), "root", null);
+        OMSourcedElement element =
+                factory.createOMElement(new PullOMDataSource("<root attr='value'/>"), "root", null);
         assertThat(element.getAttributeValue(new QName("attr"))).isEqualTo("value");
     }
 }

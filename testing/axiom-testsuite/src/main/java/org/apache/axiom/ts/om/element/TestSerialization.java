@@ -25,31 +25,34 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests proper serialization for different combinations of namespaces on the element and its children.
- * The test creates a parent "person" and children "name", "age", "weight". The
- * parent is defined as either:
+ * Tests proper serialization for different combinations of namespaces on the element and its
+ * children. The test creates a parent "person" and children "name", "age", "weight". The parent is
+ * defined as either:
+ *
  * <ul>
- * <li>a qualified name (<code>parent=Q</code>)
- * <li>an unqualified name (<code>parent=U</code>)
- * <li>a qualified name using the default namespace (<code>parent=D</code>)
+ *   <li>a qualified name (<code>parent=Q</code>)
+ *   <li>an unqualified name (<code>parent=U</code>)
+ *   <li>a qualified name using the default namespace (<code>parent=D</code>)
  * </ul>
- * <p>
- * Likewise the children are defined as either:
+ *
+ * <p>Likewise the children are defined as either:
+ *
  * <ul>
- * <li>qualified names (<code>children=Q</code>)
- * <li>unqualified children (<code>children=U</code>)
- * <li>qualified using the default namespace (<code>children=D</code>)
+ *   <li>qualified names (<code>children=Q</code>)
+ *   <li>unqualified children (<code>children=U</code>)
+ *   <li>qualified using the default namespace (<code>children=D</code>)
  * </ul>
  */
 public class TestSerialization extends AxiomTestCase {
     private static final String NS = "urn:ns";
     private static final String PREFIX = "p";
-    
+
     private final String parent;
     private final String children;
     private final String expected;
-    
-    public TestSerialization(OMMetaFactory metaFactory, String parent, String children, String expected) {
+
+    public TestSerialization(
+            OMMetaFactory metaFactory, String parent, String children, String expected) {
         super(metaFactory);
         this.parent = parent;
         this.children = children;
@@ -57,7 +60,7 @@ public class TestSerialization extends AxiomTestCase {
         addTestParameter("parent", parent);
         addTestParameter("children", children);
     }
-    
+
     private static OMNamespace createNamespace(OMFactory factory, String type) {
         if (type.equals("Q")) {
             return factory.createOMNamespace(NS, PREFIX);
@@ -69,7 +72,7 @@ public class TestSerialization extends AxiomTestCase {
             throw new IllegalArgumentException();
         }
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
@@ -87,7 +90,7 @@ public class TestSerialization extends AxiomTestCase {
         OMElement weightElem = fac.createOMElement("weight", nsChildren);
         weightElem.setText("50");
 
-        //Add children to the person element
+        // Add children to the person element
         personElem.addChild(nameElem);
         personElem.addChild(ageElem);
         personElem.addChild(weightElem);

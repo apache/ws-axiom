@@ -39,7 +39,7 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class TestGetTextBinary extends AxiomTestCase {
     private final boolean compact;
-    
+
     public TestGetTextBinary(OMMetaFactory metaFactory, boolean compact) {
         super(metaFactory);
         this.compact = compact;
@@ -54,10 +54,13 @@ public class TestGetTextBinary extends AxiomTestCase {
         element.addChild(factory.createOMText(new DataHandler(ds), false));
         if (compact) {
             // Only the builder can create a compact element containing a DataHandler
-            element = OMXMLBuilderFactory.createStAXOMBuilder(factory, element.getXMLStreamReader()).getDocumentElement();
+            element =
+                    OMXMLBuilderFactory.createStAXOMBuilder(factory, element.getXMLStreamReader())
+                            .getDocumentElement();
             element.build();
         }
-        IOTestUtils.compareStreams(ds.getInputStream(),
+        IOTestUtils.compareStreams(
+                ds.getInputStream(),
                 new ByteArrayInputStream(Base64.decodeBase64(element.getText())));
     }
 }

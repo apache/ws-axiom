@@ -28,11 +28,11 @@ import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMElement#getNamespace()} returns <code>null</code> even if an
- * {@link OMNamespace} object with empty prefix and namespace URI was passed to
- * {@link OMFactory#createOMElement(OMDataSource, String, OMNamespace)}.
- * <p>
- * This is a regression test for <a
+ * Tests that {@link OMElement#getNamespace()} returns <code>null</code> even if an {@link
+ * OMNamespace} object with empty prefix and namespace URI was passed to {@link
+ * OMFactory#createOMElement(OMDataSource, String, OMNamespace)}.
+ *
+ * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalized extends AxiomTestCase {
@@ -44,8 +44,9 @@ public class TestGetNamespaceNormalized extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("", "");
-        OMSourcedElement element = factory.createOMElement(new StringOMDataSource(
-                "<element>content</element>"), "element", ns);
+        OMSourcedElement element =
+                factory.createOMElement(
+                        new StringOMDataSource("<element>content</element>"), "element", ns);
         // This actually returns the "declared" namespace because the sourced element is not
         // expanded yet. Nevertheless the value should have been normalized to null.
         assertNull(element.getNamespace());

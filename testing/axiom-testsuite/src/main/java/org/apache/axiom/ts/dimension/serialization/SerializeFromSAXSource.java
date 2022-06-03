@@ -28,12 +28,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.xml.sax.XMLReader;
 
 /**
- * Serializes an {@link OMContainer} by processing the result of
- * {@link OMContainer#getSAXSource(boolean)}.
+ * Serializes an {@link OMContainer} by processing the result of {@link
+ * OMContainer#getSAXSource(boolean)}.
  */
 public class SerializeFromSAXSource extends SerializationStrategy {
     private final boolean cache;
-    
+
     SerializeFromSAXSource(boolean cache) {
         this.cache = cache;
     }

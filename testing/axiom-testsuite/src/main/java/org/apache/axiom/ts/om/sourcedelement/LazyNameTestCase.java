@@ -27,8 +27,9 @@ import org.apache.axiom.ts.AxiomTestCase;
 public abstract class LazyNameTestCase extends AxiomTestCase {
     protected final OMSourcedElementVariant variant;
     protected final QName qname;
-    
-    public LazyNameTestCase(OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
+
+    public LazyNameTestCase(
+            OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
         super(metaFactory);
         this.variant = variant;
         this.qname = qname;
@@ -37,7 +38,7 @@ public abstract class LazyNameTestCase extends AxiomTestCase {
         addTestParameter("prefix", qname.getPrefix());
         addTestParameter("uri", qname.getNamespaceURI());
     }
-    
+
     @Override
     protected final void runTest() throws Throwable {
         runTest(variant.createOMSourcedElement(metaFactory.getOMFactory(), qname));

@@ -42,22 +42,25 @@ public class TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified extends 
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<root><a/><b/><c/></root>")).getDocumentElement();
-        
+        OMElement root =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader("<root><a/><b/><c/></root>"))
+                        .getDocumentElement();
+
         OMElement b = root.getFirstChildWithName(new QName("b"));
         b.addAttribute("att", "value", null);
         assertFalse(b.isComplete());
-        
+
         XMLStreamReader reader = root.getXMLStreamReaderWithoutCaching();
-        
+
         // Skip to the START_ELEMENT event corresponding to b
-        for (int i=0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
             reader.next();
         }
         assertEquals(XMLStreamReader.START_ELEMENT, reader.getEventType());
         assertEquals("b", reader.getLocalName());
-        
+
         // The previously added attribute must be visible
         assertEquals(1, reader.getAttributeCount());
         assertEquals("att", reader.getAttributeLocalName(0));

@@ -33,31 +33,34 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
- * Tests that a custom builder registered with
- * {@link CustomBuilderSupport#registerCustomBuilderForPayload(CustomBuilder)} is still taken into
- * account after using {@link SOAPBody#hasFault()}. This assumes that the Axiom implementation
- * supports the optimization described by <a
+ * Tests that a custom builder registered with {@link
+ * CustomBuilderSupport#registerCustomBuilderForPayload(CustomBuilder)} is still taken into account
+ * after using {@link SOAPBody#hasFault()}. This assumes that the Axiom implementation supports the
+ * optimization described by <a
  * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a>.
  */
-public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck extends SampleBasedSOAPTestCase {
-    public TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck
+        extends SampleBasedSOAPTestCase {
+    public TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(
+            OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        SOAPModelBuilder builder = (SOAPModelBuilder)envelope.getBuilder();
-        
+        SOAPModelBuilder builder = (SOAPModelBuilder) envelope.getBuilder();
+
         // Do a fault check.  This is normally done in the engine (Axiom) and should
         // not cause inteference with the custom builder processing
         envelope.getBody().hasFault();
 
         // Do the registration here...this simulates when it could occure in the engine
         // (After the fault check and during phase processing...probably dispatch phase)
-        ((CustomBuilderSupport)builder).registerCustomBuilder(
-                CustomBuilder.Selector.PAYLOAD,
-                new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
-        
+        ((CustomBuilderSupport) builder)
+                .registerCustomBuilder(
+                        CustomBuilder.Selector.PAYLOAD,
+                        new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
+
         OMElement bodyElement = envelope.getBody().getFirstElement();
         assertTrue(bodyElement instanceof OMSourcedElement);
     }

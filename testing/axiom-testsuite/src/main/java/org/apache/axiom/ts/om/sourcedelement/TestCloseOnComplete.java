@@ -28,9 +28,9 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
- * Tests that {@link OMSourcedElement} calls {@link XMLStreamReader#close()} on the
- * {@link XMLStreamReader} returned by {@link OMDataSource#getReader()} when the element is
- * completely built.
+ * Tests that {@link OMSourcedElement} calls {@link XMLStreamReader#close()} on the {@link
+ * XMLStreamReader} returned by {@link OMDataSource#getReader()} when the element is completely
+ * built.
  */
 public class TestCloseOnComplete extends AxiomTestCase {
     public TestCloseOnComplete(OMMetaFactory metaFactory) {

@@ -37,28 +37,32 @@ import org.xml.sax.ContentHandler;
 /**
  * Tests that the {@link SAXSource} returned by {@link OMContainer#getSAXSource(boolean)} generates
  * {@link ContentHandler#startPrefixMapping(String, String)} events for namespace mappings in scope
- * on the source element.
- * This checks for an issue that may arise under the following circumstances:
+ * on the source element. This checks for an issue that may arise under the following circumstances:
+ *
  * <ol>
  *   <li>The element on which {@link OMContainer#getSAXSource(boolean)} is called is not the root
- *   element of the document.</li>
- *   <li>One of the ancestors declares a namespace mapping.</li>
+ *       element of the document.
+ *   <li>One of the ancestors declares a namespace mapping.
  *   <li>The namespace mapping is not used in the name of the source element or any of its
- *   descendant elements or attributes (but may be used in the value of an attribute).</li>   
+ *       descendant elements or attributes (but may be used in the value of an attribute).
  * </ol>
+ *
  * Example:
+ *
  * <pre>&lt;root xmlns:ns="urn:ns"&gt;&lt;element attr="ns:someThing"/&gt;&lt;root&gt;</pre>
+ *
  * In that case, when constructing an {@link SAXSource} from the child element, the namespace
- * mapping for the {@code ns} prefix should be visible to the consumer. Otherwise it would not
- * be able to interpret the attribute value correctly. This is relevant e.g. when validating
- * a part of a document against an XML schema (see
- * <a href="https://issues.apache.org/jira/browse/SYNAPSE-501">SYNAPSE-501</a>).
+ * mapping for the {@code ns} prefix should be visible to the consumer. Otherwise it would not be
+ * able to interpret the attribute value correctly. This is relevant e.g. when validating a part of
+ * a document against an XML schema (see <a
+ * href="https://issues.apache.org/jira/browse/SYNAPSE-501">SYNAPSE-501</a>).
  */
 public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
     private final XSLTImplementation xsltImplementation;
     private final boolean cache;
 
-    public TestGetSAXSourceIdentityTransformOnFragment(OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, boolean cache) {
+    public TestGetSAXSourceIdentityTransformOnFragment(
+            OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, boolean cache) {
         super(metaFactory);
         this.xsltImplementation = xsltImplementation;
         this.cache = cache;
@@ -69,20 +73,23 @@ public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
     private InputStream getInput() {
         return TestGetSAXSourceIdentityTransformOnFragment.class.getResourceAsStream("test.xml");
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer();
-        
+
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, getInput()).getDocumentElement().getFirstElement();
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(factory, getInput())
+                        .getDocumentElement()
+                        .getFirstElement();
         OMDocument outputDocument = factory.createOMDocument();
         transformer.transform(element.getSAXSource(cache), outputDocument.getSAXResult());
-        
+
         OMNamespace ns = outputDocument.getOMDocumentElement().findNamespaceURI("p");
         assertNotNull(ns);
         assertEquals("urn:some:namespace", ns.getNamespaceURI());
-        
+
         element.close(false);
     }
 }

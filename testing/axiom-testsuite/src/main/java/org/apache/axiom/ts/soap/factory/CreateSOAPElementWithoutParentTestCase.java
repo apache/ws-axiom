@@ -33,8 +33,9 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public abstract class CreateSOAPElementWithoutParentTestCase extends SOAPTestCase {
     protected final SOAPElementType type;
-    
-    public CreateSOAPElementWithoutParentTestCase(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type) {
+
+    public CreateSOAPElementWithoutParentTestCase(
+            OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type) {
         super(metaFactory, spec);
         this.type = type;
         type.getAdapter(SOAPElementTypeAdapter.class).addTestParameters(this);
@@ -51,7 +52,10 @@ public abstract class CreateSOAPElementWithoutParentTestCase extends SOAPTestCas
                 // Expected
             }
         } else {
-            String expectedPrefix = expectedName.getNamespaceURI().length() == 0 ? "" : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX; 
+            String expectedPrefix =
+                    expectedName.getNamespaceURI().length() == 0
+                            ? ""
+                            : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX;
             OMElement element = createSOAPElement();
             assertTrue(element.isComplete());
             QName actualName = element.getQName();
@@ -70,6 +74,6 @@ public abstract class CreateSOAPElementWithoutParentTestCase extends SOAPTestCas
             assertNull(element.getFirstOMChild());
         }
     }
-    
+
     protected abstract OMElement createSOAPElement();
 }

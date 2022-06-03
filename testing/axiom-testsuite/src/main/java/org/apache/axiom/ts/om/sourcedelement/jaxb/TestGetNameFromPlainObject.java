@@ -40,7 +40,8 @@ public class TestGetNameFromPlainObject extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory omFactory = metaFactory.getOMFactory();
         JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
-        OMSourcedElement element = omFactory.createOMElement(new JAXBOMDataSource(context, new DocumentBean()));
+        OMSourcedElement element =
+                omFactory.createOMElement(new JAXBOMDataSource(context, new DocumentBean()));
         assertEquals("http://ws.apache.org/axiom/test/jaxb", element.getNamespaceURI());
         assertEquals("document", element.getLocalName());
         assertFalse(element.isExpanded());

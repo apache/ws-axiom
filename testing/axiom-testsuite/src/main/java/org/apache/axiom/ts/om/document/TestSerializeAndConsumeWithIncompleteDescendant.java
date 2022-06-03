@@ -32,11 +32,11 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMDocument#serializeAndConsume(java.io.Writer)} consumes incomplete descendants,
- * even if the document itself is complete (more precisely, created programmatically). This situation
- * may occur when an element obtained from
- * {@link org.apache.axiom.om.OMXMLParserWrapper#getDocumentElement(boolean)} (with
- * <code>discardDocument</code> set to true) is added to an existing document.
+ * Tests that {@link OMDocument#serializeAndConsume(java.io.Writer)} consumes incomplete
+ * descendants, even if the document itself is complete (more precisely, created programmatically).
+ * This situation may occur when an element obtained from {@link
+ * org.apache.axiom.om.OMXMLParserWrapper#getDocumentElement(boolean)} (with <code>discardDocument
+ * </code> set to true) is added to an existing document.
  */
 public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCase {
     public TestSerializeAndConsumeWithIncompleteDescendant(OMMetaFactory metaFactory) {
@@ -46,16 +46,15 @@ public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCa
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement incompleteElement = OMXMLBuilderFactory.createOMBuilder(factory,
-                new StringReader("<elem>text</elem>")).getDocumentElement(true);
+        OMElement incompleteElement =
+                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<elem>text</elem>"))
+                        .getDocumentElement(true);
         OMDocument document = factory.createOMDocument();
         OMElement root = factory.createOMElement("root", null, document);
         root.addChild(incompleteElement);
         StringWriter out = new StringWriter();
         document.serializeAndConsume(out);
-        assertAbout(xml())
-                .that(out.toString())
-                .hasSameContentAs("<root><elem>text</elem></root>");
+        assertAbout(xml()).that(out.toString()).hasSameContentAs("<root><elem>text</elem></root>");
         assertConsumed(incompleteElement);
     }
 }

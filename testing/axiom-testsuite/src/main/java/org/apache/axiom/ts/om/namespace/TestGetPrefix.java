@@ -23,9 +23,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests the behavior of {@link OMNamespace#getPrefix()}.
- */
+/** Tests the behavior of {@link OMNamespace#getPrefix()}. */
 public class TestGetPrefix extends AxiomTestCase {
     public TestGetPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);

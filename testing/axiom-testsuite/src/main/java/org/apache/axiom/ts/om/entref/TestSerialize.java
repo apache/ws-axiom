@@ -36,7 +36,8 @@ public class TestSerialize extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMEntityReference entref = metaFactory.getOMFactory().createOMEntityReference(null, "testref");
+        OMEntityReference entref =
+                metaFactory.getOMFactory().createOMEntityReference(null, "testref");
         XMLStreamWriter writer = mock(XMLStreamWriter.class);
         entref.serialize(writer);
         verify(writer).writeEntityRef(entref.getName());

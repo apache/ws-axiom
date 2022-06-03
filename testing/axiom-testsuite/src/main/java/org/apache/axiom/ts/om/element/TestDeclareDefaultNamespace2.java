@@ -32,13 +32,9 @@ public class TestDeclareDefaultNamespace2 extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         /**
-         * <RootElement xmlns:ns1="http://one.org" xmlns:ns2="http://one.org">
-         *   <ns2:ChildElementOne xmlns="http://one.org">
-         *      <ns2:ChildElementTwo />
-         *   </ns2:ChildElementOne>
-         * </RootElement>
+         * <RootElement xmlns:ns1="http://one.org" xmlns:ns2="http://one.org"> <ns2:ChildElementOne
+         * xmlns="http://one.org"> <ns2:ChildElementTwo /> </ns2:ChildElementOne> </RootElement>
          */
-
         OMFactory omFac = metaFactory.getOMFactory();
 
         OMElement documentElement = omFac.createOMElement("RootElement", null);
@@ -50,7 +46,9 @@ public class TestDeclareDefaultNamespace2 extends AxiomTestCase {
 
         OMElement childTwo = omFac.createOMElement("ChildElementTwo", ns1, childOne);
 
-        assertEquals(1, getNumberOfOccurrences(documentElement.toStringWithConsume(),
-                "xmlns:ns2=\"http://one.org\""));
+        assertEquals(
+                1,
+                getNumberOfOccurrences(
+                        documentElement.toStringWithConsume(), "xmlns:ns2=\"http://one.org\""));
     }
 }

@@ -40,31 +40,38 @@ public class TestGetXMLStreamReaderCDATAEventFromParser extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         // Create an element with a CDATA section.
-        InputStream is = new ByteArrayInputStream("<test><![CDATA[hello world]]></test>".getBytes());
+        InputStream is =
+                new ByteArrayInputStream("<test><![CDATA[hello world]]></test>".getBytes());
         // Make sure that the parser is non coalescing (otherwise no CDATA events will be
         // reported). This is not the default for Woodstox (see WSTX-140).
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(StAXParserConfiguration.NON_COALESCING, is);
-        
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader).getDocumentElement();
-        
+        XMLStreamReader reader =
+                StAXUtils.createXMLStreamReader(StAXParserConfiguration.NON_COALESCING, is);
+
+        OMElement element =
+                OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
+                        .getDocumentElement();
+
         // Build the element so we have a full StAX tree
         element.build();
-        
+
         // Get the XMLStreamReader for the element. This will return an OMStAXWrapper.
         XMLStreamReader reader2 = element.getXMLStreamReader();
         // Check the sequence of events
         int event = reader2.next();
         assertEquals(XMLStreamReader.START_ELEMENT, event);
-        
+
         while (reader2.hasNext() && event != XMLStreamReader.CDATA) {
-           event = reader2.next();
+            event = reader2.next();
         }
-        
-        // Only woodstox is guaranteed to generate CDATA events if javax.xml.stream.isCoalescing=false
-        if (reader.toString().indexOf("wstx")!=-1) {
+
+        // Only woodstox is guaranteed to generate CDATA events if
+        // javax.xml.stream.isCoalescing=false
+        if (reader.toString().indexOf("wstx") != -1) {
             assertEquals(XMLStreamReader.CDATA, event);
             assertEquals("hello world", reader2.getText()); // AXIOM-146
-            assertTrue(Arrays.equals("hello world".toCharArray(), reader2.getTextCharacters())); // AXIOM-144
+            assertTrue(
+                    Arrays.equals(
+                            "hello world".toCharArray(), reader2.getTextCharacters())); // AXIOM-144
             assertEquals(XMLStreamReader.END_ELEMENT, reader2.next());
         }
     }

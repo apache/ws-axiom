@@ -42,11 +42,13 @@ public class TestExamineHeaderBlocksWithParser extends SampleBasedSOAPTestCase {
         Iterator<SOAPHeaderBlock> it = envelope.getHeader().examineHeaderBlocks(roleNextURI);
         assertThat(it.hasNext()).isTrue();
         SOAPHeaderBlock headerBlock = it.next();
-        assertThat(headerBlock.getQName()).isEqualTo(new QName("http://example.org/RoleTest", "h2"));
+        assertThat(headerBlock.getQName())
+                .isEqualTo(new QName("http://example.org/RoleTest", "h2"));
         assertThat(headerBlock.getRole()).isEqualTo(roleNextURI);
         assertThat(it.hasNext()).isTrue();
         headerBlock = it.next();
-        assertThat(headerBlock.getQName()).isEqualTo(new QName("http://example.org/RoleTest", "h7"));
+        assertThat(headerBlock.getQName())
+                .isEqualTo(new QName("http://example.org/RoleTest", "h7"));
         assertThat(headerBlock.getRole()).isEqualTo(roleNextURI);
         assertThat(it.hasNext()).isFalse();
     }

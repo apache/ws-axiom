@@ -35,20 +35,23 @@ public class TestGetChildrenRemove2 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<root><child1/><child2/></root>")).getDocumentElement();
+        OMElement elt =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader("<root><child1/><child2/></root>"))
+                        .getDocumentElement();
         Iterator<OMNode> iter = elt.getChildren();
         if (iter.hasNext()) {
             iter.next();
         }
         iter.remove();
 
-        //this call must generate an exception
+        // this call must generate an exception
         try {
             iter.remove();
             fail("calling remove twice without a call to next is prohibited");
         } catch (IllegalStateException e) {
-            //ok if we come here :)
+            // ok if we come here :)
         }
 
         elt.close(false);

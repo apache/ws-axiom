@@ -37,20 +37,23 @@ public class TestGetChildrenWithName extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                XMLSample.SIMPLE.getInputStream()).getDocumentElement().getFirstElement();
+        OMElement elt =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(), XMLSample.SIMPLE.getInputStream())
+                        .getDocumentElement()
+                        .getFirstElement();
         QName qname = new QName("urn:ns2", "subelement");
         Iterator<OMElement> iter = elt.getChildrenWithName(qname);
         int counter = 0;
         while (iter.hasNext()) {
-            counter ++;
+            counter++;
             Object o = iter.next();
             assertNotNull("Must return not null objects!", o);
-            assertTrue("All these should be elements!",
-                       ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
+            assertTrue(
+                    "All these should be elements!", ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
         }
-        assertEquals("This element should contain only one element with the given QName ", 1,
-                     counter);
+        assertEquals(
+                "This element should contain only one element with the given QName ", 1, counter);
         elt.close(false);
     }
 }

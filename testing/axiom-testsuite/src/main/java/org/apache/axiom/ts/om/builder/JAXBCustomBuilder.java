@@ -32,7 +32,7 @@ import org.apache.axiom.om.util.jaxb.JAXBUtils;
 public class JAXBCustomBuilder implements CustomBuilder {
     private final JAXBContext jaxbContext;
     private Object jaxbObject;
-    
+
     public JAXBCustomBuilder(JAXBContext jaxbContext) {
         this.jaxbContext = jaxbContext;
     }

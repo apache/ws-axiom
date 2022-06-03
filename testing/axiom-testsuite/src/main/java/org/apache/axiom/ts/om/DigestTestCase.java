@@ -29,15 +29,15 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Base class for unit tests validating the DOMHASH implementation.
- * <p>
- * Note that the only DOMHASH implementation available for reference is IBM's XSS4J. Unfortunately,
- * XSS4J is no longer available for download, but it can still be found in WebSphere (see the
- * <code>com.ibm.ws.wssecurity.xss4j.domutil.Digest</code> class).
+ *
+ * <p>Note that the only DOMHASH implementation available for reference is IBM's XSS4J.
+ * Unfortunately, XSS4J is no longer available for download, but it can still be found in WebSphere
+ * (see the <code>com.ibm.ws.wssecurity.xss4j.domutil.Digest</code> class).
  */
 public abstract class DigestTestCase extends AxiomTestCase {
     private final String algorithm;
     private final String expectedDigest;
-    
+
     public DigestTestCase(OMMetaFactory metaFactory, String algorithm, String expectedDigest) {
         super(metaFactory);
         this.algorithm = algorithm;
@@ -50,14 +50,14 @@ public abstract class DigestTestCase extends AxiomTestCase {
         DigestGenerator digestGenerator = new DigestGenerator();
         byte[] digest;
         if (node instanceof OMDocument) {
-            digest = digestGenerator.getDigest((OMDocument)node, algorithm);
+            digest = digestGenerator.getDigest((OMDocument) node, algorithm);
         } else if (node instanceof OMAttribute) {
-            digest = digestGenerator.getDigest((OMAttribute)node, algorithm);
+            digest = digestGenerator.getDigest((OMAttribute) node, algorithm);
         } else {
-            digest = digestGenerator.getDigest((OMNode)node, algorithm);
+            digest = digestGenerator.getDigest((OMNode) node, algorithm);
         }
         assertEquals(expectedDigest, DigestUtils.toHexString(digest));
     }
-    
+
     protected abstract OMInformationItem createInformationItem() throws Exception;
 }

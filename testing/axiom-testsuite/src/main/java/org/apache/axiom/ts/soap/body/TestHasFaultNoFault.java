@@ -27,7 +27,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestHasFaultNoFault extends SOAPTestCase {
     private final QName qname;
-    
+
     public TestHasFaultNoFault(OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
         super(metaFactory, spec);
         this.qname = qname;
@@ -39,8 +39,9 @@ public class TestHasFaultNoFault extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPBody body = soapFactory.getDefaultEnvelope().getBody();
-        body.addChild(soapFactory.createOMElement(
-                qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
+        body.addChild(
+                soapFactory.createOMElement(
+                        qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
         assertFalse(body.hasFault());
     }
 }

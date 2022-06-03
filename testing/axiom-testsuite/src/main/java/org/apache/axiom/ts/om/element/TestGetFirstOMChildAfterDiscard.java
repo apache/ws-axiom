@@ -29,9 +29,9 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMContainer#getFirstOMChild()} throws the expected
- * {@link NodeUnavailableException} if the element has been discarded before the first child could
- * be created.
+ * Tests that {@link OMContainer#getFirstOMChild()} throws the expected {@link
+ * NodeUnavailableException} if the element has been discarded before the first child could be
+ * created.
  */
 public class TestGetFirstOMChildAfterDiscard extends AxiomTestCase {
     public TestGetFirstOMChildAfterDiscard(OMMetaFactory metaFactory) {
@@ -41,8 +41,12 @@ public class TestGetFirstOMChildAfterDiscard extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(
-                "<element><!--comment--><a/><!--comment--></element>")).getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory,
+                                new StringReader(
+                                        "<element><!--comment--><a/><!--comment--></element>"))
+                        .getDocumentElement();
         element.discard();
         try {
             element.getFirstOMChild();

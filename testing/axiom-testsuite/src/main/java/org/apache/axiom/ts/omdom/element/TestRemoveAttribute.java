@@ -28,8 +28,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Tests that the owner document of an attribute changes if it is removed using
- * {@link OMElement#removeAttribute(OMAttribute)}.
+ * Tests that the owner document of an attribute changes if it is removed using {@link
+ * OMElement#removeAttribute(OMAttribute)}.
  */
 public class TestRemoveAttribute extends AxiomTestCase {
     public TestRemoveAttribute(OMMetaFactory metaFactory) {
@@ -40,12 +40,12 @@ public class TestRemoveAttribute extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
-        Document ownerDocument = ((Element)element).getOwnerDocument();
+        Document ownerDocument = ((Element) element).getOwnerDocument();
         assertNotNull(ownerDocument);
         OMAttribute attr = element.addAttribute("attr", "value", null);
-        assertSame(ownerDocument, ((Attr)attr).getOwnerDocument());
+        assertSame(ownerDocument, ((Attr) attr).getOwnerDocument());
         element.removeAttribute(attr);
-        Document newOwnerDocument = ((Attr)attr).getOwnerDocument();
+        Document newOwnerDocument = ((Attr) attr).getOwnerDocument();
         assertNotNull(ownerDocument);
         assertNotSame(ownerDocument, newOwnerDocument);
     }

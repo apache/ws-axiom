@@ -40,13 +40,13 @@ public class TestAddAttributeReplace extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
-        Document ownerDocument = ((Element)element).getOwnerDocument();
+        Document ownerDocument = ((Element) element).getOwnerDocument();
         assertNotNull(ownerDocument);
         OMAttribute attr1 = element.addAttribute("attr", "value1", null);
-        assertSame(ownerDocument, ((Attr)attr1).getOwnerDocument());
+        assertSame(ownerDocument, ((Attr) attr1).getOwnerDocument());
         OMAttribute attr2 = factory.createOMAttribute("attr", null, "value2");
         element.addAttribute(attr2);
-        Document newOwnerDocument = ((Attr)attr1).getOwnerDocument();
+        Document newOwnerDocument = ((Attr) attr1).getOwnerDocument();
         assertNotNull(ownerDocument);
         assertNotSame(ownerDocument, newOwnerDocument);
     }

@@ -45,27 +45,33 @@ public class TestName1QualifiedPrefix extends AxiomTestCase {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", null);
         OMElement element =
-                f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT2.getContent()), "library", ns);
+                f.createOMElement(
+                        new PullOMDataSource(TestDocument.DOCUMENT2.getContent()), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
         // Test getting the local name and namespace URI. This should used not result in expansion
         assertTrue(element.getLocalName().equals("library"));
-        assertTrue(element.getNamespace().getNamespaceURI().equals(
-                "http://www.sosnoski.com/uwjws/library"));
+        assertTrue(
+                element.getNamespace()
+                        .getNamespaceURI()
+                        .equals("http://www.sosnoski.com/uwjws/library"));
 
-        // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
+        // Serialize and cache.  This should cause expansion and update the name to match the
+        // testDocument string
         StringWriter writer = new StringWriter();
         root.serialize(writer);
         String result = writer.toString();
 
         assertTrue(element.getLocalName().equals("library"));
-        assertTrue(element.getNamespace().getNamespaceURI().equals(
-                "http://www.sosnoski.com/uwjws/library"));
+        assertTrue(
+                element.getNamespace()
+                        .getNamespaceURI()
+                        .equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals("pre"));
         assertTrue(element.getDefaultNamespace() == null);
-        assertTrue(result.indexOf("xmlns=") <
-                0);// Make sure that the serialized string does not contain default prefix declaration
+        // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(result.indexOf("xmlns=") < 0);
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
 
         // Serialize again
@@ -74,11 +80,13 @@ public class TestName1QualifiedPrefix extends AxiomTestCase {
         result = writer.toString();
 
         assertTrue(element.getLocalName().equals("library"));
-        assertTrue(element.getNamespace().getNamespaceURI().equals(
-                "http://www.sosnoski.com/uwjws/library"));
+        assertTrue(
+                element.getNamespace()
+                        .getNamespaceURI()
+                        .equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals("pre"));
-        assertTrue(result.indexOf("xmlns=") <
-                0); // Make sure that the serialized string does not contain default prefix declaration
+        // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(result.indexOf("xmlns=") < 0);
         assertTrue(element.getDefaultNamespace() == null);
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
     }

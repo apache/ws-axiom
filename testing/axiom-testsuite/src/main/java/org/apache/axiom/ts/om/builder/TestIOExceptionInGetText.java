@@ -32,12 +32,11 @@ import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Test the behavior of the builder when an exception is thrown by
- * {@link XMLStreamReader#getText()}. The test is only effective if the StAX
- * implementation lazily loads the character data for a
- * {@link javax.xml.stream.XMLStreamConstants#CHARACTERS} event. This is the
- * case for Woodstox. It checks that after the exception is thrown by the
- * parser, the builder no longer attempts to access the parser.
+ * Test the behavior of the builder when an exception is thrown by {@link
+ * XMLStreamReader#getText()}. The test is only effective if the StAX implementation lazily loads
+ * the character data for a {@link javax.xml.stream.XMLStreamConstants#CHARACTERS} event. This is
+ * the case for Woodstox. It checks that after the exception is thrown by the parser, the builder no
+ * longer attempts to access the parser.
  */
 public class TestIOExceptionInGetText extends AxiomTestCase {
     public TestIOExceptionInGetText(OMMetaFactory metaFactory) {
@@ -51,18 +50,21 @@ public class TestIOExceptionInGetText extends AxiomTestCase {
         // versions of XLXP) have a large input buffer and would throw an exception already
         // when the XMLStreamReader is created.
         StringBuffer xml = new StringBuffer("<root>");
-        for (int i=0; i<100000; i++) {
+        for (int i = 0; i < 100000; i++) {
             xml.append('x');
         }
-        InputStream in = new ExceptionInputStream(new ByteArrayInputStream(xml.toString().getBytes("ASCII")));
-        
+        InputStream in =
+                new ExceptionInputStream(
+                        new ByteArrayInputStream(xml.toString().getBytes("ASCII")));
+
         XMLStreamReader originalReader = StAXUtils.createXMLStreamReader(in);
         InvocationCounter invocationCounter = new InvocationCounter();
-        XMLStreamReader reader = (XMLStreamReader)invocationCounter.createProxy(originalReader);
-        
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(
-                metaFactory.getOMFactory(), reader).getDocumentElement();
-        
+        XMLStreamReader reader = (XMLStreamReader) invocationCounter.createProxy(originalReader);
+
+        OMElement element =
+                OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
+                        .getDocumentElement();
+
         try {
             element.getNextOMSibling();
             fail("Expected exception");
@@ -79,7 +81,7 @@ public class TestIOExceptionInGetText extends AxiomTestCase {
         } catch (Exception ex) {
             // Expected
         }
-        
+
         assertEquals(0, invocationCounter.getInvocationCount());
     }
 }

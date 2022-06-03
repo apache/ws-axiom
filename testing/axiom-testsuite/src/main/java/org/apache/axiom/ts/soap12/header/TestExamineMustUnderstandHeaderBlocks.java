@@ -38,30 +38,32 @@ public class TestExamineMustUnderstandHeaderBlocks extends SOAPTestCase {
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
         SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
         OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
-        soapHeader.addHeaderBlock("echoOk1", namespace).setRole(
-                "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
+        soapHeader
+                .addHeaderBlock("echoOk1", namespace)
+                .setRole("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
 
-        SOAPHeaderBlock headerBlock1 = soapHeader.addHeaderBlock("echoOk2",
-                                                                   namespace);
-        headerBlock1.setRole(
-                "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
+        SOAPHeaderBlock headerBlock1 = soapHeader.addHeaderBlock("echoOk2", namespace);
+        headerBlock1.setRole("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
         headerBlock1.setMustUnderstand(true);
 
-        soapHeader.addHeaderBlock("echoOk3", namespace).setMustUnderstand(
-                true);
+        soapHeader.addHeaderBlock("echoOk3", namespace).setMustUnderstand(true);
 
-        Iterator iterator = soapHeader.examineMustUnderstandHeaderBlocks(
-                "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
+        Iterator iterator =
+                soapHeader.examineMustUnderstandHeaderBlocks(
+                        "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
         assertTrue(iterator.hasNext());
         SOAPHeaderBlock headerBlock = (SOAPHeaderBlock) iterator.next();
         assertFalse(
                 "SOAP Header Test : - examineMustUnderstandHeaderBlocks method returns empty iterator",
                 headerBlock == null);
-        assertTrue("SOAP Header Test : - HeaderBlock local name mismatch",
-                   headerBlock.getLocalName().equals("echoOk2"));
-        assertTrue("SOAP Header Test : - HeaderBlock role value mismatch",
-                   headerBlock.getRole().equals(
-                           "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver"));
+        assertTrue(
+                "SOAP Header Test : - HeaderBlock local name mismatch",
+                headerBlock.getLocalName().equals("echoOk2"));
+        assertTrue(
+                "SOAP Header Test : - HeaderBlock role value mismatch",
+                headerBlock
+                        .getRole()
+                        .equals("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver"));
         assertFalse(
                 "SOAP Header Test : - examineMustUnderstandHeaderBlocks method returns an iterator with more than one object",
                 iterator.hasNext());

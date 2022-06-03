@@ -32,41 +32,44 @@ import org.apache.axiom.ts.om.sourcedelement.util.PushOMDataSource;
  * instances.
  */
 final class TestDocument {
-    static final TestDocument DOCUMENT1 = new TestDocument(
-            "<library xmlns=\"http://www.sosnoski.com/uwjws/library\" books=\"1\">" +
-            "<type id=\"java\" category=\"professional\" deductable=\"true\">" +
-            "<name>Java Reference</name></type><type id=\"xml\" " +
-            "category=\"professional\" deductable=\"true\"><name>XML Reference</name>" +
-            "</type><book isbn=\"1930110111\" type=\"xml\"><title>XSLT Quickly</title>" +
-            "<author>DuCharme, Bob</author><publisher>Manning</publisher>" +
-            "<price>29.95</price></book></library>",
-            new QName("http://www.sosnoski.com/uwjws/library", "library", ""));
-    
+    static final TestDocument DOCUMENT1 =
+            new TestDocument(
+                    "<library xmlns=\"http://www.sosnoski.com/uwjws/library\" books=\"1\">"
+                            + "<type id=\"java\" category=\"professional\" deductable=\"true\">"
+                            + "<name>Java Reference</name></type><type id=\"xml\" "
+                            + "category=\"professional\" deductable=\"true\"><name>XML Reference</name>"
+                            + "</type><book isbn=\"1930110111\" type=\"xml\"><title>XSLT Quickly</title>"
+                            + "<author>DuCharme, Bob</author><publisher>Manning</publisher>"
+                            + "<price>29.95</price></book></library>",
+                    new QName("http://www.sosnoski.com/uwjws/library", "library", ""));
+
     // Same as DOCUMENT1 except that an non-default prefix is used
-    static final TestDocument DOCUMENT2 = new TestDocument(
-            "<pre:library xmlns:pre=\"http://www.sosnoski.com/uwjws/library\" books=\"1\">" +
-            "<pre:type id=\"java\" category=\"professional\" deductable=\"true\">" +
-            "<pre:name>Java Reference</pre:name></pre:type><pre:type id=\"xml\" " +
-            "category=\"professional\" deductable=\"true\"><pre:name>XML Reference</pre:name>" +
-            "</pre:type><pre:book isbn=\"1930110111\" type=\"xml\"><pre:title>XSLT Quickly</pre:title>" +
-            "<pre:author>DuCharme, Bob</pre:author><pre:publisher>Manning</pre:publisher>" +
-            "<pre:price>29.95</pre:price></pre:book></pre:library>",
-            new QName("http://www.sosnoski.com/uwjws/library", "library", "pre"));
-    
+    static final TestDocument DOCUMENT2 =
+            new TestDocument(
+                    "<pre:library xmlns:pre=\"http://www.sosnoski.com/uwjws/library\" books=\"1\">"
+                            + "<pre:type id=\"java\" category=\"professional\" deductable=\"true\">"
+                            + "<pre:name>Java Reference</pre:name></pre:type><pre:type id=\"xml\" "
+                            + "category=\"professional\" deductable=\"true\"><pre:name>XML Reference</pre:name>"
+                            + "</pre:type><pre:book isbn=\"1930110111\" type=\"xml\"><pre:title>XSLT Quickly</pre:title>"
+                            + "<pre:author>DuCharme, Bob</pre:author><pre:publisher>Manning</pre:publisher>"
+                            + "<pre:price>29.95</pre:price></pre:book></pre:library>",
+                    new QName("http://www.sosnoski.com/uwjws/library", "library", "pre"));
+
     // Same as DOCUMENT1 except that the elements are unqualified
-    static final TestDocument DOCUMENT3 = new TestDocument(
-            "<library books=\"1\">" +
-            "<type id=\"java\" category=\"professional\" deductable=\"true\">" +
-            "<name>Java Reference</name></type><type id=\"xml\" " +
-            "category=\"professional\" deductable=\"true\"><name>XML Reference</name>" +
-            "</type><book isbn=\"1930110111\" type=\"xml\"><title>XSLT Quickly</title>" +
-            "<author>DuCharme, Bob</author><publisher>Manning</publisher>" +
-            "<price>29.95</price></book></library>",
-            new QName("library"));
-    
+    static final TestDocument DOCUMENT3 =
+            new TestDocument(
+                    "<library books=\"1\">"
+                            + "<type id=\"java\" category=\"professional\" deductable=\"true\">"
+                            + "<name>Java Reference</name></type><type id=\"xml\" "
+                            + "category=\"professional\" deductable=\"true\"><name>XML Reference</name>"
+                            + "</type><book isbn=\"1930110111\" type=\"xml\"><title>XSLT Quickly</title>"
+                            + "<author>DuCharme, Bob</author><publisher>Manning</publisher>"
+                            + "<price>29.95</price></book></library>",
+                    new QName("library"));
+
     private final String content;
     private final QName qname;
-    
+
     private TestDocument(String content, QName qname) {
         this.content = content;
         this.qname = qname;
@@ -75,7 +78,7 @@ final class TestDocument {
     String getContent() {
         return content;
     }
-    
+
     OMSourcedElement createOMSourcedElement(OMFactory factory, boolean push, boolean destructive) {
         OMNamespace ns = factory.createOMNamespace(qname.getNamespaceURI(), qname.getPrefix());
         OMDataSource ds;

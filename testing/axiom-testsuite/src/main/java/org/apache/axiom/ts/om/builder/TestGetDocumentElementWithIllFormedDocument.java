@@ -37,8 +37,9 @@ public class TestGetDocumentElementWithIllFormedDocument extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<!--comment1-->"));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), new StringReader("<!--comment1-->"));
         try {
             builder.getDocumentElement();
             fail("Expected OMException");

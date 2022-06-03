@@ -28,8 +28,9 @@ import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestImportInformationItem extends CrossOMTestCase {
     private final XMLSample file;
-    
-    public TestImportInformationItem(OMMetaFactory metaFactory, OMMetaFactory altMetaFactory, XMLSample file) {
+
+    public TestImportInformationItem(
+            OMMetaFactory metaFactory, OMMetaFactory altMetaFactory, XMLSample file) {
         super(metaFactory, altMetaFactory);
         this.file = file;
         addTestParameter("file", file.getName());
@@ -39,7 +40,11 @@ public class TestImportInformationItem extends CrossOMTestCase {
     protected void runTest() throws Throwable {
         OMDocument original = file.getAdapter(XMLSampleAdapter.class).getDocument(metaFactory);
         assertAbout(xml())
-                .that(xml(OMDocument.class, (OMDocument)metaFactory.getOMFactory().importInformationItem(original)))
+                .that(
+                        xml(
+                                OMDocument.class,
+                                (OMDocument)
+                                        metaFactory.getOMFactory().importInformationItem(original)))
                 .hasSameContentAs(xml(OMDocument.class, original));
     }
 }

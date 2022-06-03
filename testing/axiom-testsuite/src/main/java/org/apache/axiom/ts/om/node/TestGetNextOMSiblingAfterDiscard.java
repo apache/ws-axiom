@@ -36,8 +36,12 @@ public class TestGetNextOMSiblingAfterDiscard extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(
-                "<element><!--comment--><a/><!--comment--></element>")).getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory,
+                                new StringReader(
+                                        "<element><!--comment--><a/><!--comment--></element>"))
+                        .getDocumentElement();
         OMNode child = element.getFirstOMChild();
         element.discard();
         try {

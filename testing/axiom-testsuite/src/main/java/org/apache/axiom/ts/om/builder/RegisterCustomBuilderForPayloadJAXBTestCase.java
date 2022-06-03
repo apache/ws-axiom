@@ -48,17 +48,24 @@ public abstract class RegisterCustomBuilderForPayloadJAXBTestCase extends AxiomT
         document.addChild(content);
         return document;
     }
-    
-    protected final void test(DataHandler dh, OMXMLParserWrapper builder, boolean same) throws Exception {
-        JAXBCustomBuilder customBuilder = new JAXBCustomBuilder(JAXBContext.newInstance(MyDocument.class));
-        ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, customBuilder);
+
+    protected final void test(DataHandler dh, OMXMLParserWrapper builder, boolean same)
+            throws Exception {
+        JAXBCustomBuilder customBuilder =
+                new JAXBCustomBuilder(JAXBContext.newInstance(MyDocument.class));
+        ((CustomBuilderSupport) builder)
+                .registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, customBuilder);
         builder.getDocumentElement().build();
-        MyDocument myDocument = (MyDocument)customBuilder.getJaxbObject();
+        MyDocument myDocument = (MyDocument) customBuilder.getJaxbObject();
         if (same) {
             assertSame(dh, myDocument.getContent());
         } else {
             assertNotSame(dh, myDocument.getContent());
-            IOTestUtils.compareStreams(dh.getInputStream(), "expected", myDocument.getContent().getInputStream(), "actual");
+            IOTestUtils.compareStreams(
+                    dh.getInputStream(),
+                    "expected",
+                    myDocument.getContent().getInputStream(),
+                    "actual");
         }
     }
 }

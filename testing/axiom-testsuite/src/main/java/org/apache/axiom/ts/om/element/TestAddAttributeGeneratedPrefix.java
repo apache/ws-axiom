@@ -34,8 +34,9 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
     private final boolean defaultNamespaceInScope;
-    
-    public TestAddAttributeGeneratedPrefix(OMMetaFactory metaFactory, boolean defaultNamespaceInScope) {
+
+    public TestAddAttributeGeneratedPrefix(
+            OMMetaFactory metaFactory, boolean defaultNamespaceInScope) {
         super(metaFactory);
         this.defaultNamespaceInScope = defaultNamespaceInScope;
         addTestParameter("defaultNamespaceInScope", defaultNamespaceInScope);
@@ -50,7 +51,8 @@ public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
             parent.declareDefaultNamespace("urn:test");
         }
         OMElement element = factory.createOMElement("test", otherNS, parent);
-        OMAttribute attr = element.addAttribute("attr", "value", factory.createOMNamespace("urn:test", null));
+        OMAttribute attr =
+                element.addAttribute("attr", "value", factory.createOMNamespace("urn:test", null));
         OMNamespace ns = attr.getNamespace();
         assertTrue(ns.getPrefix().length() > 0);
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();

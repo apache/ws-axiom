@@ -34,15 +34,16 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests the behavior of
- * {@link OMElement#getXMLStreamReader(boolean, OMXMLStreamReaderConfiguration)} in conjunction with
- * {@link OMXMLStreamReaderConfiguration#isPreserveNamespaceContext()}.
+ * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean,
+ * OMXMLStreamReaderConfiguration)} in conjunction with {@link
+ * OMXMLStreamReaderConfiguration#isPreserveNamespaceContext()}.
  */
 public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTestCase {
     private final boolean preserveNamespaceContext;
     private final boolean cache;
 
-    public TestGetXMLStreamReaderWithPreserveNamespaceContext(OMMetaFactory metaFactory, boolean preserveNamespaceContext, boolean cache) {
+    public TestGetXMLStreamReaderWithPreserveNamespaceContext(
+            OMMetaFactory metaFactory, boolean preserveNamespaceContext, boolean cache) {
         super(metaFactory);
         this.preserveNamespaceContext = preserveNamespaceContext;
         addTestParameter("preserveNamespaceContext", preserveNamespaceContext);
@@ -52,15 +53,20 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTes
 
     @Override
     protected void runTest() throws Throwable {
-        InputStream in = TestGetXMLStreamReaderWithPreserveNamespaceContext.class.getResourceAsStream("AXIOM-114.xml");
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocumentElement();
+        InputStream in =
+                TestGetXMLStreamReaderWithPreserveNamespaceContext.class.getResourceAsStream(
+                        "AXIOM-114.xml");
+        OMElement root =
+                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
+                        .getDocumentElement();
         root.declareNamespace("http://example.org", "p");
         OMXMLStreamReaderConfiguration configuration = new OMXMLStreamReaderConfiguration();
         configuration.setPreserveNamespaceContext(preserveNamespaceContext);
-        XMLStreamReader reader = root.getFirstElement().getFirstElement().getXMLStreamReader(cache, configuration);
+        XMLStreamReader reader =
+                root.getFirstElement().getFirstElement().getXMLStreamReader(cache, configuration);
         assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         Set<String> prefixes = new HashSet<>();
-        for (int i=0; i<reader.getNamespaceCount(); i++) {
+        for (int i = 0; i < reader.getNamespaceCount(); i++) {
             prefixes.add(reader.getNamespacePrefix(i));
         }
         if (preserveNamespaceContext) {

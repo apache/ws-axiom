@@ -40,9 +40,12 @@ import org.xml.sax.InputSource;
 public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
     private final SAXImplementation implementation;
     private final Boolean expandEntityReferences;
-    
-    public TestCreateOMBuilderFromSAXSource(OMMetaFactory metaFactory, XMLSample file,
-            SAXImplementation implementation, Boolean expandEntityReferences) {
+
+    public TestCreateOMBuilderFromSAXSource(
+            OMMetaFactory metaFactory,
+            XMLSample file,
+            SAXImplementation implementation,
+            Boolean expandEntityReferences) {
         super(metaFactory, file);
         this.implementation = implementation;
         addTestParameter("implementation", implementation.getName());
@@ -58,13 +61,17 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
         factory.setNamespaceAware(true);
         factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
         SAXParser parser = factory.newSAXParser();
-        SAXSource source = new SAXSource(parser.getXMLReader(), new InputSource(file.getUrl().toString()));
+        SAXSource source =
+                new SAXSource(parser.getXMLReader(), new InputSource(file.getUrl().toString()));
         OMXMLParserWrapper builder;
         if (expandEntityReferences == null) {
             builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
         } else {
-            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source,
-                    expandEntityReferences.booleanValue());
+            builder =
+                    OMXMLBuilderFactory.createOMBuilder(
+                            metaFactory.getOMFactory(),
+                            source,
+                            expandEntityReferences.booleanValue());
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         builder.getDocument().serialize(baos);
@@ -74,7 +81,10 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
         assertAbout(xml())
                 .that(actual)
                 .ignoringWhitespaceInPrologAndEpilog()
-                .expandingEntityReferences(expandEntityReferences == null ? false : expandEntityReferences.booleanValue())
+                .expandingEntityReferences(
+                        expandEntityReferences == null
+                                ? false
+                                : expandEntityReferences.booleanValue())
                 .hasSameContentAs(
                         DOMImplementation.XERCES.parse(
                                 new InputSource(file.getUrl().toString()),

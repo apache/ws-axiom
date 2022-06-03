@@ -32,7 +32,7 @@ public class TestGetOrCreateHeader extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
-        SOAPHeader header = (SOAPHeader)envelope.getFirstOMChild();
+        SOAPHeader header = (SOAPHeader) envelope.getFirstOMChild();
         assertSame(header, envelope.getOrCreateHeader());
     }
 }

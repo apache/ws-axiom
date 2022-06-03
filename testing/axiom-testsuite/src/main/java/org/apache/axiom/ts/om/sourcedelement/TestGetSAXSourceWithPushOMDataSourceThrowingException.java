@@ -39,18 +39,23 @@ public class TestGetSAXSourceWithPushOMDataSourceThrowingException extends Axiom
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = metaFactory.getOMFactory().createOMElement(new AbstractPushOMDataSource() {
-            
-            @Override
-            public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-                throw new XMLStreamException("TEST");
-            }
-            
-            @Override
-            public boolean isDestructiveWrite() {
-                return false;
-            }
-        });
+        OMElement element =
+                metaFactory
+                        .getOMFactory()
+                        .createOMElement(
+                                new AbstractPushOMDataSource() {
+
+                                    @Override
+                                    public void serialize(XMLStreamWriter xmlWriter)
+                                            throws XMLStreamException {
+                                        throw new XMLStreamException("TEST");
+                                    }
+
+                                    @Override
+                                    public boolean isDestructiveWrite() {
+                                        return false;
+                                    }
+                                });
         SAXSource saxSource = element.getSAXSource(true);
         XMLReader reader = saxSource.getXMLReader();
         reader.setContentHandler(SAX.createNullContentHandler());

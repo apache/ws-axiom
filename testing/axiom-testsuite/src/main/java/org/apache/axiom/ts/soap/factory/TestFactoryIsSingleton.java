@@ -36,6 +36,7 @@ public class TestFactoryIsSingleton extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         FactorySelector factorySelector = spec.getAdapter(FactorySelector.class);
-        assertSame(factorySelector.getFactory(metaFactory), factorySelector.getFactory(metaFactory));
+        assertSame(
+                factorySelector.getFactory(metaFactory), factorySelector.getFactory(metaFactory));
     }
 }

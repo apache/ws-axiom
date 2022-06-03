@@ -42,16 +42,19 @@ public class TestReplaceChildMiddleIncomplete extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        Element element = (Element)OMXMLBuilderFactory.createOMBuilder(factory,
-                new StringReader("<root><a/><b/><c/></root>")).getDocumentElement();
-        Element a = (Element)element.getFirstChild();
-        Element b = (Element)a.getNextSibling();
+        Element element =
+                (Element)
+                        OMXMLBuilderFactory.createOMBuilder(
+                                        factory, new StringReader("<root><a/><b/><c/></root>"))
+                                .getDocumentElement();
+        Element a = (Element) element.getFirstChild();
+        Element b = (Element) a.getNextSibling();
         Element b2 = element.getOwnerDocument().createElementNS(null, "b2");
         element.replaceChild(b2, b);
         // This line is critical: before the invocation of replaceChild, b was not complete,
         // and the next sibling was not yet created. replaceChild must ensure that the next
         // sibling is available now.
-        Element c = (Element)b2.getNextSibling();
+        Element c = (Element) b2.getNextSibling();
         assertNotNull(c);
         // Check the other sibling relations
         assertNull(a.getPreviousSibling());

@@ -37,11 +37,15 @@ public class TestDetach extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document document = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Document document =
+                ((DOMMetaFactory) metaFactory)
+                        .newDocumentBuilderFactory()
+                        .newDocumentBuilder()
+                        .newDocument();
         Element parent = document.createElementNS(null, "parent");
         Element child = document.createElementNS(null, "child");
         parent.appendChild(child);
-        ((OMElement)child).detach();
+        ((OMElement) child).detach();
         assertNotSame(document, child.getOwnerDocument());
     }
 }

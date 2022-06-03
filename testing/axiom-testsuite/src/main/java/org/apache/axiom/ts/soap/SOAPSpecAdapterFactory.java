@@ -31,20 +31,22 @@ public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
     @Override
     public void createAdapters(SOAPSpec spec, Adapters adapters) {
         if (spec == SOAPSpec.SOAP11) {
-            adapters.add(new FactorySelector() {
-                @Override
-                public SOAPFactory getFactory(OMMetaFactory metaFactory) {
-                    return metaFactory.getSOAP11Factory();
-                }
-            });
+            adapters.add(
+                    new FactorySelector() {
+                        @Override
+                        public SOAPFactory getFactory(OMMetaFactory metaFactory) {
+                            return metaFactory.getSOAP11Factory();
+                        }
+                    });
             adapters.add(SOAPVersion.class, SOAPVersion.SOAP11);
         } else if (spec == SOAPSpec.SOAP12) {
-            adapters.add(new FactorySelector() {
-                @Override
-                public SOAPFactory getFactory(OMMetaFactory metaFactory) {
-                    return metaFactory.getSOAP12Factory();
-                }
-            });
+            adapters.add(
+                    new FactorySelector() {
+                        @Override
+                        public SOAPFactory getFactory(OMMetaFactory metaFactory) {
+                            return metaFactory.getSOAP12Factory();
+                        }
+                    });
             adapters.add(SOAPVersion.class, SOAPVersion.SOAP12);
         }
     }

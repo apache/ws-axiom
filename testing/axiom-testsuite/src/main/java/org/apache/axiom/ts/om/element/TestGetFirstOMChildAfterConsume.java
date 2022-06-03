@@ -31,9 +31,9 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMContainer#getFirstOMChild()} throws the expected
- * {@link NodeUnavailableException} if the element has been consumed using
- * {@link OMContainer#getXMLStreamReaderWithoutCaching()}.
+ * Tests that {@link OMContainer#getFirstOMChild()} throws the expected {@link
+ * NodeUnavailableException} if the element has been consumed using {@link
+ * OMContainer#getXMLStreamReaderWithoutCaching()}.
  */
 public class TestGetFirstOMChildAfterConsume extends AxiomTestCase {
     public TestGetFirstOMChildAfterConsume(OMMetaFactory metaFactory) {
@@ -43,8 +43,12 @@ public class TestGetFirstOMChildAfterConsume extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(
-                "<element><!--comment--><a/><!--comment--></element>")).getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory,
+                                new StringReader(
+                                        "<element><!--comment--><a/><!--comment--></element>"))
+                        .getDocumentElement();
         XMLStreamReader reader = element.getXMLStreamReaderWithoutCaching();
         while (reader.hasNext()) {
             reader.next();

@@ -33,14 +33,12 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-/**
- * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-107">AXIOM-107</a>.
- */
+/** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-107">AXIOM-107</a>. */
 public class TestSerializeWithXSITypeAttribute extends SampleBasedSOAPTestCase {
     private final SerializationStrategy serializationStrategy;
-    
-    public TestSerializeWithXSITypeAttribute(OMMetaFactory metaFactory, SOAPSpec spec,
-            SerializationStrategy serializationStrategy) {
+
+    public TestSerializeWithXSITypeAttribute(
+            OMMetaFactory metaFactory, SOAPSpec spec, SerializationStrategy serializationStrategy) {
         super(metaFactory, spec, SOAPSampleSet.XSI_TYPE);
         this.serializationStrategy = serializationStrategy;
         serializationStrategy.addTestParameters(this);
@@ -52,8 +50,18 @@ public class TestSerializeWithXSITypeAttribute extends SampleBasedSOAPTestCase {
         // to for the namespace used in the value of the xsi:type attribute.
         XML xml = serializationStrategy.serialize(envelope.getBody());
         // No deserialize the result and test that the attribute value can be resolved.
-        OMElement element = ((OMMetaFactorySPI)metaFactory).createOMBuilder(StAXParserConfiguration.DEFAULT, xml.getInputSource()).getDocumentElement().getFirstElement().getFirstElement();
-        assertThat(element.resolveQName(element.getAttributeValue(new QName("http://www.w3.org/2001/XMLSchema-instance", "type"))))
+        OMElement element =
+                ((OMMetaFactorySPI) metaFactory)
+                        .createOMBuilder(StAXParserConfiguration.DEFAULT, xml.getInputSource())
+                        .getDocumentElement()
+                        .getFirstElement()
+                        .getFirstElement();
+        assertThat(
+                        element.resolveQName(
+                                element.getAttributeValue(
+                                        new QName(
+                                                "http://www.w3.org/2001/XMLSchema-instance",
+                                                "type"))))
                 .isEqualTo(new QName("http://ws.apache.org/axis2/user", "myData"));
     }
 }

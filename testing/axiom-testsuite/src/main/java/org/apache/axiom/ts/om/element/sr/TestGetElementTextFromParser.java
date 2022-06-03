@@ -36,16 +36,18 @@ public class TestGetElementTextFromParser extends AxiomTestCase {
     private final BuilderFactory builderFactory;
     private final boolean cache;
     private final int build;
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param metaFactory
      * @param builderFactory
      * @param cache
-     * @param build the number of descendants that should be built before calling {@link OMContainer#getXMLStreamReader(boolean)}
+     * @param build the number of descendants that should be built before calling {@link
+     *     OMContainer#getXMLStreamReader(boolean)}
      */
-    public TestGetElementTextFromParser(OMMetaFactory metaFactory, BuilderFactory builderFactory, boolean cache, int build) {
+    public TestGetElementTextFromParser(
+            OMMetaFactory metaFactory, BuilderFactory builderFactory, boolean cache, int build) {
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.cache = cache;
@@ -57,21 +59,24 @@ public class TestGetElementTextFromParser extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        // Note: We test getElementText on a child element ("b") of the element from which we request
-        //       the XMLStreamReader ("a"). This is to make sure that the XMLStreamReader implementation actually
-        //       delegates to the underlying parser (which is not necessarily the case on "a").
-        OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory, new InputSource(
-                new StringReader("<a><b>AB<!--comment text-->CD</b></a>")));
+        // Note: We test getElementText on a child element ("b") of the element from which we
+        // request the XMLStreamReader ("a"). This is to make sure that the XMLStreamReader
+        // implementation actually delegates to the underlying parser (which is not necessarily the
+        // case on "a").
+        OMXMLParserWrapper builder =
+                builderFactory.getBuilder(
+                        metaFactory,
+                        new InputSource(new StringReader("<a><b>AB<!--comment text-->CD</b></a>")));
         OMElement element = builder.getDocumentElement();
-        
-        // Build a certain number of descendants. This is used to test scenarios where the XMLStreamReader
-        // needs to switch to pull through mode in the middle of the element from which we attempt to
-        // get the text.
+
+        // Build a certain number of descendants. This is used to test scenarios where the
+        // XMLStreamReader needs to switch to pull through mode in the middle of the element from
+        // which we attempt to get the text.
         Iterator<OMNode> it = element.getDescendants(true);
-        for (int i=0; i<build; i++) {
+        for (int i = 0; i < build; i++) {
             it.next();
         }
-        
+
         XMLStreamReader reader = element.getXMLStreamReader(cache);
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());

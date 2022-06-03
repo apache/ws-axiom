@@ -42,10 +42,10 @@ public class TestGetNodeValueBinary extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         DataSource ds = new RandomDataSource(666L, 1000);
-        Text text = (Text)factory.createOMText(new DataHandler(ds), false);
+        Text text = (Text) factory.createOMText(new DataHandler(ds), false);
         String nodeValue = text.getNodeValue();
         assertThat(nodeValue).isNotNull();
-        IOTestUtils.compareStreams(ds.getInputStream(),
-                new ByteArrayInputStream(Base64.decodeBase64(nodeValue)));
+        IOTestUtils.compareStreams(
+                ds.getInputStream(), new ByteArrayInputStream(Base64.decodeBase64(nodeValue)));
     }
 }

@@ -39,28 +39,28 @@ public abstract class CloneTestCase extends SOAPTestCase {
 
     /**
      * Make a copy of the source envelope and validate the target tree
+     *
      * @param sourceEnv
      * @throws Exception
      */
     protected void copyAndCheck(SOAPEnvelope sourceEnv) throws Exception {
-       
+
         SOAPCloneOptions options = new SOAPCloneOptions();
         options.setFetchDataHandlers(true);
         options.setPreserveModel(true);
         options.setCopyOMDataSources(true);
-        SOAPEnvelope targetEnv = (SOAPEnvelope)sourceEnv.clone(options);
-        
+        SOAPEnvelope targetEnv = (SOAPEnvelope) sourceEnv.clone(options);
+
         identityCheck(sourceEnv, targetEnv, "");
-        
-        assertAbout(xml())
-                .that(targetEnv.toString())
-                .hasSameContentAs(sourceEnv.toString());
-        
+
+        assertAbout(xml()).that(targetEnv.toString()).hasSameContentAs(sourceEnv.toString());
+
         sourceEnv.close(false);
     }
-    
+
     /**
      * Check the identity of each object in the tree
+     *
      * @param source
      * @param target
      * @param depth
@@ -68,34 +68,43 @@ public abstract class CloneTestCase extends SOAPTestCase {
     protected void identityCheck(OMNode source, OMNode target, String depth) {
         // System.out.println(depth + source.getClass().getName());
         if (source instanceof OMElement) {
-            
+
             if (source instanceof OMSourcedElement) {
-                assertTrue("Source = " + source.getClass().getName() + 
-                           "Target = " + target.getClass().getName(),
-                           target instanceof OMSourcedElement);
-                assertEquals(((OMSourcedElement)source).isExpanded(), ((OMSourcedElement)target).isExpanded());
-                if (((OMSourcedElement)source).isExpanded()) {
+                assertTrue(
+                        "Source = "
+                                + source.getClass().getName()
+                                + "Target = "
+                                + target.getClass().getName(),
+                        target instanceof OMSourcedElement);
+                assertEquals(
+                        ((OMSourcedElement) source).isExpanded(),
+                        ((OMSourcedElement) target).isExpanded());
+                if (((OMSourcedElement) source).isExpanded()) {
                     Iterator<OMNode> i = ((OMElement) source).getChildren();
                     Iterator<OMNode> j = ((OMElement) target).getChildren();
-                    while(i.hasNext() && j.hasNext()) {
+                    while (i.hasNext() && j.hasNext()) {
                         OMNode sourceChild = i.next();
                         OMNode targetChild = j.next();
                         identityCheck(sourceChild, targetChild, depth + "  ");
                     }
-                    assertEquals("Source and Target have different number of children",
-                               i.hasNext(), j.hasNext());
+                    assertEquals(
+                            "Source and Target have different number of children",
+                            i.hasNext(),
+                            j.hasNext());
                 }
             } else {
                 assertEquals(source.getClass(), target.getClass());
                 Iterator<OMNode> i = ((OMElement) source).getChildren();
                 Iterator<OMNode> j = ((OMElement) target).getChildren();
-                while(i.hasNext() && j.hasNext()) {
+                while (i.hasNext() && j.hasNext()) {
                     OMNode sourceChild = i.next();
                     OMNode targetChild = j.next();
                     identityCheck(sourceChild, targetChild, depth + "  ");
                 }
-                assertEquals("Source and Target have different number of children",
-                           i.hasNext(), j.hasNext());
+                assertEquals(
+                        "Source and Target have different number of children",
+                        i.hasNext(),
+                        j.hasNext());
             }
         } else {
             assertEquals(source.getClass(), target.getClass());

@@ -41,8 +41,13 @@ public class TestGetObject extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        DataSource ds = new BlobDataSource(Blobs.createBlob("test".getBytes("utf-8")), "text/plain; charset=utf-8");
-        OMSourcedElement element = factory.createOMElement(new WrappedTextNodeOMDataSourceFromDataSource(new QName("wrapper"), ds, Charset.forName("utf-8")));
+        DataSource ds =
+                new BlobDataSource(
+                        Blobs.createBlob("test".getBytes("utf-8")), "text/plain; charset=utf-8");
+        OMSourcedElement element =
+                factory.createOMElement(
+                        new WrappedTextNodeOMDataSourceFromDataSource(
+                                new QName("wrapper"), ds, Charset.forName("utf-8")));
         // getObject returns null if the data source is not of the expected type
         assertNull(element.getObject(StringOMDataSource.class));
         // Test with the right data source type

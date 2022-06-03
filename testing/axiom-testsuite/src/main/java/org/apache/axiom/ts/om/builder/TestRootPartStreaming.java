@@ -47,24 +47,30 @@ public class TestRootPartStreaming extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        
+
         // Programmatically create the message
         OMElement orgRoot = factory.createOMElement("root", null);
-        for (int i=0; i<10000; i++) {
+        for (int i = 0; i < 10000; i++) {
             factory.createOMElement("child", null, orgRoot).setText("Some text content");
         }
-        
+
         // Serialize the message as XOP even if there will be no attachment parts
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         orgRoot.serialize(baos, format);
-        
+
         // Parse the message and monitor the number of bytes read
-        InstrumentedInputStream in = new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory,
-                StAXParserConfiguration.DEFAULT,
-                MultipartBody.builder().setInputStream(in).setContentType(format.getContentType()).build());
+        InstrumentedInputStream in =
+                new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        factory,
+                        StAXParserConfiguration.DEFAULT,
+                        MultipartBody.builder()
+                                .setInputStream(in)
+                                .setContentType(format.getContentType())
+                                .build());
         OMElement root = builder.getDocumentElement();
         long count1 = in.getCount();
         XMLStreamReader reader = root.getXMLStreamReader(false);
@@ -72,9 +78,9 @@ public class TestRootPartStreaming extends AxiomTestCase {
             reader.next();
         }
         long count2 = in.getCount();
-        
+
         // We expect that after requesting the document element, only a small part (corresponding to
         // the size of the parser buffer) should have been read:
-        assertTrue(count1 < count2/2);
+        assertTrue(count1 < count2 / 2);
     }
 }

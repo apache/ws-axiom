@@ -35,17 +35,18 @@ public final class XMLSampleAdapter {
     XMLSampleAdapter(XMLSample sample) {
         this.sample = sample;
     }
-    
+
     public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory) {
-        return ((OMMetaFactorySPI)metaFactory).createOMBuilder(
-                AxiomTestCase.TEST_PARSER_CONFIGURATION,
-                new InputSource(sample.getUrl().toString()));
+        return ((OMMetaFactorySPI) metaFactory)
+                .createOMBuilder(
+                        AxiomTestCase.TEST_PARSER_CONFIGURATION,
+                        new InputSource(sample.getUrl().toString()));
     }
-    
+
     public OMDocument getDocument(OMMetaFactory metaFactory) {
         return getBuilder(metaFactory).getDocument();
     }
-    
+
     public OMElement getDocumentElement(OMMetaFactory metaFactory) {
         return getBuilder(metaFactory).getDocumentElement();
     }

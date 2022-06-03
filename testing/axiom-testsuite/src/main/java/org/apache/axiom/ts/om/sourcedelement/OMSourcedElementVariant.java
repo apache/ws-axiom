@@ -33,35 +33,49 @@ public abstract class OMSourcedElementVariant {
     public static final OMSourcedElementVariant[] INSTANCES = {
         new OMSourcedElementVariant("qname-aware-source", false, false, false) {
             @Override
-            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
-                return factory.createOMElement(new WrappedTextNodeOMDataSourceFromReader(qname, new StringReader("test")));
+            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname)
+                    throws Exception {
+                return factory.createOMElement(
+                        new WrappedTextNodeOMDataSourceFromReader(qname, new StringReader("test")));
             }
         },
         new OMSourcedElementVariant("unknown-name", true, true, true) {
             @Override
-            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
-                // TODO: can't use createOMElement(QName) here because it would generate a prefix if the prefix in the QName is empty
-                OMElement orgElement = factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
+            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname)
+                    throws Exception {
+                // TODO: can't use createOMElement(QName) here because it would generate a prefix if
+                // the prefix in the QName is empty
+                OMElement orgElement =
+                        factory.createOMElement(
+                                qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
                 return factory.createOMElement(new PullOMDataSource(orgElement.toString()));
             }
         },
         new OMSourcedElementVariant("unknown-prefix", false, false, true) {
             @Override
-            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
-                // TODO: can't use createOMElement(QName) here because it would generate a prefix if the prefix in the QName is empty
-                OMElement orgElement = factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
-                return factory.createOMElement(new PullOMDataSource(orgElement.toString()),
-                        qname.getLocalPart(), factory.createOMNamespace(qname.getNamespaceURI(), null));
+            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname)
+                    throws Exception {
+                // TODO: can't use createOMElement(QName) here because it would generate a prefix if
+                // the prefix in the QName is empty
+                OMElement orgElement =
+                        factory.createOMElement(
+                                qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
+                return factory.createOMElement(
+                        new PullOMDataSource(orgElement.toString()),
+                        qname.getLocalPart(),
+                        factory.createOMNamespace(qname.getNamespaceURI(), null));
             }
         }
     };
-    
+
     private final String name;
     private final boolean localNameRequiresExpansion;
     private final boolean namespaceURIRequiresExpansion;
     private final boolean prefixRequiresExpansion;
 
-    public OMSourcedElementVariant(String name, boolean localNameRequiresExpansion,
+    public OMSourcedElementVariant(
+            String name,
+            boolean localNameRequiresExpansion,
             boolean namespaceURIRequiresExpansion,
             boolean prefixRequiresExpansion) {
         this.name = name;
@@ -73,7 +87,7 @@ public abstract class OMSourcedElementVariant {
     public String getName() {
         return name;
     }
-    
+
     public boolean isLocalNameRequiresExpansion() {
         return localNameRequiresExpansion;
     }
@@ -83,14 +97,16 @@ public abstract class OMSourcedElementVariant {
     }
 
     public boolean isPrefixRequiresExpansion(QName qname) {
-        // Note that if the element is known in advance not to have a namespace, then expansion is never
-        // required to determine the prefix
-        return prefixRequiresExpansion && (namespaceURIRequiresExpansion || qname.getNamespaceURI().length() != 0);
+        // Note that if the element is known in advance not to have a namespace, then expansion is
+        // never required to determine the prefix
+        return prefixRequiresExpansion
+                && (namespaceURIRequiresExpansion || qname.getNamespaceURI().length() != 0);
     }
-    
+
     public void addTestProperties(MatrixTestCase test) {
         // Empty. May be overridden in subclasses.
     }
 
-    public abstract OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception;
+    public abstract OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname)
+            throws Exception;
 }

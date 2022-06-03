@@ -32,7 +32,7 @@ import org.w3c.dom.NodeList;
 /**
  * Tests the behavior of {@link Node#appendChild(Node)} if the parent has not been built completely.
  * In this case, the parent must be built before the new child is added.
- * 
+ *
  * @see TestInsertBeforeIncomplete
  */
 public class TestAppendChildIncomplete extends AxiomTestCase {
@@ -43,7 +43,11 @@ public class TestAppendChildIncomplete extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        Document document = (Document)OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/></root>")).getDocument();
+        Document document =
+                (Document)
+                        OMXMLBuilderFactory.createOMBuilder(
+                                        factory, new StringReader("<root><a/><b/></root>"))
+                                .getDocument();
         Element parent = document.getDocumentElement();
         parent.appendChild(document.createElementNS(null, "c"));
         NodeList children = parent.getChildNodes();

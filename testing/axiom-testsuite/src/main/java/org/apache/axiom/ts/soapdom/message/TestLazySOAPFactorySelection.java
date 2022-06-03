@@ -34,11 +34,15 @@ public class TestLazySOAPFactorySelection extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         // Create a SOAP model builder without specifying the SOAP version.
-        SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                SOAPSampleSet.NO_HEADER.getMessage(spec).getInputStream(), null).getSOAPMessage();
-        
+        SOAPMessage message =
+                OMXMLBuilderFactory.createSOAPModelBuilder(
+                                metaFactory,
+                                SOAPSampleSet.NO_HEADER.getMessage(spec).getInputStream(),
+                                null)
+                        .getSOAPMessage();
+
         // In some Axiom versions, this failed because at this stage, the SOAPFactory instance
         // has not yet been determined.
-        ((Document)message).createElementNS("urn:test", "p:test");
+        ((Document) message).createElementNS("urn:test", "p:test");
     }
 }

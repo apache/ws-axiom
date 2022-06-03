@@ -26,9 +26,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-65">AXIOM-65</a>.
- */
+/** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-65">AXIOM-65</a>. */
 public class TestSerializationWithTwoNonBuiltOMElements extends AxiomTestCase {
     public TestSerializationWithTwoNonBuiltOMElements(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -44,15 +42,17 @@ public class TestSerializationWithTwoNonBuiltOMElements extends AxiomTestCase {
         OMFactory omFactory = metaFactory.getOMFactory();
 
         OMElement rootElement = omFactory.createOMElement("Root", null);
-        OMElement childOne = OMXMLBuilderFactory.createOMBuilder(omFactory,
-                new StringReader(sampleXMLOne)).getDocumentElement(true);
+        OMElement childOne =
+                OMXMLBuilderFactory.createOMBuilder(omFactory, new StringReader(sampleXMLOne))
+                        .getDocumentElement(true);
         rootElement.addChild(childOne);
-        OMElement childTwo = OMXMLBuilderFactory.createOMBuilder(omFactory,
-                new StringReader(sampleXMLTwo)).getDocumentElement(true);
+        OMElement childTwo =
+                OMXMLBuilderFactory.createOMBuilder(omFactory, new StringReader(sampleXMLTwo))
+                        .getDocumentElement(true);
         rootElement.addChild(childTwo);
 
         assertTrue(expectedXML.equals(rootElement.toString()));
-        
+
         childOne.close(false);
         childTwo.close(false);
     }

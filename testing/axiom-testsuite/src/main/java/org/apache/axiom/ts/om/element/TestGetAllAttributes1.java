@@ -25,9 +25,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Test {@link OMElement#getAllAttributes()} on a programmatically created document.
- */
+/** Test {@link OMElement#getAllAttributes()} on a programmatically created document. */
 public class TestGetAllAttributes1 extends AxiomTestCase {
     public TestGetAllAttributes1(OMMetaFactory metaFactory) {
         super(metaFactory);

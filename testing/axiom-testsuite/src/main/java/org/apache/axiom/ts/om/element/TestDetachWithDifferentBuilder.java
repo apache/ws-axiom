@@ -40,8 +40,12 @@ public class TestDetachWithDifferentBuilder extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         String xml1 = "<root><a/><b/></root>";
         String xml2 = "<child>test</child>";
-        OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml1)).getDocumentElement();
-        OMElement child = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml2)).getDocumentElement(true);
+        OMElement parent =
+                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml1))
+                        .getDocumentElement();
+        OMElement child =
+                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml2))
+                        .getDocumentElement(true);
         parent.getFirstOMChild().insertSiblingBefore(child);
         // Detaching the child should not build it because its parent is built by a different
         // builder.

@@ -43,10 +43,13 @@ public class TestDiscardPartiallyBuilt extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPHeader header = envelope.getHeader();
-        OMElement from = header.getFirstChildWithName(new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));
+        OMElement from =
+                header.getFirstChildWithName(
+                        new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));
         from.getFirstElement().getFirstOMChild();
-        assertFalse(from.isComplete()); // Just in case getFirstChildWithName or getFirstElement did stupid things
-        
+        // Just in case getFirstChildWithName or getFirstElement did stupid things
+        assertFalse(from.isComplete());
+
         header.discard();
         OMElement body = envelope.getFirstElement();
         assertTrue(body instanceof SOAPBody);

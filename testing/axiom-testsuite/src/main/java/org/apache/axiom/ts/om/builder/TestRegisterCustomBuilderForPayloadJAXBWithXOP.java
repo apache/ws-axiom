@@ -32,7 +32,8 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 
-public class TestRegisterCustomBuilderForPayloadJAXBWithXOP extends RegisterCustomBuilderForPayloadJAXBTestCase {
+public class TestRegisterCustomBuilderForPayloadJAXBWithXOP
+        extends RegisterCustomBuilderForPayloadJAXBTestCase {
     public TestRegisterCustomBuilderForPayloadJAXBWithXOP(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -46,10 +47,15 @@ public class TestRegisterCustomBuilderForPayloadJAXBWithXOP extends RegisterCust
         format.setDoOptimize(true);
         createTestDocument(dh).serialize(out, format);
         out.close();
-        MultipartBody mb = MultipartBody.builder()
-                .setInputStream(blob.getInputStream())
-                .setContentType(format.getContentType())
-                .build();
-        test(dh, OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb), false);
+        MultipartBody mb =
+                MultipartBody.builder()
+                        .setInputStream(blob.getInputStream())
+                        .setContentType(format.getContentType())
+                        .build();
+        test(
+                dh,
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb),
+                false);
     }
 }

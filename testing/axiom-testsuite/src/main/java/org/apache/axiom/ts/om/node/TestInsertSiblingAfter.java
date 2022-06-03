@@ -25,9 +25,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests the behavior of {@link OMNode#insertSiblingAfter(OMNode)}.
- */
+/** Tests the behavior of {@link OMNode#insertSiblingAfter(OMNode)}. */
 public class TestInsertSiblingAfter extends AxiomTestCase {
     public TestInsertSiblingAfter(OMMetaFactory metaFactory) {
         super(metaFactory);

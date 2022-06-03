@@ -35,12 +35,10 @@ public class TestCreateOMText extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace namespace =
                 factory.createOMNamespace("http://www.apache.org/~chinthaka", "myhome");
-        OMElement omElement = factory.createOMElement("chinthaka",
-                                                        namespace);
+        OMElement omElement = factory.createOMElement("chinthaka", namespace);
         String text = "sampleText";
         OMText omText = factory.createOMText(omElement, text);
-        assertTrue("Programatically created OMText should have done = true ",
-                   omText.isComplete());
+        assertTrue("Programatically created OMText should have done = true ", omText.isComplete());
         assertTrue(
                 "Programatically created OMText should have correct text value ",
                 text.equals(omText.getText()));

@@ -40,7 +40,8 @@ public class TestCreateOMTextCDATASectionWithParent extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("test", null);
-        OMText text = factory.createOMText(parent, "cdata section content", OMNode.CDATA_SECTION_NODE);
+        OMText text =
+                factory.createOMText(parent, "cdata section content", OMNode.CDATA_SECTION_NODE);
         assertTrue(text instanceof CDATASection);
     }
 }

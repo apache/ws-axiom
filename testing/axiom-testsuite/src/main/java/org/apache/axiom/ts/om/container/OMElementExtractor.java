@@ -36,7 +36,7 @@ import org.xml.sax.InputSource;
 
 final class OMElementExtractor extends OMContainerExtractor {
     private final boolean detached;
-    
+
     OMElementExtractor(boolean detached) {
         this.detached = detached;
     }
@@ -53,8 +53,10 @@ final class OMElementExtractor extends OMContainerExtractor {
             Document doc = DOMImplementation.XERCES.parse(testFileContent);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             // Use Xalan's factory directly to avoid issues if Saxon is selected as default
-            XSLTImplementation.XALAN.newTransformerFactory().newTransformer().transform(
-                    new DOMSource(doc.getDocumentElement()), new StreamResult(baos));
+            XSLTImplementation.XALAN
+                    .newTransformerFactory()
+                    .newTransformer()
+                    .transform(new DOMSource(doc.getDocumentElement()), new StreamResult(baos));
             return new InputSource(new ByteArrayInputStream(baos.toByteArray()));
         } finally {
             testFileContent.close();

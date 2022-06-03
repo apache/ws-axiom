@@ -40,7 +40,9 @@ public class TestWrongParent1 extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPBody parent = soapFactory.createSOAPBody();
-        SOAPHeaderBlock hb = soapFactory.createSOAPHeaderBlock("MyHeader", soapFactory.createOMNamespace("urn:test", "p"));
+        SOAPHeaderBlock hb =
+                soapFactory.createSOAPHeaderBlock(
+                        "MyHeader", soapFactory.createOMNamespace("urn:test", "p"));
         try {
             parent.addChild(hb);
             fail("Expected SOAPProcessingException");

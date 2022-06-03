@@ -28,9 +28,9 @@ import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 /**
- * Tests that {@link OMInformationItem#getOMFactory()} returns the expected {@link SOAPFactory}
- * when invoked on a {@link SOAPMessage} created by a builder. Note that this is non trivial
- * because the factory is auto-detected based on the namespace URI of the SOAP envelope.
+ * Tests that {@link OMInformationItem#getOMFactory()} returns the expected {@link SOAPFactory} when
+ * invoked on a {@link SOAPMessage} created by a builder. Note that this is non trivial because the
+ * factory is auto-detected based on the namespace URI of the SOAP envelope.
  */
 public class TestGetOMFactoryWithParser extends SOAPTestCase {
     public TestGetOMFactoryWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -39,7 +39,11 @@ public class TestGetOMFactoryWithParser extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPMessage message = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPMessage(metaFactory);
+        SOAPMessage message =
+                SOAPSampleSet.WSA
+                        .getMessage(spec)
+                        .getAdapter(SOAPSampleAdapter.class)
+                        .getSOAPMessage(metaFactory);
         assertSame(soapFactory, message.getOMFactory());
     }
 }

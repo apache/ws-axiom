@@ -32,12 +32,12 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that the {@link CharacterDataReader} returned by {@link OMContainer#getXMLStreamReader()} for
- * an OM tree created by a builder correctly implements the {@link DTDReader} extension.
+ * Tests that the {@link CharacterDataReader} returned by {@link OMContainer#getXMLStreamReader()}
+ * for an OM tree created by a builder correctly implements the {@link DTDReader} extension.
  */
 public class TestCharacterDataReaderFromParser extends AxiomTestCase {
     private final boolean cache;
-    
+
     public TestCharacterDataReaderFromParser(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
@@ -47,9 +47,14 @@ public class TestCharacterDataReaderFromParser extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         String text = "This is a test for the CharacterDataReader extension";
-        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new StringReader("<root>" + text + "</root>")).getDocument();
+        OMDocument doc =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader("<root>" + text + "</root>"))
+                        .getDocument();
         XMLStreamReader reader = doc.getXMLStreamReader(cache);
-        CharacterDataReader cdataReader = (CharacterDataReader)reader.getProperty(CharacterDataReader.PROPERTY);
+        CharacterDataReader cdataReader =
+                (CharacterDataReader) reader.getProperty(CharacterDataReader.PROPERTY);
         assertNotNull(cdataReader);
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         StringWriter sw = new StringWriter();

@@ -32,10 +32,11 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMContainer#serializeAndConsume(XMLStreamWriter)} throws an appropriate
- * exception if the part of the tree has already been consumed using
- * {@link OMContainer#getXMLStreamReaderWithoutCaching()}.
+ * exception if the part of the tree has already been consumed using {@link
+ * OMContainer#getXMLStreamReaderWithoutCaching()}.
  */
-// TODO: in this scenario we should trigger a NodeUnavailableException as well; fix this with AXIOM-288
+// TODO: in this scenario we should trigger a NodeUnavailableException as well; fix this with
+// AXIOM-288
 public class TestSerializeAndConsumeConsumed extends AxiomTestCase {
     public TestSerializeAndConsumeConsumed(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -43,29 +44,31 @@ public class TestSerializeAndConsumeConsumed extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
-                metaFactory.getOMFactory(),
-                TestGetChildElementsConsumed.class.getResourceAsStream("purchase-order.xml"));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(),
+                        TestGetChildElementsConsumed.class.getResourceAsStream(
+                                "purchase-order.xml"));
 
         OMElement documentElement = builder.getDocumentElement();
 
         XMLStreamReader reader = documentElement.getXMLStreamReaderWithoutCaching();
 
-        //consume the parser. this should force the xml stream to be exhausted without
-        //building the tree
+        // consume the parser. this should force the xml stream to be exhausted without
+        // building the tree
         while (reader.hasNext()) {
             reader.next();
         }
 
-        //try to find the children of the document element. This should produce an
-        //error since the underlying stream is fully consumed without building the object tree
+        // try to find the children of the document element. This should produce an
+        // error since the underlying stream is fully consumed without building the object tree
         try {
             documentElement.serializeAndConsume(StAX.createNullXMLStreamWriter());
             fail("Expected NodeUnavailableException");
         } catch (NodeUnavailableException e) {
-            //wea re cool
+            // wea re cool
         }
-        
+
         documentElement.close(false);
     }
 }

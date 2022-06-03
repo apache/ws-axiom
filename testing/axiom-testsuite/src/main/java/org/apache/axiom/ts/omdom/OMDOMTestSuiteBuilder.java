@@ -41,15 +41,23 @@ public class OMDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.omdom.attr.TestGetNamespaceNormalized(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.attr.TestSetValueOnNamespaceDeclaration(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.document.TestAppendChildForbidden(metaFactory, true));
-        addTest(new org.apache.axiom.ts.omdom.document.TestAppendChildForbidden(metaFactory, false));
-        addTest(new org.apache.axiom.ts.omdom.document.TestCreateDocumentFragmentInterfaces(metaFactory));
+        addTest(
+                new org.apache.axiom.ts.omdom.document.TestAppendChildForbidden(
+                        metaFactory, false));
+        addTest(
+                new org.apache.axiom.ts.omdom.document.TestCreateDocumentFragmentInterfaces(
+                        metaFactory));
         addTest(new org.apache.axiom.ts.omdom.document.TestGetOMFactory1(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.document.TestGetOMFactory2(metaFactory));
         for (XMLSample sample : getInstances(XMLSample.class)) {
             addTest(new org.apache.axiom.ts.omdom.document.TestImportNode(metaFactory, sample));
         }
-        addTest(new org.apache.axiom.ts.omdom.document.TestInsertBeforeForbidden(metaFactory, true));
-        addTest(new org.apache.axiom.ts.omdom.document.TestInsertBeforeForbidden(metaFactory, false));
+        addTest(
+                new org.apache.axiom.ts.omdom.document.TestInsertBeforeForbidden(
+                        metaFactory, true));
+        addTest(
+                new org.apache.axiom.ts.omdom.document.TestInsertBeforeForbidden(
+                        metaFactory, false));
         addTest(new org.apache.axiom.ts.omdom.element.TestAddAttributeReplace(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestAddChildFromForeignDocument(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestAppendChildIncomplete(metaFactory));
@@ -60,15 +68,25 @@ public class OMDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.omdom.element.TestInsertBeforeIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveAttribute(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveAttributeNode(metaFactory));
-        addTest(new org.apache.axiom.ts.omdom.element.TestRemoveAttributeNSNamespaceDeclaration(metaFactory));
+        addTest(
+                new org.apache.axiom.ts.omdom.element.TestRemoveAttributeNSNamespaceDeclaration(
+                        metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveChildIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestReplaceChildFirstIncomplete(metaFactory));
-        addTest(new org.apache.axiom.ts.omdom.element.TestReplaceChildMiddleIncomplete(metaFactory));
+        addTest(
+                new org.apache.axiom.ts.omdom.element.TestReplaceChildMiddleIncomplete(
+                        metaFactory));
         addTest(new org.apache.axiom.ts.omdom.factory.TestCreateOMAttribute(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.factory.TestCreateOMTextCDATASection(metaFactory));
-        addTest(new org.apache.axiom.ts.omdom.factory.TestCreateOMTextCDATASectionWithParent(metaFactory));
-        addTest(new org.apache.axiom.ts.omdom.node.TestInsertSiblingAfterFromForeignDocument(metaFactory));
-        addTest(new org.apache.axiom.ts.omdom.node.TestInsertSiblingBeforeFromForeignDocument(metaFactory));
+        addTest(
+                new org.apache.axiom.ts.omdom.factory.TestCreateOMTextCDATASectionWithParent(
+                        metaFactory));
+        addTest(
+                new org.apache.axiom.ts.omdom.node.TestInsertSiblingAfterFromForeignDocument(
+                        metaFactory));
+        addTest(
+                new org.apache.axiom.ts.omdom.node.TestInsertSiblingBeforeFromForeignDocument(
+                        metaFactory));
         addTest(new org.apache.axiom.ts.omdom.text.TestCloneNodeBinary(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.text.TestGetNodeValueBinary(metaFactory));
     }

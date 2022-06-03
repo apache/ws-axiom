@@ -35,11 +35,11 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
 
 public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
-    private final static QName XOP_INCLUDE = 
+    private static final QName XOP_INCLUDE =
             new QName("http://www.w3.org/2004/08/xop/include", "Include");
 
     private final boolean cache;
-    
+
     public TestGetXMLStreamReaderMTOMEncoded(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
@@ -49,39 +49,43 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         InputStream inStream = MTOMSample.SAMPLE2.getInputStream();
-        MultipartBody mb = MultipartBody.builder()
-                .setInputStream(inStream)
-                .setContentType(MTOMSample.SAMPLE2.getContentType())
-                .build();
-        OMElement root = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getDocumentElement();
-        
+        MultipartBody mb =
+                MultipartBody.builder()
+                        .setInputStream(inStream)
+                        .setContentType(MTOMSample.SAMPLE2.getContentType())
+                        .build();
+        OMElement root =
+                OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getDocumentElement();
+
         // Use tree as input to XMLStreamReader
         // Issue XOP:Include events for optimized MTOM text nodes
         XOPEncoded<XMLStreamReader> xopEncodedStream = root.getXOPEncodedStreamReader(cache);
         XMLStreamReader xmlStreamReader = xopEncodedStream.getRootPart();
-        
+
         DataHandler dh = null;
-        while(xmlStreamReader.hasNext() && dh == null) {
+        while (xmlStreamReader.hasNext() && dh == null) {
             xmlStreamReader.next();
             if (xmlStreamReader.isStartElement()) {
-                QName qName =xmlStreamReader.getName();
+                QName qName = xmlStreamReader.getName();
                 if (XOP_INCLUDE.equals(qName)) {
                     String hrefValue = xmlStreamReader.getAttributeValue("", "href");
                     assertThat(hrefValue).startsWith("cid:");
                     if (hrefValue != null) {
-                        dh = xopEncodedStream.getAttachmentAccessor().getDataHandler(
-                                hrefValue.substring(4));
+                        dh =
+                                xopEncodedStream
+                                        .getAttachmentAccessor()
+                                        .getDataHandler(hrefValue.substring(4));
                     }
                 }
             }
         }
-        assertTrue(dh != null);   
-        
+        assertTrue(dh != null);
+
         // Make sure next event is an an XOP_Include END element
         xmlStreamReader.next();
         assertTrue(xmlStreamReader.isEndElement());
         assertTrue(XOP_INCLUDE.equals(xmlStreamReader.getName()));
-        
+
         // Make sure the next event is the end tag of name
         xmlStreamReader.next();
         assertTrue(xmlStreamReader.isEndElement());

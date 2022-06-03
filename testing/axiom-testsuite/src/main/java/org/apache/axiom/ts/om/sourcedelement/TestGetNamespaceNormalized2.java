@@ -29,11 +29,11 @@ import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMElement#getNamespace()} returns <code>null</code> for an
- * {@link OMSourcedElement} created using {@link OMFactory#createOMElement(OMDataSource, QName)} and
- * a {@link QName} without namespace.
- * <p>
- * This is a regression test for <a
+ * Tests that {@link OMElement#getNamespace()} returns <code>null</code> for an {@link
+ * OMSourcedElement} created using {@link OMFactory#createOMElement(OMDataSource, QName)} and a
+ * {@link QName} without namespace.
+ *
+ * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalized2 extends AxiomTestCase {
@@ -44,8 +44,9 @@ public class TestGetNamespaceNormalized2 extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(new StringOMDataSource(
-                "<element>content</element>"), new QName("element"));
+        OMSourcedElement element =
+                factory.createOMElement(
+                        new StringOMDataSource("<element>content</element>"), new QName("element"));
         assertNull(element.getNamespace());
         // Expand the element
         element.getFirstOMChild();

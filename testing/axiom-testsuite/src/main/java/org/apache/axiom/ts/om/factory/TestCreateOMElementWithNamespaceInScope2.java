@@ -32,7 +32,8 @@ import org.apache.axiom.om.OMNamespace;
  * not the existing prefix.
  */
 public class TestCreateOMElementWithNamespaceInScope2 extends CreateOMElementTestCase {
-    public TestCreateOMElementWithNamespaceInScope2(OMMetaFactory metaFactory, CreateOMElementVariant variant) {
+    public TestCreateOMElementWithNamespaceInScope2(
+            OMMetaFactory metaFactory, CreateOMElementVariant variant) {
         super(metaFactory, variant, null);
     }
 

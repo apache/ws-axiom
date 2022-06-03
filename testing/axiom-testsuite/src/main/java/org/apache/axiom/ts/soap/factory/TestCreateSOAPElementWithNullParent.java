@@ -32,26 +32,31 @@ import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**
- * Tests {@link SOAPFactory#createSOAPHeader(SOAPEnvelope)},
- * {@link SOAPFactory#createSOAPBody(SOAPEnvelope)}, {@link SOAPFactory#createSOAPFault(SOAPBody)},
- * {@link SOAPFactory#createSOAPFaultCode(SOAPFault)},
- * {@link SOAPFactory#createSOAPFaultValue(SOAPFaultCode)},
- * {@link SOAPFactory#createSOAPFaultValue(SOAPFaultSubCode)},
- * {@link SOAPFactory#createSOAPFaultSubCode(SOAPFaultCode)},
- * {@link SOAPFactory#createSOAPFaultSubCode(SOAPFaultSubCode)},
- * {@link SOAPFactory#createSOAPFaultReason(SOAPFault)},
- * {@link SOAPFactory#createSOAPFaultText(SOAPFaultReason)},
- * {@link SOAPFactory#createSOAPFaultNode(SOAPFault)},
- * {@link SOAPFactory#createSOAPFaultRole(SOAPFault)} and
- * {@link SOAPFactory#createSOAPFaultDetail(SOAPFault)} with a null parent.
+ * Tests {@link SOAPFactory#createSOAPHeader(SOAPEnvelope)}, {@link
+ * SOAPFactory#createSOAPBody(SOAPEnvelope)}, {@link SOAPFactory#createSOAPFault(SOAPBody)}, {@link
+ * SOAPFactory#createSOAPFaultCode(SOAPFault)}, {@link
+ * SOAPFactory#createSOAPFaultValue(SOAPFaultCode)}, {@link
+ * SOAPFactory#createSOAPFaultValue(SOAPFaultSubCode)}, {@link
+ * SOAPFactory#createSOAPFaultSubCode(SOAPFaultCode)}, {@link
+ * SOAPFactory#createSOAPFaultSubCode(SOAPFaultSubCode)}, {@link
+ * SOAPFactory#createSOAPFaultReason(SOAPFault)}, {@link
+ * SOAPFactory#createSOAPFaultText(SOAPFaultReason)}, {@link
+ * SOAPFactory#createSOAPFaultNode(SOAPFault)}, {@link SOAPFactory#createSOAPFaultRole(SOAPFault)}
+ * and {@link SOAPFactory#createSOAPFaultDetail(SOAPFault)} with a null parent.
  */
 public class TestCreateSOAPElementWithNullParent extends CreateSOAPElementWithoutParentTestCase {
     private final SOAPElementType parentType;
-    
-    public TestCreateSOAPElementWithNullParent(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type, SOAPElementType parentType) {
+
+    public TestCreateSOAPElementWithNullParent(
+            OMMetaFactory metaFactory,
+            SOAPSpec spec,
+            SOAPElementType type,
+            SOAPElementType parentType) {
         super(metaFactory, spec, type);
         this.parentType = parentType;
-        addTestParameter("parentType", parentType.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
+        addTestParameter(
+                "parentType",
+                parentType.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
     }
 
     @Override

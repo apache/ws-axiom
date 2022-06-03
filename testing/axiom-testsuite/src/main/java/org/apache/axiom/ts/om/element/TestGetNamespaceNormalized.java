@@ -31,17 +31,17 @@ import org.apache.axiom.ts.AxiomTestCase;
  * namespace that is added as a child to another element that has a default namespace. Earlier
  * versions of Axiom returned a non null value in this case to work around an issue in the
  * serialization code.
- * <p>
- * The test is executed twice: once with a <code>null</code> {@link OMNamespace} and once with an
+ *
+ * <p>The test is executed twice: once with a <code>null</code> {@link OMNamespace} and once with an
  * {@link OMNamespace} object with prefix and namespace URI set to the empty string. The expected
  * result is the same in both cases.
- * <p>
- * This is a regression test for <a
+ *
+ * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalized extends AxiomTestCase {
     private final boolean useNull;
-    
+
     public TestGetNamespaceNormalized(OMMetaFactory metaFactory, boolean useNull) {
         super(metaFactory);
         this.useNull = useNull;

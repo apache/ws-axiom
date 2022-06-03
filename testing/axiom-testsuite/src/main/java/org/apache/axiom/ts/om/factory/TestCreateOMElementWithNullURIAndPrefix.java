@@ -25,11 +25,11 @@ public class TestCreateOMElementWithNullURIAndPrefix extends AxiomTestCase {
     public TestCreateOMElementWithNullURIAndPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
-    
+
     @Override
     protected void runTest() {
         try {
-            metaFactory.getOMFactory().createOMElement("test", (String)null, (String)null);
+            metaFactory.getOMFactory().createOMElement("test", (String) null, (String) null);
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException ex) {
             // Expected

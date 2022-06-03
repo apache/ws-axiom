@@ -27,10 +27,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that the iterator returned by {@link OMElement#getChildElements()} throws a
- * {@link ConcurrentModificationException} if the current node is removed using a method other than
- * {@link Iterator#remove()}. This is a regression test for
- * <a href="https://issues.apache.org/jira/browse/AXIOM-391">AXIOM-391</a>.
+ * Tests that the iterator returned by {@link OMElement#getChildElements()} throws a {@link
+ * ConcurrentModificationException} if the current node is removed using a method other than {@link
+ * Iterator#remove()}. This is a regression test for <a
+ * href="https://issues.apache.org/jira/browse/AXIOM-391">AXIOM-391</a>.
  */
 public class TestGetChildElementsConcurrentModification extends AxiomTestCase {
     public TestGetChildElementsConcurrentModification(OMMetaFactory metaFactory) {

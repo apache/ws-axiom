@@ -31,9 +31,7 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
-/**
- * Verifies that a OMDataSource can be replaced with another one
- */
+/** Verifies that a OMDataSource can be replaced with another one */
 @SuppressWarnings("deprecation")
 public class TestSetDataSource extends AxiomTestCase {
     public TestSetDataSource(OMMetaFactory metaFactory) {
@@ -48,57 +46,57 @@ public class TestSetDataSource extends AxiomTestCase {
         OMDataSource nonDestructiveOMDataSource2 = new PullOMDataSource(payload2, false);
         OMDataSource destructiveOMDataSource1 = new PullOMDataSource(payload1, true);
         OMDataSource destructiveOMDataSource2 = new PullOMDataSource(payload2, true);
-        
+
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", null);
-        OMSourcedElement omse = factory.createOMElement(nonDestructiveOMDataSource1, "myPayload", factory.createOMNamespace("urn://test", "tns"));
+        OMSourcedElement omse =
+                factory.createOMElement(
+                        nonDestructiveOMDataSource1,
+                        "myPayload",
+                        factory.createOMNamespace("urn://test", "tns"));
         parent.addChild(omse);
         OMNode firstChild = parent.getFirstOMChild();
         assertTrue("Expected OMSourcedElement child", firstChild instanceof OMSourcedElement);
         OMSourcedElement child = (OMSourcedElement) firstChild;
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
         assertThat(child.getDataSource()).isSameInstanceAs(nonDestructiveOMDataSource1);
-        
+
         // Write out the body
         StringWriter sw = new StringWriter();
         parent.serialize(sw);
         String output = sw.toString();
-//        System.out.println(output);
-        assertTrue("The payload was not present in the output",
-                   output.indexOf(payload1) > 0);
+        //        System.out.println(output);
+        assertTrue("The payload was not present in the output", output.indexOf(payload1) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        
-        // Replace with payload2.  
+
+        // Replace with payload2.
         // Important note, it is legal to replace the OMDataSource, but
         // the namespace and local name of the OMSourcedElement cannot be changed.
         child.setDataSource(nonDestructiveOMDataSource2);
-        
+
         // Write out the body
         sw = new StringWriter();
         parent.serialize(sw);
         output = sw.toString();
-//        System.out.println(output);
-        assertTrue("The payload was not present in the output",
-                   output.indexOf(payload2) > 0);
+        //        System.out.println(output);
+        assertTrue("The payload was not present in the output", output.indexOf(payload2) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        
+
         // Now Replace with payload1 from an destructiveOMDataSource1
         child.setDataSource(destructiveOMDataSource1);
         sw = new StringWriter();
         parent.serialize(sw);
         output = sw.toString();
-//        System.out.println(output);
-        assertTrue("The payload was not present in the output",
-                   output.indexOf(payload1) > 0);
-        
+        //        System.out.println(output);
+        assertTrue("The payload was not present in the output", output.indexOf(payload1) > 0);
+
         // Now Replace with payload2 from an destructiveOMDataSource2.
         // Note at this point, the child's tree is expanded.
         child.setDataSource(destructiveOMDataSource2);
         sw = new StringWriter();
         parent.serialize(sw);
         output = sw.toString();
-//        System.out.println(output);
-        assertTrue("The payload was not present in the output",
-                   output.indexOf(payload2) > 0);
+        //        System.out.println(output);
+        assertTrue("The payload was not present in the output", output.indexOf(payload2) > 0);
     }
 }

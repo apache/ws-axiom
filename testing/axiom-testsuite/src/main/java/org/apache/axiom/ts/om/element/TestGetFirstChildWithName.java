@@ -26,9 +26,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests the behavior of {@link OMElement#getFirstChildWithName(QName)}.
- */
+/** Tests the behavior of {@link OMElement#getFirstChildWithName(QName)}. */
 public class TestGetFirstChildWithName extends AxiomTestCase {
     public TestGetFirstChildWithName(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -46,19 +44,19 @@ public class TestGetFirstChildWithName extends AxiomTestCase {
         OMElement child3 = factory.createOMElement("b", ns1, parent);
         OMElement child4 = factory.createOMElement("c", null, parent);
         factory.createOMElement("a", ns1, parent);
-        
+
         // Check that it's really the first element that is returned
         assertSame(child1, parent.getFirstChildWithName(new QName("urn:ns1", "a")));
-        
+
         // Test with a child that is not the first one
         assertSame(child2, parent.getFirstChildWithName(new QName("urn:ns2", "b")));
-        
+
         // Check that the namespace URI is taken into account
         assertNull(parent.getFirstChildWithName(new QName("b")));
-        
+
         // Check that the prefix of the given QName is not taken into account
         assertSame(child3, parent.getFirstChildWithName(new QName("urn:ns1", "b", "ns2")));
-        
+
         // Test with null namespace
         assertSame(child4, parent.getFirstChildWithName(new QName("c")));
     }

@@ -42,9 +42,13 @@ public class TestCreateOMBuilderFromDOMElement extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document document = DOMImplementation.XERCES.parse(new InputSource(new StringReader("<a><b><c/></b><b2/></a>")));
-        Element domB = (Element)document.getElementsByTagNameNS(null, "b").item(0);
-        OMElement omB = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domB, true).getDocumentElement();
+        Document document =
+                DOMImplementation.XERCES.parse(
+                        new InputSource(new StringReader("<a><b><c/></b><b2/></a>")));
+        Element domB = (Element) document.getElementsByTagNameNS(null, "b").item(0);
+        OMElement omB =
+                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domB, true)
+                        .getDocumentElement();
         assertEquals("b", omB.getLocalName());
         assertNull(omB.getNextOMSibling());
     }

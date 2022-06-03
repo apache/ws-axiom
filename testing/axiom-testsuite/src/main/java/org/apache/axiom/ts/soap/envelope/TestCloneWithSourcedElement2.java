@@ -40,25 +40,27 @@ public class TestCloneWithSourcedElement2 extends CloneTestCase {
         SOAPEnvelope sourceEnv = soapFactory.getDefaultEnvelope();
         SOAPBody body = sourceEnv.getBody();
         SOAPHeader header = sourceEnv.getHeader();
-        
+
         // Create a header OMSE
-        OMDataSource dsHdr = new StringOMDataSource(
-                "<hdr:myheader xmlns:hdr=\"urn://test\">Hello World</hdr:myheader>");
+        OMDataSource dsHdr =
+                new StringOMDataSource(
+                        "<hdr:myheader xmlns:hdr=\"urn://test\">Hello World</hdr:myheader>");
         OMNamespace hdrNS = header.getOMFactory().createOMNamespace("urn://test", "hdr");
         SOAPFactory sf = (SOAPFactory) header.getOMFactory();
         SOAPHeaderBlock shb = sf.createSOAPHeaderBlock("myheader", hdrNS, dsHdr);
-        shb.setProcessed();  // test setting processing flag
+        shb.setProcessed(); // test setting processing flag
         header.addChild(shb);
-        
+
         // Create a payload
-        OMDataSource ds = new StringOMDataSource(
-                "<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>");
+        OMDataSource ds =
+                new StringOMDataSource(
+                        "<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>");
         OMNamespace ns = body.getOMFactory().createOMNamespace("urn://test", "tns");
-        OMSourcedElement omse =body.getOMFactory().createOMElement(ds, "payload", ns);
+        OMSourcedElement omse = body.getOMFactory().createOMElement(ds, "payload", ns);
         body.addChild(omse);
-        
+
         copyAndCheck(sourceEnv);
-        
+
         // The source SOAPHeaderBlock should not be expanded in the process
         assertFalse(shb.isExpanded());
     }

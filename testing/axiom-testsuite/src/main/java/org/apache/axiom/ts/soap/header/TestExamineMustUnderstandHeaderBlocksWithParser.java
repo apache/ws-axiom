@@ -32,17 +32,20 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 public class TestExamineMustUnderstandHeaderBlocksWithParser extends SampleBasedSOAPTestCase {
-    public TestExamineMustUnderstandHeaderBlocksWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
+    public TestExamineMustUnderstandHeaderBlocksWithParser(
+            OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.HEADERS);
     }
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         String roleNextURI = spec.getNextRoleURI();
-        Iterator<SOAPHeaderBlock> it = envelope.getHeader().examineMustUnderstandHeaderBlocks(roleNextURI);
+        Iterator<SOAPHeaderBlock> it =
+                envelope.getHeader().examineMustUnderstandHeaderBlocks(roleNextURI);
         assertThat(it.hasNext()).isTrue();
         SOAPHeaderBlock headerBlock = it.next();
-        assertThat(headerBlock.getQName()).isEqualTo(new QName("http://example.org/RoleTest", "h7"));
+        assertThat(headerBlock.getQName())
+                .isEqualTo(new QName("http://example.org/RoleTest", "h7"));
         assertThat(headerBlock.getRole()).isEqualTo(roleNextURI);
         assertThat(it.hasNext()).isFalse();
     }

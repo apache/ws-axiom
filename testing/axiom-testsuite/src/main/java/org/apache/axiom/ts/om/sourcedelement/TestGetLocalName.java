@@ -24,7 +24,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 
 public class TestGetLocalName extends LazyNameTestCase {
-    public TestGetLocalName(OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
+    public TestGetLocalName(
+            OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
         super(metaFactory, variant, qname);
     }
 

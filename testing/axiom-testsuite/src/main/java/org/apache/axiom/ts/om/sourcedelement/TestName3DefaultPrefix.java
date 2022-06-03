@@ -29,9 +29,8 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
  * Tests the OMSourcedElement localName, namespace and prefix settings before and after
- * serialization Document: testDocument (which uses the default namespace) Type of
- * Serialization: Serialize and cache Tests attempt to rename namespace and localpart, which is
- * not allowed
+ * serialization Document: testDocument (which uses the default namespace) Type of Serialization:
+ * Serialize and cache Tests attempt to rename namespace and localpart, which is not allowed
  */
 public class TestName3DefaultPrefix extends AxiomTestCase {
     public TestName3DefaultPrefix(OMMetaFactory metaFactory) {
@@ -42,20 +41,24 @@ public class TestName3DefaultPrefix extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory f = metaFactory.getOMFactory();
 
-        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default
+        // prefix
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
-                f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "DUMMYNAME", ns);
+                f.createOMElement(
+                        new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "DUMMYNAME", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
-        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        // Test getting the namespace, localpart and prefix.  This should used not result in
+        // expansion
         assertTrue(element.getLocalName().equals("DUMMYNAME"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
         assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
 
-        // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
+        // Serialize and cache.  This should cause expansion and update the name to match the
+        // testDocument string
         StringWriter writer = new StringWriter();
 
         try {
@@ -70,11 +73,13 @@ public class TestName3DefaultPrefix extends AxiomTestCase {
         String result = writer.toString();
 
         assertTrue(element.getLocalName().equals("library"));
-        assertTrue(element.getNamespace().getNamespaceURI().equals(
-                "http://www.sosnoski.com/uwjws/library"));
+        assertTrue(
+                element.getNamespace()
+                        .getNamespaceURI()
+                        .equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(result.indexOf("DUMMY") <
-                0);   // Make sure that the serialized string does not contain the DUMMY values
+        // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("DUMMY") < 0);
 
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
 
@@ -84,11 +89,13 @@ public class TestName3DefaultPrefix extends AxiomTestCase {
         result = writer.toString();
 
         assertTrue(element.getLocalName().equals("library"));
-        assertTrue(element.getNamespace().getNamespaceURI().equals(
-                "http://www.sosnoski.com/uwjws/library"));
+        assertTrue(
+                element.getNamespace()
+                        .getNamespaceURI()
+                        .equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(result.indexOf("DUMMY") <
-                0);   // Make sure that the serialized string does not contain the DUMMY values
+        // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("DUMMY") < 0);
 
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
     }

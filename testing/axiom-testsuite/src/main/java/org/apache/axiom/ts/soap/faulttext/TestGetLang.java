@@ -35,7 +35,10 @@ public class TestGetLang extends SOAPTestCase {
         SOAPFaultText faultText = soapFactory.createSOAPFaultText();
         faultText.setText("test");
         assertNull(faultText.getLang());
-        faultText.addAttribute("lang", "fr", soapFactory.createOMNamespace(XMLConstants.XML_NS_URI, XMLConstants.XML_NS_PREFIX));
+        faultText.addAttribute(
+                "lang",
+                "fr",
+                soapFactory.createOMNamespace(XMLConstants.XML_NS_URI, XMLConstants.XML_NS_PREFIX));
         assertEquals("fr", faultText.getLang());
     }
 }

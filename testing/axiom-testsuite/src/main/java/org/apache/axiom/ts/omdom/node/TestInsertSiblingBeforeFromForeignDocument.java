@@ -40,14 +40,15 @@ public class TestInsertSiblingBeforeFromForeignDocument extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        DocumentBuilder db = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder();
+        DocumentBuilder db =
+                ((DOMMetaFactory) metaFactory).newDocumentBuilderFactory().newDocumentBuilder();
         Document document1 = db.newDocument();
         Element element1 = document1.createElementNS(null, "element1");
         Text text = document1.createTextNode("test");
         element1.appendChild(text);
         Document document2 = db.newDocument();
         Element element2 = document2.createElementNS(null, "element2");
-        ((OMNode)text).insertSiblingBefore((OMElement)element2);
+        ((OMNode) text).insertSiblingBefore((OMElement) element2);
         // Assert that the new child is not a copy, but the original element
         assertSame(element2, element1.getFirstChild());
         // Assert that the owner document of element2 was changed

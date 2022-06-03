@@ -32,8 +32,9 @@ import org.xml.sax.InputSource;
 public class TestCommentEvent extends AxiomTestCase {
     private final BuilderFactory builderFactory;
     private final boolean cache;
-    
-    public TestCommentEvent(OMMetaFactory metaFactory, BuilderFactory builderFactory, boolean cache) {
+
+    public TestCommentEvent(
+            OMMetaFactory metaFactory, BuilderFactory builderFactory, boolean cache) {
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.cache = cache;
@@ -43,13 +44,19 @@ public class TestCommentEvent extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory, new InputSource(new StringReader("<a><!--comment text--></a>")));
+        OMXMLParserWrapper builder =
+                builderFactory.getBuilder(
+                        metaFactory,
+                        new InputSource(new StringReader("<a><!--comment text--></a>")));
         OMElement element = builder.getDocumentElement();
         XMLStreamReader reader = element.getXMLStreamReader(cache);
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(XMLStreamReader.COMMENT, reader.next());
         assertEquals("comment text", reader.getText());
-        assertEquals("comment text", new String(reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength()));
+        assertEquals(
+                "comment text",
+                new String(
+                        reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength()));
         StringBuffer text = new StringBuffer();
         char[] buf = new char[5];
         for (int sourceStart = 0; ; sourceStart += buf.length) {

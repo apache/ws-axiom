@@ -24,12 +24,10 @@ import java.io.OutputStream;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-/**
- * Serializes an {@link OMContainer} using {@link OMContainer#serialize(OutputStream, boolean)}.
- */
+/** Serializes an {@link OMContainer} using {@link OMContainer#serialize(OutputStream, boolean)}. */
 public class SerializeToOutputStream extends SerializationStrategy {
     private final boolean cache;
-    
+
     SerializeToOutputStream(boolean cache) {
         this.cache = cache;
     }

@@ -28,8 +28,8 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Test that {@link OMElement#getAttributeValue(QName)} works properly for an attribute with the
- * {@code xml} prefix, even if this prefix is not declared explicitly. This is a regression test
- * for <a href="https://issues.apache.org/jira/browse/AXIS2-329">AXIS2-329</a>.
+ * {@code xml} prefix, even if this prefix is not declared explicitly. This is a regression test for
+ * <a href="https://issues.apache.org/jira/browse/AXIS2-329">AXIS2-329</a>.
  */
 public class TestGetAttributeValueWithXmlPrefix1 extends AxiomTestCase {
     public TestGetAttributeValueWithXmlPrefix1(OMMetaFactory metaFactory) {
@@ -38,11 +38,15 @@ public class TestGetAttributeValueWithXmlPrefix1 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elem = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
-                "<wsp:Policy xml:base=\"uri:thisBase\" " +
-                "xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\">" +
-                "</wsp:Policy>");
-        assertEquals("Attribute value mismatch", "uri:thisBase",
+        OMElement elem =
+                AXIOMUtil.stringToOM(
+                        metaFactory.getOMFactory(),
+                        "<wsp:Policy xml:base=\"uri:thisBase\" "
+                                + "xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\">"
+                                + "</wsp:Policy>");
+        assertEquals(
+                "Attribute value mismatch",
+                "uri:thisBase",
                 elem.getAttributeValue(new QName(XMLConstants.XML_NS_URI, "base")));
     }
 }

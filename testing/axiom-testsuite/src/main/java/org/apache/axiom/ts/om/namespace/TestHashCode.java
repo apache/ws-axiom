@@ -23,9 +23,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests that the {@link OMNamespace} overrides {@link Object#hashCode()}.
- */
+/** Tests that the {@link OMNamespace} overrides {@link Object#hashCode()}. */
 public class TestHashCode extends AxiomTestCase {
     public TestHashCode(OMMetaFactory metaFactory) {
         super(metaFactory);

@@ -32,7 +32,8 @@ public class TestFindNamespaceByPrefix extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMElement root =
-                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<a:root xmlns:a='urn:a'><child/></a:root>");
+                AXIOMUtil.stringToOM(
+                        metaFactory.getOMFactory(), "<a:root xmlns:a='urn:a'><child/></a:root>");
         OMNamespace ns = root.getFirstElement().findNamespace(null, "a");
         assertNotNull(ns);
         assertEquals("urn:a", ns.getNamespaceURI());

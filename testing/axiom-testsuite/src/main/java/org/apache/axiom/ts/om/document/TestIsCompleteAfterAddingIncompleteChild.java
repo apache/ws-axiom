@@ -40,8 +40,9 @@ public class TestIsCompleteAfterAddingIncompleteChild extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement incompleteElement = OMXMLBuilderFactory.createOMBuilder(factory,
-                new StringReader("<elem>text</elem>")).getDocumentElement(true);
+        OMElement incompleteElement =
+                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<elem>text</elem>"))
+                        .getDocumentElement(true);
         OMDocument document = factory.createOMDocument();
         assertTrue(document.isComplete());
         document.addChild(incompleteElement);

@@ -26,7 +26,7 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 class CloseTestXMLStreamReaderWrapper extends XMLStreamReaderWrapper {
     private final PullOMDataSource ds;
     private boolean closed;
-    
+
     CloseTestXMLStreamReaderWrapper(PullOMDataSource ds, XMLStreamReader parent) {
         super(parent);
         this.ds = ds;

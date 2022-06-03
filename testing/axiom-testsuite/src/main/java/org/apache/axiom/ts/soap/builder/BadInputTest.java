@@ -38,8 +38,12 @@ public class BadInputTest extends AxiomTestCase {
     protected void runTest() throws Throwable {
         try {
             SOAPEnvelope soapEnvelope =
-                    OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                            BadInputTest.class.getClassLoader().getResourceAsStream("badsoap/" + file), null)
+                    OMXMLBuilderFactory.createSOAPModelBuilder(
+                                    metaFactory,
+                                    BadInputTest.class
+                                            .getClassLoader()
+                                            .getResourceAsStream("badsoap/" + file),
+                                    null)
                             .getSOAPEnvelope();
             OMTestUtils.walkThrough(soapEnvelope);
             fail("this must failed gracefully with SOAPProcessingException");

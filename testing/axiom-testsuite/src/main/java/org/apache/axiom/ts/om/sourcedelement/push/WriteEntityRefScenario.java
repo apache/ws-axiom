@@ -30,9 +30,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.junit.Assert;
 
-/**
- * Scenario that uses {@link XMLStreamWriter#writeEntityRef(String)}.
- */
+/** Scenario that uses {@link XMLStreamWriter#writeEntityRef(String)}. */
 public class WriteEntityRefScenario implements PushOMDataSourceScenario {
     @Override
     public void addTestParameters(MatrixTestCase testCase) {
@@ -40,7 +38,7 @@ public class WriteEntityRefScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
@@ -55,7 +53,7 @@ public class WriteEntityRefScenario implements PushOMDataSourceScenario {
     public void validate(OMElement element, boolean dataHandlersPreserved) {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMEntityReference);
-        OMEntityReference entref = (OMEntityReference)child;
+        OMEntityReference entref = (OMEntityReference) child;
         Assert.assertEquals("test", entref.getName());
         Assert.assertNull(entref.getReplacementText());
     }

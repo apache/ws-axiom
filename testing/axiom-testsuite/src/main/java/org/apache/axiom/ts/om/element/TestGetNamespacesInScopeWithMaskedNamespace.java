@@ -33,8 +33,10 @@ public class TestGetNamespacesInScopeWithMaskedNamespace extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
-                "<a xmlns:p='urn:ns1'><b xmlns:p='urn:ns2'/></a>");
+        OMElement element =
+                AXIOMUtil.stringToOM(
+                        metaFactory.getOMFactory(),
+                        "<a xmlns:p='urn:ns1'><b xmlns:p='urn:ns2'/></a>");
         Iterator<OMNamespace> it = element.getFirstElement().getNamespacesInScope();
         assertTrue(it.hasNext());
         OMNamespace ns = it.next();

@@ -29,9 +29,7 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-/**
- * Checks the content of the SOAP envelope returned by {@link SOAPFactory#getDefaultEnvelope()}.
- */
+/** Checks the content of the SOAP envelope returned by {@link SOAPFactory#getDefaultEnvelope()}. */
 public class TestGetDefaultEnvelope extends SOAPTestCase {
     public TestGetDefaultEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
@@ -40,22 +38,22 @@ public class TestGetDefaultEnvelope extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope env = soapFactory.getDefaultEnvelope();
-        
+
         // Check correct SOAP version
         assertEquals(spec.getEnvelopeNamespaceURI(), env.getNamespaceURI());
-        
+
         // getDefaultEnvelope doesn't create a SOAPMessage/OMDocument
         assertNull(env.getParent());
-        
+
         // Check the children
         Iterator<OMNode> it = env.getChildren();
         assertTrue(it.hasNext());
         OMNode child = it.next();
         assertTrue(child instanceof SOAPHeader);
-        assertNull(((SOAPHeader)child).getFirstOMChild());
+        assertNull(((SOAPHeader) child).getFirstOMChild());
         child = it.next();
         assertTrue(child instanceof SOAPBody);
-        assertNull(((SOAPBody)child).getFirstOMChild());
+        assertNull(((SOAPBody) child).getFirstOMChild());
         assertFalse(it.hasNext());
     }
 }

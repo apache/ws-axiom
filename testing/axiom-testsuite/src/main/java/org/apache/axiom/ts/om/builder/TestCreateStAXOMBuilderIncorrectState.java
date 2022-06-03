@@ -32,8 +32,8 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMXMLBuilderFactory#createStAXOMBuilder(OMFactory, XMLStreamReader)} throws an
- * exception if the supplied {@link XMLStreamReader} is not positioned on a
- * {@link XMLStreamConstants#START_DOCUMENT} or {@link XMLStreamConstants#END_DOCUMENT} event.
+ * exception if the supplied {@link XMLStreamReader} is not positioned on a {@link
+ * XMLStreamConstants#START_DOCUMENT} or {@link XMLStreamConstants#END_DOCUMENT} event.
  */
 public class TestCreateStAXOMBuilderIncorrectState extends AxiomTestCase {
     public TestCreateStAXOMBuilderIncorrectState(OMMetaFactory metaFactory) {
@@ -42,7 +42,8 @@ public class TestCreateStAXOMBuilderIncorrectState extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<root>text</root>"));
+        XMLStreamReader reader =
+                StAXUtils.createXMLStreamReader(new StringReader("<root>text</root>"));
         // Position the reader on a CHARACTERS event
         while (reader.getEventType() != XMLStreamReader.CHARACTERS) {
             reader.next();

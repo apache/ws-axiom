@@ -27,9 +27,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-153">AXIOM-153</a>.
- */
+/** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-153">AXIOM-153</a>. */
 public class TestInsertSiblingAfterLastChild extends AxiomTestCase {
     public TestInsertSiblingAfterLastChild(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -38,9 +36,9 @@ public class TestInsertSiblingAfterLastChild extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
-        OMNamespace ns = fac.createOMNamespace("http://www.testuri.com","ns");
+        OMNamespace ns = fac.createOMNamespace("http://www.testuri.com", "ns");
         OMElement parent = fac.createOMElement("parent", ns);
-        
+
         // Create three OMElements
         OMElement c1 = fac.createOMElement("c1", ns);
         OMElement c2 = fac.createOMElement("c2", ns);
@@ -55,7 +53,8 @@ public class TestInsertSiblingAfterLastChild extends AxiomTestCase {
         assertAbout(xml())
                 .that(xml(OMElement.class, parent))
                 .ignoringRedundantNamespaceDeclarations()
-                .hasSameContentAs("<ns:parent xmlns:ns=\"http://www.testuri.com\">" +
-                        "<ns:c1 /><ns:c2 /><ns:c3 /></ns:parent>");
+                .hasSameContentAs(
+                        "<ns:parent xmlns:ns=\"http://www.testuri.com\">"
+                                + "<ns:c1 /><ns:c2 /><ns:c3 /></ns:parent>");
     }
 }

@@ -30,11 +30,10 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.junit.Assert;
 
 /**
- * Scenario that attempts to use {@link XMLStreamWriter#writeStartDocument()},
- * {@link XMLStreamWriter#writeStartDocument(String)},
- * {@link XMLStreamWriter#writeStartDocument(String, String)} and
- * {@link XMLStreamWriter#writeEndDocument()}. These methods are disallowed, as described in the
- * documentation of {@link OMDataSource#serialize(XMLStreamWriter)}.
+ * Scenario that attempts to use {@link XMLStreamWriter#writeStartDocument()}, {@link
+ * XMLStreamWriter#writeStartDocument(String)}, {@link XMLStreamWriter#writeStartDocument(String,
+ * String)} and {@link XMLStreamWriter#writeEndDocument()}. These methods are disallowed, as
+ * described in the documentation of {@link OMDataSource#serialize(XMLStreamWriter)}.
  */
 public class WriteStartEndDocumentScenario implements PushOMDataSourceScenario {
     @Override
@@ -43,7 +42,7 @@ public class WriteStartEndDocumentScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 

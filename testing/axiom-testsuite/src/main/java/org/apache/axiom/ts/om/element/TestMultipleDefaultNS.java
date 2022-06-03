@@ -35,10 +35,11 @@ public class TestMultipleDefaultNS extends AxiomTestCase {
         OMNamespace defaultNS1 = omFactory.createOMNamespace("http://defaultNS1.org", null);
         OMNamespace defaultNS2 = omFactory.createOMNamespace("http://defaultNS2.org", null);
 
-        OMElement omElementOne = omFactory.createOMElement("DocumentElement",
-                omFactory.createOMNamespace("http://defaultNS1.org", ""));
+        OMElement omElementOne =
+                omFactory.createOMElement(
+                        "DocumentElement",
+                        omFactory.createOMNamespace("http://defaultNS1.org", ""));
         OMElement omElementOneChild = omFactory.createOMElement("ChildOne", null, omElementOne);
-
 
         OMElement omElementTwo = omFactory.createOMElement("Foo", defaultNS2, omElementOne);
         omElementTwo.declareDefaultNamespace("http://defaultNS2.org");
@@ -49,7 +50,8 @@ public class TestMultipleDefaultNS extends AxiomTestCase {
 
         OMNamespace omElementOneChildNS = omElementOneChild.getNamespace();
         OMNamespace omElementTwoChildNS = omElementTwoChild.getNamespace();
-        // TODO: LLOM's and DOOM's behaviors are slightly different here; need to check if both are allowed
+        // TODO: LLOM's and DOOM's behaviors are slightly different here; need to check if both are
+        // allowed
         assertTrue(omElementOneChildNS == null || "".equals(omElementOneChildNS.getNamespaceURI()));
         assertTrue(omElementTwoChildNS == null || "".equals(omElementTwoChildNS.getNamespaceURI()));
     }

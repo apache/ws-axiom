@@ -27,9 +27,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests the behavior of {@link OMContainer#getChildrenWithNamespaceURI(String)}.
- */
+/** Tests the behavior of {@link OMContainer#getChildrenWithNamespaceURI(String)}. */
 public class TestGetChildrenWithNamespaceURI extends AxiomTestCase {
     public TestGetChildrenWithNamespaceURI(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -37,8 +35,12 @@ public class TestGetChildrenWithNamespaceURI extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new StringReader(
-                "<root><a xmlns='urn:ns1'/><b xmlns='urn:ns2'/><c xmlns='urn:ns1'/></root>")).getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader(
+                                        "<root><a xmlns='urn:ns1'/><b xmlns='urn:ns2'/><c xmlns='urn:ns1'/></root>"))
+                        .getDocumentElement();
         Iterator<OMElement> it = element.getChildrenWithNamespaceURI("urn:ns1");
         assertTrue(it.hasNext());
         assertEquals("a", it.next().getLocalName());

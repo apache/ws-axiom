@@ -29,8 +29,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a>.
  */
 public class TestGetFirstElementLocalNameWithParser extends FirstElementNameWithParserTestCase {
-    public TestGetFirstElementLocalNameWithParser(OMMetaFactory metaFactory,
-            SOAPSpec spec, QName qname) {
+    public TestGetFirstElementLocalNameWithParser(
+            OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
         super(metaFactory, spec, qname, true);
     }
 

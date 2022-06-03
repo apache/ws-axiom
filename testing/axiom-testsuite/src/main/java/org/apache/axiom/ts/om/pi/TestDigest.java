@@ -29,6 +29,8 @@ public class TestDigest extends DigestTestCase {
 
     @Override
     protected OMInformationItem createInformationItem() {
-        return metaFactory.getOMFactory().createOMProcessingInstruction(null, "dbfo", "bgcolor=\"#EEEEEE\"");
+        return metaFactory
+                .getOMFactory()
+                .createOMProcessingInstruction(null, "dbfo", "bgcolor=\"#EEEEEE\"");
     }
 }

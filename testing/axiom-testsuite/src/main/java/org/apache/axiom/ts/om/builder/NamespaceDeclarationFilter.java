@@ -22,9 +22,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-/**
- * {@link XMLStreamReader} wrapper that filters out all namespace declarations.
- */
+/** {@link XMLStreamReader} wrapper that filters out all namespace declarations. */
 public class NamespaceDeclarationFilter extends XMLStreamReaderWrapper {
     public NamespaceDeclarationFilter(XMLStreamReader parent) {
         super(parent);

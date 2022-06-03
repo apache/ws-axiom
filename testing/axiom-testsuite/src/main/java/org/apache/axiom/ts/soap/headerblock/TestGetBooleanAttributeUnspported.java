@@ -32,7 +32,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  * SOAP 1.1 messages.
  */
 public class TestGetBooleanAttributeUnspported extends BooleanAttributeTestCase {
-    public TestGetBooleanAttributeUnspported(OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
+    public TestGetBooleanAttributeUnspported(
+            OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
         super(metaFactory, spec, attribute);
     }
 

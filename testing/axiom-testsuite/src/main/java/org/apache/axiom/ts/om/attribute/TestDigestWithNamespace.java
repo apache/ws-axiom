@@ -31,6 +31,7 @@ public class TestDigestWithNamespace extends DigestTestCase {
     @Override
     protected OMInformationItem createInformationItem() {
         OMFactory factory = metaFactory.getOMFactory();
-        return factory.createOMAttribute("attr", factory.createOMNamespace("urn:ns1", "ns1"), "value");
+        return factory.createOMAttribute(
+                "attr", factory.createOMNamespace("urn:ns1", "ns1"), "value");
     }
 }

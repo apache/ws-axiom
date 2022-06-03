@@ -31,9 +31,9 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that an attempt to iterate over the child elements using
- * {@link OMElement#getChildElements()} results in the expected exception if the part of the
- * document has already been consumed by {@link OMContainer#getXMLStreamReaderWithoutCaching()}.
+ * Tests that an attempt to iterate over the child elements using {@link
+ * OMElement#getChildElements()} results in the expected exception if the part of the document has
+ * already been consumed by {@link OMContainer#getXMLStreamReaderWithoutCaching()}.
  */
 public class TestGetChildElementsConsumed extends AxiomTestCase {
     public TestGetChildElementsConsumed(OMMetaFactory metaFactory) {
@@ -42,21 +42,23 @@ public class TestGetChildElementsConsumed extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
-                metaFactory.getOMFactory(),
-                TestGetChildElementsConsumed.class.getResourceAsStream("purchase-order.xml"));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(),
+                        TestGetChildElementsConsumed.class.getResourceAsStream(
+                                "purchase-order.xml"));
 
         OMElement documentElement = builder.getDocumentElement();
         XMLStreamReader reader = documentElement.getXMLStreamReaderWithoutCaching();
 
-        //consume the parser. this should force the xml stream to be exhausted without
-        //building the tree
+        // consume the parser. this should force the xml stream to be exhausted without
+        // building the tree
         while (reader.hasNext()) {
             reader.next();
         }
 
-        //try to find the children of the document element. This should produce an
-        //error since the underlying stream is fully consumed without building the object tree
+        // try to find the children of the document element. This should produce an
+        // error since the underlying stream is fully consumed without building the object tree
         try {
             Iterator<OMElement> childElements = documentElement.getChildElements();
             while (childElements.hasNext()) {
@@ -66,7 +68,7 @@ public class TestGetChildElementsConsumed extends AxiomTestCase {
         } catch (NodeUnavailableException ex) {
             // Expected
         }
-        
+
         documentElement.close(false);
     }
 }

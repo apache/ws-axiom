@@ -35,8 +35,10 @@ public class MessageTest extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                message.getInputStream(), null).getSOAPEnvelope();
+        SOAPEnvelope soapEnvelope =
+                OMXMLBuilderFactory.createSOAPModelBuilder(
+                                metaFactory, message.getInputStream(), null)
+                        .getSOAPEnvelope();
         OMTestUtils.walkThrough(soapEnvelope);
         soapEnvelope.close(false);
     }

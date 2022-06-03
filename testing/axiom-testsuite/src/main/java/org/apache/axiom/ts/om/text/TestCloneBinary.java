@@ -33,7 +33,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCloneBinary extends AxiomTestCase {
     private boolean fetch;
-    
+
     public TestCloneBinary(OMMetaFactory metaFactory, boolean fetch) {
         super(metaFactory);
         this.fetch = fetch;
@@ -43,14 +43,21 @@ public class TestCloneBinary extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         DataHandler dh = new DataHandler(new RandomDataSource(600613L, 4096));
-        StringReader rootPart = new StringReader("<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>");
-        DummyAttachmentAccessor attachmentAccessor = new DummyAttachmentAccessor("123456@example.org", dh);
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(
-                metaFactory.getOMFactory(), new StreamSource(rootPart), attachmentAccessor).getDocumentElement();
-        OMText text = (OMText)root.getFirstOMChild();
+        StringReader rootPart =
+                new StringReader(
+                        "<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>");
+        DummyAttachmentAccessor attachmentAccessor =
+                new DummyAttachmentAccessor("123456@example.org", dh);
+        OMElement root =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StreamSource(rootPart),
+                                attachmentAccessor)
+                        .getDocumentElement();
+        OMText text = (OMText) root.getFirstOMChild();
         OMCloneOptions options = new OMCloneOptions();
         options.setFetchDataHandlers(fetch);
-        OMText clone = (OMText)text.clone(options);
+        OMText clone = (OMText) text.clone(options);
         assertTrue(clone.isBinary());
         assertEquals(fetch, attachmentAccessor.isLoaded());
         assertSame(dh, clone.getDataHandler());

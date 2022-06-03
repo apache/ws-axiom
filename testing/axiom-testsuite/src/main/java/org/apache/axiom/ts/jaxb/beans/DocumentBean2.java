@@ -21,24 +21,24 @@ package org.apache.axiom.ts.jaxb.beans;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name="document2")
-@XmlType(propOrder={ "id", "content" })
+@XmlRootElement(name = "document2")
+@XmlType(propOrder = {"id", "content"})
 public class DocumentBean2 {
     private String id;
     private byte[] content;
-    
+
     public String getId() {
         return id;
     }
-    
+
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public byte[] getContent() {
         return content;
     }
-    
+
     public void setContent(byte[] content) {
         this.content = content;
     }

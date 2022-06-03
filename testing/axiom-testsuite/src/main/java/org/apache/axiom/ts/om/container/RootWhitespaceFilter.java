@@ -24,12 +24,10 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-/**
- * {@link XMLStreamReader} wrapper that filters out any root level whitespace.
- */
+/** {@link XMLStreamReader} wrapper that filters out any root level whitespace. */
 public class RootWhitespaceFilter extends XMLStreamReaderWrapper {
     private int depth;
-    
+
     public RootWhitespaceFilter(XMLStreamReader parent) {
         super(parent);
     }
@@ -37,7 +35,8 @@ public class RootWhitespaceFilter extends XMLStreamReaderWrapper {
     @Override
     public int next() throws XMLStreamException {
         int event;
-        loop: while (true) {
+        loop:
+        while (true) {
             event = super.next();
             switch (event) {
                 case XMLStreamConstants.START_ELEMENT:

@@ -28,7 +28,8 @@ import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
- * Tests the behavior of {@link SOAPFaultClassifier#getValueAsQName()} on a {@link SOAPFaultSubCode}.
+ * Tests the behavior of {@link SOAPFaultClassifier#getValueAsQName()} on a {@link
+ * SOAPFaultSubCode}.
  */
 public class TestGetValueAsQNameWithParser extends SampleBasedSOAPTestCase {
     public TestGetValueAsQNameWithParser(OMMetaFactory metaFactory) {
@@ -38,6 +39,8 @@ public class TestGetValueAsQNameWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultSubCode subCode = envelope.getBody().getFault().getCode().getSubCode();
-        assertEquals(new QName("http:www.sample.org", "MessageTimeout_In_First_Subcode"), subCode.getValueAsQName());
+        assertEquals(
+                new QName("http:www.sample.org", "MessageTimeout_In_First_Subcode"),
+                subCode.getValueAsQName());
     }
 }

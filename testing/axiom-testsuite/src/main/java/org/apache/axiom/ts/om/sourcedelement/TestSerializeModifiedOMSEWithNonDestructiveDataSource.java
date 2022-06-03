@@ -37,20 +37,20 @@ public class TestSerializeModifiedOMSEWithNonDestructiveDataSource extends Axiom
     protected void runTest() throws Throwable {
         OMDataSourceExt ds = new StringOMDataSource("<element><child/></element>");
         assertFalse(ds.isDestructiveWrite());
-        
+
         OMFactory f = metaFactory.getOMFactory();
         OMElement element = f.createOMElement(ds, "element", null);
-        
+
         element.getFirstElement().setText("TEST");
-        
+
         StringWriter sw = new StringWriter();
         element.serialize(sw);
         assertTrue(sw.toString().indexOf("TEST") != -1);
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         element.serialize(baos);
         assertTrue(new String(baos.toByteArray(), "UTF-8").indexOf("TEST") != -1);
-        
+
         assertTrue(element.toString().indexOf("TEST") != -1);
     }
 }

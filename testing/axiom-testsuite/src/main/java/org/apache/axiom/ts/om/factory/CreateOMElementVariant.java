@@ -29,8 +29,12 @@ public abstract class CreateOMElementVariant {
     public static final CreateOMElementVariant[] INSTANCES = {
         new CreateOMElementVariant("QName", false, false) {
             @Override
-            public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
-                    String namespaceURI, String prefix) {
+            public OMElement createOMElement(
+                    OMFactory factory,
+                    OMContainer parent,
+                    String localName,
+                    String namespaceURI,
+                    String prefix) {
                 if (prefix == null) {
                     prefix = "";
                 }
@@ -39,8 +43,12 @@ public abstract class CreateOMElementVariant {
         },
         new CreateOMElementVariant("QName,OMContainer", false, true) {
             @Override
-            public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
-                    String namespaceURI, String prefix) {
+            public OMElement createOMElement(
+                    OMFactory factory,
+                    OMContainer parent,
+                    String localName,
+                    String namespaceURI,
+                    String prefix) {
                 if (prefix == null) {
                     prefix = "";
                 }
@@ -49,34 +57,47 @@ public abstract class CreateOMElementVariant {
         },
         new CreateOMElementVariant("String,OMNamespace", true, false) {
             @Override
-            public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
-                    String namespaceURI, String prefix) {
-                return factory.createOMElement(localName,
-                        getOMNamespace(factory, namespaceURI, prefix));
+            public OMElement createOMElement(
+                    OMFactory factory,
+                    OMContainer parent,
+                    String localName,
+                    String namespaceURI,
+                    String prefix) {
+                return factory.createOMElement(
+                        localName, getOMNamespace(factory, namespaceURI, prefix));
             }
         },
         new CreateOMElementVariant("String,OMNamespace,OMContainer", true, true) {
             @Override
-            public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
-                    String namespaceURI, String prefix) {
-                return factory.createOMElement(localName,
-                        getOMNamespace(factory, namespaceURI, prefix), parent);
+            public OMElement createOMElement(
+                    OMFactory factory,
+                    OMContainer parent,
+                    String localName,
+                    String namespaceURI,
+                    String prefix) {
+                return factory.createOMElement(
+                        localName, getOMNamespace(factory, namespaceURI, prefix), parent);
             }
         },
         new CreateOMElementVariant("String,String,String", true, false) {
             @Override
-            public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
-                    String namespaceURI, String prefix) {
+            public OMElement createOMElement(
+                    OMFactory factory,
+                    OMContainer parent,
+                    String localName,
+                    String namespaceURI,
+                    String prefix) {
                 return factory.createOMElement(localName, namespaceURI, prefix);
             }
         },
     };
-    
+
     private final String name;
     private final boolean supportsDefaultNamespace;
     private final boolean supportsContainer;
-    
-    public CreateOMElementVariant(String name, boolean supportsDefaultNamespace, boolean supportsContainer) {
+
+    public CreateOMElementVariant(
+            String name, boolean supportsDefaultNamespace, boolean supportsContainer) {
         this.name = name;
         this.supportsDefaultNamespace = supportsDefaultNamespace;
         this.supportsContainer = supportsContainer;
@@ -89,9 +110,9 @@ public abstract class CreateOMElementVariant {
     /**
      * Determines whether this strategy can be used to create an {@link OMElement} in the default
      * namespace, i.e. with an empty prefix.
-     * 
+     *
      * @return <code>true</code> if the strategy supports default namespaces, <code>false</code>
-     *         otherwise
+     *     otherwise
      */
     public final boolean isSupportsDefaultNamespace() {
         return supportsDefaultNamespace;
@@ -100,9 +121,9 @@ public abstract class CreateOMElementVariant {
     /**
      * Determines whether this strategy can be used to create an {@link OMElement} as a child of
      * another container.
-     * 
-     * @return <code>true</code> if a {@link OMContainer} object can be passed to
-     *         {@link #createOMElement(OMFactory, OMContainer, String, String, String)}
+     *
+     * @return <code>true</code> if a {@link OMContainer} object can be passed to {@link
+     *     #createOMElement(OMFactory, OMContainer, String, String, String)}
      */
     public final boolean isSupportsContainer() {
         return supportsContainer;
@@ -110,27 +131,26 @@ public abstract class CreateOMElementVariant {
 
     /**
      * Create an {@link OMElement}.
-     * 
-     * @param factory
-     *            the factory used to create the element
-     * @param parent
-     *            the parent of the element to be created or <code>null</code> to create an orphaned
-     *            element; this parameter can only be used if {@link #isSupportsContainer()} returns
-     *            <code>true</code>
-     * @param localName
-     *            the local name of the element
-     * @param namespaceURI
-     *            the namespace URI of the element
-     * @param prefix
-     *            the prefix of the element, the empty string if the element is to be created in the
-     *            default namespace (only supported if {@link #isSupportsDefaultNamespace()} returns
-     *            <code>true</code>), or <code>null</code> if a prefix should be generated or chosen
-     *            based on the namespace context of the parent
+     *
+     * @param factory the factory used to create the element
+     * @param parent the parent of the element to be created or <code>null</code> to create an
+     *     orphaned element; this parameter can only be used if {@link #isSupportsContainer()}
+     *     returns <code>true</code>
+     * @param localName the local name of the element
+     * @param namespaceURI the namespace URI of the element
+     * @param prefix the prefix of the element, the empty string if the element is to be created in
+     *     the default namespace (only supported if {@link #isSupportsDefaultNamespace()} returns
+     *     <code>true</code>), or <code>null</code> if a prefix should be generated or chosen based
+     *     on the namespace context of the parent
      * @return the created element
      */
-    public abstract OMElement createOMElement(OMFactory factory, OMContainer parent,
-            String localName, String namespaceURI, String prefix);
-    
+    public abstract OMElement createOMElement(
+            OMFactory factory,
+            OMContainer parent,
+            String localName,
+            String namespaceURI,
+            String prefix);
+
     static OMNamespace getOMNamespace(OMFactory factory, String namespaceURI, String prefix) {
         if (prefix == null) {
             return factory.createOMNamespace(namespaceURI, null);

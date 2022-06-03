@@ -48,24 +48,33 @@ public class TestDataHandlerSerializationWithoutMTOM extends AxiomTestCase {
     protected void runTest() throws Throwable {
         SOAPFactory factory = metaFactory.getSOAP11Factory();
         JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
-        
+
         // Construct the original message
         DocumentBean orgObject = new DocumentBean();
         orgObject.setId("123456");
         orgObject.setContent(new DataHandler(new TextDataSource("some content", "utf-8", "plain")));
         SOAPEnvelope orgEnvelope = factory.getDefaultEnvelope();
-        OMSourcedElement element = factory.createOMElement(new JAXBOMDataSource(context, orgObject));
+        OMSourcedElement element =
+                factory.createOMElement(new JAXBOMDataSource(context, orgObject));
         orgEnvelope.getBody().addChild(element);
-        
+
         // Serialize the message
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         orgEnvelope.serialize(out);
         assertFalse(element.isExpanded());
-        
-        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(
-                metaFactory, new ByteArrayInputStream(out.toByteArray()), null).getSOAPEnvelope();
-        DocumentBean object = (DocumentBean)context.createUnmarshaller().unmarshal(
-                envelope.getBody().getFirstElement().getXMLStreamReader(false));
-        assertEquals("some content", IOUtils.toString(object.getContent().getInputStream(), "utf-8"));
+
+        SOAPEnvelope envelope =
+                OMXMLBuilderFactory.createSOAPModelBuilder(
+                                metaFactory, new ByteArrayInputStream(out.toByteArray()), null)
+                        .getSOAPEnvelope();
+        DocumentBean object =
+                (DocumentBean)
+                        context.createUnmarshaller()
+                                .unmarshal(
+                                        envelope.getBody()
+                                                .getFirstElement()
+                                                .getXMLStreamReader(false));
+        assertEquals(
+                "some content", IOUtils.toString(object.getContent().getInputStream(), "utf-8"));
     }
 }

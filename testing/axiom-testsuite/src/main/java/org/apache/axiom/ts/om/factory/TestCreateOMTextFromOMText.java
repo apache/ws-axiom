@@ -25,9 +25,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests {@link OMFactory#createOMText(OMContainer, OMText)}.
- */
+/** Tests {@link OMFactory#createOMText(OMContainer, OMText)}. */
 public class TestCreateOMTextFromOMText extends AxiomTestCase {
     public TestCreateOMTextFromOMText(OMMetaFactory metaFactory) {
         super(metaFactory);

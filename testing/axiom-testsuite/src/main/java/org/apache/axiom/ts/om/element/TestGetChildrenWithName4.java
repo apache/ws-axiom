@@ -32,7 +32,7 @@ public class TestGetChildrenWithName4 extends AxiomTestCase {
     private static final String NS_A = "urn://a";
     private static final String NS_B = "urn://b";
     private static final String NS_C = "urn://c";
-    
+
     public TestGetChildrenWithName4(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -44,12 +44,11 @@ public class TestGetChildrenWithName4 extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace a = factory.createOMNamespace(NS_A, "a");
         OMNamespace b = factory.createOMNamespace(NS_B, "b");
-        
+
         OMElement documentElement = factory.createOMElement("Document", a);
         factory.createOMElement("sample", a, documentElement);
         factory.createOMElement("sample", b, documentElement);
-        
-        
+
         // Test for fully qualified names
         QName qName = new QName(NS_A, "sample");
         assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
@@ -57,17 +56,16 @@ public class TestGetChildrenWithName4 extends AxiomTestCase {
         assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
         qName = new QName(NS_C, "sample");
         assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(0);
-        
+
         // Test for QName with no namespace.
         // Axiom 1.2.x implemented a legacy behavior where an empty namespace URI was interpreted
         // as a wildcard (see AXIOM-11). In Axiom 1.3.x, the matching is always strict.
         qName = new QName("", "sample");
         assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(0);
-        
+
         // Now add an unqualified sample element to the documentElement
         factory.createOMElement("sample", null, documentElement);
-        
-        
+
         // Repeat the tests
         qName = new QName(NS_A, "sample");
         assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
@@ -75,9 +73,9 @@ public class TestGetChildrenWithName4 extends AxiomTestCase {
         assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
         qName = new QName(NS_C, "sample");
         assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(0);
-       
+
         // Since there actually is an unqualified element child, the most accurate
-        // interpretation of getChildrenWithName should be to return this one 
+        // interpretation of getChildrenWithName should be to return this one
         // child
         qName = new QName("", "sample");
         assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);

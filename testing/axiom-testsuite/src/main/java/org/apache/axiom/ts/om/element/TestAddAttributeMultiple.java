@@ -34,7 +34,7 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  */
 public class TestAddAttributeMultiple extends AxiomTestCase {
     private final AddAttributeStrategy strategy;
-    
+
     public TestAddAttributeMultiple(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
         this.strategy = strategy;
@@ -44,11 +44,11 @@ public class TestAddAttributeMultiple extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         String expectedXML =
-                "<AttributeTester xmlns:myAttr2NS=\"http://test-attributes-2.org\" " +
-                        "xmlns:myAttr1NS=\"http://test-attributes-1.org\" myAttr2NS:attrNumber=\"2\" myAttr1NS:attrNumber=\"1\" />";
-    
+                "<AttributeTester xmlns:myAttr2NS=\"http://test-attributes-2.org\" "
+                        + "xmlns:myAttr1NS=\"http://test-attributes-1.org\" myAttr2NS:attrNumber=\"2\" myAttr1NS:attrNumber=\"1\" />";
+
         OMFactory omFactory = metaFactory.getOMFactory();
-    
+
         OMNamespace attrNS1 =
                 omFactory.createOMNamespace("http://test-attributes-1.org", "myAttr1NS");
         OMNamespace attrNS2 =
@@ -56,9 +56,7 @@ public class TestAddAttributeMultiple extends AxiomTestCase {
         OMElement omElement = omFactory.createOMElement("AttributeTester", null);
         strategy.addAttribute(omElement, "attrNumber", attrNS1, "1");
         strategy.addAttribute(omElement, "attrNumber", attrNS2, "2");
-    
-        assertAbout(xml())
-                .that(xml(OMElement.class, omElement))
-                .hasSameContentAs(expectedXML);
+
+        assertAbout(xml()).that(xml(OMElement.class, omElement)).hasSameContentAs(expectedXML);
     }
 }

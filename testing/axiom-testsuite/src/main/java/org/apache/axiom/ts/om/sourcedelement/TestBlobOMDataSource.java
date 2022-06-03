@@ -32,9 +32,7 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.BlobOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests functionality of BlobOMDataSource
- */
+/** Tests functionality of BlobOMDataSource */
 public class TestBlobOMDataSource extends AxiomTestCase {
     public TestBlobOMDataSource(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -43,12 +41,13 @@ public class TestBlobOMDataSource extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        
+
         String localName = "myPayload";
         String encoding = "utf-8";
         String payload = "<tns:myPayload xmlns:tns=\"urn://test\">Payload One</tns:myPayload>";
         OMNamespace ns = factory.createOMNamespace("urn://test", "tns");
-        BlobOMDataSource ds = new BlobOMDataSource(Blobs.createBlob(payload.getBytes(encoding)), encoding);
+        BlobOMDataSource ds =
+                new BlobOMDataSource(Blobs.createBlob(payload.getBytes(encoding)), encoding);
 
         OMElement parent = factory.createOMElement("root", null);
         OMSourcedElement omse = factory.createOMElement(ds, localName, ns);
@@ -58,28 +57,33 @@ public class TestBlobOMDataSource extends AxiomTestCase {
         OMSourcedElement child = (OMSourcedElement) firstChild;
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
         assertThat(child.getDataSource()).isSameInstanceAs(ds);
-        
+
         // A BlobOMDataSource does not consume the backing object when read.
-        // Thus getting the XMLStreamReader of the BlobOMDataSource should not 
+        // Thus getting the XMLStreamReader of the BlobOMDataSource should not
         // cause expansion of the OMSourcedElement.
         XMLStreamReader reader = child.getXMLStreamReader();
         reader.next();
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        
-        // Likewise, a BlobOMDataSource does not consume the backing object when 
+
+        // Likewise, a BlobOMDataSource does not consume the backing object when
         // written.  Thus serializing the OMSourcedElement should not cause the expansion
         // of the OMSourcedElement.
-        assertTrue("The payload was not present in the output",
-                   parent.toString().indexOf(payload) > 0);
+        assertTrue(
+                "The payload was not present in the output",
+                parent.toString().indexOf(payload) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        
-        // If a consumer calls build or buildWithAttachments on the tree, the 
+
+        // If a consumer calls build or buildWithAttachments on the tree, the
         // tree should not be expanded.
         parent.build();
-        assertTrue("OMSourcedElement is expanded after build().  This is unexpected", !child.isExpanded());
+        assertTrue(
+                "OMSourcedElement is expanded after build().  This is unexpected",
+                !child.isExpanded());
         parent.buildWithAttachments();
-        assertTrue("OMSourcedElement is expanded after buildWithAttachments().  This is unexpected", !child.isExpanded());
-        
+        assertTrue(
+                "OMSourcedElement is expanded after buildWithAttachments().  This is unexpected",
+                !child.isExpanded());
+
         // Test getting the raw bytes from the BlobOMDataSource.
         assertThat(child.getDataSource()).isSameInstanceAs(ds);
     }

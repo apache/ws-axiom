@@ -25,31 +25,33 @@ import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 public abstract class OMContainerFactory extends Multiton implements Dimension {
-    public static final OMContainerFactory DOCUMENT = new OMContainerFactory() {
-        @Override
-        public void addTestParameters(MatrixTestCase testCase) {
-            testCase.addTestParameter("container", "document");
-        }
-        
-        @Override
-        public OMContainer create(OMFactory factory) {
-            return factory.createOMDocument();
-        }
-    };
-    
-    public static final OMContainerFactory ELEMENT = new OMContainerFactory() {
-        @Override
-        public void addTestParameters(MatrixTestCase testCase) {
-            testCase.addTestParameter("container", "element");
-        }
-        
-        @Override
-        public OMContainer create(OMFactory factory) {
-            return factory.createOMElement("test", null);
-        }
-    };
-    
+    public static final OMContainerFactory DOCUMENT =
+            new OMContainerFactory() {
+                @Override
+                public void addTestParameters(MatrixTestCase testCase) {
+                    testCase.addTestParameter("container", "document");
+                }
+
+                @Override
+                public OMContainer create(OMFactory factory) {
+                    return factory.createOMDocument();
+                }
+            };
+
+    public static final OMContainerFactory ELEMENT =
+            new OMContainerFactory() {
+                @Override
+                public void addTestParameters(MatrixTestCase testCase) {
+                    testCase.addTestParameter("container", "element");
+                }
+
+                @Override
+                public OMContainer create(OMFactory factory) {
+                    return factory.createOMElement("test", null);
+                }
+            };
+
     private OMContainerFactory() {}
-    
+
     public abstract OMContainer create(OMFactory factory);
 }

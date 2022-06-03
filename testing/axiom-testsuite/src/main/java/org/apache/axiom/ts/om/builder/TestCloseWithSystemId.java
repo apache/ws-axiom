@@ -39,13 +39,14 @@ public class TestCloseWithSystemId extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        InstrumentedDataSource ds = new InstrumentedDataSource(new URLDataSource(
-                XMLSample.SIMPLE.getUrl()));
+        InstrumentedDataSource ds =
+                new InstrumentedDataSource(new URLDataSource(XMLSample.SIMPLE.getUrl()));
         DataSourceRegistration registration = DataSourceRegistry.registerDataSource(ds);
         try {
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
-                    metaFactory.getOMFactory(),
-                    new StreamSource(registration.getURL().toExternalForm()));
+            OMXMLParserWrapper builder =
+                    OMXMLBuilderFactory.createOMBuilder(
+                            metaFactory.getOMFactory(),
+                            new StreamSource(registration.getURL().toExternalForm()));
             builder.getDocumentElement();
             builder.close();
             // Since the caller doesn't have control over the stream, the builder is responsible

@@ -29,8 +29,8 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
  * Tests the OMSourcedElement localName, namespace and prefix settings before and after
- * serialization Document: testDocument (which uses the default namespace) Type of
- * Serialization: Serialize and cache Prefix test
+ * serialization Document: testDocument (which uses the default namespace) Type of Serialization:
+ * Serialize and cache Prefix test
  */
 public class TestName1DefaultPrefix extends AxiomTestCase {
     public TestName1DefaultPrefix(OMMetaFactory metaFactory) {
@@ -43,26 +43,31 @@ public class TestName1DefaultPrefix extends AxiomTestCase {
 
         // Create OMSE with an unknown prefix
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
-        OMNamespace ns =
-                f.createOMNamespace("http://www.sosnoski.com/uwjws/library", null);
+        OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", null);
         OMElement element =
-                f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
+                f.createOMElement(
+                        new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
         // Test getting the local name and namespace URI. This should used not result in expansion
         assertTrue(element.getLocalName().equals("library"));
-        assertTrue(element.getNamespace().getNamespaceURI().equals(
-                "http://www.sosnoski.com/uwjws/library"));
+        assertTrue(
+                element.getNamespace()
+                        .getNamespaceURI()
+                        .equals("http://www.sosnoski.com/uwjws/library"));
 
-        // Serialize and cache.  This should cause expansion.  The prefix should be updated to match the testDocument string
+        // Serialize and cache.  This should cause expansion.  The prefix should be updated to match
+        // the testDocument string
         StringWriter writer = new StringWriter();
         root.serialize(writer);
         String result = writer.toString();
 
         assertTrue(element.getLocalName().equals("library"));
-        assertTrue(element.getNamespace().getNamespaceURI().equals(
-                "http://www.sosnoski.com/uwjws/library"));
+        assertTrue(
+                element.getNamespace()
+                        .getNamespaceURI()
+                        .equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
         assertTrue(element.getDefaultNamespace() != null);
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
@@ -73,8 +78,10 @@ public class TestName1DefaultPrefix extends AxiomTestCase {
         result = writer.toString();
 
         assertTrue(element.getLocalName().equals("library"));
-        assertTrue(element.getNamespace().getNamespaceURI().equals(
-                "http://www.sosnoski.com/uwjws/library"));
+        assertTrue(
+                element.getNamespace()
+                        .getNamespaceURI()
+                        .equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
         assertTrue(element.getDefaultNamespace() != null);
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);

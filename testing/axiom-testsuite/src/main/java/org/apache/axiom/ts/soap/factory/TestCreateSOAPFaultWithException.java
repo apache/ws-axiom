@@ -35,8 +35,9 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestCreateSOAPFaultWithException extends SOAPTestCase {
     private final boolean withParent;
-    
-    public TestCreateSOAPFaultWithException(OMMetaFactory metaFactory, SOAPSpec spec, boolean withParent) {
+
+    public TestCreateSOAPFaultWithException(
+            OMMetaFactory metaFactory, SOAPSpec spec, boolean withParent) {
         super(metaFactory, spec);
         this.withParent = withParent;
         addTestParameter("withParent", withParent);
@@ -56,7 +57,8 @@ public class TestCreateSOAPFaultWithException extends SOAPTestCase {
         Iterator<OMElement> it = detail.getAllDetailEntries();
         assertThat(it.hasNext()).isTrue();
         OMElement entry = it.next();
-        assertThat(entry.getQName()).isEqualTo(new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
+        assertThat(entry.getQName())
+                .isEqualTo(new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
         assertThat(entry.getText()).contains("Testing soap fault");
     }
 }

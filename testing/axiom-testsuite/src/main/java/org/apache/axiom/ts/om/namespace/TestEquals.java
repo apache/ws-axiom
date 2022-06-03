@@ -38,7 +38,8 @@ public class TestEquals extends AxiomTestCase {
         OMNamespace ns = factory.createOMNamespace("http://www.w3.org/XML/1998/namespace", "xml");
         assertTrue(ns.equals("http://www.w3.org/XML/1998/namespace", "xml"));
         // The implementation must not assume that namespace URI or prefixes are interned
-        assertTrue(ns.equals(new String("http://www.w3.org/XML/1998/namespace"), new String("xml")));
+        assertTrue(
+                ns.equals(new String("http://www.w3.org/XML/1998/namespace"), new String("xml")));
         assertFalse(ns.equals("http://www.w3.org/XML/1998/namespace", "xml2"));
         assertFalse(ns.equals("http://www.w3.org/XML/1998/namespace", null));
         assertFalse(ns.equals("http://www.w3.org/XML/2001/namespace", "xml"));

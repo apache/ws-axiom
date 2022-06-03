@@ -25,9 +25,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests the behavior of {@link OMElement#getTextAsQName()} for a prefixed QName.
- */
+/** Tests the behavior of {@link OMElement#getTextAsQName()} for a prefixed QName. */
 public class TestGetTextAsQName extends AxiomTestCase {
     public TestGetTextAsQName(OMMetaFactory metaFactory) {
         super(metaFactory);

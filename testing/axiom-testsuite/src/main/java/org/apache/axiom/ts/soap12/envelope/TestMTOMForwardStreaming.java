@@ -41,14 +41,13 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that attachments are streamed (i.e. not read entirely into memory) if the original message
- * was read from an input stream and
- * {@link OMElement#serializeAndConsume(java.io.OutputStream, OMOutputFormat)} is used to serialize
- * the message. This feature is important because it allows projects such as Synapse to forward MTOM
- * messages very efficiently.
+ * was read from an input stream and {@link OMElement#serializeAndConsume(java.io.OutputStream,
+ * OMOutputFormat)} is used to serialize the message. This feature is important because it allows
+ * projects such as Synapse to forward MTOM messages very efficiently.
  */
 public class TestMTOMForwardStreaming extends AxiomTestCase {
     private final boolean buildSOAPPart;
-    
+
     public TestMTOMForwardStreaming(OMMetaFactory metaFactory, boolean buildSOAPPart) {
         super(metaFactory);
         addTestParameter("buildSOAPPart", buildSOAPPart);
@@ -59,82 +58,108 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
     protected void runTest() throws Throwable {
         DataSource ds1 = new TestDataSource('A', Runtime.getRuntime().maxMemory());
         DataSource ds2 = new TestDataSource('B', Runtime.getRuntime().maxMemory());
-        
+
         // Programmatically create the original message
         SOAPFactory factory = metaFactory.getSOAP12Factory();
         final SOAPEnvelope orgEnvelope = factory.createSOAPEnvelope();
         SOAPBody orgBody = factory.createSOAPBody(orgEnvelope);
-        OMElement orgBodyElement = factory.createOMElement("test", factory.createOMNamespace("urn:test", "p"), orgBody);
+        OMElement orgBodyElement =
+                factory.createOMElement(
+                        "test", factory.createOMNamespace("urn:test", "p"), orgBody);
         OMElement orgData1 = factory.createOMElement("data", null, orgBodyElement);
         orgData1.addChild(factory.createOMText(new DataHandler(ds1), true));
         OMElement orgData2 = factory.createOMElement("data", null, orgBodyElement);
         orgData2.addChild(factory.createOMText(new DataHandler(ds2), true));
-        
+
         final OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
         format.setSOAP11(false);
         final String contentType = format.getContentType();
-        
+
         final PipedOutputStream pipe1Out = new PipedOutputStream();
         final PipedInputStream pipe1In = new PipedInputStream(pipe1Out);
-        
+
         // Create the producer thread (simulating the client sending the MTOM message)
-        Thread producerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    try {
-                        orgEnvelope.serialize(pipe1Out, format);
-                    } finally {
-                        pipe1Out.close();
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
+        Thread producerThread =
+                new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    try {
+                                        orgEnvelope.serialize(pipe1Out, format);
+                                    } finally {
+                                        pipe1Out.close();
+                                    }
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
+                        });
         producerThread.start();
-        
+
         final PipedOutputStream pipe2Out = new PipedOutputStream();
         PipedInputStream pipe2In = new PipedInputStream(pipe2Out);
-        
+
         // Create the forwarder thread (simulating the mediation engine that forwards the message)
-        Thread forwarderThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    try {
-                        MultipartBody mb = MultipartBody.builder().setInputStream(pipe1In).setContentType(contentType).build();
-                        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
-                        // The code path executed by serializeAndConsume is significantly different if
-                        // the element is built. Therefore we need two different test executions.
-                        if (buildSOAPPart) {
-                            envelope.build();
-                        }
-                        // Usage of serializeAndConsume should enable streaming
-                        envelope.serializeAndConsume(pipe2Out, format);
-                    } finally {
-                        pipe2Out.close();
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
+        Thread forwarderThread =
+                new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    try {
+                                        MultipartBody mb =
+                                                MultipartBody.builder()
+                                                        .setInputStream(pipe1In)
+                                                        .setContentType(contentType)
+                                                        .build();
+                                        SOAPEnvelope envelope =
+                                                OMXMLBuilderFactory.createSOAPModelBuilder(
+                                                                metaFactory, mb)
+                                                        .getSOAPEnvelope();
+                                        // The code path executed by serializeAndConsume is
+                                        // significantly different if
+                                        // the element is built. Therefore we need two different
+                                        // test executions.
+                                        if (buildSOAPPart) {
+                                            envelope.build();
+                                        }
+                                        // Usage of serializeAndConsume should enable streaming
+                                        envelope.serializeAndConsume(pipe2Out, format);
+                                    } finally {
+                                        pipe2Out.close();
+                                    }
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
+                        });
         forwarderThread.start();
-        
+
         try {
-            MultipartBody mb = MultipartBody.builder().setInputStream(pipe2In).setContentType(contentType).build();
-            SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
+            MultipartBody mb =
+                    MultipartBody.builder()
+                            .setInputStream(pipe2In)
+                            .setContentType(contentType)
+                            .build();
+            SOAPEnvelope envelope =
+                    OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
             OMElement bodyElement = envelope.getBody().getFirstElement();
             Iterator<OMElement> it = bodyElement.getChildElements();
             OMElement data1 = it.next();
             OMElement data2 = it.next();
-            
-            IOTestUtils.compareStreams(ds1.getInputStream(),
-                    ((PartDataHandler)((OMText)data1.getFirstOMChild()).getDataHandler()).getPart().getInputStream(false));
-            IOTestUtils.compareStreams(ds2.getInputStream(),
-                    ((PartDataHandler)((OMText)data2.getFirstOMChild()).getDataHandler()).getPart().getInputStream(false));
+
+            IOTestUtils.compareStreams(
+                    ds1.getInputStream(),
+                    ((PartDataHandler) ((OMText) data1.getFirstOMChild()).getDataHandler())
+                            .getPart()
+                            .getInputStream(false));
+            IOTestUtils.compareStreams(
+                    ds2.getInputStream(),
+                    ((PartDataHandler) ((OMText) data2.getFirstOMChild()).getDataHandler())
+                            .getPart()
+                            .getInputStream(false));
         } finally {
             pipe2In.close();
         }

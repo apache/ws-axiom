@@ -28,14 +28,19 @@ import org.apache.axiom.om.OMMetaFactory;
  * to the created element.
  */
 public class TestCreateOMElementWithoutNamespace extends CreateOMElementTestCase {
-    public TestCreateOMElementWithoutNamespace(OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
+    public TestCreateOMElementWithoutNamespace(
+            OMMetaFactory metaFactory,
+            CreateOMElementVariant variant,
+            CreateOMElementParentSupplier parentSupplier) {
         super(metaFactory, variant, parentSupplier);
     }
 
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", "");
+        OMElement element =
+                variant.createOMElement(
+                        factory, parentSupplier.createParent(factory), "test", "", "");
         assertEquals("test", element.getLocalName());
         assertNull(element.getNamespace());
         assertFalse(element.getAllDeclaredNamespaces().hasNext());

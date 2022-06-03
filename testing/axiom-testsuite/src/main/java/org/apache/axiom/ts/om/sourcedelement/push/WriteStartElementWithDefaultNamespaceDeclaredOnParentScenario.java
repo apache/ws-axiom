@@ -32,14 +32,16 @@ import org.junit.Assert;
  * Tests that {@link XMLStreamWriter#writeStartElement(String, String, String)} creates the correct
  * {@link OMElement} if the element uses a default namespace declared on the parent.
  */
-public class WriteStartElementWithDefaultNamespaceDeclaredOnParentScenario implements PushOMDataSourceScenario {
+public class WriteStartElementWithDefaultNamespaceDeclaredOnParentScenario
+        implements PushOMDataSourceScenario {
     @Override
     public void addTestParameters(MatrixTestCase testCase) {
-        testCase.addTestParameter("scenario", "writeStartElementWithDefaultNamespaceDeclaredOnParent");
+        testCase.addTestParameter(
+                "scenario", "writeStartElementWithDefaultNamespaceDeclaredOnParent");
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 

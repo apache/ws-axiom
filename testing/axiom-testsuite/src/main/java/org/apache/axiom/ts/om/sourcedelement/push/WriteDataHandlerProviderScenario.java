@@ -42,12 +42,13 @@ import org.junit.Assert;
  */
 public class WriteDataHandlerProviderScenario implements PushOMDataSourceScenario {
     private final DataHandler dh = new DataHandler(new RandomDataSource(1024));
-    private final DataHandlerProvider dhp = new DataHandlerProvider() {
-        @Override
-        public DataHandler getDataHandler() throws IOException {
-            return dh;
-        }
-    };
+    private final DataHandlerProvider dhp =
+            new DataHandlerProvider() {
+                @Override
+                public DataHandler getDataHandler() throws IOException {
+                    return dh;
+                }
+            };
 
     @Override
     public void addTestParameters(MatrixTestCase testCase) {
@@ -55,7 +56,7 @@ public class WriteDataHandlerProviderScenario implements PushOMDataSourceScenari
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
@@ -72,13 +73,14 @@ public class WriteDataHandlerProviderScenario implements PushOMDataSourceScenari
 
     @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
-        OMText child = (OMText)element.getFirstOMChild();
+        OMText child = (OMText) element.getFirstOMChild();
         if (dataHandlersPreserved) {
             Assert.assertTrue(child.isBinary());
             Assert.assertSame(dh, child.getDataHandler());
         } else {
             child.setBinary(true);
-            IOTestUtils.compareStreams(dh.getInputStream(), child.getDataHandler().getInputStream());
+            IOTestUtils.compareStreams(
+                    dh.getInputStream(), child.getDataHandler().getInputStream());
         }
     }
 }

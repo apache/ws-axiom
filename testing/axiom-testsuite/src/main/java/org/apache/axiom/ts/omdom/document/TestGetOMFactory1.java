@@ -28,8 +28,8 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.w3c.dom.Document;
 
 /**
- * Tests that {@link OMInformationItem#getOMFactory()} returns the expected instance for a
- * {@link Document} created with the {@link DocumentBuilder#newDocument()}.
+ * Tests that {@link OMInformationItem#getOMFactory()} returns the expected instance for a {@link
+ * Document} created with the {@link DocumentBuilder#newDocument()}.
  */
 public class TestGetOMFactory1 extends AxiomTestCase {
     public TestGetOMFactory1(OMMetaFactory metaFactory) {
@@ -38,7 +38,11 @@ public class TestGetOMFactory1 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document document = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
-        assertSame(metaFactory.getOMFactory(), ((OMDocument)document).getOMFactory());
+        Document document =
+                ((DOMMetaFactory) metaFactory)
+                        .newDocumentBuilderFactory()
+                        .newDocumentBuilder()
+                        .newDocument();
+        assertSame(metaFactory.getOMFactory(), ((OMDocument) document).getOMFactory());
     }
 }

@@ -45,8 +45,9 @@ public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends AxiomTest
         DataSource ds = new RandomDataSource(445566, 32, 128, 20000000);
         QName qname = new QName("a");
         Charset cs = Charset.forName("ascii");
-        OMSourcedElement element = factory.createOMElement(
-                new WrappedTextNodeOMDataSourceFromDataSource(qname, ds, cs), qname);
+        OMSourcedElement element =
+                factory.createOMElement(
+                        new WrappedTextNodeOMDataSourceFromDataSource(qname, ds, cs), qname);
         Reader in = element.getTextAsStream(true);
         assertFalse(in instanceof StringReader);
         IOTestUtils.compareStreams(new InputStreamReader(ds.getInputStream(), cs), in);

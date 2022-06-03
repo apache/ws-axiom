@@ -33,7 +33,7 @@ import org.apache.axiom.ts.soap.MTOMSample;
 
 public class TestSerialize extends AxiomTestCase {
     private final boolean base64;
-    
+
     public TestSerialize(OMMetaFactory metaFactory, boolean base64) {
         super(metaFactory);
         this.base64 = base64;
@@ -46,27 +46,32 @@ public class TestSerialize extends AxiomTestCase {
 
         // Read in message: SOAPPart and 2 image attachments
         InputStream inStream = testMessage.getInputStream();
-        MultipartBody mb = MultipartBody.builder().setInputStream(inStream).setContentType(testMessage.getContentType()).build();
-        
+        MultipartBody mb =
+                MultipartBody.builder()
+                        .setInputStream(inStream)
+                        .setContentType(testMessage.getContentType())
+                        .build();
+
         OMOutputFormat oof = new OMOutputFormat();
         oof.setDoOptimize(true);
         oof.setMimeBoundary(testMessage.getBoundary());
         oof.setRootContentId(testMessage.getStart());
         if (base64) {
-            oof.setProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, 
-                    Boolean.TRUE);
+            oof.setProperty(
+                    OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, Boolean.TRUE);
         }
-        
+
         // Write out the message
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        
+
         OMXMLParserWrapper builder =
-            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb);
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb);
         OMElement om = builder.getDocumentElement();
         om.serialize(baos, oof);
         om.close(false);
         String out = baos.toString();
-        
+
         if (base64) {
             // Do a quick check to see if the data is base64 and is
             // writing base64 compliant code.

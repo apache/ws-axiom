@@ -33,8 +33,8 @@ import org.apache.commons.io.output.NullOutputStream;
  * Test that when an {@link OMText} node is written to an XMLStreamWriter without MTOM support, the
  * implementation doesn't construct an in-memory base64 representation of the complete binary
  * content, but writes it in chunks (streaming).
- * <p>
- * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-236">AXIOM-236</a>.
+ *
+ * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-236">AXIOM-236</a>.
  */
 public class TestBase64StreamingWithSerialize extends AxiomTestCase {
     public TestBase64StreamingWithSerialize(OMMetaFactory metaFactory) {

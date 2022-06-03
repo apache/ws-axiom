@@ -39,8 +39,11 @@ public class TestGetOMDocumentElementWithParser extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory,
-                new StringReader("<!-- comment --><root/><!-- comment -->")).getDocument();
+        OMDocument document =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory,
+                                new StringReader("<!-- comment --><root/><!-- comment -->"))
+                        .getDocument();
         OMElement documentElement = document.getOMDocumentElement();
         assertNotNull(documentElement);
         assertEquals("root", documentElement.getLocalName());

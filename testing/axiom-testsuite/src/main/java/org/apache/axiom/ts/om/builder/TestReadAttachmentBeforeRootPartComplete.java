@@ -42,14 +42,15 @@ import org.apache.axiom.testutils.io.IOTestUtils;
 /**
  * Tests that the content of the root part of an XOP message is buffered, i.e. that an attachment
  * part can be accessed before the object model for the root part has been built completely.
- * <p>
- * Note:
+ *
+ * <p>Note:
+ *
  * <ul>
- * <li>Axiom &lt;= 1.2.12 reads the content of the root part into a buffer before creating the
- * parser.
- * <li>In Axiom 1.2.13 the root part is buffered on-demand (as described in <a
- * href="https://issues.apache.org/jira/browse/AXIOM-403">AXIOM-403</a>) and this unit test checks
- * that this feature is working as expected.
+ *   <li>Axiom &lt;= 1.2.12 reads the content of the root part into a buffer before creating the
+ *       parser.
+ *   <li>In Axiom 1.2.13 the root part is buffered on-demand (as described in <a
+ *       href="https://issues.apache.org/jira/browse/AXIOM-403">AXIOM-403</a>) and this unit test
+ *       checks that this feature is working as expected.
  * </ul>
  */
 public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
@@ -60,7 +61,7 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        
+
         // Programmatically create the message
         OMElement orgRoot = factory.createOMElement("root", null);
         OMElement orgChild1 = factory.createOMElement("child1", null, orgRoot);
@@ -70,9 +71,9 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
         // If we don't do this, then the root part may be buffered entirely by the parser,
         // and the test would not be effective.
         OMElement orgChild2 = factory.createOMElement("child2", null, orgRoot);
-        String s = RandomUtils.randomString(128*1024);
+        String s = RandomUtils.randomString(128 * 1024);
         orgChild2.setText(s);
-        
+
         // Serialize the message
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
@@ -80,22 +81,24 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
         OutputStream out = blob.getOutputStream();
         orgRoot.serialize(out, format);
         out.close();
-        
+
         // Parse the message
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory,
-                StAXParserConfiguration.NON_COALESCING,
-                MultipartBody.builder()
-                        .setInputStream(blob.getInputStream())
-                        .setContentType(format.getContentType())
-                        .build());
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        factory,
+                        StAXParserConfiguration.NON_COALESCING,
+                        MultipartBody.builder()
+                                .setInputStream(blob.getInputStream())
+                                .setContentType(format.getContentType())
+                                .build());
         OMElement root = builder.getDocumentElement();
-        OMElement child1 = (OMElement)root.getFirstOMChild();
-        OMText text = (OMText)child1.getFirstOMChild();
+        OMElement child1 = (OMElement) root.getFirstOMChild();
+        OMText text = (OMText) child1.getFirstOMChild();
         assertTrue(text.isBinary());
         // Access the DataHandler
         DataHandler dh = text.getDataHandler();
         IOTestUtils.compareStreams(ds.getInputStream(), dh.getInputStream());
-        OMElement child2 = (OMElement)child1.getNextOMSibling();
+        OMElement child2 = (OMElement) child1.getNextOMSibling();
         assertFalse(child2.isComplete());
         assertEquals(s, child2.getText());
     }

@@ -32,7 +32,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestAddChildWithSameParent extends AxiomTestCase {
     private final boolean build;
-    
+
     public TestAddChildWithSameParent(OMMetaFactory metaFactory, boolean build) {
         super(metaFactory);
         this.build = build;
@@ -41,17 +41,18 @@ public class TestAddChildWithSameParent extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement parent = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<parent><a/><b/><c/></parent>");
+        OMElement parent =
+                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<parent><a/><b/><c/></parent>");
         if (build) {
             parent.build();
         }
-        OMElement b = (OMElement)parent.getFirstOMChild().getNextOMSibling();
+        OMElement b = (OMElement) parent.getFirstOMChild().getNextOMSibling();
         parent.addChild(b);
-        OMElement child = (OMElement)parent.getFirstOMChild();
+        OMElement child = (OMElement) parent.getFirstOMChild();
         assertEquals("a", child.getLocalName());
-        child = (OMElement)child.getNextOMSibling();
+        child = (OMElement) child.getNextOMSibling();
         assertEquals("c", child.getLocalName());
-        child = (OMElement)child.getNextOMSibling();
+        child = (OMElement) child.getNextOMSibling();
         assertSame(child, b);
         assertNull(child.getNextOMSibling());
         assertSame(parent, b.getParent());

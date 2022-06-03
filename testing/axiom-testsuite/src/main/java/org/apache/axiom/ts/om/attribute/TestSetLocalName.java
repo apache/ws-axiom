@@ -33,7 +33,9 @@ public class TestSetLocalName extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMAttribute attr = factory.createOMAttribute("test", factory.createOMNamespace("urn:test", "p"), "value");
+        OMAttribute attr =
+                factory.createOMAttribute(
+                        "test", factory.createOMNamespace("urn:test", "p"), "value");
         attr.setLocalName("test2");
         assertEquals("test2", attr.getLocalName());
         QName qname = attr.getQName();

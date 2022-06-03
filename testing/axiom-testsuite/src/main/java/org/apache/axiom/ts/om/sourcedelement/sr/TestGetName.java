@@ -43,8 +43,11 @@ public class TestGetName extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement root = factory.createOMElement("root", null);
-        OMSourcedElement el = factory.createOMElement(new PullOMDataSource("<p:el xmlns:p='urn:ns'>content</p:el>"),
-                "el", factory.createOMNamespace("urn:ns", null));
+        OMSourcedElement el =
+                factory.createOMElement(
+                        new PullOMDataSource("<p:el xmlns:p='urn:ns'>content</p:el>"),
+                        "el",
+                        factory.createOMNamespace("urn:ns", null));
         root.addChild(el);
         XMLStreamReader reader = root.getXMLStreamReader();
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());

@@ -30,10 +30,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
- * Tests that the effect of {@link OMNamedInformationItem#setLocalName(String)} on a
- * {@link OMSourcedElement} is the same on expanded and unexpanded elements. In both cases, it must
- * behave in the same way as a normal {@link OMElement}, which implies that it must override the
- * local name of the root element returned by the data source.
+ * Tests that the effect of {@link OMNamedInformationItem#setLocalName(String)} on a {@link
+ * OMSourcedElement} is the same on expanded and unexpanded elements. In both cases, it must behave
+ * in the same way as a normal {@link OMElement}, which implies that it must override the local name
+ * of the root element returned by the data source.
  */
 public class TestSetLocalName extends AxiomTestCase {
     private boolean expand;
@@ -47,9 +47,11 @@ public class TestSetLocalName extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(
-                new PullOMDataSource("<p:root xmlns:p='urn:test'><child/></p:root>"),
-                "root", factory.createOMNamespace("urn:test", "p"));
+        OMSourcedElement element =
+                factory.createOMElement(
+                        new PullOMDataSource("<p:root xmlns:p='urn:test'><child/></p:root>"),
+                        "root",
+                        factory.createOMNamespace("urn:test", "p"));
         if (expand) {
             element.getFirstOMChild();
         }

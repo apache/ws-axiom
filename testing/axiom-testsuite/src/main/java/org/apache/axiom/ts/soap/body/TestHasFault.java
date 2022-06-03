@@ -33,9 +33,7 @@ public class TestHasFault extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPBody body = soapFactory.createSOAPBody(envelope);
-        assertFalse(
-                "Body Test:- After creating a soap body it has a fault",
-                body.hasFault());
+        assertFalse("Body Test:- After creating a soap body it has a fault", body.hasFault());
         body.addFault(new Exception("This an exception for testing"));
         assertTrue(
                 "Body Test:- After calling addFault method, hasFault method returns false",

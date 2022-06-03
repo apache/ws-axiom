@@ -27,7 +27,7 @@ import org.xml.sax.helpers.AttributesImpl;
 
 final class DummyXMLReader extends AbstractXMLReader {
     private boolean parsed;
-    
+
     @Override
     public void parse(InputSource input) throws IOException, SAXException {
         parse();
@@ -37,7 +37,7 @@ final class DummyXMLReader extends AbstractXMLReader {
     public void parse(String systemId) throws IOException, SAXException {
         parse();
     }
-    
+
     private void parse() throws SAXException {
         parsed = true;
         contentHandler.startDocument();

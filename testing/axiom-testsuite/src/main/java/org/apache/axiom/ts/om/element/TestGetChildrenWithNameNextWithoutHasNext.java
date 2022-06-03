@@ -31,9 +31,9 @@ import org.apache.axiom.ts.AxiomTestCase;
 /**
  * Tests that the iterator returned by {@link OMContainer#getChildrenWithName(QName)} returns the
  * correct element when {@link Iterator#next()} is used without calling {@link Iterator#hasNext()}
- * before. This is a regression test for
- * <a href="https://issues.apache.org/jira/browse/AXIOM-78">AXIOM-78</a> and
- * <a href="https://issues.apache.org/jira/browse/AXIOM-172">AXIOM-172</a>.
+ * before. This is a regression test for <a
+ * href="https://issues.apache.org/jira/browse/AXIOM-78">AXIOM-78</a> and <a
+ * href="https://issues.apache.org/jira/browse/AXIOM-172">AXIOM-172</a>.
  */
 public class TestGetChildrenWithNameNextWithoutHasNext extends AxiomTestCase {
     public TestGetChildrenWithNameNextWithoutHasNext(OMMetaFactory metaFactory) {

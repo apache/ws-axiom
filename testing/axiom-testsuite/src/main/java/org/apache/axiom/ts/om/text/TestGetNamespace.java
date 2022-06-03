@@ -25,9 +25,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests the behavior of {@link OMText#getNamespace()} for a prefixed QName.
- */
+/** Tests the behavior of {@link OMText#getNamespace()} for a prefixed QName. */
 public class TestGetNamespace extends AxiomTestCase {
     public TestGetNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);

@@ -29,9 +29,9 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that the iterator returned by {@link OMContainer#getChildren()} throws a
- * {@link ConcurrentModificationException} if the current node is removed using a method other than
- * {@link Iterator#remove()}.
+ * Tests that the iterator returned by {@link OMContainer#getChildren()} throws a {@link
+ * ConcurrentModificationException} if the current node is removed using a method other than {@link
+ * Iterator#remove()}.
  */
 public class TestGetChildrenConcurrentModification extends AxiomTestCase {
     public TestGetChildrenConcurrentModification(OMMetaFactory metaFactory) {
@@ -47,7 +47,7 @@ public class TestGetChildrenConcurrentModification extends AxiomTestCase {
         factory.createOMElement("child3", null, parent);
         Iterator<OMNode> it = parent.getChildren();
         it.next();
-        OMElement child2 = (OMElement)it.next();
+        OMElement child2 = (OMElement) it.next();
         child2.detach();
         try {
             it.next();

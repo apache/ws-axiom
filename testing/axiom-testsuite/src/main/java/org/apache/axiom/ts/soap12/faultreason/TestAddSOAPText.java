@@ -33,8 +33,7 @@ public class TestAddSOAPText extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
         SOAPFaultReason faultReason = soapFactory.createSOAPFaultReason(fault);
-        faultReason.addSOAPText(
-                soapFactory.createSOAPFaultText(faultReason));
+        faultReason.addSOAPText(soapFactory.createSOAPFaultText(faultReason));
         assertFalse(
                 "SOAP 1.2 FaultReason Test : - After calling addSOAPText, getFirstSOAPText returns null",
                 faultReason.getFirstSOAPText() == null);

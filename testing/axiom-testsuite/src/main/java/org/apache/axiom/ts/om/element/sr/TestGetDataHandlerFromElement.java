@@ -35,12 +35,12 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 /**
- * Tests {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)} on an
- * {@link XMLStreamReader} returned by {@link OMElement#getXMLStreamReader(boolean)}.
+ * Tests {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)} on an {@link
+ * XMLStreamReader} returned by {@link OMElement#getXMLStreamReader(boolean)}.
  */
 public class TestGetDataHandlerFromElement extends AxiomTestCase {
     private final boolean cache;
-    
+
     public TestGetDataHandlerFromElement(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
@@ -50,11 +50,13 @@ public class TestGetDataHandlerFromElement extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        RandomDataSource orgDS = new RandomDataSource(64*1024);
+        RandomDataSource orgDS = new RandomDataSource(64 * 1024);
         OMElement orgRoot = factory.createOMElement(new QName("root"));
         OMElement orgChild = factory.createOMElement(new QName("child"), orgRoot);
         orgChild.addChild(factory.createOMText(new DataHandler(orgDS), false));
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(orgRoot.toString())).getDocumentElement();
+        OMElement root =
+                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(orgRoot.toString()))
+                        .getDocumentElement();
         XMLStreamReader reader = root.getXMLStreamReader(cache);
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());

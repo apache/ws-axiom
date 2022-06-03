@@ -37,7 +37,7 @@ public class WriteCommentScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
@@ -52,6 +52,6 @@ public class WriteCommentScenario implements PushOMDataSourceScenario {
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMComment);
-        Assert.assertEquals("comment", ((OMComment)child).getValue());
+        Assert.assertEquals("comment", ((OMComment) child).getValue());
     }
 }

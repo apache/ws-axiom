@@ -29,8 +29,8 @@ import org.apache.axiom.ts.AxiomTestCase;
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an
  * attribute without namespace, even if during creation an {@link OMNamespace} object with empty
  * prefix and namespace URI was given.
- * <p>
- * This is a regression test for <a
+ *
+ * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalized extends AxiomTestCase {

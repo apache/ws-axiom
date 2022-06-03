@@ -41,10 +41,14 @@ public class TestImportNode extends ConformanceTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document doc = DOMImplementation.XERCES.parse(new InputSource(file.getUrl().toString()));
-        Document doc2 = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Document doc2 =
+                ((DOMMetaFactory) metaFactory)
+                        .newDocumentBuilderFactory()
+                        .newDocumentBuilder()
+                        .newDocument();
         Node n = doc2.importNode(doc.getDocumentElement(), true);
         assertAbout(xml())
-                .that(xml(OMElement.class, (OMElement)n))
+                .that(xml(OMElement.class, (OMElement) n))
                 // Import discards DTD information
                 .treatingElementContentWhitespaceAsText()
                 .hasSameContentAs(xml(Element.class, doc.getDocumentElement()));

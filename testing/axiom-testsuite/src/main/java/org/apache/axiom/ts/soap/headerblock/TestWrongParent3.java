@@ -29,8 +29,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Tests that {@link OMNode#insertSiblingBefore(OMNode)} throws an exception if an attempt is made to
- * add a {@link SOAPHeaderBlock} as a child of a SOAP element other than {@link SOAPHeader}.
+ * Tests that {@link OMNode#insertSiblingBefore(OMNode)} throws an exception if an attempt is made
+ * to add a {@link SOAPHeaderBlock} as a child of a SOAP element other than {@link SOAPHeader}.
  */
 public class TestWrongParent3 extends SOAPTestCase {
     public TestWrongParent3(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -41,7 +41,9 @@ public class TestWrongParent3 extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPFaultDetail parent = soapFactory.createSOAPFaultDetail();
         OMElement child1 = soapFactory.createOMElement("child1", null, parent);
-        SOAPHeaderBlock hb = soapFactory.createSOAPHeaderBlock("MyHeader", soapFactory.createOMNamespace("urn:test", "p"));
+        SOAPHeaderBlock hb =
+                soapFactory.createSOAPHeaderBlock(
+                        "MyHeader", soapFactory.createOMNamespace("urn:test", "p"));
         try {
             child1.insertSiblingBefore(hb);
             fail("Expected SOAPProcessingException");

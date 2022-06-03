@@ -37,9 +37,13 @@ public class TestCreateSOAPHeaderBlockFromOMElement extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement original = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new StringReader(
-                "<wsa:To xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2004/08/addressing\">"
-                + "http://fabrikam123.example/Purchasing</wsa:To>")).getDocumentElement();
+        OMElement original =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader(
+                                        "<wsa:To xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2004/08/addressing\">"
+                                                + "http://fabrikam123.example/Purchasing</wsa:To>"))
+                        .getDocumentElement();
         SOAPHeaderBlock headerBlock = soapFactory.createSOAPHeaderBlock(original);
         assertAbout(xml())
                 .that(xml(OMElement.class, headerBlock))

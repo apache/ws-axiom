@@ -29,8 +29,9 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 public class TestGetFirstElementLocalNameWithParser2 extends SampleBasedSOAPTestCase {
     private final boolean buildPayload;
-    
-    public TestGetFirstElementLocalNameWithParser2(OMMetaFactory metaFactory, SOAPSpec spec, boolean buildPayload) {
+
+    public TestGetFirstElementLocalNameWithParser2(
+            OMMetaFactory metaFactory, SOAPSpec spec, boolean buildPayload) {
         super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
         this.buildPayload = buildPayload;
         addTestParameter("buildPayload", "false");

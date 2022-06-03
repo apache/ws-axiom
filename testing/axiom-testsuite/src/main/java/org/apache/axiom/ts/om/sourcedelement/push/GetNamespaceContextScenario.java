@@ -40,7 +40,7 @@ public class GetNamespaceContextScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.singletonMap("p", "urn:test");
     }
 

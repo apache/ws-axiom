@@ -31,7 +31,7 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 public class DocumentElementExtractor extends XMLStreamReaderWrapper {
     private int event = START_DOCUMENT;
     private int depth;
-    
+
     public DocumentElementExtractor(XMLStreamReader parent) {
         super(parent);
     }
@@ -57,7 +57,8 @@ public class DocumentElementExtractor extends XMLStreamReaderWrapper {
     @Override
     public int next() throws XMLStreamException {
         int event;
-        loop: while (true) {
+        loop:
+        while (true) {
             event = super.next();
             switch (event) {
                 case XMLStreamConstants.START_ELEMENT:

@@ -33,7 +33,7 @@ import org.apache.axiom.util.xml.stream.XMLEventUtils;
 
 public class TestSerialize extends AxiomTestCase {
     private final int type;
-    
+
     public TestSerialize(OMMetaFactory metaFactory, int type) {
         super(metaFactory);
         this.type = type;

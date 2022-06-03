@@ -53,15 +53,20 @@ public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
         v.add(new ByteArrayInputStream("<root><a>".getBytes(charset)));
         v.add(ds.getInputStream());
         v.add(new ByteArrayInputStream("</a><b/></root>".getBytes(charset)));
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(factory,
-                StAXParserConfiguration.NON_COALESCING,
-                new SequenceInputStream(v.elements()), "ascii").getDocumentElement();
-        OMElement child = (OMElement)root.getFirstOMChild();
+        OMElement root =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory,
+                                StAXParserConfiguration.NON_COALESCING,
+                                new SequenceInputStream(v.elements()),
+                                "ascii")
+                        .getDocumentElement();
+        OMElement child = (OMElement) root.getFirstOMChild();
         Reader in = child.getTextAsStream(false);
-        IOTestUtils.compareStreams(new InputStreamReader(ds.getInputStream(), charset), "expected", in, "actual");
+        IOTestUtils.compareStreams(
+                new InputStreamReader(ds.getInputStream(), charset), "expected", in, "actual");
         in.close();
         // No try to access subsequent nodes
-        child = (OMElement)child.getNextOMSibling();
+        child = (OMElement) child.getNextOMSibling();
         assertThat(child.getLocalName()).isEqualTo("b");
     }
 }

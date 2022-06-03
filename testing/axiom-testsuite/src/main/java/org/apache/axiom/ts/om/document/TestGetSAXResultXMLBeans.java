@@ -49,13 +49,13 @@ public class TestGetSAXResultXMLBeans extends AxiomTestCase {
         item = order.addNewItem();
         item.setPartId("O85-554-66");
         item.setQuantity(1);
-        
+
         StringWriter out = new StringWriter();
         document.save(out);
         OMDocument omDocument = metaFactory.getOMFactory().createOMDocument();
         ContentHandler handler = omDocument.getSAXResult().getHandler();
-        document.save(handler, (LexicalHandler)handler);
-        
+        document.save(handler, (LexicalHandler) handler);
+
         assertAbout(xml()).that(xml(OMDocument.class, omDocument)).hasSameContentAs(out.toString());
     }
 }

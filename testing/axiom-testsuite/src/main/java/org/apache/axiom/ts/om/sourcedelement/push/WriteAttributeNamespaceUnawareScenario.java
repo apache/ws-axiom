@@ -39,7 +39,7 @@ public class WriteAttributeNamespaceUnawareScenario implements PushOMDataSourceS
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 

@@ -34,7 +34,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCloneNonDestructive extends AxiomTestCase {
     private final boolean copyOMDataSources;
-    
+
     public TestCloneNonDestructive(OMMetaFactory metaFactory, boolean copyOMDataSources) {
         super(metaFactory);
         this.copyOMDataSources = copyOMDataSources;
@@ -44,12 +44,15 @@ public class TestCloneNonDestructive extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDataSource ds = new WrappedTextNodeOMDataSourceFromDataSource(new QName("wrapper"),
-                new ByteArrayDataSource("test".getBytes("utf-8")), Charset.forName("utf-8"));
+        OMDataSource ds =
+                new WrappedTextNodeOMDataSourceFromDataSource(
+                        new QName("wrapper"),
+                        new ByteArrayDataSource("test".getBytes("utf-8")),
+                        Charset.forName("utf-8"));
         OMSourcedElement element = factory.createOMElement(ds);
         OMCloneOptions options = new OMCloneOptions();
         options.setCopyOMDataSources(copyOMDataSources);
-        OMElement clone = (OMElement)element.clone(options);
+        OMElement clone = (OMElement) element.clone(options);
         if (copyOMDataSources) {
             assertTrue(clone instanceof OMSourcedElement);
             assertFalse(element.isExpanded());

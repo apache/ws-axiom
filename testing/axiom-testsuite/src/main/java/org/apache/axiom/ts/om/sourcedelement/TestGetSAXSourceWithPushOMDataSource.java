@@ -42,8 +42,9 @@ import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
 public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
     private final PushOMDataSourceScenario scenario;
     private boolean serializeParent;
-    
-    public TestGetSAXSourceWithPushOMDataSource(OMMetaFactory metaFactory, PushOMDataSourceScenario scenario, boolean serializeParent) {
+
+    public TestGetSAXSourceWithPushOMDataSource(
+            OMMetaFactory metaFactory, PushOMDataSourceScenario scenario, boolean serializeParent) {
         super(metaFactory);
         this.scenario = scenario;
         this.serializeParent = serializeParent;
@@ -54,32 +55,41 @@ public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement sourcedElement = factory.createOMElement(new AbstractPushOMDataSource() {
-            @Override
-            public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-                scenario.serialize(writer);
-            }
-            
-            @Override
-            public boolean isDestructiveWrite() {
-                return false;
-            }
-        });
-        Iterator<Map.Entry<String,String>> it = scenario.getNamespaceContext().entrySet().iterator();
+        OMSourcedElement sourcedElement =
+                factory.createOMElement(
+                        new AbstractPushOMDataSource() {
+                            @Override
+                            public void serialize(XMLStreamWriter writer)
+                                    throws XMLStreamException {
+                                scenario.serialize(writer);
+                            }
+
+                            @Override
+                            public boolean isDestructiveWrite() {
+                                return false;
+                            }
+                        });
+        Iterator<Map.Entry<String, String>> it =
+                scenario.getNamespaceContext().entrySet().iterator();
         OMElement parent;
         if (it.hasNext()) {
-            Map.Entry<String,String> binding = it.next();
-            parent = factory.createOMElement("parent", factory.createOMNamespace(binding.getValue(), binding.getKey()));
+            Map.Entry<String, String> binding = it.next();
+            parent =
+                    factory.createOMElement(
+                            "parent",
+                            factory.createOMNamespace(binding.getValue(), binding.getKey()));
             while (it.hasNext()) {
                 binding = it.next();
-                parent.declareNamespace(factory.createOMNamespace(binding.getValue(), binding.getKey()));
+                parent.declareNamespace(
+                        factory.createOMNamespace(binding.getValue(), binding.getKey()));
             }
         } else {
             parent = factory.createOMElement("parent", null);
         }
         parent.addChild(sourcedElement);
         SAXSource saxSource = (serializeParent ? parent : sourcedElement).getSAXSource(true);
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, saxSource, false).getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(factory, saxSource, false).getDocumentElement();
         if (serializeParent) {
             element = element.getFirstElement();
         }

@@ -30,8 +30,8 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that the object model can still be accessed after using
- * {@link OMContainer#getXMLStreamReader()}.
+ * Tests that the object model can still be accessed after using {@link
+ * OMContainer#getXMLStreamReader()}.
  */
 public class TestGetXMLStreamReaderWithCaching extends AxiomTestCase {
     public TestGetXMLStreamReaderWithCaching(OMMetaFactory metaFactory) {
@@ -40,21 +40,24 @@ public class TestGetXMLStreamReaderWithCaching extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
-                metaFactory.getOMFactory(),
-                TestGetChildElementsConsumed.class.getResourceAsStream("purchase-order.xml"));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(),
+                        TestGetChildElementsConsumed.class.getResourceAsStream(
+                                "purchase-order.xml"));
 
         OMElement documentElement = builder.getDocumentElement();
         XMLStreamReader reader = documentElement.getXMLStreamReader();
 
-        //consume the parser. this should force the xml stream to be exhausted but the
-        //tree to be fully built
+        // consume the parser. this should force the xml stream to be exhausted but the
+        // tree to be fully built
         while (reader.hasNext()) {
             reader.next();
         }
 
-        //try to find the children of the document element. This should *NOT* produce an
-        //error even when the underlying stream is fully consumed , the object tree is already complete
+        // try to find the children of the document element. This should *NOT* produce an
+        // error even when the underlying stream is fully consumed , the object tree is already
+        // complete
         Iterator<OMElement> childElements = documentElement.getChildElements();
         int count = 0;
         while (childElements.hasNext()) {
@@ -63,7 +66,7 @@ public class TestGetXMLStreamReaderWithCaching extends AxiomTestCase {
         }
 
         assertEquals("Number of elements need to be 2", count, 2);
-        
+
         documentElement.close(false);
     }
 }

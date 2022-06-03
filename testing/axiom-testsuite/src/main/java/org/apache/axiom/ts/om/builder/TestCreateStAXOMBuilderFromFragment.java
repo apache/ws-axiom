@@ -34,8 +34,8 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMXMLBuilderFactory#createStAXOMBuilder(OMFactory, XMLStreamReader)}
- * if the supplied {@link XMLStreamReader} is positioned on a
- * {@link XMLStreamConstants#START_ELEMENT} event.
+ * if the supplied {@link XMLStreamReader} is positioned on a {@link
+ * XMLStreamConstants#START_ELEMENT} event.
  */
 public class TestCreateStAXOMBuilderFromFragment extends AxiomTestCase {
     public TestCreateStAXOMBuilderFromFragment(OMMetaFactory metaFactory) {
@@ -44,13 +44,17 @@ public class TestCreateStAXOMBuilderFromFragment extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a><b>text</b></a>"));
+        XMLStreamReader reader =
+                StAXUtils.createXMLStreamReader(new StringReader("<a><b>text</b></a>"));
         // Position the reader on the event for <b>
-        while (reader.getEventType() != XMLStreamReader.START_ELEMENT || !reader.getLocalName().equals("b")) {
+        while (reader.getEventType() != XMLStreamReader.START_ELEMENT
+                || !reader.getLocalName().equals("b")) {
             reader.next();
         }
         // Check that the builder only builds the part of the document corresponding to <b>text</b>
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader).getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
+                        .getDocumentElement();
         assertEquals("b", element.getLocalName());
         OMNode child = element.getFirstOMChild();
         assertTrue(child instanceof OMText);

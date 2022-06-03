@@ -38,7 +38,8 @@ public class TestUnmarshalWithDeclaredType extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMElement element = metaFactory.getOMFactory().createOMElement("foo", null);
         element.setText("bar");
-        JAXBElement<String> result = JAXBUtils.unmarshal(element, JAXBContext.newInstance(), null, String.class, true);
+        JAXBElement<String> result =
+                JAXBUtils.unmarshal(element, JAXBContext.newInstance(), null, String.class, true);
         assertThat(result.getName()).isEqualTo(new QName("foo"));
         assertThat(result.getValue()).isEqualTo("bar");
     }

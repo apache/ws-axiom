@@ -26,8 +26,11 @@ import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class TestSetChildVersionMismatch extends GetSetChildTestCase {
-    public TestSetChildVersionMismatch(OMMetaFactory metaFactory, SOAPSpec spec,
-            SOAPElementType type, SOAPElementType childType) {
+    public TestSetChildVersionMismatch(
+            OMMetaFactory metaFactory,
+            SOAPSpec spec,
+            SOAPElementType type,
+            SOAPElementType childType) {
         super(metaFactory, spec, type, childType);
     }
 

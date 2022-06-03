@@ -25,43 +25,46 @@ import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 public abstract class NoNamespaceStrategy extends Multiton implements Dimension {
-    public static final NoNamespaceStrategy NULL = new NoNamespaceStrategy() {
-        @Override
-        public void addTestParameters(MatrixTestCase testCase) {
-            testCase.addTestParameter("ns", "null");
-        }
-        
-        @Override
-        public OMNamespace createOMNamespace(OMFactory factory) {
-            return null;
-        }
-    };
-    
-    public static final NoNamespaceStrategy NULL_PREFIX = new NoNamespaceStrategy() {
-        @Override
-        public void addTestParameters(MatrixTestCase testCase) {
-            testCase.addTestParameter("ns", "nullPrefix");
-        }
-        
-        @Override
-        public OMNamespace createOMNamespace(OMFactory factory) {
-            return factory.createOMNamespace("", null);
-        }
-    };
-    
-    public static final NoNamespaceStrategy EMPTY = new NoNamespaceStrategy() {
-        @Override
-        public void addTestParameters(MatrixTestCase testCase) {
-            testCase.addTestParameter("ns", "empty");
-        }
-        
-        @Override
-        public OMNamespace createOMNamespace(OMFactory factory) {
-            return factory.createOMNamespace("", "");
-        }
-    };
-    
+    public static final NoNamespaceStrategy NULL =
+            new NoNamespaceStrategy() {
+                @Override
+                public void addTestParameters(MatrixTestCase testCase) {
+                    testCase.addTestParameter("ns", "null");
+                }
+
+                @Override
+                public OMNamespace createOMNamespace(OMFactory factory) {
+                    return null;
+                }
+            };
+
+    public static final NoNamespaceStrategy NULL_PREFIX =
+            new NoNamespaceStrategy() {
+                @Override
+                public void addTestParameters(MatrixTestCase testCase) {
+                    testCase.addTestParameter("ns", "nullPrefix");
+                }
+
+                @Override
+                public OMNamespace createOMNamespace(OMFactory factory) {
+                    return factory.createOMNamespace("", null);
+                }
+            };
+
+    public static final NoNamespaceStrategy EMPTY =
+            new NoNamespaceStrategy() {
+                @Override
+                public void addTestParameters(MatrixTestCase testCase) {
+                    testCase.addTestParameter("ns", "empty");
+                }
+
+                @Override
+                public OMNamespace createOMNamespace(OMFactory factory) {
+                    return factory.createOMNamespace("", "");
+                }
+            };
+
     private NoNamespaceStrategy() {}
-    
+
     public abstract OMNamespace createOMNamespace(OMFactory factory);
 }

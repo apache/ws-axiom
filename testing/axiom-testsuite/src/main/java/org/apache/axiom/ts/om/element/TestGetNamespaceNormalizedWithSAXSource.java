@@ -33,9 +33,9 @@ import org.xml.sax.InputSource;
 
 /**
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an element
- * with no namespace. The case considered in this test is an element created using a
- * {@link SAXSource} and that has an explicit namespace declaration for the default namespace, i.e.
- * {@code xmlns=""}. This is a regression test for <a
+ * with no namespace. The case considered in this test is an element created using a {@link
+ * SAXSource} and that has an explicit namespace declaration for the default namespace, i.e. {@code
+ * xmlns=""}. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalizedWithSAXSource extends AxiomTestCase {
@@ -49,10 +49,13 @@ public class TestGetNamespaceNormalizedWithSAXSource extends AxiomTestCase {
         factory.setNamespaceAware(true);
         factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
         SAXParser parser = factory.newSAXParser();
-        SAXSource source = new SAXSource(parser.getXMLReader(),
-                new InputSource(new StringReader("<root xmlns=''/>")));
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                source).getDocumentElement();
+        SAXSource source =
+                new SAXSource(
+                        parser.getXMLReader(),
+                        new InputSource(new StringReader("<root xmlns=''/>")));
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source)
+                        .getDocumentElement();
         assertNull(element.getNamespace());
     }
 }

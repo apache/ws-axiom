@@ -31,8 +31,8 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Test that {@link Iterator#remove()} behaves correctly on the iterator returned by
- * {@link OMContainer#getDescendants(boolean)} when used to remove an element with child nodes.
+ * Test that {@link Iterator#remove()} behaves correctly on the iterator returned by {@link
+ * OMContainer#getDescendants(boolean)} when used to remove an element with child nodes.
  */
 public class TestGetDescendantsRemoveSubtree extends AxiomTestCase {
     public TestGetDescendantsRemoveSubtree(OMMetaFactory metaFactory) {
@@ -41,12 +41,14 @@ public class TestGetDescendantsRemoveSubtree extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(
-                metaFactory.getOMFactory(),
-                new StringReader("<root><a><b/></a><c/></root>")).getDocumentElement();
+        OMElement root =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader("<root><a><b/></a><c/></root>"))
+                        .getDocumentElement();
         Iterator<OMNode> it = root.getDescendants(false);
-        assertThat(((OMElement)it.next()).getLocalName()).isEqualTo("a");
+        assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("a");
         it.remove();
-        assertThat(((OMElement)it.next()).getLocalName()).isEqualTo("c");
+        assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("c");
     }
 }

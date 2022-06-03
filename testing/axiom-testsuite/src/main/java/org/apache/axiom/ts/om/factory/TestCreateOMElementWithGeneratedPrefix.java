@@ -32,14 +32,19 @@ import org.apache.axiom.om.OMNamespace;
  * generate a prefix.
  */
 public class TestCreateOMElementWithGeneratedPrefix extends CreateOMElementTestCase {
-    public TestCreateOMElementWithGeneratedPrefix(OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
+    public TestCreateOMElementWithGeneratedPrefix(
+            OMMetaFactory metaFactory,
+            CreateOMElementVariant variant,
+            CreateOMElementParentSupplier parentSupplier) {
         super(metaFactory, variant, parentSupplier);
     }
 
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "urn:test", null);
+        OMElement element =
+                variant.createOMElement(
+                        factory, parentSupplier.createParent(factory), "test", "urn:test", null);
         assertEquals("test", element.getLocalName());
         OMNamespace ns = element.getNamespace();
         assertNotNull(ns);

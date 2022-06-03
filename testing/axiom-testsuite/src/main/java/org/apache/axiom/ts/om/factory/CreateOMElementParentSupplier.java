@@ -59,15 +59,16 @@ public abstract class CreateOMElementParentSupplier {
     };
 
     private final String name;
-    
+
     public CreateOMElementParentSupplier(String name) {
         this.name = name;
     }
-    
+
     public final String getName() {
         return name;
     }
 
     public abstract boolean isSupported(CreateOMElementVariant variant);
+
     public abstract OMContainer createParent(OMFactory factory);
 }

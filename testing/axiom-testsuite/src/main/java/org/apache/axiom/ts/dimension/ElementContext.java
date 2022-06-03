@@ -44,86 +44,94 @@ import org.xml.sax.InputSource;
  * or {@link OMElement}) in a specific state.
  */
 public abstract class ElementContext extends Multiton implements Dimension {
-    public static final ElementContext ORPHAN = new ElementContext() {
-        @Override
-        public void addTestParameters(MatrixTestCase testCase) {
-            testCase.addTestParameter("container", "none");
-        }
+    public static final ElementContext ORPHAN =
+            new ElementContext() {
+                @Override
+                public void addTestParameters(MatrixTestCase testCase) {
+                    testCase.addTestParameter("container", "none");
+                }
 
-        @Override
-        public OMContainer wrap(OMElement element) {
-            return null;
-        }
+                @Override
+                public OMContainer wrap(OMElement element) {
+                    return null;
+                }
 
-        @Override
-        public InputSource getControl(InputSource xml) {
-            throw new UnsupportedOperationException();
-        }
-    };
-    
-    /**
-     * The {@link OMElement} is a child of another (programmatically created) {@link OMElement}.
-     */
-    public static final ElementContext ELEMENT = new ElementContext() {
-        @Override
-        public void addTestParameters(MatrixTestCase testCase) {
-            testCase.addTestParameter("container", "element");
-            testCase.addTestParameter("complete", true);
-        }
+                @Override
+                public InputSource getControl(InputSource xml) {
+                    throw new UnsupportedOperationException();
+                }
+            };
 
-        @Override
-        public OMContainer wrap(OMElement element) {
-            OMElement parent = element.getOMFactory().createOMElement("parent", null);
-            parent.addChild(element);
-            return parent;
-        }
+    /** The {@link OMElement} is a child of another (programmatically created) {@link OMElement}. */
+    public static final ElementContext ELEMENT =
+            new ElementContext() {
+                @Override
+                public void addTestParameters(MatrixTestCase testCase) {
+                    testCase.addTestParameter("container", "element");
+                    testCase.addTestParameter("complete", true);
+                }
 
-        @Override
-        public InputSource getControl(InputSource xml) throws Exception {
-            Document document = DOMImplementation.XERCES.parse(xml);
-            Element parent = document.createElementNS(null, "parent");
-            parent.appendChild(document.getDocumentElement());
-            StringWriter sw = new StringWriter();
-            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(parent), new StreamResult(sw));
-            return new InputSource(new StringReader(sw.toString()));
-        }
-    };
-    
+                @Override
+                public OMContainer wrap(OMElement element) {
+                    OMElement parent = element.getOMFactory().createOMElement("parent", null);
+                    parent.addChild(element);
+                    return parent;
+                }
+
+                @Override
+                public InputSource getControl(InputSource xml) throws Exception {
+                    Document document = DOMImplementation.XERCES.parse(xml);
+                    Element parent = document.createElementNS(null, "parent");
+                    parent.appendChild(document.getDocumentElement());
+                    StringWriter sw = new StringWriter();
+                    TransformerFactory.newInstance()
+                            .newTransformer()
+                            .transform(new DOMSource(parent), new StreamResult(sw));
+                    return new InputSource(new StringReader(sw.toString()));
+                }
+            };
+
     /**
      * The {@link OMElement} is a child of another {@link OMElement} created from a parser and that
      * is incomplete.
      */
-    public static final ElementContext INCOMPLETE_ELEMENT = new ElementContext() {
-        @Override
-        public void addTestParameters(MatrixTestCase testCase) {
-            testCase.addTestParameter("container", "element");
-            testCase.addTestParameter("complete", "false");
-        }
-        
-        @Override
-        public OMContainer wrap(OMElement element) {
-            OMElement parent = OMXMLBuilderFactory.createOMBuilder(element.getOMFactory(),
-                    new StringReader("<parent><sibling/></parent>")).getDocumentElement();
-            parent.getFirstOMChild().insertSiblingBefore(element);
-            Assert.assertFalse(parent.isComplete());
-            return parent;
-        }
-        
-        @Override
-        public InputSource getControl(InputSource xml) throws Exception {
-            Document document = DOMImplementation.XERCES.parse(xml);
-            Element parent = document.createElementNS(null, "parent");
-            parent.appendChild(document.getDocumentElement());
-            parent.appendChild(document.createElementNS(null, "sibling"));
-            StringWriter sw = new StringWriter();
-            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(parent), new StreamResult(sw));
-            return new InputSource(new StringReader(sw.toString()));
-        }
-    };
-    
+    public static final ElementContext INCOMPLETE_ELEMENT =
+            new ElementContext() {
+                @Override
+                public void addTestParameters(MatrixTestCase testCase) {
+                    testCase.addTestParameter("container", "element");
+                    testCase.addTestParameter("complete", "false");
+                }
+
+                @Override
+                public OMContainer wrap(OMElement element) {
+                    OMElement parent =
+                            OMXMLBuilderFactory.createOMBuilder(
+                                            element.getOMFactory(),
+                                            new StringReader("<parent><sibling/></parent>"))
+                                    .getDocumentElement();
+                    parent.getFirstOMChild().insertSiblingBefore(element);
+                    Assert.assertFalse(parent.isComplete());
+                    return parent;
+                }
+
+                @Override
+                public InputSource getControl(InputSource xml) throws Exception {
+                    Document document = DOMImplementation.XERCES.parse(xml);
+                    Element parent = document.createElementNS(null, "parent");
+                    parent.appendChild(document.getDocumentElement());
+                    parent.appendChild(document.createElementNS(null, "sibling"));
+                    StringWriter sw = new StringWriter();
+                    TransformerFactory.newInstance()
+                            .newTransformer()
+                            .transform(new DOMSource(parent), new StreamResult(sw));
+                    return new InputSource(new StringReader(sw.toString()));
+                }
+            };
+
     private ElementContext() {}
-    
+
     public abstract OMContainer wrap(OMElement element);
-    
+
     public abstract InputSource getControl(InputSource xml) throws Exception;
 }

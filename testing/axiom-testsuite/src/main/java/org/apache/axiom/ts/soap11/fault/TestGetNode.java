@@ -24,8 +24,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Tests that {@link SOAPFault#getNode()} returns <code>null</code> (instead of throwing an
- * {@link UnsupportedOperationException}) for SOAP 1.1 faults.
+ * Tests that {@link SOAPFault#getNode()} returns <code>null</code> (instead of throwing an {@link
+ * UnsupportedOperationException}) for SOAP 1.1 faults.
  */
 public class TestGetNode extends SOAPTestCase {
     public TestGetNode(OMMetaFactory metaFactory) {

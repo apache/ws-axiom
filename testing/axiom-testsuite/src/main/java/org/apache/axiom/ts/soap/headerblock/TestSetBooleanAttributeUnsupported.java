@@ -28,7 +28,8 @@ import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class TestSetBooleanAttributeUnsupported extends BooleanAttributeTestCase {
-    public TestSetBooleanAttributeUnsupported(OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
+    public TestSetBooleanAttributeUnsupported(
+            OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
         super(metaFactory, spec, attribute);
     }
 

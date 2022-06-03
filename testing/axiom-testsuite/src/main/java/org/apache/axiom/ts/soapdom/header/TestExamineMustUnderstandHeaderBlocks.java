@@ -41,20 +41,20 @@ public class TestExamineMustUnderstandHeaderBlocks extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.createSOAPHeader();
-        
+
         // Add header blocks using DOM
-        Element domHeader = (Element)header;
+        Element domHeader = (Element) header;
         Document document = domHeader.getOwnerDocument();
         Element[] headerBlocks = new Element[3];
-        for (int i=0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
             headerBlocks[i] = document.createElementNS("urn:test", "p:h" + i);
         }
         headerBlocks[1].setAttributeNS(spec.getEnvelopeNamespaceURI(), "S:mustUnderstand", "1");
-        for (int i=0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
             // Clone the nodes because conversion to SOAPHeaderBlock is destructive
             domHeader.appendChild(headerBlocks[i].cloneNode(true));
         }
-        
+
         // Use the Axiom API to iterate over the header blocks
         Iterator<SOAPHeaderBlock> it = header.examineMustUnderstandHeaderBlocks(null);
         assertThat(it.hasNext()).isTrue();

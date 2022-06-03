@@ -37,14 +37,16 @@ public class TestInvalidXML extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        XMLStreamReader originalReader = StAXUtils.createXMLStreamReader(
-                TestInvalidXML.class.getResourceAsStream("invalid_xml.xml"));
+        XMLStreamReader originalReader =
+                StAXUtils.createXMLStreamReader(
+                        TestInvalidXML.class.getResourceAsStream("invalid_xml.xml"));
         InvocationCounter invocationCounter = new InvocationCounter();
-        XMLStreamReader reader = (XMLStreamReader)invocationCounter.createProxy(originalReader);
-        
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(
-                metaFactory.getOMFactory(), reader).getDocumentElement();
-        
+        XMLStreamReader reader = (XMLStreamReader) invocationCounter.createProxy(originalReader);
+
+        OMElement element =
+                OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
+                        .getDocumentElement();
+
         DeferredParsingException exception;
         try {
             element.getNextOMSibling();
@@ -52,12 +54,12 @@ public class TestInvalidXML extends AxiomTestCase {
         } catch (DeferredParsingException ex) {
             exception = ex;
         }
-        
+
         assertThat(exception).isNotNull();
-        
+
         assertTrue(invocationCounter.getInvocationCount() > 0);
         invocationCounter.reset();
-        
+
         // Intentionally call builder again to make sure the same error is returned.
         DeferredParsingException exception2;
         try {
@@ -66,9 +68,9 @@ public class TestInvalidXML extends AxiomTestCase {
         } catch (DeferredParsingException ex) {
             exception2 = ex;
         }
-        
+
         assertThat(invocationCounter.getInvocationCount()).isEqualTo(0);
-        
+
         assertThat(exception2).isNotNull();
         assertThat(exception2.getMessage()).isEqualTo(exception.getMessage());
     }

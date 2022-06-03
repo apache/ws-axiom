@@ -37,7 +37,7 @@ public class WriteCDataScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
@@ -52,7 +52,7 @@ public class WriteCDataScenario implements PushOMDataSourceScenario {
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMText);
-        OMText text = (OMText)child;
+        OMText text = (OMText) child;
         Assert.assertEquals(OMNode.CDATA_SECTION_NODE, text.getType());
         Assert.assertEquals("content", text.getText());
     }

@@ -33,14 +33,16 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  * absent.
  */
 public class TestGetBooleanAttributeDefault extends BooleanAttributeTestCase {
-    public TestGetBooleanAttributeDefault(OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
+    public TestGetBooleanAttributeDefault(
+            OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
         super(metaFactory, spec, attribute);
     }
 
     @Override
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
-        SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("http://example.org", "test", "h"));
+        SOAPHeaderBlock headerBlock =
+                header.addHeaderBlock(new QName("http://example.org", "test", "h"));
         assertFalse(attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock));
     }
 }

@@ -25,10 +25,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
-/**
- * Make sure that the incomplete setting of an OMSE is not 
- * propogated to the root
- **/
+/** Make sure that the incomplete setting of an OMSE is not propogated to the root */
 public class TestComplete extends AxiomTestCase {
     public TestComplete(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -40,31 +37,35 @@ public class TestComplete extends AxiomTestCase {
         OMFactory f = metaFactory.getOMFactory();
         OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
-        OMElement child = f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
+        OMElement child =
+                f.createOMElement(
+                        new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
-        
+
         // Trigger expansion of the child OMSE
         // This will cause the child to be partially parsed (i.e. incomplete)
         child.getFirstOMChild();
-        
+
         // Add the child OMSE to the root.
         root.addChild(child);
-        
-        // Normally adding an incomplete child to a parent will 
+
+        // Normally adding an incomplete child to a parent will
         // cause the parent to be marked as incomplete.
         // But OMSE's are self-contained...therefore the root
         // should still be complete
         assertTrue(!child.isComplete());
         assertTrue(root.isComplete());
-        
-        // Now repeat the test, but this time trigger the 
+
+        // Now repeat the test, but this time trigger the
         // partial parsing of the child after adding it to the root.
-        child = f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
+        child =
+                f.createOMElement(
+                        new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
         root = f.createOMElement("root", rootNS);
-        
+
         root.addChild(child);
         child.getFirstOMChild(); // causes partial parsing...i.e. incomplete child
-    
+
         assertTrue(!child.isComplete());
         assertTrue(root.isComplete());
     }

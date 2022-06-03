@@ -36,19 +36,24 @@ public class StreamTypeAdapterFactory implements AdapterFactory<StreamType> {
     @Override
     public void createAdapters(StreamType instance, Adapters adapters) {
         if (instance == StreamType.BYTE_STREAM) {
-            adapters.add(new StreamTypeAdapter() {
-                @Override
-                public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Closeable stream) {
-                    return OMXMLBuilderFactory.createOMBuilder(omFactory, (InputStream)stream);
-                }
-            });
+            adapters.add(
+                    new StreamTypeAdapter() {
+                        @Override
+                        public OMXMLParserWrapper createOMBuilder(
+                                OMFactory omFactory, Closeable stream) {
+                            return OMXMLBuilderFactory.createOMBuilder(
+                                    omFactory, (InputStream) stream);
+                        }
+                    });
         } else if (instance == StreamType.CHARACTER_STREAM) {
-            adapters.add(new StreamTypeAdapter() {
-                @Override
-                public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Closeable stream) {
-                    return OMXMLBuilderFactory.createOMBuilder(omFactory, (Reader)stream);
-                }
-            });
+            adapters.add(
+                    new StreamTypeAdapter() {
+                        @Override
+                        public OMXMLParserWrapper createOMBuilder(
+                                OMFactory omFactory, Closeable stream) {
+                            return OMXMLBuilderFactory.createOMBuilder(omFactory, (Reader) stream);
+                        }
+                    });
         }
     }
 }

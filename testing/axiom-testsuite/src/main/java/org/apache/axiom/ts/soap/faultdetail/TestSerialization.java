@@ -42,10 +42,8 @@ public class TestSerialization extends SOAPTestCase {
         SOAPFault fault = soapFactory.createSOAPFault(body);
         SOAPFaultDetail soapFaultDetail = soapFactory.createSOAPFaultDetail(fault);
         OMNamespace omNamespace = soapFactory.createOMNamespace("http://www.test.org", "test");
-        soapFaultDetail.addDetailEntry(
-                soapFactory.createOMElement("DetailEntry1", omNamespace));
-        soapFaultDetail.addDetailEntry(
-                soapFactory.createOMElement("DetailEntry2", omNamespace));
+        soapFaultDetail.addDetailEntry(soapFactory.createOMElement("DetailEntry1", omNamespace));
+        soapFaultDetail.addDetailEntry(soapFactory.createOMElement("DetailEntry2", omNamespace));
         StringWriter out = new StringWriter();
         soapFaultDetail.serialize(out);
         String msg = out.toString();

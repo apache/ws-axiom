@@ -25,7 +25,10 @@ import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class TestGetChild extends GetSetChildTestCase {
-    public TestGetChild(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type,
+    public TestGetChild(
+            OMMetaFactory metaFactory,
+            SOAPSpec spec,
+            SOAPElementType type,
             SOAPElementType childType) {
         super(metaFactory, spec, type, childType);
     }

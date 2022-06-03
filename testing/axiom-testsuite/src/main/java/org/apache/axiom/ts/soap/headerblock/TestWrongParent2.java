@@ -41,7 +41,9 @@ public class TestWrongParent2 extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPFault parent = soapFactory.createSOAPFault();
         OMElement child1 = soapFactory.createSOAPFaultCode(parent);
-        SOAPHeaderBlock hb = soapFactory.createSOAPHeaderBlock("MyHeader", soapFactory.createOMNamespace("urn:test", "p"));
+        SOAPHeaderBlock hb =
+                soapFactory.createSOAPHeaderBlock(
+                        "MyHeader", soapFactory.createOMNamespace("urn:test", "p"));
         try {
             child1.insertSiblingAfter(hb);
             fail("Expected SOAPProcessingException");

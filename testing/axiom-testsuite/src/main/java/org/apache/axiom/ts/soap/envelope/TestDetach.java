@@ -38,7 +38,7 @@ public class TestDetach extends SampleBasedSOAPTestCase {
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        OMDocument document = (OMDocument)envelope.getParent();
+        OMDocument document = (OMDocument) envelope.getParent();
         envelope.detach();
         assertNull(envelope.getParent());
         assertNull(envelope.getPreviousOMSibling());

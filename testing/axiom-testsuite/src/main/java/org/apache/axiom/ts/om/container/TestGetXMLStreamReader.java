@@ -40,9 +40,13 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
     private final BuilderFactory builderFactory;
     private final OMContainerExtractor containerExtractor;
     private final boolean cache;
-    
-    public TestGetXMLStreamReader(OMMetaFactory metaFactory, XMLSample file,
-            BuilderFactory builderFactory, OMContainerExtractor containerExtractor, boolean cache) {
+
+    public TestGetXMLStreamReader(
+            OMMetaFactory metaFactory,
+            XMLSample file,
+            BuilderFactory builderFactory,
+            OMContainerExtractor containerExtractor,
+            boolean cache) {
         super(metaFactory, file);
         this.builderFactory = builderFactory;
         this.containerExtractor = containerExtractor;
@@ -51,17 +55,25 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
         containerExtractor.addTestParameters(this);
         addTestParameter("cache", cache);
     }
-    
+
     @Override
     protected final void runTest() throws Throwable {
         InputStream in = file.getInputStream();
         try {
-            XMLStreamReader expected = StAXUtils.createXMLStreamReader(TEST_PARSER_CONFIGURATION, file.getUrl().toString(), in);
+            XMLStreamReader expected =
+                    StAXUtils.createXMLStreamReader(
+                            TEST_PARSER_CONFIGURATION, file.getUrl().toString(), in);
             try {
-                OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory, new InputSource(file.getUrl().toString()));
+                OMXMLParserWrapper builder =
+                        builderFactory.getBuilder(
+                                metaFactory, new InputSource(file.getUrl().toString()));
                 try {
-                    XMLStreamReader actual = containerExtractor.getContainer(builder).getXMLStreamReader(cache);
-                    XMLStreamReaderComparator comparator = new XMLStreamReaderComparator(containerExtractor.filter(expected), containerExtractor.filter(actual));
+                    XMLStreamReader actual =
+                            containerExtractor.getContainer(builder).getXMLStreamReader(cache);
+                    XMLStreamReaderComparator comparator =
+                            new XMLStreamReaderComparator(
+                                    containerExtractor.filter(expected),
+                                    containerExtractor.filter(actual));
                     builderFactory.configureXMLStreamReaderComparator(comparator);
                     comparator.compare();
                 } finally {

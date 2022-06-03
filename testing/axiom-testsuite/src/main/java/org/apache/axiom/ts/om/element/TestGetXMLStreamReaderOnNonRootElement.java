@@ -30,13 +30,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  * Tests that {@link OMContainer#getXMLStreamReader(boolean)} produces the correct sequence of
  * events when called on an {@link OMElement} that is not the root element. Also tests that the rest
  * of the document can be built after consuming the {@link XMLStreamReader}.
- * <p>
- * This is a regression test for
- * <a href="https://issues.apache.org/jira/browse/AXIOM-288">AXIOM-288</a>.
+ *
+ * <p>This is a regression test for <a
+ * href="https://issues.apache.org/jira/browse/AXIOM-288">AXIOM-288</a>.
  */
 public class TestGetXMLStreamReaderOnNonRootElement extends AxiomTestCase {
     private final boolean cache;
-    
+
     public TestGetXMLStreamReaderOnNonRootElement(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
@@ -45,9 +45,10 @@ public class TestGetXMLStreamReaderOnNonRootElement extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
-                "<a><b><c/></b><d>content</d></a>");
-        OMElement b = (OMElement)root.getFirstOMChild();
+        OMElement root =
+                AXIOMUtil.stringToOM(
+                        metaFactory.getOMFactory(), "<a><b><c/></b><d>content</d></a>");
+        OMElement b = (OMElement) root.getFirstOMChild();
         XMLStreamReader stream = b.getXMLStreamReader(cache);
         assertEquals(XMLStreamReader.START_DOCUMENT, stream.getEventType());
         assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
@@ -57,7 +58,7 @@ public class TestGetXMLStreamReaderOnNonRootElement extends AxiomTestCase {
         assertEquals(XMLStreamReader.END_ELEMENT, stream.next());
         assertEquals(XMLStreamReader.END_ELEMENT, stream.next());
         assertEquals(XMLStreamReader.END_DOCUMENT, stream.next());
-        OMElement d = (OMElement)b.getNextOMSibling();
+        OMElement d = (OMElement) b.getNextOMSibling();
         assertEquals("content", d.getText());
         root.close(false);
     }

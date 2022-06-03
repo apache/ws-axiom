@@ -29,10 +29,10 @@ import org.apache.axiom.ts.om.DigestTestCase;
 public class TestDigest extends DigestTestCase {
     private final String file;
 
-    public TestDigest(OMMetaFactory metaFactory, String file,
-            String algorithm, String expectedDigest) {
+    public TestDigest(
+            OMMetaFactory metaFactory, String file, String algorithm, String expectedDigest) {
         super(metaFactory, algorithm, expectedDigest);
-        this.file=file;
+        this.file = file;
         addTestParameter("file", file);
     }
 
@@ -40,8 +40,9 @@ public class TestDigest extends DigestTestCase {
     protected OMInformationItem createInformationItem() throws Exception {
         InputStream in = TestDigest.class.getResourceAsStream(file);
         try {
-            OMDocument document = OMXMLBuilderFactory.createOMBuilder(
-                    metaFactory.getOMFactory(), in).getDocument();
+            OMDocument document =
+                    OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
+                            .getDocument();
             document.build();
             return document;
         } finally {

@@ -32,7 +32,7 @@ import org.apache.axiom.util.UIDGenerator;
 public class TestCreateOMTextFromDataHandlerProvider extends AxiomTestCase {
     static class TestDataHandlerProvider implements DataHandlerProvider {
         private DataHandler dh;
-        
+
         @Override
         public DataHandler getDataHandler() {
             if (dh == null) {
@@ -40,15 +40,16 @@ public class TestCreateOMTextFromDataHandlerProvider extends AxiomTestCase {
             }
             return dh;
         }
-        
+
         public boolean isDataHandlerCreated() {
             return dh != null;
         }
     }
-    
+
     private final boolean nullContentID;
-    
-    public TestCreateOMTextFromDataHandlerProvider(OMMetaFactory metaFactory, boolean nullContentID) {
+
+    public TestCreateOMTextFromDataHandlerProvider(
+            OMMetaFactory metaFactory, boolean nullContentID) {
         super(metaFactory);
         this.nullContentID = nullContentID;
         addTestParameter("nullContentId", nullContentID);

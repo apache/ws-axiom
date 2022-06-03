@@ -29,7 +29,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 
-public class TestRegisterCustomBuilderForPayloadJAXBPlain extends RegisterCustomBuilderForPayloadJAXBTestCase {
+public class TestRegisterCustomBuilderForPayloadJAXBPlain
+        extends RegisterCustomBuilderForPayloadJAXBTestCase {
     public TestRegisterCustomBuilderForPayloadJAXBPlain(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -41,6 +42,10 @@ public class TestRegisterCustomBuilderForPayloadJAXBPlain extends RegisterCustom
         OutputStream out = blob.getOutputStream();
         createTestDocument(dh).serialize(out);
         out.close();
-        test(dh, OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), blob.getInputStream()), false);
+        test(
+                dh,
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), blob.getInputStream()),
+                false);
     }
 }

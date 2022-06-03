@@ -24,23 +24,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(namespace = "urn:test", name = "document")
-@XmlType(propOrder = { "name", "content" })
+@XmlType(propOrder = {"name", "content"})
 public class MyDocument {
     private String name;
     private DataHandler content;
-    
+
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public DataHandler getContent() {
         return content;
     }
-    
+
     public void setContent(DataHandler content) {
         this.content = content;
     }

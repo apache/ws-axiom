@@ -23,14 +23,17 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Base class for the test cases that validate the behavior of the various
- * <code>createOMElement</code> methods in {@link OMFactory}.
+ * Base class for the test cases that validate the behavior of the various <code>createOMElement
+ * </code> methods in {@link OMFactory}.
  */
 public abstract class CreateOMElementTestCase extends AxiomTestCase {
     protected final CreateOMElementVariant variant;
     protected final CreateOMElementParentSupplier parentSupplier;
 
-    public CreateOMElementTestCase(OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
+    public CreateOMElementTestCase(
+            OMMetaFactory metaFactory,
+            CreateOMElementVariant variant,
+            CreateOMElementParentSupplier parentSupplier) {
         super(metaFactory);
         this.variant = variant;
         this.parentSupplier = parentSupplier;

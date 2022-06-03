@@ -28,12 +28,12 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
- * Serializes an {@link OMContainer} using {@link OMContainer#serialize(XMLStreamWriter)} or
- * {@link OMContainer#serializeAndConsume(XMLStreamWriter)}.
+ * Serializes an {@link OMContainer} using {@link OMContainer#serialize(XMLStreamWriter)} or {@link
+ * OMContainer#serializeAndConsume(XMLStreamWriter)}.
  */
 public class SerializeToXMLStreamWriter extends SerializationStrategy {
     private final boolean cache;
-    
+
     SerializeToXMLStreamWriter(boolean cache) {
         this.cache = cache;
     }
@@ -52,7 +52,7 @@ public class SerializeToXMLStreamWriter extends SerializationStrategy {
         // it will just keep the original one when writing the XML declaration. Adjust
         // the output encoding so that it will match the encoding in the XML declaration.
         if (container instanceof OMDocument) {
-            encoding = ((OMDocument)container).getXMLEncoding();
+            encoding = ((OMDocument) container).getXMLEncoding();
         }
         if (encoding == null) {
             encoding = "UTF-8";

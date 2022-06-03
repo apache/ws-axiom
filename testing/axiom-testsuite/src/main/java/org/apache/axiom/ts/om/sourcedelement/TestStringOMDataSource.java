@@ -33,9 +33,7 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests functionality of ByteArrayDataSource
- */
+/** Tests functionality of ByteArrayDataSource */
 public class TestStringOMDataSource extends AxiomTestCase {
     public TestStringOMDataSource(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -44,7 +42,7 @@ public class TestStringOMDataSource extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        
+
         String localName = "myPayload";
         String payload1 = "<tns:myPayload xmlns:tns=\"urn://test\">Payload One</tns:myPayload>";
         OMNamespace ns = factory.createOMNamespace("urn://test", "tns");
@@ -58,28 +56,28 @@ public class TestStringOMDataSource extends AxiomTestCase {
         OMSourcedElement child = (OMSourcedElement) firstChild;
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
         assertThat(child.getDataSource()).isInstanceOf(StringOMDataSource.class);
-        
+
         // A StringOMDataSource does not consume the backing object when read.
-        // Thus getting the XMLStreamReader of the StringOMDataSource should not 
+        // Thus getting the XMLStreamReader of the StringOMDataSource should not
         // cause expansion of the OMSourcedElement.
         XMLStreamReader reader = child.getXMLStreamReader();
         reader.next();
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        
-        // Likewise, a StringOMDataSource does not consume the backing object when 
+
+        // Likewise, a StringOMDataSource does not consume the backing object when
         // written.  Thus serializing the OMSourcedElement should not cause the expansion
         // of the OMSourcedElement.
         StringWriter out = new StringWriter();
         parent.serialize(out);
-//        System.out.println(output);
-        assertTrue("The payload was not present in the output",
-                   out.toString().indexOf(payload1) > 0);
+        //        System.out.println(output);
+        assertTrue(
+                "The payload was not present in the output", out.toString().indexOf(payload1) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        
+
         // Test getting the raw content from the StringOMDataSource.
         StringOMDataSource ds = (StringOMDataSource) child.getDataSource();
         assertThat(ds.getObject()).isEqualTo(payload1);
-        
+
         // Validate close
         ds.close();
         assertTrue("Close should free the resource", ds.getObject() == null);

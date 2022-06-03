@@ -29,9 +29,9 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement(boolean)} with
- * <code>discardDocument</code> set to <code>true</code> and a document that has an epilog that is
- * not well formed. This situation should be detected.
+ * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement(boolean)} with <code>
+ * discardDocument</code> set to <code>true</code> and a document that has an epilog that is not
+ * well formed. This situation should be detected.
  */
 public class TestGetDocumentElementWithDiscardDocumentIllFormedEpilog extends AxiomTestCase {
     public TestGetDocumentElementWithDiscardDocumentIllFormedEpilog(OMMetaFactory metaFactory) {
@@ -41,8 +41,9 @@ public class TestGetDocumentElementWithDiscardDocumentIllFormedEpilog extends Ax
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory,
-                new StringReader("<root/> there shouldn't be text here!"));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        factory, new StringReader("<root/> there shouldn't be text here!"));
         OMElement element = builder.getDocumentElement(true);
         try {
             element.build();

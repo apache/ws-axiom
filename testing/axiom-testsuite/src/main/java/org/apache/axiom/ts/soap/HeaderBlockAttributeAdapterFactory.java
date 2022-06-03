@@ -29,29 +29,31 @@ public class HeaderBlockAttributeAdapterFactory implements AdapterFactory<Header
     @Override
     public void createAdapters(HeaderBlockAttribute attribute, Adapters adapters) {
         if (attribute == HeaderBlockAttribute.MUST_UNDERSTAND) {
-            adapters.add(new BooleanAttributeAccessor() {
-                @Override
-                public boolean getValue(SOAPHeaderBlock headerBlock) {
-                    return headerBlock.getMustUnderstand();
-                }
+            adapters.add(
+                    new BooleanAttributeAccessor() {
+                        @Override
+                        public boolean getValue(SOAPHeaderBlock headerBlock) {
+                            return headerBlock.getMustUnderstand();
+                        }
 
-                @Override
-                public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
-                    headerBlock.setMustUnderstand(value);
-                }
-            });
+                        @Override
+                        public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
+                            headerBlock.setMustUnderstand(value);
+                        }
+                    });
         } else if (attribute == HeaderBlockAttribute.RELAY) {
-            adapters.add(new BooleanAttributeAccessor() {
-                @Override
-                public boolean getValue(SOAPHeaderBlock headerBlock) {
-                    return headerBlock.getRelay();
-                }
+            adapters.add(
+                    new BooleanAttributeAccessor() {
+                        @Override
+                        public boolean getValue(SOAPHeaderBlock headerBlock) {
+                            return headerBlock.getRelay();
+                        }
 
-                @Override
-                public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
-                    headerBlock.setRelay(value);
-                }
-            });
+                        @Override
+                        public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
+                            headerBlock.setRelay(value);
+                        }
+                    });
         }
     }
 }

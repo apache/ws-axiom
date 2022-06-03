@@ -43,7 +43,7 @@ public class TestUnmarshalWithDataHandler extends AxiomTestCase {
         orgBean.setId("AB23498");
         orgBean.setContent(new DataHandler(new TextDataSource("test content", "utf-8", "plain")));
         OMElement element = factory.createOMElement(new JAXBOMDataSource(context, orgBean));
-        DocumentBean bean = (DocumentBean)JAXBUtils.unmarshal(element, context, null, true);
+        DocumentBean bean = (DocumentBean) JAXBUtils.unmarshal(element, context, null, true);
         assertEquals(orgBean.getId(), bean.getId());
         assertEquals(orgBean.getContent(), bean.getContent());
     }

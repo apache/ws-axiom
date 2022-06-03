@@ -35,7 +35,7 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
  */
 public class TestCloneIncomplete extends SOAPTestCase {
     private final boolean preserveModel;
-    
+
     public TestCloneIncomplete(OMMetaFactory metaFactory, SOAPSpec spec, boolean preserveModel) {
         super(metaFactory, spec);
         this.preserveModel = preserveModel;
@@ -44,7 +44,11 @@ public class TestCloneIncomplete extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPMessage message = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPMessage(metaFactory);
+        SOAPMessage message =
+                SOAPSampleSet.WSA
+                        .getMessage(spec)
+                        .getAdapter(SOAPSampleAdapter.class)
+                        .getSOAPMessage(metaFactory);
         OMCloneOptions options = new OMCloneOptions();
         options.setPreserveModel(preserveModel);
         OMInformationItem clone = message.clone(options);

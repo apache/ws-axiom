@@ -28,7 +28,7 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-//SOAP Fault Detail Test (With Parser)
+// SOAP Fault Detail Test (With Parser)
 public class TestGetAllDetailEntriesWithParser extends SampleBasedSOAPTestCase {
     public TestGetAllDetailEntriesWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
@@ -44,14 +44,16 @@ public class TestGetAllDetailEntriesWithParser extends SampleBasedSOAPTestCase {
                 detailEntry1);
         assertEquals(
                 "SOAP Fault Detail Test With Parser : - detailEntry1 localname mismatch",
-                "ErrorCode", detailEntry1.getLocalName());
+                "ErrorCode",
+                detailEntry1.getLocalName());
         OMElement detailEntry2 = iterator.next();
         assertNotNull(
                 "SOAP Fault Detail Test With Parser : - getAllDetailEntries method returns an itrator with only one detail entries",
                 detailEntry2);
         assertEquals(
                 "SOAP Fault Detail Test With Parser : - detailEntry2 localname mismatch",
-                "Message", detailEntry2.getLocalName());
+                "Message",
+                detailEntry2.getLocalName());
         assertFalse(
                 "SOAP Fault Detail Test With Parser : - getAllDetailEntries method returns an itrator with more than two detail entries",
                 iterator.hasNext());

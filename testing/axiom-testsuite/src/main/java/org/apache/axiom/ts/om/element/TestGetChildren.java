@@ -35,16 +35,19 @@ public class TestGetChildren extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<root>a<b/><!--c--><d/>e</root>")).getDocumentElement();
+        OMElement elt =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader("<root>a<b/><!--c--><d/>e</root>"))
+                        .getDocumentElement();
         Iterator<OMNode> iter = elt.getChildren();
         int counter = 0;
         while (iter.hasNext()) {
-            counter ++;
+            counter++;
             assertNotNull("Must return not null objects!", iter.next());
         }
-        assertEquals("This element should contain only five children including the text ", 5,
-                     counter);
+        assertEquals(
+                "This element should contain only five children including the text ", 5, counter);
         elt.close(false);
     }
 }

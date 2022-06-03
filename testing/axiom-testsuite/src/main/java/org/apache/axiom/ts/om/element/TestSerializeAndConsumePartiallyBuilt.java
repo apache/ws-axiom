@@ -37,10 +37,14 @@ public class TestSerializeAndConsumePartiallyBuilt extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        String xml = "<root><child><grandchild1>text</grandchild1></child><child><grandchild2>text</grandchild2></child></root>";
-        
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new StringReader(xml)).getDocumentElement();
-        
+        String xml =
+                "<root><child><grandchild1>text</grandchild1></child><child><grandchild2>text</grandchild2></child></root>";
+
+        OMElement root =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(), new StringReader(xml))
+                        .getDocumentElement();
+
         // Partially build the tree
         root.getFirstElement().getFirstElement();
 

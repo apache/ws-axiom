@@ -26,8 +26,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.activation.TestDataSource;
 
-public class TestRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtension extends RegisterCustomBuilderForPayloadJAXBTestCase {
-    public TestRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtension(OMMetaFactory metaFactory) {
+public class TestRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtension
+        extends RegisterCustomBuilderForPayloadJAXBTestCase {
+    public TestRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtension(
+            OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
@@ -35,6 +37,10 @@ public class TestRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtensi
     protected void runTest() throws Throwable {
         DataHandler dh = new DataHandler(new TestDataSource('X', Integer.MAX_VALUE));
         OMElement document = createTestDocument(dh);
-        test(dh, OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), document.getXMLStreamReader()), true);
+        test(
+                dh,
+                OMXMLBuilderFactory.createStAXOMBuilder(
+                        metaFactory.getOMFactory(), document.getXMLStreamReader()),
+                true);
     }
 }

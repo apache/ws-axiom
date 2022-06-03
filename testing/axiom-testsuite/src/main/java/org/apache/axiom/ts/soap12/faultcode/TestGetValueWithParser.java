@@ -39,6 +39,7 @@ public class TestGetValueWithParser extends SampleBasedSOAPTestCase {
                 faultCode.getValue());
         assertEquals(
                 "SOAP 1.2 Fault Code Test with parser : - Value local name mismatch",
-                SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, faultCode.getValue().getLocalName());
+                SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME,
+                faultCode.getValue().getLocalName());
     }
 }

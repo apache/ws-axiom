@@ -28,7 +28,8 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests the behavior of {@link OMNode#insertSiblingBefore(OMNode)} if the node is already a sibling.
+ * Tests the behavior of {@link OMNode#insertSiblingBefore(OMNode)} if the node is already a
+ * sibling.
  */
 public class TestInsertSiblingBeforeSameParent extends AxiomTestCase {
     public TestInsertSiblingBeforeSameParent(OMMetaFactory metaFactory) {

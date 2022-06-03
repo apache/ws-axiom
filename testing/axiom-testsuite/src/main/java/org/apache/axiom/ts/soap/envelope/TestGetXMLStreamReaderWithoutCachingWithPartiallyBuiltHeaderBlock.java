@@ -33,21 +33,27 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
- * Tests the behavior of {@link OMContainer#getXMLStreamReaderWithoutCaching()} on a
- * {@link SOAPEnvelope} with a partially built {@link SOAPHeaderBlock}. A {@link SOAPHeaderBlock} is
- * an {@link OMSourcedElement}, but if it is not linked to a {@link OMDataSource} then it should
- * behave like a plain {@link OMElement}. For {@link OMContainer#getXMLStreamReaderWithoutCaching()}
- * this means that consuming the reader should not build the {@link SOAPHeaderBlock}.
+ * Tests the behavior of {@link OMContainer#getXMLStreamReaderWithoutCaching()} on a {@link
+ * SOAPEnvelope} with a partially built {@link SOAPHeaderBlock}. A {@link SOAPHeaderBlock} is an
+ * {@link OMSourcedElement}, but if it is not linked to a {@link OMDataSource} then it should behave
+ * like a plain {@link OMElement}. For {@link OMContainer#getXMLStreamReaderWithoutCaching()} this
+ * means that consuming the reader should not build the {@link SOAPHeaderBlock}.
  */
-public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock extends SampleBasedSOAPTestCase {
-    public TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock
+        extends SampleBasedSOAPTestCase {
+    public TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock(
+            OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        SOAPHeaderBlock headerBlock = (SOAPHeaderBlock)envelope.getHeader().getFirstChildWithName(
-                new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));
+        SOAPHeaderBlock headerBlock =
+                (SOAPHeaderBlock)
+                        envelope.getHeader()
+                                .getFirstChildWithName(
+                                        new QName(
+                                                "http://www.w3.org/2005/08/addressing", "ReplyTo"));
         headerBlock.getFirstElement().getFirstOMChild();
         assertFalse(headerBlock.isComplete());
         XMLStreamReader reader = envelope.getXMLStreamReaderWithoutCaching();

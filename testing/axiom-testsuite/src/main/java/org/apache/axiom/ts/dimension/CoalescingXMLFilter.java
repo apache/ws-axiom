@@ -35,8 +35,9 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
 
 final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHandler {
-    private static final String URI_LEXICAL_HANDLER = "http://xml.org/sax/properties/lexical-handler";
-    
+    private static final String URI_LEXICAL_HANDLER =
+            "http://xml.org/sax/properties/lexical-handler";
+
     private XMLReader parent;
     private ContentHandler contentHandler;
     private LexicalHandler lexicalHandler;
@@ -56,7 +57,7 @@ final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHan
     public XMLReader getParent() {
         return parent;
     }
-    
+
     @Override
     public void setEntityResolver(EntityResolver resolver) {
         parent.setEntityResolver(resolver);
@@ -98,7 +99,8 @@ final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHan
     }
 
     @Override
-    public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
+    public Object getProperty(String name)
+            throws SAXNotRecognizedException, SAXNotSupportedException {
         if (URI_LEXICAL_HANDLER.equals(name)) {
             return lexicalHandler;
         } else {
@@ -107,21 +109,24 @@ final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHan
     }
 
     @Override
-    public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setProperty(String name, Object value)
+            throws SAXNotRecognizedException, SAXNotSupportedException {
         if (URI_LEXICAL_HANDLER.equals(name)) {
-            lexicalHandler = (LexicalHandler)value;
+            lexicalHandler = (LexicalHandler) value;
         } else {
             parent.setProperty(name, value);
         }
     }
 
     @Override
-    public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
+    public boolean getFeature(String name)
+            throws SAXNotRecognizedException, SAXNotSupportedException {
         return parent.getFeature(name);
     }
 
     @Override
-    public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setFeature(String name, boolean value)
+            throws SAXNotRecognizedException, SAXNotSupportedException {
         parent.setFeature(name, value);
     }
 
@@ -129,7 +134,7 @@ final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHan
         parent.setContentHandler(this);
         parent.setProperty(URI_LEXICAL_HANDLER, this);
     }
-    
+
     @Override
     public void parse(InputSource input) throws IOException, SAXException {
         setup();
@@ -148,7 +153,7 @@ final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHan
         }
         bufferSize = 0;
     }
-    
+
     @Override
     public void setDocumentLocator(Locator locator) {
         contentHandler.setDocumentLocator(locator);
@@ -178,7 +183,8 @@ final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHan
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes atts)
+            throws SAXException {
         flushBuffer();
         contentHandler.startElement(uri, localName, qName, atts);
     }
@@ -192,7 +198,7 @@ final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHan
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         int bufferCapacity = buffer.length;
-        while (bufferSize+length > bufferCapacity) {
+        while (bufferSize + length > bufferCapacity) {
             bufferCapacity *= 2;
         }
         if (bufferCapacity != buffer.length) {

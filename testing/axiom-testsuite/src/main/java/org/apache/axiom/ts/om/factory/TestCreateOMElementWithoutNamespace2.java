@@ -30,20 +30,21 @@ import org.apache.axiom.om.OMNamespace;
  * requested to create an element without namespace as a child of an element that has a default
  * namespace with a non empty namespace URI. In this case, a namespace declaration is added to the
  * created element to override the default namespace.
- * <p>
- * This is a regression test for
- * <a href="https://issues.apache.org/jira/browse/AXIOM-400">AXIOM-400</a>.
+ *
+ * <p>This is a regression test for <a
+ * href="https://issues.apache.org/jira/browse/AXIOM-400">AXIOM-400</a>.
  */
 public class TestCreateOMElementWithoutNamespace2 extends CreateOMElementTestCase {
-    public TestCreateOMElementWithoutNamespace2(OMMetaFactory metaFactory, CreateOMElementVariant variant) {
+    public TestCreateOMElementWithoutNamespace2(
+            OMMetaFactory metaFactory, CreateOMElementVariant variant) {
         super(metaFactory, variant, null);
     }
 
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement parent = factory.createOMElement("parent",
-                factory.createOMNamespace("urn:test", ""));
+        OMElement parent =
+                factory.createOMElement("parent", factory.createOMNamespace("urn:test", ""));
         OMElement child = variant.createOMElement(factory, parent, "test", "", "");
         assertEquals("test", child.getLocalName());
         assertNull(child.getNamespace());

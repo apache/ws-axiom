@@ -36,29 +36,35 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Tests {@link SOAPFactory#createSOAPHeader(SOAPEnvelope)},
- * {@link SOAPFactory#createSOAPBody(SOAPEnvelope)}, {@link SOAPFactory#createSOAPFault(SOAPBody)},
- * {@link SOAPFactory#createSOAPFaultCode(SOAPFault)},
- * {@link SOAPFactory#createSOAPFaultValue(SOAPFaultCode)},
- * {@link SOAPFactory#createSOAPFaultValue(SOAPFaultSubCode)},
- * {@link SOAPFactory#createSOAPFaultSubCode(SOAPFaultCode)},
- * {@link SOAPFactory#createSOAPFaultSubCode(SOAPFaultSubCode)},
- * {@link SOAPFactory#createSOAPFaultReason(SOAPFault)},
- * {@link SOAPFactory#createSOAPFaultText(SOAPFaultReason)},
- * {@link SOAPFactory#createSOAPFaultNode(SOAPFault)},
- * {@link SOAPFactory#createSOAPFaultRole(SOAPFault)} and
- * {@link SOAPFactory#createSOAPFaultDetail(SOAPFault)} with a non null parent.
+ * Tests {@link SOAPFactory#createSOAPHeader(SOAPEnvelope)}, {@link
+ * SOAPFactory#createSOAPBody(SOAPEnvelope)}, {@link SOAPFactory#createSOAPFault(SOAPBody)}, {@link
+ * SOAPFactory#createSOAPFaultCode(SOAPFault)}, {@link
+ * SOAPFactory#createSOAPFaultValue(SOAPFaultCode)}, {@link
+ * SOAPFactory#createSOAPFaultValue(SOAPFaultSubCode)}, {@link
+ * SOAPFactory#createSOAPFaultSubCode(SOAPFaultCode)}, {@link
+ * SOAPFactory#createSOAPFaultSubCode(SOAPFaultSubCode)}, {@link
+ * SOAPFactory#createSOAPFaultReason(SOAPFault)}, {@link
+ * SOAPFactory#createSOAPFaultText(SOAPFaultReason)}, {@link
+ * SOAPFactory#createSOAPFaultNode(SOAPFault)}, {@link SOAPFactory#createSOAPFaultRole(SOAPFault)}
+ * and {@link SOAPFactory#createSOAPFaultDetail(SOAPFault)} with a non null parent.
  */
 public class TestCreateSOAPElementWithParent extends SOAPTestCase {
     private final SOAPElementType type;
     private final SOAPElementType parentType;
-    
-    public TestCreateSOAPElementWithParent(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type, SOAPElementType parentType) {
+
+    public TestCreateSOAPElementWithParent(
+            OMMetaFactory metaFactory,
+            SOAPSpec spec,
+            SOAPElementType type,
+            SOAPElementType parentType) {
         super(metaFactory, spec);
         this.type = type;
         this.parentType = parentType;
-        addTestParameter("type", type.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
-        addTestParameter("parentType", parentType.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
+        addTestParameter(
+                "type", type.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
+        addTestParameter(
+                "parentType",
+                parentType.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
     }
 
     @Override
@@ -67,14 +73,20 @@ public class TestCreateSOAPElementWithParent extends SOAPTestCase {
         QName expectedName = type.getQName(spec);
         if (expectedName == null) {
             try {
-                type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory, parentType, parent);
+                type.getAdapter(SOAPElementTypeAdapter.class)
+                        .create(soapFactory, parentType, parent);
                 fail("Expect UnsupportedOperationException");
             } catch (UnsupportedOperationException ex) {
                 // Expected
             }
         } else {
-            String expectedPrefix = expectedName.getNamespaceURI().length() == 0 ? "" : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX; 
-            OMElement child = type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory, parentType, parent);
+            String expectedPrefix =
+                    expectedName.getNamespaceURI().length() == 0
+                            ? ""
+                            : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX;
+            OMElement child =
+                    type.getAdapter(SOAPElementTypeAdapter.class)
+                            .create(soapFactory, parentType, parent);
             assertTrue(child.isComplete());
             QName actualName = child.getQName();
             assertEquals(expectedName, actualName);

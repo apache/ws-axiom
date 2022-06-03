@@ -31,7 +31,7 @@ import org.w3c.dom.Document;
 
 public class TestAppendChildForbidden extends AxiomTestCase {
     private final boolean build;
-    
+
     public TestAppendChildForbidden(OMMetaFactory metaFactory, boolean build) {
         super(metaFactory);
         this.build = build;
@@ -40,12 +40,14 @@ public class TestAppendChildForbidden extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMDocument omDocument = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<test/>")).getDocument();
+        OMDocument omDocument =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(), new StringReader("<test/>"))
+                        .getDocument();
         if (build) {
             omDocument.build();
         }
-        Document document = (Document)omDocument;
+        Document document = (Document) omDocument;
         try {
             document.appendChild(document.createElementNS(null, "test"));
             fail("Expected DOMException");

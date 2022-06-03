@@ -24,12 +24,10 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests the behavior of {@link OMNode#detach()}.
- */
+/** Tests the behavior of {@link OMNode#detach()}. */
 public class TestDetachFirstChild extends AxiomTestCase {
     private final boolean build;
-    
+
     public TestDetachFirstChild(OMMetaFactory metaFactory, boolean build) {
         super(metaFactory);
         this.build = build;

@@ -28,8 +28,8 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
  * Tests the behavior of {@link SOAPEnvelope#getOrCreateHeader()} on a message that has no header.
- * It checks that the call creates a new {@link SOAPHeader} and that it doesn't build the
- * {@link SOAPBody}.
+ * It checks that the call creates a new {@link SOAPHeader} and that it doesn't build the {@link
+ * SOAPBody}.
  */
 public class TestGetOrCreateHeaderWithParserNoHeader extends SampleBasedSOAPTestCase {
     public TestGetOrCreateHeaderWithParserNoHeader(OMMetaFactory metaFactory, SOAPSpec spec) {

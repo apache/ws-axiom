@@ -31,8 +31,8 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} performs
- * namespace repairing.
+ * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} performs namespace
+ * repairing.
  */
 public class TestCreateStAXOMBuilderNamespaceRepairing extends AxiomTestCase {
     public TestCreateStAXOMBuilderNamespaceRepairing(OMMetaFactory metaFactory) {
@@ -41,18 +41,22 @@ public class TestCreateStAXOMBuilderNamespaceRepairing extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader(
-                "<p:root xmlns:p='urn:ns1' xmlns:q='urn:ns2'><child q:attr='value'/></p:root>"));
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(),
-                new NamespaceDeclarationFilter(reader)).getDocumentElement();
-        
+        XMLStreamReader reader =
+                StAXUtils.createXMLStreamReader(
+                        new StringReader(
+                                "<p:root xmlns:p='urn:ns1' xmlns:q='urn:ns2'><child q:attr='value'/></p:root>"));
+        OMElement element =
+                OMXMLBuilderFactory.createStAXOMBuilder(
+                                metaFactory.getOMFactory(), new NamespaceDeclarationFilter(reader))
+                        .getDocumentElement();
+
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         OMNamespace ns = it.next();
         assertEquals("p", ns.getPrefix());
         assertEquals("urn:ns1", ns.getNamespaceURI());
         assertFalse(it.hasNext());
-        
+
         OMElement child = element.getFirstElement();
         it = child.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());

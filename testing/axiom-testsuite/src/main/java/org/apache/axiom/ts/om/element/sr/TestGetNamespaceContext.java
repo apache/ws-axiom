@@ -28,7 +28,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetNamespaceContext extends AxiomTestCase {
     private final boolean cache;
-    
+
     public TestGetNamespaceContext(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
@@ -37,10 +37,12 @@ public class TestGetNamespaceContext extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
-                "<a xmlns='urn:ns1' xmlns:ns2='urn:ns2'><b xmlns:ns3='urn:ns3'/></a>");
-        XMLStreamReader stream = cache ? element.getXMLStreamReader()
-                : element.getXMLStreamReaderWithoutCaching();
+        OMElement element =
+                AXIOMUtil.stringToOM(
+                        metaFactory.getOMFactory(),
+                        "<a xmlns='urn:ns1' xmlns:ns2='urn:ns2'><b xmlns:ns3='urn:ns3'/></a>");
+        XMLStreamReader stream =
+                cache ? element.getXMLStreamReader() : element.getXMLStreamReaderWithoutCaching();
         stream.next();
         assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
         assertEquals("b", stream.getLocalName());

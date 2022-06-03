@@ -40,8 +40,10 @@ public class TestDiscardDocumentElement extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(
-                "<root><a>text</a></root>")).getDocument();
+        OMDocument document =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory, new StringReader("<root><a>text</a></root>"))
+                        .getDocument();
         OMElement element = document.getOMDocumentElement();
         element.discard();
         assertNull(document.getFirstOMChild());

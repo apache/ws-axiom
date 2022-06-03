@@ -33,7 +33,7 @@ public class TestCreateOMDocument extends AxiomTestCase {
         OMDocument document = metaFactory.getOMFactory().createOMDocument();
         assertNotNull(document);
         assertNull(document.getFirstOMChild());
-        
+
         // OMDocument doesn't extend OMNode. Therefore, the OMDocument implementation
         // should not implement OMNode either. This is a regression test for AXIOM-385.
         assertFalse(document instanceof OMNode);

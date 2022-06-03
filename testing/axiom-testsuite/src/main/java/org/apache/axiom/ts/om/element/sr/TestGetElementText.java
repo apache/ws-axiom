@@ -40,9 +40,9 @@ public class TestGetElementText extends AxiomTestCase {
         factory.createOMText(documentElement, "this is a TEXT");
         factory.createOMComment(documentElement, "this is a comment");
         factory.createOMText(documentElement, "this is a TEXT block 2");
-        
+
         XMLStreamReader xmlStreamReader = documentElement.getXMLStreamReader();
-        //move to the Start_Element
+        // move to the Start_Element
         while (xmlStreamReader.getEventType() != XMLStreamReader.START_ELEMENT) {
             xmlStreamReader.next();
         }

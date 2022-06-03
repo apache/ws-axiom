@@ -41,7 +41,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestSetOptimize extends AxiomTestCase {
     private final boolean optimize;
-    
+
     public TestSetOptimize(OMMetaFactory metaFactory, boolean optimize) {
         super(metaFactory);
         this.optimize = optimize;
@@ -52,14 +52,19 @@ public class TestSetOptimize extends AxiomTestCase {
     protected void runTest() throws Throwable {
         InputStream in = XOP_SPEC_SAMPLE.getInputStream();
         try {
-            OMDocument document = OMXMLBuilderFactory.createOMBuilder(
-                    metaFactory.getOMFactory(),
-                    StAXParserConfiguration.DEFAULT,
-                    MultipartBody.builder().setInputStream(in).setContentType(XOP_SPEC_SAMPLE.getContentType()).build()).getDocument();
+            OMDocument document =
+                    OMXMLBuilderFactory.createOMBuilder(
+                                    metaFactory.getOMFactory(),
+                                    StAXParserConfiguration.DEFAULT,
+                                    MultipartBody.builder()
+                                            .setInputStream(in)
+                                            .setContentType(XOP_SPEC_SAMPLE.getContentType())
+                                            .build())
+                            .getDocument();
             for (Iterator<OMSerializable> it = document.getDescendants(false); it.hasNext(); ) {
                 OMSerializable node = it.next();
                 if (node instanceof OMText) {
-                    OMText text = (OMText)node;
+                    OMText text = (OMText) node;
                     if (text.isBinary()) {
                         text.setOptimize(optimize);
                     }
@@ -69,8 +74,10 @@ public class TestSetOptimize extends AxiomTestCase {
             OMOutputFormat format = new OMOutputFormat();
             format.setDoOptimize(true);
             document.serialize(out, format);
-            
-            Multipart mp = new MimeMultipart(new ByteArrayDataSource(out.toByteArray(), format.getContentType()));
+
+            Multipart mp =
+                    new MimeMultipart(
+                            new ByteArrayDataSource(out.toByteArray(), format.getContentType()));
             assertThat(mp.getCount()).isEqualTo(optimize ? 3 : 1);
         } finally {
             in.close();

@@ -49,10 +49,12 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPModelBuilder builder = message.getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
-        ((CustomBuilderSupport)builder).registerCustomBuilder(
-                CustomBuilder.Selector.PAYLOAD,
-                new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
+        SOAPModelBuilder builder =
+                message.getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
+        ((CustomBuilderSupport) builder)
+                .registerCustomBuilder(
+                        CustomBuilder.Selector.PAYLOAD,
+                        new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
         SOAPEnvelope envelope = builder.getSOAPEnvelope();
         OMElement payload = envelope.getBody().getFirstElement();
         if (message.getPayload() == null) {
@@ -61,7 +63,9 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
             assertThat(payload).isInstanceOf(SOAPFault.class);
         } else {
             assertThat(payload).isInstanceOf(OMSourcedElement.class);
-            BlobOMDataSource.Data data = (BlobOMDataSource.Data)((OMSourcedElement)payload).getObject(BlobOMDataSource.class);
+            BlobOMDataSource.Data data =
+                    (BlobOMDataSource.Data)
+                            ((OMSourcedElement) payload).getObject(BlobOMDataSource.class);
             assertThat(data).isNotNull();
             InputSource is = new InputSource(data.getBlob().getInputStream());
             is.setEncoding(data.getEncoding());
@@ -78,7 +82,7 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
                 .ignoringRedundantNamespaceDeclarations()
                 .hasSameContentAs(message.getInputStream());
         if (payload instanceof OMSourcedElement) {
-            assertThat(((OMSourcedElement)payload).isExpanded()).isFalse();
+            assertThat(((OMSourcedElement) payload).isExpanded()).isFalse();
         }
     }
 }

@@ -44,5 +44,4 @@ public class TestGetQNameWithNamespace extends AxiomTestCase {
         assertEquals("Namespace mismatch", namespace, qname.getNamespaceURI());
         assertEquals("namespace prefix mismatch", prefix, qname.getPrefix());
     }
-
 }

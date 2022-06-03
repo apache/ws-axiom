@@ -48,13 +48,15 @@ public class TestCloseWithoutCaching extends AxiomTestCase {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Writer writer = new OutputStreamWriter(baos, "UTF-8");
         writer.write("<root><a>");
-        for (int i=0; i<20000; i++) {
+        for (int i = 0; i < 20000; i++) {
             writer.write('a');
         }
         writer.write("</a></root>");
         writer.close();
-        InstrumentedInputStream in = new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
-        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocument();
+        InstrumentedInputStream in =
+                new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
+        OMDocument doc =
+                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocument();
         XMLStreamReader reader = doc.getXMLStreamReaderWithoutCaching();
         reader.next();
         reader.next();

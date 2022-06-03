@@ -33,7 +33,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  */
 public class TestAddElementAfterBody extends SOAPTestCase {
     private final boolean header;
-    
+
     public TestAddElementAfterBody(OMMetaFactory metaFactory, SOAPSpec spec, boolean header) {
         super(metaFactory, spec);
         this.header = header;

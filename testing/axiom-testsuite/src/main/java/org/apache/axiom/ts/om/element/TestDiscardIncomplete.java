@@ -26,9 +26,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 
-/**
- *Test the discard method
- */
+/** Test the discard method */
 public class TestDiscardIncomplete extends AxiomTestCase {
     public TestDiscardIncomplete(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -37,18 +35,20 @@ public class TestDiscardIncomplete extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMElement documentElement = null;
-        
+
         // first build the OM tree without caching and see whether we can discard
         // an element from it
         // TODO: we shouldn't use a SOAP message here
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(),
+                        SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
         documentElement = builder.getDocumentElement();
 
         documentElement.getFirstElement().discard();
 
         String envelopeString = documentElement.toStringWithConsume();
-        
+
         documentElement.close(false);
     }
 }

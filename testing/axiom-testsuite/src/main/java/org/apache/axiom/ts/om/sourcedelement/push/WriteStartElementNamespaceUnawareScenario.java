@@ -40,7 +40,7 @@ public class WriteStartElementNamespaceUnawareScenario implements PushOMDataSour
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 

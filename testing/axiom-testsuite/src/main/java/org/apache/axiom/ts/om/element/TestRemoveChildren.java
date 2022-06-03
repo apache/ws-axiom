@@ -30,12 +30,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests {@link OMContainer#removeChildren()} on an {@link OMElement}.
- */
+/** Tests {@link OMContainer#removeChildren()} on an {@link OMElement}. */
 public class TestRemoveChildren extends AxiomTestCase {
     private final boolean complete;
-    
+
     public TestRemoveChildren(OMMetaFactory metaFactory, boolean complete) {
         super(metaFactory);
         this.complete = complete;
@@ -45,12 +43,14 @@ public class TestRemoveChildren extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(factory,
-                new StringReader("<root><a>A</a><b>B</b></root>")).getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory, new StringReader("<root><a>A</a><b>B</b></root>"))
+                        .getDocumentElement();
         if (complete) {
             element.build();
         }
-        OMElement firstChild = (OMElement)element.getFirstOMChild();
+        OMElement firstChild = (OMElement) element.getFirstOMChild();
         assertEquals(complete, element.isComplete());
         assertEquals(complete, firstChild.isComplete());
         element.removeChildren();

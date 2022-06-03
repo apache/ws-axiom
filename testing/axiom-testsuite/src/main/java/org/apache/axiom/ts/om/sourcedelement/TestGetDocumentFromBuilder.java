@@ -27,9 +27,9 @@ import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMXMLParserWrapper#getDocument()} and {@link OMXMLParserWrapper#getDocumentElement()}
- * throw {@link UnsupportedOperationException} when invoked on the builder
- * associated with an {@link OMSourcedElement}.
+ * Tests that {@link OMXMLParserWrapper#getDocument()} and {@link
+ * OMXMLParserWrapper#getDocumentElement()} throw {@link UnsupportedOperationException} when invoked
+ * on the builder associated with an {@link OMSourcedElement}.
  */
 public class TestGetDocumentFromBuilder extends AxiomTestCase {
     public TestGetDocumentFromBuilder(OMMetaFactory metaFactory) {

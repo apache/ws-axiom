@@ -29,19 +29,27 @@ public abstract class GetSetChildTestCase extends SOAPTestCase {
     protected final SOAPElementType type;
     protected final SOAPElementType childType;
 
-    public GetSetChildTestCase(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type, SOAPElementType childType) {
+    public GetSetChildTestCase(
+            OMMetaFactory metaFactory,
+            SOAPSpec spec,
+            SOAPElementType type,
+            SOAPElementType childType) {
         super(metaFactory, spec);
         this.type = type;
         this.childType = childType;
-        addTestParameter("type", type.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
-        addTestParameter("childType", childType.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
+        addTestParameter(
+                "type", type.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
+        addTestParameter(
+                "childType",
+                childType.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
     }
 
     @Override
     protected final void runTest() throws Throwable {
-        runTest(type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory),
+        runTest(
+                type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory),
                 childType.getAdapter(SOAPElementTypeAdapter.class));
     }
-    
+
     protected abstract void runTest(OMElement parent, SOAPElementTypeAdapter adapter);
 }

@@ -29,20 +29,17 @@ import org.apache.axiom.testing.multiton.AdapterType;
 public interface BooleanAttributeAccessor {
     /**
      * Invoke the getter method for this attribute on the given {@link SOAPHeaderBlock}.
-     * 
-     * @param headerBlock
-     *            the header block
+     *
+     * @param headerBlock the header block
      * @return the value returned by the getter method
      */
     boolean getValue(SOAPHeaderBlock headerBlock);
-    
+
     /**
      * Invoke the setter method for this attribute on the given {@link SOAPHeaderBlock}.
-     * 
-     * @param headerBlock
-     *            the heaer block
-     * @param value
-     *            the value to pass to the setter
+     *
+     * @param headerBlock the heaer block
+     * @param value the value to pass to the setter
      */
     void setValue(SOAPHeaderBlock headerBlock, boolean value);
 }

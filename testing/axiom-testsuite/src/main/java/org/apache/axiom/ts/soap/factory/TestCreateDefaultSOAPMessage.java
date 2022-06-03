@@ -30,8 +30,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Checks the content of the SOAP envelope returned by
- * {@link SOAPFactory#createDefaultSOAPMessage()}.
+ * Checks the content of the SOAP envelope returned by {@link
+ * SOAPFactory#createDefaultSOAPMessage()}.
  */
 public class TestCreateDefaultSOAPMessage extends SOAPTestCase {
     public TestCreateDefaultSOAPMessage(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -45,16 +45,16 @@ public class TestCreateDefaultSOAPMessage extends SOAPTestCase {
         assertNotNull(env);
         assertSame(env, message.getFirstOMChild());
         assertNull(env.getNextOMSibling());
-        
+
         // Check correct SOAP version
         assertEquals(spec.getEnvelopeNamespaceURI(), env.getNamespaceURI());
-        
+
         // Check the children
         Iterator<OMNode> it = env.getChildren();
         assertTrue(it.hasNext());
         OMNode child = it.next();
         assertTrue(child instanceof SOAPBody);
-        assertNull(((SOAPBody)child).getFirstOMChild());
+        assertNull(((SOAPBody) child).getFirstOMChild());
         assertFalse(it.hasNext());
     }
 }

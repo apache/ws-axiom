@@ -34,7 +34,9 @@ public class TestResolveQNameWithUnboundPrefix extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<p:root xmlns:p='urn:ns1' xmlns='urn:ns2'/>");
+        OMElement element =
+                AXIOMUtil.stringToOM(
+                        metaFactory.getOMFactory(), "<p:root xmlns:p='urn:ns1' xmlns='urn:ns2'/>");
         assertNull(element.resolveQName("ns:test"));
     }
 }

@@ -30,9 +30,7 @@ import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-/**
- * Tests {@link OMDocument#getCharsetEncoding()} on a {@link SOAPMessage} created by a builder.
- */
+/** Tests {@link OMDocument#getCharsetEncoding()} on a {@link SOAPMessage} created by a builder. */
 public class TestGetCharsetEncodingWithParser extends SOAPTestCase {
     public TestGetCharsetEncodingWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
@@ -42,13 +40,17 @@ public class TestGetCharsetEncodingWithParser extends SOAPTestCase {
     protected void runTest() throws Throwable {
         String encoding = "iso-8859-15";
         SOAPEnvelope orgEnvelope = soapFactory.getDefaultEnvelope();
-        soapFactory.createOMElement("echo", soapFactory.createOMNamespace("urn:test", null)).setText("test");
+        soapFactory
+                .createOMElement("echo", soapFactory.createOMNamespace("urn:test", null))
+                .setText("test");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         OMOutputFormat format = new OMOutputFormat();
         format.setCharSetEncoding(encoding);
         orgEnvelope.serialize(baos, format);
-        SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                new ByteArrayInputStream(baos.toByteArray()), encoding).getSOAPMessage();
+        SOAPMessage message =
+                OMXMLBuilderFactory.createSOAPModelBuilder(
+                                metaFactory, new ByteArrayInputStream(baos.toByteArray()), encoding)
+                        .getSOAPMessage();
         assertEquals(encoding, message.getCharsetEncoding());
     }
 }

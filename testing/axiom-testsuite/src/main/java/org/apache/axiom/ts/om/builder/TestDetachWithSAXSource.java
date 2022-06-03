@@ -36,8 +36,11 @@ public class TestDetachWithSAXSource extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         DummyXMLReader xmlReader = new DummyXMLReader();
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new SAXSource(xmlReader, new InputSource()), false);
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(),
+                        new SAXSource(xmlReader, new InputSource()),
+                        false);
         assertThat(xmlReader.isParsed()).isFalse();
         builder.detach();
         assertThat(xmlReader.isParsed()).isTrue();

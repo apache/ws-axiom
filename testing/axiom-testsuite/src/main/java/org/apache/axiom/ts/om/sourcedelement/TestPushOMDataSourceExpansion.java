@@ -38,13 +38,13 @@ import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
 public class TestPushOMDataSourceExpansion extends AxiomTestCase {
     class PushOMDataSource extends AbstractPushOMDataSource {
         private boolean expanded;
-        
+
         @Override
         public void serialize(XMLStreamWriter writer) throws XMLStreamException {
             scenario.serialize(writer);
             expanded = true;
         }
-        
+
         @Override
         public boolean isDestructiveWrite() {
             return false;
@@ -54,10 +54,11 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
             return expanded;
         }
     }
-    
+
     private final PushOMDataSourceScenario scenario;
-    
-    public TestPushOMDataSourceExpansion(OMMetaFactory metaFactory, PushOMDataSourceScenario scenario) {
+
+    public TestPushOMDataSourceExpansion(
+            OMMetaFactory metaFactory, PushOMDataSourceScenario scenario) {
         super(metaFactory);
         this.scenario = scenario;
         scenario.addTestParameters(this);
@@ -68,17 +69,24 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         PushOMDataSource ds = new PushOMDataSource();
         OMElement element = factory.createOMElement(ds);
-        Iterator<Map.Entry<String,String>> it = scenario.getNamespaceContext().entrySet().iterator();
+        Iterator<Map.Entry<String, String>> it =
+                scenario.getNamespaceContext().entrySet().iterator();
         if (it.hasNext()) {
-            Map.Entry<String,String> binding = it.next();
-            OMElement parent = factory.createOMElement("parent", factory.createOMNamespace(binding.getValue(), binding.getKey()));
+            Map.Entry<String, String> binding = it.next();
+            OMElement parent =
+                    factory.createOMElement(
+                            "parent",
+                            factory.createOMNamespace(binding.getValue(), binding.getKey()));
             while (it.hasNext()) {
                 binding = it.next();
-                parent.declareNamespace(factory.createOMNamespace(binding.getValue(), binding.getKey()));
+                parent.declareNamespace(
+                        factory.createOMNamespace(binding.getValue(), binding.getKey()));
             }
             parent.addChild(element);
         }
         scenario.validate(element, true);
-        assertTrue("Invalid test case: validation didn't expand the OMSourcedElement", ds.isExpanded());
+        assertTrue(
+                "Invalid test case: validation didn't expand the OMSourcedElement",
+                ds.isExpanded());
     }
 }

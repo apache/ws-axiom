@@ -28,9 +28,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests that {@link OMElement#cloneOMElement()} performs namespace repairing.
- */
+/** Tests that {@link OMElement#cloneOMElement()} performs namespace repairing. */
 // TODO: this is actually undocumented; in addition, it should probably made configurable
 public class TestCloneOMElementNamespaceRepairing extends AxiomTestCase {
     public TestCloneOMElementNamespaceRepairing(OMMetaFactory metaFactory) {
@@ -40,20 +38,22 @@ public class TestCloneOMElementNamespaceRepairing extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        
+
         // Create a root element on which we declare the namespaces
         OMElement root = factory.createOMElement("root", null);
         OMNamespace ns1 = root.declareNamespace("urn:ns1", "ns1");
         OMNamespace ns2 = root.declareNamespace("urn:ns2", "ns2");
         root.declareNamespace("urn:ns3", "ns3");
-        
-        // Create a child that uses these namespaces (in the element name and in the name of an attribute)
+
+        // Create a child that uses these namespaces (in the element name and in the name of an
+        // attribute)
         OMElement child = factory.createOMElement("child", ns1, root);
         child.addAttribute("attr", "value", ns2);
-        
-        // Check that the child has no namespace declarations (to validate the correctness of the test)
+
+        // Check that the child has no namespace declarations (to validate the correctness of the
+        // test)
         assertFalse(child.getAllDeclaredNamespaces().hasNext());
-        
+
         // Clone the child and check that namespace declarations have been generated automatically
         OMElement clone = child.cloneOMElement();
         Set<OMNamespace> expectedNSDecls = new HashSet<>();

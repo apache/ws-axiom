@@ -23,9 +23,9 @@ import org.apache.axiom.soap.SOAPEnvelope;
 
 public abstract class SampleBasedSOAPTestCase extends SOAPTestCase {
     private final SOAPSample sample;
-    
-    public SampleBasedSOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec,
-            SOAPSampleSet sampleSet) {
+
+    public SampleBasedSOAPTestCase(
+            OMMetaFactory metaFactory, SOAPSpec spec, SOAPSampleSet sampleSet) {
         super(metaFactory, spec);
         sample = sampleSet.getMessage(spec);
     }
@@ -34,11 +34,11 @@ public abstract class SampleBasedSOAPTestCase extends SOAPTestCase {
         super(metaFactory, sample.getSOAPSpec());
         this.sample = sample;
     }
-    
+
     @Override
     protected final void runTest() throws Throwable {
         runTest(sample.getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory));
     }
-    
+
     protected abstract void runTest(SOAPEnvelope envelope) throws Throwable;
 }

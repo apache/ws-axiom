@@ -22,7 +22,6 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMSource;
 
 import org.apache.axiom.om.OMDocument;
@@ -43,8 +42,13 @@ public class TestCreateSOAPModelBuilderFromDOMSource extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document document = DOMImplementation.XERCES.parse(new InputSource(SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getUrl().toString()));
-        SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new DOMSource(document)).getSOAPMessage();
+        Document document =
+                DOMImplementation.XERCES.parse(
+                        new InputSource(
+                                SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getUrl().toString()));
+        SOAPMessage message =
+                OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new DOMSource(document))
+                        .getSOAPMessage();
         assertAbout(xml())
                 .that(xml(OMDocument.class, message))
                 .ignoringWhitespaceInPrologAndEpilog()

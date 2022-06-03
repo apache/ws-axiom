@@ -31,7 +31,7 @@ import org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace1
  * Tests that {@link OMElement#addAttribute(String, String, OMNamespace)} throws an exception if the
  * specified namespace is invalid, i.e. if the {@link OMNamespace} object specifies a prefix for an
  * empty namespace.
- * 
+ *
  * @see TestCreateOMAttributeWithInvalidNamespace1
  */
 public class TestAddAttributeWithInvalidNamespace1 extends AxiomTestCase {
@@ -48,7 +48,9 @@ public class TestAddAttributeWithInvalidNamespace1 extends AxiomTestCase {
             element.addAttribute("attr", "value", ns);
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException ex) {
-            assertEquals("Cannot create a prefixed attribute with an empty namespace name", ex.getMessage());
+            assertEquals(
+                    "Cannot create a prefixed attribute with an empty namespace name",
+                    ex.getMessage());
             // No namespace declaration should have been added before throwing the exception
             assertFalse(element.getAllDeclaredNamespaces().hasNext());
         }

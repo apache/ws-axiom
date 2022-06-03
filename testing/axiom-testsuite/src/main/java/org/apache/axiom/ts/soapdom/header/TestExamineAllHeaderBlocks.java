@@ -35,8 +35,8 @@ import org.w3c.dom.Element;
 
 /**
  * Tests that child elements of a {@link SOAPHeader} created using the DOM API are converted on the
- * fly and returned as {@link SOAPHeaderBlock} instances by
- * {@link SOAPHeader#examineAllHeaderBlocks()}.
+ * fly and returned as {@link SOAPHeaderBlock} instances by {@link
+ * SOAPHeader#examineAllHeaderBlocks()}.
  */
 public class TestExamineAllHeaderBlocks extends SOAPTestCase {
     public TestExamineAllHeaderBlocks(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -46,9 +46,9 @@ public class TestExamineAllHeaderBlocks extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.createSOAPHeader();
-        
+
         // Add header blocks using DOM
-        Element domHeader = (Element)header;
+        Element domHeader = (Element) header;
         Document document = domHeader.getOwnerDocument();
         Element headerBlock1 = document.createElementNS("urn:test", "p:h1");
         headerBlock1.setAttributeNS(spec.getEnvelopeNamespaceURI(), "S:mustUnderstand", "1");
@@ -57,7 +57,7 @@ public class TestExamineAllHeaderBlocks extends SOAPTestCase {
         headerBlock2.appendChild(document.createElementNS(null, "test"));
         domHeader.appendChild(headerBlock1);
         domHeader.appendChild(headerBlock2);
-        
+
         // Use the Axiom API to iterate over the header blocks
         Iterator<SOAPHeaderBlock> it = header.examineAllHeaderBlocks();
         assertThat(it.hasNext()).isTrue();

@@ -40,7 +40,7 @@ public class TestRemoveAttributeNSNamespaceDeclaration extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         element.declareNamespace("urn:test", "ns");
-        ((Element)element).removeAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "ns");
+        ((Element) element).removeAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "ns");
         assertFalse(element.getAllDeclaredNamespaces().hasNext());
     }
 }

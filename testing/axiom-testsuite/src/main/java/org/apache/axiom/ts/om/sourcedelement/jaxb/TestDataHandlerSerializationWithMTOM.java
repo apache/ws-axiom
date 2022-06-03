@@ -54,7 +54,7 @@ public class TestDataHandlerSerializationWithMTOM extends AxiomTestCase {
     protected void runTest() throws Throwable {
         SOAPFactory factory = metaFactory.getSOAP11Factory();
         JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
-        
+
         // Construct the original message
         DocumentBean object = new DocumentBean();
         object.setId("123456");
@@ -62,7 +62,7 @@ public class TestDataHandlerSerializationWithMTOM extends AxiomTestCase {
         SOAPEnvelope orgEnvelope = factory.getDefaultEnvelope();
         OMSourcedElement element = factory.createOMElement(new JAXBOMDataSource(context, object));
         orgEnvelope.getBody().addChild(element);
-        
+
         // Serialize the message
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
@@ -71,17 +71,22 @@ public class TestDataHandlerSerializationWithMTOM extends AxiomTestCase {
         orgEnvelope.serialize(out, format);
         out.close();
         assertFalse(element.isExpanded());
-        
+
         // Parse the serialized message
-        MultipartBody mb = MultipartBody.builder()
-                .setInputStream(blob.getInputStream())
-                .setContentType(format.getContentType())
-                .build();
+        MultipartBody mb =
+                MultipartBody.builder()
+                        .setInputStream(blob.getInputStream())
+                        .setContentType(format.getContentType())
+                        .build();
         assertEquals(2, mb.getPartCount());
-        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
-        OMElement contentElement = envelope.getBody().getFirstElement().getFirstChildWithName(
-                new QName("http://ws.apache.org/axiom/test/jaxb", "content"));
-        OMText content = (OMText)contentElement.getFirstOMChild();
+        SOAPEnvelope envelope =
+                OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
+        OMElement contentElement =
+                envelope.getBody()
+                        .getFirstElement()
+                        .getFirstChildWithName(
+                                new QName("http://ws.apache.org/axiom/test/jaxb", "content"));
+        OMText content = (OMText) contentElement.getFirstOMChild();
         assertTrue(content.isBinary());
         assertTrue(content.isOptimized());
         DataHandler dh = content.getDataHandler();

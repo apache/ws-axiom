@@ -27,9 +27,7 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-/**
- * Tests the behavior of {@link SOAPHeader#addHeaderBlock(QName)}.
- */
+/** Tests the behavior of {@link SOAPHeader#addHeaderBlock(QName)}. */
 public class TestAddHeaderBlockFromQName extends SOAPTestCase {
     public TestAddHeaderBlockFromQName(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

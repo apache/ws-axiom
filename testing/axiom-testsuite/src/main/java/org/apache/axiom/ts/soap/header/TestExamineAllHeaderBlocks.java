@@ -46,22 +46,28 @@ public class TestExamineAllHeaderBlocks extends SOAPTestCase {
         assertNotNull(
                 "SOAP Header Test : - After calling addHeaderBlock method twice, examineAllHeaderBlocks method returns empty iterator",
                 headerBlock1);
-        assertEquals("SOAP Header Test : - HeaderBlock1 local name mismatch",
-                "echoOk1", headerBlock1.getLocalName());
+        assertEquals(
+                "SOAP Header Test : - HeaderBlock1 local name mismatch",
+                "echoOk1",
+                headerBlock1.getLocalName());
         assertEquals(
                 "SOAP Header Test : - HeaderBlock1 namespace uri mismatch",
-                "http://www.example.org", headerBlock1.getNamespace().getNamespaceURI());
+                "http://www.example.org",
+                headerBlock1.getNamespace().getNamespaceURI());
 
         assertTrue(iterator.hasNext());
         SOAPHeaderBlock headerBlock2 = iterator.next();
         assertNotNull(
                 "SOAP Header Test : - After calling addHeaderBlock method twice, examineAllHeaderBlocks method returns an iterator with only one object",
                 headerBlock2);
-        assertEquals("SOAP Header Test : - HeaderBlock2 local name mismatch",
-                "echoOk2", headerBlock2.getLocalName());
+        assertEquals(
+                "SOAP Header Test : - HeaderBlock2 local name mismatch",
+                "echoOk2",
+                headerBlock2.getLocalName());
         assertEquals(
                 "SOAP Header Test : - HeaderBlock2 namespace uri mismatch",
-                "http://www.example.org", headerBlock2.getNamespace().getNamespaceURI());
+                "http://www.example.org",
+                headerBlock2.getNamespace().getNamespaceURI());
 
         assertFalse(
                 "SOAP Header Test : - After calling addHeaderBlock method twice, examineAllHeaderBlocks method returns an iterator with more than two object",

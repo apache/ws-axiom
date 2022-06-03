@@ -26,14 +26,19 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 
 public class TestCreateOMElementWithNonDefaultNamespace extends CreateOMElementTestCase {
-    public TestCreateOMElementWithNonDefaultNamespace(OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
+    public TestCreateOMElementWithNonDefaultNamespace(
+            OMMetaFactory metaFactory,
+            CreateOMElementVariant variant,
+            CreateOMElementParentSupplier parentSupplier) {
         super(metaFactory, variant, parentSupplier);
     }
 
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "urn:ns", "ns");
+        OMElement element =
+                variant.createOMElement(
+                        factory, parentSupplier.createParent(factory), "test", "urn:ns", "ns");
         assertTrue(element.isComplete());
         assertEquals("test", element.getLocalName());
         OMNamespace ns = factory.createOMNamespace("urn:ns", "ns");

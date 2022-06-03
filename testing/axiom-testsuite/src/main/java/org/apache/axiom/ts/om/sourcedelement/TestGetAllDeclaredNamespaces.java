@@ -31,8 +31,8 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
- * Tests that {@link OMElement#getAllDeclaredNamespaces()} causes expansion of
- * {@link OMSourcedElement} instances.
+ * Tests that {@link OMElement#getAllDeclaredNamespaces()} causes expansion of {@link
+ * OMSourcedElement} instances.
  */
 public class TestGetAllDeclaredNamespaces extends AxiomTestCase {
     public TestGetAllDeclaredNamespaces(OMMetaFactory metaFactory) {
@@ -42,8 +42,9 @@ public class TestGetAllDeclaredNamespaces extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(
-                new PullOMDataSource("<root xmlns:p='urn:ns1'/>"), "root", null);
+        OMSourcedElement element =
+                factory.createOMElement(
+                        new PullOMDataSource("<root xmlns:p='urn:ns1'/>"), "root", null);
         Iterator<OMNamespace> attributes = element.getAllDeclaredNamespaces();
         assertThat(attributes.hasNext()).isTrue();
         OMNamespace ns = attributes.next();

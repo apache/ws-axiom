@@ -40,7 +40,7 @@ public class TestSetTextQNameWithExistingChildren extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("TestElement", null);
-        
+
         // Add some children of various types
         factory.createOMText(element, "some text");
         factory.createOMText(element, "cdata section", OMNode.CDATA_SECTION_NODE);
@@ -57,7 +57,7 @@ public class TestSetTextQNameWithExistingChildren extends AxiomTestCase {
         OMNode child = element.getFirstOMChild();
         assertTrue(child instanceof OMText);
         assertSame(element, child.getParent());
-        assertEquals("ns:test", ((OMText)child).getText());
+        assertEquals("ns:test", ((OMText) child).getText());
         assertNull(child.getNextOMSibling());
     }
 }

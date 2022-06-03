@@ -38,6 +38,7 @@ public class TestGetNodeWithParser extends SampleBasedSOAPTestCase {
                 soapFaultWithParser.getNode());
         assertEquals(
                 "SOAP 1.2 Fault Test with parser: - Fault node local name mismatch",
-                SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, soapFaultWithParser.getNode().getLocalName());
+                SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME,
+                soapFaultWithParser.getNode().getLocalName());
     }
 }

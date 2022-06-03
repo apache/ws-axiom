@@ -32,8 +32,8 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMElement#writeTextTo(Writer, boolean)} in the simple case with a
- * single {@link OMText} child. The test case also checks that the method doesn't call
- * {@link Writer#close()}.
+ * single {@link OMText} child. The test case also checks that the method doesn't call {@link
+ * Writer#close()}.
  */
 public class TestWriteTextTo extends AxiomTestCase {
     public TestWriteTextTo(OMMetaFactory metaFactory) {

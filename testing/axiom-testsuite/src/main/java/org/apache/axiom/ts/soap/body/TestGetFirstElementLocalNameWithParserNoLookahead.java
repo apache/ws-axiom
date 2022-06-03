@@ -33,25 +33,28 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
  * Tests that {@link SOAPBody#getFirstElementLocalName()} returns the expected result if the parser
- * has already progressed past the start of the payload and the optimization described in
- * <a href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a> is no longer applicable.
+ * has already progressed past the start of the payload and the optimization described in <a
+ * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a> is no longer applicable.
  */
 public class TestGetFirstElementLocalNameWithParserNoLookahead extends SOAPTestCase {
-    public TestGetFirstElementLocalNameWithParserNoLookahead(OMMetaFactory metaFactory, SOAPSpec spec) {
+    public TestGetFirstElementLocalNameWithParserNoLookahead(
+            OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
 
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope orgEnvelope = soapFactory.getDefaultEnvelope();
-        OMElement payload = soapFactory.createOMElement(
-                "payload",
-                soapFactory.createOMNamespace("urn:test", "p"),
-                orgEnvelope.getBody());
+        OMElement payload =
+                soapFactory.createOMElement(
+                        "payload",
+                        soapFactory.createOMNamespace("urn:test", "p"),
+                        orgEnvelope.getBody());
         OMElement child = soapFactory.createOMElement("child", null, payload);
         soapFactory.createOMElement("grandchild", null, child);
-        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                new StringReader(orgEnvelope.toString()));
+        SOAPModelBuilder builder =
+                OMXMLBuilderFactory.createSOAPModelBuilder(
+                        metaFactory, new StringReader(orgEnvelope.toString()));
         SOAPBody body = builder.getSOAPEnvelope().getBody();
         body.getFirstElement().getFirstElement();
         assertThat(body.getFirstElementLocalName()).isEqualTo("payload");

@@ -40,8 +40,9 @@ import org.xml.sax.XMLReader;
 public class TestGetSAXResultSAXParser extends AxiomTestCase {
     private final SAXImplementation saxImplementation;
     private final XMLSample file;
-    
-    public TestGetSAXResultSAXParser(OMMetaFactory metaFactory, SAXImplementation saxImplementation, XMLSample file) {
+
+    public TestGetSAXResultSAXParser(
+            OMMetaFactory metaFactory, SAXImplementation saxImplementation, XMLSample file) {
         super(metaFactory);
         this.saxImplementation = saxImplementation;
         this.file = file;
@@ -57,7 +58,7 @@ public class TestGetSAXResultSAXParser extends AxiomTestCase {
         OMDocument document = metaFactory.getOMFactory().createOMDocument();
         ContentHandler handler = document.getSAXResult().getHandler();
         reader.setContentHandler(handler);
-        reader.setDTDHandler((DTDHandler)handler);
+        reader.setDTDHandler((DTDHandler) handler);
         reader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
         reader.setProperty("http://xml.org/sax/properties/declaration-handler", handler);
         reader.parse(new InputSource(file.getUrl().toString()));

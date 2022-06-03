@@ -31,14 +31,15 @@ import org.apache.axiom.om.util.StAXUtils;
 public final class PullOMDataSource extends AbstractPullOMDataSource {
     private final String data;
     private final boolean destructive;
-    private final Set<CloseTestXMLStreamReaderWrapper> unclosedReaders = new HashSet<CloseTestXMLStreamReaderWrapper>();
+    private final Set<CloseTestXMLStreamReaderWrapper> unclosedReaders =
+            new HashSet<CloseTestXMLStreamReaderWrapper>();
     private int readerRequestCount;
     private boolean destroyed;
 
     public PullOMDataSource(String data) {
         this(data, true);
     }
-    
+
     public PullOMDataSource(String data, boolean destructive) {
         this.data = data;
         this.destructive = destructive;
@@ -53,8 +54,9 @@ public final class PullOMDataSource extends AbstractPullOMDataSource {
             destroyed = true;
         }
         readerRequestCount++;
-        CloseTestXMLStreamReaderWrapper reader = new CloseTestXMLStreamReaderWrapper(this,
-                StAXUtils.createXMLStreamReader(new StringReader(data)));
+        CloseTestXMLStreamReaderWrapper reader =
+                new CloseTestXMLStreamReaderWrapper(
+                        this, StAXUtils.createXMLStreamReader(new StringReader(data)));
         unclosedReaders.add(reader);
         return reader;
     }
@@ -71,7 +73,7 @@ public final class PullOMDataSource extends AbstractPullOMDataSource {
     public boolean hasUnclosedReaders() {
         return !unclosedReaders.isEmpty();
     }
-    
+
     void readerClosed(CloseTestXMLStreamReaderWrapper reader) {
         unclosedReaders.remove(reader);
     }

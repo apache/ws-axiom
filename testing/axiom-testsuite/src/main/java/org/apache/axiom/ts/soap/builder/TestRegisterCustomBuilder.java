@@ -41,22 +41,32 @@ public class TestRegisterCustomBuilder extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPModelBuilder builder = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
-        ((CustomBuilderSupport)builder).registerCustomBuilder(
-                new CustomBuilder.Selector() {
-                    @Override
-                    public boolean accepts(OMContainer parent, int depth, String namespaceURI, String localName) {
-                        return depth == 3
-                                && namespaceURI.equals("http://www.w3.org/2005/08/addressing")
-                                && localName.equals("To");
-                    }
-                },
-                new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
+        SOAPModelBuilder builder =
+                SOAPSampleSet.WSA
+                        .getMessage(spec)
+                        .getAdapter(SOAPSampleAdapter.class)
+                        .getBuilder(metaFactory);
+        ((CustomBuilderSupport) builder)
+                .registerCustomBuilder(
+                        new CustomBuilder.Selector() {
+                            @Override
+                            public boolean accepts(
+                                    OMContainer parent,
+                                    int depth,
+                                    String namespaceURI,
+                                    String localName) {
+                                return depth == 3
+                                        && namespaceURI.equals(
+                                                "http://www.w3.org/2005/08/addressing")
+                                        && localName.equals("To");
+                            }
+                        },
+                        new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
         SOAPHeader header = builder.getSOAPEnvelope().getHeader();
         ArrayList al = header.getHeaderBlocksWithNSURI("http://www.w3.org/2005/08/addressing");
         assertEquals(al.size(), 4);
-        for (int i=0; i<al.size(); i++){
-            SOAPHeaderBlock shb = (SOAPHeaderBlock)al.get(i);
+        for (int i = 0; i < al.size(); i++) {
+            SOAPHeaderBlock shb = (SOAPHeaderBlock) al.get(i);
             if ("To".equals(shb.getLocalName())) {
                 assertNotNull(shb.getDataSource());
             }

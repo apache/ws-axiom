@@ -31,12 +31,14 @@ public class TestGetValueNestedWithParser extends SampleBasedSOAPTestCase {
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        SOAPFaultSubCode subCode = envelope.getBody().getFault().getCode().getSubCode().getSubCode();
+        SOAPFaultSubCode subCode =
+                envelope.getBody().getFault().getCode().getSubCode().getSubCode();
         assertNotNull(
                 "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode With Parser : - getValue method returns null",
                 subCode.getValue());
         assertEquals(
                 "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode With Parser : - Value text mismatch",
-                "m:MessageTimeout_In_Second_Subcode", subCode.getValue().getText());
+                "m:MessageTimeout_In_Second_Subcode",
+                subCode.getValue().getText());
     }
 }

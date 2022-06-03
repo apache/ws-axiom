@@ -44,8 +44,11 @@ public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase
         OMFactory factory = metaFactory.getOMFactory();
         DataSource ds = new RandomDataSource(665544, 32, 128, 20000000);
         QName qname = new QName("a");
-        OMSourcedElement element = factory.createOMElement(
-                new WrappedTextNodeOMDataSourceFromDataSource(qname, ds, Charset.forName("ascii")), qname);
+        OMSourcedElement element =
+                factory.createOMElement(
+                        new WrappedTextNodeOMDataSourceFromDataSource(
+                                qname, ds, Charset.forName("ascii")),
+                        qname);
         Reader in = new InputStreamReader(ds.getInputStream(), "ascii");
         Writer out = new CharacterStreamComparator(in);
         element.writeTextTo(out, true); // cache doesn't matter here

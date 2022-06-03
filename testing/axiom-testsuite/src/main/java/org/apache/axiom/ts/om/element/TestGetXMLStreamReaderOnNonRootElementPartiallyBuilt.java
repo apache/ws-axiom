@@ -38,8 +38,9 @@ import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
 public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends AxiomTestCase {
     private final boolean cache;
     private final int build;
-    
-    public TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt(OMMetaFactory metaFactory, boolean cache, int build) {
+
+    public TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt(
+            OMMetaFactory metaFactory, boolean cache, int build) {
         super(metaFactory);
         this.cache = cache;
         this.build = build;
@@ -49,19 +50,22 @@ public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends AxiomT
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
-                "<root><child><emptyElement/><element>content</element></child></root>");
-        OMElement child = (OMElement)root.getFirstOMChild();
-        
+        OMElement root =
+                AXIOMUtil.stringToOM(
+                        metaFactory.getOMFactory(),
+                        "<root><child><emptyElement/><element>content</element></child></root>");
+        OMElement child = (OMElement) root.getFirstOMChild();
+
         // Partially build the tree
         if (build > 0) {
             Iterator<OMNode> it = root.getDescendants(false);
-            for (int i=0; i<build; i++) {
+            for (int i = 0; i < build; i++) {
                 it.next();
             }
         }
-        
-        XMLStreamReader reader = new XMLStreamReaderValidator(child.getXMLStreamReader(cache), true);
+
+        XMLStreamReader reader =
+                new XMLStreamReaderValidator(child.getXMLStreamReader(cache), true);
         while (reader.hasNext()) {
             reader.next();
         }

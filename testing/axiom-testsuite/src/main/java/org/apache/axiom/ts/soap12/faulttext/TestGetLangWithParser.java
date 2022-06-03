@@ -41,15 +41,20 @@ public class TestGetLangWithParser extends SampleBasedSOAPTestCase {
         OMAttribute langAttribute = faultText.getAllAttributes().next();
         assertTrue(
                 "SOAP 1.2 Fault Text Test With Parser : - Lang attribute local name mismaatch",
-                langAttribute.getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME));
+                langAttribute
+                        .getLocalName()
+                        .equals(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME));
         assertTrue(
                 "SOAP 1.2 Fault Text Test With Parser : - Lang attribute namespace prefix mismatch",
-                langAttribute.getNamespace().getPrefix().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
+                langAttribute
+                        .getNamespace()
+                        .getPrefix()
+                        .equals(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
         assertTrue(
                 "SOAP 1.2 Fault Text Test With Parser : - Lang attribute namespace uri mismatch",
-                langAttribute.getNamespace().getNamespaceURI().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI));
+                langAttribute
+                        .getNamespace()
+                        .getNamespaceURI()
+                        .equals(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI));
     }
 }

@@ -27,8 +27,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Tests that a call to {@link SOAPBody#hasFault()} doesn't cause expansion of an
- * {@link OMSourcedElement} with an unknown name that is the first child of the SOAP body.
+ * Tests that a call to {@link SOAPBody#hasFault()} doesn't cause expansion of an {@link
+ * OMSourcedElement} with an unknown name that is the first child of the SOAP body.
  */
 public class TestHasFaultWithOMSEUnknownName extends SOAPTestCase {
     public TestHasFaultWithOMSEUnknownName(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -39,8 +39,8 @@ public class TestHasFaultWithOMSEUnknownName extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         SOAPBody body = envelope.getBody();
-        OMSourcedElement element = soapFactory.createOMElement(new StringOMDataSource(
-                "<ns:root xmlns:ns='urn:ns'/>"));
+        OMSourcedElement element =
+                soapFactory.createOMElement(new StringOMDataSource("<ns:root xmlns:ns='urn:ns'/>"));
         body.addChild(element);
         assertFalse(body.hasFault());
         assertFalse(element.isExpanded());

@@ -30,26 +30,29 @@ import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.commons.io.output.NullOutputStream;
 
 public abstract class AxiomTestCase extends MatrixTestCase {
-    public static final StAXParserConfiguration TEST_PARSER_CONFIGURATION = new StAXParserConfiguration() {
-        @Override
-        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
-            // For the tests, preserve as much of the syntactic structure of the test documents
-            factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
-            return dialect.enableCDataReporting(factory);
-        }
-        
-        @Override
-        public String toString() {
-            return "TEST";
-        }
-    };
-    
+    public static final StAXParserConfiguration TEST_PARSER_CONFIGURATION =
+            new StAXParserConfiguration() {
+                @Override
+                public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+                    // For the tests, preserve as much of the syntactic structure of the test
+                    // documents
+                    factory.setProperty(
+                            XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
+                    return dialect.enableCDataReporting(factory);
+                }
+
+                @Override
+                public String toString() {
+                    return "TEST";
+                }
+            };
+
     protected final OMMetaFactory metaFactory;
 
     public AxiomTestCase(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
     }
-    
+
     protected void assertConsumed(OMContainer container) {
         assertFalse("Expected the node to be incomplete", container.isComplete());
         boolean isConsumed;

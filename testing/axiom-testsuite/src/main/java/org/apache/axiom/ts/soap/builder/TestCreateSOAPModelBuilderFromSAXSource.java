@@ -53,7 +53,9 @@ public class TestCreateSOAPModelBuilderFromSAXSource extends SOAPTestCase {
         InputStream in = sample.getInputStream();
         InputSource is = new InputSource(in);
         is.setEncoding(sample.getEncoding());
-        SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new SAXSource(reader, is)).getSOAPMessage();
+        SOAPMessage message =
+                OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new SAXSource(reader, is))
+                        .getSOAPMessage();
         assertAbout(xml())
                 .that(xml(OMDocument.class, message))
                 .ignoringWhitespaceInPrologAndEpilog()

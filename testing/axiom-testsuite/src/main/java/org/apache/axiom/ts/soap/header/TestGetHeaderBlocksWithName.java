@@ -38,8 +38,9 @@ public class TestGetHeaderBlocksWithName extends SampleBasedSOAPTestCase {
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        Iterator<SOAPHeaderBlock> it = envelope.getHeader().getHeaderBlocksWithName(
-                new QName("http://example.org/RoleTest", "h2"));
+        Iterator<SOAPHeaderBlock> it =
+                envelope.getHeader()
+                        .getHeaderBlocksWithName(new QName("http://example.org/RoleTest", "h2"));
         assertThat(it.hasNext()).isTrue();
         SOAPHeaderBlock headerBlock = it.next();
         assertThat(headerBlock.getLocalName()).isEqualTo("h2");

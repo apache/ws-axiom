@@ -32,26 +32,26 @@ public class TestDeclareDefaultNamespace1 extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         /**
-         * <RootElement xmlns="http://one.org">
-         *   <ns2:ChildElementOne xmlns:ns2="http://ws.apache.org/axis2" xmlns="http://two.org">
-         *      <ChildElementTwo xmlns="http://one.org" />
-         *   </ns2:ChildElementOne>
-         * </RootElement>
+         * <RootElement xmlns="http://one.org"> <ns2:ChildElementOne
+         * xmlns:ns2="http://ws.apache.org/axis2" xmlns="http://two.org"> <ChildElementTwo
+         * xmlns="http://one.org" /> </ns2:ChildElementOne> </RootElement>
          */
-
         OMFactory omFac = metaFactory.getOMFactory();
 
-        OMElement documentElement = omFac.createOMElement("RootElement",
-                omFac.createOMNamespace("http://one.org", ""));
+        OMElement documentElement =
+                omFac.createOMElement("RootElement", omFac.createOMNamespace("http://one.org", ""));
 
         OMNamespace ns = omFac.createOMNamespace("http://ws.apache.org/axis2", "ns2");
         OMElement childOne = omFac.createOMElement("ChildElementOne", ns, documentElement);
         childOne.declareDefaultNamespace("http://two.org");
 
-        OMElement childTwo = omFac.createOMElement("ChildElementTwo",
-                omFac.createOMNamespace("http://one.org", ""), childOne);
+        OMElement childTwo =
+                omFac.createOMElement(
+                        "ChildElementTwo", omFac.createOMNamespace("http://one.org", ""), childOne);
 
-        assertEquals(2, getNumberOfOccurrences(documentElement.toStringWithConsume(),
-                "xmlns=\"http://one.org\""));
+        assertEquals(
+                2,
+                getNumberOfOccurrences(
+                        documentElement.toStringWithConsume(), "xmlns=\"http://one.org\""));
     }
 }

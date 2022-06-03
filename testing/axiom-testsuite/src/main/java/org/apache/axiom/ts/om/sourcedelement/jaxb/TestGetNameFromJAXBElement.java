@@ -43,8 +43,10 @@ public class TestGetNameFromJAXBElement extends AxiomTestCase {
         OMFactory omFactory = metaFactory.getOMFactory();
         ObjectFactory objectFactory = new ObjectFactory();
         JAXBContext context = JAXBContext.newInstance(ObjectFactory.class);
-        JAXBElement<LinkIdentitiesType> jaxbElement = objectFactory.createLinkIdentities(new LinkIdentitiesType());
-        OMSourcedElement element = omFactory.createOMElement(new JAXBOMDataSource(context, jaxbElement));
+        JAXBElement<LinkIdentitiesType> jaxbElement =
+                objectFactory.createLinkIdentities(new LinkIdentitiesType());
+        OMSourcedElement element =
+                omFactory.createOMElement(new JAXBOMDataSource(context, jaxbElement));
         assertEquals("http://www.example.org/identity", element.getNamespaceURI());
         assertEquals("LinkIdentities", element.getLocalName());
         assertFalse(element.isExpanded());

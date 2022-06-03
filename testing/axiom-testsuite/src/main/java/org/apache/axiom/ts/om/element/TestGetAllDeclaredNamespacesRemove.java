@@ -33,8 +33,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link Iterator#remove()} can be used on the iterator returned by
- * {@link OMElement#getAllDeclaredNamespaces()} to remove a namespace declaration.
+ * Tests that {@link Iterator#remove()} can be used on the iterator returned by {@link
+ * OMElement#getAllDeclaredNamespaces()} to remove a namespace declaration.
  */
 public class TestGetAllDeclaredNamespacesRemove extends AxiomTestCase {
     public TestGetAllDeclaredNamespacesRemove(OMMetaFactory metaFactory) {

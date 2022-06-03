@@ -33,20 +33,28 @@ public class TestChildReDeclaringGrandParentsDefaultNSWithPrefix extends AxiomTe
     @Override
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
-        OMElement elem = fac.createOMElement("RequestSecurityToken",
-                fac.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
+        OMElement elem =
+                fac.createOMElement(
+                        "RequestSecurityToken",
+                        fac.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
         fac.createOMElement(new QName("TokenType"), elem).setText("test");
         fac.createOMElement(new QName("RequestType"), elem).setText("test1");
 
-        OMElement entElem = fac.createOMElement(
-                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
-                elem);
-        OMElement binSecElem = fac.createOMElement(
-                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Binarysecret", "wst"),
-                entElem);
+        OMElement entElem =
+                fac.createOMElement(
+                        new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
+                        elem);
+        OMElement binSecElem =
+                fac.createOMElement(
+                        new QName(
+                                "http://schemas.xmlsoap.org/ws/2005/02/trust",
+                                "Binarysecret",
+                                "wst"),
+                        entElem);
         binSecElem.setText("secret value");
         String xml = elem.toString();
-        assertTrue("Binarysecret element should have \'wst\' ns prefix",
-                   xml.indexOf("<wst:Binarysecret") != -1);
+        assertTrue(
+                "Binarysecret element should have \'wst\' ns prefix",
+                xml.indexOf("<wst:Binarysecret") != -1);
     }
 }

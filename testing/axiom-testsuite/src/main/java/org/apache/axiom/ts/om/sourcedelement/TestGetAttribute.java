@@ -42,8 +42,8 @@ public class TestGetAttribute extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(
-                new PullOMDataSource("<root attr='value'/>"), "root", null);
+        OMSourcedElement element =
+                factory.createOMElement(new PullOMDataSource("<root attr='value'/>"), "root", null);
         OMAttribute attr = element.getAttribute(new QName("attr"));
         assertThat(attr).isNotNull();
         assertThat(attr.getLocalName()).isEqualTo("attr");

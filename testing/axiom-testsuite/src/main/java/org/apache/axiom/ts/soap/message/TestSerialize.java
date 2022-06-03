@@ -34,8 +34,11 @@ public class TestSerialize extends AxiomTestCase {
     private final ExpansionStrategy expansionStrategy;
     private final SerializationStrategy serializationStrategy;
 
-    public TestSerialize(OMMetaFactory metaFactory, SOAPSample message,
-            ExpansionStrategy expansionStrategy, SerializationStrategy serializationStrategy) {
+    public TestSerialize(
+            OMMetaFactory metaFactory,
+            SOAPSample message,
+            ExpansionStrategy expansionStrategy,
+            SerializationStrategy serializationStrategy) {
         super(metaFactory);
         this.message = message;
         this.expansionStrategy = expansionStrategy;
@@ -47,8 +50,10 @@ public class TestSerialize extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPMessage soapMessage = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                message.getInputStream(), null).getSOAPMessage();
+        SOAPMessage soapMessage =
+                OMXMLBuilderFactory.createSOAPModelBuilder(
+                                metaFactory, message.getInputStream(), null)
+                        .getSOAPMessage();
         expansionStrategy.apply(soapMessage);
         assertAbout(xml())
                 .that(serializationStrategy.serialize(soapMessage).getInputSource())

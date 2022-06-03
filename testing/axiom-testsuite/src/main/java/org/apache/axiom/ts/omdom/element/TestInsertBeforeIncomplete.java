@@ -30,11 +30,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Tests the behavior of {@link Node#insertBefore(Node, Node)} if <code>refChild</code> is
- * <code>null</code> and the parent has not been built completely. In this case, the child will be
- * added at the end of the list of children, which implies that the parent must be built before the
- * new child is added.
- * 
+ * Tests the behavior of {@link Node#insertBefore(Node, Node)} if <code>refChild</code> is <code>
+ * null</code> and the parent has not been built completely. In this case, the child will be added
+ * at the end of the list of children, which implies that the parent must be built before the new
+ * child is added.
+ *
  * @see TestAppendChildIncomplete
  */
 public class TestInsertBeforeIncomplete extends AxiomTestCase {
@@ -45,7 +45,11 @@ public class TestInsertBeforeIncomplete extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        Document document = (Document)OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/></root>")).getDocument();
+        Document document =
+                (Document)
+                        OMXMLBuilderFactory.createOMBuilder(
+                                        factory, new StringReader("<root><a/><b/></root>"))
+                                .getDocument();
         Element parent = document.getDocumentElement();
         parent.insertBefore(document.createElementNS(null, "c"), null);
         NodeList children = parent.getChildNodes();

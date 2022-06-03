@@ -27,8 +27,8 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMDocument#getOMDocumentElement()} returns <code>null</code> after the existing
- * document element has been removed using {@link OMNode#detach()}. This is a regression test for
- * <a href="https://issues.apache.org/jira/browse/AXIOM-361">AXIOM-361</a>.
+ * document element has been removed using {@link OMNode#detach()}. This is a regression test for <a
+ * href="https://issues.apache.org/jira/browse/AXIOM-361">AXIOM-361</a>.
  */
 public class TestGetOMDocumentElementAfterDetach extends AxiomTestCase {
     public TestGetOMDocumentElementAfterDetach(OMMetaFactory metaFactory) {

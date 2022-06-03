@@ -29,9 +29,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-/**
- * Tests {@link Node#cloneNode(boolean)} on an element that is not completely built.
- */
+/** Tests {@link Node#cloneNode(boolean)} on an element that is not completely built. */
 public class TestCloneNodeIncomplete extends AxiomTestCase {
     public TestCloneNodeIncomplete(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -39,9 +37,15 @@ public class TestCloneNodeIncomplete extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Element element = (Element)OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<root><child1/><child2/></root>")).getDocumentElement();
-        Element clone = (Element)element.cloneNode(true);
-        assertAbout(xml()).that(xml(Element.class, clone)).hasSameContentAs(xml(Element.class, element));
+        Element element =
+                (Element)
+                        OMXMLBuilderFactory.createOMBuilder(
+                                        metaFactory.getOMFactory(),
+                                        new StringReader("<root><child1/><child2/></root>"))
+                                .getDocumentElement();
+        Element clone = (Element) element.cloneNode(true);
+        assertAbout(xml())
+                .that(xml(Element.class, clone))
+                .hasSameContentAs(xml(Element.class, element));
     }
 }

@@ -30,16 +30,16 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that the rest of a document can still be built after calling
- * {@link OMContainer#getXMLStreamReader(boolean)} and closing the returned {@link XMLStreamReader}.
- * A call to {@link XMLStreamReader#close()} must not close the builder in this case.
- * <p>
- * This is a regression test for
- * <a href="https://issues.apache.org/jira/browse/AXIOM-288">AXIOM-288</a>.
+ * Tests that the rest of a document can still be built after calling {@link
+ * OMContainer#getXMLStreamReader(boolean)} and closing the returned {@link XMLStreamReader}. A call
+ * to {@link XMLStreamReader#close()} must not close the builder in this case.
+ *
+ * <p>This is a regression test for <a
+ * href="https://issues.apache.org/jira/browse/AXIOM-288">AXIOM-288</a>.
  */
 public class TestCloseAndContinueBuilding extends AxiomTestCase {
     private final boolean cache;
-    
+
     public TestCloseAndContinueBuilding(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
@@ -48,16 +48,20 @@ public class TestCloseAndContinueBuilding extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new StringReader(
-                "<root><a><b>some text</b></a><c>content</c></root>")).getDocumentElement();
-        OMElement a = (OMElement)root.getFirstOMChild();
+        OMElement root =
+                OMXMLBuilderFactory.createOMBuilder(
+                                metaFactory.getOMFactory(),
+                                new StringReader(
+                                        "<root><a><b>some text</b></a><c>content</c></root>"))
+                        .getDocumentElement();
+        OMElement a = (OMElement) root.getFirstOMChild();
         XMLStreamReader reader = a.getXMLStreamReader(cache);
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(new QName("b"), reader.getName());
         reader.close();
         assertFalse(root.isComplete());
-        OMElement c = (OMElement)a.getNextOMSibling();
+        OMElement c = (OMElement) a.getNextOMSibling();
         assertEquals("content", c.getText());
     }
 }

@@ -26,12 +26,12 @@ import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**
- * Tests {@link SOAPFactory#createSOAPEnvelope()}, {@link SOAPFactory#createSOAPHeader()},
- * {@link SOAPFactory#createSOAPBody()}, {@link SOAPFactory#createSOAPFault()},
- * {@link SOAPFactory#createSOAPFaultCode()}, {@link SOAPFactory#createSOAPFaultValue()},
- * {@link SOAPFactory#createSOAPFaultSubCode()}, {@link SOAPFactory#createSOAPFaultReason()},
- * {@link SOAPFactory#createSOAPFaultText()}, {@link SOAPFactory#createSOAPFaultNode()},
- * {@link SOAPFactory#createSOAPFaultRole()} and {@link SOAPFactory#createSOAPFaultDetail()}.
+ * Tests {@link SOAPFactory#createSOAPEnvelope()}, {@link SOAPFactory#createSOAPHeader()}, {@link
+ * SOAPFactory#createSOAPBody()}, {@link SOAPFactory#createSOAPFault()}, {@link
+ * SOAPFactory#createSOAPFaultCode()}, {@link SOAPFactory#createSOAPFaultValue()}, {@link
+ * SOAPFactory#createSOAPFaultSubCode()}, {@link SOAPFactory#createSOAPFaultReason()}, {@link
+ * SOAPFactory#createSOAPFaultText()}, {@link SOAPFactory#createSOAPFaultNode()}, {@link
+ * SOAPFactory#createSOAPFaultRole()} and {@link SOAPFactory#createSOAPFaultDetail()}.
  */
 public class TestCreateSOAPElement extends CreateSOAPElementWithoutParentTestCase {
     public TestCreateSOAPElement(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type) {

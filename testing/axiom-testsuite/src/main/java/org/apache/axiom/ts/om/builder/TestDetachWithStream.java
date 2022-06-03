@@ -32,8 +32,9 @@ import org.apache.axiom.ts.xml.XMLSample;
 public class TestDetachWithStream extends AxiomTestCase {
     private final StreamType streamType;
     private final boolean useStreamSource;
-    
-    public TestDetachWithStream(OMMetaFactory metaFactory, StreamType streamType, boolean useStreamSource) {
+
+    public TestDetachWithStream(
+            OMMetaFactory metaFactory, StreamType streamType, boolean useStreamSource) {
         super(metaFactory);
         this.streamType = streamType;
         this.useStreamSource = useStreamSource;
@@ -43,12 +44,18 @@ public class TestDetachWithStream extends AxiomTestCase {
 
     @Override
     protected final void runTest() throws Throwable {
-        InstrumentedStream stream = streamType.instrumentStream(streamType.getStream(XMLSample.LARGE));
+        InstrumentedStream stream =
+                streamType.instrumentStream(streamType.getStream(XMLSample.LARGE));
         OMXMLParserWrapper builder;
         if (useStreamSource) {
-            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), streamType.createStreamSource(stream));
+            builder =
+                    OMXMLBuilderFactory.createOMBuilder(
+                            metaFactory.getOMFactory(), streamType.createStreamSource(stream));
         } else {
-            builder = streamType.getAdapter(StreamTypeAdapter.class).createOMBuilder(metaFactory.getOMFactory(), stream);
+            builder =
+                    streamType
+                            .getAdapter(StreamTypeAdapter.class)
+                            .createOMBuilder(metaFactory.getOMFactory(), stream);
         }
         long countBeforeDetach = stream.getCount();
         builder.detach();

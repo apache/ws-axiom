@@ -28,9 +28,7 @@ import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-/**
- * Tests that {@link SOAPHeaderBlock#setRole(String)} adds a namespace declaration if necessary.
- */
+/** Tests that {@link SOAPHeaderBlock#setRole(String)} adds a namespace declaration if necessary. */
 public class TestSetRoleWithoutExistingNamespaceDecl extends SOAPTestCase {
     public TestSetRoleWithoutExistingNamespaceDecl(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
@@ -38,7 +36,9 @@ public class TestSetRoleWithoutExistingNamespaceDecl extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPHeaderBlock headerBlock = soapFactory.createSOAPHeaderBlock("block", soapFactory.createOMNamespace("urn:test", "p"));
+        SOAPHeaderBlock headerBlock =
+                soapFactory.createSOAPHeaderBlock(
+                        "block", soapFactory.createOMNamespace("urn:test", "p"));
         headerBlock.setRole("urn:testrole");
         OMAttribute roleAttr = headerBlock.getAttribute(HeaderBlockAttribute.ROLE.getQName(spec));
         assertThat(roleAttr).isNotNull();

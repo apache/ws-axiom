@@ -31,8 +31,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} when an attempt is made
- * to set an {@link OMElement} that is not a {@link SOAPEnvelope} as the root element of a
- * {@link SOAPMessage}. In this case, an exception should be thrown.
+ * to set an {@link OMElement} that is not a {@link SOAPEnvelope} as the root element of a {@link
+ * SOAPMessage}. In this case, an exception should be thrown.
  */
 public class TestSetOMDocumentElementNonSOAPEnvelope extends SOAPTestCase {
     public TestSetOMDocumentElementNonSOAPEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {

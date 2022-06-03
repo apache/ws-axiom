@@ -42,8 +42,10 @@ public class TestSetOMDocumentElementReplace extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory,
-                new StringReader("<!--comment1--><root/><!--comment2-->")).getDocument();
+        OMDocument document =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory, new StringReader("<!--comment1--><root/><!--comment2-->"))
+                        .getDocument();
         OMElement documentElement = factory.createOMElement("new", null);
         document.setOMDocumentElement(documentElement);
         assertSame(documentElement, document.getOMDocumentElement());
@@ -51,13 +53,13 @@ public class TestSetOMDocumentElementReplace extends AxiomTestCase {
         assertTrue(it.hasNext());
         OMNode child = it.next();
         assertTrue(child instanceof OMComment);
-        assertEquals("comment1", ((OMComment)child).getValue());
+        assertEquals("comment1", ((OMComment) child).getValue());
         assertTrue(it.hasNext());
         assertSame(documentElement, it.next());
         assertTrue(it.hasNext());
         child = it.next();
         assertTrue(child instanceof OMComment);
-        assertEquals("comment2", ((OMComment)child).getValue());
+        assertEquals("comment2", ((OMComment) child).getValue());
         assertFalse(it.hasNext());
     }
 }

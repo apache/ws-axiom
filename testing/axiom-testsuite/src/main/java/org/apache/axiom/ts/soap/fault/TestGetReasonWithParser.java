@@ -38,6 +38,7 @@ public class TestGetReasonWithParser extends SampleBasedSOAPTestCase {
                 soapFaultWithParser.getReason());
         assertEquals(
                 "Fault Test with parser: - Fault reason local name mismatch",
-                spec.getFaultReasonQName(), soapFaultWithParser.getReason().getQName());
+                spec.getFaultReasonQName(),
+                soapFaultWithParser.getReason().getQName());
     }
 }

@@ -32,9 +32,8 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests the behavior of
- * {@link OMXMLBuilderFactory#createOMBuilder(StAXParserConfiguration, InputStream)} with
- * {@link StAXParserConfiguration#STANDALONE}.
+ * Tests the behavior of {@link OMXMLBuilderFactory#createOMBuilder(StAXParserConfiguration,
+ * InputStream)} with {@link StAXParserConfiguration#STANDALONE}.
  */
 public class TestStandaloneConfiguration extends AxiomTestCase {
     public TestStandaloneConfiguration(OMMetaFactory metaFactory) {
@@ -44,18 +43,19 @@ public class TestStandaloneConfiguration extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         InputStream is = TestStandaloneConfiguration.class.getResourceAsStream("web_w_dtd2.xml");
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                StAXParserConfiguration.STANDALONE, is);
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), StAXParserConfiguration.STANDALONE, is);
         OMElement root = builder.getDocumentElement();
         assertTrue(root.getLocalName().equals("web-app"));
         OMDocument document = builder.getDocument();
         Iterator<OMNode> i = document.getChildren();
         OMDocType docType = null;
         while (docType == null && i.hasNext()) {
-           OMNode obj = i.next();
-           if (obj instanceof OMDocType) {
-               docType = (OMDocType) obj;
-           }
+            OMNode obj = i.next();
+            if (obj instanceof OMDocType) {
+                docType = (OMDocType) obj;
+            }
         }
         assertTrue(docType != null);
         root.close(false);

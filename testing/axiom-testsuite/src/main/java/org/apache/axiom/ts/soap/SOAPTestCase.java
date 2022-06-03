@@ -30,7 +30,7 @@ public abstract class SOAPTestCase extends AxiomTestCase {
     protected final SOAPSpec spec;
     protected SOAPFactory soapFactory;
     protected SOAPFactory altSoapFactory;
-    
+
     public SOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory);
         this.spec = spec;
@@ -41,11 +41,13 @@ public abstract class SOAPTestCase extends AxiomTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         soapFactory = spec.getAdapter(FactorySelector.class).getFactory(metaFactory);
-        altSoapFactory = spec.getAltSpec().getAdapter(FactorySelector.class).getFactory(metaFactory);
+        altSoapFactory =
+                spec.getAltSpec().getAdapter(FactorySelector.class).getFactory(metaFactory);
     }
 
     protected SOAPHeaderBlock createSOAPHeaderBlock() {
-        OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");;
+        OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
+        ;
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
         SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
         return soapFactory.createSOAPHeaderBlock("testHeaderBlock", namespace, soapHeader);

@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
@@ -36,8 +35,9 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestGetDescendants extends AxiomTestCase {
     private final OMContainerFactory containerFactory;
     private final boolean includeSelf;
-    
-    public TestGetDescendants(OMMetaFactory metaFactory, OMContainerFactory containerFactory, boolean includeSelf) {
+
+    public TestGetDescendants(
+            OMMetaFactory metaFactory, OMContainerFactory containerFactory, boolean includeSelf) {
         super(metaFactory);
         this.containerFactory = containerFactory;
         containerFactory.addTestParameters(this);
@@ -50,7 +50,8 @@ public class TestGetDescendants extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMContainer root = containerFactory.create(factory);
         OMElement child1 = factory.createOMElement("child", null, root);
-        OMProcessingInstruction child2 = factory.createOMProcessingInstruction(root, "test", "data");
+        OMProcessingInstruction child2 =
+                factory.createOMProcessingInstruction(root, "test", "data");
         OMText grandchild1 = factory.createOMText(child1, "text");
         OMComment grandchild2 = factory.createOMComment(child1, "text");
         Iterator<? extends OMSerializable> it = root.getDescendants(includeSelf);

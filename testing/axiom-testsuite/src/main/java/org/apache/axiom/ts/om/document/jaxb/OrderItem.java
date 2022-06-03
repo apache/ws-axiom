@@ -22,19 +22,19 @@ package org.apache.axiom.ts.om.document.jaxb;
 public class OrderItem {
     private String partId;
     private int quantity;
-    
+
     public String getPartId() {
         return partId;
     }
-    
+
     public void setPartId(String partId) {
         this.partId = partId;
     }
-    
+
     public int getQuantity() {
         return quantity;
     }
-    
+
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }

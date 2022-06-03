@@ -22,7 +22,7 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
 
-//Regression test for AXIOM-203
+// Regression test for AXIOM-203
 public class TestDigestWithoutNamespace extends DigestTestCase {
     public TestDigestWithoutNamespace(OMMetaFactory metaFactory) {
         super(metaFactory, "MD5", "78f0b570fedc6e01679f501b7b75d069");

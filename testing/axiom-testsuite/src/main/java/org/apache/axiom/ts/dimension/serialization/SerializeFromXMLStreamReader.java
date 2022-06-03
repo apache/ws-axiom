@@ -26,12 +26,12 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
- * Serializes an {@link OMContainer} by processing the result of
- * {@link OMContainer#getXMLStreamReader(boolean)}.
+ * Serializes an {@link OMContainer} by processing the result of {@link
+ * OMContainer#getXMLStreamReader(boolean)}.
  */
 public class SerializeFromXMLStreamReader extends SerializationStrategy {
     private final boolean cache;
-    
+
     SerializeFromXMLStreamReader(boolean cache) {
         this.cache = cache;
     }
@@ -45,7 +45,9 @@ public class SerializeFromXMLStreamReader extends SerializationStrategy {
     @Override
     public XML serialize(OMContainer container) throws Exception {
         StringWriter sw = new StringWriter();
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(container.getOMFactory(), container.getXMLStreamReader(cache));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createStAXOMBuilder(
+                        container.getOMFactory(), container.getXMLStreamReader(cache));
         builder.getDocument().serialize(sw);
         builder.close();
         return new XMLAsString(sw.toString());

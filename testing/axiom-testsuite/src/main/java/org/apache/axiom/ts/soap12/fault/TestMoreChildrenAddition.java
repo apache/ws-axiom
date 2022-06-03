@@ -35,20 +35,23 @@ public class TestMoreChildrenAddition extends SOAPTestCase {
 
         SOAPEnvelope soapEnvelope = soapFactory.getDefaultFaultEnvelope();
         String errorCodeString = "Some Error occurred !!";
-        soapEnvelope.getBody().getFault().getCode().getValue().setText(
-                errorCodeString);
+        soapEnvelope.getBody().getFault().getCode().getValue().setText(errorCodeString);
 
         SOAPFaultCode code = soapEnvelope.getBody().getFault().getCode();
         envelope.getBody().getFault().setCode(code);
 
-        assertTrue("Parent Value of Code has not been set to new fault",
-                   code.getParent() == envelope.getBody().getFault());
-        assertTrue("Parent Value of Code is still pointing to old fault",
-                   code.getParent() != soapEnvelope.getBody().getFault());
-        assertNull("Old fault must not have a fault code",
-                   soapEnvelope.getBody().getFault().getCode());
-        assertEquals("The SOAP Code value must be " + errorCodeString,
-                     errorCodeString,
-                     envelope.getBody().getFault().getCode().getValue().getText());
+        assertTrue(
+                "Parent Value of Code has not been set to new fault",
+                code.getParent() == envelope.getBody().getFault());
+        assertTrue(
+                "Parent Value of Code is still pointing to old fault",
+                code.getParent() != soapEnvelope.getBody().getFault());
+        assertNull(
+                "Old fault must not have a fault code",
+                soapEnvelope.getBody().getFault().getCode());
+        assertEquals(
+                "The SOAP Code value must be " + errorCodeString,
+                errorCodeString,
+                envelope.getBody().getFault().getCode().getValue().getText());
     }
 }

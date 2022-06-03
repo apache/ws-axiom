@@ -28,8 +28,9 @@ import org.apache.axiom.om.OMText;
 
 public class TestInsertSibling extends CrossOMTestCase {
     private final boolean before;
-    
-    public TestInsertSibling(OMMetaFactory metaFactory, OMMetaFactory altMetaFactory, boolean before) {
+
+    public TestInsertSibling(
+            OMMetaFactory metaFactory, OMMetaFactory altMetaFactory, boolean before) {
         super(metaFactory, altMetaFactory);
         this.before = before;
         addTestParameter("before", before);
@@ -46,7 +47,8 @@ public class TestInsertSibling extends CrossOMTestCase {
         } else {
             child.insertSiblingAfter(orgSibling);
         }
-        OMComment sibling = (OMComment)(before ? child.getPreviousOMSibling() : child.getNextOMSibling());
+        OMComment sibling =
+                (OMComment) (before ? child.getPreviousOMSibling() : child.getNextOMSibling());
         assertThat(sibling).isNotSameInstanceAs(orgSibling);
         assertThat(sibling.getValue()).isEqualTo("test");
     }

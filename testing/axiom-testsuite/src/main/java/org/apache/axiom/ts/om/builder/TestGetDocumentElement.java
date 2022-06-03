@@ -32,14 +32,15 @@ import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.xml.sax.InputSource;
 
 /**
- * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement()} and
- * {@link OMXMLParserWrapper#getDocumentElement(boolean)}.
+ * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement()} and {@link
+ * OMXMLParserWrapper#getDocumentElement(boolean)}.
  */
 public class TestGetDocumentElement extends AxiomTestCase {
     private final BuilderFactory builderFactory;
     private final Boolean discardDocument;
-    
-    public TestGetDocumentElement(OMMetaFactory metaFactory, BuilderFactory builderFactory, Boolean discardDocument) {
+
+    public TestGetDocumentElement(
+            OMMetaFactory metaFactory, BuilderFactory builderFactory, Boolean discardDocument) {
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.discardDocument = discardDocument;
@@ -49,8 +50,10 @@ public class TestGetDocumentElement extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory,
-                new InputSource(new StringReader("<!--comment1--><root/><!--comment2-->")));
+        OMXMLParserWrapper builder =
+                builderFactory.getBuilder(
+                        metaFactory,
+                        new InputSource(new StringReader("<!--comment1--><root/><!--comment2-->")));
         OMElement element;
         if (discardDocument == null) {
             element = builder.getDocumentElement();

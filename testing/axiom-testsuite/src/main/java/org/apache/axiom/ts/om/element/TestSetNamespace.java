@@ -26,14 +26,29 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.om.SetNamespaceTestCase;
 
 /**
- * Tests the behavior of {@link OMElement#setNamespace(OMNamespace)} and
- * {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)}.
+ * Tests the behavior of {@link OMElement#setNamespace(OMNamespace)} and {@link
+ * OMNamedInformationItem#setNamespace(OMNamespace, boolean)}.
  */
 public class TestSetNamespace extends SetNamespaceTestCase {
     private final Boolean declare;
-    
-    public TestSetNamespace(OMMetaFactory metaFactory, String namespaceURI, String prefix, Boolean declare, String prefixInScope, boolean invalid, String expectedPrefix, boolean expectNSDecl) {
-        super(metaFactory, namespaceURI, prefix, prefixInScope, invalid, expectedPrefix, expectNSDecl);
+
+    public TestSetNamespace(
+            OMMetaFactory metaFactory,
+            String namespaceURI,
+            String prefix,
+            Boolean declare,
+            String prefixInScope,
+            boolean invalid,
+            String expectedPrefix,
+            boolean expectNSDecl) {
+        super(
+                metaFactory,
+                namespaceURI,
+                prefix,
+                prefixInScope,
+                invalid,
+                expectedPrefix,
+                expectNSDecl);
         this.declare = declare;
         if (declare != null) {
             addTestParameter("declare", declare.booleanValue());
@@ -53,7 +68,7 @@ public class TestSetNamespace extends SetNamespaceTestCase {
     @Override
     protected void setNamespace(OMNamedInformationItem node, OMNamespace ns) {
         if (declare == null) {
-            ((OMElement)node).setNamespace(ns);
+            ((OMElement) node).setNamespace(ns);
         } else {
             node.setNamespace(ns, declare.booleanValue());
         }

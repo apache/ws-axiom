@@ -36,7 +36,8 @@ public class TestGetPrefixWithDefaultNamespace extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement("test", factory.createOMNamespace("urn:ns", ""));
+        OMElement element =
+                factory.createOMElement("test", factory.createOMNamespace("urn:ns", ""));
         assertNull(element.getPrefix());
     }
 }

@@ -26,12 +26,13 @@ import org.apache.axiom.soap.RolePlayer;
 public final class MyRolePlayer implements RolePlayer {
     boolean ultimateReceiver;
     List<String> roles;
+
     public MyRolePlayer(boolean ultimateReceiver) {
         this.ultimateReceiver = ultimateReceiver;
         roles = null;
     }
 
-    public MyRolePlayer(boolean ultimateReceiver, String [] roles) {
+    public MyRolePlayer(boolean ultimateReceiver, String[] roles) {
         this.ultimateReceiver = ultimateReceiver;
         this.roles = new ArrayList<>();
         for (int i = 0; i < roles.length; i++) {

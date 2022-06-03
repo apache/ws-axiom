@@ -27,20 +27,24 @@ import org.apache.axiom.om.OMNamespace;
 
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
- * requested to create an element without namespace and the specified namespace prefix is
- * <code>null</code>. Normally, a <code>null</code> prefix indicates that Axiom should generate a
- * prefix, but for an element without namespace this is not possible and an empty prefix must be
- * used instead.
+ * requested to create an element without namespace and the specified namespace prefix is <code>null
+ * </code>. Normally, a <code>null</code> prefix indicates that Axiom should generate a prefix, but
+ * for an element without namespace this is not possible and an empty prefix must be used instead.
  */
 public class TestCreateOMElementWithoutNamespaceNullPrefix extends CreateOMElementTestCase {
-    public TestCreateOMElementWithoutNamespaceNullPrefix(OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
+    public TestCreateOMElementWithoutNamespaceNullPrefix(
+            OMMetaFactory metaFactory,
+            CreateOMElementVariant variant,
+            CreateOMElementParentSupplier parentSupplier) {
         super(metaFactory, variant, parentSupplier);
     }
 
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", null);
+        OMElement element =
+                variant.createOMElement(
+                        factory, parentSupplier.createParent(factory), "test", "", null);
         assertEquals("test", element.getLocalName());
         assertNull(element.getNamespace());
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();

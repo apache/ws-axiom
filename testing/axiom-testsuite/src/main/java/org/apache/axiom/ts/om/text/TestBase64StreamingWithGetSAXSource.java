@@ -40,16 +40,16 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Tests that when an {@link OMText} node is serialized by the {@link SAXSource} returned by
- * {@link OMContainer#getSAXSource(boolean)}, the implementation doesn't construct an in-memory
- * base64 representation of the complete binary content, but writes it in chunks (streaming).
- * <p>
- * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-442">AXIOM-442</a>.
+ * Tests that when an {@link OMText} node is serialized by the {@link SAXSource} returned by {@link
+ * OMContainer#getSAXSource(boolean)}, the implementation doesn't construct an in-memory base64
+ * representation of the complete binary content, but writes it in chunks (streaming).
+ *
+ * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-442">AXIOM-442</a>.
  */
 public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
     private static class Base64Comparator extends DefaultHandler {
         private final Writer out;
-        
+
         public Base64Comparator(InputStream expected) {
             out = new Base64DecodingOutputStreamWriter(new ByteStreamComparator(expected));
         }
@@ -72,7 +72,7 @@ public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
             }
         }
     }
-    
+
     public TestBase64StreamingWithGetSAXSource(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

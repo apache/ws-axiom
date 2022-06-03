@@ -40,18 +40,25 @@ public class TestBuildWithAttachments extends AxiomTestCase {
     protected void runTest() throws Throwable {
         MTOMSample sample = MTOMSample.SAMPLE1;
         InputStream in = sample.getInputStream();
-        MultipartBody mb = MultipartBody.builder().setInputStream(in).setContentType(sample.getContentType()).build();
-        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
+        MultipartBody mb =
+                MultipartBody.builder()
+                        .setInputStream(in)
+                        .setContentType(sample.getContentType())
+                        .build();
+        SOAPEnvelope envelope =
+                OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
         envelope.buildWithAttachments();
         in.close();
         Iterator<OMElement> it = envelope.getBody().getFirstElement().getChildElements();
         OMElement image1 = it.next();
         OMElement image2 = it.next();
-        
-        IOTestUtils.compareStreams(((OMText)image1.getFirstOMChild()).getDataHandler().getInputStream(),
+
+        IOTestUtils.compareStreams(
+                ((OMText) image1.getFirstOMChild()).getDataHandler().getInputStream(),
                 sample.getPart(1));
 
-        IOTestUtils.compareStreams(((OMText)image2.getFirstOMChild()).getDataHandler().getInputStream(),
+        IOTestUtils.compareStreams(
+                ((OMText) image2.getFirstOMChild()).getDataHandler().getInputStream(),
                 sample.getPart(2));
     }
 }

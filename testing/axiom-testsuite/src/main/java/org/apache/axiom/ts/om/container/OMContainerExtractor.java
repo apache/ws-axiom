@@ -29,62 +29,59 @@ import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.xml.sax.InputSource;
 
-/**
- * Extracts an {@link OMContainer} instance from a test file.
- */
+/** Extracts an {@link OMContainer} instance from a test file. */
 public abstract class OMContainerExtractor extends Multiton implements Dimension {
-    public static final OMContainerExtractor DOCUMENT = new OMContainerExtractor() {
-        @Override
-        public void addTestParameters(MatrixTestCase testCase) {
-            testCase.addTestParameter("container", "document");
-        }
+    public static final OMContainerExtractor DOCUMENT =
+            new OMContainerExtractor() {
+                @Override
+                public void addTestParameters(MatrixTestCase testCase) {
+                    testCase.addTestParameter("container", "document");
+                }
 
-        @Override
-        public InputSource getControl(InputStream testFileContent) {
-            return new InputSource(testFileContent);
-        }
+                @Override
+                public InputSource getControl(InputStream testFileContent) {
+                    return new InputSource(testFileContent);
+                }
 
-        @Override
-        public OMContainer getContainer(OMXMLParserWrapper builder) {
-            return builder.getDocument();
-        }
+                @Override
+                public OMContainer getContainer(OMXMLParserWrapper builder) {
+                    return builder.getDocument();
+                }
 
-        @Override
-        public XMLStreamReader filter(XMLStreamReader reader) {
-            return new RootWhitespaceFilter(reader);
-        }
-    };
-    
+                @Override
+                public XMLStreamReader filter(XMLStreamReader reader) {
+                    return new RootWhitespaceFilter(reader);
+                }
+            };
+
     public static final OMElementExtractor ELEMENT = new OMElementExtractor(false);
     public static final OMElementExtractor ELEMENT_DETACHED = new OMElementExtractor(true);
-    
+
     OMContainerExtractor() {}
-    
+
     /**
-     * Prepare a control document that has the same content as the container returned by
-     * {@link #getContainer(OMXMLParserWrapper)}.
-     * 
-     * @param testFileContent
-     *            the content of the test file
+     * Prepare a control document that has the same content as the container returned by {@link
+     * #getContainer(OMXMLParserWrapper)}.
+     *
+     * @param testFileContent the content of the test file
      * @return the {@link InputSource} for the control document
      * @throws Exception
      */
     public abstract InputSource getControl(InputStream testFileContent) throws Exception;
-    
+
     /**
      * Extract the {@link OMContainer} from the given test file.
-     * 
+     *
      * @param builder the builder for the test file
      * @return the container
      */
     public abstract OMContainer getContainer(OMXMLParserWrapper builder);
-    
+
     /**
      * Filter the given stream so that its content matches the content of the container returned by
      * {@link #getContainer(OMXMLParserWrapper)}.
-     * 
-     * @param reader
-     *            the original stream reader representing the content of the test file
+     *
+     * @param reader the original stream reader representing the content of the test file
      * @return the filtered stream reader
      */
     public abstract XMLStreamReader filter(XMLStreamReader reader);

@@ -44,11 +44,13 @@ public class XOPRoundtripTest extends AxiomTestCase {
         OMElement element1 = factory.createOMElement(new QName("test"));
         element1.addChild(factory.createOMText(dh, true));
         XOPEncoded<XMLStreamReader> xopEncodedStream = element1.getXOPEncodedStreamReader(true);
-        OMElement element2 = OMXMLBuilderFactory.createOMBuilder(
-                factory,
-                new StAXSource(xopEncodedStream.getRootPart()),
-                xopEncodedStream.getAttachmentAccessor()).getDocumentElement();
-        OMText child = (OMText)element2.getFirstOMChild();
+        OMElement element2 =
+                OMXMLBuilderFactory.createOMBuilder(
+                                factory,
+                                new StAXSource(xopEncodedStream.getRootPart()),
+                                xopEncodedStream.getAttachmentAccessor())
+                        .getDocumentElement();
+        OMText child = (OMText) element2.getFirstOMChild();
         assertNotNull(child);
         assertTrue(child.isBinary());
         assertTrue(child.isOptimized());

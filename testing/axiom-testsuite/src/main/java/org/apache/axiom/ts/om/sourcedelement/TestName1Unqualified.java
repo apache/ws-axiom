@@ -41,19 +41,23 @@ public class TestName1Unqualified extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory f = metaFactory.getOMFactory();
 
-        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default
+        // prefix
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("", "");
         OMElement element =
-                f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT3.getContent()), "library", ns);
+                f.createOMElement(
+                        new PullOMDataSource(TestDocument.DOCUMENT3.getContent()), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
-        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        // Test getting the namespace, localpart and prefix.  This should used not result in
+        // expansion
         assertTrue(element.getLocalName().equals("library"));
         assertNull(element.getNamespace());
 
-        // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
+        // Serialize and cache.  This should cause expansion and update the name to match the
+        // testDocument string
         StringWriter writer = new StringWriter();
         root.serialize(writer);
         String result = writer.toString();
@@ -61,8 +65,8 @@ public class TestName1Unqualified extends AxiomTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertNull(element.getNamespace());
         assertNull(element.getDefaultNamespace());
-        assertTrue(result.indexOf("xmlns=") <
-                0); // Make sure that the serialized string does not contain default prefix declaration
+        // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(result.indexOf("xmlns=") < 0);
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
 
         // Serialize again
@@ -72,10 +76,11 @@ public class TestName1Unqualified extends AxiomTestCase {
 
         assertTrue(element.getLocalName().equals("library"));
         assertNull(element.getNamespace());
-        assertTrue(result.indexOf("xmlns=") <
-                0);// Make sure that the serialized string does not contain default prefix declaration
-        assertTrue(element.getDefaultNamespace() == null ||
-                element.getDefaultNamespace().getNamespaceURI().length() == 0);
+        // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(result.indexOf("xmlns=") < 0);
+        assertTrue(
+                element.getDefaultNamespace() == null
+                        || element.getDefaultNamespace().getNamespaceURI().length() == 0);
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
     }
 }

@@ -31,9 +31,9 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxb.beans.DocumentBean;
 
 /**
- * Tests the expansion of an {@link OMSourcedElement} backed by a {@link JAXBOMDataSource} with
- * a bean that has a {@link DataHandler}. The expansion should result in an {@link OMText} node
- * linked to that {@link DataHandler}.
+ * Tests the expansion of an {@link OMSourcedElement} backed by a {@link JAXBOMDataSource} with a
+ * bean that has a {@link DataHandler}. The expansion should result in an {@link OMText} node linked
+ * to that {@link DataHandler}.
  */
 public class TestDataHandlerExpansion extends AxiomTestCase {
     public TestDataHandlerExpansion(OMMetaFactory metaFactory) {
@@ -49,12 +49,12 @@ public class TestDataHandlerExpansion extends AxiomTestCase {
         object.setId("123456");
         object.setContent(dh);
         OMElement element = factory.createOMElement(new JAXBOMDataSource(context, object));
-        OMElement child = (OMElement)element.getFirstOMChild();
+        OMElement child = (OMElement) element.getFirstOMChild();
         assertEquals("id", child.getLocalName());
         assertEquals("123456", child.getText());
-        child = (OMElement)child.getNextOMSibling();
+        child = (OMElement) child.getNextOMSibling();
         assertEquals("content", child.getLocalName());
-        OMText content = (OMText)child.getFirstOMChild();
+        OMText content = (OMText) child.getFirstOMChild();
         assertTrue(content.isBinary());
         assertTrue(content.isOptimized());
         assertSame(dh, content.getDataHandler());

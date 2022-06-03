@@ -32,7 +32,8 @@ public class TestResolveQNameWithNonDefaultNamespace extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<root xmlns:p='urn:ns'/>");
+        OMElement element =
+                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<root xmlns:p='urn:ns'/>");
         QName qname = element.resolveQName("p:test");
         assertEquals("p", qname.getPrefix());
         assertEquals("urn:ns", qname.getNamespaceURI());

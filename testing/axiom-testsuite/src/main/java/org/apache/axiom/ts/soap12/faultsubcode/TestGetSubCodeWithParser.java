@@ -38,6 +38,7 @@ public class TestGetSubCodeWithParser extends SampleBasedSOAPTestCase {
                 subCode.getSubCode());
         assertEquals(
                 "SOAP 1.2 SOAPFaultSubCode Test In FaultCode With Parser : - SubCode local name mismatch",
-                SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, subCode.getSubCode().getLocalName());
+                SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME,
+                subCode.getSubCode().getLocalName());
     }
 }

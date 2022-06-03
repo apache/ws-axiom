@@ -44,9 +44,12 @@ public class TestUnmarshalWithDataHandlerToByteArray extends AxiomTestCase {
         OMElement element = factory.createOMElement("document2", ns);
         factory.createOMElement("id", ns, element).setText("12345");
         OMElement content = factory.createOMElement("content", ns, element);
-        content.addChild(factory.createOMText(new DataHandler(new TextDataSource("test content", "utf-8", "plain")), true));
+        content.addChild(
+                factory.createOMText(
+                        new DataHandler(new TextDataSource("test content", "utf-8", "plain")),
+                        true));
         JAXBContext context = JAXBContext.newInstance(DocumentBean2.class);
-        DocumentBean2 bean = (DocumentBean2)JAXBUtils.unmarshal(element, context, null, true);
+        DocumentBean2 bean = (DocumentBean2) JAXBUtils.unmarshal(element, context, null, true);
         assertThat(bean.getId()).isEqualTo("12345");
         assertThat(bean.getContent()).isEqualTo("test content".getBytes("utf-8"));
     }

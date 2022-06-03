@@ -37,7 +37,7 @@ public class WriteProcessingInstruction1Scenario implements PushOMDataSourceScen
     }
 
     @Override
-    public Map<String,String> getNamespaceContext() {
+    public Map<String, String> getNamespaceContext() {
         return Collections.emptyMap();
     }
 
@@ -47,12 +47,12 @@ public class WriteProcessingInstruction1Scenario implements PushOMDataSourceScen
         writer.writeProcessingInstruction("target");
         writer.writeEndElement();
     }
-    
+
     @Override
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMProcessingInstruction);
-        OMProcessingInstruction pi = (OMProcessingInstruction)child;
+        OMProcessingInstruction pi = (OMProcessingInstruction) child;
         Assert.assertEquals("target", pi.getTarget());
         Assert.assertEquals("", pi.getValue());
     }
