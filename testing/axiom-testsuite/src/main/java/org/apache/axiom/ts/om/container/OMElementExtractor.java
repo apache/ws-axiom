@@ -70,4 +70,4 @@ final class OMElementExtractor extends OMContainerExtractor {
     public XMLStreamReader filter(XMLStreamReader reader) {
         return new DocumentElementExtractor(reader);
     }
-};
+}

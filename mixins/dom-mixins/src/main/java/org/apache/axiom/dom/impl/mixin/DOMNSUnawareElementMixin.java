@@ -20,7 +20,7 @@ package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMNSUnawareElement;
-import org.apache.axiom.weaver.annotation.Mixin;;
+import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class DOMNSUnawareElementMixin implements DOMNSUnawareElement {
