@@ -35,8 +35,13 @@ import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
 public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
-    private enum CharacterDataMode { PASS_THROUGH, BUFFER, SKIP, ACCUMULATE };
-    
+    private enum CharacterDataMode {
+        PASS_THROUGH,
+        BUFFER,
+        SKIP,
+        ACCUMULATE
+    };
+
     private final ContentHandler contentHandler;
     private final LexicalHandler lexicalHandler;
     private String[] prefixStack = new String[16];
@@ -53,7 +58,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     private int bufferPos;
     private CharacterDataAccumulator accumulator;
     private String piTarget;
-    
+
     public ContentHandlerXmlHandler(ContentHandler contentHandler, LexicalHandler lexicalHandler) {
         this.contentHandler = contentHandler;
         this.lexicalHandler = lexicalHandler;
@@ -66,17 +71,18 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
             return prefix + ":" + localName;
         }
     }
-    
+
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            Boolean standalone) throws StreamException {
+    public void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+            throws StreamException {
         try {
             contentHandler.startDocument();
         } catch (SAXException ex) {
             throw new StreamException(ex);
         }
     }
-    
+
     @Override
     public void startFragment() throws StreamException {
         try {
@@ -87,7 +93,9 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
+    public void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset)
+            throws StreamException {
         if (lexicalHandler != null) {
             try {
                 lexicalHandler.startDTD(rootName, publicId, systemId);
@@ -99,12 +107,13 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix)
+            throws StreamException {
         elementURI = namespaceURI;
         elementLocalName = localName;
         elementQName = getQName(prefix, localName);
         if (depth == scopeStack.length) {
-            int[] newScopeStack = new int[scopeStack.length*2];
+            int[] newScopeStack = new int[scopeStack.length * 2];
             System.arraycopy(scopeStack, 0, newScopeStack, 0, scopeStack.length);
             scopeStack = newScopeStack;
         }
@@ -112,9 +121,10 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI)
+            throws StreamException {
         if (bindings == prefixStack.length) {
-            String[] newPrefixStack = new String[prefixStack.length*2];
+            String[] newPrefixStack = new String[prefixStack.length * 2];
             System.arraycopy(prefixStack, 0, newPrefixStack, 0, prefixStack.length);
             prefixStack = newPrefixStack;
         }
@@ -124,11 +134,19 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
         } catch (SAXException ex) {
             throw new StreamException(ex);
         }
-        // TODO: depending on the http://xml.org/sax/features/xmlns-uris feature, we also need to add an attribute
+        // TODO: depending on the http://xml.org/sax/features/xmlns-uris feature, we also need to
+        // add an attribute
     }
 
     @Override
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
+    public void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified)
+            throws StreamException {
         attributes.addAttribute(namespaceURI, localName, getQName(prefix, localName), type, value);
     }
 
@@ -162,7 +180,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
             String elementLocalName = elementNameStack.pop();
             String elementURI = elementNameStack.pop();
             contentHandler.endElement(elementURI, elementLocalName, elementQName);
-            for (int i=bindings-1; i>=scopeStack[depth-1]; i--) {
+            for (int i = bindings - 1; i >= scopeStack[depth - 1]; i--) {
                 contentHandler.endPrefixMapping(prefixStack[i]);
             }
             bindings = scopeStack[--depth];
@@ -173,11 +191,11 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
 
     private void writeToBuffer(String data) {
         int dataLen = data.length();
-        if (buffer.length-bufferPos < dataLen) {
+        if (buffer.length - bufferPos < dataLen) {
             int newLength = buffer.length;
             do {
                 newLength *= 2;
-            } while (newLength-bufferPos < dataLen);
+            } while (newLength - bufferPos < dataLen);
             char[] newBuffer = new char[newLength];
             System.arraycopy(buffer, 0, newBuffer, 0, bufferPos);
             buffer = newBuffer;
@@ -207,12 +225,12 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
                         bufferPos = 0;
                     } else if (data instanceof CharacterData) {
                         try {
-                            ((CharacterData)data).writeTo(this);
+                            ((CharacterData) data).writeTo(this);
                         } catch (IOException ex) {
                             Throwable cause = ex.getCause();
                             SAXException saxException;
                             if (cause instanceof SAXException) {
-                                saxException = (SAXException)cause;
+                                saxException = (SAXException) cause;
                             } else {
                                 saxException = new SAXException(ex);
                             }
@@ -236,7 +254,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
             throw new StreamException(ex);
         }
     }
-    
+
     @Override
     public void startCDATASection() throws StreamException {
         try {
@@ -261,7 +279,8 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
 
     @Override
     public void startComment() throws StreamException {
-        characterDataMode = lexicalHandler == null ? CharacterDataMode.SKIP : CharacterDataMode.BUFFER;
+        characterDataMode =
+                lexicalHandler == null ? CharacterDataMode.SKIP : CharacterDataMode.BUFFER;
     }
 
     @Override

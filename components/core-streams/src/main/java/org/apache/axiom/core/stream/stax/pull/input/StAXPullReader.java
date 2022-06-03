@@ -35,20 +35,20 @@ import java.io.Closeable;
 
 /* Implementation note about error handling
  * ----------------------------------------
- * 
+ *
  * Usually, code that uses StAX directly just stops processing of an XML document
  * once the first parsing error has been reported. However, since Axiom
  * uses deferred parsing, and client code accesses the XML infoset using
  * an object model, things are more complicated. Indeed, if the XML
  * document is not well formed, the corresponding error might be reported
  * as a runtime exception by any call to a method of an OM node.
- * 
+ *
  * Typically the client code will have some error handling that will intercept
  * runtime exceptions and take appropriate action. Very often this error handling
  * code might want to access the object model again, for example to log the request that caused the
  * failure. This causes no problem except if the runtime exception was caused by a
  * parsing error, in which case Axiom would again try to pull events from the parser.
- * 
+ *
  * This would lead to a situation where Axiom accesses a parser that has reported a parsing
  * error before. While one would expect that after a first error reported by the parser, all
  * subsequent invocations of the parser will fail, this is not the case for all parsers
@@ -58,40 +58,46 @@ import java.io.Closeable;
  * (incorrect) events afterwards. The explanation for this behaviour might be that
  * the situation described here is quite uncommon when StAX is used directly (i.e. not through
  * Axiom).
- * 
+ *
  * To avoid this, the builder remembers exceptions thrown by the parser and rethrows
  * them during a call to next().
  */
 final class StAXPullReader implements XmlReader {
     private static final Log log = LogFactory.getLog(StAXPullReader.class);
-    
+
     /** Field parser */
     private XMLStreamReader reader;
+
     private XMLStreamReaderHelper helper;
 
     private final XmlHandler handler;
     private final Closeable closeable;
-    
-    /**
-     * Specifies whether the builder/parser should be automatically closed when the
-     * {@link XMLStreamConstants#END_DOCUMENT} event is reached.
-     */
-    private final boolean autoClose;
-    
-    private boolean isClosed = false;              // Indicate if parser is closed
 
     /**
-     * Stores exceptions thrown by the parser. Used to avoid accessing the parser
-     * again after is has thrown a parse exception.
+     * Specifies whether the builder/parser should be automatically closed when the {@link
+     * XMLStreamConstants#END_DOCUMENT} event is reached.
+     */
+    private final boolean autoClose;
+
+    private boolean isClosed = false; // Indicate if parser is closed
+
+    /**
+     * Stores exceptions thrown by the parser. Used to avoid accessing the parser again after is has
+     * thrown a parse exception.
      */
     private Exception parserException;
-    
+
     private boolean start = true;
-    
-    StAXPullReader(XMLStreamReader reader, XMLStreamReaderHelper helper, XmlHandler handler,
-            Closeable closeable, boolean autoClose) {
+
+    StAXPullReader(
+            XMLStreamReader reader,
+            XMLStreamReaderHelper helper,
+            XmlHandler handler,
+            Closeable closeable,
+            boolean autoClose) {
         if (reader.getEventType() != XMLStreamReader.START_DOCUMENT) {
-            throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
+            throw new IllegalStateException(
+                    "The XMLStreamReader must be positioned on a START_DOCUMENT event");
         }
         this.reader = reader;
         this.helper = helper;
@@ -99,11 +105,11 @@ final class StAXPullReader implements XmlReader {
         this.closeable = closeable;
         this.autoClose = autoClose;
     }
-    
+
     private static String normalize(String s) {
         return s == null ? "" : s;
     }
-    
+
     private void processText(int textType) throws StreamException {
         if (textType == XMLStreamConstants.CHARACTERS) {
             CharacterData data = helper.getCharacterData();
@@ -151,12 +157,12 @@ final class StAXPullReader implements XmlReader {
             // Can't see a reason why we would want to surface an exception
             // while closing the parser.
             if (log.isDebugEnabled()) {
-                log.debug("Exception occurred during parser close.  " +
-                                "Processing continues. " + e);
+                log.debug(
+                        "Exception occurred during parser close.  " + "Processing continues. " + e);
             }
         } finally {
             isClosed = true;
-//            builderHandler.done = true;
+            //            builderHandler.done = true;
             // Release the parser so that it can be GC'd or reused. This is important because the
             // object model keeps a reference to the builder even after the builder is complete.
             reader = null;
@@ -167,18 +173,22 @@ final class StAXPullReader implements XmlReader {
     @Override
     public boolean proceed() throws StreamException {
         int token = parserNext();
-        
+
         // Note: if autoClose is enabled, then the parser may be null at this point
-        
+
         switch (token) {
             case XMLStreamConstants.START_DOCUMENT:
-                handler.startDocument(reader.getEncoding(), reader.getVersion(), reader.getCharacterEncodingScheme(),
+                handler.startDocument(
+                        reader.getEncoding(),
+                        reader.getVersion(),
+                        reader.getCharacterEncodingScheme(),
                         reader.standaloneSet() ? reader.isStandalone() : null);
                 break;
-            case XMLStreamConstants.START_ELEMENT: {
-                processElement();
-                break;
-            }
+            case XMLStreamConstants.START_ELEMENT:
+                {
+                    processElement();
+                    break;
+                }
             case XMLStreamConstants.CHARACTERS:
             case XMLStreamConstants.CDATA:
             case XMLStreamConstants.SPACE:
@@ -206,13 +216,13 @@ final class StAXPullReader implements XmlReader {
             case XMLStreamConstants.ENTITY_REFERENCE:
                 handler.processEntityReference(reader.getLocalName(), reader.getText());
                 break;
-            default :
+            default:
                 throw new IllegalStateException();
         }
-        
+
         return token == XMLStreamReader.END_DOCUMENT;
     }
-    
+
     private void processElement() throws StreamException {
         String namespaceURI = normalize(reader.getNamespaceURI());
         String localName = reader.getLocalName();
@@ -220,8 +230,7 @@ final class StAXPullReader implements XmlReader {
         handler.startElement(namespaceURI, localName, prefix);
         for (int i = 0, count = reader.getNamespaceCount(); i < count; i++) {
             handler.processNamespaceDeclaration(
-                    normalize(reader.getNamespacePrefix(i)),
-                    normalize(reader.getNamespaceURI(i)));
+                    normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)));
         }
         for (int i = 0, count = reader.getAttributeCount(); i < count; i++) {
             handler.processAttribute(
@@ -234,7 +243,7 @@ final class StAXPullReader implements XmlReader {
         }
         handler.attributesCompleted();
     }
-    
+
     private void processDTD() throws StreamException {
         DTDInfo dtdInfo = helper.getDTDInfo();
         String internalSubset = getDTDText();
@@ -242,15 +251,17 @@ final class StAXPullReader implements XmlReader {
         if (internalSubset != null && internalSubset.length() == 0) {
             internalSubset = null;
         }
-        handler.processDocumentTypeDeclaration(dtdInfo.getRootName(), dtdInfo.getPublicId(),
-                dtdInfo.getSystemId(), internalSubset);
+        handler.processDocumentTypeDeclaration(
+                dtdInfo.getRootName(),
+                dtdInfo.getPublicId(),
+                dtdInfo.getSystemId(),
+                internalSubset);
     }
-    
+
     /**
-     * The getText() method for a DOCTYPE returns the 
-     * subset of the DOCTYPE (not the direct infoset).
-     * This may force the parser to get information from 
-     * the network.
+     * The getText() method for a DOCTYPE returns the subset of the DOCTYPE (not the direct
+     * infoset). This may force the parser to get information from the network.
+     *
      * @return doctype subset
      */
     private String getDTDText() {
@@ -262,24 +273,27 @@ final class StAXPullReader implements XmlReader {
             // attempts to load the external subset even if
             // external enties is false.  So ignore this error
             // if external entity support is explicitly disabled.
-            Boolean b = (Boolean) reader.getProperty(
-                   XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES);
+            Boolean b =
+                    (Boolean) reader.getProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES);
             if (b == null || b == Boolean.TRUE) {
                 throw e;
             }
             if (log.isDebugEnabled()) {
-                log.debug("An exception occurred while calling getText() for a DOCTYPE.  " +
-                                "The exception is ignored because external " +
-                                "entites support is disabled.  " +
-                                "The ignored exception is " + e);
+                log.debug(
+                        "An exception occurred while calling getText() for a DOCTYPE.  "
+                                + "The exception is ignored because external "
+                                + "entites support is disabled.  "
+                                + "The ignored exception is "
+                                + e);
             }
         }
         return text;
     }
 
     /**
-     * Pushes the virtual parser ahead one token.
-     * If a look ahead token was calculated it is returned.
+     * Pushes the virtual parser ahead one token. If a look ahead token was calculated it is
+     * returned.
+     *
      * @return next token
      * @throws StreamException
      */
@@ -290,12 +304,13 @@ final class StAXPullReader implements XmlReader {
         } else {
             try {
                 if (parserException != null) {
-                    log.warn("Attempt to access a parser that has thrown a parse exception before; " +
-                    		"rethrowing the original exception.");
+                    log.warn(
+                            "Attempt to access a parser that has thrown a parse exception before; "
+                                    + "rethrowing the original exception.");
                     if (parserException instanceof XMLStreamException) {
-                        throw (XMLStreamException)parserException;
+                        throw (XMLStreamException) parserException;
                     } else {
-                        throw (RuntimeException)parserException;
+                        throw (RuntimeException) parserException;
                     }
                 }
                 int event;

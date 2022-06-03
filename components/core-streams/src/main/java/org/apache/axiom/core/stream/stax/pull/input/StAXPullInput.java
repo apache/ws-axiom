@@ -31,8 +31,12 @@ public final class StAXPullInput implements XmlInput {
     private final XMLStreamReaderHelperFactory helperFactory;
     private final boolean autoClose;
     private final Closeable closeable;
-    
-    public StAXPullInput(XMLStreamReader reader, XMLStreamReaderHelperFactory helperFactory, boolean autoClose, Closeable closeable) {
+
+    public StAXPullInput(
+            XMLStreamReader reader,
+            XMLStreamReaderHelperFactory helperFactory,
+            boolean autoClose,
+            Closeable closeable) {
         this.reader = reader;
         this.helperFactory = helperFactory;
         this.autoClose = autoClose;
@@ -45,6 +49,7 @@ public final class StAXPullInput implements XmlInput {
 
     @Override
     public XmlReader createReader(XmlHandler handler) {
-        return new StAXPullReader(reader, helperFactory.createHelper(reader), handler, closeable, autoClose);
+        return new StAXPullReader(
+                reader, helperFactory.createHelper(reader), handler, closeable, autoClose);
     }
 }

@@ -29,11 +29,14 @@ import org.apache.axiom.core.stream.XmlHandlerWrapper;
 
 public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper {
     private static final String SOLE_CHILD_MSG =
-            "Expected xop:Include as the sole child of an element information item (see section " +
-            "3.2 of http://www.w3.org/TR/xop10/)";
+            "Expected xop:Include as the sole child of an element information item (see section "
+                    + "3.2 of http://www.w3.org/TR/xop10/)";
 
     private enum State {
-        AFTER_START_ELEMENT, CONTENT_SEEN, IN_XOP_INCLUDE, AFTER_XOP_INCLUDE
+        AFTER_START_ELEMENT,
+        CONTENT_SEEN,
+        IN_XOP_INCLUDE,
+        AFTER_XOP_INCLUDE
     }
 
     private State state = State.CONTENT_SEEN;
@@ -89,12 +92,19 @@ public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper
     }
 
     @Override
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value,
-            String type, boolean specified) throws StreamException {
+    public void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified)
+            throws StreamException {
         if (state == State.IN_XOP_INCLUDE) {
             if (namespaceURI.isEmpty() && localName.equals(XOPConstants.HREF)) {
                 if (!value.startsWith("cid:")) {
-                    throw new StreamException("Expected href attribute containing a URL in the cid scheme");
+                    throw new StreamException(
+                            "Expected href attribute containing a URL in the cid scheme");
                 }
                 try {
                     // URIs should always be decoded using UTF-8. On the other hand, since non ASCII
@@ -106,7 +116,10 @@ public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper
                     throw new StreamException(ex);
                 }
             } else {
-                throw new StreamException("Encountered unexpected attribute " + new QName(namespaceURI, localName) + " on xop:Include element");
+                throw new StreamException(
+                        "Encountered unexpected attribute "
+                                + new QName(namespaceURI, localName)
+                                + " on xop:Include element");
             }
         } else {
             super.processAttribute(namespaceURI, localName, prefix, value, type, specified);

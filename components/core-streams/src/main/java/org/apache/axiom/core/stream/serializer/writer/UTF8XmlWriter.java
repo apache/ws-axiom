@@ -27,24 +27,25 @@ final class UTF8XmlWriter extends ASCIICompatibleXmlWriter {
     }
 
     @Override
-    public void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) {
+    public void setUnmappableCharacterHandler(
+            UnmappableCharacterHandler unmappableCharacterHandler) {
         // There are no unmappable characters in UTF-8
     }
 
     @Override
     protected void writeNonASCIICharacter(int codePoint) throws IOException {
         if (codePoint < 0x800) {
-            writeByte((byte)(0xc0 + (codePoint >> 6)));
-            writeByte((byte)(0x80 + (codePoint & 0x3f)));
+            writeByte((byte) (0xc0 + (codePoint >> 6)));
+            writeByte((byte) (0x80 + (codePoint & 0x3f)));
         } else if (codePoint < 0x10000) {
-            writeByte((byte)(0xe0 + (codePoint >> 12)));
-            writeByte((byte)(0x80 + ((codePoint >> 6) & 0x3f)));
-            writeByte((byte)(0x80 + (codePoint & 0x3f)));
+            writeByte((byte) (0xe0 + (codePoint >> 12)));
+            writeByte((byte) (0x80 + ((codePoint >> 6) & 0x3f)));
+            writeByte((byte) (0x80 + (codePoint & 0x3f)));
         } else {
-            writeByte((byte)(0xf0 + (codePoint >> 18)));
-            writeByte((byte)(0x80 + ((codePoint >> 12) & 0x3f)));
-            writeByte((byte)(0x80 + ((codePoint >> 6) & 0x3f)));
-            writeByte((byte)(0x80 + (codePoint & 0x3f)));
+            writeByte((byte) (0xf0 + (codePoint >> 18)));
+            writeByte((byte) (0x80 + ((codePoint >> 12) & 0x3f)));
+            writeByte((byte) (0x80 + ((codePoint >> 6) & 0x3f)));
+            writeByte((byte) (0x80 + (codePoint & 0x3f)));
         }
     }
 }

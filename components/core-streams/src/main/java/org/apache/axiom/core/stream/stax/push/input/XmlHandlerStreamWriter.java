@@ -41,45 +41,41 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     private final XmlHandler handler;
     private final Serializer serializer;
     private final XMLStreamWriterExtensionFactory extensionFactory;
-    private Map<String,Object> extensions;
+    private Map<String, Object> extensions;
     private boolean inStartElement;
     private boolean inEmptyElement;
 
-    /**
-     * Array containing the prefixes for the namespace bindings.
-     */
+    /** Array containing the prefixes for the namespace bindings. */
     private String[] prefixArray = new String[16];
-    
-    /**
-     * Array containing the URIs for the namespace bindings.
-     */
+
+    /** Array containing the URIs for the namespace bindings. */
     private String[] uriArray = new String[16];
-    
-    /**
-     * The number of currently defined namespace bindings.
-     */
+
+    /** The number of currently defined namespace bindings. */
     private int bindings;
-    
+
     /**
-     * Tracks the scopes defined for this namespace context. Each entry in the array identifies
-     * the first namespace binding defined in the corresponding scope and points to an entry
-     * in {@link #prefixArray}/{@link #uriArray}.
+     * Tracks the scopes defined for this namespace context. Each entry in the array identifies the
+     * first namespace binding defined in the corresponding scope and points to an entry in {@link
+     * #prefixArray}/{@link #uriArray}.
      */
     private int[] scopeIndexes = new int[16];
-    
+
     /**
      * The number of currently defined scopes. This is the same as the depth of the current scope,
      * where the depth of the root scope is 0.
      */
     private int scopes;
 
-    public XmlHandlerStreamWriter(XmlHandler handler, Serializer serializer,
+    public XmlHandlerStreamWriter(
+            XmlHandler handler,
+            Serializer serializer,
             XMLStreamWriterExtensionFactory extensionFactory) {
         this.handler = handler;
         this.serializer = serializer;
         this.extensionFactory = extensionFactory;
     }
-    
+
     public XmlHandler getHandler() {
         return handler;
     }
@@ -87,16 +83,16 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     private static String normalize(String s) {
         return s == null ? "" : s;
     }
-    
+
     private static XMLStreamException toXMLStreamException(StreamException ex) {
         Throwable cause = ex.getCause();
         if (cause instanceof XMLStreamException) {
-            return (XMLStreamException)cause;
+            return (XMLStreamException) cause;
         } else {
             return new XMLStreamException(ex);
         }
     }
-    
+
     @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         if (extensions != null) {
@@ -109,7 +105,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
             Object extension = extensionFactory.createExtension(name, this);
             if (extension != null) {
                 if (extensions == null) {
-                    extensions = new HashMap<String,Object>();
+                    extensions = new HashMap<String, Object>();
                 }
                 extensions.put(name, extension);
                 return extension;
@@ -138,11 +134,12 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
         } else if (uri.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
             return XMLConstants.XMLNS_ATTRIBUTE;
         } else {
-            outer: for (int i=bindings-1; i>=0; i--) {
+            outer:
+            for (int i = bindings - 1; i >= 0; i--) {
                 if (uri.equals(uriArray[i])) {
                     String prefix = prefixArray[i];
                     // Now check that the prefix is not masked
-                    for (int j=i+1; j<bindings; j++) {
+                    for (int j = i + 1; j < bindings; j++) {
                         if (prefix.equals(prefixArray[j])) {
                             continue outer;
                         }
@@ -162,17 +159,18 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     @Override
     public void setPrefix(String prefix, String uri) throws XMLStreamException {
         if (inEmptyElement) {
-            log.warn("The behavior of XMLStreamWriter#setPrefix and " +
-                    "XMLStreamWriter#setDefaultNamespace is undefined when invoked in the " +
-                    "context of an empty element");
+            log.warn(
+                    "The behavior of XMLStreamWriter#setPrefix and "
+                            + "XMLStreamWriter#setDefaultNamespace is undefined when invoked in the "
+                            + "context of an empty element");
         }
         internalSetPrefix(normalize(prefix), normalize(uri));
     }
-    
+
     private void internalSetPrefix(String prefix, String uri) {
         if (bindings == prefixArray.length) {
             int len = prefixArray.length;
-            int newLen = len*2;
+            int newLen = len * 2;
             String[] newPrefixArray = new String[newLen];
             System.arraycopy(prefixArray, 0, newPrefixArray, 0, len);
             String[] newUriArray = new String[newLen];
@@ -234,7 +232,8 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
         }
     }
 
-    private void doWriteStartElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
+    private void doWriteStartElement(String prefix, String localName, String namespaceURI)
+            throws XMLStreamException {
         finishStartElement();
         try {
             handler.startElement(normalize(namespaceURI), localName, normalize(prefix));
@@ -249,7 +248,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
             throws XMLStreamException {
         doWriteStartElement(prefix, localName, namespaceURI);
         if (scopes == scopeIndexes.length) {
-            int[] newScopeIndexes = new int[scopeIndexes.length*2];
+            int[] newScopeIndexes = new int[scopeIndexes.length * 2];
             System.arraycopy(scopeIndexes, 0, newScopeIndexes, 0, scopeIndexes.length);
             scopeIndexes = newScopeIndexes;
         }
@@ -288,7 +287,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
             inStartElement = false;
         }
     }
-    
+
     @Override
     public void writeEmptyElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException {
@@ -307,7 +306,8 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     public void writeAttribute(String prefix, String namespaceURI, String localName, String value)
             throws XMLStreamException {
         try {
-            handler.processAttribute(normalize(namespaceURI), localName, normalize(prefix), value, "CDATA", true);
+            handler.processAttribute(
+                    normalize(namespaceURI), localName, normalize(prefix), value, "CDATA", true);
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }
@@ -343,15 +343,14 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
             return prefix;
         }
     }
-    
+
     @Override
     public void writeStartElement(String namespaceURI, String localName) throws XMLStreamException {
         writeStartElement(internalGetPrefix(namespaceURI), localName, namespaceURI);
     }
 
     @Override
-    public void writeEmptyElement(String namespaceURI, String localName)
-            throws XMLStreamException {
+    public void writeEmptyElement(String namespaceURI, String localName) throws XMLStreamException {
         writeEmptyElement(internalGetPrefix(namespaceURI), localName, namespaceURI);
     }
 
@@ -420,8 +419,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     }
 
     @Override
-    public void writeProcessingInstruction(String target, String data)
-            throws XMLStreamException {
+    public void writeProcessingInstruction(String target, String data) throws XMLStreamException {
         finishStartElement();
         try {
             handler.startProcessingInstruction(target);
@@ -463,12 +461,13 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
         } else if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
             return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
         } else {
-            for (int i=bindings-1; i>=0; i--) {
+            for (int i = bindings - 1; i >= 0; i--) {
                 if (prefix.equals(prefixArray[i])) {
                     return uriArray[i];
                 }
             }
-            // The Javadoc of NamespaceContext#getNamespaceURI specifies that XMLConstants.NULL_NS_URI
+            // The Javadoc of NamespaceContext#getNamespaceURI specifies that
+            // XMLConstants.NULL_NS_URI
             // is returned both for unbound prefixes and the null namespace
             return XMLConstants.NULL_NS_URI;
         }
@@ -490,11 +489,12 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
                 @Override
                 public boolean hasNext() {
                     if (next == null) {
-                        outer: while (--binding >= 0) {
+                        outer:
+                        while (--binding >= 0) {
                             if (namespaceURI.equals(uriArray[binding])) {
                                 String prefix = prefixArray[binding];
                                 // Now check that the prefix is not masked
-                                for (int j=binding+1; j<bindings; j++) {
+                                for (int j = binding + 1; j < bindings; j++) {
                                     if (prefix.equals(prefixArray[j])) {
                                         continue outer;
                                     }

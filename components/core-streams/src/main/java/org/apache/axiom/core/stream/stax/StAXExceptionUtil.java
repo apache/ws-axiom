@@ -24,20 +24,20 @@ import org.apache.axiom.core.stream.StreamException;
 
 public final class StAXExceptionUtil {
     private StAXExceptionUtil() {}
-    
+
     public static StreamException toStreamException(XMLStreamException ex) {
         Throwable cause = ex.getCause();
         if (cause instanceof StreamException) {
-            return (StreamException)cause;
+            return (StreamException) cause;
         } else {
             return new StreamException(ex);
         }
     }
-    
+
     public static XMLStreamException toXMLStreamException(StreamException ex) {
         Throwable cause = ex.getCause();
         if (cause instanceof XMLStreamException) {
-            return (XMLStreamException)cause;
+            return (XMLStreamException) cause;
         } else {
             return new XMLStreamException(ex.getMessage(), ex);
         }

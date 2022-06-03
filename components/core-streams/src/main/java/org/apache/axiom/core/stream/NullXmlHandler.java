@@ -24,82 +24,73 @@ public final class NullXmlHandler implements XmlHandler {
     private NullXmlHandler() {}
 
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            Boolean standalone) throws StreamException {
-    }
+    public void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+            throws StreamException {}
 
     @Override
-    public void startFragment() throws StreamException {
-    }
+    public void startFragment() throws StreamException {}
 
     @Override
-    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
-            String internalSubset) throws StreamException {
-    }
+    public void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset)
+            throws StreamException {}
 
     @Override
     public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
-    }
+            throws StreamException {}
 
     @Override
-    public void endElement() throws StreamException {
-    }
+    public void endElement() throws StreamException {}
 
     @Override
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value,
-            String type, boolean specified) throws StreamException {
-    }
+    public void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified)
+            throws StreamException {}
 
     @Override
     public void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException {
-    }
+            throws StreamException {}
 
     @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException {
-    }
+            throws StreamException {}
 
     @Override
-    public void attributesCompleted() throws StreamException {
-    }
+    public void attributesCompleted() throws StreamException {}
 
     @Override
-    public void processCharacterData(Object data, boolean ignorable) throws StreamException {
-    }
+    public void processCharacterData(Object data, boolean ignorable) throws StreamException {}
 
     @Override
-    public void startProcessingInstruction(String target) throws StreamException {
-    }
+    public void startProcessingInstruction(String target) throws StreamException {}
 
     @Override
-    public void endProcessingInstruction() throws StreamException {
-    }
+    public void endProcessingInstruction() throws StreamException {}
 
     @Override
-    public void startComment() throws StreamException {
-    }
+    public void startComment() throws StreamException {}
 
     @Override
-    public void endComment() throws StreamException {
-    }
+    public void endComment() throws StreamException {}
 
     @Override
-    public void startCDATASection() throws StreamException {
-    }
+    public void startCDATASection() throws StreamException {}
 
     @Override
-    public void endCDATASection() throws StreamException {
-    }
+    public void endCDATASection() throws StreamException {}
 
     @Override
-    public void processEntityReference(String name, String replacementText) throws StreamException {
-    }
+    public void processEntityReference(String name, String replacementText)
+            throws StreamException {}
 
     @Override
-    public void completed() throws StreamException {
-    }
+    public void completed() throws StreamException {}
 
     @Override
     public boolean drain() throws StreamException {

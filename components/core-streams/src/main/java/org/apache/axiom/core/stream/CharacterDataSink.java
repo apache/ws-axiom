@@ -24,5 +24,6 @@ import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 
 public interface CharacterDataSink {
     Writer getWriter();
+
     AbstractBase64EncodingOutputStream getBase64EncodingOutputStream();
 }

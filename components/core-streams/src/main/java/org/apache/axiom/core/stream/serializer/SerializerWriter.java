@@ -24,8 +24,8 @@ import java.io.Writer;
 import org.apache.axiom.core.stream.StreamException;
 
 /**
- * {@link Writer} that writes character data as {@link ToXMLStream#characters(char[], int, int)}
- * to a {@link ToXMLStream}.
+ * {@link Writer} that writes character data as {@link ToXMLStream#characters(char[], int, int)} to
+ * a {@link ToXMLStream}.
  */
 final class SerializerWriter extends Writer {
     private final Serializer serializer;
@@ -53,10 +53,8 @@ final class SerializerWriter extends Writer {
     }
 
     @Override
-    public void close() throws IOException {
-    }
+    public void close() throws IOException {}
 
     @Override
-    public void flush() throws IOException {
-    }
+    public void flush() throws IOException {}
 }

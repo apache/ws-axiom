@@ -38,24 +38,24 @@ public class DOMReaderTest {
         root.setTextContent("test");
         XmlHandler handler = mock(XmlHandler.class);
         DOMReader reader = new DOMReader(handler, document, false);
-        
+
         assertThat(reader.proceed()).isFalse();
         verify(handler).startDocument(null, "1.0", null, false);
         verifyNoMoreInteractions(handler);
-        
+
         assertThat(reader.proceed()).isFalse();
         verify(handler).startElement("urn:test", "root", "p");
         verify(handler).attributesCompleted();
         verifyNoMoreInteractions(handler);
-        
+
         assertThat(reader.proceed()).isFalse();
         verify(handler).processCharacterData("test", false);
         verifyNoMoreInteractions(handler);
-        
+
         assertThat(reader.proceed()).isFalse();
         verify(handler).endElement();
         verifyNoMoreInteractions(handler);
-        
+
         assertThat(reader.proceed()).isTrue();
         verify(handler).completed();
         verifyNoMoreInteractions(handler);

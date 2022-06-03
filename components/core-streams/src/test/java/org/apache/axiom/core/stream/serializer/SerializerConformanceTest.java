@@ -59,10 +59,10 @@ public class SerializerConformanceTest extends MatrixTestCase {
         InputSource is = new InputSource(new StringReader(sw.toString()));
         is.setSystemId(sample.getUrl().toString());
         assertAbout(xml())
-            .that(is)
-            .ignoringWhitespaceInPrologAndEpilog()
-            .treatingElementContentWhitespaceAsText()  // TODO
-            .hasSameContentAs(document);
+                .that(is)
+                .ignoringWhitespaceInPrologAndEpilog()
+                .treatingElementContentWhitespaceAsText() // TODO
+                .hasSameContentAs(document);
     }
 
     public static TestSuite suite() {

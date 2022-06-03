@@ -34,7 +34,8 @@ final class OutputStreamXmlWriter extends XmlWriter {
     private final CharBuffer encoderIn;
     private final ByteBuffer encoderOut;
     private final CharsetEncoder encoder;
-    private UnmappableCharacterHandler unmappableCharacterHandler = UnmappableCharacterHandler.THROW_EXCEPTION;
+    private UnmappableCharacterHandler unmappableCharacterHandler =
+            UnmappableCharacterHandler.THROW_EXCEPTION;
     private boolean processingUnmappableCharacter;
     private CharBuffer encoderInAlt;
 
@@ -48,7 +49,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
     private void flushEncodingOut() throws IOException {
         out.write(encoderOut.array(), 0, encoderOut.position());
         // Cast ensures compatibility with Java 8.
-        ((Buffer)encoderOut).clear();
+        ((Buffer) encoderOut).clear();
     }
 
     private CharBuffer getEncoderIn() throws IOException {
@@ -64,7 +65,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
 
     private void flush(CharBuffer encoderIn) throws IOException {
         // Cast ensures compatibility with Java 8.
-        ((Buffer)encoderIn).flip();
+        ((Buffer) encoderIn).flip();
         while (true) {
             CoderResult coderResult = encoder.encode(encoderIn, encoderOut, false);
             if (coderResult.isUnderflow()) {
@@ -80,7 +81,8 @@ final class OutputStreamXmlWriter extends XmlWriter {
                 try {
                     switch (coderResult.length()) {
                         case 1:
-                            unmappableCharacterHandler.processUnmappableCharacter(encoderIn.get(), this);
+                            unmappableCharacterHandler.processUnmappableCharacter(
+                                    encoderIn.get(), this);
                             break;
                         case 2:
                             throw new UnsupportedOperationException("TODO");
@@ -98,7 +100,8 @@ final class OutputStreamXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) throws IOException {
+    public void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler)
+            throws IOException {
         if (unmappableCharacterHandler != this.unmappableCharacterHandler) {
             flush(encoderIn);
             this.unmappableCharacterHandler = unmappableCharacterHandler;
@@ -153,22 +156,19 @@ final class OutputStreamXmlWriter extends XmlWriter {
                 if (encoderIn.remaining() < 4) {
                     OutputStreamXmlWriter.this.flush(encoderIn);
                 }
-                for (int i=0; i<4; i++) {
-                    encoderIn.put((char)(b[i] & 0xFF));
+                for (int i = 0; i < 4; i++) {
+                    encoderIn.put((char) (b[i] & 0xFF));
                 }
             }
-            
+
             @Override
-            protected void flushBuffer() throws IOException {
-            }
-            
+            protected void flushBuffer() throws IOException {}
+
             @Override
-            protected void doFlush() throws IOException {
-            }
-            
+            protected void doFlush() throws IOException {}
+
             @Override
-            protected void doClose() throws IOException {
-            }
+            protected void doClose() throws IOException {}
         };
     }
 

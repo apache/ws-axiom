@@ -49,6 +49,5 @@ public final class FakeReader implements XmlReader {
     }
 
     @Override
-    public void dispose() {
-    }
+    public void dispose() {}
 }

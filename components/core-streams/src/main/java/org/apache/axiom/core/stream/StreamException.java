@@ -19,9 +19,7 @@
 package org.apache.axiom.core.stream;
 
 // TODO: update Javadoc
-/**
- * Wraps an exception thrown by the underlying API (StAX, SAX, etc.) while writing data.
- */
+/** Wraps an exception thrown by the underlying API (StAX, SAX, etc.) while writing data. */
 public class StreamException extends Exception {
     private static final long serialVersionUID = 7173617216602466028L;
 

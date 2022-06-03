@@ -32,8 +32,8 @@ public final class WriterXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) {
-    }
+    public void setUnmappableCharacterHandler(
+            UnmappableCharacterHandler unmappableCharacterHandler) {}
 
     @Override
     public void write(char c) throws IOException {
@@ -56,6 +56,5 @@ public final class WriterXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void flushBuffer() throws IOException {
-    }
+    public void flushBuffer() throws IOException {}
 }

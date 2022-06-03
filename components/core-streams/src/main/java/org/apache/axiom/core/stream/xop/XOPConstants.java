@@ -19,8 +19,8 @@
 package org.apache.axiom.core.stream.xop;
 
 /**
- * Interface defining constants used by {@link XOPDecodingFilterHandler} and
- * {@link XOPEncodingFilterHandler}.
+ * Interface defining constants used by {@link XOPDecodingFilterHandler} and {@link
+ * XOPEncodingFilterHandler}.
  */
 interface XOPConstants {
     String INCLUDE = "Include";

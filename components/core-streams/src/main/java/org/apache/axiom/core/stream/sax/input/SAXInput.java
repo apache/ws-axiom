@@ -28,12 +28,12 @@ import org.apache.axiom.core.stream.XmlReader;
 public final class SAXInput implements XmlInput {
     private final boolean expandEntityReferences;
     private final SAXSource source;
-    
+
     public SAXInput(SAXSource source, boolean expandEntityReferences) {
         this.expandEntityReferences = expandEntityReferences;
         this.source = source;
     }
-    
+
     @Override
     public XmlReader createReader(XmlHandler handler) {
         return new SAXReader(handler, source, expandEntityReferences);

@@ -29,6 +29,8 @@ import java.io.IOException;
 public interface CharacterData {
     @Override
     String toString();
+
     void writeTo(CharacterDataSink sink) throws IOException;
+
     void appendTo(StringBuilder buffer);
 }

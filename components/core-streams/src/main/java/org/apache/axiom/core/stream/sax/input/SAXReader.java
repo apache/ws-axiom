@@ -33,17 +33,18 @@ public final class SAXReader implements XmlReader {
     private final XmlHandler handler;
     private final boolean expandEntityReferences;
     private final SAXSource source;
-    
+
     SAXReader(XmlHandler handler, SAXSource source, boolean expandEntityReferences) {
         this.handler = handler;
         this.expandEntityReferences = expandEntityReferences;
         this.source = source;
     }
-    
+
     @Override
     public boolean proceed() throws StreamException {
         XMLReader reader = source.getXMLReader();
-        XmlHandlerContentHandler contentHandler = new XmlHandlerContentHandler(handler, expandEntityReferences);
+        XmlHandlerContentHandler contentHandler =
+                new XmlHandlerContentHandler(handler, expandEntityReferences);
         reader.setContentHandler(contentHandler);
         reader.setDTDHandler(contentHandler);
         try {
@@ -67,6 +68,5 @@ public final class SAXReader implements XmlReader {
     }
 
     @Override
-    public void dispose() {
-    }
+    public void dispose() {}
 }

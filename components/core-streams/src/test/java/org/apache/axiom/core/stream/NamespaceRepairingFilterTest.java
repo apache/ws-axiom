@@ -21,9 +21,11 @@ package org.apache.axiom.core.stream;
 import org.junit.Test;
 
 public class NamespaceRepairingFilterTest {
-    @Test(expected=ConflictingNamespaceDeclarationException.class)
+    @Test(expected = ConflictingNamespaceDeclarationException.class)
     public void testNamespaceDeclarationConflictingWithElementName() throws StreamException {
-        XmlHandler handler = new NamespaceRepairingFilter(null, false).createFilterHandler(NullXmlHandler.INSTANCE);
+        XmlHandler handler =
+                new NamespaceRepairingFilter(null, false)
+                        .createFilterHandler(NullXmlHandler.INSTANCE);
         handler.startFragment();
         handler.startElement("urn:ns1", "test", "p");
         handler.processNamespaceDeclaration("p", "urn:ns2");

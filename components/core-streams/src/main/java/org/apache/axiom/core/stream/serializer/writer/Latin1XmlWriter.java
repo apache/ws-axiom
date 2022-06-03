@@ -23,7 +23,8 @@ import java.io.OutputStream;
 
 final class Latin1XmlWriter extends ASCIICompatibleXmlWriter {
     private final int maxChar;
-    private UnmappableCharacterHandler unmappableCharacterHandler = UnmappableCharacterHandler.THROW_EXCEPTION;
+    private UnmappableCharacterHandler unmappableCharacterHandler =
+            UnmappableCharacterHandler.THROW_EXCEPTION;
 
     Latin1XmlWriter(OutputStream out, int maxChar) {
         super(out);
@@ -31,7 +32,8 @@ final class Latin1XmlWriter extends ASCIICompatibleXmlWriter {
     }
 
     @Override
-    public void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) throws IOException {
+    public void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler)
+            throws IOException {
         this.unmappableCharacterHandler = unmappableCharacterHandler;
     }
 
@@ -40,7 +42,7 @@ final class Latin1XmlWriter extends ASCIICompatibleXmlWriter {
         if (codePoint > maxChar) {
             unmappableCharacterHandler.processUnmappableCharacter(codePoint, this);
         } else {
-            writeByte((byte)codePoint);
+            writeByte((byte) codePoint);
         }
     }
 }

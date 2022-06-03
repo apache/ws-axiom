@@ -28,7 +28,7 @@ abstract class ASCIICompatibleXmlWriter extends XmlWriter {
     final byte[] buffer = new byte[4096];
     int bufferPosition;
     private char highSurrogate;
-    
+
     ASCIICompatibleXmlWriter(OutputStream out) {
         this.out = out;
     }
@@ -48,7 +48,7 @@ abstract class ASCIICompatibleXmlWriter extends XmlWriter {
             if (bufferPosition == buffer.length) {
                 flushBuffer();
             }
-            buffer[bufferPosition++] = (byte)c;
+            buffer[bufferPosition++] = (byte) c;
         } else {
             internalWrite(c);
         }
@@ -81,14 +81,14 @@ abstract class ASCIICompatibleXmlWriter extends XmlWriter {
         final int bufferLength = buffer.length;
         int bufferPosition = this.bufferPosition;
         int highSurrogate = this.highSurrogate;
-        for (int i=0, length=s.length(); i<length; i++) {
+        for (int i = 0, length = s.length(); i < length; i++) {
             char c = s.charAt(i);
             if (c < 128 && highSurrogate == 0) {
                 if (bufferPosition == bufferLength) {
                     out.write(buffer, 0, bufferLength);
                     bufferPosition = 0;
                 }
-                buffer[bufferPosition++] = (byte)c;
+                buffer[bufferPosition++] = (byte) c;
             } else {
                 this.bufferPosition = bufferPosition;
                 internalWrite(c);
@@ -105,14 +105,14 @@ abstract class ASCIICompatibleXmlWriter extends XmlWriter {
         final int bufferLength = buffer.length;
         int bufferPosition = this.bufferPosition;
         int highSurrogate = this.highSurrogate;
-        for (int i=0; i<length; i++) {
-            char c = chars[start+i];
+        for (int i = 0; i < length; i++) {
+            char c = chars[start + i];
             if (c < 128 && highSurrogate == 0) {
                 if (bufferPosition == bufferLength) {
                     out.write(buffer, 0, bufferLength);
                     bufferPosition = 0;
                 }
-                buffer[bufferPosition++] = (byte)c;
+                buffer[bufferPosition++] = (byte) c;
             } else {
                 this.bufferPosition = bufferPosition;
                 internalWrite(c);
@@ -128,24 +128,21 @@ abstract class ASCIICompatibleXmlWriter extends XmlWriter {
         return new AbstractBase64EncodingOutputStream() {
             @Override
             protected void doWrite(byte[] b) throws IOException {
-                if (buffer.length-bufferPosition < 4) {
+                if (buffer.length - bufferPosition < 4) {
                     ASCIICompatibleXmlWriter.this.flushBuffer();
                 }
                 System.arraycopy(b, 0, buffer, bufferPosition, 4);
                 bufferPosition += 4;
             }
-            
+
             @Override
-            protected void flushBuffer() throws IOException {
-            }
-            
+            protected void flushBuffer() throws IOException {}
+
             @Override
-            protected void doFlush() throws IOException {
-            }
-            
+            protected void doFlush() throws IOException {}
+
             @Override
-            protected void doClose() throws IOException {
-            }
+            protected void doClose() throws IOException {}
         };
     }
 

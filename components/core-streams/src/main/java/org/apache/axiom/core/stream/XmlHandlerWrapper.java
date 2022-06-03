@@ -30,8 +30,9 @@ public class XmlHandlerWrapper implements XmlHandler {
     }
 
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            Boolean standalone) throws StreamException {
+    public void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+            throws StreamException {
         parent.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
     }
 
@@ -41,8 +42,9 @@ public class XmlHandlerWrapper implements XmlHandler {
     }
 
     @Override
-    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
-            String internalSubset) throws StreamException {
+    public void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset)
+            throws StreamException {
         parent.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
 
@@ -58,8 +60,14 @@ public class XmlHandlerWrapper implements XmlHandler {
     }
 
     @Override
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value,
-            String type, boolean specified) throws StreamException {
+    public void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified)
+            throws StreamException {
         parent.processAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
 

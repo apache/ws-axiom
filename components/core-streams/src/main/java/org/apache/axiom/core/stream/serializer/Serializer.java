@@ -34,9 +34,9 @@ import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 
 /**
- * This abstract class is a base class for other stream 
- * serializers (xml, html, text ...) that write output to a stream.
- * 
+ * This abstract class is a base class for other stream serializers (xml, html, text ...) that write
+ * output to a stream.
+ *
  * @xsl.usage internal
  */
 public final class Serializer implements XmlHandler, CharacterDataSink {
@@ -45,7 +45,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
      * and large enough to reduce method invocation overhead.
      */
     private static final int CHUNK_SIZE = 4096;
-    
+
     private static final int MIXED_CONTENT = 0;
     private static final int TAG = 1;
     private static final int ATTRIBUTE_VALUE = 2;
@@ -53,27 +53,24 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     private static final int PROCESSING_INSTRUCTION = 4;
     private static final int CDATA_SECTION = 5;
 
-    private static final String[] illegalCharacterSequences = { null, null, null, "--", "?>", "]]>" };
+    private static final String[] illegalCharacterSequences = {null, null, null, "--", "?>", "]]>"};
 
     private static final UnmappableCharacterHandler[] unmappableCharacterHandlers = {
-            UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE,
-            UnmappableCharacterHandler.THROW_EXCEPTION,
-            UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE,
-            UnmappableCharacterHandler.THROW_EXCEPTION,
-            UnmappableCharacterHandler.THROW_EXCEPTION,
-            UnmappableCharacterHandler.THROW_EXCEPTION };
-    
+        UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE,
+        UnmappableCharacterHandler.THROW_EXCEPTION,
+        UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE,
+        UnmappableCharacterHandler.THROW_EXCEPTION,
+        UnmappableCharacterHandler.THROW_EXCEPTION,
+        UnmappableCharacterHandler.THROW_EXCEPTION
+    };
+
     private final XmlWriter writer;
     private final OutputStream outputStream;
-    
-    /**
-     * Add space before '/>' for XHTML.
-     */
+
+    /** Add space before '/>' for XHTML. */
     protected boolean spaceBeforeClose = false;
 
-    /**
-     * Tells if we're in an internal document type subset.
-     */
+    /** Tells if we're in an internal document type subset. */
     protected boolean inDoctype = false;
 
     private int context = MIXED_CONTENT;
@@ -90,10 +87,8 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     private boolean startTagOpen;
 
     /**
-     * A utility buffer for converting Strings passed to
-     * character() methods to character arrays.
-     * Reusing this buffer means not creating a new character array
-     * everytime and it runs faster.
+     * A utility buffer for converting Strings passed to character() methods to character arrays.
+     * Reusing this buffer means not creating a new character array everytime and it runs faster.
      */
     private final char[] charsBuff = new char[CHUNK_SIZE];
 
@@ -123,7 +118,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
      * flush all pending data before returning the output stream.
      *
      * @return the output stream, or {@code null} if this serializer is not writing to an output
-     *         stream (but to a {@link Writer} e.g.)
+     *     stream (but to a {@link Writer} e.g.)
      * @throws StreamException
      */
     public OutputStream getOutputStream() throws StreamException {
@@ -137,17 +132,15 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     /**
-     *   Report an element type declaration.
-     *  
-     *   <p>The content model will consist of the string "EMPTY", the
-     *   string "ANY", or a parenthesised group, optionally followed
-     *   by an occurrence indicator.  The model will be normalized so
-     *   that all whitespace is removed,and will include the enclosing
-     *   parentheses.</p>
-     *  
-     *   @param name The element type name.
-     *   @param model The content model as a normalized string.
-     *   @exception StreamException The application may raise an exception.
+     * Report an element type declaration.
+     *
+     * <p>The content model will consist of the string "EMPTY", the string "ANY", or a parenthesised
+     * group, optionally followed by an occurrence indicator. The model will be normalized so that
+     * all whitespace is removed,and will include the enclosing parentheses.
+     *
+     * @param name The element type name.
+     * @param model The content model as a normalized string.
+     * @exception StreamException The application may raise an exception.
      */
     public void elementDecl(String name, String model) throws StreamException {
         try {
@@ -165,11 +158,10 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     /**
      * Report an internal entity declaration.
      *
-     * <p>Only the effective (first) declaration for each entity
-     * will be reported.</p>
+     * <p>Only the effective (first) declaration for each entity will be reported.
      *
-     * @param name The name of the entity.  If it is a parameter
-     *        entity, the name will begin with '%'.
+     * @param name The name of the entity. If it is a parameter entity, the name will begin with
+     *     '%'.
      * @param value The replacement text of the entity.
      * @exception StreamException The application may raise an exception.
      * @see #externalEntityDecl
@@ -187,9 +179,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     /**
      * Output the doc type declaration.
      *
-     * @param name non-null reference to document type name.
-     * NEEDSDOC @param value
-     *
+     * @param name non-null reference to document type name. NEEDSDOC @param value
      * @throws StreamException
      */
     private void outputEntityDecl(String name, String value) throws IOException {
@@ -201,8 +191,9 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            Boolean standalone) throws StreamException {
+    public void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+            throws StreamException {
         switchContext(TAG);
         try {
             writer.write("<?xml version=\"");
@@ -226,30 +217,27 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void startFragment() throws StreamException {
-    }
+    public void startFragment() throws StreamException {}
 
     /**
      * Report an attribute type declaration.
      *
-     * <p>Only the effective (first) declaration for an attribute will
-     * be reported.  The type will be one of the strings "CDATA",
-     * "ID", "IDREF", "IDREFS", "NMTOKEN", "NMTOKENS", "ENTITY",
-     * "ENTITIES", or "NOTATION", or a parenthesized token group with
-     * the separator "|" and all whitespace removed.</p>
+     * <p>Only the effective (first) declaration for an attribute will be reported. The type will be
+     * one of the strings "CDATA", "ID", "IDREF", "IDREFS", "NMTOKEN", "NMTOKENS", "ENTITY",
+     * "ENTITIES", or "NOTATION", or a parenthesized token group with the separator "|" and all
+     * whitespace removed.
      *
      * @param eName The name of the associated element.
      * @param aName The name of the attribute.
      * @param type A string representing the attribute type.
-     * @param valueDefault A string representing the attribute default
-     *        ("#IMPLIED", "#REQUIRED", or "#FIXED") or null if
-     *        none of these applies.
-     * @param value A string representing the attribute's default value,
-     *        or null if there is none.
+     * @param valueDefault A string representing the attribute default ("#IMPLIED", "#REQUIRED", or
+     *     "#FIXED") or null if none of these applies.
+     * @param value A string representing the attribute's default value, or null if there is none.
      * @exception StreamException The application may raise an exception.
      */
-    public void attributeDecl(String eName, String aName, String type, String valueDefault,
-            String value) throws StreamException {
+    public void attributeDecl(
+            String eName, String aName, String type, String valueDefault, String value)
+            throws StreamException {
         try {
             DTDprolog();
             writer.write("<!ATTLIST ");
@@ -262,8 +250,8 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                 writer.write(' ');
                 writer.write(valueDefault);
             }
-            //writer.write(" ");
-            //writer.write(value);
+            // writer.write(" ");
+            // writer.write(value);
             writer.write(">\n");
         } catch (IOException ex) {
             throw new StreamException(ex);
@@ -273,19 +261,18 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     /**
      * Report a parsed external entity declaration.
      *
-     * <p>Only the effective (first) declaration for each entity
-     * will be reported.</p>
+     * <p>Only the effective (first) declaration for each entity will be reported.
      *
-     * @param name The name of the entity.  If it is a parameter
-     *        entity, the name will begin with '%'.
-     * @param publicId The declared public identifier of the entity, or
-     *        null if none was declared.
+     * @param name The name of the entity. If it is a parameter entity, the name will begin with
+     *     '%'.
+     * @param publicId The declared public identifier of the entity, or null if none was declared.
      * @param systemId The declared system identifier of the entity.
      * @exception StreamException The application may raise an exception.
      * @see #internalEntityDecl
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
-    public void externalEntityDecl(String name, String publicId, String systemId) throws StreamException {
+    public void externalEntityDecl(String name, String publicId, String systemId)
+            throws StreamException {
         try {
             DTDprolog();
             writer.write("<!ENTITY ");
@@ -306,65 +293,63 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     /**
      * Receive notification of character data.
      *
-     * <p>The Parser will call this method to report each chunk of
-     * character data.  SAX parsers may return all contiguous character
-     * data in a single chunk, or they may split it into several
-     * chunks; however, all of the characters in any single event
-     * must come from the same external entity, so that the Locator
-     * provides useful information.</p>
+     * <p>The Parser will call this method to report each chunk of character data. SAX parsers may
+     * return all contiguous character data in a single chunk, or they may split it into several
+     * chunks; however, all of the characters in any single event must come from the same external
+     * entity, so that the Locator provides useful information.
      *
-     * <p>The application must not attempt to read from the array
-     * outside of the specified range.</p>
+     * <p>The application must not attempt to read from the array outside of the specified range.
      *
-     * <p>Note that some parsers will report whitespace using the
-     * ignorableWhitespace() method rather than this one (validating
-     * parsers must do so).</p>
+     * <p>Note that some parsers will report whitespace using the ignorableWhitespace() method
+     * rather than this one (validating parsers must do so).
      *
      * @param chars The characters from the XML document.
      * @param start The start position in the array.
      * @param length The number of characters to read from the array.
-     * @throws StreamException Any SAX exception, possibly
-     *            wrapping another exception.
+     * @throws StreamException Any SAX exception, possibly wrapping another exception.
      * @see #ignorableWhitespace
      * @see org.xml.sax.Locator
-     *
      * @throws StreamException
      */
     public void characters(char chars[], int start, int length) throws StreamException {
-        // It does not make sense to continue with rest of the method if the number of 
+        // It does not make sense to continue with rest of the method if the number of
         // characters to read from array is 0.
         // Section 7.6.1 of XSLT 1.0 (http://www.w3.org/TR/xslt#value-of) suggest no text node
         // is created if string is empty.
-        if (length == 0)
-            return;
-        
+        if (length == 0) return;
+
         final XmlWriter writer = this.writer;
         final int context = this.context;
         final String illegalCharacterSequence = illegalCharacterSequences[context];
-        
+
         try {
             int i;
-            
+
             final int end = start + length;
-            int lastDirtyCharProcessed = start - 1; // last non-clean character that was processed
-                                                    // that was processed
+            // last non-clean character that was processed that was processed
+            int lastDirtyCharProcessed = start - 1;
             int matchedIllegalCharacters = this.matchedIllegalCharacters;
             int squareBrackets = this.squareBrackets;
             for (i = start; i < end; i++) {
                 char ch = chars[i];
-                
+
                 if (illegalCharacterSequence != null) {
                     while (true) {
                         if (ch == illegalCharacterSequence.charAt(matchedIllegalCharacters)) {
                             if (++matchedIllegalCharacters == illegalCharacterSequence.length()) {
-                                throw new IllegalCharacterSequenceException("Illegal character sequence \"" + illegalCharacterSequence + "\"");
+                                throw new IllegalCharacterSequenceException(
+                                        "Illegal character sequence \""
+                                                + illegalCharacterSequence
+                                                + "\"");
                             }
                             break;
                         } else if (matchedIllegalCharacters > 0) {
                             int offset = 1;
-                            loop: while (offset < matchedIllegalCharacters) {
+                            loop:
+                            while (offset < matchedIllegalCharacters) {
                                 for (int j = 0; j < matchedIllegalCharacters - offset; j++) {
-                                    if (illegalCharacterSequence.charAt(j) != illegalCharacterSequence.charAt(j+offset)) {
+                                    if (illegalCharacterSequence.charAt(j)
+                                            != illegalCharacterSequence.charAt(j + offset)) {
                                         offset++;
                                         continue loop;
                                     }
@@ -377,10 +362,10 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                         }
                     }
                 }
-                
+
                 String replacement = null;
                 boolean generateCharacterReference = false;
-                
+
                 if (context == MIXED_CONTENT || context == ATTRIBUTE_VALUE) {
                     if (ch <= 0x1F) {
                         // Range 0x00 through 0x1F inclusive
@@ -393,8 +378,8 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                         // 0xD   CARRIAGE RETURN
                         //
                         // We also cover 0x0 ... It isn't valid
-                        // but we will output "&#0;" 
-                        
+                        // but we will output "&#0;"
+
                         // The default will handle this just fine, but this
                         // is a little performance boost to handle the more
                         // common TAB, NEW-LINE, CARRIAGE-RETURN
@@ -443,17 +428,19 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                         // LINE SEPARATOR
                         replacement = "&#8232;";
                     }
-                    
+
                     if (ch == ']') {
                         squareBrackets++;
                     } else {
                         squareBrackets = 0;
                     }
                 }
-                
+
                 int startClean = lastDirtyCharProcessed + 1;
                 int lengthClean = i - startClean;
-                if (replacement != null || generateCharacterReference || lengthClean == CHUNK_SIZE) {
+                if (replacement != null
+                        || generateCharacterReference
+                        || lengthClean == CHUNK_SIZE) {
                     if (startClean < i) {
                         writer.write(chars, startClean, lengthClean);
                     }
@@ -465,7 +452,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                     lastDirtyCharProcessed = i;
                 }
             }
-            
+
             // we've reached the end. Any clean characters at the
             // end of the array than need to be written out?
             int startClean = lastDirtyCharProcessed + 1;
@@ -487,7 +474,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     void characters(String s, int start, int length) throws StreamException {
         while (length > 0) {
             int count = Math.min(length, CHUNK_SIZE);
-            s.getChars(start, start+count, charsBuff, 0);
+            s.getChars(start, start + count, charsBuff, 0);
             characters(charsBuff, 0, count);
             start += count;
             length -= count;
@@ -509,11 +496,11 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
         closeStartTag();
         if (data instanceof CharacterData) {
             try {
-                ((CharacterData)data).writeTo(this);
+                ((CharacterData) data).writeTo(this);
             } catch (IOException ex) {
                 Throwable cause = ex.getCause();
                 if (cause instanceof StreamException) {
-                    throw (StreamException)cause;
+                    throw (StreamException) cause;
                 } else {
                     throw new StreamException(ex);
                 }
@@ -524,10 +511,10 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix)
+            throws StreamException {
         closeStartTag();
-        try
-        {
+        try {
             switchContext(TAG);
             writer.write('<');
             if (!prefix.isEmpty()) {
@@ -535,24 +522,24 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                 writer.write(':');
             }
             writer.write(localName);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new StreamException(e);
         }
-        if (2*(depth+1) > elementNameStack.length) {
-            String[] newElementNameStack = new String[elementNameStack.length*2];
+        if (2 * (depth + 1) > elementNameStack.length) {
+            String[] newElementNameStack = new String[elementNameStack.length * 2];
             System.arraycopy(elementNameStack, 0, newElementNameStack, 0, elementNameStack.length);
             elementNameStack = newElementNameStack;
         }
-        elementNameStack[2*depth] = prefix;
-        elementNameStack[2*depth+1] = localName;
+        elementNameStack[2 * depth] = prefix;
+        elementNameStack[2 * depth + 1] = localName;
         depth++;
         startTagOpen = true;
     }
 
     @Override
-    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
+    public void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset)
+            throws StreamException {
         startDTD(rootName, publicId, systemId);
         if (internalSubset != null) {
             writeInternalSubset(internalSubset);
@@ -560,8 +547,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
         endDTD();
     }
 
-    public void startDTD(String name, String publicId, String systemId) throws StreamException
-    {
+    public void startDTD(String name, String publicId, String systemId) throws StreamException {
         inDoctype = true;
         try {
             writer.write("<!DOCTYPE ");
@@ -580,13 +566,13 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                 writer.write(systemId);
                 writer.write('\"');
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw new StreamException(ex);
         }
     }
 
-    private void writeAttribute(String prefix, String localName, String value) throws StreamException {
+    private void writeAttribute(String prefix, String localName, String value)
+            throws StreamException {
         try {
             writer.write(' ');
             if (!prefix.isEmpty()) {
@@ -607,7 +593,8 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI)
+            throws StreamException {
         if (prefix.isEmpty()) {
             writeAttribute("", "xmlns", namespaceURI);
         } else {
@@ -616,18 +603,25 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
+    public void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified)
+            throws StreamException {
         writeAttribute(prefix, localName, value);
     }
 
     @Override
-    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
+    public void processAttribute(String name, String value, String type, boolean specified)
+            throws StreamException {
         writeAttribute("", name, value);
     }
 
     @Override
-    public void attributesCompleted() throws StreamException {
-    }
+    public void attributesCompleted() throws StreamException {}
 
     @Override
     public void endElement() throws StreamException {
@@ -642,12 +636,12 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
             } else {
                 switchContext(TAG);
                 writer.write("</");
-                String prefix = elementNameStack[2*depth];
+                String prefix = elementNameStack[2 * depth];
                 if (!prefix.isEmpty()) {
                     writer.write(prefix);
                     writer.write(':');
                 }
-                writer.write(elementNameStack[2*depth+1]);
+                writer.write(elementNameStack[2 * depth + 1]);
                 writer.write('>');
             }
             switchContext(MIXED_CONTENT);
@@ -679,8 +673,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void endCDATASection() throws StreamException
-    {
+    public void endCDATASection() throws StreamException {
         try {
             writer.write("]]>");
         } catch (IOException ex) {
@@ -691,6 +684,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
 
     /**
      * Report the end of DTD declarations.
+     *
      * @throws StreamException The application may raise an exception.
      * @see #startDTD
      */
@@ -718,8 +712,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     /**
-     * For the enclosing elements starting tag write out
-     * out any attributes followed by ">"
+     * For the enclosing elements starting tag write out out any attributes followed by ">"
      *
      * @throws StreamException
      */
@@ -794,7 +787,8 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
         }
     }
 
-    public void unparsedEntityDecl(String name, String pubID, String sysID, String notationName) throws StreamException {
+    public void unparsedEntityDecl(String name, String pubID, String sysID, String notationName)
+            throws StreamException {
         try {
             DTDprolog();
             writer.write("<!ENTITY ");
@@ -813,9 +807,10 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
             throw new StreamException(ex);
         }
     }
-    
+
     /**
-     * A private helper method to output the 
+     * A private helper method to output the
+     *
      * @throws StreamException
      * @throws IOException
      */
@@ -825,8 +820,9 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
             inDoctype = false;
         }
     }
-    
-    public void writeRaw(String s, UnmappableCharacterHandler unmappableCharacterHandler) throws StreamException {
+
+    public void writeRaw(String s, UnmappableCharacterHandler unmappableCharacterHandler)
+            throws StreamException {
         try {
             writer.setUnmappableCharacterHandler(unmappableCharacterHandler);
             writer.write(s);
@@ -843,7 +839,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
             writer.write('&');
             writer.write(name);
             writer.write(';');
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new StreamException(ex);
         }
     }

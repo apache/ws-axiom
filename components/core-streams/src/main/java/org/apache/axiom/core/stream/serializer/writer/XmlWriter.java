@@ -39,20 +39,24 @@ public abstract class XmlWriter {
         }
     }
 
-    public abstract void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) throws IOException;
+    public abstract void setUnmappableCharacterHandler(
+            UnmappableCharacterHandler unmappableCharacterHandler) throws IOException;
+
     public abstract void write(char c) throws IOException;
+
     public abstract void write(String s) throws IOException;
+
     public abstract void write(char chars[], int start, int length) throws IOException;
 
     public abstract AbstractBase64EncodingOutputStream getBase64EncodingOutputStream();
 
     /**
      * Write any pending data to the underlying stream, without flushing the stream itself.
-     * 
+     *
      * @throws IOException
      */
     public abstract void flushBuffer() throws IOException;
-    
+
     public final void writeCharacterReference(int codePoint) throws IOException {
         write("&#");
         // TODO: optimize this

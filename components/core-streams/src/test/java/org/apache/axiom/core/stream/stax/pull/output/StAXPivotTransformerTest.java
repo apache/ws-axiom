@@ -59,8 +59,10 @@ public class StAXPivotTransformerTest extends MatrixTestCase {
         StAXPivot pivot = new StAXPivot(null);
         pivot.setReader(new DOMInput(document, false).createReader(pivot));
         StringWriter sw = new StringWriter();
-        xsltImplementation.newTransformerFactory().newTransformer().transform(
-                new StAXSource(pivot), new StreamResult(sw));
+        xsltImplementation
+                .newTransformerFactory()
+                .newTransformer()
+                .transform(new StAXSource(pivot), new StreamResult(sw));
         assertAbout(xml()).that(sw.toString()).hasSameContentAs(document);
     }
 
@@ -68,7 +70,8 @@ public class StAXPivotTransformerTest extends MatrixTestCase {
         return new MatrixTestSuiteBuilder() {
             @Override
             protected void addTests() {
-                for (XSLTImplementation xsltImplementation : getInstances(XSLTImplementation.class)) {
+                for (XSLTImplementation xsltImplementation :
+                        getInstances(XSLTImplementation.class)) {
                     if (xsltImplementation.supportsStAXSource()) {
                         for (XMLSample sample : getInstances(XMLSample.class)) {
                             if (!sample.hasDTD()) {

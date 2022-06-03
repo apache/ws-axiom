@@ -21,7 +21,7 @@ package org.apache.axiom.core.stream;
 public final class FilteredXmlInput implements XmlInput {
     private final XmlInput parent;
     private final XmlFilter filter;
-    
+
     public FilteredXmlInput(XmlInput parent, XmlFilter filter) {
         this.parent = parent;
         this.filter = filter;

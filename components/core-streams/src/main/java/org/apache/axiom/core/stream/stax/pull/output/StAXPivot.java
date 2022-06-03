@@ -60,11 +60,12 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
                 return XMLConstants.XMLNS_ATTRIBUTE;
             } else {
                 int bindings = getNamespaceBindingsCount();
-                outer: for (int i=(bindings-1)*2; i>=0; i-=2) {
-                    if (namespaceURI.equals(namespaceStack[i+1])) {
+                outer:
+                for (int i = (bindings - 1) * 2; i >= 0; i -= 2) {
+                    if (namespaceURI.equals(namespaceStack[i + 1])) {
                         String prefix = namespaceStack[i];
                         // Now check that the prefix is not masked
-                        for (int j=i+2; j<bindings*2; j+=2) {
+                        for (int j = i + 2; j < bindings * 2; j += 2) {
                             if (prefix.equals(namespaceStack[j])) {
                                 continue outer;
                             }
@@ -93,12 +94,13 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
                     @Override
                     public boolean hasNext() {
                         if (next == null) {
-                            outer: while (--binding >= 0) {
-                                if (namespaceURI.equals(namespaceStack[binding*2+1])) {
-                                    String prefix = namespaceStack[binding*2];
+                            outer:
+                            while (--binding >= 0) {
+                                if (namespaceURI.equals(namespaceStack[binding * 2 + 1])) {
+                                    String prefix = namespaceStack[binding * 2];
                                     // Now check that the prefix is not masked
-                                    for (int j=binding+1; j<bindings; j++) {
-                                        if (prefix.equals(namespaceStack[j*2])) {
+                                    for (int j = binding + 1; j < bindings; j++) {
+                                        if (prefix.equals(namespaceStack[j * 2])) {
                                             continue outer;
                                         }
                                     }
@@ -129,22 +131,22 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
             }
         }
     }
-    
+
     private static final int STATE_DEFAULT = 0;
-    
+
     /**
      * All data for the current StAX event has been received and the instance is not ready to
      * receive more data.
      */
     private static final int STATE_EVENT_COMPLETE = 1;
-    
+
     /**
      * Indicates that all character data should be collected until a non character event is
      * encountered. This state is used to implement comment and CDATA section processing as well as
      * {@link XMLStreamReader#getElementText()}.
      */
     private static final int STATE_COLLECT_TEXT = 2;
-    
+
     /**
      * Used in a CDATA section to indicate that the character data inside the CDATA section should
      * be coalesced with the character data around the CDATA section. This state is used to
@@ -152,13 +154,13 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
      * state transitions back to {@link #STATE_COLLECT_TEXT}.
      */
     private static final int STATE_COALESCE_CDATA_SECTION = 3;
-    
+
     /**
      * Indicates that all events should be skipped until a start or end element event is
      * encountered. This state is used to implement {@link XMLStreamReader#nextTag()}.
      */
     private static final int STATE_NEXT_TAG = 4;
-    
+
     /**
      * Indicates that all content (character data) in a comment or processing instruction should be
      * skipped. This state is used when comment or processing instruction is encountered in states
@@ -167,15 +169,13 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
      * comment or processing instruction is reached.
      */
     private static final int STATE_SKIP_CONTENT = 5;
-    
-    /**
-     * Indicates that an error has occurred an that the instance is no longer usable.
-     */
+
+    /** Indicates that an error has occurred an that the instance is no longer usable. */
     private static final int STATE_ERROR = 6;
-    
+
     private final XMLStreamReaderExtensionFactory extensionFactory;
     private XmlReader reader;
-    private Map<String,Object> extensions;
+    private Map<String, Object> extensions;
     private int state = STATE_DEFAULT;
     private int previousState = -1;
     private int eventType = -1;
@@ -198,7 +198,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     private String text;
     // Entity reference name or processing instruction target
     private String name;
-    
+
     // TODO: The constructor should take an XmlInput object as input
     public StAXPivot(XMLStreamReaderExtensionFactory extensionFactory) {
         this.extensionFactory = extensionFactory;
@@ -227,13 +227,13 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     private void putNamespaceDeclaration(int index, String prefix, String namespaceURI) {
-        if (index*2 == namespaceStack.length) {
-            String[] newNamespaceStack = new String[namespaceStack.length*2];
+        if (index * 2 == namespaceStack.length) {
+            String[] newNamespaceStack = new String[namespaceStack.length * 2];
             System.arraycopy(namespaceStack, 0, newNamespaceStack, 0, namespaceStack.length);
             namespaceStack = newNamespaceStack;
         }
-        namespaceStack[2*index] = prefix;
-        namespaceStack[2*index+1] = namespaceURI;
+        namespaceStack[2 * index] = prefix;
+        namespaceStack[2 * index + 1] = namespaceURI;
     }
 
     private void checkState() {
@@ -241,23 +241,25 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
             throw new IllegalStateException();
         }
     }
-    
+
     private void startCollectingText() {
         state = STATE_COLLECT_TEXT;
         if (accumulator == null) {
             accumulator = new CharacterDataAccumulator();
         }
     }
-    
+
     private String stopCollectingText() {
         String data = accumulator.toString();
         accumulator.clear();
         state = STATE_EVENT_COMPLETE;
         return data;
     }
-    
+
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) throws StreamException {
+    public void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+            throws StreamException {
         checkState();
         eventType = START_DOCUMENT;
         encoding = inputEncoding;
@@ -275,7 +277,9 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     @Override
-    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
+    public void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset)
+            throws StreamException {
         checkState();
         eventType = DTD;
         this.rootName = rootName;
@@ -286,26 +290,27 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix)
+            throws StreamException {
         checkState();
         eventType = START_ELEMENT;
         if (state == STATE_NEXT_TAG) {
             state = STATE_DEFAULT;
         }
-        if (depth*3 == elementStack.length) {
-            String[] newElementStack = new String[elementStack.length*2];
+        if (depth * 3 == elementStack.length) {
+            String[] newElementStack = new String[elementStack.length * 2];
             System.arraycopy(elementStack, 0, newElementStack, 0, elementStack.length);
             elementStack = newElementStack;
         }
-        elementStack[depth*3] = namespaceURI;
-        elementStack[depth*3+1] = localName;
-        elementStack[depth*3+2] = prefix;
-        if (depth+1 == scopeStack.length) {
-            int[] newScopeStack = new int[scopeStack.length*2];
+        elementStack[depth * 3] = namespaceURI;
+        elementStack[depth * 3 + 1] = localName;
+        elementStack[depth * 3 + 2] = prefix;
+        if (depth + 1 == scopeStack.length) {
+            int[] newScopeStack = new int[scopeStack.length * 2];
             System.arraycopy(scopeStack, 0, newScopeStack, 0, scopeStack.length);
             scopeStack = newScopeStack;
         }
-        scopeStack[depth+1] = scopeStack[depth];
+        scopeStack[depth + 1] = scopeStack[depth];
         attributeCount = 0;
     }
 
@@ -318,17 +323,24 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     @Override
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
-        if (attributeCount*5 == attributeStack.length) {
-            String[] newAttributeStack = new String[attributeStack.length*2];
+    public void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified)
+            throws StreamException {
+        if (attributeCount * 5 == attributeStack.length) {
+            String[] newAttributeStack = new String[attributeStack.length * 2];
             System.arraycopy(attributeStack, 0, newAttributeStack, 0, attributeStack.length);
             attributeStack = newAttributeStack;
         }
-        attributeStack[5*attributeCount] = namespaceURI;
-        attributeStack[5*attributeCount+1] = localName;
-        attributeStack[5*attributeCount+2] = prefix;
-        attributeStack[5*attributeCount+3] = value;
-        attributeStack[5*attributeCount+4] = type;
+        attributeStack[5 * attributeCount] = namespaceURI;
+        attributeStack[5 * attributeCount + 1] = localName;
+        attributeStack[5 * attributeCount + 2] = prefix;
+        attributeStack[5 * attributeCount + 3] = value;
+        attributeStack[5 * attributeCount + 4] = type;
         attributeCount++;
     }
 
@@ -340,8 +352,9 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
-        putNamespaceDeclaration(scopeStack[depth+1]++, prefix, namespaceURI);
+    public void processNamespaceDeclaration(String prefix, String namespaceURI)
+            throws StreamException {
+        putNamespaceDeclaration(scopeStack[depth + 1]++, prefix, namespaceURI);
     }
 
     @Override
@@ -504,7 +517,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
             Object extension = extensionFactory.createExtension(name, this);
             if (extension != null) {
                 if (extensions == null) {
-                    extensions = new HashMap<String,Object>();
+                    extensions = new HashMap<String, Object>();
                 }
                 extensions.put(name, extension);
                 return extension;
@@ -558,35 +571,53 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     @Override
-    public void require(int expectedType, String expectedNamespaceURI, String expectedLocalName) throws XMLStreamException {
+    public void require(int expectedType, String expectedNamespaceURI, String expectedLocalName)
+            throws XMLStreamException {
         if (expectedType != eventType) {
-            throw new XMLStreamException("Required type " + XMLEventUtils.getEventTypeString(expectedType)
-                    + ", actual type " + XMLEventUtils.getEventTypeString(eventType));
+            throw new XMLStreamException(
+                    "Required type "
+                            + XMLEventUtils.getEventTypeString(expectedType)
+                            + ", actual type "
+                            + XMLEventUtils.getEventTypeString(eventType));
         }
 
         if (expectedLocalName != null) {
-            if (eventType != START_ELEMENT && eventType != END_ELEMENT
-                && eventType != ENTITY_REFERENCE) {
-                throw new XMLStreamException("Required a non-null local name, but current token " +
-                        "not a START_ELEMENT, END_ELEMENT or ENTITY_REFERENCE (was " +
-                        XMLEventUtils.getEventTypeString(eventType) + ")");
+            if (eventType != START_ELEMENT
+                    && eventType != END_ELEMENT
+                    && eventType != ENTITY_REFERENCE) {
+                throw new XMLStreamException(
+                        "Required a non-null local name, but current token "
+                                + "not a START_ELEMENT, END_ELEMENT or ENTITY_REFERENCE (was "
+                                + XMLEventUtils.getEventTypeString(eventType)
+                                + ")");
             }
             String localName = getLocalName();
             if (!localName.equals(expectedLocalName)) {
-                throw new XMLStreamException("Required local name '" + expectedLocalName +
-                        "'; current local name '" + localName + "'.");
+                throw new XMLStreamException(
+                        "Required local name '"
+                                + expectedLocalName
+                                + "'; current local name '"
+                                + localName
+                                + "'.");
             }
         }
-        
+
         if (expectedNamespaceURI != null) {
             if (eventType != START_ELEMENT && eventType != END_ELEMENT) {
-                throw new XMLStreamException("Required non-null namespace URI, but current token " +
-                        "not a START_ELEMENT or END_ELEMENT (was " +
-                        XMLEventUtils.getEventTypeString(eventType) + ")");
+                throw new XMLStreamException(
+                        "Required non-null namespace URI, but current token "
+                                + "not a START_ELEMENT or END_ELEMENT (was "
+                                + XMLEventUtils.getEventTypeString(eventType)
+                                + ")");
             }
-            String namespaceURI = elementStack[3*depth];
+            String namespaceURI = elementStack[3 * depth];
             if (!expectedNamespaceURI.equals(namespaceURI)) {
-                throw new XMLStreamException("Required namespace '" + expectedNamespaceURI + "'; have '" + namespaceURI +"'.");
+                throw new XMLStreamException(
+                        "Required namespace '"
+                                + expectedNamespaceURI
+                                + "'; have '"
+                                + namespaceURI
+                                + "'.");
             }
         }
     }
@@ -656,24 +687,25 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     int getNamespaceBindingsCount() {
-        return scopeStack[eventType == START_ELEMENT || eventType == END_ELEMENT ? depth + 1 : depth];
+        return scopeStack[
+                eventType == START_ELEMENT || eventType == END_ELEMENT ? depth + 1 : depth];
     }
-    
+
     String lookupNamespaceURI(String prefix) {
         if (prefix.equals(XMLConstants.XML_NS_PREFIX)) {
             return XMLConstants.XML_NS_URI;
         } else if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
             return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
         } else {
-            for (int i=(getNamespaceBindingsCount()-1)*2; i>=0; i-=2) {
+            for (int i = (getNamespaceBindingsCount() - 1) * 2; i >= 0; i -= 2) {
                 if (prefix.equals(namespaceStack[i])) {
-                    return namespaceStack[i+1];
+                    return namespaceStack[i + 1];
                 }
             }
             return prefix.isEmpty() ? "" : null;
         }
     }
-    
+
     @Override
     public String getNamespaceURI(String prefix) {
         return emptyToNull(lookupNamespaceURI(nullToEmpty(prefix)));
@@ -705,7 +737,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
                 // means that this method may return true for a CHARACTER event and we need
                 // to scan the text of the node.
                 String text = internalGetText();
-                for (int i=0; i<text.length(); i++) {
+                for (int i = 0; i < text.length(); i++) {
                     char c = text.charAt(i);
                     if (c != ' ' && c != '\t' && c != '\r' && c != '\n') {
                         return false;
@@ -729,7 +761,10 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public QName getAttributeName(int index) {
         if (eventType == START_ELEMENT) {
-            return QNameCache.getQName(attributeStack[5*index], attributeStack[5*index+1], attributeStack[5*index+2]);
+            return QNameCache.getQName(
+                    attributeStack[5 * index],
+                    attributeStack[5 * index + 1],
+                    attributeStack[5 * index + 2]);
         } else {
             throw new IllegalStateException();
         }
@@ -738,7 +773,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public String getAttributeNamespace(int index) {
         if (eventType == START_ELEMENT) {
-            return emptyToNull(attributeStack[5*index]);
+            return emptyToNull(attributeStack[5 * index]);
         } else {
             throw new IllegalStateException();
         }
@@ -747,7 +782,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public String getAttributeLocalName(int index) {
         if (eventType == START_ELEMENT) {
-            return attributeStack[5*index+1];
+            return attributeStack[5 * index + 1];
         } else {
             throw new IllegalStateException();
         }
@@ -756,7 +791,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public String getAttributePrefix(int index) {
         if (eventType == START_ELEMENT) {
-            return emptyToNull(attributeStack[5*index+2]);
+            return emptyToNull(attributeStack[5 * index + 2]);
         } else {
             throw new IllegalStateException();
         }
@@ -765,7 +800,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public String getAttributeValue(int index) {
         if (eventType == START_ELEMENT) {
-            return attributeStack[5*index+3];
+            return attributeStack[5 * index + 3];
         } else {
             throw new IllegalStateException();
         }
@@ -774,7 +809,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public String getAttributeType(int index) {
         if (eventType == START_ELEMENT) {
-            return attributeStack[5*index+4];
+            return attributeStack[5 * index + 4];
         } else {
             throw new IllegalStateException();
         }
@@ -794,9 +829,10 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     public String getAttributeValue(String namespaceURI, String localName) {
         if (eventType == START_ELEMENT) {
             namespaceURI = nullToEmpty(namespaceURI);
-            for (int i=0; i<attributeCount; i++) {
-                if (localName.equals(attributeStack[i*5+1]) && namespaceURI.equals(attributeStack[i*5])) {
-                    return attributeStack[i*5+3];
+            for (int i = 0; i < attributeCount; i++) {
+                if (localName.equals(attributeStack[i * 5 + 1])
+                        && namespaceURI.equals(attributeStack[i * 5])) {
+                    return attributeStack[i * 5 + 3];
                 }
             }
             return null;
@@ -810,7 +846,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         switch (eventType) {
             case START_ELEMENT:
             case END_ELEMENT:
-                return scopeStack[depth+1]-scopeStack[depth];
+                return scopeStack[depth + 1] - scopeStack[depth];
             default:
                 throw new IllegalStateException();
         }
@@ -821,7 +857,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         switch (eventType) {
             case START_ELEMENT:
             case END_ELEMENT:
-                return emptyToNull(namespaceStack[2*(scopeStack[depth]+index)]);
+                return emptyToNull(namespaceStack[2 * (scopeStack[depth] + index)]);
             default:
                 throw new IllegalStateException();
         }
@@ -834,7 +870,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
             case END_ELEMENT:
                 // The XSLT implementation in the JRE doesn't like null values returned here.
                 // Returning empty strings is also what Woodstox does.
-                return namespaceStack[2*(scopeStack[depth]+index)+1];
+                return namespaceStack[2 * (scopeStack[depth] + index) + 1];
             default:
                 throw new IllegalStateException();
         }
@@ -859,7 +895,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         }
         return text;
     }
-    
+
     @Override
     public String getText() {
         switch (eventType) {
@@ -890,9 +926,10 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     @Override
-    public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length) throws XMLStreamException {
+    public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
+            throws XMLStreamException {
         String text = internalGetText();
-        int copied = Math.min(length, text.length()-sourceStart);
+        int copied = Math.min(length, text.length() - sourceStart);
         text.getChars(sourceStart, sourceStart + copied, target, targetStart);
         return copied;
     }
@@ -926,9 +963,12 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
 
     @Override
     public boolean hasText() {
-        return eventType == CHARACTERS || eventType == DTD
-                || eventType == CDATA || eventType == ENTITY_REFERENCE
-                || eventType == COMMENT || eventType == SPACE;
+        return eventType == CHARACTERS
+                || eventType == DTD
+                || eventType == CDATA
+                || eventType == ENTITY_REFERENCE
+                || eventType == COMMENT
+                || eventType == SPACE;
     }
 
     @Override
@@ -941,7 +981,10 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         switch (eventType) {
             case START_ELEMENT:
             case END_ELEMENT:
-                return QNameCache.getQName(elementStack[3*depth], elementStack[3*depth+1], elementStack[3*depth+2]);
+                return QNameCache.getQName(
+                        elementStack[3 * depth],
+                        elementStack[3 * depth + 1],
+                        elementStack[3 * depth + 2]);
             default:
                 throw new IllegalStateException();
         }
@@ -957,7 +1000,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         switch (eventType) {
             case START_ELEMENT:
             case END_ELEMENT:
-                return emptyToNull(elementStack[3*depth]);
+                return emptyToNull(elementStack[3 * depth]);
             default:
                 throw new IllegalStateException();
         }
@@ -968,7 +1011,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         switch (eventType) {
             case START_ELEMENT:
             case END_ELEMENT:
-                return emptyToNull(elementStack[3*depth+1]);
+                return emptyToNull(elementStack[3 * depth + 1]);
             case ENTITY_REFERENCE:
                 return name;
             default:
@@ -982,7 +1025,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
             case START_ELEMENT:
             case END_ELEMENT:
                 // Saxon assumes that getPrefix returns "" instead of null.
-                return elementStack[3*depth+2];
+                return elementStack[3 * depth + 2];
             default:
                 throw new IllegalStateException();
         }

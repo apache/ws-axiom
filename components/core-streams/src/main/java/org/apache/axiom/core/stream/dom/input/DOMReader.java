@@ -37,21 +37,21 @@ final class DOMReader implements XmlReader {
     private static final int NOT_VISITED = 1;
     private static final int VISITED = 2;
     private static final int COMPLETE = 3;
-    
+
     private final XmlHandler handler;
     private final Node rootNode;
     private final boolean expandEntityReferences;
     private final boolean dom3;
     private Node currentNode;
     private int state = START;
-    
+
     DOMReader(XmlHandler handler, Node node, boolean expandEntityReferences) {
         this.handler = handler;
         rootNode = node;
         this.expandEntityReferences = expandEntityReferences;
         Document ownerDocument;
         if (node.getNodeType() == Node.DOCUMENT_NODE) {
-            ownerDocument = (Document)node;
+            ownerDocument = (Document) node;
         } else {
             ownerDocument = node.getOwnerDocument();
         }
@@ -61,12 +61,13 @@ final class DOMReader implements XmlReader {
     private static String nullToEmptyString(String s) {
         return s == null ? "" : s;
     }
-    
+
     @Override
     public boolean proceed() throws StreamException {
         Node currentNode = this.currentNode;
         int state = this.state;
-        loop: while (true) {
+        loop:
+        while (true) {
             switch (state) {
                 case START:
                     if (rootNode instanceof Document) {
@@ -120,9 +121,13 @@ final class DOMReader implements XmlReader {
                 switch (nodeType) {
                     case Node.DOCUMENT_NODE:
                         if (currentNode != null) {
-                            Document document = (Document)currentNode;
+                            Document document = (Document) currentNode;
                             if (dom3) {
-                                handler.startDocument(document.getInputEncoding(), document.getXmlVersion(), document.getXmlEncoding(), document.getXmlStandalone());
+                                handler.startDocument(
+                                        document.getInputEncoding(),
+                                        document.getXmlVersion(),
+                                        document.getXmlEncoding(),
+                                        document.getXmlStandalone());
                             } else {
                                 handler.startDocument(null, "1.0", null, null);
                             }
@@ -131,38 +136,61 @@ final class DOMReader implements XmlReader {
                         }
                         break loop;
                     case Node.DOCUMENT_TYPE_NODE:
-                        DocumentType docType = (DocumentType)currentNode;
-                        handler.processDocumentTypeDeclaration(docType.getName(), docType.getPublicId(), docType.getSystemId(), docType.getInternalSubset());
+                        DocumentType docType = (DocumentType) currentNode;
+                        handler.processDocumentTypeDeclaration(
+                                docType.getName(),
+                                docType.getPublicId(),
+                                docType.getSystemId(),
+                                docType.getInternalSubset());
                         break loop;
                     case Node.ELEMENT_NODE:
-                        Element element = (Element)currentNode;
+                        Element element = (Element) currentNode;
                         String localName = element.getLocalName();
                         if (localName == null) {
                             // TODO
                             throw new UnsupportedOperationException();
                         } else {
-                            handler.startElement(nullToEmptyString(element.getNamespaceURI()), localName, nullToEmptyString(element.getPrefix()));
+                            handler.startElement(
+                                    nullToEmptyString(element.getNamespaceURI()),
+                                    localName,
+                                    nullToEmptyString(element.getPrefix()));
                         }
                         NamedNodeMap attributes = element.getAttributes();
                         // TODO: we should not push all attributes at once
-                        for (int length=attributes.getLength(), i=0; i<length; i++) {
-                            Attr attr = (Attr)attributes.item(i);
+                        for (int length = attributes.getLength(), i = 0; i < length; i++) {
+                            Attr attr = (Attr) attributes.item(i);
                             String attrLocalName = attr.getLocalName();
                             if (attrLocalName == null) {
-                                handler.processAttribute(attr.getName(), attr.getValue(), "CDATA", attr.getSpecified());
+                                handler.processAttribute(
+                                        attr.getName(),
+                                        attr.getValue(),
+                                        "CDATA",
+                                        attr.getSpecified());
                             } else {
                                 String namespaceURI = attr.getNamespaceURI();
                                 if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-                                    handler.processNamespaceDeclaration(attrLocalName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : attrLocalName, attr.getValue());
+                                    handler.processNamespaceDeclaration(
+                                            attrLocalName.equals(XMLConstants.XMLNS_ATTRIBUTE)
+                                                    ? ""
+                                                    : attrLocalName,
+                                            attr.getValue());
                                 } else {
-                                    handler.processAttribute(nullToEmptyString(namespaceURI), attrLocalName, nullToEmptyString(attr.getPrefix()), attr.getValue(), "CDATA", attr.getSpecified());
+                                    handler.processAttribute(
+                                            nullToEmptyString(namespaceURI),
+                                            attrLocalName,
+                                            nullToEmptyString(attr.getPrefix()),
+                                            attr.getValue(),
+                                            "CDATA",
+                                            attr.getSpecified());
                                 }
                             }
                         }
                         handler.attributesCompleted();
                         break loop;
                     case Node.TEXT_NODE:
-                        handler.processCharacterData(currentNode.getNodeValue(), dom3 && ((Text)currentNode).isElementContentWhitespace());
+                        handler.processCharacterData(
+                                currentNode.getNodeValue(),
+                                dom3 && ((Text) currentNode).isElementContentWhitespace());
                         break loop;
                     case Node.CDATA_SECTION_NODE:
                         handler.startCDATASection();
@@ -175,7 +203,7 @@ final class DOMReader implements XmlReader {
                         handler.endComment();
                         break loop;
                     case Node.PROCESSING_INSTRUCTION_NODE:
-                        ProcessingInstruction pi = (ProcessingInstruction)currentNode;
+                        ProcessingInstruction pi = (ProcessingInstruction) currentNode;
                         handler.startProcessingInstruction(pi.getTarget());
                         handler.processCharacterData(pi.getData(), false);
                         handler.endProcessingInstruction();
@@ -191,7 +219,8 @@ final class DOMReader implements XmlReader {
                         }
                     default:
                         // TODO
-                        throw new UnsupportedOperationException("Unsupported node type " + nodeType);
+                        throw new UnsupportedOperationException(
+                                "Unsupported node type " + nodeType);
                 }
             }
         }
@@ -201,6 +230,5 @@ final class DOMReader implements XmlReader {
     }
 
     @Override
-    public void dispose() {
-    }
+    public void dispose() {}
 }

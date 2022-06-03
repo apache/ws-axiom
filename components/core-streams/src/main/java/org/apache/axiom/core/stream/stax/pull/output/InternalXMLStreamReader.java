@@ -22,7 +22,10 @@ import javax.xml.stream.XMLStreamReader;
 
 public interface InternalXMLStreamReader extends XMLStreamReader {
     String getRootName();
+
     String getPublicId();
+
     String getSystemId();
+
     Object getCharacterData();
 }

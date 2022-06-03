@@ -26,19 +26,19 @@ public final class DocumentElementExtractingFilterHandler extends XmlHandlerWrap
     }
 
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) throws StreamException {
-    }
+    public void startDocument(
+            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+            throws StreamException {}
 
     @Override
-    public void startFragment() throws StreamException {
-    }
+    public void startFragment() throws StreamException {}
 
     @Override
-    public void completed() throws StreamException {
-    }
+    public void completed() throws StreamException {}
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix)
+            throws StreamException {
         super.startElement(namespaceURI, localName, prefix);
         depth++;
     }
@@ -50,8 +50,9 @@ public final class DocumentElementExtractingFilterHandler extends XmlHandlerWrap
     }
 
     @Override
-    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
-    }
+    public void processDocumentTypeDeclaration(
+            String rootName, String publicId, String systemId, String internalSubset)
+            throws StreamException {}
 
     @Override
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {

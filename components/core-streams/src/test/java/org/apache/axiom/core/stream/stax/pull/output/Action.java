@@ -22,7 +22,8 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 
 public interface Action {
-    public static final Action DEFAULT_START_DOCUMENT = h -> h.startDocument("utf-8", "1.0", "utf-8", true);
+    public static final Action DEFAULT_START_DOCUMENT =
+            h -> h.startDocument("utf-8", "1.0", "utf-8", true);
 
     void run(XmlHandler handler) throws StreamException;
 }

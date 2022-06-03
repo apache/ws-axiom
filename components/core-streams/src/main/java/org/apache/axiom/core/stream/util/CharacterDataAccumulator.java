@@ -22,40 +22,40 @@ import org.apache.axiom.core.stream.CharacterData;
 
 public class CharacterDataAccumulator {
     private Object content;
-    
+
     public void append(Object data) {
         if (content == null) {
             content = data;
         } else {
             StringBuilder buffer;
             if (content instanceof StringBuilder) {
-                buffer = (StringBuilder)content;
+                buffer = (StringBuilder) content;
             } else {
                 if (content instanceof CharacterData) {
                     buffer = new StringBuilder();
-                    ((CharacterData)content).appendTo(buffer);
+                    ((CharacterData) content).appendTo(buffer);
                 } else {
                     buffer = new StringBuilder(content.toString());
                 }
                 content = buffer;
             }
             if (data instanceof CharacterData) {
-                ((CharacterData)data).appendTo(buffer);
+                ((CharacterData) data).appendTo(buffer);
             } else {
                 buffer.append(data);
             }
         }
     }
-    
+
     public boolean isEmpty() {
         return content == null;
     }
-    
+
     @Override
     public String toString() {
         return content == null ? "" : content.toString();
     }
-    
+
     public void clear() {
         content = null;
     }

@@ -43,7 +43,7 @@ public class SerializerTest {
 
     /**
      * Tests the scenario described in AXIOM-509.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -61,7 +61,7 @@ public class SerializerTest {
 
     /**
      * Test that characters are converted to entities only when necessary.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -71,10 +71,11 @@ public class SerializerTest {
         handler.startFragment();
         handler.startElement("", "test", "");
         handler.attributesCompleted();
-        handler.processCharacterData("a\u03A3\u20AC", false);  // 20AC = Euro sign
+        handler.processCharacterData("a\u03A3\u20AC", false); // 20AC = Euro sign
         handler.endElement();
         handler.completed();
-        assertThat(new String(baos.toByteArray(), "iso-8859-15")).isEqualTo("<test>a&#931;\u20AC</test>");
+        assertThat(new String(baos.toByteArray(), "iso-8859-15"))
+                .isEqualTo("<test>a&#931;\u20AC</test>");
     }
 
     @Test
@@ -87,12 +88,13 @@ public class SerializerTest {
         handler.attributesCompleted();
         handler.endElement();
         handler.completed();
-        assertThat(new String(baos.toByteArray(), "ascii")).isEqualTo("<test attr=\"n&#233;ant\"/>");
+        assertThat(new String(baos.toByteArray(), "ascii"))
+                .isEqualTo("<test attr=\"n&#233;ant\"/>");
     }
 
     /**
      * Tests the scenario described in XALANJ-2593.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -105,10 +107,11 @@ public class SerializerTest {
         handler.attributesCompleted();
         handler.endElement();
         handler.completed();
-        assertThat(new String(baos.toByteArray(), "ascii")).isEqualTo("<x y=\"&#144308; - &#132648;\"/>");
+        assertThat(new String(baos.toByteArray(), "ascii"))
+                .isEqualTo("<x y=\"&#144308; - &#132648;\"/>");
     }
 
-    @Test(expected=StreamException.class)
+    @Test(expected = StreamException.class)
     public void testUnmappableCharacterInComment() throws Exception {
         Serializer handler = new Serializer(NullOutputStream.NULL_OUTPUT_STREAM, "iso-8859-1");
         handler.startFragment();
@@ -118,7 +121,7 @@ public class SerializerTest {
         handler.completed();
     }
 
-    @Test(expected=StreamException.class)
+    @Test(expected = StreamException.class)
     public void testUnmappableCharacterInCDATASection() throws Exception {
         Serializer handler = new Serializer(NullOutputStream.NULL_OUTPUT_STREAM, "ascii");
         handler.startFragment();
@@ -128,7 +131,7 @@ public class SerializerTest {
         handler.completed();
     }
 
-    @Test(expected=StreamException.class)
+    @Test(expected = StreamException.class)
     public void testUnmappableCharacterInProcessingInstruction() throws Exception {
         Serializer handler = new Serializer(NullOutputStream.NULL_OUTPUT_STREAM, "ascii");
         handler.startFragment();
@@ -138,7 +141,7 @@ public class SerializerTest {
         handler.completed();
     }
 
-    @Test(expected=StreamException.class)
+    @Test(expected = StreamException.class)
     public void testUnmappableCharacterInName() throws Exception {
         Serializer handler = new Serializer(NullOutputStream.NULL_OUTPUT_STREAM, "iso-8859-15");
         handler.startFragment();
@@ -148,7 +151,7 @@ public class SerializerTest {
         handler.completed();
     }
 
-    @Test(expected=IllegalCharacterSequenceException.class)
+    @Test(expected = IllegalCharacterSequenceException.class)
     public void testIllegalCharacterSequenceInComment() throws Exception {
         Serializer handler = new Serializer(new NullWriter());
         handler.startFragment();
@@ -158,7 +161,7 @@ public class SerializerTest {
         handler.completed();
     }
 
-    @Test(expected=IllegalCharacterSequenceException.class)
+    @Test(expected = IllegalCharacterSequenceException.class)
     public void testIllegalCharacterSequenceInProcessingInstruction() throws Exception {
         Serializer handler = new Serializer(new NullWriter());
         handler.startFragment();
@@ -168,7 +171,7 @@ public class SerializerTest {
         handler.completed();
     }
 
-    @Test(expected=IllegalCharacterSequenceException.class)
+    @Test(expected = IllegalCharacterSequenceException.class)
     public void testIllegalCharacterSequenceInCDATASection() throws Exception {
         Serializer handler = new Serializer(new NullWriter());
         handler.startFragment();
@@ -182,7 +185,7 @@ public class SerializerTest {
     @Test
     public void testGTEscapedAfterSquareBrackets() throws Exception {
         String sequence = "xxx]]>yyy";
-        for (int i=1; i<sequence.length()-1; i++) {
+        for (int i = 1; i < sequence.length() - 1; i++) {
             StringWriter sw = new StringWriter();
             Serializer handler = new Serializer(sw);
             handler.startFragment();

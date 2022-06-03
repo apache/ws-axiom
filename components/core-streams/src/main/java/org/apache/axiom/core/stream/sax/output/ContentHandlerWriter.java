@@ -45,10 +45,8 @@ final class ContentHandlerWriter extends Writer {
     }
 
     @Override
-    public void close() throws IOException {
-    }
+    public void close() throws IOException {}
 
     @Override
-    public void flush() throws IOException {
-    }
+    public void flush() throws IOException {}
 }

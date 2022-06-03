@@ -21,19 +21,24 @@ package org.apache.axiom.core.stream.serializer.writer;
 import java.io.IOException;
 
 public abstract class UnmappableCharacterHandler {
-    public static final UnmappableCharacterHandler THROW_EXCEPTION = new UnmappableCharacterHandler() {
-        @Override
-        public void processUnmappableCharacter(int codePoint, XmlWriter writer) throws IOException {
-            throw new IOException("Unmappable character (code point " + codePoint + ")");
-        }
-    };
+    public static final UnmappableCharacterHandler THROW_EXCEPTION =
+            new UnmappableCharacterHandler() {
+                @Override
+                public void processUnmappableCharacter(int codePoint, XmlWriter writer)
+                        throws IOException {
+                    throw new IOException("Unmappable character (code point " + codePoint + ")");
+                }
+            };
 
-    public static final UnmappableCharacterHandler CONVERT_TO_CHARACTER_REFERENCE = new UnmappableCharacterHandler() {
-        @Override
-        public void processUnmappableCharacter(int codePoint, XmlWriter writer) throws IOException {
-            writer.writeCharacterReference(codePoint);
-        }
-    };
+    public static final UnmappableCharacterHandler CONVERT_TO_CHARACTER_REFERENCE =
+            new UnmappableCharacterHandler() {
+                @Override
+                public void processUnmappableCharacter(int codePoint, XmlWriter writer)
+                        throws IOException {
+                    writer.writeCharacterReference(codePoint);
+                }
+            };
 
-    public abstract void processUnmappableCharacter(int codePoint, XmlWriter writer) throws IOException;
+    public abstract void processUnmappableCharacter(int codePoint, XmlWriter writer)
+            throws IOException;
 }

@@ -29,37 +29,40 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class XMLStreamWriterNamespaceContextProvider implements NamespaceContextProvider {
     private static final Log log = LogFactory.getLog(XMLStreamWriterNamespaceContextProvider.class);
-    
+
     private final XMLStreamWriter writer;
-    
+
     public XMLStreamWriterNamespaceContextProvider(XMLStreamWriter writer) {
         this.writer = writer;
     }
 
     /**
-     * @param prefix 
+     * @param prefix
      * @param namespace
      * @return true if the prefix is associated with the namespace in the current context
      */
     @Override
     public boolean isBound(String prefix, String namespace) throws StreamException {
         try {
-            // The "xml" prefix is always (implicitly) associated. Returning true here makes sure that
+            // The "xml" prefix is always (implicitly) associated. Returning true here makes sure
+            // that
             // we never write a declaration for the xml namespace. See AXIOM-37 for a discussion
             // of this issue.
             if ("xml".equals(prefix)) {
                 return true;
             }
-            
-            // NOTE: Calling getNamespaceContext() on many XMLStreamWriter implementations is expensive.
+
+            // NOTE: Calling getNamespaceContext() on many XMLStreamWriter implementations is
+            // expensive.
             // Please use other writer methods first.
-            
+
             // For consistency, convert null arguments.
             // This helps get around the parser implementation differences.
-            // In addition, the getPrefix/getNamespace methods cannot be called with null parameters.
+            // In addition, the getPrefix/getNamespace methods cannot be called with null
+            // parameters.
             prefix = (prefix == null) ? "" : prefix;
             namespace = (namespace == null) ? "" : namespace;
-            
+
             if (namespace.length() > 0) {
                 // QUALIFIED NAMESPACE
                 // Get the namespace associated with the prefix
@@ -67,12 +70,12 @@ public class XMLStreamWriterNamespaceContextProvider implements NamespaceContext
                 if (prefix.equals(writerPrefix)) {
                     return true;
                 }
-                
+
                 // It is possible that the namespace is associated with multiple prefixes,
                 // So try getting the namespace as a second step.
                 if (writerPrefix != null) {
                     NamespaceContext nsContext = writer.getNamespaceContext();
-                    if(nsContext != null) {
+                    if (nsContext != null) {
                         String writerNS = nsContext.getNamespaceURI(prefix);
                         return namespace.equals(writerNS);
                     }
@@ -80,15 +83,17 @@ public class XMLStreamWriterNamespaceContextProvider implements NamespaceContext
                 return false;
             } else {
                 // UNQUALIFIED NAMESPACE
-                
-                // Neither XML 1.0 nor XML 1.1 allow to associate a prefix with an unqualified name (see also AXIOM-372).
+
+                // Neither XML 1.0 nor XML 1.1 allow to associate a prefix with an unqualified name
+                // (see also AXIOM-372).
                 if (prefix.length() > 0) {
-                    throw new StreamException("Invalid namespace declaration: Prefixed namespace bindings may not be empty.");  
+                    throw new StreamException(
+                            "Invalid namespace declaration: Prefixed namespace bindings may not be empty.");
                 }
-                
+
                 // Get the namespace associated with the prefix.
                 // It is illegal to call getPrefix with null, but the specification is not
-                // clear on what happens if called with "".  So the following code is 
+                // clear on what happens if called with "".  So the following code is
                 // protected
                 try {
                     String writerPrefix = writer.getPrefix("");
@@ -97,12 +102,12 @@ public class XMLStreamWriterNamespaceContextProvider implements NamespaceContext
                     }
                 } catch (Throwable t) {
                     if (log.isDebugEnabled()) {
-                        log.debug("Caught exception from getPrefix(\"\"). Processing continues: " + t);
+                        log.debug(
+                                "Caught exception from getPrefix(\"\"). Processing continues: "
+                                        + t);
                     }
                 }
-                
-                
-                
+
                 // Fallback to using the namespace context
                 NamespaceContext nsContext = writer.getNamespaceContext();
                 if (nsContext != null) {

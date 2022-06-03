@@ -24,17 +24,26 @@ public final class NamespaceURIInterningFilterHandler extends XmlHandlerWrapper 
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix)
+            throws StreamException {
         super.startElement(namespaceURI.intern(), localName, prefix);
     }
 
     @Override
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
+    public void processAttribute(
+            String namespaceURI,
+            String localName,
+            String prefix,
+            String value,
+            String type,
+            boolean specified)
+            throws StreamException {
         super.processAttribute(namespaceURI.intern(), localName, prefix, value, type, specified);
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI)
+            throws StreamException {
         super.processNamespaceDeclaration(prefix, namespaceURI.intern());
     }
 }

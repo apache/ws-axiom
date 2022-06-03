@@ -33,53 +33,40 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class XmlHandlerContentHandler implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
+public final class XmlHandlerContentHandler
+        implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
     private final XmlHandler handler;
     private final boolean expandEntityReferences;
-    
-    /**
-     * Stores the root name if there is a DTD.
-     */
+
+    /** Stores the root name if there is a DTD. */
     private String dtdName;
-    
-    /**
-     * Stores the public ID if there is a DTD.
-     */
+
+    /** Stores the public ID if there is a DTD. */
     private String dtdPublicId;
-    
-    /**
-     * Stores the system ID if there is a DTD.
-     */
+
+    /** Stores the system ID if there is a DTD. */
     private String dtdSystemId;
-    
-    /**
-     * Stores the internal subset if there is a DTD.
-     */
+
+    /** Stores the internal subset if there is a DTD. */
     private StringWriter internalSubset;
 
     private Serializer internalSubsetSerializer;
 
-    /**
-     * Stores the replacement values for entities.
-     */
-    private Map<String,String> entities;
-    
-    /**
-     * Flag indicating that the parser is processing the external subset.
-     */
+    /** Stores the replacement values for entities. */
+    private Map<String, String> entities;
+
+    /** Flag indicating that the parser is processing the external subset. */
     private boolean inExternalSubset;
 
     /**
      * Stores namespace declarations reported to {@link #startPrefixMapping(String, String)}. These
-     * declarations will be passed to the {@link XmlHandler} by
-     * {@link #startElement(String, String, String, Attributes)}. Each declaration is stored as
-     * (prefix, uri) pair using two array elements.
+     * declarations will be passed to the {@link XmlHandler} by {@link #startElement(String, String,
+     * String, Attributes)}. Each declaration is stored as (prefix, uri) pair using two array
+     * elements.
      */
     private String[] namespaces = new String[16];
 
-    /**
-     * The number of namespace declarations stored in {@link #namespaces}.
-     */
+    /** The number of namespace declarations stored in {@link #namespaces}. */
     private int namespaceCount;
 
     private boolean inEntityReference;
@@ -89,19 +76,18 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         this.handler = handler;
         this.expandEntityReferences = expandEntityReferences;
     }
-    
+
     private static SAXException toSAXException(StreamException ex) {
         Throwable cause = ex.getCause();
         if (cause instanceof SAXException) {
-            return (SAXException)cause;
+            return (SAXException) cause;
         } else {
             return new SAXException(ex);
         }
     }
-    
+
     @Override
-    public void setDocumentLocator(Locator locator) {
-    }
+    public void setDocumentLocator(Locator locator) {}
 
     @Override
     public void startDocument() throws SAXException {
@@ -154,7 +140,8 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     }
 
     @Override
-    public void externalEntityDecl(String name, String publicId, String systemId) throws SAXException {
+    public void externalEntityDecl(String name, String publicId, String systemId)
+            throws SAXException {
         if (!inExternalSubset) {
             try {
                 internalSubsetSerializer.externalEntityDecl(name, publicId, systemId);
@@ -167,7 +154,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     @Override
     public void internalEntityDecl(String name, String value) throws SAXException {
         if (entities == null) {
-            entities = new HashMap<String,String>();
+            entities = new HashMap<String, String>();
         }
         entities.put(name, value);
         if (!inExternalSubset) {
@@ -191,7 +178,8 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     }
 
     @Override
-    public void unparsedEntityDecl(String name, String publicId, String systemId, String notationName)
+    public void unparsedEntityDecl(
+            String name, String publicId, String systemId, String notationName)
             throws SAXException {
         if (!inExternalSubset) {
             try {
@@ -209,7 +197,10 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
         try {
             String internalSubset = this.internalSubset.toString();
-            handler.processDocumentTypeDeclaration(dtdName, dtdPublicId, dtdSystemId,
+            handler.processDocumentTypeDeclaration(
+                    dtdName,
+                    dtdPublicId,
+                    dtdSystemId,
                     internalSubset.length() == 0 ? null : internalSubset);
         } catch (StreamException ex) {
             throw toSAXException(ex);
@@ -225,24 +216,22 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
      *      java.lang.String)
      */
     @Override
-    public void startPrefixMapping(String prefix, String uri)
-            throws SAXException {
+    public void startPrefixMapping(String prefix, String uri) throws SAXException {
         if (!inEntityReference) {
-            int index = namespaceCount*2;
+            int index = namespaceCount * 2;
             if (index == namespaces.length) {
-                String[] newNamespaces = new String[namespaces.length*2];
+                String[] newNamespaces = new String[namespaces.length * 2];
                 System.arraycopy(namespaces, 0, newNamespaces, 0, namespaces.length);
                 namespaces = newNamespaces;
             }
             namespaces[index] = prefix;
-            namespaces[index+1] = uri;
+            namespaces[index + 1] = uri;
             namespaceCount++;
         }
     }
 
     @Override
-    public void endPrefixMapping(String prefix) throws SAXException {
-    }
+    public void endPrefixMapping(String prefix) throws SAXException {}
 
     /*
      * (non-Javadoc)
@@ -251,8 +240,8 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
      *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName,
-                             String qName, Attributes atts) throws SAXException {
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
+            throws SAXException {
         if (inEntityReference) {
             return;
         }
@@ -263,23 +252,30 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
             String prefix = idx == -1 ? "" : qName.substring(0, idx);
             handler.startElement(namespaceURI, localName, prefix);
             for (int i = 0; i < namespaceCount; i++) {
-                handler.processNamespaceDeclaration(namespaces[2*i], namespaces[2*i+1]);
+                handler.processNamespaceDeclaration(namespaces[2 * i], namespaces[2 * i + 1]);
             }
             namespaceCount = 0;
-    
+
             int j = atts.getLength();
             for (int i = 0; i < j; i++) {
                 String attrQName = atts.getQName(i);
-                // Note that some SAX parsers report namespace declarations as attributes in addition
-                // to calling start/endPrefixMapping.
+                // Note that some SAX parsers report namespace declarations as attributes in
+                // addition to calling start/endPrefixMapping.
                 // NOTE: This filter was introduced to make SAXOMBuilder work with some versions of
                 //       XMLBeans (2.3.0). It is not clear whether this is a bug in XMLBeans or not.
-                //       See http://forum.springframework.org/showthread.php?t=43958 for a discussion.
-                //       If this test causes problems with other parsers, don't hesitate to remove it.
+                //       See http://forum.springframework.org/showthread.php?t=43958 for a
+                //       discussion. If this test causes problems with other parsers, don't hesitate
+                //       to remove it.
                 if (!attrQName.startsWith("xmlns")) {
                     idx = attrQName.indexOf(':');
                     String attrPrefix = idx == -1 ? "" : attrQName.substring(0, idx);
-                    handler.processAttribute(atts.getURI(i), atts.getLocalName(i), attrPrefix, atts.getValue(i), atts.getType(i), true);
+                    handler.processAttribute(
+                            atts.getURI(i),
+                            atts.getLocalName(i),
+                            attrPrefix,
+                            atts.getValue(i),
+                            atts.getType(i),
+                            true);
                 }
             }
             handler.attributesCompleted();
@@ -295,8 +291,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
      *      java.lang.String, java.lang.String)
      */
     @Override
-    public void endElement(String uri, String localName, String qName)
-            throws SAXException {
+    public void endElement(String uri, String localName, String qName) throws SAXException {
         if (!inEntityReference) {
             try {
                 handler.endElement();
@@ -329,8 +324,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     }
 
     @Override
-    public void characters(char[] ch, int start, int length)
-            throws SAXException {
+    public void characters(char[] ch, int start, int length) throws SAXException {
         if (!inEntityReference) {
             try {
                 handler.processCharacterData(new String(ch, start, length), false);
@@ -339,10 +333,9 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
             }
         }
     }
-    
+
     @Override
-    public void ignorableWhitespace(char[] ch, int start, int length)
-            throws SAXException {
+    public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
         if (!inEntityReference) {
             try {
                 handler.processCharacterData(new String(ch, start, length), true);
@@ -353,8 +346,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     }
 
     @Override
-    public void processingInstruction(String piTarget, String data)
-            throws SAXException {
+    public void processingInstruction(String piTarget, String data) throws SAXException {
         if (!inEntityReference) {
             try {
                 handler.startProcessingInstruction(piTarget);

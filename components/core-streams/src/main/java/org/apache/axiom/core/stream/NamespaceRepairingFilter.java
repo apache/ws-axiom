@@ -19,20 +19,21 @@
 package org.apache.axiom.core.stream;
 
 public final class NamespaceRepairingFilter implements XmlFilter {
-    public static final NamespaceRepairingFilter DEFAULT = new NamespaceRepairingFilter(null, false);
+    public static final NamespaceRepairingFilter DEFAULT =
+            new NamespaceRepairingFilter(null, false);
 
     private final NamespaceContextProvider parentNamespaceContext;
     private final boolean removeRedundantDeclarations;
 
-    public NamespaceRepairingFilter(NamespaceContextProvider parentNamespaceContext,
-            boolean removeRedundantDeclarations) {
+    public NamespaceRepairingFilter(
+            NamespaceContextProvider parentNamespaceContext, boolean removeRedundantDeclarations) {
         this.parentNamespaceContext = parentNamespaceContext;
         this.removeRedundantDeclarations = removeRedundantDeclarations;
     }
 
     @Override
     public XmlHandler createFilterHandler(XmlHandler parent) {
-        return new NamespaceRepairingFilterHandler(parent, parentNamespaceContext,
-                removeRedundantDeclarations);
+        return new NamespaceRepairingFilterHandler(
+                parent, parentNamespaceContext, removeRedundantDeclarations);
     }
 }
