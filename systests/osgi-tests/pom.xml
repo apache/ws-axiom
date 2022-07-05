@@ -165,6 +165,12 @@
                                         <artifactId>jaxb-osgi</artifactId>
                                         <version>${jaxbri.version}</version>
                                     </artifact>
+                                    <!-- Required by Woodstox; see https://github.com/FasterXML/woodstox/pull/151. -->
+                                    <artifact>
+                                        <groupId>org.apache.aries.spifly</groupId>
+                                        <artifactId>org.apache.aries.spifly.dynamic.framework.extension</artifactId>
+                                        <version>1.3.5</version>
+                                    </artifact>
                                 </artifacts>
                             </artifactSet>
                         </configuration>

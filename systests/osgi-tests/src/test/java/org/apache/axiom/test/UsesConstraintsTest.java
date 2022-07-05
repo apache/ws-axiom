@@ -103,6 +103,7 @@ public class UsesConstraintsTest {
         context.addFrameworkListener(listener);
         List<Bundle> bundles = new ArrayList<Bundle>();
         bundles.add(context.installBundle("link:classpath:META-INF/links/org.ops4j.pax.logging.api.link"));
+        bundles.add(context.installBundle("link:classpath:org.apache.aries.spifly.dynamic.framework.extension.link"));
         bundles.add(context.installBundle("link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"));
         bundles.add(context.installBundle("link:classpath:stax2-api.link"));
         bundles.add(context.installBundle("link:classpath:com.fasterxml.woodstox.woodstox-core.link"));

@@ -48,6 +48,7 @@ public class FactoryTest {
     @Configuration
     public static Option[] configuration() {
         return options(
+                url("link:classpath:org.apache.aries.spifly.dynamic.framework.extension.link"),
                 url("link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"),
                 url("link:classpath:stax2-api.link"),
                 url("link:classpath:com.fasterxml.woodstox.woodstox-core.link"),
