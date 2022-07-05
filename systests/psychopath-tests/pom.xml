@@ -73,7 +73,7 @@
             <extension>
                 <groupId>com.github.veithen.maven</groupId>
                 <artifactId>p2-maven-connector</artifactId>
-                <version>0.5.1</version>
+                <version>0.6.0</version>
             </extension>
         </extensions>
     </build>
