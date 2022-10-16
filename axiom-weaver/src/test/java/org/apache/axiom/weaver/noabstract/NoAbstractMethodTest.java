@@ -24,7 +24,7 @@ import org.apache.axiom.weaver.SimpleImplementationClassNameMapper;
 import org.apache.axiom.weaver.Weaver;
 import org.apache.axiom.weaver.innerclass.InnerClassTest;
 import org.apache.axiom.weaver.mixin.clazz.MixinFactoryException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NoAbstractMethodTest {
     @Test
