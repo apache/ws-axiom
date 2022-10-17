@@ -33,7 +33,7 @@ import org.xml.sax.ext.LexicalHandler;
 
 final class CrimsonXMLReaderWrapper implements XMLReader {
     private final XMLReader parent;
-    
+
     public CrimsonXMLReaderWrapper(XMLReader parent) {
         this.parent = parent;
     }
@@ -60,7 +60,7 @@ final class CrimsonXMLReaderWrapper implements XMLReader {
     public void setProperty(String name, Object value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         if ("http://xml.org/sax/properties/lexical-handler".equals(name)) {
-            value = new CrimsonLexicalHandlerWrapper((LexicalHandler)value);
+            value = new CrimsonLexicalHandlerWrapper((LexicalHandler) value);
         }
         parent.setProperty(name, value);
     }

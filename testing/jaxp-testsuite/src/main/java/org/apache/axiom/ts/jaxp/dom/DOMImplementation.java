@@ -33,20 +33,22 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public abstract class DOMImplementation extends Multiton {
-    public static final DOMImplementation XERCES = new DOMImplementation("xerces", true, true) {
-        @Override
-        protected DocumentBuilderFactory newDocumentBuilderFactory() {
-            return new org.apache.xerces.jaxp.DocumentBuilderFactoryImpl();
-        }
-    };
-    
-    public static final DOMImplementation CRIMSON = new DOMImplementation("crimson", false, false) {
-        @Override
-        protected DocumentBuilderFactory newDocumentBuilderFactory() {
-            return new org.apache.crimson.jaxp.DocumentBuilderFactoryImpl();
-        }
-    };
-    
+    public static final DOMImplementation XERCES =
+            new DOMImplementation("xerces", true, true) {
+                @Override
+                protected DocumentBuilderFactory newDocumentBuilderFactory() {
+                    return new org.apache.xerces.jaxp.DocumentBuilderFactoryImpl();
+                }
+            };
+
+    public static final DOMImplementation CRIMSON =
+            new DOMImplementation("crimson", false, false) {
+                @Override
+                protected DocumentBuilderFactory newDocumentBuilderFactory() {
+                    return new org.apache.crimson.jaxp.DocumentBuilderFactoryImpl();
+                }
+            };
+
     private final String name;
     private final boolean dom3;
     private final boolean internalSubset;
@@ -60,7 +62,7 @@ public abstract class DOMImplementation extends Multiton {
     public final String getName() {
         return name;
     }
-    
+
     public final boolean isDOM3() {
         return dom3;
     }
@@ -68,9 +70,9 @@ public abstract class DOMImplementation extends Multiton {
     public final boolean supportsGetInternalSubset() {
         return internalSubset;
     }
-    
+
     protected abstract DocumentBuilderFactory newDocumentBuilderFactory();
-    
+
     public final Document newDocument() {
         try {
             return newDocumentBuilderFactory().newDocumentBuilder().newDocument();
@@ -78,12 +80,13 @@ public abstract class DOMImplementation extends Multiton {
             throw new Error("Unexpected exception", ex);
         }
     }
-    
+
     public final Document parse(InputSource is) throws SAXException, IOException {
         return parse(is, true);
     }
 
-    public final Document parse(InputSource is, boolean expandEntityReferences) throws SAXException, IOException {
+    public final Document parse(InputSource is, boolean expandEntityReferences)
+            throws SAXException, IOException {
         DocumentBuilderFactory factory = newDocumentBuilderFactory();
         factory.setNamespaceAware(true);
         factory.setExpandEntityReferences(expandEntityReferences);
@@ -100,17 +103,17 @@ public abstract class DOMImplementation extends Multiton {
         }
         return document;
     }
-    
+
     private void expandPredefinedEntityReferences(Element element) {
         Node child = element.getFirstChild();
         while (child != null) {
             switch (child.getNodeType()) {
                 case Node.ELEMENT_NODE:
-                    expandPredefinedEntityReferences((Element)child);
+                    expandPredefinedEntityReferences((Element) child);
                     break;
                 case Node.ENTITY_REFERENCE_NODE:
                     if (child.getNodeName().equals("lt")) {
-                        Text content = (Text)child.getFirstChild().cloneNode(false);
+                        Text content = (Text) child.getFirstChild().cloneNode(false);
                         element.replaceChild(content, child);
                         child = content;
                     }
@@ -118,7 +121,7 @@ public abstract class DOMImplementation extends Multiton {
             child = child.getNextSibling();
         }
     }
-    
+
     public final Document parse(InputStream in) throws SAXException, IOException {
         return parse(new InputSource(in));
     }

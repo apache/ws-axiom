@@ -37,7 +37,7 @@ import org.xml.sax.helpers.DefaultHandler;
 @SuppressWarnings("deprecation")
 final class CrimsonSAXParserWrapper extends SAXParser {
     private final SAXParser parent;
-    
+
     public CrimsonSAXParserWrapper(SAXParser parent) {
         this.parent = parent;
     }

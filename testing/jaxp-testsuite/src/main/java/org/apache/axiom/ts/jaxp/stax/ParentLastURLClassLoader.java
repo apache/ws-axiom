@@ -37,7 +37,7 @@ public class ParentLastURLClassLoader extends URLClassLoader {
         }
         return url;
     }
-    
+
     @Override
     public Enumeration<URL> getResources(String name) throws IOException {
         // Make sure that we return our own resources first. Otherwise, if an API performs
@@ -56,7 +56,8 @@ public class ParentLastURLClassLoader extends URLClassLoader {
     }
 
     @Override
-    protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+    protected synchronized Class<?> loadClass(String name, boolean resolve)
+            throws ClassNotFoundException {
         if (name.startsWith("javax.")) {
             return super.loadClass(name, resolve);
         } else {

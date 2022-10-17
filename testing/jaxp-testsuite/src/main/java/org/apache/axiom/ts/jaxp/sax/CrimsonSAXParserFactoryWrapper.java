@@ -60,14 +60,16 @@ final class CrimsonSAXParserFactoryWrapper extends SAXParserFactory {
     }
 
     @Override
-    public void setFeature(String name, boolean value) throws ParserConfigurationException,
-            SAXNotRecognizedException, SAXNotSupportedException {
+    public void setFeature(String name, boolean value)
+            throws ParserConfigurationException, SAXNotRecognizedException,
+                    SAXNotSupportedException {
         parent.setFeature(name, value);
     }
 
     @Override
-    public boolean getFeature(String name) throws ParserConfigurationException,
-            SAXNotRecognizedException, SAXNotSupportedException {
+    public boolean getFeature(String name)
+            throws ParserConfigurationException, SAXNotRecognizedException,
+                    SAXNotSupportedException {
         return parent.getFeature(name);
     }
 

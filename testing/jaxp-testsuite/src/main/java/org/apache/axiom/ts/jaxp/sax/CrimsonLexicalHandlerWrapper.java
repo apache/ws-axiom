@@ -23,7 +23,7 @@ import org.xml.sax.ext.LexicalHandler;
 
 final class CrimsonLexicalHandlerWrapper implements LexicalHandler {
     private final LexicalHandler parent;
-    
+
     CrimsonLexicalHandlerWrapper(LexicalHandler parent) {
         this.parent = parent;
     }

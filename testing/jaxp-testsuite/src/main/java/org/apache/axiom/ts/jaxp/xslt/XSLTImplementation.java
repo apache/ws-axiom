@@ -32,35 +32,36 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.xml.sax.ext.LexicalHandler;
 
-/**
- * Specifies an XSLT implementation for use in a {@link MatrixTestCase}.
- */
+/** Specifies an XSLT implementation for use in a {@link MatrixTestCase}. */
 public abstract class XSLTImplementation extends Multiton {
-    public static final XSLTImplementation JRE = new XSLTImplementation("jre") {
-        @Override
-        public TransformerFactory newTransformerFactory() {
-            return TransformerFactory.newDefaultInstance();
-        }
-    };
+    public static final XSLTImplementation JRE =
+            new XSLTImplementation("jre") {
+                @Override
+                public TransformerFactory newTransformerFactory() {
+                    return TransformerFactory.newDefaultInstance();
+                }
+            };
 
-    public static final XSLTImplementation XALAN = new XSLTImplementation("xalan") {
-        @Override
-        public TransformerFactory newTransformerFactory() {
-            return new org.apache.xalan.processor.TransformerFactoryImpl();
-        }
-    };
-    
-    public static final XSLTImplementation SAXON = new XSLTImplementation("saxon") {
-        @Override
-        public TransformerFactory newTransformerFactory() {
-            return new net.sf.saxon.TransformerFactoryImpl();
-        }
-    };
-    
+    public static final XSLTImplementation XALAN =
+            new XSLTImplementation("xalan") {
+                @Override
+                public TransformerFactory newTransformerFactory() {
+                    return new org.apache.xalan.processor.TransformerFactoryImpl();
+                }
+            };
+
+    public static final XSLTImplementation SAXON =
+            new XSLTImplementation("saxon") {
+                @Override
+                public TransformerFactory newTransformerFactory() {
+                    return new net.sf.saxon.TransformerFactoryImpl();
+                }
+            };
+
     private final String name;
     private Boolean supportsLexicalHandlerWithStreamSource;
     private Boolean supportsStAXSource;
-    
+
     private XSLTImplementation(String name) {
         this.name = name;
     }
@@ -70,17 +71,19 @@ public abstract class XSLTImplementation extends Multiton {
     }
 
     public abstract TransformerFactory newTransformerFactory();
-    
+
     /**
      * Determine if an identity transformation from a {@link StreamSource} to a {@link SAXResult}
      * will generate events defined by {@link LexicalHandler}.
-     * 
-     * @return <code>true</code> if the XSLT implementation will invoke the methods on the
-     *         {@link LexicalHandler} set on the {@link SAXResult}, <code>false</code> otherwise
+     *
+     * @return <code>true</code> if the XSLT implementation will invoke the methods on the {@link
+     *     LexicalHandler} set on the {@link SAXResult}, <code>false</code> otherwise
      */
     public final synchronized boolean supportsLexicalHandlerWithStreamSource() {
         if (supportsLexicalHandlerWithStreamSource == null) {
-            StreamSource source = new StreamSource(new StringReader("<!DOCTYPE root><root><![CDATA[test]]></root>"));
+            StreamSource source =
+                    new StreamSource(
+                            new StringReader("<!DOCTYPE root><root><![CDATA[test]]></root>"));
             TestContentHandler handler = new TestContentHandler();
             SAXResult result = new SAXResult(handler);
             result.setLexicalHandler(handler);
@@ -97,7 +100,10 @@ public abstract class XSLTImplementation extends Multiton {
     public final synchronized boolean supportsStAXSource() {
         if (supportsStAXSource == null) {
             try {
-                StAXSource source = new StAXSource(XMLInputFactory.newInstance().createXMLStreamReader(new StringReader("<root/>")));
+                StAXSource source =
+                        new StAXSource(
+                                XMLInputFactory.newInstance()
+                                        .createXMLStreamReader(new StringReader("<root/>")));
                 StreamResult result = new StreamResult(new ByteArrayOutputStream());
                 newTransformerFactory().newTransformer().transform(source, result);
                 supportsStAXSource = true;
