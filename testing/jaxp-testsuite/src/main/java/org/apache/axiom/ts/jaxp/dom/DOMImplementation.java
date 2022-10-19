@@ -41,14 +41,6 @@ public abstract class DOMImplementation extends Multiton {
                 }
             };
 
-    public static final DOMImplementation CRIMSON =
-            new DOMImplementation("crimson", false, false) {
-                @Override
-                protected DocumentBuilderFactory newDocumentBuilderFactory() {
-                    return new org.apache.crimson.jaxp.DocumentBuilderFactoryImpl();
-                }
-            };
-
     private final String name;
     private final boolean dom3;
     private final boolean internalSubset;
