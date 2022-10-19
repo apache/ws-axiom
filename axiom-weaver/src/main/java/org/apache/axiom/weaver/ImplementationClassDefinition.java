@@ -47,8 +47,8 @@ final class ImplementationClassDefinition extends ClassDefinition {
     private final boolean singleton;
     private final Mixin[] mixins;
     private final MixinMethod[] methods;
-    private final List<Named<InitializerMethod>> initializerMethods = new ArrayList<>();
-    private final List<Named<StaticInitializerMethod>> staticInitializerMethods = new ArrayList<>();
+    private final List<InitializerMethod> initializerMethods = new ArrayList<>();
+    private final List<StaticInitializerMethod> staticInitializerMethods = new ArrayList<>();
 
     ImplementationClassDefinition(
             TargetContext targetContext,
@@ -67,7 +67,6 @@ final class ImplementationClassDefinition extends ClassDefinition {
         this.singleton = singleton;
         this.mixins = mixins;
         Map<String, MixinMethod> methodMap = new LinkedHashMap<>();
-        UniqueNameGenerator methodNameGenerator = new UniqueNameGenerator();
         for (Mixin mixin : mixins) {
             for (MixinMethod method : mixin.getMethods()) {
                 String signature = method.getSignature();
@@ -110,18 +109,11 @@ final class ImplementationClassDefinition extends ClassDefinition {
             }
             InitializerMethod initializerMethod = mixin.getInitializerMethod();
             if (initializerMethod != null) {
-                initializerMethods.add(
-                        new Named<>(
-                                initializerMethod,
-                                methodNameGenerator.generateUniqueName("init$" + mixin.getName())));
+                initializerMethods.add(initializerMethod);
             }
             StaticInitializerMethod staticInitializerMethod = mixin.getStaticInitializerMethod();
             if (staticInitializerMethod != null) {
-                staticInitializerMethods.add(
-                        new Named<>(
-                                staticInitializerMethod,
-                                methodNameGenerator.generateUniqueName(
-                                        "clinit$" + mixin.getName())));
+                staticInitializerMethods.add(staticInitializerMethod);
             }
         }
         methods = methodMap.values().toArray(new MixinMethod[methodMap.size()]);
@@ -138,12 +130,13 @@ final class ImplementationClassDefinition extends ClassDefinition {
         mv.visitCode();
         mv.visitIntInsn(Opcodes.ALOAD, 0);
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superName, "<init>", "()V", false);
-        for (Named<InitializerMethod> method : initializerMethods) {
-            mv.visitIntInsn(Opcodes.ALOAD, 0);
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, method.getName(), "()V", false);
+        MethodInliner inliner =
+                new MethodInliner(mv, 1, 1, new Object[] {targetContext.getTargetClassName()});
+        for (InitializerMethod method : initializerMethods) {
+            method.getBody().apply(targetContext, inliner);
         }
         mv.visitInsn(Opcodes.RETURN);
-        mv.visitMaxs(1, 1);
+        inliner.emitMaxs();
         mv.visitEnd();
     }
 
@@ -155,8 +148,9 @@ final class ImplementationClassDefinition extends ClassDefinition {
                 cv.visitMethod(
                         Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "<clinit>", "()V", null, null);
         mv.visitCode();
-        for (Named<StaticInitializerMethod> method : staticInitializerMethods) {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, className, method.getName(), "()V", false);
+        MethodInliner inliner = new MethodInliner(mv, singleton ? 2 : 0, 0, new Object[0]);
+        for (StaticInitializerMethod method : staticInitializerMethods) {
+            method.getBody().apply(targetContext, inliner);
         }
         if (singleton) {
             mv.visitTypeInsn(Opcodes.NEW, targetContext.getTargetClassName());
@@ -174,7 +168,7 @@ final class ImplementationClassDefinition extends ClassDefinition {
                     "L" + targetContext.getTargetClassName() + ";");
         }
         mv.visitInsn(Opcodes.RETURN);
-        mv.visitMaxs(singleton ? 2 : 0, 0);
+        inliner.emitMaxs();
         mv.visitEnd();
     }
 
@@ -193,25 +187,6 @@ final class ImplementationClassDefinition extends ClassDefinition {
         generateStaticInitializer(cv);
         for (Mixin mixin : mixins) {
             mixin.apply(className, cv);
-        }
-        for (Named<InitializerMethod> method : initializerMethods) {
-            MethodVisitor mv =
-                    cv.visitMethod(Opcodes.ACC_PRIVATE, method.getName(), "()V", null, null);
-            if (mv != null) {
-                method.get().getBody().apply(targetContext, mv);
-            }
-        }
-        for (Named<StaticInitializerMethod> method : staticInitializerMethods) {
-            MethodVisitor mv =
-                    cv.visitMethod(
-                            Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC,
-                            method.getName(),
-                            "()V",
-                            null,
-                            null);
-            if (mv != null) {
-                method.get().getBody().apply(targetContext, mv);
-            }
         }
         for (MixinMethod method : methods) {
             method.apply(targetContext, cv);
