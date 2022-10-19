@@ -21,6 +21,8 @@ package org.apache.axiom.weaver.maven;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -33,6 +35,7 @@ import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -58,6 +61,7 @@ public final class WeaveMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        Log log = getLog();
         URLClassLoader classLoader = createClassLoader();
         try {
             Weaver weaver =
@@ -91,6 +95,11 @@ public final class WeaveMojo extends AbstractMojo {
                         new File(
                                 project.getBuild().getOutputDirectory(),
                                 classDefinition.getClassName() + ".class");
+                if (log.isDebugEnabled()) {
+                    StringWriter sw = new StringWriter();
+                    classDefinition.dump(new PrintWriter(sw));
+                    log.debug(String.format("Generating %s:\n%s", outputFile, sw));
+                }
                 outputFile.getParentFile().mkdirs();
                 try (FileOutputStream out = new FileOutputStream(outputFile)) {
                     out.write(classDefinition.toByteArray());
@@ -102,7 +111,7 @@ public final class WeaveMojo extends AbstractMojo {
             try {
                 classLoader.close();
             } catch (IOException ex) {
-                getLog().warn(ex);
+                log.warn(ex);
             }
         }
     }
