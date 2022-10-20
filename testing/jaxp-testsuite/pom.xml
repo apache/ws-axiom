@@ -30,10 +30,6 @@
 
     <url>http://ws.apache.org/axiom/</url>
 
-    <properties>
-        <javaVersion>9</javaVersion>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

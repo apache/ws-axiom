@@ -250,7 +250,7 @@
     </distributionManagement>
 
     <properties>
-        <javaVersion>1.8</javaVersion>
+        <javaVersion>11</javaVersion>
 
         <failIfNoTests>false</failIfNoTests>
         <shade.plugin.version>3.4.0</shade.plugin.version>
@@ -897,8 +897,7 @@
                 <configuration>
                     <rules>
                         <requireJavaVersion>
-                            <!-- We require Java 11 for the build, but we configure the compiler to enforce compatibility with older versions. -->
-                            <version>11</version>
+                            <version>${javaVersion}</version>
                         </requireJavaVersion>
                         <requireMavenVersion>
                             <!-- Require a recent Maven version for consistent build results -->
@@ -950,13 +949,6 @@
                                     if (System.properties['skipTests'] == 'true') {
                                         println 'Disabling JaCoCo because tests are skipped'
                                         project.properties['skipJacoco'] = 'true'
-                                    }
-                                    
-                                    javaVersion = project.properties['javaVersion']
-                                    if (javaVersion == '1.8') {
-                                        project.properties['javaRelease'] = '8'
-                                    } else {
-                                        project.properties['javaRelease'] = javaVersion;
                                     }
                                 ]]></script>
                             </scripts>
@@ -1027,7 +1019,7 @@
                 <configuration>
                     <source>${javaVersion}</source>
                     <target>${javaVersion}</target>
-                    <release>${javaRelease}</release>
+                    <release>${javaVersion}</release>
                     <showWarnings>true</showWarnings>
                     <compilerArgs combine.children="append">
                         <compilerArg>-XDcompilePolicy=simple</compilerArg>

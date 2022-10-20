@@ -111,6 +111,9 @@ final class MixinClassVisitor extends ClassVisitor {
 
     @Override
     public void visitInnerClass(String name, String outerName, String innerName, int access) {
+        if (outerName != null || innerName != null) {
+            return;
+        }
         if (log.isDebugEnabled()) {
             log.debug(String.format("Found inner class %s", name));
         }
