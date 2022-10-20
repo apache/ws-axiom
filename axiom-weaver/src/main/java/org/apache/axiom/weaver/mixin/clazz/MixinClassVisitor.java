@@ -31,6 +31,8 @@ import org.apache.axiom.weaver.mixin.MixinInnerClass;
 import org.apache.axiom.weaver.mixin.MixinMethod;
 import org.apache.axiom.weaver.mixin.StaticInitializerMethod;
 import org.apache.axiom.weaver.mixin.TargetContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -44,6 +46,8 @@ import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
 final class MixinClassVisitor extends ClassVisitor {
+    private static final Log log = LogFactory.getLog(MixinClassVisitor.class);
+
     private final ClassFetcher classFetcher;
     private int bytecodeVersion;
     private String className;
@@ -69,6 +73,9 @@ final class MixinClassVisitor extends ClassVisitor {
             String signature,
             String superName,
             String[] interfaces) {
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Processing mixin class %s", name));
+        }
         bytecodeVersion = version;
         className = name;
         remapperFactory =
@@ -104,6 +111,9 @@ final class MixinClassVisitor extends ClassVisitor {
 
     @Override
     public void visitInnerClass(String name, String outerName, String innerName, int access) {
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Found inner class %s", name));
+        }
         innerClassNames.add(name);
     }
 
