@@ -21,7 +21,7 @@ package org.apache.axiom.util.activation;
 import java.io.IOException;
 
 /**
- * Exception used by {@link SizeLimitedOutputStream} if the size limit has been exceeded.
+ * Exception used by {@link CountingOutputStream} if the size limit has been exceeded.
  */
 final class SizeLimitExceededException extends IOException {
     private static final long serialVersionUID = 1L;

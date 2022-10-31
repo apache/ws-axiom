@@ -22,15 +22,19 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * An output stream that counts the number of bytes written to it and throws an exception when the
- * size exceeds a given limit.
+ * An output stream that counts the number of bytes written to it and optionally throws an exception
+ * when the size exceeds a given limit.
  */
-final class SizeLimitedOutputStream extends OutputStream {
+final class CountingOutputStream extends OutputStream {
     private final long maxSize;
     private long size;
     
-    SizeLimitedOutputStream(long maxSize) {
+    CountingOutputStream(long maxSize) {
         this.maxSize = maxSize;
+    }
+
+    CountingOutputStream() {
+        this(-1);
     }
 
     @Override
@@ -52,10 +56,14 @@ final class SizeLimitedOutputStream extends OutputStream {
     }
     
     private void checkSize() throws SizeLimitExceededException {
-        if (size > maxSize) {
+        if (maxSize != -1 && size > maxSize) {
             // Throw a cached exception instance to avoid the overhead of building the
             // stack trace.
             throw SizeLimitExceededException.INSTANCE;
         }
+    }
+
+    long getSize() {
+        return size;
     }
 }

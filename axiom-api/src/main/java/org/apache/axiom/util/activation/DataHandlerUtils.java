@@ -24,6 +24,8 @@ import java.io.OutputStream;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
+import org.apache.axiom.blob.Blob;
+
 /**
  * Contains utility methods to work with {@link DataHandler} objects.
  */
@@ -57,11 +59,40 @@ public final class DataHandlerUtils {
             // getInputStream method. Obviously starting a new thread just to check the size of
             // the data is an overhead that we should avoid.
             try {
-                dh.writeTo(new SizeLimitedOutputStream(limit));
+                dh.writeTo(new CountingOutputStream(limit));
                 return false;
             } catch (SizeLimitExceededException ex) {
                 return true;
             }
         }
+    }
+
+    /**
+     * Get a {@link DataHandler} for the given {@link Blob}. If the blob was obtained from {@link
+     * #toBlob(DataHandler)}, the original {@link DataHandler} is returned.
+     * 
+     * @param blob the {@link Blob} to convert
+     * @return a {@link DataHandler} representing the {@link Blob}
+     */
+    public static DataHandler toDataHandler(Blob blob) {
+        if (blob instanceof DataHandlerBlob) {
+            return ((DataHandlerBlob)blob).getDataHandler();
+        }
+        return new DataHandler(new BlobDataSource(blob, "application/octet-stream"));
+    }
+
+    /**
+     * Get a {@link Blob} for the given {@link DataHandler}. If the {@link DataHandler} was obtained from {@link
+     * #toDataHandler(Blob)}, the original {@link Blob} is returned.
+     * 
+     * @param dh the {@link DataHandler} to convert
+     * @return a {@link Blob} representing the {@link DataHandler}
+     */
+    public static Blob toBlob(DataHandler dh) {
+        DataSource ds = dh.getDataSource();
+        if (ds instanceof BlobDataSource) {
+            return ((BlobDataSource)ds).getBlob();
+        }
+        return new DataHandlerBlob(dh);
     }
 }
