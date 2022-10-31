@@ -21,9 +21,9 @@ package org.apache.axiom.om.ds.jaxb;
 import javax.activation.DataHandler;
 import javax.xml.bind.attachment.AttachmentMarshaller;
 
-import org.apache.axiom.blob.BlobDataSource;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.util.activation.BlobDataSource;
 
 final class AttachmentMarshallerImpl extends AttachmentMarshaller {
     private final MTOMXMLStreamWriter out;

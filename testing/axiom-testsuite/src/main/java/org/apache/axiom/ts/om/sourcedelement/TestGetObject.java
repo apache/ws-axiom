@@ -23,7 +23,6 @@ import java.nio.charset.Charset;
 import javax.activation.DataSource;
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.blob.BlobDataSource;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -32,6 +31,7 @@ import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.activation.BlobDataSource;
 
 public class TestGetObject extends AxiomTestCase {
     public TestGetObject(OMMetaFactory metaFactory) {

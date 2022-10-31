@@ -22,7 +22,6 @@ import java.io.IOException;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.blob.BlobDataSource;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CloneableCharacterData;
@@ -32,6 +31,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.UIDGenerator;
+import org.apache.axiom.util.activation.BlobDataSource;
 import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
 import org.apache.axiom.util.base64.Base64Utils;

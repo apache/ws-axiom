@@ -28,12 +28,12 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.blob.BlobDataSource;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.util.activation.BlobDataSource;
 import org.apache.axiom.util.activation.EmptyDataSource;
 import org.apache.axiom.util.base64.Base64DecodingOutputStreamWriter;
 import org.apache.commons.logging.Log;
