@@ -26,7 +26,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.ext.stax.BlobReader;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
 import org.xml.sax.ext.DeclHandler;
@@ -315,7 +315,7 @@ public interface OMContainer extends OMSerializable {
      * {@link XMLStreamReader#close()} method.
      * <p>
      * The returned reader MAY implement the extension defined by
-     * {@link DataHandlerReader} and any binary content will
+     * {@link BlobReader} and any binary content will
      * be reported using this extension. More precisely, if the object model contains an
      * {@link OMText} instance with {@link OMText#isBinary()} returning <code>true</code> (or
      * would contain such an instance after it has been fully built), then its data will always be

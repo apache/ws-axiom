@@ -20,23 +20,23 @@ package org.apache.axiom.samples;
 
 import java.io.IOException;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.ext.stax.BlobProvider;
+import org.apache.axiom.ext.stax.BlobWriter;
 import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
 
 // START SNIPPET: main
-public class LogWriter extends XMLStreamWriterWrapper implements DataHandlerWriter {
+public class LogWriter extends XMLStreamWriterWrapper implements BlobWriter {
     public LogWriter(XMLStreamWriter parent) {
         super(parent);
     }
 
     @Override
     public Object getProperty(String name) throws IllegalArgumentException {
-        if (name.equals(DataHandlerWriter.PROPERTY)) {
+        if (name.equals(BlobWriter.PROPERTY)) {
             return this;
         } else {
             return super.getProperty(name);
@@ -44,13 +44,13 @@ public class LogWriter extends XMLStreamWriterWrapper implements DataHandlerWrit
     }
 
     @Override
-    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
+    public void writeBlob(Blob blob, String contentID, boolean optimize)
             throws IOException, XMLStreamException {
         super.writeCharacters("[base64 encoded data]");
     }
 
     @Override
-    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
+    public void writeBlob(BlobProvider blobProvider, String contentID,
             boolean optimize) throws IOException, XMLStreamException {
         super.writeCharacters("[base64 encoded data]");
     }

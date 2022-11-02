@@ -20,7 +20,7 @@ package org.apache.axiom.om.impl.stream.stax.push;
 
 import org.apache.axiom.core.stream.stax.push.input.InternalXMLStreamWriter;
 import org.apache.axiom.core.stream.stax.push.input.XMLStreamWriterExtensionFactory;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.ext.stax.BlobWriter;
 
 public final class AxiomXMLStreamWriterExtensionFactory implements XMLStreamWriterExtensionFactory {
     public static final AxiomXMLStreamWriterExtensionFactory INSTANCE =
@@ -30,8 +30,8 @@ public final class AxiomXMLStreamWriterExtensionFactory implements XMLStreamWrit
 
     @Override
     public Object createExtension(String propertyName, InternalXMLStreamWriter writer) {
-        if (DataHandlerWriter.PROPERTY.equals(propertyName)) {
-            return new DataHandlerWriterImpl(writer);
+        if (BlobWriter.PROPERTY.equals(propertyName)) {
+            return new BlobWriterImpl(writer);
         } else {
             return null;
         }

@@ -876,12 +876,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.element.sr.TestCommentEvent(metaFactory, bf, true));
             addTest(new org.apache.axiom.ts.om.element.sr.TestCommentEvent(metaFactory, bf, false));
         }
-        addTest(
-                new org.apache.axiom.ts.om.element.sr.TestGetDataHandlerFromElement(
-                        metaFactory, true));
-        addTest(
-                new org.apache.axiom.ts.om.element.sr.TestGetDataHandlerFromElement(
-                        metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.element.sr.TestGetBlobFromElement(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.element.sr.TestGetBlobFromElement(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.sr.TestGetElementText(metaFactory));
         for (BuilderFactory bf : getInstances(BuilderFactory.class)) {
             addTest(
@@ -989,10 +985,10 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
                         metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMText(metaFactory));
         addTest(
-                new org.apache.axiom.ts.om.factory.TestCreateOMTextFromDataHandlerProvider(
+                new org.apache.axiom.ts.om.factory.TestCreateOMTextFromBlobProvider(
                         metaFactory, false));
         addTest(
-                new org.apache.axiom.ts.om.factory.TestCreateOMTextFromDataHandlerProvider(
+                new org.apache.axiom.ts.om.factory.TestCreateOMTextFromBlobProvider(
                         metaFactory, true));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextFromOMText(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextWithNullParent(metaFactory));

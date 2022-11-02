@@ -20,31 +20,30 @@ package org.apache.axiom.om.impl.stream.stax.push;
 
 import java.io.IOException;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.stax.push.input.InternalXMLStreamWriter;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.ext.stax.BlobProvider;
+import org.apache.axiom.ext.stax.BlobWriter;
 import org.apache.axiom.om.impl.intf.TextContent;
 
-public final class DataHandlerWriterImpl implements DataHandlerWriter {
+public final class BlobWriterImpl implements BlobWriter {
     private final InternalXMLStreamWriter writer;
 
-    public DataHandlerWriterImpl(InternalXMLStreamWriter writer) {
+    public BlobWriterImpl(InternalXMLStreamWriter writer) {
         this.writer = writer;
     }
 
     @Override
-    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
+    public void writeBlob(Blob blob, String contentID, boolean optimize)
             throws IOException, XMLStreamException {
-        writer.writeCharacterData(new TextContent(contentID, dataHandler, optimize));
+        writer.writeCharacterData(new TextContent(contentID, blob, optimize));
     }
 
     @Override
-    public void writeDataHandler(
-            DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize)
+    public void writeBlob(BlobProvider blobProvider, String contentID, boolean optimize)
             throws IOException, XMLStreamException {
-        writer.writeCharacterData(new TextContent(contentID, dataHandlerProvider, optimize));
+        writer.writeCharacterData(new TextContent(contentID, blobProvider, optimize));
     }
 }

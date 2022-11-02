@@ -27,8 +27,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.ext.stax.BlobProvider;
+import org.apache.axiom.ext.stax.BlobWriter;
 import org.apache.axiom.om.ds.AbstractOMDataSource;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
@@ -122,10 +123,10 @@ public interface OMDataSource {
      * <li>To produce base64 binary data (that could be optimized using XOP/MTOM), the
      * implementation MUST use one of the following approaches:
      * <ul>
-     * <li>Use the {@link DataHandlerWriter} extension (or alternatively the
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
+     * <li>Use the {@link BlobWriter} extension (or alternatively the
+     * {@link XMLStreamWriterUtils#writeBlob(XMLStreamWriter, Blob, String, boolean)}
      * or
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
+     * {@link XMLStreamWriterUtils#writeBlob(XMLStreamWriter, BlobProvider, String, boolean)}
      * utility methods) to write the data to the stream. This is the preferred approach, unless the
      * content is produced by a third party library that is not aware of these APIs.
      * <li>Cast the {@link XMLStreamWriter} to an {@link MTOMXMLStreamWriter}, use

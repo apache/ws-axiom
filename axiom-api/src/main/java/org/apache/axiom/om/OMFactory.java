@@ -22,7 +22,8 @@ package org.apache.axiom.om;
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.ext.stax.BlobProvider;
 
 /** Class OMFactory */
 public interface OMFactory {
@@ -300,14 +301,14 @@ public interface OMFactory {
      * 
      * @param contentID
      *            the content ID identifying the binary content; may be <code>null</code>
-     * @param dataHandlerProvider
-     *            used to load the {@link javax.activation.DataHandler} when requested from the returned
+     * @param blobProvider
+     *            used to load the {@link Blob} when requested from the returned
      *            {@link OMText} node
      * @param optimize
      *            determines whether the binary content should be optimized
      * @return TODO
      */
-    OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
+    OMText createOMText(String contentID, BlobProvider blobProvider,
             boolean optimize);
 
     /**

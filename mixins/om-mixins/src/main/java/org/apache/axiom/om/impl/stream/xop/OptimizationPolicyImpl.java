@@ -23,7 +23,7 @@ import java.io.IOException;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.logging.Log;
@@ -62,8 +62,7 @@ public final class OptimizationPolicyImpl implements OptimizationPolicy {
     }
 
     @Override
-    public boolean isOptimized(DataHandlerProvider dataHandlerProvider, boolean optimize)
-            throws IOException {
+    public boolean isOptimized(BlobProvider blobProvider, boolean optimize) throws IOException {
 
         if (!optimize) {
             return false;
@@ -72,7 +71,7 @@ public final class OptimizationPolicyImpl implements OptimizationPolicy {
             // DataHandlerProvider#getDataHandler(), which would force loading the data handler.
             return true;
         } else {
-            return isOptimized(dataHandlerProvider.getDataHandler(), optimize);
+            return isOptimized(DataHandlerUtils.toDataHandler(blobProvider.getBlob()), optimize);
         }
     }
 }

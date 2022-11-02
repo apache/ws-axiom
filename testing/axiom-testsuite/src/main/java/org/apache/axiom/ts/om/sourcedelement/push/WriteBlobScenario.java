@@ -26,20 +26,21 @@ import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.ext.stax.BlobWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.junit.Assert;
 
 /**
- * Tests that {@link DataHandlerWriter#writeDataHandler(DataHandler, String, boolean)} creates an
- * {@link OMText} backed by a {@link DataHandler}.
+ * Tests that {@link BlobWriter#writeBlob(Blob, String, boolean)} creates an {@link OMText} backed
+ * by a {@link Blob}.
  */
-public class WriteDataHandlerScenario implements PushOMDataSourceScenario {
+public class WriteBlobScenario implements PushOMDataSourceScenario {
     private final DataHandler dh = new DataHandler(new RandomDataSource(1024));
 
     @Override
@@ -56,7 +57,7 @@ public class WriteDataHandlerScenario implements PushOMDataSourceScenario {
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         try {
-            XMLStreamWriterUtils.writeDataHandler(writer, dh, null, true);
+            XMLStreamWriterUtils.writeBlob(writer, DataHandlerUtils.toBlob(dh), null, true);
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }

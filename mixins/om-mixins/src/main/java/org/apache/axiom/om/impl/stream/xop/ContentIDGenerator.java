@@ -44,7 +44,7 @@ public interface ContentIDGenerator {
      *
      * @param existingContentID An existing content ID for the {@link javax.activation.DataHandler}
      *     being processed, as returned by {@link
-     *     org.apache.axiom.ext.stax.datahandler.DataHandlerReader#getContentID()}, or <code>null
+     *     org.apache.axiom.ext.stax.BlobReader#getContentID()}, or <code>null
      *     </code> if no existing content ID is known. The implementation is free to use this
      *     information or not.
      * @return the content ID; may not be <code>null</code>

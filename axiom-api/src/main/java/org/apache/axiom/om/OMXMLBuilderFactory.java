@@ -29,7 +29,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.ext.stax.BlobReader;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.MediaType;
 import org.apache.axiom.mime.MultipartBody;
@@ -68,7 +68,7 @@ public class OMXMLBuilderFactory {
      * of the document represented by the stream reader.
      * <p>
      * The builder supports the {@link XMLStreamReader} extension defined by
-     * {@link DataHandlerReader} as well as the legacy extension mechanism defined in the
+     * {@link BlobReader} as well as the legacy extension mechanism defined in the
      * documentation of {@link XMLStreamReaderUtils}.
      * <p>
      * The returned builder also performs namespace repairing, i.e. it adds appropriate namespace

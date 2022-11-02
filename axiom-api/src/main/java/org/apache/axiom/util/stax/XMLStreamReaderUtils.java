@@ -23,25 +23,23 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
+import org.apache.axiom.ext.stax.BlobReader;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.util.activation.BlobDataSource;
-import org.apache.axiom.util.activation.EmptyDataSource;
 import org.apache.axiom.util.base64.Base64DecodingOutputStreamWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
  * Contains utility methods to work with {@link XMLStreamReader} objects, including the extension
- * defined by {@link DataHandlerReader}.
+ * defined by {@link BlobReader}.
  */
 public class XMLStreamReaderUtils {
     private static final Log log = LogFactory.getLog(XMLStreamReaderUtils.class);
@@ -49,18 +47,18 @@ public class XMLStreamReaderUtils {
     private XMLStreamReaderUtils() {}
     
     /**
-     * Get the {@link DataHandlerReader} extension for a given {@link XMLStreamReader}, if
+     * Get the {@link BlobReader} extension for a given {@link XMLStreamReader}, if
      * available.
      * 
      * @param reader
-     *            the stream reader to get the {@link DataHandlerReader} extension from
+     *            the stream reader to get the {@link BlobReader} extension from
      * @return the implementation of the extension, or <code>null</code> if the
      *         {@link XMLStreamReader} doesn't expose base64 encoded binary content as
-     *         {@link DataHandler} objects.
+     *         {@link Blob} objects.
      */
-    public static DataHandlerReader getDataHandlerReader(final XMLStreamReader reader) {
+    public static BlobReader getBlobReader(final XMLStreamReader reader) {
         try {
-            return (DataHandlerReader)reader.getProperty(DataHandlerReader.PROPERTY);
+            return (BlobReader)reader.getProperty(BlobReader.PROPERTY);
         } catch (IllegalArgumentException ex) {
             return null;
         }
@@ -68,21 +66,21 @@ public class XMLStreamReaderUtils {
     
     /**
      * Helper method to implement {@link XMLStreamReader#getProperty(String)}. This method
-     * processes the property defined by {@link DataHandlerReader#PROPERTY}.
+     * processes the property defined by {@link BlobReader#PROPERTY}.
      * 
      * @param extension
-     *            the reference to the {@link DataHandlerReader} extension for the
+     *            the reference to the {@link BlobReader} extension for the
      *            {@link XMLStreamReader} implementation
      * @param propertyName
      *            the name of the property, as passed to the
      *            {@link XMLStreamReader#getProperty(String)} method
-     * @return the property value as specified by the {@link DataHandlerReader} extension;
+     * @return the property value as specified by the {@link BlobReader} extension;
      *         <code>null</code> if the property doesn't match
      */
-    public static Object processGetProperty(DataHandlerReader extension, String propertyName) {
+    public static Object processGetProperty(BlobReader extension, String propertyName) {
         if (extension == null || propertyName == null) {
             throw new IllegalArgumentException();
-        } else if (propertyName.equals(DataHandlerReader.PROPERTY)) {
+        } else if (propertyName.equals(BlobReader.PROPERTY)) {
             return extension;
         } else {
             return null;
@@ -90,9 +88,9 @@ public class XMLStreamReaderUtils {
     }
     
     /**
-     * Get a {@link DataHandler} for the binary data encoded in an element. The method supports
+     * Get a {@link Blob} for the binary data encoded in an element. The method supports
      * base64 encoded character data as well as optimized binary data through the
-     * {@link DataHandlerReader} extension.
+     * {@link BlobReader} extension.
      * <p>
      * <em>Precondition</em>: the reader is on a {@link XMLStreamConstants#START_ELEMENT}
      * <p>
@@ -102,21 +100,21 @@ public class XMLStreamReaderUtils {
      * @param reader the stream to read the data from
      * @return the binary data from the element
      */
-    public static DataHandler getDataHandlerFromElement(XMLStreamReader reader)
+    public static Blob getBlobFromElement(XMLStreamReader reader)
             throws XMLStreamException {
         
         int event = reader.next();
         if (event == XMLStreamConstants.END_ELEMENT) {
-            // This means that the element is actually empty -> return empty DataHandler
-            return new DataHandler(new EmptyDataSource("application/octet-stream"));
+            // This means that the element is actually empty -> return empty blob
+            return Blobs.createBlob(new byte[0]);
         } else if (event != XMLStreamConstants.CHARACTERS) {
             throw new XMLStreamException("Expected a CHARACTER event");
         }
-        DataHandlerReader dhr = getDataHandlerReader(reader);
-        if (dhr != null && dhr.isBinary()) {
-            DataHandler dh = dhr.getDataHandler();
+        BlobReader blobReader = getBlobReader(reader);
+        if (blobReader != null && blobReader.isBinary()) {
+            Blob blob = blobReader.getBlob();
             reader.next();
-            return dh;
+            return blob;
         } else {
             MemoryBlob blob = Blobs.createMemoryBlob();
             Writer out = new Base64DecodingOutputStreamWriter(blob.getOutputStream());
@@ -139,7 +137,7 @@ public class XMLStreamReaderUtils {
             } catch (IOException ex) {
                 throw new XMLStreamException("Error during base64 decoding", ex);
             }
-            return new DataHandler(new BlobDataSource(blob, "application/octet-string"));
+            return blob;
         }
     }
     

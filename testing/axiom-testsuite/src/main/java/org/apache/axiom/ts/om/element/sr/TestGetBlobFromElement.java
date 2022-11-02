@@ -21,10 +21,10 @@ package org.apache.axiom.ts.om.element.sr;
 import java.io.StringReader;
 
 import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -35,13 +35,13 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 /**
- * Tests {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)} on an {@link
+ * Tests {@link XMLStreamReaderUtils#getBlobFromElement(XMLStreamReader)} on an {@link
  * XMLStreamReader} returned by {@link OMElement#getXMLStreamReader(boolean)}.
  */
-public class TestGetDataHandlerFromElement extends AxiomTestCase {
+public class TestGetBlobFromElement extends AxiomTestCase {
     private final boolean cache;
 
-    public TestGetDataHandlerFromElement(OMMetaFactory metaFactory, boolean cache) {
+    public TestGetBlobFromElement(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
         addTestParameter("cache", cache);
@@ -60,7 +60,7 @@ public class TestGetDataHandlerFromElement extends AxiomTestCase {
         XMLStreamReader reader = root.getXMLStreamReader(cache);
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        DataSource ds = XMLStreamReaderUtils.getDataHandlerFromElement(reader).getDataSource();
-        IOTestUtils.compareStreams(orgDS.getInputStream(), ds.getInputStream());
+        Blob blob = XMLStreamReaderUtils.getBlobFromElement(reader);
+        IOTestUtils.compareStreams(orgDS.getInputStream(), blob.getInputStream());
     }
 }

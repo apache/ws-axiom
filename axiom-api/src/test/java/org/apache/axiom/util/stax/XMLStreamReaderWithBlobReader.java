@@ -18,16 +18,16 @@
  */
 package org.apache.axiom.util.stax;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.ext.stax.BlobProvider;
+import org.apache.axiom.ext.stax.BlobReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-public class XMLStreamReaderWithDataHandlerReader extends XMLStreamReaderWrapper implements DataHandlerReader {
-    public XMLStreamReaderWithDataHandlerReader(XMLStreamReader parent) {
+public class XMLStreamReaderWithBlobReader extends XMLStreamReaderWrapper implements BlobReader {
+    public XMLStreamReaderWithBlobReader(XMLStreamReader parent) {
         super(parent);
     }
 
@@ -58,12 +58,12 @@ public class XMLStreamReaderWithDataHandlerReader extends XMLStreamReaderWrapper
     }
 
     @Override
-    public DataHandler getDataHandler() throws XMLStreamException {
+    public Blob getBlob() throws XMLStreamException {
         throw new IllegalStateException();
     }
 
     @Override
-    public DataHandlerProvider getDataHandlerProvider() {
+    public BlobProvider getBlobProvider() {
         throw new IllegalStateException();
     }
 }

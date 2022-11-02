@@ -26,17 +26,19 @@ import java.util.Set;
 
 import javax.activation.DataHandler;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.xop.AbstractXOPEncodingFilterHandler;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.TextContent;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler
         implements XOPHandler, OMAttachmentAccessor {
-    private final Map<String, Object> dataHandlerObjects = new LinkedHashMap<String, Object>();
+    private final Map<String, Object> blobObjects = new LinkedHashMap<String, Object>();
     private final ContentIDGenerator contentIDGenerator;
     private final OptimizationPolicy optimizationPolicy;
 
@@ -59,7 +61,7 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
         }
         if (doOptimize) {
             String contentID = contentIDGenerator.generateContentID(null);
-            dataHandlerObjects.put(contentID, dataHandler);
+            blobObjects.put(contentID, DataHandlerUtils.toBlob(dataHandler));
             return contentID;
         } else {
             return null;
@@ -75,19 +77,19 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
      *     returned.
      */
     public Set<String> getContentIDs() {
-        return Collections.unmodifiableSet(dataHandlerObjects.keySet());
+        return Collections.unmodifiableSet(blobObjects.keySet());
     }
 
     @Override
     public DataHandler getDataHandler(String contentID) {
-        Object dataHandlerObject = dataHandlerObjects.get(contentID);
-        if (dataHandlerObject == null) {
+        Object blobObject = blobObjects.get(contentID);
+        if (blobObject == null) {
             return null;
-        } else if (dataHandlerObject instanceof DataHandler) {
-            return (DataHandler) dataHandlerObject;
+        } else if (blobObject instanceof Blob) {
+            return DataHandlerUtils.toDataHandler((Blob) blobObject);
         } else {
             try {
-                return ((DataHandlerProvider) dataHandlerObject).getDataHandler();
+                return DataHandlerUtils.toDataHandler(((BlobProvider) blobObject).getBlob());
             } catch (IOException ex) {
                 throw new OMException(ex);
             }
@@ -99,18 +101,18 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
         if (data instanceof TextContent) {
             TextContent textContent = (TextContent) data;
             if (textContent.isBinary()) {
-                Object dataHandlerObject = textContent.getDataHandlerObject();
+                Object blobObject = textContent.getBlobObject();
                 boolean optimize;
                 try {
-                    if (dataHandlerObject instanceof DataHandlerProvider) {
+                    if (blobObject instanceof BlobProvider) {
                         optimize =
                                 optimizationPolicy.isOptimized(
-                                        (DataHandlerProvider) dataHandlerObject,
-                                        textContent.isOptimize());
+                                        (BlobProvider) blobObject, textContent.isOptimize());
                     } else {
                         optimize =
                                 optimizationPolicy.isOptimized(
-                                        (DataHandler) dataHandlerObject, textContent.isOptimize());
+                                        DataHandlerUtils.toDataHandler((Blob) blobObject),
+                                        textContent.isOptimize());
                     }
                 } catch (IOException ex) {
                     throw new StreamException(ex);
@@ -118,7 +120,7 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
                 if (optimize) {
                     String contentID =
                             contentIDGenerator.generateContentID(textContent.getContentID());
-                    dataHandlerObjects.put(contentID, dataHandlerObject);
+                    blobObjects.put(contentID, blobObject);
                     return contentID;
                 }
             }

@@ -17,14 +17,15 @@
  * under the License.
  */
 
-package org.apache.axiom.ext.stax.datahandler;
+package org.apache.axiom.ext.stax;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
+
+import org.apache.axiom.blob.Blob;
 
 /**
  * Extension interface for {@link javax.xml.stream.XMLStreamReader} implementations that expose
- * base64 encoded binary content as {@link DataHandler} objects.
+ * base64 encoded binary content as {@link Blob} objects.
  * <p>
  * All the requirements specified in {@link org.apache.axiom.ext.stax} apply to
  * this extension interface. In particular,
@@ -47,21 +48,21 @@ import javax.xml.stream.XMLStreamException;
  * instances provided by databinding frameworks or XMLStreamReader proxies that enrich a stream of
  * StAX events with binary data existing outside of the XML document (e.g. an XOP/MTOM decoder).
  */
-public interface DataHandlerReader {
+public interface BlobReader {
     /**
      * The name of the property used to look up this extension interface from a
      * {@link javax.xml.stream.XMLStreamReader} implementation.
      */
-    String PROPERTY = DataHandlerReader.class.getName();
+    String PROPERTY = BlobReader.class.getName();
     
     /**
      * Check whether the current event is a {@link javax.xml.stream.XMLStreamConstants#CHARACTERS}
      * event representing base64 encoded binary content and for which a
-     * {@link javax.activation.DataHandler} is available.
+     * {@link Blob} is available.
      * 
      * @return <code>true</code> if the current event is a
      *         {@link javax.xml.stream.XMLStreamConstants#CHARACTERS} event representing base64
-     *         encoded binary content and for which a {@link javax.activation.DataHandler} is
+     *         encoded binary content and for which a {@link Blob} is
      *         available; <code>false</code> for all other types of events.
      */
     boolean isBinary();
@@ -80,8 +81,8 @@ public interface DataHandlerReader {
     /**
      * Check whether the {@link javax.xml.stream.XMLStreamReader} supports deferred loading of the
      * binary content for the current event. If this method returns <code>true</code> then a
-     * consumer MAY call {@link #getDataHandlerProvider()} and retrieve the
-     * {@link javax.activation.DataHandler} later using {@link DataHandlerProvider#getDataHandler()}.
+     * consumer MAY call {@link #getBlobProvider()} and retrieve the
+     * {@link Blob} later using {@link BlobProvider#getBlob()}.
      * Calling this method is only meaningful if {@link #isBinary()} returns <code>true</code> for
      * the current event. The behavior of this method is undefined if this is not the case.
      * 
@@ -118,29 +119,29 @@ public interface DataHandlerReader {
     String getContentID();
     
     /**
-     * Get the {@link DataHandler} with the binary content for the current event. The behavior of
+     * Get the {@link Blob} with the binary content for the current event. The behavior of
      * this method is only defined for events for which {@link #isBinary()} returns
      * <code>true</code>. For events of this type the method MUST return a valid
-     * {@link DataHandler}, regardless of the return value of {@link #isDeferred()}. If
+     * {@link Blob}, regardless of the return value of {@link #isDeferred()}. If
      * {@link #isDeferred()} returns <code>true</code>, then the consumer may use this method to
      * force the implementation to load the binary content immediately.
      * 
      * @return the binary content for the current event
      * 
-     * @throws XMLStreamException if an error occurs while loading the {@link DataHandler}
+     * @throws XMLStreamException if an error occurs while loading the {@link Blob}
      */
-    DataHandler getDataHandler() throws XMLStreamException;
+    Blob getBlob() throws XMLStreamException;
     
     /**
-     * Get a {@link DataHandlerProvider} instance for deferred loading of the binary content for the
+     * Get a {@link BlobProvider} instance for deferred loading of the binary content for the
      * current event. The behavior of this method is defined if and only if {@link #isDeferred()}
      * returns <code>true</code> for the current event. The returned reference MUST remain valid
      * after the current event has been consumed. It is up to the implementation to specify the
      * exact lifecycle of the returned instance, in particular until when the binary content can be
      * retrieved.
      * 
-     * @return the {@link DataHandlerProvider} instance the consumer can use to load the binary
+     * @return the {@link BlobProvider} instance the consumer can use to load the binary
      *         content at a later time
      */
-    DataHandlerProvider getDataHandlerProvider();
+    BlobProvider getBlobProvider();
 }

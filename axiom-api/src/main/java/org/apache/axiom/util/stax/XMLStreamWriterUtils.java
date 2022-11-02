@@ -21,12 +21,12 @@ package org.apache.axiom.util.stax;
 
 import java.io.IOException;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.ext.stax.BlobProvider;
+import org.apache.axiom.ext.stax.BlobWriter;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 
 /**
@@ -43,68 +43,68 @@ public class XMLStreamWriterUtils {
      * <p>
      * Note that this method will always serialize the data as base64 encoded character data.
      * Serialization code should prefer using
-     * {@link #writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)} or
-     * {@link #writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)} to
+     * {@link #writeBlob(XMLStreamWriter, Blob, String, boolean)} or
+     * {@link #writeBlob(XMLStreamWriter, BlobProvider, String, boolean)} to
      * enable optimization (if supported by the {@link XMLStreamWriter}).
      * 
      * @param writer the stream writer to write the data to
-     * @param dh the data handler containing the data to encode
+     * @param blob the blob containing the data to encode
      * @throws IOException if an error occurs when reading the data from the data handler
      * @throws XMLStreamException if an error occurs when writing the base64 encoded data to
      *         the stream
      */
-    public static void writeBase64(XMLStreamWriter writer, DataHandler dh)
+    public static void writeBase64(XMLStreamWriter writer, Blob blob)
             throws IOException, XMLStreamException {
         
         Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(
                 new XMLStreamWriterWriter(writer), 4096, true);
         try {
-            dh.writeTo(out);
+            blob.writeTo(out);
             out.close();
         } catch (XMLStreamIOException ex) {
             throw ex.getXMLStreamException();
         }
     }
 
-    private static DataHandlerWriter internalGetDataHandlerWriter(XMLStreamWriter writer) {
+    private static BlobWriter internalGetBlobWriter(XMLStreamWriter writer) {
         try {
-            return (DataHandlerWriter)writer.getProperty(DataHandlerWriter.PROPERTY);
+            return (BlobWriter)writer.getProperty(BlobWriter.PROPERTY);
         } catch (IllegalArgumentException ex) {
             return null;
         }
     }
 
     /**
-     * Get the {@link DataHandlerWriter} extension for a given {@link XMLStreamWriter}. If the
+     * Get the {@link BlobWriter} extension for a given {@link XMLStreamWriter}. If the
      * writer exposes the extension, a reference to the extension interface implementation is
      * returned. If the writer doesn't expose the extension, this method returns an instance of the
      * extension interface that emulates the extension (by writing the binary data as base64
      * character data to the stream).
      * 
      * @param writer
-     *            the stream for which the method should return the {@link DataHandlerWriter}
+     *            the stream for which the method should return the {@link BlobWriter}
      *            extension
      * @return a reference to the extension interface exposed by the writer or an implementation the
      *         emulates the extension; the return value is never <code>null</code>
      */
-    public static DataHandlerWriter getDataHandlerWriter(final XMLStreamWriter writer) {
-        DataHandlerWriter dataHandlerWriter = internalGetDataHandlerWriter(writer);
-        if (dataHandlerWriter == null) {
-            return new DataHandlerWriter() {
+    public static BlobWriter getBlobWriter(final XMLStreamWriter writer) {
+        BlobWriter blobWriter = internalGetBlobWriter(writer);
+        if (blobWriter == null) {
+            return new BlobWriter() {
                 @Override
-                public void writeDataHandler(DataHandler dataHandler, String contentID,
+                public void writeBlob(Blob blob, String contentID,
                         boolean optimize) throws IOException, XMLStreamException {
-                    writeBase64(writer, dataHandler);
+                    writeBase64(writer, blob);
                 }
 
                 @Override
-                public void writeDataHandler(DataHandlerProvider dataHandlerProvider,
+                public void writeBlob(BlobProvider blobProvider,
                         String contentID, boolean optimize) throws IOException, XMLStreamException {
-                    writeBase64(writer, dataHandlerProvider.getDataHandler());
+                    writeBase64(writer, blobProvider.getBlob());
                 }
             };
         } else {
-            return dataHandlerWriter;
+            return blobWriter;
         }
     }
 
@@ -112,15 +112,15 @@ public class XMLStreamWriterUtils {
      * Write binary content to the stream. Depending on the supplied {@link XMLStreamWriter},
      * the content will be written as base64 encoded character data or using an optimization
      * scheme such as XOP/MTOM. The method attempts to submit the binary content using the
-     * {@link DataHandlerWriter} extension. If the writer doesn't expose this extension,
-     * the method will fall back to {@link #writeBase64(XMLStreamWriter, DataHandler)}.
+     * {@link BlobWriter} extension. If the writer doesn't expose this extension,
+     * the method will fall back to {@link #writeBase64(XMLStreamWriter, Blob)}.
      * <p>
-     * Please refer to the documentation of {@link DataHandlerWriter} for a more
+     * Please refer to the documentation of {@link BlobWriter} for a more
      * detailed description of the semantics of the different arguments.
      * 
      * @param writer
      *            the stream writer to write the data to
-     * @param dataHandler
+     * @param blob
      *            the binary content to write
      * @param contentID
      *            an existing content ID for the binary data
@@ -131,24 +131,24 @@ public class XMLStreamWriterUtils {
      * @throws XMLStreamException
      *             if an error occurs while writing to the underlying stream
      */
-    public static void writeDataHandler(XMLStreamWriter writer, DataHandler dataHandler,
+    public static void writeBlob(XMLStreamWriter writer, Blob blob,
             String contentID, boolean optimize) throws IOException, XMLStreamException {
-        DataHandlerWriter dataHandlerWriter = internalGetDataHandlerWriter(writer);
-        if (dataHandlerWriter != null) {
-            dataHandlerWriter.writeDataHandler(dataHandler, contentID, optimize);
+        BlobWriter blobWriter = internalGetBlobWriter(writer);
+        if (blobWriter != null) {
+            blobWriter.writeBlob(blob, contentID, optimize);
         } else {
-            writeBase64(writer, dataHandler);
+            writeBase64(writer, blob);
         }
     }
     
     /**
      * Write binary content to the stream. This method is similar to
-     * {@link #writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)},
+     * {@link #writeBlob(XMLStreamWriter, Blob, String, boolean)},
      * but supports deferred loading of the data handler.
      * 
      * @param writer
      *            the stream writer to write the data to
-     * @param dataHandlerProvider
+     * @param blobProvider
      *            the binary content to write
      * @param contentID
      *            an existing content ID for the binary data
@@ -159,13 +159,13 @@ public class XMLStreamWriterUtils {
      * @throws XMLStreamException
      *             if an error occurs while writing to the underlying stream
      */
-    public static void writeDataHandler(XMLStreamWriter writer, DataHandlerProvider dataHandlerProvider,
+    public static void writeBlob(XMLStreamWriter writer, BlobProvider blobProvider,
             String contentID, boolean optimize) throws IOException, XMLStreamException {
-        DataHandlerWriter dataHandlerWriter = internalGetDataHandlerWriter(writer);
-        if (dataHandlerWriter != null) {
-            dataHandlerWriter.writeDataHandler(dataHandlerProvider, contentID, optimize);
+        BlobWriter blobWriter = internalGetBlobWriter(writer);
+        if (blobWriter != null) {
+            blobWriter.writeBlob(blobProvider, contentID, optimize);
         } else {
-            writeBase64(writer, dataHandlerProvider.getDataHandler());
+            writeBase64(writer, blobProvider.getBlob());
         }
     }
     

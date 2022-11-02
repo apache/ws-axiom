@@ -25,8 +25,9 @@ import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.ext.stax.BlobProvider;
+import org.apache.axiom.ext.stax.BlobWriter;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 
@@ -42,9 +43,9 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      * Check if MTOM is enabled.
      * <p>
      * Note that serialization code should use
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
+     * {@link XMLStreamWriterUtils#writeBlob(XMLStreamWriter, Blob, String, boolean)}
      * or
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
+     * {@link XMLStreamWriterUtils#writeBlob(XMLStreamWriter, BlobProvider, String, boolean)}
      * to submit any binary content and let this writer decide whether the content should be written
      * as base64 encoded character data or using {@code xop:Include}. This makes optimization
      * entirely transparent for the caller and there should be no need to check if the writer is
@@ -59,7 +60,7 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
     public abstract boolean isOptimized();
 
     /**
-     * Prepare a {@link DataHandler} for serialization without using the {@link DataHandlerWriter}
+     * Prepare a {@link DataHandler} for serialization without using the {@link BlobWriter}
      * API. The method first determines whether the binary data represented by the
      * {@link DataHandler} should be optimized or inlined. If the data should not be optimized, then
      * the method returns <code>null</code> and the caller is expected to use
@@ -70,9 +71,9 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      * <p>
      * This method should only be used to integrate Axiom with third party libraries that support
      * XOP. In all other cases,
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
+     * {@link XMLStreamWriterUtils#writeBlob(XMLStreamWriter, Blob, String, boolean)}
      * or
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
+     * {@link XMLStreamWriterUtils#writeBlob(XMLStreamWriter, BlobProvider, String, boolean)}
      * should be used to write base64Binary values and the application code should never generate
      * {@code xop:Include} elements itself.
      * 

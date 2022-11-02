@@ -26,7 +26,7 @@ import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -64,6 +64,7 @@ import org.apache.axiom.om.impl.intf.AxiomText;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.intf.factory.AxiomElementType;
 import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public class OMFactoryImpl implements OMFactory {
     protected final AxiomNodeFactory nodeFactory;
@@ -213,14 +214,16 @@ public class OMFactoryImpl implements OMFactory {
     @Override
     public final OMText createOMText(DataHandler dataHandler, boolean optimize) {
         return createAxiomText(
-                null, new TextContent(null, dataHandler, optimize), OMNode.TEXT_NODE);
+                null,
+                new TextContent(null, DataHandlerUtils.toBlob(dataHandler), optimize),
+                OMNode.TEXT_NODE);
     }
 
     @Override
     public final OMText createOMText(
-            String contentID, DataHandlerProvider dataHandlerProvider, boolean optimize) {
+            String contentID, BlobProvider blobProvider, boolean optimize) {
         return createAxiomText(
-                null, new TextContent(contentID, dataHandlerProvider, optimize), OMNode.TEXT_NODE);
+                null, new TextContent(contentID, blobProvider, optimize), OMNode.TEXT_NODE);
     }
 
     @Override

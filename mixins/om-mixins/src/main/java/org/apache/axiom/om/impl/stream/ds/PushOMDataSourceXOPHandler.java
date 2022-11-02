@@ -29,6 +29,7 @@ import org.apache.axiom.core.stream.xop.AbstractXOPDecodingFilterHandler;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.stream.xop.XOPHandler;
 import org.apache.axiom.util.UIDGenerator;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 final class PushOMDataSourceXOPHandler extends AbstractXOPDecodingFilterHandler
         implements XOPHandler {
@@ -51,6 +52,6 @@ final class PushOMDataSourceXOPHandler extends AbstractXOPDecodingFilterHandler
         if (dataHandler == null) {
             throw new StreamException("No DataHandler found for content ID " + contentID);
         }
-        return new TextContent(contentID, dataHandler, true);
+        return new TextContent(contentID, DataHandlerUtils.toBlob(dataHandler), true);
     }
 }

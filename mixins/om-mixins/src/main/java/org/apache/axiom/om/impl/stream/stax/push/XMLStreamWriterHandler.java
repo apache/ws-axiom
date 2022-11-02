@@ -25,8 +25,8 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.ext.stax.BlobProvider;
+import org.apache.axiom.ext.stax.BlobWriter;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 
@@ -35,7 +35,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class XMLStreamWriterHandler implements XmlHandler {
     private final XMLStreamWriter writer;
-    private DataHandlerWriter dataHandlerWriter;
+    private BlobWriter blobWriter;
     private final CharacterDataAccumulator buffer = new CharacterDataAccumulator();
     private boolean buffering;
     private String piTarget;
@@ -163,17 +163,17 @@ public class XMLStreamWriterHandler implements XmlHandler {
             if (data instanceof TextContent) {
                 TextContent textContent = (TextContent) data;
                 if (textContent.isBinary()) {
-                    Object dataHandlerObject = textContent.getDataHandlerObject();
-                    if (dataHandlerObject instanceof DataHandlerProvider) {
-                        getDataHandlerWriter()
-                                .writeDataHandler(
-                                        (DataHandlerProvider) dataHandlerObject,
+                    Object blobObject = textContent.getBlobObject();
+                    if (blobObject instanceof BlobProvider) {
+                        getBlobWriter()
+                                .writeBlob(
+                                        (BlobProvider) blobObject,
                                         textContent.getContentID(),
                                         textContent.isOptimize());
                     } else {
-                        getDataHandlerWriter()
-                                .writeDataHandler(
-                                        textContent.getDataHandler(),
+                        getBlobWriter()
+                                .writeBlob(
+                                        textContent.getBlob(),
                                         textContent.getContentID(),
                                         textContent.isOptimize());
                     }
@@ -241,12 +241,12 @@ public class XMLStreamWriterHandler implements XmlHandler {
         }
     }
 
-    private DataHandlerWriter getDataHandlerWriter() {
-        // We only retrieve/create the DataHandlerWriter if necessary
-        if (dataHandlerWriter == null) {
-            dataHandlerWriter = XMLStreamWriterUtils.getDataHandlerWriter(writer);
+    private BlobWriter getBlobWriter() {
+        // We only retrieve/create the BlobWriter if necessary
+        if (blobWriter == null) {
+            blobWriter = XMLStreamWriterUtils.getBlobWriter(writer);
         }
-        return dataHandlerWriter;
+        return blobWriter;
     }
 
     @Override

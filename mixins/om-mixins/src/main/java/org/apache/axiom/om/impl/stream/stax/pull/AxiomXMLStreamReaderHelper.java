@@ -25,8 +25,8 @@ import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.stax.pull.input.DTDInfo;
 import org.apache.axiom.core.stream.stax.pull.input.XMLStreamReaderHelper;
+import org.apache.axiom.ext.stax.BlobReader;
 import org.apache.axiom.ext.stax.DTDReader;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
@@ -34,14 +34,14 @@ final class AxiomXMLStreamReaderHelper extends XMLStreamReaderHelper {
     private final XMLStreamReader reader;
 
     /**
-     * Reference to the {@link DataHandlerReader} extension of the reader, or <code>null</code> if
-     * the reader doesn't support this extension.
+     * Reference to the {@link BlobReader} extension of the reader, or <code>null</code> if the
+     * reader doesn't support this extension.
      */
-    private final DataHandlerReader dataHandlerReader;
+    private final BlobReader blobReader;
 
     AxiomXMLStreamReaderHelper(XMLStreamReader reader) {
         this.reader = reader;
-        dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
+        blobReader = XMLStreamReaderUtils.getBlobReader(reader);
     }
 
     @Override
@@ -62,18 +62,18 @@ final class AxiomXMLStreamReaderHelper extends XMLStreamReaderHelper {
 
     @Override
     public CharacterData getCharacterData() throws StreamException {
-        if (dataHandlerReader != null && dataHandlerReader.isBinary()) {
-            if (dataHandlerReader.isDeferred()) {
+        if (blobReader != null && blobReader.isBinary()) {
+            if (blobReader.isDeferred()) {
                 return new TextContent(
-                        dataHandlerReader.getContentID(),
-                        dataHandlerReader.getDataHandlerProvider(),
-                        dataHandlerReader.isOptimized());
+                        blobReader.getContentID(),
+                        blobReader.getBlobProvider(),
+                        blobReader.isOptimized());
             } else {
                 try {
                     return new TextContent(
-                            dataHandlerReader.getContentID(),
-                            dataHandlerReader.getDataHandler(),
-                            dataHandlerReader.isOptimized());
+                            blobReader.getContentID(),
+                            blobReader.getBlob(),
+                            blobReader.isOptimized());
                 } catch (XMLStreamException ex) {
                     throw new StreamException(ex);
                 }

@@ -20,18 +20,17 @@ package org.apache.axiom.om.impl.intf;
 
 import java.io.IOException;
 
-import javax.activation.DataHandler;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CloneableCharacterData;
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.CharacterDataSink;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.UIDGenerator;
-import org.apache.axiom.util.activation.BlobDataSource;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
 import org.apache.axiom.util.base64.Base64Utils;
@@ -45,10 +44,10 @@ public final class TextContent implements CloneableCharacterData {
     private String contentID;
 
     /**
-     * Contains a {@link DataHandler} or {@link DataHandlerProvider} object if the text node
-     * represents base64 encoded binary data.
+     * Contains a {@link Blob} or {@link BlobProvider} object if the text node represents base64
+     * encoded binary data.
      */
-    private Object dataHandlerObject;
+    private Object blobObject;
 
     private boolean optimize;
     private boolean binary;
@@ -65,11 +64,11 @@ public final class TextContent implements CloneableCharacterData {
         this.optimize = optimize;
     }
 
-    public TextContent(String contentID, Object dataHandlerObject, boolean optimize) {
+    public TextContent(String contentID, Object blobObject, boolean optimize) {
         this.value = null;
         mimeType = null;
         this.contentID = contentID;
-        this.dataHandlerObject = dataHandlerObject;
+        this.blobObject = blobObject;
         binary = true;
         this.optimize = optimize;
     }
@@ -78,7 +77,7 @@ public final class TextContent implements CloneableCharacterData {
         this.value = other.value;
         this.mimeType = other.mimeType;
         this.contentID = other.contentID;
-        this.dataHandlerObject = other.dataHandlerObject;
+        this.blobObject = other.blobObject;
         this.optimize = other.optimize;
         this.binary = other.binary;
     }
@@ -113,33 +112,33 @@ public final class TextContent implements CloneableCharacterData {
         this.contentID = contentID;
     }
 
-    public Object getDataHandlerObject() {
-        return dataHandlerObject;
+    public Object getBlobObject() {
+        return blobObject;
     }
 
-    public DataHandler getDataHandler() {
-        if (dataHandlerObject != null) {
-            if (dataHandlerObject instanceof DataHandlerProvider) {
+    public Blob getBlob() {
+        if (blobObject != null) {
+            if (blobObject instanceof BlobProvider) {
                 try {
-                    dataHandlerObject = ((DataHandlerProvider) dataHandlerObject).getDataHandler();
+                    blobObject = ((BlobProvider) blobObject).getBlob();
                 } catch (IOException ex) {
                     throw new OMException(ex);
                 }
             }
-            return (DataHandler) dataHandlerObject;
+            return (Blob) blobObject;
         } else if (binary) {
-            return new DataHandler(
-                    new BlobDataSource(Blobs.createBlob(Base64Utils.decode(value)), mimeType));
+            return Blobs.createBlob(Base64Utils.decode(value));
         } else {
-            throw new OMException("No DataHandler available");
+            throw new OMException("No Blob available");
         }
     }
 
     @Override
     public String toString() {
-        if (dataHandlerObject != null) {
+        if (blobObject != null) {
             try {
-                return Base64Utils.encode(getDataHandler());
+                // TODO(AXIOM-506): avoid conversion here
+                return Base64Utils.encode(DataHandlerUtils.toDataHandler(getBlob()));
             } catch (Exception e) {
                 throw new OMException(e);
             }
@@ -149,9 +148,10 @@ public final class TextContent implements CloneableCharacterData {
     }
 
     public char[] toCharArray() {
-        if (dataHandlerObject != null) {
+        if (blobObject != null) {
             try {
-                return Base64Utils.encodeToCharArray(getDataHandler());
+                // TODO(AXIOM-506): avoid conversion here
+                return Base64Utils.encodeToCharArray(DataHandlerUtils.toDataHandler(getBlob()));
             } catch (IOException ex) {
                 throw new OMException(ex);
             }
@@ -167,7 +167,8 @@ public final class TextContent implements CloneableCharacterData {
                 && ((OMCloneOptions) options).isFetchDataHandlers()) {
             // Force loading of the reference to the DataHandler and ensure that its content is
             // completely fetched into memory (or temporary storage).
-            getDataHandler().getDataSource();
+            // TODO(AXIOM-506): review this
+            DataHandlerUtils.toDataHandler(getBlob()).getDataSource();
         }
         return new TextContent(this);
     }
@@ -176,7 +177,7 @@ public final class TextContent implements CloneableCharacterData {
     public void writeTo(CharacterDataSink sink) throws IOException {
         if (binary) {
             AbstractBase64EncodingOutputStream out = sink.getBase64EncodingOutputStream();
-            getDataHandler().writeTo(out);
+            getBlob().writeTo(out);
             out.complete();
         } else {
             // TODO: there must be a better way to just write a String
@@ -190,7 +191,7 @@ public final class TextContent implements CloneableCharacterData {
             Base64EncodingStringBufferOutputStream out =
                     new Base64EncodingStringBufferOutputStream(buffer);
             try {
-                getDataHandler().writeTo(out);
+                getBlob().writeTo(out);
                 out.complete();
             } catch (IOException ex) {
                 throw new OMException(ex);

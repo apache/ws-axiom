@@ -17,16 +17,17 @@
  * under the License.
  */
 
-package org.apache.axiom.ext.stax.datahandler;
+package org.apache.axiom.ext.stax;
 
 import java.io.IOException;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
+
+import org.apache.axiom.blob.Blob;
 
 /**
  * Extension interface for {@link javax.xml.stream.XMLStreamWriter} implementations that can
- * receive base64 encoded binary content as {@link DataHandler} objects. A stream writer
+ * receive base64 encoded binary content as {@link Blob} objects. A stream writer
  * implementing this extension may write the binary data as base64 encoded character data
  * or using some optimization such as XOP/MTOM.
  * <p>
@@ -35,8 +36,8 @@ import javax.xml.stream.XMLStreamException;
  * a consumer MUST use {@link javax.xml.stream.XMLStreamWriter#getProperty(String)} with the property
  * name defined by {@link #PROPERTY} to get a reference to this extension interface.
  * <p>
- * The interface defines two methods to write binary content, one that takes a {@link DataHandler}
- * argument and one with a {@link DataHandlerProvider} argument. The first should be used when
+ * The interface defines two methods to write binary content, one that takes a {@link Blob}
+ * argument and one with a {@link BlobProvider} argument. The first should be used when
  * the content is immediately available, while the second supports deferred loading of the data
  * handler. The meaning of the <code>contentID</code> and <code>optimize</code> arguments is
  * the same for both methods:
@@ -45,7 +46,7 @@ import javax.xml.stream.XMLStreamException;
  *   <dd>
  *     A content ID of the binary content, if available. The semantics of this argument are
  *     similar to those defined for the return value of the
- *     {@link DataHandlerReader#getContentID()} method:
+ *     {@link BlobReader#getContentID()} method:
  *     <ul>
  *       <li>This argument should only be set if a content ID has been used
  *           previously in an interaction with another component or system.
@@ -62,23 +63,23 @@ import javax.xml.stream.XMLStreamException;
  *     to override this value or ignore it entirely.
  * </dl>
  * Instead of interacting directly with this extension interface, the consumer may use the
- * {@link org.apache.axiom.util.stax.XMLStreamWriterUtils#writeDataHandler(javax.xml.stream.XMLStreamWriter, DataHandler, String, boolean)} or
- * {@link org.apache.axiom.util.stax.XMLStreamWriterUtils#writeDataHandler(javax.xml.stream.XMLStreamWriter, DataHandlerProvider, String, boolean)}
+ * {@link org.apache.axiom.util.stax.XMLStreamWriterUtils#writeBlob(javax.xml.stream.XMLStreamWriter, Blob, String, boolean)} or
+ * {@link org.apache.axiom.util.stax.XMLStreamWriterUtils#writeBlob(javax.xml.stream.XMLStreamWriter, BlobProvider, String, boolean)}
  * utility methods. These methods make the processing of binary data entirely transparent for
  * the caller.
  */
-public interface DataHandlerWriter {
+public interface BlobWriter {
     /**
      * The name of the property used to look up this extension interface from a
      * {@link javax.xml.stream.XMLStreamWriter} implementation.
      */
-    String PROPERTY = DataHandlerWriter.class.getName();
+    String PROPERTY = BlobWriter.class.getName();
 
     /**
      * Write binary content to the stream. The implementation may choose to write the data as base64
      * encoded character data or using an optimization protocol such as XOP/MTOM.
      * 
-     * @param dataHandler
+     * @param blob
      *            the binary content to write
      * @param contentID
      *            an existing content ID for the binary data (see above)
@@ -89,7 +90,7 @@ public interface DataHandlerWriter {
      * @throws XMLStreamException
      *             if an error occurs while writing to the underlying stream
      */
-    void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
+    void writeBlob(Blob blob, String contentID, boolean optimize)
             throws IOException, XMLStreamException;
 
     /**
@@ -99,7 +100,7 @@ public interface DataHandlerWriter {
      * after the XML infoset is complete. If the caller uses this method, the implementation can
      * defer the actual loading of the binary content.
      * 
-     * @param dataHandlerProvider
+     * @param blobProvider
      *            the binary content to write
      * @param contentID
      *            an existing content ID for the binary data (see above)
@@ -113,6 +114,6 @@ public interface DataHandlerWriter {
      * @throws XMLStreamException
      *             if an error occurs while writing to the underlying stream
      */
-    void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
+    void writeBlob(BlobProvider blobProvider, String contentID,
             boolean optimize) throws IOException, XMLStreamException;
 }

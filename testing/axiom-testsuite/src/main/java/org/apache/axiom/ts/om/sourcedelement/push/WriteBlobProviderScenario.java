@@ -26,27 +26,29 @@ import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.ext.stax.BlobProvider;
+import org.apache.axiom.ext.stax.BlobWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.junit.Assert;
 
 /**
- * Tests that {@link DataHandlerWriter#writeDataHandler(DataHandlerProvider, String, boolean)}
- * creates an {@link OMText} backed by a {@link DataHandlerProvider}.
+ * Tests that {@link BlobWriter#writeBlob(BlobProvider, String, boolean)} creates an {@link OMText}
+ * backed by a {@link BlobProvider}.
  */
-public class WriteDataHandlerProviderScenario implements PushOMDataSourceScenario {
+public class WriteBlobProviderScenario implements PushOMDataSourceScenario {
     private final DataHandler dh = new DataHandler(new RandomDataSource(1024));
-    private final DataHandlerProvider dhp =
-            new DataHandlerProvider() {
+    private final BlobProvider blobProvider =
+            new BlobProvider() {
                 @Override
-                public DataHandler getDataHandler() throws IOException {
-                    return dh;
+                public Blob getBlob() throws IOException {
+                    return DataHandlerUtils.toBlob(dh);
                 }
             };
 
@@ -64,7 +66,7 @@ public class WriteDataHandlerProviderScenario implements PushOMDataSourceScenari
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         try {
-            XMLStreamWriterUtils.writeDataHandler(writer, dhp, null, true);
+            XMLStreamWriterUtils.writeBlob(writer, blobProvider, null, true);
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }

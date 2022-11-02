@@ -22,34 +22,35 @@ import static com.google.common.truth.Truth.assertThat;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.util.UIDGenerator;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
-public class TestCreateOMTextFromDataHandlerProvider extends AxiomTestCase {
-    static class TestDataHandlerProvider implements DataHandlerProvider {
-        private DataHandler dh;
+public class TestCreateOMTextFromBlobProvider extends AxiomTestCase {
+    static class TestDataHandlerProvider implements BlobProvider {
+        private Blob blob;
 
         @Override
-        public DataHandler getDataHandler() {
-            if (dh == null) {
-                dh = new DataHandler("Data", "text/plain");
+        public Blob getBlob() {
+            if (blob == null) {
+                blob = DataHandlerUtils.toBlob(new DataHandler("Data", "text/plain"));
             }
-            return dh;
+            return blob;
         }
 
-        public boolean isDataHandlerCreated() {
-            return dh != null;
+        public boolean isBlobCreated() {
+            return blob != null;
         }
     }
 
     private final boolean nullContentID;
 
-    public TestCreateOMTextFromDataHandlerProvider(
-            OMMetaFactory metaFactory, boolean nullContentID) {
+    public TestCreateOMTextFromBlobProvider(OMMetaFactory metaFactory, boolean nullContentID) {
         super(metaFactory);
         this.nullContentID = nullContentID;
         addTestParameter("nullContentId", nullContentID);
@@ -61,9 +62,9 @@ public class TestCreateOMTextFromDataHandlerProvider extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         String contentID = nullContentID ? null : UIDGenerator.generateContentId();
         OMText text = factory.createOMText(contentID, prov, true);
-        assertFalse(prov.isDataHandlerCreated());
+        assertFalse(prov.isBlobCreated());
         assertEquals(text.getDataHandler().getContent(), "Data");
-        assertTrue(prov.isDataHandlerCreated());
+        assertTrue(prov.isBlobCreated());
         if (contentID == null) {
             assertThat(text.getContentID()).isNotNull();
         } else {

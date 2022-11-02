@@ -17,25 +17,25 @@
  * under the License.
  */
 
-package org.apache.axiom.ext.stax.datahandler;
+package org.apache.axiom.ext.stax;
 
 import java.io.IOException;
 
-import javax.activation.DataHandler;
+import org.apache.axiom.blob.Blob;
 
 /**
  * Interface used for deferred loading of binary content.
  * 
- * @see DataHandlerReader#isDeferred()
- * @see DataHandlerReader#getDataHandlerProvider()
+ * @see BlobReader#isDeferred()
+ * @see BlobReader#getBlobProvider()
  */
-public interface DataHandlerProvider {
+public interface BlobProvider {
     /**
-     * Get the {@link DataHandler} object for the binary content.
+     * Get the {@link Blob} object for the binary content.
      * 
      * @return the binary content
      * 
-     * @throws IOException if an error occurs while loading the {@link DataHandler}
+     * @throws IOException if an error occurs while loading the {@link Blob}
      */
-    DataHandler getDataHandler() throws IOException;
+    Blob getBlob() throws IOException;
 }

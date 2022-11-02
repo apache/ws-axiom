@@ -18,19 +18,19 @@
  */
 package org.apache.axiom.om.impl.stream.stax.pull;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.stax.pull.output.InternalXMLStreamReader;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.ext.stax.BlobProvider;
+import org.apache.axiom.ext.stax.BlobReader;
 import org.apache.axiom.om.impl.intf.TextContent;
 
-final class DataHandlerReaderImpl implements DataHandlerReader {
+final class BlobReaderImpl implements BlobReader {
     private final InternalXMLStreamReader reader;
 
-    DataHandlerReaderImpl(InternalXMLStreamReader reader) {
+    BlobReaderImpl(InternalXMLStreamReader reader) {
         this.reader = reader;
     }
 
@@ -51,8 +51,7 @@ final class DataHandlerReaderImpl implements DataHandlerReader {
 
     @Override
     public boolean isDeferred() {
-        return ((TextContent) reader.getCharacterData()).getDataHandlerObject()
-                instanceof DataHandlerProvider;
+        return ((TextContent) reader.getCharacterData()).getBlobObject() instanceof BlobProvider;
     }
 
     @Override
@@ -61,13 +60,12 @@ final class DataHandlerReaderImpl implements DataHandlerReader {
     }
 
     @Override
-    public DataHandler getDataHandler() throws XMLStreamException {
-        return ((TextContent) reader.getCharacterData()).getDataHandler();
+    public Blob getBlob() throws XMLStreamException {
+        return ((TextContent) reader.getCharacterData()).getBlob();
     }
 
     @Override
-    public DataHandlerProvider getDataHandlerProvider() {
-        return (DataHandlerProvider)
-                ((TextContent) reader.getCharacterData()).getDataHandlerObject();
+    public BlobProvider getBlobProvider() {
+        return (BlobProvider) ((TextContent) reader.getCharacterData()).getBlobObject();
     }
 }

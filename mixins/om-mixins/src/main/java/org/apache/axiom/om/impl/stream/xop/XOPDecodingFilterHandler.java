@@ -22,15 +22,17 @@ import java.io.IOException;
 
 import javax.activation.DataHandler;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.xop.AbstractXOPDecodingFilterHandler;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.TextContent;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
-    private static class DataHandlerProviderImpl implements DataHandlerProvider {
+    private static class DataHandlerProviderImpl implements BlobProvider {
         private final OMAttachmentAccessor attachmentAccessor;
         private final String contentID;
 
@@ -40,12 +42,12 @@ final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
         }
 
         @Override
-        public DataHandler getDataHandler() throws IOException {
+        public Blob getBlob() throws IOException {
             DataHandler dh = attachmentAccessor.getDataHandler(contentID);
             if (dh == null) {
                 throw new OMException("No MIME part found for content ID '" + contentID + "'");
             } else {
-                return dh;
+                return DataHandlerUtils.toBlob(dh);
             }
         }
     }

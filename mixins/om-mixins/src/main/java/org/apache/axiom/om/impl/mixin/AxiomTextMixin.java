@@ -31,6 +31,7 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomText;
 import org.apache.axiom.om.impl.intf.TextContent;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
@@ -132,7 +133,7 @@ public abstract class AxiomTextMixin implements AxiomText {
         try {
             Object content = coreGetCharacterData();
             if (content instanceof TextContent) {
-                return ((TextContent) content).getDataHandler();
+                return DataHandlerUtils.toDataHandler(((TextContent) content).getBlob());
             } else {
                 throw new OMException("No DataHandler available");
             }

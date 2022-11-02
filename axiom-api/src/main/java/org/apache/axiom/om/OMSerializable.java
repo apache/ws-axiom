@@ -22,7 +22,7 @@ package org.apache.axiom.om;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.ext.stax.BlobWriter;
 
 /**
  * Information item that can be serialized (written to an XML stream writer) and
@@ -85,11 +85,11 @@ public interface OMSerializable extends OMInformationItem {
      * <p>
      * The implementation of this method must satisfy the following requirements:
      * <ul>
-     * <li>If the writer exposes the {@link DataHandlerWriter} extension, then base64 binary data
+     * <li>If the writer exposes the {@link BlobWriter} extension, then base64 binary data
      * MUST be written using one of the methods defined by that extension. This will occur if the
      * information item is an {@link OMText} node for which {@link OMText#isBinary()} returns
      * <code>true</code> or if it is an {@link OMContainer} that has such an {@link OMText} node as
-     * descendant. If the writer doesn't expose the {@link DataHandlerWriter} extension, then the
+     * descendant. If the writer doesn't expose the {@link BlobWriter} extension, then the
      * implementation MUST use {@link XMLStreamWriter#writeCharacters(String)} or
      * {@link XMLStreamWriter#writeCharacters(char[], int, int)} to write the base64 encoded data to
      * the stream.

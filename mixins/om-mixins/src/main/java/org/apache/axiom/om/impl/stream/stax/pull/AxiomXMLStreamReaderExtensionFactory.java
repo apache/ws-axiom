@@ -20,9 +20,9 @@ package org.apache.axiom.om.impl.stream.stax.pull;
 
 import org.apache.axiom.core.stream.stax.pull.output.InternalXMLStreamReader;
 import org.apache.axiom.core.stream.stax.pull.output.XMLStreamReaderExtensionFactory;
+import org.apache.axiom.ext.stax.BlobReader;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 
 public final class AxiomXMLStreamReaderExtensionFactory implements XMLStreamReaderExtensionFactory {
     public static final AxiomXMLStreamReaderExtensionFactory INSTANCE =
@@ -32,8 +32,8 @@ public final class AxiomXMLStreamReaderExtensionFactory implements XMLStreamRead
 
     @Override
     public Object createExtension(String propertyName, InternalXMLStreamReader reader) {
-        if (propertyName.equals(DataHandlerReader.PROPERTY)) {
-            return new DataHandlerReaderImpl(reader);
+        if (propertyName.equals(BlobReader.PROPERTY)) {
+            return new BlobReaderImpl(reader);
         } else if (propertyName.equals(DTDReader.PROPERTY)) {
             return new DTDReaderImpl(reader);
         } else if (propertyName.equals(CharacterDataReader.PROPERTY)) {
