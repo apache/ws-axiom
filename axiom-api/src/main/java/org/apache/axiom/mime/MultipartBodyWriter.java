@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.mime.Header;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64EncodingOutputStream;
 
