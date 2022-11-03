@@ -73,9 +73,6 @@ public final class MultipartBodyWriter {
         
         @Override
         public void close() throws IOException {
-            if (parent instanceof Base64EncodingOutputStream) {
-                ((Base64EncodingOutputStream)parent).complete();
-            }
             writeAscii("\r\n");
         }
     }
@@ -138,12 +135,10 @@ public final class MultipartBodyWriter {
      */
     public OutputStream writePart(String contentType, String contentTransferEncoding,
             String contentID, List<Header> extraHeaders) throws IOException {
-        OutputStream transferEncoder;
-        if (contentTransferEncoding.equals("8bit") || contentTransferEncoding.equals("binary")) {
-            transferEncoder = out;
-        } else {
-            // We support no content transfer encodings other than 8bit, binary and base64.
-            transferEncoder = new Base64EncodingOutputStream(out);
+        OutputStream partOut = new PartOutputStream(out);
+        // We support no content transfer encodings other than 8bit, binary and base64.
+        if (!contentTransferEncoding.equals("8bit") && !contentTransferEncoding.equals("binary")) {
+            partOut = new Base64EncodingOutputStream(partOut);
             contentTransferEncoding = "base64";
         }
         writeAscii("--");
@@ -170,7 +165,7 @@ public final class MultipartBodyWriter {
             }
         }
         writeAscii("\r\n\r\n");
-        return new PartOutputStream(transferEncoder);
+        return partOut;
     }
     
     /**
