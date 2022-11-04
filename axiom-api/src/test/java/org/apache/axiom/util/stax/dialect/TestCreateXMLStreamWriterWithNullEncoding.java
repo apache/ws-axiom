@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.junit.Assert.assertThrows;
+
 import javax.xml.stream.XMLOutputFactory;
 
 public class TestCreateXMLStreamWriterWithNullEncoding extends DialectTestCase {
@@ -29,14 +31,6 @@ public class TestCreateXMLStreamWriterWithNullEncoding extends DialectTestCase {
     protected void runTest() throws Throwable {
         XMLOutputFactory factory = staxImpl.newNormalizedXMLOutputFactory();
         // This should cause an exception
-        try {
-            factory.createXMLStreamWriter(System.out, null);
-        } catch (Throwable ex) {
-            // Expected
-            return;
-        }
-        // Attention here: since the fail method works by throwing an exception and we
-        // catch Throwable, it must be invoked outside of the catch block!
-        fail("Expected createXMLStreamWriter to throw an exception");
+        assertThrows(Throwable.class, () -> factory.createXMLStreamWriter(System.out, null));
     }
 }

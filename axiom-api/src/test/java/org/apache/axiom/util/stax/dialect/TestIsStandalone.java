@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.junit.Assert.assertThrows;
+
 import java.io.StringReader;
 
 import javax.xml.stream.XMLInputFactory;
@@ -35,12 +37,7 @@ public class TestIsStandalone extends DialectTestCase {
                 new StringReader("<?xml version='1.0' standalone='no'?><root/>"));
         assertEquals(false, reader.isStandalone());
         reader.next();
-        try {
-            reader.isStandalone();
-            fail("Expected IllegalStateException");
-        } catch (IllegalStateException ex) {
-            // Expected
-        }
+        assertThrows(IllegalStateException.class, reader::isStandalone);
         reader.close();
     }
 }

@@ -20,6 +20,7 @@
 package org.apache.axiom.util.base64;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
 
 import java.util.Random;
 
@@ -38,30 +39,15 @@ public class Base64UtilsTest extends TestCase {
     }
     
     public void testMissingPadding() {
-        try {
-            Base64Utils.decode("cw");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            // Expected
-        }
+        assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("cw"));
     }
 
     public void testTooMuchPadding() {
-        try {
-            Base64Utils.decode("cw===");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            // Expected
-        }
+        assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("cw==="));
     }
     
     public void testNonZeroRemainder() {
-        try {
-            Base64Utils.decode("//==");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            // Expected
-        }
+        assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("//=="));
     }
     
     public void testSpace() throws Exception{
@@ -71,20 +57,10 @@ public class Base64UtilsTest extends TestCase {
     }
 
     public void testInvalidCharacter() {
-        try {
-            Base64Utils.decode("//-/");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            // Expected
-        }
+        assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("//-/"));
     }
 
     public void testInvalidPadding() {
-        try {
-            Base64Utils.decode("//=/");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            // Expected
-        }
+        assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("//=/"));
     }
 }

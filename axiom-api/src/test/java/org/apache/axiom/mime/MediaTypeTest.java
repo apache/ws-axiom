@@ -19,6 +19,7 @@
 package org.apache.axiom.mime;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
 
 import java.text.ParseException;
 
@@ -78,21 +79,11 @@ public class MediaTypeTest extends TestCase {
     }
 
     public void testParseInvalid1() {
-        try {
-            new MediaType("text/");
-            fail("Expected ParseException");
-        } catch (ParseException ex) {
-            // Expected
-        }
+        assertThrows(ParseException.class, () -> new MediaType("text/"));
     }
 
     public void testParseInvalid2() {
-        try {
-            new MediaType("text/xml;");
-            fail("Expected ParseException");
-        } catch (ParseException ex) {
-            // Expected
-        }
+        assertThrows(ParseException.class, () -> new MediaType("text/xml;"));
     }
 
     public void testIsXML() throws Exception {

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.junit.Assert.assertThrows;
+
 import java.io.ByteArrayInputStream;
 
 import javax.xml.stream.XMLInputFactory;
@@ -35,12 +37,7 @@ public class TestGetCharacterEncodingScheme extends DialectTestCase {
                 "<?xml version='1.0' encoding='iso-8859-15'?><root/>".getBytes("iso-8859-15")));
         assertEquals("iso-8859-15", reader.getCharacterEncodingScheme());
         reader.next();
-        try {
-            reader.getCharacterEncodingScheme();
-            fail("Expected IllegalStateException");
-        } catch (IllegalStateException ex) {
-            // Expected
-        }
+        assertThrows(IllegalStateException.class, reader::getCharacterEncodingScheme);
         reader.close();
     }
 }

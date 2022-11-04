@@ -25,6 +25,7 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.testutils.io.ExceptionOutputStream;
 import org.apache.commons.io.input.NullInputStream;
+import org.junit.Assert;
 
 public class TestWriteToWithError extends SizeSensitiveWritableBlobTestCase {
     public TestWriteToWithError(WritableBlobFactory<?> factory, int size) {
@@ -35,12 +36,8 @@ public class TestWriteToWithError extends SizeSensitiveWritableBlobTestCase {
     protected void runTest(WritableBlob blob) throws Throwable {
         blob.readFrom(new NullInputStream(size));
         ExceptionOutputStream out = new ExceptionOutputStream(size/2);
-        try {
-            blob.writeTo(out);
-            fail("Expected StreamCopyException");
-        } catch (StreamCopyException ex) {
-            assertThat(ex.getOperation()).isEqualTo(StreamCopyException.WRITE);
-            assertThat(ex.getCause()).isSameInstanceAs(out.getException());
-        }
+        StreamCopyException ex = Assert.assertThrows(StreamCopyException.class, () -> blob.writeTo(out));
+        assertThat(ex.getOperation()).isEqualTo(StreamCopyException.WRITE);
+        assertThat(ex.getCause()).isSameInstanceAs(out.getException());
     }
 }

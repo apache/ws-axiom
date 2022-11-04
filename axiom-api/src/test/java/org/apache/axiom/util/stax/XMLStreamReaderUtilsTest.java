@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax;
 
+import static org.junit.Assert.assertThrows;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -106,22 +108,16 @@ public class XMLStreamReaderUtilsTest extends TestCase {
     }
     
     private void testGetBlobFromElementWithUnexpectedContent(boolean useBlobReader) throws Exception {
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<test>\n<child/>\n</test>"));
-        if (useBlobReader) {
-            reader = new XMLStreamReaderWithBlobReader(reader);
-        }
+        XMLStreamReader parentReader = StAXUtils.createXMLStreamReader(new StringReader("<test>\n<child/>\n</test>"));
+        XMLStreamReader reader = useBlobReader ? new XMLStreamReaderWithBlobReader(parentReader) : parentReader;
         try {
             reader.next();
             
             // Check precondition
             assertTrue(reader.isStartElement());
             
-            try {
-                XMLStreamReaderUtils.getBlobFromElement(reader);
-                fail("Expected XMLStreamException");
-            } catch (XMLStreamException ex) {
-                // Expected
-            }
+            assertThrows(XMLStreamException.class, () ->
+                XMLStreamReaderUtils.getBlobFromElement(reader));
         } finally {
             reader.close();
         }
@@ -225,11 +221,6 @@ public class XMLStreamReaderUtilsTest extends TestCase {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a>xxx<b>yyy</b>zzz</a>"));
         reader.next();
         Reader in = XMLStreamReaderUtils.getElementTextAsStream(reader, false);
-        try {
-            IOUtils.toString(in);
-            fail("Expected exception");
-        } catch (IOException ex) {
-            // Expected
-        }
+        assertThrows(IOException.class, () -> IOUtils.toString(in));
     }
 }

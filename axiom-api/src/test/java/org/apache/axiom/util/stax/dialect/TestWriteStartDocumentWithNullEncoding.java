@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.junit.Assert.assertThrows;
+
 import javax.xml.stream.XMLStreamWriter;
 
 public class TestWriteStartDocumentWithNullEncoding extends DialectTestCase {
@@ -28,12 +30,6 @@ public class TestWriteStartDocumentWithNullEncoding extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
         XMLStreamWriter writer = staxImpl.newNormalizedXMLOutputFactory().createXMLStreamWriter(System.out, "UTF-8");
-        try {
-            writer.writeStartDocument(null, "1.0");
-        } catch (Throwable ex) {
-            // Expected
-            return;
-        }
-        fail("Expected writeStartDocument to throw an exception");
+        assertThrows(Throwable.class, () -> writer.writeStartDocument(null, "1.0"));
     }
 }

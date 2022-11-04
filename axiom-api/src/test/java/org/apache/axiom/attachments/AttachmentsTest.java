@@ -19,6 +19,7 @@
 package org.apache.axiom.attachments;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -233,15 +234,10 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testGetRootPartContentTypeWithContentIDMismatch() {
         String contentType = "multipart/related; boundary=\"" + MTOMSample.SAMPLE1.getBoundary() +
                 "\"; type=\"text/xml\"; start=\"<wrong-content-id@example.org>\"";
-        try {
+        assertThrows(MIMEException.class, () -> {
             Attachments attachments = new Attachments(MTOMSample.SAMPLE1.getInputStream(), contentType);
             attachments.getRootPartContentType();
-            fail("Expected MIMEException");
-        } catch (MIMEException ex) {
-            // OK, expected
-        } catch (Throwable ex) {
-            fail("Unexpected exception: " + ex.getClass().getName());
-        }
+        });
     }
     
     public void testGetIncomingAttachmentStreams() throws Exception {
@@ -311,72 +307,44 @@ public class AttachmentsTest extends AbstractTestCase {
         while (is.read() != -1) ;  
     }
     
-    public void testSimultaneousStreamAccess() throws Exception {
-        InputStream inStream;
-        Attachments attachments;
-    
-        inStream = MTOMSample.SAMPLE1.getInputStream();
-        attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
+    public void testSimultaneousStreamAccess1() throws Exception {
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
     
         attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
     
         // This should throw an error
-        try {
-            attachments.getIncomingAttachmentStreams();
-            fail("No exception caught when attempting to access datahandler and stream at the same time");
-        } catch (IllegalStateException ise) {
-            // Nothing
-        }
+        assertThrows(IllegalStateException.class, attachments::getIncomingAttachmentStreams);
     
         inStream.close();
-    
+    }
+
+    public void testSimultaneousStreamAccess2() throws Exception {
         // Try the other way around.
-        inStream = MTOMSample.SAMPLE1.getInputStream();
-        attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
     
         attachments.getIncomingAttachmentStreams();
     
         // These should NOT throw error even though they are using part based access
-        try {
-            String contentType = attachments.getRootPartContentType();
-            assertTrue(contentType.indexOf("application/xop+xml;") >=0);
-            assertTrue(contentType.indexOf("charset=UTF-8;") >=0);
-            assertTrue(contentType.indexOf("type=\"application/soap+xml\";") >=0);
-        } catch (IllegalStateException ise) {
-            fail("No exception expected when requesting SOAP part data");
-            ise.printStackTrace();
-        }
+        String contentType = attachments.getRootPartContentType();
+        assertTrue(contentType.indexOf("application/xop+xml;") >=0);
+        assertTrue(contentType.indexOf("charset=UTF-8;") >=0);
+        assertTrue(contentType.indexOf("type=\"application/soap+xml\";") >=0);
     
-        try {
-            attachments.getRootPartInputStream();
-        } catch (IllegalStateException ise) {
-            fail("No exception expected when requesting SOAP part data");
-        }
+        attachments.getRootPartInputStream();
     
         // These should throw an error
-        try {
-            attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
-            fail("No exception caught when attempting to access stream and datahandler at the same time");
-        } catch (IllegalStateException ise) {
-            // Nothing
-        }
+        assertThrows(IllegalStateException.class, () ->
+            attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
     
         // Additionally, we also need to ensure mutual exclusion if someone
         // tries to access part data directly
     
-        try {
-            attachments.getAllContentIDs();
-            fail("No exception caught when attempting to access stream and contentids list at the same time");
-        } catch (IllegalStateException ise) {
-            // Nothing
-        }
+        assertThrows(IllegalStateException.class, attachments::getAllContentIDs);
     
-        try {
-            attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
-            fail("No exception caught when attempting to access stream and part at the same time");
-        } catch (IllegalStateException ise) {
-            // Nothing
-        }
+        assertThrows(IllegalStateException.class, () ->
+            attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
     }
 
     public void testRemoveDataHandlerAfterParsing() {
@@ -707,12 +675,7 @@ public class AttachmentsTest extends AbstractTestCase {
     }
     
     public void testGetAttachmentSpecTypeWithoutStream() {
-        try {
-            new Attachments().getAttachmentSpecType();
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThrows(OMException.class, () -> new Attachments().getAttachmentSpecType());
     }
 
     private void testGetSizeOnDataSource(boolean useFiles) throws Exception {
@@ -748,12 +711,7 @@ public class AttachmentsTest extends AbstractTestCase {
         try {
             Attachments attachments = new Attachments(new ExceptionInputStream(in, 1050), MTOMSample.SAMPLE1.getContentType());
             // TODO: decide what exception should be thrown exactly here
-            try {
-                attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
-                fail("Expected exception");
-            } catch (MIMEException ex) {
-                // Expected
-            }
+            assertThrows(MIMEException.class, () -> attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
         } finally {
             in.close();
         }
@@ -765,12 +723,7 @@ public class AttachmentsTest extends AbstractTestCase {
             Attachments attachments = new Attachments(new ExceptionInputStream(in, 1500), MTOMSample.SAMPLE1.getContentType());
             DataHandler dh = attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
             // TODO: decide what exception should be thrown exactly here
-            try {
-                dh.getInputStream();
-                fail("Expected exception");
-            } catch (MIMEException ex) {
-                // Expected
-            }
+            assertThrows(MIMEException.class, dh::getInputStream);
         } finally {
             in.close();
         }

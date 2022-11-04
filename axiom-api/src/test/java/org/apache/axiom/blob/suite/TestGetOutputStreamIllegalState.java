@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.blob.suite;
 
+import static org.junit.Assert.assertThrows;
+
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 
@@ -29,11 +31,6 @@ public class TestGetOutputStreamIllegalState extends WritableBlobTestCase {
 
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
-        try {
-            blob.getOutputStream();
-            fail("Expected IllegalStateException");
-        } catch (IllegalStateException ex) {
-            // Expected
-        }
+        assertThrows(IllegalStateException.class, blob::getOutputStream);
     }
 }

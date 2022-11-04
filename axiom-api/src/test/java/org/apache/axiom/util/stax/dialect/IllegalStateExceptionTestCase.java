@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.junit.Assert.assertThrows;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -31,17 +33,10 @@ public abstract class IllegalStateExceptionTestCase extends EventSpecificTestCas
 
     @Override
     protected final void runTest(XMLStreamReader reader) throws Throwable {
-        boolean exception;
-        try {
+        if (expectException) {
+            assertThrows(IllegalStateException.class, () -> invoke(reader));
+        } else {
             invoke(reader);
-            exception = false;
-        } catch (IllegalStateException ex) {
-            exception = true;
-        }
-        if (exception && !expectException) {
-            fail("Didn't expect IllegalStateException");
-        } else if (!exception && expectException) {
-            fail("Expected IllegalStateException");
         }
     }
     

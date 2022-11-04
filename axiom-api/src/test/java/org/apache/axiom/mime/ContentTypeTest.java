@@ -81,31 +81,31 @@ public class ContentTypeTest extends TestCase {
     }
     
     public void testParseInvalid1() {
-        assertThrows(ParseException.class, () -> { new ContentType("text/xml; ?"); });
+        assertThrows(ParseException.class, () -> new ContentType("text/xml; ?"));
     }
 
     public void testParseInvalid2() {
-        assertThrows(ParseException.class, () -> { new ContentType("text/"); });
+        assertThrows(ParseException.class, () -> new ContentType("text/"));
     }
 
     public void testParseInvalid3() {
-        assertThrows(ParseException.class, () -> { new ContentType("text/xml; charset="); });
+        assertThrows(ParseException.class, () -> new ContentType("text/xml; charset="));
     }
 
     public void testParseInvalid4() {
-        assertThrows(ParseException.class, () -> { new ContentType("text/xml; charset=\"asc"); });
+        assertThrows(ParseException.class, () -> new ContentType("text/xml; charset=\"asc"));
     }
 
     public void testParseInvalid5() {
-        assertThrows(ParseException.class, () -> { new ContentType("text/xml; param=\"test\\"); });
+        assertThrows(ParseException.class, () -> new ContentType("text/xml; param=\"test\\"));
     }
 
     public void testParseInvalid6() {
-        assertThrows(ParseException.class, () -> { new ContentType("text/xml; param;"); });
+        assertThrows(ParseException.class, () -> new ContentType("text/xml; param;"));
     }
 
     public void testParseInvalid7() {
-        assertThrows(ParseException.class, () -> { new ContentType("text/xml; param"); });
+        assertThrows(ParseException.class, () -> new ContentType("text/xml; param"));
     }
 
     public void testToString() {

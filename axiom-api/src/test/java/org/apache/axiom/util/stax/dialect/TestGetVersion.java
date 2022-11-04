@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.junit.Assert.assertThrows;
+
 import java.io.StringReader;
 
 import javax.xml.stream.XMLInputFactory;
@@ -35,12 +37,7 @@ public class TestGetVersion extends DialectTestCase {
                 new StringReader("<?xml version='1.0'?><root/>"));
         assertEquals("1.0", reader.getVersion());
         reader.next();
-        try {
-            reader.getVersion();
-            fail("Expected IllegalStateException");
-        } catch (IllegalStateException ex) {
-            // Expected
-        }
+        assertThrows(IllegalStateException.class, reader::getVersion);
         reader.close();
     }
 }

@@ -19,26 +19,20 @@
 
 package org.apache.axiom.om.util;
 
+import static org.junit.Assert.assertThrows;
+
 import junit.framework.TestCase;
 
 public class StAXUtilsTest extends TestCase {
     public void testInputFactoryIsImmutable() throws Exception {
-        try {
+        assertThrows(IllegalStateException.class, () ->
             StAXUtils.getXMLInputFactory().setProperty("javax.xml.stream.isValidating",
-                    Boolean.TRUE);
-            fail("Expected IllegalStateException");
-        } catch (IllegalStateException ex) {
-            // Expected
-        }
+                    Boolean.TRUE));
     }
     
     public void testOutputFactoryIsImmutable() throws Exception {
-        try {
+        assertThrows(IllegalStateException.class, () ->
             StAXUtils.getXMLOutputFactory().setProperty("javax.xml.stream.isRepairingNamespaces",
-                    Boolean.TRUE);
-            fail("Expected IllegalStateException");
-        } catch (IllegalStateException ex) {
-            // Expected
-        }
+                    Boolean.TRUE));
     }
 }
