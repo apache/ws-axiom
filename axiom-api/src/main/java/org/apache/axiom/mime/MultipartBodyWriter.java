@@ -25,12 +25,11 @@ import java.util.List;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.util.UIDGenerator;
-import org.apache.axiom.util.base64.Base64EncodingOutputStream;
 
 /**
  * Writes a MIME multipart body as used by XOP/MTOM and SOAP with Attachments. MIME parts are
- * written using {@link #writePart(String, String, String, List)} or
- * {@link #writePart(DataHandler, String, String, List)}. Calls to both methods can be mixed, i.e.
+ * written using {@link #writePart(String, ContentTransferEncoding, String, List)} or
+ * {@link #writePart(DataHandler, ContentTransferEncoding, String, List)}. Calls to both methods can be mixed, i.e.
  * it is not required to use the same method for all MIME parts. Instead, the caller should choose
  * the most convenient method for each part (depending on the form in which the content is
  * available). After all parts have been written, {@link #complete()} must be called to write the
@@ -40,9 +39,8 @@ import org.apache.axiom.util.base64.Base64EncodingOutputStream;
  * arguments of the two write methods:
  * <ul>
  * <li>The content transfer encoding specified by the {@code contentTransferEncoding} argument is
- * applied by the write method; the caller only provides the unencoded data. At least {@code binary}
- * and {@code base64} are supported. If the specified encoding is not supported, the write methods
- * may use an alternative one. In any case, the implementation ensures that the MIME part has a
+ * applied by the write method; the caller only provides the unencoded data. The implementation
+ * ensures that the MIME part has a
  * {@code Content-Transfer-Encoding} header appropriate for the applied encoding.</li>
  * <li>The content ID passed as argument is always the raw ID (without the angle brackets). The
  * implementation translates this into a properly formatted {@code Content-ID} header.</li>
@@ -133,14 +131,8 @@ public final class MultipartBodyWriter {
      * @throws IOException
      *             if an I/O error occurs when writing to the underlying stream
      */
-    public OutputStream writePart(String contentType, String contentTransferEncoding,
+    public OutputStream writePart(String contentType, ContentTransferEncoding contentTransferEncoding,
             String contentID, List<Header> extraHeaders) throws IOException {
-        OutputStream partOut = new PartOutputStream(out);
-        // We support no content transfer encodings other than 8bit, binary and base64.
-        if (!contentTransferEncoding.equals("8bit") && !contentTransferEncoding.equals("binary")) {
-            partOut = new Base64EncodingOutputStream(partOut);
-            contentTransferEncoding = "base64";
-        }
         writeAscii("--");
         writeAscii(boundary);
         // RFC 2046 explicitly says that Content-Type is not mandatory (and defaults to
@@ -150,7 +142,7 @@ public final class MultipartBodyWriter {
             writeAscii(contentType);
         }
         writeAscii("\r\nContent-Transfer-Encoding: ");
-        writeAscii(contentTransferEncoding);
+        writeAscii(contentTransferEncoding.toString());
         if (contentID != null) {
             writeAscii("\r\nContent-ID: <");
             writeAscii(contentID);
@@ -165,7 +157,7 @@ public final class MultipartBodyWriter {
             }
         }
         writeAscii("\r\n\r\n");
-        return partOut;
+        return contentTransferEncoding.encode(new PartOutputStream(out));
     }
     
     /**
@@ -184,7 +176,7 @@ public final class MultipartBodyWriter {
      * @throws IOException
      *             if an I/O error occurs when writing the part to the underlying stream
      */
-    public void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID, List<Header> extraHeaders)
+    public void writePart(DataHandler dataHandler, ContentTransferEncoding contentTransferEncoding, String contentID, List<Header> extraHeaders)
             throws IOException {
         OutputStream partOutputStream = writePart(dataHandler.getContentType(), contentTransferEncoding, contentID, extraHeaders);
         dataHandler.writeTo(partOutputStream);

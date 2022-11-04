@@ -32,7 +32,7 @@ import org.apache.axiom.util.UIDGenerator;
 import junit.framework.TestCase;
 
 public class MultipartBodyWriterTest extends TestCase {
-    private void test(String contentTransferEncoding) throws Exception {
+    private void test(ContentTransferEncoding contentTransferEncoding) throws Exception {
         Random random = new Random();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         MultipartBodyWriter mpw = new MultipartBodyWriter(baos, UIDGenerator.generateMimeBoundary());
@@ -46,17 +46,17 @@ public class MultipartBodyWriterTest extends TestCase {
         MimeMultipart mp = new MimeMultipart(new ByteArrayDataSource(baos.toByteArray()));
         assertEquals(1, mp.getCount());
         MimeBodyPart bp = (MimeBodyPart)mp.getBodyPart(0);
-        assertEquals(contentTransferEncoding, bp.getHeader("Content-Transfer-Encoding")[0]);
+        assertEquals(contentTransferEncoding.toString(), bp.getHeader("Content-Transfer-Encoding")[0]);
         baos.reset(); 
         bp.getDataHandler().writeTo(baos);
         assertTrue(Arrays.equals(content, baos.toByteArray()));
     }
     
     public void testBinary() throws Exception {
-        test("binary");
+        test(ContentTransferEncoding.BINARY);
     }
     
     public void testBase64() throws Exception {
-        test("base64");
+        test(ContentTransferEncoding.BASE64);
     }
 }

@@ -27,6 +27,7 @@ import java.util.List;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.ConfigurableDataHandler;
+import org.apache.axiom.mime.ContentTransferEncoding;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.MultipartBodyWriter;
@@ -75,11 +76,11 @@ public class OMMultipartWriter {
         }
     }
 
-    private String getContentTransferEncoding(String contentType) {
+    private ContentTransferEncoding getContentTransferEncoding(String contentType) {
         if (useCTEBase64 && !isTextual(contentType)) {
-            return "base64";
+            return ContentTransferEncoding.BASE64;
         } else {
-            return "binary";
+            return ContentTransferEncoding.BINARY;
         }
     }
     
@@ -95,7 +96,7 @@ public class OMMultipartWriter {
 
     /**
      * Start writing the root part of the MIME package. This method delegates to
-     * {@link MultipartBodyWriter#writePart(String, String, String, List)}, but computes the content type,
+     * {@link MultipartBodyWriter#writePart(String, ContentTransferEncoding, String, List)}, but computes the content type,
      * content transfer encoding and content ID from the {@link OMOutputFormat}.
      * 
      * @return an output stream to write the content of the MIME part
@@ -103,12 +104,12 @@ public class OMMultipartWriter {
      *             if an I/O error occurs when writing to the underlying stream
      */
     public OutputStream writeRootPart() throws IOException {
-        return writer.writePart(rootPartContentType, "binary", format.getRootContentId(), null);
+        return writer.writePart(rootPartContentType, ContentTransferEncoding.BINARY, format.getRootContentId(), null);
     }
 
     /**
      * Start writing an attachment part of the MIME package. This method delegates to
-     * {@link MultipartBodyWriter#writePart(String, String, String, List)}, but computes the content transfer
+     * {@link MultipartBodyWriter#writePart(String, ContentTransferEncoding, String, List)}, but computes the content transfer
      * encoding based on the content type and the {@link OMOutputFormat}.
      * 
      * @param contentType
@@ -125,7 +126,7 @@ public class OMMultipartWriter {
     
     /**
      * Start writing an attachment part of the MIME package. This method delegates to
-     * {@link MultipartBodyWriter#writePart(String, String, String, List)}, but computes the content
+     * {@link MultipartBodyWriter#writePart(String, ContentTransferEncoding, String, List)}, but computes the content
      * transfer encoding based on the content type and the {@link OMOutputFormat}.
      * 
      * @param contentType
@@ -144,7 +145,7 @@ public class OMMultipartWriter {
     
     /**
      * Write a MIME part. This method delegates to
-     * {@link MultipartBodyWriter#writePart(DataHandler, String, String, List)}, but computes the
+     * {@link MultipartBodyWriter#writePart(DataHandler, ContentTransferEncoding, String, List)}, but computes the
      * appropriate content transfer encoding from the {@link OMOutputFormat}.
      * 
      * @param dataHandler
@@ -157,9 +158,18 @@ public class OMMultipartWriter {
      *             if an I/O error occurs when writing the part to the underlying stream
      */
     public void writePart(DataHandler dataHandler, String contentID, List<Header> extraHeaders) throws IOException {
-        String contentTransferEncoding = null;
+        ContentTransferEncoding contentTransferEncoding = null;
         if (dataHandler instanceof ConfigurableDataHandler) {
-            contentTransferEncoding = ((ConfigurableDataHandler)dataHandler).getTransferEncoding();
+            switch (((ConfigurableDataHandler)dataHandler).getTransferEncoding()) {
+                case "8bit":
+                    contentTransferEncoding = ContentTransferEncoding.EIGHT_BIT;
+                    break;
+                case "binary":
+                    contentTransferEncoding = ContentTransferEncoding.BINARY;
+                    break;
+                default:
+                    contentTransferEncoding = ContentTransferEncoding.BASE64;
+            }
         }
         if (contentTransferEncoding == null) {
             contentTransferEncoding = getContentTransferEncoding(dataHandler.getContentType());
@@ -169,7 +179,7 @@ public class OMMultipartWriter {
     
     /**
      * Write a MIME part. This method delegates to
-     * {@link MultipartBodyWriter#writePart(DataHandler, String, String, List)}, but computes the appropriate
+     * {@link MultipartBodyWriter#writePart(DataHandler, ContentTransferEncoding, String, List)}, but computes the appropriate
      * content transfer encoding from the {@link OMOutputFormat}.
      * 
      * @param dataHandler
