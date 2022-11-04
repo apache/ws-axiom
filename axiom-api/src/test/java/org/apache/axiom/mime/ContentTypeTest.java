@@ -19,6 +19,7 @@
 package org.apache.axiom.mime;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
 
 import java.text.ParseException;
 
@@ -72,66 +73,31 @@ public class ContentTypeTest extends TestCase {
     }
     
     public void testParseInvalid1() {
-        try {
-            new ContentType("text/xml; ?");
-            fail("Expected ParseException");
-        } catch (ParseException ex) {
-            // Expected
-        }
+        assertThrows(ParseException.class, () -> { new ContentType("text/xml; ?"); });
     }
 
     public void testParseInvalid2() {
-        try {
-            new ContentType("text/");
-            fail("Expected ParseException");
-        } catch (ParseException ex) {
-            // Expected
-        }
+        assertThrows(ParseException.class, () -> { new ContentType("text/"); });
     }
 
     public void testParseInvalid3() {
-        try {
-            new ContentType("text/xml; charset=");
-            fail("Expected ParseException");
-        } catch (ParseException ex) {
-            // Expected
-        }
+        assertThrows(ParseException.class, () -> { new ContentType("text/xml; charset="); });
     }
 
     public void testParseInvalid4() {
-        try {
-            new ContentType("text/xml; charset=\"asc");
-            fail("Expected ParseException");
-        } catch (ParseException ex) {
-            // Expected
-        }
+        assertThrows(ParseException.class, () -> { new ContentType("text/xml; charset=\"asc"); });
     }
 
     public void testParseInvalid5() {
-        try {
-            new ContentType("text/xml; param=\"test\\");
-            fail("Expected ParseException");
-        } catch (ParseException ex) {
-            // Expected
-        }
+        assertThrows(ParseException.class, () -> { new ContentType("text/xml; param=\"test\\"); });
     }
 
     public void testParseInvalid6() {
-        try {
-            new ContentType("text/xml; param;");
-            fail("Expected ParseException");
-        } catch (ParseException ex) {
-            // Expected
-        }
+        assertThrows(ParseException.class, () -> { new ContentType("text/xml; param;"); });
     }
 
     public void testParseInvalid7() {
-        try {
-            new ContentType("text/xml; param");
-            fail("Expected ParseException");
-        } catch (ParseException ex) {
-            // Expected
-        }
+        assertThrows(ParseException.class, () -> { new ContentType("text/xml; param"); });
     }
 
     public void testToString() {
