@@ -20,8 +20,7 @@
 package org.apache.axiom.om;
 
 import org.apache.axiom.om.impl.MTOMConstants;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPVersion;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -54,14 +53,14 @@ public class OMOutputFormatTest extends TestCase {
     public void testGetContentTypeDefault() {
         OMOutputFormat format = new OMOutputFormat();
         String contentType = format.getContentType();
-        assertTrue(contentType.equals(SOAP11Constants.SOAP_11_CONTENT_TYPE.toString()));
+        assertTrue(contentType.equals(SOAPVersion.SOAP11.getMediaType().toString()));
     }
     
     public void testGetContentTypeSOAP12() {
         OMOutputFormat format = new OMOutputFormat();
         format.setSOAP11(false);
         String contentType = format.getContentType();
-        assertTrue(contentType.equals(SOAP12Constants.SOAP_12_CONTENT_TYPE.toString()));
+        assertTrue(contentType.equals(SOAPVersion.SOAP12.getMediaType().toString()));
     }
     
     public void testGetContentTypeSOAP11MTOM() {
@@ -71,7 +70,7 @@ public class OMOutputFormatTest extends TestCase {
         
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.indexOf(SOAP11Constants.SOAP_11_CONTENT_TYPE.toString())!=-1);
+        assertTrue(contentType.indexOf(SOAPVersion.SOAP11.getMediaType().toString())!=-1);
         assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE)!=-1);
         
         // Test for a double quoted boundary value.
@@ -89,7 +88,7 @@ public class OMOutputFormatTest extends TestCase {
         
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.indexOf(SOAP11Constants.SOAP_11_CONTENT_TYPE.toString())>=0);
+        assertTrue(contentType.indexOf(SOAPVersion.SOAP11.getMediaType().toString())>=0);
         assertTrue(contentType.indexOf("multipart/related")>=0);
         assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE) < 0);
         
@@ -104,7 +103,7 @@ public class OMOutputFormatTest extends TestCase {
         
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.indexOf(SOAP11Constants.SOAP_11_CONTENT_TYPE.toString())>=0);
+        assertTrue(contentType.indexOf(SOAPVersion.SOAP11.getMediaType().toString())>=0);
         assertTrue(contentType.indexOf("multipart/related")>=0);
         assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE) < 0);
         
@@ -123,7 +122,7 @@ public class OMOutputFormatTest extends TestCase {
         
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.indexOf(SOAP12Constants.SOAP_12_CONTENT_TYPE.toString())!=-1);
+        assertTrue(contentType.indexOf(SOAPVersion.SOAP12.getMediaType().toString())!=-1);
         assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE)!=-1);
     }
     
@@ -136,7 +135,7 @@ public class OMOutputFormatTest extends TestCase {
         
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.indexOf(SOAP12Constants.SOAP_12_CONTENT_TYPE.toString())!=-1);
+        assertTrue(contentType.indexOf(SOAPVersion.SOAP12.getMediaType().toString())!=-1);
         assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE)!=-1);
         assertTrue(contentType.indexOf("action=\\\"testSoapAction\\\"")!=-1);
     }

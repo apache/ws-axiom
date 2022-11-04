@@ -24,8 +24,7 @@ import java.util.Map;
 
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.StAXWriterConfiguration;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -189,9 +188,9 @@ public class OMOutputFormat {
         }
         if (contentType == null) {
             if (isSoap11) {
-                contentType = SOAP11Constants.SOAP_11_CONTENT_TYPE.toString();
+                contentType = SOAPVersion.SOAP11.getMediaType().toString();
             } else {
-                contentType = SOAP12Constants.SOAP_12_CONTENT_TYPE.toString();
+                contentType = SOAPVersion.SOAP12.getMediaType().toString();
             }
         }
         // If MTOM or SWA, the returned content-type is an 
