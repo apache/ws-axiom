@@ -21,8 +21,6 @@ package org.apache.axiom.soap;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.mime.MediaType;
-
 
 public interface SOAP12Constants extends SOAPConstants {
     public String SOAP_ENVELOPE_NAMESPACE_URI =
@@ -63,7 +61,10 @@ public interface SOAP12Constants extends SOAPConstants {
     public static final String SOAP_FAULT_ROLE_LOCAL_NAME = "Role";
 
     //SOAP 1.2 Content Type
-    public static final MediaType SOAP_12_CONTENT_TYPE = MediaType.APPLICATION_SOAP_XML;
+    /**
+     * @deprecated Use {@link SOAPVersion#getMediaType()} instead.
+     */
+    public static final String SOAP_12_CONTENT_TYPE = "application/soap+xml";
 
     // -------- SOAP Fault Codes ------------------------------
     public static final String FAULT_CODE_SENDER = "Sender";

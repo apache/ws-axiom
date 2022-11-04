@@ -33,8 +33,7 @@ import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.MediaType;
 import org.apache.axiom.mime.MultipartBodyWriter;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPVersion;
 
 /**
  * Writes a MIME multipart package as used by XOP/MTOM and SOAP with Attachments. This class wraps a
@@ -57,9 +56,9 @@ public class OMMultipartWriter {
         
         MediaType soapContentType;
         if (format.isSOAP11()) {
-            soapContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
+            soapContentType = SOAPVersion.SOAP11.getMediaType();
         } else {
-            soapContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+            soapContentType = SOAPVersion.SOAP12.getMediaType();
         }
         if (format.isOptimized()) {
             rootPartContentType = ContentType.builder()
