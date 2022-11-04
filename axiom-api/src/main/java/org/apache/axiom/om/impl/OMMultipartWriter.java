@@ -27,6 +27,7 @@ import java.util.List;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.ConfigurableDataHandler;
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.ContentTransferEncoding;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.Header;
@@ -34,6 +35,7 @@ import org.apache.axiom.mime.MediaType;
 import org.apache.axiom.mime.MultipartBodyWriter;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 /**
  * Writes a MIME multipart package as used by XOP/MTOM and SOAP with Attachments. This class wraps a
@@ -143,7 +145,7 @@ public class OMMultipartWriter {
     
     /**
      * Write a MIME part. This method delegates to
-     * {@link MultipartBodyWriter#writePart(DataHandler, ContentTransferEncoding, String, List)}, but computes the
+     * {@link MultipartBodyWriter#writePart(Blob, ContentType, ContentTransferEncoding, String, List)}, but computes the
      * appropriate content transfer encoding from the {@link OMOutputFormat}.
      * 
      * @param dataHandler
@@ -156,6 +158,17 @@ public class OMMultipartWriter {
      *             if an I/O error occurs when writing the part to the underlying stream
      */
     public void writePart(DataHandler dataHandler, String contentID, List<Header> extraHeaders) throws IOException {
+        ContentType contentType;
+        String contentTypeString = dataHandler.getContentType();
+        if (contentTypeString == null) {
+            contentType = null;
+        } else {
+            try {
+                contentType = new ContentType(contentTypeString);
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
         ContentTransferEncoding contentTransferEncoding = null;
         if (dataHandler instanceof ConfigurableDataHandler) {
             switch (((ConfigurableDataHandler)dataHandler).getTransferEncoding()) {
@@ -169,27 +182,18 @@ public class OMMultipartWriter {
                     contentTransferEncoding = ContentTransferEncoding.BASE64;
             }
         }
-        if (contentTransferEncoding == null) {
-            String contentTypeString = dataHandler.getContentType();
-            if (contentTypeString != null) {
-                ContentType contentType;
-                try {
-                    contentType = new ContentType(contentTypeString);
-                } catch (ParseException ex) {
-                    throw new RuntimeException(ex);
-                }
-                contentTransferEncoding = getContentTransferEncoding(contentType);
-            }
+        if (contentTransferEncoding == null && contentType != null) {
+            contentTransferEncoding = getContentTransferEncoding(contentType);
         }
         if (contentTransferEncoding == null) {
             contentTransferEncoding = ContentTransferEncoding.BINARY;
         }
-        writer.writePart(dataHandler, contentTransferEncoding, contentID, extraHeaders);
+        writer.writePart(DataHandlerUtils.toBlob(dataHandler), contentType, contentTransferEncoding, contentID, extraHeaders);
     }
     
     /**
      * Write a MIME part. This method delegates to
-     * {@link MultipartBodyWriter#writePart(DataHandler, ContentTransferEncoding, String, List)}, but computes the appropriate
+     * {@link MultipartBodyWriter#writePart(Blob, ContentType, ContentTransferEncoding, String, List)}, but computes the appropriate
      * content transfer encoding from the {@link OMOutputFormat}.
      * 
      * @param dataHandler

@@ -20,17 +20,15 @@ package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.ParseException;
 import java.util.List;
 
-import javax.activation.DataHandler;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.util.UIDGenerator;
 
 /**
  * Writes a MIME multipart body as used by XOP/MTOM and SOAP with Attachments. MIME parts are
  * written using {@link #writePart(ContentType, ContentTransferEncoding, String, List)} or
- * {@link #writePart(DataHandler, ContentTransferEncoding, String, List)}. Calls to both methods can be mixed, i.e.
+ * {@link #writePart(Blob, ContentType, ContentTransferEncoding, String, List)}. Calls to both methods can be mixed, i.e.
  * it is not required to use the same method for all MIME parts. Instead, the caller should choose
  * the most convenient method for each part (depending on the form in which the content is
  * available). After all parts have been written, {@link #complete()} must be called to write the
@@ -162,11 +160,12 @@ public final class MultipartBodyWriter {
     }
     
     /**
-     * Write a MIME part. The content is provided by a {@link DataHandler} object, which also
-     * specifies the content type of the part.
+     * Write a MIME part.
      * 
-     * @param dataHandler
+     * @param blob
      *            the content of the MIME part to write
+     * @param contentType
+     *            the content type; may be {@code null}
      * @param contentTransferEncoding
      *            the content transfer encoding to be used (see above); must not be
      *            <code>null</code>
@@ -177,21 +176,10 @@ public final class MultipartBodyWriter {
      * @throws IOException
      *             if an I/O error occurs when writing the part to the underlying stream
      */
-    public void writePart(DataHandler dataHandler, ContentTransferEncoding contentTransferEncoding, String contentID, List<Header> extraHeaders)
+    public void writePart(Blob blob, ContentType contentType, ContentTransferEncoding contentTransferEncoding, String contentID, List<Header> extraHeaders)
             throws IOException {
-        ContentType contentType;
-        String contentTypeString = dataHandler.getContentType();
-        if (contentTypeString == null) {
-            contentType = null;
-        } else {
-            try {
-                contentType = new ContentType(contentTypeString);
-            } catch (ParseException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
         OutputStream partOutputStream = writePart(contentType, contentTransferEncoding, contentID, extraHeaders);
-        dataHandler.writeTo(partOutputStream);
+        blob.writeTo(partOutputStream);
         partOutputStream.close();
     }
     
