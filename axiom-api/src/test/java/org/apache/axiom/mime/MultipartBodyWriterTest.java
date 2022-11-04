@@ -38,7 +38,7 @@ public class MultipartBodyWriterTest extends TestCase {
         MultipartBodyWriter mpw = new MultipartBodyWriter(baos, UIDGenerator.generateMimeBoundary());
         byte[] content = new byte[8192];
         random.nextBytes(content);
-        OutputStream partOutputStream = mpw.writePart("application/octet-stream", contentTransferEncoding, UIDGenerator.generateContentId(), null);
+        OutputStream partOutputStream = mpw.writePart(new ContentType(MediaType.APPLICATION_OCTET_STREAM), contentTransferEncoding, UIDGenerator.generateContentId(), null);
         partOutputStream.write(content);
         partOutputStream.close();
         mpw.complete();

@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.mixin;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.text.ParseException;
 import java.util.Iterator;
 
 import javax.activation.DataHandler;
@@ -48,6 +49,7 @@ import org.apache.axiom.core.stream.sax.input.XmlHandlerContentHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.stax.pull.output.StAXPivot;
 import org.apache.axiom.core.stream.stax.push.input.XMLStreamWriterNamespaceContextProvider;
+import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.PartDataHandler;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -387,8 +389,13 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
                 if (cache || !(dataHandler instanceof PartDataHandler)) {
                     multipartWriter.writePart(dataHandler, contentID);
                 } else {
-                    OutputStream part =
-                            multipartWriter.writePart(dataHandler.getContentType(), contentID);
+                    ContentType contentType;
+                    try {
+                        contentType = new ContentType(dataHandler.getContentType());
+                    } catch (ParseException ex) {
+                        throw new OMException(ex);
+                    }
+                    OutputStream part = multipartWriter.writePart(contentType, contentID);
                     IOUtils.copy(
                             ((PartDataHandler) dataHandler).getPart().getInputStream(false),
                             part,

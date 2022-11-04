@@ -30,6 +30,7 @@ import org.apache.axiom.attachments.ConfigurableDataHandler;
 import org.apache.axiom.mime.ContentTransferEncoding;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.Header;
+import org.apache.axiom.mime.MediaType;
 import org.apache.axiom.mime.MultipartBodyWriter;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -44,7 +45,7 @@ public class OMMultipartWriter {
     private final OMOutputFormat format;
     private final MultipartBodyWriter writer;
     private final boolean useCTEBase64;
-    private final String rootPartContentType;
+    private final ContentType rootPartContentType;
     
     public OMMultipartWriter(OutputStream out, OMOutputFormat format) {
         this.format = format;
@@ -54,30 +55,28 @@ public class OMMultipartWriter {
         useCTEBase64 = format != null && Boolean.TRUE.equals(
                 format.getProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS));
         
-        String soapContentType;
+        MediaType soapContentType;
         if (format.isSOAP11()) {
             soapContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
         } else {
             soapContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
         }
         if (format.isOptimized()) {
-            rootPartContentType = "application/xop+xml; charset=" + format.getCharSetEncoding()
-                    + "; type=\"" + soapContentType + "\"";            
+            rootPartContentType = ContentType.builder()
+                    .setMediaType(MediaType.APPLICATION_XOP_XML)
+                    .setParameter("charset", format.getCharSetEncoding())
+                    .setParameter("type", soapContentType.toString())
+                    .build();
         } else {
-            rootPartContentType = soapContentType + "; charset=" + format.getCharSetEncoding();
+            rootPartContentType = ContentType.builder()
+                    .setMediaType(soapContentType)
+                    .setParameter("charset", format.getCharSetEncoding())
+                    .build();
         }
     }
 
-    private static boolean isTextual(String contentType) {
-        try {
-            return new ContentType(contentType).isTextual();
-        } catch (ParseException ex) {
-            return false;
-        }
-    }
-
-    private ContentTransferEncoding getContentTransferEncoding(String contentType) {
-        if (useCTEBase64 && !isTextual(contentType)) {
+    private ContentTransferEncoding getContentTransferEncoding(ContentType contentType) {
+        if (useCTEBase64 && !contentType.isTextual()) {
             return ContentTransferEncoding.BASE64;
         } else {
             return ContentTransferEncoding.BINARY;
@@ -90,13 +89,13 @@ public class OMMultipartWriter {
      * 
      * @return the content type of the root part
      */
-    public String getRootPartContentType() {
+    public ContentType getRootPartContentType() {
         return rootPartContentType;
     }
 
     /**
      * Start writing the root part of the MIME package. This method delegates to
-     * {@link MultipartBodyWriter#writePart(String, ContentTransferEncoding, String, List)}, but computes the content type,
+     * {@link MultipartBodyWriter#writePart(ContentType, ContentTransferEncoding, String, List)}, but computes the content type,
      * content transfer encoding and content ID from the {@link OMOutputFormat}.
      * 
      * @return an output stream to write the content of the MIME part
@@ -109,7 +108,7 @@ public class OMMultipartWriter {
 
     /**
      * Start writing an attachment part of the MIME package. This method delegates to
-     * {@link MultipartBodyWriter#writePart(String, ContentTransferEncoding, String, List)}, but computes the content transfer
+     * {@link MultipartBodyWriter#writePart(ContentType, ContentTransferEncoding, String, List)}, but computes the content transfer
      * encoding based on the content type and the {@link OMOutputFormat}.
      * 
      * @param contentType
@@ -120,13 +119,13 @@ public class OMMultipartWriter {
      * @throws IOException
      *             if an I/O error occurs when writing to the underlying stream
      */
-    public OutputStream writePart(String contentType, String contentID) throws IOException {
+    public OutputStream writePart(ContentType contentType, String contentID) throws IOException {
         return writer.writePart(contentType, getContentTransferEncoding(contentType), contentID, null);
     }
     
     /**
      * Start writing an attachment part of the MIME package. This method delegates to
-     * {@link MultipartBodyWriter#writePart(String, ContentTransferEncoding, String, List)}, but computes the content
+     * {@link MultipartBodyWriter#writePart(ContentType, ContentTransferEncoding, String, List)}, but computes the content
      * transfer encoding based on the content type and the {@link OMOutputFormat}.
      * 
      * @param contentType
@@ -139,7 +138,7 @@ public class OMMultipartWriter {
      * @throws IOException
      *             if an I/O error occurs when writing to the underlying stream
      */
-    public OutputStream writePart(String contentType, String contentID, List<Header> extraHeaders) throws IOException {    
+    public OutputStream writePart(ContentType contentType, String contentID, List<Header> extraHeaders) throws IOException {    
         return writer.writePart(contentType, getContentTransferEncoding(contentType), contentID, extraHeaders);
     }
     
@@ -172,7 +171,19 @@ public class OMMultipartWriter {
             }
         }
         if (contentTransferEncoding == null) {
-            contentTransferEncoding = getContentTransferEncoding(dataHandler.getContentType());
+            String contentTypeString = dataHandler.getContentType();
+            if (contentTypeString != null) {
+                ContentType contentType;
+                try {
+                    contentType = new ContentType(contentTypeString);
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
+                contentTransferEncoding = getContentTransferEncoding(contentType);
+            }
+        }
+        if (contentTransferEncoding == null) {
+            contentTransferEncoding = ContentTransferEncoding.BINARY;
         }
         writer.writePart(dataHandler, contentTransferEncoding, contentID, extraHeaders);
     }

@@ -20,6 +20,7 @@ package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.activation.DataHandler;
@@ -28,7 +29,7 @@ import org.apache.axiom.util.UIDGenerator;
 
 /**
  * Writes a MIME multipart body as used by XOP/MTOM and SOAP with Attachments. MIME parts are
- * written using {@link #writePart(String, ContentTransferEncoding, String, List)} or
+ * written using {@link #writePart(ContentType, ContentTransferEncoding, String, List)} or
  * {@link #writePart(DataHandler, ContentTransferEncoding, String, List)}. Calls to both methods can be mixed, i.e.
  * it is not required to use the same method for all MIME parts. Instead, the caller should choose
  * the most convenient method for each part (depending on the form in which the content is
@@ -118,7 +119,7 @@ public final class MultipartBodyWriter {
      * {@link OutputStream#close()} must be called to complete the writing of the MIME part.
      * 
      * @param contentType
-     *            the value of the {@code Content-Type} header of the MIME part; may be {@code null}
+     *            the content type of the MIME part; may be {@code null}
      * @param contentTransferEncoding
      *            the content transfer encoding to be used (see above); must not be
      *            <code>null</code>
@@ -131,7 +132,7 @@ public final class MultipartBodyWriter {
      * @throws IOException
      *             if an I/O error occurs when writing to the underlying stream
      */
-    public OutputStream writePart(String contentType, ContentTransferEncoding contentTransferEncoding,
+    public OutputStream writePart(ContentType contentType, ContentTransferEncoding contentTransferEncoding,
             String contentID, List<Header> extraHeaders) throws IOException {
         writeAscii("--");
         writeAscii(boundary);
@@ -139,7 +140,7 @@ public final class MultipartBodyWriter {
         // text/plain; charset=us-ascii).
         if (contentType != null) {
             writeAscii("\r\nContent-Type: ");
-            writeAscii(contentType);
+            writeAscii(contentType.toString());
         }
         writeAscii("\r\nContent-Transfer-Encoding: ");
         writeAscii(contentTransferEncoding.toString());
@@ -178,7 +179,18 @@ public final class MultipartBodyWriter {
      */
     public void writePart(DataHandler dataHandler, ContentTransferEncoding contentTransferEncoding, String contentID, List<Header> extraHeaders)
             throws IOException {
-        OutputStream partOutputStream = writePart(dataHandler.getContentType(), contentTransferEncoding, contentID, extraHeaders);
+        ContentType contentType;
+        String contentTypeString = dataHandler.getContentType();
+        if (contentTypeString == null) {
+            contentType = null;
+        } else {
+            try {
+                contentType = new ContentType(contentTypeString);
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        OutputStream partOutputStream = writePart(contentType, contentTransferEncoding, contentID, extraHeaders);
         dataHandler.writeTo(partOutputStream);
         partOutputStream.close();
     }

@@ -189,9 +189,9 @@ public class OMOutputFormat {
         }
         if (contentType == null) {
             if (isSoap11) {
-                contentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
+                contentType = SOAP11Constants.SOAP_11_CONTENT_TYPE.toString();
             } else {
-                contentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+                contentType = SOAP12Constants.SOAP_12_CONTENT_TYPE.toString();
             }
         }
         // If MTOM or SWA, the returned content-type is an 

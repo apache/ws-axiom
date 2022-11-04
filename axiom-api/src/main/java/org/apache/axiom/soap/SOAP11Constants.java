@@ -21,6 +21,8 @@ package org.apache.axiom.soap;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.mime.MediaType;
+
 
 public interface SOAP11Constants extends SOAPConstants {
     static final String SOAP_ENVELOPE_NAMESPACE_URI =
@@ -41,7 +43,7 @@ public interface SOAP11Constants extends SOAPConstants {
     static final String SOAP_FAULT_DETAIL_LOCAL_NAME = "detail";
 
     //SOAP 1.2 Content Type
-    static final String SOAP_11_CONTENT_TYPE = "text/xml";
+    static final MediaType SOAP_11_CONTENT_TYPE = MediaType.TEXT_XML;
 
     // -------- SOAP Fault Codes ------------------------------
     static final String FAULT_CODE_SENDER = "Client";
