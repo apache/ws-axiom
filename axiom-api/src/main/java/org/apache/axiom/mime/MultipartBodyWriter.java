@@ -20,6 +20,7 @@ package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.util.List;
 
 import javax.activation.DataHandler;
@@ -71,13 +72,26 @@ public final class MultipartBodyWriter {
         
         @Override
         public void close() throws IOException {
-            writeAscii("\r\n");
+            writeAscii(SAFE_CR_LF);
         }
     }
-    
-    private final OutputStream out;
-    private final String boundary;
-    private final byte[] buffer = new byte[256];
+
+    /*
+     * Some ASCII-safe constants as byte[] to obviate ASCII-check every time they are written...
+     */
+    private static final String      CR_LF                           =  "\r\n";
+    private static final byte[] SAFE_CR_LF                           =  CR_LF                                 .getBytes();
+    private static final byte[] SAFE_CR_LF_CR_LF                     = (CR_LF + CR_LF                        ).getBytes();
+    private static final byte[] SAFE_CR_LF_CONTENT_TYPE              = (CR_LF + "Content-Type: "             ).getBytes();
+    private static final byte[] SAFE_CR_LF_CONTENT_ID                = (CR_LF + "Content-ID: <"              ).getBytes();
+    private static final byte[] SAFE_CR_LF_CONTENT_TRANSFER_ENCODING = (CR_LF + "Content-Transfer-Encoding: ").getBytes();
+    private static final byte[] SAFE_COLON_SPACE                     =  ": "                                  .getBytes();
+    private static final byte[] SAFE_DASH_DASH                       =  "--"                                  .getBytes();
+    private static final byte[] SAFE_DASH_DASH_CR_LF                 = ("--" + CR_LF                         ).getBytes();
+
+    private        final byte[] safeBoundary;
+    private        final OutputStream out;
+    private        final byte[] buffer = new byte[256];
 
     /**
      * Constructor.
@@ -91,7 +105,20 @@ public final class MultipartBodyWriter {
      */
     public MultipartBodyWriter(OutputStream out, String boundary) {
         this.out = out;
-        this.boundary = boundary;
+        this.safeBoundary = boundary.getBytes();
+
+        for (final char boundaryChar : boundary.toCharArray()) {
+            if (boundaryChar >= 128) {
+                throw new UncheckedIOException(new IOException("Illegal character '" + boundaryChar + "' in Boundary.: " + boundary));
+                /*
+                 * TODO alternatively, throw a (checked) IOException, but then Callers need to be changed too.
+                 */
+            }
+        }
+    }
+
+    private void writeAscii(final byte[] asciiSafeBytes) throws IOException {
+    	out.write(asciiSafeBytes);
     }
 
     void writeAscii(String s) throws IOException {
@@ -133,30 +160,30 @@ public final class MultipartBodyWriter {
      */
     public OutputStream writePart(String contentType, ContentTransferEncoding contentTransferEncoding,
             String contentID, List<Header> extraHeaders) throws IOException {
-        writeAscii("--");
-        writeAscii(boundary);
+        writeAscii(SAFE_DASH_DASH);
+        writeAscii(safeBoundary);
         // RFC 2046 explicitly says that Content-Type is not mandatory (and defaults to
         // text/plain; charset=us-ascii).
         if (contentType != null) {
-            writeAscii("\r\nContent-Type: ");
+            writeAscii(SAFE_CR_LF_CONTENT_TYPE);
             writeAscii(contentType);
         }
-        writeAscii("\r\nContent-Transfer-Encoding: ");
+        writeAscii(SAFE_CR_LF_CONTENT_TRANSFER_ENCODING);
         writeAscii(contentTransferEncoding.toString());
         if (contentID != null) {
-            writeAscii("\r\nContent-ID: <");
+            writeAscii(SAFE_CR_LF_CONTENT_ID);
             writeAscii(contentID);
             out.write('>');
         }
         if (extraHeaders != null) {
             for (Header header : extraHeaders) {
-                writeAscii("\r\n");
+                writeAscii(SAFE_CR_LF);
                 writeAscii(header.getName());
-                writeAscii(": ");
+                writeAscii(SAFE_COLON_SPACE);
                 writeAscii(header.getValue());
             }
         }
-        writeAscii("\r\n\r\n");
+        writeAscii(SAFE_CR_LF_CR_LF);
         return contentTransferEncoding.encode(new PartOutputStream(out));
     }
     
@@ -191,8 +218,8 @@ public final class MultipartBodyWriter {
      *             if an I/O error occurs when writing to the underlying stream
      */
     public void complete() throws IOException {
-        writeAscii("--");
-        writeAscii(boundary);
-        writeAscii("--\r\n");
+        writeAscii(SAFE_DASH_DASH);
+        writeAscii(safeBoundary);
+        writeAscii(SAFE_DASH_DASH_CR_LF);
     }
 }
