@@ -26,6 +26,14 @@ import java.text.ParseException;
 import junit.framework.TestCase;
 
 public class ContentTypeTest extends TestCase {
+    public void testNullMediaType() {
+        assertThrows(NullPointerException.class, () -> new ContentType((MediaType)null));
+    }
+
+    public void testNullParameter() {
+        assertThrows(NullPointerException.class, () -> new ContentType(MediaType.TEXT_PLAIN, "charset", null));
+    }
+
     public void testImmutable() {
         String[] parameters = { "charset", "utf-8" };
         ContentType ct = new ContentType(MediaType.TEXT_XML, parameters);

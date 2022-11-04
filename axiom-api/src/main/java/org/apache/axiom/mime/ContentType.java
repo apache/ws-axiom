@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.activation.MimeType;
 
@@ -108,7 +109,8 @@ public final class ContentType {
 
         /**
          * Set the specified parameter value. If a parameter with the given name already exists, it will
-         * be replaced. Note that parameter names are case insensitive.
+         * be replaced. If the value is {@code null}, the parameter will be removed.
+         * Note that parameter names are case insensitive.
          * 
          * @param name
          *            the parameter name
@@ -117,7 +119,11 @@ public final class ContentType {
          * @return the builder
          */
         public Builder setParameter(String name, String value) {
-            parameters.put(name.toLowerCase(Locale.ENGLISH), value);
+            if (value == null) {
+                parameters.remove(name.toLowerCase(Locale.ENGLISH));
+            } else {
+                parameters.put(name.toLowerCase(Locale.ENGLISH), value);
+            }
             return this;
         }
 
@@ -166,6 +172,10 @@ public final class ContentType {
      *            representing the parameter names, and odd entries the corresponding values)
      */
     public ContentType(MediaType mediaType, String... parameters) {
+        Objects.requireNonNull(mediaType);
+        for (String parameter : parameters) {
+            Objects.requireNonNull(parameter);
+        }
         this.mediaType = mediaType;
         this.parameters = parameters.clone();
     }

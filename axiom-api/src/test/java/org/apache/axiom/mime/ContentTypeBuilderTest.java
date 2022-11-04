@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.mime;
 
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
+
 import junit.framework.TestCase;
 
 public class ContentTypeBuilderTest extends TestCase {
@@ -67,5 +70,18 @@ public class ContentTypeBuilderTest extends TestCase {
         ContentType.Builder builder = new ContentType("text/xml; charset=utf-8; x-param=value").toBuilder();
         builder.removeParameter("charset");
         assertEquals("text/xml; x-param=\"value\"", builder.build().toString());
+    }
+
+    public void testNullParameterName() {
+        ContentType.Builder builder = ContentType.builder();
+        assertThrows(NullPointerException.class, () -> builder.setParameter(null, "value"));
+    }
+
+    public void testNullParameterValue() {
+        ContentType.Builder builder = ContentType.builder();
+        builder.setMediaType(MediaType.TEXT_XML);
+        builder.setParameter("param", "value");
+        builder.setParameter("param", null);
+        assertThat(builder.build().toString()).isEqualTo("text/xml");
     }
 }
