@@ -398,7 +398,6 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
             }
             multipartWriter.complete();
         }
-        ;
     }
 
     @Override
