@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.ParseException;
 import java.util.List;
 
 import javax.activation.DataHandler;
@@ -34,7 +33,11 @@ import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.MediaType;
 import org.apache.axiom.mime.MultipartBodyWriter;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.format.xop.CombinedContentTransferEncodingPolicy;
+import org.apache.axiom.om.format.xop.ContentTransferEncodingPolicy;
+import org.apache.axiom.om.format.xop.ContentTypeProvider;
 import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.util.activation.DataHandlerContentTypeProvider;
 import org.apache.axiom.util.activation.DataHandlerUtils;
 
 /**
@@ -45,7 +48,8 @@ import org.apache.axiom.util.activation.DataHandlerUtils;
 public class OMMultipartWriter {
     private final OMOutputFormat format;
     private final MultipartBodyWriter writer;
-    private final boolean useCTEBase64;
+    private final ContentTypeProvider contentTypeProvider;
+    private final ContentTransferEncodingPolicy contentTransferEncodingPolicy;
     private final ContentType rootPartContentType;
     
     public OMMultipartWriter(OutputStream out, OMOutputFormat format) {
@@ -53,8 +57,14 @@ public class OMMultipartWriter {
         
         writer = new MultipartBodyWriter(out, format.getMimeBoundary());
         
-        useCTEBase64 = format != null && Boolean.TRUE.equals(
-                format.getProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS));
+        // TODO(AXIOM-506): make this configurable in OMOutputFormat
+        contentTypeProvider = DataHandlerContentTypeProvider.INSTANCE;
+        ContentTransferEncodingPolicy contentTransferEncodingPolicy = ConfigurableDataHandler.CONTENT_TRANSFER_ENCODING_POLICY;
+        if (format != null && Boolean.TRUE.equals(
+                format.getProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS))) {
+            contentTransferEncodingPolicy = new CombinedContentTransferEncodingPolicy(contentTransferEncodingPolicy, ContentTransferEncodingPolicy.USE_BASE64_FOR_NON_TEXTUAL_PARTS);
+        }
+        this.contentTransferEncodingPolicy = contentTransferEncodingPolicy;
         
         MediaType soapContentType;
         if (format.isSOAP11()) {
@@ -76,12 +86,9 @@ public class OMMultipartWriter {
         }
     }
 
-    private ContentTransferEncoding getContentTransferEncoding(ContentType contentType) {
-        if (useCTEBase64 && !contentType.isTextual()) {
-            return ContentTransferEncoding.BASE64;
-        } else {
-            return ContentTransferEncoding.BINARY;
-        }
+    private ContentTransferEncoding getContentTransferEncoding(Blob blob, ContentType contentType) {
+        ContentTransferEncoding cte = contentTransferEncodingPolicy.getContentTransferEncoding(blob, contentType);
+        return cte == null ? ContentTransferEncoding.BINARY : cte;
     }
     
     /**
@@ -121,7 +128,7 @@ public class OMMultipartWriter {
      *             if an I/O error occurs when writing to the underlying stream
      */
     public OutputStream writePart(ContentType contentType, String contentID) throws IOException {
-        return writer.writePart(contentType, getContentTransferEncoding(contentType), contentID, null);
+        return writer.writePart(contentType, getContentTransferEncoding(null, contentType), contentID, null);
     }
     
     /**
@@ -140,7 +147,7 @@ public class OMMultipartWriter {
      *             if an I/O error occurs when writing to the underlying stream
      */
     public OutputStream writePart(ContentType contentType, String contentID, List<Header> extraHeaders) throws IOException {    
-        return writer.writePart(contentType, getContentTransferEncoding(contentType), contentID, extraHeaders);
+        return writer.writePart(contentType, getContentTransferEncoding(null, contentType), contentID, extraHeaders);
     }
     
     /**
@@ -158,37 +165,9 @@ public class OMMultipartWriter {
      *             if an I/O error occurs when writing the part to the underlying stream
      */
     public void writePart(DataHandler dataHandler, String contentID, List<Header> extraHeaders) throws IOException {
-        ContentType contentType;
-        String contentTypeString = dataHandler.getContentType();
-        if (contentTypeString == null) {
-            contentType = null;
-        } else {
-            try {
-                contentType = new ContentType(contentTypeString);
-            } catch (ParseException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        ContentTransferEncoding contentTransferEncoding = null;
-        if (dataHandler instanceof ConfigurableDataHandler) {
-            switch (((ConfigurableDataHandler)dataHandler).getTransferEncoding()) {
-                case "8bit":
-                    contentTransferEncoding = ContentTransferEncoding.EIGHT_BIT;
-                    break;
-                case "binary":
-                    contentTransferEncoding = ContentTransferEncoding.BINARY;
-                    break;
-                default:
-                    contentTransferEncoding = ContentTransferEncoding.BASE64;
-            }
-        }
-        if (contentTransferEncoding == null && contentType != null) {
-            contentTransferEncoding = getContentTransferEncoding(contentType);
-        }
-        if (contentTransferEncoding == null) {
-            contentTransferEncoding = ContentTransferEncoding.BINARY;
-        }
-        writer.writePart(DataHandlerUtils.toBlob(dataHandler), contentType, contentTransferEncoding, contentID, extraHeaders);
+        Blob blob = DataHandlerUtils.toBlob(dataHandler);
+        ContentType contentType = contentTypeProvider.getContentType(blob);
+        writer.writePart(blob, contentType, getContentTransferEncoding(blob, contentType), contentID, extraHeaders);
     }
     
     /**

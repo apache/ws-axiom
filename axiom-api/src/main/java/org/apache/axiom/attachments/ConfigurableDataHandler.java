@@ -21,6 +21,15 @@ package org.apache.axiom.attachments;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
+
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.mime.ContentTransferEncoding;
+import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.om.format.xop.ContentTransferEncodingPolicy;
+import org.apache.axiom.util.activation.DataHandlerUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.net.URL;
 
 /**
@@ -36,6 +45,34 @@ import java.net.URL;
  * @see javax.activation.DataHandler
  */
 public class ConfigurableDataHandler extends DataHandler {
+    private static final Log log = LogFactory.getLog(ConfigurableDataHandler.class);
+
+    /**
+     * {@link ContentTransferEncodingPolicy} implementation that recognizes blobs created from
+     * {@link ConfigurableDataHandler} objects and returns the content transfer encoding
+     * set using {@link ConfigurableDataHandler#setTransferEncoding(String)}.
+     */
+    public static final ContentTransferEncodingPolicy CONTENT_TRANSFER_ENCODING_POLICY = new ContentTransferEncodingPolicy() {
+        @Override
+        public ContentTransferEncoding getContentTransferEncoding(Blob blob, ContentType contentType) {
+            DataHandler dataHandler = DataHandlerUtils.toDataHandler(blob);
+            if (!(dataHandler instanceof ConfigurableDataHandler)) {
+                return null;
+            }
+            String cte = ((ConfigurableDataHandler)dataHandler).getTransferEncoding();
+            if (cte == null) {
+                return null;
+            }
+            switch (cte) {
+                case "8bit": return ContentTransferEncoding.EIGHT_BIT;
+                case "binary": return ContentTransferEncoding.BINARY;
+                case "base64": return ContentTransferEncoding.BASE64;
+                default:
+                    log.warn(String.format("Unrecognized content transfer encoding: %s", cte));
+                    return null;
+            }
+        }
+    };
 
     private String transferEncoding;
 
