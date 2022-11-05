@@ -78,7 +78,7 @@ public final class DataHandlerUtils {
         if (blob instanceof DataHandlerBlob) {
             return ((DataHandlerBlob)blob).getDataHandler();
         }
-        return new DataHandler(new BlobDataSource(blob, "application/octet-stream"));
+        return new BlobDataHandler(blob);
     }
 
     /**
@@ -89,9 +89,8 @@ public final class DataHandlerUtils {
      * @return a {@link Blob} representing the {@link DataHandler}
      */
     public static Blob toBlob(DataHandler dh) {
-        DataSource ds = dh.getDataSource();
-        if (ds instanceof BlobDataSource) {
-            return ((BlobDataSource)ds).getBlob();
+        if (dh instanceof BlobDataHandler) {
+            return ((BlobDataHandler)dh).getBlob();
         }
         return new DataHandlerBlob(dh);
     }
