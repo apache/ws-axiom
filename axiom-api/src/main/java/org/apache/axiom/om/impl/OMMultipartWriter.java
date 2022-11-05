@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import javax.activation.DataHandler;
-
 import org.apache.axiom.attachments.ConfigurableDataHandler;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.ContentTransferEncoding;
@@ -38,7 +36,6 @@ import org.apache.axiom.om.format.xop.ContentTransferEncodingPolicy;
 import org.apache.axiom.om.format.xop.ContentTypeProvider;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.util.activation.DataHandlerContentTypeProvider;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 
 /**
  * Writes a MIME multipart package as used by XOP/MTOM and SOAP with Attachments. This class wraps a
@@ -155,7 +152,7 @@ public class OMMultipartWriter {
      * {@link MultipartBodyWriter#writePart(Blob, ContentType, ContentTransferEncoding, String, List)}, but computes the
      * appropriate content transfer encoding from the {@link OMOutputFormat}.
      * 
-     * @param dataHandler
+     * @param blob
      *            the content of the MIME part to write
      * @param contentID
      *            the content ID of the MIME part
@@ -164,8 +161,7 @@ public class OMMultipartWriter {
      * @throws IOException
      *             if an I/O error occurs when writing the part to the underlying stream
      */
-    public void writePart(DataHandler dataHandler, String contentID, List<Header> extraHeaders) throws IOException {
-        Blob blob = DataHandlerUtils.toBlob(dataHandler);
+    public void writePart(Blob blob, String contentID, List<Header> extraHeaders) throws IOException {
         ContentType contentType = contentTypeProvider.getContentType(blob);
         writer.writePart(blob, contentType, getContentTransferEncoding(blob, contentType), contentID, extraHeaders);
     }
@@ -175,15 +171,15 @@ public class OMMultipartWriter {
      * {@link MultipartBodyWriter#writePart(Blob, ContentType, ContentTransferEncoding, String, List)}, but computes the appropriate
      * content transfer encoding from the {@link OMOutputFormat}.
      * 
-     * @param dataHandler
+     * @param blob
      *            the content of the MIME part to write
      * @param contentID
      *            the content ID of the MIME part 
      * @throws IOException
      *             if an I/O error occurs when writing the part to the underlying stream
      */
-    public void writePart(DataHandler dataHandler, String contentID) throws IOException {
-        writePart(dataHandler, contentID, null);
+    public void writePart(Blob blob, String contentID) throws IOException {
+        writePart(blob, contentID, null);
     }
 
     /**

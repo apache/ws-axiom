@@ -78,6 +78,7 @@ import org.apache.axiom.om.impl.stream.xop.ContentIDGeneratorImpl;
 import org.apache.axiom.om.impl.stream.xop.OptimizationPolicy;
 import org.apache.axiom.om.impl.stream.xop.OptimizationPolicyImpl;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.io.IOUtils;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.xml.sax.InputSource;
@@ -387,7 +388,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
             for (String contentID : encoder.getContentIDs()) {
                 DataHandler dataHandler = encoder.getDataHandler(contentID);
                 if (cache || !(dataHandler instanceof PartDataHandler)) {
-                    multipartWriter.writePart(dataHandler, contentID);
+                    multipartWriter.writePart(DataHandlerUtils.toBlob(dataHandler), contentID);
                 } else {
                     ContentType contentType;
                     try {
