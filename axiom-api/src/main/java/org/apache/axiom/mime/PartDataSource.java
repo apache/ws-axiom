@@ -21,7 +21,9 @@ package org.apache.axiom.mime;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.function.Supplier;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
 /**
@@ -29,9 +31,11 @@ import org.apache.axiom.ext.activation.SizeAwareDataSource;
  */
 final class PartDataSource implements SizeAwareDataSource {
     private final Part part;
+    private final Supplier<Blob> contentSupplier;
 
-    PartDataSource(Part part) {
+    PartDataSource(Part part, Supplier<Blob> contentSupplier) {
         this.part = part;
+        this.contentSupplier = contentSupplier;
     }
 
     @Override
@@ -56,6 +60,6 @@ final class PartDataSource implements SizeAwareDataSource {
 
     @Override
     public long getSize() {
-        return part.getBlob().getSize();
+        return contentSupplier.get().getSize();
     }
 }

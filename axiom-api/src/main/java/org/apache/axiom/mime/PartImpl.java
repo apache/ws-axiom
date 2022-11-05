@@ -24,13 +24,12 @@ import org.apache.axiom.blob.OverflowableBlob;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.StreamCopyException;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.stream.EntityState;
 import org.apache.james.mime4j.stream.MimeTokenStream;
-
-import javax.activation.DataHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,7 +86,7 @@ final class PartImpl implements Part {
      */
     private WritableBlob content;
     
-    private DataHandler dataHandler;
+    private Blob blob;
     
     private PartInputStream partInputStream;
     
@@ -140,11 +139,11 @@ final class PartImpl implements Part {
     }
     
     @Override
-    public DataHandler getDataHandler() {
-        if (dataHandler == null) {
-            dataHandler = message.getDataHandlerFactory().createDataHandler(this);
+    public Blob getBlob() {
+        if (blob == null) {
+            blob = DataHandlerUtils.toBlob(message.getDataHandlerFactory().createDataHandler(this, this::getRawBlob));
         }
-        return dataHandler;
+        return blob;
     }
 
     private WritableBlob getContent() {
@@ -159,8 +158,7 @@ final class PartImpl implements Part {
         }
     }
     
-    @Override
-    public Blob getBlob() {
+    private Blob getRawBlob() {
         WritableBlob blob = getContent();
         if (blob instanceof OverflowableBlob) {
             WritableBlob overflowBlob = ((OverflowableBlob)blob).getOverflowBlob();

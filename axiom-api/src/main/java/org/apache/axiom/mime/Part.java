@@ -21,8 +21,6 @@ package org.apache.axiom.mime;
 import java.io.InputStream;
 import java.util.List;
 
-import javax.activation.DataHandler;
-
 import org.apache.axiom.blob.Blob;
 
 /**
@@ -78,13 +76,6 @@ public interface Part {
      * @return the content of the part
      */
     InputStream getInputStream(boolean preserve);
-
-    /**
-     * Get the content of this part as a {@link DataHandler}.
-     * 
-     * @return the content of this part
-     */
-    DataHandler getDataHandler();
 
     /**
      * Make sure that this part has been fully read from the underlying stream.

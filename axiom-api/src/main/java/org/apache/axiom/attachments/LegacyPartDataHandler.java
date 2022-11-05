@@ -20,6 +20,7 @@ package org.apache.axiom.attachments;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Supplier;
 
 import javax.activation.DataSource;
 
@@ -29,15 +30,14 @@ import org.apache.axiom.mime.Part;
 import org.apache.axiom.mime.PartDataHandler;
 
 final class LegacyPartDataHandler extends PartDataHandler implements DataHandlerExt {
-    LegacyPartDataHandler(Part part) {
-        super(part);
+    LegacyPartDataHandler(Part part, Supplier<Blob> contentSupplier) {
+        super(part, contentSupplier);
     }
 
     @Override
-    protected DataSource createDataSource(Part part, String contentType) {
-        Blob blob = part.getBlob();
-        if (blob instanceof LegacyTempFileBlob) {
-            return ((LegacyTempFileBlob)blob).getDataSource(contentType);
+    protected DataSource createDataSource(Blob content, String contentType) {
+        if (content instanceof LegacyTempFileBlob) {
+            return ((LegacyTempFileBlob)content).getDataSource(contentType);
         } else {
             return null;
         }

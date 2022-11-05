@@ -25,9 +25,11 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import javax.activation.DataHandler;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.DataHandlerFactory;
@@ -37,6 +39,7 @@ import org.apache.axiom.mime.MultipartBody.PartCreationListener;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.UIDGenerator;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -76,8 +79,8 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
                 .setAttachmentBlobFactory(attachmentBlobFactory)
                 .setDataHandlerFactory(new DataHandlerFactory() {
                         @Override
-                        public DataHandler createDataHandler(Part part) {
-                            return new LegacyPartDataHandler(part);
+                        public DataHandler createDataHandler(Part part, Supplier<Blob> contentSupplier) {
+                            return new LegacyPartDataHandler(part, contentSupplier);
                         }
                     })
                 .setPartCreationListener(this)
@@ -87,7 +90,7 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
         String rootPartContentID = rootPart.getContentID();
         if (rootPartContentID == null) {
             rootPartContentID = "firstPart_" + UIDGenerator.generateContentId();
-            map.put(rootPartContentID, rootPart.getDataHandler());
+            map.put(rootPartContentID, DataHandlerUtils.toDataHandler(rootPart.getBlob()));
         }
         this.rootPartContentID = rootPartContentID;
     }
@@ -96,7 +99,7 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
     public void partCreated(Part part) {
         String contentID = part.getContentID();
         if (contentID != null) {
-            map.put(contentID, part.getDataHandler());
+            map.put(contentID, DataHandlerUtils.toDataHandler(part.getBlob()));
         }
     }
 

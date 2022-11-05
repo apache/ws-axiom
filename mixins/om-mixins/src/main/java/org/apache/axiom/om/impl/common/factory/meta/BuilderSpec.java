@@ -48,6 +48,7 @@ import org.apache.axiom.om.impl.stream.stax.pull.AxiomXMLStreamReaderHelperFacto
 import org.apache.axiom.om.impl.stream.xop.XOPDecodingFilter;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.stax.XMLFragmentStreamReader;
 import org.apache.axiom.util.xml.stream.XMLEventUtils;
 import org.w3c.dom.Node;
@@ -221,7 +222,9 @@ public final class BuilderSpec {
                                     @Override
                                     public DataHandler getDataHandler(String contentID) {
                                         Part part = message.getPart(contentID);
-                                        return part == null ? null : part.getDataHandler();
+                                        return part == null
+                                                ? null
+                                                : DataHandlerUtils.toDataHandler(part.getBlob());
                                     }
                                 })),
                 new Detachable() {

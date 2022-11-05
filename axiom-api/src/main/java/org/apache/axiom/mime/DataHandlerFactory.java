@@ -18,10 +18,14 @@
  */
 package org.apache.axiom.mime;
 
+import java.util.function.Supplier;
+
 import javax.activation.DataHandler;
 
+import org.apache.axiom.blob.Blob;
+
 /**
- * Factory for the {@link DataHandler} instances returned by {@link Part#getDataHandler()}.
+ * Factory for the {@link DataHandler} instances returned by {@link Part#getBlob()}.
  */
 public interface DataHandlerFactory {
     /**
@@ -29,8 +33,8 @@ public interface DataHandlerFactory {
      */
     DataHandlerFactory DEFAULT = new DataHandlerFactory() {
         @Override
-        public DataHandler createDataHandler(Part part) {
-            return new PartDataHandler(part);
+        public DataHandler createDataHandler(Part part, Supplier<Blob> contentSupplier) {
+            return new PartDataHandler(part, contentSupplier);
         }
     };
 
@@ -39,7 +43,9 @@ public interface DataHandlerFactory {
      * 
      * @param part
      *            the MIME part
+     * @param contentSupplier
+     *            a supplier for the content of the part
      * @return the data handler
      */
-    DataHandler createDataHandler(Part part);
+    DataHandler createDataHandler(Part part, Supplier<Blob> contentSupplier);
 }
