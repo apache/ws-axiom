@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 import org.apache.axiom.mime.MultipartBody;
+import org.apache.axiom.mime.activation.DataHandlerBlobFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
@@ -44,6 +45,7 @@ public class TestBuildWithAttachments extends AxiomTestCase {
                 MultipartBody.builder()
                         .setInputStream(in)
                         .setContentType(sample.getContentType())
+                        .setBlobFactory(DataHandlerBlobFactory.INSTANCE)
                         .build();
         SOAPEnvelope envelope =
                 OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();

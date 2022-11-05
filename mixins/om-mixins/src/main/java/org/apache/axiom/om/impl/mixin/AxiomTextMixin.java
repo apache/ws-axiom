@@ -22,7 +22,7 @@ import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.mime.PartDataHandler;
+import org.apache.axiom.mime.activation.PartDataHandler;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;

@@ -30,7 +30,8 @@ import javax.xml.ws.Endpoint;
 import junit.framework.TestCase;
 
 import org.apache.axiom.mime.MultipartBody;
-import org.apache.axiom.mime.PartDataHandler;
+import org.apache.axiom.mime.activation.DataHandlerBlobFactory;
+import org.apache.axiom.mime.activation.PartDataHandler;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
@@ -68,6 +69,7 @@ public class MTOMSample extends TestCase {
         MultipartBody multipartBody = MultipartBody.builder()
                 .setInputStream(in)
                 .setContentType(connection.getContentType())
+                .setBlobFactory(DataHandlerBlobFactory.INSTANCE)
                 .build();
         SOAPEnvelope response = OMXMLBuilderFactory.createSOAPModelBuilder(multipartBody).getSOAPEnvelope();
         OMElement retrieveContentResponse = response.getBody().getFirstElement();

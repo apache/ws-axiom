@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.mime;
+package org.apache.axiom.mime.activation;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,6 +26,7 @@ import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
 import org.apache.axiom.blob.Blob;
+import org.apache.axiom.mime.Part;
 
 /**
  * {@link DataHandler} implementation for MIME parts read from a stream.

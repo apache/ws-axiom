@@ -27,7 +27,7 @@ import javax.activation.DataSource;
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.Part;
-import org.apache.axiom.mime.PartDataHandler;
+import org.apache.axiom.mime.activation.PartDataHandler;
 
 final class LegacyPartDataHandler extends PartDataHandler implements DataHandlerExt {
     LegacyPartDataHandler(Part part, Supplier<Blob> contentSupplier) {

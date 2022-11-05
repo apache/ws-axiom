@@ -18,10 +18,13 @@
  */
 package org.apache.axiom.mime;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.function.Supplier;
 
 import org.apache.axiom.blob.Blob;
-import org.apache.axiom.util.activation.DataHandlerUtils;
+import org.apache.axiom.ext.io.StreamCopyException;
 
 /**
  * Factory for the {@link Blob} instances returned by {@link Part#getBlob()}. This may be used to
@@ -30,12 +33,28 @@ import org.apache.axiom.util.activation.DataHandlerUtils;
  */
 public interface BlobFactory {
     /**
-     * Default factory that creates {@link PartDataHandler} instances.
+     * Default factory that creates {@link Blob} instances that lazily access the underlying
+     * content.
      */
     BlobFactory DEFAULT = new BlobFactory() {
         @Override
         public Blob createBlob(Part part, Supplier<Blob> contentSupplier) {
-            return DataHandlerUtils.toBlob(new PartDataHandler(part, contentSupplier));
+            return new Blob() {
+                @Override
+                public InputStream getInputStream() throws IOException {
+                    return contentSupplier.get().getInputStream();
+                }
+                
+                @Override
+                public void writeTo(OutputStream out) throws StreamCopyException {
+                    contentSupplier.get().writeTo(out);
+                }
+                
+                @Override
+                public long getSize() {
+                    return contentSupplier.get().getSize();
+                }
+            };
         }
     };
 

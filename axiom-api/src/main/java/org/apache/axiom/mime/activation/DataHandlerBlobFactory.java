@@ -16,23 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.mime;
+package org.apache.axiom.mime.activation;
 
-import javax.activation.DataSource;
+import java.util.function.Supplier;
 
-final class Util {
-    private Util() {}
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.mime.BlobFactory;
+import org.apache.axiom.mime.Part;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
-    /**
-     * Get the content type that should be reported by {@link DataSource} instances created for a
-     * given part.
-     * 
-     * @param Part
-     *            the part
-     * @return the content type
-     */
-    static String getDataSourceContentType(Part part) {
-        String ct = part.getHeader(Header.CONTENT_TYPE);
-        return ct == null ? "application/octet-stream" : ct;
+/**
+ * {@link BlobFactory} implementation that creates {@link Blob} instances that wrap
+ * {@link PartDataHandler} instances.
+ */
+public final class DataHandlerBlobFactory implements BlobFactory {
+    public static final DataHandlerBlobFactory INSTANCE = new DataHandlerBlobFactory();
+
+    private DataHandlerBlobFactory() {}
+
+    @Override
+    public Blob createBlob(Part part, Supplier<Blob> contentSupplier) {
+        return DataHandlerUtils.toBlob(new PartDataHandler(part, contentSupplier));
     }
 }

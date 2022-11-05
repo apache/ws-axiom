@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.mime;
+package org.apache.axiom.mime.activation;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
+import org.apache.axiom.mime.Part;
 
 /**
  * Default {@link DataSource} implementation for MIME parts.

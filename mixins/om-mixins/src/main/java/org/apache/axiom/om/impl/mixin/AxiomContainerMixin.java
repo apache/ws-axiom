@@ -50,7 +50,7 @@ import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.stax.pull.output.StAXPivot;
 import org.apache.axiom.core.stream.stax.push.input.XMLStreamWriterNamespaceContextProvider;
 import org.apache.axiom.mime.ContentType;
-import org.apache.axiom.mime.PartDataHandler;
+import org.apache.axiom.mime.activation.PartDataHandler;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
