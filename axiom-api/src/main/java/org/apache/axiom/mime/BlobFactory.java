@@ -20,32 +20,33 @@ package org.apache.axiom.mime;
 
 import java.util.function.Supplier;
 
-import javax.activation.DataHandler;
-
 import org.apache.axiom.blob.Blob;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 /**
- * Factory for the {@link DataHandler} instances returned by {@link Part#getBlob()}.
+ * Factory for the {@link Blob} instances returned by {@link Part#getBlob()}. This may be used to
+ * create {@link Blob} instances that wrap some other type of objects representing the content of
+ * MIME parts.
  */
-public interface DataHandlerFactory {
+public interface BlobFactory {
     /**
      * Default factory that creates {@link PartDataHandler} instances.
      */
-    DataHandlerFactory DEFAULT = new DataHandlerFactory() {
+    BlobFactory DEFAULT = new BlobFactory() {
         @Override
-        public DataHandler createDataHandler(Part part, Supplier<Blob> contentSupplier) {
-            return new PartDataHandler(part, contentSupplier);
+        public Blob createBlob(Part part, Supplier<Blob> contentSupplier) {
+            return DataHandlerUtils.toBlob(new PartDataHandler(part, contentSupplier));
         }
     };
 
     /**
-     * Create a data handler for the given MIME part.
+     * Create a {@link Blob} for the given MIME part.
      * 
      * @param part
      *            the MIME part
      * @param contentSupplier
      *            a supplier for the content of the part
-     * @return the data handler
+     * @return the blob
      */
-    DataHandler createDataHandler(Part part, Supplier<Blob> contentSupplier);
+    Blob createBlob(Part part, Supplier<Blob> contentSupplier);
 }

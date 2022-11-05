@@ -24,7 +24,6 @@ import org.apache.axiom.blob.OverflowableBlob;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.StreamCopyException;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.james.mime4j.MimeException;
@@ -141,7 +140,7 @@ final class PartImpl implements Part {
     @Override
     public Blob getBlob() {
         if (blob == null) {
-            blob = DataHandlerUtils.toBlob(message.getDataHandlerFactory().createDataHandler(this, this::getRawBlob));
+            blob = message.getBlobFactory().createBlob(this, this::getRawBlob);
         }
         return blob;
     }

@@ -32,7 +32,7 @@ import javax.activation.DataHandler;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
-import org.apache.axiom.mime.DataHandlerFactory;
+import org.apache.axiom.mime.BlobFactory;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.mime.MultipartBody.PartCreationListener;
@@ -77,10 +77,10 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
                 .setInputStream(inStream)
                 .setContentType(contentTypeString)
                 .setAttachmentBlobFactory(attachmentBlobFactory)
-                .setDataHandlerFactory(new DataHandlerFactory() {
+                .setBlobFactory(new BlobFactory() {
                         @Override
-                        public DataHandler createDataHandler(Part part, Supplier<Blob> contentSupplier) {
-                            return new LegacyPartDataHandler(part, contentSupplier);
+                        public Blob createBlob(Part part, Supplier<Blob> contentSupplier) {
+                            return DataHandlerUtils.toBlob(new LegacyPartDataHandler(part, contentSupplier));
                         }
                     })
                 .setPartCreationListener(this)
