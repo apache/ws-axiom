@@ -141,12 +141,6 @@
                 <version>${project.version}</version>
                 <executions>
                     <execution>
-                        <id>post-process-classes</id>
-                        <goals>
-                            <goal>post-process-classes</goal>
-                        </goals>
-                    </execution>
-                    <execution>
                         <id>post-process-sources-jar</id>
                         <goals>
                             <goal>post-process-sources-jar</goal>

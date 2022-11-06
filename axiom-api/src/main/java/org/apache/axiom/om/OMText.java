@@ -19,8 +19,9 @@
 
 package org.apache.axiom.om;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
+
+import org.apache.axiom.blob.Blob;
 
 /**
  * Represents character data in an XML document. A node of this type is used to
@@ -80,11 +81,11 @@ public interface OMText extends OMNode {
     OMNamespace getNamespace();
 
     /**
-     * Gets the datahandler.
+     * Returns a {@link Blob} containing the base64-decoded content of this node.
      *
-     * @return Returns datahandler.
+     * @return the base64-decoded content
      */
-    DataHandler getDataHandler();
+    Blob getBlob();
 
     /** @return Returns boolean flag saying whether the node contains an optimized text or not. */
     // TODO: inconsistent naming

@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.mixin;
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.mime.activation.PartDataHandler;
 import org.apache.axiom.om.OMElement;
@@ -129,11 +130,11 @@ public abstract class AxiomTextMixin implements AxiomText {
     }
 
     @Override
-    public final DataHandler getDataHandler() {
+    public final Blob getBlob() {
         try {
             Object content = coreGetCharacterData();
             if (content instanceof TextContent) {
-                return DataHandlerUtils.toDataHandler(((TextContent) content).getBlob());
+                return ((TextContent) content).getBlob();
             } else {
                 throw new OMException("No DataHandler available");
             }
@@ -150,7 +151,7 @@ public abstract class AxiomTextMixin implements AxiomText {
     @Override
     public final void buildWithAttachments() {
         if (isOptimized()) {
-            DataHandler dataHandler = getDataHandler();
+            DataHandler dataHandler = DataHandlerUtils.getDataHandler(getBlob());
             if (dataHandler instanceof PartDataHandler) {
                 ((PartDataHandler) dataHandler).getPart().fetch();
             }

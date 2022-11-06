@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.mtom;
 
 import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
@@ -28,8 +29,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.MTOMSample;
-
-import javax.activation.DataHandler;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -81,7 +80,7 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
 
         Iterator childIt = data.getChildren();
         OMElement child = (OMElement) childIt.next();
-        OMText blob = (OMText) child.getFirstOMChild();
+        OMText blobNode = (OMText) child.getFirstOMChild();
         /*
          * Following is the procedure the user has to follow to read objects in
          * OBBlob User has to know the object type & whether it is serializable.
@@ -90,8 +89,7 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
          */
         byte[] expectedObject = new byte[] { 13, 56, 65, 32, 12, 12, 7, -3, -2,
                 -1, 98 };
-        DataHandler actualDH;
-        actualDH = blob.getDataHandler();
+        Blob actualBlob = blobNode.getBlob();
         //ByteArrayInputStream object = (ByteArrayInputStream) actualDH
         //.getContent();
         //byte[] actualObject= null;
@@ -125,9 +123,9 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
         // At this moment only the SOAP part should have been loaded
         assertEquals(1, attachments.getContentIDList().size());
         for (OMText node : binaryNodes) {
-            // Request the DataHandler and do something with it to make sure
+            // Request the Blob and do something with it to make sure
             // the part is loaded
-            node.getDataHandler().getInputStream().close();
+            node.getBlob().getInputStream().close();
         }
         assertEquals(binaryNodes.size() + 1, attachments.getContentIDList().size());
     }

@@ -39,6 +39,7 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.testutils.activation.TestDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 /**
  * Tests that attachments are streamed (i.e. not read entirely into memory) if the original message
@@ -150,12 +151,16 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
 
             IOTestUtils.compareStreams(
                     ds1.getInputStream(),
-                    ((PartDataHandler) ((OMText) data1.getFirstOMChild()).getDataHandler())
+                    ((PartDataHandler)
+                                    DataHandlerUtils.toDataHandler(
+                                            ((OMText) data1.getFirstOMChild()).getBlob()))
                             .getPart()
                             .getInputStream(false));
             IOTestUtils.compareStreams(
                     ds2.getInputStream(),
-                    ((PartDataHandler) ((OMText) data2.getFirstOMChild()).getDataHandler())
+                    ((PartDataHandler)
+                                    DataHandlerUtils.toDataHandler(
+                                            ((OMText) data2.getFirstOMChild()).getBlob()))
                             .getPart()
                             .getInputStream(false));
         } finally {

@@ -24,6 +24,7 @@ import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.mime.MultipartBody;
@@ -66,8 +67,8 @@ public class TestDataHandlerSerializationWithMTOM extends AxiomTestCase {
         // Serialize the message
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
-        MemoryBlob blob = Blobs.createMemoryBlob();
-        OutputStream out = blob.getOutputStream();
+        MemoryBlob mtom = Blobs.createMemoryBlob();
+        OutputStream out = mtom.getOutputStream();
         orgEnvelope.serialize(out, format);
         out.close();
         assertFalse(element.isExpanded());
@@ -75,7 +76,7 @@ public class TestDataHandlerSerializationWithMTOM extends AxiomTestCase {
         // Parse the serialized message
         MultipartBody mb =
                 MultipartBody.builder()
-                        .setInputStream(blob.getInputStream())
+                        .setInputStream(mtom.getInputStream())
                         .setContentType(format.getContentType())
                         .build();
         assertEquals(2, mb.getPartCount());
@@ -89,7 +90,7 @@ public class TestDataHandlerSerializationWithMTOM extends AxiomTestCase {
         OMText content = (OMText) contentElement.getFirstOMChild();
         assertTrue(content.isBinary());
         assertTrue(content.isOptimized());
-        DataHandler dh = content.getDataHandler();
-        assertEquals("some content", IOUtils.toString(dh.getInputStream(), "utf-8"));
+        Blob blob = content.getBlob();
+        assertEquals("some content", IOUtils.toString(blob.getInputStream(), "utf-8"));
     }
 }

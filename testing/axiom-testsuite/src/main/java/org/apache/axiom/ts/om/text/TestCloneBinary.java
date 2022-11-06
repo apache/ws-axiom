@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public class TestCloneBinary extends AxiomTestCase {
     private boolean fetch;
@@ -60,6 +61,6 @@ public class TestCloneBinary extends AxiomTestCase {
         OMText clone = (OMText) text.clone(options);
         assertTrue(clone.isBinary());
         assertEquals(fetch, attachmentAccessor.isLoaded());
-        assertSame(dh, clone.getDataHandler());
+        assertSame(dh, DataHandlerUtils.toDataHandler(clone.getBlob()));
     }
 }

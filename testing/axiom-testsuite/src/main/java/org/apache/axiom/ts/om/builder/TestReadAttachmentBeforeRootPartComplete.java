@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.mime.MultipartBody;
@@ -77,8 +78,8 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
         // Serialize the message
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
-        MemoryBlob blob = Blobs.createMemoryBlob();
-        OutputStream out = blob.getOutputStream();
+        MemoryBlob xop = Blobs.createMemoryBlob();
+        OutputStream out = xop.getOutputStream();
         orgRoot.serialize(out, format);
         out.close();
 
@@ -88,16 +89,16 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
                         factory,
                         StAXParserConfiguration.NON_COALESCING,
                         MultipartBody.builder()
-                                .setInputStream(blob.getInputStream())
+                                .setInputStream(xop.getInputStream())
                                 .setContentType(format.getContentType())
                                 .build());
         OMElement root = builder.getDocumentElement();
         OMElement child1 = (OMElement) root.getFirstOMChild();
         OMText text = (OMText) child1.getFirstOMChild();
         assertTrue(text.isBinary());
-        // Access the DataHandler
-        DataHandler dh = text.getDataHandler();
-        IOTestUtils.compareStreams(ds.getInputStream(), dh.getInputStream());
+        // Access the Blob
+        Blob blob = text.getBlob();
+        IOTestUtils.compareStreams(ds.getInputStream(), blob.getInputStream());
         OMElement child2 = (OMElement) child1.getNextOMSibling();
         assertFalse(child2.isComplete());
         assertEquals(s, child2.getText());

@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.testutils.activation.TestDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public class XOPRoundtripTest extends AxiomTestCase {
     public XOPRoundtripTest(OMMetaFactory metaFactory) {
@@ -54,6 +55,6 @@ public class XOPRoundtripTest extends AxiomTestCase {
         assertNotNull(child);
         assertTrue(child.isBinary());
         assertTrue(child.isOptimized());
-        assertSame(dh, child.getDataHandler());
+        assertSame(dh, DataHandlerUtils.toDataHandler(child.getBlob()));
     }
 }

@@ -23,15 +23,14 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Endpoint;
 
 import junit.framework.TestCase;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.MultipartBody;
-import org.apache.axiom.mime.activation.PartDataHandlerBlobFactory;
-import org.apache.axiom.mime.activation.PartDataHandler;
+import org.apache.axiom.mime.PartBlob;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
@@ -69,15 +68,14 @@ public class MTOMSample extends TestCase {
         MultipartBody multipartBody = MultipartBody.builder()
                 .setInputStream(in)
                 .setContentType(connection.getContentType())
-                .setPartBlobFactory(PartDataHandlerBlobFactory.DEFAULT)
                 .build();
         SOAPEnvelope response = OMXMLBuilderFactory.createSOAPModelBuilder(multipartBody).getSOAPEnvelope();
         OMElement retrieveContentResponse = response.getBody().getFirstElement();
         OMElement content = retrieveContentResponse.getFirstElement();
-        // Extract the DataHandler representing the optimized binary data
-        DataHandler dh = ((OMText)content.getFirstOMChild()).getDataHandler();
+        // Extract the Blob representing the optimized binary data
+        Blob blob = ((OMText)content.getFirstOMChild()).getBlob();
         // Stream the content of the MIME part
-        InputStream contentStream = ((PartDataHandler)dh).getPart().getInputStream(false);
+        InputStream contentStream = ((PartBlob)blob).getPart().getInputStream(false);
         // Write the content to the result stream
         IOUtils.copy(contentStream, result);
         contentStream.close();

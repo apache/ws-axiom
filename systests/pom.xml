@@ -32,7 +32,6 @@
     <name>System Tests</name>
 
     <modules>
-        <module>compat-tests</module>
         <module>cross-om-tests</module>
         <module>eclipse-tests</module>
         <module>jaxws-tests</module>

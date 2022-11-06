@@ -67,7 +67,6 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>post-process-classes</goal>
                             <goal>post-process-sources-jar</goal>
                         </goals>
                     </execution>

@@ -428,9 +428,7 @@ public class OMFactoryImpl implements OMFactory {
                     if (text.isBinary()) {
                         content =
                                 new TextContent(
-                                        text.getContentID(),
-                                        text.getDataHandler(),
-                                        text.isOptimized());
+                                        text.getContentID(), text.getBlob(), text.isOptimized());
                     } else {
                         content = text.getText();
                     }

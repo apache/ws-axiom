@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.ds.jaxb.JAXBOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxb.beans.DocumentBean;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 /**
  * Tests the expansion of an {@link OMSourcedElement} backed by a {@link JAXBOMDataSource} with a
@@ -57,6 +58,6 @@ public class TestDataHandlerExpansion extends AxiomTestCase {
         OMText content = (OMText) child.getFirstOMChild();
         assertTrue(content.isBinary());
         assertTrue(content.isOptimized());
-        assertSame(dh, content.getDataHandler());
+        assertSame(dh, DataHandlerUtils.toDataHandler(content.getBlob()));
     }
 }
