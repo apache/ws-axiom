@@ -28,14 +28,18 @@ import org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSourc
 
 public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
-        OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMLinkedListMetaFactoryLoader().load(null));
-        
-        // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
+        OMTestSuiteBuilder builder =
+                new OMTestSuiteBuilder(new OMLinkedListMetaFactoryLoader().load(null));
+
+        // TODO: if there is a comment node surrounded by text, then these text nodes need to be
+        // merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
-        
+
         // TODO: need to evaluate if the test case is correct
-        builder.exclude(TestGetSAXSourceWithPushOMDataSource.class, "(&(scenario=getNamespaceContext)(serializeParent=false))");
-        
+        builder.exclude(
+                TestGetSAXSourceWithPushOMDataSource.class,
+                "(&(scenario=getNamespaceContext)(serializeParent=false))");
+
         return builder.build();
     }
 }

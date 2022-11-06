@@ -16,7 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-@org.apache.axiom.weaver.annotation.WeavablePackage(mixins={
-        AxiomInformationItemMixin.class,
-})
+@org.apache.axiom.weaver.annotation.WeavablePackage(
+        mixins = {
+            AxiomInformationItemMixin.class,
+        })
 package org.apache.axiom.om.impl.llom.mixin;
