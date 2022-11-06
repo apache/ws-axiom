@@ -38,6 +38,7 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.RandomUtils;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.testutils.io.IOTestUtils;
 
 /**
@@ -67,7 +68,8 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
         OMElement orgRoot = factory.createOMElement("root", null);
         OMElement orgChild1 = factory.createOMElement("child1", null, orgRoot);
         DataSource ds = new RandomDataSource(54321, 4096);
-        orgChild1.addChild(factory.createOMText(new DataHandler(ds), true));
+        orgChild1.addChild(
+                factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds)), true));
         // Create a child with a large text content and insert it after the binary node.
         // If we don't do this, then the root part may be buffered entirely by the parser,
         // and the test would not be effective.

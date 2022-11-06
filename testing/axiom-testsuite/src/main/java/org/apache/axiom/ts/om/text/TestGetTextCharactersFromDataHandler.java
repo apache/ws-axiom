@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.activation.TextDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.codec.binary.Base64;
 
 /**
@@ -39,7 +40,7 @@ public class TestGetTextCharactersFromDataHandler extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         DataHandler dh = new DataHandler(new TextDataSource("test content", "utf-8", "plain"));
-        OMText text = metaFactory.getOMFactory().createOMText(dh, true);
+        OMText text = metaFactory.getOMFactory().createOMText(DataHandlerUtils.toBlob(dh), true);
         char[] chars = text.getTextCharacters();
         byte[] decoded = Base64.decodeBase64(new String(chars));
         assertEquals("test content", new String(decoded, "utf-8"));

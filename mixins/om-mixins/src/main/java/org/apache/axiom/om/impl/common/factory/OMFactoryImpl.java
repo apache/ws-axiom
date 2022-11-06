@@ -22,9 +22,9 @@ import static org.apache.axiom.util.xml.NSUtils.generatePrefix;
 
 import java.util.Iterator;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMAttribute;
@@ -64,7 +64,6 @@ import org.apache.axiom.om.impl.intf.AxiomText;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.intf.factory.AxiomElementType;
 import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public class OMFactoryImpl implements OMFactory {
     protected final AxiomNodeFactory nodeFactory;
@@ -207,16 +206,8 @@ public class OMFactoryImpl implements OMFactory {
     }
 
     @Override
-    public final OMText createOMText(Object dataHandler, boolean optimize) {
-        return createOMText((DataHandler) dataHandler, optimize);
-    }
-
-    @Override
-    public final OMText createOMText(DataHandler dataHandler, boolean optimize) {
-        return createAxiomText(
-                null,
-                new TextContent(null, DataHandlerUtils.toBlob(dataHandler), optimize),
-                OMNode.TEXT_NODE);
+    public final OMText createOMText(Blob blob, boolean optimize) {
+        return createAxiomText(null, new TextContent(null, blob, optimize), OMNode.TEXT_NODE);
     }
 
     @Override

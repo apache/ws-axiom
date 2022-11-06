@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 /**
@@ -53,7 +54,8 @@ public class TestGetBlobFromElement extends AxiomTestCase {
         RandomDataSource orgDS = new RandomDataSource(64 * 1024);
         OMElement orgRoot = factory.createOMElement(new QName("root"));
         OMElement orgChild = factory.createOMElement(new QName("child"), orgRoot);
-        orgChild.addChild(factory.createOMText(new DataHandler(orgDS), false));
+        orgChild.addChild(
+                factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(orgDS)), false));
         OMElement root =
                 OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(orgRoot.toString()))
                         .getDocumentElement();

@@ -31,6 +31,7 @@ import org.apache.axiom.om.util.jaxb.JAXBUtils;
 import org.apache.axiom.testutils.activation.TextDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxb.beans.DocumentBean2;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public class TestUnmarshalWithDataHandlerToByteArray extends AxiomTestCase {
     public TestUnmarshalWithDataHandlerToByteArray(OMMetaFactory metaFactory) {
@@ -46,7 +47,9 @@ public class TestUnmarshalWithDataHandlerToByteArray extends AxiomTestCase {
         OMElement content = factory.createOMElement("content", ns, element);
         content.addChild(
                 factory.createOMText(
-                        new DataHandler(new TextDataSource("test content", "utf-8", "plain")),
+                        DataHandlerUtils.toBlob(
+                                new DataHandler(
+                                        new TextDataSource("test content", "utf-8", "plain"))),
                         true));
         JAXBContext context = JAXBContext.newInstance(DocumentBean2.class);
         DocumentBean2 bean = (DocumentBean2) JAXBUtils.unmarshal(element, context, null, true);

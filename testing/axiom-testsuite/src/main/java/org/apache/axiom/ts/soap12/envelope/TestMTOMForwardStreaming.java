@@ -69,9 +69,11 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
                 factory.createOMElement(
                         "test", factory.createOMNamespace("urn:test", "p"), orgBody);
         OMElement orgData1 = factory.createOMElement("data", null, orgBodyElement);
-        orgData1.addChild(factory.createOMText(new DataHandler(ds1), true));
+        orgData1.addChild(
+                factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds1)), true));
         OMElement orgData2 = factory.createOMElement("data", null, orgBodyElement);
-        orgData2.addChild(factory.createOMText(new DataHandler(ds2), true));
+        orgData2.addChild(
+                factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds2)), true));
 
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);

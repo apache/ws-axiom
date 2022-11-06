@@ -34,6 +34,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.ByteStreamComparator;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.base64.Base64DecodingOutputStreamWriter;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -85,7 +86,7 @@ public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
         // doesn't fail with an OutOfMemoryError, we know that the OMText implementation
         // supports streaming.
         DataSource ds = new RandomDataSource(654321L, Runtime.getRuntime().maxMemory());
-        OMText text = factory.createOMText(new DataHandler(ds), false);
+        OMText text = factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds)), false);
         elem.addChild(text);
         SAXSource saxSource = elem.getSAXSource(true);
         XMLReader xmlReader = saxSource.getXMLReader();

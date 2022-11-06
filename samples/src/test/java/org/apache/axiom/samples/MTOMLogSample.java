@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -52,7 +53,7 @@ public class MTOMLogSample extends TestCase {
         SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
         SOAPEnvelope env = factory.createDefaultSOAPMessage().getSOAPEnvelope();
         OMElement element = factory.createOMElement(new QName("urn:testService", "invokeMtom", "ns"), env.getBody());
-        element.addChild(factory.createOMText(new DataHandler("test", "text/xml"), true));
+        element.addChild(factory.createOMText(DataHandlerUtils.toBlob(new DataHandler("test", "text/xml")), true));
         logMessage(env);
     }
 }

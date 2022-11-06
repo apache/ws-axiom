@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Text;
 
@@ -42,7 +43,8 @@ public class TestGetNodeValueBinary extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         DataSource ds = new RandomDataSource(666L, 1000);
-        Text text = (Text) factory.createOMText(new DataHandler(ds), false);
+        Text text =
+                (Text) factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds)), false);
         String nodeValue = text.getNodeValue();
         assertThat(nodeValue).isNotNull();
         IOTestUtils.compareStreams(

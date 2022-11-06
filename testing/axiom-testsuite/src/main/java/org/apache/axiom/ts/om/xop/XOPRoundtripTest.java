@@ -43,7 +43,7 @@ public class XOPRoundtripTest extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         DataHandler dh = new DataHandler(new TestDataSource('x', Runtime.getRuntime().maxMemory()));
         OMElement element1 = factory.createOMElement(new QName("test"));
-        element1.addChild(factory.createOMText(dh, true));
+        element1.addChild(factory.createOMText(DataHandlerUtils.toBlob(dh), true));
         XOPEncoded<XMLStreamReader> xopEncodedStream = element1.getXOPEncodedStreamReader(true);
         OMElement element2 =
                 OMXMLBuilderFactory.createOMBuilder(

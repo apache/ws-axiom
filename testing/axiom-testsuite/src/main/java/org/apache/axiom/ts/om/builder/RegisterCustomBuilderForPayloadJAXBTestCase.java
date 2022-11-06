@@ -31,6 +31,7 @@ import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public abstract class RegisterCustomBuilderForPayloadJAXBTestCase extends AxiomTestCase {
     public RegisterCustomBuilderForPayloadJAXBTestCase(OMMetaFactory metaFactory) {
@@ -44,7 +45,7 @@ public abstract class RegisterCustomBuilderForPayloadJAXBTestCase extends AxiomT
         name.setText("some name");
         document.addChild(name);
         OMElement content = factory.createOMElement(new QName("content"));
-        content.addChild(factory.createOMText(dh, true));
+        content.addChild(factory.createOMText(DataHandlerUtils.toBlob(dh), true));
         document.addChild(content);
         return document;
     }
