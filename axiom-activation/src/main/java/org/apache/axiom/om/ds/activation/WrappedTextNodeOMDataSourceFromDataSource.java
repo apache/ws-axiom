@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.ds;
+package org.apache.axiom.om.ds.activation;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +29,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMDataSourceExt;
+import org.apache.axiom.om.ds.WrappedTextNodeOMDataSource;
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 /**

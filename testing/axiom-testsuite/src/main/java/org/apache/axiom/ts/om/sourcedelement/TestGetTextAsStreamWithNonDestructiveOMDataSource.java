@@ -29,7 +29,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromDataSource;
+import org.apache.axiom.om.ds.activation.WrappedTextNodeOMDataSourceFromDataSource;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;

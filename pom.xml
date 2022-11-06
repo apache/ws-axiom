@@ -230,6 +230,7 @@
         <module>components</module>
         <module>axiom-weaver</module>
         <module>axiom-weaver-annotations</module>
+        <module>axiom-activation</module>
     </modules>
 
     <scm>
