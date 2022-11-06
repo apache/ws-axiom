@@ -42,13 +42,11 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>om-mixins</artifactId>
             <version>${project.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>dom-mixins</artifactId>
             <version>${project.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -255,6 +253,25 @@
                                 org.apache.axiom.om.impl.dom.DOOMNSAwareAttributeImpl -&gt; org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl,
                                 org.apache.axiom.om.impl.dom.DOOMNamespaceDeclarationImpl -&gt; org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl
                             </ignore>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>buildutils-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <id>create-dependency-reduced-pom</id>
+                        <goals>
+                            <goal>create-dependency-reduced-pom</goal>
+                        </goals>
+                        <configuration>
+                            <excludedArtifacts>
+                                <excludedArtifact>om-mixins</excludedArtifact>
+                                <excludedArtifact>dom-mixins</excludedArtifact>
+                            </excludedArtifacts>
                         </configuration>
                     </execution>
                 </executions>

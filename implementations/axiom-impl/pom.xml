@@ -42,7 +42,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>om-mixins</artifactId>
             <version>${project.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -221,6 +220,24 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>buildutils-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <id>create-dependency-reduced-pom</id>
+                        <goals>
+                            <goal>create-dependency-reduced-pom</goal>
+                        </goals>
+                        <configuration>
+                            <excludedArtifacts>
+                                <excludedArtifact>om-mixins</excludedArtifact>
+                            </excludedArtifacts>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

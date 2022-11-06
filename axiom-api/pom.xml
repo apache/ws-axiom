@@ -38,13 +38,11 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>base64-utils</artifactId>
             <version>${project.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>blob</artifactId>
             <version>${project.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
@@ -151,6 +149,18 @@
                         <goals>
                             <goal>post-process-sources-jar</goal>
                         </goals>
+                    </execution>
+                    <execution>
+                        <id>create-dependency-reduced-pom</id>
+                        <goals>
+                            <goal>create-dependency-reduced-pom</goal>
+                        </goals>
+                        <configuration>
+                            <excludedArtifacts>
+                                <excludedArtifact>base64-utils</excludedArtifact>
+                                <excludedArtifact>blob</excludedArtifact>
+                            </excludedArtifacts>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
