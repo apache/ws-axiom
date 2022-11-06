@@ -217,6 +217,22 @@
                                     </visibilityRules>
                                 </layer>
                                 <layer>
+                                    <packages>
+                                        <value>javax.activation</value>
+                                    </packages>
+                                    <visibilityRules>
+                                        <value>
+                                            <packages>
+                                                <value>org.apache.axiom.attachments</value>
+                                                <value>org.apache.axiom.ext.activation</value>
+                                                <value>org.apache.axiom.mime.activation</value>
+                                                <value>org.apache.axiom.util.activation</value>
+                                            </packages>
+                                            <allowPublicUsage>true</allowPublicUsage>
+                                        </value>
+                                    </visibilityRules>
+                                </layer>
+                                <layer>
                                     <!-- The attachments API is considered a legacy API and shouldn't be used anywhere. -->
                                     <packages>
                                         <value>org.apache.axiom.attachments</value>
@@ -250,6 +266,11 @@
                                 <!-- TODO(AXIOM-506) -->
                                 org.apache.axiom.om.impl.OMMultipartWriter -&gt; org.apache.axiom.attachments.ConfigurableDataHandler,
                                 org.apache.axiom.util.base64.Base64Utils -&gt; org.apache.axiom.util.activation.DataSourceUtils,
+                                org.apache.axiom.util.base64.Base64Utils -&gt; javax.activation.DataSource,
+                                org.apache.axiom.util.base64.Base64Utils -&gt; javax.activation.DataHandler,
+                                org.apache.axiom.om.impl.MTOMXMLStreamWriter -&gt; javax.activation.DataHandler,
+                                org.apache.axiom.om.OMFactory -&gt; javax.activation.DataHandler,
+                                org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromDataSource -&gt; javax.activation.DataSource,
                                 <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
                                 org.apache.axiom.om.OMAbstractFactory -&gt; org.apache.axiom.soap.SOAPFactory,
                                 org.apache.axiom.om.OMMetaFactory -&gt; org.apache.axiom.soap.SOAPFactory,
