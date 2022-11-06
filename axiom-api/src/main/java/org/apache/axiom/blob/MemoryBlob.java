@@ -30,12 +30,7 @@ import java.io.IOException;
  * Instances are created with {@link Blobs#createMemoryBlob()} or using {@link #FACTORY}.
  */
 public interface MemoryBlob extends WritableBlob {
-    WritableBlobFactory<MemoryBlob> FACTORY = new WritableBlobFactory<MemoryBlob>() {
-        @Override
-        public MemoryBlob createBlob() {
-            return new MemoryBlobImpl();
-        }
-    };
+    WritableBlobFactory<MemoryBlob> FACTORY = MemoryBlobImpl::new;
 
     @Override
     MemoryBlobInputStream getInputStream();

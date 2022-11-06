@@ -106,14 +106,9 @@ public class Attachments implements OMAttachmentAccessor {
         }
         WritableBlobFactory<?> attachmentBlobFactory;
         if (fileCacheEnable) {
-            final WritableBlobFactory<?> tempFileBlobFactory = new LegacyTempFileBlobFactory(this, attachmentRepoDir);
+            WritableBlobFactory<?> tempFileBlobFactory = new LegacyTempFileBlobFactory(this, attachmentRepoDir);
             if (fileStorageThreshold > 0) {
-                attachmentBlobFactory = new WritableBlobFactory<WritableBlob>() {
-                    @Override
-                    public WritableBlob createBlob() {
-                        return Blobs.createOverflowableBlob(fileStorageThreshold, tempFileBlobFactory);
-                    }
-                };
+                attachmentBlobFactory = () -> Blobs.createOverflowableBlob(fileStorageThreshold, tempFileBlobFactory);
             } else {
                 attachmentBlobFactory = tempFileBlobFactory;
             }

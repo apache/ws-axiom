@@ -25,11 +25,8 @@ import junit.framework.TestSuite;
 
 public class OverflowableBlobTest extends TestCase {
     public static TestSuite suite() {
-        return new WritableBlobTestSuiteBuilder(new WritableBlobFactory<OverflowableBlob>() {
-            @Override
-            public OverflowableBlob createBlob() {
-                return Blobs.createOverflowableBlob(16*1024, "test", ".dat", null);
-            }
-        }, new int[] { 10000, 16*1024, 100000 }, true, false).build();
+        return new WritableBlobTestSuiteBuilder(
+                () -> Blobs.createOverflowableBlob(16*1024, "test", ".dat", null),
+                new int[] { 10000, 16*1024, 100000 }, true, false).build();
     }
 }
