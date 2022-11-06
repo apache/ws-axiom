@@ -21,51 +21,52 @@ package org.apache.axiom.mime;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.function.Supplier;
 
-import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.io.StreamCopyException;
 
 /**
- * Factory for the {@link Blob} instances returned by {@link Part#getBlob()}. This may be used to
- * create {@link Blob} instances that wrap some other type of objects representing the content of
+ * Factory for the {@link PartBlob} instances returned by {@link Part#getBlob()}. This may be used to
+ * create {@link PartBlob} instances that wrap some other type of objects representing the content of
  * MIME parts.
  */
-public interface BlobFactory {
+public interface PartBlobFactory {
     /**
-     * Default factory that creates {@link Blob} instances that lazily access the underlying
+     * Default factory that creates {@link PartBlob} instances that lazily access the underlying
      * content.
      */
-    BlobFactory DEFAULT = new BlobFactory() {
+    PartBlobFactory DEFAULT = new PartBlobFactory() {
         @Override
-        public Blob createBlob(Part part, Supplier<Blob> contentSupplier) {
-            return new Blob() {
+        public PartBlob createBlob(Part part) {
+            return new PartBlob() {
+                @Override
+                public Part getPart() {
+                    return part;
+                }
+
                 @Override
                 public InputStream getInputStream() throws IOException {
-                    return contentSupplier.get().getInputStream();
+                    return part.getBlob().getInputStream();
                 }
                 
                 @Override
                 public void writeTo(OutputStream out) throws StreamCopyException {
-                    contentSupplier.get().writeTo(out);
+                    part.getBlob().writeTo(out);
                 }
                 
                 @Override
                 public long getSize() {
-                    return contentSupplier.get().getSize();
+                    return part.getBlob().getSize();
                 }
             };
         }
     };
 
     /**
-     * Create a {@link Blob} for the given MIME part.
+     * Create a {@link PartBlob} for the given MIME part.
      * 
      * @param part
      *            the MIME part
-     * @param contentSupplier
-     *            a supplier for the content of the part
      * @return the blob
      */
-    Blob createBlob(Part part, Supplier<Blob> contentSupplier);
+    PartBlob createBlob(Part part);
 }

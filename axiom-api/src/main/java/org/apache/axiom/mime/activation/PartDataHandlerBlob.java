@@ -22,41 +22,41 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.axiom.ext.activation.SizeAwareDataSource;
+import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.mime.Part;
+import org.apache.axiom.mime.PartBlob;
 
 /**
- * Default {@link DataSource} implementation for MIME parts.
+ * {@link PartBlob} implementation that wraps a {@link PartDataHandler}.
  */
-final class PartDataSource implements SizeAwareDataSource {
-    private final Part part;
+public final class PartDataHandlerBlob implements PartBlob {
+    private final PartDataHandler dataHandler;
 
-    PartDataSource(Part part) {
-        this.part = part;
+    PartDataHandlerBlob(PartDataHandler dataHandler) {
+        this.dataHandler = dataHandler;
+    }
+
+    public PartDataHandler getDataHandler() {
+        return dataHandler;
     }
 
     @Override
-    public String getContentType() {
-        return Util.getDataSourceContentType(part);
+    public Part getPart() {
+        return dataHandler.getPart();
     }
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return part.getInputStream(true);
+        return dataHandler.getPart().getBlob().getInputStream();
     }
 
     @Override
-    public String getName() {
-        return part.getContentID();
-    }
-
-    @Override
-    public OutputStream getOutputStream() throws IOException {
-        throw new UnsupportedOperationException();
+    public void writeTo(OutputStream out) throws StreamCopyException {
+        dataHandler.getPart().getBlob().writeTo(out);
     }
 
     @Override
     public long getSize() {
-        return part.getBlob().getSize();
+        return dataHandler.getPart().getBlob().getSize();
     }
 }

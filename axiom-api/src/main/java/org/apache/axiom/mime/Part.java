@@ -68,6 +68,13 @@ public interface Part {
     Blob getBlob();
 
     /**
+     * Get the {@link PartBlob} instance created by the configured {@link PartBlobFactory}.
+     * 
+     * @return the {@link PartBlob} instance
+     */
+    PartBlob getPartBlob();
+
+    /**
      * Get the content of this part as an {@link InputStream}.
      * 
      * @param preserve

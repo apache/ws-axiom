@@ -58,7 +58,7 @@ public final class MultipartBody implements Iterable<Part> {
         private InputStream inputStream;
         private ContentType contentType;
         private WritableBlobFactory<?> attachmentBlobFactory;
-        private BlobFactory blobFactory;
+        private PartBlobFactory partBlobFactory;
         private PartCreationListener partCreationListener;
         
         Builder() {}
@@ -87,8 +87,8 @@ public final class MultipartBody implements Iterable<Part> {
             return this;
         }
 
-        public Builder setBlobFactory(BlobFactory blobFactory) {
-            this.blobFactory = blobFactory;
+        public Builder setPartBlobFactory(PartBlobFactory partBlobFactory) {
+            this.partBlobFactory = partBlobFactory;
             return this;
         }
 
@@ -108,7 +108,7 @@ public final class MultipartBody implements Iterable<Part> {
                     inputStream,
                     contentType,
                     attachmentBlobFactory == null ? MemoryBlob.FACTORY : attachmentBlobFactory,
-                    blobFactory == null ? BlobFactory.DEFAULT : blobFactory,
+                    partBlobFactory == null ? PartBlobFactory.DEFAULT : partBlobFactory,
                     partCreationListener);
         }
     }
@@ -138,15 +138,15 @@ public final class MultipartBody implements Iterable<Part> {
     private int partCount;
 
     private final WritableBlobFactory<?> attachmentBlobFactory;
-    private final BlobFactory blobFactory;
+    private final PartBlobFactory partBlobFactory;
     private final PartCreationListener partCreationListener;
     
     MultipartBody(InputStream inStream, ContentType contentType,
             WritableBlobFactory<?> attachmentBlobFactory,
-            BlobFactory blobFactory,
+            PartBlobFactory partBlobFactory,
             PartCreationListener partCreationListener) {
         this.attachmentBlobFactory = attachmentBlobFactory;
-        this.blobFactory = blobFactory;
+        this.partBlobFactory = partBlobFactory;
         this.partCreationListener = partCreationListener;
         this.contentType = contentType;
 
@@ -187,8 +187,8 @@ public final class MultipartBody implements Iterable<Part> {
         return contentID;
     }
 
-    BlobFactory getBlobFactory() {
-        return blobFactory;
+    PartBlobFactory getPartBlobFactory() {
+        return partBlobFactory;
     }
 
     public ContentType getContentType() {

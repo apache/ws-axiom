@@ -221,7 +221,7 @@ public final class BuilderSpec {
                                     @Override
                                     public Blob getBlob(String contentID) {
                                         Part part = message.getPart(contentID);
-                                        return part == null ? null : part.getBlob();
+                                        return part == null ? null : part.getPartBlob();
                                     }
                                 })),
                 new Detachable() {

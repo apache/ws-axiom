@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import org.apache.axiom.mime.MultipartBody;
-import org.apache.axiom.mime.activation.DataHandlerBlobFactory;
+import org.apache.axiom.mime.activation.PartDataHandlerBlobFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
@@ -51,7 +51,7 @@ public class TestSerialize extends AxiomTestCase {
                 MultipartBody.builder()
                         .setInputStream(inStream)
                         .setContentType(testMessage.getContentType())
-                        .setBlobFactory(DataHandlerBlobFactory.INSTANCE)
+                        .setPartBlobFactory(PartDataHandlerBlobFactory.DEFAULT)
                         .build();
 
         OMOutputFormat oof = new OMOutputFormat();

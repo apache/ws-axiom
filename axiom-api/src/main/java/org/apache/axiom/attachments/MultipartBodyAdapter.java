@@ -25,14 +25,13 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
-import org.apache.axiom.mime.BlobFactory;
+import org.apache.axiom.mime.activation.PartDataHandler;
+import org.apache.axiom.mime.activation.PartDataHandlerBlobFactory;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.mime.MultipartBody.PartCreationListener;
@@ -77,10 +76,10 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
                 .setInputStream(inStream)
                 .setContentType(contentTypeString)
                 .setAttachmentBlobFactory(attachmentBlobFactory)
-                .setBlobFactory(new BlobFactory() {
+                .setPartBlobFactory(new PartDataHandlerBlobFactory() {
                         @Override
-                        public Blob createBlob(Part part, Supplier<Blob> contentSupplier) {
-                            return DataHandlerUtils.toBlob(new LegacyPartDataHandler(part, contentSupplier));
+                        protected PartDataHandler createDataHandler(Part part) {
+                            return new LegacyPartDataHandler(part);
                         }
                     })
                 .setPartCreationListener(this)
@@ -90,7 +89,7 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
         String rootPartContentID = rootPart.getContentID();
         if (rootPartContentID == null) {
             rootPartContentID = "firstPart_" + UIDGenerator.generateContentId();
-            map.put(rootPartContentID, DataHandlerUtils.toDataHandler(rootPart.getBlob()));
+            map.put(rootPartContentID, DataHandlerUtils.toDataHandler(rootPart.getPartBlob()));
         }
         this.rootPartContentID = rootPartContentID;
     }
@@ -99,7 +98,7 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
     public void partCreated(Part part) {
         String contentID = part.getContentID();
         if (contentID != null) {
-            map.put(contentID, DataHandlerUtils.toDataHandler(part.getBlob()));
+            map.put(contentID, DataHandlerUtils.toDataHandler(part.getPartBlob()));
         }
     }
 

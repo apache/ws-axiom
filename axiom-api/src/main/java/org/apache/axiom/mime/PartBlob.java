@@ -16,26 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.mime.activation;
-
-import java.util.function.Supplier;
+package org.apache.axiom.mime;
 
 import org.apache.axiom.blob.Blob;
-import org.apache.axiom.mime.BlobFactory;
-import org.apache.axiom.mime.Part;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 
 /**
- * {@link BlobFactory} implementation that creates {@link Blob} instances that wrap
- * {@link PartDataHandler} instances.
+ * A {@link Blob} that enables access to the {@link Part} whose content it represents.
  */
-public final class DataHandlerBlobFactory implements BlobFactory {
-    public static final DataHandlerBlobFactory INSTANCE = new DataHandlerBlobFactory();
-
-    private DataHandlerBlobFactory() {}
-
-    @Override
-    public Blob createBlob(Part part, Supplier<Blob> contentSupplier) {
-        return DataHandlerUtils.toBlob(new PartDataHandler(part, contentSupplier));
-    }
+public interface PartBlob extends Blob {
+    /**
+     * The the MIME part from which this blob was created.
+     * 
+     * @return the MIME part
+     */
+    Part getPart();
 }

@@ -20,7 +20,6 @@ package org.apache.axiom.attachments;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.function.Supplier;
 
 import javax.activation.DataSource;
 
@@ -30,8 +29,8 @@ import org.apache.axiom.mime.Part;
 import org.apache.axiom.mime.activation.PartDataHandler;
 
 final class LegacyPartDataHandler extends PartDataHandler implements DataHandlerExt {
-    LegacyPartDataHandler(Part part, Supplier<Blob> contentSupplier) {
-        super(part, contentSupplier);
+    LegacyPartDataHandler(Part part) {
+        super(part);
     }
 
     @Override

@@ -26,7 +26,7 @@ import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
 import org.apache.axiom.mime.MultipartBody;
-import org.apache.axiom.mime.activation.DataHandlerBlobFactory;
+import org.apache.axiom.mime.activation.PartDataHandlerBlobFactory;
 import org.apache.axiom.mime.activation.PartDataHandler;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -109,7 +109,8 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
                                             MultipartBody.builder()
                                                     .setInputStream(pipe1In)
                                                     .setContentType(contentType)
-                                                    .setBlobFactory(DataHandlerBlobFactory.INSTANCE)
+                                                    .setPartBlobFactory(
+                                                            PartDataHandlerBlobFactory.DEFAULT)
                                                     .build();
                                     SOAPEnvelope envelope =
                                             OMXMLBuilderFactory.createSOAPModelBuilder(
@@ -138,7 +139,7 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
                     MultipartBody.builder()
                             .setInputStream(pipe2In)
                             .setContentType(contentType)
-                            .setBlobFactory(DataHandlerBlobFactory.INSTANCE)
+                            .setPartBlobFactory(PartDataHandlerBlobFactory.DEFAULT)
                             .build();
             SOAPEnvelope envelope =
                     OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();

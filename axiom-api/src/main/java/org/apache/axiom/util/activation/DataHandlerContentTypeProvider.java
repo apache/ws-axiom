@@ -41,10 +41,11 @@ public final class DataHandlerContentTypeProvider implements ContentTypeProvider
 
     @Override
     public ContentType getContentType(Blob blob) {
-        if (!(blob instanceof DataHandlerBlob)) {
+        DataHandler dh = DataHandlerUtils.getDataHandler(blob);
+        if (dh == null) {
             return null;
         }
-        String contentType = ((DataHandlerBlob) blob).getDataHandler().getContentType();
+        String contentType = dh.getContentType();
         if (contentType == null) {
             return null;
         }

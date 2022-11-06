@@ -20,32 +20,32 @@ package org.apache.axiom.mime.activation;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.function.Supplier;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.Part;
+import org.apache.axiom.mime.PartBlob;
 
 /**
  * {@link DataHandler} implementation for MIME parts read from a stream.
  */
 public class PartDataHandler extends DataHandler {
     private final Part part;
-    private final Supplier<Blob> contentSupplier;
+    private final PartDataHandlerBlob blob;
     private DataSource dataSource;
 
-    protected PartDataHandler(Part part, Supplier<Blob> contentSupplier) {
+    protected PartDataHandler(Part part) {
         // We can't call PartImpl#getDataSource() here because it would fetch the content of the
         // part and therefore disable streaming. We can't pass null here either because Geronimo's
         // DataHandler implementation would throw a NullPointerException. Therefore we create the
         // default PartDataSource. When the DataSource is requested, we check if for there is an
         // implementation specific to the buffering strategy and return that instead of the default
         // implementation.
-        super(new PartDataSource(part, contentSupplier));
+        super(new PartDataSource(part));
         this.part = part;
-        this.contentSupplier = contentSupplier;
+        this.blob = new PartDataHandlerBlob(this);
     }
 
     /**
@@ -57,10 +57,19 @@ public class PartDataHandler extends DataHandler {
         return part;
     }
 
+    /**
+     * Get the {@link PartBlob} that wraps this instance.
+     * 
+     * @return the blob wrapper
+     */
+    public final PartBlob getBlob() {
+        return blob;
+    }
+
     @Override
     public final DataSource getDataSource() {
         if (dataSource == null) {
-            dataSource = createDataSource(contentSupplier.get(), Util.getDataSourceContentType(part));
+            dataSource = createDataSource(part.getBlob(), Util.getDataSourceContentType(part));
             if (dataSource == null) {
                 // We get here if there is no DataSource implementation specific to the buffering
                 // strategy being used. In this case we use super.getDataSource() to get the
@@ -92,6 +101,6 @@ public class PartDataHandler extends DataHandler {
         // The PartContent may have an implementation of writeTo that is more efficient than the default
         // DataHandler#writeTo method (which requests an input stream and then copies it to the output
         // stream).
-        contentSupplier.get().writeTo(os);
+        part.getBlob().writeTo(os);
     }
 }

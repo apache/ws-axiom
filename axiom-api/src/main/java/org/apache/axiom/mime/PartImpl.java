@@ -85,7 +85,7 @@ final class PartImpl implements Part {
      */
     private WritableBlob content;
     
-    private Blob blob;
+    private PartBlob blob;
     
     private PartInputStream partInputStream;
     
@@ -138,9 +138,9 @@ final class PartImpl implements Part {
     }
     
     @Override
-    public Blob getBlob() {
+    public PartBlob getPartBlob() {
         if (blob == null) {
-            blob = message.getBlobFactory().createBlob(this, this::getRawBlob);
+            blob = message.getPartBlobFactory().createBlob(this);
         }
         return blob;
     }
@@ -157,7 +157,8 @@ final class PartImpl implements Part {
         }
     }
     
-    private Blob getRawBlob() {
+    @Override
+    public Blob getBlob() {
         WritableBlob blob = getContent();
         if (blob instanceof OverflowableBlob) {
             WritableBlob overflowBlob = ((OverflowableBlob)blob).getOverflowBlob();
