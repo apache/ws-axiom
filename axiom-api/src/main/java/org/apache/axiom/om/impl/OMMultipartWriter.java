@@ -30,12 +30,14 @@ import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.MediaType;
 import org.apache.axiom.mime.MultipartBodyWriter;
+import org.apache.axiom.mime.PartBlob;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.format.xop.CombinedContentTransferEncodingPolicy;
 import org.apache.axiom.om.format.xop.ContentTransferEncodingPolicy;
 import org.apache.axiom.om.format.xop.ContentTypeProvider;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.util.activation.DataHandlerContentTypeProvider;
+import org.apache.axiom.util.io.IOUtils;
 
 /**
  * Writes a MIME multipart package as used by XOP/MTOM and SOAP with Attachments. This class wraps a
@@ -180,6 +182,29 @@ public class OMMultipartWriter {
      */
     public void writePart(Blob blob, String contentID) throws IOException {
         writePart(blob, contentID, null);
+    }
+
+    /**
+     * Write a MIME part. This is similar to {@link #writePart(Blob, String)}, but optionally
+     * consumes the blob (which is only supported for {@link PartBlob} instances).
+     * 
+     * @param blob
+     *            the content of the MIME part to write
+     * @param contentID
+     *            the content ID of the MIME part
+     * @param preserve
+     *            whether the content of the original MIME part should be preserved
+     * @throws IOException
+     *             if an I/O error occurs when writing the part to the underlying stream
+     */
+    public void writePart(PartBlob blob, String contentID, boolean preserve) throws IOException {
+        ContentType contentType = contentTypeProvider.getContentType(blob);
+        OutputStream part = writer.writePart(contentType, getContentTransferEncoding(blob, contentType), contentID, null);
+        IOUtils.copy(
+                blob.getPart().getInputStream(preserve),
+                part,
+                -1);
+        part.close();
     }
 
     /**

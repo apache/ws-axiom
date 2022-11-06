@@ -21,10 +21,8 @@ package org.apache.axiom.om.impl.mixin;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.text.ParseException;
 import java.util.Iterator;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -32,6 +30,7 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreChildNode;
@@ -49,8 +48,7 @@ import org.apache.axiom.core.stream.sax.input.XmlHandlerContentHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.stax.pull.output.StAXPivot;
 import org.apache.axiom.core.stream.stax.push.input.XMLStreamWriterNamespaceContextProvider;
-import org.apache.axiom.mime.ContentType;
-import org.apache.axiom.mime.activation.PartDataHandler;
+import org.apache.axiom.mime.PartBlob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -78,8 +76,6 @@ import org.apache.axiom.om.impl.stream.xop.ContentIDGeneratorImpl;
 import org.apache.axiom.om.impl.stream.xop.OptimizationPolicy;
 import org.apache.axiom.om.impl.stream.xop.OptimizationPolicyImpl;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
-import org.apache.axiom.util.activation.DataHandlerUtils;
-import org.apache.axiom.util.io.IOUtils;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.xml.sax.InputSource;
 
@@ -386,23 +382,11 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
         if (encoder != null) {
             rootPartOutputStream.close();
             for (String contentID : encoder.getContentIDs()) {
-                DataHandler dataHandler =
-                        DataHandlerUtils.toDataHandler(encoder.getBlob(contentID));
-                if (cache || !(dataHandler instanceof PartDataHandler)) {
-                    multipartWriter.writePart(DataHandlerUtils.toBlob(dataHandler), contentID);
+                Blob blob = encoder.getBlob(contentID);
+                if (cache || !(blob instanceof PartBlob)) {
+                    multipartWriter.writePart(blob, contentID);
                 } else {
-                    ContentType contentType;
-                    try {
-                        contentType = new ContentType(dataHandler.getContentType());
-                    } catch (ParseException ex) {
-                        throw new OMException(ex);
-                    }
-                    OutputStream part = multipartWriter.writePart(contentType, contentID);
-                    IOUtils.copy(
-                            ((PartDataHandler) dataHandler).getPart().getInputStream(false),
-                            part,
-                            -1);
-                    part.close();
+                    multipartWriter.writePart((PartBlob) blob, contentID, false);
                 }
             }
             multipartWriter.complete();
