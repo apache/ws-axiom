@@ -24,7 +24,9 @@ import java.net.URLDecoder;
 import javax.activation.DataHandler;
 import javax.xml.bind.attachment.AttachmentUnmarshaller;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMAttachmentAccessor;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
     private final OMAttachmentAccessor attachmentAccessor;
@@ -63,11 +65,11 @@ final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
 
     @Override
     public DataHandler getAttachmentAsDataHandler(String cid) {
-        DataHandler dh = attachmentAccessor.getDataHandler(getContentIDFromURL(cid));
-        if (dh == null) {
+        Blob blob = attachmentAccessor.getBlob(getContentIDFromURL(cid));
+        if (blob == null) {
             throw new IllegalArgumentException("No MIME part found for content ID '" + cid + "'");
         } else {
-            return dh;
+            return DataHandlerUtils.toDataHandler(blob);
         }
     }
 

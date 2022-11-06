@@ -22,10 +22,10 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.io.InputStream;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -62,8 +62,8 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
         XOPEncoded<XMLStreamReader> xopEncodedStream = root.getXOPEncodedStreamReader(cache);
         XMLStreamReader xmlStreamReader = xopEncodedStream.getRootPart();
 
-        DataHandler dh = null;
-        while (xmlStreamReader.hasNext() && dh == null) {
+        Blob blob = null;
+        while (xmlStreamReader.hasNext() && blob == null) {
             xmlStreamReader.next();
             if (xmlStreamReader.isStartElement()) {
                 QName qName = xmlStreamReader.getName();
@@ -71,15 +71,15 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
                     String hrefValue = xmlStreamReader.getAttributeValue("", "href");
                     assertThat(hrefValue).startsWith("cid:");
                     if (hrefValue != null) {
-                        dh =
+                        blob =
                                 xopEncodedStream
                                         .getAttachmentAccessor()
-                                        .getDataHandler(hrefValue.substring(4));
+                                        .getBlob(hrefValue.substring(4));
                     }
                 }
             }
         }
-        assertTrue(dh != null);
+        assertTrue(blob != null);
 
         // Make sure next event is an an XOP_Include END element
         xmlStreamReader.next();

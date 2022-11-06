@@ -386,7 +386,8 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
         if (encoder != null) {
             rootPartOutputStream.close();
             for (String contentID : encoder.getContentIDs()) {
-                DataHandler dataHandler = encoder.getDataHandler(contentID);
+                DataHandler dataHandler =
+                        DataHandlerUtils.toDataHandler(encoder.getBlob(contentID));
                 if (cache || !(dataHandler instanceof PartDataHandler)) {
                     multipartWriter.writePart(DataHandlerUtils.toBlob(dataHandler), contentID);
                 } else {

@@ -22,6 +22,7 @@ package org.apache.axiom.attachments;
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.WritableBlob;
@@ -32,6 +33,7 @@ import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -221,7 +223,6 @@ public class Attachments implements OMAttachmentAccessor {
      * @return the {@link DataHandler} of the MIME part referred by the content ID or
      *         <code>null</code> if the MIME part referred by the content ID does not exist
      */
-    @Override
     public DataHandler getDataHandler(String contentID) {
         return delegate.getDataHandler(contentID);
     }
@@ -408,5 +409,11 @@ public class Attachments implements OMAttachmentAccessor {
 
     public MultipartBody getMultipartBody() {
         return delegate.getMultipartBody();
+    }
+
+    @Override
+    public Blob getBlob(String contentID) {
+        DataHandler dh = getDataHandler(contentID);
+        return dh == null ? null : DataHandlerUtils.toBlob(dh);
     }
 }

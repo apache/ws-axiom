@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
@@ -33,6 +32,7 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.FilteredXmlInput;
 import org.apache.axiom.core.stream.NamespaceRepairingFilter;
 import org.apache.axiom.core.stream.XmlInput;
@@ -48,7 +48,6 @@ import org.apache.axiom.om.impl.stream.stax.pull.AxiomXMLStreamReaderHelperFacto
 import org.apache.axiom.om.impl.stream.xop.XOPDecodingFilter;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.stax.XMLFragmentStreamReader;
 import org.apache.axiom.util.xml.stream.XMLEventUtils;
 import org.w3c.dom.Node;
@@ -220,11 +219,9 @@ public final class BuilderSpec {
                         new XOPDecodingFilter(
                                 new OMAttachmentAccessor() {
                                     @Override
-                                    public DataHandler getDataHandler(String contentID) {
+                                    public Blob getBlob(String contentID) {
                                         Part part = message.getPart(contentID);
-                                        return part == null
-                                                ? null
-                                                : DataHandlerUtils.toDataHandler(part.getBlob());
+                                        return part == null ? null : part.getBlob();
                                     }
                                 })),
                 new Detachable() {

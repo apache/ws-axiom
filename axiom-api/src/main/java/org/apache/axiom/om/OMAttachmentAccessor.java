@@ -18,20 +18,20 @@
  */
 package org.apache.axiom.om;
 
-import javax.activation.DataHandler;
+import org.apache.axiom.blob.Blob;
 
 /**
  * Interface to look up MIME parts.
  */
 public interface OMAttachmentAccessor {
     /**
-     * Get the {@link DataHandler} for the MIME part identified by a given content ID.
+     * Get the content of the MIME part identified by a given content ID.
      * 
      * @param contentID
      *            the raw content ID (without the surrounding angle brackets and {@code cid:}
      *            prefix) of the MIME part
-     * @return the {@link DataHandler} of the MIME part referred by the content ID or
+     * @return the content of the MIME part referred by the content ID or
      *         <code>null</code> if the MIME part referred by the content ID does not exist
      */
-    public DataHandler getDataHandler(String contentID);
+    public Blob getBlob(String contentID);
 }

@@ -20,7 +20,9 @@ package org.apache.axiom.ts.om.text;
 
 import javax.activation.DataHandler;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMAttachmentAccessor;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 final class DummyAttachmentAccessor implements OMAttachmentAccessor {
     private final String contentID;
@@ -37,12 +39,12 @@ final class DummyAttachmentAccessor implements OMAttachmentAccessor {
     }
 
     @Override
-    public DataHandler getDataHandler(String contentID) {
+    public Blob getBlob(String contentID) {
         if (!contentID.equals(this.contentID)) {
             return null;
         } else {
             loaded = true;
-            return dataHandler;
+            return DataHandlerUtils.toBlob(dataHandler);
         }
     }
 }

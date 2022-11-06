@@ -81,15 +81,15 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
     }
 
     @Override
-    public DataHandler getDataHandler(String contentID) {
+    public Blob getBlob(String contentID) {
         Object blobObject = blobObjects.get(contentID);
         if (blobObject == null) {
             return null;
         } else if (blobObject instanceof Blob) {
-            return DataHandlerUtils.toDataHandler((Blob) blobObject);
+            return (Blob) blobObject;
         } else {
             try {
-                return DataHandlerUtils.toDataHandler(((BlobProvider) blobObject).getBlob());
+                return ((BlobProvider) blobObject).getBlob();
             } catch (IOException ex) {
                 throw new OMException(ex);
             }
