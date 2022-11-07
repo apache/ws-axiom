@@ -49,13 +49,6 @@ final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
         }
     }
 
-    private enum State {
-        AFTER_START_ELEMENT,
-        CONTENT_SEEN,
-        IN_XOP_INCLUDE,
-        AFTER_XOP_INCLUDE
-    }
-
     private final OMAttachmentAccessor attachmentAccessor;
 
     XOPDecodingFilterHandler(XmlHandler parent, OMAttachmentAccessor attachmentAccessor) {
