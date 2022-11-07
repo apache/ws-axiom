@@ -46,6 +46,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
@@ -54,14 +55,15 @@ import org.apache.axiom.mime.MIMEException;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
-import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.activation.TextDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.soap.MTOMSample;
 import org.apache.axiom.ts.soap.SwASample;
 import org.apache.axiom.ts.xml.MIMESample;
 import org.apache.axiom.util.UIDGenerator;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.NullOutputStream;
 
@@ -573,9 +575,9 @@ public class AttachmentsTest extends AbstractTestCase {
         mp.addBodyPart(bp1);
         
         // Create an attachment that is larger than the maximum heap
-        DataSource dataSource = new RandomDataSource((int)Math.min(Runtime.getRuntime().maxMemory(), Integer.MAX_VALUE));
+        Blob blob = new RandomBlob((int)Math.min(Runtime.getRuntime().maxMemory(), Integer.MAX_VALUE));
         MimeBodyPart bp2 = new MimeBodyPart();
-        bp2.setDataHandler(new DataHandler(dataSource));
+        bp2.setDataHandler(DataHandlerUtils.toDataHandler(blob));
         bp2.addHeader("Content-Transfer-Encoding", "binary");
         bp2.addHeader("Content-ID", "part2@apache.org");
         mp.addBodyPart(bp2);
@@ -607,7 +609,7 @@ public class AttachmentsTest extends AbstractTestCase {
             // streamed, then this will result in an OOM error.
             Attachments attachments = new Attachments(pipeIn, message.getContentType());
             DataHandlerExt dh = (DataHandlerExt)attachments.getDataHandler("part2@apache.org");
-            IOTestUtils.compareStreams(dataSource.getInputStream(), dh.readOnce());
+            IOTestUtils.compareStreams(blob.getInputStream(), dh.readOnce());
         } finally {
             pipeIn.close();
         }

@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -31,7 +30,7 @@ import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.ext.stax.BlobWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.activation.DataHandlerUtils;
@@ -43,12 +42,12 @@ import org.junit.Assert;
  * backed by a {@link BlobProvider}.
  */
 public class WriteBlobProviderScenario implements PushOMDataSourceScenario {
-    private final DataHandler dh = new DataHandler(new RandomDataSource(1024));
+    private final Blob blob = new RandomBlob(1024);
     private final BlobProvider blobProvider =
             new BlobProvider() {
                 @Override
                 public Blob getBlob() throws IOException {
-                    return DataHandlerUtils.toBlob(dh);
+                    return blob;
                 }
             };
 
@@ -78,11 +77,11 @@ public class WriteBlobProviderScenario implements PushOMDataSourceScenario {
         OMText child = (OMText) element.getFirstOMChild();
         if (dataHandlersPreserved) {
             Assert.assertTrue(child.isBinary());
-            Assert.assertSame(dh, DataHandlerUtils.toDataHandler(child.getBlob()));
+            Assert.assertSame(blob, child.getBlob());
         } else {
             child.setBinary(true);
             IOTestUtils.compareStreams(
-                    dh.getInputStream(),
+                    blob.getInputStream(),
                     DataHandlerUtils.toDataHandler(child.getBlob()).getInputStream());
         }
     }

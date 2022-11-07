@@ -20,9 +20,6 @@ package org.apache.axiom.ts.om.builder;
 
 import java.io.OutputStream;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
@@ -36,9 +33,8 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.RandomUtils;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.testutils.io.IOTestUtils;
 
 /**
@@ -67,9 +63,8 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
         // Programmatically create the message
         OMElement orgRoot = factory.createOMElement("root", null);
         OMElement orgChild1 = factory.createOMElement("child1", null, orgRoot);
-        DataSource ds = new RandomDataSource(54321, 4096);
-        orgChild1.addChild(
-                factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds)), true));
+        Blob orgBlob = new RandomBlob(54321, 4096);
+        orgChild1.addChild(factory.createOMText(orgBlob, true));
         // Create a child with a large text content and insert it after the binary node.
         // If we don't do this, then the root part may be buffered entirely by the parser,
         // and the test would not be effective.
@@ -100,7 +95,7 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
         assertTrue(text.isBinary());
         // Access the Blob
         Blob blob = text.getBlob();
-        IOTestUtils.compareStreams(ds.getInputStream(), blob.getInputStream());
+        IOTestUtils.compareStreams(orgBlob.getInputStream(), blob.getInputStream());
         OMElement child2 = (OMElement) child1.getNextOMSibling();
         assertFalse(child2.isComplete());
         assertEquals(s, child2.getText());

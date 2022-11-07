@@ -28,14 +28,13 @@ import java.io.SequenceInputStream;
 import java.nio.charset.Charset;
 import java.util.Vector;
 
-import javax.activation.DataSource;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -48,10 +47,10 @@ public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
     protected void runTest() throws Throwable {
         Charset charset = Charset.forName("ascii");
         OMFactory factory = metaFactory.getOMFactory();
-        DataSource ds = new RandomDataSource(654321, 64, 128, 20000000);
+        Blob blob = new RandomBlob(654321, 64, 128, 20000000);
         Vector<InputStream> v = new Vector<InputStream>();
         v.add(new ByteArrayInputStream("<root><a>".getBytes(charset)));
-        v.add(ds.getInputStream());
+        v.add(blob.getInputStream());
         v.add(new ByteArrayInputStream("</a><b/></root>".getBytes(charset)));
         OMElement root =
                 OMXMLBuilderFactory.createOMBuilder(
@@ -63,7 +62,7 @@ public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
         OMElement child = (OMElement) root.getFirstOMChild();
         Reader in = child.getTextAsStream(false);
         IOTestUtils.compareStreams(
-                new InputStreamReader(ds.getInputStream(), charset), "expected", in, "actual");
+                new InputStreamReader(blob.getInputStream(), charset), "expected", in, "actual");
         in.close();
         // No try to access subsequent nodes
         child = (OMElement) child.getNextOMSibling();

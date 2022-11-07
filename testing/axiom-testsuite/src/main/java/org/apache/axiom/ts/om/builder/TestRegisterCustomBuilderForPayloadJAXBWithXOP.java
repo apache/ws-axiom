@@ -30,7 +30,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public class TestRegisterCustomBuilderForPayloadJAXBWithXOP
         extends RegisterCustomBuilderForPayloadJAXBTestCase {
@@ -40,7 +41,7 @@ public class TestRegisterCustomBuilderForPayloadJAXBWithXOP
 
     @Override
     protected void runTest() throws Throwable {
-        DataHandler dh = new DataHandler(new RandomDataSource(10000));
+        DataHandler dh = DataHandlerUtils.toDataHandler(new RandomBlob(10000));
         MemoryBlob blob = Blobs.createMemoryBlob();
         OutputStream out = blob.getOutputStream();
         OMOutputFormat format = new OMOutputFormat();

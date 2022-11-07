@@ -27,7 +27,8 @@ import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public class TestRegisterCustomBuilderForPayloadJAXBPlain
         extends RegisterCustomBuilderForPayloadJAXBTestCase {
@@ -37,7 +38,7 @@ public class TestRegisterCustomBuilderForPayloadJAXBPlain
 
     @Override
     protected void runTest() throws Throwable {
-        DataHandler dh = new DataHandler(new RandomDataSource(10000));
+        DataHandler dh = DataHandlerUtils.toDataHandler(new RandomBlob(10000));
         MemoryBlob blob = Blobs.createMemoryBlob();
         OutputStream out = blob.getOutputStream();
         createTestDocument(dh).serialize(out);

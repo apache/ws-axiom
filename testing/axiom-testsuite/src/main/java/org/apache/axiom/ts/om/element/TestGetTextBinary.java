@@ -20,23 +20,20 @@ package org.apache.axiom.ts.om.element;
 
 import java.io.ByteArrayInputStream;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.codec.binary.Base64;
 
 /**
  * Tests that {@link OMElement#getText()} returns the expected value (i.e. base64 encoded data) for
- * an element that has an {@link OMText} child constructed from a {@link DataHandler}.
+ * an element that has an {@link OMText} child constructed from a {@link Blob}.
  */
 public class TestGetTextBinary extends AxiomTestCase {
     private final boolean compact;
@@ -50,9 +47,9 @@ public class TestGetTextBinary extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        DataSource ds = new RandomDataSource(99999, 1000);
+        Blob blob = new RandomBlob(99999, 1000);
         OMElement element = factory.createOMElement("elem", null);
-        element.addChild(factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds)), false));
+        element.addChild(factory.createOMText(blob, false));
         if (compact) {
             // Only the builder can create a compact element containing a DataHandler
             element =
@@ -61,7 +58,7 @@ public class TestGetTextBinary extends AxiomTestCase {
             element.build();
         }
         IOTestUtils.compareStreams(
-                ds.getInputStream(),
+                blob.getInputStream(),
                 new ByteArrayInputStream(Base64.decodeBase64(element.getText())));
     }
 }

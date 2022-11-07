@@ -22,15 +22,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.io.ByteArrayInputStream;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Text;
 
@@ -42,12 +39,11 @@ public class TestGetNodeValueBinary extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        DataSource ds = new RandomDataSource(666L, 1000);
-        Text text =
-                (Text) factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds)), false);
+        Blob blob = new RandomBlob(666L, 1000);
+        Text text = (Text) factory.createOMText(blob, false);
         String nodeValue = text.getNodeValue();
         assertThat(nodeValue).isNotNull();
         IOTestUtils.compareStreams(
-                ds.getInputStream(), new ByteArrayInputStream(Base64.decodeBase64(nodeValue)));
+                blob.getInputStream(), new ByteArrayInputStream(Base64.decodeBase64(nodeValue)));
     }
 }

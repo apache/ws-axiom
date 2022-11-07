@@ -16,67 +16,69 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.testutils.activation;
+package org.apache.axiom.testutils.blob;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
-import javax.activation.DataSource;
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.ext.io.StreamCopyException;
 
-public class RandomDataSource implements DataSource {
+public class RandomBlob implements Blob {
     private final long seed;
     private final int rangeStart;
     private final int rangeEnd;
     private final long length;
 
-    public RandomDataSource(long seed, int rangeStart, int rangeEnd, long length) {
+    public RandomBlob(long seed, int rangeStart, int rangeEnd, long length) {
         this.seed = seed;
         this.rangeStart = rangeStart;
         this.rangeEnd = rangeEnd;
         this.length = length;
     }
-    
-    public RandomDataSource(long seed, long length) {
+
+    public RandomBlob(long seed, long length) {
         this(seed, 0, 256, length);
     }
-    
-    public RandomDataSource(long length) {
+
+    public RandomBlob(long length) {
         this(System.currentTimeMillis(), length);
     }
 
     @Override
-    public String getName() {
-        return null;
-    }
-    
-    @Override
-    public String getContentType() {
-        return "application/octet-stream";
-    }
-    
-    @Override
     public InputStream getInputStream() throws IOException {
-        final Random random = new Random(seed);
+        Random random = new Random(seed);
         return new InputStream() {
             private long position;
-            
+
             @Override
             public int read() throws IOException {
                 if (position == length) {
                     return -1;
                 } else {
                     position++;
-                    return random.nextInt(rangeEnd-rangeStart) + rangeStart;
+                    return random.nextInt(rangeEnd - rangeStart) + rangeStart;
                 }
             }
         };
     }
-    
+
     @Override
-    public OutputStream getOutputStream() throws IOException {
-        throw new UnsupportedOperationException();
+    public void writeTo(OutputStream out) throws StreamCopyException {
+        Random random = new Random(seed);
+        for (long i = 0; i < length; i++) {
+            try {
+                out.write(random.nextInt(rangeEnd - rangeStart) + rangeStart);
+            } catch (IOException ex) {
+                throw new StreamCopyException(StreamCopyException.WRITE, ex);
+            }
+        }
+    }
+
+    @Override
+    public long getSize() {
+        return length;
     }
 }

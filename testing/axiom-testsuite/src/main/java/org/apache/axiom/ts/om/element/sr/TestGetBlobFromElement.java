@@ -20,7 +20,6 @@ package org.apache.axiom.ts.om.element.sr;
 
 import java.io.StringReader;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
@@ -29,10 +28,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 /**
@@ -51,11 +49,10 @@ public class TestGetBlobFromElement extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        RandomDataSource orgDS = new RandomDataSource(64 * 1024);
+        Blob orgBlob = new RandomBlob(64 * 1024);
         OMElement orgRoot = factory.createOMElement(new QName("root"));
         OMElement orgChild = factory.createOMElement(new QName("child"), orgRoot);
-        orgChild.addChild(
-                factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(orgDS)), false));
+        orgChild.addChild(factory.createOMText(orgBlob, false));
         OMElement root =
                 OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(orgRoot.toString()))
                         .getDocumentElement();
@@ -63,6 +60,6 @@ public class TestGetBlobFromElement extends AxiomTestCase {
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         Blob blob = XMLStreamReaderUtils.getBlobFromElement(reader);
-        IOTestUtils.compareStreams(orgDS.getInputStream(), blob.getInputStream());
+        IOTestUtils.compareStreams(orgBlob.getInputStream(), blob.getInputStream());
     }
 }

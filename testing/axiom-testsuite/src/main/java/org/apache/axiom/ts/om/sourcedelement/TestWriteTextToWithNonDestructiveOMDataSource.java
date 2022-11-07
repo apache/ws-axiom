@@ -30,9 +30,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.activation.WrappedTextNodeOMDataSourceFromDataSource;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.CharacterStreamComparator;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.activation.BlobDataSource;
 
 public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase {
     public TestWriteTextToWithNonDestructiveOMDataSource(OMMetaFactory metaFactory) {
@@ -42,7 +43,9 @@ public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        DataSource ds = new RandomDataSource(665544, 32, 128, 20000000);
+        DataSource ds =
+                new BlobDataSource(
+                        new RandomBlob(665544, 32, 128, 20000000), "application/octet-stream");
         QName qname = new QName("a");
         OMSourcedElement element =
                 factory.createOMElement(

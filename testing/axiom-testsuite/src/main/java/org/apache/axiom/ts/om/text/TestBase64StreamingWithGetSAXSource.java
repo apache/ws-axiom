@@ -22,19 +22,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.xml.transform.sax.SAXSource;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.ByteStreamComparator;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.base64.Base64DecodingOutputStreamWriter;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -82,15 +80,15 @@ public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement elem = factory.createOMElement("test", null);
-        // Create a data source that would eat up all memory when loaded. If the test
+        // Create a blob that would eat up all memory when loaded. If the test
         // doesn't fail with an OutOfMemoryError, we know that the OMText implementation
         // supports streaming.
-        DataSource ds = new RandomDataSource(654321L, Runtime.getRuntime().maxMemory());
-        OMText text = factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds)), false);
+        Blob blob = new RandomBlob(654321L, Runtime.getRuntime().maxMemory());
+        OMText text = factory.createOMText(blob, false);
         elem.addChild(text);
         SAXSource saxSource = elem.getSAXSource(true);
         XMLReader xmlReader = saxSource.getXMLReader();
-        xmlReader.setContentHandler(new Base64Comparator(ds.getInputStream()));
+        xmlReader.setContentHandler(new Base64Comparator(blob.getInputStream()));
         xmlReader.parse(saxSource.getInputSource());
     }
 }

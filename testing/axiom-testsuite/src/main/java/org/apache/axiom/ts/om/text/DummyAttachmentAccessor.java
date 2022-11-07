@@ -18,20 +18,17 @@
  */
 package org.apache.axiom.ts.om.text;
 
-import javax.activation.DataHandler;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMAttachmentAccessor;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 
 final class DummyAttachmentAccessor implements OMAttachmentAccessor {
     private final String contentID;
-    private final DataHandler dataHandler;
+    private final Blob blob;
     private boolean loaded;
 
-    DummyAttachmentAccessor(String contentID, DataHandler dataHandler) {
+    DummyAttachmentAccessor(String contentID, Blob blob) {
         this.contentID = contentID;
-        this.dataHandler = dataHandler;
+        this.blob = blob;
     }
 
     boolean isLoaded() {
@@ -44,7 +41,7 @@ final class DummyAttachmentAccessor implements OMAttachmentAccessor {
             return null;
         } else {
             loaded = true;
-            return DataHandlerUtils.toBlob(dataHandler);
+            return blob;
         }
     }
 }

@@ -20,17 +20,16 @@ package org.apache.axiom.ts.om.text;
 
 import java.io.StringReader;
 
-import javax.activation.DataHandler;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public class TestCloneBinary extends AxiomTestCase {
     private boolean fetch;
@@ -43,12 +42,12 @@ public class TestCloneBinary extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        DataHandler dh = new DataHandler(new RandomDataSource(600613L, 4096));
+        Blob blob = new RandomBlob(600613L, 4096);
         StringReader rootPart =
                 new StringReader(
                         "<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>");
         DummyAttachmentAccessor attachmentAccessor =
-                new DummyAttachmentAccessor("123456@example.org", dh);
+                new DummyAttachmentAccessor("123456@example.org", blob);
         OMElement root =
                 OMXMLBuilderFactory.createOMBuilder(
                                 metaFactory.getOMFactory(),
@@ -61,6 +60,6 @@ public class TestCloneBinary extends AxiomTestCase {
         OMText clone = (OMText) text.clone(options);
         assertTrue(clone.isBinary());
         assertEquals(fetch, attachmentAccessor.isLoaded());
-        assertSame(dh, DataHandlerUtils.toDataHandler(clone.getBlob()));
+        assertSame(blob, clone.getBlob());
     }
 }

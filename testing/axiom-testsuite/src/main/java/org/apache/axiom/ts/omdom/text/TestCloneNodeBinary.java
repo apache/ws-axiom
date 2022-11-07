@@ -18,14 +18,11 @@
  */
 package org.apache.axiom.ts.omdom.text;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.w3c.dom.Text;
 
 public class TestCloneNodeBinary extends AxiomTestCase {
@@ -36,9 +33,8 @@ public class TestCloneNodeBinary extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        DataSource ds = new RandomDataSource(666L, 1000);
-        Text text =
-                (Text) factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds)), false);
+        Blob blob = new RandomBlob(666L, 1000);
+        Text text = (Text) factory.createOMText(blob, false);
         String base64 = text.getData();
         assertTrue(base64.length() > 0);
         assertEquals(base64, ((Text) text.cloneNode(true)).getData());

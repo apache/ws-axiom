@@ -21,21 +21,22 @@ package org.apache.axiom.net.protocol.registry;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.junit.Test;
 
 public class URLRegistryTest {
     @Test
     public void test() throws Exception {
-        RandomDataSource ds = new RandomDataSource(1000);
-        URLRegistration registration = URLRegistry.register(ds);
+        Blob blob = new RandomBlob(1000);
+        URLRegistration registration = URLRegistry.register(blob::getInputStream);
         try {
             // We must be able to connect to the URL after converting it to a String
             URL url = new URL(registration.getURL().toString());
             URLConnection connection = url.openConnection();
             IOTestUtils.compareStreams(
-                    connection.getInputStream(), "actual", ds.getInputStream(), "expected");
+                    connection.getInputStream(), "actual", blob.getInputStream(), "expected");
         } finally {
             registration.unregister();
         }
