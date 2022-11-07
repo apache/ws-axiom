@@ -16,53 +16,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.testutils.activation;
+package org.apache.axiom.net.protocol.registry;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.activation.DataSource;
 
 import org.apache.commons.io.input.ProxyInputStream;
 
-public final class InstrumentedDataSource implements DataSource {
-    private final DataSource parent;
+public final class InstrumentedDataProvider implements DataProvider {
+    private final DataProvider parent;
     private final AtomicInteger openStreamCount = new AtomicInteger();
 
-    public InstrumentedDataSource(DataSource parent) {
+    public InstrumentedDataProvider(DataProvider parent) {
         this.parent = parent;
     }
 
     @Override
-    public String getContentType() {
-        return parent.getContentType();
-    }
-
-    @Override
     public InputStream getInputStream() throws IOException {
-        InputStream in = new ProxyInputStream(parent.getInputStream()) {
-            @Override
-            public void close() throws IOException {
-                super.close();
-                openStreamCount.decrementAndGet();
-            }
-        };
+        InputStream in =
+                new ProxyInputStream(parent.getInputStream()) {
+                    @Override
+                    public void close() throws IOException {
+                        super.close();
+                        openStreamCount.decrementAndGet();
+                    }
+                };
         openStreamCount.incrementAndGet();
         return in;
     }
 
-    @Override
-    public String getName() {
-        return parent.getName();
-    }
-
-    @Override
-    public OutputStream getOutputStream() throws IOException {
-        throw new UnsupportedOperationException();
-    }
-    
     public int getOpenStreamCount() {
         return openStreamCount.get();
     }

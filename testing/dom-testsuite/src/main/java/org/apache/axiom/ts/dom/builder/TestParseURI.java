@@ -20,13 +20,12 @@ package org.apache.axiom.ts.dom.builder;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import javax.activation.URLDataSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.axiom.net.protocol.registry.InstrumentedDataProvider;
 import org.apache.axiom.net.protocol.registry.URLRegistration;
 import org.apache.axiom.net.protocol.registry.URLRegistry;
-import org.apache.axiom.testutils.activation.InstrumentedDataSource;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
@@ -41,14 +40,14 @@ public class TestParseURI extends DOMTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        InstrumentedDataSource ds = new InstrumentedDataSource(new URLDataSource(
-                XMLSample.SIMPLE.getUrl()));
-        URLRegistration registration = URLRegistry.register(ds);
+        InstrumentedDataProvider dataProvider = new InstrumentedDataProvider(
+                XMLSample.SIMPLE.getUrl()::openStream);
+        URLRegistration registration = URLRegistry.register(dataProvider);
         try {
             DocumentBuilder builder = dbf.newDocumentBuilder();
             Document document = builder.parse(registration.getURL().toExternalForm());
             assertThat(document.getDocumentElement().getLocalName()).isEqualTo("root");
-            assertThat(ds.getOpenStreamCount()).isEqualTo(0);
+            assertThat(dataProvider.getOpenStreamCount()).isEqualTo(0);
         } finally {
             registration.unregister();
         }

@@ -20,15 +20,14 @@ package org.apache.axiom.ts.om.builder;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import javax.activation.URLDataSource;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.axiom.net.protocol.registry.InstrumentedDataProvider;
 import org.apache.axiom.net.protocol.registry.URLRegistration;
 import org.apache.axiom.net.protocol.registry.URLRegistry;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.activation.InstrumentedDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
@@ -39,9 +38,9 @@ public class TestCloseWithSystemId extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        InstrumentedDataSource ds =
-                new InstrumentedDataSource(new URLDataSource(XMLSample.SIMPLE.getUrl()));
-        URLRegistration registration = URLRegistry.register(ds);
+        InstrumentedDataProvider dataProvider =
+                new InstrumentedDataProvider(XMLSample.SIMPLE.getUrl()::openStream);
+        URLRegistration registration = URLRegistry.register(dataProvider);
         try {
             OMXMLParserWrapper builder =
                     OMXMLBuilderFactory.createOMBuilder(
@@ -51,7 +50,7 @@ public class TestCloseWithSystemId extends AxiomTestCase {
             builder.close();
             // Since the caller doesn't have control over the stream, the builder is responsible
             // for closing it.
-            assertThat(ds.getOpenStreamCount()).isEqualTo(0);
+            assertThat(dataProvider.getOpenStreamCount()).isEqualTo(0);
         } finally {
             registration.unregister();
         }

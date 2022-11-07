@@ -25,8 +25,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 
-import javax.activation.DataSource;
-
 public final class URLRegistry {
     private static boolean handlerRegistered;
     private static final Map<String, DataProvider> dataProviders = new HashMap<>();
@@ -68,10 +66,6 @@ public final class URLRegistry {
                 }
             }
         };
-    }
-
-    public static URLRegistration register(DataSource dataSource) {
-        return register(dataSource::getInputStream);
     }
 
     static synchronized DataProvider lookup(String id) {
