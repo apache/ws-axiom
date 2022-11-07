@@ -16,27 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.testutils.net.protocol.mem;
+package org.apache.axiom.net.protocol.registry;
 
 import java.net.URL;
 import java.net.URLConnection;
 
-import junit.framework.TestCase;
-
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.testutils.net.protocol.mem.DataSourceRegistration;
-import org.apache.axiom.testutils.net.protocol.mem.DataSourceRegistry;
+import org.junit.Test;
 
-public class DataSourceRegistryTest extends TestCase {
+public class URLRegistryTest {
+    @Test
     public void test() throws Exception {
         RandomDataSource ds = new RandomDataSource(1000);
-        DataSourceRegistration registration = DataSourceRegistry.registerDataSource(ds);
+        URLRegistration registration = URLRegistry.register(ds);
         try {
             // We must be able to connect to the URL after converting it to a String
             URL url = new URL(registration.getURL().toString());
             URLConnection connection = url.openConnection();
-            IOTestUtils.compareStreams(connection.getInputStream(), "actual", ds.getInputStream(), "expected");
+            IOTestUtils.compareStreams(
+                    connection.getInputStream(), "actual", ds.getInputStream(), "expected");
         } finally {
             registration.unregister();
         }

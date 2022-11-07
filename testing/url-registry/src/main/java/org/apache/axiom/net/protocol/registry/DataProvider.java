@@ -16,29 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.testutils.net.protocol.mem;
+package org.apache.axiom.net.protocol.registry;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 
-import javax.activation.DataSource;
-
-final class DataSourceURLConnection extends URLConnection {
-    private final DataSource dataSource;
-    
-    DataSourceURLConnection(URL url, DataSource dataSource) {
-        super(url);
-        this.dataSource = dataSource;
-    }
-
-    @Override
-    public void connect() throws IOException {
-    }
-
-    @Override
-    public InputStream getInputStream() throws IOException {
-        return dataSource.getInputStream();
-    }
+public interface DataProvider {
+    InputStream getInputStream() throws IOException;
 }

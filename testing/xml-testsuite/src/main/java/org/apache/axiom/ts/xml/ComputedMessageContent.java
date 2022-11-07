@@ -20,14 +20,11 @@ package org.apache.axiom.ts.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-import javax.activation.DataSource;
-
-import org.apache.axiom.testutils.net.protocol.mem.DataSourceRegistry;
+import org.apache.axiom.net.protocol.registry.URLRegistry;
 
 public abstract class ComputedMessageContent extends MessageContent {
     private byte[] content;
@@ -50,27 +47,7 @@ public abstract class ComputedMessageContent extends MessageContent {
     @Override
     public final synchronized URL getURL() {
         if (url == null) {
-            url = DataSourceRegistry.registerDataSource(new DataSource() {
-                @Override
-                public OutputStream getOutputStream() throws IOException {
-                    throw new UnsupportedOperationException();
-                }
-                
-                @Override
-                public String getName() {
-                    return null;
-                }
-                
-                @Override
-                public InputStream getInputStream() throws IOException {
-                    return ComputedMessageContent.this.getInputStream();
-                }
-                
-                @Override
-                public String getContentType() {
-                    return "application/octet-stream";
-                }
-            }).getURL();
+            url = URLRegistry.register(this::getInputStream).getURL();
         }
         return url;
     }

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.testutils.net.protocol.mem;
+package org.apache.axiom.net.protocol.registry;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,50 +27,54 @@ import java.util.UUID;
 
 import javax.activation.DataSource;
 
-public final class DataSourceRegistry {
+public final class URLRegistry {
     private static boolean handlerRegistered;
-    private static final Map<String,DataSource> dataSources = new HashMap<>();
-    
-    private DataSourceRegistry() {}
+    private static final Map<String, DataProvider> dataProviders = new HashMap<>();
 
-    public synchronized static DataSourceRegistration registerDataSource(DataSource dataSource) {
+    private URLRegistry() {}
+
+    public static synchronized URLRegistration register(DataProvider dataProvider) {
         if (!handlerRegistered) {
             Properties systemProps = System.getProperties();
             synchronized (systemProps) {
-                StringBuilder pkgs = new StringBuilder(systemProps.getProperty("java.protocol.handler.pkgs", ""));
+                StringBuilder pkgs =
+                        new StringBuilder(
+                                systemProps.getProperty("java.protocol.handler.pkgs", ""));
                 if (pkgs.length() > 0) {
                     pkgs.append('|');
                 }
-                pkgs.append("org.apache.axiom.testutils.net.protocol");
+                pkgs.append("org.apache.axiom.net.protocol");
                 systemProps.setProperty("java.protocol.handler.pkgs", pkgs.toString());
             }
             handlerRegistered = true;
         }
         final String id = UUID.randomUUID().toString();
-        dataSources.put(id, dataSource);
-        return new DataSourceRegistration() {
+        dataProviders.put(id, dataProvider);
+        return new URLRegistration() {
             @Override
             public URL getURL() {
                 try {
-                    // Note: Woodstox expects that URL schemes are between 3 and 8 characters long;
-                    //       that's why we chose "mem" and not "ds".
-                    return new URL("mem", "", id);
+                    return new URL("registry", "", id);
                 } catch (MalformedURLException ex) {
                     // We should never get here
                     throw new Error(ex);
                 }
             }
-            
+
             @Override
             public void unregister() {
-                synchronized (DataSourceRegistry.class) {
-                    dataSources.remove(id);
+                synchronized (URLRegistry.class) {
+                    dataProviders.remove(id);
                 }
             }
         };
     }
-    
-    static synchronized DataSource lookupDataSource(String id) {
-        return dataSources.get(id);
+
+    public static URLRegistration register(DataSource dataSource) {
+        return register(dataSource::getInputStream);
+    }
+
+    static synchronized DataProvider lookup(String id) {
+        return dataProviders.get(id);
     }
 }

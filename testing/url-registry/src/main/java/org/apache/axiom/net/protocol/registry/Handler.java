@@ -16,11 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.testutils.net.protocol.mem;
+package org.apache.axiom.net.protocol.registry;
 
+import java.io.IOException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 
-public interface DataSourceRegistration {
-    URL getURL();
-    void unregister();
+public final class Handler extends URLStreamHandler {
+    @Override
+    protected URLConnection openConnection(URL url) throws IOException {
+        DataProvider dataProvider = URLRegistry.lookup(url.getPath());
+        if (dataProvider == null) {
+            throw new IOException("URL registration not found");
+        }
+        return new URLConnectionImpl(url, dataProvider);
+    }
 }

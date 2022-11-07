@@ -22,54 +22,46 @@
 
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>axiom</artifactId>
+        <artifactId>testing</artifactId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>testing</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>url-registry</artifactId>
 
-    <name>Testing</name>
+    <url>http://ws.apache.org/axiom/</url>
 
-    <modules>
-        <module>axiom-testsuite</module>
-        <module>axiom-truth</module>
-        <module>dom-testsuite</module>
-        <module>jaxen-testsuite</module>
-        <module>multiton</module>
-        <module>saaj-testsuite</module>
-        <module>soap-testsuite</module>
-        <module>spring-ws-testsuite</module>
-        <module>testutils</module>
-        <module>xml-testsuite</module>
-        <module>xml-truth</module>
-        <module>jaxp-testsuite</module>
-        <module>url-registry</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>testutils</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>com.github.veithen.maven</groupId>
-                <artifactId>jacoco-report-maven-plugin</artifactId>
-                <configuration>
-                    <includeClasses>false</includeClasses>
-                </configuration>
+                <groupId>com.spotify.fmt</groupId>
+                <artifactId>fmt-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <inherited>false</inherited>
-                <reportSets>
-                    <reportSet>
-                        <reports />
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
 </project>

@@ -23,12 +23,12 @@ import static com.google.common.truth.Truth.assertThat;
 import javax.activation.URLDataSource;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.axiom.net.protocol.registry.URLRegistration;
+import org.apache.axiom.net.protocol.registry.URLRegistry;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.activation.InstrumentedDataSource;
-import org.apache.axiom.testutils.net.protocol.mem.DataSourceRegistration;
-import org.apache.axiom.testutils.net.protocol.mem.DataSourceRegistry;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
@@ -41,7 +41,7 @@ public class TestCloseWithSystemId extends AxiomTestCase {
     protected void runTest() throws Throwable {
         InstrumentedDataSource ds =
                 new InstrumentedDataSource(new URLDataSource(XMLSample.SIMPLE.getUrl()));
-        DataSourceRegistration registration = DataSourceRegistry.registerDataSource(ds);
+        URLRegistration registration = URLRegistry.register(ds);
         try {
             OMXMLParserWrapper builder =
                     OMXMLBuilderFactory.createOMBuilder(

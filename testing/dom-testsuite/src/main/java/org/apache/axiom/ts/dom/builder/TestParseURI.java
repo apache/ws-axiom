@@ -24,9 +24,9 @@ import javax.activation.URLDataSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.axiom.net.protocol.registry.URLRegistration;
+import org.apache.axiom.net.protocol.registry.URLRegistry;
 import org.apache.axiom.testutils.activation.InstrumentedDataSource;
-import org.apache.axiom.testutils.net.protocol.mem.DataSourceRegistration;
-import org.apache.axiom.testutils.net.protocol.mem.DataSourceRegistry;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
@@ -43,7 +43,7 @@ public class TestParseURI extends DOMTestCase {
     protected void runTest() throws Throwable {
         InstrumentedDataSource ds = new InstrumentedDataSource(new URLDataSource(
                 XMLSample.SIMPLE.getUrl()));
-        DataSourceRegistration registration = DataSourceRegistry.registerDataSource(ds);
+        URLRegistration registration = URLRegistry.register(ds);
         try {
             DocumentBuilder builder = dbf.newDocumentBuilder();
             Document document = builder.parse(registration.getURL().toExternalForm());
