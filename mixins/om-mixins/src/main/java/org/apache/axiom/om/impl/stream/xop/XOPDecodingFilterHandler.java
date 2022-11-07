@@ -29,11 +29,11 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.TextContent;
 
 final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
-    private static class DataHandlerProviderImpl implements BlobProvider {
+    private static class BlobProviderImpl implements BlobProvider {
         private final OMAttachmentAccessor attachmentAccessor;
         private final String contentID;
 
-        public DataHandlerProviderImpl(OMAttachmentAccessor attachmentAccessor, String contentID) {
+        public BlobProviderImpl(OMAttachmentAccessor attachmentAccessor, String contentID) {
             this.attachmentAccessor = attachmentAccessor;
             this.contentID = contentID;
         }
@@ -59,6 +59,6 @@ final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
     @Override
     protected Object buildCharacterData(String contentID) {
         return new TextContent(
-                contentID, new DataHandlerProviderImpl(attachmentAccessor, contentID), true);
+                contentID, new BlobProviderImpl(attachmentAccessor, contentID), true);
     }
 }

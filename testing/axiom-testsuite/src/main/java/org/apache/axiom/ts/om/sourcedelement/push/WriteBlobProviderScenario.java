@@ -43,13 +43,6 @@ import org.junit.Assert;
  */
 public class WriteBlobProviderScenario implements PushOMDataSourceScenario {
     private final Blob blob = new RandomBlob(1024);
-    private final BlobProvider blobProvider =
-            new BlobProvider() {
-                @Override
-                public Blob getBlob() throws IOException {
-                    return blob;
-                }
-            };
 
     @Override
     public void addTestParameters(MatrixTestCase testCase) {
@@ -65,7 +58,7 @@ public class WriteBlobProviderScenario implements PushOMDataSourceScenario {
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         try {
-            XMLStreamWriterUtils.writeBlob(writer, blobProvider, null, true);
+            XMLStreamWriterUtils.writeBlob(writer, () -> blob, null, true);
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }

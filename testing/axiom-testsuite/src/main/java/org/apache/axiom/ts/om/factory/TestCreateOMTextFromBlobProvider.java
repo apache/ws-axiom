@@ -32,7 +32,7 @@ import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public class TestCreateOMTextFromBlobProvider extends AxiomTestCase {
-    static class TestDataHandlerProvider implements BlobProvider {
+    static class TestBlobProvider implements BlobProvider {
         private Blob blob;
 
         @Override
@@ -58,7 +58,7 @@ public class TestCreateOMTextFromBlobProvider extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        TestDataHandlerProvider prov = new TestDataHandlerProvider();
+        TestBlobProvider prov = new TestBlobProvider();
         OMFactory factory = metaFactory.getOMFactory();
         String contentID = nullContentID ? null : UIDGenerator.generateContentId();
         OMText text = factory.createOMText(contentID, prov, true);
