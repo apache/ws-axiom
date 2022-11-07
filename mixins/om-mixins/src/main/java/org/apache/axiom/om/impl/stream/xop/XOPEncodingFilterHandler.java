@@ -24,8 +24,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.activation.DataHandler;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
@@ -52,16 +50,16 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
     }
 
     @Override
-    public String prepareDataHandler(DataHandler dataHandler) {
+    public String prepareBlob(Blob blob) {
         boolean doOptimize;
         try {
-            doOptimize = optimizationPolicy.isOptimized(dataHandler, true);
+            doOptimize = optimizationPolicy.isOptimized(DataHandlerUtils.toDataHandler(blob), true);
         } catch (IOException ex) {
             doOptimize = true;
         }
         if (doOptimize) {
             String contentID = contentIDGenerator.generateContentID(null);
-            blobObjects.put(contentID, DataHandlerUtils.toBlob(dataHandler));
+            blobObjects.put(contentID, blob);
             return contentID;
         } else {
             return null;

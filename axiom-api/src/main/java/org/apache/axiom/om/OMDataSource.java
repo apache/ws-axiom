@@ -22,7 +22,6 @@
  */
 package org.apache.axiom.om;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -130,7 +129,7 @@ public interface OMDataSource {
      * utility methods) to write the data to the stream. This is the preferred approach, unless the
      * content is produced by a third party library that is not aware of these APIs.
      * <li>Cast the {@link XMLStreamWriter} to an {@link MTOMXMLStreamWriter}, use
-     * {@link MTOMXMLStreamWriter#prepareDataHandler(DataHandler)} and generate the
+     * {@link MTOMXMLStreamWriter#prepareBlob(Blob)} and generate the
      * necessary {@code xop:Include} elements. In this case, the implementation MAY use
      * {@link MTOMXMLStreamWriter#isOptimized()} to check if XOP/MTOM is enabled at all.
      * </ul>

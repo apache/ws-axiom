@@ -21,11 +21,11 @@ package org.apache.axiom.om.impl.stream.ds;
 
 import java.io.OutputStream;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.DocumentElementExtractingFilterHandler;
 import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
@@ -249,11 +249,11 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     }
 
     @Override
-    public String prepareDataHandler(DataHandler dataHandler) {
+    public String prepareBlob(Blob blob) {
         XmlHandler handler = getHandler();
         while (handler instanceof XmlHandlerWrapper) {
             if (handler instanceof XOPHandler) {
-                return ((XOPHandler) handler).prepareDataHandler(dataHandler);
+                return ((XOPHandler) handler).prepareBlob(blob);
             }
             handler = ((XmlHandlerWrapper) handler).getParent();
         }

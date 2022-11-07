@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl;
 
 import java.io.OutputStream;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -51,7 +50,7 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      * entirely transparent for the caller and there should be no need to check if the writer is
      * producing MTOM. However, in some cases this is not possible, such as when integrating with
      * 3rd party libraries. The serialization code should then use
-     * {@link #prepareDataHandler(DataHandler)} so that it can write {@code xop:Include} elements
+     * {@link #prepareBlob(Blob)} so that it can write {@code xop:Include} elements
      * directly to the stream. In that case, the code may use the {@link #isOptimized()} method
      * check if MTOM is enabled at all.
      * 
@@ -60,9 +59,9 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
     public abstract boolean isOptimized();
 
     /**
-     * Prepare a {@link DataHandler} for serialization without using the {@link BlobWriter}
+     * Prepare a {@link Blob} for serialization without using the {@link BlobWriter}
      * API. The method first determines whether the binary data represented by the
-     * {@link DataHandler} should be optimized or inlined. If the data should not be optimized, then
+     * {@link Blob} should be optimized or inlined. If the data should not be optimized, then
      * the method returns <code>null</code> and the caller is expected to use
      * {@link #writeCharacters(String)} or {@link #writeCharacters(char[], int, int)} to write the
      * base64 encoded data to the stream. If the data should be optimized, then the method returns a
@@ -77,12 +76,12 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      * should be used to write base64Binary values and the application code should never generate
      * {@code xop:Include} elements itself.
      * 
-     * @param dataHandler
-     *            the {@link DataHandler} that the caller intends to write to the stream
+     * @param blob
+     *            the {@link Blob} that the caller intends to write to the stream
      * @return the content ID that the caller must use in the {@code xop:Include} element or
      *         <code>null</code> if the base64 encoded data should not be optimized
      */
-    public abstract String prepareDataHandler(DataHandler dataHandler);
+    public abstract String prepareBlob(Blob blob);
 
     /**
      * Returns the character set encoding scheme. If the value of the charSetEncoding is not set

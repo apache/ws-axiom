@@ -24,6 +24,7 @@ import javax.xml.bind.attachment.AttachmentMarshaller;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.util.activation.BlobDataSource;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 
 final class AttachmentMarshallerImpl extends AttachmentMarshaller {
     private final MTOMXMLStreamWriter out;
@@ -40,7 +41,7 @@ final class AttachmentMarshallerImpl extends AttachmentMarshaller {
     @Override
     public String addMtomAttachment(DataHandler data, String elementNamespace,
             String elementLocalName) {
-        return "cid:" + out.prepareDataHandler(data);
+        return "cid:" + out.prepareBlob(DataHandlerUtils.toBlob(data));
     }
 
     @Override

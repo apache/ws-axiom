@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.om.impl.stream.xop;
 
-import javax.activation.DataHandler;
+import org.apache.axiom.blob.Blob;
 
 public interface XOPHandler {
-    String prepareDataHandler(DataHandler dataHandler);
+    String prepareBlob(Blob blob);
 }

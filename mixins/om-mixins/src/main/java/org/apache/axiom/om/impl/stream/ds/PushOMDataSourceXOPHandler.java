@@ -21,37 +21,35 @@ package org.apache.axiom.om.impl.stream.ds;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.activation.DataHandler;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.xop.AbstractXOPDecodingFilterHandler;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.stream.xop.XOPHandler;
 import org.apache.axiom.util.UIDGenerator;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 
 final class PushOMDataSourceXOPHandler extends AbstractXOPDecodingFilterHandler
         implements XOPHandler {
-    private final Map<String, DataHandler> dataHandlers = new HashMap<String, DataHandler>();
+    private final Map<String, Blob> blobs = new HashMap<>();
 
     PushOMDataSourceXOPHandler(XmlHandler parent) {
         super(parent);
     }
 
     @Override
-    public String prepareDataHandler(DataHandler dataHandler) {
+    public String prepareBlob(Blob blob) {
         String contentID = UIDGenerator.generateContentId();
-        dataHandlers.put(contentID, dataHandler);
+        blobs.put(contentID, blob);
         return contentID;
     }
 
     @Override
     protected Object buildCharacterData(String contentID) throws StreamException {
-        DataHandler dataHandler = dataHandlers.get(contentID);
-        if (dataHandler == null) {
-            throw new StreamException("No DataHandler found for content ID " + contentID);
+        Blob blob = blobs.get(contentID);
+        if (blob == null) {
+            throw new StreamException("No Blob found for content ID " + contentID);
         }
-        return new TextContent(contentID, DataHandlerUtils.toBlob(dataHandler), true);
+        return new TextContent(contentID, blob, true);
     }
 }
