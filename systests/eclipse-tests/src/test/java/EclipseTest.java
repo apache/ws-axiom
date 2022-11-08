@@ -53,6 +53,7 @@ public class EclipseTest {
                 frameworkProperty(EquinoxLocations.PROP_HOME_LOCATION_AREA).value("target"),
                 // Don't start bundles. We expect Equinox to start them lazily.
                 url("link:classpath:com.sun.activation.jakarta.activation.link").start(false),
+                url("link:classpath:org.apache.commons.commons-io.link").start(false),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link").start(false),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link").start(false),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-dom.link").start(false),
