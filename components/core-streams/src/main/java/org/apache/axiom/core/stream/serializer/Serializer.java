@@ -386,16 +386,16 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                         switch (ch) {
                             case 0x09:
                                 if (context == ATTRIBUTE_VALUE) {
-                                    replacement = "&#9;";
+                                    replacement = "&#x9;";
                                 }
                                 break;
                             case 0x0A:
                                 if (context == ATTRIBUTE_VALUE) {
-                                    replacement = "&#10;";
+                                    replacement = "&#xa;";
                                 }
                                 break;
                             case 0x0D:
-                                replacement = "&#13;";
+                                replacement = "&#xd;";
                                 // Leave whitespace carriage return as a real character
                                 break;
                             default:
@@ -426,7 +426,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                         generateCharacterReference = true;
                     } else if (ch == 0x2028) {
                         // LINE SEPARATOR
-                        replacement = "&#8232;";
+                        replacement = "&#x2028;";
                     }
 
                     if (ch == ']') {

@@ -34,6 +34,6 @@ public class OutputStreamXmlWriterTest {
                 UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE);
         writer.write("abc\u20ACdef");
         writer.flushBuffer();
-        assertThat(baos.toString("iso-8859-1")).isEqualTo("abc&#8364;def");
+        assertThat(baos.toString("iso-8859-1")).isEqualTo("abc&#x20ac;def");
     }
 }

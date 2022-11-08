@@ -75,7 +75,7 @@ public class SerializerTest {
         handler.endElement();
         handler.completed();
         assertThat(new String(baos.toByteArray(), "iso-8859-15"))
-                .isEqualTo("<test>a&#931;\u20AC</test>");
+                .isEqualTo("<test>a&#x3a3;\u20AC</test>");
     }
 
     @Test
@@ -89,7 +89,7 @@ public class SerializerTest {
         handler.endElement();
         handler.completed();
         assertThat(new String(baos.toByteArray(), "ascii"))
-                .isEqualTo("<test attr=\"n&#233;ant\"/>");
+                .isEqualTo("<test attr=\"n&#xe9;ant\"/>");
     }
 
     /**
@@ -108,7 +108,7 @@ public class SerializerTest {
         handler.endElement();
         handler.completed();
         assertThat(new String(baos.toByteArray(), "ascii"))
-                .isEqualTo("<x y=\"&#144308; - &#132648;\"/>");
+                .isEqualTo("<x y=\"&#x233b4; - &#x20628;\"/>");
     }
 
     @Test(expected = StreamException.class)

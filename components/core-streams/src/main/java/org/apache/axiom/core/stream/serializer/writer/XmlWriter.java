@@ -58,9 +58,13 @@ public abstract class XmlWriter {
     public abstract void flushBuffer() throws IOException;
 
     public final void writeCharacterReference(int codePoint) throws IOException {
-        write("&#");
-        // TODO: optimize this
-        write(Integer.toString(codePoint));
+        write("&#x");
+        int digits =
+                Math.max(((Integer.SIZE - Integer.numberOfLeadingZeros(codePoint)) + 3) / 4, 1);
+        for (int i = digits - 1; i >= 0; i--) {
+            int digit = (codePoint >> (4 * i)) & 0xf;
+            write((char) (digit + (digit < 10 ? '0' : 'a' - 10)));
+        }
         write(';');
     }
 }
