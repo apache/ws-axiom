@@ -26,7 +26,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.mime.MultipartBody;
 import org.w3c.dom.Node;
 
 /** Interface OMXMLParserWrapper */
@@ -119,8 +119,8 @@ public interface OMXMLParserWrapper {
      * <td>The object model is built completely.</td>
      * </tr>
      * <tr>
-     * <td>{@link Attachments}</td>
-     * <td>All MIME parts are fetched so that the stream from which the {@link Attachments} object
+     * <td>{@link MultipartBody}</td>
+     * <td>All MIME parts are fetched so that the stream from which the {@link MultipartBody} object
      * has been created can safely be closed.</td>
      * </tr>
      * </table>
