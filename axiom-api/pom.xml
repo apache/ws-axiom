@@ -286,7 +286,6 @@
                                 <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
                                 org.apache.axiom.attachments.lifecycle.LifecycleManager -&gt; org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
                                 <!-- TODO(AXIOM-506) -->
-                                org.apache.axiom.om.impl.OMMultipartWriter -&gt; org.apache.axiom.attachments.ConfigurableDataHandler,
                                 org.apache.axiom.util.base64.Base64Utils -&gt; org.apache.axiom.util.activation.DataSourceUtils,
                                 org.apache.axiom.util.base64.Base64Utils -&gt; javax.activation.DataSource,
                                 org.apache.axiom.util.base64.Base64Utils -&gt; javax.activation.DataHandler,

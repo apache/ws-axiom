@@ -22,6 +22,7 @@ package org.apache.axiom.om;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.axiom.om.format.xop.ContentTransferEncodingPolicy;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.StAXWriterConfiguration;
 import org.apache.axiom.soap.SOAPVersion;
@@ -70,16 +71,11 @@ public class OMOutputFormat {
     @SuppressWarnings("deprecation")
     private StAXWriterConfiguration writerConfiguration;
     
-    // The value of this property is a Boolean.  
-    // A missing value indicates the default action, which is Boolean.FALSE
-    // If Boolean.TRUE, attachments that are "non textual" are written out with 
-    // a content-transfer-encoding type of base64.
-    // @See CommonUtils.isTextualPart for the textual part definition.
-    // 
-    // Example:
-    //   An attachment with a content-type of "image/gif" is a non-textual attachment.
-    //   An attachment with a content-type of "application/soap+xml" is an textual attachment
-    //
+    private ContentTransferEncodingPolicy contentTransferEncodingPolicy;
+
+    /**
+     * @deprecated Use {@link ContentTransferEncodingPolicy#USE_BASE64_FOR_NON_TEXTUAL_PARTS} instead.
+     */
     public static final String USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS = 
         "org.apache.axiom.om.OMFormat.use.cteBase64.forNonTextualAttachments";
     
@@ -125,6 +121,7 @@ public class OMOutputFormat {
         ignoreXMLDeclaration = format.ignoreXMLDeclaration;
         autoCloseWriter = format.autoCloseWriter;
         writerConfiguration = format.writerConfiguration;
+        contentTransferEncodingPolicy = format.contentTransferEncodingPolicy;
         if (format.map != null) {
             map = new HashMap<String,Object>(format.map);
         }
@@ -473,5 +470,14 @@ public class OMOutputFormat {
      */
     public void setStAXWriterConfiguration(StAXWriterConfiguration writerConfiguration) {
         this.writerConfiguration = writerConfiguration;
+    }
+
+    public ContentTransferEncodingPolicy getContentTransferEncodingPolicy() {
+        return contentTransferEncodingPolicy;
+    }
+
+    public void setContentTransferEncodingPolicy(
+            ContentTransferEncodingPolicy contentTransferEncodingPolicy) {
+        this.contentTransferEncodingPolicy = contentTransferEncodingPolicy;
     }
 }

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.apache.axiom.attachments.ConfigurableDataHandler;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.ContentTransferEncoding;
 import org.apache.axiom.mime.ContentType;
@@ -58,10 +57,14 @@ public class OMMultipartWriter {
         
         // TODO(AXIOM-506): make this configurable in OMOutputFormat
         contentTypeProvider = DataHandlerContentTypeProvider.INSTANCE;
-        ContentTransferEncodingPolicy contentTransferEncodingPolicy = ConfigurableDataHandler.CONTENT_TRANSFER_ENCODING_POLICY;
+        ContentTransferEncodingPolicy contentTransferEncodingPolicy = format.getContentTransferEncodingPolicy();
         if (format != null && Boolean.TRUE.equals(
                 format.getProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS))) {
-            contentTransferEncodingPolicy = new CombinedContentTransferEncodingPolicy(contentTransferEncodingPolicy, ContentTransferEncodingPolicy.USE_BASE64_FOR_NON_TEXTUAL_PARTS);
+            if (contentTransferEncodingPolicy == null) {
+                contentTransferEncodingPolicy = ContentTransferEncodingPolicy.USE_BASE64_FOR_NON_TEXTUAL_PARTS;
+            } else {
+                contentTransferEncodingPolicy = new CombinedContentTransferEncodingPolicy(contentTransferEncodingPolicy, ContentTransferEncodingPolicy.USE_BASE64_FOR_NON_TEXTUAL_PARTS);
+            }
         }
         this.contentTransferEncodingPolicy = contentTransferEncodingPolicy;
         
@@ -86,7 +89,10 @@ public class OMMultipartWriter {
     }
 
     private ContentTransferEncoding getContentTransferEncoding(Blob blob, ContentType contentType) {
-        ContentTransferEncoding cte = contentTransferEncodingPolicy.getContentTransferEncoding(blob, contentType);
+        ContentTransferEncoding cte = null;
+        if (contentTransferEncodingPolicy != null) {
+            cte = contentTransferEncodingPolicy.getContentTransferEncoding(blob, contentType);
+        }
         return cte == null ? ContentTransferEncoding.BINARY : cte;
     }
     
