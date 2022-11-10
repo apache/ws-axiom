@@ -28,6 +28,7 @@ import javax.activation.DataSource;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 import junit.framework.TestCase;
 
@@ -119,15 +120,7 @@ public class PartOnFileTest extends TestCase {
     }
 
     private void createTemporaryDirectory() throws Exception {
-        temp = File.createTempFile("partOnFileTest", ".tmp");
-
-        if (!temp.delete()) {
-            fail("Cannot delete from temporary directory. File: " + temp);
-        }
-
-        if (!temp.mkdir()) {
-            fail("Cannot create a temporary location for part files");
-        }
+        temp = Files.createTempDirectory("partOnFileTest" + ".tmp").toFile();
     }
 
     private void deleteTemporaryDirectory() throws Exception {
