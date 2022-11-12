@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.activation.DataHandler;
-import javax.activation.DataSource;
 
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.io.StreamCopyException;
@@ -56,17 +55,6 @@ final class DataHandlerBlob implements Blob {
 
     @Override
     public long getSize() {
-        DataSource ds = dataHandler.getDataSource();
-        long size = DataSourceUtils.getSize(ds);
-        if (size != -1) {
-            return size;
-        }
-        CountingOutputStream out = new CountingOutputStream();
-        try {
-            dataHandler.writeTo(out);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-        return out.getSize();
+        return DataSourceUtils.getSize(dataHandler.getDataSource());
     }
 }

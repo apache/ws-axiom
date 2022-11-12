@@ -137,8 +137,7 @@ public final class TextContent implements CloneableCharacterData {
     public String toString() {
         if (blobObject != null) {
             try {
-                // TODO(AXIOM-506): avoid conversion here
-                return Base64Utils.encode(DataHandlerUtils.toDataHandler(getBlob()));
+                return Base64Utils.encode(getBlob());
             } catch (Exception e) {
                 throw new OMException(e);
             }
@@ -150,8 +149,7 @@ public final class TextContent implements CloneableCharacterData {
     public char[] toCharArray() {
         if (blobObject != null) {
             try {
-                // TODO(AXIOM-506): avoid conversion here
-                return Base64Utils.encodeToCharArray(DataHandlerUtils.toDataHandler(getBlob()));
+                return Base64Utils.encodeToCharArray(getBlob());
             } catch (IOException ex) {
                 throw new OMException(ex);
             }

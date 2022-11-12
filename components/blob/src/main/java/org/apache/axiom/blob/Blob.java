@@ -58,9 +58,19 @@ public interface Blob {
     void writeTo(OutputStream out) throws StreamCopyException;
 
     /**
-     * Get the size of the blob.
+     * Get the (approximate) size of the blob. Returns -1 if the size can't be determined without
+     * reading the entire blob (in which case the caller may want to use {@link
+     * #writeTo(OutputStream)} with an {@link OutputStream} that counts the number of bytes to
+     * determine the size). The method may choose to return a value based on an estimation. This may
+     * be the case e.g. if reading the data involves a decoding operation, and the length of the
+     * resulting stream can't be determined precisely without performing the decoding operation.
      *
-     * @return the number of bytes in the blob
+     * <p>When reading the actual data, the code should always read until the end of the stream is
+     * reached (as indicated by the return value of the {@code read} methods of the {@link
+     * InputStream} class). It must be prepared to reach the end of the stream after a number of
+     * bytes that is lower or higher than the value returned by this method.
+     *
+     * @return the number of bytes in the blob, or -1 if the size is not known
      */
     long getSize();
 }

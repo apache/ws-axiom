@@ -277,10 +277,6 @@
                                 </layer>
                             </layers>
                             <ignore>
-                                <!-- TODO(AXIOM-506) -->
-                                org.apache.axiom.util.base64.Base64Utils -&gt; org.apache.axiom.util.activation.DataSourceUtils,
-                                org.apache.axiom.util.base64.Base64Utils -&gt; javax.activation.DataSource,
-                                org.apache.axiom.util.base64.Base64Utils -&gt; javax.activation.DataHandler,
                                 <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
                                 org.apache.axiom.om.OMAbstractFactory -&gt; org.apache.axiom.soap.SOAPFactory,
                                 org.apache.axiom.om.OMMetaFactory -&gt; org.apache.axiom.soap.SOAPFactory,
