@@ -32,7 +32,6 @@ import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler
         implements XOPHandler, OMAttachmentAccessor {
@@ -53,7 +52,7 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
     public String prepareBlob(Blob blob) {
         boolean doOptimize;
         try {
-            doOptimize = optimizationPolicy.isOptimized(DataHandlerUtils.toDataHandler(blob), true);
+            doOptimize = optimizationPolicy.isOptimized(blob, true);
         } catch (IOException ex) {
             doOptimize = true;
         }
@@ -109,8 +108,7 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
                     } else {
                         optimize =
                                 optimizationPolicy.isOptimized(
-                                        DataHandlerUtils.toDataHandler((Blob) blobObject),
-                                        textContent.isOptimize());
+                                        (Blob) blobObject, textContent.isOptimize());
                     }
                 } catch (IOException ex) {
                     throw new StreamException(ex);

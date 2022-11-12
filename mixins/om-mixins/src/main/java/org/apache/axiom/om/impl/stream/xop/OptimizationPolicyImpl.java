@@ -21,8 +21,7 @@ package org.apache.axiom.om.impl.stream.xop;
 
 import java.io.IOException;
 
-import javax.activation.DataHandler;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.util.activation.DataHandlerUtils;
@@ -45,7 +44,7 @@ public final class OptimizationPolicyImpl implements OptimizationPolicy {
     }
 
     @Override
-    public boolean isOptimized(DataHandler dataHandler, boolean optimize) {
+    public boolean isOptimized(Blob blob, boolean optimize) {
         if (!optimize) {
             return false;
         }
@@ -54,7 +53,7 @@ public final class OptimizationPolicyImpl implements OptimizationPolicy {
             return true;
         }
         try {
-            return DataHandlerUtils.isLargerThan(dataHandler, threshold);
+            return DataHandlerUtils.isLargerThan(DataHandlerUtils.toDataHandler(blob), threshold);
         } catch (IOException ex) {
             log.warn("DataHandler.writeTo(OutputStream) threw IOException", ex);
             return true;
@@ -71,7 +70,7 @@ public final class OptimizationPolicyImpl implements OptimizationPolicy {
             // DataHandlerProvider#getDataHandler(), which would force loading the data handler.
             return true;
         } else {
-            return isOptimized(DataHandlerUtils.toDataHandler(blobProvider.getBlob()), optimize);
+            return isOptimized(blobProvider.getBlob(), optimize);
         }
     }
 }

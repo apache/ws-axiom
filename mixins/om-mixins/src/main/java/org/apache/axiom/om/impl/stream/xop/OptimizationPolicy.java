@@ -21,8 +21,7 @@ package org.apache.axiom.om.impl.stream.xop;
 
 import java.io.IOException;
 
-import javax.activation.DataHandler;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.stax.BlobProvider;
 
 /**
@@ -30,9 +29,8 @@ import org.apache.axiom.ext.stax.BlobProvider;
  * using XOP. The implementation takes the decision based on the submitted binary content and the
  * "eligible for optimization" flag. Depending on the context of use, this flag is provided by the
  * return value of {@link org.apache.axiom.ext.stax.BlobReader#isOptimized()} or the <code>optimize
- * </code> argument of {@link org.apache.axiom.ext.stax.BlobWriter#writeBlob(DataHandler, String,
- * boolean)} or {@link org.apache.axiom.ext.stax.BlobWriter#writeBlob(BlobProvider, String,
- * boolean)}.
+ * </code> argument of {@link org.apache.axiom.ext.stax.BlobWriter#writeBlob(Blob, String, boolean)}
+ * or {@link org.apache.axiom.ext.stax.BlobWriter#writeBlob(BlobProvider, String, boolean)}.
  */
 public interface OptimizationPolicy {
     /**
@@ -41,12 +39,12 @@ public interface OptimizationPolicy {
     OptimizationPolicy DEFAULT =
             new OptimizationPolicy() {
                 @Override
-                public boolean isOptimized(DataHandler dataHandler, boolean optimize) {
+                public boolean isOptimized(Blob blob, boolean optimize) {
                     return optimize;
                 }
 
                 @Override
-                public boolean isOptimized(BlobProvider dataHandlerProvider, boolean optimize) {
+                public boolean isOptimized(BlobProvider blobProvider, boolean optimize) {
                     return optimize;
                 }
             };
@@ -58,28 +56,27 @@ public interface OptimizationPolicy {
     OptimizationPolicy ALL =
             new OptimizationPolicy() {
                 @Override
-                public boolean isOptimized(DataHandler dataHandler, boolean optimize) {
+                public boolean isOptimized(Blob blob, boolean optimize) {
                     return true;
                 }
 
                 @Override
-                public boolean isOptimized(BlobProvider dataHandlerProvider, boolean optimize) {
+                public boolean isOptimized(BlobProvider blobProvider, boolean optimize) {
                     return true;
                 }
             };
 
     /**
-     * Determine whether the binary content supplied by a given {@link DataHandler} should be
-     * optimized.
+     * Determine whether the binary content supplied by a given {@link Blob} should be optimized.
      *
-     * @param dataHandler the binary content
+     * @param blob the binary content
      * @param optimize indicates whether the binary content was initially marked as eligible for
      *     optimization (see above)
      * @return <code>true</code> if the binary content should be optimized using XOP, i.e. encoded
      *     using {@code xop:Include}
-     * @throws IOException if an error occurs while reading the data handler
+     * @throws IOException if an error occurs while reading the blob
      */
-    boolean isOptimized(DataHandler dataHandler, boolean optimize) throws IOException;
+    boolean isOptimized(Blob blob, boolean optimize) throws IOException;
 
     /**
      * Determine whether the binary content supplied by a given {@link BlobProvider} should be
@@ -90,7 +87,7 @@ public interface OptimizationPolicy {
      *     optimization (see above)
      * @return <code>true</code> if the binary content should be optimized using XOP, i.e. encoded
      *     using {@code xop:Include}
-     * @throws IOException if an error occurs while reading the data handler
+     * @throws IOException if an error occurs while reading the blob
      */
     boolean isOptimized(BlobProvider blobProvider, boolean optimize) throws IOException;
 }
