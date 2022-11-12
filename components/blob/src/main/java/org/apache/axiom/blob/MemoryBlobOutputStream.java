@@ -37,8 +37,7 @@ public abstract class MemoryBlobOutputStream extends OutputStream implements Rea
     public abstract void write(byte[] b, int off, int len);
 
     @Override
-    public final void flush() {
-    }
+    public final void flush() {}
 
     @Override
     public abstract void close();

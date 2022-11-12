@@ -25,7 +25,7 @@ import java.io.IOException;
 
 final class TempFileInputStream extends FileInputStream {
     private long markPosition;
-    
+
     TempFileInputStream(File file) throws FileNotFoundException {
         super(file);
     }

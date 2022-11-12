@@ -27,8 +27,8 @@ import org.apache.axiom.ext.io.StreamCopyException;
 
 /**
  * Stores binary data.
- * <p>
- * Blobs are thread safe in the sense that methods defined by this interface may be called
+ *
+ * <p>Blobs are thread safe in the sense that methods defined by this interface may be called
  * concurrently. In addition, two different threads can safely invoke methods on two different
  * {@link InputStream} instances retrieved by {@link #getInputStream()} concurrently. However some
  * blobs (in particular {@link WritableBlob} implementations) may define additional methods and
@@ -40,7 +40,7 @@ public interface Blob {
      * Get an input stream to read the data in the blob. A new {@link InputStream} object is
      * returned each time this method is called, and the stream is positioned at the beginning of
      * the data.
-     * 
+     *
      * @return the input stream to read the data from
      * @throws IOException
      */
@@ -49,19 +49,17 @@ public interface Blob {
     /**
      * Write the data to a given output stream. This method can be called multiple times, i.e. it
      * doesn't consume the content.
-     * 
-     * @param out
-     *            The output stream to write the data to. This method will not close the stream.
-     * @throws StreamCopyException
-     *             Thrown if there is an I/O when reading the data from the blob or when writing it
-     *             to the stream. {@link StreamCopyException#getOperation()} can be used to
-     *             determine whether the failed operation was a read or a write.
+     *
+     * @param out The output stream to write the data to. This method will not close the stream.
+     * @throws StreamCopyException Thrown if there is an I/O when reading the data from the blob or
+     *     when writing it to the stream. {@link StreamCopyException#getOperation()} can be used to
+     *     determine whether the failed operation was a read or a write.
      */
     void writeTo(OutputStream out) throws StreamCopyException;
 
     /**
      * Get the size of the blob.
-     * 
+     *
      * @return the number of bytes in the blob
      */
     long getSize();

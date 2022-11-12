@@ -23,15 +23,15 @@ package org.apache.axiom.blob;
  * exceeds a certain threshold. Typically the overflow blob (i.e. the blob that is created if the
  * memory buffer overflows) stores data in a temporary file. It is therefore mandatory to call
  * {@link WritableBlob#release()} to discard the blob.
- * <p>
- * Instances are created with {@link Blobs#createOverflowableBlob(int, WritableBlobFactory)} or any
- * of the other methods returning {@link OverflowableBlob}.
+ *
+ * <p>Instances are created with {@link Blobs#createOverflowableBlob(int, WritableBlobFactory)} or
+ * any of the other methods returning {@link OverflowableBlob}.
  */
 public interface OverflowableBlob extends WritableBlob {
     /**
      * Get a reference to the overflow blob. The overflow blob is created only if the size of the
      * blob exceeds the threshold. The method returns <code>null</code> if that's not the case.
-     * 
+     *
      * @return the overflow blob, or <code>null</code> if this blob hasn't overflown
      */
     WritableBlob getOverflowBlob();

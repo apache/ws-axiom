@@ -27,8 +27,11 @@ public class WritableBlobTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final boolean outputStreamHasReadFromSupport;
     private final boolean writeToUsesReadFromSupport;
 
-    public WritableBlobTestSuiteBuilder(WritableBlobFactory<?> factory, int[] sizes,
-            boolean outputStreamHasReadFromSupport, boolean writeToUsesReadFromSupport) {
+    public WritableBlobTestSuiteBuilder(
+            WritableBlobFactory<?> factory,
+            int[] sizes,
+            boolean outputStreamHasReadFromSupport,
+            boolean writeToUsesReadFromSupport) {
         this.factory = factory;
         this.sizes = sizes;
         this.outputStreamHasReadFromSupport = outputStreamHasReadFromSupport;
@@ -63,8 +66,8 @@ public class WritableBlobTestSuiteBuilder extends MatrixTestSuiteBuilder {
         for (int size : sizes) {
             addTests(size);
         }
-    };
-    
+    }
+
     private void addTests(int size) {
         addTest(new TestMarkReset(factory, size));
         addTest(new TestReadFrom(factory, size));

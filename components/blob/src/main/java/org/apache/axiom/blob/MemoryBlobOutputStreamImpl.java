@@ -26,18 +26,18 @@ import org.apache.axiom.ext.io.StreamCopyException;
 final class MemoryBlobOutputStreamImpl extends MemoryBlobOutputStream {
     private final MemoryBlobImpl blob;
     private MemoryBlobChunk chunk;
-    
+
     MemoryBlobOutputStreamImpl(MemoryBlobImpl blob, MemoryBlobChunk firstChunk) {
         this.blob = blob;
         chunk = firstChunk;
     }
-    
+
     private void updateChunk() {
         if (chunk.size == chunk.buffer.length) {
             chunk = chunk.allocateNextChunk();
         }
     }
-    
+
     @Override
     public void write(byte[] b, int off, int len) {
         if (chunk == null) {
@@ -46,7 +46,7 @@ final class MemoryBlobOutputStreamImpl extends MemoryBlobOutputStream {
         int total = 0;
         while (total < len) {
             updateChunk();
-            int c = Math.min(len-total, chunk.buffer.length-chunk.size);
+            int c = Math.min(len - total, chunk.buffer.length - chunk.size);
             System.arraycopy(b, off, chunk.buffer, chunk.size, c);
             chunk.size += c;
             total += c;
@@ -65,7 +65,7 @@ final class MemoryBlobOutputStreamImpl extends MemoryBlobOutputStream {
             throw new IllegalStateException();
         }
         updateChunk();
-        chunk.buffer[chunk.size++] = (byte)b;
+        chunk.buffer[chunk.size++] = (byte) b;
     }
 
     @Override
@@ -79,8 +79,11 @@ final class MemoryBlobOutputStreamImpl extends MemoryBlobOutputStream {
             updateChunk();
             int c;
             try {
-                c = in.read(chunk.buffer, chunk.size,
-                        (int)Math.min(toRead, chunk.buffer.length-chunk.size));
+                c =
+                        in.read(
+                                chunk.buffer,
+                                chunk.size,
+                                (int) Math.min(toRead, chunk.buffer.length - chunk.size));
             } catch (IOException ex) {
                 throw new StreamCopyException(StreamCopyException.READ, ex);
             }
@@ -93,7 +96,7 @@ final class MemoryBlobOutputStreamImpl extends MemoryBlobOutputStream {
         }
         return read;
     }
-    
+
     @Override
     public void close() {
         blob.commit();

@@ -22,12 +22,12 @@ import java.io.IOException;
 
 /**
  * Blob that stores data in memory.
- * <p>
- * This interface redefines several methods from {@link Blob} and {@link WritableBlob} to not throw
- * {@link IOException}. Also note that since data is stored in memory, calling
- * {@link WritableBlob#release()} is not required.
- * <p>
- * Instances are created with {@link Blobs#createMemoryBlob()} or using {@link #FACTORY}.
+ *
+ * <p>This interface redefines several methods from {@link Blob} and {@link WritableBlob} to not
+ * throw {@link IOException}. Also note that since data is stored in memory, calling {@link
+ * WritableBlob#release()} is not required.
+ *
+ * <p>Instances are created with {@link Blobs#createMemoryBlob()} or using {@link #FACTORY}.
  */
 public interface MemoryBlob extends WritableBlob {
     WritableBlobFactory<MemoryBlob> FACTORY = MemoryBlobImpl::new;
@@ -47,7 +47,7 @@ public interface MemoryBlob extends WritableBlob {
     /**
      * Get an input stream that consumes the content of this blob. The memory held by this blob will
      * be gradually released as data is read from the stream.
-     * 
+     *
      * @return the input stream to read the data from
      */
     MemoryBlobInputStream readOnce();

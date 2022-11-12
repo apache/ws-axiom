@@ -45,8 +45,7 @@ public class TestReadFrom extends SizeSensitiveWritableBlobTestCase {
         InputStream in2 = blob.getInputStream();
         try {
             assertThat(IOUtils.toByteArray(in2)).isEqualTo(data);
-        }
-        finally {
+        } finally {
             in2.close();
         }
     }

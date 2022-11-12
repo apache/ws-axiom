@@ -38,15 +38,23 @@ public class TestReadFromSupport extends SizeSensitiveWritableBlobTestCase {
 
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
-        int chunkSize = size/4;
-        byte[] content = new byte[chunkSize*4];
+        int chunkSize = size / 4;
+        byte[] content = new byte[chunkSize * 4];
         new Random().nextBytes(content);
         OutputStream out = blob.getOutputStream();
         try {
             out.write(Arrays.copyOfRange(content, 0, chunkSize));
-            ((ReadFromSupport)out).readFrom(new ByteArrayInputStream(Arrays.copyOfRange(content, chunkSize, chunkSize*2)), -1);
-            ((ReadFromSupport)out).readFrom(new ByteArrayInputStream(Arrays.copyOfRange(content, chunkSize*2, chunkSize*4)), chunkSize);
-            out.write(content, chunkSize*3, chunkSize);
+            ((ReadFromSupport) out)
+                    .readFrom(
+                            new ByteArrayInputStream(
+                                    Arrays.copyOfRange(content, chunkSize, chunkSize * 2)),
+                            -1);
+            ((ReadFromSupport) out)
+                    .readFrom(
+                            new ByteArrayInputStream(
+                                    Arrays.copyOfRange(content, chunkSize * 2, chunkSize * 4)),
+                            chunkSize);
+            out.write(content, chunkSize * 3, chunkSize);
         } finally {
             out.close();
         }

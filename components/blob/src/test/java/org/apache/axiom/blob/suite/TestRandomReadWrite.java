@@ -65,7 +65,7 @@ public class TestRandomReadWrite extends SizeSensitiveWritableBlobTestCase {
                     break;
                 }
                 assertThat(b).isIn(Range.closedOpen(0, 256));
-                data2[offset++] = (byte)b;
+                data2[offset++] = (byte) b;
             } else {
                 int bufferOffset = random.nextInt(512);
                 int c = 512 + random.nextInt(1024);

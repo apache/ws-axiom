@@ -39,7 +39,8 @@ public class TestWriteToWithReadFromSupport extends SizeSensitiveWritableBlobTes
         OutputStream out = blob.getOutputStream();
         out.write(data);
         out.close();
-        ByteArrayOutputStreamWithReadFromSupport baos = new ByteArrayOutputStreamWithReadFromSupport();
+        ByteArrayOutputStreamWithReadFromSupport baos =
+                new ByteArrayOutputStreamWithReadFromSupport();
         blob.writeTo(baos);
         assertThat(baos.toByteArray()).isEqualTo(data);
         assertThat(baos.isReadFromCalled()).isTrue();

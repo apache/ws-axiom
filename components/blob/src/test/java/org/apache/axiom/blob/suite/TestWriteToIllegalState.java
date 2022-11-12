@@ -32,6 +32,8 @@ public class TestWriteToIllegalState extends WritableBlobTestCase {
 
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
-        assertThrows(IllegalStateException.class, () -> blob.writeTo(NullOutputStream.NULL_OUTPUT_STREAM));
+        assertThrows(
+                IllegalStateException.class,
+                () -> blob.writeTo(NullOutputStream.NULL_OUTPUT_STREAM));
     }
 }

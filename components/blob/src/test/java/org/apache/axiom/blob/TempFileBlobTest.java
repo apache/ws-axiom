@@ -26,8 +26,10 @@ import junit.framework.TestSuite;
 public class TempFileBlobTest extends TestCase {
     public static TestSuite suite() {
         return new WritableBlobTestSuiteBuilder(
-                new TempFileBlobFactory("test", ".dat", null),
-                new int[] { 10000 },
-                false, true).build();
+                        new TempFileBlobFactory("test", ".dat", null),
+                        new int[] {10000},
+                        false,
+                        true)
+                .build();
     }
 }

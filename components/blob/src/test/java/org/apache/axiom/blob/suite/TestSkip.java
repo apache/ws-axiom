@@ -35,12 +35,12 @@ public class TestSkip extends WritableBlobTestCase {
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
         OutputStream out = blob.getOutputStream();
-        out.write(new byte[] { 2, 4, 6, 8, 9, 7, 5, 3, 1 });
+        out.write(new byte[] {2, 4, 6, 8, 9, 7, 5, 3, 1});
         out.close();
         InputStream in = blob.getInputStream();
         try {
             assertThat(in.skip(4)).isEqualTo(4);
-            assertThat(IOUtils.toByteArray(in, 3)).isEqualTo(new byte[] { 9, 7, 5 });
+            assertThat(IOUtils.toByteArray(in, 3)).isEqualTo(new byte[] {9, 7, 5});
             // The skip method in FileInputStream returns 10 instead of 2
             // (see http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6294974).
             assertThat(in.skip(10)).isAnyOf(2L, 10L);

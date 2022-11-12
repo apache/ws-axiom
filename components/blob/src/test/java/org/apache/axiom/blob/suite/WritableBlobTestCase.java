@@ -47,6 +47,6 @@ public abstract class WritableBlobTestCase extends MatrixTestCase {
             blob.release();
         }
     }
-    
+
     protected abstract void runTest(WritableBlob blob) throws Throwable;
 }

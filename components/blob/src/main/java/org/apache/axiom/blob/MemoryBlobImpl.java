@@ -27,7 +27,7 @@ import org.apache.axiom.ext.io.StreamCopyException;
 final class MemoryBlobImpl implements MemoryBlob {
     private MemoryBlobChunk firstChunk;
     private boolean committed;
-    
+
     @Override
     public long getSize() {
         if (firstChunk == null || !committed) {
@@ -47,7 +47,7 @@ final class MemoryBlobImpl implements MemoryBlob {
     public MemoryBlobOutputStream getOutputStream() {
         return internalGetOutputStream();
     }
-    
+
     private MemoryBlobOutputStream internalGetOutputStream() {
         if (firstChunk != null || committed) {
             throw new IllegalStateException();
@@ -59,7 +59,7 @@ final class MemoryBlobImpl implements MemoryBlob {
     void commit() {
         committed = true;
     }
-    
+
     @Override
     public long readFrom(InputStream in) throws StreamCopyException {
         MemoryBlobOutputStream out = internalGetOutputStream();
@@ -74,7 +74,7 @@ final class MemoryBlobImpl implements MemoryBlob {
     public MemoryBlobInputStream getInputStream() {
         return getInputStream(true);
     }
-    
+
     @Override
     public MemoryBlobInputStream readOnce() {
         return getInputStream(false);

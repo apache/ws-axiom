@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Input stream that doesn't throw {@link IOException} and that supports
- * {@link InputStream#mark(int)}.
+ * Input stream that doesn't throw {@link IOException} and that supports {@link
+ * InputStream#mark(int)}.
  */
 public abstract class MemoryBlobInputStream extends InputStream {
     @Override

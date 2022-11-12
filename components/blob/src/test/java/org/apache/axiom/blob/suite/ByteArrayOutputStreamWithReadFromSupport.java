@@ -25,7 +25,8 @@ import java.io.OutputStream;
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.ext.io.StreamCopyException;
 
-public class ByteArrayOutputStreamWithReadFromSupport extends OutputStream implements ReadFromSupport {
+public class ByteArrayOutputStreamWithReadFromSupport extends OutputStream
+        implements ReadFromSupport {
     private byte[] buffer = new byte[4096];
     private int size;
     private boolean readFromCalled;
@@ -33,13 +34,13 @@ public class ByteArrayOutputStreamWithReadFromSupport extends OutputStream imple
     @Override
     public void write(int b) throws IOException {
         if (buffer.length == size) {
-            byte[] newBuffer = new byte[size*2];
+            byte[] newBuffer = new byte[size * 2];
             System.arraycopy(buffer, 0, newBuffer, 0, size);
             buffer = newBuffer;
         }
-        buffer[size++] = (byte)b;
+        buffer[size++] = (byte) b;
     }
-    
+
     @Override
     public long readFrom(InputStream inputStream, long length) throws StreamCopyException {
         readFromCalled = true;

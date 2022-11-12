@@ -26,9 +26,9 @@ import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.util.io.IOUtils;
 
 /**
- * Partial implementation of the {@link WritableBlob} interface that implements
- * {@link WritableBlob#readFrom(InputStream)} using {@link WritableBlob#getOutputStream()} and
- * {@link WritableBlob#writeTo(OutputStream)} using {@link WritableBlob#getInputStream()}.
+ * Partial implementation of the {@link WritableBlob} interface that implements {@link
+ * WritableBlob#readFrom(InputStream)} using {@link WritableBlob#getOutputStream()} and {@link
+ * WritableBlob#writeTo(OutputStream)} using {@link WritableBlob#getInputStream()}.
  */
 public abstract class AbstractWritableBlob implements WritableBlob {
     @Override

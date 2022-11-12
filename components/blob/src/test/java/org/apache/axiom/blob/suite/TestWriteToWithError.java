@@ -35,8 +35,9 @@ public class TestWriteToWithError extends SizeSensitiveWritableBlobTestCase {
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
         blob.readFrom(new NullInputStream(size));
-        ExceptionOutputStream out = new ExceptionOutputStream(size/2);
-        StreamCopyException ex = Assert.assertThrows(StreamCopyException.class, () -> blob.writeTo(out));
+        ExceptionOutputStream out = new ExceptionOutputStream(size / 2);
+        StreamCopyException ex =
+                Assert.assertThrows(StreamCopyException.class, () -> blob.writeTo(out));
         assertThat(ex.getOperation()).isEqualTo(StreamCopyException.WRITE);
         assertThat(ex.getCause()).isSameInstanceAs(out.getException());
     }

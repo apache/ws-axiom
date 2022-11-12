@@ -18,15 +18,11 @@
  */
 package org.apache.axiom.blob;
 
-import org.apache.axiom.blob.WritableBlob;
-
-/**
- * A factory for {@link WritableBlob} instances.
- */
+/** A factory for {@link WritableBlob} instances. */
 public interface WritableBlobFactory<T extends WritableBlob> {
     /**
      * Create a new {@link WritableBlob} instance.
-     * 
+     *
      * @return the newly created instance
      */
     T createBlob();

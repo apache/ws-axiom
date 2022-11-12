@@ -22,11 +22,11 @@ final class MemoryBlobChunk {
     final byte[] buffer;
     int size;
     MemoryBlobChunk nextChunk;
-    
+
     MemoryBlobChunk(int capacity) {
         buffer = new byte[capacity];
     }
-    
+
     MemoryBlobChunk allocateNextChunk() {
         return nextChunk = new MemoryBlobChunk(buffer.length * 2);
     }

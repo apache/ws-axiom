@@ -23,7 +23,7 @@ final class MemoryBlobInputStreamImpl extends MemoryBlobInputStream {
     private int index;
     private MemoryBlobChunk markChunk;
     private int markIndex;
-    
+
     MemoryBlobInputStreamImpl(MemoryBlobChunk firstChunk) {
         markChunk = chunk = firstChunk;
     }
@@ -34,7 +34,7 @@ final class MemoryBlobInputStreamImpl extends MemoryBlobInputStream {
             index = 0;
         }
     }
-    
+
     @Override
     public int read(byte[] buffer, int off, int len) {
         int read = 0;
@@ -47,7 +47,7 @@ final class MemoryBlobInputStreamImpl extends MemoryBlobInputStream {
                     break;
                 }
             }
-            int c = Math.min(len, chunk.size-index);
+            int c = Math.min(len, chunk.size - index);
             System.arraycopy(chunk.buffer, index, buffer, off, c);
             index += c;
             off += c;
@@ -92,7 +92,7 @@ final class MemoryBlobInputStreamImpl extends MemoryBlobInputStream {
             if (chunk == null) {
                 break;
             }
-            int c = (int)Math.min(n, chunk.size-index);
+            int c = (int) Math.min(n, chunk.size - index);
             index += c;
             skipped += c;
             n -= c;
@@ -114,7 +114,7 @@ final class MemoryBlobInputStreamImpl extends MemoryBlobInputStream {
                 }
                 chunk = chunk.nextChunk;
             }
-            return (int)available;
+            return (int) available;
         }
     }
 

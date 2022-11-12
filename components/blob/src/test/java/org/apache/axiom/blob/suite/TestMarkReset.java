@@ -36,8 +36,8 @@ public class TestMarkReset extends SizeSensitiveWritableBlobTestCase {
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
         Random random = new Random();
-        byte[] sourceData1 = new byte[size/2];
-        byte[] sourceData2 = new byte[size/2];
+        byte[] sourceData1 = new byte[size / 2];
+        byte[] sourceData2 = new byte[size / 2];
         random.nextBytes(sourceData1);
         random.nextBytes(sourceData2);
         OutputStream out = blob.getOutputStream();

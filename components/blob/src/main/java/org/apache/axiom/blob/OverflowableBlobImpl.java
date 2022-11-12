@@ -36,11 +36,11 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             }
             if (overflowOutputStream != null) {
                 overflowOutputStream.write(b, off, len);
-            } else if (len > (chunks.length-chunkIndex)*chunkSize - chunkOffset) {
+            } else if (len > (chunks.length - chunkIndex) * chunkSize - chunkOffset) {
 
                 // The buffer will overflow. Switch to a temporary file.
                 switchToOverflowBlob();
-                
+
                 // Write the new data to the temporary file.
                 overflowOutputStream.write(b, off, len);
 
@@ -52,7 +52,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
                     byte[] chunk = getCurrentChunk();
 
                     // Determine number of bytes that can be copied to the current chunk.
-                    int c = Math.min(len, chunkSize-chunkOffset);
+                    int c = Math.min(len, chunkSize - chunkOffset);
                     // Copy data to the chunk.
                     System.arraycopy(b, off, chunk, chunkOffset, c);
 
@@ -75,7 +75,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
 
         @Override
         public void write(int b) throws IOException {
-            write(new byte[] { (byte)b }, 0, 1);
+            write(new byte[] {(byte) b}, 0, 1);
         }
 
         @Override
@@ -91,17 +91,17 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             return OverflowableBlobImpl.this.readFrom(in, length, false);
         }
     }
-    
+
     class InputStreamImpl extends InputStream {
 
         private int currentChunkIndex;
         private int currentChunkOffset;
         private int markChunkIndex;
         private int markChunkOffset;
-        
+
         @Override
         public int available() throws IOException {
-            return (chunkIndex-currentChunkIndex)*chunkSize + chunkOffset - currentChunkOffset;
+            return (chunkIndex - currentChunkIndex) * chunkSize + chunkOffset - currentChunkOffset;
         }
 
         @Override
@@ -112,15 +112,15 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             }
 
             int read = 0;
-            while (len > 0 && !(currentChunkIndex == chunkIndex
-                    && currentChunkOffset == chunkOffset)) {
+            while (len > 0
+                    && !(currentChunkIndex == chunkIndex && currentChunkOffset == chunkOffset)) {
 
                 int c;
                 if (currentChunkIndex == chunkIndex) {
                     // The current chunk is the last one => take into account the offset
-                    c = Math.min(len, chunkOffset-currentChunkOffset);
+                    c = Math.min(len, chunkOffset - currentChunkOffset);
                 } else {
-                    c = Math.min(len, chunkSize-currentChunkOffset);
+                    c = Math.min(len, chunkSize - currentChunkOffset);
                 }
 
                 // Copy the data.
@@ -138,7 +138,8 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             }
 
             if (read == 0) {
-                // We didn't read anything (and the len argument was not 0) => we reached the end of the buffer.
+                // We didn't read anything (and the len argument was not 0) => we reached the end of
+                // the buffer.
                 return -1;
             } else {
                 return read;
@@ -177,66 +178,57 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         public long skip(long n) throws IOException {
 
             int available = available();
-            int c = n < available ? (int)n : available;
+            int c = n < available ? (int) n : available;
             int newOffset = currentChunkOffset + c;
-            int chunkDelta = newOffset/chunkSize;
+            int chunkDelta = newOffset / chunkSize;
             currentChunkIndex += chunkDelta;
-            currentChunkOffset = newOffset - (chunkDelta*chunkSize);
+            currentChunkOffset = newOffset - (chunkDelta * chunkSize);
             return c;
         }
-        
+
         @Override
-        public void close() throws IOException {
-        }
+        public void close() throws IOException {}
     }
-    
-    /**
-     * Size of the chunks that will be allocated in the buffer.
-     */
+
+    /** Size of the chunks that will be allocated in the buffer. */
     final int chunkSize;
-    
+
     final WritableBlobFactory<?> overflowBlobFactory;
-    
+
     /**
-     * Array of <code>byte[]</code> representing the chunks of the buffer.
-     * A chunk is only allocated when the first byte is written to it.
-     * This attribute is set to <code>null</code> when the buffer overflows and
-     * is written out to a temporary file.
+     * Array of <code>byte[]</code> representing the chunks of the buffer. A chunk is only allocated
+     * when the first byte is written to it. This attribute is set to <code>null</code> when the
+     * buffer overflows and is written out to a temporary file.
      */
     byte[][] chunks;
-    
-    /**
-     * Index of the chunk the next byte will be written to.
-     */
+
+    /** Index of the chunk the next byte will be written to. */
     int chunkIndex;
-    
-    /**
-     * Offset into the chunk where the next byte will be written.
-     */
+
+    /** Offset into the chunk where the next byte will be written. */
     int chunkOffset;
-    
+
     /**
      * The overflow blob. This is only set when the memory buffer overflows and is written to a
      * different blob.
      */
     WritableBlob overflowBlob;
-    
-    /**
-     * The state of the blob.
-     */
+
+    /** The state of the blob. */
     State state = State.NEW;
-    
+
     OutputStream overflowOutputStream;
-    
-    OverflowableBlobImpl(int numberOfChunks, int chunkSize, WritableBlobFactory<?> overflowBlobFactory) {
+
+    OverflowableBlobImpl(
+            int numberOfChunks, int chunkSize, WritableBlobFactory<?> overflowBlobFactory) {
         this.chunkSize = chunkSize;
         this.overflowBlobFactory = overflowBlobFactory;
         chunks = new byte[numberOfChunks][];
     }
-    
+
     /**
      * Get the current chunk to write to, allocating it if necessary.
-     * 
+     *
      * @return the current chunk to write to (never null)
      */
     byte[] getCurrentChunk() {
@@ -250,10 +242,10 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             return chunks[chunkIndex];
         }
     }
-    
+
     /**
      * Create a temporary file and write the existing in memory data to it.
-     * 
+     *
      * @return an open FileOutputStream to the temporary file
      * @throws IOException
      */
@@ -262,7 +254,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
 
         overflowOutputStream = overflowBlob.getOutputStream();
         // Write the buffer to the temporary file.
-        for (int i=0; i<chunkIndex; i++) {
+        for (int i = 0; i < chunkIndex; i++) {
             overflowOutputStream.write(chunks[i]);
         }
 
@@ -273,7 +265,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         // Release references to the buffer so that it can be garbage collected.
         chunks = null;
     }
-    
+
     @Override
     public OutputStream getOutputStream() {
         if (state != State.NEW) {
@@ -283,7 +275,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             return new OutputStreamImpl();
         }
     }
-    
+
     long readFrom(InputStream in, long length, boolean commit) throws StreamCopyException {
         if (state == State.COMMITTED) {
             throw new IllegalStateException();
@@ -303,9 +295,9 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             } else {
                 int c;
                 try {
-                    int len = chunkSize-chunkOffset;
+                    int len = chunkSize - chunkOffset;
                     if (len > toRead) {
-                        len = (int)toRead;
+                        len = (int) toRead;
                     }
                     c = in.read(getCurrentChunk(), chunkOffset, len);
                 } catch (IOException ex) {
@@ -333,7 +325,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         state = commit ? State.COMMITTED : State.UNCOMMITTED;
         return read;
     }
-    
+
     @Override
     public long readFrom(InputStream in) throws StreamCopyException {
         if (state != State.NEW) {
@@ -352,7 +344,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             return new InputStreamImpl();
         }
     }
-    
+
     @Override
     public void writeTo(OutputStream out) throws StreamCopyException {
         if (state != State.COMMITTED) {
@@ -362,7 +354,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             overflowBlob.writeTo(out);
         } else {
             try {
-                for (int i=0; i<chunkIndex; i++) {
+                for (int i = 0; i < chunkIndex; i++) {
                     out.write(chunks[i]);
                 }
                 if (chunkOffset > 0) {
@@ -373,7 +365,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             }
         }
     }
-    
+
     @Override
     public long getSize() {
         if (state != State.COMMITTED) {
@@ -382,10 +374,10 @@ final class OverflowableBlobImpl implements OverflowableBlob {
         if (overflowBlob != null) {
             return overflowBlob.getSize();
         } else {
-            return chunkIndex*chunkSize + chunkOffset;
+            return chunkIndex * chunkSize + chunkOffset;
         }
     }
-    
+
     @Override
     public void release() throws IOException {
         if (overflowBlob != null) {

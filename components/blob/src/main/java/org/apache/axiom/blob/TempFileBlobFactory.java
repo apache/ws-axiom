@@ -36,7 +36,7 @@ final class TempFileBlobFactory implements WritableBlobFactory<WritableBlob> {
     public WritableBlob createBlob() {
         return new TempFileBlobImpl(this);
     }
-    
+
     File createTempFile() throws IOException {
         return File.createTempFile(tempPrefix, tempSuffix, tempDirectory);
     }

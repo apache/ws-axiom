@@ -22,8 +22,9 @@ import org.apache.axiom.blob.WritableBlobFactory;
 
 public abstract class SizeSensitiveWritableBlobTestCase extends WritableBlobTestCase {
     protected final int size;
-    
-    public SizeSensitiveWritableBlobTestCase(WritableBlobFactory<?> factory, State initialState, int size) {
+
+    public SizeSensitiveWritableBlobTestCase(
+            WritableBlobFactory<?> factory, State initialState, int size) {
         super(factory, initialState);
         this.size = size;
         addTestParameter("size", size);

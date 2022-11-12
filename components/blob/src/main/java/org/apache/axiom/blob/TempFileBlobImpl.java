@@ -29,7 +29,7 @@ import org.apache.commons.logging.LogFactory;
 
 final class TempFileBlobImpl extends AbstractWritableBlob {
     private static final Log log = LogFactory.getLog(TempFileBlobImpl.class);
-    
+
     private final TempFileBlobFactory factory;
     private final Throwable trace;
     private File file;
@@ -50,13 +50,14 @@ final class TempFileBlobImpl extends AbstractWritableBlob {
             log.debug("Using temporary file " + file);
         }
         file.deleteOnExit();
-        OutputStream out = new FileOutputStream(file) {
-            @Override
-            public void close() throws IOException {
-                super.close();
-                state = State.COMMITTED;
-            }
-        };
+        OutputStream out =
+                new FileOutputStream(file) {
+                    @Override
+                    public void close() throws IOException {
+                        super.close();
+                        state = State.COMMITTED;
+                    }
+                };
         state = State.UNCOMMITTED;
         return out;
     }
