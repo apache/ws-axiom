@@ -25,8 +25,8 @@ import java.util.Random;
 
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
-import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.util.UIDGenerator;
 
 import junit.framework.TestCase;
@@ -43,7 +43,7 @@ public class MultipartBodyWriterTest extends TestCase {
         partOutputStream.close();
         mpw.complete();
         
-        MimeMultipart mp = new MimeMultipart(new ByteArrayDataSource(baos.toByteArray()));
+        MimeMultipart mp = new MimeMultipart(new ByteArrayDataSource(baos.toByteArray(), "application/octet-stream"));
         assertEquals(1, mp.getCount());
         MimeBodyPart bp = (MimeBodyPart)mp.getBodyPart(0);
         assertEquals(contentTransferEncoding.toString(), bp.getHeader("Content-Transfer-Encoding")[0]);

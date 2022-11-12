@@ -231,6 +231,7 @@
         <module>axiom-weaver</module>
         <module>axiom-weaver-annotations</module>
         <module>axiom-activation</module>
+        <module>axiom-legacy-attachments</module>
     </modules>
 
     <scm>

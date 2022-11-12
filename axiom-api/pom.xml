@@ -255,12 +255,6 @@
                                     </visibilityRules>
                                 </layer>
                                 <layer>
-                                    <!-- The attachments API is considered a legacy API and shouldn't be used anywhere. -->
-                                    <packages>
-                                        <value>org.apache.axiom.attachments</value>
-                                    </packages>
-                                </layer>
-                                <layer>
                                     <packages>
                                         <value>org.apache.axiom.util</value>
                                     </packages>
@@ -283,8 +277,6 @@
                                 </layer>
                             </layers>
                             <ignore>
-                                <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
-                                org.apache.axiom.attachments.lifecycle.LifecycleManager -&gt; org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
                                 <!-- TODO(AXIOM-506) -->
                                 org.apache.axiom.util.base64.Base64Utils -&gt; org.apache.axiom.util.activation.DataSourceUtils,
                                 org.apache.axiom.util.base64.Base64Utils -&gt; javax.activation.DataSource,

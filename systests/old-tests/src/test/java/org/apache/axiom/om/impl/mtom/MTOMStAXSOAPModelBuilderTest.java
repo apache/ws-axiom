@@ -53,7 +53,7 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
     }
 
     private OMElement createTestMTOMMessage() throws Exception {
-        return OMXMLBuilderFactory.createSOAPModelBuilder(createAttachmentsForTestMTOMMessage()).getDocumentElement();
+        return OMXMLBuilderFactory.createSOAPModelBuilder(createAttachmentsForTestMTOMMessage().getMultipartBody()).getDocumentElement();
     }
     
     
@@ -106,7 +106,7 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
      */
     public void testDeferredLoadingOfAttachments() throws Exception {
         Attachments attachments = createAttachmentsForTestMTOMMessage();
-        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(attachments);
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(attachments.getMultipartBody());
         OMDocument doc = builder.getDocument();
         // Find all the binary nodes
         List<OMText> binaryNodes = new ArrayList<>();
@@ -237,7 +237,7 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
         
         InputStream inStream = new BufferedInputStream(new ByteArrayInputStream(full));
         Attachments attachments = new Attachments(inStream, contentTypeString);
-        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(attachments);
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(attachments.getMultipartBody());
         OMElement root = builder.getDocumentElement();
         root.build();
     }

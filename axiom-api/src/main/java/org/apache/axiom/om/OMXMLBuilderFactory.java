@@ -28,7 +28,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 
-import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.ext.stax.BlobReader;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.MediaType;
@@ -430,25 +429,6 @@ public class OMXMLBuilderFactory {
     }
     
     /**
-     * Create an XOP aware model builder from the provided {@link Attachments} object and with a
-     * given parser configuration.
-     * 
-     * @param configuration
-     *            the parser configuration to use
-     * @param attachments
-     *            an {@link Attachments} object that must have been created from an input stream
-     * @return the builder
-     * @throws OMException
-     *             if an error occurs while processing the content type information from the
-     *             {@link Attachments} object
-     * 
-     * @deprecated Use {@link #createOMBuilder(StAXParserConfiguration, MultipartBody)} instead.
-     */
-    public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, Attachments attachments) {
-        return createOMBuilder(configuration, attachments.getMultipartBody());
-    }
-    
-    /**
      * Create an XOP aware model builder from the provided {@link MultipartBody} object and with a
      * given parser configuration.
      * 
@@ -463,29 +443,6 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, MultipartBody message) {
         return createOMBuilder(OMAbstractFactory.getMetaFactory().getOMFactory(), configuration, message);
-    }
-    
-    /**
-     * Create an XOP aware model builder from the provided {@link Attachments} object using a
-     * specified object model factory and with a given parser configuration.
-     * 
-     * @param omFactory
-     *            the object model factory to use
-     * @param configuration
-     *            the parser configuration to use
-     * @param attachments
-     *            an {@link Attachments} object that must have been created from an input stream
-     * @return the builder
-     * @throws OMException
-     *             if an error occurs while processing the content type information from the
-     *             {@link Attachments} object
-     * 
-     * @deprecated Use {{@link #createOMBuilder(OMFactory, StAXParserConfiguration, MultipartBody)}
-     *             instead.
-     */
-    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
-            StAXParserConfiguration configuration, Attachments attachments) {
-        return createOMBuilder(omFactory, configuration, attachments.getMultipartBody());
     }
 
     /**
@@ -644,25 +601,6 @@ public class OMXMLBuilderFactory {
     }
     
     /**
-     * Create an MTOM aware model builder from the provided {@link Attachments} object. The method
-     * will determine the SOAP version based on the content type information from the
-     * {@link Attachments} object. It will configure the underlying parser as specified by
-     * {@link StAXParserConfiguration#SOAP}.
-     * 
-     * @param attachments
-     *            an {@link Attachments} object that must have been created from an input stream
-     * @return the builder
-     * @throws OMException
-     *             if an error occurs while processing the content type information from the
-     *             {@link Attachments} object
-     * 
-     * @deprecated Use {@link #createSOAPModelBuilder(MultipartBody)} instead
-     */
-    public static SOAPModelBuilder createSOAPModelBuilder(Attachments attachments) {
-        return createSOAPModelBuilder(attachments.getMultipartBody());
-    }
-    
-    /**
      * Create an MTOM aware model builder from the provided {@link MultipartBody} object. The method
      * will determine the SOAP version based on the content type information from the
      * {@link MultipartBody} object. It will configure the underlying parser as specified by
@@ -677,28 +615,6 @@ public class OMXMLBuilderFactory {
      */
     public static SOAPModelBuilder createSOAPModelBuilder(MultipartBody message) {
         return createSOAPModelBuilder(OMAbstractFactory.getMetaFactory(), message);
-    }
-    
-    /**
-     * Create an MTOM aware model builder from the provided {@link Attachments} object using a
-     * particular Axiom implementation. The method will determine the SOAP version based on the
-     * content type information from the {@link Attachments} object. It will configure the
-     * underlying parser as specified by {@link StAXParserConfiguration#SOAP}.
-     * 
-     * @param metaFactory
-     *            the meta factory for the Axiom implementation to use
-     * @param attachments
-     *            an {@link Attachments} object that must have been created from an input stream
-     * @return the builder
-     * @throws OMException
-     *             if an error occurs while processing the content type information from the
-     *             {@link Attachments} object
-     * 
-     * @deprecated Use {@link #createSOAPModelBuilder(OMMetaFactory, MultipartBody)} instead.
-     */
-    public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory,
-            Attachments attachments) {
-        return createSOAPModelBuilder(metaFactory, attachments.getMultipartBody());
     }
 
     /**
