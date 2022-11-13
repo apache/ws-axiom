@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.activation;
+package org.apache.axiom.om.impl.stream.xop;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,7 +28,7 @@ import java.io.OutputStream;
 final class CountingOutputStream extends OutputStream {
     private final long maxSize;
     private long size;
-    
+
     CountingOutputStream(long maxSize) {
         this.maxSize = maxSize;
     }
@@ -54,7 +54,7 @@ final class CountingOutputStream extends OutputStream {
         size++;
         checkSize();
     }
-    
+
     private void checkSize() throws SizeLimitExceededException {
         if (maxSize != -1 && size > maxSize) {
             // Throw a cached exception instance to avoid the overhead of building the

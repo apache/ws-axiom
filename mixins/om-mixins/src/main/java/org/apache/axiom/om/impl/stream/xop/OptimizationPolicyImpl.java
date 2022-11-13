@@ -22,9 +22,9 @@ package org.apache.axiom.om.impl.stream.xop;
 import java.io.IOException;
 
 import org.apache.axiom.blob.Blob;
+import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -52,11 +52,20 @@ public final class OptimizationPolicyImpl implements OptimizationPolicy {
         if (threshold == 0) {
             return true;
         }
+        long size = blob.getSize();
+        if (size != -1) {
+            return size > threshold;
+        }
         try {
-            return DataHandlerUtils.isLargerThan(DataHandlerUtils.toDataHandler(blob), threshold);
-        } catch (IOException ex) {
-            log.warn("DataHandler.writeTo(OutputStream) threw IOException", ex);
-            return true;
+            blob.writeTo(new CountingOutputStream(threshold));
+            return false;
+        } catch (StreamCopyException ex) {
+            if (ex.getOperation() == StreamCopyException.WRITE) {
+                return true;
+            } else {
+                log.warn("Blob.writeTo(OutputStream) threw IOException", ex.getCause());
+                return true;
+            }
         }
     }
 

@@ -18,11 +18,7 @@
  */
 package org.apache.axiom.util.activation;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import javax.activation.DataHandler;
-import javax.activation.DataSource;
 
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.activation.PartDataHandler;
@@ -33,41 +29,6 @@ import org.apache.axiom.mime.activation.PartDataHandlerBlob;
  */
 public final class DataHandlerUtils {
     private DataHandlerUtils() {}
-
-    /**
-     * Check if the given {@link DataHandler} will produce a byte stream that is longer than a given
-     * limit. It will first attempt to determine the size using
-     * {@link DataSourceUtils#getSize(DataSource)}. If that fails, it will use
-     * {@link DataHandler#writeTo(OutputStream)} to determine if the size is larger than the limit.
-     * 
-     * @param dh
-     *            the {@link DataHandler} to check
-     * @param limit
-     *            the limit
-     * @return {@code true} if the size is larger than {@code limit}, {@code false} otherwise
-     * @throws IOException
-     *             if {@link DataHandler#writeTo(OutputStream)} produced an unexpected exception
-     */
-    public static boolean isLargerThan(DataHandler dh, long limit) throws IOException {
-        long size = DataSourceUtils.getSize(dh.getDataSource());
-        if (size != -1) {
-            return size > limit;
-        } else {
-            // In all other cases, we prefer DataHandler#writeTo over DataSource#getInputStream.
-            // The reason is that if the DataHandler was constructed from an Object rather than
-            // a DataSource, a call to DataSource#getInputStream() will start a new thread and
-            // return a PipedInputStream. This is so for Geronimo's as well as Sun's JAF
-            // implementation. The reason is that DataContentHandler only has a writeTo and no
-            // getInputStream method. Obviously starting a new thread just to check the size of
-            // the data is an overhead that we should avoid.
-            try {
-                dh.writeTo(new CountingOutputStream(limit));
-                return false;
-            } catch (SizeLimitExceededException ex) {
-                return true;
-            }
-        }
-    }
 
     /**
      * Get the {@link DataHandler} wrapped by the given {@link Blob}.

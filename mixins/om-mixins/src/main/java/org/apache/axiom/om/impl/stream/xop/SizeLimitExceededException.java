@@ -16,18 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.activation;
+package org.apache.axiom.om.impl.stream.xop;
 
 import java.io.IOException;
 
-/**
- * Exception used by {@link CountingOutputStream} if the size limit has been exceeded.
- */
+/** Exception used by {@link CountingOutputStream} if the size limit has been exceeded. */
 final class SizeLimitExceededException extends IOException {
     private static final long serialVersionUID = 1L;
 
     static final SizeLimitExceededException INSTANCE = new SizeLimitExceededException();
-    
+
     private SizeLimitExceededException() {
         setStackTrace(new StackTraceElement[0]);
     }
