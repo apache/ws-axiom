@@ -51,7 +51,6 @@ public class SJSXPTest {
         return options(
                 url("link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"),
                 url("link:classpath:org.apache.servicemix.bundles.jaxp-ri.link"),
-                url("link:classpath:com.sun.activation.jakarta.activation.link"),
                 url("link:classpath:org.apache.commons.commons-io.link"),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),

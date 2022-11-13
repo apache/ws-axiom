@@ -45,6 +45,7 @@ public class DataSourceUtilsTest {
                 url("link:classpath:org.apache.commons.commons-io.link"),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-activation.link"),
                 junitBundles());
     }
 
