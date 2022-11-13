@@ -56,7 +56,7 @@ public class TestCloneBinary extends AxiomTestCase {
                         .getDocumentElement();
         OMText text = (OMText) root.getFirstOMChild();
         OMCloneOptions options = new OMCloneOptions();
-        options.setFetchDataHandlers(fetch);
+        options.setFetchBlobs(fetch);
         OMText clone = (OMText) text.clone(options);
         assertTrue(clone.isBinary());
         assertEquals(fetch, attachmentAccessor.isLoaded());

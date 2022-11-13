@@ -18,12 +18,11 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.mime.activation.PartDataHandler;
+import org.apache.axiom.mime.PartBlob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -32,7 +31,6 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomText;
 import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
@@ -151,9 +149,9 @@ public abstract class AxiomTextMixin implements AxiomText {
     @Override
     public final void buildWithAttachments() {
         if (isOptimized()) {
-            DataHandler dataHandler = DataHandlerUtils.getDataHandler(getBlob());
-            if (dataHandler instanceof PartDataHandler) {
-                ((PartDataHandler) dataHandler).getPart().fetch();
+            Blob blob = getBlob();
+            if (blob instanceof PartBlob) {
+                ((PartBlob) blob).getPart().fetch();
             }
         }
     }

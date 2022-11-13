@@ -27,10 +27,10 @@ import org.apache.axiom.core.CloneableCharacterData;
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.CharacterDataSink;
 import org.apache.axiom.ext.stax.BlobProvider;
+import org.apache.axiom.mime.PartBlob;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.UIDGenerator;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
 import org.apache.axiom.util.base64.Base64Utils;
@@ -162,11 +162,14 @@ public final class TextContent implements CloneableCharacterData {
     public <T> CharacterData clone(ClonePolicy<T> policy, T options) {
         if (binary
                 && options instanceof OMCloneOptions
-                && ((OMCloneOptions) options).isFetchDataHandlers()) {
-            // Force loading of the reference to the DataHandler and ensure that its content is
-            // completely fetched into memory (or temporary storage).
-            // TODO(AXIOM-506): review this
-            DataHandlerUtils.toDataHandler(getBlob()).getDataSource();
+                && ((OMCloneOptions) options).isFetchBlobs()) {
+            // This will fetch the Blob from the BlobProvider if applicable.
+            Blob blob = getBlob();
+            // If the blob refers to a MIME part of an XOP encoded message, ensure that the part is
+            // fetched.
+            if (blob instanceof PartBlob) {
+                ((PartBlob) blob).getPart().fetch();
+            }
         }
         return new TextContent(this);
     }

@@ -18,42 +18,41 @@
  */
 package org.apache.axiom.om;
 
-import javax.activation.DataHandler;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.stax.BlobProvider;
 
 public class OMCloneOptions {
-    private boolean fetchDataHandlers;
+    private boolean fetchBlobs;
     private boolean copyOMDataSources;
     private boolean preserveModel;
 
     /**
-     * Determine whether {@link DataHandler} objects should be fetched when cloning {@link OMText}
-     * nodes. See {@link #setFetchDataHandlers(boolean)} for more information about this option.
+     * Determine whether {@link Blob} objects should be fetched when cloning {@link OMText}
+     * nodes. See {@link #setFetchBlobs(boolean)} for more information about this option.
      * 
      * @return the current value of this option
      */
-    public boolean isFetchDataHandlers() {
-        return fetchDataHandlers;
+    public boolean isFetchBlobs() {
+        return fetchBlobs;
     }
 
     /**
-     * Specify whether {@link DataHandler} objects should be fetched when cloning {@link OMText}
+     * Specify whether {@link Blob} objects should be fetched when cloning {@link OMText}
      * nodes. If this option is set to <code>false</code> (default) then an {@link OMText} node
      * backed by a {@link BlobProvider} will be cloned by copying the reference to that
      * {@link BlobProvider} to the cloned {@link OMText} node. This implies that if the
      * original tree was constructed from an XOP encoded stream, then the clone may become unusable
      * if that stream is closed. If this option is set to <code>true</code>, then
-     * {@link BlobProvider} references will be replaced by {@link DataHandler} references. In
+     * {@link BlobProvider} references will be replaced by {@link Blob} references. In
      * addition, the necessary actions are taken to ensure that the content of these
-     * {@link DataHandler} instances is fetched into memory or temporary storage, so that the clones
+     * {@link Blob} instances is fetched into memory or temporary storage, so that the clones
      * remain usable even after the underlying stream is closed.
      * 
-     * @param fetchDataHandlers
+     * @param fetchBlobs
      *            the value to set for this option
      */
-    public void setFetchDataHandlers(boolean fetchDataHandlers) {
-        this.fetchDataHandlers = fetchDataHandlers;
+    public void setFetchBlobs(boolean fetchBlobs) {
+        this.fetchBlobs = fetchBlobs;
     }
 
     /**

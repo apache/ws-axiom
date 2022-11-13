@@ -46,7 +46,7 @@ public abstract class CloneTestCase extends SOAPTestCase {
     protected void copyAndCheck(SOAPEnvelope sourceEnv) throws Exception {
 
         SOAPCloneOptions options = new SOAPCloneOptions();
-        options.setFetchDataHandlers(true);
+        options.setFetchBlobs(true);
         options.setPreserveModel(true);
         options.setCopyOMDataSources(true);
         SOAPEnvelope targetEnv = (SOAPEnvelope) sourceEnv.clone(options);
