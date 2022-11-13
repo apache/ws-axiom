@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.axiom.om.format.xop.ContentTransferEncodingPolicy;
+import org.apache.axiom.om.format.xop.ContentTypeProvider;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.StAXWriterConfiguration;
 import org.apache.axiom.soap.SOAPVersion;
@@ -71,6 +72,7 @@ public class OMOutputFormat {
     @SuppressWarnings("deprecation")
     private StAXWriterConfiguration writerConfiguration;
     
+    private ContentTypeProvider contentTypeProvider;
     private ContentTransferEncodingPolicy contentTransferEncodingPolicy;
 
     /**
@@ -121,6 +123,7 @@ public class OMOutputFormat {
         ignoreXMLDeclaration = format.ignoreXMLDeclaration;
         autoCloseWriter = format.autoCloseWriter;
         writerConfiguration = format.writerConfiguration;
+        contentTypeProvider = format.contentTypeProvider;
         contentTransferEncodingPolicy = format.contentTransferEncodingPolicy;
         if (format.map != null) {
             map = new HashMap<String,Object>(format.map);
@@ -470,6 +473,14 @@ public class OMOutputFormat {
      */
     public void setStAXWriterConfiguration(StAXWriterConfiguration writerConfiguration) {
         this.writerConfiguration = writerConfiguration;
+    }
+
+    public ContentTypeProvider getContentTypeProvider() {
+        return contentTypeProvider;
+    }
+
+    public void setContentTypeProvider(ContentTypeProvider contentTypeProvider) {
+        this.contentTypeProvider = contentTypeProvider;
     }
 
     public ContentTransferEncodingPolicy getContentTransferEncodingPolicy() {

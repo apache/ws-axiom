@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
+import org.apache.axiom.util.activation.DataHandlerContentTypeProvider;
 
 public class TestSerialize extends AxiomTestCase {
     private final boolean base64;
@@ -59,6 +60,7 @@ public class TestSerialize extends AxiomTestCase {
         oof.setMimeBoundary(testMessage.getBoundary());
         oof.setRootContentId(testMessage.getStart());
         if (base64) {
+            oof.setContentTypeProvider(DataHandlerContentTypeProvider.INSTANCE);
             oof.setProperty(
                     OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, Boolean.TRUE);
         }

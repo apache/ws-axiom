@@ -35,7 +35,6 @@ import org.apache.axiom.om.format.xop.CombinedContentTransferEncodingPolicy;
 import org.apache.axiom.om.format.xop.ContentTransferEncodingPolicy;
 import org.apache.axiom.om.format.xop.ContentTypeProvider;
 import org.apache.axiom.soap.SOAPVersion;
-import org.apache.axiom.util.activation.DataHandlerContentTypeProvider;
 import org.apache.axiom.util.io.IOUtils;
 
 /**
@@ -46,7 +45,6 @@ import org.apache.axiom.util.io.IOUtils;
 public class OMMultipartWriter {
     private final OMOutputFormat format;
     private final MultipartBodyWriter writer;
-    private final ContentTypeProvider contentTypeProvider;
     private final ContentTransferEncodingPolicy contentTransferEncodingPolicy;
     private final ContentType rootPartContentType;
     
@@ -55,8 +53,6 @@ public class OMMultipartWriter {
         
         writer = new MultipartBodyWriter(out, format.getMimeBoundary());
         
-        // TODO(AXIOM-506): make this configurable in OMOutputFormat
-        contentTypeProvider = DataHandlerContentTypeProvider.INSTANCE;
         ContentTransferEncodingPolicy contentTransferEncodingPolicy = format.getContentTransferEncodingPolicy();
         if (format != null && Boolean.TRUE.equals(
                 format.getProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS))) {
@@ -86,6 +82,11 @@ public class OMMultipartWriter {
                     .setParameter("charset", format.getCharSetEncoding())
                     .build();
         }
+    }
+
+    private ContentType getContentType(Blob blob) {
+        ContentTypeProvider contentTypeProvider = format.getContentTypeProvider();
+        return contentTypeProvider == null ? null : contentTypeProvider.getContentType(blob);
     }
 
     private ContentTransferEncoding getContentTransferEncoding(Blob blob, ContentType contentType) {
@@ -170,7 +171,7 @@ public class OMMultipartWriter {
      *             if an I/O error occurs when writing the part to the underlying stream
      */
     public void writePart(Blob blob, String contentID, List<Header> extraHeaders) throws IOException {
-        ContentType contentType = contentTypeProvider.getContentType(blob);
+        ContentType contentType = getContentType(blob);
         writer.writePart(blob, contentType, getContentTransferEncoding(blob, contentType), contentID, extraHeaders);
     }
     
@@ -204,7 +205,7 @@ public class OMMultipartWriter {
      *             if an I/O error occurs when writing the part to the underlying stream
      */
     public void writePart(PartBlob blob, String contentID, boolean preserve) throws IOException {
-        ContentType contentType = contentTypeProvider.getContentType(blob);
+        ContentType contentType = getContentType(blob);
         OutputStream part = writer.writePart(contentType, getContentTransferEncoding(blob, contentType), contentID, null);
         IOUtils.copy(
                 blob.getPart().getInputStream(preserve),
