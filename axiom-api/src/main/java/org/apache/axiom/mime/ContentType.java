@@ -26,8 +26,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.activation.MimeType;
-
 /**
  * Represents the (parsed) value of a {@code Content-Type} header as defined by
  * <a href="http://tools.ietf.org/html/rfc2045">RFC 2045</a>.
@@ -45,10 +43,10 @@ import javax.activation.MimeType;
  * quoted-pair := "\" CHAR
  * </pre>
  * <p>
- * This class is similar to {@link MimeType} and JavaMail's <code>ContentType</code> class, but the
+ * This class is similar to Activation's {@code MimeType} and JavaMail's {@code ContentType} classes, but the
  * following differences exist:
  * <ul>
- * <li>This class is more lenient than (certain implementations of) {@link MimeType}. It will
+ * <li>This class is more lenient than (certain implementations of) {@code MimeType}. It will
  * accept content types that are not strictly valid, but that are commonly found. E.g. it will
  * accept content types with an extra semicolon at the end.
  * <li>This class is immutable.
