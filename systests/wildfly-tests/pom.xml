@@ -68,7 +68,7 @@
         <dependency>
             <groupId>org.wildfly.arquillian</groupId>
             <artifactId>wildfly-arquillian-container-managed</artifactId>
-            <version>5.0.0.Alpha5</version>
+            <version>5.0.0.Alpha6</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
