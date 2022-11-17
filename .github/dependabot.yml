@@ -53,3 +53,6 @@ updates:
       - dependency-name: "org.glassfish.jaxb:jaxb-runtime"
         versions:
           - ">= 3.0"
+      - dependency-name: "org.springframework:*"
+        versions:
+          - ">= 6.0.0"
