@@ -25,7 +25,11 @@ import java.io.OutputStream;
 
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
-/** A data source with empty (zero length) content. */
+/**
+ * A data source with empty (zero length) content.
+ * 
+ * @deprecated
+ */
 public class EmptyDataSource implements SizeAwareDataSource {
     /** Empty data source instance with content type {@code application/octet-stream}. */
     public static final EmptyDataSource INSTANCE = new EmptyDataSource("application/octet-stream");

@@ -29,7 +29,11 @@ import javax.activation.CommandMap;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
-/** Base class for {@link DataHandler} wrappers. */
+/**
+ * Base class for {@link DataHandler} wrappers.
+ * 
+ * @deprecated
+ */
 public class DataHandlerWrapper extends DataHandler {
     private final DataHandler parent;
 
