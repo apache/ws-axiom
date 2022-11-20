@@ -21,17 +21,13 @@ package org.apache.axiom.om.util.jaxb;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-/**
- * Interface used to apply custom settings to an {@link Unmarshaller}.
- */
+/** Interface used to apply custom settings to an {@link Unmarshaller}. */
 public interface UnmarshallerConfigurator {
     /**
      * Apply settings to the given unmarshaller.
-     * 
-     * @param unmarshaller
-     *            the unmarshaller to configure
-     * @throws JAXBException
-     *             if the unmarshaller throws an exception
+     *
+     * @param unmarshaller the unmarshaller to configure
+     * @throws JAXBException if the unmarshaller throws an exception
      */
     void configure(Unmarshaller unmarshaller) throws JAXBException;
 }

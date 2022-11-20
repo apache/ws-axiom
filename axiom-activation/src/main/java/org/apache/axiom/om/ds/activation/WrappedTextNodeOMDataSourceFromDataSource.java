@@ -40,23 +40,23 @@ public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOM
     private final DataSource binaryData;
     private final Charset charset;
 
-    public WrappedTextNodeOMDataSourceFromDataSource(QName wrapperElementName, DataSource binaryData,
-            Charset charset) {
+    public WrappedTextNodeOMDataSourceFromDataSource(
+            QName wrapperElementName, DataSource binaryData, Charset charset) {
         super(wrapperElementName);
         this.binaryData = binaryData;
         this.charset = charset;
     }
-    
+
     @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         InputStream is;
         try {
             is = binaryData.getInputStream();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }
-        return new WrappedTextNodeStreamReader(wrapperElementName, new InputStreamReader(is, charset));
+        return new WrappedTextNodeStreamReader(
+                wrapperElementName, new InputStreamReader(is, charset));
     }
 
     @Override
@@ -71,6 +71,7 @@ public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOM
 
     @Override
     public OMDataSourceExt copy() {
-        return new WrappedTextNodeOMDataSourceFromDataSource(wrapperElementName, binaryData, charset);
+        return new WrappedTextNodeOMDataSourceFromDataSource(
+                wrapperElementName, binaryData, charset);
     }
 }

@@ -23,20 +23,21 @@ import org.apache.axiom.mime.Part;
 import org.apache.axiom.mime.PartBlob;
 
 /**
- * {@link PartBlobFactory} implementation that creates {@link PartBlob} instances that wrap
- * {@link PartDataHandler} instances.
+ * {@link PartBlobFactory} implementation that creates {@link PartBlob} instances that wrap {@link
+ * PartDataHandler} instances.
  */
 public abstract class PartDataHandlerBlobFactory implements PartBlobFactory {
     /**
      * {@link PartDataHandlerBlobFactory} instance that creates plain {@link PartDataHandler}
      * instances.
      */
-    public static final PartDataHandlerBlobFactory DEFAULT = new PartDataHandlerBlobFactory() {
-        @Override
-        protected PartDataHandler createDataHandler(Part part) {
-            return new PartDataHandler(part);
-        }
-    };
+    public static final PartDataHandlerBlobFactory DEFAULT =
+            new PartDataHandlerBlobFactory() {
+                @Override
+                protected PartDataHandler createDataHandler(Part part) {
+                    return new PartDataHandler(part);
+                }
+            };
 
     protected PartDataHandlerBlobFactory() {}
 
@@ -47,7 +48,7 @@ public abstract class PartDataHandlerBlobFactory implements PartBlobFactory {
 
     /**
      * Create a {@link PartDataHandler} for the given {@link Part}.
-     * 
+     *
      * @param part the MIME part
      * @return the data handler
      */

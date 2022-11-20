@@ -29,9 +29,8 @@ final class Util {
     /**
      * Get the content type that should be reported by {@link DataSource} instances created for a
      * given part.
-     * 
-     * @param Part
-     *            the part
+     *
+     * @param Part the part
      * @return the content type
      */
     static String getDataSourceContentType(Part part) {

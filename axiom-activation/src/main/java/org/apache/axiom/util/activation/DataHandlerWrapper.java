@@ -29,9 +29,7 @@ import javax.activation.CommandMap;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
-/**
- * Base class for {@link DataHandler} wrappers.
- */
+/** Base class for {@link DataHandler} wrappers. */
 public class DataHandlerWrapper extends DataHandler {
     private final DataHandler parent;
 
@@ -43,7 +41,7 @@ public class DataHandlerWrapper extends DataHandler {
         super(EmptyDataSource.INSTANCE);
         this.parent = parent;
     }
-    
+
     @Override
     public CommandInfo[] getAllCommands() {
         return parent.getAllCommands();
@@ -95,7 +93,8 @@ public class DataHandlerWrapper extends DataHandler {
     }
 
     @Override
-    public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+    public Object getTransferData(DataFlavor flavor)
+            throws UnsupportedFlavorException, IOException {
         return parent.getTransferData(flavor);
     }
 

@@ -28,9 +28,7 @@ import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.mime.PartBlob;
 
-/**
- * {@link DataHandler} implementation for MIME parts read from a stream.
- */
+/** {@link DataHandler} implementation for MIME parts read from a stream. */
 public class PartDataHandler extends DataHandler {
     private final Part part;
     private final PartDataHandlerBlob blob;
@@ -50,7 +48,7 @@ public class PartDataHandler extends DataHandler {
 
     /**
      * Get the MIME part linked to this data handler.
-     * 
+     *
      * @return the MIME part
      */
     public final Part getPart() {
@@ -59,7 +57,7 @@ public class PartDataHandler extends DataHandler {
 
     /**
      * Get the {@link PartBlob} that wraps this instance.
-     * 
+     *
      * @return the blob wrapper
      */
     public final PartBlob getBlob() {
@@ -83,13 +81,11 @@ public class PartDataHandler extends DataHandler {
     /**
      * Create the {@link DataSource} to be returned by {@link #getDataSource()}. This method may be
      * overridden by subclasses to support custom {@link DataSource} implementations.
-     * 
-     * @param content
-     *            the content of the part
-     * @param contentType
-     *            the content type expected to be returned by {@link DataSource#getContentType()};
-     *            defaults to {@code application/octet-stream} if the part doesn't specify a content
-     *            type
+     *
+     * @param content the content of the part
+     * @param contentType the content type expected to be returned by {@link
+     *     DataSource#getContentType()}; defaults to {@code application/octet-stream} if the part
+     *     doesn't specify a content type
      * @return the {@link DataSource} instance, or {@code null} to use the default implementation
      */
     protected DataSource createDataSource(Blob content, String contentType) {
@@ -98,9 +94,9 @@ public class PartDataHandler extends DataHandler {
 
     @Override
     public final void writeTo(OutputStream os) throws IOException {
-        // The PartContent may have an implementation of writeTo that is more efficient than the default
-        // DataHandler#writeTo method (which requests an input stream and then copies it to the output
-        // stream).
+        // The PartContent may have an implementation of writeTo that is more efficient than the
+        // default DataHandler#writeTo method (which requests an input stream and then copies it to
+        // the output stream).
         part.getBlob().writeTo(os);
     }
 }

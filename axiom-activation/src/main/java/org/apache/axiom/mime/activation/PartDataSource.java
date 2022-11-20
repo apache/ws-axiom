@@ -25,9 +25,7 @@ import java.io.OutputStream;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.mime.Part;
 
-/**
- * Default {@link DataSource} implementation for MIME parts.
- */
+/** Default {@link DataSource} implementation for MIME parts. */
 final class PartDataSource implements SizeAwareDataSource {
     private final Part part;
 

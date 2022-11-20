@@ -25,27 +25,24 @@ import java.io.OutputStream;
 
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
-/**
- * A data source with empty (zero length) content.
- */
+/** A data source with empty (zero length) content. */
 public class EmptyDataSource implements SizeAwareDataSource {
-    /**
-     * Empty data source instance with content type {@code application/octet-stream}.
-     */
+    /** Empty data source instance with content type {@code application/octet-stream}. */
     public static final EmptyDataSource INSTANCE = new EmptyDataSource("application/octet-stream");
-    
-    private static final InputStream emptyInputStream = new InputStream() {
-        @Override
-        public int read() throws IOException {
-            return -1;
-        }
-    };
-    
+
+    private static final InputStream emptyInputStream =
+            new InputStream() {
+                @Override
+                public int read() throws IOException {
+                    return -1;
+                }
+            };
+
     private final String contentType;
-    
+
     /**
      * Construct an empty data source with the given content type.
-     * 
+     *
      * @param contentType the content type
      */
     public EmptyDataSource(String contentType) {

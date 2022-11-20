@@ -41,30 +41,28 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
  * and for {@link JAXBElement} instances. It implements {@link QNameAwareOMDataSource} so that it
  * can be used with {@link OMFactory#createOMElement(OMDataSource)}, i.e. it is not necessary to
  * supply the QName during construction of the {@link OMSourcedElement}. It also has full support
- * for XOP/MTOM. It is implemented as a push-style {@link OMDataSource} so that an
- * {@link OMSourcedElement} backed by an instance of this class can be expanded in an efficient way
- * (including the case where the JAXB object contains base64 binary data represented as
- * {@link DataHandler} instances or byte arrays).
- * <p>
- * The JAXB object encapsulated by an instance of this class can be retrieved using
- * {@link OMDataSourceExt#getObject()}. Note that modifying the JAXB object after passing it to the
+ * for XOP/MTOM. It is implemented as a push-style {@link OMDataSource} so that an {@link
+ * OMSourcedElement} backed by an instance of this class can be expanded in an efficient way
+ * (including the case where the JAXB object contains base64 binary data represented as {@link
+ * DataHandler} instances or byte arrays).
+ *
+ * <p>The JAXB object encapsulated by an instance of this class can be retrieved using {@link
+ * OMDataSourceExt#getObject()}. Note that modifying the JAXB object after passing it to the
  * constructor may result in unexpected behavior and should be avoided.
- * <p>
- * Instances of this class are non destructive, in the sense defined by
- * {@link OMDataSourceExt#isDestructiveWrite()}.
+ *
+ * <p>Instances of this class are non destructive, in the sense defined by {@link
+ * OMDataSourceExt#isDestructiveWrite()}.
  */
 public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameAwareOMDataSource {
     private final JAXBContext context;
     private final Object object;
     private QName cachedQName;
-    
+
     /**
      * Constructor.
-     * 
-     * @param context
-     *            the JAXB context to which the object is known
-     * @param object
-     *            the JAXB object; this may be a plain Java bean or a {@link JAXBElement}
+     *
+     * @param context the JAXB context to which the object is known
+     * @param object the JAXB object; this may be a plain Java bean or a {@link JAXBElement}
      */
     public JAXBOMDataSource(JAXBContext context, Object object) {
         this.context = context;
@@ -82,7 +80,7 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameA
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
             if (writer instanceof MTOMXMLStreamWriter) {
-                MTOMXMLStreamWriter mtomWriter = (MTOMXMLStreamWriter)writer;
+                MTOMXMLStreamWriter mtomWriter = (MTOMXMLStreamWriter) writer;
                 if (mtomWriter.isOptimized()) {
                     marshaller.setAttachmentMarshaller(new AttachmentMarshallerImpl(mtomWriter));
                 }
@@ -93,7 +91,7 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameA
             Throwable cause = ex.getCause();
             while (cause != null) {
                 if (cause instanceof XMLStreamException) {
-                    throw (XMLStreamException)cause;
+                    throw (XMLStreamException) cause;
                 }
                 cause = cause.getCause();
             }
@@ -104,7 +102,7 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameA
     private QName getQName() {
         if (cachedQName == null) {
             if (object instanceof JAXBElement) {
-                cachedQName = ((JAXBElement<?>)object).getName();
+                cachedQName = ((JAXBElement<?>) object).getName();
             } else {
                 cachedQName = context.createJAXBIntrospector().getElementName(object);
                 if (cachedQName == null) {
@@ -116,7 +114,7 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameA
         }
         return cachedQName;
     }
-    
+
     @Override
     public String getLocalName() {
         return getQName().getLocalPart();

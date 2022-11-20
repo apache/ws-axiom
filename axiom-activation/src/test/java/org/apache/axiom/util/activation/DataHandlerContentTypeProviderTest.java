@@ -30,23 +30,26 @@ import org.junit.Test;
 public class DataHandlerContentTypeProviderTest {
     @Test
     public void testNotDataHandler() {
-        assertThat(DataHandlerContentTypeProvider.INSTANCE
-                .getContentType(Blobs.createBlob(new byte[10]))).isNull();
+        assertThat(
+                        DataHandlerContentTypeProvider.INSTANCE.getContentType(
+                                Blobs.createBlob(new byte[10])))
+                .isNull();
     }
 
     @Test
     public void testDataHandlerWithoutContentType() {
         DataHandler dh = new DataHandler(new BlobDataSource(Blobs.createBlob(new byte[10]), null));
         assertThat(
-                DataHandlerContentTypeProvider.INSTANCE.getContentType(DataHandlerUtils.toBlob(dh)))
-                        .isNull();
+                        DataHandlerContentTypeProvider.INSTANCE.getContentType(
+                                DataHandlerUtils.toBlob(dh)))
+                .isNull();
     }
 
     @Test
     public void testDataHandlerWithContentType() {
         DataHandler dh = new DataHandler("test", "text/plain");
-        ContentType contentType = DataHandlerContentTypeProvider.INSTANCE
-                .getContentType(DataHandlerUtils.toBlob(dh));
+        ContentType contentType =
+                DataHandlerContentTypeProvider.INSTANCE.getContentType(DataHandlerUtils.toBlob(dh));
         assertThat(contentType).isNotNull();
         assertThat(contentType.getMediaType()).isEqualTo(MediaType.TEXT_PLAIN);
     }

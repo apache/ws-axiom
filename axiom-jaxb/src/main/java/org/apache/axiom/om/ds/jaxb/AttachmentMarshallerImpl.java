@@ -28,7 +28,7 @@ import org.apache.axiom.util.activation.DataHandlerUtils;
 
 final class AttachmentMarshallerImpl extends AttachmentMarshaller {
     private final MTOMXMLStreamWriter out;
-    
+
     public AttachmentMarshallerImpl(MTOMXMLStreamWriter out) {
         this.out = out;
     }
@@ -39,14 +39,19 @@ final class AttachmentMarshallerImpl extends AttachmentMarshaller {
     }
 
     @Override
-    public String addMtomAttachment(DataHandler data, String elementNamespace,
-            String elementLocalName) {
+    public String addMtomAttachment(
+            DataHandler data, String elementNamespace, String elementLocalName) {
         return "cid:" + out.prepareBlob(DataHandlerUtils.toBlob(data));
     }
 
     @Override
-    public String addMtomAttachment(byte[] data, int offset, int length, String mimeType,
-            String elementNamespace, String elementLocalName) {
+    public String addMtomAttachment(
+            byte[] data,
+            int offset,
+            int length,
+            String mimeType,
+            String elementNamespace,
+            String elementLocalName) {
         // TODO: instead of copying the array, we could use a specialized DataHandler/DataSource
         if (offset != 0 || length != data.length) {
             int len = length - offset;
@@ -54,8 +59,11 @@ final class AttachmentMarshallerImpl extends AttachmentMarshaller {
             System.arraycopy(data, offset, newData, 0, len);
             data = newData;
         }
-        return addMtomAttachment(new DataHandler(new BlobDataSource(Blobs.createBlob(data), "application/octet-stream")),
-                elementNamespace, elementLocalName);
+        return addMtomAttachment(
+                new DataHandler(
+                        new BlobDataSource(Blobs.createBlob(data), "application/octet-stream")),
+                elementNamespace,
+                elementLocalName);
     }
 
     @Override

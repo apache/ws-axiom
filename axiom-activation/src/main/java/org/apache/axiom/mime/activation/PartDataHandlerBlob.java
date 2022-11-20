@@ -26,9 +26,7 @@ import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.mime.PartBlob;
 
-/**
- * {@link PartBlob} implementation that wraps a {@link PartDataHandler}.
- */
+/** {@link PartBlob} implementation that wraps a {@link PartDataHandler}. */
 public final class PartDataHandlerBlob implements PartBlob {
     private final PartDataHandler dataHandler;
 

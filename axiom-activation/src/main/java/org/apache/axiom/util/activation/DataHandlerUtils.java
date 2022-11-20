@@ -24,24 +24,23 @@ import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.activation.PartDataHandler;
 import org.apache.axiom.mime.activation.PartDataHandlerBlob;
 
-/**
- * Contains utility methods to work with {@link DataHandler} objects.
- */
+/** Contains utility methods to work with {@link DataHandler} objects. */
 public final class DataHandlerUtils {
     private DataHandlerUtils() {}
 
     /**
      * Get the {@link DataHandler} wrapped by the given {@link Blob}.
-     * 
+     *
      * @param blob the {@link Blob} to unwrap
-     * @return the wrapped {@link DataHandler}, or {@code null} if the blob doesn't wrap a {@link DataHandler}
+     * @return the wrapped {@link DataHandler}, or {@code null} if the blob doesn't wrap a {@link
+     *     DataHandler}
      */
     public static DataHandler getDataHandler(Blob blob) {
         if (blob instanceof DataHandlerBlob) {
-            return ((DataHandlerBlob)blob).getDataHandler();
+            return ((DataHandlerBlob) blob).getDataHandler();
         }
         if (blob instanceof PartDataHandlerBlob) {
-            return ((PartDataHandlerBlob)blob).getDataHandler();
+            return ((PartDataHandlerBlob) blob).getDataHandler();
         }
         return null;
     }
@@ -49,7 +48,7 @@ public final class DataHandlerUtils {
     /**
      * Get a {@link DataHandler} for the given {@link Blob}. If the blob was obtained from {@link
      * #toBlob(DataHandler)}, the original {@link DataHandler} is returned.
-     * 
+     *
      * @param blob the {@link Blob} to convert
      * @return a {@link DataHandler} representing the {@link Blob}
      */
@@ -59,18 +58,18 @@ public final class DataHandlerUtils {
     }
 
     /**
-     * Get a {@link Blob} for the given {@link DataHandler}. If the {@link DataHandler} was obtained from {@link
-     * #toDataHandler(Blob)}, the original {@link Blob} is returned.
-     * 
+     * Get a {@link Blob} for the given {@link DataHandler}. If the {@link DataHandler} was obtained
+     * from {@link #toDataHandler(Blob)}, the original {@link Blob} is returned.
+     *
      * @param dh the {@link DataHandler} to convert
      * @return a {@link Blob} representing the {@link DataHandler}
      */
     public static Blob toBlob(DataHandler dh) {
         if (dh instanceof BlobDataHandler) {
-            return ((BlobDataHandler)dh).getBlob();
+            return ((BlobDataHandler) dh).getBlob();
         }
         if (dh instanceof PartDataHandler) {
-            return ((PartDataHandler)dh).getBlob();
+            return ((PartDataHandler) dh).getBlob();
         }
         return new DataHandlerBlob(dh);
     }

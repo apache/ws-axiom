@@ -35,7 +35,8 @@ import org.apache.commons.logging.LogFactory;
 public final class DataHandlerContentTypeProvider implements ContentTypeProvider {
     private static final Log log = LogFactory.getLog(DataHandlerContentTypeProvider.class);
 
-    public static final DataHandlerContentTypeProvider INSTANCE = new DataHandlerContentTypeProvider();
+    public static final DataHandlerContentTypeProvider INSTANCE =
+            new DataHandlerContentTypeProvider();
 
     private DataHandlerContentTypeProvider() {}
 

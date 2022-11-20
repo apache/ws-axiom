@@ -30,13 +30,13 @@ import org.apache.axiom.util.activation.DataHandlerUtils;
 
 final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
     private final OMAttachmentAccessor attachmentAccessor;
-    
+
     AttachmentUnmarshallerImpl(OMAttachmentAccessor attachmentAccessor) {
         this.attachmentAccessor = attachmentAccessor;
     }
     /**
      * Extract the content ID from a URL following the cid scheme defined by RFC2392.
-     * 
+     *
      * @param url the URL
      * @return the corresponding content ID
      * @throws IllegalArgumentException if the URL doesn't use the cid scheme

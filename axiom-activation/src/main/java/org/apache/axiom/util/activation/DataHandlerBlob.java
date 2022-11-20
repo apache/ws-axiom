@@ -29,7 +29,7 @@ import org.apache.axiom.ext.io.StreamCopyException;
 
 final class DataHandlerBlob implements Blob {
     private final DataHandler dataHandler;
-    
+
     DataHandlerBlob(DataHandler dataHandler) {
         this.dataHandler = dataHandler;
     }
