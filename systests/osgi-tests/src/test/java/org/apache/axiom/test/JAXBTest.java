@@ -39,9 +39,7 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
-/**
- * Tests that the axiom-jaxb bundle can be loaded successfully and is operational.
- */
+/** Tests that the axiom-jaxb bundle can be loaded successfully and is operational. */
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
 public class JAXBTest {
@@ -65,12 +63,13 @@ public class JAXBTest {
                 filteredSystemPackages("javax.xml.stream"),
                 junitBundles());
     }
-    
+
     @Test
     public void test() throws Exception {
         OMFactory factory = OMAbstractFactory.getOMFactory();
         JAXBContext context = JAXBContext.newInstance(DummyBean.class);
-        OMSourcedElement element = factory.createOMElement(new JAXBOMDataSource(context, new DummyBean()));
+        OMSourcedElement element =
+                factory.createOMElement(new JAXBOMDataSource(context, new DummyBean()));
         element.serialize(new ByteArrayOutputStream());
     }
 }

@@ -49,9 +49,8 @@ public class BlueprintTest {
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-dom.link"),
                 junitBundles());
     }
-    
-    @Inject
-    private TestService testService;
+
+    @Inject private TestService testService;
 
     @Test
     public void test() throws Exception {

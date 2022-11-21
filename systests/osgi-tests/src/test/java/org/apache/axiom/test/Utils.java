@@ -35,14 +35,22 @@ import org.osgi.framework.launch.FrameworkFactory;
 
 public class Utils {
     private static String[] defaultSystemPackages;
-    
-    private synchronized static String[] getDefaultSystemPackages() {
+
+    private static synchronized String[] getDefaultSystemPackages() {
         if (defaultSystemPackages == null) {
             try {
-                NativeTestContainer testContainer = new NativeTestContainer(DefaultExamSystem.create(null), ServiceLoader.load(FrameworkFactory.class).iterator().next());
+                NativeTestContainer testContainer =
+                        new NativeTestContainer(
+                                DefaultExamSystem.create(null),
+                                ServiceLoader.load(FrameworkFactory.class).iterator().next());
                 testContainer.start();
                 try {
-                    defaultSystemPackages = testContainer.getSystemBundle().getBundleContext().getProperty(Constants.FRAMEWORK_SYSTEMPACKAGES).split("\\s*,\\s*");
+                    defaultSystemPackages =
+                            testContainer
+                                    .getSystemBundle()
+                                    .getBundleContext()
+                                    .getProperty(Constants.FRAMEWORK_SYSTEMPACKAGES)
+                                    .split("\\s*,\\s*");
                 } finally {
                     testContainer.stop();
                 }
@@ -52,7 +60,7 @@ public class Utils {
         }
         return defaultSystemPackages;
     }
-    
+
     public static FrameworkPropertyOption filteredSystemPackages(String... excludedPackage) {
         List<String> systemPackages = new ArrayList<>();
         Set<String> excludedPackageSet = new HashSet<>(Arrays.asList(excludedPackage));
@@ -61,6 +69,7 @@ public class Utils {
                 systemPackages.add(systemPackage);
             }
         }
-        return CoreOptions.frameworkProperty(Constants.FRAMEWORK_SYSTEMPACKAGES).value(String.join(",", systemPackages));
+        return CoreOptions.frameworkProperty(Constants.FRAMEWORK_SYSTEMPACKAGES)
+                .value(String.join(",", systemPackages));
     }
 }

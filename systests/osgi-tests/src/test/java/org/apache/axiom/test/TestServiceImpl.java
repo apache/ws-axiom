@@ -30,7 +30,7 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public String doSomething() throws Exception {
-        Document document = (Document)metaFactory.getOMFactory().createOMDocument();
+        Document document = (Document) metaFactory.getOMFactory().createOMDocument();
         return document.createElementNS(null, "test").toString();
     }
 }

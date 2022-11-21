@@ -35,9 +35,7 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
-/**
- * Tests that Axiom works properly with the StAX implementation from the JRE.
- */
+/** Tests that Axiom works properly with the StAX implementation from the JRE. */
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
 public class SystemDepsTest {
@@ -50,11 +48,12 @@ public class SystemDepsTest {
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link"),
                 junitBundles());
     }
-    
+
     @Test
     public void testCreateOMBuilder() throws Exception {
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(new StringReader(
-                "<root/>")).getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(new StringReader("<root/>"))
+                        .getDocumentElement();
         assertEquals("root", element.getLocalName());
     }
 }

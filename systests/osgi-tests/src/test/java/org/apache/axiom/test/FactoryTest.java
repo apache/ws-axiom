@@ -60,10 +60,9 @@ public class FactoryTest {
                 filteredSystemPackages("javax.xml.stream"),
                 junitBundles());
     }
-    
-    @Inject
-    private BundleContext context;
-    
+
+    @Inject private BundleContext context;
+
     @Test
     public void testGetOMFactory() throws Exception {
         assertNotNull(OMAbstractFactory.getOMFactory());
@@ -81,41 +80,46 @@ public class FactoryTest {
 
     @Test
     public void testLLOMMetaFactoryServicePresent() throws Exception {
-        ServiceReference<?>[] omfactRefs = context
-                .getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=llom)");
+        ServiceReference<?>[] omfactRefs =
+                context.getServiceReferences(
+                        "org.apache.axiom.om.OMMetaFactory", "(implementationName=llom)");
         assertNotNull(omfactRefs);
         assertEquals(1, omfactRefs.length);
     }
-    
+
     @Test
     public void testDOOMMetaFactoryServicePresent() throws Exception {
-        ServiceReference<?>[] omfactRefs = context
-                .getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=doom)");
+        ServiceReference<?>[] omfactRefs =
+                context.getServiceReferences(
+                        "org.apache.axiom.om.OMMetaFactory", "(implementationName=doom)");
         assertNotNull(omfactRefs);
         assertEquals(2, omfactRefs.length);
     }
-    
+
     @Test
     public void testLookupByFeature() throws Exception {
-        ServiceReference<?>[] omfactRefs = context
-                .getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(feature=dom)");
+        ServiceReference<?>[] omfactRefs =
+                context.getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(feature=dom)");
         assertNotNull(omfactRefs);
         assertEquals(1, omfactRefs.length);
     }
-    
+
     @Test
     public void testLookupDOMMetaFactory() throws Exception {
-        ServiceReference<?>[] omfactRefs = context
-                .getServiceReferences("org.apache.axiom.om.dom.DOMMetaFactory", null);
+        ServiceReference<?>[] omfactRefs =
+                context.getServiceReferences("org.apache.axiom.om.dom.DOMMetaFactory", null);
         assertNotNull(omfactRefs);
         assertEquals(1, omfactRefs.length);
     }
-    
+
     @Test
     public void testCreateOMBuilder() throws Exception {
-        OMElement oe = OMXMLBuilderFactory.createOMBuilder(new StringReader(
-                "<a:testElement xmlns:a=\"http://test/namespace\"/>")).getDocumentElement();
-        assertEquals("testElement",oe.getLocalName());
+        OMElement oe =
+                OMXMLBuilderFactory.createOMBuilder(
+                                new StringReader(
+                                        "<a:testElement xmlns:a=\"http://test/namespace\"/>"))
+                        .getDocumentElement();
+        assertEquals("testElement", oe.getLocalName());
         assertEquals("http://test/namespace", oe.getNamespace().getNamespaceURI());
     }
 }

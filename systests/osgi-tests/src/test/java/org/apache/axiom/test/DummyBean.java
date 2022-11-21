@@ -20,7 +20,7 @@ package org.apache.axiom.test;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="test", namespace="urn:test")
+@XmlRootElement(name = "test", namespace = "urn:test")
 public class DummyBean {
     private String content;
 

@@ -40,8 +40,8 @@ import org.ops4j.pax.exam.spi.reactors.PerClass;
 /**
  * Tests that Axiom works properly with SJSXP (instead of Woodstox) in an OSGi environment. In
  * particular, this is a regression test for <a
- * href="https://issues.apache.org/jira/browse/AXIOM-454">AXIOM-454</a>; it checks that the
- * <code>org.codehaus.stax2</code> import is optional.
+ * href="https://issues.apache.org/jira/browse/AXIOM-454">AXIOM-454</a>; it checks that the <code>
+ * org.codehaus.stax2</code> import is optional.
  */
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
@@ -61,12 +61,15 @@ public class SJSXPTest {
                 systemPackages("org.w3c.dom.html", "org.w3c.dom.ranges", "org.w3c.dom.traversal"),
                 junitBundles());
     }
-    
+
     @Test
     public void testCreateOMBuilder() throws Exception {
-        OMElement oe = OMXMLBuilderFactory.createOMBuilder(new StringReader(
-                "<a:testElement xmlns:a=\"http://test/namespace\"/>")).getDocumentElement();
-        assertEquals("testElement",oe.getLocalName());
+        OMElement oe =
+                OMXMLBuilderFactory.createOMBuilder(
+                                new StringReader(
+                                        "<a:testElement xmlns:a=\"http://test/namespace\"/>"))
+                        .getDocumentElement();
+        assertEquals("testElement", oe.getLocalName());
         assertEquals("http://test/namespace", oe.getNamespace().getNamespaceURI());
     }
 }

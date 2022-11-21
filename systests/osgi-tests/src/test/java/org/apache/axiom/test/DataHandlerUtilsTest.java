@@ -52,6 +52,12 @@ public class DataHandlerUtilsTest {
 
     @Test
     public void testByteArrayDataSourceToBlobGetSize() {
-        assertEquals(123, DataHandlerUtils.toBlob(new DataHandler(new ByteArrayDataSource(new byte[123], "application/octet-stream"))).getSize());
+        assertEquals(
+                123,
+                DataHandlerUtils.toBlob(
+                                new DataHandler(
+                                        new ByteArrayDataSource(
+                                                new byte[123], "application/octet-stream")))
+                        .getSize());
     }
 }
