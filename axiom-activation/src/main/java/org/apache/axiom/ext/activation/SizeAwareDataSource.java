@@ -19,18 +19,20 @@
 
 package org.apache.axiom.ext.activation;
 
+import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.util.activation.DataHandlerUtils;
+
 /**
- * Optional extension interface that can be implemented by data sources that support a getSize
- * method. Code working with data sources can use this this information to optimize certain
- * operations. Note however that instead of checking of this interface directly, this kind of code
- * should use {@link org.apache.axiom.util.activation.DataSourceUtils#getSize(DataSource)} because
- * this method is able to determine the size of other types of data sources as well.
+ * Optional extension interface that can be implemented by data sources that support a {@code
+ * getSize} method. This is used by {@link DataHandlerUtils#toBlob(DataHandler)} to implement the
+ * {@link Blob#getSize()} method. Note that the latter is able to determine the size of some types
+ * of {@link DataSource} instances that don't implement this extension interface.
  *
- * <p>Code using this interface should be aware that some implementations may be unable to guarantee
- * 100% accuracy when determining the size of the data source. Situations where this can occur
- * include:
+ * <p>Some implementations of this interface may be unable to guarantee 100% accuracy when
+ * determining the size of the data source. Situations where this can occur include:
  *
  * <ul>
  *   <li>The data source uses a network protocol that allows to get the size of the data but that

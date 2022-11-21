@@ -28,7 +28,7 @@ import javax.activation.FileDataSource;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
 /** Contains utility methods to work with {@link DataSource} objects. */
-public class DataSourceUtils {
+final class DataSourceUtils {
     private static final Class<?> byteArrayDataSourceClass;
 
     static {
@@ -55,7 +55,7 @@ public class DataSourceUtils {
      * @param ds the data source
      * @return (an estimation of) the size of the data or <code>-1</code> if the size is unknown
      */
-    public static long getSize(DataSource ds) {
+    static long getSize(DataSource ds) {
         if (ds instanceof SizeAwareDataSource) {
             return ((SizeAwareDataSource) ds).getSize();
         } else if (byteArrayDataSourceClass != null && byteArrayDataSourceClass.isInstance(ds)) {

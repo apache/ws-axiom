@@ -23,9 +23,10 @@ import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
+import javax.activation.DataHandler;
 import javax.mail.util.ByteArrayDataSource;
 
-import org.apache.axiom.util.activation.DataSourceUtils;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -36,7 +37,7 @@ import org.ops4j.pax.exam.spi.reactors.PerClass;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
-public class DataSourceUtilsTest {
+public class DataHandlerUtilsTest {
     @Configuration
     public static Option[] configuration() {
         return options(
@@ -50,7 +51,7 @@ public class DataSourceUtilsTest {
     }
 
     @Test
-    public void testGetSize() {
-        assertEquals(123, DataSourceUtils.getSize(new ByteArrayDataSource(new byte[123], "application/octet-stream")));
+    public void testByteArrayDataSourceToBlobGetSize() {
+        assertEquals(123, DataHandlerUtils.toBlob(new DataHandler(new ByteArrayDataSource(new byte[123], "application/octet-stream"))).getSize());
     }
 }
