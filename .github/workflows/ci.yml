@@ -70,7 +70,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         distribution: 'zulu'
-        java-version: 11
+        java-version: 17
         server-id: apache.snapshots.https
         server-username: NEXUS_USER
         server-password: NEXUS_PW
