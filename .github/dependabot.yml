@@ -56,3 +56,7 @@ updates:
       - dependency-name: "org.springframework:*"
         versions:
           - ">= 6.0.0"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
