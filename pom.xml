@@ -261,7 +261,7 @@
         <exam.version>4.13.5</exam.version>
         <slf4j.version>1.7.36</slf4j.version>
         <jetty.version>10.0.13</jetty.version>
-        <log4j.version>2.19.0</log4j.version>
+        <log4j.version>2.20.0</log4j.version>
         <groovy.version>4.0.9</groovy.version>
         <jaxbri.version>2.3.6</jaxbri.version>
         <auto-service.version>1.0.1</auto-service.version>
