@@ -268,6 +268,7 @@
         <asm.version>9.4</asm.version>
         <errorprone.version>2.16</errorprone.version>
         <junit5.version>5.9.1</junit5.version>
+        <plexus-utils.version>3.5.1</plexus-utils.version>
 
         <skipDeploy>false</skipDeploy>
 
@@ -548,6 +549,11 @@
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service-annotations</artifactId>
                 <version>${auto-service.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <version>${plexus-utils.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
