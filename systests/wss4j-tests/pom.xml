@@ -169,14 +169,6 @@
                     <storepass>password</storepass>
                     <keypass>password</keypass>
                 </configuration>
-                <dependencies>
-                    <!-- Workaround for https://github.com/mojohaus/keytool/issues/57 -->
-                    <dependency>
-                        <groupId>org.codehaus.plexus</groupId>
-                        <artifactId>plexus-utils</artifactId>
-                        <version>${plexus-utils.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
