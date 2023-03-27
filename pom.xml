@@ -265,7 +265,7 @@
         <groovy.version>4.0.10</groovy.version>
         <jaxbri.version>2.3.6</jaxbri.version>
         <auto-service.version>1.0.1</auto-service.version>
-        <asm.version>9.4</asm.version>
+        <asm.version>9.5</asm.version>
         <errorprone.version>2.16</errorprone.version>
         <junit5.version>5.9.1</junit5.version>
 
