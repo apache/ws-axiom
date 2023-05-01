@@ -72,7 +72,7 @@
     <maintainer>
       <foaf:Person>
         <foaf:name>Axiom Development Team</foaf:name>
-        <foaf:mbox rdf:resource="mailto:dev@ws.apache.org?subject=[Axiom]"/>
+        <foaf:mbox rdf:resource="mailto:dev@ws.apache.org?subject=%5BAxiom%5D"/>
       </foaf:Person>
     </maintainer>
     <asfext:implements>
