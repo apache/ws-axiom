@@ -67,11 +67,6 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency><!-- Need this because the Xalan version in some JREs doesn't interact well with JDOM -->
-            <groupId>xalan</groupId>
-            <artifactId>xalan</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-jcl</artifactId>
