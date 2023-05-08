@@ -30,6 +30,10 @@
 
     <url>http://ws.apache.org/axiom/</url>
 
+    <properties>
+        <xalan.version>2.7.3</xalan.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -47,13 +51,12 @@
         <dependency>
             <groupId>xalan</groupId>
             <artifactId>xalan</artifactId>
-            <version>2.7.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>xml-apis</groupId>
-                    <artifactId>xml-apis</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>${xalan.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>serializer</artifactId>
+            <version>${xalan.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.saxon</groupId>
