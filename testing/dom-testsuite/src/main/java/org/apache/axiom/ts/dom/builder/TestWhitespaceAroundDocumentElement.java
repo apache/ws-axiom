@@ -42,19 +42,21 @@ public class TestWhitespaceAroundDocumentElement extends DOMTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(" <!-- --> <root/> ")));
+        Document doc =
+                dbf.newDocumentBuilder()
+                        .parse(new InputSource(new StringReader(" <!-- --> <root/> ")));
         Node child = doc.getFirstChild();
         do {
             assertThat(child).isNotInstanceOf(Text.class);
             child = child.getNextSibling();
         } while (child != null);
-        
+
         child = doc.getLastChild();
         do {
             assertThat(child).isNotInstanceOf(Text.class);
             child = child.getPreviousSibling();
         } while (child != null);
-        
+
         NodeList children = doc.getChildNodes();
         assertThat(children.getLength()).isEqualTo(2);
         assertThat(children.item(1)).isSameInstanceAs(doc.getDocumentElement());

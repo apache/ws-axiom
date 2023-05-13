@@ -25,8 +25,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * Tests that {@link Node#getOwnerDocument()} returns <code>null</code> if the node is a
- * {@link Document}.
+ * Tests that {@link Node#getOwnerDocument()} returns <code>null</code> if the node is a {@link
+ * Document}.
  */
 public class TestGetOwnerDocument extends DOMTestCase {
     public TestGetOwnerDocument(DocumentBuilderFactory dbf) {

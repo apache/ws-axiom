@@ -28,9 +28,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Tests the behavior of {@link Node#replaceChild(Node, Node)} when replacing a child by a
- * {@link DocumentFragment}. This test covers the case where the child being replaced is neither the
- * first nor the last child.
+ * Tests the behavior of {@link Node#replaceChild(Node, Node)} when replacing a child by a {@link
+ * DocumentFragment}. This test covers the case where the child being replaced is neither the first
+ * nor the last child.
  */
 public class TestReplaceChildMiddleWithDocumentFragment extends DOMTestCase {
     public TestReplaceChildMiddleWithDocumentFragment(DocumentBuilderFactory dbf) {
@@ -40,13 +40,13 @@ public class TestReplaceChildMiddleWithDocumentFragment extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
-        
+
         DocumentFragment fragment = document.createDocumentFragment();
         Element x = document.createElementNS(null, "x");
         Element y = document.createElementNS(null, "y");
         fragment.appendChild(x);
         fragment.appendChild(y);
-        
+
         Element element = document.createElementNS(null, "parent");
         Element a = document.createElementNS(null, "a");
         Element b = document.createElementNS(null, "b");
@@ -54,23 +54,23 @@ public class TestReplaceChildMiddleWithDocumentFragment extends DOMTestCase {
         element.appendChild(a);
         element.appendChild(b);
         element.appendChild(c);
-        
+
         element.replaceChild(fragment, b);
-        
+
         NodeList children = element.getChildNodes();
         assertEquals(4, children.getLength());
         assertSame(a, children.item(0));
         assertSame(x, children.item(1));
         assertSame(y, children.item(2));
         assertSame(c, children.item(3));
-        
+
         assertSame(element, x.getParentNode());
         assertSame(element, y.getParentNode());
-        
+
         assertNull(fragment.getFirstChild());
         assertNull(fragment.getLastChild());
         assertEquals(0, fragment.getChildNodes().getLength());
-        
+
         assertSame(a, element.getFirstChild());
         assertSame(c, element.getLastChild());
     }

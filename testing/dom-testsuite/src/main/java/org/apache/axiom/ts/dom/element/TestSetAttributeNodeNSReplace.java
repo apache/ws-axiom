@@ -38,18 +38,18 @@ public class TestSetAttributeNodeNSReplace extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
-        
+
         // Initialize element with original attribute
         Element element = document.createElementNS("urn:ns1", "test");
         Attr attr1 = document.createAttributeNS("urn:ns2", "p:attr");
         attr1.setValue("value1");
         element.setAttributeNodeNS(attr1);
-        
+
         // Replace attribute
         Attr attr2 = document.createAttributeNS("urn:ns2", "q:attr");
         attr2.setValue("value2");
         element.setAttributeNodeNS(attr2);
-        
+
         assertNull(attr1.getOwnerElement());
         assertSame(document, attr1.getOwnerDocument());
         assertSame(element, attr2.getOwnerElement());

@@ -26,9 +26,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * Tests the behavior of {@link Node#setPrefix(String)} when used to remove the prefix on an
- * {@link Attr} that has a namespace. Although this results in an attribute that is invalid with
- * respect to namespaces, no exception is thrown.
+ * Tests the behavior of {@link Node#setPrefix(String)} when used to remove the prefix on an {@link
+ * Attr} that has a namespace. Although this results in an attribute that is invalid with respect to
+ * namespaces, no exception is thrown.
  */
 public class TestSetPrefixNullWithNamespace extends DOMTestCase {
     public TestSetPrefixNullWithNamespace(DocumentBuilderFactory dbf) {

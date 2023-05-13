@@ -25,9 +25,7 @@ import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Text;
 
-/**
- * Tests that {@link CharacterData#getLength()} returns the expected result.
- */
+/** Tests that {@link CharacterData#getLength()} returns the expected result. */
 public class TestGetLength extends DOMTestCase {
     public TestGetLength(DocumentBuilderFactory dbf) {
         super(dbf);

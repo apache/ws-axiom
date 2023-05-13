@@ -29,15 +29,19 @@ import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 
 public class XercesTest extends TestCase {
     public static TestSuite suite() {
-        W3CDOMLevel1TestSuiteBuilder builder = new W3CDOMLevel1TestSuiteBuilder(new DocumentBuilderFactoryFactory() {
-            @Override
-            public DocumentBuilderFactory newInstance() {
-                return new DocumentBuilderFactoryImpl();
-            }
-        });
-        
-        builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)");
-        
+        W3CDOMLevel1TestSuiteBuilder builder =
+                new W3CDOMLevel1TestSuiteBuilder(
+                        new DocumentBuilderFactoryFactory() {
+                            @Override
+                            public DocumentBuilderFactory newInstance() {
+                                return new DocumentBuilderFactoryImpl();
+                            }
+                        });
+
+        builder.exclude(
+                W3CTestCase.class,
+                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)");
+
         return builder.build();
     }
 }

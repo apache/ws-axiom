@@ -32,7 +32,7 @@ public class TestCreateText extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         String textValue = "temp text value";
-        
+
         Document doc = dbf.newDocumentBuilder().newDocument();
         Text txt = doc.createTextNode(textValue);
 

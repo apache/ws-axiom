@@ -36,8 +36,9 @@ public class TestRemoveLastChild extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
-        Element element = builder.parse(new InputSource(new StringReader(
-                "<root><a/><b/><c/></root>"))).getDocumentElement();
+        Element element =
+                builder.parse(new InputSource(new StringReader("<root><a/><b/><c/></root>")))
+                        .getDocumentElement();
         element.removeChild(element.getLastChild());
         Node lastChild = element.getLastChild();
         assertNotNull(lastChild);

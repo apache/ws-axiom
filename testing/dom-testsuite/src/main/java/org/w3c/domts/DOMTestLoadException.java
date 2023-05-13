@@ -19,8 +19,8 @@
 package org.w3c.domts;
 
 /**
- * Replacement class for the original <code>DOMTestLoadException</code> supporting exception chaining
- * and having an additional constructor.
+ * Replacement class for the original <code>DOMTestLoadException</code> supporting exception
+ * chaining and having an additional constructor.
  */
 public class DOMTestLoadException extends Exception {
     private static final long serialVersionUID = 1L;

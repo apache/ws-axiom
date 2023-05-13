@@ -38,18 +38,18 @@ public class TestLookupNamespaceURIExplicit extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
-        
+
         Element e1 = document.createElementNS("urn:ns0", "ns0:e1");
         e1.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns", "urn:ns1");
         e1.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:p", "urn:ns2");
         e1.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:q", "urn:ns4");
-        
+
         Element e2 = document.createElementNS("urn:ns0", "ns0:e2");
         e2.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:p", "urn:ns3");
         // This attribute undeclares the "q" prefix. Note that this is allowed only in XML 1.1.
         e2.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:q", "");
         e1.appendChild(e2);
-        
+
         Element e3 = document.createElementNS("urn:ns0", "ns0:e3");
         e3.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns", "");
         // Add some attributes to check that lookupNamespaceURI doesn't confuse normal attributes
@@ -57,15 +57,15 @@ public class TestLookupNamespaceURIExplicit extends DOMTestCase {
         e3.setAttributeNS("urn:test", "ns:p", "value");
         e3.setAttributeNS(null, "q", "value");
         e2.appendChild(e3);
-        
+
         assertEquals("urn:ns1", e1.lookupNamespaceURI(null));
         assertEquals("urn:ns1", e2.lookupNamespaceURI(null));
         assertNull(e3.lookupNamespaceURI(null));
-        
+
         assertEquals("urn:ns2", e1.lookupNamespaceURI("p"));
         assertEquals("urn:ns3", e2.lookupNamespaceURI("p"));
         assertEquals("urn:ns3", e3.lookupNamespaceURI("p"));
-        
+
         assertEquals("urn:ns4", e1.lookupNamespaceURI("q"));
         assertEquals(null, e2.lookupNamespaceURI("q"));
         assertEquals(null, e3.lookupNamespaceURI("q"));

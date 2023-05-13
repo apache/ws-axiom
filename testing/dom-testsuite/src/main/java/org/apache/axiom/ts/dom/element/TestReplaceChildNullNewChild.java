@@ -26,9 +26,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
- * Tests the behavior of {@link Node#replaceChild(Node, Node)} if <code>newChild</code> is
- * <code>null</code>. In this case an exception should be thrown. Note that the DOM doesn't specify
- * the exception to throw; Xerces throws a {@link NullPointerException}.
+ * Tests the behavior of {@link Node#replaceChild(Node, Node)} if <code>newChild</code> is <code>
+ * null</code>. In this case an exception should be thrown. Note that the DOM doesn't specify the
+ * exception to throw; Xerces throws a {@link NullPointerException}.
  */
 public class TestReplaceChildNullNewChild extends DOMTestCase {
     public TestReplaceChildNullNewChild(DocumentBuilderFactory dbf) {

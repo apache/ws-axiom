@@ -22,17 +22,17 @@ import javax.xml.namespace.QName;
 
 public final class DOMUtils {
     private DOMUtils() {}
-    
+
     public static String getNamespaceURI(QName qname) {
         String uri = qname.getNamespaceURI();
         return uri.length() == 0 ? null : uri;
     }
-    
+
     public static String getPrefix(QName qname) {
         String prefix = qname.getPrefix();
         return prefix.length() == 0 ? null : prefix;
     }
-    
+
     public static String getQualifiedName(QName qname) {
         String prefix = qname.getPrefix();
         return prefix.length() == 0 ? qname.getLocalPart() : prefix + ":" + qname.getLocalPart();

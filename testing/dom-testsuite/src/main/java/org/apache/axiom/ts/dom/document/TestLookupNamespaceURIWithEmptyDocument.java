@@ -24,9 +24,7 @@ import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-/**
- * Tests the behavior of {@link Node#lookupNamespaceURI(String)} on an empty {@link Document}.
- */
+/** Tests the behavior of {@link Node#lookupNamespaceURI(String)} on an empty {@link Document}. */
 public class TestLookupNamespaceURIWithEmptyDocument extends DOMTestCase {
     public TestLookupNamespaceURIWithEmptyDocument(DocumentBuilderFactory dbf) {
         super(dbf);

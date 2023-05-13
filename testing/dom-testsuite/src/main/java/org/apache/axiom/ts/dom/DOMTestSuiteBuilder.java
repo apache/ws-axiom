@@ -30,26 +30,28 @@ import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
-    private static final QName[] validAttrQNames = new QName[] {
-        new QName("urn:ns2", "attr", "q"),
-        new QName("", "attr", ""),
-        new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "ns", XMLConstants.XMLNS_ATTRIBUTE),
-        new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, ""),
-    };
-    
-    private static final QName[] invalidAttrQNames = new QName[] {
-        new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "attr", ""),
-        new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "attr", "p"),
-        new QName("urn:test", "p", XMLConstants.XMLNS_ATTRIBUTE),
-        new QName("", XMLConstants.XMLNS_ATTRIBUTE, ""),
-    };
-    
+    private static final QName[] validAttrQNames =
+            new QName[] {
+                new QName("urn:ns2", "attr", "q"),
+                new QName("", "attr", ""),
+                new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "ns", XMLConstants.XMLNS_ATTRIBUTE),
+                new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, ""),
+            };
+
+    private static final QName[] invalidAttrQNames =
+            new QName[] {
+                new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "attr", ""),
+                new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "attr", "p"),
+                new QName("urn:test", "p", XMLConstants.XMLNS_ATTRIBUTE),
+                new QName("", XMLConstants.XMLNS_ATTRIBUTE, ""),
+            };
+
     private final DocumentBuilderFactoryFactory dbff;
-    
+
     public DOMTestSuiteBuilder(DocumentBuilderFactoryFactory dbff) {
         this.dbff = dbff;
     }
-    
+
     @Override
     protected void addTests() {
         DocumentBuilderFactory dbf = dbff.newInstance();
@@ -76,11 +78,15 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.dom.document.TestCloneNode(dbf, file));
         }
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttribute(dbf));
-        for (int i=0; i<validAttrQNames.length; i++) {
-            addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNS(dbf, validAttrQNames[i]));
+        for (int i = 0; i < validAttrQNames.length; i++) {
+            addTest(
+                    new org.apache.axiom.ts.dom.document.TestCreateAttributeNS(
+                            dbf, validAttrQNames[i]));
         }
-        for (int i=0; i<invalidAttrQNames.length; i++) {
-            addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSInvalid(dbf, invalidAttrQNames[i]));
+        for (int i = 0; i < invalidAttrQNames.length; i++) {
+            addTest(
+                    new org.apache.axiom.ts.dom.document.TestCreateAttributeNSInvalid(
+                            dbf, invalidAttrQNames[i]));
         }
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateCDATASection(dbf));
@@ -98,8 +104,12 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestLookupPrefixWithEmptyDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestNormalizeDocumentNamespace(dbf));
         for (XSLTImplementation xsltImplementation : getInstances(XSLTImplementation.class)) {
-            addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithIdentityStylesheet(dbf, xsltImplementation));
-            addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithStylesheet(dbf, xsltImplementation));
+            addTest(
+                    new org.apache.axiom.ts.dom.document.TestTransformerWithIdentityStylesheet(
+                            dbf, xsltImplementation));
+            addTest(
+                    new org.apache.axiom.ts.dom.document.TestTransformerWithStylesheet(
+                            dbf, xsltImplementation));
         }
         addTest(new org.apache.axiom.ts.dom.document.TestValidator(dbf));
         addTest(new org.apache.axiom.ts.dom.documentfragment.TestCloneNodeDeep(dbf));
@@ -117,7 +127,9 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes3(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes4(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestCloneNode(dbf));
-        addTest(new org.apache.axiom.ts.dom.element.TestCloneNodeWithAttributeHavingMultipleChildren(dbf));
+        addTest(
+                new org.apache.axiom.ts.dom.element
+                        .TestCloneNodeWithAttributeHavingMultipleChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestCloneNodeWithAttributes(dbf, true));
         addTest(new org.apache.axiom.ts.dom.element.TestCloneNodeWithAttributes(dbf, false));
         addTest(new org.apache.axiom.ts.dom.element.TestGetElementsByTagName(dbf));
@@ -138,13 +150,17 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURIDefaultBindings(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURIExplicit(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURIImplicit(dbf));
-        addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURINamespaceDeclarationAsNSUnawareAttribute(dbf));
+        addTest(
+                new org.apache.axiom.ts.dom.element
+                        .TestLookupNamespaceURINamespaceDeclarationAsNSUnawareAttribute(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURIXercesJ1586(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixDefaultBindings(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixEmptyNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixExplicitMasked(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixImplicitMasked(dbf));
-        addTest(new org.apache.axiom.ts.dom.element.TestRemoveAttributeNodeForeignImplementation(dbf));
+        addTest(
+                new org.apache.axiom.ts.dom.element.TestRemoveAttributeNodeForeignImplementation(
+                        dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveAttributeNodeNotOwner(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveFirstChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveLastChild(dbf));
@@ -158,30 +174,42 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildLastWithDocumentFragment(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildMiddle(dbf, false));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildMiddle(dbf, true));
-        addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildMiddleWithDocumentFragment(dbf));
+        addTest(
+                new org.apache.axiom.ts.dom.element.TestReplaceChildMiddleWithDocumentFragment(
+                        dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildNotFound(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildNullNewChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildSingle(dbf, false));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildSingle(dbf, true));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildWrongDocument(dbf));
-        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSForeignImplementation(dbf));
+        addTest(
+                new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSForeignImplementation(
+                        dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSInUse(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSReplace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeWrongDocument(dbf));
-        for (int i=0; i<validAttrQNames.length; i++) {
-            addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, validAttrQNames[i], "value"));
+        for (int i = 0; i < validAttrQNames.length; i++) {
+            addTest(
+                    new org.apache.axiom.ts.dom.element.TestSetAttributeNS(
+                            dbf, validAttrQNames[i], "value"));
         }
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNSExisting(dbf));
-        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNSExistingDefaultNamespaceDeclaration(dbf));
-        for (int i=0; i<invalidAttrQNames.length; i++) {
-            addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNSInvalid(dbf, invalidAttrQNames[i]));
+        addTest(
+                new org.apache.axiom.ts.dom.element
+                        .TestSetAttributeNSExistingDefaultNamespaceDeclaration(dbf));
+        for (int i = 0; i < invalidAttrQNames.length; i++) {
+            addTest(
+                    new org.apache.axiom.ts.dom.element.TestSetAttributeNSInvalid(
+                            dbf, invalidAttrQNames[i]));
         }
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNull(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetTextContent(dbf));
-        addTest(new org.apache.axiom.ts.dom.element.attributes.TestSetNamedItemNSWrongDocument(dbf));
+        addTest(
+                new org.apache.axiom.ts.dom.element.attributes.TestSetNamedItemNSWrongDocument(
+                        dbf));
         addTest(new org.apache.axiom.ts.dom.element.attributes.TestSetNamedItemWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestAppendData(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetChildNodes(dbf));

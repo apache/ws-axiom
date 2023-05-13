@@ -37,27 +37,32 @@ import org.w3c.domts.DocumentBuilderSetting;
 public abstract class W3CDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final DocumentBuilderFactoryFactory dbff;
     private final Set<DOMFeature> unsupportedFeatures;
-    
-    public W3CDOMTestSuiteBuilder(DocumentBuilderFactoryFactory dbff, DOMFeature... unsupportedFeatures) {
+
+    public W3CDOMTestSuiteBuilder(
+            DocumentBuilderFactoryFactory dbff, DOMFeature... unsupportedFeatures) {
         this.dbff = dbff;
         this.unsupportedFeatures = new HashSet<DOMFeature>(Arrays.asList(unsupportedFeatures));
     }
-    
+
     @Override
     protected final void addTests() {
         final DOMTestDocumentBuilderFactory factory;
         try {
-            factory = new DOMTestDocumentBuilderFactoryImpl(dbff, new DocumentBuilderSetting[] {
-                    DocumentBuilderSetting.notCoalescing,
-                    DocumentBuilderSetting.notExpandEntityReferences,
-                    DocumentBuilderSetting.notIgnoringElementContentWhitespace,
-                    DocumentBuilderSetting.namespaceAware,
-                    DocumentBuilderSetting.notValidating});
+            factory =
+                    new DOMTestDocumentBuilderFactoryImpl(
+                            dbff,
+                            new DocumentBuilderSetting[] {
+                                DocumentBuilderSetting.notCoalescing,
+                                DocumentBuilderSetting.notExpandEntityReferences,
+                                DocumentBuilderSetting.notIgnoringElementContentWhitespace,
+                                DocumentBuilderSetting.namespaceAware,
+                                DocumentBuilderSetting.notValidating
+                            });
         } catch (DOMTestIncompatibleException ex) {
             // TODO
             throw new Error(ex);
         }
-        
+
         DOMTestSuite suite;
         try {
             suite = createDOMTestSuite(factory);
@@ -65,39 +70,47 @@ public abstract class W3CDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             // TODO
             throw new Error(ex);
         }
-        
-        suite.build(new DOMTestSink() {
-            @Override
-            public void addTest(Class testClass) {
-                try {
-                    if (!unsupportedFeatures.isEmpty()) {
-                        Set<DOMFeature> usedFeatures = new HashSet<DOMFeature>();
-                        DOMFeature.matchFeatures(testClass, usedFeatures);
-                        ClassReader classReader = new ClassReader(testClass.getResourceAsStream(testClass.getSimpleName() + ".class"));
-                        DOMTSClassVisitor cv = new DOMTSClassVisitor(usedFeatures);
-                        classReader.accept(cv, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-                        usedFeatures.retainAll(unsupportedFeatures);
-                        if (!usedFeatures.isEmpty()) {
-                            return;
+
+        suite.build(
+                new DOMTestSink() {
+                    @Override
+                    public void addTest(Class testClass) {
+                        try {
+                            if (!unsupportedFeatures.isEmpty()) {
+                                Set<DOMFeature> usedFeatures = new HashSet<DOMFeature>();
+                                DOMFeature.matchFeatures(testClass, usedFeatures);
+                                ClassReader classReader =
+                                        new ClassReader(
+                                                testClass.getResourceAsStream(
+                                                        testClass.getSimpleName() + ".class"));
+                                DOMTSClassVisitor cv = new DOMTSClassVisitor(usedFeatures);
+                                classReader.accept(
+                                        cv, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+                                usedFeatures.retainAll(unsupportedFeatures);
+                                if (!usedFeatures.isEmpty()) {
+                                    return;
+                                }
+                            }
+                            Constructor<? extends DOMTestCase> testConstructor =
+                                    ((Class<?>) testClass)
+                                            .asSubclass(DOMTestCase.class)
+                                            .getConstructor(DOMTestDocumentBuilderFactory.class);
+                            DOMTestCase test;
+                            try {
+                                test = testConstructor.newInstance(new Object[] {factory});
+                            } catch (InvocationTargetException ex) {
+                                throw ex.getTargetException();
+                            }
+                            test.setFramework(JUnitTestFramework.INSTANCE);
+                            W3CDOMTestSuiteBuilder.this.addTest(new W3CTestCase(test));
+                        } catch (Throwable ex) {
+                            // TODO
+                            throw new Error(ex);
                         }
                     }
-                    Constructor<? extends DOMTestCase> testConstructor = ((Class<?>)testClass).asSubclass(DOMTestCase.class).getConstructor(DOMTestDocumentBuilderFactory.class);
-                    DOMTestCase test;
-                    try {
-                        test = testConstructor.newInstance(new Object[] { factory });
-                    } catch (InvocationTargetException ex) {
-                        throw ex.getTargetException();
-                    }
-                    test.setFramework(JUnitTestFramework.INSTANCE);
-                    W3CDOMTestSuiteBuilder.this.addTest(new W3CTestCase(test));
-                }
-                catch (Throwable ex) {
-                    // TODO
-                    throw new Error(ex);
-                }
-            }
-        });
+                });
     }
 
-    protected abstract DOMTestSuite createDOMTestSuite(DOMTestDocumentBuilderFactory factory) throws Exception;
+    protected abstract DOMTestSuite createDOMTestSuite(DOMTestDocumentBuilderFactory factory)
+            throws Exception;
 }

@@ -33,7 +33,7 @@ public class TestInsertBefore extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
-        
+
         Element parent1 = document.createElementNS(null, "parent1");
         Element a = document.createElementNS(null, "a");
         Element b = document.createElementNS(null, "b");
@@ -41,20 +41,20 @@ public class TestInsertBefore extends DOMTestCase {
         parent1.appendChild(a);
         parent1.appendChild(b);
         parent1.appendChild(c);
-        
+
         Element parent2 = document.createElementNS(null, "parent1");
         Element d = document.createElementNS(null, "d");
         Element e = document.createElementNS(null, "e");
         parent2.appendChild(d);
         parent2.appendChild(e);
-        
+
         parent2.insertBefore(b, e);
-        
+
         NodeList children = parent1.getChildNodes();
         assertEquals(2, children.getLength());
         assertSame(a, children.item(0));
         assertSame(c, children.item(1));
-        
+
         children = parent2.getChildNodes();
         assertEquals(3, children.getLength());
         assertSame(d, children.item(0));

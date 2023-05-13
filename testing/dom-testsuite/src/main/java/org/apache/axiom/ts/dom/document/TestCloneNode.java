@@ -39,7 +39,7 @@ public class TestCloneNode extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().parse(file.getUrl().toString());
-        Document document2 = (Document)document.cloneNode(true);
+        Document document2 = (Document) document.cloneNode(true);
         assertAbout(xml())
                 .that(xml(Document.class, document2))
                 .treatingElementContentWhitespaceAsText()

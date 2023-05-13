@@ -34,31 +34,31 @@ public class TestInsertBeforeWithDocumentFragment extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
-        
+
         DocumentFragment fragment = document.createDocumentFragment();
         Element x = document.createElementNS(null, "x");
         Element y = document.createElementNS(null, "y");
         fragment.appendChild(x);
         fragment.appendChild(y);
-        
+
         Element element = document.createElementNS(null, "parent1");
         Element a = document.createElementNS(null, "a");
         Element b = document.createElementNS(null, "b");
         element.appendChild(a);
         element.appendChild(b);
-        
+
         element.insertBefore(fragment, b);
-        
+
         NodeList children = element.getChildNodes();
         assertEquals(4, children.getLength());
         assertSame(a, children.item(0));
         assertSame(x, children.item(1));
         assertSame(y, children.item(2));
         assertSame(b, children.item(3));
-        
+
         assertSame(element, x.getParentNode());
         assertSame(element, y.getParentNode());
-        
+
         assertNull(fragment.getFirstChild());
         assertNull(fragment.getLastChild());
         assertEquals(0, fragment.getChildNodes().getLength());

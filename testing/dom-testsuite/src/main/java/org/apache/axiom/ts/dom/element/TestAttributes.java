@@ -33,46 +33,49 @@ public class TestAttributes extends DOMTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().parse(
-                TestAttributes.class.getResourceAsStream("attributetest.xml"));
+        Document doc =
+                dbf.newDocumentBuilder()
+                        .parse(TestAttributes.class.getResourceAsStream("attributetest.xml"));
 
         // Check whether body has attributes
         Element bodyElement = doc.getDocumentElement();
         assertTrue(bodyElement.hasAttributes());
 
-        Element directionResponse = (Element)bodyElement.getElementsByTagName("GetDirectionsResponse").item(0);
+        Element directionResponse =
+                (Element) bodyElement.getElementsByTagName("GetDirectionsResponse").item(0);
         assertTrue(directionResponse.hasAttributes());
 
         NamedNodeMap attributes = directionResponse.getAttributes();
-        Attr attr = (Attr)attributes.item(0);
+        Attr attr = (Attr) attributes.item(0);
         assertEquals("xmlns", attr.getName());
         assertEquals("http://www.example.org/webservices/", attr.getValue());
 
-        Element directionResult = (Element)bodyElement.getElementsByTagName("GetDirectionsResult").item(0);
+        Element directionResult =
+                (Element) bodyElement.getElementsByTagName("GetDirectionsResult").item(0);
         assertFalse(directionResult.hasAttributes());
 
-        Element drivingDirection = (Element)directionResult.getElementsByTagName("drivingdirections").item(0);
+        Element drivingDirection =
+                (Element) directionResult.getElementsByTagName("drivingdirections").item(0);
         assertTrue(drivingDirection.hasAttributes());
 
         attributes = drivingDirection.getAttributes();
-        attr = (Attr)attributes.item(0);
+        attr = (Attr) attributes.item(0);
         assertEquals("xmlns", attr.getName());
         assertEquals("", attr.getValue());
 
-
-        Element route = (Element)drivingDirection.getElementsByTagName("route").item(0);
+        Element route = (Element) drivingDirection.getElementsByTagName("route").item(0);
         assertTrue(route.hasAttributes());
 
         attributes = route.getAttributes();
-        attr = (Attr)attributes.item(0);
+        attr = (Attr) attributes.item(0);
         assertEquals("distanceToTravel", attr.getName());
         assertEquals("500m", attr.getValue());
 
-        attr = (Attr)attributes.item(1);
+        attr = (Attr) attributes.item(1);
         assertEquals("finalStep", attr.getName());
         assertEquals("false", attr.getValue());
 
-        attr = (Attr)attributes.item(2);
+        attr = (Attr) attributes.item(2);
         assertEquals("id", attr.getName());
         assertEquals("0", attr.getValue());
     }

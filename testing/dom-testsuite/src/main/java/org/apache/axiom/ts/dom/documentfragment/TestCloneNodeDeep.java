@@ -25,9 +25,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
-/**
- * Tests {@link Node#cloneNode(boolean)} with <code>deep</code> set to <code>true</code>.
- */
+/** Tests {@link Node#cloneNode(boolean)} with <code>deep</code> set to <code>true</code>. */
 public class TestCloneNodeDeep extends DOMTestCase {
     public TestCloneNodeDeep(DocumentBuilderFactory dbf) {
         super(dbf);
@@ -39,7 +37,7 @@ public class TestCloneNodeDeep extends DOMTestCase {
         DocumentFragment fragment = document.createDocumentFragment();
         fragment.appendChild(document.createComment("comment"));
         fragment.appendChild(document.createElementNS(null, "test"));
-        DocumentFragment clone = (DocumentFragment)fragment.cloneNode(true);
+        DocumentFragment clone = (DocumentFragment) fragment.cloneNode(true);
         assertSame(document, clone.getOwnerDocument());
         Node child = clone.getFirstChild();
         assertNotNull(child);

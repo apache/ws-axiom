@@ -28,9 +28,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 /**
- * Tests the behavior of {@link Document#adoptNode(Node)} if the node is
- * already owned by the document. In this case, the method is still expected
- * to detach the node from its parent.
+ * Tests the behavior of {@link Document#adoptNode(Node)} if the node is already owned by the
+ * document. In this case, the method is still expected to detach the node from its parent.
  */
 public class TestAdoptNodeToSameDocument extends DOMTestCase {
     public TestAdoptNodeToSameDocument(DocumentBuilderFactory dbf) {

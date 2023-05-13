@@ -33,7 +33,7 @@ public class TestGetElementsByTagNameWithNamespaces extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element root = doc.createElementNS("urn:ns1", "ns1:root");
-        for (int i=0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
             root.appendChild(doc.createElementNS("urn:ns2", "ns2:child"));
         }
         assertEquals(3, root.getElementsByTagName("ns2:child").getLength());

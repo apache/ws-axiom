@@ -25,7 +25,7 @@ import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 
 public abstract class TransformerTestCase extends DOMTestCase {
     protected final XSLTImplementation xsltImplementation;
-    
+
     public TransformerTestCase(DocumentBuilderFactory dbf, XSLTImplementation xsltImplementation) {
         super(dbf);
         this.xsltImplementation = xsltImplementation;

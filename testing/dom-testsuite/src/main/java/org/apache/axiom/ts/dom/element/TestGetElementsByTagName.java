@@ -34,7 +34,7 @@ public class TestGetElementsByTagName extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         String childElementLN = "Child";
-        
+
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element docElem = doc.getDocumentElement();
         assertNull("The document element shoudl be null", docElem);

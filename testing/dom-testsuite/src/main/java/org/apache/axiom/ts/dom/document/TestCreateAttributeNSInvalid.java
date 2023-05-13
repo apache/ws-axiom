@@ -28,7 +28,7 @@ import org.w3c.dom.Document;
 
 public class TestCreateAttributeNSInvalid extends DOMTestCase {
     private final QName qname;
-    
+
     public TestCreateAttributeNSInvalid(DocumentBuilderFactory dbf, QName qname) {
         super(dbf);
         this.qname = qname;
@@ -40,7 +40,8 @@ public class TestCreateAttributeNSInvalid extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         try {
-            document.createAttributeNS(DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname));
+            document.createAttributeNS(
+                    DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname));
             fail("Expected DOMException");
         } catch (DOMException ex) {
             assertEquals(DOMException.NAMESPACE_ERR, ex.code);

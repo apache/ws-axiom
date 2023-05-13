@@ -27,9 +27,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
-/**
- * Tests the behavior of {@link Document#adoptNode(Node)}.
- */
+/** Tests the behavior of {@link Document#adoptNode(Node)}. */
 public class TestAdoptNode extends DOMTestCase {
     public TestAdoptNode(DocumentBuilderFactory dbf) {
         super(dbf);

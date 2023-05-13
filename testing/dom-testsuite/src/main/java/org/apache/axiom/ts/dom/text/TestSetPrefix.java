@@ -26,9 +26,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
-/**
- * Tests that calling {@link Node#setPrefix(String)} on a text node results in an exception.
- */
+/** Tests that calling {@link Node#setPrefix(String)} on a text node results in an exception. */
 public class TestSetPrefix extends DOMTestCase {
     public TestSetPrefix(DocumentBuilderFactory dbf) {
         super(dbf);

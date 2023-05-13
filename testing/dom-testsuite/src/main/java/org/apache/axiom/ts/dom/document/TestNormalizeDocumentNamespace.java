@@ -45,7 +45,7 @@ public class TestNormalizeDocumentNamespace extends DOMTestCase {
         document.normalizeDocument();
         NamedNodeMap attributes = element.getAttributes();
         assertEquals(1, attributes.getLength());
-        Attr attr = (Attr)attributes.item(0);
+        Attr attr = (Attr) attributes.item(0);
         assertNull(attr.getPrefix());
         assertEquals(XMLConstants.XMLNS_ATTRIBUTE, attr.getLocalName());
         assertEquals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, attr.getNamespaceURI());

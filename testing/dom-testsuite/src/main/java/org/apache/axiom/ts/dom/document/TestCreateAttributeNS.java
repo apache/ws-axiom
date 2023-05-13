@@ -28,7 +28,7 @@ import org.w3c.dom.Document;
 
 public class TestCreateAttributeNS extends DOMTestCase {
     private final QName qname;
-    
+
     public TestCreateAttributeNS(DocumentBuilderFactory dbf, QName qname) {
         super(dbf);
         this.qname = qname;
@@ -46,7 +46,7 @@ public class TestCreateAttributeNS extends DOMTestCase {
         Document doc = dbf.newDocumentBuilder().newDocument();
 
         Attr attr = doc.createAttributeNS(uri, name);
-        
+
         // Check name
         assertEquals("Attr name mismatch", localName, attr.getLocalName());
         assertEquals("NamsspaceURI mismatch", uri, attr.getNamespaceURI());

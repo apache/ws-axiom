@@ -24,9 +24,7 @@ import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-/**
- * Tests the behavior of {@link Node#lookupPrefix(String)} on an empty {@link Document}.
- */
+/** Tests the behavior of {@link Node#lookupPrefix(String)} on an empty {@link Document}. */
 public class TestLookupPrefixWithEmptyDocument extends DOMTestCase {
     public TestLookupPrefixWithEmptyDocument(DocumentBuilderFactory dbf) {
         super(dbf);

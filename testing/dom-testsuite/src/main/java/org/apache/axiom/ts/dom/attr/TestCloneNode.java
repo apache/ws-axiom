@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
 
 public class TestCloneNode extends DOMTestCase {
     private final boolean deep;
-    
+
     public TestCloneNode(DocumentBuilderFactory dbf, boolean deep) {
         super(dbf);
         this.deep = deep;
@@ -41,7 +41,7 @@ public class TestCloneNode extends DOMTestCase {
         attr.appendChild(document.createTextNode("foo"));
         attr.appendChild(document.createTextNode("bar"));
         // Note that for an attribute, cloneNode always copies the children, even if deep=false
-        Attr clone = (Attr)attr.cloneNode(deep);
+        Attr clone = (Attr) attr.cloneNode(deep);
         Node child = clone.getFirstChild();
         assertNotNull(child);
         assertEquals(Node.TEXT_NODE, child.getNodeType());

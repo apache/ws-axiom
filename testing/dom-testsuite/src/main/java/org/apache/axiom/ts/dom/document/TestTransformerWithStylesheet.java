@@ -31,19 +31,27 @@ import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.w3c.dom.Document;
 
 public class TestTransformerWithStylesheet extends TransformerTestCase {
-    public TestTransformerWithStylesheet(DocumentBuilderFactory dbf, XSLTImplementation xsltImplementation) {
+    public TestTransformerWithStylesheet(
+            DocumentBuilderFactory dbf, XSLTImplementation xsltImplementation) {
         super(dbf, xsltImplementation);
     }
 
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
-        Document input = builder.parse(TestTransformerWithStylesheet.class.getResourceAsStream("input.xml"));
-        Document stylesheet
-                = builder.parse(TestTransformerWithStylesheet.class.getResourceAsStream("stylesheet.xslt"));
-        Document expected = builder.parse(TestTransformerWithStylesheet.class.getResourceAsStream("output.xml"));
+        Document input =
+                builder.parse(TestTransformerWithStylesheet.class.getResourceAsStream("input.xml"));
+        Document stylesheet =
+                builder.parse(
+                        TestTransformerWithStylesheet.class.getResourceAsStream("stylesheet.xslt"));
+        Document expected =
+                builder.parse(
+                        TestTransformerWithStylesheet.class.getResourceAsStream("output.xml"));
         Document actual = builder.newDocument();
-        Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer(new DOMSource(stylesheet));
+        Transformer transformer =
+                xsltImplementation
+                        .newTransformerFactory()
+                        .newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(input), new DOMResult(actual));
         assertAbout(xml())
                 .that(xml(Document.class, actual))

@@ -32,10 +32,10 @@ public class TestAllowedChildren extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
-        
+
         doc.appendChild(doc.createComment("some comment"));
         doc.appendChild(doc.createProcessingInstruction("pi", "data"));
-        
+
         // Document Object Model (DOM) Level 3 Core Specification, section 1.1.1
         // says that text nodes are not allowed as children of a document.
         try {
@@ -44,9 +44,9 @@ public class TestAllowedChildren extends DOMTestCase {
         } catch (DOMException ex) {
             assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
         }
-        
+
         doc.appendChild(doc.createElement("root1"));
-        
+
         // Multiple document elements are not allowed
         try {
             doc.appendChild(doc.createElement("root2"));
@@ -54,11 +54,11 @@ public class TestAllowedChildren extends DOMTestCase {
         } catch (DOMException ex) {
             assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
         }
-        
+
         // PIs and comments after the document element are allowed
         doc.appendChild(doc.createProcessingInstruction("pi", "data"));
         doc.appendChild(doc.createComment("some comment"));
-        
+
         // Again, text nodes are not allowed
         try {
             doc.appendChild(doc.createTextNode("    "));

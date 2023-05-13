@@ -37,7 +37,9 @@ final class DOMTestDocumentBuilderFactoryImpl extends DOMTestDocumentBuilderFact
     private final DocumentBuilderFactory dbf;
     private final DocumentBuilder builder;
 
-    public DOMTestDocumentBuilderFactoryImpl(DocumentBuilderFactoryFactory dbff, DocumentBuilderSetting[] settings) throws DOMTestIncompatibleException {
+    public DOMTestDocumentBuilderFactoryImpl(
+            DocumentBuilderFactoryFactory dbff, DocumentBuilderSetting[] settings)
+            throws DOMTestIncompatibleException {
         super(settings);
         this.dbff = dbff;
         dbf = dbff.newInstance();
@@ -52,7 +54,8 @@ final class DOMTestDocumentBuilderFactoryImpl extends DOMTestDocumentBuilderFact
     }
 
     @Override
-    public DOMTestDocumentBuilderFactory newInstance(DocumentBuilderSetting[] settings) throws DOMTestIncompatibleException {
+    public DOMTestDocumentBuilderFactory newInstance(DocumentBuilderSetting[] settings)
+            throws DOMTestIncompatibleException {
         return new DOMTestDocumentBuilderFactoryImpl(dbff, mergeSettings(settings));
     }
 

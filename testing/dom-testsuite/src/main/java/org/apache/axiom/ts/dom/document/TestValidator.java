@@ -38,10 +38,12 @@ public class TestValidator extends DOMTestCase {
     protected void runTest() throws Throwable {
         SchemaFactory factory = new XMLSchemaFactory();
         DocumentBuilder builder = dbf.newDocumentBuilder();
-        Schema schema = factory.newSchema(new DOMSource(
-                builder.parse(TestValidator.class.getResourceAsStream("ipo.xsd"))));
+        Schema schema =
+                factory.newSchema(
+                        new DOMSource(
+                                builder.parse(TestValidator.class.getResourceAsStream("ipo.xsd"))));
         Validator validator = schema.newValidator();
-        validator.validate(new DOMSource(
-                builder.parse(TestValidator.class.getResourceAsStream("ipo_1.xml"))));
+        validator.validate(
+                new DOMSource(builder.parse(TestValidator.class.getResourceAsStream("ipo_1.xml"))));
     }
 }

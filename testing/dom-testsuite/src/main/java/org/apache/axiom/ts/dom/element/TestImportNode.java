@@ -44,10 +44,11 @@ public class TestImportNode extends DOMTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Element orgElement = from.parse(new InputSource(file.getUrl().toString())).getDocumentElement();
+        Element orgElement =
+                from.parse(new InputSource(file.getUrl().toString())).getDocumentElement();
         Document doc = dbf.newDocumentBuilder().newDocument();
         assertAbout(xml())
-                .that(xml(Element.class, (Element)doc.importNode(orgElement, true)))
+                .that(xml(Element.class, (Element) doc.importNode(orgElement, true)))
                 // Import discards DTD information
                 .treatingElementContentWhitespaceAsText()
                 .hasSameContentAs(orgElement);

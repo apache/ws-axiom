@@ -33,7 +33,7 @@ public class TestCloneNode extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:test", "p:elem");
-        Element clone = (Element)element.cloneNode(true);
+        Element clone = (Element) element.cloneNode(true);
         assertEquals("urn:test", clone.getNamespaceURI());
         assertEquals("p", clone.getPrefix());
         assertEquals("elem", clone.getLocalName());

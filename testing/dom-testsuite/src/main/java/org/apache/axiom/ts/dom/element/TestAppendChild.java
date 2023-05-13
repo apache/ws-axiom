@@ -36,7 +36,7 @@ public class TestAppendChild extends DOMTestCase {
         String childElemName = "TestChildElem";
         String childTextValue = "text value of the child text node";
 
-        //Apending am Element node
+        // Apending am Element node
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element elem = doc.createElement(elementName);
         Element childElem = doc.createElement(childElemName);

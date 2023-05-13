@@ -37,13 +37,16 @@ public class TestAttributes2 extends DOMTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(
-                "<root><child xmlns=\"\"/></root>")));
-        Element element = (Element)doc.getDocumentElement().getFirstChild();
+        Document doc =
+                dbf.newDocumentBuilder()
+                        .parse(
+                                new InputSource(
+                                        new StringReader("<root><child xmlns=\"\"/></root>")));
+        Element element = (Element) doc.getDocumentElement().getFirstChild();
         assertTrue(element.hasAttributes());
         NamedNodeMap attributes = element.getAttributes();
         assertEquals(1, attributes.getLength());
-        Attr attr = (Attr)attributes.item(0);
+        Attr attr = (Attr) attributes.item(0);
         assertEquals("xmlns", attr.getName());
         assertNull(attr.getPrefix());
         assertEquals("xmlns", attr.getLocalName());

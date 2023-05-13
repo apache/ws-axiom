@@ -45,7 +45,6 @@ public class TestAppendData extends DOMTestCase {
 
         textNode.appendData(textToAppend);
 
-        assertEquals("Text value mismatch", tempText + textToAppend, textNode
-                .getData());
+        assertEquals("Text value mismatch", tempText + textToAppend, textNode.getData());
     }
 }

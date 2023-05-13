@@ -34,9 +34,10 @@ public class TestAttributes4 extends DOMTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(
-                "<root><child/></root>")));
-        Element element = (Element)doc.getDocumentElement().getFirstChild();
-        assertFalse(element.hasAttributes());                  
+        Document doc =
+                dbf.newDocumentBuilder()
+                        .parse(new InputSource(new StringReader("<root><child/></root>")));
+        Element element = (Element) doc.getDocumentElement().getFirstChild();
+        assertFalse(element.hasAttributes());
     }
 }

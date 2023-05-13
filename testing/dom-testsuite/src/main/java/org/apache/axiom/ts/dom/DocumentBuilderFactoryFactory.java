@@ -20,9 +20,7 @@ package org.apache.axiom.ts.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-/**
- * Creates {@link DocumentBuilderFactory} instances.
- */
+/** Creates {@link DocumentBuilderFactory} instances. */
 public interface DocumentBuilderFactoryFactory {
     DocumentBuilderFactory newInstance();
 }

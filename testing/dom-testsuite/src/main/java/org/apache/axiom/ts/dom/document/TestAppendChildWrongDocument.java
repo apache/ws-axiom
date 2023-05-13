@@ -28,8 +28,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
- * Tests that {@link Node#appendChild(Node)} throws an appropriate exception if an attempt is made to
- * append a child that has a different owner document.
+ * Tests that {@link Node#appendChild(Node)} throws an appropriate exception if an attempt is made
+ * to append a child that has a different owner document.
  */
 public class TestAppendChildWrongDocument extends DOMTestCase {
     public TestAppendChildWrongDocument(DocumentBuilderFactory dbf) {

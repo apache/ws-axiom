@@ -39,6 +39,6 @@ public class TestGetFirstChild extends DOMTestCase {
         Node child = attr.getFirstChild();
         assertNotNull("Expected Attr to have a child node", child);
         assertTrue(child instanceof Text);
-        assertEquals("value", ((Text)child).getData());
+        assertEquals("value", ((Text) child).getData());
     }
 }

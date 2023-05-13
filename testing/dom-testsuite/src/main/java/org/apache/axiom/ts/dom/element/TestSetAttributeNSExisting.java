@@ -38,15 +38,15 @@ public class TestSetAttributeNSExisting extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
-        
+
         // Add the original attribute
         Attr attr = document.createAttributeNS("urn:test", "p1:attr");
         attr.setValue("value1");
         element.setAttributeNodeNS(attr);
-        
+
         // Now change the attribute using setAttributeNS (using a different prefix and value)
         element.setAttributeNS("urn:test", "p2:attr", "value2");
-        
+
         // DOM is expected to change the original attribute, not to create a new one
         assertEquals("value2", attr.getValue());
         assertEquals("p2", attr.getPrefix());

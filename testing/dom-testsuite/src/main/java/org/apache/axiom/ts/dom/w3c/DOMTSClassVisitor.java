@@ -26,14 +26,15 @@ import org.objectweb.asm.Opcodes;
 
 final class DOMTSClassVisitor extends ClassVisitor {
     private final Set<DOMFeature> usedFeatures;
-    
+
     DOMTSClassVisitor(Set<DOMFeature> usedFeatures) {
         super(Opcodes.ASM9);
         this.usedFeatures = usedFeatures;
     }
 
     @Override
-    public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+    public MethodVisitor visitMethod(
+            int access, String name, String desc, String signature, String[] exceptions) {
         return name.equals("runTest") ? new DOMTSMethodVisitor(usedFeatures) : null;
     }
 }

@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
 
 public abstract class ReplaceChildTestCase extends DOMTestCase {
     private final boolean newChildHasSiblings;
-    
+
     public ReplaceChildTestCase(DocumentBuilderFactory dbf, boolean newChildHasSiblings) {
         super(dbf);
         this.newChildHasSiblings = newChildHasSiblings;

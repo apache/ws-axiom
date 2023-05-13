@@ -36,8 +36,9 @@ public class TestSetTextContent extends DOMTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().parse(new InputSource(
-                new StringReader("<a>1<!--c--><b>2</b>3</a>")));
+        Document doc =
+                dbf.newDocumentBuilder()
+                        .parse(new InputSource(new StringReader("<a>1<!--c--><b>2</b>3</a>")));
         Element element = doc.getDocumentElement();
         Node oldFirstChild = element.getFirstChild();
         element.setTextContent("test");

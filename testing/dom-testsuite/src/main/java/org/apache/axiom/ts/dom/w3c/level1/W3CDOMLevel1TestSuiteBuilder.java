@@ -26,13 +26,14 @@ import org.w3c.domts.DOMTestSuite;
 import org.w3c.domts.level1.core.alltests;
 
 public final class W3CDOMLevel1TestSuiteBuilder extends W3CDOMTestSuiteBuilder {
-    public W3CDOMLevel1TestSuiteBuilder(DocumentBuilderFactoryFactory dbff,
-            DOMFeature... unsupportedFeatures) {
+    public W3CDOMLevel1TestSuiteBuilder(
+            DocumentBuilderFactoryFactory dbff, DOMFeature... unsupportedFeatures) {
         super(dbff, unsupportedFeatures);
     }
 
     @Override
-    protected DOMTestSuite createDOMTestSuite(DOMTestDocumentBuilderFactory factory) throws Exception {
+    protected DOMTestSuite createDOMTestSuite(DOMTestDocumentBuilderFactory factory)
+            throws Exception {
         return new alltests(factory);
     }
 }

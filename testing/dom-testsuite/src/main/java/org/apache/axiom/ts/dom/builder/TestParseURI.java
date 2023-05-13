@@ -30,9 +30,7 @@ import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 
-/**
- * Tests {@link DocumentBuilder#parse(String)}.
- */
+/** Tests {@link DocumentBuilder#parse(String)}. */
 public class TestParseURI extends DOMTestCase {
     public TestParseURI(DocumentBuilderFactory dbf) {
         super(dbf);
@@ -40,8 +38,8 @@ public class TestParseURI extends DOMTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        InstrumentedDataProvider dataProvider = new InstrumentedDataProvider(
-                XMLSample.SIMPLE.getUrl()::openStream);
+        InstrumentedDataProvider dataProvider =
+                new InstrumentedDataProvider(XMLSample.SIMPLE.getUrl()::openStream);
         URLRegistration registration = URLRegistry.register(dataProvider);
         try {
             DocumentBuilder builder = dbf.newDocumentBuilder();

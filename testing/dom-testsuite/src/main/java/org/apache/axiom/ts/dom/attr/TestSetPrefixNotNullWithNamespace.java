@@ -26,8 +26,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * Tests the behavior of {@link Node#setPrefix(String)} on an {@link Attr} if the specified
- * prefix is not null (and not an empty string) and the attribute has a namespace.
+ * Tests the behavior of {@link Node#setPrefix(String)} on an {@link Attr} if the specified prefix
+ * is not null (and not an empty string) and the attribute has a namespace.
  */
 public class TestSetPrefixNotNullWithNamespace extends DOMTestCase {
     public TestSetPrefixNotNullWithNamespace(DocumentBuilderFactory dbf) {

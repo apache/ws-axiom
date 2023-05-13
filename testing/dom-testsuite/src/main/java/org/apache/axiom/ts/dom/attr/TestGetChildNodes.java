@@ -41,6 +41,6 @@ public class TestGetChildNodes extends DOMTestCase {
         assertEquals(1, children.getLength());
         Node child = children.item(0);
         assertTrue(child instanceof Text);
-        assertEquals("value", ((Text)child).getData());
+        assertEquals("value", ((Text) child).getData());
     }
 }

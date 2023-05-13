@@ -39,15 +39,18 @@ public class TestSetAttributeNSExistingDefaultNamespaceDeclaration extends DOMTe
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
-        
+
         // Add the original default namespace declaration
-        Attr attr = document.createAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE);
+        Attr attr =
+                document.createAttributeNS(
+                        XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE);
         attr.setValue("urn:ns1");
         element.setAttributeNodeNS(attr);
-        
+
         // Now change the attribute using setAttributeNS
-        element.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, "urn:ns2");
-        
+        element.setAttributeNS(
+                XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, "urn:ns2");
+
         // DOM is expected to change the original attribute, not to create a new one
         assertEquals("urn:ns2", attr.getValue());
         assertNull(attr.getPrefix());

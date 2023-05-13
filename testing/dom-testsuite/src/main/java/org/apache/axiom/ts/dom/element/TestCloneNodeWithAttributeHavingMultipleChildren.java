@@ -39,7 +39,7 @@ public class TestCloneNodeWithAttributeHavingMultipleChildren extends DOMTestCas
         attr.appendChild(document.createTextNode("bar"));
         Element element = document.createElementNS(null, "test");
         element.setAttributeNodeNS(attr);
-        Element clonedElement = (Element)element.cloneNode(false);
+        Element clonedElement = (Element) element.cloneNode(false);
         Attr clonedAttr = clonedElement.getAttributeNodeNS(null, "attr");
         NodeList children = clonedAttr.getChildNodes();
         assertEquals(2, children.getLength());

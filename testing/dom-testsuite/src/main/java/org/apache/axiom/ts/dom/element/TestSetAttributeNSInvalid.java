@@ -42,7 +42,8 @@ public class TestSetAttributeNSInvalid extends DOMTestCase {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
         try {
-            element.setAttributeNS(DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname), "value");
+            element.setAttributeNS(
+                    DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname), "value");
             fail("Expected DOMException");
         } catch (DOMException ex) {
             assertEquals(DOMException.NAMESPACE_ERR, ex.code);

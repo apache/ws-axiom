@@ -26,12 +26,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-/**
- * Tests that {@link Node#cloneNode(boolean)} correctly clones the attributes of an element.
- */
+/** Tests that {@link Node#cloneNode(boolean)} correctly clones the attributes of an element. */
 public class TestCloneNodeWithAttributes extends DOMTestCase {
     private final boolean deep;
-    
+
     public TestCloneNodeWithAttributes(DocumentBuilderFactory dbf, boolean deep) {
         super(dbf);
         this.deep = deep;
@@ -44,7 +42,7 @@ public class TestCloneNodeWithAttributes extends DOMTestCase {
         Element element = document.createElementNS("urn:ns1", "p:elem");
         element.setAttributeNS(null, "attr1", "value1");
         element.setAttributeNS("urn:ns2", "q:attr2", "value2");
-        Element clone = (Element)element.cloneNode(deep);
+        Element clone = (Element) element.cloneNode(deep);
         assertEquals(2, clone.getAttributes().getLength());
         Attr attr1 = clone.getAttributeNodeNS(null, "attr1");
         Attr attr2 = clone.getAttributeNodeNS("urn:ns2", "attr2");

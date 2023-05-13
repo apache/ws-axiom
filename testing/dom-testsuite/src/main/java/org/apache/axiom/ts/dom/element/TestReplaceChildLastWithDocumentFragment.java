@@ -28,9 +28,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Tests the behavior of {@link Node#replaceChild(Node, Node)} when replacing a child by a
- * {@link DocumentFragment}. This test covers the case where the child being replaced is the first
- * child (which uses a different code path in DOOM).
+ * Tests the behavior of {@link Node#replaceChild(Node, Node)} when replacing a child by a {@link
+ * DocumentFragment}. This test covers the case where the child being replaced is the first child
+ * (which uses a different code path in DOOM).
  */
 public class TestReplaceChildLastWithDocumentFragment extends DOMTestCase {
     public TestReplaceChildLastWithDocumentFragment(DocumentBuilderFactory dbf) {
@@ -40,34 +40,34 @@ public class TestReplaceChildLastWithDocumentFragment extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
-        
+
         DocumentFragment fragment = document.createDocumentFragment();
         Element x = document.createElementNS(null, "x");
         Element y = document.createElementNS(null, "y");
         fragment.appendChild(x);
         fragment.appendChild(y);
-        
+
         Element element = document.createElementNS(null, "parent");
         Element a = document.createElementNS(null, "a");
         Element b = document.createElementNS(null, "b");
         element.appendChild(a);
         element.appendChild(b);
-        
+
         element.replaceChild(fragment, b);
-        
+
         NodeList children = element.getChildNodes();
         assertEquals(3, children.getLength());
         assertSame(a, children.item(0));
         assertSame(x, children.item(1));
         assertSame(y, children.item(2));
-        
+
         assertSame(element, x.getParentNode());
         assertSame(element, y.getParentNode());
-        
+
         assertNull(fragment.getFirstChild());
         assertNull(fragment.getLastChild());
         assertEquals(0, fragment.getChildNodes().getLength());
-        
+
         assertSame(a, element.getFirstChild());
         assertSame(y, element.getLastChild());
     }

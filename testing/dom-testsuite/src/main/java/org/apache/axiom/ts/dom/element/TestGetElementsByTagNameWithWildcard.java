@@ -33,7 +33,7 @@ public class TestGetElementsByTagNameWithWildcard extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element root = doc.createElement("root");
-        for (int i=0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
             root.appendChild(doc.createElement("child" + i));
         }
         assertEquals(3, root.getElementsByTagName("*").getLength());
