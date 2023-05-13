@@ -176,7 +176,8 @@ public abstract class DOMDocumentMixin implements DOMDocument {
 
     @Override
     public final String getXmlVersion() {
-        return coreGetXmlVersion();
+        String version = coreGetXmlVersion();
+        return version == null ? "1.0" : version;
     }
 
     @Override

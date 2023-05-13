@@ -23,6 +23,9 @@ public interface CoreDocument extends CoreParentNode {
 
     void coreSetInputEncoding(String inputEncoding);
 
+    /**
+     * Returns the XML version declared on the XML declaration or {@code null} if none was declared.
+     */
     String coreGetXmlVersion();
 
     void coreSetXmlVersion(String xmlVersion);
