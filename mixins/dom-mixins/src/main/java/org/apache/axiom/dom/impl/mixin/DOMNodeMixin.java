@@ -143,27 +143,22 @@ public abstract class DOMNodeMixin implements DOMNode {
     //TODO : sumedha, complete
     @Override
     public boolean isEqualNode(Node node) {
-        final boolean equal = true;
-        final boolean notEqual = false;
         if (this.getNodeType() != node.getNodeType()) {
-            return notEqual;
+            return false;
         }
         if (checkStringAttributeEquality(node)) {
             if (checkNamedNodeMapEquality(node)) {
 
             } else {
-                return notEqual;
+                return false;
             }
         } else {
-            return notEqual;
+            return false;
         }
-        return equal;
+        return true;
     }
 
     private boolean checkStringAttributeEquality(Node node) {
-        final boolean equal = true;
-        final boolean notEqual = false;
-
         // null     not-null  -> true
         // not-null null      -> true
         // null     null      -> false
@@ -171,76 +166,74 @@ public abstract class DOMNodeMixin implements DOMNode {
 
         //NodeName
         if (node.getNodeName() == null ^ this.getNodeName() == null) {
-            return notEqual;
+            return false;
         } else {
             if (node.getNodeName() == null) {
                 //This means both are null.do nothing
             } else {
                 if (!(node.getNodeName().equals(this.getNodeName()))) {
-                    return notEqual;
+                    return false;
                 }
             }
         }
 
         //localName
         if (node.getLocalName() == null ^ this.getLocalName() == null) {
-            return notEqual;
+            return false;
         } else {
             if (node.getLocalName() == null) {
                 //This means both are null.do nothing
             } else {
                 if (!(node.getLocalName().equals(this.getLocalName()))) {
-                    return notEqual;
+                    return false;
                 }
             }
         }
 
         //namespaceURI
         if (node.getNamespaceURI() == null ^ this.getNamespaceURI() == null) {
-            return notEqual;
+            return false;
         } else {
             if (node.getNamespaceURI() == null) {
                 //This means both are null.do nothing
             } else {
                 if (!(node.getNamespaceURI().equals(this.getNamespaceURI()))) {
-                    return notEqual;
+                    return false;
                 }
             }
         }
 
         //prefix
         if (node.getPrefix() == null ^ this.getPrefix() == null) {
-            return notEqual;
+            return false;
         } else {
             if (node.getPrefix() == null) {
                 //This means both are null.do nothing
             } else {
                 if (!(node.getPrefix().equals(this.getPrefix()))) {
-                    return notEqual;
+                    return false;
                 }
             }
         }
 
         //nodeValue
         if (node.getNodeValue() == null ^ this.getNodeValue() == null) {
-            return notEqual;
+            return false;
         } else {
             if (node.getNodeValue() == null) {
                 //This means both are null.do nothing
             } else {
                 if (!(node.getNodeValue().equals(this.getNodeValue()))) {
-                    return notEqual;
+                    return false;
                 }
             }
         }
-        return equal;
+        return true;
     }
 
     private boolean checkNamedNodeMapEquality(Node node) {
-        final boolean equal = true;
-        final boolean notEqual = false;
         if (node.getAttributes() == null ^ this.getAttributes() == null) {
-            return notEqual;
+            return false;
         }
         NamedNodeMap thisNamedNodeMap = this.getAttributes();
         NamedNodeMap nodeNamedNodeMap = node.getAttributes();
@@ -251,13 +244,13 @@ public abstract class DOMNodeMixin implements DOMNode {
         // not-null not-null  -> false
 
         if (thisNamedNodeMap == null ^ nodeNamedNodeMap == null) {
-            return notEqual;
+            return false;
         } else {
             if (thisNamedNodeMap == null) {
                 //This means both are null.do nothing
             } else {
                 if (thisNamedNodeMap.getLength() != nodeNamedNodeMap.getLength()) {
-                    return notEqual;
+                    return false;
                 } else {
                     //they have the same length and for each node that exists in one map
                     //there is a node that exists in the other map and is equal, although
@@ -269,17 +262,17 @@ public abstract class DOMNodeMixin implements DOMNode {
                                 (DOMNode) nodeNamedNodeMap.getNamedItem(thisNode.getNodeName());
                         if (tmpNode == null) {
                             //i.e. no corresponding node
-                            return notEqual;
+                            return false;
                         } else {
                             if (!(thisNode.isEqualNode(tmpNode))) {
-                                return notEqual;
+                                return false;
                             }
                         }
                     }
                 }
             }
         }
-        return equal;
+        return true;
     }
 
     @Override
