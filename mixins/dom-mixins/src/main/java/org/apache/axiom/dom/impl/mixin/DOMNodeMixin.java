@@ -21,6 +21,7 @@ package org.apache.axiom.dom.impl.mixin;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import java.util.Hashtable;
+import java.util.Objects;
 
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
@@ -142,133 +143,29 @@ public abstract class DOMNodeMixin implements DOMNode {
 
     //TODO : sumedha, complete
     @Override
-    public boolean isEqualNode(Node node) {
-        if (this.getNodeType() != node.getNodeType()) {
+    public boolean isEqualNode(Node other) {
+        if (getNodeType() != other.getNodeType()
+                || !Objects.equals(getNodeName(), other.getNodeName())
+                || !Objects.equals(getLocalName(), other.getLocalName())
+                || !Objects.equals(getNamespaceURI(), other.getNamespaceURI())
+                || !Objects.equals(getPrefix(), other.getPrefix())
+                || !Objects.equals(getNodeValue(), other.getNodeValue())) {
             return false;
         }
-        if (checkStringAttributeEquality(node)) {
-            if (checkNamedNodeMapEquality(node)) {
-
-            } else {
+        NamedNodeMap attributes = getAttributes();
+        NamedNodeMap otherAttributes = other.getAttributes();
+        if (attributes == null ^ otherAttributes == null) {
+            return false;
+        }
+        if (attributes != null) {
+            if (attributes.getLength() != otherAttributes.getLength()) {
                 return false;
             }
-        } else {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean checkStringAttributeEquality(Node node) {
-        // null     not-null  -> true
-        // not-null null      -> true
-        // null     null      -> false
-        // not-null not-null  -> false
-
-        //NodeName
-        if (node.getNodeName() == null ^ this.getNodeName() == null) {
-            return false;
-        } else {
-            if (node.getNodeName() == null) {
-                //This means both are null.do nothing
-            } else {
-                if (!(node.getNodeName().equals(this.getNodeName()))) {
+            for (int a = 0, itemCount = attributes.getLength(); a < itemCount; a++) {
+                Node attribute = attributes.item(a);
+                Node otherAttribute = otherAttributes.getNamedItem(attribute.getNodeName());
+                if (otherAttribute == null || !attribute.isEqualNode(otherAttribute)) {
                     return false;
-                }
-            }
-        }
-
-        //localName
-        if (node.getLocalName() == null ^ this.getLocalName() == null) {
-            return false;
-        } else {
-            if (node.getLocalName() == null) {
-                //This means both are null.do nothing
-            } else {
-                if (!(node.getLocalName().equals(this.getLocalName()))) {
-                    return false;
-                }
-            }
-        }
-
-        //namespaceURI
-        if (node.getNamespaceURI() == null ^ this.getNamespaceURI() == null) {
-            return false;
-        } else {
-            if (node.getNamespaceURI() == null) {
-                //This means both are null.do nothing
-            } else {
-                if (!(node.getNamespaceURI().equals(this.getNamespaceURI()))) {
-                    return false;
-                }
-            }
-        }
-
-        //prefix
-        if (node.getPrefix() == null ^ this.getPrefix() == null) {
-            return false;
-        } else {
-            if (node.getPrefix() == null) {
-                //This means both are null.do nothing
-            } else {
-                if (!(node.getPrefix().equals(this.getPrefix()))) {
-                    return false;
-                }
-            }
-        }
-
-        //nodeValue
-        if (node.getNodeValue() == null ^ this.getNodeValue() == null) {
-            return false;
-        } else {
-            if (node.getNodeValue() == null) {
-                //This means both are null.do nothing
-            } else {
-                if (!(node.getNodeValue().equals(this.getNodeValue()))) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private boolean checkNamedNodeMapEquality(Node node) {
-        if (node.getAttributes() == null ^ this.getAttributes() == null) {
-            return false;
-        }
-        NamedNodeMap thisNamedNodeMap = this.getAttributes();
-        NamedNodeMap nodeNamedNodeMap = node.getAttributes();
-
-        // null     not-null  -> true
-        // not-null null      -> true
-        // null     null      -> false
-        // not-null not-null  -> false
-
-        if (thisNamedNodeMap == null ^ nodeNamedNodeMap == null) {
-            return false;
-        } else {
-            if (thisNamedNodeMap == null) {
-                //This means both are null.do nothing
-            } else {
-                if (thisNamedNodeMap.getLength() != nodeNamedNodeMap.getLength()) {
-                    return false;
-                } else {
-                    //they have the same length and for each node that exists in one map
-                    //there is a node that exists in the other map and is equal, although
-                    //not necessarily at the same index.
-                    int itemCount = thisNamedNodeMap.getLength();
-                    for (int a = 0; a < itemCount; a++) {
-                        DOMNode thisNode = (DOMNode) thisNamedNodeMap.item(a);
-                        DOMNode tmpNode =
-                                (DOMNode) nodeNamedNodeMap.getNamedItem(thisNode.getNodeName());
-                        if (tmpNode == null) {
-                            //i.e. no corresponding node
-                            return false;
-                        } else {
-                            if (!(thisNode.isEqualNode(tmpNode))) {
-                                return false;
-                            }
-                        }
-                    }
                 }
             }
         }
