@@ -20,6 +20,4 @@ package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreTypedAttribute;
 
-public interface DOMTypedAttribute extends DOMAttribute, DOMNamedNode, CoreTypedAttribute {
-
-}
+public interface DOMTypedAttribute extends DOMAttribute, DOMNamedNode, CoreTypedAttribute {}

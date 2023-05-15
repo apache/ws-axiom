@@ -29,20 +29,20 @@ import org.w3c.dom.Node;
 public abstract class DOMChildNodeMixin implements DOMChildNode {
     @Override
     public final Node getParentNode() {
-        return (Node)coreGetParent();
+        return (Node) coreGetParent();
     }
-    
+
     @Override
     public final Node getNextSibling() {
         try {
-            return (Node)coreGetNextSibling(DocumentWhitespaceFilter.INSTANCE);
+            return (Node) coreGetNextSibling(DocumentWhitespaceFilter.INSTANCE);
         } catch (CoreModelException ex) {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
-    
+
     @Override
     public final Node getPreviousSibling() {
-        return (Node)coreGetPreviousSibling(DocumentWhitespaceFilter.INSTANCE);
+        return (Node) coreGetPreviousSibling(DocumentWhitespaceFilter.INSTANCE);
     }
 }

@@ -28,7 +28,7 @@ import org.w3c.dom.Node;
 public class ElementsByTagName extends NodeListImpl {
     private final DOMParentNode node;
     private final String tagname;
-    
+
     public ElementsByTagName(DOMParentNode node, String tagname) {
         this.node = node;
         this.tagname = tagname;
@@ -37,9 +37,23 @@ public class ElementsByTagName extends NodeListImpl {
     @Override
     protected Iterator<? extends Node> createIterator() {
         if (tagname.equals("*")) {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.ANY, null, null, Mappers.<Node>identity(), DOMSemantics.INSTANCE);
+            return node.coreGetElements(
+                    Axis.DESCENDANTS,
+                    DOMElement.class,
+                    ElementMatcher.ANY,
+                    null,
+                    null,
+                    Mappers.<Node>identity(),
+                    DOMSemantics.INSTANCE);
         } else {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.BY_NAME, null, tagname, Mappers.<Node>identity(), DOMSemantics.INSTANCE);
+            return node.coreGetElements(
+                    Axis.DESCENDANTS,
+                    DOMElement.class,
+                    ElementMatcher.BY_NAME,
+                    null,
+                    tagname,
+                    Mappers.<Node>identity(),
+                    DOMSemantics.INSTANCE);
         }
     }
 }

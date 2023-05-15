@@ -37,7 +37,7 @@ import org.w3c.dom.Node;
 public abstract class DOMDocumentFragmentMixin implements DOMDocumentFragment {
     @Override
     public final Document getOwnerDocument() {
-        return (Document)coreGetOwnerDocument(true);
+        return (Document) coreGetOwnerDocument(true);
     }
 
     @Override
@@ -56,8 +56,7 @@ public abstract class DOMDocumentFragmentMixin implements DOMDocumentFragment {
     }
 
     @Override
-    public final void setNodeValue(String nodeValue) {
-    }
+    public final void setNodeValue(String nodeValue) {}
 
     @Override
     public final CoreElement getNamespaceContext() {
@@ -93,7 +92,7 @@ public abstract class DOMDocumentFragmentMixin implements DOMDocumentFragment {
     public final NamedNodeMap getAttributes() {
         return null;
     }
-    
+
     @Override
     public final String getTextContent() {
         try {
@@ -113,6 +112,5 @@ public abstract class DOMDocumentFragmentMixin implements DOMDocumentFragment {
     }
 
     @Override
-    public final void normalize(DOMConfigurationImpl config) {
-    }
+    public final void normalize(DOMConfigurationImpl config) {}
 }

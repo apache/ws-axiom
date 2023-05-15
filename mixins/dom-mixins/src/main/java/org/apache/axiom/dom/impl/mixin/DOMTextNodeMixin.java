@@ -37,21 +37,21 @@ public abstract class DOMTextNodeMixin implements DOMTextNode {
         while (true) {
             CoreChildNode sibling = first.coreGetPreviousSibling();
             if (sibling instanceof DOMTextNode) {
-                first = (DOMTextNode)sibling;
+                first = (DOMTextNode) sibling;
             } else {
                 break;
             }
         }
         return first;
     }
-    
+
     private DOMTextNode getWholeTextEndNode() {
         try {
             DOMTextNode last = this;
             while (true) {
                 CoreChildNode sibling = last.coreGetNextSibling();
                 if (sibling instanceof DOMTextNode) {
-                    last = (DOMTextNode)sibling;
+                    last = (DOMTextNode) sibling;
                 } else {
                     break;
                 }
@@ -77,7 +77,7 @@ public abstract class DOMTextNodeMixin implements DOMTextNode {
                     if (current == last) {
                         break;
                     } else {
-                        current = (DOMTextNode)current.coreGetNextSibling();
+                        current = (DOMTextNode) current.coreGetNextSibling();
                     }
                 }
                 return buffer.toString();
@@ -106,7 +106,7 @@ public abstract class DOMTextNodeMixin implements DOMTextNode {
                 DOMTextNode current = first;
                 DOMTextNode next;
                 do {
-                    next = current == last ? null : (DOMTextNode)current.coreGetNextSibling();
+                    next = current == last ? null : (DOMTextNode) current.coreGetNextSibling();
                     current.coreDetach(DOMSemantics.INSTANCE);
                     current = next;
                 } while (next != null);

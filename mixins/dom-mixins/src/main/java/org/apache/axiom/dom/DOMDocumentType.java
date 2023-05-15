@@ -21,6 +21,4 @@ package org.apache.axiom.dom;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.w3c.dom.DocumentType;
 
-public interface DOMDocumentType extends DOMLeafNode, DocumentType, CoreDocumentTypeDeclaration {
-
-}
+public interface DOMDocumentType extends DOMLeafNode, DocumentType, CoreDocumentTypeDeclaration {}

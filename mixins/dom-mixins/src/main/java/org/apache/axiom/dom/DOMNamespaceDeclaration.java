@@ -20,6 +20,4 @@ package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 
-public interface DOMNamespaceDeclaration extends DOMAttribute, CoreNamespaceDeclaration {
-
-}
+public interface DOMNamespaceDeclaration extends DOMAttribute, CoreNamespaceDeclaration {}

@@ -21,6 +21,4 @@ package org.apache.axiom.dom;
 import org.apache.axiom.core.CoreDocumentFragment;
 import org.w3c.dom.DocumentFragment;
 
-public interface DOMDocumentFragment extends DOMRootNode, DocumentFragment, CoreDocumentFragment {
-
-}
+public interface DOMDocumentFragment extends DOMRootNode, DocumentFragment, CoreDocumentFragment {}

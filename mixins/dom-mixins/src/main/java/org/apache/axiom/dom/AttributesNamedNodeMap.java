@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
 
 public final class AttributesNamedNodeMap implements NamedNodeMap {
     private final DOMElement element;
-    
+
     public AttributesNamedNodeMap(DOMElement element) {
         this.element = element;
     }
@@ -42,15 +42,15 @@ public final class AttributesNamedNodeMap implements NamedNodeMap {
         }
         return length;
     }
-    
+
     @Override
     public Node item(int index) {
         // TODO: wrong result for negative indexes
         CoreAttribute attr = element.coreGetFirstAttribute();
-        for (int i=0; i<index && attr != null; i++) {
+        for (int i = 0; i < index && attr != null; i++) {
             attr = attr.coreGetNextAttribute();
         }
-        return (Node)attr;
+        return (Node) attr;
     }
 
     @Override
@@ -66,7 +66,7 @@ public final class AttributesNamedNodeMap implements NamedNodeMap {
     @Override
     public Node setNamedItem(Node arg) throws DOMException {
         if (arg instanceof CoreTypedAttribute) {
-            return element.setAttributeNode((Attr)arg);
+            return element.setAttributeNode((Attr) arg);
         } else {
             throw DOMExceptionUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
@@ -75,7 +75,7 @@ public final class AttributesNamedNodeMap implements NamedNodeMap {
     @Override
     public Node setNamedItemNS(Node arg) throws DOMException {
         if (arg instanceof CoreTypedAttribute) {
-            return element.setAttributeNodeNS((Attr)arg);
+            return element.setAttributeNodeNS((Attr) arg);
         } else {
             throw DOMExceptionUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }

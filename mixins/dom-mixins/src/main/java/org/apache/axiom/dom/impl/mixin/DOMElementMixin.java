@@ -49,14 +49,14 @@ import org.w3c.dom.TypeInfo;
 public abstract class DOMElementMixin implements DOMElement {
     @Override
     public final Document getOwnerDocument() {
-        return (Document)coreGetOwnerDocument(true);
+        return (Document) coreGetOwnerDocument(true);
     }
 
     @Override
     public final short getNodeType() {
         return Node.ELEMENT_NODE;
     }
-    
+
     @Override
     public final String getNodeName() {
         return getTagName();
@@ -68,14 +68,13 @@ public abstract class DOMElementMixin implements DOMElement {
     }
 
     @Override
-    public final void setNodeValue(String nodeValue) {
-    }
+    public final void setNodeValue(String nodeValue) {}
 
     @Override
     public final String getTagName() {
         return internalGetName();
     }
-    
+
     @Override
     public final TypeInfo getSchemaTypeInfo() {
         throw new UnsupportedOperationException();
@@ -95,21 +94,29 @@ public abstract class DOMElementMixin implements DOMElement {
     public final NamedNodeMap getAttributes() {
         return new AttributesNamedNodeMap(this);
     }
-    
+
     @Override
     public final Attr getAttributeNode(String name) {
-        return (DOMAttribute)coreGetAttribute(DOMSemantics.DOM1_ATTRIBUTE_MATCHER, null, name);
+        return (DOMAttribute) coreGetAttribute(DOMSemantics.DOM1_ATTRIBUTE_MATCHER, null, name);
     }
 
     @Override
     public final Attr getAttributeNodeNS(String namespaceURI, String localName) {
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            return (DOMAttribute)coreGetAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName);
+            return (DOMAttribute)
+                    coreGetAttribute(
+                            DOMSemantics.NAMESPACE_DECLARATION_MATCHER,
+                            null,
+                            localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName);
         } else {
-            return (DOMAttribute)coreGetAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName);
+            return (DOMAttribute)
+                    coreGetAttribute(
+                            DOMSemantics.DOM2_ATTRIBUTE_MATCHER,
+                            namespaceURI == null ? "" : namespaceURI,
+                            localName);
         }
     }
-    
+
     @Override
     public final String getAttribute(String name) {
         Attr attr = getAttributeNode(name);
@@ -143,7 +150,8 @@ public abstract class DOMElementMixin implements DOMElement {
     }
 
     @Override
-    public final void setAttributeNS(String namespaceURI, String qualifiedName, String value) throws DOMException {
+    public final void setAttributeNS(String namespaceURI, String qualifiedName, String value)
+            throws DOMException {
         try {
             int i = NSUtil.validateQualifiedName(qualifiedName);
             String prefix;
@@ -153,14 +161,24 @@ public abstract class DOMElementMixin implements DOMElement {
                 localName = qualifiedName;
             } else {
                 prefix = qualifiedName.substring(0, i);
-                localName = qualifiedName.substring(i+1);
+                localName = qualifiedName.substring(i + 1);
             }
             if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-                coreSetAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, NSUtil.getDeclaredPrefix(localName, prefix), null, value);
+                coreSetAttribute(
+                        DOMSemantics.NAMESPACE_DECLARATION_MATCHER,
+                        null,
+                        NSUtil.getDeclaredPrefix(localName, prefix),
+                        null,
+                        value);
             } else {
                 namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
                 NSUtil.validateAttributeName(namespaceURI, localName, prefix);
-                coreSetAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, namespaceURI, localName, prefix, value);
+                coreSetAttribute(
+                        DOMSemantics.DOM2_ATTRIBUTE_MATCHER,
+                        namespaceURI,
+                        localName,
+                        prefix,
+                        value);
             }
         } catch (CoreModelException ex) {
             throw DOMExceptionUtil.toUncheckedException(ex);
@@ -171,13 +189,13 @@ public abstract class DOMElementMixin implements DOMElement {
     public final Attr setAttributeNode(Attr newAttr) throws DOMException {
         return setAttributeNodeNS(newAttr);
     }
-    
+
     @Override
     public final Attr setAttributeNodeNS(Attr _newAttr) throws DOMException {
         if (!(_newAttr instanceof DOMAttribute)) {
             throw DOMExceptionUtil.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
         }
-        DOMAttribute newAttr = (DOMAttribute)_newAttr;
+        DOMAttribute newAttr = (DOMAttribute) _newAttr;
         CoreElement owner = newAttr.coreGetOwnerElement();
         if (owner == this) {
             // This means that the "new" attribute is already linked to the element
@@ -198,14 +216,14 @@ public abstract class DOMElementMixin implements DOMElement {
                 // Must be a DOM1 (namespace unaware) attribute
                 matcher = DOMSemantics.DOM1_ATTRIBUTE_MATCHER;
             }
-            return (DOMAttribute)coreSetAttribute(matcher, newAttr, DOMSemantics.INSTANCE);
+            return (DOMAttribute) coreSetAttribute(matcher, newAttr, DOMSemantics.INSTANCE);
         }
     }
 
     @Override
     public final Attr removeAttributeNode(Attr oldAttr) throws DOMException {
         if (oldAttr instanceof DOMAttribute) {
-            DOMAttribute attr = (DOMAttribute)oldAttr;
+            DOMAttribute attr = (DOMAttribute) oldAttr;
             if (attr.coreGetOwnerElement() != this) {
                 throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
             } else {
@@ -225,14 +243,23 @@ public abstract class DOMElementMixin implements DOMElement {
 
     @Override
     public final void removeAttributeNS(String namespaceURI, String localName) throws DOMException {
-        // Specs: "If no attribute with this local name and namespace URI is found, this method has no effect."
+        // Specs: "If no attribute with this local name and namespace URI is found, this method has
+        // no effect."
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            coreRemoveAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName, DOMSemantics.INSTANCE);
+            coreRemoveAttribute(
+                    DOMSemantics.NAMESPACE_DECLARATION_MATCHER,
+                    null,
+                    localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName,
+                    DOMSemantics.INSTANCE);
         } else {
-            coreRemoveAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName, DOMSemantics.INSTANCE);
+            coreRemoveAttribute(
+                    DOMSemantics.DOM2_ATTRIBUTE_MATCHER,
+                    namespaceURI == null ? "" : namespaceURI,
+                    localName,
+                    DOMSemantics.INSTANCE);
         }
     }
-    
+
     @Override
     public final String getTextContent() {
         try {
@@ -267,18 +294,23 @@ public abstract class DOMElementMixin implements DOMElement {
         if (attr == null) {
             throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         } else {
-            ((CoreTypedAttribute)attr).coreSetType(isId ? "ID" : "CDATA");
+            ((CoreTypedAttribute) attr).coreSetType(isId ? "ID" : "CDATA");
         }
     }
 
     @Override
-    public final void setIdAttributeNS(String namespaceURI, String localName, boolean isId) throws DOMException {
+    public final void setIdAttributeNS(String namespaceURI, String localName, boolean isId)
+            throws DOMException {
         // Here, we assume that a namespace declaration can never be an ID attribute
-        CoreAttribute attr = coreGetAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, NSUtil.normalizeNamespaceURI(namespaceURI), localName);
+        CoreAttribute attr =
+                coreGetAttribute(
+                        DOMSemantics.DOM2_ATTRIBUTE_MATCHER,
+                        NSUtil.normalizeNamespaceURI(namespaceURI),
+                        localName);
         if (attr == null) {
             throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         } else {
-            ((CoreTypedAttribute)attr).coreSetType(isId ? "ID" : "CDATA");
+            ((CoreTypedAttribute) attr).coreSetType(isId ? "ID" : "CDATA");
         }
     }
 
@@ -287,7 +319,7 @@ public abstract class DOMElementMixin implements DOMElement {
         if (idAttr.getOwnerElement() != this) {
             throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         } else {
-            ((CoreTypedAttribute)idAttr).coreSetType(isId ? "ID" : "CDATA");
+            ((CoreTypedAttribute) idAttr).coreSetType(isId ? "ID" : "CDATA");
         }
     }
 }

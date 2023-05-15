@@ -20,6 +20,4 @@ package org.apache.axiom.dom;
 
 import org.w3c.dom.Text;
 
-public interface DOMTextNode extends DOMCharacterData, Text {
-
-}
+public interface DOMTextNode extends DOMCharacterData, Text {}

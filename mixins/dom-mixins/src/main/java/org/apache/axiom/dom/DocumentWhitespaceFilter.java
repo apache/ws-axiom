@@ -25,13 +25,13 @@ import org.apache.axiom.core.NodeFilter;
 import org.apache.axiom.core.NodeType;
 
 public final class DocumentWhitespaceFilter implements NodeFilter {
-    public final static DocumentWhitespaceFilter INSTANCE = new DocumentWhitespaceFilter();
-    
+    public static final DocumentWhitespaceFilter INSTANCE = new DocumentWhitespaceFilter();
+
     private DocumentWhitespaceFilter() {}
 
     @Override
     public boolean accept(CoreNode node) {
         return node.coreGetNodeType() != NodeType.CHARACTER_DATA
-                || !(((CoreCharacterDataNode)node).coreGetParent() instanceof CoreDocument);
+                || !(((CoreCharacterDataNode) node).coreGetParent() instanceof CoreDocument);
     }
 }

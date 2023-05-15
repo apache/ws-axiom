@@ -21,6 +21,4 @@ package org.apache.axiom.dom;
 import org.apache.axiom.core.CoreAttribute;
 import org.w3c.dom.Attr;
 
-public interface DOMAttribute extends DOMRootNode, Attr, CoreAttribute {
-
-}
+public interface DOMAttribute extends DOMRootNode, Attr, CoreAttribute {}

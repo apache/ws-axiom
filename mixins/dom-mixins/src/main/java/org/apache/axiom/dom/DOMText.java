@@ -20,6 +20,4 @@ package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreCharacterDataNode;
 
-public interface DOMText extends DOMTextNode, CoreCharacterDataNode {
-
-}
+public interface DOMText extends DOMTextNode, CoreCharacterDataNode {}

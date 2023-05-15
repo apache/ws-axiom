@@ -29,22 +29,22 @@ public abstract class DOMNSUnawareNamedNodeMixin implements DOMNSUnawareNamedNod
     public final String getNamespaceURI() {
         return null;
     }
-    
+
     @Override
     public final String getPrefix() {
         return null;
     }
-    
+
     @Override
     public final void setPrefix(String prefix) throws DOMException {
         throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
-    
+
     @Override
     public final String getLocalName() {
         return null;
     }
-    
+
     @Override
     public final String internalGetName() {
         return coreGetName();

@@ -62,7 +62,7 @@ public abstract class DOMCharacterDataMixin implements DOMCharacterData {
         String data = getData();
         return data != null ? data.length() : 0;
     }
-    
+
     @Override
     public final void appendData(String arg) {
         setData(getData() + arg);

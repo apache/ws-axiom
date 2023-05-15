@@ -34,7 +34,7 @@ import org.w3c.dom.NodeList;
 public abstract class DOMEntityReferenceMixin implements DOMEntityReference {
     @Override
     public final Document getOwnerDocument() {
-        return (Document)coreGetOwnerDocument(true);
+        return (Document) coreGetOwnerDocument(true);
     }
 
     @Override
@@ -53,8 +53,7 @@ public abstract class DOMEntityReferenceMixin implements DOMEntityReference {
     }
 
     @Override
-    public final void setNodeValue(String nodeValue) {
-    }
+    public final void setNodeValue(String nodeValue) {}
 
     @Override
     public final String getPrefix() {
@@ -95,7 +94,7 @@ public abstract class DOMEntityReferenceMixin implements DOMEntityReference {
     public final void setTextContent(String textContent) {
         throw new UnsupportedOperationException();
     }
-    
+
     @Override
     public final CoreElement getNamespaceContext() {
         return coreGetParentElement();
@@ -142,6 +141,5 @@ public abstract class DOMEntityReferenceMixin implements DOMEntityReference {
     }
 
     @Override
-    public final void normalizeRecursively(DOMConfigurationImpl config) {
-    }
+    public final void normalizeRecursively(DOMConfigurationImpl config) {}
 }

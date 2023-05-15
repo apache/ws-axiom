@@ -23,7 +23,7 @@ import org.w3c.dom.NodeList;
 
 public final class EmptyNodeList implements NodeList {
     public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
+
     private EmptyNodeList() {}
 
     @Override

@@ -18,6 +18,4 @@
  */
 package org.apache.axiom.dom;
 
-public interface DOMLeafNode extends DOMChildNode {
-
-}
+public interface DOMLeafNode extends DOMChildNode {}

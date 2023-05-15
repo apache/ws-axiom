@@ -20,6 +20,4 @@ package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreNSUnawareNamedNode;
 
-public interface DOMNSUnawareNamedNode extends CoreNSUnawareNamedNode, DOMNamedNode {
-
-}
+public interface DOMNSUnawareNamedNode extends CoreNSUnawareNamedNode, DOMNamedNode {}

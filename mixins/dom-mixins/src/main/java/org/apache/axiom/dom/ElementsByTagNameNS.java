@@ -29,7 +29,7 @@ public class ElementsByTagNameNS extends NodeListImpl {
     private final DOMParentNode node;
     private final String namespaceURI;
     private final String localName;
-    
+
     public ElementsByTagNameNS(DOMParentNode node, String namespaceURI, String localName) {
         this.node = node;
         this.namespaceURI = namespaceURI == null ? "" : namespaceURI;
@@ -41,14 +41,43 @@ public class ElementsByTagNameNS extends NodeListImpl {
         boolean nsWildcard = "*".equals(namespaceURI);
         boolean localNameWildcard = localName.equals("*");
         if (nsWildcard && localNameWildcard) {
-            // TODO: there seems to be no unit test checking whether the iterator should return DOM1 elements!
-            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.ANY, null, null, Mappers.<Node>identity(), DOMSemantics.INSTANCE);
+            // TODO: there seems to be no unit test checking whether the iterator should return DOM1
+            // elements!
+            return node.coreGetElements(
+                    Axis.DESCENDANTS,
+                    DOMElement.class,
+                    ElementMatcher.ANY,
+                    null,
+                    null,
+                    Mappers.<Node>identity(),
+                    DOMSemantics.INSTANCE);
         } else if (nsWildcard) {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_LOCAL_NAME, null, localName, Mappers.<Node>identity(), DOMSemantics.INSTANCE);
+            return node.coreGetElements(
+                    Axis.DESCENDANTS,
+                    DOMNSAwareElement.class,
+                    ElementMatcher.BY_LOCAL_NAME,
+                    null,
+                    localName,
+                    Mappers.<Node>identity(),
+                    DOMSemantics.INSTANCE);
         } else if (localNameWildcard) {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_NAMESPACE_URI, namespaceURI, null, Mappers.<Node>identity(), DOMSemantics.INSTANCE);
+            return node.coreGetElements(
+                    Axis.DESCENDANTS,
+                    DOMNSAwareElement.class,
+                    ElementMatcher.BY_NAMESPACE_URI,
+                    namespaceURI,
+                    null,
+                    Mappers.<Node>identity(),
+                    DOMSemantics.INSTANCE);
         } else {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_QNAME, namespaceURI, localName, Mappers.<Node>identity(), DOMSemantics.INSTANCE);
+            return node.coreGetElements(
+                    Axis.DESCENDANTS,
+                    DOMNSAwareElement.class,
+                    ElementMatcher.BY_QNAME,
+                    namespaceURI,
+                    localName,
+                    Mappers.<Node>identity(),
+                    DOMSemantics.INSTANCE);
         }
     }
 }

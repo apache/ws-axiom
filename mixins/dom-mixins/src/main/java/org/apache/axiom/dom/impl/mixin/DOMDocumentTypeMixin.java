@@ -40,8 +40,7 @@ public abstract class DOMDocumentTypeMixin implements DOMDocumentType {
     }
 
     @Override
-    public final void setNodeValue(String nodeValue) {
-    }
+    public final void setNodeValue(String nodeValue) {}
 
     @Override
     public final String getName() {

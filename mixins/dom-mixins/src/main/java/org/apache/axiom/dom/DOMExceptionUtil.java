@@ -50,11 +50,11 @@ public final class DOMExceptionUtil {
         "VALIDATION_ERR",
         "TYPE_MISMATCH_ERR",
     };
-    
+
     private DOMExceptionUtil() {}
-    
+
     public static DOMException newDOMException(short code) {
-        String key = codeStrings[code-1];
+        String key = codeStrings[code - 1];
         String message;
         try {
             message = resourceBundle.getString(key);
@@ -67,7 +67,7 @@ public final class DOMExceptionUtil {
             return new DOMException(code, key + ": " + message);
         }
     }
-    
+
     public static RuntimeException toUncheckedException(CoreModelException ex) {
         if (ex instanceof HierarchyException) {
             return newDOMException(DOMException.HIERARCHY_REQUEST_ERR);

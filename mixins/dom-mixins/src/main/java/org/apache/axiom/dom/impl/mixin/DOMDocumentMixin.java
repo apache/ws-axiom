@@ -98,8 +98,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     }
 
     @Override
-    public final void setNodeValue(String nodeValue) {
-    }
+    public final void setNodeValue(String nodeValue) {}
 
     @Override
     public final String getPrefix() {
@@ -144,12 +143,12 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     @Override
     public final Element getDocumentElement() {
         try {
-            return (Element)coreGetDocumentElement();
+            return (Element) coreGetDocumentElement();
         } catch (CoreModelException ex) {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
-    
+
     @Override
     public final CoreElement getNamespaceContext() {
         try {
@@ -210,7 +209,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
             normalizeRecursively(domConfig);
         }
     }
-    
+
     @Override
     public final Text createTextNode(String data) {
         DOMText text = getDOMNodeFactory().createCharacterDataNode();
@@ -230,7 +229,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
-    
+
     @Override
     public final Element createElement(String tagName) {
         DOMNSUnawareElement element = getDOMNodeFactory().createNSUnawareElement();
@@ -259,7 +258,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
             localName = qualifiedName;
         } else {
             prefix = qualifiedName.substring(0, i);
-            localName = qualifiedName.substring(i+1);
+            localName = qualifiedName.substring(i + 1);
         }
         namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
         NSUtil.validateNamespace(namespaceURI, prefix);
@@ -279,7 +278,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
             localName = qualifiedName;
         } else {
             prefix = qualifiedName.substring(0, i);
-            localName = qualifiedName.substring(i+1);
+            localName = qualifiedName.substring(i + 1);
         }
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
             DOMNamespaceDeclaration decl = getDOMNodeFactory().createNamespaceDeclaration();
@@ -346,11 +345,11 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     public final NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
         return new ElementsByTagNameNS(this, namespaceURI, localName);
     }
-    
+
     // TODO: need unit test to check that this method works as expected on an OMSourcedElement
     @Override
     public final Node renameNode(Node node, String namespaceURI, String qualifiedName) {
-        if (!(node instanceof DOMNode && ((DOMNode)node).coreHasSameOwnerDocument(this))) {
+        if (!(node instanceof DOMNode && ((DOMNode) node).coreHasSameOwnerDocument(this))) {
             throw DOMExceptionUtil.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
         }
         // TODO: what about an attempt to rename a namespace unaware node?
@@ -365,25 +364,28 @@ public abstract class DOMDocumentMixin implements DOMDocument {
             localName = qualifiedName;
         } else {
             prefix = qualifiedName.substring(0, i);
-            localName = qualifiedName.substring(i+1);
+            localName = qualifiedName.substring(i + 1);
         }
         namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
-        switch (((DOMNode)node).coreGetNodeType()) {
+        switch (((DOMNode) node).coreGetNodeType()) {
             case NS_AWARE_ELEMENT:
                 NSUtil.validateNamespace(namespaceURI, prefix);
-                ((DOMNSAwareElement)node).coreSetName(namespaceURI, localName, prefix);
+                ((DOMNSAwareElement) node).coreSetName(namespaceURI, localName, prefix);
                 return node;
             case NS_AWARE_ATTRIBUTE:
                 if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
                     DOMNamespaceDeclaration decl = getDOMNodeFactory().createNamespaceDeclaration();
                     decl.coreSetOwnerDocument(this);
-                    // TODO: we should have a generic method to move the content over to the new node
-                    decl.coreSetDeclaredNamespace(NSUtil.getDeclaredPrefix(localName, prefix), ((DOMNSAwareAttribute)node).getValue());
+                    // TODO: we should have a generic method to move the content over to the new
+                    // node
+                    decl.coreSetDeclaredNamespace(
+                            NSUtil.getDeclaredPrefix(localName, prefix),
+                            ((DOMNSAwareAttribute) node).getValue());
                     // TODO: what about replacing the node in the tree??
                     return decl;
                 } else {
                     NSUtil.validateAttributeName(namespaceURI, localName, prefix);
-                    ((DOMNSAwareAttribute)node).coreSetName(namespaceURI, localName, prefix);
+                    ((DOMNSAwareAttribute) node).coreSetName(namespaceURI, localName, prefix);
                     return node;
                 }
             case NAMESPACE_DECLARATION:
@@ -400,7 +402,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
             CoreChildNode child = coreGetFirstChild();
             while (child != null) {
                 if (child instanceof DocumentType) {
-                    return (DocumentType)child;
+                    return (DocumentType) child;
                 } else if (child instanceof Element) {
                     // A doctype declaration can only appear before the root element. Stop here.
                     return null;
@@ -416,14 +418,14 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     @Override
     public final Node adoptNode(Node node) throws DOMException {
         if (node instanceof DOMNode) {
-            DOMNode childNode = (DOMNode)node;
+            DOMNode childNode = (DOMNode) node;
             if (childNode instanceof CoreChildNode) {
-                ((CoreChildNode)childNode).coreDetach(this);
+                ((CoreChildNode) childNode).coreDetach(this);
             } else {
                 childNode.coreSetOwnerDocument(this);
             }
             if (node instanceof DOMAttribute) {
-                ((DOMAttribute)node).coreSetSpecified(true);
+                ((DOMAttribute) node).coreSetSpecified(true);
             }
             return childNode;
         } else {
@@ -440,10 +442,19 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     @Override
     public final Element getElementById(String elementId) {
         try {
-            for (Iterator<DOMElement> it = coreGetNodes(Axis.DESCENDANTS, DOMElement.class, Mappers.<DOMElement>identity(), DOMSemantics.INSTANCE); it.hasNext(); ) {
+            for (Iterator<DOMElement> it =
+                            coreGetNodes(
+                                    Axis.DESCENDANTS,
+                                    DOMElement.class,
+                                    Mappers.<DOMElement>identity(),
+                                    DOMSemantics.INSTANCE);
+                    it.hasNext(); ) {
                 DOMElement element = it.next();
-                for (CoreAttribute attr = element.coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
-                    if (((DOMAttribute)attr).isId() && elementId.equals(attr.coreGetCharacterData().toString())) {
+                for (CoreAttribute attr = element.coreGetFirstAttribute();
+                        attr != null;
+                        attr = attr.coreGetNextAttribute()) {
+                    if (((DOMAttribute) attr).isId()
+                            && elementId.equals(attr.coreGetCharacterData().toString())) {
                         return element;
                     }
                 }
@@ -475,8 +486,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     }
 
     @Override
-    public final void normalize(DOMConfigurationImpl config) {
-    }
+    public final void normalize(DOMConfigurationImpl config) {}
 
     @Override
     public final Node importNode(Node importedNode, boolean deep) throws DOMException {
@@ -484,71 +494,80 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         short type = importedNode.getNodeType();
         Node newNode = null;
         switch (type) {
-            case Node.ELEMENT_NODE: {
-                Element newElement;
-                if (importedNode.getLocalName() == null) {
-                    newElement = this.createElement(importedNode.getNodeName());
-                } else {
-                    
-                    String ns = importedNode.getNamespaceURI();
-                    ns = (ns != null) ? ns.intern() : null;
-                    newElement = createElementNS(ns, importedNode.getNodeName());
-                }
+            case Node.ELEMENT_NODE:
+                {
+                    Element newElement;
+                    if (importedNode.getLocalName() == null) {
+                        newElement = this.createElement(importedNode.getNodeName());
+                    } else {
 
-                // Copy element's attributes, if any.
-                NamedNodeMap sourceAttrs = importedNode.getAttributes();
-                if (sourceAttrs != null) {
-                    int length = sourceAttrs.getLength();
-                    for (int index = 0; index < length; index++) {
-                        ((DOMElement)newElement).coreAppendAttribute((DOMAttribute)importNode(sourceAttrs.item(index), true));
+                        String ns = importedNode.getNamespaceURI();
+                        ns = (ns != null) ? ns.intern() : null;
+                        newElement = createElementNS(ns, importedNode.getNodeName());
                     }
+
+                    // Copy element's attributes, if any.
+                    NamedNodeMap sourceAttrs = importedNode.getAttributes();
+                    if (sourceAttrs != null) {
+                        int length = sourceAttrs.getLength();
+                        for (int index = 0; index < length; index++) {
+                            ((DOMElement) newElement)
+                                    .coreAppendAttribute(
+                                            (DOMAttribute)
+                                                    importNode(sourceAttrs.item(index), true));
+                        }
+                    }
+                    newNode = newElement;
+                    break;
                 }
-                newNode = newElement;
-                break;
-            }
 
-            case Node.ATTRIBUTE_NODE: {
-                if (importedNode.getLocalName() == null) {
-                    newNode = createAttribute(importedNode.getNodeName());
-                } else {
-                    String ns = importedNode.getNamespaceURI();
-                    ns = (ns != null) ? ns.intern() : null;
-                    newNode = createAttributeNS(ns ,
-                                                importedNode.getNodeName());
+            case Node.ATTRIBUTE_NODE:
+                {
+                    if (importedNode.getLocalName() == null) {
+                        newNode = createAttribute(importedNode.getNodeName());
+                    } else {
+                        String ns = importedNode.getNamespaceURI();
+                        ns = (ns != null) ? ns.intern() : null;
+                        newNode = createAttributeNS(ns, importedNode.getNodeName());
+                    }
+                    ((Attr) newNode).setValue(importedNode.getNodeValue());
+                    break;
                 }
-                ((Attr) newNode).setValue(importedNode.getNodeValue());
-                break;
-            }
 
-            case Node.TEXT_NODE: {
-                newNode = createTextNode(importedNode.getNodeValue());
-                break;
-            }
+            case Node.TEXT_NODE:
+                {
+                    newNode = createTextNode(importedNode.getNodeValue());
+                    break;
+                }
 
-            case Node.COMMENT_NODE: {
-                newNode = createComment(importedNode.getNodeValue());
-                break;
-            }
-                
-            case Node.DOCUMENT_FRAGMENT_NODE: {
-                newNode = createDocumentFragment();
-                // No name, kids carry value
-                break;
-            }
+            case Node.COMMENT_NODE:
+                {
+                    newNode = createComment(importedNode.getNodeValue());
+                    break;
+                }
+
+            case Node.DOCUMENT_FRAGMENT_NODE:
+                {
+                    newNode = createDocumentFragment();
+                    // No name, kids carry value
+                    break;
+                }
 
             case Node.CDATA_SECTION_NODE:
                 newNode = createCDATASection(importedNode.getNodeValue());
                 break;
-            
-            case Node.PROCESSING_INSTRUCTION_NODE: {
-                ProcessingInstruction pi = (ProcessingInstruction)importedNode;
-                newNode = createProcessingInstruction(pi.getTarget(), pi.getData());
-                break;
-            }
+
+            case Node.PROCESSING_INSTRUCTION_NODE:
+                {
+                    ProcessingInstruction pi = (ProcessingInstruction) importedNode;
+                    newNode = createProcessingInstruction(pi.getTarget(), pi.getData());
+                    break;
+                }
             case Node.ENTITY_REFERENCE_NODE:
             case Node.ENTITY_NODE:
             case Node.NOTATION_NODE:
-                throw new UnsupportedOperationException("TODO : Implement handling of org.w3c.dom.Node type == " + type );
+                throw new UnsupportedOperationException(
+                        "TODO : Implement handling of org.w3c.dom.Node type == " + type);
 
             case Node.DOCUMENT_NODE: // Can't import document nodes
             case Node.DOCUMENT_TYPE_NODE:
@@ -558,13 +577,13 @@ public abstract class DOMDocumentMixin implements DOMDocument {
 
         // If deep, replicate and attach the kids.
         if (deep && !(importedNode instanceof Attr)) {
-            for (Node srckid = importedNode.getFirstChild(); srckid != null;
-                 srckid = srckid.getNextSibling()) {
+            for (Node srckid = importedNode.getFirstChild();
+                    srckid != null;
+                    srckid = srckid.getNextSibling()) {
                 newNode.appendChild(importNode(srckid, true));
             }
         }
 
         return newNode;
-
     }
 }

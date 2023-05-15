@@ -45,7 +45,7 @@ public abstract class DOMProcessingInstructionMixin implements DOMProcessingInst
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
-    
+
     @Override
     public final void setData(String data) {
         try {
@@ -54,7 +54,7 @@ public abstract class DOMProcessingInstructionMixin implements DOMProcessingInst
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
-    
+
     @Override
     public final String getNodeName() {
         return coreGetTarget();

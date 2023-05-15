@@ -21,6 +21,4 @@ package org.apache.axiom.dom;
 import org.apache.axiom.core.CoreCDATASection;
 import org.w3c.dom.CDATASection;
 
-public interface DOMCDATASection extends CoreCDATASection, CDATASection, DOMTextNode{
-
-}
+public interface DOMCDATASection extends CoreCDATASection, CDATASection, DOMTextNode {}

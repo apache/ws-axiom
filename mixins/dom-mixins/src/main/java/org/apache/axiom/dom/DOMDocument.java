@@ -21,6 +21,4 @@ package org.apache.axiom.dom;
 import org.apache.axiom.core.CoreDocument;
 import org.w3c.dom.Document;
 
-public interface DOMDocument extends DOMRootNode, Document, CoreDocument {
-
-}
+public interface DOMDocument extends DOMRootNode, Document, CoreDocument {}

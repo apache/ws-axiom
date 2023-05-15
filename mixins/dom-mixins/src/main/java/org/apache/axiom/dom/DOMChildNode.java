@@ -20,6 +20,4 @@ package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreChildNode;
 
-public interface DOMChildNode extends DOMNode, CoreChildNode {
-
-}
+public interface DOMChildNode extends DOMNode, CoreChildNode {}

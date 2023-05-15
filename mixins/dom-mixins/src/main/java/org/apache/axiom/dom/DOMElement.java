@@ -21,6 +21,5 @@ package org.apache.axiom.dom;
 import org.apache.axiom.core.CoreElement;
 import org.w3c.dom.Element;
 
-public interface DOMElement extends DOMChildNode, DOMParentNode, DOMNamedNode, Element, CoreElement {
-
-}
+public interface DOMElement
+        extends DOMChildNode, DOMParentNode, DOMNamedNode, Element, CoreElement {}

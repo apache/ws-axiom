@@ -53,7 +53,7 @@ public abstract class DOMNSAwareNamedNodeMixin implements DOMNSAwareNamedNode {
         }
         coreSetPrefix(prefix);
     }
-    
+
     @Override
     public final String internalGetName() {
         String prefix = coreGetPrefix();

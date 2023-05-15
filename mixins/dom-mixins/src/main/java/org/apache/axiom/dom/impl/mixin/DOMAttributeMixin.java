@@ -36,7 +36,7 @@ import org.w3c.dom.TypeInfo;
 public abstract class DOMAttributeMixin implements DOMAttribute {
     @Override
     public final Document getOwnerDocument() {
-        return (Document)coreGetOwnerDocument(true);
+        return (Document) coreGetOwnerDocument(true);
     }
 
     @Override
@@ -58,7 +58,7 @@ public abstract class DOMAttributeMixin implements DOMAttribute {
     public final String getNodeName() {
         return getName();
     }
-    
+
     @Override
     public final boolean hasAttributes() {
         return false;
@@ -68,7 +68,7 @@ public abstract class DOMAttributeMixin implements DOMAttribute {
     public final NamedNodeMap getAttributes() {
         return null;
     }
-    
+
     @Override
     public final String getTextContent() {
         return getValue();
@@ -78,7 +78,7 @@ public abstract class DOMAttributeMixin implements DOMAttribute {
     public final void setTextContent(String textContent) {
         setValue(textContent);
     }
-    
+
     @Override
     public final String getValue() {
         try {
@@ -87,7 +87,7 @@ public abstract class DOMAttributeMixin implements DOMAttribute {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
-    
+
     @Override
     public final void setValue(String value) {
         try {
@@ -96,7 +96,7 @@ public abstract class DOMAttributeMixin implements DOMAttribute {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
-    
+
     @Override
     public final CoreElement getNamespaceContext() {
         return coreGetOwnerElement();
@@ -104,7 +104,7 @@ public abstract class DOMAttributeMixin implements DOMAttribute {
 
     @Override
     public final Element getOwnerElement() {
-        return (Element)coreGetOwnerElement();
+        return (Element) coreGetOwnerElement();
     }
 
     @Override
@@ -119,6 +119,5 @@ public abstract class DOMAttributeMixin implements DOMAttribute {
     }
 
     @Override
-    public final void normalize(DOMConfigurationImpl config) {
-    }
+    public final void normalize(DOMConfigurationImpl config) {}
 }

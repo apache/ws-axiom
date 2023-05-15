@@ -45,7 +45,7 @@ public abstract class DOMNodeMixin implements DOMNode {
     public final boolean isSupported(String feature, String version) {
         return getDOMNodeFactory().hasFeature(feature, version);
     }
-    
+
     @Override
     public final String lookupNamespaceURI(String prefix) {
         try {
@@ -102,7 +102,11 @@ public abstract class DOMNodeMixin implements DOMNode {
     @Override
     public final Node cloneNode(boolean deep) {
         try {
-            DOMNode clone = (DOMNode)coreClone(deep ? DOMSemantics.DEEP_CLONE : DOMSemantics.SHALLOW_CLONE, null);
+            DOMNode clone =
+                    (DOMNode)
+                            coreClone(
+                                    deep ? DOMSemantics.DEEP_CLONE : DOMSemantics.SHALLOW_CLONE,
+                                    null);
             if (!(clone instanceof DOMDocument)) {
                 clone.coreSetOwnerDocument(coreGetOwnerDocument(true));
             }
@@ -114,7 +118,7 @@ public abstract class DOMNodeMixin implements DOMNode {
 
     @Override
     public void normalize() {
-        //Parent node should override this 
+        // Parent node should override this
     }
 
     /*
@@ -141,7 +145,7 @@ public abstract class DOMNodeMixin implements DOMNode {
         return this == node;
     }
 
-    //TODO : sumedha, complete
+    // TODO : sumedha, complete
     @Override
     public boolean isEqualNode(Node other) {
         if (getNodeType() != other.getNodeType()
@@ -197,10 +201,10 @@ public abstract class DOMNodeMixin implements DOMNode {
     /**
      * Get the owner document of this node. In contrast to {@link Node#getOwnerDocument()}, this
      * method returns a non null value when invoked on a {@link Document} instance.
-     * 
+     *
      * @return the owner document
      */
     final DOMDocument ownerDocument() {
-        return (DOMDocument)coreGetOwnerDocument(true);
+        return (DOMDocument) coreGetOwnerDocument(true);
     }
 }

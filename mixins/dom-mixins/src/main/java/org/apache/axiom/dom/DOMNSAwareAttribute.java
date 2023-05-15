@@ -20,6 +20,5 @@ package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreNSAwareAttribute;
 
-public interface DOMNSAwareAttribute extends DOMTypedAttribute, DOMNSAwareNamedNode, CoreNSAwareAttribute {
-
-}
+public interface DOMNSAwareAttribute
+        extends DOMTypedAttribute, DOMNSAwareNamedNode, CoreNSAwareAttribute {}

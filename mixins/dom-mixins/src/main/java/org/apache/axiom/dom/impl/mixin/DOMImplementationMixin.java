@@ -33,12 +33,15 @@ public abstract class DOMImplementationMixin implements DOMNodeFactory {
     public boolean hasFeature(String feature, String version) {
         boolean anyVersion = version == null || version.length() == 0;
         return (feature.equalsIgnoreCase("Core") || feature.equalsIgnoreCase("XML"))
-                && (anyVersion || version.equals("1.0") || version.equals("2.0") || version.equals("3.0"));
+                && (anyVersion
+                        || version.equals("1.0")
+                        || version.equals("2.0")
+                        || version.equals("3.0"));
     }
 
     @Override
-    public Document createDocument(String namespaceURI, String qualifiedName,
-                                   DocumentType doctype) throws DOMException {
+    public Document createDocument(String namespaceURI, String qualifiedName, DocumentType doctype)
+            throws DOMException {
 
         // TODO Handle docType stuff
         DOMDocument doc = createDocument();
@@ -50,8 +53,7 @@ public abstract class DOMImplementationMixin implements DOMNodeFactory {
     }
 
     @Override
-    public DocumentType createDocumentType(String qualifiedName,
-                                           String publicId, String systemId) {
+    public DocumentType createDocumentType(String qualifiedName, String publicId, String systemId) {
         DOMDocumentType docType = createDocumentTypeDeclaration();
         docType.coreSetRootName(qualifiedName);
         docType.coreSetPublicId(publicId);
@@ -68,5 +70,4 @@ public abstract class DOMImplementationMixin implements DOMNodeFactory {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
-
 }

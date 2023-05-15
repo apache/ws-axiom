@@ -21,6 +21,4 @@ package org.apache.axiom.dom;
 import org.apache.axiom.core.CoreComment;
 import org.w3c.dom.Comment;
 
-public interface DOMComment extends DOMCharacterData, Comment, CoreComment {
-
-}
+public interface DOMComment extends DOMCharacterData, Comment, CoreComment {}

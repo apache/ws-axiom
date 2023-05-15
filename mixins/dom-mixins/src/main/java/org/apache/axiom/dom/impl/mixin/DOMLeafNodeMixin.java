@@ -35,7 +35,7 @@ import org.w3c.dom.NodeList;
 public abstract class DOMLeafNodeMixin implements DOMLeafNode {
     @Override
     public final Document getOwnerDocument() {
-        return (Document)coreGetOwnerDocument(true);
+        return (Document) coreGetOwnerDocument(true);
     }
 
     @Override
@@ -62,7 +62,7 @@ public abstract class DOMLeafNodeMixin implements DOMLeafNode {
     public final boolean hasChildNodes() {
         return false;
     }
-    
+
     @Override
     public final Node getFirstChild() {
         return null;
@@ -117,13 +117,12 @@ public abstract class DOMLeafNodeMixin implements DOMLeafNode {
     public final void setTextContent(String textContent) {
         setNodeValue(textContent);
     }
-    
+
     @Override
     public final CoreElement getNamespaceContext() {
         return coreGetParentElement();
     }
 
     @Override
-    public final void normalizeRecursively(DOMConfigurationImpl config) {
-    }
+    public final void normalizeRecursively(DOMConfigurationImpl config) {}
 }

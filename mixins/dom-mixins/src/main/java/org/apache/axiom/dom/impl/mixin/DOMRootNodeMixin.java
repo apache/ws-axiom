@@ -33,7 +33,7 @@ public abstract class DOMRootNodeMixin implements DOMRootNode {
     public final Node getPreviousSibling() {
         return null;
     }
-    
+
     @Override
     public final Node getParentNode() {
         return null;
