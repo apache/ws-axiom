@@ -275,16 +275,6 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(
                 new org.apache.axiom.ts.om.builder.TestReadAttachmentBeforeRootPartComplete(
                         metaFactory));
-        addTest(
-                new org.apache.axiom.ts.om.builder.TestRegisterCustomBuilderForPayloadJAXBPlain(
-                        metaFactory));
-        addTest(
-                new org.apache.axiom.ts.om.builder
-                        .TestRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtension(
-                        metaFactory));
-        addTest(
-                new org.apache.axiom.ts.om.builder.TestRegisterCustomBuilderForPayloadJAXBWithXOP(
-                        metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestRootPartStreaming(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestStandaloneConfiguration(metaFactory));
         addTest(new org.apache.axiom.ts.om.comment.TestSerialize(metaFactory));
@@ -859,11 +849,6 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
                         metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestUnmarshalWithDataHandler(metaFactory));
-        addTest(
-                new org.apache.axiom.ts.om.element.TestUnmarshalWithDataHandlerToByteArray(
-                        metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestUnmarshalWithDeclaredType(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextTo(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextToWithNonTextNodes(metaFactory));
         addTest(
@@ -1180,24 +1165,6 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(
                 new org.apache.axiom.ts.om.sourcedelement
                         .TestWriteTextToWithNonDestructiveOMDataSource(metaFactory));
-        addTest(
-                new org.apache.axiom.ts.om.sourcedelement.jaxb.TestDataHandlerExpansion(
-                        metaFactory));
-        addTest(
-                new org.apache.axiom.ts.om.sourcedelement.jaxb.TestDataHandlerSerializationWithMTOM(
-                        metaFactory));
-        addTest(
-                new org.apache.axiom.ts.om.sourcedelement.jaxb
-                        .TestDataHandlerSerializationWithoutMTOM(metaFactory));
-        addTest(
-                new org.apache.axiom.ts.om.sourcedelement.jaxb.TestExceptionDuringSerialization(
-                        metaFactory));
-        addTest(
-                new org.apache.axiom.ts.om.sourcedelement.jaxb.TestGetNameFromJAXBElement(
-                        metaFactory));
-        addTest(
-                new org.apache.axiom.ts.om.sourcedelement.jaxb.TestGetNameFromPlainObject(
-                        metaFactory));
         addTest(new org.apache.axiom.ts.om.sourcedelement.sr.TestGetName(metaFactory));
         for (int events = 0; events < 7; events++) {
             addTest(

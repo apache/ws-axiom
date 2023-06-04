@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.ts.om.builder;
+package org.apache.axiom.om.ds.custombuilder;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -25,7 +25,6 @@ import javax.xml.bind.JAXBException;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.jaxb.JAXBOMDataSource;
 import org.apache.axiom.om.util.jaxb.JAXBUtils;
 

@@ -16,32 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.om.ds.jaxb;
 
-package org.apache.axiom.ts.om.builder;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
-import javax.activation.DataHandler;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
 
-@XmlRootElement(namespace = "urn:test", name = "document")
-@XmlType(propOrder = {"name", "content"})
-public class MyDocument {
-    private String name;
-    private DataHandler content;
+public class ExceptionXMLStreamWriterWrapper extends XMLStreamWriterWrapper {
+    private final XMLStreamException exception;
 
-    public String getName() {
-        return name;
+    public ExceptionXMLStreamWriterWrapper(XMLStreamWriter parent, XMLStreamException exception) {
+        super(parent);
+        this.exception = exception;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public DataHandler getContent() {
-        return content;
-    }
-
-    public void setContent(DataHandler content) {
-        this.content = content;
+    @Override
+    public void writeCharacters(String text) throws XMLStreamException {
+        exception.fillInStackTrace();
+        throw exception;
     }
 }

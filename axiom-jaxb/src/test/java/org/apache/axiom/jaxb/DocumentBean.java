@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.jaxb.beans;
+package org.apache.axiom.jaxb;
 
 import javax.activation.DataHandler;
 import javax.xml.bind.annotation.XmlRootElement;

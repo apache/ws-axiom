@@ -51,11 +51,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-jaxb</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
@@ -184,22 +179,6 @@
                         <version>${log4j.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>com.github.veithen.maven</groupId>
-                <artifactId>xjc-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate-sources</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>src/main/schema/identity.xsd</file>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>com.spotify.fmt</groupId>

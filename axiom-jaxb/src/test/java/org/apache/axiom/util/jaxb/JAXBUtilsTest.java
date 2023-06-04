@@ -16,31 +16,44 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.util.jaxb;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 
+import org.apache.axiom.jaxb.DocumentBean;
+import org.apache.axiom.jaxb.DocumentBean2;
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.ds.jaxb.JAXBOMDataSource;
 import org.apache.axiom.om.util.jaxb.JAXBUtils;
 import org.apache.axiom.testutils.activation.TextDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.jaxb.beans.DocumentBean2;
 import org.apache.axiom.util.activation.DataHandlerUtils;
+import org.junit.jupiter.api.Test;
 
-public class TestUnmarshalWithDataHandlerToByteArray extends AxiomTestCase {
-    public TestUnmarshalWithDataHandlerToByteArray(OMMetaFactory metaFactory) {
-        super(metaFactory);
+public class JAXBUtilsTest {
+    @Test
+    public void testUnmarshalWithDataHandler() throws Exception {
+        OMFactory factory = OMAbstractFactory.getOMFactory();
+        JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
+        DocumentBean orgBean = new DocumentBean();
+        orgBean.setId("AB23498");
+        orgBean.setContent(new DataHandler(new TextDataSource("test content", "utf-8", "plain")));
+        OMElement element = factory.createOMElement(new JAXBOMDataSource(context, orgBean));
+        DocumentBean bean = (DocumentBean) JAXBUtils.unmarshal(element, context, null, true);
+        assertThat(bean.getId()).isEqualTo(orgBean.getId());
+        assertThat(bean.getContent()).isEqualTo(orgBean.getContent());
     }
 
-    @Override
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
+    @Test
+    public void testUnmarshalWithDataHandlerToByteArray() throws Exception {
+        OMFactory factory = OMAbstractFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("http://ws.apache.org/axiom/test/jaxb", "p");
         OMElement element = factory.createOMElement("document2", ns);
         factory.createOMElement("id", ns, element).setText("12345");
@@ -55,5 +68,15 @@ public class TestUnmarshalWithDataHandlerToByteArray extends AxiomTestCase {
         DocumentBean2 bean = (DocumentBean2) JAXBUtils.unmarshal(element, context, null, true);
         assertThat(bean.getId()).isEqualTo("12345");
         assertThat(bean.getContent()).isEqualTo("test content".getBytes("utf-8"));
+    }
+
+    @Test
+    public void testUnmarshalWithDeclaredType() throws Exception {
+        OMElement element = OMAbstractFactory.getOMFactory().createOMElement("foo", null);
+        element.setText("bar");
+        JAXBElement<String> result =
+                JAXBUtils.unmarshal(element, JAXBContext.newInstance(), null, String.class, true);
+        assertThat(result.getName()).isEqualTo(new QName("foo"));
+        assertThat(result.getValue()).isEqualTo("bar");
     }
 }
