@@ -22,7 +22,6 @@ import java.nio.charset.Charset;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
@@ -30,6 +29,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.activation.WrappedTextNodeOMDataSourceFromDataSource;
+import org.apache.axiom.testutils.activation.TextDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCloneNonDestructive extends AxiomTestCase {
@@ -47,7 +47,7 @@ public class TestCloneNonDestructive extends AxiomTestCase {
         OMDataSource ds =
                 new WrappedTextNodeOMDataSourceFromDataSource(
                         new QName("wrapper"),
-                        new ByteArrayDataSource("test".getBytes("utf-8")),
+                        new TextDataSource("test", "utf-8", "plain"),
                         Charset.forName("utf-8"));
         OMSourcedElement element = factory.createOMElement(ds);
         OMCloneOptions options = new OMCloneOptions();
