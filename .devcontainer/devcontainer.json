@@ -14,5 +14,8 @@
 				"github.vscode-github-actions"
 			]
 		}
+	},
+	"hostRequirements": {
+		"memory": "8gb"
 	}
 }
