@@ -85,10 +85,6 @@
             <artifactId>jaxp-testsuite</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>jakarta.activation</groupId>
-            <artifactId>jakarta.activation-api</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
