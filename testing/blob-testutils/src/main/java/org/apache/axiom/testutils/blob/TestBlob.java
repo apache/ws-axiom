@@ -17,35 +17,26 @@
  * under the License.
  */
 
-package org.apache.axiom.testutils.activation;
+package org.apache.axiom.testutils.blob;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.activation.DataSource;
+import org.apache.axiom.blob.Blob;
+import org.apache.axiom.ext.io.StreamCopyException;
 
 /**
- * Test data source that produces a byte sequence with specified length and with all bytes equal to
- * a specified value.
+ * Test blob that produces a byte sequence with specified length and with all bytes equal to a
+ * specified value.
  */
-public class TestDataSource implements DataSource {
+public class TestBlob implements Blob {
     final int value;
     final long length;
 
-    public TestDataSource(int value, long length) {
+    public TestBlob(int value, long length) {
         this.value = value;
         this.length = length;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public String getContentType() {
-        return null;
     }
 
     @Override
@@ -66,7 +57,18 @@ public class TestDataSource implements DataSource {
     }
 
     @Override
-    public OutputStream getOutputStream() throws IOException {
-        throw new UnsupportedOperationException();
+    public void writeTo(OutputStream out) throws StreamCopyException {
+        for (long i = 0; i < length; i++) {
+            try {
+                out.write(value);
+            } catch (IOException ex) {
+                throw new StreamCopyException(StreamCopyException.WRITE, ex);
+            }
+        }
+    }
+
+    @Override
+    public long getSize() {
+        return length;
     }
 }

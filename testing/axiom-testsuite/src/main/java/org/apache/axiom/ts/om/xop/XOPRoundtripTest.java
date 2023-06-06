@@ -18,20 +18,19 @@
  */
 package org.apache.axiom.ts.om.xop;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stax.StAXSource;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.XOPEncoded;
-import org.apache.axiom.testutils.activation.TestDataSource;
+import org.apache.axiom.testutils.blob.TestBlob;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 
 public class XOPRoundtripTest extends AxiomTestCase {
     public XOPRoundtripTest(OMMetaFactory metaFactory) {
@@ -41,9 +40,9 @@ public class XOPRoundtripTest extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        DataHandler dh = new DataHandler(new TestDataSource('x', Runtime.getRuntime().maxMemory()));
+        Blob blob = new TestBlob('x', Runtime.getRuntime().maxMemory());
         OMElement element1 = factory.createOMElement(new QName("test"));
-        element1.addChild(factory.createOMText(DataHandlerUtils.toBlob(dh), true));
+        element1.addChild(factory.createOMText(blob, true));
         XOPEncoded<XMLStreamReader> xopEncodedStream = element1.getXOPEncodedStreamReader(true);
         OMElement element2 =
                 OMXMLBuilderFactory.createOMBuilder(
@@ -55,6 +54,6 @@ public class XOPRoundtripTest extends AxiomTestCase {
         assertNotNull(child);
         assertTrue(child.isBinary());
         assertTrue(child.isOptimized());
-        assertSame(dh, DataHandlerUtils.toDataHandler(child.getBlob()));
+        assertSame(blob, child.getBlob());
     }
 }

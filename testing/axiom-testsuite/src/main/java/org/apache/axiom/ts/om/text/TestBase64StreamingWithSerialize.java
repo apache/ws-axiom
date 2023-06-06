@@ -18,16 +18,12 @@
  */
 package org.apache.axiom.ts.om.text;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.activation.TestDataSource;
+import org.apache.axiom.testutils.blob.TestBlob;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.io.output.NullOutputStream;
 
 /**
@@ -46,11 +42,10 @@ public class TestBase64StreamingWithSerialize extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement elem = factory.createOMElement("test", null);
-        // Create a data source that would eat up all memory when loaded. If the test
-        // doesn't fail with an OutOfMemoryError, we know that the OMText implementation
-        // supports streaming.
-        DataSource ds = new TestDataSource('A', Runtime.getRuntime().maxMemory());
-        OMText text = factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds)), false);
+        // Create a blob that would eat up all memory when loaded. If the test doesn't fail with an
+        // OutOfMemoryError, we know that the OMText implementation supports streaming.
+        OMText text =
+                factory.createOMText(new TestBlob('A', Runtime.getRuntime().maxMemory()), false);
         elem.addChild(text);
         elem.serialize(NullOutputStream.NULL_OUTPUT_STREAM);
     }

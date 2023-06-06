@@ -22,9 +22,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.Iterator;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.mime.activation.PartDataHandlerBlobFactory;
 import org.apache.axiom.mime.activation.PartDataHandler;
@@ -36,7 +34,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.activation.TestDataSource;
+import org.apache.axiom.testutils.blob.TestBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.util.activation.DataHandlerUtils;
@@ -58,8 +56,8 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        DataSource ds1 = new TestDataSource('A', Runtime.getRuntime().maxMemory());
-        DataSource ds2 = new TestDataSource('B', Runtime.getRuntime().maxMemory());
+        Blob blob1 = new TestBlob('A', Runtime.getRuntime().maxMemory());
+        Blob blob2 = new TestBlob('B', Runtime.getRuntime().maxMemory());
 
         // Programmatically create the original message
         SOAPFactory factory = metaFactory.getSOAP12Factory();
@@ -69,11 +67,9 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
                 factory.createOMElement(
                         "test", factory.createOMNamespace("urn:test", "p"), orgBody);
         OMElement orgData1 = factory.createOMElement("data", null, orgBodyElement);
-        orgData1.addChild(
-                factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds1)), true));
+        orgData1.addChild(factory.createOMText(blob1, true));
         OMElement orgData2 = factory.createOMElement("data", null, orgBodyElement);
-        orgData2.addChild(
-                factory.createOMText(DataHandlerUtils.toBlob(new DataHandler(ds2)), true));
+        orgData2.addChild(factory.createOMText(blob2, true));
 
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
@@ -152,14 +148,14 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
             OMElement data2 = it.next();
 
             IOTestUtils.compareStreams(
-                    ds1.getInputStream(),
+                    blob1.getInputStream(),
                     ((PartDataHandler)
                                     DataHandlerUtils.toDataHandler(
                                             ((OMText) data1.getFirstOMChild()).getBlob()))
                             .getPart()
                             .getInputStream(false));
             IOTestUtils.compareStreams(
-                    ds2.getInputStream(),
+                    blob2.getInputStream(),
                     ((PartDataHandler)
                                     DataHandlerUtils.toDataHandler(
                                             ((OMText) data2.getFirstOMChild()).getBlob()))
