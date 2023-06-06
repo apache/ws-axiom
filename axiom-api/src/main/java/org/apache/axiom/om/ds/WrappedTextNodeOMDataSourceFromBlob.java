@@ -16,35 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.ds.activation;
+package org.apache.axiom.om.ds;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
-import javax.activation.DataSource;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMDataSourceExt;
-import org.apache.axiom.om.ds.WrappedTextNodeOMDataSource;
-import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 /**
- * {@link WrappedTextNodeOMDataSource} that pulls the text data from a {@link DataSource} object.
- * The {@link #getObject()} method returns the {@link DataSource} instance.
- *
- * @deprecated Use {@link WrappedTextNodeOMDataSourceFromBlob} instead.
+ * {@link WrappedTextNodeOMDataSource} that pulls the text data from a {@link Blob} object.
+ * The {@link #getObject()} method returns the {@link Blob} instance.
  */
-public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOMDataSource {
-    private final DataSource binaryData;
+public class WrappedTextNodeOMDataSourceFromBlob extends WrappedTextNodeOMDataSource {
+    private final Blob binaryData;
     private final Charset charset;
 
-    public WrappedTextNodeOMDataSourceFromDataSource(
-            QName wrapperElementName, DataSource binaryData, Charset charset) {
+    public WrappedTextNodeOMDataSourceFromBlob(
+            QName wrapperElementName, Blob binaryData, Charset charset) {
         super(wrapperElementName);
         this.binaryData = binaryData;
         this.charset = charset;
@@ -74,7 +70,7 @@ public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOM
 
     @Override
     public OMDataSourceExt copy() {
-        return new WrappedTextNodeOMDataSourceFromDataSource(
+        return new WrappedTextNodeOMDataSourceFromBlob(
                 wrapperElementName, binaryData, charset);
     }
 }

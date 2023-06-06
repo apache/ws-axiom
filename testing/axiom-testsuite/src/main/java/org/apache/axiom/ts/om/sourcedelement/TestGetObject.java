@@ -20,18 +20,17 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import java.nio.charset.Charset;
 
-import javax.activation.DataSource;
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSource;
-import org.apache.axiom.om.ds.activation.WrappedTextNodeOMDataSourceFromDataSource;
+import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.BlobDataSource;
 
 public class TestGetObject extends AxiomTestCase {
     public TestGetObject(OMMetaFactory metaFactory) {
@@ -41,20 +40,18 @@ public class TestGetObject extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        DataSource ds =
-                new BlobDataSource(
-                        Blobs.createBlob("test".getBytes("utf-8")), "text/plain; charset=utf-8");
+        Blob blob = Blobs.createBlob("test".getBytes("utf-8"));
         OMSourcedElement element =
                 factory.createOMElement(
-                        new WrappedTextNodeOMDataSourceFromDataSource(
-                                new QName("wrapper"), ds, Charset.forName("utf-8")));
+                        new WrappedTextNodeOMDataSourceFromBlob(
+                                new QName("wrapper"), blob, Charset.forName("utf-8")));
         // getObject returns null if the data source is not of the expected type
         assertNull(element.getObject(StringOMDataSource.class));
         // Test with the right data source type
-        assertSame(ds, element.getObject(WrappedTextNodeOMDataSourceFromDataSource.class));
-        assertSame(ds, element.getObject(WrappedTextNodeOMDataSource.class));
+        assertSame(blob, element.getObject(WrappedTextNodeOMDataSourceFromBlob.class));
+        assertSame(blob, element.getObject(WrappedTextNodeOMDataSource.class));
         // Now modify the content of the element
         factory.createOMComment(element, "comment");
-        assertNull(element.getObject(WrappedTextNodeOMDataSourceFromDataSource.class));
+        assertNull(element.getObject(WrappedTextNodeOMDataSourceFromBlob.class));
     }
 }

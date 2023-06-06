@@ -23,17 +23,16 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 
-import javax.activation.DataSource;
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.activation.WrappedTextNodeOMDataSourceFromDataSource;
+import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.BlobDataSource;
 
 public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends AxiomTestCase {
     public TestGetTextAsStreamWithNonDestructiveOMDataSource(OMMetaFactory metaFactory) {
@@ -43,17 +42,15 @@ public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends AxiomTest
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        DataSource ds =
-                new BlobDataSource(
-                        new RandomBlob(445566, 32, 128, 20000000), "application/octet-stream");
+        Blob blob = new RandomBlob(445566, 32, 128, 20000000);
         QName qname = new QName("a");
         Charset cs = Charset.forName("ascii");
         OMSourcedElement element =
                 factory.createOMElement(
-                        new WrappedTextNodeOMDataSourceFromDataSource(qname, ds, cs), qname);
+                        new WrappedTextNodeOMDataSourceFromBlob(qname, blob, cs), qname);
         Reader in = element.getTextAsStream(true);
         assertFalse(in instanceof StringReader);
-        IOTestUtils.compareStreams(new InputStreamReader(ds.getInputStream(), cs), in);
+        IOTestUtils.compareStreams(new InputStreamReader(blob.getInputStream(), cs), in);
         assertFalse(element.isExpanded());
     }
 }

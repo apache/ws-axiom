@@ -23,17 +23,16 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
 
-import javax.activation.DataSource;
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.activation.WrappedTextNodeOMDataSourceFromDataSource;
+import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.CharacterStreamComparator;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.BlobDataSource;
 
 public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase {
     public TestWriteTextToWithNonDestructiveOMDataSource(OMMetaFactory metaFactory) {
@@ -43,16 +42,14 @@ public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        DataSource ds =
-                new BlobDataSource(
-                        new RandomBlob(665544, 32, 128, 20000000), "application/octet-stream");
+        Blob blob = new RandomBlob(665544, 32, 128, 20000000);
         QName qname = new QName("a");
         OMSourcedElement element =
                 factory.createOMElement(
-                        new WrappedTextNodeOMDataSourceFromDataSource(
-                                qname, ds, Charset.forName("ascii")),
+                        new WrappedTextNodeOMDataSourceFromBlob(
+                                qname, blob, Charset.forName("ascii")),
                         qname);
-        Reader in = new InputStreamReader(ds.getInputStream(), "ascii");
+        Reader in = new InputStreamReader(blob.getInputStream(), "ascii");
         Writer out = new CharacterStreamComparator(in);
         element.writeTextTo(out, true); // cache doesn't matter here
         out.close();
