@@ -16,11 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.jaxb;
 
-package org.apache.axiom.ts.om.document;
-
-import static com.google.common.truth.Truth.assertAbout;
-import static org.apache.axiom.truth.xml.XMLTruth.xml;
+import static org.xmlunit.assertj3.XmlAssert.assertThat;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -28,21 +26,17 @@ import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.transform.stax.StAXSource;
 
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.om.document.jaxb.Order;
-import org.apache.axiom.ts.om.document.jaxb.OrderItem;
+import org.junit.jupiter.api.Test;
+import org.xmlunit.diff.DifferenceEvaluators;
 
-public class TestGetSAXResultJAXB extends AxiomTestCase {
-    public TestGetSAXResultJAXB(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
-    @Override
-    protected void runTest() throws Throwable {
-        List<OrderItem> items = new ArrayList<OrderItem>(2);
+public class JAXBTest {
+    @Test
+    public void testGetSAXResultJAXB() throws Exception {
+        List<OrderItem> items = new ArrayList<>(2);
         OrderItem item = new OrderItem();
         item.setPartId("P85-137-19");
         item.setQuantity(2);
@@ -58,10 +52,12 @@ public class TestGetSAXResultJAXB extends AxiomTestCase {
         Marshaller marshaller = JAXBContext.newInstance(Order.class).createMarshaller();
         StringWriter out = new StringWriter();
         marshaller.marshal(order, out);
-
-        OMDocument document = metaFactory.getOMFactory().createOMDocument();
+        OMDocument document = OMAbstractFactory.getOMFactory().createOMDocument();
         marshaller.marshal(order, document.getSAXResult().getHandler());
 
-        assertAbout(xml()).that(xml(OMDocument.class, document)).hasSameContentAs(out.toString());
+        assertThat(new StAXSource(document.getXMLStreamReader(true)))
+                .and(out.toString())
+                .withDifferenceEvaluator(DifferenceEvaluators.ignorePrologDifferences())
+                .areIdentical();
     }
 }

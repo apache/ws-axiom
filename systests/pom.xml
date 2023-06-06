@@ -41,6 +41,7 @@
         <module>psychopath-tests</module>
         <module>spring-ws-tests</module>
         <module>wss4j-tests</module>
+        <module>jaxb-tests</module>
     </modules>
 
     <properties>

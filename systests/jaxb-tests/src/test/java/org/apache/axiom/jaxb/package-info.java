@@ -20,4 +20,4 @@
 @javax.xml.bind.annotation.XmlSchema(
         namespace = "http://ws.apache.org/axiom/test/jaxb",
         elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package org.apache.axiom.ts.om.document.jaxb;
+package org.apache.axiom.jaxb;

@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.ts.om.document.jaxb;
+package org.apache.axiom.jaxb;
 
 public class OrderItem {
     private String partId;
