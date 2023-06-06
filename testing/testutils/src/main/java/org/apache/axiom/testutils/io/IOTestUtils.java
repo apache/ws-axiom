@@ -29,24 +29,26 @@ import org.apache.commons.io.IOUtils;
 
 public final class IOTestUtils {
     private IOTestUtils() {}
-    
+
     @Deprecated
     public static void compareStreams(InputStream s1, InputStream s2) throws IOException {
         compareStreams(s1, "s1", s2, "s2");
     }
-    
-    public static void compareStreams(InputStream s1, String name1, InputStream s2, String name2) throws IOException {
+
+    public static void compareStreams(InputStream s1, String name1, InputStream s2, String name2)
+            throws IOException {
         OutputStream comparator = new ByteStreamComparator(s2, name2, name1);
         IOUtils.copy(s1, comparator);
         comparator.close();
     }
-    
+
     @Deprecated
     public static void compareStreams(Reader s1, Reader s2) throws IOException {
         compareStreams(s1, "s1", s2, "s2");
     }
-    
-    public static void compareStreams(Reader s1, String name1, Reader s2, String name2) throws IOException {
+
+    public static void compareStreams(Reader s1, String name1, Reader s2, String name2)
+            throws IOException {
         Writer comparator = new CharacterStreamComparator(s2, name2, name1);
         IOUtils.copy(s1, comparator);
         comparator.close();

@@ -21,10 +21,11 @@ package org.apache.axiom.testutils.io;
 import java.io.Closeable;
 
 /**
- * Stream that counts the number of bytes/characters read/written and that remembers if
- * {@link Closeable#close()} has been called.
+ * Stream that counts the number of bytes/characters read/written and that remembers if {@link
+ * Closeable#close()} has been called.
  */
 public interface InstrumentedStream extends Closeable {
     long getCount();
+
     boolean isClosed();
 }

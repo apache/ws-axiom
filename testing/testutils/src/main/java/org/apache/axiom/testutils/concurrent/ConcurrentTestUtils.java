@@ -27,22 +27,24 @@ public class ConcurrentTestUtils {
     public static void testThreadSafety(Action action) throws Throwable {
         int threadCount = 10;
         List<Throwable> results = new ArrayList<>(threadCount);
-        for (int i=0; i<threadCount; i++) {
-            new Thread(() -> {
-                Throwable result;
-                try {
-                    for (int j=0; j<1000; j++) {
-                        action.execute();
-                    }
-                    result = null;
-                } catch (Throwable ex) {
-                    result = ex;
-                }
-                synchronized (results) {
-                    results.add(result);
-                    results.notifyAll();
-                }
-            }).start();
+        for (int i = 0; i < threadCount; i++) {
+            new Thread(
+                            () -> {
+                                Throwable result;
+                                try {
+                                    for (int j = 0; j < 1000; j++) {
+                                        action.execute();
+                                    }
+                                    result = null;
+                                } catch (Throwable ex) {
+                                    result = ex;
+                                }
+                                synchronized (results) {
+                                    results.add(result);
+                                    results.notifyAll();
+                                }
+                            })
+                    .start();
         }
         synchronized (results) {
             while (results.size() < threadCount) {
@@ -55,5 +57,4 @@ public class ConcurrentTestUtils {
             }
         }
     }
-
 }

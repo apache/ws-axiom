@@ -23,13 +23,11 @@ import java.io.Reader;
 
 import org.apache.commons.io.input.ProxyReader;
 
-/**
- * {@link Reader} wrapper that implements {@link InstrumentedStream}.
- */
+/** {@link Reader} wrapper that implements {@link InstrumentedStream}. */
 public final class InstrumentedReader extends ProxyReader implements InstrumentedStream {
     private long count;
     private boolean closed;
-    
+
     public InstrumentedReader(Reader parent) {
         super(parent);
     }
@@ -40,7 +38,7 @@ public final class InstrumentedReader extends ProxyReader implements Instrumente
             count += n;
         }
     }
-    
+
     @Override
     public long getCount() {
         return count;

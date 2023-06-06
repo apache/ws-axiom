@@ -30,7 +30,7 @@ final class SpaceAsCharactersXMLStreamReaderFilter extends StreamReaderDelegate 
     private static int processEventType(int eventType) {
         return eventType == SPACE ? CHARACTERS : eventType;
     }
-    
+
     @Override
     public int next() throws XMLStreamException {
         return processEventType(super.next());

@@ -31,7 +31,7 @@ import org.apache.commons.io.input.ProxyInputStream;
 public class ExceptionInputStream extends ProxyInputStream {
     private int remaining;
     private IOException exception;
-    
+
     public ExceptionInputStream(InputStream in) {
         this(in, Integer.MAX_VALUE);
     }
@@ -68,7 +68,7 @@ public class ExceptionInputStream extends ProxyInputStream {
         //       number of bytes read if we approach the point where we throw an
         //       exception. This is useful when testing consumers that tend to
         //       read too much in advance.
-        int c = super.read(b, off, Math.min(Math.max(1, remaining/2), len));
+        int c = super.read(b, off, Math.min(Math.max(1, remaining / 2), len));
         if (c == -1) {
             throw exception = new IOException("End of stream reached");
         }

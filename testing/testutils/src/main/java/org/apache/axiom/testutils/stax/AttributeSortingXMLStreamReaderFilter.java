@@ -28,7 +28,7 @@ import javax.xml.stream.util.StreamReaderDelegate;
 
 final class AttributeSortingXMLStreamReaderFilter extends StreamReaderDelegate {
     private int[] indexMap;
-    
+
     public AttributeSortingXMLStreamReaderFilter(XMLStreamReader reader) {
         super(reader);
     }
@@ -49,8 +49,8 @@ final class AttributeSortingXMLStreamReaderFilter extends StreamReaderDelegate {
         if (indexMap == null) {
             int n = super.getAttributeCount();
             indexMap = new int[n];
-            SortedMap<String,Integer> map = new TreeMap<>();
-            for (int i=0; i<n; i++) {
+            SortedMap<String, Integer> map = new TreeMap<>();
+            for (int i = 0; i < n; i++) {
                 map.put(super.getAttributeName(i).toString(), i);
             }
             int newIndex = 0;
@@ -60,7 +60,7 @@ final class AttributeSortingXMLStreamReaderFilter extends StreamReaderDelegate {
         }
         return indexMap[index];
     }
-    
+
     @Override
     public String getAttributeLocalName(int index) {
         return super.getAttributeLocalName(getIndex(index));

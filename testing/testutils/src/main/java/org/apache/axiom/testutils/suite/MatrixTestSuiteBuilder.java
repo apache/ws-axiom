@@ -37,45 +37,47 @@ public abstract class MatrixTestSuiteBuilder {
     private static class Exclude {
         private final Class<? extends MatrixTestCase> testClass;
         private final Filter filter;
-        
+
         public Exclude(Class<? extends MatrixTestCase> testClass, Filter filter) {
             this.testClass = testClass;
             this.filter = filter;
         }
-        
+
         public boolean accept(MatrixTestCase test) {
             return (testClass == null || test.getClass().equals(testClass))
                     && (filter == null || filter.match(test.getTestParameters()));
         }
     }
-    
+
     private final List<Exclude> excludes = new ArrayList<>();
     private TestSuite suite;
-    
+
     public final void exclude(Class<? extends MatrixTestCase> testClass, String filter) {
         try {
-            excludes.add(new Exclude(testClass, filter == null ? null : FrameworkUtil.createFilter(filter)));
+            excludes.add(
+                    new Exclude(
+                            testClass, filter == null ? null : FrameworkUtil.createFilter(filter)));
         } catch (InvalidSyntaxException ex) {
             throw new IllegalArgumentException("Invalid filter expression", ex);
         }
     }
-    
+
     public final void exclude(Class<? extends MatrixTestCase> testClass) {
         exclude(testClass, null);
     }
-    
+
     public final void exclude(String filter) {
         exclude(null, filter);
     }
-    
+
     protected abstract void addTests();
-    
+
     public final TestSuite build() {
         suite = new TestSuite();
         addTests();
         return suite;
     }
-    
+
     protected final void addTest(MatrixTestCase test) {
         for (Exclude exclude : excludes) {
             if (exclude.accept(test)) {

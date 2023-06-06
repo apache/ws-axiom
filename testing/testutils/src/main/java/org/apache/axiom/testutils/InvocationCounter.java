@@ -32,8 +32,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Utility class that counts the number of invocations on one or more objects. It also counts the
  * number of exceptions thrown by these invocations. The class uses dynamic proxies to implement
  * this feature.
- * <p>
- * This class is thread safe.
+ *
+ * <p>This class is thread safe.
  */
 public class InvocationCounter {
     private class InvocationHandlerImpl implements InvocationHandler {
@@ -54,15 +54,15 @@ public class InvocationCounter {
             }
         }
     }
-    
+
     final AtomicInteger invocationCount = new AtomicInteger();
     final AtomicInteger exceptionCount = new AtomicInteger();
-    
+
     /**
      * Create a new proxy. Every invocation of a method on this proxy increases the invocation count
      * by one unit. If the invocation results in an exception, then the exception counter is also
      * incremented. The returned proxy implements all interfaces of the target instance.
-     * 
+     *
      * @param target the target instance
      * @return the proxy instance
      */
@@ -73,13 +73,15 @@ public class InvocationCounter {
             ifaces.addAll(Arrays.asList(clazz.getInterfaces()));
             clazz = clazz.getSuperclass();
         } while (clazz != null);
-        return Proxy.newProxyInstance(InvocationCounter.class.getClassLoader(),
-                ifaces.toArray(new Class<?>[ifaces.size()]), new InvocationHandlerImpl(target));
+        return Proxy.newProxyInstance(
+                InvocationCounter.class.getClassLoader(),
+                ifaces.toArray(new Class<?>[ifaces.size()]),
+                new InvocationHandlerImpl(target));
     }
 
     /**
      * Get the number of invocations counted by this instance.
-     * 
+     *
      * @return the number of invocations
      */
     public int getInvocationCount() {
@@ -88,16 +90,14 @@ public class InvocationCounter {
 
     /**
      * Get the number of exceptions counted by this instance.
-     * 
+     *
      * @return the number of exceptions
      */
     public int getExceptionCount() {
         return exceptionCount.get();
     }
-    
-    /**
-     * Reset all counters to zero.
-     */
+
+    /** Reset all counters to zero. */
     public void reset() {
         invocationCount.set(0);
         exceptionCount.set(0);

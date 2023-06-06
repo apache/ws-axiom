@@ -23,13 +23,11 @@ import java.io.InputStream;
 
 import org.apache.commons.io.input.ProxyInputStream;
 
-/**
- * {@link InputStream} wrapper that implements {@link InstrumentedStream}.
- */
+/** {@link InputStream} wrapper that implements {@link InstrumentedStream}. */
 public final class InstrumentedInputStream extends ProxyInputStream implements InstrumentedStream {
     private long count;
     private boolean closed;
-    
+
     public InstrumentedInputStream(InputStream parent) {
         super(parent);
     }
@@ -40,7 +38,7 @@ public final class InstrumentedInputStream extends ProxyInputStream implements I
             count += n;
         }
     }
-    
+
     @Override
     public long getCount() {
         return count;

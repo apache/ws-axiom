@@ -23,10 +23,10 @@ import java.net.ServerSocket;
 
 public final class PortAllocator {
     private PortAllocator() {}
-    
+
     /**
      * Allocate a TCP port.
-     * 
+     *
      * @return the allocated port
      */
     public static int allocatePort() {

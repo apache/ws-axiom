@@ -23,30 +23,28 @@ import java.util.Hashtable;
 
 import junit.framework.TestCase;
 
-/**
- * A test case that can be executed multiple times with different parameters.
- */
+/** A test case that can be executed multiple times with different parameters. */
 public abstract class MatrixTestCase extends TestCase {
-    private final Dictionary<String,String> parameters = new Hashtable<>();
+    private final Dictionary<String, String> parameters = new Hashtable<>();
 
     public MatrixTestCase() {
         setName(getClass().getName());
     }
-    
+
     public final void addTestParameter(String name, String value) {
         setName(getName() + " [" + name + "=" + value + "]");
         parameters.put(name, value);
     }
-    
+
     public final void addTestParameter(String name, boolean value) {
         addTestParameter(name, String.valueOf(value));
     }
-    
+
     public final void addTestParameter(String name, int value) {
         addTestParameter(name, String.valueOf(value));
     }
-    
-    public final Dictionary<String,String> getTestParameters() {
+
+    public final Dictionary<String, String> getTestParameters() {
         return parameters;
     }
 

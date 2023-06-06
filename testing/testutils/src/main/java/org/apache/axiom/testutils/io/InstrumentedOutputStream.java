@@ -23,13 +23,12 @@ import java.io.OutputStream;
 
 import org.apache.commons.io.output.ProxyOutputStream;
 
-/**
- * {@link OutputStream} wrapper that implements {@link InstrumentedStream}.
- */
-public final class InstrumentedOutputStream extends ProxyOutputStream implements InstrumentedStream {
+/** {@link OutputStream} wrapper that implements {@link InstrumentedStream}. */
+public final class InstrumentedOutputStream extends ProxyOutputStream
+        implements InstrumentedStream {
     private long count;
     private boolean closed;
-    
+
     public InstrumentedOutputStream(OutputStream proxy) {
         super(proxy);
     }
@@ -38,7 +37,7 @@ public final class InstrumentedOutputStream extends ProxyOutputStream implements
     protected void beforeWrite(int n) {
         count += n;
     }
-    
+
     @Override
     public long getCount() {
         return count;

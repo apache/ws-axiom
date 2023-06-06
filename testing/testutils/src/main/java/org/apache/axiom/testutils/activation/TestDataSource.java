@@ -26,8 +26,8 @@ import java.io.OutputStream;
 import javax.activation.DataSource;
 
 /**
- * Test data source that produces a byte sequence with specified length and with all bytes
- * equal to a specified value.
+ * Test data source that produces a byte sequence with specified length and with all bytes equal to
+ * a specified value.
  */
 public class TestDataSource implements DataSource {
     final int value;
@@ -42,17 +42,17 @@ public class TestDataSource implements DataSource {
     public String getName() {
         return null;
     }
-    
+
     @Override
     public String getContentType() {
         return null;
     }
-    
+
     @Override
     public InputStream getInputStream() throws IOException {
         return new InputStream() {
             private long position;
-            
+
             @Override
             public int read() throws IOException {
                 if (position == length) {
@@ -64,7 +64,7 @@ public class TestDataSource implements DataSource {
             }
         };
     }
-    
+
     @Override
     public OutputStream getOutputStream() throws IOException {
         throw new UnsupportedOperationException();

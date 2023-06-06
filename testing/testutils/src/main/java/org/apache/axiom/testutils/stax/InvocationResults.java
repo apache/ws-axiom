@@ -21,7 +21,7 @@ package org.apache.axiom.testutils.stax;
 final class InvocationResults<T> {
     private final T expected;
     private final T actual;
-    
+
     InvocationResults(T expected, T actual) {
         this.expected = expected;
         this.actual = actual;

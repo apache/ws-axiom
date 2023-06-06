@@ -23,13 +23,11 @@ import java.io.Writer;
 
 import org.apache.commons.io.output.ProxyWriter;
 
-/**
- * {@link Writer} wrapper that implements {@link InstrumentedStream}.
- */
+/** {@link Writer} wrapper that implements {@link InstrumentedStream}. */
 public final class InstrumentedWriter extends ProxyWriter implements InstrumentedStream {
     private long count;
     private boolean closed;
-    
+
     public InstrumentedWriter(Writer parent) {
         super(parent);
     }
@@ -38,7 +36,7 @@ public final class InstrumentedWriter extends ProxyWriter implements Instrumente
     protected void beforeWrite(int n) {
         count += n;
     }
-    
+
     @Override
     public long getCount() {
         return count;

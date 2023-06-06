@@ -35,17 +35,14 @@ public class CharacterStreamComparator extends Writer {
     private final String name2;
     private final char[] compareBuffer = new char[1024];
     private int position;
-    
+
     /**
      * Constructor.
-     * 
-     * @param in
-     *            the stream to compare to
-     * @param name1
-     *            the name of the stream passed as argument; used in error messages
-     * @param name2
-     *            a name for the stream represented by the data written to this instance; used in
-     *            error messages
+     *
+     * @param in the stream to compare to
+     * @param name1 the name of the stream passed as argument; used in error messages
+     * @param name2 a name for the stream represented by the data written to this instance; used in
+     *     error messages
      */
     public CharacterStreamComparator(Reader in, String name1, String name2) {
         this.in = in;
@@ -63,11 +60,30 @@ public class CharacterStreamComparator extends Writer {
         while (len > 0) {
             int c = in.read(compareBuffer, 0, Math.min(compareBuffer.length, len));
             if (c == -1) {
-                fail("The two streams have different lengths: len(" + name1 + ") = " + position + " < len(" + name2 + ")");
+                fail(
+                        "The two streams have different lengths: len("
+                                + name1
+                                + ") = "
+                                + position
+                                + " < len("
+                                + name2
+                                + ")");
             }
-            for (int i=0; i<c; i++) {
+            for (int i = 0; i < c; i++) {
                 if (buffer[off] != compareBuffer[i]) {
-                    fail("Byte mismatch: " + name1 + "[" + position + "] = " + compareBuffer[i] + " != " + name2 + "[" + position + "] = " + buffer[off]);
+                    fail(
+                            "Byte mismatch: "
+                                    + name1
+                                    + "["
+                                    + position
+                                    + "] = "
+                                    + compareBuffer[i]
+                                    + " != "
+                                    + name2
+                                    + "["
+                                    + position
+                                    + "] = "
+                                    + buffer[off]);
                 }
                 off++;
                 len--;
@@ -77,13 +93,18 @@ public class CharacterStreamComparator extends Writer {
     }
 
     @Override
-    public void flush() throws IOException {
-    }
+    public void flush() throws IOException {}
 
     @Override
     public void close() throws IOException {
         if (in.read() != -1) {
-            fail("The two streams have different lengths: len(" + name1 + ") > len(" + name2 + ") = " + position);
+            fail(
+                    "The two streams have different lengths: len("
+                            + name1
+                            + ") > len("
+                            + name2
+                            + ") = "
+                            + position);
         }
     }
 }

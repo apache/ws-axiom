@@ -20,10 +20,10 @@ package org.apache.axiom.testutils;
 
 public final class DigestUtils {
     private DigestUtils() {}
-    
+
     public static String toHexString(byte[] digest) {
         StringBuilder buffer = new StringBuilder();
-        for (int i=0; i<digest.length; i++) {
+        for (int i = 0; i < digest.length; i++) {
             String s = Integer.toHexString(digest[i] & 0xFF);
             if (s.length() < 2) {
                 buffer.append('0');
