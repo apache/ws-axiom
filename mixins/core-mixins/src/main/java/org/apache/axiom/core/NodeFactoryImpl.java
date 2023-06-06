@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,7 +54,7 @@ public abstract class NodeFactoryImpl implements NodeFactory {
                                 new InputStreamReader(
                                         cl.getResourceAsStream(
                                                 pkg.replace('.', '/') + "/nodetypes.index"),
-                                        "UTF-8"));
+                                        StandardCharsets.UTF_8));
                 try {
                     String line;
                     while ((line = in.readLine()) != null) {

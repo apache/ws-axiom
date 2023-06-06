@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.stream.XMLStreamReader;
 
@@ -46,7 +47,7 @@ public class TestCloseWithoutCaching extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Writer writer = new OutputStreamWriter(baos, "UTF-8");
+        Writer writer = new OutputStreamWriter(baos, StandardCharsets.UTF_8);
         writer.write("<root><a>");
         for (int i = 0; i < 20000; i++) {
             writer.write('a');

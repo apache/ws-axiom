@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.fail;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
@@ -122,7 +123,8 @@ public class JAXBOMDataSourceTest {
         assertThat(content.isBinary()).isTrue();
         assertThat(content.isOptimized()).isTrue();
         Blob blob = content.getBlob();
-        assertThat(IOUtils.toString(blob.getInputStream(), "utf-8")).isEqualTo("some content");
+        assertThat(IOUtils.toString(blob.getInputStream(), StandardCharsets.UTF_8))
+                .isEqualTo("some content");
     }
 
     /**
@@ -159,7 +161,7 @@ public class JAXBOMDataSourceTest {
                                         envelope.getBody()
                                                 .getFirstElement()
                                                 .getXMLStreamReader(false));
-        assertThat(IOUtils.toString(object.getContent().getInputStream(), "utf-8"))
+        assertThat(IOUtils.toString(object.getContent().getInputStream(), StandardCharsets.UTF_8))
                 .isEqualTo("some content");
     }
 

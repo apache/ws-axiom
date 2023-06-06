@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.namespace.QName;
 
@@ -44,7 +45,7 @@ public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends AxiomTest
         OMFactory factory = metaFactory.getOMFactory();
         Blob blob = new RandomBlob(445566, 32, 128, 20000000);
         QName qname = new QName("a");
-        Charset cs = Charset.forName("ascii");
+        Charset cs = StandardCharsets.US_ASCII;
         OMSourcedElement element =
                 factory.createOMElement(
                         new WrappedTextNodeOMDataSourceFromBlob(qname, blob, cs), qname);

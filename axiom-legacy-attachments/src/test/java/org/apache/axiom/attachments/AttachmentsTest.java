@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -547,7 +548,7 @@ public class AttachmentsTest extends AbstractTestCase {
                 true, getAttachmentsDir(), "1");
         
         DataHandler dh = attachments.getDataHandler("__WLS__1188904239162__SOAP__");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(dh.getInputStream(), "UTF-8"));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(dh.getInputStream(), StandardCharsets.UTF_8));
         assertEquals("%PDF-1.3", reader.readLine());
         reader.close();
         

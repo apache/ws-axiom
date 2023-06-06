@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import junit.framework.TestCase;
 
@@ -51,7 +52,7 @@ public class CharacterEncoding2Test extends TestCase {
             "</soap:Envelope>";
 
     public void testISO99591() throws Exception {
-        ByteArrayInputStream byteInStr = new ByteArrayInputStream(xml.getBytes("iso-8859-1"));
+        ByteArrayInputStream byteInStr = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
 
         SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(
                 byteInStr, null);
@@ -67,8 +68,8 @@ public class CharacterEncoding2Test extends TestCase {
         envelope.serialize(byteOutStr, outputFormat);
 
         assertAbout(xml())
-                .that(new InputStreamReader(new ByteArrayInputStream(byteOutStr.toByteArray()),"iso-8859-1"))
-                .hasSameContentAs(new InputStreamReader(new ByteArrayInputStream(xml.getBytes("iso-8859-1")),"iso-8859-1"));
+                .that(new InputStreamReader(new ByteArrayInputStream(byteOutStr.toByteArray()), StandardCharsets.ISO_8859_1))
+                .hasSameContentAs(new InputStreamReader(new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1));
         
         builder.close();
     }

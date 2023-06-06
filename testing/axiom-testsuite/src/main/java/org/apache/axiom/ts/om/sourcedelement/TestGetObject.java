@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.namespace.QName;
 
@@ -40,11 +40,11 @@ public class TestGetObject extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        Blob blob = Blobs.createBlob("test".getBytes("utf-8"));
+        Blob blob = Blobs.createBlob("test".getBytes(StandardCharsets.UTF_8));
         OMSourcedElement element =
                 factory.createOMElement(
                         new WrappedTextNodeOMDataSourceFromBlob(
-                                new QName("wrapper"), blob, Charset.forName("utf-8")));
+                                new QName("wrapper"), blob, StandardCharsets.UTF_8));
         // getObject returns null if the data source is not of the expected type
         assertNull(element.getObject(StringOMDataSource.class));
         // Test with the right data source type

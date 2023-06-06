@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.SequenceInputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Vector;
 
 import org.apache.axiom.blob.Blob;
@@ -45,7 +46,7 @@ public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Charset charset = Charset.forName("ascii");
+        Charset charset = StandardCharsets.US_ASCII;
         OMFactory factory = metaFactory.getOMFactory();
         Blob blob = new RandomBlob(654321, 64, 128, 20000000);
         Vector<InputStream> v = new Vector<InputStream>();

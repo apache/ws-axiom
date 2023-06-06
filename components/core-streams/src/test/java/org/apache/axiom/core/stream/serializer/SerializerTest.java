@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.commons.io.output.NullOutputStream;
@@ -88,7 +89,7 @@ public class SerializerTest {
         handler.attributesCompleted();
         handler.endElement();
         handler.completed();
-        assertThat(new String(baos.toByteArray(), "ascii"))
+        assertThat(new String(baos.toByteArray(), StandardCharsets.US_ASCII))
                 .isEqualTo("<test attr=\"n&#xe9;ant\"/>");
     }
 
@@ -107,7 +108,7 @@ public class SerializerTest {
         handler.attributesCompleted();
         handler.endElement();
         handler.completed();
-        assertThat(new String(baos.toByteArray(), "ascii"))
+        assertThat(new String(baos.toByteArray(), StandardCharsets.US_ASCII))
                 .isEqualTo("<x y=\"&#x233b4; - &#x20628;\"/>");
     }
 

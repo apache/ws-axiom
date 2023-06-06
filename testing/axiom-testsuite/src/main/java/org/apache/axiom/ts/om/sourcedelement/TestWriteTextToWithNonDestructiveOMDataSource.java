@@ -21,7 +21,7 @@ package org.apache.axiom.ts.om.sourcedelement;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.namespace.QName;
 
@@ -47,9 +47,9 @@ public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase
         OMSourcedElement element =
                 factory.createOMElement(
                         new WrappedTextNodeOMDataSourceFromBlob(
-                                qname, blob, Charset.forName("ascii")),
+                                qname, blob, StandardCharsets.US_ASCII),
                         qname);
-        Reader in = new InputStreamReader(blob.getInputStream(), "ascii");
+        Reader in = new InputStreamReader(blob.getInputStream(), StandardCharsets.US_ASCII);
         Writer out = new CharacterStreamComparator(in);
         element.writeTextTo(out, true); // cache doesn't matter here
         out.close();

@@ -21,6 +21,7 @@ package org.apache.axiom.ts.om.document;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
@@ -38,7 +39,7 @@ public class TestSerializeUTF16 extends XMLDeclarationSerializationTestCase {
         format.setCharSetEncoding("UTF-16");
         document.serializeAndConsume(baos, format);
 
-        String xmlDocument = new String(baos.toByteArray(), "UTF-16");
+        String xmlDocument = new String(baos.toByteArray(), StandardCharsets.UTF_16);
         assertThat(xmlDocument).startsWith("<?xml version=\"1.0\" encoding=\"UTF-16\"?>");
     }
 }

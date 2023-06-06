@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.builder;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.stream.XMLStreamReader;
 
@@ -55,7 +56,8 @@ public class TestIOExceptionInGetText extends AxiomTestCase {
         }
         InputStream in =
                 new ExceptionInputStream(
-                        new ByteArrayInputStream(xml.toString().getBytes("ASCII")));
+                        new ByteArrayInputStream(
+                                xml.toString().getBytes(StandardCharsets.US_ASCII)));
 
         XMLStreamReader originalReader = StAXUtils.createXMLStreamReader(in);
         InvocationCounter invocationCounter = new InvocationCounter();

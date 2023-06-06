@@ -34,6 +34,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -230,7 +231,7 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
                 "Foo Bar\r\n" +
                 "------=_AxIs2_Def_boundary_=42214532--\r\n";
         byte[] bytes1 = xmlPlusMime1.getBytes();
-        byte[] bytes2 = xmlPlusMime2.getBytes("UTF-16");
+        byte[] bytes2 = xmlPlusMime2.getBytes(StandardCharsets.UTF_16);
         byte[] bytes3 = xmlPlusMime3.getBytes();
         byte[] full = append(bytes1, bytes2);
         full = append(full, bytes3);

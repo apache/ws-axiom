@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
@@ -49,7 +50,7 @@ public class TestSerializeModifiedOMSEWithNonDestructiveDataSource extends Axiom
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         element.serialize(baos);
-        assertTrue(new String(baos.toByteArray(), "UTF-8").indexOf("TEST") != -1);
+        assertTrue(new String(baos.toByteArray(), StandardCharsets.UTF_8).indexOf("TEST") != -1);
 
         assertTrue(element.toString().indexOf("TEST") != -1);
     }

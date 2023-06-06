@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.text;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.activation.DataHandler;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -43,6 +45,6 @@ public class TestGetTextCharactersFromDataHandler extends AxiomTestCase {
         OMText text = metaFactory.getOMFactory().createOMText(DataHandlerUtils.toBlob(dh), true);
         char[] chars = text.getTextCharacters();
         byte[] decoded = Base64.decodeBase64(new String(chars));
-        assertEquals("test content", new String(decoded, "utf-8"));
+        assertEquals("test content", new String(decoded, StandardCharsets.UTF_8));
     }
 }

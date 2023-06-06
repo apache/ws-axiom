@@ -21,6 +21,7 @@ package org.apache.axiom.ts.om.document;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
@@ -38,7 +39,7 @@ public class TestSerializeWithIgnoreXMLDeclaration extends XMLDeclarationSeriali
         format.setIgnoreXMLDeclaration(true);
         document.serializeAndConsume(baos, format);
 
-        String xmlDocument = new String(baos.toByteArray(), "utf-8");
+        String xmlDocument = new String(baos.toByteArray(), StandardCharsets.UTF_8);
 
         assertThat(xmlDocument).doesNotContain("<?xml");
     }

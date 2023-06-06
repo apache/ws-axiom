@@ -20,6 +20,8 @@ package org.apache.axiom.util.jaxb;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -67,7 +69,7 @@ public class JAXBUtilsTest {
         JAXBContext context = JAXBContext.newInstance(DocumentBean2.class);
         DocumentBean2 bean = (DocumentBean2) JAXBUtils.unmarshal(element, context, null, true);
         assertThat(bean.getId()).isEqualTo("12345");
-        assertThat(bean.getContent()).isEqualTo("test content".getBytes("utf-8"));
+        assertThat(bean.getContent()).isEqualTo("test content".getBytes(StandardCharsets.UTF_8));
     }
 
     @Test

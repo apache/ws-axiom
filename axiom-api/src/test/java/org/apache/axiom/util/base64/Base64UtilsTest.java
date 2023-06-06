@@ -22,6 +22,7 @@ package org.apache.axiom.util.base64;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 import junit.framework.TestCase;
@@ -53,7 +54,7 @@ public class Base64UtilsTest extends TestCase {
     public void testSpace() throws Exception{
         assertEquals(
                 "any carnal pleasure.",
-                new String(Base64Utils.decode(" YW55IG\tNhcm5hbC\r\nBwb  GVhc3VyZS4 = "), "utf-8"));
+                new String(Base64Utils.decode(" YW55IG\tNhcm5hbC\r\nBwb  GVhc3VyZS4 = "), StandardCharsets.UTF_8));
     }
 
     public void testInvalidCharacter() {

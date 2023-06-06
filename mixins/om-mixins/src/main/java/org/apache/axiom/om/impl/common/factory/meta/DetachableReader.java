@@ -24,7 +24,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.CharBuffer;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
@@ -32,8 +32,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.common.builder.Detachable;
 
 final class DetachableReader extends Reader implements Detachable {
-    private static final Charset UTF8 = Charset.forName("UTF-8");
-
     private Reader target;
 
     DetachableReader(Reader target) {
@@ -78,7 +76,7 @@ final class DetachableReader extends Reader implements Detachable {
     @Override
     public void detach() {
         MemoryBlob blob = Blobs.createMemoryBlob();
-        Writer out = new OutputStreamWriter(blob.getOutputStream(), UTF8);
+        Writer out = new OutputStreamWriter(blob.getOutputStream(), StandardCharsets.UTF_8);
         char[] buffer = new char[2048];
         int c;
         try {
@@ -89,6 +87,6 @@ final class DetachableReader extends Reader implements Detachable {
         } catch (IOException ex) {
             throw new OMException(ex);
         }
-        target = new InputStreamReader(blob.readOnce(), UTF8);
+        target = new InputStreamReader(blob.readOnce(), StandardCharsets.UTF_8);
     }
 }
