@@ -24,8 +24,7 @@ import java.util.Iterator;
 
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.MultipartBody;
-import org.apache.axiom.mime.activation.PartDataHandlerBlobFactory;
-import org.apache.axiom.mime.activation.PartDataHandler;
+import org.apache.axiom.mime.PartBlob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
@@ -37,7 +36,6 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.testutils.blob.TestBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 
 /**
  * Tests that attachments are streamed (i.e. not read entirely into memory) if the original message
@@ -108,8 +106,6 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
                                             MultipartBody.builder()
                                                     .setInputStream(pipe1In)
                                                     .setContentType(contentType)
-                                                    .setPartBlobFactory(
-                                                            PartDataHandlerBlobFactory.DEFAULT)
                                                     .build();
                                     SOAPEnvelope envelope =
                                             OMXMLBuilderFactory.createSOAPModelBuilder(
@@ -138,7 +134,6 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
                     MultipartBody.builder()
                             .setInputStream(pipe2In)
                             .setContentType(contentType)
-                            .setPartBlobFactory(PartDataHandlerBlobFactory.DEFAULT)
                             .build();
             SOAPEnvelope envelope =
                     OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
@@ -149,16 +144,12 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
 
             IOTestUtils.compareStreams(
                     blob1.getInputStream(),
-                    ((PartDataHandler)
-                                    DataHandlerUtils.toDataHandler(
-                                            ((OMText) data1.getFirstOMChild()).getBlob()))
+                    ((PartBlob) ((OMText) data1.getFirstOMChild()).getBlob())
                             .getPart()
                             .getInputStream(false));
             IOTestUtils.compareStreams(
                     blob2.getInputStream(),
-                    ((PartDataHandler)
-                                    DataHandlerUtils.toDataHandler(
-                                            ((OMText) data2.getFirstOMChild()).getBlob()))
+                    ((PartBlob) ((OMText) data2.getFirstOMChild()).getBlob())
                             .getPart()
                             .getInputStream(false));
         } finally {
