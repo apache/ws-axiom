@@ -32,7 +32,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.junit.Assert;
 
@@ -65,17 +64,15 @@ public class WriteBlobScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
+    public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         OMText child = (OMText) element.getFirstOMChild();
-        if (dataHandlersPreserved) {
+        if (blobsPreserved) {
             Assert.assertTrue(child.isBinary());
             Assert.assertSame(blob, child.getBlob());
         } else {
             // TODO: this will only work if a single text node was created
             child.setBinary(true);
-            IOTestUtils.compareStreams(
-                    blob.getInputStream(),
-                    DataHandlerUtils.toDataHandler(child.getBlob()).getInputStream());
+            IOTestUtils.compareStreams(blob.getInputStream(), child.getBlob().getInputStream());
         }
     }
 }

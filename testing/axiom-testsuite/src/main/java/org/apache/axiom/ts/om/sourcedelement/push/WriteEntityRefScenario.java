@@ -50,7 +50,7 @@ public class WriteEntityRefScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public void validate(OMElement element, boolean dataHandlersPreserved) {
+    public void validate(OMElement element, boolean blobsPreserved) {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMEntityReference);
         OMEntityReference entref = (OMEntityReference) child;

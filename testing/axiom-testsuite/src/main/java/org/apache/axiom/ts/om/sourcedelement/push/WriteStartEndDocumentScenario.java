@@ -76,7 +76,7 @@ public class WriteStartEndDocumentScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
+    public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         // Just fore expansion
         element.getFirstOMChild();
     }

@@ -64,7 +64,7 @@ public class WriteNamespaceScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
+    public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         OMNamespace decl = null;
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         while (it.hasNext()) {

@@ -53,7 +53,7 @@ public class WriteEmptyElementAutoPrefixScenario implements PushOMDataSourceScen
     }
 
     @Override
-    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
+    public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         OMElement child = element.getFirstElement();
         Assert.assertEquals("p", child.getPrefix());
         Assert.assertEquals("urn:test", child.getNamespaceURI());

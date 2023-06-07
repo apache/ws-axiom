@@ -49,7 +49,7 @@ public class WriteCDataScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
+    public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMText);
         OMText text = (OMText) child;

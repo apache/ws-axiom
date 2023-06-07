@@ -20,18 +20,16 @@ package org.apache.axiom.ts.om.text;
 
 import java.nio.charset.StandardCharsets;
 
-import javax.activation.DataHandler;
-
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.activation.TextDataSource;
+import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.codec.binary.Base64;
 
 /**
  * Tests that {@link OMText#getTextCharacters()} returns the expected result for an {@link OMText}
- * node backed by a {@link DataHandler}. This is a regression test for <a
+ * node backed by a {@link Blob}. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-442">AXIOM-442</a>.
  */
 public class TestGetTextCharactersFromDataHandler extends AxiomTestCase {
@@ -41,8 +39,8 @@ public class TestGetTextCharactersFromDataHandler extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        DataHandler dh = new DataHandler(new TextDataSource("test content", "utf-8", "plain"));
-        OMText text = metaFactory.getOMFactory().createOMText(DataHandlerUtils.toBlob(dh), true);
+        Blob blob = new TextBlob("test content", StandardCharsets.UTF_8);
+        OMText text = metaFactory.getOMFactory().createOMText(blob, true);
         char[] chars = text.getTextCharacters();
         byte[] decoded = Base64.decodeBase64(new String(chars));
         assertEquals("test content", new String(decoded, StandardCharsets.UTF_8));

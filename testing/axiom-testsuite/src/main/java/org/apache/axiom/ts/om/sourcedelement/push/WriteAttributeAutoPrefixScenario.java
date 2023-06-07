@@ -55,7 +55,7 @@ public class WriteAttributeAutoPrefixScenario implements PushOMDataSourceScenari
     }
 
     @Override
-    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
+    public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         Iterator<OMAttribute> it = element.getAllAttributes();
         Assert.assertTrue(it.hasNext());
         OMAttribute attr = it.next();

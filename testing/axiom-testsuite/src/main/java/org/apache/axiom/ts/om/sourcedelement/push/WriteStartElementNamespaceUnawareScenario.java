@@ -57,7 +57,7 @@ public class WriteStartElementNamespaceUnawareScenario implements PushOMDataSour
     }
 
     @Override
-    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
+    public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         // Just expand the element
         element.getFirstOMChild();
     }

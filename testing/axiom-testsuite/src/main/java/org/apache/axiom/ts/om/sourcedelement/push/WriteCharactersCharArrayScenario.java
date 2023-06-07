@@ -54,7 +54,7 @@ public class WriteCharactersCharArrayScenario implements PushOMDataSourceScenari
     }
 
     @Override
-    public void validate(OMElement element, boolean dataHandlersPreserved) {
+    public void validate(OMElement element, boolean blobsPreserved) {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMText);
         Assert.assertEquals("test", ((OMText) child).getText());

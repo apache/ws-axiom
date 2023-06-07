@@ -51,7 +51,7 @@ public class WriteAttributeNamespaceUnawareScenario implements PushOMDataSourceS
     }
 
     @Override
-    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
+    public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         Assert.assertEquals("value", element.getAttributeValue(new QName("attr")));
     }
 }

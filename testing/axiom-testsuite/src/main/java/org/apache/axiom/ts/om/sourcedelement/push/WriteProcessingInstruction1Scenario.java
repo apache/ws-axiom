@@ -49,7 +49,7 @@ public class WriteProcessingInstruction1Scenario implements PushOMDataSourceScen
     }
 
     @Override
-    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
+    public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMProcessingInstruction);
         OMProcessingInstruction pi = (OMProcessingInstruction) child;

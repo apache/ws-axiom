@@ -20,10 +20,10 @@ package org.apache.axiom.ts.om.sourcedelement.push;
 
 import java.util.Map;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.testutils.suite.Dimension;
@@ -79,10 +79,10 @@ public interface PushOMDataSourceScenario extends Dimension {
      *
      * @param element the {@link OMElement} representing the XML data produced by {@link
      *     #serialize(XMLStreamWriter)}
-     * @param dataHandlersPreserved <code>true</code> if {@link DataHandler} objects written to the
-     *     {@link XMLStreamWriter} are expected to have been preserved as is; <code>false</code> if
-     *     they are expected to have been transformed to base64 encoded character data
+     * @param blobsPreserved {@code true} if {@link Blob} objects written to the {@link
+     *     XMLStreamWriter} are expected to have been preserved as is; {@code false} if they are
+     *     expected to have been transformed to base64 encoded character data
      * @throws Throwable
      */
-    void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable;
+    void validate(OMElement element, boolean blobsPreserved) throws Throwable;
 }
