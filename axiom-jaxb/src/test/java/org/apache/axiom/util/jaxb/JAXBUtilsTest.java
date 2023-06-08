@@ -35,8 +35,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.ds.jaxb.JAXBOMDataSource;
 import org.apache.axiom.om.util.jaxb.JAXBUtils;
-import org.apache.axiom.testutils.activation.TextDataSource;
-import org.apache.axiom.util.activation.DataHandlerUtils;
+import org.apache.axiom.testutils.blob.TextBlob;
 import org.junit.jupiter.api.Test;
 
 public class JAXBUtilsTest {
@@ -46,11 +45,11 @@ public class JAXBUtilsTest {
         JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
         DocumentBean orgBean = new DocumentBean();
         orgBean.setId("AB23498");
-        orgBean.setContent(new DataHandler(new TextDataSource("test content", "utf-8", "plain")));
+        orgBean.setContent(new DataHandler("test content", "text/plain"));
         OMElement element = factory.createOMElement(new JAXBOMDataSource(context, orgBean));
         DocumentBean bean = (DocumentBean) JAXBUtils.unmarshal(element, context, null, true);
         assertThat(bean.getId()).isEqualTo(orgBean.getId());
-        assertThat(bean.getContent()).isEqualTo(orgBean.getContent());
+        assertThat(bean.getContent()).isSameAs(orgBean.getContent());
     }
 
     @Test
@@ -61,11 +60,7 @@ public class JAXBUtilsTest {
         factory.createOMElement("id", ns, element).setText("12345");
         OMElement content = factory.createOMElement("content", ns, element);
         content.addChild(
-                factory.createOMText(
-                        DataHandlerUtils.toBlob(
-                                new DataHandler(
-                                        new TextDataSource("test content", "utf-8", "plain"))),
-                        true));
+                factory.createOMText(new TextBlob("test content", StandardCharsets.UTF_8), true));
         JAXBContext context = JAXBContext.newInstance(DocumentBean2.class);
         DocumentBean2 bean = (DocumentBean2) JAXBUtils.unmarshal(element, context, null, true);
         assertThat(bean.getId()).isEqualTo("12345");

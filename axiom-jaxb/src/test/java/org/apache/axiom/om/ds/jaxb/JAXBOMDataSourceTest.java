@@ -47,7 +47,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.activation.TextDataSource;
+import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -92,7 +92,9 @@ public class JAXBOMDataSourceTest {
         // Construct the original message
         DocumentBean object = new DocumentBean();
         object.setId("123456");
-        object.setContent(new DataHandler(new TextDataSource("some content", "utf-8", "plain")));
+        object.setContent(
+                DataHandlerUtils.toDataHandler(
+                        new TextBlob("some content", StandardCharsets.UTF_8)));
         SOAPEnvelope orgEnvelope = factory.getDefaultEnvelope();
         OMSourcedElement element = factory.createOMElement(new JAXBOMDataSource(context, object));
         orgEnvelope.getBody().addChild(element);
@@ -139,7 +141,9 @@ public class JAXBOMDataSourceTest {
         // Construct the original message
         DocumentBean orgObject = new DocumentBean();
         orgObject.setId("123456");
-        orgObject.setContent(new DataHandler(new TextDataSource("some content", "utf-8", "plain")));
+        orgObject.setContent(
+                DataHandlerUtils.toDataHandler(
+                        new TextBlob("some content", StandardCharsets.UTF_8)));
         SOAPEnvelope orgEnvelope = factory.getDefaultEnvelope();
         OMSourcedElement element =
                 factory.createOMElement(new JAXBOMDataSource(context, orgObject));
