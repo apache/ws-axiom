@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.testutils.activation;
+package org.apache.axiom.attachments;
 
 import java.io.IOException;
 import java.io.InputStream;
