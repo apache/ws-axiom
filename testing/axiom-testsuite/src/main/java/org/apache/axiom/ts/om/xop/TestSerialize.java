@@ -21,8 +21,9 @@ package org.apache.axiom.ts.om.xop;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.mime.MediaType;
 import org.apache.axiom.mime.MultipartBody;
-import org.apache.axiom.mime.activation.PartDataHandlerBlobFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
@@ -31,7 +32,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
-import org.apache.axiom.util.activation.DataHandlerContentTypeProvider;
 
 public class TestSerialize extends AxiomTestCase {
     private final boolean base64;
@@ -52,7 +52,6 @@ public class TestSerialize extends AxiomTestCase {
                 MultipartBody.builder()
                         .setInputStream(inStream)
                         .setContentType(testMessage.getContentType())
-                        .setPartBlobFactory(PartDataHandlerBlobFactory.DEFAULT)
                         .build();
 
         OMOutputFormat oof = new OMOutputFormat();
@@ -60,7 +59,7 @@ public class TestSerialize extends AxiomTestCase {
         oof.setMimeBoundary(testMessage.getBoundary());
         oof.setRootContentId(testMessage.getStart());
         if (base64) {
-            oof.setContentTypeProvider(DataHandlerContentTypeProvider.INSTANCE);
+            oof.setContentTypeProvider(blob -> new ContentType(new MediaType("image", "jpeg")));
             oof.setProperty(
                     OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, Boolean.TRUE);
         }
