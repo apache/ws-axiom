@@ -26,12 +26,8 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>testutils</artifactId>
+    <artifactId>activation-testutils</artifactId>
 
-    <name>Axiom Test Utilities</name>
-    <description>
-        Contains utility classes used by the test suites in Axiom.
-    </description>
     <url>http://ws.apache.org/axiom/</url>
 
     <dependencies>
@@ -40,16 +36,8 @@
             <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.truth</groupId>
-            <artifactId>truth</artifactId>
-        </dependency>
-        <dependency><!-- We use this only for LDAP like filters -->
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.framework</artifactId>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
         </dependency>
     </dependencies>
 

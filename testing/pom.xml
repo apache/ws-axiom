@@ -46,6 +46,7 @@
         <module>jaxp-testsuite</module>
         <module>url-registry</module>
         <module>blob-testutils</module>
+        <module>activation-testutils</module>
     </modules>
 
     <build>
