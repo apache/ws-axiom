@@ -57,6 +57,7 @@
         <dependency>
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
+            <version>${javax.activation.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sun.mail</groupId>

@@ -58,7 +58,7 @@ public class JAXBTest {
                 url("link:classpath:org.glassfish.hk2.osgi-resource-locator.link"),
                 url("link:classpath:jakarta.xml.bind-api.link"),
                 url("link:classpath:com.sun.xml.bind.jaxb-osgi.link"),
-                url("link:classpath:org.apache.ws.commons.axiom.axiom-activation.link"),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-javax-activation.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-jaxb.link"),
                 filteredSystemPackages("javax.xml.stream"),
                 junitBundles());

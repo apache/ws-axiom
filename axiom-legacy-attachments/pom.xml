@@ -39,12 +39,13 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-activation</artifactId>
+            <artifactId>axiom-javax-activation</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
+            <version>${javax.activation.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

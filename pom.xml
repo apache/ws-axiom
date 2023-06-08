@@ -230,7 +230,8 @@
         <module>components</module>
         <module>axiom-weaver</module>
         <module>axiom-weaver-annotations</module>
-        <module>axiom-activation</module>
+        <module>axiom-jakarta-activation</module>
+        <module>axiom-javax-activation</module>
         <module>axiom-legacy-attachments</module>
     </modules>
 
@@ -268,6 +269,8 @@
         <asm.version>9.5</asm.version>
         <errorprone.version>2.16</errorprone.version>
         <junit5.version>5.9.1</junit5.version>
+        <javax.activation.version>1.2.2</javax.activation.version>
+        <jakarta.activation.version>2.1.2</jakarta.activation.version>
 
         <skipDeploy>false</skipDeploy>
 
@@ -507,11 +510,6 @@
                 <groupId>org.ow2.asm</groupId>
                 <artifactId>asm-commons</artifactId>
                 <version>${asm.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.activation</groupId>
-                <artifactId>jakarta.activation-api</artifactId>
-                <version>1.2.2</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.activation</groupId>
