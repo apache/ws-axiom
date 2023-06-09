@@ -266,7 +266,6 @@
         <jetty.version>10.0.15</jetty.version>
         <log4j.version>2.20.0</log4j.version>
         <groovy.version>4.0.12</groovy.version>
-        <jaxbri.version>2.3.6</jaxbri.version>
         <auto-service.version>1.0.1</auto-service.version>
         <asm.version>9.5</asm.version>
         <errorprone.version>2.16</errorprone.version>
@@ -515,16 +514,6 @@
                 <groupId>com.sun.activation</groupId>
                 <artifactId>jakarta.activation</artifactId>
                 <version>1.2.2</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.xml.bind</groupId>
-                <artifactId>jakarta.xml.bind-api</artifactId>
-                <version>2.3.3</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish.jaxb</groupId>
-                <artifactId>jaxb-runtime</artifactId>
-                <version>${jaxbri.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>

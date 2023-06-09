@@ -17,7 +17,7 @@
  * under the License.
  */
 
-@javax.xml.bind.annotation.XmlSchema(
+@jakarta.xml.bind.annotation.XmlSchema(
         namespace = "http://ws.apache.org/axiom/test/jaxb",
-        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+        elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.apache.axiom.jaxb;

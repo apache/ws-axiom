@@ -34,6 +34,13 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>javax-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.aries.proxy</groupId>
                 <artifactId>org.apache.aries.proxy.api</artifactId>
                 <version>1.1.1</version>
@@ -163,7 +170,6 @@
                                     <artifact>
                                         <groupId>com.sun.xml.bind</groupId>
                                         <artifactId>jaxb-osgi</artifactId>
-                                        <version>${jaxbri.version}</version>
                                     </artifact>
                                     <!-- Required by Woodstox; see https://github.com/FasterXML/woodstox/pull/151. -->
                                     <artifact>
