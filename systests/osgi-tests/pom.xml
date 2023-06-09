@@ -68,7 +68,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-jaxb</artifactId>
+            <artifactId>axiom-javax-jaxb</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
