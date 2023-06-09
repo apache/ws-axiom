@@ -47,7 +47,13 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-jakarta-activation</artifactId>
             <version>${project.version}</version>
-            <classifier>sources</classifier>
+            <type>pom</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -69,10 +75,17 @@
                         <id>unpack-sources</id>
                         <phase>generate-sources</phase>
                         <goals>
-                            <goal>unpack-dependencies</goal>
+                            <goal>unpack</goal>
                         </goals>
                         <configuration>
-                            <includeClassifiers>sources</includeClassifiers>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>axiom-jakarta-activation</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+                            </artifactItems>
                             <excludes>META-INF/**</excludes>
                             <outputDirectory>${project.build.directory}/src</outputDirectory>
                             <overWriteSnapshots>true</overWriteSnapshots>
@@ -129,24 +142,6 @@
                         </Import-Package>
                     </instructions>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>buildutils-maven-plugin</artifactId>
-                <version>${project.version}</version>
-                <executions>
-                    <execution>
-                        <id>create-dependency-reduced-pom</id>
-                        <goals>
-                            <goal>create-dependency-reduced-pom</goal>
-                        </goals>
-                        <configuration>
-                            <excludedArtifacts>
-                                <excludedArtifact>axiom-jakarta-activation</excludedArtifact>
-                            </excludedArtifacts>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
