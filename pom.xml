@@ -233,6 +233,8 @@
         <module>axiom-jakarta-activation</module>
         <module>axiom-javax-activation</module>
         <module>axiom-legacy-attachments</module>
+        <module>javax-bom</module>
+        <module>jakarta-bom</module>
     </modules>
 
     <scm>
@@ -269,8 +271,6 @@
         <asm.version>9.5</asm.version>
         <errorprone.version>2.16</errorprone.version>
         <junit5.version>5.9.1</junit5.version>
-        <javax.activation.version>1.2.2</javax.activation.version>
-        <jakarta.activation.version>2.1.2</jakarta.activation.version>
 
         <skipDeploy>false</skipDeploy>
 
