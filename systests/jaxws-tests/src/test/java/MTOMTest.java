@@ -25,8 +25,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.soap.MTOMFeature;
 
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMAbstractFactory;
@@ -42,6 +40,9 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.example.ImageService;
 import org.example.ImageServicePort;
 import org.junit.Test;
+
+import jakarta.xml.ws.BindingProvider;
+import jakarta.xml.ws.soap.MTOMFeature;
 
 public class MTOMTest {
     /**

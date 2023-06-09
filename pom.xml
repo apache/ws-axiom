@@ -436,11 +436,6 @@
                 <version>${springws.version}</version>
             </dependency>
             <dependency>
-                <groupId>jakarta.xml.soap</groupId>
-                <artifactId>jakarta.xml.soap-api</artifactId>
-                <version>1.4.2</version>
-            </dependency>
-            <dependency>
                 <groupId>com.sun.xml.messaging.saaj</groupId>
                 <artifactId>saaj-impl</artifactId>
                 <version>1.5.3</version>
@@ -454,11 +449,6 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>5.3.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.ws</groupId>
-                <artifactId>jaxws-rt</artifactId>
-                <version>2.3.5</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.felix</groupId>
@@ -762,11 +752,6 @@
                     <groupId>com.github.veithen.maven</groupId>
                     <artifactId>xjc-maven-plugin</artifactId>
                     <version>0.1.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.github.veithen.maven</groupId>
-                    <artifactId>wsimport-maven-plugin</artifactId>
-                    <version>0.2.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>

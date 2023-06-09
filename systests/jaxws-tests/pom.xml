@@ -34,6 +34,17 @@
         Tests interoperability with the JAX-WS reference implementation.
     </description>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>jakarta-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -73,6 +84,7 @@
             <plugin>
                 <groupId>com.github.veithen.maven</groupId>
                 <artifactId>wsimport-maven-plugin</artifactId>
+                <version>0.3.0</version>
                 <executions>
                     <execution>
                         <goals>
