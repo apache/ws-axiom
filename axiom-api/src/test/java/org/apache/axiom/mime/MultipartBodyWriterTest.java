@@ -23,12 +23,11 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Random;
 
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMultipart;
-import javax.mail.util.ByteArrayDataSource;
-
 import org.apache.axiom.util.UIDGenerator;
 
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.util.ByteArrayDataSource;
 import junit.framework.TestCase;
 
 public class MultipartBodyWriterTest extends TestCase {
