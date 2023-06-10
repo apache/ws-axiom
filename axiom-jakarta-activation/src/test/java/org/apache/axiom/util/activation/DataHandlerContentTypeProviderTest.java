@@ -25,7 +25,7 @@ import jakarta.activation.DataHandler;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.MediaType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DataHandlerContentTypeProviderTest {
     @Test

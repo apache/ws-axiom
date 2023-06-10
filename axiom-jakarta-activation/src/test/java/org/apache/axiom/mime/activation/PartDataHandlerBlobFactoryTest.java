@@ -30,7 +30,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.soap.MTOMSample;
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PartDataHandlerBlobFactoryTest {
     @Test
