@@ -66,7 +66,7 @@ public abstract class MIMESample extends MessageSample {
         return getParameter("boundary");
     }
 
-    protected final synchronized MimeMultipart getMultipart() {
+    private final synchronized MimeMultipart getMultipart() {
         if (multipart == null) {
             try {
                 multipart =

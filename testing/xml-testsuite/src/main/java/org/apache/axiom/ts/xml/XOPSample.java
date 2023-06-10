@@ -22,8 +22,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-import javax.mail.BodyPart;
-import javax.mail.internet.MimeMultipart;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -55,14 +53,10 @@ public class XOPSample extends MIMESample {
 
     public final InputStream getInlinedMessage() {
         try {
-            MimeMultipart mp = getMultipart();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            Document rootPart =
-                    documentBuilderFactory
-                            .newDocumentBuilder()
-                            .parse(mp.getBodyPart(0).getInputStream());
-            process(rootPart.getDocumentElement(), mp);
+            Document rootPart = documentBuilderFactory.newDocumentBuilder().parse(getPart(0));
+            process(rootPart.getDocumentElement());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             TransformerFactory.newInstance()
                     .newTransformer()
@@ -73,12 +67,11 @@ public class XOPSample extends MIMESample {
         }
     }
 
-    private void process(Element element, MimeMultipart mp) throws Exception {
+    private void process(Element element) throws Exception {
         if (element.getNamespaceURI().equals("http://www.w3.org/2004/08/xop/include")
                 && element.getLocalName().equals("Include")) {
             String cid = element.getAttribute("href").substring(4);
-            BodyPart part = mp.getBodyPart("<" + cid + ">");
-            String base64 = Base64.encodeBase64String(IOUtils.toByteArray(part.getInputStream()));
+            String base64 = Base64.encodeBase64String(IOUtils.toByteArray(getPart(cid)));
             element.getParentNode()
                     .replaceChild(element.getOwnerDocument().createTextNode(base64), element);
         } else {
@@ -86,7 +79,7 @@ public class XOPSample extends MIMESample {
                     child != null;
                     child = child.getNextSibling()) {
                 if (child instanceof Element) {
-                    process((Element) child, mp);
+                    process((Element) child);
                 }
             }
         }
