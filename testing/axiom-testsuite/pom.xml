@@ -125,6 +125,10 @@
             <artifactId>auto-service-annotations</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
