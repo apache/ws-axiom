@@ -271,6 +271,7 @@
         <asm.version>9.5</asm.version>
         <errorprone.version>2.16</errorprone.version>
         <junit5.version>5.9.1</junit5.version>
+        <mime4j.version>0.8.9</mime4j.version>
 
         <skipDeploy>false</skipDeploy>
 
@@ -302,7 +303,12 @@
             <dependency>
                 <groupId>org.apache.james</groupId>
                 <artifactId>apache-mime4j-core</artifactId>
-                <version>0.8.9</version>
+                <version>${mime4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.james</groupId>
+                <artifactId>apache-mime4j-dom</artifactId>
+                <version>${mime4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>

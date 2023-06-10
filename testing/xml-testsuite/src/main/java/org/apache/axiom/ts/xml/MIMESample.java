@@ -20,18 +20,21 @@ package org.apache.axiom.ts.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
-import javax.activation.DataSource;
-import javax.mail.BodyPart;
-import javax.mail.MessagingException;
-import javax.mail.internet.ContentType;
-import javax.mail.internet.MimeMultipart;
-import javax.mail.internet.ParseException;
+import org.apache.james.mime4j.codec.DecodeMonitor;
+import org.apache.james.mime4j.dom.Entity;
+import org.apache.james.mime4j.dom.Multipart;
+import org.apache.james.mime4j.dom.SingleBody;
+import org.apache.james.mime4j.dom.field.FieldName;
+import org.apache.james.mime4j.field.ContentTypeFieldLenientImpl;
+import org.apache.james.mime4j.message.DefaultMessageBuilder;
+import org.apache.james.mime4j.stream.Field;
+import org.apache.james.mime4j.stream.MimeConfig;
+import org.apache.james.mime4j.stream.RawField;
 
 public abstract class MIMESample extends MessageSample {
     private final String contentType;
-    private MimeMultipart multipart;
+    private Multipart multipart;
 
     protected MIMESample(MessageContent content, String name, String contentType) {
         super(content, name);
@@ -44,13 +47,9 @@ public abstract class MIMESample extends MessageSample {
     }
 
     private String getParameter(String name) {
-        try {
-            return new ContentType(contentType).getParameter(name);
-        } catch (ParseException ex) {
-            // MIMEResource objects are only defined as constants. Therefore we
-            // will never get here under normal conditions.
-            throw new Error(ex);
-        }
+        return ContentTypeFieldLenientImpl.PARSER
+                .parse(new RawField(FieldName.CONTENT_TYPE, contentType), DecodeMonitor.SILENT)
+                .getParameter(name);
     }
 
     public final String getStart() {
@@ -66,35 +65,16 @@ public abstract class MIMESample extends MessageSample {
         return getParameter("boundary");
     }
 
-    private final synchronized MimeMultipart getMultipart() {
+    private final synchronized Multipart getMultipart() {
         if (multipart == null) {
             try {
+                DefaultMessageBuilder defaultMessageBuilder = new DefaultMessageBuilder();
+                defaultMessageBuilder.setMimeEntityConfig(
+                        MimeConfig.custom().setHeadlessParsing(contentType).build());
+                defaultMessageBuilder.setDecodeMonitor(DecodeMonitor.SILENT);
                 multipart =
-                        new MimeMultipart(
-                                new DataSource() {
-                                    @Override
-                                    public OutputStream getOutputStream() throws IOException {
-                                        throw new UnsupportedOperationException();
-                                    }
-
-                                    @Override
-                                    public String getName() {
-                                        return null;
-                                    }
-
-                                    @Override
-                                    public InputStream getInputStream() throws IOException {
-                                        return MIMESample.this.getInputStream();
-                                    }
-
-                                    @Override
-                                    public String getContentType() {
-                                        return MIMESample.this.getContentType();
-                                    }
-                                });
-                // Force the implementation to parse the message
-                multipart.getCount();
-            } catch (MessagingException ex) {
+                        (Multipart) defaultMessageBuilder.parseMessage(getInputStream()).getBody();
+            } catch (IOException ex) {
                 throw new Error(ex);
             }
         }
@@ -103,29 +83,27 @@ public abstract class MIMESample extends MessageSample {
 
     public final InputStream getPart(int part) {
         try {
-            return getMultipart().getBodyPart(part).getInputStream();
+            return ((SingleBody) getMultipart().getBodyParts().get(part).getBody())
+                    .getInputStream();
         } catch (IOException ex) {
-            throw new Error(ex);
-        } catch (MessagingException ex) {
             throw new Error(ex);
         }
     }
 
     public final InputStream getPart(String cid) {
         try {
-            MimeMultipart mp = getMultipart();
-            BodyPart part = mp.getBodyPart(cid);
-            if (part == null) {
-                part = mp.getBodyPart("<" + cid + ">");
+            Multipart mp = getMultipart();
+            for (Entity entity : mp.getBodyParts()) {
+                Field contentId = entity.getHeader().getField(FieldName.CONTENT_ID);
+                if (contentId != null
+                        && (contentId.getBody().equals(cid)
+                                || contentId.getBody().equals("<" + cid + ">"))) {
+                    return ((SingleBody) entity.getBody()).getInputStream();
+                }
             }
-            if (part == null) {
-                throw new IllegalArgumentException("Part " + cid + " not found");
-            }
-            return part.getInputStream();
         } catch (IOException ex) {
             throw new Error(ex);
-        } catch (MessagingException ex) {
-            throw new Error(ex);
         }
+        throw new IllegalArgumentException("Part " + cid + " not found");
     }
 }
