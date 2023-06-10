@@ -34,7 +34,7 @@ final class DataSourceUtils {
     static {
         Class<?> clazz;
         try {
-            clazz = Class.forName("javax.mail.util.ByteArrayDataSource");
+            clazz = Class.forName("jakarta.mail.util.ByteArrayDataSource");
         } catch (ClassNotFoundException e) {
             clazz = null;
         }
