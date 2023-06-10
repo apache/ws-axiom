@@ -29,12 +29,10 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.Attr;
 import org.w3c.dom.NamedNodeMap;
 
-/**
- * Tests the behavior of {@link SOAPElement#addChildElement(String, String, String)}.
- */
+/** Tests the behavior of {@link SOAPElement#addChildElement(String, String, String)}. */
 public class TestAddChildElementLocalNamePrefixAndURI extends SAAJTestCase {
-    public TestAddChildElementLocalNamePrefixAndURI(SAAJImplementation saajImplementation,
-            SOAPSpec spec) {
+    public TestAddChildElementLocalNamePrefixAndURI(
+            SAAJImplementation saajImplementation, SOAPSpec spec) {
         super(saajImplementation, spec);
     }
 
@@ -48,7 +46,7 @@ public class TestAddChildElementLocalNamePrefixAndURI extends SAAJTestCase {
         assertThat(element.getParentNode()).isSameInstanceAs(root);
         NamedNodeMap attributes = element.getAttributes();
         assertThat(attributes.getLength()).isEqualTo(1);
-        Attr attr = (Attr)attributes.item(0);
+        Attr attr = (Attr) attributes.item(0);
         assertThat(attr.getNamespaceURI()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
         assertThat(attr.getPrefix()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE);
         assertThat(attr.getLocalName()).isEqualTo("ns2");

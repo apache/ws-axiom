@@ -54,12 +54,12 @@ final class AxiomTraverser implements Traverser {
     public Event next() throws TraverserException {
         if (node == null) {
             if (root instanceof OMDocument) {
-                node = ((OMDocument)root).getFirstOMChild();
+                node = ((OMDocument) root).getFirstOMChild();
             } else {
-                node = (OMElement)root;
+                node = (OMElement) root;
             }
         } else if (!visited && node instanceof OMElement) {
-            OMNode firstChild = ((OMElement)node).getFirstOMChild();
+            OMNode firstChild = ((OMElement) node).getFirstOMChild();
             if (firstChild != null) {
                 node = firstChild;
             } else {
@@ -77,7 +77,7 @@ final class AxiomTraverser implements Traverser {
                 if (parent instanceof OMDocument) {
                     return null;
                 } else {
-                    node = (OMElement)parent;
+                    node = (OMElement) parent;
                     visited = true;
                 }
             }
@@ -110,31 +110,31 @@ final class AxiomTraverser implements Traverser {
 
     @Override
     public String getRootName() {
-        return ((OMDocType)node).getRootName();
+        return ((OMDocType) node).getRootName();
     }
 
     @Override
     public String getPublicId() {
-        return ((OMDocType)node).getPublicId();
+        return ((OMDocType) node).getPublicId();
     }
 
     @Override
     public String getSystemId() {
-        return ((OMDocType)node).getSystemId();
+        return ((OMDocType) node).getSystemId();
     }
 
     @Override
     public QName getQName() {
-        return ((OMElement)node).getQName();
+        return ((OMElement) node).getQName();
     }
 
     @Override
-    public Map<QName,String> getAttributes() {
-        Map<QName,String> attributes = null;
-        for (Iterator<OMAttribute> it = ((OMElement)node).getAllAttributes(); it.hasNext(); ) {
+    public Map<QName, String> getAttributes() {
+        Map<QName, String> attributes = null;
+        for (Iterator<OMAttribute> it = ((OMElement) node).getAllAttributes(); it.hasNext(); ) {
             OMAttribute attr = it.next();
             if (attributes == null) {
-                attributes = new HashMap<QName,String>();
+                attributes = new HashMap<QName, String>();
             }
             attributes.put(attr.getQName(), attr.getAttributeValue());
         }
@@ -143,11 +143,12 @@ final class AxiomTraverser implements Traverser {
 
     @Override
     public Map<String, String> getNamespaces() {
-        Map<String,String> namespaces = null;
-        for (Iterator<OMNamespace> it = ((OMElement)node).getAllDeclaredNamespaces(); it.hasNext(); ) {
+        Map<String, String> namespaces = null;
+        for (Iterator<OMNamespace> it = ((OMElement) node).getAllDeclaredNamespaces();
+                it.hasNext(); ) {
             OMNamespace ns = it.next();
             if (namespaces == null) {
-                namespaces = new HashMap<String,String>();
+                namespaces = new HashMap<String, String>();
             }
             namespaces.put(ns.getPrefix(), ns.getNamespaceURI());
         }
@@ -160,9 +161,9 @@ final class AxiomTraverser implements Traverser {
             case OMNode.TEXT_NODE:
             case OMNode.SPACE_NODE:
             case OMNode.CDATA_SECTION_NODE:
-                return ((OMText)node).getText();
+                return ((OMText) node).getText();
             case OMNode.COMMENT_NODE:
-                return ((OMComment)node).getValue();
+                return ((OMComment) node).getValue();
             default:
                 throw new IllegalStateException();
         }
@@ -170,16 +171,16 @@ final class AxiomTraverser implements Traverser {
 
     @Override
     public String getEntityName() {
-        return ((OMEntityReference)node).getName();
+        return ((OMEntityReference) node).getName();
     }
 
     @Override
     public String getPITarget() {
-        return ((OMProcessingInstruction)node).getTarget();
+        return ((OMProcessingInstruction) node).getTarget();
     }
 
     @Override
     public String getPIData() {
-        return ((OMProcessingInstruction)node).getValue();
+        return ((OMProcessingInstruction) node).getValue();
     }
 }

@@ -26,9 +26,7 @@ import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-/**
- * Tests the behavior of {@link SOAPElement#addChildElement(String)}.
- */
+/** Tests the behavior of {@link SOAPElement#addChildElement(String)}. */
 public class TestAddChildElementLocalName extends SAAJTestCase {
     public TestAddChildElementLocalName(SAAJImplementation saajImplementation, SOAPSpec spec) {
         super(saajImplementation, spec);

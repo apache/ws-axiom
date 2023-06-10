@@ -27,14 +27,19 @@ import org.springframework.core.io.Resource;
 
 public abstract class SpringWSTestCase extends MatrixTestCase {
     protected final SOAPSpec spec;
-    
+
     public SpringWSTestCase(SOAPSpec spec) {
         this.spec = spec;
         addTestParameter("soapVersion", spec.getAdapter(SOAPSpecAdapter.class).getSoapVersion());
     }
-    
-    protected void configureContext(GenericApplicationContext context, MessageFactoryConfigurator messageFactoryConfigurator, Resource configResource) {
-        context.getEnvironment().getPropertySources().addFirst(new MatrixTestCasePropertySource(this));
+
+    protected void configureContext(
+            GenericApplicationContext context,
+            MessageFactoryConfigurator messageFactoryConfigurator,
+            Resource configResource) {
+        context.getEnvironment()
+                .getPropertySources()
+                .addFirst(new MatrixTestCasePropertySource(this));
         messageFactoryConfigurator.configure(context);
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
         reader.loadBeanDefinitions(new ClassPathResource("common.xml", SpringWSTestCase.class));

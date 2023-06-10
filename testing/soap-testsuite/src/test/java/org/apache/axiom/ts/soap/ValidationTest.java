@@ -27,7 +27,7 @@ import junit.framework.TestSuite;
 
 public class ValidationTest extends TestCase {
     private final SOAPSample message;
-    
+
     public ValidationTest(SOAPSample message) {
         super(message.getName());
         this.message = message;
@@ -35,7 +35,10 @@ public class ValidationTest extends TestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        message.getSOAPSpec().getSchema().newValidator().validate(new StreamSource(message.getInputStream()));
+        message.getSOAPSpec()
+                .getSchema()
+                .newValidator()
+                .validate(new StreamSource(message.getInputStream()));
     }
 
     public static TestSuite suite() {

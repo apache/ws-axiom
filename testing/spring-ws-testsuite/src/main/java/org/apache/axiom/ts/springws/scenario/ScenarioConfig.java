@@ -23,8 +23,9 @@ import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 public final class ScenarioConfig {
     private final MessageFactoryConfigurator clientMessageFactoryConfigurator;
     private final MessageFactoryConfigurator serverMessageFactoryConfigurator;
-    
-    public ScenarioConfig(MessageFactoryConfigurator clientMessageFactoryConfigurator,
+
+    public ScenarioConfig(
+            MessageFactoryConfigurator clientMessageFactoryConfigurator,
             MessageFactoryConfigurator serverMessageFactoryConfigurator) {
         this.clientMessageFactoryConfigurator = clientMessageFactoryConfigurator;
         this.serverMessageFactoryConfigurator = serverMessageFactoryConfigurator;
@@ -37,5 +38,4 @@ public final class ScenarioConfig {
     public final MessageFactoryConfigurator getServerMessageFactoryConfigurator() {
         return serverMessageFactoryConfigurator;
     }
-    
 }

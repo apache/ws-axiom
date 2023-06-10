@@ -22,51 +22,51 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(namespace="urn:broker", name="Order")
-@XmlType(propOrder={"customer","items"})
+@XmlRootElement(namespace = "urn:broker", name = "Order")
+@XmlType(propOrder = {"customer", "items"})
 public class Order {
-    @XmlRootElement(namespace="urn:broker", name="Item")
-    @XmlType(propOrder={"stock","count"})
+    @XmlRootElement(namespace = "urn:broker", name = "Item")
+    @XmlType(propOrder = {"stock", "count"})
     public static class Item {
         private String stock;
         private int count;
-        
-        @XmlElement(namespace="urn:broker", name="Stock")
+
+        @XmlElement(namespace = "urn:broker", name = "Stock")
         public String getStock() {
             return stock;
         }
-        
+
         public void setStock(String stock) {
             this.stock = stock;
         }
-        
-        @XmlElement(namespace="urn:broker", name="Count")
+
+        @XmlElement(namespace = "urn:broker", name = "Count")
         public int getCount() {
             return count;
         }
-        
+
         public void setCount(int count) {
             this.count = count;
         }
     }
-    
+
     private int customer;
     private Item[] items;
-    
-    @XmlElement(namespace="urn:broker", name="Customer")
+
+    @XmlElement(namespace = "urn:broker", name = "Customer")
     public int getCustomer() {
         return customer;
     }
-    
+
     public void setCustomer(int customer) {
         this.customer = customer;
     }
-    
-    @XmlElement(namespace="urn:broker", name="Item")
+
+    @XmlElement(namespace = "urn:broker", name = "Item")
     public Item[] getItems() {
         return items;
     }
-    
+
     public void setItems(Item[] items) {
         this.items = items;
     }

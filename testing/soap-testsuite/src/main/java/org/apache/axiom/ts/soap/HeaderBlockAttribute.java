@@ -22,86 +22,85 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.testing.multiton.Multiton;
 
-/**
- * Describes an attribute that can appear on a SOAP header block.
- */
+/** Describes an attribute that can appear on a SOAP header block. */
 public abstract class HeaderBlockAttribute extends Multiton {
-    public static final HeaderBlockAttribute MUST_UNDERSTAND = new HeaderBlockAttribute() {
-        @Override
-        public String getName(SOAPSpec spec) {
-            return "mustUnderstand";
-        }
+    public static final HeaderBlockAttribute MUST_UNDERSTAND =
+            new HeaderBlockAttribute() {
+                @Override
+                public String getName(SOAPSpec spec) {
+                    return "mustUnderstand";
+                }
 
-        @Override
-        public boolean isBoolean() {
-            return true;
-        }
+                @Override
+                public boolean isBoolean() {
+                    return true;
+                }
 
-        @Override
-        public boolean isSupported(SOAPSpec spec) {
-            return true;
-        }
-    };
-    
-    public static final HeaderBlockAttribute ROLE = new HeaderBlockAttribute() {
-        @Override
-        public String getName(SOAPSpec spec) {
-            return spec == SOAPSpec.SOAP11 ? "actor" : "role";
-        }
+                @Override
+                public boolean isSupported(SOAPSpec spec) {
+                    return true;
+                }
+            };
 
-        @Override
-        public boolean isBoolean() {
-            return false;
-        }
+    public static final HeaderBlockAttribute ROLE =
+            new HeaderBlockAttribute() {
+                @Override
+                public String getName(SOAPSpec spec) {
+                    return spec == SOAPSpec.SOAP11 ? "actor" : "role";
+                }
 
-        @Override
-        public boolean isSupported(SOAPSpec spec) {
-            return true;
-        }
-    };
-    
-    public static final HeaderBlockAttribute RELAY = new HeaderBlockAttribute() {
-        @Override
-        public String getName(SOAPSpec spec) {
-            return "relay";
-        }
+                @Override
+                public boolean isBoolean() {
+                    return false;
+                }
 
-        @Override
-        public boolean isBoolean() {
-            return true;
-        }
+                @Override
+                public boolean isSupported(SOAPSpec spec) {
+                    return true;
+                }
+            };
 
-        @Override
-        public boolean isSupported(SOAPSpec spec) {
-            return spec == SOAPSpec.SOAP12;
-        }
-    };
-    
+    public static final HeaderBlockAttribute RELAY =
+            new HeaderBlockAttribute() {
+                @Override
+                public String getName(SOAPSpec spec) {
+                    return "relay";
+                }
+
+                @Override
+                public boolean isBoolean() {
+                    return true;
+                }
+
+                @Override
+                public boolean isSupported(SOAPSpec spec) {
+                    return spec == SOAPSpec.SOAP12;
+                }
+            };
+
     /**
      * Get the name of the attribute.
-     * 
-     * @param spec
-     *            identifies the SOAP version
+     *
+     * @param spec identifies the SOAP version
      * @return the name of the attribute in the given SOAP version
      */
     public abstract String getName(SOAPSpec spec);
-    
+
     public final QName getQName(SOAPSpec spec) {
         return new QName(spec.getEnvelopeNamespaceURI(), getName(spec));
     }
-    
+
     /**
      * Determine if the attribute is a boolean attribute.
-     * 
+     *
      * @return <code>true</code> if this is a boolean attribute
      */
     public abstract boolean isBoolean();
-    
+
     /**
      * Determine if the attribute is supported by the given SOAP version.
-     * 
-     * @param spec
-     *            identifies the SOAP version
+     *
+     * @param spec identifies the SOAP version
      * @return <code>true</code> if the attribute is supported, <code>false</code> otherwise
      */
     public abstract boolean isSupported(SOAPSpec spec);

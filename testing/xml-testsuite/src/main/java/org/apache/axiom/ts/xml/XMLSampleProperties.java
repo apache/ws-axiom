@@ -31,13 +31,14 @@ final class XMLSampleProperties {
     private static final XMLInputFactory inputFactory;
 
     static {
-        // We make use of Woodstox' DTDInfo interface here, but we want to be able to use system properties
+        // We make use of Woodstox' DTDInfo interface here, but we want to be able to use system
+        // properties
         // to specify the StAX implementation to be used by the tests. Therefore we need to create
         // an instance of the Woodstox InputFactory implementation directly.
         inputFactory = new WstxInputFactory();
         inputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
     }
-    
+
     private final String encoding;
     private final boolean hasDTD;
     private final boolean hasExternalSubset;
@@ -50,15 +51,16 @@ final class XMLSampleProperties {
         boolean hasInternalSubset = false;
         boolean hasEntityReferences = false;
         try {
-            XMLStreamReader reader = inputFactory.createXMLStreamReader(new StreamSource(
-                    sample.getUrl().toString()));
+            XMLStreamReader reader =
+                    inputFactory.createXMLStreamReader(
+                            new StreamSource(sample.getUrl().toString()));
             encoding = reader.getEncoding();
             while (reader.hasNext()) {
                 switch (reader.next()) {
                     case XMLStreamReader.DTD:
                         hasDTD = true;
                         hasInternalSubset = reader.getText().length() > 0;
-                        hasExternalSubset = ((DTDInfo)reader).getDTDSystemId() != null;
+                        hasExternalSubset = ((DTDInfo) reader).getDTDSystemId() != null;
                         break;
                     case XMLStreamReader.ENTITY_REFERENCE:
                         hasEntityReferences = true;

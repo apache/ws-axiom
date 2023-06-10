@@ -20,7 +20,7 @@ package org.apache.axiom.ts.soap;
 
 /**
  * Describes a boolean literal recognized by a given SOAP version.
- * 
+ *
  * @see SOAPSpec#getBooleanLiterals()
  */
 public final class BooleanLiteral {
@@ -28,7 +28,7 @@ public final class BooleanLiteral {
     static final BooleanLiteral FALSE = new BooleanLiteral("false", false);
     static final BooleanLiteral ONE = new BooleanLiteral("1", true);
     static final BooleanLiteral ZERO = new BooleanLiteral("0", false);
-    
+
     private final String lexicalRepresentation;
     private final boolean value;
 
@@ -39,7 +39,7 @@ public final class BooleanLiteral {
 
     /**
      * Get the lexical representation of this literal.
-     * 
+     *
      * @return the lexical representation
      */
     public String getLexicalRepresentation() {
@@ -48,7 +48,7 @@ public final class BooleanLiteral {
 
     /**
      * Get the value corresponding to this literal.
-     * 
+     *
      * @return the value
      */
     public boolean getValue() {

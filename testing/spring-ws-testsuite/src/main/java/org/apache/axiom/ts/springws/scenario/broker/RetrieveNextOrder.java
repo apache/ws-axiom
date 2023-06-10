@@ -21,8 +21,6 @@ package org.apache.axiom.ts.springws.scenario.broker;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(namespace="urn:broker", name="RetrieveNextOrder")
+@XmlRootElement(namespace = "urn:broker", name = "RetrieveNextOrder")
 @XmlType
-public class RetrieveNextOrder {
-
-}
+public class RetrieveNextOrder {}

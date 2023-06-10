@@ -26,55 +26,62 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.testing.multiton.Multiton;
 
 public abstract class SOAPElementType extends Multiton {
-    public static final SOAPElementType ENVELOPE = new SOAPElementType() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getEnvelopeQName();
-        }
-    };
-    
-    public static final SOAPElementType HEADER = new SOAPElementType() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getHeaderQName();
-        }
-    };
-    
-    public static final SOAPElementType BODY = new SOAPElementType() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getBodyQName();
-        }
-    };
-    
-    public static final SOAPElementType FAULT = new SOAPElementType() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getFaultQName();
-        }
-    };
-    
-    public static final SOAPElementType VALUE = new SOAPElementType() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getFaultValueQName();
-        }
-    };
-    
-    public static final SOAPElementType SUB_CODE = new SOAPElementType() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getFaultSubCodeQName();
-        }
-    };
-    
-    public static final SOAPElementType TEXT = new SOAPElementType() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getFaultTextQName();
-        }
-    };
-    
+    public static final SOAPElementType ENVELOPE =
+            new SOAPElementType() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getEnvelopeQName();
+                }
+            };
+
+    public static final SOAPElementType HEADER =
+            new SOAPElementType() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getHeaderQName();
+                }
+            };
+
+    public static final SOAPElementType BODY =
+            new SOAPElementType() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getBodyQName();
+                }
+            };
+
+    public static final SOAPElementType FAULT =
+            new SOAPElementType() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getFaultQName();
+                }
+            };
+
+    public static final SOAPElementType VALUE =
+            new SOAPElementType() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getFaultValueQName();
+                }
+            };
+
+    public static final SOAPElementType SUB_CODE =
+            new SOAPElementType() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getFaultSubCodeQName();
+                }
+            };
+
+    public static final SOAPElementType TEXT =
+            new SOAPElementType() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getFaultTextQName();
+                }
+            };
+
     private static final SOAPElementType[] allTypes = {
         SOAPElementType.ENVELOPE,
         SOAPElementType.HEADER,
@@ -89,7 +96,7 @@ public abstract class SOAPElementType extends Multiton {
         SOAPFaultChild.ROLE,
         SOAPFaultChild.DETAIL,
     };
-    
+
     static {
         addRelation(ENVELOPE, HEADER);
         addRelation(ENVELOPE, BODY);
@@ -105,35 +112,34 @@ public abstract class SOAPElementType extends Multiton {
         addRelation(FAULT, SOAPFaultChild.ROLE);
         addRelation(FAULT, SOAPFaultChild.DETAIL);
     }
-    
+
     private final List<SOAPElementType> parentTypes = new ArrayList<>();
     private final List<SOAPElementType> childTypes = new ArrayList<>();
-    
+
     SOAPElementType() {}
-    
+
     private static void addRelation(SOAPElementType parentType, SOAPElementType childType) {
         parentType.childTypes.add(childType);
         childType.parentTypes.add(parentType);
     }
-    
+
     public static SOAPElementType[] getAll() {
         return allTypes.clone();
     }
-    
+
     /**
      * Get the qualified name for this element type in the given SOAP version.
-     * 
-     * @param spec
-     *            the SOAP version
+     *
+     * @param spec the SOAP version
      * @return the element name, or <code>null</code> if the element type doesn't exist in the given
-     *         SOAP version
+     *     SOAP version
      */
     public abstract QName getQName(SOAPSpec spec);
-    
+
     public SOAPElementType[] getParentTypes() {
         return parentTypes.toArray(new SOAPElementType[parentTypes.size()]);
     }
-    
+
     public SOAPElementType[] getChildTypes() {
         return childTypes.toArray(new SOAPElementType[childTypes.size()]);
     }

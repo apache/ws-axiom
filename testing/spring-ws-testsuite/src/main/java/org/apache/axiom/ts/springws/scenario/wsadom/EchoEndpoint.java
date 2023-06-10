@@ -29,9 +29,9 @@ import org.w3c.dom.Element;
 @Endpoint
 public class EchoEndpoint {
     private static final Log log = LogFactory.getLog(EchoEndpoint.class);
-    
+
     public static final String ACTION = "urn:echo";
-    
+
     @Action(ACTION)
     @ResponsePayload
     public Element echo(@RequestPayload Element request) {

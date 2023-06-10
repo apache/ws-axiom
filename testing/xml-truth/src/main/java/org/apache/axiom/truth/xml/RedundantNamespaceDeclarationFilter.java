@@ -31,17 +31,17 @@ import org.apache.axiom.truth.xml.spi.Traverser;
 import org.apache.axiom.truth.xml.spi.TraverserException;
 
 final class RedundantNamespaceDeclarationFilter extends Filter {
-    private static final Map<String,String> implicitNamespaces;
-    
+    private static final Map<String, String> implicitNamespaces;
+
     static {
         implicitNamespaces = new HashMap<>();
         implicitNamespaces.put("", "");
         implicitNamespaces.put(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
         implicitNamespaces.put(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
     }
-    
-    private final List<Map<String,String>> stack;
-    
+
+    private final List<Map<String, String>> stack;
+
     RedundantNamespaceDeclarationFilter(Traverser parent) {
         super(parent);
         stack = new ArrayList<>(10);
@@ -49,8 +49,8 @@ final class RedundantNamespaceDeclarationFilter extends Filter {
     }
 
     private String lookupNamespaceURI(String prefix) {
-        for (int i=stack.size()-1; i>=0; i--) {
-            Map<String,String> namespaces = stack.get(i);
+        for (int i = stack.size() - 1; i >= 0; i--) {
+            Map<String, String> namespaces = stack.get(i);
             if (namespaces != null) {
                 String namespaceURI = namespaces.get(prefix);
                 if (namespaceURI != null) {
@@ -60,15 +60,16 @@ final class RedundantNamespaceDeclarationFilter extends Filter {
         }
         return null;
     }
-    
+
     @Override
     public Event next() throws TraverserException {
         Event event = super.next();
         if (event == Event.START_ELEMENT) {
-            Map<String,String> namespaces = super.getNamespaces();
+            Map<String, String> namespaces = super.getNamespaces();
             if (namespaces != null) {
-                for (Iterator<Map.Entry<String,String>> it = namespaces.entrySet().iterator(); it.hasNext(); ) {
-                    Map.Entry<String,String> namespace = it.next();
+                for (Iterator<Map.Entry<String, String>> it = namespaces.entrySet().iterator();
+                        it.hasNext(); ) {
+                    Map.Entry<String, String> namespace = it.next();
                     if (namespace.getValue().equals(lookupNamespaceURI(namespace.getKey()))) {
                         it.remove();
                     }
@@ -79,13 +80,13 @@ final class RedundantNamespaceDeclarationFilter extends Filter {
             }
             stack.add(namespaces);
         } else if (event == Event.END_ELEMENT) {
-            stack.remove(stack.size()-1);
+            stack.remove(stack.size() - 1);
         }
         return event;
     }
 
     @Override
-    public Map<String,String> getNamespaces() {
-        return stack.get(stack.size()-1);
+    public Map<String, String> getNamespaces() {
+        return stack.get(stack.size() - 1);
     }
 }

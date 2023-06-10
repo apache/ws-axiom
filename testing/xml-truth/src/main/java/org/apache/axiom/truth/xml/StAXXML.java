@@ -26,7 +26,7 @@ import org.apache.axiom.truth.xml.spi.XML;
 
 final class StAXXML implements XML {
     private XMLStreamReaderProvider xmlStreamReaderProvider;
-    
+
     StAXXML(XMLStreamReaderProvider xmlStreamReaderProvider) {
         this.xmlStreamReaderProvider = xmlStreamReaderProvider;
     }
@@ -39,7 +39,8 @@ final class StAXXML implements XML {
     @Override
     public Traverser createTraverser(boolean expandEntityReferences) throws TraverserException {
         try {
-            return new StAXTraverser(xmlStreamReaderProvider.getXMLStreamReader(expandEntityReferences));
+            return new StAXTraverser(
+                    xmlStreamReaderProvider.getXMLStreamReader(expandEntityReferences));
         } catch (XMLStreamException ex) {
             throw new TraverserException(ex);
         }

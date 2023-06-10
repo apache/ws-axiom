@@ -24,7 +24,7 @@ import org.springframework.ws.soap.SoapMessageFactory;
 
 public abstract class SimpleTestCase extends SpringWSTestCase {
     private final MessageFactoryConfigurator mfc;
-    
+
     public SimpleTestCase(MessageFactoryConfigurator mfc, SOAPSpec spec) {
         super(spec);
         this.mfc = mfc;
@@ -36,7 +36,7 @@ public abstract class SimpleTestCase extends SpringWSTestCase {
         configureContext(context, mfc, null);
         context.refresh();
         try {
-            runTest((SoapMessageFactory)context.getBean("messageFactory"));
+            runTest((SoapMessageFactory) context.getBean("messageFactory"));
         } finally {
             context.close();
         }

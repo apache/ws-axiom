@@ -25,16 +25,18 @@ public abstract class MessageContent {
     public static MessageContent fromURL(URL url) {
         return new URLMessageContent(url);
     }
-    
+
     public static MessageContent fromClasspath(Class<?> clazz, String relativeResourceName) {
         URL url = clazz.getResource(relativeResourceName);
         if (url == null) {
-            throw new IllegalArgumentException(String.format(
-                    "No such resource: %s (relative to %s)", relativeResourceName, clazz.getName()));
+            throw new IllegalArgumentException(
+                    String.format(
+                            "No such resource: %s (relative to %s)",
+                            relativeResourceName, clazz.getName()));
         }
         return fromURL(url);
     }
-    
+
     public static MessageContent fromClasspath(ClassLoader classLoader, String resourceName) {
         URL url = classLoader.getResource(resourceName);
         if (url == null) {
@@ -42,9 +44,10 @@ public abstract class MessageContent {
         }
         return fromURL(url);
     }
-    
+
     MessageContent() {}
-    
+
     public abstract InputStream getInputStream();
+
     public abstract URL getURL();
 }

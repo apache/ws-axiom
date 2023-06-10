@@ -32,21 +32,24 @@ public class ValidationTest extends ScenarioTestCase {
     public ValidationTest(ScenarioConfig config, SOAPSpec spec) {
         super(config, spec);
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         StockQuoteClient client = context.getBean(StockQuoteClient.class);
-        
+
         assertEquals(105.37, client.getQuote("GOOG"), 0.001);
-        
+
         try {
             client.getQuote("TOOLONG");
             fail("Expected SoapFaultClientException");
         } catch (SoapFaultClientException ex) {
             assertEquals(spec.getSenderFaultCode(), ex.getFaultCode());
-            Iterator<SoapFaultDetailElement> it = ex.getSoapFault().getFaultDetail().getDetailEntries();
+            Iterator<SoapFaultDetailElement> it =
+                    ex.getSoapFault().getFaultDetail().getDetailEntries();
             assertTrue(it.hasNext());
-            assertEquals(new QName("http://springframework.org/spring-ws", "ValidationError"), it.next().getName());
+            assertEquals(
+                    new QName("http://springframework.org/spring-ws", "ValidationError"),
+                    it.next().getName());
         }
     }
 }

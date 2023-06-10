@@ -39,54 +39,65 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
     private final ScenarioConfig config;
     private Server server;
     protected GenericXmlApplicationContext context;
-    
+
     public ScenarioTestCase(ScenarioConfig config, SOAPSpec spec) {
         super(spec);
         this.config = config;
         addTestParameter("client", config.getClientMessageFactoryConfigurator().getName());
         addTestParameter("server", config.getServerMessageFactoryConfigurator().getName());
     }
-    
+
     @Override
     protected void setUp() throws Exception {
         // Set up a custom thread pool to improve thread names (for logging purposes)
         QueuedThreadPool threadPool = new QueuedThreadPool();
         threadPool.setName("jetty");
         server = new Server(threadPool);
-        
+
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(0);
-        server.setConnectors(new Connector[] { connector });
+        server.setConnectors(new Connector[] {connector});
         ServletContextHandler handler = new ServletContextHandler(server, "/");
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setContextClass(GenericWebApplicationContext.class);
-        servlet.setContextInitializers(new ApplicationContextInitializer<ConfigurableApplicationContext>() {
-            @Override
-            public void initialize(ConfigurableApplicationContext applicationContext) {
-                configureContext((GenericWebApplicationContext)applicationContext, config.getServerMessageFactoryConfigurator(),
-                        new ClassPathResource("server.xml", ScenarioTestCase.this.getClass()));
-            }
-        });
+        servlet.setContextInitializers(
+                new ApplicationContextInitializer<ConfigurableApplicationContext>() {
+                    @Override
+                    public void initialize(ConfigurableApplicationContext applicationContext) {
+                        configureContext(
+                                (GenericWebApplicationContext) applicationContext,
+                                config.getServerMessageFactoryConfigurator(),
+                                new ClassPathResource(
+                                        "server.xml", ScenarioTestCase.this.getClass()));
+                    }
+                });
         ServletHolder servletHolder = new ServletHolder(servlet);
         servletHolder.setName("spring-ws");
         servletHolder.setInitOrder(1);
         handler.addServlet(servletHolder, "/*");
         server.start();
-        
+
         context = new GenericXmlApplicationContext();
         MockPropertySource propertySource = new MockPropertySource("client-properties");
         propertySource.setProperty("port", connector.getLocalPort());
-        context.getEnvironment().getPropertySources().replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
-        configureContext(context, config.getClientMessageFactoryConfigurator(), new ClassPathResource("client.xml", getClass()));
+        context.getEnvironment()
+                .getPropertySources()
+                .replace(
+                        StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,
+                        propertySource);
+        configureContext(
+                context,
+                config.getClientMessageFactoryConfigurator(),
+                new ClassPathResource("client.xml", getClass()));
 
         context.refresh();
     }
-    
+
     @Override
     protected void tearDown() throws Exception {
         context.close();
         context = null;
-        
+
         server.stop();
         server = null;
     }

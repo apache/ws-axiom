@@ -22,11 +22,13 @@ import org.apache.axiom.ts.xml.MIMESample;
 import org.apache.axiom.ts.xml.MessageContent;
 
 public class SwASample extends MIMESample {
-    public static final SwASample SAMPLE1 = new SwASample("sample1.msg",
-            "multipart/related; " +
-            "boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; " +
-            "type=\"text/xml\"; " +
-            "start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"");
+    public static final SwASample SAMPLE1 =
+            new SwASample(
+                    "sample1.msg",
+                    "multipart/related; "
+                            + "boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; "
+                            + "type=\"text/xml\"; "
+                            + "start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"");
 
     private SwASample(String name, String contentType) {
         super(MessageContent.fromClasspath(SwASample.class, "swa/" + name), name, contentType);

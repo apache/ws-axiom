@@ -48,10 +48,11 @@ final class StAXTraverser implements Traverser {
                 atStart = true;
                 break;
             default:
-                throw new IllegalStateException("The reader must be positioned at a START_DOCUMENT or START_ELEMENT event");
+                throw new IllegalStateException(
+                        "The reader must be positioned at a START_DOCUMENT or START_ELEMENT event");
         }
     }
-    
+
     @Override
     public Event next() throws TraverserException {
         try {
@@ -103,17 +104,17 @@ final class StAXTraverser implements Traverser {
 
     @Override
     public String getRootName() {
-        return ((DTDInfo)reader).getDTDRootName();
+        return ((DTDInfo) reader).getDTDRootName();
     }
 
     @Override
     public String getPublicId() {
-        return ((DTDInfo)reader).getDTDPublicId();
+        return ((DTDInfo) reader).getDTDPublicId();
     }
 
     @Override
     public String getSystemId() {
-        return ((DTDInfo)reader).getDTDSystemId();
+        return ((DTDInfo) reader).getDTDSystemId();
     }
 
     @Override
@@ -122,13 +123,13 @@ final class StAXTraverser implements Traverser {
     }
 
     @Override
-    public Map<QName,String> getAttributes() {
+    public Map<QName, String> getAttributes() {
         int attributeCount = reader.getAttributeCount();
         if (attributeCount == 0) {
             return null;
         } else {
-            Map<QName,String> attributes = new HashMap<>();
-            for (int i=0; i<attributeCount; i++) {
+            Map<QName, String> attributes = new HashMap<>();
+            for (int i = 0; i < attributeCount; i++) {
                 attributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
             return attributes;
@@ -136,14 +137,16 @@ final class StAXTraverser implements Traverser {
     }
 
     @Override
-    public Map<String,String> getNamespaces() {
+    public Map<String, String> getNamespaces() {
         int namespaceCount = reader.getNamespaceCount();
         if (namespaceCount == 0) {
             return null;
         } else {
-            Map<String,String> namespaces = new HashMap<>();
-            for (int i=0; i<namespaceCount; i++) {
-                namespaces.put(Strings.nullToEmpty(reader.getNamespacePrefix(i)), Strings.nullToEmpty(reader.getNamespaceURI(i)));
+            Map<String, String> namespaces = new HashMap<>();
+            for (int i = 0; i < namespaceCount; i++) {
+                namespaces.put(
+                        Strings.nullToEmpty(reader.getNamespacePrefix(i)),
+                        Strings.nullToEmpty(reader.getNamespaceURI(i)));
             }
             return namespaces;
         }

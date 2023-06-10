@@ -16,7 +16,5 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/**
- * Google Truth extension for XML.
- */
+/** Google Truth extension for XML. */
 package org.apache.axiom.truth.xml;

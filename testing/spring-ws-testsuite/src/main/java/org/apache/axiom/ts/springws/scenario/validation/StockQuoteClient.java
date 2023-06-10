@@ -30,6 +30,6 @@ public class StockQuoteClient {
     public double getQuote(String symbol) {
         GetQuote request = new GetQuote();
         request.setSymbol(symbol);
-        return ((GetQuoteResponse)webServiceTemplate.marshalSendAndReceive(request)).getPrice();
+        return ((GetQuoteResponse) webServiceTemplate.marshalSendAndReceive(request)).getPrice();
     }
 }

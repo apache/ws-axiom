@@ -23,14 +23,16 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.SoapVersion;
 
-/**
- * Defines a particular {@link SoapMessageFactory} configuration.
- */
+/** Defines a particular {@link SoapMessageFactory} configuration. */
 public abstract class MessageFactoryConfigurator {
-    public static final MessageFactoryConfigurator SAAJ = new SimpleMessageFactoryConfigurator("saaj", new ClassPathResource("saaj-message-factory.xml", MessageFactoryConfigurator.class));
-    
+    public static final MessageFactoryConfigurator SAAJ =
+            new SimpleMessageFactoryConfigurator(
+                    "saaj",
+                    new ClassPathResource(
+                            "saaj-message-factory.xml", MessageFactoryConfigurator.class));
+
     private final String name;
-    
+
     public MessageFactoryConfigurator(String name) {
         this.name = name;
     }
@@ -38,17 +40,18 @@ public abstract class MessageFactoryConfigurator {
     public String getName() {
         return name;
     }
-    
+
     /**
      * Configure a {@link SoapMessageFactory} in the given application context. The method must
+     *
      * <ul>
-     * <li>add a bean of type {@link SoapMessageFactory} and name {@code messageFactory} to the
-     * context;
-     * <li>configure that {@link SoapMessageFactory} to use the SOAP version specified by the
-     * {@code soapVersion} property (which specifies the name of one of the constants defined in
-     * {@link SoapVersion}).
+     *   <li>add a bean of type {@link SoapMessageFactory} and name {@code messageFactory} to the
+     *       context;
+     *   <li>configure that {@link SoapMessageFactory} to use the SOAP version specified by the
+     *       {@code soapVersion} property (which specifies the name of one of the constants defined
+     *       in {@link SoapVersion}).
      * </ul>
-     * 
+     *
      * @param context
      */
     public abstract void configure(GenericApplicationContext context);

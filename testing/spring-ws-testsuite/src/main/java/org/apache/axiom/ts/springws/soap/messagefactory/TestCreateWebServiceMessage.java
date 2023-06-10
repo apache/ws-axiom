@@ -28,8 +28,8 @@ import org.springframework.ws.soap.SoapMessage;
 import org.springframework.ws.soap.SoapMessageFactory;
 
 /**
- * Tests the characteristics of the {@link SoapMessage} returned by
- * {@link SoapMessageFactory#createWebServiceMessage()}.
+ * Tests the characteristics of the {@link SoapMessage} returned by {@link
+ * SoapMessageFactory#createWebServiceMessage()}.
  */
 public class TestCreateWebServiceMessage extends SimpleTestCase {
     public TestCreateWebServiceMessage(MessageFactoryConfigurator mfc, SOAPSpec spec) {
@@ -39,15 +39,15 @@ public class TestCreateWebServiceMessage extends SimpleTestCase {
     @Override
     protected void runTest(SoapMessageFactory messageFactory) {
         SoapMessage message = messageFactory.createWebServiceMessage();
-        
+
         SoapEnvelope env = message.getEnvelope();
         assertNotNull(env);
         assertEquals(spec.getEnvelopeQName(), env.getName());
-        
+
         SoapHeader header = env.getHeader();
         assertNotNull(header);
         assertEquals(spec.getHeaderQName(), header.getName());
-        
+
         SoapBody body = env.getBody();
         assertNotNull(body);
         assertEquals(spec.getHeaderQName(), header.getName());

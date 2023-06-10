@@ -25,8 +25,11 @@ public final class SimpleSOAPSample extends SOAPSample {
     public SimpleSOAPSample(SOAPSpec spec, String resourceName) {
         this(spec, resourceName, resourceName);
     }
-    
+
     SimpleSOAPSample(SOAPSpec spec, String resourceName, String name) {
-        super(spec, MessageContent.fromClasspath(SimpleSOAPSample.class.getClassLoader(), resourceName), name);
+        super(
+                spec,
+                MessageContent.fromClasspath(SimpleSOAPSample.class.getClassLoader(), resourceName),
+                name);
     }
 }

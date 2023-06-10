@@ -22,5 +22,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 abstract class XMLStreamReaderProvider {
-    abstract XMLStreamReader getXMLStreamReader(boolean expandEntityReferences) throws XMLStreamException;
+    abstract XMLStreamReader getXMLStreamReader(boolean expandEntityReferences)
+            throws XMLStreamException;
 }

@@ -21,7 +21,7 @@ package org.apache.axiom.ts.springws.scenario.jaxb2;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(namespace="urn:stockquote", name="GetQuoteResponse")
+@XmlRootElement(namespace = "urn:stockquote", name = "GetQuoteResponse")
 @XmlType
 public class GetQuoteResponse {
     private double price;

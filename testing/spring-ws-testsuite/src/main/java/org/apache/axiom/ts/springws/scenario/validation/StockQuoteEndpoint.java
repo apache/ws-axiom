@@ -25,7 +25,9 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 @Endpoint
 public class StockQuoteEndpoint {
-    @PayloadRoot(namespace="http://apache.org/axiom/ts/springws/scenario/validation", localPart="GetQuote")
+    @PayloadRoot(
+            namespace = "http://apache.org/axiom/ts/springws/scenario/validation",
+            localPart = "GetQuote")
     @ResponsePayload
     public GetQuoteResponse getQuote(@RequestPayload GetQuote request) {
         GetQuoteResponse response = new GetQuoteResponse();

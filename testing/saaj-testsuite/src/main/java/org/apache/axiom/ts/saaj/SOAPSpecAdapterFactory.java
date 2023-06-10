@@ -34,29 +34,39 @@ public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
     @Override
     public void createAdapters(SOAPSpec spec, Adapters adapters) {
         if (spec == SOAPSpec.SOAP11) {
-            adapters.add(new FactorySelector() {
-                @Override
-                public MessageFactory newMessageFactory(SAAJImplementation saajImplementation) throws SOAPException {
-                    return saajImplementation.newMessageFactory(SOAPConstants.SOAP_1_1_PROTOCOL);
-                }
-                
-                @Override
-                public SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation) throws SOAPException {
-                    return saajImplementation.newSOAPFactory(SOAPConstants.SOAP_1_1_PROTOCOL);
-                }
-            });
+            adapters.add(
+                    new FactorySelector() {
+                        @Override
+                        public MessageFactory newMessageFactory(
+                                SAAJImplementation saajImplementation) throws SOAPException {
+                            return saajImplementation.newMessageFactory(
+                                    SOAPConstants.SOAP_1_1_PROTOCOL);
+                        }
+
+                        @Override
+                        public SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation)
+                                throws SOAPException {
+                            return saajImplementation.newSOAPFactory(
+                                    SOAPConstants.SOAP_1_1_PROTOCOL);
+                        }
+                    });
         } else if (spec == SOAPSpec.SOAP12) {
-            adapters.add(new FactorySelector() {
-                @Override
-                public MessageFactory newMessageFactory(SAAJImplementation saajImplementation) throws SOAPException {
-                    return saajImplementation.newMessageFactory(SOAPConstants.SOAP_1_2_PROTOCOL);
-                }
-                
-                @Override
-                public SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation) throws SOAPException {
-                    return saajImplementation.newSOAPFactory(SOAPConstants.SOAP_1_2_PROTOCOL);
-                }
-            });
+            adapters.add(
+                    new FactorySelector() {
+                        @Override
+                        public MessageFactory newMessageFactory(
+                                SAAJImplementation saajImplementation) throws SOAPException {
+                            return saajImplementation.newMessageFactory(
+                                    SOAPConstants.SOAP_1_2_PROTOCOL);
+                        }
+
+                        @Override
+                        public SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation)
+                                throws SOAPException {
+                            return saajImplementation.newSOAPFactory(
+                                    SOAPConstants.SOAP_1_2_PROTOCOL);
+                        }
+                    });
         }
     }
 }

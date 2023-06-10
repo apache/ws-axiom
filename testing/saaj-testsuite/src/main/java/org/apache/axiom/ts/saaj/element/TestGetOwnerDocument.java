@@ -31,8 +31,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * Tests the behavior of the {@link Node#getOwnerDocument()} method when invoked on a {@link SOAPElement}
- * as well as the properties of the returned document.
+ * Tests the behavior of the {@link Node#getOwnerDocument()} method when invoked on a {@link
+ * SOAPElement} as well as the properties of the returned document.
  */
 public class TestGetOwnerDocument extends SAAJTestCase {
     public TestGetOwnerDocument(SAAJImplementation saajImplementation, SOAPSpec spec) {

@@ -21,12 +21,12 @@ package org.apache.axiom.truth.xml.spi;
 public interface XML {
     /**
      * Check whether element content whitespace will be reported as {@link Event#WHITESPACE} events.
-     * 
-     * @return {@link true} if element content whitespace will be reported as
-     *         {@link Event#WHITESPACE} events; {@link false} if element content whitespace
-     *         reporting is not supported and {@link Event#TEXT} events will be generated
+     *
+     * @return {@link true} if element content whitespace will be reported as {@link
+     *     Event#WHITESPACE} events; {@link false} if element content whitespace reporting is not
+     *     supported and {@link Event#TEXT} events will be generated
      */
     boolean isReportingElementContentWhitespace();
-    
+
     Traverser createTraverser(boolean expandEntityReferences) throws TraverserException;
 }

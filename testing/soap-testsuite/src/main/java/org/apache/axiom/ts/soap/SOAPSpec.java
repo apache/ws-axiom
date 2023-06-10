@@ -31,65 +31,72 @@ import javax.xml.validation.SchemaFactory;
 
 import org.apache.axiom.testing.multiton.Multiton;
 
-/**
- * Describes the characteristics of a given SOAP version.
- */
+/** Describes the characteristics of a given SOAP version. */
 public abstract class SOAPSpec extends Multiton {
-    public static final SOAPSpec SOAP11 = new SOAPSpec("soap11",
-            "text/xml",
-            "http://schemas.xmlsoap.org/soap/envelope/",
-            new BooleanLiteral[] { BooleanLiteral.ONE, BooleanLiteral.ZERO },
-            new QName("faultcode"),
-            null,
-            null,
-            new QName("faultstring"),
-            null,
-            null,
-            new QName("faultactor"),
-            new QName("detail"),
-            "http://schemas.xmlsoap.org/soap/actor/next",
-            new QName("http://schemas.xmlsoap.org/soap/envelope/", "Client"),
-            new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"),
-            new String[] { "soap-1.1.xsd" },
-            true) {
-        @Override
-        public SOAPSpec getAltSpec() {
-            return SOAPSpec.SOAP12;
-        }
+    public static final SOAPSpec SOAP11 =
+            new SOAPSpec(
+                    "soap11",
+                    "text/xml",
+                    "http://schemas.xmlsoap.org/soap/envelope/",
+                    new BooleanLiteral[] {BooleanLiteral.ONE, BooleanLiteral.ZERO},
+                    new QName("faultcode"),
+                    null,
+                    null,
+                    new QName("faultstring"),
+                    null,
+                    null,
+                    new QName("faultactor"),
+                    new QName("detail"),
+                    "http://schemas.xmlsoap.org/soap/actor/next",
+                    new QName("http://schemas.xmlsoap.org/soap/envelope/", "Client"),
+                    new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"),
+                    new String[] {"soap-1.1.xsd"},
+                    true) {
+                @Override
+                public SOAPSpec getAltSpec() {
+                    return SOAPSpec.SOAP12;
+                }
 
-        @Override
-        public String getCanonicalRepresentation(boolean value) {
-            return value ? "1" : "0";
-        }
-    };
+                @Override
+                public String getCanonicalRepresentation(boolean value) {
+                    return value ? "1" : "0";
+                }
+            };
 
-    public static final SOAPSpec SOAP12 = new SOAPSpec("soap12",
-            "application/soap+xml",
-            "http://www.w3.org/2003/05/soap-envelope",
-            new BooleanLiteral[] { BooleanLiteral.TRUE, BooleanLiteral.FALSE, BooleanLiteral.ONE, BooleanLiteral.ZERO },
-            new QName("http://www.w3.org/2003/05/soap-envelope", "Code"),
-            new QName("http://www.w3.org/2003/05/soap-envelope", "Value"),
-            new QName("http://www.w3.org/2003/05/soap-envelope", "Subcode"),
-            new QName("http://www.w3.org/2003/05/soap-envelope", "Reason"),
-            new QName("http://www.w3.org/2003/05/soap-envelope", "Text"),
-            new QName("http://www.w3.org/2003/05/soap-envelope", "Node"),
-            new QName("http://www.w3.org/2003/05/soap-envelope", "Role"),
-            new QName("http://www.w3.org/2003/05/soap-envelope", "Detail"),
-            "http://www.w3.org/2003/05/soap-envelope/role/next",
-            new QName("http://www.w3.org/2003/05/soap-envelope", "Sender"),
-            new QName("http://www.w3.org/2003/05/soap-envelope", "Receiver"),
-            new String[] { "xml.xsd", "soap-1.2.xsd" },
-            false) {
-        @Override
-        public SOAPSpec getAltSpec() {
-            return SOAPSpec.SOAP11;
-        }
+    public static final SOAPSpec SOAP12 =
+            new SOAPSpec(
+                    "soap12",
+                    "application/soap+xml",
+                    "http://www.w3.org/2003/05/soap-envelope",
+                    new BooleanLiteral[] {
+                        BooleanLiteral.TRUE,
+                        BooleanLiteral.FALSE,
+                        BooleanLiteral.ONE,
+                        BooleanLiteral.ZERO
+                    },
+                    new QName("http://www.w3.org/2003/05/soap-envelope", "Code"),
+                    new QName("http://www.w3.org/2003/05/soap-envelope", "Value"),
+                    new QName("http://www.w3.org/2003/05/soap-envelope", "Subcode"),
+                    new QName("http://www.w3.org/2003/05/soap-envelope", "Reason"),
+                    new QName("http://www.w3.org/2003/05/soap-envelope", "Text"),
+                    new QName("http://www.w3.org/2003/05/soap-envelope", "Node"),
+                    new QName("http://www.w3.org/2003/05/soap-envelope", "Role"),
+                    new QName("http://www.w3.org/2003/05/soap-envelope", "Detail"),
+                    "http://www.w3.org/2003/05/soap-envelope/role/next",
+                    new QName("http://www.w3.org/2003/05/soap-envelope", "Sender"),
+                    new QName("http://www.w3.org/2003/05/soap-envelope", "Receiver"),
+                    new String[] {"xml.xsd", "soap-1.2.xsd"},
+                    false) {
+                @Override
+                public SOAPSpec getAltSpec() {
+                    return SOAPSpec.SOAP11;
+                }
 
-        @Override
-        public String getCanonicalRepresentation(boolean value) {
-            return String.valueOf(value);
-        }
-    };
+                @Override
+                public String getCanonicalRepresentation(boolean value) {
+                    return String.valueOf(value);
+                }
+            };
 
     private final String name;
     private final String contentType;
@@ -113,12 +120,25 @@ public abstract class SOAPSpec extends Multiton {
     private final String[] schemaResources;
     private Schema schema;
     private final boolean allowsElementsAfterBody;
-    
-    private SOAPSpec(String name, String contentType, String envelopeNamespaceURI, BooleanLiteral[] booleanLiterals,
-            QName faultCodeQName, QName faultValueQName, QName faultSubCodeQName, QName faultReasonQName,
-            QName faultTextQName, QName faultNodeQName, QName faultRoleQName, QName faultDetailQName,
-            String nextRoleURI, QName senderFaultCode, QName receiverFaultCode,
-            String[] schemaResources, boolean allowsElementsAfterBody) {
+
+    private SOAPSpec(
+            String name,
+            String contentType,
+            String envelopeNamespaceURI,
+            BooleanLiteral[] booleanLiterals,
+            QName faultCodeQName,
+            QName faultValueQName,
+            QName faultSubCodeQName,
+            QName faultReasonQName,
+            QName faultTextQName,
+            QName faultNodeQName,
+            QName faultRoleQName,
+            QName faultDetailQName,
+            String nextRoleURI,
+            QName senderFaultCode,
+            QName receiverFaultCode,
+            String[] schemaResources,
+            boolean allowsElementsAfterBody) {
         this.name = name;
         this.contentType = contentType;
         this.envelopeNamespaceURI = envelopeNamespaceURI;
@@ -141,19 +161,19 @@ public abstract class SOAPSpec extends Multiton {
         this.schemaResources = schemaResources;
         this.allowsElementsAfterBody = allowsElementsAfterBody;
     }
-    
+
     public final String getName() {
         return name;
     }
-    
+
     /**
      * Get the {@link SOAPSpec} instance for the other SOAP version. This is useful when
      * constructing test cases that test SOAP version mismatches.
-     * 
+     *
      * @return the {@link SOAPSpec} instance for the other SOAP version
      */
     public abstract SOAPSpec getAltSpec();
-    
+
     public final String getContentType() {
         return contentType;
     }
@@ -161,7 +181,7 @@ public abstract class SOAPSpec extends Multiton {
     public final String getEnvelopeNamespaceURI() {
         return envelopeNamespaceURI;
     }
-    
+
     public final QName getEnvelopeQName() {
         return envelopeQName;
     }
@@ -181,7 +201,7 @@ public abstract class SOAPSpec extends Multiton {
     public final QName getFaultCodeQName() {
         return faultCodeQName;
     }
-    
+
     public final QName getFaultValueQName() {
         return faultValueQName;
     }
@@ -209,12 +229,12 @@ public abstract class SOAPSpec extends Multiton {
     public final QName getFaultDetailQName() {
         return faultDetailQName;
     }
-    
+
     /**
-     * Get the boolean literals recognized by this SOAP version. While SOAP 1.2 refers to the
-     * {@code xs:boolean} type and therefore recognizes {@code true}, {@code false}, {@code 1}
-     * and {@code 0}, SOAP 1.1 only recognizes {@code 1} and {@code 0}.
-     * 
+     * Get the boolean literals recognized by this SOAP version. While SOAP 1.2 refers to the {@code
+     * xs:boolean} type and therefore recognizes {@code true}, {@code false}, {@code 1} and {@code
+     * 0}, SOAP 1.1 only recognizes {@code 1} and {@code 0}.
+     *
      * @return an array with the recognized boolean literals
      */
     public final BooleanLiteral[] getBooleanLiterals() {
@@ -228,18 +248,19 @@ public abstract class SOAPSpec extends Multiton {
         }
         return result;
     }
-    
+
     /**
      * Produce a representative list of strings that are not valid lexical representations of
      * booleans as defined by this SOAP version. The list in particular contains:
+     *
      * <ul>
-     * <li>Boolean literals allowed by the other SOAP version, but that are not valid in this SOAP
-     * version.
-     * <li>A variant of a valid boolean literal that uses a different case and that is not valid,
-     * unless no such variant exists.
-     * <li>The string <code>"invalid"</code>.
+     *   <li>Boolean literals allowed by the other SOAP version, but that are not valid in this SOAP
+     *       version.
+     *   <li>A variant of a valid boolean literal that uses a different case and that is not valid,
+     *       unless no such variant exists.
+     *   <li>The string <code>"invalid"</code>.
      * </ul>
-     * 
+     *
      * @return an array of invalid boolean literals
      */
     public final String[] getInvalidBooleanLiterals() {
@@ -253,37 +274,40 @@ public abstract class SOAPSpec extends Multiton {
         }
         return result.toArray(new String[result.size()]);
     }
-    
+
     /**
      * Get the canonical representation for the given boolean value as specified by this SOAP
      * version.
-     * 
-     * @param value
-     *            the boolean value
+     *
+     * @param value the boolean value
      * @return the canonical representation
      */
     public abstract String getCanonicalRepresentation(boolean value);
-    
+
     public final String getNextRoleURI() {
         return nextRoleURI;
     }
-    
+
     public final QName getSenderFaultCode() {
         return senderFaultCode;
     }
-    
+
     public final QName getReceiverFaultCode() {
         return receiverFaultCode;
     }
-    
-    public synchronized final Schema getSchema() {
+
+    public final synchronized Schema getSchema() {
         if (schema == null) {
             Source[] sources = new Source[schemaResources.length];
-            for (int i=0; i<schemaResources.length; i++) {
-                sources[i] = new StreamSource(SOAPSpec.class.getResource("xsd/" + schemaResources[i]).toString());
+            for (int i = 0; i < schemaResources.length; i++) {
+                sources[i] =
+                        new StreamSource(
+                                SOAPSpec.class.getResource("xsd/" + schemaResources[i]).toString());
             }
             try {
-                schema = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema").newSchema(sources);
+                schema =
+                        SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema")
+                                .newSchema(sources);
             } catch (Exception ex) {
                 throw new Error(ex);
             }

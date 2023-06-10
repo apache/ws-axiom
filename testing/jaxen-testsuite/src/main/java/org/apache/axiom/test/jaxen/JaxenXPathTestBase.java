@@ -32,7 +32,7 @@ import org.jaxen.test.XPathTestBase;
 
 public abstract class JaxenXPathTestBase extends XPathTestBase {
     static String TESTS_ROOT;
-    
+
     static {
         URL testsXmlUrl = XPathTestBase.class.getClassLoader().getResource("xml/test/tests.xml");
         try {
@@ -41,9 +41,9 @@ public abstract class JaxenXPathTestBase extends XPathTestBase {
             throw new RuntimeException(ex);
         }
     }
-    
+
     final List documents = new ArrayList();
-    
+
     public JaxenXPathTestBase(String name) {
         super(name);
     }
@@ -51,9 +51,9 @@ public abstract class JaxenXPathTestBase extends XPathTestBase {
     protected abstract Object loadDocument(InputStream in) throws Exception;
 
     protected abstract void releaseDocument(Object document);
-    
+
     protected abstract Navigator createNavigator();
-    
+
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();

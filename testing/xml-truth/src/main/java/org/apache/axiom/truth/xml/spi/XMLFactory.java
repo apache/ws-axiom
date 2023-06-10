@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.truth.xml.spi;
 
-
 public interface XMLFactory<T> {
     Class<T> getExpectedType();
+
     XML createXML(T object);
 }

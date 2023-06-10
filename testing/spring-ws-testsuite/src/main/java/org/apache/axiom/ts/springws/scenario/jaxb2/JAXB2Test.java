@@ -27,12 +27,14 @@ public class JAXB2Test extends ScenarioTestCase {
     public JAXB2Test(ScenarioConfig config, SOAPSpec spec) {
         super(config, spec);
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         GetQuoteRequest request = new GetQuoteRequest();
         request.setSymbol("GOOG");
-        GetQuoteResponse response = (GetQuoteResponse)context.getBean(WebServiceTemplate.class).marshalSendAndReceive(request);
+        GetQuoteResponse response =
+                (GetQuoteResponse)
+                        context.getBean(WebServiceTemplate.class).marshalSendAndReceive(request);
         assertNotNull(response);
         assertEquals(105.37, response.getPrice(), 0.001);
     }

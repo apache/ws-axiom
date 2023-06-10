@@ -25,7 +25,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 @Endpoint
 public class StockQuoteEndpoint {
-    @PayloadRoot(namespace="urn:stockquote", localPart="GetQuote")
+    @PayloadRoot(namespace = "urn:stockquote", localPart = "GetQuote")
     @ResponsePayload
     public GetQuoteResponse getQuote(@RequestPayload GetQuoteRequest request) {
         GetQuoteResponse response = new GetQuoteResponse();

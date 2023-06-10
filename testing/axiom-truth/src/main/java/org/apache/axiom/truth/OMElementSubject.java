@@ -40,15 +40,20 @@ public final class OMElementSubject extends AbstractOMContainerSubject {
             failWithActual(simpleFact("expected to have no namespace declarations"));
         }
     }
-    
+
     public void hasNamespaceDeclaration(OMNamespace ns) {
         for (Iterator<OMNamespace> it = subject.getAllDeclaredNamespaces(); it.hasNext(); ) {
             if (it.next().equals(ns)) {
                 return;
             }
         }
-        failWithActual(simpleFact("expected to have namespace declaration for namespace URI \"" + ns.getNamespaceURI()
-                + "\" and prefix \"" + ns.getPrefix() + "\""));
+        failWithActual(
+                simpleFact(
+                        "expected to have namespace declaration for namespace URI \""
+                                + ns.getNamespaceURI()
+                                + "\" and prefix \""
+                                + ns.getPrefix()
+                                + "\""));
     }
 
     public void hasNamespaceDeclaration(String prefix, String namespaceURI) {
@@ -58,7 +63,12 @@ public final class OMElementSubject extends AbstractOMContainerSubject {
                 return;
             }
         }
-        failWithActual(simpleFact("expected to have namespace declaration for namespace URI \"" + namespaceURI
-                + "\" and prefix \"" + prefix + "\""));
+        failWithActual(
+                simpleFact(
+                        "expected to have namespace declaration for namespace URI \""
+                                + namespaceURI
+                                + "\" and prefix \""
+                                + prefix
+                                + "\""));
     }
 }

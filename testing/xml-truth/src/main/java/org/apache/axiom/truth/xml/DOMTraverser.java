@@ -41,7 +41,7 @@ final class DOMTraverser implements Traverser {
     private final boolean expandEntityReferences;
     private Node node;
     private boolean descend;
-    
+
     DOMTraverser(Node root, boolean dom3, boolean expandEntityReferences) {
         this.root = root;
         this.dom3 = dom3;
@@ -95,7 +95,9 @@ final class DOMTraverser implements Traverser {
                     }
                 case Node.TEXT_NODE:
                     descend = false;
-                    return dom3 && ((Text)node).isElementContentWhitespace() ? Event.WHITESPACE : Event.TEXT;
+                    return dom3 && ((Text) node).isElementContentWhitespace()
+                            ? Event.WHITESPACE
+                            : Event.TEXT;
                 case Node.ENTITY_REFERENCE_NODE:
                     if (expandEntityReferences) {
                         descend = !visited;
@@ -118,20 +120,20 @@ final class DOMTraverser implements Traverser {
             }
         }
     }
-    
+
     @Override
     public String getRootName() {
-        return ((DocumentType)node).getName();
+        return ((DocumentType) node).getName();
     }
 
     @Override
     public String getPublicId() {
-        return ((DocumentType)node).getPublicId();
+        return ((DocumentType) node).getPublicId();
     }
 
     @Override
     public String getSystemId() {
-        return ((DocumentType)node).getSystemId();
+        return ((DocumentType) node).getSystemId();
     }
 
     private static QName getQName(Node node) {
@@ -139,21 +141,24 @@ final class DOMTraverser implements Traverser {
         if (localName == null) {
             return new QName(node.getNodeName());
         } else {
-            return new QName(node.getNamespaceURI(), node.getLocalName(), Strings.nullToEmpty(node.getPrefix()));
+            return new QName(
+                    node.getNamespaceURI(),
+                    node.getLocalName(),
+                    Strings.nullToEmpty(node.getPrefix()));
         }
     }
-    
+
     @Override
     public QName getQName() {
         return getQName(node);
     }
 
     @Override
-    public Map<QName,String> getAttributes() {
-        Map<QName,String> result = null;
+    public Map<QName, String> getAttributes() {
+        Map<QName, String> result = null;
         NamedNodeMap attributes = node.getAttributes();
-        for (int i=0; i<attributes.getLength(); i++) {
-            Attr attr = (Attr)attributes.item(i);
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Attr attr = (Attr) attributes.item(i);
             if (!XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI())) {
                 if (result == null) {
                     result = new HashMap<>();
@@ -165,17 +170,19 @@ final class DOMTraverser implements Traverser {
     }
 
     @Override
-    public Map<String,String> getNamespaces() {
-        Map<String,String> result = null;
+    public Map<String, String> getNamespaces() {
+        Map<String, String> result = null;
         NamedNodeMap attributes = node.getAttributes();
-        for (int i=0; i<attributes.getLength(); i++) {
-            Attr attr = (Attr)attributes.item(i);
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Attr attr = (Attr) attributes.item(i);
             if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI())) {
                 if (result == null) {
                     result = new HashMap<>();
                 }
                 String prefix = attr.getPrefix();
-                result.put(XMLConstants.XMLNS_ATTRIBUTE.equals(prefix) ? attr.getLocalName() : "", attr.getValue());
+                result.put(
+                        XMLConstants.XMLNS_ATTRIBUTE.equals(prefix) ? attr.getLocalName() : "",
+                        attr.getValue());
             }
         }
         return result;
@@ -193,11 +200,11 @@ final class DOMTraverser implements Traverser {
 
     @Override
     public String getPITarget() {
-        return ((ProcessingInstruction)node).getTarget();
+        return ((ProcessingInstruction) node).getTarget();
     }
 
     @Override
     public String getPIData() {
-        return ((ProcessingInstruction)node).getData();
+        return ((ProcessingInstruction) node).getData();
     }
 }

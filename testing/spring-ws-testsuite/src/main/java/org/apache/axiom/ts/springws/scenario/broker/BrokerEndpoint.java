@@ -43,15 +43,18 @@ public class BrokerEndpoint {
     private final CustomerService customerService;
     private final TransformerHelper transformerHelper = new TransformerHelper();
     private final Deque<String> orderQueue = new LinkedList<String>();
-    
+
     public BrokerEndpoint(CustomerService customerService) {
         this.customerService = customerService;
     }
 
-    @PayloadRoot(namespace="urn:broker", localPart="Order")
+    @PayloadRoot(namespace = "urn:broker", localPart = "Order")
     @ResponsePayload
-    @Namespaces(@Namespace(prefix="p", uri="urn:broker"))
-    public OrderStatus order(@XPathParam("/p:Order/p:Customer") Integer customer, @RequestPayload Source payloadSource) throws UnknownCustomerException, TransformerException {
+    @Namespaces(@Namespace(prefix = "p", uri = "urn:broker"))
+    public OrderStatus order(
+            @XPathParam("/p:Order/p:Customer") Integer customer,
+            @RequestPayload Source payloadSource)
+            throws UnknownCustomerException, TransformerException {
         customerService.validateCustomer(customer);
         StringWriter sw = new StringWriter();
         transformerHelper.transform(payloadSource, new StreamResult(sw));
@@ -64,8 +67,8 @@ public class BrokerEndpoint {
         status.setReceived(new Date());
         return status;
     }
-    
-    @PayloadRoot(namespace="urn:broker", localPart="RetrieveNextOrder")
+
+    @PayloadRoot(namespace = "urn:broker", localPart = "RetrieveNextOrder")
     @ResponsePayload
     public Source retrieveNextOrder() throws InterruptedException {
         synchronized (orderQueue) {

@@ -28,12 +28,13 @@ import org.springframework.ws.soap.SoapMessageCreationException;
 import org.springframework.ws.soap.SoapMessageFactory;
 
 /**
- * Tests that {@link SoapMessageFactory#createWebServiceMessage(InputStream)} throws
- * {@link SoapMessageCreationException} if there is a mismatch between the SOAP version implied by
- * the content type and the actual SOAP version used by the message.
+ * Tests that {@link SoapMessageFactory#createWebServiceMessage(InputStream)} throws {@link
+ * SoapMessageCreationException} if there is a mismatch between the SOAP version implied by the
+ * content type and the actual SOAP version used by the message.
  */
 public class TestCreateWebServiceMessageFromInputStreamVersionMismatch extends SimpleTestCase {
-    public TestCreateWebServiceMessageFromInputStreamVersionMismatch(MessageFactoryConfigurator mfc, SOAPSpec spec) {
+    public TestCreateWebServiceMessageFromInputStreamVersionMismatch(
+            MessageFactoryConfigurator mfc, SOAPSpec spec) {
         super(mfc, spec);
     }
 
@@ -41,7 +42,8 @@ public class TestCreateWebServiceMessageFromInputStreamVersionMismatch extends S
     protected void runTest(SoapMessageFactory messageFactory) throws Throwable {
         try {
             messageFactory.createWebServiceMessage(
-                    new TransportInputStreamImpl(SOAPSampleSet.NO_HEADER.getMessage(spec.getAltSpec())));
+                    new TransportInputStreamImpl(
+                            SOAPSampleSet.NO_HEADER.getMessage(spec.getAltSpec())));
             fail("Expected SoapMessageCreationException");
         } catch (SoapMessageCreationException ex) {
             // Expected

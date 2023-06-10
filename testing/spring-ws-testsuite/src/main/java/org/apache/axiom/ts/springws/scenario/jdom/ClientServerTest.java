@@ -30,12 +30,17 @@ public class ClientServerTest extends ScenarioTestCase {
     public ClientServerTest(ScenarioConfig config, SOAPSpec spec) {
         super(config, spec);
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
-        JDOMSource source = new JDOMSource(new SAXBuilder().build(ClientServerTest.class.getResourceAsStream("request.xml")).getRootElement());
+        JDOMSource source =
+                new JDOMSource(
+                        new SAXBuilder()
+                                .build(ClientServerTest.class.getResourceAsStream("request.xml"))
+                                .getRootElement());
         JDOMResult result = new JDOMResult();
         context.getBean(WebServiceTemplate.class).sendSourceAndReceiveToResult(source, result);
-        assertEquals(8.0d, Double.parseDouble(result.getDocument().getRootElement().getText()), 1e-6);
+        assertEquals(
+                8.0d, Double.parseDouble(result.getDocument().getRootElement().getText()), 1e-6);
     }
 }

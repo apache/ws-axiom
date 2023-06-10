@@ -28,35 +28,37 @@ import javax.xml.soap.SOAPFactory;
 public final class SAAJImplementation {
     private static final Method newMessageFactoryMethod;
     private static final Method newSOAPFactoryMethod;
-    
+
     static {
         try {
-            newMessageFactoryMethod = SAAJMetaFactory.class.getDeclaredMethod("newMessageFactory", String.class);
+            newMessageFactoryMethod =
+                    SAAJMetaFactory.class.getDeclaredMethod("newMessageFactory", String.class);
             newMessageFactoryMethod.setAccessible(true);
-            newSOAPFactoryMethod = SAAJMetaFactory.class.getDeclaredMethod("newSOAPFactory", String.class);
+            newSOAPFactoryMethod =
+                    SAAJMetaFactory.class.getDeclaredMethod("newSOAPFactory", String.class);
             newSOAPFactoryMethod.setAccessible(true);
         } catch (Exception ex) {
             throw new Error(ex);
         }
     }
-    
+
     private final SAAJMetaFactory metaFactory;
-    
+
     public SAAJImplementation(SAAJMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
     }
-    
+
     public MessageFactory newMessageFactory(String protocol) throws SOAPException {
         try {
-            return (MessageFactory)newMessageFactoryMethod.invoke(metaFactory, protocol);
+            return (MessageFactory) newMessageFactoryMethod.invoke(metaFactory, protocol);
         } catch (Exception ex) {
             throw new Error(ex);
         }
     }
-    
+
     public SOAPFactory newSOAPFactory(String protocol) throws SOAPException {
         try {
-            return (SOAPFactory)newSOAPFactoryMethod.invoke(metaFactory, protocol);
+            return (SOAPFactory) newSOAPFactoryMethod.invoke(metaFactory, protocol);
         } catch (Exception ex) {
             throw new Error(ex);
         }

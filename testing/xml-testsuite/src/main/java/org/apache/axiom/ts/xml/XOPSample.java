@@ -36,15 +36,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class XOPSample extends MIMESample {
-    /**
-     * Slightly modified version of the non-SOAP sample given in the XOP spec.
-     */
-    public static final XOPSample XOP_SPEC_SAMPLE = new XOPSample("spec-sample.msg",
-            "Multipart/Related;boundary=MIME_boundary; " +
-            "type=\"application/xop+xml\"; " +
-            "start=\"<mymessage.xml@example.org>\"; " +
-            "start-info=\"text/xml\"");
-    
+    /** Slightly modified version of the non-SOAP sample given in the XOP spec. */
+    public static final XOPSample XOP_SPEC_SAMPLE =
+            new XOPSample(
+                    "spec-sample.msg",
+                    "Multipart/Related;boundary=MIME_boundary; "
+                            + "type=\"application/xop+xml\"; "
+                            + "start=\"<mymessage.xml@example.org>\"; "
+                            + "start-info=\"text/xml\"");
+
     protected XOPSample(MessageContent content, String name, String contentType) {
         super(content, name, contentType);
     }
@@ -58,30 +58,35 @@ public class XOPSample extends MIMESample {
             MimeMultipart mp = getMultipart();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            Document rootPart = documentBuilderFactory.newDocumentBuilder().parse(
-                    mp.getBodyPart(0).getInputStream());
+            Document rootPart =
+                    documentBuilderFactory
+                            .newDocumentBuilder()
+                            .parse(mp.getBodyPart(0).getInputStream());
             process(rootPart.getDocumentElement(), mp);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            TransformerFactory.newInstance().newTransformer().transform(
-                    new DOMSource(rootPart), new StreamResult(baos));
+            TransformerFactory.newInstance()
+                    .newTransformer()
+                    .transform(new DOMSource(rootPart), new StreamResult(baos));
             return new ByteArrayInputStream(baos.toByteArray());
         } catch (Exception ex) {
             throw new Error(ex);
         }
     }
-    
+
     private void process(Element element, MimeMultipart mp) throws Exception {
         if (element.getNamespaceURI().equals("http://www.w3.org/2004/08/xop/include")
                 && element.getLocalName().equals("Include")) {
             String cid = element.getAttribute("href").substring(4);
             BodyPart part = mp.getBodyPart("<" + cid + ">");
             String base64 = Base64.encodeBase64String(IOUtils.toByteArray(part.getInputStream()));
-            element.getParentNode().replaceChild(
-                    element.getOwnerDocument().createTextNode(base64), element);
+            element.getParentNode()
+                    .replaceChild(element.getOwnerDocument().createTextNode(base64), element);
         } else {
-            for (Node child = element.getFirstChild(); child != null; child = child.getNextSibling()) {
+            for (Node child = element.getFirstChild();
+                    child != null;
+                    child = child.getNextSibling()) {
                 if (child instanceof Element) {
-                    process((Element)child, mp);
+                    process((Element) child, mp);
                 }
             }
         }

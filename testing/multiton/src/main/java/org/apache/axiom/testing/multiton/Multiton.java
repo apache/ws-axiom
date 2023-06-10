@@ -34,27 +34,38 @@ import java.util.ServiceLoader;
 /**
  * Base class for multitons. A multiton is a class that has a fixed set of instances. The base class
  * also provides a simple mechanism that allows to extend the behavior of a multiton using adapters.
- * <p>
- * The set of instances of a multiton is determined by:
+ *
+ * <p>The set of instances of a multiton is determined by:
+ *
  * <ul>
- * <li>The values of all public static final fields in the multiton class that have types that are
- * assignment compatible with the multiton class.
- * <li>The array elements returned by methods in the multiton class annotated with
- * {@link Instances}. These methods must be private static, have no parameters and return an array
- * with an component type assignment compatible with the multiton class.
+ *   <li>The values of all public static final fields in the multiton class that have types that are
+ *       assignment compatible with the multiton class.
+ *   <li>The array elements returned by methods in the multiton class annotated with {@link
+ *       Instances}. These methods must be private static, have no parameters and return an array
+ *       with an component type assignment compatible with the multiton class.
  * </ul>
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class Multiton {
-    private static final Map<Class<?>,List<?>> instancesMap = new HashMap<>();
-    private static final Map<Class,List<AdapterFactory>> adapterFactoryMap = new HashMap<>();
+    private static final Map<Class<?>, List<?>> instancesMap = new HashMap<>();
+    private static final Map<Class, List<AdapterFactory>> adapterFactoryMap = new HashMap<>();
     private final Adapters adapters = new Adapters();
-    
+
     static {
-        for (Iterator<AdapterFactory> it = ServiceLoader.load(AdapterFactory.class, Multiton.class.getClassLoader()).iterator(); it.hasNext(); ) {
+        for (Iterator<AdapterFactory> it =
+                        ServiceLoader.load(AdapterFactory.class, Multiton.class.getClassLoader())
+                                .iterator();
+                it.hasNext(); ) {
             AdapterFactory adapterFactory = it.next();
-            // TODO: only works in the basic case where the factory directly implements AdapterFactory as the first interface
-            Class clazz = ((Class<?>)((ParameterizedType)adapterFactory.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0]).asSubclass(Multiton.class);
+            // TODO: only works in the basic case where the factory directly implements
+            // AdapterFactory as the first interface
+            Class clazz =
+                    ((Class<?>)
+                                    ((ParameterizedType)
+                                                    adapterFactory.getClass()
+                                                            .getGenericInterfaces()[0])
+                                            .getActualTypeArguments()[0])
+                            .asSubclass(Multiton.class);
             List<AdapterFactory> adapterFactories = adapterFactoryMap.get(clazz);
             if (adapterFactories == null) {
                 adapterFactories = new ArrayList<>();
@@ -67,18 +78,20 @@ public abstract class Multiton {
     /**
      * Get all instances of the given multiton. See the Javadoc of the {@link Multiton} class for
      * information about how the instances are determined.
-     * 
+     *
      * @param multitonClass the multiton class
      * @return the list of instances
      * @throws MultitonInstantiationException if an error occurred
      */
     public static synchronized <T extends Multiton> List<T> getInstances(Class<T> multitonClass) {
-        List<T> instances = (List<T>)instancesMap.get(multitonClass);
+        List<T> instances = (List<T>) instancesMap.get(multitonClass);
         if (instances == null) {
             instances = new ArrayList<>();
             for (Field field : multitonClass.getDeclaredFields()) {
                 int mod = field.getModifiers();
-                if (Modifier.isPublic(mod) && Modifier.isStatic(mod) && Modifier.isFinal(mod)
+                if (Modifier.isPublic(mod)
+                        && Modifier.isStatic(mod)
+                        && Modifier.isFinal(mod)
                         && multitonClass.isAssignableFrom(field.getType())) {
                     try {
                         instances.add(multitonClass.cast(field.get(null)));
@@ -91,18 +104,22 @@ public abstract class Multiton {
                 if (method.getAnnotation(Instances.class) != null) {
                     int mod = method.getModifiers();
                     if (!Modifier.isPrivate(mod) || !Modifier.isStatic(mod)) {
-                        throw new MultitonInstantiationException("Methods annotated with @Instances must be private static");
+                        throw new MultitonInstantiationException(
+                                "Methods annotated with @Instances must be private static");
                     }
                     if (method.getParameterTypes().length > 0) {
-                        throw new MultitonInstantiationException("Methods annotated with @Instances must not take any parameters");
+                        throw new MultitonInstantiationException(
+                                "Methods annotated with @Instances must not take any parameters");
                     }
                     Class<?> returnType = method.getReturnType();
-                    if (!returnType.isArray() || !multitonClass.isAssignableFrom(returnType.getComponentType())) {
-                        throw new MultitonInstantiationException("Invalid return type for method annotated with @Instances");
+                    if (!returnType.isArray()
+                            || !multitonClass.isAssignableFrom(returnType.getComponentType())) {
+                        throw new MultitonInstantiationException(
+                                "Invalid return type for method annotated with @Instances");
                     }
                     method.setAccessible(true);
                     try {
-                        for (Object instance : (Object[])method.invoke(null)) {
+                        for (Object instance : (Object[]) method.invoke(null)) {
                             instances.add(multitonClass.cast(instance));
                         }
                     } catch (IllegalAccessException ex) {
@@ -117,7 +134,7 @@ public abstract class Multiton {
         }
         return instances;
     }
-    
+
     public final <T> T getAdapter(Class<T> type) {
         synchronized (adapters) {
             if (!adapters.initialized()) {

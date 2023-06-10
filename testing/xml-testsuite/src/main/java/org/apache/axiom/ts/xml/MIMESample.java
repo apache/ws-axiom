@@ -32,7 +32,7 @@ import javax.mail.internet.ParseException;
 public abstract class MIMESample extends MessageSample {
     private final String contentType;
     private MimeMultipart multipart;
-    
+
     protected MIMESample(MessageContent content, String name, String contentType) {
         super(content, name);
         this.contentType = contentType;
@@ -42,7 +42,7 @@ public abstract class MIMESample extends MessageSample {
     public final String getContentType() {
         return contentType;
     }
-    
+
     private String getParameter(String name) {
         try {
             return new ContentType(contentType).getParameter(name);
@@ -52,44 +52,46 @@ public abstract class MIMESample extends MessageSample {
             throw new Error(ex);
         }
     }
-    
+
     public final String getStart() {
         String start = getParameter("start");
         if (start.startsWith("<") && start.endsWith(">")) {
-            return start.substring(1, start.length()-1);
+            return start.substring(1, start.length() - 1);
         } else {
             return start;
         }
     }
-    
+
     public final String getBoundary() {
         return getParameter("boundary");
     }
-    
+
     protected final synchronized MimeMultipart getMultipart() {
         if (multipart == null) {
             try {
-                multipart = new MimeMultipart(new DataSource() {
-                    @Override
-                    public OutputStream getOutputStream() throws IOException {
-                        throw new UnsupportedOperationException();
-                    }
-                    
-                    @Override
-                    public String getName() {
-                        return null;
-                    }
-                    
-                    @Override
-                    public InputStream getInputStream() throws IOException {
-                        return MIMESample.this.getInputStream();
-                    }
-                    
-                    @Override
-                    public String getContentType() {
-                        return MIMESample.this.getContentType();
-                    }
-                });
+                multipart =
+                        new MimeMultipart(
+                                new DataSource() {
+                                    @Override
+                                    public OutputStream getOutputStream() throws IOException {
+                                        throw new UnsupportedOperationException();
+                                    }
+
+                                    @Override
+                                    public String getName() {
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public InputStream getInputStream() throws IOException {
+                                        return MIMESample.this.getInputStream();
+                                    }
+
+                                    @Override
+                                    public String getContentType() {
+                                        return MIMESample.this.getContentType();
+                                    }
+                                });
                 // Force the implementation to parse the message
                 multipart.getCount();
             } catch (MessagingException ex) {
@@ -98,7 +100,7 @@ public abstract class MIMESample extends MessageSample {
         }
         return multipart;
     }
-    
+
     public final InputStream getPart(int part) {
         try {
             return getMultipart().getBodyPart(part).getInputStream();
@@ -108,7 +110,7 @@ public abstract class MIMESample extends MessageSample {
             throw new Error(ex);
         }
     }
-    
+
     public final InputStream getPart(String cid) {
         try {
             MimeMultipart mp = getMultipart();

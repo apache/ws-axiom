@@ -41,7 +41,7 @@ public class SAAJTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTests(SOAPSpec.SOAP11);
         addTests(SOAPSpec.SOAP12);
     }
-    
+
     private void addTests(SOAPSpec spec) {
         addTest(new TestExamineMustUnderstandHeaderElements(saajImplementation, spec));
         addTest(new TestAddChildElementLocalName(saajImplementation, spec));

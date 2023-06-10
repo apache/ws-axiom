@@ -25,7 +25,7 @@ import org.apache.axiom.truth.xml.spi.TraverserException;
 final class CoalescingFilter extends Filter {
     private Event savedEvent;
     private String savedText;
-    
+
     CoalescingFilter(Traverser parent) {
         super(parent);
     }

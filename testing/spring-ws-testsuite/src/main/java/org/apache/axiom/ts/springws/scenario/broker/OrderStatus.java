@@ -24,12 +24,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(namespace="urn:broker", name="OrderStatus")
+@XmlRootElement(namespace = "urn:broker", name = "OrderStatus")
 @XmlType
 public class OrderStatus {
     private Date received;
 
-    @XmlElement(namespace="urn:broker", name="Received")
+    @XmlElement(namespace = "urn:broker", name = "Received")
     public Date getReceived() {
         return received;
     }

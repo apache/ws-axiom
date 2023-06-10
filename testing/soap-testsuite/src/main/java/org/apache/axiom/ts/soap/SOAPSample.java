@@ -36,27 +36,25 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-/**
- * A SOAP test message.
- */
+/** A SOAP test message. */
 public class SOAPSample extends XMLSample {
-    /**
-     * A SOAP fault response that uses some SOAP 1.2 specific features.
-     */
-    public static final SOAPSample SOAP12_FAULT = new SimpleSOAPSample(SOAPSpec.SOAP12, "test-message/soap12/fault.xml", "soap12/fault.xml");
-    
-    /**
-     * A SOAP 1.2 message that uses the relay attribute.
-     */
-    public static final SOAPSample SOAP12_RELAY = new SimpleSOAPSample(SOAPSpec.SOAP12, "test-message/soap12/relay.xml", "soap12/relay.xml");
-    
+    /** A SOAP fault response that uses some SOAP 1.2 specific features. */
+    public static final SOAPSample SOAP12_FAULT =
+            new SimpleSOAPSample(
+                    SOAPSpec.SOAP12, "test-message/soap12/fault.xml", "soap12/fault.xml");
+
+    /** A SOAP 1.2 message that uses the relay attribute. */
+    public static final SOAPSample SOAP12_RELAY =
+            new SimpleSOAPSample(
+                    SOAPSpec.SOAP12, "test-message/soap12/relay.xml", "soap12/relay.xml");
+
     private final SOAPSpec spec;
-    
+
     SOAPSample(SOAPSpec spec, MessageContent content, String name) {
         super(content, name);
         this.spec = spec;
     }
-    
+
     @Instances
     private static SOAPSample[] instances() {
         List<SOAPSample> instances = new ArrayList<>();
@@ -67,16 +65,16 @@ public class SOAPSample extends XMLSample {
         }
         return instances.toArray(new SOAPSample[instances.size()]);
     }
-    
+
     /**
      * Get the SOAP version of this message.
-     * 
+     *
      * @return the SOAP specification version
      */
     public final SOAPSpec getSOAPSpec() {
         return spec;
     }
-    
+
     public final Element getEnvelope() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
@@ -86,34 +84,35 @@ public class SOAPSample extends XMLSample {
             throw new Error(ex);
         }
     }
-    
+
     private Element getBody() {
         NodeList children = getEnvelope().getChildNodes();
-        for (int i=0; i<children.getLength(); i++) {
+        for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
             if (child.getNodeType() == Node.ELEMENT_NODE && child.getLocalName().equals("Body")) {
-                return (Element)child;
+                return (Element) child;
             }
         }
         throw new Error("SOAP message has no body");
     }
-    
+
     public final Element getPayload() {
         NodeList children = getBody().getChildNodes();
-        for (int i=0; i<children.getLength(); i++) {
+        for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
             if (child.getNodeType() == Node.ELEMENT_NODE) {
-                return (Element)child;
+                return (Element) child;
             }
         }
         return null;
     }
-    
+
     public final InputSource getPayloadInputSource() {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            TransformerFactory.newInstance().newTransformer().transform(
-                    new DOMSource(getPayload()), new StreamResult(baos));
+            TransformerFactory.newInstance()
+                    .newTransformer()
+                    .transform(new DOMSource(getPayload()), new StreamResult(baos));
         } catch (Exception ex) {
             throw new Error(ex);
         }

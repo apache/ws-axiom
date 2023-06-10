@@ -34,7 +34,10 @@ public class CompareTest extends MatrixTestCase {
     private final XMLObjectFactory right;
     private boolean expandEntityReferences;
 
-    public CompareTest(XMLSample sample, XMLObjectFactory left, XMLObjectFactory right,
+    public CompareTest(
+            XMLSample sample,
+            XMLObjectFactory left,
+            XMLObjectFactory right,
             boolean expandEntityReferences) {
         this.sample = sample;
         this.left = left;
@@ -45,7 +48,7 @@ public class CompareTest extends MatrixTestCase {
         addTestParameter("right", right.getName());
         addTestParameter("expandEntityReferences", expandEntityReferences);
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         assertAbout(xml())

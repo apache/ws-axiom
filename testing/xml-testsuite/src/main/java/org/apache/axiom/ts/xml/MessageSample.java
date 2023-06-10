@@ -36,7 +36,7 @@ public abstract class MessageSample extends Multiton {
 
     /**
      * Get the name of this message (for use in test case naming e.g.).
-     * 
+     *
      * @return the name of this test message
      */
     public final String getName() {
@@ -45,13 +45,13 @@ public abstract class MessageSample extends Multiton {
 
     /**
      * Get the content of this message.
-     * 
+     *
      * @return an input stream with the content of this message
      */
     public final InputStream getInputStream() {
         return content.getInputStream();
     }
-    
+
     public final URL getUrl() {
         return content.getURL();
     }

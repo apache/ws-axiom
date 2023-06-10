@@ -26,11 +26,12 @@ import org.apache.axiom.testing.multiton.AdapterType;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**
- * {@link SOAPSpec} adapter that allows to retrieve the {@link MessageFactory} or
- * {@link SOAPFactory} corresponding to the SOAP version from a {@link SAAJImplementation}.
+ * {@link SOAPSpec} adapter that allows to retrieve the {@link MessageFactory} or {@link
+ * SOAPFactory} corresponding to the SOAP version from a {@link SAAJImplementation}.
  */
 @AdapterType
 public interface FactorySelector {
     MessageFactory newMessageFactory(SAAJImplementation saajImplementation) throws SOAPException;
+
     SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation) throws SOAPException;
 }

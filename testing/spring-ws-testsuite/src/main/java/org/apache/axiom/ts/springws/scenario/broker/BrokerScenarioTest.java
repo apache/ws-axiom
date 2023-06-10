@@ -30,13 +30,14 @@ import org.springframework.ws.soap.client.SoapFaultClientException;
 
 /**
  * Broker scenario test.
- * <p>
- * The test uses a method endpoint and covers the following aspects:
+ *
+ * <p>The test uses a method endpoint and covers the following aspects:
+ *
  * <ul>
- * <li>{@link XPathParam} parameters.
- * <li>{@link Source} parameters and return values.
- * <li>Endpoint methods with multiple parameters that require procession the payload.
- * <li>SOAP faults.
+ *   <li>{@link XPathParam} parameters.
+ *   <li>{@link Source} parameters and return values.
+ *   <li>Endpoint methods with multiple parameters that require procession the payload.
+ *   <li>SOAP faults.
  * </ul>
  */
 public class BrokerScenarioTest extends ScenarioTestCase {
@@ -47,7 +48,7 @@ public class BrokerScenarioTest extends ScenarioTestCase {
     @Override
     protected void runTest() throws Throwable {
         BrokerClient client = context.getBean(BrokerClient.class);
-        
+
         Order order = new Order();
         order.setCustomer(47892);
         Order.Item item1 = new Order.Item();
@@ -56,17 +57,17 @@ public class BrokerScenarioTest extends ScenarioTestCase {
         Order.Item item2 = new Order.Item();
         item2.setStock("MSFT");
         item2.setCount(10);
-        order.setItems(new Order.Item[] { item1, item2 });
+        order.setItems(new Order.Item[] {item1, item2});
         OrderStatus status = client.order(order);
         assertNotNull(status.getReceived());
-        
+
         Order receivedOrder = client.receiveNextOrder();
         assertNotNull(receivedOrder);
         assertEquals(order.getCustomer(), receivedOrder.getCustomer());
         assertEquals(order.getItems().length, receivedOrder.getItems().length);
         assertEquals(order.getItems()[0].getStock(), receivedOrder.getItems()[0].getStock());
         assertEquals(order.getItems()[0].getCount(), receivedOrder.getItems()[0].getCount());
-        
+
         order.setCustomer(23629);
         // SOAP 1.2 fault processing is locale dependent
         Locale oldLocale = Locale.getDefault();

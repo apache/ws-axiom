@@ -36,7 +36,10 @@ public class TestAddChildElementReification extends SAAJTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPBody body = newMessageFactory().createMessage().getSOAPBody();
-        SOAPElement child = body.addChildElement((SOAPElement)body.getOwnerDocument().createElementNS("urn:test", "p:test"));
+        SOAPElement child =
+                body.addChildElement(
+                        (SOAPElement)
+                                body.getOwnerDocument().createElementNS("urn:test", "p:test"));
         assertThat(child).isInstanceOf(SOAPBodyElement.class);
     }
 }

@@ -32,26 +32,23 @@ import org.apache.axiom.testing.multiton.Instances;
 import org.w3c.dom.Document;
 
 public class XMLSample extends MessageSample {
-    /**
-     * A simple XML document without any particular features.
-     */
+    /** A simple XML document without any particular features. */
     public static final XMLSample SIMPLE = new XMLSample("simple.xml");
-    
-    /**
-     * An XML document that is larger than the input buffer of typical XML parsers.
-     */
+
+    /** An XML document that is larger than the input buffer of typical XML parsers. */
     public static final XMLSample LARGE = new XMLSample("large.xml");
-    
-    public static final XMLSample ENTITY_REFERENCE_NESTED = new XMLSample("entity-reference-nested.xml");
-    
+
+    public static final XMLSample ENTITY_REFERENCE_NESTED =
+            new XMLSample("entity-reference-nested.xml");
+
     /**
      * An XML document that has a document type declaration with a system ID, public ID and internal
      * subset.
      */
     public static final XMLSample DTD_FULL = new XMLSample("dtd-full.xml");
-    
+
     private static final DocumentBuilder documentBuilder;
-    
+
     static {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
@@ -61,16 +58,17 @@ public class XMLSample extends MessageSample {
             throw new Error(ex);
         }
     }
-    
+
     private XMLSampleProperties properties;
-    
+
     protected XMLSample(MessageContent content, String name) {
         super(content, name);
     }
-    
+
     private XMLSample(String relativeResourceName) {
-        this(MessageContent.fromClasspath(XMLSample.class, relativeResourceName),
-                relativeResourceName.substring(relativeResourceName.lastIndexOf('/')+1));
+        this(
+                MessageContent.fromClasspath(XMLSample.class, relativeResourceName),
+                relativeResourceName.substring(relativeResourceName.lastIndexOf('/') + 1));
     }
 
     private synchronized XMLSampleProperties getProperties() {
@@ -108,11 +106,13 @@ public class XMLSample extends MessageSample {
             throw new Error(ex);
         }
     }
-    
+
     @Instances
     private static XMLSample[] instances() throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                XMLSample.class.getResourceAsStream("bulk/filelist")));
+        BufferedReader in =
+                new BufferedReader(
+                        new InputStreamReader(
+                                XMLSample.class.getResourceAsStream("bulk/filelist")));
         List<XMLSample> result = new ArrayList<>(10);
         String name;
         while ((name = in.readLine()) != null) {
@@ -126,7 +126,7 @@ public class XMLSample extends MessageSample {
     public final String getContentType() {
         return getMediaType() + "; charset=\"" + getEncoding() + "\"";
     }
-    
+
     protected String getMediaType() {
         return "application/xml";
     }

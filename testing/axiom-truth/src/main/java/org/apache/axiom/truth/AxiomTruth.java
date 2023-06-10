@@ -30,29 +30,38 @@ public final class AxiomTruth {
     private AxiomTruth() {}
 
     public static OMContainerSubject assertThat(OMContainer target) {
-        return assertAbout(new Subject.Factory<OMContainerSubject, OMContainer>() {
-            @Override
-            public OMContainerSubject createSubject(FailureMetadata metadata, OMContainer actual) {
-                return new OMContainerSubject(metadata, actual);
-            }
-        }).that(target);
+        return assertAbout(
+                        new Subject.Factory<OMContainerSubject, OMContainer>() {
+                            @Override
+                            public OMContainerSubject createSubject(
+                                    FailureMetadata metadata, OMContainer actual) {
+                                return new OMContainerSubject(metadata, actual);
+                            }
+                        })
+                .that(target);
     }
 
     public static OMElementSubject assertThat(OMElement target) {
-        return assertAbout(new Subject.Factory<OMElementSubject, OMElement>() {
-            @Override
-            public OMElementSubject createSubject(FailureMetadata metadata, OMElement actual) {
-                return new OMElementSubject(metadata, actual);
-            }
-        }).that(target);
+        return assertAbout(
+                        new Subject.Factory<OMElementSubject, OMElement>() {
+                            @Override
+                            public OMElementSubject createSubject(
+                                    FailureMetadata metadata, OMElement actual) {
+                                return new OMElementSubject(metadata, actual);
+                            }
+                        })
+                .that(target);
     }
 
     public static OMAttributeSubject assertThat(OMAttribute target) {
-        return assertAbout(new Subject.Factory<OMAttributeSubject, OMAttribute>() {
-            @Override
-            public OMAttributeSubject createSubject(FailureMetadata metadata, OMAttribute actual) {
-                return new OMAttributeSubject(metadata, actual);
-            }
-        }).that(target);
+        return assertAbout(
+                        new Subject.Factory<OMAttributeSubject, OMAttribute>() {
+                            @Override
+                            public OMAttributeSubject createSubject(
+                                    FailureMetadata metadata, OMAttribute actual) {
+                                return new OMAttributeSubject(metadata, actual);
+                            }
+                        })
+                .that(target);
     }
 }

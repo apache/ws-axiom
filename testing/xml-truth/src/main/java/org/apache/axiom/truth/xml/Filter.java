@@ -28,7 +28,7 @@ import org.apache.axiom.truth.xml.spi.TraverserException;
 
 class Filter implements Traverser {
     private final Traverser parent;
-    
+
     Filter(Traverser parent) {
         this.parent = parent;
     }
@@ -59,12 +59,12 @@ class Filter implements Traverser {
     }
 
     @Override
-    public Map<QName,String> getAttributes() {
+    public Map<QName, String> getAttributes() {
         return parent.getAttributes();
     }
 
     @Override
-    public Map<String,String> getNamespaces() {
+    public Map<String, String> getNamespaces() {
         return parent.getNamespaces();
     }
 

@@ -35,7 +35,7 @@ public class SoapActionTest extends ScenarioTestCase {
     public SoapActionTest(ScenarioConfig config, SOAPSpec spec) {
         super(config, spec);
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -43,10 +43,11 @@ public class SoapActionTest extends ScenarioTestCase {
         Element request = requestDocument.createElementNS("urn:test", "p:Echo");
         request.setTextContent("Hello");
         Document responseDocument = documentBuilder.newDocument();
-        context.getBean(WebServiceTemplate.class).sendSourceAndReceiveToResult(
-                new DOMSource(request),
-                new SoapActionCallback("http://www.example.com/echo"),
-                new DOMResult(responseDocument));
+        context.getBean(WebServiceTemplate.class)
+                .sendSourceAndReceiveToResult(
+                        new DOMSource(request),
+                        new SoapActionCallback("http://www.example.com/echo"),
+                        new DOMResult(responseDocument));
         Element response = responseDocument.getDocumentElement();
         assertEquals("urn:test", response.getNamespaceURI());
         assertEquals("Echo", response.getLocalName());

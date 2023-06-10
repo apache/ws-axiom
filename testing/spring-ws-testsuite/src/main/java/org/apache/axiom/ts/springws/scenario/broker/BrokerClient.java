@@ -26,12 +26,12 @@ public class BrokerClient {
     public BrokerClient(WebServiceTemplate webServiceTemplate) {
         this.webServiceTemplate = webServiceTemplate;
     }
-    
+
     public OrderStatus order(Order order) {
-        return (OrderStatus)webServiceTemplate.marshalSendAndReceive(order);
+        return (OrderStatus) webServiceTemplate.marshalSendAndReceive(order);
     }
-    
+
     public Order receiveNextOrder() {
-        return (Order)webServiceTemplate.marshalSendAndReceive(new RetrieveNextOrder());
+        return (Order) webServiceTemplate.marshalSendAndReceive(new RetrieveNextOrder());
     }
 }

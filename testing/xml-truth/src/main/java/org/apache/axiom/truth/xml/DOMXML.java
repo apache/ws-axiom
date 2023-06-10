@@ -26,10 +26,10 @@ import org.w3c.dom.Node;
 final class DOMXML implements XML {
     private final Node root;
     private final boolean dom3;
-    
+
     DOMXML(Node root) {
         this.root = root;
-        Document document = root instanceof Document ? (Document)root : root.getOwnerDocument();
+        Document document = root instanceof Document ? (Document) root : root.getOwnerDocument();
         dom3 = document.getImplementation().hasFeature("XML", "3.0");
     }
 

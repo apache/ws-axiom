@@ -28,8 +28,8 @@ import org.springframework.ws.soap.SoapMessage;
 import org.springframework.ws.soap.SoapMessageFactory;
 
 /**
- * Tests the characteristics of the {@link SoapMessage} returned by
- * {@link SoapMessageFactory#createWebServiceMessage(InputStream)}.
+ * Tests the characteristics of the {@link SoapMessage} returned by {@link
+ * SoapMessageFactory#createWebServiceMessage(InputStream)}.
  */
 public class TestCreateWebServiceMessageFromInputStreamMTOM extends SimpleTestCase {
     public TestCreateWebServiceMessageFromInputStreamMTOM(MessageFactoryConfigurator mfc) {
@@ -38,8 +38,9 @@ public class TestCreateWebServiceMessageFromInputStreamMTOM extends SimpleTestCa
 
     @Override
     protected void runTest(SoapMessageFactory messageFactory) throws Throwable {
-        SoapMessage message = messageFactory.createWebServiceMessage(
-                new TransportInputStreamImpl(MTOMSample.SAMPLE1));
+        SoapMessage message =
+                messageFactory.createWebServiceMessage(
+                        new TransportInputStreamImpl(MTOMSample.SAMPLE1));
         assertNotNull(message.getEnvelope());
     }
 }

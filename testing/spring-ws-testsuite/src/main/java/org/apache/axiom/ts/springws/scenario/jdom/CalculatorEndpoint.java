@@ -33,11 +33,12 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 @Endpoint
 public class CalculatorEndpoint {
     private static final Log log = LogFactory.getLog(CalculatorEndpoint.class);
-    
+
     private static final String NAMESPACE_URI = "urn:calculator";
     private static final Namespace NAMESPACE = Namespace.getNamespace("c", NAMESPACE_URI);
 
-    private XPathExpression<Element> operandExpression = XPathFactory.instance().compile("c:Operand", Filters.element(), null, NAMESPACE);
+    private XPathExpression<Element> operandExpression =
+            XPathFactory.instance().compile("c:Operand", Filters.element(), null, NAMESPACE);
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "AddRequest")
     @ResponsePayload

@@ -25,31 +25,38 @@ import javax.xml.namespace.QName;
 // TODO: add a close method
 public interface Traverser {
     Event next() throws TraverserException;
+
     String getRootName();
+
     String getPublicId();
+
     String getSystemId();
+
     QName getQName();
-    
+
     /**
      * Get the attributes for the current element. Only valid if the last call to {@link #next()}
      * returned {@link Event#START_ELEMENT}.
-     * 
+     *
      * @return the attributes of the element, or <code>null</code> if the element has no attributes
      */
-    Map<QName,String> getAttributes();
-    
+    Map<QName, String> getAttributes();
+
     /**
-     * Get the namespace declarations for the current element. Only valid if the last call to
-     * {@link #next()} returned {@link Event#START_ELEMENT}. Namespace declarations for the default
+     * Get the namespace declarations for the current element. Only valid if the last call to {@link
+     * #next()} returned {@link Event#START_ELEMENT}. Namespace declarations for the default
      * namespace are represented using an empty string as prefix.
-     * 
+     *
      * @return the namespace declarations of the element, or <code>null</code> if the element has no
-     *         namespace declarations
+     *     namespace declarations
      */
-    Map<String,String> getNamespaces();
-    
+    Map<String, String> getNamespaces();
+
     String getText();
+
     String getEntityName();
+
     String getPITarget();
+
     String getPIData();
 }

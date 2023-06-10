@@ -35,7 +35,7 @@ public class WSAddressingDOMTest extends ScenarioTestCase {
     public WSAddressingDOMTest(ScenarioConfig config, SOAPSpec spec) {
         super(config, spec);
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -43,8 +43,11 @@ public class WSAddressingDOMTest extends ScenarioTestCase {
         Element request = requestDocument.createElementNS("urn:test", "p:testRequest");
         request.setTextContent("test");
         Document responseDocument = documentBuilder.newDocument();
-        context.getBean(WebServiceTemplate.class).sendSourceAndReceiveToResult(
-                new DOMSource(request), new ActionCallback(EchoEndpoint.ACTION), new DOMResult(responseDocument));
+        context.getBean(WebServiceTemplate.class)
+                .sendSourceAndReceiveToResult(
+                        new DOMSource(request),
+                        new ActionCallback(EchoEndpoint.ACTION),
+                        new DOMResult(responseDocument));
         Element response = responseDocument.getDocumentElement();
         assertEquals("urn:test", response.getNamespaceURI());
         assertEquals("testRequest", response.getLocalName());

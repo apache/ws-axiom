@@ -23,7 +23,7 @@ import org.springframework.core.env.PropertySource;
 
 public class MatrixTestCasePropertySource extends PropertySource<MatrixTestCase> {
     public static final String TEST_PARAMETERS_PROPERTY_SOURCE_NAME = "testParameters";
-    
+
     public MatrixTestCasePropertySource(MatrixTestCase source) {
         super(TEST_PARAMETERS_PROPERTY_SOURCE_NAME, source);
     }

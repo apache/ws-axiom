@@ -33,8 +33,9 @@ import org.junit.Test;
 public class StAXTraverserTest {
     @Test
     public void testFragment() throws Exception {
-        XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(
-                new StringReader("<root><a><b/></a></root>"));
+        XMLStreamReader reader =
+                XMLInputFactory.newInstance()
+                        .createXMLStreamReader(new StringReader("<root><a><b/></a></root>"));
         reader.next();
         reader.next();
         Traverser t = new StAXTraverser(reader);

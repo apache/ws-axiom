@@ -21,67 +21,72 @@ package org.apache.axiom.ts.soap;
 import javax.xml.namespace.QName;
 
 public abstract class SOAPFaultChild extends SOAPElementType {
-    public static final SOAPFaultChild CODE = new SOAPFaultChild() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getFaultCodeQName();
-        }
-        
-        @Override
-        public int getOrder() {
-            return 1;
-        }
-    };
+    public static final SOAPFaultChild CODE =
+            new SOAPFaultChild() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getFaultCodeQName();
+                }
 
-    public static final SOAPFaultChild REASON = new SOAPFaultChild() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getFaultReasonQName();
-        }
-        
-        @Override
-        public int getOrder() {
-            return 2;
-        }
-    };
+                @Override
+                public int getOrder() {
+                    return 1;
+                }
+            };
 
-    public static final SOAPFaultChild NODE = new SOAPFaultChild() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getFaultNodeQName();
-        }
-        
-        @Override
-        public int getOrder() {
-            return 3;
-        }
-    };
+    public static final SOAPFaultChild REASON =
+            new SOAPFaultChild() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getFaultReasonQName();
+                }
 
-    public static final SOAPFaultChild ROLE = new SOAPFaultChild() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getFaultRoleQName();
-        }
-        
-        @Override
-        public int getOrder() {
-            return 4;
-        }
-    };
+                @Override
+                public int getOrder() {
+                    return 2;
+                }
+            };
 
-    public static final SOAPFaultChild DETAIL = new SOAPFaultChild() {
-        @Override
-        public QName getQName(SOAPSpec spec) {
-            return spec.getFaultDetailQName();
-        }
-        
-        @Override
-        public int getOrder() {
-            return 5;
-        }
-    };
+    public static final SOAPFaultChild NODE =
+            new SOAPFaultChild() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getFaultNodeQName();
+                }
+
+                @Override
+                public int getOrder() {
+                    return 3;
+                }
+            };
+
+    public static final SOAPFaultChild ROLE =
+            new SOAPFaultChild() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getFaultRoleQName();
+                }
+
+                @Override
+                public int getOrder() {
+                    return 4;
+                }
+            };
+
+    public static final SOAPFaultChild DETAIL =
+            new SOAPFaultChild() {
+                @Override
+                public QName getQName(SOAPSpec spec) {
+                    return spec.getFaultDetailQName();
+                }
+
+                @Override
+                public int getOrder() {
+                    return 5;
+                }
+            };
 
     private SOAPFaultChild() {}
-    
+
     public abstract int getOrder();
 }

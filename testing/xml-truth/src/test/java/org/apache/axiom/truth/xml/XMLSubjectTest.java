@@ -31,15 +31,15 @@ public class XMLSubjectTest {
                 .ignoringRedundantNamespaceDeclarations()
                 .hasSameContentAs("<a xmlns:p='#1'><b/></a>");
     }
-    
-    @Test(expected=AssertionError.class)
+
+    @Test(expected = AssertionError.class)
     public void testIgnoringRedundantNamespaceDeclarations2() {
         assertAbout(xml())
                 .that("<a xmlns:p='#1'><b xmlns:p='#2'/></a>")
                 .ignoringRedundantNamespaceDeclarations()
                 .hasSameContentAs("<a xmlns:p='#1'><b/></a>");
     }
-    
+
     @Test
     public void testIgnoringNamespaceDeclarationsAndPrefixes() {
         // START SNIPPET: sample
@@ -50,7 +50,7 @@ public class XMLSubjectTest {
                 .hasSameContentAs("<a xmlns='urn:ns'/>");
         // END SNIPPET: sample
     }
-    
+
     @Test
     public void testIgnoringComments() {
         assertAbout(xml())

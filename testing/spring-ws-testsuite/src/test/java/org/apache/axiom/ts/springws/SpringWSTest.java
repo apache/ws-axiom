@@ -23,8 +23,10 @@ import junit.framework.TestSuite;
 
 public class SpringWSTest extends TestCase {
     public static TestSuite suite() {
-        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(MessageFactoryConfigurator.SAAJ, MessageFactoryConfigurator.SAAJ);
-        
+        SpringWSTestSuiteBuilder builder =
+                new SpringWSTestSuiteBuilder(
+                        MessageFactoryConfigurator.SAAJ, MessageFactoryConfigurator.SAAJ);
+
         return builder.build();
     }
 }

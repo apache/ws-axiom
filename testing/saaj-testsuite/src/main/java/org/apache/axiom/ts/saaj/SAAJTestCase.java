@@ -34,11 +34,11 @@ public abstract class SAAJTestCase extends MatrixTestCase {
         this.spec = spec;
         addTestParameter("spec", spec.getName());
     }
-    
+
     protected final MessageFactory newMessageFactory() throws SOAPException {
         return spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation);
     }
-    
+
     protected final SOAPFactory newSOAPFactory() throws SOAPException {
         return spec.getAdapter(FactorySelector.class).newSOAPFactory(saajImplementation);
     }

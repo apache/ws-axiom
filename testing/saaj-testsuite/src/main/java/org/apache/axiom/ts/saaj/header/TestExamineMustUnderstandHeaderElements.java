@@ -32,7 +32,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestExamineMustUnderstandHeaderElements extends SAAJTestCase {
-    public TestExamineMustUnderstandHeaderElements(SAAJImplementation saajImplementation, SOAPSpec spec) {
+    public TestExamineMustUnderstandHeaderElements(
+            SAAJImplementation saajImplementation, SOAPSpec spec) {
         super(saajImplementation, spec);
     }
 
