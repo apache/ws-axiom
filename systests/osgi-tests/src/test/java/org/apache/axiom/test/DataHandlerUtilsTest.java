@@ -41,7 +41,7 @@ public class DataHandlerUtilsTest {
     @Configuration
     public static Option[] configuration() {
         return options(
-                url("link:classpath:com.sun.activation.jakarta.activation.link"),
+                url("link:classpath:jakarta.activation-api.link"),
                 url("link:classpath:jakarta.mail-api.link"),
                 url("link:classpath:org.apache.commons.commons-io.link"),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
