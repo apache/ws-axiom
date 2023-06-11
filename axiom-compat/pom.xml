@@ -55,8 +55,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>jakarta.mail</artifactId>
+            <groupId>jakarta.mail</groupId>
+            <artifactId>jakarta.mail-api</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

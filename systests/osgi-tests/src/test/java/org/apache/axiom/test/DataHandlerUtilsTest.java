@@ -42,7 +42,7 @@ public class DataHandlerUtilsTest {
     public static Option[] configuration() {
         return options(
                 url("link:classpath:com.sun.activation.jakarta.activation.link"),
-                url("link:classpath:com.sun.mail.jakarta.mail.link"),
+                url("link:classpath:jakarta.mail-api.link"),
                 url("link:classpath:org.apache.commons.commons-io.link"),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
