@@ -27,12 +27,11 @@ import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
 /** Data source backed by a {@link Blob}. */
-// TODO(AXIOM-506): this should not be public
-public class BlobDataSource implements SizeAwareDataSource {
+class BlobDataSource implements SizeAwareDataSource {
     private final Blob blob;
     private final String contentType;
 
-    public BlobDataSource(Blob blob, String contentType) {
+    BlobDataSource(Blob blob, String contentType) {
         this.blob = blob;
         this.contentType = contentType;
     }
