@@ -37,22 +37,22 @@ public class ParseSample extends TestCase {
         // Create a builder for the file and get the root element
         InputStream in = new FileInputStream(file);
         OMElement root = OMXMLBuilderFactory.createOMBuilder(in).getDocumentElement();
-        
+
         // Process the content of the file
-        OMElement urlElement = root.getFirstChildWithName(
-                new QName("http://maven.apache.org/POM/4.0.0", "url"));
+        OMElement urlElement =
+                root.getFirstChildWithName(new QName("http://maven.apache.org/POM/4.0.0", "url"));
         if (urlElement == null) {
             System.out.println("No <url> element found");
         } else {
             System.out.println("url = " + urlElement.getText());
         }
-        
+
         // Because Axiom uses deferred parsing, the stream must be closed AFTER
         // processing the document (unless OMElement#build() is called)
         in.close();
     }
     // END SNIPPET: main
-    
+
     public void test() throws Exception {
         String basedir = System.getProperty("basedir");
         processFile(new File(basedir == null ? "." : basedir, "pom.xml"));

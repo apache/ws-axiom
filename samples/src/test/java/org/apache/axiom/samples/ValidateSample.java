@@ -49,9 +49,11 @@ public class ValidateSample extends TestCase {
         validator.validate(bodyContent.getSAXSource(true));
     }
     // END SNIPPET: sax
-    
+
     public void testSAX() throws Exception {
-        validate(getClass().getResourceAsStream("soap-request.xml"), getClass().getResource("schema.xsd"));
+        validate(
+                getClass().getResourceAsStream("soap-request.xml"),
+                getClass().getResource("schema.xsd"));
     }
 
     // START SNIPPET: dom
@@ -63,11 +65,13 @@ public class ValidateSample extends TestCase {
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = schemaFactory.newSchema(schemaUrl);
         Validator validator = schema.newValidator();
-        validator.validate(new DOMSource((Element)bodyContent));
+        validator.validate(new DOMSource((Element) bodyContent));
     }
     // END SNIPPET: dom
-    
+
     public void testDOM() throws Exception {
-        validate(getClass().getResourceAsStream("soap-request.xml"), getClass().getResource("schema.xsd"));
+        validate(
+                getClass().getResourceAsStream("soap-request.xml"),
+                getClass().getResource("schema.xsd"));
     }
 }

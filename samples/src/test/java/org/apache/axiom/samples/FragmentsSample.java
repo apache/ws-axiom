@@ -34,13 +34,13 @@ public class FragmentsSample extends TestCase {
     public void processFragments(InputStream in) throws XMLStreamException {
         // Create an XMLStreamReader without building the object model
         XMLStreamReader reader =
-            OMXMLBuilderFactory.createOMBuilder(in).getDocument().getXMLStreamReader(false);
+                OMXMLBuilderFactory.createOMBuilder(in).getDocument().getXMLStreamReader(false);
         while (reader.hasNext()) {
-            if (reader.getEventType() == XMLStreamReader.START_ELEMENT &&
-                    reader.getName().equals(new QName("tag"))) {
+            if (reader.getEventType() == XMLStreamReader.START_ELEMENT
+                    && reader.getName().equals(new QName("tag"))) {
                 // A matching START_ELEMENT event was found. Build a corresponding OMElement.
-                OMElement element = 
-                    OMXMLBuilderFactory.createStAXOMBuilder(reader).getDocumentElement();
+                OMElement element =
+                        OMXMLBuilderFactory.createStAXOMBuilder(reader).getDocumentElement();
                 // Make sure that all events belonging to the element are consumed so
                 // that the XMLStreamReader points to a well defined location (namely the
                 // event immediately following the END_ELEMENT event).
@@ -53,11 +53,11 @@ public class FragmentsSample extends TestCase {
         }
     }
     // END SNIPPET: main
-    
+
     public void processFragment(OMElement element) {
         System.out.println(element.toString());
     }
-    
+
     public void test() throws XMLStreamException {
         processFragments(FragmentsSample.class.getResourceAsStream("fragments.xml"));
     }

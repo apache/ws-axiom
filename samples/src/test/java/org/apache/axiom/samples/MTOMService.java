@@ -27,12 +27,12 @@ import jakarta.jws.WebService;
 import jakarta.xml.ws.soap.MTOM;
 
 // START SNIPPET: class
-@WebService(targetNamespace="urn:test")
+@WebService(targetNamespace = "urn:test")
 @MTOM
 public class MTOMService {
     @WebMethod
-    @WebResult(name="content")
-    public DataHandler retrieveContent(@WebParam(name="fileId") String fileId) {
+    @WebResult(name = "content")
+    public DataHandler retrieveContent(@WebParam(name = "fileId") String fileId) {
         return new DataHandler(new URLDataSource(MTOMService.class.getResource("test.txt")));
     }
 }

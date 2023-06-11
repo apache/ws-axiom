@@ -48,11 +48,12 @@ public class MTOMSample extends TestCase {
         // Build the SOAP request
         SOAPFactory soapFactory = OMAbstractFactory.getSOAP11Factory();
         SOAPEnvelope request = soapFactory.getDefaultEnvelope();
-        OMElement retrieveContent = soapFactory.createOMElement(
-                new QName("urn:test", "retrieveContent"), request.getBody());
+        OMElement retrieveContent =
+                soapFactory.createOMElement(
+                        new QName("urn:test", "retrieveContent"), request.getBody());
         OMElement fileId = soapFactory.createOMElement(new QName("fileId"), retrieveContent);
         fileId.setText(id);
-        
+
         // Use the java.net.URL API to connect to the service and send the request
         URLConnection connection = serviceURL.openConnection();
         connection.setDoOutput(true);
@@ -63,31 +64,34 @@ public class MTOMSample extends TestCase {
         OutputStream out = connection.getOutputStream();
         request.serialize(out, format);
         out.close();
-        
+
         // Get the SOAP response
         InputStream in = connection.getInputStream();
-        MultipartBody multipartBody = MultipartBody.builder()
-                .setInputStream(in)
-                .setContentType(connection.getContentType())
-                .build();
-        SOAPEnvelope response = OMXMLBuilderFactory.createSOAPModelBuilder(multipartBody).getSOAPEnvelope();
+        MultipartBody multipartBody =
+                MultipartBody.builder()
+                        .setInputStream(in)
+                        .setContentType(connection.getContentType())
+                        .build();
+        SOAPEnvelope response =
+                OMXMLBuilderFactory.createSOAPModelBuilder(multipartBody).getSOAPEnvelope();
         OMElement retrieveContentResponse = response.getBody().getFirstElement();
         OMElement content = retrieveContentResponse.getFirstElement();
         // Extract the Blob representing the optimized binary data
-        Blob blob = ((OMText)content.getFirstOMChild()).getBlob();
+        Blob blob = ((OMText) content.getFirstOMChild()).getBlob();
         // Stream the content of the MIME part
-        InputStream contentStream = ((PartBlob)blob).getPart().getInputStream(false);
+        InputStream contentStream = ((PartBlob) blob).getPart().getInputStream(false);
         // Write the content to the result stream
         IOUtils.copy(contentStream, result);
         contentStream.close();
-        
+
         in.close();
     }
     // END SNIPPET: retrieveContent
-    
+
     public void test() throws Exception {
         int port = PortAllocator.allocatePort();
-        Endpoint endpoint = Endpoint.publish("http://localhost:" + port + "/mtom", new MTOMService());
+        Endpoint endpoint =
+                Endpoint.publish("http://localhost:" + port + "/mtom", new MTOMService());
         retrieveContent(new URL("http://localhost:" + port + "/mtom"), "G87ZX20047", System.out);
         endpoint.stop();
     }

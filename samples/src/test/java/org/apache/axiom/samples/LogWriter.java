@@ -50,8 +50,8 @@ public class LogWriter extends XMLStreamWriterWrapper implements BlobWriter {
     }
 
     @Override
-    public void writeBlob(BlobProvider blobProvider, String contentID,
-            boolean optimize) throws IOException, XMLStreamException {
+    public void writeBlob(BlobProvider blobProvider, String contentID, boolean optimize)
+            throws IOException, XMLStreamException {
         super.writeCharacters("[base64 encoded data]");
     }
 }
