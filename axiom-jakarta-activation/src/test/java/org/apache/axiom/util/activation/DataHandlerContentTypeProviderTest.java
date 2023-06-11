@@ -20,7 +20,12 @@ package org.apache.axiom.util.activation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
 
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.mime.ContentType;
@@ -38,7 +43,29 @@ public class DataHandlerContentTypeProviderTest {
 
     @Test
     public void testDataHandlerWithoutContentType() {
-        DataHandler dh = new DataHandler(new BlobDataSource(Blobs.createBlob(new byte[10]), null));
+        DataHandler dh =
+                new DataHandler(
+                        new DataSource() {
+                            @Override
+                            public InputStream getInputStream() throws IOException {
+                                throw new UnsupportedOperationException();
+                            }
+
+                            @Override
+                            public OutputStream getOutputStream() throws IOException {
+                                throw new UnsupportedOperationException();
+                            }
+
+                            @Override
+                            public String getContentType() {
+                                return null;
+                            }
+
+                            @Override
+                            public String getName() {
+                                throw new UnsupportedOperationException();
+                            }
+                        });
         assertThat(
                         DataHandlerContentTypeProvider.INSTANCE.getContentType(
                                 DataHandlerUtils.toBlob(dh)))

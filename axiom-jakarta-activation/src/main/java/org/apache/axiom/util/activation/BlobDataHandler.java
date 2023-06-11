@@ -29,7 +29,7 @@ final class BlobDataHandler extends DataHandler {
     private final Blob blob;
 
     BlobDataHandler(Blob blob) {
-        super(new BlobDataSource(blob, "application/octet-stream"));
+        super(new BlobDataSource(blob));
         this.blob = blob;
     }
 

@@ -29,11 +29,9 @@ import org.apache.axiom.ext.activation.SizeAwareDataSource;
 /** Data source backed by a {@link Blob}. */
 class BlobDataSource implements SizeAwareDataSource {
     private final Blob blob;
-    private final String contentType;
 
-    BlobDataSource(Blob blob, String contentType) {
+    BlobDataSource(Blob blob) {
         this.blob = blob;
-        this.contentType = contentType;
     }
 
     Blob getBlob() {
@@ -47,7 +45,7 @@ class BlobDataSource implements SizeAwareDataSource {
 
     @Override
     public String getContentType() {
-        return contentType;
+        return "application/octet-stream";
     }
 
     @Override
