@@ -20,7 +20,6 @@ package org.apache.axiom.samples;
 
 import java.io.StringWriter;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -35,6 +34,8 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import jakarta.activation.DataHandler;
 
 public class MTOMLogSample extends TestCase {
     private static final Log log = LogFactory.getLog(MTOMLogSample.class);

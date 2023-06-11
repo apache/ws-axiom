@@ -18,13 +18,13 @@
  */
 package org.apache.axiom.samples;
 
-import javax.activation.DataHandler;
-import javax.activation.URLDataSource;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.ws.soap.MTOM;
+import jakarta.activation.DataHandler;
+import jakarta.activation.URLDataSource;
+import jakarta.jws.WebMethod;
+import jakarta.jws.WebParam;
+import jakarta.jws.WebResult;
+import jakarta.jws.WebService;
+import jakarta.xml.ws.soap.MTOM;
 
 // START SNIPPET: class
 @WebService(targetNamespace="urn:test")

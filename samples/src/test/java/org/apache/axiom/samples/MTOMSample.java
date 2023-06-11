@@ -24,7 +24,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import javax.xml.namespace.QName;
-import javax.xml.ws.Endpoint;
 
 import junit.framework.TestCase;
 
@@ -40,6 +39,8 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.testutils.PortAllocator;
 import org.apache.commons.io.IOUtils;
+
+import jakarta.xml.ws.Endpoint;
 
 public class MTOMSample extends TestCase {
     // START SNIPPET: retrieveContent
