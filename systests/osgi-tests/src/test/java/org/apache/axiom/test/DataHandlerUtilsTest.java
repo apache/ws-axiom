@@ -23,9 +23,6 @@ import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
-import javax.activation.DataHandler;
-import javax.mail.util.ByteArrayDataSource;
-
 import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +31,9 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
+
+import jakarta.activation.DataHandler;
+import jakarta.mail.util.ByteArrayDataSource;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
@@ -46,7 +46,7 @@ public class DataHandlerUtilsTest {
                 url("link:classpath:org.apache.commons.commons-io.link"),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
-                url("link:classpath:org.apache.ws.commons.axiom.axiom-javax-activation.link"),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-jakarta-activation.link"),
                 junitBundles());
     }
 

@@ -35,7 +35,7 @@
         <dependencies>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>javax-bom</artifactId>
+                <artifactId>jakarta-bom</artifactId>
                 <version>${project.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -68,7 +68,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-javax-jaxb</artifactId>
+            <artifactId>axiom-jakarta-jaxb</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

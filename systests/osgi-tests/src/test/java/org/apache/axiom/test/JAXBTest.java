@@ -25,8 +25,6 @@ import static org.ops4j.pax.exam.CoreOptions.url;
 
 import java.io.ByteArrayOutputStream;
 
-import javax.xml.bind.JAXBContext;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
@@ -38,6 +36,8 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
+
+import jakarta.xml.bind.JAXBContext;
 
 /** Tests that the axiom-jaxb bundle can be loaded successfully and is operational. */
 @RunWith(PaxExam.class)
@@ -58,8 +58,8 @@ public class JAXBTest {
                 url("link:classpath:org.glassfish.hk2.osgi-resource-locator.link"),
                 url("link:classpath:jakarta.xml.bind-api.link"),
                 url("link:classpath:com.sun.xml.bind.jaxb-osgi.link"),
-                url("link:classpath:org.apache.ws.commons.axiom.axiom-javax-activation.link"),
-                url("link:classpath:org.apache.ws.commons.axiom.axiom-javax-jaxb.link"),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-jakarta-activation.link"),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-jakarta-jaxb.link"),
                 filteredSystemPackages("javax.xml.stream"),
                 junitBundles());
     }
