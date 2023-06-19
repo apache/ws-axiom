@@ -26,6 +26,7 @@ env:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         java: [ 17, 19 ]
     name: "Java ${{ matrix.java }}"
