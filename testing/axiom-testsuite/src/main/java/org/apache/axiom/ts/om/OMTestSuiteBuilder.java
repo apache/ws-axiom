@@ -1189,6 +1189,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.xop.TestSetOptimize(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.xop.TestSetOptimize(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.xop.TestSetOptimizePlainOMText(metaFactory));
         addTest(new org.apache.axiom.ts.om.xop.XOPRoundtripTest(metaFactory));
         Method[] methods = AXIOMXPathTestCase.class.getMethods();
         for (int i = 0; i < methods.length; i++) {

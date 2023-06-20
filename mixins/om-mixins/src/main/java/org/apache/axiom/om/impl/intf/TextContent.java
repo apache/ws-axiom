@@ -112,25 +112,38 @@ public final class TextContent implements CloneableCharacterData {
         this.contentID = contentID;
     }
 
+    /**
+     * Returns the base64 decoded content. Can only be used if {@link #isBinary()} returns {@code
+     * true}.
+     *
+     * @return a {@link Blob} or {@link BlobProvider} object for the base64 decoded content
+     */
     public Object getBlobObject() {
-        return blobObject;
+        if (!binary) {
+            throw new IllegalStateException();
+        }
+        if (blobObject != null) {
+            return blobObject;
+        }
+        return Blobs.createBlob(Base64Utils.decode(value));
     }
 
+    /**
+     * Returns a {@link Blob} with the base64 decoded content. Can only be used if {@link
+     * #isBinary()} returns {@code true}.
+     *
+     * @return a {@link Blob} object for the base64 decoded content
+     */
     public Blob getBlob() {
-        if (blobObject != null) {
-            if (blobObject instanceof BlobProvider) {
-                try {
-                    blobObject = ((BlobProvider) blobObject).getBlob();
-                } catch (IOException ex) {
-                    throw new OMException(ex);
-                }
+        Object blobObject = getBlobObject();
+        if (blobObject instanceof BlobProvider) {
+            try {
+                return ((BlobProvider) blobObject).getBlob();
+            } catch (IOException ex) {
+                throw new OMException(ex);
             }
-            return (Blob) blobObject;
-        } else if (binary) {
-            return Blobs.createBlob(Base64Utils.decode(value));
-        } else {
-            throw new OMException("No Blob available");
         }
+        return (Blob) blobObject;
     }
 
     @Override
