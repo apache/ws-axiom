@@ -185,7 +185,9 @@ public class OMFactoryImpl implements OMFactory {
     @Override
     public final OMText createOMText(
             OMContainer parent, String s, String mimeType, boolean optimize) {
-        return createAxiomText(parent, new TextContent(s, mimeType, optimize), OMNode.TEXT_NODE);
+        TextContent textContent = new TextContent(s);
+        textContent.setOptimize(optimize);
+        return createAxiomText(parent, textContent, OMNode.TEXT_NODE);
     }
 
     @Override

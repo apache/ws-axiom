@@ -38,8 +38,6 @@ import org.apache.axiom.util.base64.Base64Utils;
 public final class TextContent implements CloneableCharacterData {
     private final String value;
 
-    private final String mimeType;
-
     /** Field contentID for the mime part used when serializing Binary stuff as MTOM optimized. */
     private String contentID;
 
@@ -54,19 +52,10 @@ public final class TextContent implements CloneableCharacterData {
 
     public TextContent(String value) {
         this.value = value;
-        this.mimeType = null;
-    }
-
-    public TextContent(String value, String mimeType, boolean optimize) {
-        this.value = value;
-        this.mimeType = mimeType;
-        binary = true;
-        this.optimize = optimize;
     }
 
     public TextContent(String contentID, Object blobObject, boolean optimize) {
         this.value = null;
-        mimeType = null;
         this.contentID = contentID;
         this.blobObject = blobObject;
         binary = true;
@@ -75,7 +64,6 @@ public final class TextContent implements CloneableCharacterData {
 
     private TextContent(TextContent other) {
         this.value = other.value;
-        this.mimeType = other.mimeType;
         this.contentID = other.contentID;
         this.blobObject = other.blobObject;
         this.optimize = other.optimize;

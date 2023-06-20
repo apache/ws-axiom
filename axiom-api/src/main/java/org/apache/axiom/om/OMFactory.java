@@ -283,10 +283,16 @@ public interface OMFactory {
      */
     OMText createOMText(String s, int type);
 
+    /**
+     * @deprecated
+     */
     OMText createOMText(String s, String mimeType, boolean optimize);
 
     OMText createOMText(Blob blob, boolean optimize);
 
+    /**
+     * @deprecated
+     */
     OMText createOMText(OMContainer parent, String s, String mimeType,
                                boolean optimize);
 
