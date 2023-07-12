@@ -59,6 +59,10 @@ updates:
       - dependency-name: "org.springframework.ws:*"
         versions:
           - ">= 3.1.4"
+      - dependency-name: "org.apache.maven.plugins:maven-source-plugin"
+        versions:
+          # MSOURCES-137
+          - "3.3.0"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
