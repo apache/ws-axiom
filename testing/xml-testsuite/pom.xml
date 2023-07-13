@@ -92,11 +92,10 @@
                                     def filelist = new File(project.build.directory, "generated-resources/org/apache/axiom/ts/xml/bulk/filelist");
                                     filelist.parentFile.mkdirs();
                                     filelist.delete();
-                                    new File(project.basedir, "src/main/resources/org/apache/axiom/ts/xml/bulk").eachFile({
-                                        if (it.file && it.name.endsWith(".xml")) {
-                                            filelist.append("$it.name\n");
-                                        }
-                                    })
+                                    def files = new File(project.basedir, "src/main/resources/org/apache/axiom/ts/xml/bulk").listFiles(
+                                        { File f -> f.file && f.name.endsWith(".xml") } as FileFilter)
+                                    files.sort()
+                                    files.each({ filelist.append("$it.name\n") })
                                 ]]></script>
                             </scripts>
                         </configuration>
