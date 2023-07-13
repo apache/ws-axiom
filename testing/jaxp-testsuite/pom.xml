@@ -145,11 +145,9 @@
                                     def dir = new File(project.build.directory, "generated-resources/org/apache/axiom/ts/jaxp/stax");
                                     def filelist = new File(dir, "filelist");
                                     filelist.delete();
-                                    dir.eachFile({
-                                        if (it.file && it.name.endsWith(".jar")) {
-                                            filelist.append("$it.name\n");
-                                        }
-                                    })
+                                    def files = dir.listFiles({ File f -> f.file && f.name.endsWith(".jar") } as FileFilter)
+                                    files.sort()
+                                    files.each({ filelist.append("$it.name\n") })
                                 ]]></script>
                             </scripts>
                         </configuration>
