@@ -991,7 +991,7 @@
                     <showWarnings>true</showWarnings>
                     <compilerArgs combine.children="append">
                         <compilerArg>-XDcompilePolicy=simple</compilerArg>
-                        <compilerArg>-Xplugin:ErrorProne -XepExcludedPaths:.*/org/jaxen/.* -Xep:MissingOverride:ERROR</compilerArg>
+                        <compilerArg>-Xplugin:ErrorProne -XepExcludedPaths:.*/org/(jaxen|w3c)/.* -Xep:MissingOverride:ERROR</compilerArg>
                     </compilerArgs>
                     <annotationProcessorPaths combine.children="append">
                         <annotationProcessorPath>

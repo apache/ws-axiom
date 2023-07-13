@@ -1,0 +1,61 @@
+--- a/org/w3c/domts/DOMTest.java	2023-07-13 22:51:13.882222600 +0000
++++ b/org/w3c/domts/DOMTest.java	2023-07-13 22:52:18.206222600 +0000
+@@ -79,53 +79,10 @@
+   private URL resolveURI(String baseURI) throws DOMTestLoadException {
+     String docURI = factory.addExtension(baseURI);
+-
+-    URL resolvedURI = null;
+-    try {
+-      resolvedURI = new URL(docURI);
+-      if (resolvedURI.getProtocol() != null) {
+-        return resolvedURI;
+-      }
+-    }
+-    catch (MalformedURLException ex) {
+-      //        throw new DOMTestLoadException(ex);
+-    }
+-    //
+-    //   build a URL for a test file in the JAR
+-    //
+-    resolvedURI = getClass().getResource("/" + docURI);
+-    if (resolvedURI == null) {
+-      //
+-      //   see if it is an absolute URI
+-      //
+-      int firstSlash = docURI.indexOf('/');
+-      try {
+-        if (firstSlash == 0
+-            || (firstSlash >= 1
+-                && docURI.charAt(firstSlash - 1) == ':')) {
+-          resolvedURI = new URL(docURI);
+-        }
+-        else {
+-          //
+-          //  try the files/level?/spec directory
+-          //
+-          String filename = getClass().getPackage().getName();
+-          filename =
+-              "tests/"
+-              + filename.substring(14).replace('.', '/')
+-              + "/files/"
+-              + docURI;
+-          resolvedURI = new java.io.File(filename).toURL();
+-        }
+-      }
+-      catch (MalformedURLException ex) {
+-        throw new DOMTestLoadException(ex);
+-      }
+-    }
+-
+-    if (resolvedURI == null) {
+-      throw new DOMTestLoadException(
+-          new java.io.FileNotFoundException(docURI));
++    String resourceName = "/" + getClass().getPackage().getName().replace('.', '/') + "/" + docURI;
++    URL url = getClass().getResource(resourceName);
++    if (url == null) {
++      throw new DOMTestLoadException("Resource " + resourceName + " not found");
+     }
+-    return resolvedURI;
++    return url;
+   }
+ 
