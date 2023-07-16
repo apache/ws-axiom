@@ -12,6 +12,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+github:
+  description: "Apache Axiom"
+  homepage: https://ws.apache.org/axiom/
+  enabled_merge_buttons:
+    squash: true
+    merge: false
+    rebase: true
+  autolink_jira:
+    - AXIOM
 notifications:
   commits: commits@ws.apache.org
   pullrequests: dev@ws.apache.org
