@@ -18,13 +18,13 @@
  */
 package org.apache.axiom.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -47,13 +47,15 @@ public class BlueprintTest {
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-dom.link"),
-                junitBundles());
+                junitBundles(),
+                url("link:classpath:net.bytebuddy.byte-buddy.link"),
+                url("link:classpath:assertj-core.link"));
     }
 
     @Inject private TestService testService;
 
     @Test
     public void test() throws Exception {
-        Assert.assertEquals("<test/>", testService.doSomething());
+        assertThat(testService.doSomething()).isEqualTo("<test/>");
     }
 }

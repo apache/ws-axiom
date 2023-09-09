@@ -19,8 +19,7 @@
 package org.apache.axiom.test;
 
 import static org.apache.axiom.test.Utils.filteredSystemPackages;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
@@ -58,24 +57,26 @@ public class FactoryTest {
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-dom.link"),
                 filteredSystemPackages("javax.xml.stream"),
-                junitBundles());
+                junitBundles(),
+                url("link:classpath:net.bytebuddy.byte-buddy.link"),
+                url("link:classpath:assertj-core.link"));
     }
 
     @Inject private BundleContext context;
 
     @Test
     public void testGetOMFactory() throws Exception {
-        assertNotNull(OMAbstractFactory.getOMFactory());
+        assertThat(OMAbstractFactory.getOMFactory()).isNotNull();
     }
 
     @Test
     public void testGetSOAP11Factory() throws Exception {
-        assertNotNull(OMAbstractFactory.getSOAP11Factory());
+        assertThat(OMAbstractFactory.getSOAP11Factory()).isNotNull();
     }
 
     @Test
     public void testGetSOAP12Factory() throws Exception {
-        assertNotNull(OMAbstractFactory.getSOAP12Factory());
+        assertThat(OMAbstractFactory.getSOAP12Factory()).isNotNull();
     }
 
     @Test
@@ -83,8 +84,8 @@ public class FactoryTest {
         ServiceReference<?>[] omfactRefs =
                 context.getServiceReferences(
                         "org.apache.axiom.om.OMMetaFactory", "(implementationName=llom)");
-        assertNotNull(omfactRefs);
-        assertEquals(1, omfactRefs.length);
+        assertThat(omfactRefs).isNotNull();
+        assertThat(omfactRefs).hasSize(1);
     }
 
     @Test
@@ -92,24 +93,24 @@ public class FactoryTest {
         ServiceReference<?>[] omfactRefs =
                 context.getServiceReferences(
                         "org.apache.axiom.om.OMMetaFactory", "(implementationName=doom)");
-        assertNotNull(omfactRefs);
-        assertEquals(2, omfactRefs.length);
+        assertThat(omfactRefs).isNotNull();
+        assertThat(omfactRefs).hasSize(2);
     }
 
     @Test
     public void testLookupByFeature() throws Exception {
         ServiceReference<?>[] omfactRefs =
                 context.getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(feature=dom)");
-        assertNotNull(omfactRefs);
-        assertEquals(1, omfactRefs.length);
+        assertThat(omfactRefs).isNotNull();
+        assertThat(omfactRefs).hasSize(1);
     }
 
     @Test
     public void testLookupDOMMetaFactory() throws Exception {
         ServiceReference<?>[] omfactRefs =
                 context.getServiceReferences("org.apache.axiom.om.dom.DOMMetaFactory", null);
-        assertNotNull(omfactRefs);
-        assertEquals(1, omfactRefs.length);
+        assertThat(omfactRefs).isNotNull();
+        assertThat(omfactRefs).hasSize(1);
     }
 
     @Test
@@ -119,7 +120,7 @@ public class FactoryTest {
                                 new StringReader(
                                         "<a:testElement xmlns:a=\"http://test/namespace\"/>"))
                         .getDocumentElement();
-        assertEquals("testElement", oe.getLocalName());
-        assertEquals("http://test/namespace", oe.getNamespace().getNamespaceURI());
+        assertThat(oe.getLocalName()).isEqualTo("testElement");
+        assertThat(oe.getNamespace().getNamespaceURI()).isEqualTo("http://test/namespace");
     }
 }

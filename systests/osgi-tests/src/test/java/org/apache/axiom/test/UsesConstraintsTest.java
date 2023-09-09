@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.ops4j.pax.exam.CoreOptions.streamBundle;
 import static org.ops4j.pax.tinybundles.core.TinyBundles.bundle;
 import static org.osgi.framework.Constants.BUNDLE_SYMBOLICNAME;
@@ -149,7 +149,7 @@ public class UsesConstraintsTest {
         framework.start();
         try {
             listener.awaitStart();
-            assertTrue("Uses constraint violation expected", listener.gotExpectedError());
+            assertThat(listener.gotExpectedError()).isTrue();
         } finally {
             framework.stop();
         }

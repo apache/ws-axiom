@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
@@ -46,7 +46,9 @@ public class SystemDepsTest {
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link"),
-                junitBundles());
+                junitBundles(),
+                url("link:classpath:net.bytebuddy.byte-buddy.link"),
+                url("link:classpath:assertj-core.link"));
     }
 
     @Test
@@ -54,6 +56,6 @@ public class SystemDepsTest {
         OMElement element =
                 OMXMLBuilderFactory.createOMBuilder(new StringReader("<root/>"))
                         .getDocumentElement();
-        assertEquals("root", element.getLocalName());
+        assertThat(element.getLocalName()).isEqualTo("root");
     }
 }

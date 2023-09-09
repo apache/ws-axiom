@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
@@ -47,17 +47,19 @@ public class DataHandlerUtilsTest {
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-jakarta-activation.link"),
-                junitBundles());
+                junitBundles(),
+                url("link:classpath:net.bytebuddy.byte-buddy.link"),
+                url("link:classpath:assertj-core.link"));
     }
 
     @Test
     public void testByteArrayDataSourceToBlobGetSize() {
-        assertEquals(
-                123,
-                DataHandlerUtils.toBlob(
-                                new DataHandler(
-                                        new ByteArrayDataSource(
-                                                new byte[123], "application/octet-stream")))
-                        .getSize());
+        assertThat(
+                        DataHandlerUtils.toBlob(
+                                        new DataHandler(
+                                                new ByteArrayDataSource(
+                                                        new byte[123], "application/octet-stream")))
+                                .getSize())
+                .isEqualTo(123);
     }
 }

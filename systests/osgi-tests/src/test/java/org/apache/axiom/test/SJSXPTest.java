@@ -19,7 +19,7 @@
 package org.apache.axiom.test;
 
 import static org.apache.axiom.test.Utils.filteredSystemPackages;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemPackages;
@@ -59,7 +59,9 @@ public class SJSXPTest {
                 // For whatever reason, these packages are no longer exported by the system bundle
                 // in Felix >= 4.0.0
                 systemPackages("org.w3c.dom.html", "org.w3c.dom.ranges", "org.w3c.dom.traversal"),
-                junitBundles());
+                junitBundles(),
+                url("link:classpath:net.bytebuddy.byte-buddy.link"),
+                url("link:classpath:assertj-core.link"));
     }
 
     @Test
@@ -69,7 +71,7 @@ public class SJSXPTest {
                                 new StringReader(
                                         "<a:testElement xmlns:a=\"http://test/namespace\"/>"))
                         .getDocumentElement();
-        assertEquals("testElement", oe.getLocalName());
-        assertEquals("http://test/namespace", oe.getNamespace().getNamespaceURI());
+        assertThat(oe.getLocalName()).isEqualTo("testElement");
+        assertThat(oe.getNamespace().getNamespaceURI()).isEqualTo("http://test/namespace");
     }
 }
