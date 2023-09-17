@@ -86,6 +86,7 @@ public class MTOMSample extends TestCase {
 
         in.close();
     }
+
     // END SNIPPET: retrieveContent
 
     public void test() throws Exception {

@@ -51,6 +51,7 @@ public class ParseSample extends TestCase {
         // processing the document (unless OMElement#build() is called)
         in.close();
     }
+
     // END SNIPPET: main
 
     public void test() throws Exception {

@@ -52,6 +52,7 @@ public class FragmentsSample extends TestCase {
             }
         }
     }
+
     // END SNIPPET: main
 
     public void processFragment(OMElement element) {

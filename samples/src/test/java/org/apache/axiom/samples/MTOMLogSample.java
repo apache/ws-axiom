@@ -49,6 +49,7 @@ public class MTOMLogSample extends TestCase {
         writer.flush();
         log.info("Message: " + sw.toString());
     }
+
     // END SNIPPET: variant2
 
     public void test() throws XMLStreamException {

@@ -34,6 +34,7 @@ final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
     AttachmentUnmarshallerImpl(OMAttachmentAccessor attachmentAccessor) {
         this.attachmentAccessor = attachmentAccessor;
     }
+
     /**
      * Extract the content ID from a URL following the cid scheme defined by RFC2392.
      *

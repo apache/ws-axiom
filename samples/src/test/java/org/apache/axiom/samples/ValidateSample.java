@@ -48,6 +48,7 @@ public class ValidateSample extends TestCase {
         Validator validator = schema.newValidator();
         validator.validate(bodyContent.getSAXSource(true));
     }
+
     // END SNIPPET: sax
 
     public void testSAX() throws Exception {
@@ -67,6 +68,7 @@ public class ValidateSample extends TestCase {
         Validator validator = schema.newValidator();
         validator.validate(new DOMSource((Element) bodyContent));
     }
+
     // END SNIPPET: dom
 
     public void testDOM() throws Exception {
