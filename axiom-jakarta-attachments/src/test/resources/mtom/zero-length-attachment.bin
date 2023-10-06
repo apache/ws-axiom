@@ -1,0 +1,21 @@
+--MIMEBoundaryurn_uuid_0549F3F826EC3041861188639371825
+Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"
+Content-Transfer-Encoding: binary
+Content-ID: <0.urn:uuid:0549F3F826EC3041861188639371826@apache.org>
+
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+    <soapenv:Body>
+        <ns3:test xmlns:ns3="urn:test">
+            <data>
+                <xop:Include href="cid:1.urn:uuid:0549F3F826EC3041861188639371827@apache.org" xmlns:xop="http://www.w3.org/2004/08/xop/include" />
+            </data>
+        </ns3:test>
+   </soapenv:Body>
+</soapenv:Envelope>
+--MIMEBoundaryurn_uuid_0549F3F826EC3041861188639371825
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: binary
+Content-ID: <1.urn:uuid:0549F3F826EC3041861188639371827@apache.org>
+
+
+--MIMEBoundaryurn_uuid_0549F3F826EC3041861188639371825--

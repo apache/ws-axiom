@@ -216,9 +216,12 @@
         <module>buildutils</module>
         <module>axiom-api</module>
         <module>axiom-compat</module>
+        <module>axiom-compat-jakarta</module>
         <module>axiom-jakarta-jaxb</module>
+        <module>axiom-jakarta-attachments</module>
         <module>axiom-javax-jaxb</module>
         <module>axiom-all</module>
+        <module>axiom-jakarta-all</module>
         <module>samples</module>
         <module>systests</module>
         <module>devguide</module>

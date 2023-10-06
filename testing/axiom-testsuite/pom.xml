@@ -138,8 +138,9 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.angus</groupId>
-            <artifactId>angus-mail</artifactId>
+            <artifactId>jakarta.mail</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>
