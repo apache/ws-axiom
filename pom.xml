@@ -268,7 +268,7 @@
         <log4j.version>2.20.0</log4j.version>
         <groovy.version>4.0.12</groovy.version>
         <auto-service.version>1.0.1</auto-service.version>
-        <asm.version>9.6</asm.version>
+        <asm.version>9.5</asm.version>
         <errorprone.version>2.16</errorprone.version>
         <junit5.version>5.9.1</junit5.version>
         <mime4j.version>0.8.9</mime4j.version>
@@ -1352,7 +1352,7 @@ $${type_declaration}</template></templates>]]></value>
                                 <!-- BSD style license -->
                                 <exclude>legal/stax2-api-LICENSE.txt</exclude>
                                 <!-- BSD style license -->
-                                <exclude>legal/jakarta-activation-api-LICENSE.txt</exclude>
+                                <exclude>legal/jakarta.activation-api-LICENSE.txt</exclude>
                                 <!-- BSD style license -->
                                 <exclude>legal/jakarta.xml.bind-api-LICENSE.txt</exclude>
                                 <!-- Files used by various developer tools -->

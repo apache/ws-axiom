@@ -51,7 +51,7 @@
             <artifactId>axiom-javax-jaxb</artifactId>
             <version>${project.version}</version>
         </dependency>
-	<!-- 
+	<!-- AXIOM-506 This breaks in the commit to switch to jakarta
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-legacy-attachments</artifactId>
