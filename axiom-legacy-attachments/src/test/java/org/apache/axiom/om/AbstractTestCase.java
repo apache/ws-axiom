@@ -22,8 +22,8 @@ package org.apache.axiom.om;
 import java.io.InputStream;
 import java.net.URL;
 
-import javax.activation.DataSource;
-import javax.activation.URLDataSource;
+import jakarta.activation.DataSource;
+import jakarta.activation.URLDataSource;
 
 import junit.framework.TestCase;
 

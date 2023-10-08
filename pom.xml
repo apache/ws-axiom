@@ -1352,7 +1352,7 @@ $${type_declaration}</template></templates>]]></value>
                                 <!-- BSD style license -->
                                 <exclude>legal/stax2-api-LICENSE.txt</exclude>
                                 <!-- BSD style license -->
-                                <exclude>legal/jakarta.activation-api-LICENSE.txt</exclude>
+                                <exclude>legal/jakarta-activation-api-LICENSE.txt</exclude>
                                 <!-- BSD style license -->
                                 <exclude>legal/jakarta.xml.bind-api-LICENSE.txt</exclude>
                                 <!-- Files used by various developer tools -->

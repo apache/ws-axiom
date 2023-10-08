@@ -23,8 +23,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import org.apache.axiom.ts.soap.MTOMSample;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
 
 import java.io.File;
 import java.io.InputStream;

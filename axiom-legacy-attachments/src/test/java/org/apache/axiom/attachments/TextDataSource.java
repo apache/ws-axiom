@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 
-import javax.activation.DataSource;
+import jakarta.activation.DataSource;
 
 import org.apache.commons.io.input.ReaderInputStream;
 

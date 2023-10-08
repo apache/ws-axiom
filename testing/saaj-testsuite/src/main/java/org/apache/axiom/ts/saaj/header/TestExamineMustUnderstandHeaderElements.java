@@ -21,10 +21,10 @@ package org.apache.axiom.ts.saaj.header;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import javax.xml.soap.MimeHeaders;
-import javax.xml.soap.SOAPHeader;
-import javax.xml.soap.SOAPHeaderElement;
-import javax.xml.soap.SOAPMessage;
+import jakarta.xml.soap.MimeHeaders;
+import jakarta.xml.soap.SOAPHeader;
+import jakarta.xml.soap.SOAPHeaderElement;
+import jakarta.xml.soap.SOAPMessage;
 
 import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;

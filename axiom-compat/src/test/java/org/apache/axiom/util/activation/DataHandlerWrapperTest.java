@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.util.activation;
 
-import javax.activation.DataHandler;
+import jakarta.activation.DataHandler;
 
 import junit.framework.TestCase;
 

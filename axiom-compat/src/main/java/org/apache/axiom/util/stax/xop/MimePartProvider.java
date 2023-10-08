@@ -21,7 +21,7 @@ package org.apache.axiom.util.stax.xop;
 
 import java.io.IOException;
 
-import javax.activation.DataHandler;
+import jakarta.activation.DataHandler;
 
 /**
  * Interface used by {@link XOPDecodingStreamReader} to load MIME parts referenced by

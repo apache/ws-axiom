@@ -20,10 +20,10 @@ package org.apache.axiom.ts.saaj;
 
 import java.lang.reflect.Method;
 
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SAAJMetaFactory;
-import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPFactory;
+import jakarta.xml.soap.MessageFactory;
+import jakarta.xml.soap.SAAJMetaFactory;
+import jakarta.xml.soap.SOAPException;
+import jakarta.xml.soap.SOAPFactory;
 
 public final class SAAJImplementation {
     private static final Method newMessageFactoryMethod;

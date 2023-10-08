@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.saaj.element;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPElement;
+import jakarta.xml.soap.SOAPElement;
 
 import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;

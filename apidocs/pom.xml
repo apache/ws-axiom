@@ -43,7 +43,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-javax-activation</artifactId>
+            <artifactId>axiom-jakarta.activation</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -51,11 +51,13 @@
             <artifactId>axiom-javax-jaxb</artifactId>
             <version>${project.version}</version>
         </dependency>
+	<!-- 
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-legacy-attachments</artifactId>
             <version>${project.version}</version>
         </dependency>
+	-->
         <!-- These are artifacts that are optional/provided dependencies of the above artifacts.
              We need them to process the sources. -->
         <dependency>

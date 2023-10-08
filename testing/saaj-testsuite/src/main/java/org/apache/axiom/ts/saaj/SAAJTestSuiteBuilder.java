@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.saaj;
 
-import javax.xml.soap.SAAJMetaFactory;
+import jakarta.xml.soap.SAAJMetaFactory;
 
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.saaj.body.TestAddChildElementReification;

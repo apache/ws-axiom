@@ -19,8 +19,8 @@
 
 package org.apache.axiom.attachments;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
 
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.ContentTransferEncoding;

@@ -22,7 +22,7 @@ package org.apache.axiom.attachments.lifecycle;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.activation.DataHandler;
+import jakarta.activation.DataHandler;
 
 public interface DataHandlerExt {
     /**

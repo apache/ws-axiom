@@ -21,8 +21,8 @@ package org.apache.axiom.ts.saaj.element;
 import static com.google.common.truth.Truth.assertThat;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPElement;
-import javax.xml.soap.SOAPPart;
+import jakarta.xml.soap.SOAPElement;
+import jakarta.xml.soap.SOAPPart;
 
 import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;

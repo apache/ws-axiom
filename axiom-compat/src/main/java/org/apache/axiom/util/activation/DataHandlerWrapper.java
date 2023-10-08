@@ -18,16 +18,15 @@
  */
 package org.apache.axiom.util.activation;
 
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.activation.CommandInfo;
-import javax.activation.CommandMap;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
+import jakarta.activation.ActivationDataFlavor;
+import jakarta.activation.CommandInfo;
+import jakarta.activation.CommandMap;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
 
 /**
  * Base class for {@link DataHandler} wrappers.
@@ -97,18 +96,18 @@ public class DataHandlerWrapper extends DataHandler {
     }
 
     @Override
-    public Object getTransferData(DataFlavor flavor)
-            throws UnsupportedFlavorException, IOException {
+    public Object getTransferData(ActivationDataFlavor flavor)
+            throws IOException {
         return parent.getTransferData(flavor);
     }
 
     @Override
-    public DataFlavor[] getTransferDataFlavors() {
+    public ActivationDataFlavor[] getTransferDataFlavors() {
         return parent.getTransferDataFlavors();
     }
 
     @Override
-    public boolean isDataFlavorSupported(DataFlavor flavor) {
+    public boolean isDataFlavorSupported(ActivationDataFlavor flavor) {
         return parent.isDataFlavorSupported(flavor);
     }
 

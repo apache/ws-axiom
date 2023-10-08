@@ -19,7 +19,7 @@
 
 package org.apache.axiom.attachments;
 
-import javax.activation.FileDataSource;
+import jakarta.activation.FileDataSource;
 import java.io.File;
 
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
