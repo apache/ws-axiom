@@ -41,25 +41,21 @@
             <artifactId>axiom-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-	<!-- AXIOM-506 This breaks in the commit to switch to jakarta
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-jakarta-activation</artifactId>
             <version>${project.version}</version>
         </dependency>
-	-->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-javax-jaxb</artifactId>
+            <artifactId>axiom-jakarta-jaxb</artifactId>
             <version>${project.version}</version>
         </dependency>
-	<!-- AXIOM-506 This breaks in the commit to switch to jakarta
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-legacy-attachments</artifactId>
             <version>${project.version}</version>
         </dependency>
-	-->
         <!-- These are artifacts that are optional/provided dependencies of the above artifacts.
              We need them to process the sources. -->
         <dependency>
@@ -76,11 +72,6 @@
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>stax2-api</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.activation</groupId>
-            <artifactId>jakarta.activation-api</artifactId>
-            <version>1.2.2</version>
         </dependency>
     </dependencies>
 
