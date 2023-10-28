@@ -278,7 +278,7 @@
         <errorprone.version>2.16</errorprone.version>
         <junit5.version>5.9.1</junit5.version>
         <mime4j.version>0.8.9</mime4j.version>
-
+	<eclipse-angus.version>2.0.2</eclipse-angus.version>
         <skipDeploy>false</skipDeploy>
 
         <project.build.outputTimestamp>2022-03-13T11:17:04Z</project.build.outputTimestamp>
@@ -502,6 +502,16 @@
                 <groupId>org.ow2.asm</groupId>
                 <artifactId>asm-commons</artifactId>
                 <version>${asm.version}</version>
+            </dependency>
+	    <dependency>
+                <groupId>org.eclipse.angus</groupId>
+                <artifactId>jakarta.mail</artifactId>
+                <version>${eclipse-angus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.angus</groupId>
+                <artifactId>angus-mail</artifactId>
+                <version>${eclipse-angus.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
