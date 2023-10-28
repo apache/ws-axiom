@@ -46,8 +46,8 @@ import org.apache.axiom.blob.Blob;
  * should be used instead of {@link OMText#getText()}.
  * <p>
  * An {@link OMText} node stores the character data as {@link String},
- * <code>char[]</code> or a {@link javax.activation.DataHandler}. The latter is
- * used for base64 encoded binary data.
+ * <code>char[]</code> or a {@link Blob}. The latter is used for base64 encoded
+ * binary data.
  */
 public interface OMText extends OMNode {
     /**

@@ -42,7 +42,7 @@ import java.net.URL;
  * ByteArrayDataSource(byteArray));</p> <p>    dataHandler.setTransferEncoding("quoted-printable");</p>
  * <p>    dataHandler.setContentType("image/jpg");</p>
  *
- * @see javax.activation.DataHandler
+ * @see jakarta.activation.DataHandler
  */
 public class ConfigurableDataHandler extends DataHandler {
     private static final Log log = LogFactory.getLog(ConfigurableDataHandler.class);
