@@ -53,6 +53,14 @@
             <includes>
                 <include>*:*:jar</include>
             </includes>
+            <excludes>
+                <!-- These dependencies are stripped when generating the dependency-reduced POMs,
+                     but they may still be present in a reactor build. Exclude them. -->
+                <exclude>*:base64-utils</exclude>
+                <exclude>*:blob</exclude>
+                <exclude>*:om-mixins</exclude>
+                <exclude>*:dom-mixins</exclude>
+            </excludes>
             <useProjectArtifact>false</useProjectArtifact>
             <useTransitiveFiltering>true</useTransitiveFiltering>
         </dependencySet>
