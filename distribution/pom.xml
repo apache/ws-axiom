@@ -58,7 +58,12 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-javax-jaxb</artifactId>
+            <artifactId>axiom-jakarta-activation</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-jakarta-jaxb</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
