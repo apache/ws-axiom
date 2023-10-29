@@ -63,11 +63,6 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-all</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>devguide</artifactId>
             <version>${project.version}</version>
             <type>pdf</type>

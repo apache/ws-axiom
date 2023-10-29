@@ -53,18 +53,8 @@
             <includes>
                 <include>*:*:jar</include>
             </includes>
-            <excludes>
-                <exclude>*:axiom-all</exclude>
-            </excludes>
             <useProjectArtifact>false</useProjectArtifact>
             <useTransitiveFiltering>true</useTransitiveFiltering>
-        </dependencySet>
-        <dependencySet>
-            <includes>
-                <include>*:axiom-all</include>
-            </includes>
-            <useProjectArtifact>false</useProjectArtifact>
-            <outputFileNameMapping>axiom.jar</outputFileNameMapping>
         </dependencySet>
         <dependencySet>
             <outputDirectory>apidocs</outputDirectory>
