@@ -275,10 +275,11 @@
         <groovy.version>4.0.12</groovy.version>
         <auto-service.version>1.0.1</auto-service.version>
         <asm.version>9.6</asm.version>
+        <woodstox.version>6.5.1</woodstox.version>
         <errorprone.version>2.16</errorprone.version>
         <junit5.version>5.9.1</junit5.version>
         <mime4j.version>0.8.9</mime4j.version>
-	<eclipse-angus.version>2.0.2</eclipse-angus.version>
+	    <eclipse-angus.version>2.0.2</eclipse-angus.version>
         <skipDeploy>false</skipDeploy>
 
         <project.build.outputTimestamp>2022-03-13T11:17:04Z</project.build.outputTimestamp>
@@ -294,7 +295,7 @@
             <dependency>
                 <groupId>com.fasterxml.woodstox</groupId>
                 <artifactId>woodstox-core</artifactId>
-                <version>6.5.1</version>
+                <version>${woodstox.version}</version>
             </dependency>
             <dependency>
                 <groupId>jaxen</groupId>
@@ -1092,7 +1093,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
+                <version>0.8.11</version>
                 <executions>
                     <execution>
                         <goals>

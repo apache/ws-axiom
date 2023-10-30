@@ -121,7 +121,7 @@
                         <configuration>
                             <ignore>
                                 <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
-                                org.apache.axiom.attachments.lifecycle.LifecycleManager -&gt; org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
+                                org.apache.axiom.jakarta.attachments.lifecycle.LifecycleManager -&gt; org.apache.axiom.jakarta.attachments.lifecycle.impl.FileAccessor,
                             </ignore>
                         </configuration>
                     </execution>
