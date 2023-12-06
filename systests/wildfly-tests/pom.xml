@@ -32,7 +32,7 @@
     <name>Wildfly Tests</name>
 
     <properties>
-        <wildfly.version>30.0.0.Final</wildfly.version>
+        <wildfly.version>30.0.1.Final</wildfly.version>
         <wildfly.home>${project.build.directory}/wildfly-preview-${wildfly.version}</wildfly.home>
         <wildfly.jigsawArgs>--add-modules java.se</wildfly.jigsawArgs>
     </properties>
