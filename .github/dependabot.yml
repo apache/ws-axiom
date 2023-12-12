@@ -25,9 +25,6 @@ updates:
       - dependency-name: "com.sun.xml.messaging.saaj:saaj-impl"
         versions:
           - ">= 2.0"
-      - dependency-name: "com.sun.xml.ws:jaxws-rt"
-        versions:
-          - ">= 3.0"
       - dependency-name: "jakarta.activation:jakarta.activation-api"
         versions:
           - ">= 1.2.2"

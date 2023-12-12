@@ -67,11 +67,6 @@
                 <artifactId>jaxb-osgi</artifactId>
                 <version>${jaxbri.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.sun.xml.ws</groupId>
-                <artifactId>jaxws-rt</artifactId>
-                <version>2.3.5</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
