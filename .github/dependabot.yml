@@ -22,9 +22,6 @@ updates:
       - dependency-name: "com.sun.activation:jakarta.activation"
         versions:
           - ">= 1.2.2"
-      - dependency-name: "com.sun.mail:jakarta.mail"
-        versions:
-          - ">= 2.0"
       - dependency-name: "com.sun.xml.messaging.saaj:saaj-impl"
         versions:
           - ">= 2.0"
