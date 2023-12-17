@@ -18,11 +18,12 @@
  */
 package org.apache.axiom.util.xml;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.xml.namespace.QName;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class QNameMapTest {
     @Test
@@ -32,9 +33,10 @@ public class QNameMapTest {
         assertThat(map.get(null, "name")).isEqualTo("value");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetWithNullLocalPart() {
-        new QNameMap<Object>().get("urn:test", null);
+        assertThrows(
+                IllegalArgumentException.class, () -> new QNameMap<Object>().get("urn:test", null));
     }
 
     @Test
