@@ -43,7 +43,7 @@ public final class XMLChar {
      * @param c the character to examine
      * @return {@code true} if the character is name start char, {@code false} otherwise
      */
-    public static boolean isNameStartChar(char c) {
+    public static boolean isNameStartChar(int c) {
         return c == ':'
                 || 'A' <= c && c <= 'Z'
                 || c == '_'
@@ -70,7 +70,7 @@ public final class XMLChar {
      * @param c the character to examine
      * @return {@code true} if the character is name char, {@code false} otherwise
      */
-    public static boolean isNameChar(char c) {
+    public static boolean isNameChar(int c) {
         return isNameStartChar(c)
                 || c == '-'
                 || c == '.'

@@ -94,6 +94,12 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNS(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNSWithInvalidName(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNSWithoutNamespace(dbf));
+        addTest(
+                new org.apache.axiom.ts.dom.document.TestCreateElementNSWithSupplementaryCharacter(
+                        dbf));
+        addTest(
+                new org.apache.axiom.ts.dom.document.TestCreateElementWithSupplementaryCharacter(
+                        dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateEntityReference(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateText(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestDocumentSiblings(dbf));
@@ -209,6 +215,7 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNull(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixWithSupplementaryCharacter(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetTextContent(dbf));
         addTest(
                 new org.apache.axiom.ts.dom.element.attributes.TestSetNamedItemNSWrongDocument(

@@ -23,7 +23,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.apache.axiom.ts.dom.document.TestCreateElementNSWithSupplementaryCharacter;
+import org.apache.axiom.ts.dom.document.TestCreateElementWithSupplementaryCharacter;
 import org.apache.axiom.ts.dom.element.TestLookupNamespaceURIXercesJ1586;
+import org.apache.axiom.ts.dom.element.TestSetPrefixWithSupplementaryCharacter;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 
 public class XercesTest extends TestCase {
@@ -36,6 +39,10 @@ public class XercesTest extends TestCase {
                                 return new DocumentBuilderFactoryImpl();
                             }
                         });
+
+        builder.exclude(TestCreateElementWithSupplementaryCharacter.class);
+        builder.exclude(TestCreateElementNSWithSupplementaryCharacter.class);
+        builder.exclude(TestSetPrefixWithSupplementaryCharacter.class);
 
         // XERCESJ-1586
         builder.exclude(TestLookupNamespaceURIXercesJ1586.class);

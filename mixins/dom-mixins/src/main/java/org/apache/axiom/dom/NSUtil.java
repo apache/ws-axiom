@@ -32,23 +32,25 @@ public final class NSUtil {
         if (name.length() == 0) {
             throw DOMExceptionUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
-        for (int i = 0; i < name.length(); i++) {
-            char c = name.charAt(i);
+        for (int i = 0; i < name.length(); ) {
+            int c = name.codePointAt(i);
             if (i == 0 && !isNameStartChar(c) || i > 0 && !isNameChar(c)) {
                 throw DOMExceptionUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
             }
+            i += Character.charCount(c);
         }
     }
 
     public static void validatePrefix(String prefix) throws DOMException {
-        for (int i = 0; i < prefix.length(); i++) {
-            char c = prefix.charAt(i);
+        for (int i = 0; i < prefix.length(); ) {
+            int c = prefix.codePointAt(i);
             if (c == ':') {
                 throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
             }
             if (i == 0 && !isNameStartChar(c) || i > 0 && !isNameChar(c)) {
                 throw DOMExceptionUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
             }
+            i += Character.charCount(c);
         }
     }
 
@@ -58,8 +60,8 @@ public final class NSUtil {
         }
         int colonPosition = -1;
         boolean checkNameStart = true;
-        for (int i = 0; i < qualifiedName.length(); i++) {
-            char c = qualifiedName.charAt(i);
+        for (int i = 0; i < qualifiedName.length(); ) {
+            int c = qualifiedName.codePointAt(i);
             if (c == ':') {
                 if (colonPosition == -1 && i > 0) {
                     colonPosition = i;
@@ -78,6 +80,7 @@ public final class NSUtil {
             } else if (!isNameChar(c)) {
                 throw DOMExceptionUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
             }
+            i += Character.charCount(c);
         }
         if (checkNameStart) {
             // If we get here, then the qualified name ends with a colon
