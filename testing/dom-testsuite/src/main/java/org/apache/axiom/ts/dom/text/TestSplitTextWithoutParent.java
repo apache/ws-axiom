@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.dom.text;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -39,6 +39,6 @@ public class TestSplitTextWithoutParent extends DOMTestCase {
         Text newText = text.splitText(2);
         assertThat(text.getData()).isEqualTo("AB");
         assertThat(newText.getData()).isEqualTo("CD");
-        assertThat(newText.getOwnerDocument()).isSameInstanceAs(document);
+        assertThat(newText.getOwnerDocument()).isSameAs(document);
     }
 }

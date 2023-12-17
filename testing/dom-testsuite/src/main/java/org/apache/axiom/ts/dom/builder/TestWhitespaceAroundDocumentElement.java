@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.dom.builder;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringReader;
 
@@ -59,6 +59,6 @@ public class TestWhitespaceAroundDocumentElement extends DOMTestCase {
 
         NodeList children = doc.getChildNodes();
         assertThat(children.getLength()).isEqualTo(2);
-        assertThat(children.item(1)).isSameInstanceAs(doc.getDocumentElement());
+        assertThat(children.item(1)).isSameAs(doc.getDocumentElement());
     }
 }
