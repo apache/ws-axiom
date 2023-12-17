@@ -21,6 +21,7 @@ package org.apache.axiom.dom.impl.mixin;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.dom.DOMNSAwareNamedNode;
+import org.apache.axiom.dom.NSUtil;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 
@@ -51,6 +52,7 @@ public abstract class DOMNSAwareNamedNodeMixin implements DOMNSAwareNamedNode {
         if (coreGetNamespaceURI().length() == 0 && prefix.length() > 0) {
             throw newDOMException(DOMException.NAMESPACE_ERR);
         }
+        NSUtil.validatePrefix(prefix);
         coreSetPrefix(prefix);
     }
 
