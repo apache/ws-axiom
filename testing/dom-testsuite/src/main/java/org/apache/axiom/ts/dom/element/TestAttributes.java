@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -39,44 +41,44 @@ public class TestAttributes extends DOMTestCase {
 
         // Check whether body has attributes
         Element bodyElement = doc.getDocumentElement();
-        assertTrue(bodyElement.hasAttributes());
+        assertThat(bodyElement.hasAttributes()).isTrue();
 
         Element directionResponse =
                 (Element) bodyElement.getElementsByTagName("GetDirectionsResponse").item(0);
-        assertTrue(directionResponse.hasAttributes());
+        assertThat(directionResponse.hasAttributes()).isTrue();
 
         NamedNodeMap attributes = directionResponse.getAttributes();
         Attr attr = (Attr) attributes.item(0);
-        assertEquals("xmlns", attr.getName());
-        assertEquals("http://www.example.org/webservices/", attr.getValue());
+        assertThat(attr.getName()).isEqualTo("xmlns");
+        assertThat(attr.getValue()).isEqualTo("http://www.example.org/webservices/");
 
         Element directionResult =
                 (Element) bodyElement.getElementsByTagName("GetDirectionsResult").item(0);
-        assertFalse(directionResult.hasAttributes());
+        assertThat(directionResult.hasAttributes()).isFalse();
 
         Element drivingDirection =
                 (Element) directionResult.getElementsByTagName("drivingdirections").item(0);
-        assertTrue(drivingDirection.hasAttributes());
+        assertThat(drivingDirection.hasAttributes()).isTrue();
 
         attributes = drivingDirection.getAttributes();
         attr = (Attr) attributes.item(0);
-        assertEquals("xmlns", attr.getName());
-        assertEquals("", attr.getValue());
+        assertThat(attr.getName()).isEqualTo("xmlns");
+        assertThat(attr.getValue()).isEqualTo("");
 
         Element route = (Element) drivingDirection.getElementsByTagName("route").item(0);
-        assertTrue(route.hasAttributes());
+        assertThat(route.hasAttributes()).isTrue();
 
         attributes = route.getAttributes();
         attr = (Attr) attributes.item(0);
-        assertEquals("distanceToTravel", attr.getName());
-        assertEquals("500m", attr.getValue());
+        assertThat(attr.getName()).isEqualTo("distanceToTravel");
+        assertThat(attr.getValue()).isEqualTo("500m");
 
         attr = (Attr) attributes.item(1);
-        assertEquals("finalStep", attr.getName());
-        assertEquals("false", attr.getValue());
+        assertThat(attr.getName()).isEqualTo("finalStep");
+        assertThat(attr.getValue()).isEqualTo("false");
 
         attr = (Attr) attributes.item(2);
-        assertEquals("id", attr.getName());
-        assertEquals("0", attr.getValue());
+        assertThat(attr.getName()).isEqualTo("id");
+        assertThat(attr.getValue()).isEqualTo("0");
     }
 }

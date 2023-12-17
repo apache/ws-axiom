@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -37,19 +39,20 @@ public class TestGetDomConfigDefaults extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         DOMConfiguration domConfig = document.getDomConfig();
-        assertEquals(Boolean.FALSE, domConfig.getParameter("canonical-form"));
-        assertEquals(Boolean.TRUE, domConfig.getParameter("cdata-sections"));
-        assertEquals(Boolean.FALSE, domConfig.getParameter("check-character-normalization"));
-        assertEquals(Boolean.TRUE, domConfig.getParameter("comments"));
-        assertEquals(Boolean.FALSE, domConfig.getParameter("datatype-normalization"));
-        assertEquals(Boolean.TRUE, domConfig.getParameter("element-content-whitespace"));
-        assertEquals(Boolean.TRUE, domConfig.getParameter("entities"));
-        assertEquals(Boolean.TRUE, domConfig.getParameter("namespaces"));
-        assertEquals(Boolean.TRUE, domConfig.getParameter("namespace-declarations"));
-        assertEquals(Boolean.FALSE, domConfig.getParameter("normalize-characters"));
-        assertEquals(Boolean.TRUE, domConfig.getParameter("split-cdata-sections"));
-        assertEquals(Boolean.FALSE, domConfig.getParameter("validate"));
-        assertEquals(Boolean.FALSE, domConfig.getParameter("validate-if-schema"));
-        assertEquals(Boolean.TRUE, domConfig.getParameter("well-formed"));
+        assertThat(domConfig.getParameter("canonical-form")).isEqualTo(Boolean.FALSE);
+        assertThat(domConfig.getParameter("cdata-sections")).isEqualTo(Boolean.TRUE);
+        assertThat(domConfig.getParameter("check-character-normalization"))
+                .isEqualTo(Boolean.FALSE);
+        assertThat(domConfig.getParameter("comments")).isEqualTo(Boolean.TRUE);
+        assertThat(domConfig.getParameter("datatype-normalization")).isEqualTo(Boolean.FALSE);
+        assertThat(domConfig.getParameter("element-content-whitespace")).isEqualTo(Boolean.TRUE);
+        assertThat(domConfig.getParameter("entities")).isEqualTo(Boolean.TRUE);
+        assertThat(domConfig.getParameter("namespaces")).isEqualTo(Boolean.TRUE);
+        assertThat(domConfig.getParameter("namespace-declarations")).isEqualTo(Boolean.TRUE);
+        assertThat(domConfig.getParameter("normalize-characters")).isEqualTo(Boolean.FALSE);
+        assertThat(domConfig.getParameter("split-cdata-sections")).isEqualTo(Boolean.TRUE);
+        assertThat(domConfig.getParameter("validate")).isEqualTo(Boolean.FALSE);
+        assertThat(domConfig.getParameter("validate-if-schema")).isEqualTo(Boolean.FALSE);
+        assertThat(domConfig.getParameter("well-formed")).isEqualTo(Boolean.TRUE);
     }
 }

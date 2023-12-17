@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -43,11 +45,11 @@ public class TestLookupNamespaceURI extends DOMTestCase {
         documentElement.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:ns", "urn:test");
         document.appendChild(documentElement);
         // Note: this part is also tested by the W3C test suite (see nodelookupnamespaceuri02)
-        assertEquals("urn:test", document.lookupNamespaceURI("ns"));
+        assertThat(document.lookupNamespaceURI("ns")).isEqualTo("urn:test");
         // The following assertion is important to check that there is no infinite recursion
         // (Document delegates the lookup to its document element, but the document element must
         // not delegate to its parent if no matching declaration is found).
         // This is not tested by the W3C test suite.
-        assertNull(document.lookupNamespaceURI("p"));
+        assertThat(document.lookupNamespaceURI("p")).isNull();
     }
 }

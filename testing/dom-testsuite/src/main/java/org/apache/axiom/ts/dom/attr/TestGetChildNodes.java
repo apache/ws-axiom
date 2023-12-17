@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.attr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -38,9 +40,9 @@ public class TestGetChildNodes extends DOMTestCase {
         Attr attr = document.createAttributeNS(null, "name");
         attr.setValue("value");
         NodeList children = attr.getChildNodes();
-        assertEquals(1, children.getLength());
+        assertThat(children.getLength()).isEqualTo(1);
         Node child = children.item(0);
-        assertTrue(child instanceof Text);
-        assertEquals("value", ((Text) child).getData());
+        assertThat(child).isInstanceOf(Text.class);
+        assertThat(((Text) child).getData()).isEqualTo("value");
     }
 }

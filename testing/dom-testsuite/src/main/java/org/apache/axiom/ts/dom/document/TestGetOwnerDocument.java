@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -36,6 +38,6 @@ public class TestGetOwnerDocument extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
-        assertNull(document.getOwnerDocument());
+        assertThat(document.getOwnerDocument()).isNull();
     }
 }

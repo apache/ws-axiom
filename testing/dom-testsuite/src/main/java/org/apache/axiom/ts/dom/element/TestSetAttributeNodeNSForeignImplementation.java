@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,11 +40,13 @@ public class TestSetAttributeNodeNSForeignImplementation extends DOMTestCase {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
         Attr attr = mock(Attr.class);
-        try {
-            element.setAttributeNodeNS(attr);
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertThat(ex.code).isEqualTo(DOMException.WRONG_DOCUMENT_ERR);
-        }
+        assertThat(
+                        assertThrows(
+                                        DOMException.class,
+                                        () -> {
+                                            element.setAttributeNodeNS(attr);
+                                        })
+                                .code)
+                .isEqualTo(DOMException.WRONG_DOCUMENT_ERR);
     }
 }

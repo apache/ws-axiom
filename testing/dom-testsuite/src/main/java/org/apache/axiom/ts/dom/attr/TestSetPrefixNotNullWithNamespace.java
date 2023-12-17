@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.attr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -39,7 +41,7 @@ public class TestSetPrefixNotNullWithNamespace extends DOMTestCase {
         Document document = dbf.newDocumentBuilder().newDocument();
         Attr attr = document.createAttributeNS("urn:ns", "p:test");
         attr.setPrefix("q");
-        assertEquals("q", attr.getPrefix());
-        assertEquals("q:test", attr.getName());
+        assertThat(attr.getPrefix()).isEqualTo("q");
+        assertThat(attr.getName()).isEqualTo("q:test");
     }
 }

@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.dom.element.attributes;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -39,11 +42,13 @@ public class TestSetNamedItemNSWrongDocument extends DOMTestCase {
         Document document2 = db.newDocument();
         Element element = document1.createElementNS(null, "test");
         Attr attr = document2.createAttributeNS(null, "test");
-        try {
-            element.getAttributes().setNamedItemNS(attr);
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertEquals(DOMException.WRONG_DOCUMENT_ERR, ex.code);
-        }
+        assertThat(
+                        assertThrows(
+                                        DOMException.class,
+                                        () -> {
+                                            element.getAttributes().setNamedItemNS(attr);
+                                        })
+                                .code)
+                .isEqualTo(DOMException.WRONG_DOCUMENT_ERR);
     }
 }

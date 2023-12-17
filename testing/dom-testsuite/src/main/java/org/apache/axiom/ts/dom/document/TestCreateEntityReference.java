@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -34,9 +36,9 @@ public class TestCreateEntityReference extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         EntityReference entref = document.createEntityReference("myentity");
-        assertEquals(Node.ENTITY_REFERENCE_NODE, entref.getNodeType());
-        assertEquals("myentity", entref.getNodeName());
-        assertNull(entref.getNodeValue());
-        assertSame(document, entref.getOwnerDocument());
+        assertThat(entref.getNodeType()).isEqualTo(Node.ENTITY_REFERENCE_NODE);
+        assertThat(entref.getNodeName()).isEqualTo("myentity");
+        assertThat(entref.getNodeValue()).isNull();
+        assertThat(entref.getOwnerDocument()).isSameAs(document);
     }
 }

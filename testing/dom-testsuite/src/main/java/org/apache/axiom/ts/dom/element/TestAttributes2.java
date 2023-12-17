@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.XMLConstants;
@@ -43,14 +45,14 @@ public class TestAttributes2 extends DOMTestCase {
                                 new InputSource(
                                         new StringReader("<root><child xmlns=\"\"/></root>")));
         Element element = (Element) doc.getDocumentElement().getFirstChild();
-        assertTrue(element.hasAttributes());
+        assertThat(element.hasAttributes()).isTrue();
         NamedNodeMap attributes = element.getAttributes();
-        assertEquals(1, attributes.getLength());
+        assertThat(attributes.getLength()).isEqualTo(1);
         Attr attr = (Attr) attributes.item(0);
-        assertEquals("xmlns", attr.getName());
-        assertNull(attr.getPrefix());
-        assertEquals("xmlns", attr.getLocalName());
-        assertEquals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, attr.getNamespaceURI());
-        assertEquals("", attr.getValue());
+        assertThat(attr.getName()).isEqualTo("xmlns");
+        assertThat(attr.getPrefix()).isNull();
+        assertThat(attr.getLocalName()).isEqualTo("xmlns");
+        assertThat(attr.getNamespaceURI()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
+        assertThat(attr.getValue()).isEqualTo("");
     }
 }

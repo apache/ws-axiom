@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.attr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -43,12 +45,12 @@ public class TestCloneNode extends DOMTestCase {
         // Note that for an attribute, cloneNode always copies the children, even if deep=false
         Attr clone = (Attr) attr.cloneNode(deep);
         Node child = clone.getFirstChild();
-        assertNotNull(child);
-        assertEquals(Node.TEXT_NODE, child.getNodeType());
-        assertEquals("foo", child.getNodeValue());
+        assertThat(child).isNotNull();
+        assertThat(child.getNodeType()).isEqualTo(Node.TEXT_NODE);
+        assertThat(child.getNodeValue()).isEqualTo("foo");
         child = child.getNextSibling();
-        assertEquals(Node.TEXT_NODE, child.getNodeType());
-        assertEquals("bar", child.getNodeValue());
-        assertNull(child.getNextSibling());
+        assertThat(child.getNodeType()).isEqualTo(Node.TEXT_NODE);
+        assertThat(child.getNodeValue()).isEqualTo("bar");
+        assertThat(child.getNextSibling()).isNull();
     }
 }

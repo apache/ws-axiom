@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.documentfragment;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -38,15 +40,15 @@ public class TestCloneNodeDeep extends DOMTestCase {
         fragment.appendChild(document.createComment("comment"));
         fragment.appendChild(document.createElementNS(null, "test"));
         DocumentFragment clone = (DocumentFragment) fragment.cloneNode(true);
-        assertSame(document, clone.getOwnerDocument());
+        assertThat(clone.getOwnerDocument()).isSameAs(document);
         Node child = clone.getFirstChild();
-        assertNotNull(child);
-        assertEquals(Node.COMMENT_NODE, child.getNodeType());
+        assertThat(child).isNotNull();
+        assertThat(child.getNodeType()).isEqualTo(Node.COMMENT_NODE);
         child = child.getNextSibling();
-        assertNotNull(child);
-        assertEquals(Node.ELEMENT_NODE, child.getNodeType());
-        assertEquals("test", child.getLocalName());
+        assertThat(child).isNotNull();
+        assertThat(child.getNodeType()).isEqualTo(Node.ELEMENT_NODE);
+        assertThat(child.getLocalName()).isEqualTo("test");
         child = child.getNextSibling();
-        assertNull(child);
+        assertThat(child).isNull();
     }
 }

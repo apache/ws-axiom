@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -33,8 +35,8 @@ public class TestCreateElementNSWithoutNamespace extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element element = doc.createElementNS(null, "test");
-        assertNull(element.getPrefix());
-        assertNull(element.getNamespaceURI());
-        assertEquals("test", element.getTagName());
+        assertThat(element.getPrefix()).isNull();
+        assertThat(element.getNamespaceURI()).isNull();
+        assertThat(element.getTagName()).isEqualTo("test");
     }
 }

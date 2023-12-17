@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -39,11 +42,13 @@ public class TestSetPrefixNotNullWithoutNamespace extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
-        try {
-            element.setPrefix("p");
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertEquals(DOMException.NAMESPACE_ERR, ex.code);
-        }
+        assertThat(
+                        assertThrows(
+                                        DOMException.class,
+                                        () -> {
+                                            element.setPrefix("p");
+                                        })
+                                .code)
+                .isEqualTo(DOMException.NAMESPACE_ERR);
     }
 }

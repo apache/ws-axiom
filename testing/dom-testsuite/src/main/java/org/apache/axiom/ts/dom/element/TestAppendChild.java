@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -44,15 +46,15 @@ public class TestAppendChild extends DOMTestCase {
         elem.appendChild(childElem);
 
         Element addedChild = (Element) elem.getFirstChild();
-        assertNotNull("Child Element node missing", addedChild);
-        assertEquals("Incorre node object", childElem, addedChild);
+        assertThat(addedChild).isNotNull();
+        assertThat(addedChild).isEqualTo(childElem);
 
         elem = doc.createElement(elementName);
         Text text = doc.createTextNode(childTextValue);
         elem.appendChild(text);
 
         Text addedTextnode = (Text) elem.getFirstChild();
-        assertNotNull("Child Text node missing", addedTextnode);
-        assertEquals("Incorrect node object", text, addedTextnode);
+        assertThat(addedTextnode).isNotNull();
+        assertThat(addedTextnode).isEqualTo(text);
     }
 }

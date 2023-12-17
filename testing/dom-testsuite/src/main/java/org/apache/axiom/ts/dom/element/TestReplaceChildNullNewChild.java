@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.junit.Assert.assertThrows;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -41,11 +43,10 @@ public class TestReplaceChildNullNewChild extends DOMTestCase {
         Element root = document.createElementNS(null, "root");
         Element child = document.createElementNS(null, "child");
         root.appendChild(child);
-        try {
-            root.replaceChild(null, child);
-            fail("Expected exception");
-        } catch (Exception ex) {
-            // Expected
-        }
+        assertThrows(
+                Exception.class,
+                () -> {
+                    root.replaceChild(null, child);
+                });
     }
 }

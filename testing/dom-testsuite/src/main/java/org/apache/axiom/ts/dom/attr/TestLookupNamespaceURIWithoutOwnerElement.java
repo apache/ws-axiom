@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.attr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -38,6 +40,6 @@ public class TestLookupNamespaceURIWithoutOwnerElement extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Attr attr = document.createAttributeNS("urn:test", "p:attr");
-        assertNull(attr.lookupNamespaceURI("p"));
+        assertThat(attr.lookupNamespaceURI("p")).isNull();
     }
 }

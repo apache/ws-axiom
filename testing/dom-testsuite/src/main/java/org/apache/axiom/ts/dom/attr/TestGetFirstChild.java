@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.attr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -37,8 +39,8 @@ public class TestGetFirstChild extends DOMTestCase {
         Attr attr = document.createAttributeNS(null, "name");
         attr.setValue("value");
         Node child = attr.getFirstChild();
-        assertNotNull("Expected Attr to have a child node", child);
-        assertTrue(child instanceof Text);
-        assertEquals("value", ((Text) child).getData());
+        assertThat(child).isNotNull();
+        assertThat(child).isInstanceOf(Text.class);
+        assertThat(((Text) child).getData()).isEqualTo("value");
     }
 }

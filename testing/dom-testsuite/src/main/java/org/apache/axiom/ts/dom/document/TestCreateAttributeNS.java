@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -48,15 +50,15 @@ public class TestCreateAttributeNS extends DOMTestCase {
         Attr attr = doc.createAttributeNS(uri, name);
 
         // Check name
-        assertEquals("Attr name mismatch", localName, attr.getLocalName());
-        assertEquals("NamsspaceURI mismatch", uri, attr.getNamespaceURI());
-        assertEquals("namespace prefix mismatch", prefix, attr.getPrefix());
-        assertEquals(name, attr.getName());
+        assertThat(attr.getLocalName()).isEqualTo(localName);
+        assertThat(attr.getNamespaceURI()).isEqualTo(uri);
+        assertThat(attr.getPrefix()).isEqualTo(prefix);
+        assertThat(attr.getName()).isEqualTo(name);
 
         // Check defaults
-        assertSame(doc, attr.getOwnerDocument());
-        assertNull(attr.getOwnerElement());
-        assertNull(attr.getFirstChild());
-        assertEquals("", attr.getValue());
+        assertThat(attr.getOwnerDocument()).isSameAs(doc);
+        assertThat(attr.getOwnerElement()).isNull();
+        assertThat(attr.getFirstChild()).isNull();
+        assertThat(attr.getValue()).isEqualTo("");
     }
 }

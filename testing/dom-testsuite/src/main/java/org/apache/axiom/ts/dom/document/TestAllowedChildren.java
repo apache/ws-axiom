@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -38,33 +41,39 @@ public class TestAllowedChildren extends DOMTestCase {
 
         // Document Object Model (DOM) Level 3 Core Specification, section 1.1.1
         // says that text nodes are not allowed as children of a document.
-        try {
-            doc.appendChild(doc.createTextNode("    "));
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
-        }
+        assertThat(
+                        assertThrows(
+                                        DOMException.class,
+                                        () -> {
+                                            doc.appendChild(doc.createTextNode("    "));
+                                        })
+                                .code)
+                .isEqualTo(DOMException.HIERARCHY_REQUEST_ERR);
 
         doc.appendChild(doc.createElement("root1"));
 
         // Multiple document elements are not allowed
-        try {
-            doc.appendChild(doc.createElement("root2"));
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
-        }
+        assertThat(
+                        assertThrows(
+                                        DOMException.class,
+                                        () -> {
+                                            doc.appendChild(doc.createElement("root2"));
+                                        })
+                                .code)
+                .isEqualTo(DOMException.HIERARCHY_REQUEST_ERR);
 
         // PIs and comments after the document element are allowed
         doc.appendChild(doc.createProcessingInstruction("pi", "data"));
         doc.appendChild(doc.createComment("some comment"));
 
         // Again, text nodes are not allowed
-        try {
-            doc.appendChild(doc.createTextNode("    "));
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
-        }
+        assertThat(
+                        assertThrows(
+                                        DOMException.class,
+                                        () -> {
+                                            doc.appendChild(doc.createTextNode("    "));
+                                        })
+                                .code)
+                .isEqualTo(DOMException.HIERARCHY_REQUEST_ERR);
     }
 }

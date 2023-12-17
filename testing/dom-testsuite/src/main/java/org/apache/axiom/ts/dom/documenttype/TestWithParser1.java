@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.documenttype;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -35,9 +37,9 @@ public class TestWithParser1 extends DOMTestCase {
                 dbf.newDocumentBuilder()
                         .parse(TestWithParser1.class.getResource("test1.xml").toString());
         DocumentType doctype = document.getDoctype();
-        assertEquals("root", doctype.getName());
-        assertNull(doctype.getPublicId());
-        assertNull(doctype.getSystemId());
-        assertEquals("<!ELEMENT root (#PCDATA)>", doctype.getInternalSubset().trim());
+        assertThat(doctype.getName()).isEqualTo("root");
+        assertThat(doctype.getPublicId()).isNull();
+        assertThat(doctype.getSystemId()).isNull();
+        assertThat(doctype.getInternalSubset().trim()).isEqualTo("<!ELEMENT root (#PCDATA)>");
     }
 }

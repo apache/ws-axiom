@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -41,12 +44,16 @@ public class TestSetAttributeNSInvalid extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
-        try {
-            element.setAttributeNS(
-                    DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname), "value");
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertEquals(DOMException.NAMESPACE_ERR, ex.code);
-        }
+        assertThat(
+                        assertThrows(
+                                        DOMException.class,
+                                        () -> {
+                                            element.setAttributeNS(
+                                                    DOMUtils.getNamespaceURI(qname),
+                                                    DOMUtils.getQualifiedName(qname),
+                                                    "value");
+                                        })
+                                .code)
+                .isEqualTo(DOMException.NAMESPACE_ERR);
     }
 }

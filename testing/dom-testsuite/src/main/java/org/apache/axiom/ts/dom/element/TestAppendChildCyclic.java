@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -44,11 +47,13 @@ public class TestAppendChildCyclic extends DOMTestCase {
         grandparent.appendChild(parent);
         Element element = document.createElementNS(null, "element");
         parent.appendChild(element);
-        try {
-            element.appendChild(grandparent);
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
-        }
+        assertThat(
+                        assertThrows(
+                                        DOMException.class,
+                                        () -> {
+                                            element.appendChild(grandparent);
+                                        })
+                                .code)
+                .isEqualTo(DOMException.HIERARCHY_REQUEST_ERR);
     }
 }

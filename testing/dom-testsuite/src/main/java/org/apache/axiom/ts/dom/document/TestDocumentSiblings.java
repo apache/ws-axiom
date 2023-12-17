@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -37,10 +39,10 @@ public class TestDocumentSiblings extends DOMTestCase {
         doc.appendChild(elem);
 
         Node node = doc.getNextSibling();
-        assertNull("Document's next sibling has to be null", node);
+        assertThat(node).isNull();
         Node node2 = doc.getPreviousSibling();
-        assertNull("Document's previous sibling has to be null", node2);
+        assertThat(node2).isNull();
         Node node3 = doc.getParentNode();
-        assertNull("Document's parent has to be null", node3);
+        assertThat(node3).isNull();
     }
 }

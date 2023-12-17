@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -35,9 +37,9 @@ public class TestCreateElementNS extends DOMTestCase {
         String namespace = "http://ws.apache.org/axis2/ns";
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element elem = doc.createElementNS(namespace, "axis2:" + tagName);
-        assertEquals("Local name misnatch", tagName, elem.getLocalName());
-        assertEquals("Namespace misnatch", namespace, elem.getNamespaceURI());
+        assertThat(elem.getLocalName()).isEqualTo(tagName);
+        assertThat(elem.getNamespaceURI()).isEqualTo(namespace);
         // In contrast to Axiom, DOM doesn't generate namespace declarations automatically
-        assertEquals(0, elem.getAttributes().getLength());
+        assertThat(elem.getAttributes().getLength()).isEqualTo(0);
     }
 }

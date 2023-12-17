@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -36,6 +38,6 @@ public class TestCreateText extends DOMTestCase {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Text txt = doc.createTextNode(textValue);
 
-        assertEquals("Text value mismatch", textValue, txt.getData());
+        assertThat(txt.getData()).isEqualTo(textValue);
     }
 }

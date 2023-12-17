@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -43,9 +45,9 @@ public class TestAdoptNodeToSameDocument extends DOMTestCase {
         Element parent = document.createElementNS(null, "test");
         Text node = document.createTextNode("test");
         parent.appendChild(node);
-        assertSame(node, document.adoptNode(node));
-        assertSame(document, node.getOwnerDocument());
-        assertNull(node.getParentNode());
-        assertNull(parent.getFirstChild());
+        assertThat(document.adoptNode(node)).isSameAs(node);
+        assertThat(node.getOwnerDocument()).isSameAs(document);
+        assertThat(node.getParentNode()).isNull();
+        assertThat(parent.getFirstChild()).isNull();
     }
 }

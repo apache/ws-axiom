@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.documentfragment;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -44,6 +46,6 @@ public class TestLookupPrefix extends DOMTestCase {
         Element element = document.createElementNS("urn:test", "ns:root");
         element.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:ns", "urn:test");
         fragment.appendChild(element);
-        assertNull(fragment.lookupPrefix("urn:test"));
+        assertThat(fragment.lookupPrefix("urn:test")).isNull();
     }
 }

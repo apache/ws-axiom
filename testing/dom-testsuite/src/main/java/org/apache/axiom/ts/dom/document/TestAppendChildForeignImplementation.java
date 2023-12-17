@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.dom.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,11 +38,13 @@ public class TestAppendChildForeignImplementation extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = mock(Element.class);
-        try {
-            document.appendChild(element);
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertThat(ex.code).isEqualTo(DOMException.WRONG_DOCUMENT_ERR);
-        }
+        assertThat(
+                        assertThrows(
+                                        DOMException.class,
+                                        () -> {
+                                            document.appendChild(element);
+                                        })
+                                .code)
+                .isEqualTo(DOMException.WRONG_DOCUMENT_ERR);
     }
 }

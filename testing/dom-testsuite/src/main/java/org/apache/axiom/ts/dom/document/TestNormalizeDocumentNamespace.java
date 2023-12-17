@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -44,11 +46,11 @@ public class TestNormalizeDocumentNamespace extends DOMTestCase {
         domConfig.setParameter("namespaces", Boolean.TRUE);
         document.normalizeDocument();
         NamedNodeMap attributes = element.getAttributes();
-        assertEquals(1, attributes.getLength());
+        assertThat(attributes.getLength()).isEqualTo(1);
         Attr attr = (Attr) attributes.item(0);
-        assertNull(attr.getPrefix());
-        assertEquals(XMLConstants.XMLNS_ATTRIBUTE, attr.getLocalName());
-        assertEquals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, attr.getNamespaceURI());
-        assertEquals("urn:ns", attr.getValue());
+        assertThat(attr.getPrefix()).isNull();
+        assertThat(attr.getLocalName()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE);
+        assertThat(attr.getNamespaceURI()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
+        assertThat(attr.getValue()).isEqualTo("urn:ns");
     }
 }

@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.dom.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -36,11 +39,13 @@ public class TestSetPrefix extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Text text = document.createTextNode("test");
-        try {
-            text.setPrefix("p");
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertEquals(DOMException.NAMESPACE_ERR, ex.code);
-        }
+        assertThat(
+                        assertThrows(
+                                        DOMException.class,
+                                        () -> {
+                                            text.setPrefix("p");
+                                        })
+                                .code)
+                .isEqualTo(DOMException.NAMESPACE_ERR);
     }
 }

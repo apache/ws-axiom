@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -43,11 +46,13 @@ public class TestReplaceChildCyclic extends DOMTestCase {
         ancestor.appendChild(element);
         Element child = document.createElementNS(null, "child");
         element.appendChild(child);
-        try {
-            element.replaceChild(ancestor, child);
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
-        }
+        assertThat(
+                        assertThrows(
+                                        DOMException.class,
+                                        () -> {
+                                            element.replaceChild(ancestor, child);
+                                        })
+                                .code)
+                .isEqualTo(DOMException.HIERARCHY_REQUEST_ERR);
     }
 }
