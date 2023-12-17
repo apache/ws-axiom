@@ -232,6 +232,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
 
     @Override
     public final Element createElement(String tagName) {
+        NSUtil.validateName(tagName);
         DOMNSUnawareElement element = getDOMNodeFactory().createNSUnawareElement();
         element.coreSetOwnerDocument(this);
         element.coreSetName(tagName);
