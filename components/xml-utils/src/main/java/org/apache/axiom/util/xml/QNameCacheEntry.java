@@ -23,6 +23,4 @@ import java.util.concurrent.atomic.AtomicReference;
 import javax.xml.namespace.QName;
 
 @SuppressWarnings("serial")
-final class QNameCacheEntry extends AtomicReference<QName> {
-    
-}
+final class QNameCacheEntry extends AtomicReference<QName> {}

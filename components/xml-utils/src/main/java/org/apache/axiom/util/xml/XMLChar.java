@@ -24,47 +24,59 @@ package org.apache.axiom.util.xml;
  */
 public final class XMLChar {
     private XMLChar() {}
-    
+
     /**
      * Determine if the given character is whitespace according to the XML specification.
-     * 
-     * @param c
-     *            the character to examine
+     *
+     * @param c the character to examine
      * @return {@code true} if the character is whitespace, {@code false} otherwise
      */
     public static boolean isWhitespace(char c) {
         return c == ' ' || c == '\r' || c == '\n' || c == '\t';
     }
-    
+
     /**
      * Determine if the given character matches the <a
      * href="http://www.w3.org/TR/2008/REC-xml-20081126/#NT-NameStartChar">{@code NameStartChar}</a>
      * production in the XML specification.
-     * 
-     * @param c
-     *            the character to examine
+     *
+     * @param c the character to examine
      * @return {@code true} if the character is name start char, {@code false} otherwise
      */
     public static boolean isNameStartChar(char c) {
-        return c == ':' || 'A' <= c && c <= 'Z' || c == '_' || 'a' <= c && c <= 'z' || 0xC0 <= c && c <= 0xD6
-                || 0xD8 <= c && c <= 0xF6 || 0xF8 <= c && c <= 0x2FF || 0x370 <= c && c <= 0x37D
-                || 0x37F <= c && c <= 0x1FFF || 0x200C <= c && c <= 0x200D
-                || 0x2070 <= c && c <= 0x218F || 0x2C00 <= c && c <= 0x2FEF
-                || 0x3001 <= c && c <= 0xD7FF || 0xF900 <= c && c <= 0xFDCF
-                || 0xFDF0 <= c && c <= 0xFFFD || 0x10000 <= c && c <= 0xEFFFF;
+        return c == ':'
+                || 'A' <= c && c <= 'Z'
+                || c == '_'
+                || 'a' <= c && c <= 'z'
+                || 0xC0 <= c && c <= 0xD6
+                || 0xD8 <= c && c <= 0xF6
+                || 0xF8 <= c && c <= 0x2FF
+                || 0x370 <= c && c <= 0x37D
+                || 0x37F <= c && c <= 0x1FFF
+                || 0x200C <= c && c <= 0x200D
+                || 0x2070 <= c && c <= 0x218F
+                || 0x2C00 <= c && c <= 0x2FEF
+                || 0x3001 <= c && c <= 0xD7FF
+                || 0xF900 <= c && c <= 0xFDCF
+                || 0xFDF0 <= c && c <= 0xFFFD
+                || 0x10000 <= c && c <= 0xEFFFF;
     }
-    
+
     /**
      * Determine if the given character matches the <a
      * href="http://www.w3.org/TR/2008/REC-xml-20081126/#NT-NameChar">{@code NameChar}</a>
      * production in the XML specification.
-     * 
-     * @param c
-     *            the character to examine
+     *
+     * @param c the character to examine
      * @return {@code true} if the character is name char, {@code false} otherwise
      */
     public static boolean isNameChar(char c) {
-        return isNameStartChar(c) || c == '-' || c == '.' || '0' <= c && c <= '9' || c == 0xB7
-                || 0x0300 <= c && c <= 0x036F || 0x203F <= c && c <= 0x2040;
+        return isNameStartChar(c)
+                || c == '-'
+                || c == '.'
+                || '0' <= c && c <= '9'
+                || c == 0xB7
+                || 0x0300 <= c && c <= 0x036F
+                || 0x203F <= c && c <= 0x2040;
     }
 }

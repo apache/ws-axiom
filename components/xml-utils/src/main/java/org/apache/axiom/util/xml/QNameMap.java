@@ -24,20 +24,20 @@ import javax.xml.namespace.QName;
 public final class QNameMap<V> {
     private QNameMapEntry<V>[] buckets;
     private int size;
-    
+
     public QNameMap() {
         buckets = createBuckets(16);
     }
-    
+
     @SuppressWarnings("unchecked")
     private QNameMapEntry<V>[] createBuckets(int count) {
         return new QNameMapEntry[count];
     }
-    
+
     public void put(QName qname, V value) {
-        if (buckets.length < size*4/3) {
+        if (buckets.length < size * 4 / 3) {
             QNameMapEntry<V>[] oldBuckets = buckets;
-            buckets = createBuckets(buckets.length*2);
+            buckets = createBuckets(buckets.length * 2);
             for (QNameMapEntry<V> entry : oldBuckets) {
                 while (entry != null) {
                     QNameMapEntry<V> next = entry.next;
@@ -66,11 +66,11 @@ public final class QNameMap<V> {
         }
         entry.value = value;
     }
-    
+
     public V get(QName qname) {
         return get(qname.getNamespaceURI(), qname.getLocalPart());
     }
-    
+
     public V get(String namespaceURI, String localPart) {
         if (namespaceURI == null) {
             namespaceURI = XMLConstants.NULL_NS_URI;
@@ -81,20 +81,20 @@ public final class QNameMap<V> {
         int index = index(namespaceURI, localPart);
         QNameMapEntry<V> entry = buckets[index];
         while (entry != null) {
-            if (entry.qname.getLocalPart().equals(localPart) &&
-                    entry.qname.getNamespaceURI().equals(namespaceURI)) {
+            if (entry.qname.getLocalPart().equals(localPart)
+                    && entry.qname.getNamespaceURI().equals(namespaceURI)) {
                 return entry.value;
             }
             entry = entry.next;
         }
         return null;
     }
-    
+
     private int index(QName qname) {
         return index(qname.getNamespaceURI(), qname.getLocalPart());
     }
-    
+
     private int index(String namespaceURI, String localPart) {
-        return (namespaceURI.hashCode() ^ localPart.hashCode()) & (buckets.length-1);
+        return (namespaceURI.hashCode() ^ localPart.hashCode()) & (buckets.length - 1);
     }
 }

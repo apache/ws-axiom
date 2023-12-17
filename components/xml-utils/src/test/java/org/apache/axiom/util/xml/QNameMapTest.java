@@ -31,8 +31,8 @@ public class QNameMapTest {
         map.put(new QName(null, "name"), "value");
         assertThat(map.get(null, "name")).isEqualTo("value");
     }
-    
-    @Test(expected=IllegalArgumentException.class)
+
+    @Test(expected = IllegalArgumentException.class)
     public void testGetWithNullLocalPart() {
         new QNameMap<Object>().get("urn:test", null);
     }

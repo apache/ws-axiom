@@ -33,14 +33,17 @@ public class NSUtilsTest {
     /**
      * Test that the generated prefixes are unique for a sample of namespace URIs collected from the
      * Axiom source tree.
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testUniqueness() throws Exception {
         Set<String> prefixes = new HashSet<String>();
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                NSUtilsTest.class.getResourceAsStream("namespaces.txt"), Charsets.UTF_8));
+        BufferedReader in =
+                new BufferedReader(
+                        new InputStreamReader(
+                                NSUtilsTest.class.getResourceAsStream("namespaces.txt"),
+                                Charsets.UTF_8));
         try {
             String uri;
             while ((uri = in.readLine()) != null) {

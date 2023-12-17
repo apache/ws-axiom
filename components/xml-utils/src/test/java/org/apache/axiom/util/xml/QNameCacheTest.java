@@ -36,7 +36,7 @@ public class QNameCacheTest {
     @Test
     public void testCached() {
         QName[] qnames = new QName[2];
-        for (int i=0; i<2; i++) {
+        for (int i = 0; i < 2; i++) {
             qnames[i] = QNameCache.getQName("urn:test", "test", "p");
         }
         assertThat(qnames[1]).isSameInstanceAs(qnames[0]);
