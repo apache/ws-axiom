@@ -22,12 +22,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
-
-import com.google.common.base.Charsets;
 
 public class NSUtilsTest {
     /**
@@ -43,7 +42,7 @@ public class NSUtilsTest {
                 new BufferedReader(
                         new InputStreamReader(
                                 NSUtilsTest.class.getResourceAsStream("namespaces.txt"),
-                                Charsets.UTF_8));
+                                StandardCharsets.UTF_8));
         try {
             String uri;
             while ((uri = in.readLine()) != null) {
