@@ -268,7 +268,7 @@
         <groovy.version>4.0.16</groovy.version>
         <auto-service.version>1.1.1</auto-service.version>
         <asm.version>9.6</asm.version>
-        <errorprone.version>2.23.0</errorprone.version>
+        <errorprone.version>2.24.0</errorprone.version>
         <junit5.version>5.10.1</junit5.version>
         <mime4j.version>0.8.9</mime4j.version>
 
