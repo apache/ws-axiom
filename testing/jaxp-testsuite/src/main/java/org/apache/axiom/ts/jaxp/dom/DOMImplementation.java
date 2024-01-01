@@ -26,15 +26,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.axiom.testing.multiton.Multiton;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public abstract class DOMImplementation extends Multiton {
     public static final DOMImplementation XERCES =
-            new DOMImplementation("xerces", true, true) {
+            new DOMImplementation("xerces") {
                 @Override
                 protected DocumentBuilderFactory newDocumentBuilderFactory() {
                     return new org.apache.xerces.jaxp.DocumentBuilderFactoryImpl();
@@ -42,25 +39,13 @@ public abstract class DOMImplementation extends Multiton {
             };
 
     private final String name;
-    private final boolean dom3;
-    private final boolean internalSubset;
 
-    private DOMImplementation(String name, boolean dom3, boolean internalSubset) {
+    private DOMImplementation(String name) {
         this.name = name;
-        this.dom3 = dom3;
-        this.internalSubset = internalSubset;
     }
 
     public final String getName() {
         return name;
-    }
-
-    public final boolean isDOM3() {
-        return dom3;
-    }
-
-    public final boolean supportsGetInternalSubset() {
-        return internalSubset;
     }
 
     protected abstract DocumentBuilderFactory newDocumentBuilderFactory();
@@ -88,30 +73,7 @@ public abstract class DOMImplementation extends Multiton {
         } catch (ParserConfigurationException ex) {
             throw new Error("Unexpected exception", ex);
         }
-        if (!expandEntityReferences) {
-            // Crimson creates EntityReference nodes for predefined entities (such as &lt;);
-            // expand them.
-            expandPredefinedEntityReferences(document.getDocumentElement());
-        }
         return document;
-    }
-
-    private void expandPredefinedEntityReferences(Element element) {
-        Node child = element.getFirstChild();
-        while (child != null) {
-            switch (child.getNodeType()) {
-                case Node.ELEMENT_NODE:
-                    expandPredefinedEntityReferences((Element) child);
-                    break;
-                case Node.ENTITY_REFERENCE_NODE:
-                    if (child.getNodeName().equals("lt")) {
-                        Text content = (Text) child.getFirstChild().cloneNode(false);
-                        element.replaceChild(content, child);
-                        child = content;
-                    }
-            }
-            child = child.getNextSibling();
-        }
     }
 
     public final Document parse(InputStream in) throws SAXException, IOException {

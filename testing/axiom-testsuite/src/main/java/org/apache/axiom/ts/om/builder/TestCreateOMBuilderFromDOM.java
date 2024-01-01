@@ -83,7 +83,6 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
         assertAbout(xml())
                 .that(actual)
                 .ignoringWhitespaceInPrologAndEpilog()
-                .treatingElementContentWhitespaceAsText(!implementation.isDOM3())
                 .hasSameContentAs(
                         loadDocument(expandEntityReferences == null || expandEntityReferences));
     }

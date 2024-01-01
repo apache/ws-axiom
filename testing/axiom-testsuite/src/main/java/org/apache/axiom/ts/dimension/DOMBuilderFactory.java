@@ -44,10 +44,6 @@ final class DOMBuilderFactory extends BuilderFactory {
 
     @Override
     public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
-        comparator.setCompareCharacterEncodingScheme(implementation.isDOM3());
-        comparator.setCompareEncoding(implementation.isDOM3());
-        comparator.setCompareInternalSubset(implementation.supportsGetInternalSubset());
-        comparator.setTreatSpaceAsCharacters(!implementation.isDOM3());
         // DOM gives access to the parsed replacement value (via the Entity interface), but Axiom
         // stores the unparsed replacement value. Therefore OMEntityReference#getReplacementText()
         // returns null for nodes created from a DOM tree.
