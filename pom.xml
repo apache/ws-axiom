@@ -270,7 +270,7 @@
         <asm.version>9.6</asm.version>
         <errorprone.version>2.25.0</errorprone.version>
         <junit5.version>5.10.2</junit5.version>
-        <mime4j.version>0.8.9</mime4j.version>
+        <mime4j.version>0.8.10</mime4j.version>
 
         <skipDeploy>false</skipDeploy>
 
