@@ -90,7 +90,7 @@
                             <goal>javadoc-no-fork</goal>
                         </goals>
                         <configuration>
-                            <reportOutputDirectory>${project.build.directory}/apidocs</reportOutputDirectory>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
