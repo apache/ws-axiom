@@ -293,7 +293,7 @@ public final class XMLSubject extends Subject {
                                         if (onlyWhitespace) {
                                             break;
                                         }
-                                        // Fall through
+                                    // Fall through
                                     case WHITESPACE:
                                         if (depth == 0) {
                                             continue;

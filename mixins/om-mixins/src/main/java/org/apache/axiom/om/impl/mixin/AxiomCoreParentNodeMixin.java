@@ -66,7 +66,7 @@ public abstract class AxiomCoreParentNodeMixin implements AxiomCoreParentNode {
                     if (!isExpanded()) {
                         break;
                     }
-                    // Fall through
+                // Fall through
                 case INCOMPLETE:
                     // First do the children that have already been created; only they need
                     // recursion.

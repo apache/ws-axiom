@@ -540,7 +540,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
                 case CHARACTERS:
                 case SPACE:
                     characterData = null;
-                    // Fall through
+                // Fall through
                 case CDATA:
                 case COMMENT:
                 case PROCESSING_INSTRUCTION:

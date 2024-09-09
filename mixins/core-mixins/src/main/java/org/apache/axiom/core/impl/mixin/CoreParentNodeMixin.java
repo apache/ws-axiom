@@ -375,7 +375,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                                 depth++;
                                 continue;
                             }
-                            // Fall through
+                        // Fall through
                         case SKIP:
                             // Just continue
                     }
