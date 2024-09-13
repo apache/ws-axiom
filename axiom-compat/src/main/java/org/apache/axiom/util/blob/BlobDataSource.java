@@ -28,7 +28,8 @@ import org.apache.axiom.ext.activation.SizeAwareDataSource;
 /**
  * Data source backed by a {@link Blob}.
  * 
- * @deprecated Use {@link org.apache.axiom.blob.BlobDataSource} instead.
+ * @deprecated Use {@link org.apache.axiom.util.activation.DataHandlerUtils#toDataHandler(org.apache.axiom.blob.Blob)}
+ * and {@link jakarta.activation.DataHandler#getDataSource()} instead.
  */
 public class BlobDataSource implements SizeAwareDataSource {
     private final Blob blob;
