@@ -928,7 +928,7 @@
                                     new File(project.build.directory, 'tmp').mkdirs()
                                     
                                     // Skip Jacoco if necessary
-                                    if (System.properties['skipTests'] == 'true') {
+                                    if (session.systemProperties['maven.test.skip'] == 'true' || session.systemProperties['skipTests'] == 'true') {
                                         println 'Disabling JaCoCo because tests are skipped'
                                         project.properties['skipJacoco'] = 'true'
                                     }

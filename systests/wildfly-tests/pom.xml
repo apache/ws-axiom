@@ -144,7 +144,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <skip>${skipTests}</skip>
+                    <skip>${maven.test.skip}</skip>
                 </configuration>
             </plugin>
             <plugin>
