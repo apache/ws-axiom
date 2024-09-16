@@ -29,7 +29,7 @@ public class DialectTestSuite extends TestSuite {
         builder.exclude(TestGetTextInProlog.class, "(implementation=JRE)");
         
         // SJSXP and XLXP don't report whitespace in prolog
-        builder.exclude(TestGetTextInProlog.class, "(|(implementation=sjsxp-1.0.1.jar)(implementation=com.ibm.ws.prereq.xlxp.jar)(implementation=xml.jar))");
+        builder.exclude(TestGetTextInProlog.class, "(|(implementation=sjsxp-*)(implementation=com.ibm.ws.prereq.xlxp.jar)(implementation=xml.jar))");
         
         // DTDReader is not supported for all StAX implementations
         builder.exclude(TestDTDReader.class, "(|(implementation=stax-1.2.0.jar)(implementation=wstx-asl-3.*))");
