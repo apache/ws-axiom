@@ -17,11 +17,9 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project name="Axiom">
-    <bannerLeft>
-        <name>Apache Axiom</name>
-        <src>images/logo.png</src>
-        <href>http://ws.apache.org/axiom/index.html</href>
+<site xmlns="http://maven.apache.org/SITE/2.0.0" name="Axiom" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd">
+    <bannerLeft name="Apache Axiom" href="http://ws.apache.org/axiom/index.html">
+        <image src="images/logo.png"/>
     </bannerLeft>
     <body>
         <menu name="About">
@@ -75,4 +73,4 @@
             <item name="Google Truth extension for XML" href="testing/xml-truth/index.html"/>
         </menu>
     </body>
-</project>
+</site>
