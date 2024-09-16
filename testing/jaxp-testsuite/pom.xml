@@ -132,6 +132,11 @@
                                     <artifact>
                                         <groupId>com.fasterxml.woodstox</groupId>
                                         <artifactId>woodstox-core</artifactId>
+                                        <version>6.7.0</version>
+                                    </artifact>
+                                    <artifact>
+                                        <groupId>com.fasterxml.woodstox</groupId>
+                                        <artifactId>woodstox-core</artifactId>
                                     </artifact>
                                     <artifact>
                                         <groupId>com.sun.xml.stream</groupId>

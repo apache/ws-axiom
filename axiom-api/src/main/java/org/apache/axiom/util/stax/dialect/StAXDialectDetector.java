@@ -268,14 +268,7 @@ public class StAXDialectDetector {
         
         if (title != null && title.toLowerCase(Locale.ENGLISH).contains("woodstox")) {
             Version version = new Version(versionString);
-            switch (version.getComponent(0)) {
-                case 4:
-                case 5:
-                case 6:
-                    return Woodstox4Dialect.INSTANCE;
-                default:
-                    return null;
-            }
+            return version.getComponent(0) >= 4 ? Woodstox4Dialect.INSTANCE : null;
         } else if (title != null && title.indexOf("SJSXP") != -1) {
             return new SJSXPDialect(false);
         } else if ("com.bea.core.weblogic.stax".equals(symbolicName)) {
