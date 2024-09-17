@@ -21,9 +21,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.apache.ws</groupId>
-        <artifactId>ws-parent</artifactId>
-        <version>3</version>
+        <groupId>org.apache</groupId>
+        <artifactId>apache</artifactId>
+        <version>20</version>
     </parent>
 
     <groupId>org.apache.ws.commons.axiom</groupId>
@@ -211,6 +211,29 @@
             <email>jochen.wiedmann AT gmail.com</email>
         </contributor>
     </contributors>
+
+    <mailingLists>
+        <mailingList>
+            <name>Users</name>
+            <subscribe>users-subscribe@ws.apache.org</subscribe>
+            <unsubscribe>users-unsubscribe@ws.apache.org</unsubscribe>
+            <post>users@ws.apache.org</post>
+            <archive>http://mail-archives.apache.org/mod_mbox/ws-users/</archive>
+        </mailingList>
+        <mailingList>
+            <name>Developers</name>
+            <subscribe>dev-subscribe@ws.apache.org</subscribe>
+            <unsubscribe>dev-unsubscribe@ws.apache.org</unsubscribe>
+            <post>dev@ws.apache.org</post>
+            <archive>http://mail-archives.apache.org/mod_mbox/ws-dev/</archive>
+        </mailingList>
+        <mailingList>
+            <name>Commits</name>
+            <subscribe>commits-subscribe@ws.apache.org</subscribe>
+            <unsubscribe>commits-unsubscribe@ws.apache.org</unsubscribe>
+            <archive>http://mail-archives.apache.org/mod_mbox/ws-commits/</archive>
+        </mailingList>
+    </mailingLists>
 
     <modules>
         <module>buildutils</module>
@@ -753,6 +776,17 @@
                     <configuration>
                         <detectOfflineLinks>false</detectOfflineLinks>
                         <source>${javaVersion}</source>
+                        <breakiterator>true</breakiterator>
+                        <!-- The notimestamp, windowtitle and bottom parameters are chosen to minimize the number
+                             of changes between releases (to avoid mass changes when committing the site for a new release) -->
+                        <notimestamp>true</notimestamp>
+                        <windowtitle>${project.name} API</windowtitle>
+                        <!-- Use entity references here to avoid charset encoding issues (the string is passed as
+                             a command line argument to the javadoc util and it's tricky to get charset encoding
+                             right in this case). -->
+                        <bottom><![CDATA[Copyright &copy; {organizationName}. All Rights Reserved.]]></bottom>
+                        <!-- doctitle only appears in the summary and we should include the version there -->
+                        <doctitle>${project.name} ${project.version} API</doctitle>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -1151,6 +1185,9 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -1170,6 +1207,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-publish-plugin</artifactId>
+                <version>3.1.0</version>
                 <inherited>false</inherited>
                 <configuration>
                     <ignorePathsToDelete>
