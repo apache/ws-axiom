@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
-        <version>20</version>
+        <version>33</version>
     </parent>
 
     <groupId>org.apache.ws.commons.axiom</groupId>
@@ -278,7 +278,7 @@
     </distributionManagement>
 
     <properties>
-        <javaVersion>11</javaVersion>
+        <maven.compiler.target>11</maven.compiler.target>
 
         <failIfNoTests>false</failIfNoTests>
         <shade.plugin.version>3.6.0</shade.plugin.version>
@@ -775,7 +775,6 @@
                     <version>3.10.0</version>
                     <configuration>
                         <detectOfflineLinks>false</detectOfflineLinks>
-                        <source>${javaVersion}</source>
                         <breakiterator>true</breakiterator>
                         <!-- The notimestamp, windowtitle and bottom parameters are chosen to minimize the number
                              of changes between releases (to avoid mass changes when committing the site for a new release) -->
@@ -1062,9 +1061,6 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>${javaVersion}</source>
-                    <target>${javaVersion}</target>
-                    <release>${javaVersion}</release>
                     <showWarnings>true</showWarnings>
                     <compilerArgs combine.children="append">
                         <compilerArg>-XDcompilePolicy=simple</compilerArg>

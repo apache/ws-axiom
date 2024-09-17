@@ -32,7 +32,7 @@
     <url>http://ws.apache.org/axiom/</url>
 
     <properties>
-        <javaVersion>17</javaVersion>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <dependencyManagement>
