@@ -913,7 +913,8 @@
                 <configuration>
                     <rules>
                         <requireJavaVersion>
-                            <version>${javaVersion}</version>
+                            <!-- A more recent Java version is required by some of the Maven plugins in the build. -->
+                            <version>17</version>
                         </requireJavaVersion>
                         <requireMavenVersion>
                             <!-- Require a recent Maven version for consistent build results -->
