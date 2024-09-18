@@ -89,23 +89,17 @@
                         <goals>
                             <goal>javadoc-no-fork</goal>
                         </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>site-javadoc</id>
-                        <phase>site</phase>
+                        <phase>pre-site</phase>
                         <goals>
                             <goal>javadoc-no-fork</goal>
                         </goals>
-                        <configuration>
-                            <reportOutputDirectory>${project.reporting.outputDirectory}</reportOutputDirectory>
-                            <destDir>.</destDir>
-                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
                     <includeDependencySources>true</includeDependencySources>
                     <dependencySourceIncludes>
                         <dependencySourceInclude>${project.groupId}:*</dependencySourceInclude>
@@ -119,6 +113,26 @@
                         <additionalOption>-html5</additionalOption>
                     </additionalOptions>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/apidocs</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
