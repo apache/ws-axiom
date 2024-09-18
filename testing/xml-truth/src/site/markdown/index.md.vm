@@ -18,7 +18,7 @@
 ##
 
 Introduction
-------------
+============
 
 This `xml-truth` module provides a [Google Truth](https://github.com/google/truth) extension to
 compare XML data. It can be used as an alternative to [XMLUnit](http://www.xmlunit.org/). The basic

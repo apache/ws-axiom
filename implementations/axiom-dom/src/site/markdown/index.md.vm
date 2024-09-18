@@ -18,7 +18,7 @@
 ##
 
 About
------
+=====
 
 DOOM (DOM over OM) implements both the Axiom API and the standard DOM API. To use this implementation,
 add `axiom-dom` to your project and request an `OMMetaFactory` with the DOM feature:

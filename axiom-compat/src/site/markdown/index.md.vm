@@ -18,7 +18,7 @@
 ##
 
 Introduction
-------------
+============
 
 `axiom-compat` contains deprecated classes that will be removed in a future Axiom
 version. Add this module as a dependencies to projects with legacy code.

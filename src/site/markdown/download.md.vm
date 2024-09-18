@@ -18,7 +18,7 @@
 ##
 
 Releases
---------
+========
 
 The current release is ${release_version} and was published on ${release_date}. The release note for this
 release can be found [here](release-notes/${release_version}.html).
