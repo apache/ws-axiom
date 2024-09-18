@@ -45,11 +45,15 @@ final class DataHandlerBlob implements Blob {
 
     @Override
     public void writeTo(OutputStream out) throws StreamCopyException {
+        OutputStreamWrapper wrapper = new OutputStreamWrapper(out);
         try {
-            dataHandler.writeTo(out);
+            dataHandler.writeTo(wrapper);
         } catch (IOException ex) {
-            // TODO(AXIOM-506): maybe we can do some wrapping to determine the operation that failed
-            throw new StreamCopyException(StreamCopyException.WRITE, ex);
+            IOException wrapperException = wrapper.getException();
+            if (wrapperException != null) {
+                throw new StreamCopyException(StreamCopyException.WRITE, wrapperException);
+            }
+            throw new StreamCopyException(StreamCopyException.READ, ex);
         }
     }
 

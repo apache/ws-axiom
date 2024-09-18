@@ -31,9 +31,10 @@ public class ExceptionOutputStream extends OutputStream {
 
     @Override
     public void write(int b) throws IOException {
-        if (--remaining == 0) {
+        if (remaining == 0) {
             throw exception = new IOException("Maximum number of bytes written");
         }
+        remaining--;
     }
 
     public IOException getException() {
