@@ -21,7 +21,7 @@
     <skin>
         <groupId>org.apache.maven.skins</groupId>
         <artifactId>maven-fluido-skin</artifactId>
-        <version>1.7</version>
+        <version>2.0.0-M10</version>
     </skin>
     <bannerLeft name="Apache Axiom" href="http://ws.apache.org/axiom/index.html">
         <image src="images/logo.png"/>
