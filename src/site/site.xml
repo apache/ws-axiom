@@ -23,7 +23,7 @@
         <artifactId>maven-fluido-skin</artifactId>
         <version>2.0.0-M10</version>
     </skin>
-    <bannerLeft name="Apache Axiom" href="http://ws.apache.org/axiom/index.html">
+    <bannerLeft href="http://ws.apache.org/axiom/index.html">
         <image src="images/logo.png"/>
     </bannerLeft>
     <bannerRight href="http://ws.apache.org/">
