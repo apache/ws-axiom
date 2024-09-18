@@ -40,6 +40,6 @@ for classifier in [ "bin", "src" ]:
         copyfile(join(axiom_dir, "distribution", "target", file), join(dist_dir, file))
 call(["svn", "add", dist_dir])
 if release.endswith("-SNAPSHOT"):
-    print "Skipping commit because version is a snapshot."
+    print("Skipping commit because version is a snapshot.")
 else:
     call(["svn", "commit", dist_dir])
