@@ -868,7 +868,7 @@
                 <plugin>
                     <groupId>com.spotify.fmt</groupId>
                     <artifactId>fmt-maven-plugin</artifactId>
-                    <version>2.24</version>
+                    <version>2.25</version>
                     <configuration>
                         <!-- AOSP changes the indentation (from 2 to 4) and the import order. Since we
                              don't want Android conventions for import ordering, we skip sorting
