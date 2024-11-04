@@ -294,7 +294,7 @@
         <errorprone.version>2.35.1</errorprone.version>
         <junit5.version>5.11.3</junit5.version>
         <mime4j.version>0.8.11</mime4j.version>
-        <surefire.version>3.5.1</surefire.version>
+        <surefire.version>3.5.2</surefire.version>
 
         <skipDeploy>false</skipDeploy>
 
