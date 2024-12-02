@@ -526,7 +526,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
                 <step>
                     <para>
-                        Start the release process with the following command:
+                        Start the release process with the following command - use 'mvn release:rollback' to undo and be aware that in the main pom.xml there is an apache parent that defines some plugin versions. See <link xlink:href="https://maven.apache.org/pom/asf"/> 
                     </para>
                     <screen>mvn release:prepare</screen>
                     <para>
@@ -563,9 +563,18 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     </para>
                     <para>
                         If not yet done, export your public key and append it to <link xlink:href="https://dist.apache.org/repos/dist/release/ws/axiom/KEYS"/>.
+                    </para>
+                    <para>
+                        If not yet done, export your public key to the dev area and append it to <link xlink:href="https://dist.apache.org/repos/dist/release/axis/axis2/java/rampart/KEYS"/>.
                         The command to export a public key is as follows:
                     </para>
                     <screen>gpg --armor --export <replaceable>key_id</replaceable></screen>
+                    <para>
+                        If you have multiple keys, you can define a ~/.gnupg/gpg.conf file for a default. Note that while 'gpg --list-keys' will show your public keys, using maven-release-plugin with the command 'release:perform' below requires 'gpg --list-secret-keys' to have a valid entry that matches your public key, in order to create 'asc' files that are used to verify the release artifcats. 'release:prepare' creates the sha512 checksum files.
+                    </para>
+                    <para>
+                        The created artifacts i.e. zip files can be checked with, for example, sha512sum 'axiom-2.0.0-bin.zip' which should match the generated sha512 files. In that example, use 'gpg --verify axiom-2.0.0-bin.zip.asc axiom-2.0.0-bin.zip.asc to verify the artifacts were signed correctly.
+                    </para>
                 </step>
                 <step>
                     <para>
