@@ -20,7 +20,7 @@ package org.apache.axiom.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.ops4j.pax.exam.CoreOptions.streamBundle;
-import static org.ops4j.pax.tinybundles.core.TinyBundles.bundle;
+import static org.ops4j.pax.tinybundles.TinyBundles.bundle;
 import static org.osgi.framework.Constants.BUNDLE_SYMBOLICNAME;
 import static org.osgi.framework.Constants.FRAMEWORK_STORAGE;
 import static org.osgi.framework.Constants.FRAMEWORK_STORAGE_CLEAN;
@@ -126,8 +126,8 @@ public class UsesConstraintsTest {
         bundles.add(
                 context.installBundle(
                         streamBundle(
-                                        bundle().set(BUNDLE_SYMBOLICNAME, "testbundle1")
-                                                .set(
+                                        bundle().setHeader(BUNDLE_SYMBOLICNAME, "testbundle1")
+                                                .setHeader(
                                                         IMPORT_PACKAGE,
                                                         "org.apache.axiom.om, javax.xml.stream; version=1.0")
                                                 .build())
@@ -137,8 +137,8 @@ public class UsesConstraintsTest {
         bundles.add(
                 context.installBundle(
                         streamBundle(
-                                        bundle().set(BUNDLE_SYMBOLICNAME, "testbundle2")
-                                                .set(
+                                        bundle().setHeader(BUNDLE_SYMBOLICNAME, "testbundle2")
+                                                .setHeader(
                                                         IMPORT_PACKAGE,
                                                         "org.apache.axiom.om, javax.xml.stream; version=\"[0.0.0,1.0)\"")
                                                 .build())
