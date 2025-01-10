@@ -293,7 +293,7 @@
         <asm.version>9.7.1</asm.version>
         <errorprone.version>2.36.0</errorprone.version>
         <junit5.version>5.11.4</junit5.version>
-        <mime4j.version>0.8.11</mime4j.version>
+        <mime4j.version>0.8.12</mime4j.version>
         <surefire.version>3.5.2</surefire.version>
 
         <skipDeploy>false</skipDeploy>
