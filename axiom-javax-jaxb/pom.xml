@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>2.0.0</version>
     </parent>
 
     <artifactId>axiom-javax-jaxb</artifactId>
@@ -110,7 +110,7 @@
                         <configuration>
                             <target>
                                 <replaceregexp match="\bjakarta\b" replace="javax" flags="g" byline="true">
-                                    <fileset dir="${project.build.directory}/src"/>
+                                    <fileset dir="${project.build.directory}/src" />
                                 </replaceregexp>
                             </target>
                         </configuration>
