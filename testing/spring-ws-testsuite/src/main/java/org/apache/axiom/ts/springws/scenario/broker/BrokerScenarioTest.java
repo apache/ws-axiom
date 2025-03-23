@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.springws.scenario.broker;
 
+import static org.junit.Assert.assertThrows;
+
 import java.util.Locale;
 
 import javax.xml.transform.Source;
@@ -73,9 +75,8 @@ public class BrokerScenarioTest extends ScenarioTestCase {
         Locale oldLocale = Locale.getDefault();
         Locale.setDefault(Locale.ENGLISH);
         try {
-            client.order(order);
-            fail("Expected SoapFaultClientException");
-        } catch (SoapFaultClientException ex) {
+            SoapFaultClientException ex =
+                    assertThrows(SoapFaultClientException.class, () -> client.order(order));
             assertEquals(spec.getSenderFaultCode(), ex.getFaultCode());
             assertEquals("Customer 23629 unknown", ex.getMessage());
         } finally {
