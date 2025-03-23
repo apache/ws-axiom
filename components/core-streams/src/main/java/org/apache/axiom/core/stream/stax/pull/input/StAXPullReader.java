@@ -275,7 +275,7 @@ final class StAXPullReader implements XmlReader {
             // if external entity support is explicitly disabled.
             Boolean b =
                     (Boolean) reader.getProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES);
-            if (b == null || b == Boolean.TRUE) {
+            if (b == null || b.booleanValue()) {
                 throw e;
             }
             if (log.isDebugEnabled()) {
