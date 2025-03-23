@@ -20,10 +20,10 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.mime.MultipartBody;
@@ -32,11 +32,11 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.example.ImageService;
 import org.example.ImageServicePort;
 import org.junit.Test;
@@ -56,7 +56,7 @@ public class MTOMTest {
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(0);
         server.setConnectors(new Connector[] { connector });
-        ServletContextHandler handler = new ServletContextHandler(server, "/");
+        ServletContextHandler handler = new ServletContextHandler("/");
         HttpServlet servlet = new HttpServlet() {
             @Override
             protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -84,6 +84,7 @@ public class MTOMTest {
         servletHolder.setName("test");
         servletHolder.setInitOrder(1);
         handler.addServlet(servletHolder, "/");
+        server.setHandler(handler);
         server.start();
         try {
             ImageServicePort imageService = new ImageService().getImageServicePort(new MTOMFeature());
