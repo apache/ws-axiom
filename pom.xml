@@ -289,7 +289,7 @@
         <log4j.version>2.24.3</log4j.version>
         <groovy.version>4.0.26</groovy.version>
         <auto-service.version>1.1.1</auto-service.version>
-        <asm.version>9.7.1</asm.version>
+        <asm.version>9.8</asm.version>
         <errorprone.version>2.37.0</errorprone.version>
         <junit5.version>5.12.1</junit5.version>
         <mime4j.version>0.8.12</mime4j.version>
