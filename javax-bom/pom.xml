@@ -33,7 +33,7 @@
 
     <properties>
         <jaxbri.version>2.3.9</jaxbri.version>
-        <jetty.version>10.0.25</jetty.version>
+        <jetty.version>12.0.19</jetty.version>
     </properties>
 
     <dependencyManagement>
