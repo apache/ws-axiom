@@ -27,6 +27,7 @@ updates:
       - dependency-name: "org.glassfish.jaxb:jaxb-runtime"
       - dependency-name: "com.sun.xml.bind:jaxb-osgi"
       - dependency-name: "org.eclipse.jetty:*"
+      - dependency-name: "org.eclipse.jetty.ee10:*"
       # Same here; need two different versions.
       - dependency-name: "com.github.veithen.maven:xjc-maven-plugin"
       # There is a bug in Saxon 10 related to how xmlns="" declarations are processed.
