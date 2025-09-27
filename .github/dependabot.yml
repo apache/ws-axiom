@@ -28,18 +28,10 @@ updates:
       - dependency-name: "com.sun.xml.bind:jaxb-osgi"
       - dependency-name: "org.eclipse.jetty:*"
       - dependency-name: "org.eclipse.jetty.ee10:*"
-      # Same here; need two different versions.
-      - dependency-name: "com.github.veithen.maven:xjc-maven-plugin"
       # There is a bug in Saxon 10 related to how xmlns="" declarations are processed.
       - dependency-name: "net.sf.saxon:Saxon-HE"
         versions:
           - ">= 10.0"
-      - dependency-name: "org.springframework:*"
-        versions:
-          - ">= 6.0.0"
-      - dependency-name: "org.springframework.ws:*"
-        versions:
-          - ">= 3.1.4"
       - dependency-name: "org.apache.maven.plugins:maven-source-plugin"
         versions:
           # MSOURCES-137

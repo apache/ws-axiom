@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.ts.springws.scenario.jaxb2;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
 @XmlRootElement(namespace = "urn:stockquote", name = "GetQuote")
 @XmlType

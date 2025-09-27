@@ -20,11 +20,11 @@ package org.apache.axiom.ts.springws.scenario;
 
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.springws.SpringWSTestCase;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -57,7 +57,7 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(0);
         server.setConnectors(new Connector[] {connector});
-        ServletContextHandler handler = new ServletContextHandler(server, "/");
+        ServletContextHandler handler = new ServletContextHandler("/");
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setContextClass(GenericWebApplicationContext.class);
         servlet.setContextInitializers(
@@ -75,6 +75,7 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
         servletHolder.setName("spring-ws");
         servletHolder.setInitOrder(1);
         handler.addServlet(servletHolder, "/*");
+        server.setHandler(handler);
         server.start();
 
         context = new GenericXmlApplicationContext();

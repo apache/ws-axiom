@@ -52,7 +52,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-compat</artifactId>
+            <artifactId>axiom-legacy-attachments</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

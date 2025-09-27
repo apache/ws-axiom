@@ -23,12 +23,17 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
+import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStreamVersionMismatch;
 
 public class SpringWSTest extends TestCase {
     public static TestSuite suite() {
         SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(
                 new AxiomMessageFactoryConfigurator(),
                 MessageFactoryConfigurator.SAAJ);
+
+        // Since Spring-WS 3.1.4, the behavior differs between the Axiom and SAAJ implementations.
+        builder.exclude(TestCreateWebServiceMessageFromInputStreamVersionMismatch.class);
+
         return builder.build();
     }
 }

@@ -104,7 +104,6 @@
             <plugin>
                 <groupId>com.github.veithen.maven</groupId>
                 <artifactId>xjc-maven-plugin</artifactId>
-                <version>0.2.0</version>
                 <executions>
                     <execution>
                         <goals>
