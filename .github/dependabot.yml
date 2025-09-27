@@ -26,8 +26,6 @@ updates:
       - dependency-name: "jakarta.xml.bind:jakarta.xml.bind-api"
       - dependency-name: "org.glassfish.jaxb:jaxb-runtime"
       - dependency-name: "com.sun.xml.bind:jaxb-osgi"
-      - dependency-name: "org.eclipse.jetty:*"
-      - dependency-name: "org.eclipse.jetty.ee10:*"
       # There is a bug in Saxon 10 related to how xmlns="" declarations are processed.
       - dependency-name: "net.sf.saxon:Saxon-HE"
         versions:
