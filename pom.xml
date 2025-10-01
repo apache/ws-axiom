@@ -292,7 +292,7 @@
         <auto-service.version>1.1.1</auto-service.version>
         <asm.version>9.8</asm.version>
         <errorprone.version>2.42.0</errorprone.version>
-        <junit5.version>5.13.4</junit5.version>
+        <junit5.version>6.0.0</junit5.version>
         <mime4j.version>0.8.13</mime4j.version>
         <surefire.version>3.5.4</surefire.version>
 
