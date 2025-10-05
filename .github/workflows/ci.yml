@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [ 17, 21, 23 ]
+        java: [ 21, 23 ]
     name: "Java ${{ matrix.java }}"
     runs-on: ubuntu-22.04
     steps:
@@ -69,7 +69,7 @@ jobs:
       uses: actions/setup-java@v5
       with:
         distribution: 'zulu'
-        java-version: 17
+        java-version: 21
     - name: Build
       run: mvn -B -e -Dmaven.test.skip=true package site-deploy
     - name: Remove Snapshots
@@ -96,7 +96,7 @@ jobs:
       uses: actions/setup-java@v5
       with:
         distribution: 'zulu'
-        java-version: 17
+        java-version: 21
         server-id: apache.snapshots.https
         server-username: NEXUS_USER
         server-password: NEXUS_PW

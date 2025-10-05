@@ -918,7 +918,7 @@
                     <rules>
                         <requireJavaVersion>
                             <!-- A more recent Java version is required by some of the Maven plugins in the build. -->
-                            <version>17</version>
+                            <version>21</version>
                         </requireJavaVersion>
                         <requireMavenVersion>
                             <!-- Require a recent Maven version for consistent build results -->
