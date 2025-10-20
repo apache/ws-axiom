@@ -40,19 +40,28 @@ import org.xml.sax.InputSource;
 public class SOAPSample extends XMLSample {
     /** A SOAP fault response that uses some SOAP 1.2 specific features. */
     public static final SOAPSample SOAP12_FAULT =
-            new SimpleSOAPSample(
-                    SOAPSpec.SOAP12, "test-message/soap12/fault.xml", "soap12/fault.xml");
+            new SOAPSample(SOAPSpec.SOAP12, "test-message/soap12/fault.xml", "soap12/fault.xml");
 
     /** A SOAP 1.2 message that uses the relay attribute. */
     public static final SOAPSample SOAP12_RELAY =
-            new SimpleSOAPSample(
-                    SOAPSpec.SOAP12, "test-message/soap12/relay.xml", "soap12/relay.xml");
+            new SOAPSample(SOAPSpec.SOAP12, "test-message/soap12/relay.xml", "soap12/relay.xml");
 
     private final SOAPSpec spec;
 
     SOAPSample(SOAPSpec spec, MessageContent content, String name) {
         super(content, name);
         this.spec = spec;
+    }
+
+    SOAPSample(SOAPSpec spec, String resourceName, String name) {
+        this(
+                spec,
+                MessageContent.fromClasspath(SOAPSample.class.getClassLoader(), resourceName),
+                name);
+    }
+
+    SOAPSample(SOAPSpec spec, String resourceName) {
+        this(spec, resourceName, resourceName);
     }
 
     @Instances

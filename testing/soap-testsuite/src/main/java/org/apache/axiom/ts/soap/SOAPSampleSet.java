@@ -65,7 +65,7 @@ public final class SOAPSampleSet extends Multiton {
 
     private SOAPSampleSet(String name) {
         soap12Message =
-                new SimpleSOAPSample(
+                new SOAPSample(
                         SOAPSpec.SOAP12, "test-message/set/" + name + ".xml", "soap12/" + name);
         soap11Message =
                 new SOAPSample(

@@ -61,19 +61,18 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         goodSOAPFiles = new ArrayList<SOAPSample>();
         goodSOAPFiles.addAll(
                 Arrays.asList(
-                        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/whitespacedMessage.xml"),
-                        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/minimalMessage.xml"),
-                        new SimpleSOAPSample(
-                                SOAPSpec.SOAP11, "soap/soap11/reallyReallyBigMessage.xml"),
-                        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/emtyBodymessage.xml"),
-                        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/soapfault.xml"),
-                        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/bodyNotQualified.xml"),
-                        new SimpleSOAPSample(
+                        new SOAPSample(SOAPSpec.SOAP11, "soap/soap11/whitespacedMessage.xml"),
+                        new SOAPSample(SOAPSpec.SOAP11, "soap/soap11/minimalMessage.xml"),
+                        new SOAPSample(SOAPSpec.SOAP11, "soap/soap11/reallyReallyBigMessage.xml"),
+                        new SOAPSample(SOAPSpec.SOAP11, "soap/soap11/emtyBodymessage.xml"),
+                        new SOAPSample(SOAPSpec.SOAP11, "soap/soap11/soapfault.xml"),
+                        new SOAPSample(SOAPSpec.SOAP11, "soap/soap11/bodyNotQualified.xml"),
+                        new SOAPSample(
                                 SOAPSpec.SOAP11, "soap/soap11/faultelements-with-comment.xml"),
-                        new SimpleSOAPSample(
+                        new SOAPSample(
                                 SOAPSpec.SOAP11, "soap/soap11/additional-element-after-body.xml"),
-                        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/empty-header.xml"),
-                        new SimpleSOAPSample(SOAPSpec.SOAP12, "soap/soap12/empty-header.xml")));
+                        new SOAPSample(SOAPSpec.SOAP11, "soap/soap11/empty-header.xml"),
+                        new SOAPSample(SOAPSpec.SOAP12, "soap/soap12/empty-header.xml")));
         goodSOAPFiles.addAll(Multiton.getInstances(SOAPSample.class));
     }
 
