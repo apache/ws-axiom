@@ -20,9 +20,8 @@ package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.ts.xml.MessageContent;
 
-// TODO: this should eventually have package access
-public final class SimpleSOAPSample extends SOAPSample {
-    public SimpleSOAPSample(SOAPSpec spec, String resourceName) {
+final class SimpleSOAPSample extends SOAPSample {
+    SimpleSOAPSample(SOAPSpec spec, String resourceName) {
         this(spec, resourceName, resourceName);
     }
 
