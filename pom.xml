@@ -752,7 +752,7 @@
                 <plugin>
                     <groupId>org.apache.rat</groupId>
                     <artifactId>apache-rat-plugin</artifactId>
-                    <version>0.16.1</version>
+                    <version>0.17</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
@@ -1395,7 +1395,7 @@ $${type_declaration}</template></templates>]]></value>
                             </execution>
                         </executions>
                         <configuration>
-                            <excludes>
+                            <inputExcludes>
                                 <!-- Exclusions specific to the root project -->
                                 
                                 <!-- RAT doesn't recognize this one as notes file -->
@@ -1422,7 +1422,7 @@ $${type_declaration}</template></templates>]]></value>
                                 <exclude>src/test/resources/**</exclude>
                                 <!-- Temporary file created by maven-shade-plugin -->
                                 <exclude>dependency-reduced-pom.xml</exclude>
-                            </excludes>
+                            </inputExcludes>
                         </configuration>
                     </plugin>
                 </plugins>
