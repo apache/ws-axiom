@@ -24,14 +24,16 @@ import java.io.UnsupportedEncodingException;
 /**
  * Interface to a backing object that can can be read and written as XML.
  * 
- * To plug an arbitrary object into an OM tree.  Follow these steps
- *  1) Provide a class that implements OMDataSourceExt.
- *  2) Use OMFactory.createOMElement(OMDataSource, String, OMNamespace) to build an
- *     OMSourcedElement.
- *  3) Add the OMSourcedElement to the OM tree.
+ * <p>To plug an arbitrary object into an OM tree.  Follow these steps
+ * <ol>
+ *   <li>Provide a class that implements {@code OMDataSourceExt}.
+ *   <li>Use {@link OMFactory#createOMElement(OMDataSource, String, OMNamespace)} to build an
+ *       {@link OMSourcedElement}.
+ *   <li>Add the {@link OMSourcedElement} to the OM tree.
+ * </ol>
  * 
- * OMDataSourceExt provides additional methods that are not available on the
- * original OMDataSource.
+ * <p>{@code OMDataSourceExt} provides additional methods that are not available on the
+ * original {@link OMDataSource}.
  * 
  * @see OMDataSource
  * @see OMSourcedElement
