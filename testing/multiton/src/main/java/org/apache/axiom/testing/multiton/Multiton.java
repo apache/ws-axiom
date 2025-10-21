@@ -22,18 +22,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 
 /**
- * Base class for multitons. A multiton is a class that has a fixed set of instances. The base class
- * also provides a simple mechanism that allows to extend the behavior of a multiton using adapters.
+ * Base class for multitons. A multiton is a class that has a fixed set of instances.
  *
  * <p>The set of instances of a multiton is determined by:
  *
@@ -45,35 +41,9 @@ import java.util.ServiceLoader;
  *       with an component type assignment compatible with the multiton class.
  * </ul>
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
-public abstract class Multiton {
+@SuppressWarnings({"unchecked"})
+public abstract class Multiton extends Adaptable {
     private static final Map<Class<?>, List<?>> instancesMap = new HashMap<>();
-    private static final Map<Class, List<AdapterFactory>> adapterFactoryMap = new HashMap<>();
-    private final Adapters adapters = new Adapters();
-
-    static {
-        for (Iterator<AdapterFactory> it =
-                        ServiceLoader.load(AdapterFactory.class, Multiton.class.getClassLoader())
-                                .iterator();
-                it.hasNext(); ) {
-            AdapterFactory adapterFactory = it.next();
-            // TODO: only works in the basic case where the factory directly implements
-            // AdapterFactory as the first interface
-            Class clazz =
-                    ((Class<?>)
-                                    ((ParameterizedType)
-                                                    adapterFactory.getClass()
-                                                            .getGenericInterfaces()[0])
-                                            .getActualTypeArguments()[0])
-                            .asSubclass(Multiton.class);
-            List<AdapterFactory> adapterFactories = adapterFactoryMap.get(clazz);
-            if (adapterFactories == null) {
-                adapterFactories = new ArrayList<>();
-                adapterFactoryMap.put(clazz, adapterFactories);
-            }
-            adapterFactories.add(adapterFactory);
-        }
-    }
 
     /**
      * Get all instances of the given multiton. See the Javadoc of the {@link Multiton} class for
@@ -133,23 +103,5 @@ public abstract class Multiton {
             instancesMap.put(multitonClass, instances);
         }
         return instances;
-    }
-
-    public final <T> T getAdapter(Class<T> type) {
-        synchronized (adapters) {
-            if (!adapters.initialized()) {
-                Class<?> clazz = getClass();
-                while (clazz != Multiton.class) {
-                    List<AdapterFactory> adapterFactories = adapterFactoryMap.get(clazz);
-                    if (adapterFactories != null) {
-                        for (AdapterFactory adapterFactory : adapterFactories) {
-                            adapterFactory.createAdapters(this, adapters);
-                        }
-                    }
-                    clazz = clazz.getSuperclass();
-                }
-            }
-            return adapters.get(type);
-        }
     }
 }

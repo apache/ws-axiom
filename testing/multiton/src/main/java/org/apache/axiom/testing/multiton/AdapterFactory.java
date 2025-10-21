@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.testing.multiton;
 
-public interface AdapterFactory<T extends Multiton> {
+public interface AdapterFactory<T extends Adaptable> {
     void createAdapters(T instance, Adapters adapters);
 }
