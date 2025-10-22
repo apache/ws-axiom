@@ -44,7 +44,7 @@ import org.apache.axiom.om.OMOutputFormat;
  * actually use {@link AbstractPullOMDataSource} or {@link AbstractPushOMDataSource}.
  */
 public abstract class AbstractOMDataSource implements OMDataSourceExt {
-    private Map<String,Object> properties;
+    private Map<String, Object> properties;
 
     @Override
     public final Object getProperty(String key) {
@@ -59,7 +59,7 @@ public abstract class AbstractOMDataSource implements OMDataSourceExt {
     @Override
     public final Object setProperty(String key, Object value) {
         if (properties == null) {
-            properties = new HashMap<String,Object>();
+            properties = new HashMap<String, Object>();
         }
         return properties.put(key, value);
     }
@@ -88,24 +88,24 @@ public abstract class AbstractOMDataSource implements OMDataSourceExt {
         }
         return baos.toByteArray();
     }
-    
+
     @Override
-    public final InputStream getXMLInputStream(String encoding) throws UnsupportedEncodingException {
+    public final InputStream getXMLInputStream(String encoding)
+            throws UnsupportedEncodingException {
         return new ByteArrayInputStream(getXMLBytes(encoding));
     }
 
-    // 
+    //
     // Default implementations that may be overridden by subclasses
     //
-    
+
     @Override
     public Object getObject() {
         return null;
     }
 
     @Override
-    public void close() {
-    }
+    public void close() {}
 
     @Override
     public OMDataSourceExt copy() {

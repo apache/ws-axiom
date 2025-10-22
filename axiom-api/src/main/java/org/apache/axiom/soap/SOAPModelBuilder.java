@@ -20,23 +20,21 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMXMLParserWrapper;
 
-/**
- * SOAP specific extension to {@link OMXMLParserWrapper}.
- */
+/** SOAP specific extension to {@link OMXMLParserWrapper}. */
 public interface SOAPModelBuilder extends OMXMLParserWrapper {
     /**
      * Get the SOAP envelope for the document processed by this builder. This is a convenience
-     * method that has the same return value as {@link OMXMLParserWrapper#getDocumentElement()}
-     * but a different return type.
-     * 
+     * method that has the same return value as {@link OMXMLParserWrapper#getDocumentElement()} but
+     * a different return type.
+     *
      * @return the SOAP envelope
      */
     SOAPEnvelope getSOAPEnvelope();
-    
+
     /**
      * Get the SOAP message being built by this builder. This is a convenience method that has the
      * same return value as {@link OMXMLParserWrapper#getDocument()} but a different return type.
-     * 
+     *
      * @return the SOAP message
      */
     SOAPMessage getSOAPMessage();

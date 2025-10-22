@@ -19,5 +19,4 @@
 
 package org.apache.axiom.soap;
 
-public interface SOAPFaultCode extends SOAPFaultClassifier {
-}
+public interface SOAPFaultCode extends SOAPFaultClassifier {}

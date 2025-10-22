@@ -33,7 +33,9 @@ public class TestGetPrefixAfterWriteNamespace extends DialectTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        XMLStreamWriter writer = staxImpl.newNormalizedXMLOutputFactory().createXMLStreamWriter(NullOutputStream.NULL_OUTPUT_STREAM);
+        XMLStreamWriter writer =
+                staxImpl.newNormalizedXMLOutputFactory()
+                        .createXMLStreamWriter(NullOutputStream.NULL_OUTPUT_STREAM);
         writer.writeStartElement("", "root", "");
         writer.writeNamespace("p", "urn:test");
         assertEquals("p", writer.getPrefix("urn:test"));

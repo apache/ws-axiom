@@ -27,33 +27,37 @@ import junit.framework.TestCase;
 
 public class ContentTypeTest extends TestCase {
     public void testNullMediaType() {
-        assertThrows(NullPointerException.class, () -> new ContentType((MediaType)null));
+        assertThrows(NullPointerException.class, () -> new ContentType((MediaType) null));
     }
 
     public void testNullParameter() {
-        assertThrows(NullPointerException.class, () -> new ContentType(MediaType.TEXT_PLAIN, "charset", null));
+        assertThrows(
+                NullPointerException.class,
+                () -> new ContentType(MediaType.TEXT_PLAIN, "charset", null));
     }
 
     public void testImmutable() {
-        String[] parameters = { "charset", "utf-8" };
+        String[] parameters = {"charset", "utf-8"};
         ContentType ct = new ContentType(MediaType.TEXT_XML, parameters);
         parameters[1] = "ascii";
         assertEquals("utf-8", ct.getParameter("charset"));
     }
-    
+
     public void testGetParameterIgnoresCase() {
         ContentType ct = new ContentType(MediaType.TEXT_XML, "charset", "utf-8");
         assertEquals("utf-8", ct.getParameter("CHARSET"));
     }
-    
+
     public void testParse() throws Exception {
-        ContentType ct = new ContentType("multipart/related; "
-                + "boundary=\"boundaryA3ADBAEE51A1A87B2A11443668160701\"; "
-                + "type=\"application/xop+xml\"; "
-                + "start=\"<A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; "
-                + "start-info=\"application/soap+xml\"; "
-                + "charset=UTF-8;"
-                + "action=\"urn:myAction\"");
+        ContentType ct =
+                new ContentType(
+                        "multipart/related; "
+                                + "boundary=\"boundaryA3ADBAEE51A1A87B2A11443668160701\"; "
+                                + "type=\"application/xop+xml\"; "
+                                + "start=\"<A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; "
+                                + "start-info=\"application/soap+xml\"; "
+                                + "charset=UTF-8;"
+                                + "action=\"urn:myAction\"");
         assertEquals(MediaType.MULTIPART_RELATED, ct.getMediaType());
         assertEquals("boundaryA3ADBAEE51A1A87B2A11443668160701", ct.getParameter("boundary"));
         assertEquals("application/xop+xml", ct.getParameter("type"));
@@ -62,24 +66,26 @@ public class ContentTypeTest extends TestCase {
         assertEquals("UTF-8", ct.getParameter("charset"));
         assertEquals("urn:myAction", ct.getParameter("action"));
     }
-    
+
     public void testParseWithExtraSemicolon() throws Exception {
         ContentType ct = new ContentType("text/xml; charset=utf-8;");
         assertEquals(MediaType.TEXT_XML, ct.getMediaType());
         assertEquals("utf-8", ct.getParameter("charset"));
     }
-    
+
     public void testParseWithExtraSpaces() throws Exception {
         ContentType ct = new ContentType("text/xml ; charset = utf-8 ");
         assertEquals(MediaType.TEXT_XML, ct.getMediaType());
         assertEquals("utf-8", ct.getParameter("charset"));
     }
-    
+
     public void testParseWithQuotedPair() throws Exception {
-        ContentType ct = new ContentType("application/x-some-format; comment=\"this is not a \\\"quote\\\"\"");
+        ContentType ct =
+                new ContentType(
+                        "application/x-some-format; comment=\"this is not a \\\"quote\\\"\"");
         assertEquals("this is not a \"quote\"", ct.getParameter("comment"));
     }
-    
+
     public void testParseInvalid1() {
         assertThrows(ParseException.class, () -> new ContentType("text/xml; ?"));
     }
@@ -112,17 +118,26 @@ public class ContentTypeTest extends TestCase {
         ContentType ct = new ContentType(MediaType.TEXT_XML, "charset", "utf-8");
         assertEquals("text/xml; charset=\"utf-8\"", ct.toString());
     }
-    
+
     public void testToStringWithQuote() {
-        ContentType ct = new ContentType(new MediaType("application", "x-some-format"),
-                "comment", "this is not a \"quote\"");
-        assertEquals("application/x-some-format; comment=\"this is not a \\\"quote\\\"\"", ct.toString());
+        ContentType ct =
+                new ContentType(
+                        new MediaType("application", "x-some-format"),
+                        "comment",
+                        "this is not a \"quote\"");
+        assertEquals(
+                "application/x-some-format; comment=\"this is not a \\\"quote\\\"\"",
+                ct.toString());
     }
 
     public void testToStringWithBackslash() {
-        ContentType ct = new ContentType(new MediaType("application", "x-some-format"),
-                "filename", "c:\\temp\\test.dat");
-        assertEquals("application/x-some-format; filename=\"c:\\\\temp\\\\test.dat\"", ct.toString());
+        ContentType ct =
+                new ContentType(
+                        new MediaType("application", "x-some-format"),
+                        "filename",
+                        "c:\\temp\\test.dat");
+        assertEquals(
+                "application/x-some-format; filename=\"c:\\\\temp\\\\test.dat\"", ct.toString());
     }
 
     private static boolean isTextual(String contentType) throws Exception {

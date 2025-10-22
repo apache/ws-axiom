@@ -31,13 +31,13 @@ public interface OMInformationItem {
      * items created using one of the methods defined by {@link OMFactory}, this is the instance
      * returned by {@link OMMetaFactory#getOMFactory()} (for the {@link OMMetaFactory} corresponding
      * to the implementation of the Axiom API this information item belongs to). For information
-     * items created by one of the methods defined by {@link SOAPFactory}, this is the
-     * {@link SOAPFactory} instance for the corresponding SOAP version.
-     * <p>
-     * This means that the returned factory will be a {@link SOAPFactory} only if the method is
+     * items created by one of the methods defined by {@link SOAPFactory}, this is the {@link
+     * SOAPFactory} instance for the corresponding SOAP version.
+     *
+     * <p>This means that the returned factory will be a {@link SOAPFactory} only if the method is
      * called on a {@link SOAPMessage} or an {@link OMElement} that implements one of the SOAP
      * specific extension interfaces.
-     * 
+     *
      * @return the {@link OMFactory} corresponding to this information item
      */
     OMFactory getOMFactory();
@@ -48,11 +48,10 @@ public interface OMInformationItem {
      * and create clones immediately. It will also preserve the original nodes. This means that
      * after the execution of this method, both the returned clone and the original container will
      * be completely built.
-     * 
-     * @param options
-     *            the options to use when cloning this element and its descendants; for object
-     *            models with domain specific extensions (such as SOAP), this may be a subclass of
-     *            {@link OMCloneOptions}
+     *
+     * @param options the options to use when cloning this element and its descendants; for object
+     *     models with domain specific extensions (such as SOAP), this may be a subclass of {@link
+     *     OMCloneOptions}
      * @return the cloned element
      */
     OMInformationItem clone(OMCloneOptions options);

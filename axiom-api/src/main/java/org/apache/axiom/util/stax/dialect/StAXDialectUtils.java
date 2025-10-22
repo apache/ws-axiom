@@ -26,14 +26,15 @@ class StAXDialectUtils {
      * Default implementation for the {@link StAXDialect#disallowDoctypeDecl(XMLInputFactory)}
      * method. This method assumes that if {@link XMLInputFactory#SUPPORT_DTD} is set to false, the
      * underlying parser
+     *
      * <ol>
-     * <li>still reports DTD events and
-     * <li>doesn't attempt to load the external DTD subset (if present).
+     *   <li>still reports DTD events and
+     *   <li>doesn't attempt to load the external DTD subset (if present).
      * </ol>
+     *
      * These assumptions may be false for some StAX implementations.
-     * 
-     * @param factory
-     *            the factory to configure
+     *
+     * @param factory the factory to configure
      * @return the configured factory
      */
     public static XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {

@@ -33,10 +33,10 @@ import org.apache.axiom.om.util.StAXUtils;
 
 /**
  * Base class for {@link OMDataSourceExt} implementations that can easily serialize the content to
- * an {@link XMLStreamWriter} but that are unable to produce the content as an
- * {@link XMLStreamReader}.
- * <p>
- * {@link OMSourcedElement} will handle {@link OMDataSource} implementations extending this class
+ * an {@link XMLStreamWriter} but that are unable to produce the content as an {@link
+ * XMLStreamReader}.
+ *
+ * <p>{@link OMSourcedElement} will handle {@link OMDataSource} implementations extending this class
  * differently when it comes to expansion: instead of using {@link OMDataSource#getReader()} to
  * expand the element, it will use {@link OMDataSource#serialize(XMLStreamWriter)} (with a special
  * {@link XMLStreamWriter} that builds the descendants of the {@link OMSourcedElement}). This means
@@ -51,9 +51,10 @@ public abstract class AbstractPushOMDataSource extends AbstractOMDataSource {
 
     @Override
     public final XMLStreamReader getReader() throws XMLStreamException {
-        // Note: we don't actually expect this code to be called because OMSourcedElement should handle
-        // AbstractPushOMDataSource instances differently. Nevertheless the code is functionally correct
-        // (but not very good from a performance point of view, especially for XOP).
+        // Note: we don't actually expect this code to be called because OMSourcedElement should
+        // handle AbstractPushOMDataSource instances differently. Nevertheless the code is
+        // functionally correct (but not very good from a performance point of view, especially for
+        // XOP).
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         serialize(bos, new OMOutputFormat());
         return StAXUtils.createXMLStreamReader(new ByteArrayInputStream(bos.toByteArray()));

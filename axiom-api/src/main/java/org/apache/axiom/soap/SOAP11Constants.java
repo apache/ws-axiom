@@ -21,26 +21,25 @@ package org.apache.axiom.soap;
 
 import javax.xml.namespace.QName;
 
-
 public interface SOAP11Constants extends SOAPConstants {
-    static final String SOAP_ENVELOPE_NAMESPACE_URI =
-            "http://schemas.xmlsoap.org/soap/envelope/";
-    static final String SOAP_ENCODING_NAMESPACE_URI =
-            "http://schemas.xmlsoap.org/soap/encoding/";
+    static final String SOAP_ENVELOPE_NAMESPACE_URI = "http://schemas.xmlsoap.org/soap/envelope/";
+    static final String SOAP_ENCODING_NAMESPACE_URI = "http://schemas.xmlsoap.org/soap/encoding/";
 
     /** Field ATTR_ACTOR */
     static final String ATTR_ACTOR = "actor";
 
     /** Field SOAP_FAULT_CODE_LOCAL_NAME */
     static final String SOAP_FAULT_CODE_LOCAL_NAME = "faultcode";
+
     /** Field SOAP_FAULT_STRING_LOCAL_NAME */
     static final String SOAP_FAULT_STRING_LOCAL_NAME = "faultstring";
+
     /** Field SOAP_FAULT_ACTOR_LOCAL_NAME */
     static final String SOAP_FAULT_ACTOR_LOCAL_NAME = "faultactor";
 
     static final String SOAP_FAULT_DETAIL_LOCAL_NAME = "detail";
 
-    //SOAP 1.2 Content Type
+    // SOAP 1.2 Content Type
     /**
      * @deprecated Use {@link SOAPVersion#getMediaType()} instead.
      */
@@ -54,13 +53,13 @@ public interface SOAP11Constants extends SOAPConstants {
 
     // QNames
     static final QName QNAME_ACTOR = new QName(SOAP_ENVELOPE_NAMESPACE_URI, ATTR_ACTOR);
-    
-    static final QName QNAME_MU_FAULTCODE = new QName(SOAP_ENVELOPE_NAMESPACE_URI,
-                                                      FAULT_CODE_MUST_UNDERSTAND);
-    static final QName QNAME_SENDER_FAULTCODE = new QName(SOAP_ENVELOPE_NAMESPACE_URI,
-                                                          FAULT_CODE_SENDER);
-    static final QName QNAME_RECEIVER_FAULTCODE = new QName(SOAP_ENVELOPE_NAMESPACE_URI,
-                                                            FAULT_CODE_RECEIVER);
+
+    static final QName QNAME_MU_FAULTCODE =
+            new QName(SOAP_ENVELOPE_NAMESPACE_URI, FAULT_CODE_MUST_UNDERSTAND);
+    static final QName QNAME_SENDER_FAULTCODE =
+            new QName(SOAP_ENVELOPE_NAMESPACE_URI, FAULT_CODE_SENDER);
+    static final QName QNAME_RECEIVER_FAULTCODE =
+            new QName(SOAP_ENVELOPE_NAMESPACE_URI, FAULT_CODE_RECEIVER);
 
     static final QName QNAME_FAULT_REASON = new QName(SOAP_FAULT_STRING_LOCAL_NAME);
     static final QName QNAME_FAULT_CODE = new QName(SOAP_FAULT_CODE_LOCAL_NAME);

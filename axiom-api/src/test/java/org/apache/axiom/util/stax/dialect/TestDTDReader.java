@@ -36,11 +36,13 @@ public class TestDTDReader extends DialectTestCase {
     protected void runTest() throws Throwable {
         InputStream in = XMLSample.DTD_FULL.getInputStream();
         try {
-            XMLStreamReader reader = staxImpl.newNormalizedXMLInputFactory().createXMLStreamReader(XMLSample.DTD_FULL.getUrl().toString(), in);
+            XMLStreamReader reader =
+                    staxImpl.newNormalizedXMLInputFactory()
+                            .createXMLStreamReader(XMLSample.DTD_FULL.getUrl().toString(), in);
             while (reader.next() != XMLStreamReader.DTD) {
                 // Just loop
             }
-            DTDReader dtdReader = (DTDReader)reader.getProperty(DTDReader.PROPERTY);
+            DTDReader dtdReader = (DTDReader) reader.getProperty(DTDReader.PROPERTY);
             assertThat(dtdReader).isNotNull();
             assertThat(dtdReader.getRootName()).isEqualTo("root");
             assertThat(dtdReader.getSystemId()).isEqualTo("dtd-full.dtd");

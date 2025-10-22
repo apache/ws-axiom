@@ -24,7 +24,7 @@ import org.xml.sax.XMLReader;
 public class TestGetSetFeature extends MatrixTestCase {
     private final XMLReader xmlReader;
     private final String feature;
-    
+
     public TestGetSetFeature(XMLReader xmlReader, String feature) {
         this.xmlReader = xmlReader;
         this.feature = feature;

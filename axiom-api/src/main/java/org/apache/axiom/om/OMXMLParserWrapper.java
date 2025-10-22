@@ -31,35 +31,34 @@ import org.w3c.dom.Node;
 
 /** Interface OMXMLParserWrapper */
 public interface OMXMLParserWrapper {
-    /** @return Returns the complete status. */
+    /**
+     * @return Returns the complete status.
+     */
     boolean isCompleted();
 
     /**
      * Get the document being built by this builder.
-     * 
+     *
      * @return the {@link OMDocument} instance
-     * @throws UnsupportedOperationException
-     *             if there is no document linked to this builder; this may occur if the builder is
-     *             associated with an {@link OMSourcedElement}
+     * @throws UnsupportedOperationException if there is no document linked to this builder; this
+     *     may occur if the builder is associated with an {@link OMSourcedElement}
      */
     OMDocument getDocument();
-    
+
     /**
      * Get the document element, i.e. the root element of the document. Using this method is
      * equivalent to using {@link OMDocument#getOMDocumentElement()} on the document returned by
      * {@link #getDocument()}.
-     * <p>
-     * Note that this method will never return <code>null</code> (except in the very special case
+     *
+     * <p>Note that this method will never return <code>null</code> (except in the very special case
      * where the document has been requested before and the document element has been removed
      * explicitly): if the document being parsed has no document element, then this will result in a
      * parser error, i.e. an {@link OMException} will be thrown.
-     * 
+     *
      * @return the document element
-     * @throws OMException
-     *             if a parse error occurs
-     * @throws UnsupportedOperationException
-     *             if there is no document linked to this builder; this may occur if the builder is
-     *             associated with an {@link OMSourcedElement}
+     * @throws OMException if a parse error occurs
+     * @throws UnsupportedOperationException if there is no document linked to this builder; this
+     *     may occur if the builder is associated with an {@link OMSourcedElement}
      */
     OMElement getDocumentElement();
 
@@ -72,15 +71,12 @@ public interface OMXMLParserWrapper {
      * when it is added to another OM tree. This makes it possible to add the content of a document
      * to an existing OM tree while preserving the deferred parsing feature. It is even possible to
      * create an OM tree where different subtrees are associated with different builder instances.
-     * 
-     * @param discardDocument
-     *            specifies whether the document should be discarded
+     *
+     * @param discardDocument specifies whether the document should be discarded
      * @return the document element
-     * @throws OMException
-     *             if a parse error occurs
-     * @throws UnsupportedOperationException
-     *             if there is no document linked to this builder; this may occur if the builder is
-     *             associated with an {@link OMSourcedElement}
+     * @throws OMException if a parse error occurs
+     * @throws UnsupportedOperationException if there is no document linked to this builder; this
+     *     may occur if the builder is associated with an {@link OMSourcedElement}
      */
     OMElement getDocumentElement(boolean discardDocument);
 
@@ -90,13 +86,15 @@ public interface OMXMLParserWrapper {
      * <b>not</b> close the underlying input source.
      */
     void close();
-    
+
     /**
      * Detach this builder from its underlying source, so that the state of the source object can be
      * changed without impact on the object model produced by this builder. The effect of this
      * method depends on the type of source object passed to {@link OMXMLBuilderFactory} to create
      * the builder:
+     *
      * <p>
+     *
      * <table border="1">
      * <caption>Actions performed by the {@link #detach()} method</caption>
      * <tr>

@@ -23,18 +23,18 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * Interface implemented by {@link XMLStreamReader} classes that delegate to another stream reader
  * and that can be safely unwrapped.
- * <p>
- * This interface gives access to the parent reader, i.e. it allows to unwrap a stream reader
+ *
+ * <p>This interface gives access to the parent reader, i.e. it allows to unwrap a stream reader
  * wrapper. It should be noted that in general, unwrapping a wrapper and accessing the parent object
  * is not a safe operation because it may invalidate the state of the wrapper (which may still be
  * used later). Therefore this interface must only be implemented by {@link XMLStreamReader} classes
  * for which unwrapping is a safe operation. In particular, this interface should not be implemented
  * by wrappers that alter the sequence of events produced by the stream reader.
- * <p>
- * This interface is used by
- * {@link org.apache.axiom.util.stax.XMLStreamReaderUtils#getOriginalXMLStreamReader(XMLStreamReader)}
- * to get access to the original parser.
- * 
+ *
+ * <p>This interface is used by {@link
+ * org.apache.axiom.util.stax.XMLStreamReaderUtils#getOriginalXMLStreamReader(XMLStreamReader)} to
+ * get access to the original parser.
+ *
  * @deprecated
  */
 public interface DelegatingXMLStreamReader extends XMLStreamReader {

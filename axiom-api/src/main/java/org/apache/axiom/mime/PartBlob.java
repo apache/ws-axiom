@@ -20,13 +20,11 @@ package org.apache.axiom.mime;
 
 import org.apache.axiom.blob.Blob;
 
-/**
- * A {@link Blob} that enables access to the {@link Part} whose content it represents.
- */
+/** A {@link Blob} that enables access to the {@link Part} whose content it represents. */
 public interface PartBlob extends Blob {
     /**
      * The the MIME part from which this blob was created.
-     * 
+     *
      * @return the MIME part
      */
     Part getPart();

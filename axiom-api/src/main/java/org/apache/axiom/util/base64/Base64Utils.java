@@ -25,14 +25,12 @@ import java.io.Writer;
 
 import org.apache.axiom.blob.Blob;
 
-/**
- * Contains utility methods to work with base64 encoded data.
- */
+/** Contains utility methods to work with base64 encoded data. */
 public class Base64Utils {
     private static int getEncodedSize(int unencodedSize) {
-        return (unencodedSize+2) / 3 * 4;
+        return (unencodedSize + 2) / 3 * 4;
     }
-    
+
     private static int getBufferSize(Blob blob) {
         long size = blob.getSize();
         if (size == -1) {
@@ -41,30 +39,31 @@ public class Base64Utils {
         } else if (size > Integer.MAX_VALUE) {
             throw new IllegalArgumentException("Blob is too large to encode to string");
         } else {
-            return getEncodedSize((int)size);
+            return getEncodedSize((int) size);
         }
     }
-    
+
     /**
-     * Get a base64 representation of the content of a given {@link Blob} as a string.
-     * This method will try to carry out the encoding operation in the most efficient way.
-     * 
+     * Get a base64 representation of the content of a given {@link Blob} as a string. This method
+     * will try to carry out the encoding operation in the most efficient way.
+     *
      * @param blob the blob with the content to encode
      * @return the base64 encoded content
      * @throws IOException if an I/O error occurs when reading the content of the blob
      */
     public static String encode(Blob blob) throws IOException {
         StringBuilder buffer = new StringBuilder(getBufferSize(blob));
-        Base64EncodingStringBufferOutputStream out = new Base64EncodingStringBufferOutputStream(buffer);
+        Base64EncodingStringBufferOutputStream out =
+                new Base64EncodingStringBufferOutputStream(buffer);
         blob.writeTo(out);
         out.complete();
         return buffer.toString();
     }
 
     /**
-     * Get a base64 representation of the content of a given {@link Blob} as a char array.
-     * This method will try to carry out the encoding operation in the most efficient way.
-     * 
+     * Get a base64 representation of the content of a given {@link Blob} as a char array. This
+     * method will try to carry out the encoding operation in the most efficient way.
+     *
      * @param blob the blob with the content to encode
      * @return the base64 encoded content
      * @throws IOException if an I/O error occurs when reading the content of the blob
@@ -79,10 +78,8 @@ public class Base64Utils {
 
     private static int decode0(char[] ibuf, byte[] obuf, int wp) {
         int outlen = 3;
-        if (ibuf[3] == Base64Constants.S_BASE64PAD)
-            outlen = 2;
-        if (ibuf[2] == Base64Constants.S_BASE64PAD)
-            outlen = 1;
+        if (ibuf[3] == Base64Constants.S_BASE64PAD) outlen = 2;
+        if (ibuf[2] == Base64Constants.S_BASE64PAD) outlen = 1;
         int b0 = Base64Constants.S_DECODETABLE[ibuf[0]];
         int b1 = Base64Constants.S_DECODETABLE[ibuf[1]];
         int b2 = Base64Constants.S_DECODETABLE[ibuf[2]];
@@ -115,8 +112,9 @@ public class Base64Utils {
         int obufcount = 0;
         for (int i = off; i < off + len; i++) {
             char ch = data[i];
-            if (ch == Base64Constants.S_BASE64PAD || ch < Base64Constants.S_DECODETABLE.length
-                    && Base64Constants.S_DECODETABLE[ch] >= 0) {
+            if (ch == Base64Constants.S_BASE64PAD
+                    || ch < Base64Constants.S_DECODETABLE.length
+                            && Base64Constants.S_DECODETABLE[ch] >= 0) {
                 ibuf[ibufcount++] = ch;
                 if (ibufcount == ibuf.length) {
                     ibufcount = 0;
@@ -124,8 +122,7 @@ public class Base64Utils {
                 }
             }
         }
-        if (obufcount == obuf.length)
-            return obuf;
+        if (obufcount == obuf.length) return obuf;
         byte[] ret = new byte[obufcount];
         System.arraycopy(obuf, 0, ret, 0, obufcount);
         return ret;
@@ -136,9 +133,8 @@ public class Base64Utils {
      * <a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/#base64Binary">XML Schema</a>
      * specification. It can be used to decode the text content of an element (or the value of an
      * attribute) of type <code>base64Binary</code>.
-     * 
-     * @param data
-     *            the base64 encoded data
+     *
+     * @param data the base64 encoded data
      * @return the decoded data
      */
     public static byte[] decode(String data) {
@@ -178,12 +174,12 @@ public class Base64Utils {
                 continue;
             }
             if (bits == 0) {
-                accumulator = (byte)(b << 2);
+                accumulator = (byte) (b << 2);
                 bits = 6;
             } else {
                 accumulator |= b >> (bits - 2);
                 result[resultPos++] = accumulator;
-                accumulator = (byte)(b << (10 - bits));
+                accumulator = (byte) (b << (10 - bits));
                 bits -= 2;
             }
             symbols--;
@@ -204,31 +200,32 @@ public class Base64Utils {
         for (int i = 0; i < data.length(); i++) {
             char ch = data.charAt(i);
 
-            if (ch == Base64Constants.S_BASE64PAD || ch < Base64Constants.S_DECODETABLE.length
-                    && Base64Constants.S_DECODETABLE[ch] >= 0) {
-                //valid character.Do nothing
+            if (ch == Base64Constants.S_BASE64PAD
+                    || ch < Base64Constants.S_DECODETABLE.length
+                            && Base64Constants.S_DECODETABLE[ch] >= 0) {
+                // valid character.Do nothing
             } else if (ch == '\r' || ch == '\n') {
-                //do nothing
+                // do nothing
             } else {
                 return false;
             }
-        }//iterate over all characters in the string
+        } // iterate over all characters in the string
         return true;
     }
-
 
     /**
      * @deprecated
      */
-    public static void decode(char[] data, int off, int len,
-                              OutputStream ostream) throws IOException {
+    public static void decode(char[] data, int off, int len, OutputStream ostream)
+            throws IOException {
         char[] ibuf = new char[4];
         int ibufcount = 0;
         byte[] obuf = new byte[3];
         for (int i = off; i < off + len; i++) {
             char ch = data[i];
-            if (ch == Base64Constants.S_BASE64PAD || ch < Base64Constants.S_DECODETABLE.length
-                    && Base64Constants.S_DECODETABLE[ch] >= 0) {
+            if (ch == Base64Constants.S_BASE64PAD
+                    || ch < Base64Constants.S_DECODETABLE.length
+                            && Base64Constants.S_DECODETABLE[ch] >= 0) {
                 ibuf[ibufcount++] = ch;
                 if (ibufcount == ibuf.length) {
                     ibufcount = 0;
@@ -242,15 +239,15 @@ public class Base64Utils {
     /**
      * @deprecated
      */
-    public static void decode(String data, OutputStream ostream)
-            throws IOException {
+    public static void decode(String data, OutputStream ostream) throws IOException {
         char[] ibuf = new char[4];
         int ibufcount = 0;
         byte[] obuf = new byte[3];
         for (int i = 0; i < data.length(); i++) {
             char ch = data.charAt(i);
-            if (ch == Base64Constants.S_BASE64PAD || ch < Base64Constants.S_DECODETABLE.length
-                    && Base64Constants.S_DECODETABLE[ch] >= 0) {
+            if (ch == Base64Constants.S_BASE64PAD
+                    || ch < Base64Constants.S_DECODETABLE.length
+                            && Base64Constants.S_DECODETABLE[ch] >= 0) {
                 ibuf[ibufcount++] = ch;
                 if (ibufcount == ibuf.length) {
                     ibufcount = 0;
@@ -272,34 +269,34 @@ public class Base64Utils {
      * @deprecated
      */
     public static String encode(byte[] data, int off, int len) {
-        if (len <= 0)
-            return "";
+        if (len <= 0) return "";
         char[] out = new char[len / 3 * 4 + 4];
         int rindex = off;
         int windex = 0;
         int rest = len - off;
         while (rest >= 3) {
-            int i = ((data[rindex] & 0xff) << 16)
-                    + ((data[rindex + 1] & 0xff) << 8)
-                    + (data[rindex + 2] & 0xff);
-            out[windex++] = (char)Base64Constants.S_BASE64CHAR[i >> 18];
-            out[windex++] = (char)Base64Constants.S_BASE64CHAR[(i >> 12) & 0x3f];
-            out[windex++] = (char)Base64Constants.S_BASE64CHAR[(i >> 6) & 0x3f];
-            out[windex++] = (char)Base64Constants.S_BASE64CHAR[i & 0x3f];
+            int i =
+                    ((data[rindex] & 0xff) << 16)
+                            + ((data[rindex + 1] & 0xff) << 8)
+                            + (data[rindex + 2] & 0xff);
+            out[windex++] = (char) Base64Constants.S_BASE64CHAR[i >> 18];
+            out[windex++] = (char) Base64Constants.S_BASE64CHAR[(i >> 12) & 0x3f];
+            out[windex++] = (char) Base64Constants.S_BASE64CHAR[(i >> 6) & 0x3f];
+            out[windex++] = (char) Base64Constants.S_BASE64CHAR[i & 0x3f];
             rindex += 3;
             rest -= 3;
         }
         if (rest == 1) {
             int i = data[rindex] & 0xff;
-            out[windex++] = (char)Base64Constants.S_BASE64CHAR[i >> 2];
-            out[windex++] = (char)Base64Constants.S_BASE64CHAR[(i << 4) & 0x3f];
+            out[windex++] = (char) Base64Constants.S_BASE64CHAR[i >> 2];
+            out[windex++] = (char) Base64Constants.S_BASE64CHAR[(i << 4) & 0x3f];
             out[windex++] = Base64Constants.S_BASE64PAD;
             out[windex++] = Base64Constants.S_BASE64PAD;
         } else if (rest == 2) {
             int i = ((data[rindex] & 0xff) << 8) + (data[rindex + 1] & 0xff);
-            out[windex++] = (char)Base64Constants.S_BASE64CHAR[i >> 10];
-            out[windex++] = (char)Base64Constants.S_BASE64CHAR[(i >> 4) & 0x3f];
-            out[windex++] = (char)Base64Constants.S_BASE64CHAR[(i << 2) & 0x3f];
+            out[windex++] = (char) Base64Constants.S_BASE64CHAR[i >> 10];
+            out[windex++] = (char) Base64Constants.S_BASE64CHAR[(i >> 4) & 0x3f];
+            out[windex++] = (char) Base64Constants.S_BASE64CHAR[(i << 2) & 0x3f];
             out[windex++] = Base64Constants.S_BASE64PAD;
         }
         return new String(out, 0, windex);
@@ -317,30 +314,31 @@ public class Base64Utils {
         int rindex = off;
         int rest = len - off;
         while (rest >= 3) {
-            int i = ((data[rindex] & 0xff) << 16)
-                    + ((data[rindex + 1] & 0xff) << 8)
-                    + (data[rindex + 2] & 0xff);
-            out[0] = (char)Base64Constants.S_BASE64CHAR[i >> 18];
-            out[1] = (char)Base64Constants.S_BASE64CHAR[(i >> 12) & 0x3f];
-            out[2] = (char)Base64Constants.S_BASE64CHAR[(i >> 6) & 0x3f];
-            out[3] = (char)Base64Constants.S_BASE64CHAR[i & 0x3f];
+            int i =
+                    ((data[rindex] & 0xff) << 16)
+                            + ((data[rindex + 1] & 0xff) << 8)
+                            + (data[rindex + 2] & 0xff);
+            out[0] = (char) Base64Constants.S_BASE64CHAR[i >> 18];
+            out[1] = (char) Base64Constants.S_BASE64CHAR[(i >> 12) & 0x3f];
+            out[2] = (char) Base64Constants.S_BASE64CHAR[(i >> 6) & 0x3f];
+            out[3] = (char) Base64Constants.S_BASE64CHAR[i & 0x3f];
             buffer.append(out);
             rindex += 3;
             rest -= 3;
         }
         if (rest == 1) {
             int i = data[rindex] & 0xff;
-            out[0] = (char)Base64Constants.S_BASE64CHAR[i >> 2];
-            out[1] = (char)Base64Constants.S_BASE64CHAR[(i << 4) & 0x3f];
+            out[0] = (char) Base64Constants.S_BASE64CHAR[i >> 2];
+            out[1] = (char) Base64Constants.S_BASE64CHAR[(i << 4) & 0x3f];
             out[2] = Base64Constants.S_BASE64PAD;
             out[3] = Base64Constants.S_BASE64PAD;
             buffer.append(out);
         } else if (rest == 2) {
             int i = ((data[rindex] & 0xff) << 8) + (data[rindex + 1] & 0xff);
-            out[0] = (char)Base64Constants.S_BASE64CHAR[i >> 10];
-            out[1] = (char)Base64Constants.S_BASE64CHAR[(i >> 4) & 0x3f];
-            out[2] = (char)Base64Constants.S_BASE64CHAR[(i << 2) & 0x3f];
-            out[3] = (char)Base64Constants.S_BASE64PAD;
+            out[0] = (char) Base64Constants.S_BASE64CHAR[i >> 10];
+            out[1] = (char) Base64Constants.S_BASE64CHAR[(i >> 4) & 0x3f];
+            out[2] = (char) Base64Constants.S_BASE64CHAR[(i << 2) & 0x3f];
+            out[3] = (char) Base64Constants.S_BASE64PAD;
             buffer.append(out);
         }
     }
@@ -348,17 +346,17 @@ public class Base64Utils {
     /**
      * @deprecated
      */
-    public static void encode(byte[] data, int off, int len,
-                              OutputStream ostream) throws IOException {
-        if (len <= 0)
-            return;
+    public static void encode(byte[] data, int off, int len, OutputStream ostream)
+            throws IOException {
+        if (len <= 0) return;
         byte[] out = new byte[4];
         int rindex = off;
         int rest = len - off;
         while (rest >= 3) {
-            int i = ((data[rindex] & 0xff) << 16)
-                    + ((data[rindex + 1] & 0xff) << 8)
-                    + (data[rindex + 2] & 0xff);
+            int i =
+                    ((data[rindex] & 0xff) << 16)
+                            + ((data[rindex + 1] & 0xff) << 8)
+                            + (data[rindex + 2] & 0xff);
             out[0] = Base64Constants.S_BASE64CHAR[i >> 18];
             out[1] = Base64Constants.S_BASE64CHAR[(i >> 12) & 0x3f];
             out[2] = Base64Constants.S_BASE64CHAR[(i >> 6) & 0x3f];
@@ -387,42 +385,40 @@ public class Base64Utils {
     /**
      * @deprecated
      */
-    public static void encode(byte[] data, int off, int len, Writer writer)
-            throws IOException {
-        if (len <= 0)
-            return;
+    public static void encode(byte[] data, int off, int len, Writer writer) throws IOException {
+        if (len <= 0) return;
         char[] out = new char[4];
         int rindex = off;
         int rest = len - off;
         int output = 0;
         while (rest >= 3) {
-            int i = ((data[rindex] & 0xff) << 16)
-                    + ((data[rindex + 1] & 0xff) << 8)
-                    + (data[rindex + 2] & 0xff);
-            out[0] = (char)Base64Constants.S_BASE64CHAR[i >> 18];
-            out[1] = (char)Base64Constants.S_BASE64CHAR[(i >> 12) & 0x3f];
-            out[2] = (char)Base64Constants.S_BASE64CHAR[(i >> 6) & 0x3f];
-            out[3] = (char)Base64Constants.S_BASE64CHAR[i & 0x3f];
+            int i =
+                    ((data[rindex] & 0xff) << 16)
+                            + ((data[rindex + 1] & 0xff) << 8)
+                            + (data[rindex + 2] & 0xff);
+            out[0] = (char) Base64Constants.S_BASE64CHAR[i >> 18];
+            out[1] = (char) Base64Constants.S_BASE64CHAR[(i >> 12) & 0x3f];
+            out[2] = (char) Base64Constants.S_BASE64CHAR[(i >> 6) & 0x3f];
+            out[3] = (char) Base64Constants.S_BASE64CHAR[i & 0x3f];
             writer.write(out, 0, 4);
             rindex += 3;
             rest -= 3;
             output += 4;
-            if (output % 76 == 0)
-                writer.write("\n");
+            if (output % 76 == 0) writer.write("\n");
         }
         if (rest == 1) {
             int i = data[rindex] & 0xff;
-            out[0] = (char)Base64Constants.S_BASE64CHAR[i >> 2];
-            out[1] = (char)Base64Constants.S_BASE64CHAR[(i << 4) & 0x3f];
-            out[2] = (char)Base64Constants.S_BASE64PAD;
-            out[3] = (char)Base64Constants.S_BASE64PAD;
+            out[0] = (char) Base64Constants.S_BASE64CHAR[i >> 2];
+            out[1] = (char) Base64Constants.S_BASE64CHAR[(i << 4) & 0x3f];
+            out[2] = (char) Base64Constants.S_BASE64PAD;
+            out[3] = (char) Base64Constants.S_BASE64PAD;
             writer.write(out, 0, 4);
         } else if (rest == 2) {
             int i = ((data[rindex] & 0xff) << 8) + (data[rindex + 1] & 0xff);
-            out[0] = (char)Base64Constants.S_BASE64CHAR[i >> 10];
-            out[1] = (char)Base64Constants.S_BASE64CHAR[(i >> 4) & 0x3f];
-            out[2] = (char)Base64Constants.S_BASE64CHAR[(i << 2) & 0x3f];
-            out[3] = (char)Base64Constants.S_BASE64PAD;
+            out[0] = (char) Base64Constants.S_BASE64CHAR[i >> 10];
+            out[1] = (char) Base64Constants.S_BASE64CHAR[(i >> 4) & 0x3f];
+            out[2] = (char) Base64Constants.S_BASE64CHAR[(i << 2) & 0x3f];
+            out[3] = (char) Base64Constants.S_BASE64PAD;
             writer.write(out, 0, 4);
         }
     }

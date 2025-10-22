@@ -22,7 +22,7 @@ final class Feature {
     private final String name;
     private final int priority;
     private final Class<?>[] extensionInterfaces;
-    
+
     Feature(String name, int priority, Class<?>[] extensionInterfaces) {
         this.name = name;
         this.priority = priority;

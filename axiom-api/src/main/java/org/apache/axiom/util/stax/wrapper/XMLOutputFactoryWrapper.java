@@ -37,7 +37,7 @@ public class XMLOutputFactoryWrapper extends XMLOutputFactory {
 
     /**
      * Constructor.
-     * 
+     *
      * @param parent the parent factory
      */
     public XMLOutputFactoryWrapper(XMLOutputFactory parent) {

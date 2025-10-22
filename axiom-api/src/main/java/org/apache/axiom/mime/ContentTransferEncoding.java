@@ -22,9 +22,7 @@ import java.io.OutputStream;
 
 import org.apache.axiom.util.base64.Base64EncodingOutputStream;
 
-/**
- * Represents a MIME content transfer encoding.
- */
+/** Represents a MIME content transfer encoding. */
 public abstract class ContentTransferEncoding {
     private static class Identity extends ContentTransferEncoding {
         Identity(String name) {
@@ -37,25 +35,20 @@ public abstract class ContentTransferEncoding {
         }
     }
 
-    /**
-     * The {@code 8bit} content transfer encoding.
-     */
+    /** The {@code 8bit} content transfer encoding. */
     public static final ContentTransferEncoding EIGHT_BIT = new Identity("8bit");
 
-    /**
-     * The {@code binary} content transfer encoding.
-     */
+    /** The {@code binary} content transfer encoding. */
     public static final ContentTransferEncoding BINARY = new Identity("binary");
 
-    /**
-     * The {@code base64} content transfer encoding.
-     */
-    public static final ContentTransferEncoding BASE64 = new ContentTransferEncoding("base64") {
-        @Override
-        public OutputStream encode(OutputStream out) {
-            return new Base64EncodingOutputStream(out);
-        }
-    };
+    /** The {@code base64} content transfer encoding. */
+    public static final ContentTransferEncoding BASE64 =
+            new ContentTransferEncoding("base64") {
+                @Override
+                public OutputStream encode(OutputStream out) {
+                    return new Base64EncodingOutputStream(out);
+                }
+            };
 
     private final String name;
 
@@ -70,7 +63,7 @@ public abstract class ContentTransferEncoding {
 
     /**
      * Wrap the given output stream to apply the content transfer encoding.
-     * 
+     *
      * @param out the output stream to wrap
      * @return the wrapped output stream
      */

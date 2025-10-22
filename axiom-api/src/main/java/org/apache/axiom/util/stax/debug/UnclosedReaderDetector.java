@@ -33,29 +33,29 @@ import org.apache.commons.logging.LogFactory;
  * reader will be detected when the {@link XMLStreamReader} instance is finalized by the virtual
  * machine. When this happens, a warning message will be logged. The log message contains the stack
  * trace of the instruction that created the reader.
- * <p>
- * Note that for this to work, the detector must compute the stack trace every time a reader is
+ *
+ * <p>Note that for this to work, the detector must compute the stack trace every time a reader is
  * created. Since this may have a significant performance impact, the wrapper should only used
  * during testing and debugging.
  */
 public class UnclosedReaderDetector extends WrappingXMLInputFactory {
     static final Log log = LogFactory.getLog(UnclosedReaderDetector.class);
-    
+
     private static class StreamReaderWrapper extends XMLStreamReaderWrapper {
         private final Throwable stackTrace;
         private boolean isClosed;
-    
+
         public StreamReaderWrapper(XMLStreamReader parent) {
             super(parent);
             stackTrace = new Throwable();
         }
-    
+
         @Override
         public void close() throws XMLStreamException {
             super.close();
             isClosed = true;
         }
-    
+
         @Override
         protected void finalize() throws Throwable {
             if (!isClosed) {
@@ -66,7 +66,7 @@ public class UnclosedReaderDetector extends WrappingXMLInputFactory {
 
     /**
      * Constructor.
-     * 
+     *
      * @param parent the parent factory
      */
     public UnclosedReaderDetector(XMLInputFactory parent) {

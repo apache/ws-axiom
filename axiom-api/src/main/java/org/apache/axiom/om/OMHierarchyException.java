@@ -19,9 +19,7 @@
 
 package org.apache.axiom.om;
 
-/**
- * Thrown if an object model operation would lead to a hierarchy that is not allowed.
- */
+/** Thrown if an object model operation would lead to a hierarchy that is not allowed. */
 public class OMHierarchyException extends OMException {
     private static final long serialVersionUID = 8391435427221729190L;
 

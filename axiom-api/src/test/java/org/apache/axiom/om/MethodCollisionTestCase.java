@@ -29,27 +29,28 @@ public class MethodCollisionTestCase extends TestCase {
     private final Class<?> omInterface;
     private final Class<?> domInterface;
     private final MethodSignature[] exceptions;
-    
-    public MethodCollisionTestCase(Class<?> omInterface, Class<?> domInterface, MethodSignature[] exceptions) {
+
+    public MethodCollisionTestCase(
+            Class<?> omInterface, Class<?> domInterface, MethodSignature[] exceptions) {
         this.omInterface = omInterface;
         this.domInterface = domInterface;
         this.exceptions = exceptions;
         setName(omInterface.getName() + " <-> " + domInterface.getName());
     }
-    
+
     public MethodCollisionTestCase(Class<?> omInterface, Class<?> domInterface) {
         this(omInterface, domInterface, null);
     }
-    
+
     private Set<MethodSignature> getMethodSignatures(Class<?> iface) {
         Set<MethodSignature> result = new HashSet<MethodSignature>();
         Method[] methods = iface.getMethods();
-        for (int i=0; i<methods.length; i++) {
+        for (int i = 0; i < methods.length; i++) {
             result.add(new MethodSignature(methods[i]));
         }
         return result;
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         Set<MethodSignature> signatures = getMethodSignatures(omInterface);

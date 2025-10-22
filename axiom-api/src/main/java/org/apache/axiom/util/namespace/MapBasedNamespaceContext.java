@@ -27,19 +27,16 @@ import java.util.Set;
 
 import javax.xml.XMLConstants;
 
-/**
- * Namespace context implementation that stores namespace bindings in a {@link Map}.
- */
+/** Namespace context implementation that stores namespace bindings in a {@link Map}. */
 public class MapBasedNamespaceContext extends AbstractNamespaceContext {
-    private final Map<String,String> namespaces;
+    private final Map<String, String> namespaces;
 
     /**
      * Constructor.
-     * 
-     * @param map
-     *            a map containing the (prefix, namespace URI) entries
+     *
+     * @param map a map containing the (prefix, namespace URI) entries
      */
-    public MapBasedNamespaceContext(Map<String,String> map) {
+    public MapBasedNamespaceContext(Map<String, String> map) {
         namespaces = map;
     }
 
@@ -51,7 +48,7 @@ public class MapBasedNamespaceContext extends AbstractNamespaceContext {
 
     @Override
     protected String doGetPrefix(String nsURI) {
-        for (Map.Entry<String,String> entry : namespaces.entrySet()) {
+        for (Map.Entry<String, String> entry : namespaces.entrySet()) {
             String uri = entry.getValue();
             if (uri.equals(nsURI)) {
                 return entry.getKey();
@@ -66,7 +63,7 @@ public class MapBasedNamespaceContext extends AbstractNamespaceContext {
     @Override
     protected Iterator<String> doGetPrefixes(String nsURI) {
         Set<String> prefixes = null;
-        for (Map.Entry<String,String> entry : namespaces.entrySet()) {
+        for (Map.Entry<String, String> entry : namespaces.entrySet()) {
             String uri = entry.getValue();
             if (uri.equals(nsURI)) {
                 if (prefixes == null) {

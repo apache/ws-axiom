@@ -33,82 +33,74 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 
 /**
- * {@link XMLStreamReader} implementation that
- * represents a text node wrapped inside an element. The text data is provided by a
- * {@link java.io.Reader Reader}.
- * <p>
- * It will produce the following sequence of XML events:
+ * {@link XMLStreamReader} implementation that represents a text node wrapped inside an element. The
+ * text data is provided by a {@link java.io.Reader Reader}.
+ *
+ * <p>It will produce the following sequence of XML events:
+ *
  * <ul>
- *   <li>START_DOCUMENT</li>
- *   <li>START_ELEMENT</li>
- *   <li>(CHARACTER)*</li>
- *   <li>END_ELEMENT</li>
- *   <li>END_DOCMENT</li>
+ *   <li>START_DOCUMENT
+ *   <li>START_ELEMENT
+ *   <li>(CHARACTER)*
+ *   <li>END_ELEMENT
+ *   <li>END_DOCMENT
  * </ul>
- * The class is implemented as a simple state machine, where the state is identified
- * by the current event type. The initial state is {@code START_DOCUMENT} and the
- * following transitions are triggered by {@link #next()}:
+ *
+ * The class is implemented as a simple state machine, where the state is identified by the current
+ * event type. The initial state is {@code START_DOCUMENT} and the following transitions are
+ * triggered by {@link #next()}:
+ *
  * <ul>
- *   <li>START_DOCUMENT &rarr; START_ELEMENT</li>
- *   <li>START_ELEMENT &rarr; END_ELEMENT (if character stream is empty)</li>
- *   <li>START_ELEMENT &rarr; CHARACTERS (if character stream is not empty)</li>
- *   <li>CHARACTERS &rarr; CHARACTERS (if data available in stream)</li>
- *   <li>CHARACTERS &rarr; END_ELEMENT (if end of stream reached)</li>
- *   <li>END_ELEMENT &rarr; END_DOCUMENT</li>
+ *   <li>START_DOCUMENT &rarr; START_ELEMENT
+ *   <li>START_ELEMENT &rarr; END_ELEMENT (if character stream is empty)
+ *   <li>START_ELEMENT &rarr; CHARACTERS (if character stream is not empty)
+ *   <li>CHARACTERS &rarr; CHARACTERS (if data available in stream)
+ *   <li>CHARACTERS &rarr; END_ELEMENT (if end of stream reached)
+ *   <li>END_ELEMENT &rarr; END_DOCUMENT
  * </ul>
+ *
  * Additionally, {@link #getElementText()} triggers the following transition:
+ *
  * <ul>
- *   <li>START_ELEMENT &rarr; END_ELEMENT</li>
+ *   <li>START_ELEMENT &rarr; END_ELEMENT
  * </ul>
- * Note that since multiple consecutive CHARACTERS events may be returned, this
- * "parser" is not coalescing.
- * 
+ *
+ * Note that since multiple consecutive CHARACTERS events may be returned, this "parser" is not
+ * coalescing.
  */
 // TODO: this is a good candidate to implement the CharacterDataReader interface
 public class WrappedTextNodeStreamReader implements XMLStreamReader {
-    /**
-     * The qualified name of the wrapper element.
-     */
+    /** The qualified name of the wrapper element. */
     private final QName wrapperElementName;
-    
-    /**
-     * The Reader object that represents the text data.
-     */
+
+    /** The Reader object that represents the text data. */
     private final Reader reader;
-    
-    /**
-     * The maximum number of characters to return for each CHARACTER event.
-     */
+
+    /** The maximum number of characters to return for each CHARACTER event. */
     private final int chunkSize;
-    
-    /**
-     * The type of the current XML event.
-     */
+
+    /** The type of the current XML event. */
     private int eventType = START_DOCUMENT;
-    
+
     /**
-     * The character data for the current event. This is only set if the current
-     * event is a CHARACTER event. The size of the array is determined by
-     * {@link #chunkSize}
+     * The character data for the current event. This is only set if the current event is a
+     * CHARACTER event. The size of the array is determined by {@link #chunkSize}
      */
     private char[] charData;
-    
-    /**
-     * The length of the character data in {@link #charData}.
-     */
+
+    /** The length of the character data in {@link #charData}. */
     private int charDataLength;
-    
+
     /**
-     * The namespace context applicable in the scope of the wrapper element.
-     * Beside the default mappings for xml and xmlns, it only contains the
-     * mapping for the namespace of the wrapper element.
-     * This attribute is initialized lazily by {@link #getNamespaceContext()}.
+     * The namespace context applicable in the scope of the wrapper element. Beside the default
+     * mappings for xml and xmlns, it only contains the mapping for the namespace of the wrapper
+     * element. This attribute is initialized lazily by {@link #getNamespaceContext()}.
      */
     private NamespaceContext namespaceContext;
-    
+
     /**
      * Create a new instance.
-     * 
+     *
      * @param wrapperElementName the qualified name of the wrapper element
      * @param reader the Reader object holding the character data to be wrapped
      * @param chunkSize the maximum number of characters that are returned for each CHARACTER event
@@ -118,10 +110,10 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         this.reader = reader;
         this.chunkSize = chunkSize;
     }
-    
+
     /**
      * Create a new instance with chunk size 4096.
-     * 
+     *
      * @param wrapperElementName the qualified name of the wrapper element
      * @param reader the Reader object holding the character data to be wrapped
      */
@@ -134,16 +126,16 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         // We don't define any properties
         return null;
     }
-    
+
     //
     // Methods to manipulate the parser state
     //
-    
+
     @Override
     public boolean hasNext() throws XMLStreamException {
         return eventType != END_DOCUMENT;
     }
-    
+
     @Override
     public int next() throws XMLStreamException {
         // Determine next event type based on current event type. If current event type
@@ -154,12 +146,11 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
                 break;
             case START_ELEMENT:
                 charData = new char[chunkSize];
-                // Fall through.
+            // Fall through.
             case CHARACTERS:
                 try {
                     charDataLength = reader.read(charData);
-                }
-                catch (IOException ex) {
+                } catch (IOException ex) {
                     throw new XMLStreamException(ex);
                 }
                 if (charDataLength == -1) {
@@ -177,7 +168,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         }
         return eventType;
     }
-    
+
     @Override
     public int nextTag() throws XMLStreamException {
         // We don't have white space, comments or processing instructions
@@ -190,46 +181,57 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
     }
 
     @Override
-    public boolean isStartElement() { return eventType == START_ELEMENT; }
+    public boolean isStartElement() {
+        return eventType == START_ELEMENT;
+    }
 
     @Override
-    public boolean isEndElement() { return eventType == END_ELEMENT; }
+    public boolean isEndElement() {
+        return eventType == END_ELEMENT;
+    }
 
     @Override
-    public boolean isCharacters() { return eventType == CHARACTERS; }
+    public boolean isCharacters() {
+        return eventType == CHARACTERS;
+    }
 
     @Override
-    public boolean isWhiteSpace() { return false; }
+    public boolean isWhiteSpace() {
+        return false;
+    }
 
     @Override
-    public boolean hasText() { return eventType == CHARACTERS; }
+    public boolean hasText() {
+        return eventType == CHARACTERS;
+    }
 
     @Override
-    public boolean hasName() { return eventType == START_ELEMENT || eventType == END_ELEMENT; }
-    
+    public boolean hasName() {
+        return eventType == START_ELEMENT || eventType == END_ELEMENT;
+    }
+
     @Override
     public void require(int type, String namespaceURI, String localName) throws XMLStreamException {
         if (type != eventType
-             || (namespaceURI != null && !namespaceURI.equals(getNamespaceURI()))
-             || (localName != null && !namespaceURI.equals(getLocalName()))) {
+                || (namespaceURI != null && !namespaceURI.equals(getNamespaceURI()))
+                || (localName != null && !namespaceURI.equals(getLocalName()))) {
             throw new XMLStreamException("Unexpected event type");
         }
     }
-    
+
     @Override
     public Location getLocation() {
         // We do not support location information
         return DummyLocation.INSTANCE;
     }
-    
+
     @Override
     public void close() throws XMLStreamException {
         // Javadoc says that this method should not close the underlying input source,
         // but we need to close the reader somewhere.
         try {
             reader.close();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }
     }
@@ -237,7 +239,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
     //
     // Methods related to the xml declaration.
     //
-    
+
     @Override
     public String getEncoding() {
         // Encoding is not known (not relevant?)
@@ -265,19 +267,23 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
     public boolean isStandalone() {
         return true;
     }
-    
+
     //
     // Methods related to the namespace context
     //
-    
+
     @Override
     public NamespaceContext getNamespaceContext() {
         if (namespaceContext == null) {
-            namespaceContext = new MapBasedNamespaceContext(Collections.singletonMap(wrapperElementName.getPrefix(), wrapperElementName.getNamespaceURI()));
+            namespaceContext =
+                    new MapBasedNamespaceContext(
+                            Collections.singletonMap(
+                                    wrapperElementName.getPrefix(),
+                                    wrapperElementName.getNamespaceURI()));
         }
         return namespaceContext;
     }
-    
+
     @Override
     public String getNamespaceURI(String prefix) {
         String namespaceURI = getNamespaceContext().getNamespaceURI(prefix);
@@ -285,17 +291,17 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         // different semantics for unbound prefixes.
         return namespaceURI.equals(XMLConstants.NULL_NS_URI) ? null : prefix;
     }
-    
+
     //
     // Methods related to elements
     //
-    
+
     private void checkStartElement() {
         if (eventType != START_ELEMENT) {
             throw new IllegalStateException();
         }
     }
-    
+
     @Override
     public String getAttributeValue(String namespaceURI, String localName) {
         checkStartElement();
@@ -307,7 +313,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         checkStartElement();
         return 0;
     }
-    
+
     @Override
     public QName getAttributeName(int index) {
         checkStartElement();
@@ -349,13 +355,13 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         checkStartElement();
         throw new ArrayIndexOutOfBoundsException();
     }
-    
+
     private void checkElement() {
         if (eventType != START_ELEMENT && eventType != END_ELEMENT) {
             throw new IllegalStateException();
         }
     }
-    
+
     @Override
     public QName getName() {
         return null;
@@ -377,7 +383,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
         checkElement();
         return wrapperElementName.getNamespaceURI();
     }
-    
+
     @Override
     public int getNamespaceCount() {
         checkElement();
@@ -404,7 +410,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
             throw new IndexOutOfBoundsException();
         }
     }
-    
+
     @Override
     public String getElementText() throws XMLStreamException {
         if (eventType == START_ELEMENT) {
@@ -420,8 +426,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
                 }
                 eventType = END_ELEMENT;
                 return buffer.toString();
-            }
-            catch (IOException ex) {
+            } catch (IOException ex) {
                 throw new XMLStreamException(ex);
             }
         } else {
@@ -434,7 +439,7 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
             throw new IllegalStateException();
         }
     }
-    
+
     @Override
     public String getText() {
         checkCharacters();
@@ -460,17 +465,18 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
     }
 
     @Override
-    public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length) throws XMLStreamException {
+    public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
+            throws XMLStreamException {
         checkCharacters();
-        int c = Math.min(charDataLength-sourceStart, length);
+        int c = Math.min(charDataLength - sourceStart, length);
         System.arraycopy(charData, sourceStart, target, targetStart, c);
         return c;
     }
-    
+
     //
     // Methods related to processing instructions
     //
-    
+
     @Override
     public String getPIData() {
         throw new IllegalStateException();

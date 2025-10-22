@@ -21,11 +21,12 @@ package org.apache.axiom.mime;
 import java.text.ParseException;
 
 final class ContentTypeTokenizer {
-    // Note: normally only ' ' and '\t' can appear in unfolded header values, but we accept parsing folded values
+    // Note: normally only ' ' and '\t' can appear in unfolded header values, but we accept parsing
+    // folded values
     private static final String whitespace = " \t\n\r";
-    
+
     private static final String tspecials = "()<>@,;:\\\"/[]?=";
-    
+
     private final String s;
     private int index;
 
@@ -34,7 +35,9 @@ final class ContentTypeTokenizer {
     }
 
     private void skipWhiteSpace() {
-        for (int len = s.length(); index < len && whitespace.indexOf(s.charAt(index)) != -1; index++) {
+        for (int len = s.length();
+                index < len && whitespace.indexOf(s.charAt(index)) != -1;
+                index++) {
             // Just loop
         }
     }
@@ -42,24 +45,27 @@ final class ContentTypeTokenizer {
     String expectToken() throws ParseException {
         skipWhiteSpace();
         int begin = index;
-        for (int len = s.length(); index < len && tspecials.indexOf(s.charAt(index)) == -1; index++) {
+        for (int len = s.length();
+                index < len && tspecials.indexOf(s.charAt(index)) == -1;
+                index++) {
             // Just loop
         }
         int end = index;
-        for (; end > begin && whitespace.indexOf(s.charAt(end-1)) != -1; end--) {
+        for (; end > begin && whitespace.indexOf(s.charAt(end - 1)) != -1; end--) {
             // Just loop
         }
         if (begin == end) {
             if (index == s.length()) {
                 return null;
             } else {
-                throw new ParseException("Expected token, but found '" + s.charAt(index) + "'", index);
+                throw new ParseException(
+                        "Expected token, but found '" + s.charAt(index) + "'", index);
             }
         } else {
             return s.substring(begin, end);
         }
     }
-    
+
     String requireToken() throws ParseException {
         String token = expectToken();
         if (token == null) {
@@ -80,7 +86,8 @@ final class ContentTypeTokenizer {
                     if (c == '\\') {
                         index++;
                         if (index == len) {
-                            throw new ParseException("Expected more input after escape character", index);
+                            throw new ParseException(
+                                    "Expected more input after escape character", index);
                         }
                         sb.append(s.charAt(index));
                     } else if (c == '\"') {
@@ -100,7 +107,8 @@ final class ContentTypeTokenizer {
                 return requireToken();
             }
         } else {
-            throw new ParseException("Unexpected end of string; expected token or quoted string", index);
+            throw new ParseException(
+                    "Unexpected end of string; expected token or quoted string", index);
         }
     }
 
@@ -117,16 +125,18 @@ final class ContentTypeTokenizer {
             }
         }
     }
-    
+
     void require(char c) throws ParseException {
         if (!expect(c)) {
             throw new ParseException("Unexpected end of string; expected '" + c + "'", index);
         }
     }
-    
+
     void requireEndOfString() throws ParseException {
         if (index != s.length()) {
-            throw new ParseException("Unexpected character '" + s.charAt(index) + "'; expected end of string", index);
+            throw new ParseException(
+                    "Unexpected character '" + s.charAt(index) + "'; expected end of string",
+                    index);
         }
     }
 }

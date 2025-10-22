@@ -26,56 +26,42 @@ import java.text.ParseException;
  * {@code text}) and a subtype (e.g. {@code xml}). Note that in RFC 2045, "media type" refers to
  * what is called "primary type" here, while this class uses "media type" to refer to the
  * combination of primary and subtype.
- * <p>
- * This class is immutable. It overrides {@link Object#equals(Object)} and {@link Object#hashCode()}
- * to allow comparing media types as described by RFC 2045, i.e. in a case insensitive way.
+ *
+ * <p>This class is immutable. It overrides {@link Object#equals(Object)} and {@link
+ * Object#hashCode()} to allow comparing media types as described by RFC 2045, i.e. in a case
+ * insensitive way.
  */
 public final class MediaType {
-    /**
-     * The media type for {@code text/xml}.
-     */
+    /** The media type for {@code text/xml}. */
     public static final MediaType TEXT_XML = new MediaType("text", "xml");
-    
-    /**
-     * The media type for {@code application/xml}.
-     */
+
+    /** The media type for {@code application/xml}. */
     public static final MediaType APPLICATION_XML = new MediaType("application", "xml");
-    
-    /**
-     * The media type for {@code application/soap+xml}.
-     */
+
+    /** The media type for {@code application/soap+xml}. */
     public static final MediaType APPLICATION_SOAP_XML = new MediaType("application", "soap+xml");
-    
-    /**
-     * The media type for {@code application/xop+xml}.
-     */
+
+    /** The media type for {@code application/xop+xml}. */
     public static final MediaType APPLICATION_XOP_XML = new MediaType("application", "xop+xml");
-    
-    /**
-     * The media type for {@code multipart/related}.
-     */
+
+    /** The media type for {@code multipart/related}. */
     public static final MediaType MULTIPART_RELATED = new MediaType("multipart", "related");
-    
-    /**
-     * The media type for {@code application/octet-stream}.
-     */
-    public static final MediaType APPLICATION_OCTET_STREAM = new MediaType("application", "octet-stream");
-    
-    /**
-     * The media type for {@code text/plain}.
-     */
+
+    /** The media type for {@code application/octet-stream}. */
+    public static final MediaType APPLICATION_OCTET_STREAM =
+            new MediaType("application", "octet-stream");
+
+    /** The media type for {@code text/plain}. */
     public static final MediaType TEXT_PLAIN = new MediaType("text", "plain");
-    
+
     private final String primaryType;
     private final String subType;
-    
+
     /**
      * Constructor.
-     * 
-     * @param primaryType
-     *            the primary type
-     * @param subType
-     *            the subtype
+     *
+     * @param primaryType the primary type
+     * @param subType the subtype
      */
     public MediaType(String primaryType, String subType) {
         this.primaryType = primaryType;
@@ -84,11 +70,9 @@ public final class MediaType {
 
     /**
      * Constructor that parses a media type.
-     * 
-     * @param type
-     *            the media type to parse
-     * @throws ParseException
-     *             if the value is invalid and could not be parsed
+     *
+     * @param type the media type to parse
+     * @throws ParseException if the value is invalid and could not be parsed
      */
     public MediaType(String type) throws ParseException {
         ContentTypeTokenizer tokenizer = new ContentTypeTokenizer(type);
@@ -100,7 +84,7 @@ public final class MediaType {
 
     /**
      * Get the primary type.
-     * 
+     *
      * @return the primary type
      */
     public String getPrimaryType() {
@@ -109,7 +93,7 @@ public final class MediaType {
 
     /**
      * Get the subtype.
-     * 
+     *
      * @return the subtype
      */
     public String getSubType() {
@@ -118,9 +102,8 @@ public final class MediaType {
 
     /**
      * Check if this media type has the given primary type.
-     * 
-     * @param type
-     *            the primary type to check against
+     *
+     * @param type the primary type to check against
      * @return whether the primary type matches
      */
     public boolean hasPrimaryType(String type) {
@@ -129,9 +112,8 @@ public final class MediaType {
 
     /**
      * Check if this media type has the given sub type.
-     * 
-     * @param type
-     *            the sub type to check against
+     *
+     * @param type the sub type to check against
      * @return whether the sub type matches
      */
     public boolean hasSubType(String type) {
@@ -139,27 +121,29 @@ public final class MediaType {
     }
 
     /**
-     * Check if this media type describes XML content as defined in
-     * <a href="http://tools.ietf.org/html/rfc7303">RFC 7303</a>.
-     * 
+     * Check if this media type describes XML content as defined in <a
+     * href="http://tools.ietf.org/html/rfc7303">RFC 7303</a>.
+     *
      * @return whether the content expected for this media type is XML
      */
     public boolean isXML() {
         return equals(TEXT_XML)
-                || hasPrimaryType("application") && (
-                        hasSubType("xml")
-                        || subType.length() > 4 && subType.substring(subType.length() - 4).equalsIgnoreCase("+xml"));
+                || hasPrimaryType("application")
+                        && (hasSubType("xml")
+                                || subType.length() > 4
+                                        && subType.substring(subType.length() - 4)
+                                                .equalsIgnoreCase("+xml"));
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        for (int i=0, l=primaryType.length(); i<l; i++) {
-            hash = 31*hash + Character.toLowerCase(primaryType.charAt(i));
+        for (int i = 0, l = primaryType.length(); i < l; i++) {
+            hash = 31 * hash + Character.toLowerCase(primaryType.charAt(i));
         }
         hash *= 31;
-        for (int i=0, l=subType.length(); i<l; i++) {
-            hash = 31*hash + Character.toLowerCase(subType.charAt(i));
+        for (int i = 0, l = subType.length(); i < l; i++) {
+            hash = 31 * hash + Character.toLowerCase(subType.charAt(i));
         }
         return hash;
     }
@@ -167,8 +151,9 @@ public final class MediaType {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof MediaType) {
-            MediaType other = (MediaType)obj;
-            return primaryType.equalsIgnoreCase(other.primaryType) && subType.equalsIgnoreCase(other.subType);
+            MediaType other = (MediaType) obj;
+            return primaryType.equalsIgnoreCase(other.primaryType)
+                    && subType.equalsIgnoreCase(other.subType);
         } else {
             return false;
         }

@@ -33,8 +33,9 @@ public class TestIsStandalone extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
-        XMLStreamReader reader = factory.createXMLStreamReader(
-                new StringReader("<?xml version='1.0' standalone='no'?><root/>"));
+        XMLStreamReader reader =
+                factory.createXMLStreamReader(
+                        new StringReader("<?xml version='1.0' standalone='no'?><root/>"));
         assertEquals(false, reader.isStandalone());
         reader.next();
         assertThrows(IllegalStateException.class, reader::isStandalone);

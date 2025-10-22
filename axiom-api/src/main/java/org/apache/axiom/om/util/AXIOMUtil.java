@@ -38,7 +38,7 @@ public class AXIOMUtil {
     public static OMElement stringToOM(String xmlFragment) throws XMLStreamException {
         return stringToOM(OMAbstractFactory.getOMFactory(), xmlFragment);
     }
-    
+
     /**
      * Create an OMElement from an XML fragment given as a string.
      *
@@ -49,7 +49,7 @@ public class AXIOMUtil {
      */
     public static OMElement stringToOM(OMFactory omFactory, String xmlFragment)
             throws XMLStreamException {
-        
+
         if (xmlFragment != null) {
             return OMXMLBuilderFactory.createOMBuilder(omFactory, new StringReader(xmlFragment))
                     .getDocumentElement();

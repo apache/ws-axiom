@@ -23,12 +23,11 @@ import org.apache.axiom.om.OMElement;
 
 import java.util.Iterator;
 
-
 /**
  * The Detail element information item is intended for carrying application specific error
  * information related to the SOAP Body .
- * <p>
- * The Detail element information item has: A [local name] of Detail . A [namespace name] of
+ *
+ * <p>The Detail element information item has: A [local name] of Detail . A [namespace name] of
  * http://www.w3.org/2003/05/soap-envelope . Zero or more attribute information items in its
  * [attributes] property. Zero or more child element information items in its [children] property.
  */
@@ -36,5 +35,4 @@ public interface SOAPFaultDetail extends OMElement {
     void addDetailEntry(OMElement detailElement);
 
     Iterator<OMElement> getAllDetailEntries();
-
 }

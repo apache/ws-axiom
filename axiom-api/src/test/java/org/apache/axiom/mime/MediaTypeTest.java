@@ -31,7 +31,7 @@ public class MediaTypeTest extends TestCase {
         assertEquals("text", mt.getPrimaryType());
         assertEquals("xml", mt.getSubType());
     }
-    
+
     public void testEquals() {
         MediaType mt1 = new MediaType("text", "xml");
         MediaType mt2 = new MediaType("text", "xml");
@@ -43,13 +43,13 @@ public class MediaTypeTest extends TestCase {
         assertFalse(mt3.equals(mt4));
         assertFalse(mt1.equals("test"));
     }
-    
+
     public void testEqualsIgnoresCase() {
         MediaType mt1 = new MediaType("text", "xml");
         MediaType mt2 = new MediaType("TEXT", "XML");
         assertTrue(mt1.equals(mt2));
     }
-    
+
     public void testHashCode() {
         MediaType mt1 = new MediaType("text", "xml");
         MediaType mt2 = new MediaType("text", "xml");
@@ -66,7 +66,7 @@ public class MediaTypeTest extends TestCase {
         MediaType mt2 = new MediaType("TEXT", "XML");
         assertTrue(mt1.hashCode() == mt2.hashCode());
     }
-    
+
     public void testToString() {
         MediaType mt = new MediaType("application", "octet-stream");
         assertEquals("application/octet-stream", mt.toString());

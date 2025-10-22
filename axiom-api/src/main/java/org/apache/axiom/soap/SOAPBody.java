@@ -26,22 +26,19 @@ import org.apache.axiom.om.OMNamespace;
 /**
  * An object that represents the contents of the SOAP body element in a SOAP message. B SOAP body
  * element consists of XML data that affects the way the application-specific content is processed.
- * <p>
- * B <code>SOAPBody</code> object contains <code>OMBodyBlock</code> objects, which have the content
- * for the SOAP body. B <code>SOAPFault</code> object, which carries status and/or error
+ *
+ * <p>B <code>SOAPBody</code> object contains <code>OMBodyBlock</code> objects, which have the
+ * content for the SOAP body. B <code>SOAPFault</code> object, which carries status and/or error
  * information, is an example of a <code>OMBodyBlock</code> object.
  */
 public interface SOAPBody extends OMElement {
     /**
-     * Creates a new <code>SOAPFault</code> object and adds it to this <code>SOAPBody</code>
-     * object.
+     * Creates a new <code>SOAPFault</code> object and adds it to this <code>SOAPBody</code> object.
      *
      * @param e
      * @return the new <code>SOAPFault</code> object
+     * @throws org.apache.axiom.om.OMException if there is a SOAP error
      * @throws org.apache.axiom.om.OMException
-     *          if there is a SOAP error
-     * @throws org.apache.axiom.om.OMException
-     *
      */
     SOAPFault addFault(Exception e) throws OMException;
 
@@ -49,8 +46,8 @@ public interface SOAPBody extends OMElement {
      * Indicates whether a <code>SOAPFault</code> object exists in this <code>SOAPBody</code>
      * object.
      *
-     * @return <code>true</code> if a <code>SOAPFault</code> object exists in this
-     *         <code>SOAPBody</code> object; <code>false</code> otherwise
+     * @return <code>true</code> if a <code>SOAPFault</code> object exists in this <code>SOAPBody
+     *     </code> object; <code>false</code> otherwise
      */
     boolean hasFault();
 
@@ -68,24 +65,22 @@ public interface SOAPBody extends OMElement {
     void addFault(SOAPFault soapFault) throws OMException;
 
     /**
-     * Retrieves the OMNamespace of the first element in the body.
-     * The implementation might build the OMElement or it may
-     * obtain this information from the builder/parser without building
-     * the OMElement.  Use this method in the situations where you need
-     * to know the OMNamespace, but don't necessarily need the OMElement.
-     * 
-     * @return the namespace of first element in the body, or <code>null</code> if the element
-     * has no namespace or the body is empty
+     * Retrieves the OMNamespace of the first element in the body. The implementation might build
+     * the OMElement or it may obtain this information from the builder/parser without building the
+     * OMElement. Use this method in the situations where you need to know the OMNamespace, but
+     * don't necessarily need the OMElement.
+     *
+     * @return the namespace of first element in the body, or <code>null</code> if the element has
+     *     no namespace or the body is empty
      */
     public OMNamespace getFirstElementNS();
-    
+
     /**
-     * Retrieves the local name of the first element in the body.
-     * The implementation might build the OMElement or it may
-     * obtain this information from the builder/parser without building
-     * the OMElement.  Use this method in the situations where you need
-     * to know the name, but don't necessarily need the OMElement.
-     * 
+     * Retrieves the local name of the first element in the body. The implementation might build the
+     * OMElement or it may obtain this information from the builder/parser without building the
+     * OMElement. Use this method in the situations where you need to know the name, but don't
+     * necessarily need the OMElement.
+     *
      * @return local name of first element in the body, or <code>null</code> if the body is empty
      */
     public String getFirstElementLocalName();

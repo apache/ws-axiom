@@ -22,7 +22,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestGetNameIllegalStateException extends IllegalStateExceptionTestCase {
-    public TestGetNameIllegalStateException(StAXImplementationAdapter staxImpl, int event, boolean expectException) {
+    public TestGetNameIllegalStateException(
+            StAXImplementationAdapter staxImpl, int event, boolean expectException) {
         super(staxImpl, event, expectException);
     }
 

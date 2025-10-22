@@ -65,53 +65,123 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestGetEncodingFromDetection(staxImpl, "UnicodeLittleUnmarked", "UTF-16LE"));
         addTest(new TestGetEncoding(staxImpl));
         addTest(new TestGetEncodingWithCharacterStream(staxImpl));
-        addTest(new TestGetLocalNameIllegalStateException(staxImpl, XMLStreamConstants.START_ELEMENT, false));
-        addTest(new TestGetLocalNameIllegalStateException(staxImpl, XMLStreamConstants.END_ELEMENT, false));
-        addTest(new TestGetLocalNameIllegalStateException(staxImpl, XMLStreamConstants.PROCESSING_INSTRUCTION, true));
-        addTest(new TestGetLocalNameIllegalStateException(staxImpl, XMLStreamConstants.CHARACTERS, true));
-        addTest(new TestGetLocalNameIllegalStateException(staxImpl, XMLStreamConstants.COMMENT, true));
-        addTest(new TestGetLocalNameIllegalStateException(staxImpl, XMLStreamConstants.SPACE, true));
-        addTest(new TestGetLocalNameIllegalStateException(staxImpl, XMLStreamConstants.START_DOCUMENT, true));
-        addTest(new TestGetLocalNameIllegalStateException(staxImpl, XMLStreamConstants.END_DOCUMENT, true));
-        addTest(new TestGetLocalNameIllegalStateException(staxImpl, XMLStreamConstants.ENTITY_REFERENCE, false));
+        addTest(
+                new TestGetLocalNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.START_ELEMENT, false));
+        addTest(
+                new TestGetLocalNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.END_ELEMENT, false));
+        addTest(
+                new TestGetLocalNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.PROCESSING_INSTRUCTION, true));
+        addTest(
+                new TestGetLocalNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.CHARACTERS, true));
+        addTest(
+                new TestGetLocalNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.COMMENT, true));
+        addTest(
+                new TestGetLocalNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.SPACE, true));
+        addTest(
+                new TestGetLocalNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.START_DOCUMENT, true));
+        addTest(
+                new TestGetLocalNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.END_DOCUMENT, true));
+        addTest(
+                new TestGetLocalNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.ENTITY_REFERENCE, false));
         addTest(new TestGetLocalNameIllegalStateException(staxImpl, XMLStreamConstants.DTD, true));
-        addTest(new TestGetLocalNameIllegalStateException(staxImpl, XMLStreamConstants.CDATA, true));
-        addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.START_ELEMENT, false));
-        addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.END_ELEMENT, false));
-        addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.PROCESSING_INSTRUCTION, true));
-        addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.CHARACTERS, true));
+        addTest(
+                new TestGetLocalNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.CDATA, true));
+        addTest(
+                new TestGetNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.START_ELEMENT, false));
+        addTest(
+                new TestGetNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.END_ELEMENT, false));
+        addTest(
+                new TestGetNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.PROCESSING_INSTRUCTION, true));
+        addTest(
+                new TestGetNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.CHARACTERS, true));
         addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.COMMENT, true));
         addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.SPACE, true));
-        addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.START_DOCUMENT, true));
-        addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.END_DOCUMENT, true));
-        addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.ENTITY_REFERENCE, true));
+        addTest(
+                new TestGetNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.START_DOCUMENT, true));
+        addTest(
+                new TestGetNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.END_DOCUMENT, true));
+        addTest(
+                new TestGetNameIllegalStateException(
+                        staxImpl, XMLStreamConstants.ENTITY_REFERENCE, true));
         addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.DTD, true));
         addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.CDATA, true));
         addTest(new TestGetNamespaceContextImplicitNamespaces(staxImpl));
         addTest(new TestGetNamespacePrefixDefaultNamespace(staxImpl));
-        addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.START_ELEMENT, false));
-        addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.END_ELEMENT, false));
-        addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.PROCESSING_INSTRUCTION, true));
-        addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.CHARACTERS, true));
-        addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.COMMENT, true));
-        addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.SPACE, true));
-        addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.START_DOCUMENT, true));
-        addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.END_DOCUMENT, true));
-        addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.ENTITY_REFERENCE, true));
-        addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.DTD, true));
-        addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.CDATA, true));
+        addTest(
+                new TestGetNamespaceURIIllegalStateException(
+                        staxImpl, XMLStreamConstants.START_ELEMENT, false));
+        addTest(
+                new TestGetNamespaceURIIllegalStateException(
+                        staxImpl, XMLStreamConstants.END_ELEMENT, false));
+        addTest(
+                new TestGetNamespaceURIIllegalStateException(
+                        staxImpl, XMLStreamConstants.PROCESSING_INSTRUCTION, true));
+        addTest(
+                new TestGetNamespaceURIIllegalStateException(
+                        staxImpl, XMLStreamConstants.CHARACTERS, true));
+        addTest(
+                new TestGetNamespaceURIIllegalStateException(
+                        staxImpl, XMLStreamConstants.COMMENT, true));
+        addTest(
+                new TestGetNamespaceURIIllegalStateException(
+                        staxImpl, XMLStreamConstants.SPACE, true));
+        addTest(
+                new TestGetNamespaceURIIllegalStateException(
+                        staxImpl, XMLStreamConstants.START_DOCUMENT, true));
+        addTest(
+                new TestGetNamespaceURIIllegalStateException(
+                        staxImpl, XMLStreamConstants.END_DOCUMENT, true));
+        addTest(
+                new TestGetNamespaceURIIllegalStateException(
+                        staxImpl, XMLStreamConstants.ENTITY_REFERENCE, true));
+        addTest(
+                new TestGetNamespaceURIIllegalStateException(
+                        staxImpl, XMLStreamConstants.DTD, true));
+        addTest(
+                new TestGetNamespaceURIIllegalStateException(
+                        staxImpl, XMLStreamConstants.CDATA, true));
         addTest(new TestGetNamespaceURIWithNullNamespace(staxImpl));
         addTest(new TestGetPrefixAfterWriteDefaultNamespace(staxImpl));
         addTest(new TestGetPrefixAfterWriteNamespace(staxImpl));
-        addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.START_ELEMENT, false));
-        addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.END_ELEMENT, false));
-        addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.PROCESSING_INSTRUCTION, true));
-        addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.CHARACTERS, true));
+        addTest(
+                new TestGetPrefixIllegalStateException(
+                        staxImpl, XMLStreamConstants.START_ELEMENT, false));
+        addTest(
+                new TestGetPrefixIllegalStateException(
+                        staxImpl, XMLStreamConstants.END_ELEMENT, false));
+        addTest(
+                new TestGetPrefixIllegalStateException(
+                        staxImpl, XMLStreamConstants.PROCESSING_INSTRUCTION, true));
+        addTest(
+                new TestGetPrefixIllegalStateException(
+                        staxImpl, XMLStreamConstants.CHARACTERS, true));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.COMMENT, true));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.SPACE, true));
-        addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.START_DOCUMENT, true));
-        addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.END_DOCUMENT, true));
-        addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.ENTITY_REFERENCE, true));
+        addTest(
+                new TestGetPrefixIllegalStateException(
+                        staxImpl, XMLStreamConstants.START_DOCUMENT, true));
+        addTest(
+                new TestGetPrefixIllegalStateException(
+                        staxImpl, XMLStreamConstants.END_DOCUMENT, true));
+        addTest(
+                new TestGetPrefixIllegalStateException(
+                        staxImpl, XMLStreamConstants.ENTITY_REFERENCE, true));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.DTD, true));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.CDATA, true));
         addTest(new TestGetTextInProlog(staxImpl));
@@ -137,7 +207,8 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestHasText(staxImpl, XMLStreamConstants.END_DOCUMENT, false));
         addTest(new TestHasText(staxImpl, XMLStreamConstants.ENTITY_REFERENCE, true));
         addTest(new TestHasText(staxImpl, XMLStreamConstants.DTD, true));
-        // Note: CDATA events are actually not mentioned in the Javadoc of XMLStreamReader#hasText().
+        // Note: CDATA events are actually not mentioned in the Javadoc of
+        // XMLStreamReader#hasText().
         //       This is because reporting CDATA sections as CDATA events is an implementation
         //       specific feature. Nevertheless, for obvious reasons, we expect hasText to
         //       return true in this case.

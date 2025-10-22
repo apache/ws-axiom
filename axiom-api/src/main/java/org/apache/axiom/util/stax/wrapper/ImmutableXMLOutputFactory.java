@@ -28,7 +28,7 @@ import javax.xml.stream.XMLOutputFactory;
 public class ImmutableXMLOutputFactory extends XMLOutputFactoryWrapper {
     /**
      * Constructor.
-     * 
+     *
      * @param parent the parent factory
      */
     public ImmutableXMLOutputFactory(XMLOutputFactory parent) {

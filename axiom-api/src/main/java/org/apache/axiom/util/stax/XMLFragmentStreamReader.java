@@ -29,71 +29,72 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * Wrapping XML stream reader that reads a single element from the underlying stream.
- * It will generate START_DOCUMENT and END_DOCUMENT events as required to make
- * the sequence of events appear as a complete document.
- * <p>
- * Assume for example that the parent reader is parsing the following document:
+ * Wrapping XML stream reader that reads a single element from the underlying stream. It will
+ * generate START_DOCUMENT and END_DOCUMENT events as required to make the sequence of events appear
+ * as a complete document.
+ *
+ * <p>Assume for example that the parent reader is parsing the following document:
+ *
  * <pre>&lt;a&gt;&lt;b&gt;text&lt;/b&gt;&lt;/a&gt;</pre>
- * If the current event is <code>&lt;b&gt;</code> when the wrapper is created, it will produce
- * the following sequence of events:
+ *
+ * If the current event is <code>&lt;b&gt;</code> when the wrapper is created, it will produce the
+ * following sequence of events:
+ *
  * <p>
+ *
  * <ul>
- *   <li>A synthetic START_DOCUMENT event.</li>
+ *   <li>A synthetic START_DOCUMENT event.
  *   <li>START_ELEMENT, CHARACTERS and END_ELEMENT events for <code>&lt;b&gt;text&lt;/b&gt;</code>.
- *       For these events, the wrapper directly delegates to the parent reader.</li>
- *   <li>A synthetic END_DOCUMENT event.</li>
+ *       For these events, the wrapper directly delegates to the parent reader.
+ *   <li>A synthetic END_DOCUMENT event.
  * </ul>
- * By default, after all events have been consumed from the wrapper, the current event on the
- * parent reader will be the event following the last END_ELEMENT of the fragment. In the example
- * above this will be <code>&lt;/a&gt;</code>. The
- * {@link #XMLFragmentStreamReader(XMLStreamReader, boolean)} constructor allows to override this
- * behavior.
- * <p>
- * The wrapper will release the reference to the parent reader when {@link #close()} is called.
+ *
+ * By default, after all events have been consumed from the wrapper, the current event on the parent
+ * reader will be the event following the last END_ELEMENT of the fragment. In the example above
+ * this will be <code>&lt;/a&gt;</code>. The {@link #XMLFragmentStreamReader(XMLStreamReader,
+ * boolean)} constructor allows to override this behavior.
+ *
+ * <p>The wrapper will release the reference to the parent reader when {@link #close()} is called.
  * For obvious reasons, the wrapper will never call {@link XMLStreamReader#close()} on the parent
  * reader.
  */
 public class XMLFragmentStreamReader implements XMLStreamReader {
     // The current event is a synthetic START_DOCUMENT event
     private static final int STATE_START_DOCUMENT = 0;
-    
+
     // The current event is from the fragment and there will be more events from the fragment
     private static final int STATE_IN_FRAGMENT = 1;
-    
+
     // The current event is the final END_ELEMENT event from the fragment
     private static final int STATE_FRAGMENT_END = 2;
-    
+
     // The current event is a synthetic END_DOCUMENT event
     private static final int STATE_END_DOCUMENT = 3;
-    
+
     private XMLStreamReader parent;
     private final boolean proceedToNext;
     private int state;
     private int depth;
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param parent the parent reader to read the fragment from
      * @throws IllegalStateException if the current event on the parent is not a START_ELEMENT
      */
     public XMLFragmentStreamReader(XMLStreamReader parent) {
         this(parent, true);
     }
-    
+
     /**
      * Constructor.
-     * 
-     * @param parent
-     *            the parent reader to read the fragment from
-     * @param proceedToNext
-     *            determines whether the parent reader should be positioned on the
-     *            {@link XMLStreamConstants#END_ELEMENT} event of the fragment ({@code false}) or on
-     *            event following the {@link XMLStreamConstants#END_ELEMENT} event ({@code true})
-     *            after all events have been consumed from the wrapper
-     * @throws IllegalStateException
-     *             if the current event on the parent is not a START_ELEMENT
+     *
+     * @param parent the parent reader to read the fragment from
+     * @param proceedToNext determines whether the parent reader should be positioned on the {@link
+     *     XMLStreamConstants#END_ELEMENT} event of the fragment ({@code false}) or on event
+     *     following the {@link XMLStreamConstants#END_ELEMENT} event ({@code true}) after all
+     *     events have been consumed from the wrapper
+     * @throws IllegalStateException if the current event on the parent is not a START_ELEMENT
      */
     public XMLFragmentStreamReader(XMLStreamReader parent, boolean proceedToNext) {
         this.parent = parent;
@@ -209,7 +210,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
     public String getVersion() {
         return "1.0";
     }
-    
+
     @Override
     public boolean isStandalone() {
         return true;
@@ -477,22 +478,30 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
 
     @Override
     public boolean isCharacters() {
-        return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isCharacters();
+        return state != STATE_START_DOCUMENT
+                && state != STATE_END_DOCUMENT
+                && parent.isCharacters();
     }
 
     @Override
     public boolean isStartElement() {
-        return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isStartElement();
+        return state != STATE_START_DOCUMENT
+                && state != STATE_END_DOCUMENT
+                && parent.isStartElement();
     }
 
     @Override
     public boolean isEndElement() {
-        return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isEndElement();
+        return state != STATE_START_DOCUMENT
+                && state != STATE_END_DOCUMENT
+                && parent.isEndElement();
     }
 
     @Override
     public boolean isWhiteSpace() {
-        return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isWhiteSpace();
+        return state != STATE_START_DOCUMENT
+                && state != STATE_END_DOCUMENT
+                && parent.isWhiteSpace();
     }
 
     @Override

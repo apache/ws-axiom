@@ -33,15 +33,15 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Formats options for OM Output.
- * <p>
- * Setting of all the properties in a OMOutputFormat should be done before calling the
+ *
+ * <p>Setting of all the properties in a OMOutputFormat should be done before calling the
  * getContentType() method. It is advised to set all the properties at the creation time of the
  * OMOutputFormat and not to change them later.
  */
 public class OMOutputFormat {
-    
+
     private static final Log log = LogFactory.getLog(OMOutputFormat.class);
-    
+
     private String mimeBoundary;
     private String rootContentId;
     private int nextid;
@@ -49,65 +49,64 @@ public class OMOutputFormat {
     private boolean doingSWA;
     private boolean isSoap11;
     private int optimizedThreshold;
-    
-    /** Field DEFAULT_CHAR_SET_ENCODING. Specifies the default character encoding scheme to be used. */
+
+    /**
+     * Field DEFAULT_CHAR_SET_ENCODING. Specifies the default character encoding scheme to be used.
+     */
     public static final String DEFAULT_CHAR_SET_ENCODING = "utf-8";
 
     private String charSetEncoding;
     private String xmlVersion;
     private String contentType;
-    
+
     /**
-     * Flag set if {@link #contentType} has been set explicitly through
-     * {@link #setContentType(String)}. If this attribute is <code>false</code> and
-     * {@link #contentType} is non null, then it was calculated by {@link #getContentType()}.
+     * Flag set if {@link #contentType} has been set explicitly through {@link
+     * #setContentType(String)}. If this attribute is <code>false</code> and {@link #contentType} is
+     * non null, then it was calculated by {@link #getContentType()}.
      */
     private boolean contentTypeSet;
-    
+
     private boolean ignoreXMLDeclaration;
     private boolean autoCloseWriter;
 
     public static final String ACTION_PROPERTY = "action";
-    
+
     @SuppressWarnings("deprecation")
     private StAXWriterConfiguration writerConfiguration;
-    
+
     private ContentTypeProvider contentTypeProvider;
     private ContentTransferEncodingPolicy contentTransferEncodingPolicy;
 
     /**
-     * @deprecated Use {@link ContentTransferEncodingPolicy#USE_BASE64_FOR_NON_TEXTUAL_PARTS} instead.
+     * @deprecated Use {@link ContentTransferEncodingPolicy#USE_BASE64_FOR_NON_TEXTUAL_PARTS}
+     *     instead.
      */
-    public static final String USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS = 
-        "org.apache.axiom.om.OMFormat.use.cteBase64.forNonTextualAttachments";
-    
+    public static final String USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS =
+            "org.apache.axiom.om.OMFormat.use.cteBase64.forNonTextualAttachments";
+
     /**
      * @deprecated As of version 1.2.13, Axiom always respects the order of attachments.
      */
     public static final String RESPECT_SWA_ATTACHMENT_ORDER =
-        "org.apache.axiom.om.OMFormat.respectSWAAttachmentOrder";
-    
+            "org.apache.axiom.om.OMFormat.respectSWAAttachmentOrder";
+
     /**
      * @deprecated As of version 1.2.13, Axiom always respects the order of attachments.
      */
-    public static final Boolean RESPECT_SWA_ATTACHMENT_ORDER_DEFAULT =
-        Boolean.TRUE;
-    
-    
-    private Map<String,Object> map;  // Map of generic properties
+    public static final Boolean RESPECT_SWA_ATTACHMENT_ORDER_DEFAULT = Boolean.TRUE;
 
+    private Map<String, Object> map; // Map of generic properties
 
     public OMOutputFormat() {
         isSoap11 = true;
     }
-    
+
     /**
      * Constructs a new instance by copying the configuration from an existing instance. Note that
      * this will only copy configuration data, but not information that is subject to
      * auto-generation, such as the root content ID or the MIME boundary.
-     * 
-     * @param format
-     *            the existing instance
+     *
+     * @param format the existing instance
      */
     public OMOutputFormat(OMOutputFormat format) {
         doOptimize = format.doOptimize;
@@ -126,10 +125,10 @@ public class OMOutputFormat {
         contentTypeProvider = format.contentTypeProvider;
         contentTransferEncodingPolicy = format.contentTransferEncodingPolicy;
         if (format.map != null) {
-            map = new HashMap<String,Object>(format.map);
+            map = new HashMap<String, Object>(format.map);
         }
     }
-    
+
     /**
      * @param key String
      * @return property or null
@@ -148,11 +147,11 @@ public class OMOutputFormat {
      */
     public Object setProperty(String key, Object value) {
         if (map == null) {
-            map = new HashMap<String,Object>();
+            map = new HashMap<String, Object>();
         }
         return map.put(key, value);
     }
-    
+
     /**
      * @param key
      * @return true if known key
@@ -160,28 +159,29 @@ public class OMOutputFormat {
     public boolean containsKey(String key) {
         if (map == null) {
             return false;
-        } 
+        }
         return map.containsKey(key);
     }
 
     /**
      * Indicates whether the document should be serialized using MTOM.
-     * 
+     *
      * @return <code>true</code> if the document should be serialized using MTOM; <code>false</code>
-     *         otherwise; the return value is always <code>false</code> if {@link #isDoingSWA()}
-     *         returns <code>true</code>
+     *     otherwise; the return value is always <code>false</code> if {@link #isDoingSWA()} returns
+     *     <code>true</code>
      */
     public boolean isOptimized() {
-        return doOptimize && !doingSWA;  // optimize is disabled if SWA
+        return doOptimize && !doingSWA; // optimize is disabled if SWA
     }
 
     /**
-     * Return the content-type value that should be written with the message.
-     * (i.e. if optimized, then a multipart/related content-type is returned).
+     * Return the content-type value that should be written with the message. (i.e. if optimized,
+     * then a multipart/related content-type is returned).
+     *
      * @return content-type value
      */
     public String getContentType() {
-       
+
         String ct = null;
         if (log.isDebugEnabled()) {
             log.debug("Start getContentType: " + toString());
@@ -193,7 +193,7 @@ public class OMOutputFormat {
                 contentType = SOAPVersion.SOAP12.getMediaType().toString();
             }
         }
-        // If MTOM or SWA, the returned content-type is an 
+        // If MTOM or SWA, the returned content-type is an
         // appropriate multipart/related content type.
         if (isOptimized()) {
             ct = this.getContentTypeForMTOM(contentType);
@@ -207,12 +207,12 @@ public class OMOutputFormat {
         }
         return ct;
     }
-    
+
     /**
-     * Set a raw content-type 
-     * (i.e. "text/xml" (SOAP 1.1) or "application/xml" (REST))
-     * If this method is not invoked, OMOutputFormat will choose
-     * a content-type value consistent with the soap version.
+     * Set a raw content-type (i.e. "text/xml" (SOAP 1.1) or "application/xml" (REST)) If this
+     * method is not invoked, OMOutputFormat will choose a content-type value consistent with the
+     * soap version.
+     *
      * @param c
      */
     public void setContentType(String c) {
@@ -279,10 +279,9 @@ public class OMOutputFormat {
     /**
      * Specifies that the document should be serialized using MTOM. Note that this setting is
      * ignored if SwA is enabled using {@link #setDoingSWA(boolean)}.
-     * 
-     * @param optimize
-     *            <code>true</code> if the document should be serialized using MTOM;
-     *            <code>false</code> otherwise
+     *
+     * @param optimize <code>true</code> if the document should be serialized using MTOM; <code>
+     *     false</code> otherwise
      */
     public void setDoOptimize(boolean optimize) {
         doOptimize = optimize;
@@ -290,9 +289,9 @@ public class OMOutputFormat {
 
     /**
      * Indicates whether the document should be serialized using SwA.
-     * 
+     *
      * @return <code>true</code> if the document should be serialized using SwA; <code>false</code>
-     *         otherwise
+     *     otherwise
      */
     public boolean isDoingSWA() {
         return doingSWA;
@@ -301,45 +300,43 @@ public class OMOutputFormat {
     /**
      * Specifies that the document should be serialized using SwA (SOAP with Attachments). When SwA
      * is enabled, then any configuration done using {@link #setDoOptimize(boolean)} is ignored.
-     * 
-     * @param doingSWA
-     *            <code>true</code> if the document should be serialized using SwA;
-     *            <code>false</code> otherwise
+     *
+     * @param doingSWA <code>true</code> if the document should be serialized using SwA; <code>false
+     *     </code> otherwise
      */
     public void setDoingSWA(boolean doingSWA) {
         this.doingSWA = doingSWA;
     }
 
     /**
-     * Generates a Content-Type value for MTOM messages.  This is a MIME Multipart/Related
-     * Content-Type value as defined by RFC 2387 and the XOP specification.  The generated
-     * header will look like the following:
-     * 
-     *   Content-Type: multipart/related; boundary="[MIME BOUNDARY VALUE]"; 
-     *      type="application/xop+xml"; 
-     *      start="[MESSAGE CONTENT ID]"; 
-     *      start-info="[MESSAGE CONTENT TYPE]";
-     * 
+     * Generates a Content-Type value for MTOM messages. This is a MIME Multipart/Related
+     * Content-Type value as defined by RFC 2387 and the XOP specification. The generated header
+     * will look like the following:
+     *
+     * <p>Content-Type: multipart/related; boundary="[MIME BOUNDARY VALUE]";
+     * type="application/xop+xml"; start="[MESSAGE CONTENT ID]"; start-info="[MESSAGE CONTENT
+     * TYPE]";
+     *
      * @param SOAPContentType
      * @return TODO
      */
     public String getContentTypeForMTOM(String SOAPContentType) {
-        // If an action was set, we need to include it within the value 
-        // for the start-info attribute.  
+        // If an action was set, we need to include it within the value
+        // for the start-info attribute.
         if (containsKey(ACTION_PROPERTY)) {
             String action = (String) getProperty(ACTION_PROPERTY);
             if (action != null && action.length() > 0) {
-                SOAPContentType = SOAPContentType + "; action=\\\"" + action + "\\\"";   
-            }                     
+                SOAPContentType = SOAPContentType + "; action=\\\"" + action + "\\\"";
+            }
         }
-        
+
         StringBuffer sb = new StringBuffer();
         sb.append("multipart/related");
         sb.append("; ");
         sb.append("boundary=");
-        // The value of the boundary parameter must be enclosed in double quotation  
+        // The value of the boundary parameter must be enclosed in double quotation
         // marks, according to the Basic Profile 2.0 Specification, Rule R1109:
-        // "Parameters on the Content-Type MIME header field-value in a request 
+        // "Parameters on the Content-Type MIME header field-value in a request
         // MESSAGE MUST be a quoted string."
         sb.append("\"");
         sb.append(getMimeBoundary());
@@ -358,9 +355,9 @@ public class OMOutputFormat {
         sb.append("multipart/related");
         sb.append("; ");
         sb.append("boundary=");
-        // The value of the boundary parameter must be enclosed in double quotation  
+        // The value of the boundary parameter must be enclosed in double quotation
         // marks, according to the Basic Profile 2.0 Specification, Rule R1109:
-        // "Parameters on the Content-Type MIME header field-value in a request 
+        // "Parameters on the Content-Type MIME header field-value in a request
         // MESSAGE MUST be a quoted string."
         sb.append("\"");
         sb.append(getMimeBoundary());
@@ -389,86 +386,82 @@ public class OMOutputFormat {
     public void setMimeBoundary(String mimeBoundary) {
         this.mimeBoundary = mimeBoundary;
     }
-    public void setRootContentId(String rootContentId) {
-		this.rootContentId = rootContentId;
-	}
 
-    
-    /**
-     * Use toString for logging state of the OMOutputFormat
-     */
+    public void setRootContentId(String rootContentId) {
+        this.rootContentId = rootContentId;
+    }
+
+    /** Use toString for logging state of the OMOutputFormat */
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("OMOutputFormat [");
-        
+
         sb.append(" mimeBoundary =");
         sb.append(mimeBoundary);
-        
+
         sb.append(" rootContentId=");
         sb.append(rootContentId);
-        
+
         sb.append(" doOptimize=");
         sb.append(doOptimize);
-        
+
         sb.append(" doingSWA=");
         sb.append(doingSWA);
-        
+
         sb.append(" isSOAP11=");
         sb.append(isSoap11);
-        
+
         sb.append(" charSetEncoding=");
         sb.append(charSetEncoding);
-        
+
         sb.append(" xmlVersion=");
         sb.append(xmlVersion);
-        
+
         sb.append(" contentType=");
         sb.append(contentType);
-        
+
         sb.append(" ignoreXmlDeclaration=");
         sb.append(ignoreXMLDeclaration);
-        
+
         sb.append(" autoCloseWriter=");
         sb.append(autoCloseWriter);
-        
+
         // TODO Print all properties
         sb.append(" actionProperty=");
         sb.append(getProperty(ACTION_PROPERTY));
 
         sb.append(" optimizedThreshold=");
         sb.append(optimizedThreshold);
-        
+
         sb.append("]");
         return sb.toString();
-        
     }
 
     public void setOptimizedThreshold(int optimizedThreshold) {
         this.optimizedThreshold = optimizedThreshold;
     }
-    
+
     public int getOptimizedThreshold() {
         return optimizedThreshold;
     }
 
     /**
      * Get the currently configured StAX writer configuration.
-     * 
+     *
      * @return the current configuration; {@link StAXWriterConfiguration#DEFAULT} if none has been
-     *         set explicitly
+     *     set explicitly
      * @deprecated
      */
     public StAXWriterConfiguration getStAXWriterConfiguration() {
         return writerConfiguration == null ? StAXWriterConfiguration.DEFAULT : writerConfiguration;
     }
-     
+
     /**
-     * Set the StAX writer configuration that will be used when requesting an
-     * {@link javax.xml.stream.XMLStreamWriter} from {@link org.apache.axiom.om.util.StAXUtils}.
-     * 
-     * @param writerConfiguration
-     *            the configuration
+     * Set the StAX writer configuration that will be used when requesting an {@link
+     * javax.xml.stream.XMLStreamWriter} from {@link org.apache.axiom.om.util.StAXUtils}.
+     *
+     * @param writerConfiguration the configuration
      * @deprecated
      */
     public void setStAXWriterConfiguration(StAXWriterConfiguration writerConfiguration) {

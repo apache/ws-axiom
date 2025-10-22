@@ -32,7 +32,7 @@ import org.apache.axiom.util.xml.stream.XMLEventUtils;
  */
 public abstract class EventSpecificTestCase extends DialectTestCase {
     private final int event;
-    
+
     public EventSpecificTestCase(StAXImplementationAdapter staxImpl, int event) {
         super(staxImpl);
         this.event = event;
@@ -41,9 +41,11 @@ public abstract class EventSpecificTestCase extends DialectTestCase {
 
     @Override
     protected final void runTest() throws Throwable {
-        XMLInputFactory factory = staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
+        XMLInputFactory factory =
+                staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
         factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
-        InputStream in = IllegalStateExceptionTestCase.class.getResourceAsStream("alleventtypes.xml");
+        InputStream in =
+                IllegalStateExceptionTestCase.class.getResourceAsStream("alleventtypes.xml");
         try {
             XMLStreamReader reader = factory.createXMLStreamReader(in);
             while (true) {
@@ -60,6 +62,6 @@ public abstract class EventSpecificTestCase extends DialectTestCase {
             in.close();
         }
     }
-    
+
     protected abstract void runTest(XMLStreamReader reader) throws Throwable;
 }

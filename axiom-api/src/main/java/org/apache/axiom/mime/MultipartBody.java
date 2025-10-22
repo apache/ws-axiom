@@ -44,23 +44,23 @@ import org.apache.james.mime4j.stream.RecursionMode;
  * enable access to all parts. In addition, it supports lookup by content ID. Data is read from the
  * stream on demand. This means that the stream must be kept open until all parts have been
  * processed or {@link #detach()} has been called. It also means that any invocation of a method on
- * an instance of this class or an individual {@link Part} instance may trigger a
- * {@link MIMEException} if there is an I/O error on the stream or a MIME parsing error.
- * <p>
- * Instances of this class are created using a fluent builder; see {@link #builder()}.
+ * an instance of this class or an individual {@link Part} instance may trigger a {@link
+ * MIMEException} if there is an I/O error on the stream or a MIME parsing error.
+ *
+ * <p>Instances of this class are created using a fluent builder; see {@link #builder()}.
  */
 public final class MultipartBody implements Iterable<Part> {
     public interface PartCreationListener {
         void partCreated(Part part);
     }
 
-    public final static class Builder {
+    public static final class Builder {
         private InputStream inputStream;
         private ContentType contentType;
         private WritableBlobFactory<?> attachmentBlobFactory;
         private PartBlobFactory partBlobFactory;
         private PartCreationListener partCreationListener;
-        
+
         Builder() {}
 
         public Builder setInputStream(InputStream inputStream) {
@@ -114,24 +114,21 @@ public final class MultipartBody implements Iterable<Part> {
     }
 
     private static final Log log = LogFactory.getLog(MultipartBody.class);
-    
+
     private static final MimeConfig config = MimeConfig.custom().setStrictParsing(true).build();
-    
+
     /** <code>ContentType</code> of the MIME message */
     private final ContentType contentType;
+
     private final String rootPartContentID;
     private final MimeTokenStream parser;
-    
-    /**
-     * Stores the already parsed MIME parts by Content IDs.
-     */
-    private final Map<String,PartImpl> partMap = new HashMap<String,PartImpl>();
 
-    /**
-     * The MIME part currently being processed.
-     */
+    /** Stores the already parsed MIME parts by Content IDs. */
+    private final Map<String, PartImpl> partMap = new HashMap<String, PartImpl>();
+
+    /** The MIME part currently being processed. */
     private PartImpl currentPart;
-    
+
     private PartImpl firstPart;
     private PartImpl rootPart;
 
@@ -140,8 +137,10 @@ public final class MultipartBody implements Iterable<Part> {
     private final WritableBlobFactory<?> attachmentBlobFactory;
     private final PartBlobFactory partBlobFactory;
     private final PartCreationListener partCreationListener;
-    
-    MultipartBody(InputStream inStream, ContentType contentType,
+
+    MultipartBody(
+            InputStream inStream,
+            ContentType contentType,
             WritableBlobFactory<?> attachmentBlobFactory,
             PartBlobFactory partBlobFactory,
             PartCreationListener partCreationListener) {
@@ -156,7 +155,7 @@ public final class MultipartBody implements Iterable<Part> {
         parser = new MimeTokenStream(config);
         parser.setRecursionMode(RecursionMode.M_NO_RECURSE);
         parser.parseHeadless(inStream, contentType.toString());
-        
+
         // Move the parser to the beginning of the first part
         while (parser.getState() != EntityState.T_START_BODYPART) {
             try {
@@ -175,9 +174,10 @@ public final class MultipartBody implements Iterable<Part> {
 
     private static String normalizeContentID(String contentID) {
         contentID = contentID.trim();
-        if (contentID.length() >= 2 && contentID.charAt(0) == '<'
-                && contentID.charAt(contentID.length()-1) == '>') {
-            contentID = contentID.substring(1, contentID.length()-1);
+        if (contentID.length() >= 2
+                && contentID.charAt(0) == '<'
+                && contentID.charAt(contentID.length() - 1) == '>') {
+            contentID = contentID.substring(1, contentID.length() - 1);
         }
         // There is some evidence that some broken MIME implementations add
         // a "cid:" prefix to the Content-ID; remove it if necessary.
@@ -197,11 +197,10 @@ public final class MultipartBody implements Iterable<Part> {
 
     /**
      * Get the MIME part with the given content ID.
-     * 
-     * @param contentID
-     *            the content ID of the part to retrieve
+     *
+     * @param contentID the content ID of the part to retrieve
      * @return the MIME part, or {@code null} if the message doesn't have a part with the given
-     *         content ID
+     *     content ID
      */
     public Part getPart(String contentID) {
         do {
@@ -215,7 +214,7 @@ public final class MultipartBody implements Iterable<Part> {
 
     /**
      * Get the number of parts in this multipart.
-     * 
+     *
      * @return the number of parts
      */
     public int getPartCount() {
@@ -236,8 +235,7 @@ public final class MultipartBody implements Iterable<Part> {
                 return rootPart;
             }
         } while (getNextPart() != null);
-        throw new MIMEException(
-                "Mandatory root MIME part is missing");
+        throw new MIMEException("Mandatory root MIME part is missing");
     }
 
     PartImpl getNextPart() {
@@ -252,31 +250,37 @@ public final class MultipartBody implements Iterable<Part> {
 
             try {
                 checkParserState(parser.next(), EntityState.T_START_HEADER);
-                
+
                 List<Header> headers = new ArrayList<Header>();
                 while (parser.next() == EntityState.T_FIELD) {
                     Field field = parser.getField();
                     String name = field.getName();
                     String value = field.getBody();
-                    
-                    if (log.isDebugEnabled()){
-                        log.debug("addHeader: (" + name + ") value=(" + value +")");
+
+                    if (log.isDebugEnabled()) {
+                        log.debug("addHeader: (" + name + ") value=(" + value + ")");
                     }
                     headers.add(new Header(name, value));
                     if (partContentID == null && name.equalsIgnoreCase("Content-ID")) {
                         partContentID = normalizeContentID(value);
                     }
                 }
-                
+
                 checkParserState(parser.next(), EntityState.T_BODY);
-                
+
                 if (rootPartContentID == null) {
                     isRootPart = firstPart == null;
                 } else {
                     isRootPart = rootPartContentID.equals(partContentID);
                 }
-                
-                PartImpl part = new PartImpl(this, isRootPart ? MemoryBlob.FACTORY : attachmentBlobFactory, partContentID, headers, parser);
+
+                PartImpl part =
+                        new PartImpl(
+                                this,
+                                isRootPart ? MemoryBlob.FACTORY : attachmentBlobFactory,
+                                partContentID,
+                                headers,
+                                parser);
                 if (currentPart == null) {
                     firstPart = part;
                 } else {
@@ -292,8 +296,7 @@ public final class MultipartBody implements Iterable<Part> {
             partCount++;
             if (partContentID != null) {
                 if (partMap.containsKey(partContentID)) {
-                    throw new MIMEException(
-                            "Two MIME parts with the same Content-ID not allowed.");
+                    throw new MIMEException("Two MIME parts with the same Content-ID not allowed.");
                 }
                 partMap.put(partContentID, currentPart);
             }
@@ -307,10 +310,14 @@ public final class MultipartBody implements Iterable<Part> {
         return currentPart;
     }
 
-    private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
+    private static void checkParserState(EntityState state, EntityState expected)
+            throws IllegalStateException {
         if (expected != state) {
-            throw new IllegalStateException("Internal error: expected parser to be in state "
-                    + expected + ", but got " + state);
+            throw new IllegalStateException(
+                    "Internal error: expected parser to be in state "
+                            + expected
+                            + ", but got "
+                            + state);
         }
     }
 

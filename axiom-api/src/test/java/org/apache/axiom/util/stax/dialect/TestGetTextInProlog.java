@@ -31,8 +31,9 @@ public class TestGetTextInProlog extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
-        XMLStreamReader reader = factory.createXMLStreamReader(
-                new StringReader("<?xml version=\"1.0\"?>\r\n<root/>"));
+        XMLStreamReader reader =
+                factory.createXMLStreamReader(
+                        new StringReader("<?xml version=\"1.0\"?>\r\n<root/>"));
         assertEquals(XMLStreamReader.SPACE, reader.next());
         assertEquals("\n", reader.getText());
     }

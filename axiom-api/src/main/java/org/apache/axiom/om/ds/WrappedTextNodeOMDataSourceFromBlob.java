@@ -32,8 +32,8 @@ import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 /**
- * {@link WrappedTextNodeOMDataSource} that pulls the text data from a {@link Blob} object.
- * The {@link #getObject()} method returns the {@link Blob} instance.
+ * {@link WrappedTextNodeOMDataSource} that pulls the text data from a {@link Blob} object. The
+ * {@link #getObject()} method returns the {@link Blob} instance.
  */
 public class WrappedTextNodeOMDataSourceFromBlob extends WrappedTextNodeOMDataSource {
     private final Blob binaryData;
@@ -70,7 +70,6 @@ public class WrappedTextNodeOMDataSourceFromBlob extends WrappedTextNodeOMDataSo
 
     @Override
     public OMDataSourceExt copy() {
-        return new WrappedTextNodeOMDataSourceFromBlob(
-                wrapperElementName, binaryData, charset);
+        return new WrappedTextNodeOMDataSourceFromBlob(wrapperElementName, binaryData, charset);
     }
 }

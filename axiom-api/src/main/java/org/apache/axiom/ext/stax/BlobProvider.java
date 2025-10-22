@@ -25,16 +25,15 @@ import org.apache.axiom.blob.Blob;
 
 /**
  * Interface used for deferred loading of binary content.
- * 
+ *
  * @see BlobReader#isDeferred()
  * @see BlobReader#getBlobProvider()
  */
 public interface BlobProvider {
     /**
      * Get the {@link Blob} object for the binary content.
-     * 
+     *
      * @return the binary content
-     * 
      * @throws IOException if an error occurs while loading the {@link Blob}
      */
     Blob getBlob() throws IOException;

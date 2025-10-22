@@ -21,12 +21,12 @@ package org.apache.axiom.om;
 
 /**
  * A namespace binding specifying a namespace prefix and a namespace URI.
- * <p>
- * Implementations of this interface must be immutable or behave as if they were immutable,
- * i.e. {@link #getPrefix()} and {@link #getNamespaceURI()} must always return the same
- * values when invoked on the same instance.
- * <p>
- * Implementations must override {@link Object#equals(Object)} and {@link Object#hashCode()}. Two
+ *
+ * <p>Implementations of this interface must be immutable or behave as if they were immutable, i.e.
+ * {@link #getPrefix()} and {@link #getNamespaceURI()} must always return the same values when
+ * invoked on the same instance.
+ *
+ * <p>Implementations must override {@link Object#equals(Object)} and {@link Object#hashCode()}. Two
  * {@link OMNamespace} instances are considered equal if their namespace URIs and prefixes are
  * equal.
  */
@@ -47,7 +47,7 @@ public interface OMNamespace {
      * {@link OMFactory}. In all other cases the return value is not null. In particular, an empty
      * string indicates that no prefix is used, i.e. that the namespace is used as default
      * namespace.
-     * 
+     *
      * @return the namespace prefix
      */
     String getPrefix();
@@ -62,12 +62,12 @@ public interface OMNamespace {
 
     /**
      * Get the namespace URI. This method never returns <code>null</code>. It may return an empty
-     * string if this instance represents a namespace declaration of type {@code xmlns=""}. This
-     * may be the case for instances returned by {@link OMElement#getAllDeclaredNamespaces()}. On
-     * the other hand, methods such as {@link OMNamedInformationItem#getNamespace()} will return
-     * <code>null</code> for information items that have no namespace. In that case the returned
-     * string is never empty.
-     * 
+     * string if this instance represents a namespace declaration of type {@code xmlns=""}. This may
+     * be the case for instances returned by {@link OMElement#getAllDeclaredNamespaces()}. On the
+     * other hand, methods such as {@link OMNamedInformationItem#getNamespace()} will return <code>
+     * null</code> for information items that have no namespace. In that case the returned string is
+     * never empty.
+     *
      * @return the namespace URI
      */
     String getNamespaceURI();

@@ -26,23 +26,25 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * {@link Writer} implementation that writes data as
- * {@link javax.xml.stream.XMLStreamConstants#CHARACTERS} events to an {@link XMLStreamWriter}.
- * Note that this class
+ * {@link Writer} implementation that writes data as {@link
+ * javax.xml.stream.XMLStreamConstants#CHARACTERS} events to an {@link XMLStreamWriter}. Note that
+ * this class
+ *
  * <ul>
- *   <li>doesn't buffer the data;</li>
- *   <li>ignores calls to {@link #flush()} and {@link #close()};</li>
- *   <li>is not thread-safe (synchronized).</li>
+ *   <li>doesn't buffer the data;
+ *   <li>ignores calls to {@link #flush()} and {@link #close()};
+ *   <li>is not thread-safe (synchronized).
  * </ul>
- * Any {@link XMLStreamException} occurring in the underlying {@link XMLStreamWriter} will
- * be wrapped using {@link XMLStreamIOException}.
+ *
+ * Any {@link XMLStreamException} occurring in the underlying {@link XMLStreamWriter} will be
+ * wrapped using {@link XMLStreamIOException}.
  */
 public class XMLStreamWriterWriter extends Writer {
     private final XMLStreamWriter writer;
 
     /**
      * Constructor.
-     * 
+     *
      * @param writer the XML stream writer to write the events to
      */
     public XMLStreamWriterWriter(XMLStreamWriter writer) {
@@ -60,7 +62,7 @@ public class XMLStreamWriterWriter extends Writer {
 
     @Override
     public void write(String str, int off, int len) throws IOException {
-        write(str.substring(off, off+len));
+        write(str.substring(off, off + len));
     }
 
     @Override
@@ -71,10 +73,10 @@ public class XMLStreamWriterWriter extends Writer {
             throw new XMLStreamIOException(ex);
         }
     }
-    
+
     @Override
     public void write(int c) throws IOException {
-        write(new char[] { (char)c });
+        write(new char[] {(char) c});
     }
 
     @Override

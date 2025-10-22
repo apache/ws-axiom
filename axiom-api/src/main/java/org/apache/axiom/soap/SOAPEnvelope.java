@@ -29,59 +29,60 @@ public interface SOAPEnvelope extends OMElement {
      * Returns the {@link SOAPHeader} object for this envelope. This method takes advantage of the
      * fact that the {@link SOAPHeader} must be the first child element (if it exists) to avoid
      * building the {@link SOAPBody} if it is still incomplete.
-     * 
+     *
      * @return the {@link SOAPHeader} object or <code>null</code> if there is none
      */
     SOAPHeader getHeader();
 
     /**
      * Returns the existing {@link SOAPHeader} object for this envelope or creates a new one if
-     * there is none. Similarly to {@link #getHeader()}, this method avoids building the
-     * {@link SOAPBody}.
-     * 
+     * there is none. Similarly to {@link #getHeader()}, this method avoids building the {@link
+     * SOAPBody}.
+     *
      * @return the existing or newly created {@link SOAPHeader} object for this envelope
      */
     SOAPHeader getOrCreateHeader();
-    
+
     /**
      * Returns the <CODE>SOAPBody</CODE> object associated with this <CODE>SOAPEnvelope</CODE>
-     * object. <P> This SOAPBody will just be a container for all the BodyElements in the
-     * <CODE>OMMessage</CODE> </P>
+     * object.
      *
-     * @return the <CODE>SOAPBody</CODE> object for this <CODE> SOAPEnvelope</CODE> object or
-     *         <CODE>null</CODE> if there is none
+     * <p>This SOAPBody will just be a container for all the BodyElements in the <CODE>OMMessage
+     * </CODE>
+     *
+     * @return the <CODE>SOAPBody</CODE> object for this <CODE> SOAPEnvelope</CODE> object or <CODE>
+     *     null</CODE> if there is none
      * @throws OMException if there is a problem obtaining the <CODE>SOAPBody</CODE> object
      */
     SOAPBody getBody() throws OMException;
 
     SOAPVersion getVersion();
-    
+
     /**
-     * Returns true if there is a SOAPFault in the body.
-     * The implementation may choose to get this information by building the OM
-     * tree or use parser provided information.
+     * Returns true if there is a SOAPFault in the body. The implementation may choose to get this
+     * information by building the OM tree or use parser provided information.
+     *
      * @return true if SOAPFault in the body
      */
     boolean hasFault();
-    
+
     /**
-     * Retrieves the OMNamespace of the first element in the body.
-     * The implementation might build the OMElement or it may
-     * obtain this information from the builder/parser without building
-     * the OMElement.  Use this method in the situations where you need
-     * to know the OMNamespace, but don't necessarily need the OMElement.
-     * 
-     * @return the namespace of first element in the body, or <code>null</code> if the element
-     * has no namespace or the body is empty
+     * Retrieves the OMNamespace of the first element in the body. The implementation might build
+     * the OMElement or it may obtain this information from the builder/parser without building the
+     * OMElement. Use this method in the situations where you need to know the OMNamespace, but
+     * don't necessarily need the OMElement.
+     *
+     * @return the namespace of first element in the body, or <code>null</code> if the element has
+     *     no namespace or the body is empty
      */
     public OMNamespace getSOAPBodyFirstElementNS();
-    
+
     /**
-     * Retrieves the local name of the first element in the body.
-     * The implementation might build the OMElement or it may
-     * obtain this information from the builder/parser without building
-     * the OMElement.  Use this method in the situations where you need
-     * to know the name, but don't necessarily need the OMElement.
+     * Retrieves the local name of the first element in the body. The implementation might build the
+     * OMElement or it may obtain this information from the builder/parser without building the
+     * OMElement. Use this method in the situations where you need to know the name, but don't
+     * necessarily need the OMElement.
+     *
      * @return local name of first element in the body or null
      */
     public String getSOAPBodyFirstElementLocalName();

@@ -29,26 +29,24 @@ import org.apache.axiom.om.OMMetaFactoryLocator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * The default {@link OMMetaFactoryLocator} implementation used in non OSGi environments.
- */
+/** The default {@link OMMetaFactoryLocator} implementation used in non OSGi environments. */
 public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator {
     private static final Log log = LogFactory.getLog(DefaultOMMetaFactoryLocator.class);
-    
+
     public DefaultOMMetaFactoryLocator() {
         ClassLoader classLoader = DefaultOMMetaFactoryLocator.class.getClassLoader();
-        
+
         // Fall back to the system class loader if Axiom is loaded form the bootstrap
         // class loader (There is no good reason to do that, but we don't want people to
         // blame Axiom if things break).
         if (classLoader == null) {
             classLoader = ClassLoader.getSystemClassLoader();
         }
-        
+
         Loader loader = new DefaultLoader(classLoader);
-        
+
         List<Implementation> implementations = new ArrayList<Implementation>();
-        
+
         // If a meta factory is specified using the system property, we register it as an
         // implementation with feature "default" and maximum priority, so that it will always
         // be used as default implementation. Note that even if the system property is specified
@@ -65,9 +63,13 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
         }
         if (metaFactoryClassName != null) {
             if (log.isDebugEnabled()) {
-                log.debug(OMAbstractFactory.META_FACTORY_NAME_PROPERTY + " system property is set; value=" + metaFactoryClassName);
+                log.debug(
+                        OMAbstractFactory.META_FACTORY_NAME_PROPERTY
+                                + " system property is set; value="
+                                + metaFactoryClassName);
             }
-            Implementation implementation = ImplementationFactory.createDefaultImplementation(loader, metaFactoryClassName);
+            Implementation implementation =
+                    ImplementationFactory.createDefaultImplementation(loader, metaFactoryClassName);
             if (implementation != null) {
                 implementations.add(implementation);
             }
@@ -79,15 +81,20 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
         try {
             e = classLoader.getResources(ImplementationFactory.DESCRIPTOR_RESOURCE);
         } catch (IOException ex) {
-            log.error("Failed to look up " + ImplementationFactory.DESCRIPTOR_RESOURCE + " from class loader", ex);
+            log.error(
+                    "Failed to look up "
+                            + ImplementationFactory.DESCRIPTOR_RESOURCE
+                            + " from class loader",
+                    ex);
             e = null;
         }
         if (e != null) {
             while (e.hasMoreElements()) {
-                implementations.addAll(ImplementationFactory.parseDescriptor(loader, e.nextElement()));
+                implementations.addAll(
+                        ImplementationFactory.parseDescriptor(loader, e.nextElement()));
             }
         }
-        
+
         loadImplementations(implementations);
     }
 }

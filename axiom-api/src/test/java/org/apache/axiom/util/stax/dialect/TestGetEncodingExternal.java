@@ -25,8 +25,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * Checks that {@link XMLStreamReader#getEncoding()} returns the charset passed to
- * {@link XMLInputFactory#createXMLStreamReader(java.io.InputStream, String)}.
+ * Checks that {@link XMLStreamReader#getEncoding()} returns the charset passed to {@link
+ * XMLInputFactory#createXMLStreamReader(java.io.InputStream, String)}.
  */
 public class TestGetEncodingExternal extends DialectTestCase {
     public TestGetEncodingExternal(StAXImplementationAdapter staxImpl) {
@@ -36,8 +36,10 @@ public class TestGetEncodingExternal extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
-        XMLStreamReader reader = factory.createXMLStreamReader(new ByteArrayInputStream(
-                "<root/>".getBytes(StandardCharsets.ISO_8859_1)), "ISO-8859-1");
+        XMLStreamReader reader =
+                factory.createXMLStreamReader(
+                        new ByteArrayInputStream("<root/>".getBytes(StandardCharsets.ISO_8859_1)),
+                        "ISO-8859-1");
         assertEquals("ISO-8859-1", reader.getEncoding());
     }
 }

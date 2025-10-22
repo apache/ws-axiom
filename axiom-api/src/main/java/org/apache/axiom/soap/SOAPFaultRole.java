@@ -21,12 +21,11 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMElement;
 
-
 /**
  * The Role element information item identifies the role the node was operating in at the point the
  * fault occurred.
- * <p>
- * The Role element information item has: A [local name] of Role . A [namespace name] of
+ *
+ * <p>The Role element information item has: A [local name] of Role . A [namespace name] of
  * http://www.w3.org/2003/05/soap-envelope .
  */
 public interface SOAPFaultRole extends OMElement {

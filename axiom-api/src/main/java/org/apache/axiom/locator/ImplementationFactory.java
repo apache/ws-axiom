@@ -39,26 +39,35 @@ import org.xml.sax.SAXException;
 
 final class ImplementationFactory {
     static final String DESCRIPTOR_RESOURCE = "META-INF/axiom.xml";
-    
+
     private static final String NS = "http://ws.apache.org/axiom/";
     private static final QName QNAME_IMPLEMENTATIONS = new QName(NS, "implementations");
     private static final QName QNAME_IMPLEMENTATION = new QName(NS, "implementation");
     private static final QName QNAME_FEATURE = new QName(NS, "feature");
     private static final QName QNAME_EXTENSION_INTERFACE = new QName(NS, "extensionInterface");
-    
+
     private static final Log log = LogFactory.getLog(ImplementationFactory.class);
-    
+
     private ImplementationFactory() {}
-    
+
     static Implementation createDefaultImplementation(Loader loader, String className) {
         if (log.isDebugEnabled()) {
             log.debug("Creating default implementation for class " + className);
         }
-        OMMetaFactory metaFactory = (OMMetaFactory)load(loader, className);
-        return metaFactory == null ? null : new Implementation(null, metaFactory,
-                new Feature[] { new Feature(OMAbstractFactory.FEATURE_DEFAULT, Integer.MAX_VALUE, new Class<?>[0]) });
+        OMMetaFactory metaFactory = (OMMetaFactory) load(loader, className);
+        return metaFactory == null
+                ? null
+                : new Implementation(
+                        null,
+                        metaFactory,
+                        new Feature[] {
+                            new Feature(
+                                    OMAbstractFactory.FEATURE_DEFAULT,
+                                    Integer.MAX_VALUE,
+                                    new Class<?>[0])
+                        });
     }
-    
+
     private static Object load(Loader loader, String className) {
         Class<?> clazz;
         try {
@@ -74,7 +83,7 @@ final class ImplementationFactory {
             return null;
         }
     }
-    
+
     static List<Implementation> parseDescriptor(Loader loader, URL url) {
         if (log.isDebugEnabled()) {
             log.debug("Loading " + url);
@@ -96,20 +105,29 @@ final class ImplementationFactory {
                         if (child instanceof Element) {
                             QName childQName = getQName(child);
                             if (childQName.equals(QNAME_IMPLEMENTATION)) {
-                                Implementation implementation = parseImplementation(loader, (Element)child);
+                                Implementation implementation =
+                                        parseImplementation(loader, (Element) child);
                                 if (implementation != null) {
                                     implementations.add(implementation);
                                 }
                             } else {
-                                log.warn("Skipping unexpected element " + childQName + "; only "
-                                        + QNAME_IMPLEMENTATION + " is expected");
+                                log.warn(
+                                        "Skipping unexpected element "
+                                                + childQName
+                                                + "; only "
+                                                + QNAME_IMPLEMENTATION
+                                                + " is expected");
                             }
                         }
                         child = child.getNextSibling();
                     }
                 } else {
-                    log.error(url + " is not a valid implementation descriptor: unexpected root element "
-                            + rootQName + "; expected " + QNAME_IMPLEMENTATIONS);
+                    log.error(
+                            url
+                                    + " is not a valid implementation descriptor: unexpected root element "
+                                    + rootQName
+                                    + "; expected "
+                                    + QNAME_IMPLEMENTATIONS);
                 }
             } finally {
                 in.close();
@@ -127,7 +145,7 @@ final class ImplementationFactory {
         }
         return implementations;
     }
-    
+
     private static Implementation parseImplementation(Loader loader, Element implementation) {
         String name = implementation.getAttributeNS(null, "name");
         if (name.length() == 0) {
@@ -139,7 +157,8 @@ final class ImplementationFactory {
             log.error("Encountered " + QNAME_IMPLEMENTATION + " element without loader attribute");
             return null;
         }
-        OMMetaFactory metaFactory = ((OMMetaFactoryLoader)load(loader, loaderClassName)).load(null);
+        OMMetaFactory metaFactory =
+                ((OMMetaFactoryLoader) load(loader, loaderClassName)).load(null);
         if (metaFactory == null) {
             return null;
         }
@@ -149,18 +168,23 @@ final class ImplementationFactory {
             if (child instanceof Element) {
                 QName childQName = getQName(child);
                 if (childQName.equals(QNAME_FEATURE)) {
-                    Feature feature = parseFeature(loader, (Element)child);
+                    Feature feature = parseFeature(loader, (Element) child);
                     if (feature != null) {
                         features.add(feature);
                     }
                 } else {
-                    log.warn("Skipping unexpected element " + childQName + "; only "
-                            + QNAME_FEATURE + " is expected");
+                    log.warn(
+                            "Skipping unexpected element "
+                                    + childQName
+                                    + "; only "
+                                    + QNAME_FEATURE
+                                    + " is expected");
                 }
             }
             child = child.getNextSibling();
         }
-        return new Implementation(name, metaFactory, features.toArray(new Feature[features.size()]));
+        return new Implementation(
+                name, metaFactory, features.toArray(new Feature[features.size()]));
     }
 
     private static Feature parseFeature(Loader loader, Element feature) {
@@ -180,29 +204,38 @@ final class ImplementationFactory {
             if (child instanceof Element) {
                 QName childQName = getQName(child);
                 if (childQName.equals(QNAME_EXTENSION_INTERFACE)) {
-                    String className = ((Element)child).getTextContent();
+                    String className = ((Element) child).getTextContent();
                     try {
                         extensionInterfaces.add(loader.load(className));
                     } catch (ClassNotFoundException ex) {
                         log.error("The class " + className + " could not be loaded", ex);
                     }
                 } else {
-                    log.warn("Skipping unexpected element " + childQName + "; only "
-                            + QNAME_EXTENSION_INTERFACE + " is expected");
+                    log.warn(
+                            "Skipping unexpected element "
+                                    + childQName
+                                    + "; only "
+                                    + QNAME_EXTENSION_INTERFACE
+                                    + " is expected");
                 }
             }
             child = child.getNextSibling();
         }
         try {
-            return new Feature(name, Integer.parseInt(priority), extensionInterfaces.toArray(new Class<?>[extensionInterfaces.size()]));
+            return new Feature(
+                    name,
+                    Integer.parseInt(priority),
+                    extensionInterfaces.toArray(new Class<?>[extensionInterfaces.size()]));
         } catch (NumberFormatException ex) {
             log.error("Invalid priority value '" + priority + "'; must be an integer");
             return null;
         }
     }
-    
+
     private static QName getQName(Node node) {
         String namespaceURI = node.getNamespaceURI();
-        return namespaceURI == null ? new QName(node.getLocalName()) : new QName(namespaceURI, node.getLocalName());
+        return namespaceURI == null
+                ? new QName(node.getLocalName())
+                : new QName(namespaceURI, node.getLocalName());
     }
 }

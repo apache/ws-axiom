@@ -32,10 +32,11 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.BundleTrackerCustomizer;
 
-final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator implements BundleTrackerCustomizer<List<RegisteredImplementation>> {
+final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator
+        implements BundleTrackerCustomizer<List<RegisteredImplementation>> {
     private final BundleContext apiBundleContext;
     private final List<Implementation> implementations = new ArrayList<Implementation>();
-    
+
     OSGiOMMetaFactoryLocator(BundleContext apiBundleContext) {
         this.apiBundleContext = apiBundleContext;
     }
@@ -50,14 +51,17 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator i
     public List<RegisteredImplementation> addingBundle(Bundle bundle, BundleEvent event) {
         URL descriptorUrl = bundle.getEntry(ImplementationFactory.DESCRIPTOR_RESOURCE);
         if (descriptorUrl != null) {
-            List<Implementation> discoveredImplementations = ImplementationFactory.parseDescriptor(new OSGiLoader(bundle), descriptorUrl);
-            List<RegisteredImplementation> registeredImplementations = new ArrayList<RegisteredImplementation>(discoveredImplementations.size());
+            List<Implementation> discoveredImplementations =
+                    ImplementationFactory.parseDescriptor(new OSGiLoader(bundle), descriptorUrl);
+            List<RegisteredImplementation> registeredImplementations =
+                    new ArrayList<RegisteredImplementation>(discoveredImplementations.size());
             synchronized (this) {
                 implementations.addAll(discoveredImplementations);
                 loadImplementations(implementations);
             }
             for (Implementation implementation : discoveredImplementations) {
-                List<ServiceRegistration<?>> registrations = new ArrayList<ServiceRegistration<?>>();
+                List<ServiceRegistration<?>> registrations =
+                        new ArrayList<ServiceRegistration<?>>();
                 List<ServiceReference<?>> references = new ArrayList<ServiceReference<?>>();
                 for (Feature feature : implementation.getFeatures()) {
                     List<String> clazzes = new ArrayList<String>();
@@ -65,18 +69,24 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator i
                     for (Class<?> extensionInterface : feature.getExtensionInterfaces()) {
                         clazzes.add(extensionInterface.getName());
                     }
-                    Hashtable<String,Object> properties = new Hashtable<String,Object>();
+                    Hashtable<String, Object> properties = new Hashtable<String, Object>();
                     properties.put("implementationName", implementation.getName());
                     properties.put("feature", feature.getName());
                     properties.put(Constants.SERVICE_RANKING, feature.getPriority());
-                    ServiceRegistration<?> registration = bundle.getBundleContext().registerService(clazzes.toArray(new String[clazzes.size()]), implementation.getMetaFactory(), properties);
+                    ServiceRegistration<?> registration =
+                            bundle.getBundleContext()
+                                    .registerService(
+                                            clazzes.toArray(new String[clazzes.size()]),
+                                            implementation.getMetaFactory(),
+                                            properties);
                     registrations.add(registration);
                     ServiceReference<?> reference = registration.getReference();
                     references.add(reference);
                     // Let the OSGi runtime know that the axiom-api bundle is using the service
                     apiBundleContext.getService(reference);
                 }
-                registeredImplementations.add(new RegisteredImplementation(implementation, registrations, references));
+                registeredImplementations.add(
+                        new RegisteredImplementation(implementation, registrations, references));
             }
             return registeredImplementations;
         } else {
@@ -85,16 +95,18 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator i
     }
 
     @Override
-    public void modifiedBundle(Bundle bundle, BundleEvent event, List<RegisteredImplementation> object) {
-    }
+    public void modifiedBundle(
+            Bundle bundle, BundleEvent event, List<RegisteredImplementation> object) {}
 
     @Override
-    public void removedBundle(Bundle bundle, BundleEvent event, List<RegisteredImplementation> object) {
+    public void removedBundle(
+            Bundle bundle, BundleEvent event, List<RegisteredImplementation> object) {
         for (RegisteredImplementation registeredImplementation : object) {
             for (ServiceReference<?> reference : registeredImplementation.getReferences()) {
                 apiBundleContext.ungetService(reference);
             }
-            for (ServiceRegistration<?> registration : registeredImplementation.getRegistrations()) {
+            for (ServiceRegistration<?> registration :
+                    registeredImplementation.getRegistrations()) {
                 registration.unregister();
             }
             synchronized (this) {

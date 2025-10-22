@@ -28,26 +28,28 @@ import java.lang.reflect.Method;
 import junit.framework.TestCase;
 
 public class OMOutputFormatTest extends TestCase {
-    
+
     public void testAPI_getProperty() throws Exception {
         Method m = OMOutputFormat.class.getMethod("getProperty", new Class[] {String.class});
         assertTrue(m != null);
-        
+
         Class<?> returnType = m.getReturnType();
         assertTrue(returnType == Object.class);
     }
-    
+
     public void testAPI_setProperty() throws Exception {
-        Method m = OMOutputFormat.class.getMethod("setProperty", new Class[] {String.class, Object.class});
+        Method m =
+                OMOutputFormat.class.getMethod(
+                        "setProperty", new Class[] {String.class, Object.class});
         assertTrue(m != null);
-        
+
         Class<?> returnType = m.getReturnType();
         assertTrue(returnType == Object.class);
     }
-    
+
     public void testAPI_publicProperties() throws Exception {
         Field f = OMOutputFormat.class.getField("ACTION_PROPERTY");
-        assertTrue(f != null);        
+        assertTrue(f != null);
     }
 
     public void testGetContentTypeDefault() {
@@ -55,88 +57,88 @@ public class OMOutputFormatTest extends TestCase {
         String contentType = format.getContentType();
         assertTrue(contentType.equals(SOAPVersion.SOAP11.getMediaType().toString()));
     }
-    
+
     public void testGetContentTypeSOAP12() {
         OMOutputFormat format = new OMOutputFormat();
         format.setSOAP11(false);
         String contentType = format.getContentType();
         assertTrue(contentType.equals(SOAPVersion.SOAP12.getMediaType().toString()));
     }
-    
+
     public void testGetContentTypeSOAP11MTOM() {
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
         String contentType = format.getContentType();
-        
+
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.indexOf(SOAPVersion.SOAP11.getMediaType().toString())!=-1);
-        assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE)!=-1);
-        
+        assertTrue(contentType.indexOf(SOAPVersion.SOAP11.getMediaType().toString()) != -1);
+        assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE) != -1);
+
         // Test for a double quoted boundary value.
         // The Basic Profile 2.0 Specification, Rule R1109 says,
-        // "Parameters on the Content-Type MIME header field-value 
+        // "Parameters on the Content-Type MIME header field-value
         // in a request MESSAGE MUST be a quoted string."
-        assertTrue(contentType.indexOf("boundary=\"")!=-1);
+        assertTrue(contentType.indexOf("boundary=\"") != -1);
     }
-    
+
     public void testGetContentTypeSOAP11SWA() {
         OMOutputFormat format = new OMOutputFormat();
         format.setSOAP11(true);
         format.setDoingSWA(true);
         String contentType = format.getContentType();
-        
+
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.indexOf(SOAPVersion.SOAP11.getMediaType().toString())>=0);
-        assertTrue(contentType.indexOf("multipart/related")>=0);
+        assertTrue(contentType.indexOf(SOAPVersion.SOAP11.getMediaType().toString()) >= 0);
+        assertTrue(contentType.indexOf("multipart/related") >= 0);
         assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE) < 0);
-        
+
         // Sometimes the OMOutputFormat has both "optimized" and "doing swa".
         // In such cases, the winner should be swa.
-        
+
         format = new OMOutputFormat();
         format.setSOAP11(true);
         format.setDoingSWA(true);
         format.setDoOptimize(true);
         contentType = format.getContentType();
-        
+
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.indexOf(SOAPVersion.SOAP11.getMediaType().toString())>=0);
-        assertTrue(contentType.indexOf("multipart/related")>=0);
+        assertTrue(contentType.indexOf(SOAPVersion.SOAP11.getMediaType().toString()) >= 0);
+        assertTrue(contentType.indexOf("multipart/related") >= 0);
         assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE) < 0);
-        
+
         // Test for a double quoted boundary value.
         // The Basic Profile 2.0 Specification, Rule R1109 says,
-        // "Parameters on the Content-Type MIME header field-value 
+        // "Parameters on the Content-Type MIME header field-value
         // in a request MESSAGE MUST be a quoted string."
-        assertTrue(contentType.indexOf("boundary=\"")!=-1);
+        assertTrue(contentType.indexOf("boundary=\"") != -1);
     }
-    
+
     public void testGetContentTypeSOAP12MTOM() {
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
         format.setSOAP11(false);
         String contentType = format.getContentType();
-        
+
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.indexOf(SOAPVersion.SOAP12.getMediaType().toString())!=-1);
-        assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE)!=-1);
+        assertTrue(contentType.indexOf(SOAPVersion.SOAP12.getMediaType().toString()) != -1);
+        assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE) != -1);
     }
-    
+
     public void testGetContentTypeSOAP12MTOMWithAction() {
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
         format.setSOAP11(false);
         format.setProperty(OMOutputFormat.ACTION_PROPERTY, "testSoapAction");
         String contentType = format.getContentType();
-        
+
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.indexOf(SOAPVersion.SOAP12.getMediaType().toString())!=-1);
-        assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE)!=-1);
-        assertTrue(contentType.indexOf("action=\\\"testSoapAction\\\"")!=-1);
+        assertTrue(contentType.indexOf(SOAPVersion.SOAP12.getMediaType().toString()) != -1);
+        assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE) != -1);
+        assertTrue(contentType.indexOf("action=\\\"testSoapAction\\\"") != -1);
     }
 }

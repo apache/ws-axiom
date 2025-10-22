@@ -29,16 +29,17 @@ import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 
 /**
- * Defines a particular StAX parser configuration. An implementation of this
- * interface must satisfy the following requirements:
+ * Defines a particular StAX parser configuration. An implementation of this interface must satisfy
+ * the following requirements:
+ *
  * <ol>
- * <li>It MUST be immutable.
- * <li>It MUST either be a singleton or properly implement
- * {@link Object#equals(Object)} and {@link Object#hashCode()}.
+ *   <li>It MUST be immutable.
+ *   <li>It MUST either be a singleton or properly implement {@link Object#equals(Object)} and
+ *       {@link Object#hashCode()}.
  * </ol>
- * These two requirements ensure that instances of this interface may be used as
- * cache keys.
- * 
+ *
+ * These two requirements ensure that instances of this interface may be used as cache keys.
+ *
  * @see StAXWriterConfiguration
  */
 public interface StAXParserConfiguration {
@@ -46,128 +47,127 @@ public interface StAXParserConfiguration {
      * Configuration that sets up the parser to preserve CDATA sections. This configuration will
      * also put the parser in non coalescing mode.
      */
-    StAXParserConfiguration PRESERVE_CDATA_SECTIONS = new StAXParserConfiguration() {
-        @Override
-        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
-            return dialect.enableCDataReporting(factory);
-        }
-        
-        @Override
-        public String toString() {
-            return "PRESERVE_CDATA_SECTIONS";
-        }
-    };
-    
-    /**
-     * The default configuration. Same as {@link #PRESERVE_CDATA_SECTIONS}.
-     */
-    StAXParserConfiguration DEFAULT = PRESERVE_CDATA_SECTIONS;
-    
-    /**
-     * Configuration that forces the parser to process the XML document as
-     * standalone. In this configuration, the parser will ignore any references
-     * to external entities, in particular DTDs. This is especially useful to
-     * process documents referencing DTDs with system IDs that are network
-     * locations, because parsing these documents would otherwise fail on nodes
-     * detached from the network. This configuration should be used with care
-     * because the resulting representation of the document may be incomplete.
-     * E.g. default attribute values defined in the DTD will not be reported.
-     */
-    StAXParserConfiguration STANDALONE = new StAXParserConfiguration() {
-        @Override
-        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
-            factory = DEFAULT.configure(factory, dialect);
-            factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-            // Some StAX parser such as Woodstox still try to load the external DTD subset,
-            // even if IS_SUPPORTING_EXTERNAL_ENTITIES is set to false. To work around this,
-            // we add a custom XMLResolver that returns empty documents. See WSTX-117 for
-            // an interesting discussion about this.
-            factory.setXMLResolver(new XMLResolver() {
+    StAXParserConfiguration PRESERVE_CDATA_SECTIONS =
+            new StAXParserConfiguration() {
                 @Override
-                public Object resolveEntity(String publicID, String systemID, String baseURI,
-                        String namespace) throws XMLStreamException {
-                    return new ByteArrayInputStream(new byte[0]);
+                public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+                    return dialect.enableCDataReporting(factory);
                 }
-            });
-            return factory;
-        }
 
-        @Override
-        public String toString() {
-            return "STANDALONE";
-        }
-    };
+                @Override
+                public String toString() {
+                    return "PRESERVE_CDATA_SECTIONS";
+                }
+            };
+
+    /** The default configuration. Same as {@link #PRESERVE_CDATA_SECTIONS}. */
+    StAXParserConfiguration DEFAULT = PRESERVE_CDATA_SECTIONS;
 
     /**
-     * Configuration that sets up the parser in coalescing mode.
+     * Configuration that forces the parser to process the XML document as standalone. In this
+     * configuration, the parser will ignore any references to external entities, in particular
+     * DTDs. This is especially useful to process documents referencing DTDs with system IDs that
+     * are network locations, because parsing these documents would otherwise fail on nodes detached
+     * from the network. This configuration should be used with care because the resulting
+     * representation of the document may be incomplete. E.g. default attribute values defined in
+     * the DTD will not be reported.
      */
-    StAXParserConfiguration COALESCING = new StAXParserConfiguration() {
-        @Override
-        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
-            factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-            return factory;
-        }
+    StAXParserConfiguration STANDALONE =
+            new StAXParserConfiguration() {
+                @Override
+                public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+                    factory = DEFAULT.configure(factory, dialect);
+                    factory.setProperty(
+                            XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+                    // Some StAX parser such as Woodstox still try to load the external DTD subset,
+                    // even if IS_SUPPORTING_EXTERNAL_ENTITIES is set to false. To work around this,
+                    // we add a custom XMLResolver that returns empty documents. See WSTX-117 for
+                    // an interesting discussion about this.
+                    factory.setXMLResolver(
+                            new XMLResolver() {
+                                @Override
+                                public Object resolveEntity(
+                                        String publicID,
+                                        String systemID,
+                                        String baseURI,
+                                        String namespace)
+                                        throws XMLStreamException {
+                                    return new ByteArrayInputStream(new byte[0]);
+                                }
+                            });
+                    return factory;
+                }
 
-        @Override
-        public String toString() {
-            return "NON_COALESCING";
-        }
-    };
-    
-    /**
-     * Configuration that sets up the parser in non coalescing mode.
-     */
-    StAXParserConfiguration NON_COALESCING = new StAXParserConfiguration() {
-        @Override
-        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
-            factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
-            return factory;
-        }
+                @Override
+                public String toString() {
+                    return "STANDALONE";
+                }
+            };
 
-        @Override
-        public String toString() {
-            return "NON_COALESCING";
-        }
-    };
-    
+    /** Configuration that sets up the parser in coalescing mode. */
+    StAXParserConfiguration COALESCING =
+            new StAXParserConfiguration() {
+                @Override
+                public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+                    factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
+                    return factory;
+                }
+
+                @Override
+                public String toString() {
+                    return "NON_COALESCING";
+                }
+            };
+
+    /** Configuration that sets up the parser in non coalescing mode. */
+    StAXParserConfiguration NON_COALESCING =
+            new StAXParserConfiguration() {
+                @Override
+                public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+                    factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
+                    return factory;
+                }
+
+                @Override
+                public String toString() {
+                    return "NON_COALESCING";
+                }
+            };
+
     /**
-     * Configuration suitable for SOAP messages. This will configure the parser
-     * to throw an exception when it encounters a document type declaration. The
-     * SOAP 1.1 specification indeed prescribes that
-     * "A SOAP message MUST NOT contain a Document Type Declaration." The
-     * difference between the {@link #STANDALONE} configuration and this
-     * configuration is that with {@link #STANDALONE}, the parser silently
-     * ignores references to external entities but doesn't throw any exception.
-     * 
+     * Configuration suitable for SOAP messages. This will configure the parser to throw an
+     * exception when it encounters a document type declaration. The SOAP 1.1 specification indeed
+     * prescribes that "A SOAP message MUST NOT contain a Document Type Declaration." The difference
+     * between the {@link #STANDALONE} configuration and this configuration is that with {@link
+     * #STANDALONE}, the parser silently ignores references to external entities but doesn't throw
+     * any exception.
+     *
      * @see StAXDialect#disallowDoctypeDecl(XMLInputFactory)
      */
-    StAXParserConfiguration SOAP = new StAXParserConfiguration() {
-        @Override
-        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
-            return dialect.disallowDoctypeDecl(DEFAULT.configure(factory, dialect));
-        }
+    StAXParserConfiguration SOAP =
+            new StAXParserConfiguration() {
+                @Override
+                public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+                    return dialect.disallowDoctypeDecl(DEFAULT.configure(factory, dialect));
+                }
 
-        @Override
-        public String toString() {
-            return "SOAP";
-        }
-    };
-    
+                @Override
+                public String toString() {
+                    return "SOAP";
+                }
+            };
+
     /**
-     * Apply the configuration to the given factory. The method MAY optionally
-     * wrap the factory, e.g. to modify the behavior of the
-     * {@link javax.xml.stream.XMLStreamReader} instances created by the
-     * factory.
-     * 
-     * @param factory
-     *            the factory to configure
-     * @param dialect
-     *            The dialect of the StAX implementation as detected by
-     *            {@link StAXDialectDetector}. The implementation may use this
-     *            information to configure implementation specific settings.
-     * @return The configured factory. This may be the original factory (if the
-     *         implementation only changes the factory properties), or a
-     *         wrapper.
+     * Apply the configuration to the given factory. The method MAY optionally wrap the factory,
+     * e.g. to modify the behavior of the {@link javax.xml.stream.XMLStreamReader} instances created
+     * by the factory.
+     *
+     * @param factory the factory to configure
+     * @param dialect The dialect of the StAX implementation as detected by {@link
+     *     StAXDialectDetector}. The implementation may use this information to configure
+     *     implementation specific settings.
+     * @return The configured factory. This may be the original factory (if the implementation only
+     *     changes the factory properties), or a wrapper.
      */
     XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect);
 }

@@ -26,8 +26,7 @@ public interface SOAPFaultNode extends OMElement {
      * each SOAP node is identified by a URI. The value of the Node element information item is the
      * URI that identifies the SOAP node that generated the fault. SOAP nodes that do not act as the
      * ultimate SOAP receiver MUST include this element information item. An ultimate SOAP receiver
-     * MAY include this element information item to indicate explicitly that it generated the
-     * fault.
+     * MAY include this element information item to indicate explicitly that it generated the fault.
      *
      * @param uri
      */

@@ -28,11 +28,11 @@ import org.apache.axiom.ts.jaxp.stax.StAXImplementation;
 public final class StAXImplementationAdapter {
     private final StAXImplementation impl;
     private StAXDialect dialect;
-    
+
     public StAXImplementationAdapter(StAXImplementation impl) {
         this.impl = impl;
     }
-    
+
     public String getName() {
         return impl.getName();
     }
@@ -53,7 +53,7 @@ public final class StAXImplementationAdapter {
         }
         return dialect.normalize(factory);
     }
-    
+
     public StAXDialect getDialect() {
         return dialect;
     }

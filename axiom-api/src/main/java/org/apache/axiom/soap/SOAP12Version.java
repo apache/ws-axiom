@@ -23,17 +23,16 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.mime.MediaType;
 
-/**
- * Version-specific stuff for SOAP 1.2
- */
+/** Version-specific stuff for SOAP 1.2 */
 public class SOAP12Version implements SOAPVersion, SOAP12Constants {
     /**
      * @deprecated Use {@link SOAPVersion#SOAP12} instead.
      */
-    public static SOAP12Version getSingleton() { return (SOAP12Version)SOAPVersion.SOAP12; }
-
-    SOAP12Version() {
+    public static SOAP12Version getSingleton() {
+        return (SOAP12Version) SOAPVersion.SOAP12;
     }
+
+    SOAP12Version() {}
 
     @Override
     public String getEnvelopeURI() {

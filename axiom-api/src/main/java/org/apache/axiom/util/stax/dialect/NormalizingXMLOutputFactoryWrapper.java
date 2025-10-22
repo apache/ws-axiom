@@ -26,7 +26,7 @@ import org.apache.axiom.util.stax.wrapper.WrappingXMLOutputFactory;
 
 class NormalizingXMLOutputFactoryWrapper extends WrappingXMLOutputFactory {
     private final AbstractStAXDialect dialect;
-    
+
     NormalizingXMLOutputFactoryWrapper(XMLOutputFactory parent, AbstractStAXDialect dialect) {
         super(parent);
         this.dialect = dialect;

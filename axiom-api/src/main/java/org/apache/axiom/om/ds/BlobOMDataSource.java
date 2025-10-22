@@ -28,14 +28,12 @@ import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.util.StAXUtils;
 
-/**
- * {@link OMDataSource} implementation backed by a {@link Blob}.
- */
+/** {@link OMDataSource} implementation backed by a {@link Blob}. */
 public final class BlobOMDataSource extends AbstractPullOMDataSource {
     public static final class Data {
         private final Blob blob;
         private final String encoding;
-        
+
         Data(Blob blob, String encoding) {
             this.blob = blob;
             this.encoding = encoding;
@@ -54,12 +52,9 @@ public final class BlobOMDataSource extends AbstractPullOMDataSource {
 
     /**
      * Constructor.
-     * 
-     * @param blob
-     *            the blob to read from
-     * @param encoding
-     *            the encoding of the data in the blob
-     * 
+     *
+     * @param blob the blob to read from
+     * @param encoding the encoding of the data in the blob
      * @see Blobs
      */
     public BlobOMDataSource(Blob blob, String encoding) {
@@ -84,7 +79,8 @@ public final class BlobOMDataSource extends AbstractPullOMDataSource {
     @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         try {
-            return StAXUtils.createXMLStreamReader(data.getBlob().getInputStream(), data.getEncoding());
+            return StAXUtils.createXMLStreamReader(
+                    data.getBlob().getInputStream(), data.getEncoding());
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }

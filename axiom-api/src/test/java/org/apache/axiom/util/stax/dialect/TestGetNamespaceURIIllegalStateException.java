@@ -22,7 +22,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestGetNamespaceURIIllegalStateException extends IllegalStateExceptionTestCase {
-    public TestGetNamespaceURIIllegalStateException(StAXImplementationAdapter staxImpl, int event, boolean expectException) {
+    public TestGetNamespaceURIIllegalStateException(
+            StAXImplementationAdapter staxImpl, int event, boolean expectException) {
         super(staxImpl, event, expectException);
     }
 

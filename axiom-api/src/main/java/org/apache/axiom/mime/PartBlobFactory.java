@@ -25,47 +25,47 @@ import java.io.OutputStream;
 import org.apache.axiom.ext.io.StreamCopyException;
 
 /**
- * Factory for the {@link PartBlob} instances returned by {@link Part#getBlob()}. This may be used to
- * create {@link PartBlob} instances that wrap some other type of objects representing the content of
- * MIME parts.
+ * Factory for the {@link PartBlob} instances returned by {@link Part#getBlob()}. This may be used
+ * to create {@link PartBlob} instances that wrap some other type of objects representing the
+ * content of MIME parts.
  */
 public interface PartBlobFactory {
     /**
      * Default factory that creates {@link PartBlob} instances that lazily access the underlying
      * content.
      */
-    PartBlobFactory DEFAULT = new PartBlobFactory() {
-        @Override
-        public PartBlob createBlob(Part part) {
-            return new PartBlob() {
+    PartBlobFactory DEFAULT =
+            new PartBlobFactory() {
                 @Override
-                public Part getPart() {
-                    return part;
-                }
+                public PartBlob createBlob(Part part) {
+                    return new PartBlob() {
+                        @Override
+                        public Part getPart() {
+                            return part;
+                        }
 
-                @Override
-                public InputStream getInputStream() throws IOException {
-                    return part.getBlob().getInputStream();
-                }
-                
-                @Override
-                public void writeTo(OutputStream out) throws StreamCopyException {
-                    part.getBlob().writeTo(out);
-                }
-                
-                @Override
-                public long getSize() {
-                    return part.getBlob().getSize();
+                        @Override
+                        public InputStream getInputStream() throws IOException {
+                            return part.getBlob().getInputStream();
+                        }
+
+                        @Override
+                        public void writeTo(OutputStream out) throws StreamCopyException {
+                            part.getBlob().writeTo(out);
+                        }
+
+                        @Override
+                        public long getSize() {
+                            return part.getBlob().getSize();
+                        }
+                    };
                 }
             };
-        }
-    };
 
     /**
      * Create a {@link PartBlob} for the given MIME part.
-     * 
-     * @param part
-     *            the MIME part
+     *
+     * @param part the MIME part
      * @return the blob
      */
     PartBlob createBlob(Part part);

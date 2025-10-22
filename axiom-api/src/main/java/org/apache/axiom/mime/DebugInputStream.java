@@ -29,7 +29,7 @@ final class DebugInputStream extends InputStream {
     private long read;
     private int chunks;
     private boolean logged;
-    
+
     DebugInputStream(InputStream parent, Log log) {
         this.parent = parent;
         this.log = log;
@@ -37,18 +37,24 @@ final class DebugInputStream extends InputStream {
 
     private void log(IOException ex) {
         if (!logged) {
-            log.debug("IOException occurred after reading " + read + " bytes in " + chunks + " chunks", ex);
+            log.debug(
+                    "IOException occurred after reading "
+                            + read
+                            + " bytes in "
+                            + chunks
+                            + " chunks",
+                    ex);
             logged = true;
         }
     }
-    
+
     private void logEOF() {
         if (!logged) {
             log.debug("EOF reached after reading " + read + " bytes in " + chunks + " chunks");
             logged = true;
         }
     }
-    
+
     @Override
     public int available() throws IOException {
         try {

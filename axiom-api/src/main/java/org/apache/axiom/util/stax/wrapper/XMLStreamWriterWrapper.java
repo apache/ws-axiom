@@ -26,16 +26,16 @@ import javax.xml.stream.XMLStreamWriter;
 /**
  * Base class for {@link XMLStreamWriter} wrappers. The class provides default implementations for
  * all methods. Each of them calls the corresponding method in the parent writer. Note that in
- * contrast to {@link javax.xml.stream.XMLStreamReader}, for which there is a
- * {@link javax.xml.stream.util.StreamReaderDelegate}, no equivalent exists in the StAX API for
- * {@link XMLStreamWriter}.
+ * contrast to {@link javax.xml.stream.XMLStreamReader}, for which there is a {@link
+ * javax.xml.stream.util.StreamReaderDelegate}, no equivalent exists in the StAX API for {@link
+ * XMLStreamWriter}.
  */
 public class XMLStreamWriterWrapper implements XMLStreamWriter {
     private final XMLStreamWriter parent;
 
     /**
      * Constructor.
-     * 
+     *
      * @param parent the parent writer
      */
     public XMLStreamWriterWrapper(XMLStreamWriter parent) {

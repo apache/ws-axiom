@@ -25,6 +25,8 @@ import junit.framework.TestSuite;
 
 public class ValidationTest extends TestCase {
     public static TestSuite suite() throws Exception {
-        return new XMLReaderTestSuiteBuilder(SAXParserFactory.newInstance().newSAXParser().getXMLReader()).build();
+        return new XMLReaderTestSuiteBuilder(
+                        SAXParserFactory.newInstance().newSAXParser().getXMLReader())
+                .build();
     }
 }

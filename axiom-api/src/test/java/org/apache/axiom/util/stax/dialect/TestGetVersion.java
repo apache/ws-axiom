@@ -33,8 +33,8 @@ public class TestGetVersion extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
-        XMLStreamReader reader = factory.createXMLStreamReader(
-                new StringReader("<?xml version='1.0'?><root/>"));
+        XMLStreamReader reader =
+                factory.createXMLStreamReader(new StringReader("<?xml version='1.0'?><root/>"));
         assertEquals("1.0", reader.getVersion());
         reader.next();
         assertThrows(IllegalStateException.class, reader::getVersion);

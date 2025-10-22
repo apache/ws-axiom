@@ -25,23 +25,29 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * This XMLResolver is used whenever a secure XMLStreamReader
- * is needed.  Basically it throws an exception if an attempt
- * is made to read an entity.
+ * This XMLResolver is used whenever a secure XMLStreamReader is needed. Basically it throws an
+ * exception if an attempt is made to read an entity.
  */
 final class SecureXMLResolver implements XMLResolver {
     private static final Log log = LogFactory.getLog(SecureXMLResolver.class);
 
     @Override
-    public Object resolveEntity(String publicID, String systemID, String baseURI,
-            String namespace) throws XMLStreamException {
-        // Do not expose the name of the entity that was attempted to be 
+    public Object resolveEntity(String publicID, String systemID, String baseURI, String namespace)
+            throws XMLStreamException {
+        // Do not expose the name of the entity that was attempted to be
         // read as this will reveal secure information to the client.
         if (log.isDebugEnabled()) {
-            log.debug("resolveEntity is disabled because this is a secure XMLStreamReader(" + 
-                    publicID + ") (" + systemID + ") (" + baseURI + ") (" + namespace + ")");
+            log.debug(
+                    "resolveEntity is disabled because this is a secure XMLStreamReader("
+                            + publicID
+                            + ") ("
+                            + systemID
+                            + ") ("
+                            + baseURI
+                            + ") ("
+                            + namespace
+                            + ")");
         }
         throw new XMLStreamException("Reading external entities is disabled");
     }
 }
-

@@ -24,18 +24,17 @@ import org.apache.axiom.om.OMMetaFactory;
 
 /**
  * Loads the {@link OMMetaFactory} for a given Axiom implementation. An Axiom implementation must
- * provide an implementation of this interface. That implementation class is specified in the
- * {@code META-INF/axiom.xml} of the Axiom implementation.
+ * provide an implementation of this interface. That implementation class is specified in the {@code
+ * META-INF/axiom.xml} of the Axiom implementation.
  */
 public interface OMMetaFactoryLoader {
     /**
      * Get the {@link OMMetaFactory} instance for the Axiom implementation. Note that the
      * implementation is not required to return the same instance on every invocation. It is the
      * responsibility of the Axiom API to cache the instance if necessary.
-     * 
-     * @param properties
-     *            reserved for future use
+     *
+     * @param properties reserved for future use
      * @return the {@link OMMetaFactory} instance; must not be <code>null</code>
      */
-    OMMetaFactory load(Map<String,Object> properties);
+    OMMetaFactory load(Map<String, Object> properties);
 }

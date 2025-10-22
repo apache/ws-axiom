@@ -35,7 +35,7 @@ import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 public class WrappedTextNodeOMDataSourceFromReader extends WrappedTextNodeOMDataSource {
     private final Reader reader;
     private boolean isAccessed;
-    
+
     public WrappedTextNodeOMDataSourceFromReader(QName wrapperElementName, Reader reader) {
         super(wrapperElementName);
         this.reader = reader;

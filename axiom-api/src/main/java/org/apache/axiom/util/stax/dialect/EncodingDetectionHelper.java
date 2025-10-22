@@ -25,13 +25,13 @@ import java.io.PushbackInputStream;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * Implements the character encoding autodetection algorithm described in Appendix F.1 of the
- * XML 1.0 specifications (Fifth Edition).
+ * Implements the character encoding autodetection algorithm described in Appendix F.1 of the XML
+ * 1.0 specifications (Fifth Edition).
  */
 class EncodingDetectionHelper {
     private final InputStream stream;
     private final boolean useMark;
-    
+
     public EncodingDetectionHelper(InputStream stream) {
         useMark = stream.markSupported();
         if (useMark) {
@@ -40,11 +40,11 @@ class EncodingDetectionHelper {
             this.stream = new PushbackInputStream(stream, 4);
         }
     }
-    
+
     public InputStream getInputStream() {
         return stream;
     }
-    
+
     public String detectEncoding() throws XMLStreamException {
         byte[] startBytes = new byte[4];
         try {
@@ -53,7 +53,7 @@ class EncodingDetectionHelper {
             }
             int read = 0;
             do {
-                int c = stream.read(startBytes, read, 4-read);
+                int c = stream.read(startBytes, read, 4 - read);
                 if (c == -1) {
                     throw new XMLStreamException("Unexpected end of stream");
                 }
@@ -62,13 +62,16 @@ class EncodingDetectionHelper {
             if (useMark) {
                 stream.reset();
             } else {
-                ((PushbackInputStream)stream).unread(startBytes);
+                ((PushbackInputStream) stream).unread(startBytes);
             }
         } catch (IOException ex) {
             throw new XMLStreamException("Unable to read start bytes", ex);
         }
-        int marker = ((startBytes[0] & 0xFF) << 24) + ((startBytes[1] & 0xFF) << 16)
-                + ((startBytes[2] & 0xFF) << 8) + (startBytes[3] & 0xFF);
+        int marker =
+                ((startBytes[0] & 0xFF) << 24)
+                        + ((startBytes[1] & 0xFF) << 16)
+                        + ((startBytes[2] & 0xFF) << 8)
+                        + (startBytes[3] & 0xFF);
         switch (marker) {
             case 0x0000FEFF:
             case 0xFFFE0000:

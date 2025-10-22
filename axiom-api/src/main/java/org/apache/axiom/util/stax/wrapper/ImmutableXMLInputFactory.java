@@ -26,13 +26,13 @@ import javax.xml.stream.util.XMLEventAllocator;
 
 /**
  * Wraps an {@link XMLInputFactory} so that its state can no longer be changed. The state includes
- * the properties as well as the {@link XMLEventAllocator}, {@link XMLReporter} and
- * {@link XMLResolver} instances configured on the factory.
+ * the properties as well as the {@link XMLEventAllocator}, {@link XMLReporter} and {@link
+ * XMLResolver} instances configured on the factory.
  */
 public class ImmutableXMLInputFactory extends XMLInputFactoryWrapper {
     /**
      * Constructor.
-     * 
+     *
      * @param parent the parent factory
      */
     public ImmutableXMLInputFactory(XMLInputFactory parent) {

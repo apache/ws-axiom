@@ -23,10 +23,10 @@ import java.util.Arrays;
 
 public class MethodSignature {
     // Note: Although the JVM considers the return type as part of the signature,
-    //       the Java compiler does not. 
+    //       the Java compiler does not.
     private final String name;
     private final Class<?>[] parameterTypes;
-    
+
     public MethodSignature(String name, Class<?>[] parameterTypes) {
         this.name = name;
         this.parameterTypes = parameterTypes;
@@ -40,7 +40,7 @@ public class MethodSignature {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof MethodSignature) {
-            MethodSignature other = (MethodSignature)obj;
+            MethodSignature other = (MethodSignature) obj;
             return other.name.equals(name) && Arrays.equals(other.parameterTypes, parameterTypes);
         } else {
             return false;
@@ -50,19 +50,19 @@ public class MethodSignature {
     @Override
     public int hashCode() {
         int hashCode = name.hashCode();
-        for (int i=0; i<parameterTypes.length; i++) {
-            hashCode = 31*hashCode + parameterTypes[i].hashCode();
+        for (int i = 0; i < parameterTypes.length; i++) {
+            hashCode = 31 * hashCode + parameterTypes[i].hashCode();
         }
         return hashCode;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder buffer = new StringBuilder();
         buffer.append(name);
         buffer.append('(');
-        for (int i=0; i<parameterTypes.length; i++) {
-            if (i>0) {
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (i > 0) {
                 buffer.append(", ");
             }
             buffer.append(parameterTypes[i].getName());

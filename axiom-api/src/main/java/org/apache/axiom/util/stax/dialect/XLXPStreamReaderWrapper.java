@@ -34,7 +34,7 @@ class XLXPStreamReaderWrapper extends XMLStreamReaderWrapper {
             return new AbstractDTDReader(getParent()) {
                 @Override
                 protected String getDocumentTypeDeclaration(XMLStreamReader reader) {
-                    return (String)reader.getProperty("javax.xml.stream.dtd.declaration");
+                    return (String) reader.getProperty("javax.xml.stream.dtd.declaration");
                 }
             };
         } else {

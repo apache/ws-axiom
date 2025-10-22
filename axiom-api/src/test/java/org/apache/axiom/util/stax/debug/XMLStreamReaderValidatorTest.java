@@ -28,15 +28,17 @@ import junit.framework.TestCase;
 import org.apache.axiom.om.util.StAXUtils;
 
 public class XMLStreamReaderValidatorTest extends TestCase {
-    private static XMLStreamReaderValidator createValidatorForParser(String xml) throws XMLStreamException {
-        return new XMLStreamReaderValidator(StAXUtils.createXMLStreamReader(new StringReader(xml)), true);
+    private static XMLStreamReaderValidator createValidatorForParser(String xml)
+            throws XMLStreamException {
+        return new XMLStreamReaderValidator(
+                StAXUtils.createXMLStreamReader(new StringReader(xml)), true);
     }
-    
+
     /**
-     * Test that {@link XMLStreamReaderValidator} correctly keeps track of events when
-     * {@link XMLStreamReader#getElementText()} is used. This is a regression test for
-     * <a href="https://issues.apache.org/jira/browse/AXIOM-63">AXIOM-63</a>.
-     * 
+     * Test that {@link XMLStreamReaderValidator} correctly keeps track of events when {@link
+     * XMLStreamReader#getElementText()} is used. This is a regression test for <a
+     * href="https://issues.apache.org/jira/browse/AXIOM-63">AXIOM-63</a>.
+     *
      * @throws Exception
      */
     public void testGetElementText() throws Exception {
@@ -50,10 +52,10 @@ public class XMLStreamReaderValidatorTest extends TestCase {
     }
 
     /**
-     * Test that {@link XMLStreamReaderValidator} correctly keeps track of events when
-     * {@link XMLStreamReader#nextTag()} is used. This is a regression test for
-     * <a href="https://issues.apache.org/jira/browse/AXIOM-63">AXIOM-63</a>.
-     * 
+     * Test that {@link XMLStreamReaderValidator} correctly keeps track of events when {@link
+     * XMLStreamReader#nextTag()} is used. This is a regression test for <a
+     * href="https://issues.apache.org/jira/browse/AXIOM-63">AXIOM-63</a>.
+     *
      * @throws Exception
      */
     public void testNextTag() throws Exception {

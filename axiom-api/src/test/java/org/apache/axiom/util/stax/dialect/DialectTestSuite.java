@@ -24,19 +24,23 @@ import junit.framework.TestSuite;
 public class DialectTestSuite extends TestSuite {
     public static Test suite() throws Exception {
         DialectTestSuiteBuilder builder = new DialectTestSuiteBuilder();
-        
+
         // Neither SJSXP nor XLXP report whitespace in prolog
         builder.exclude(TestGetTextInProlog.class, "(implementation=JRE)");
-        
+
         // SJSXP and XLXP don't report whitespace in prolog
-        builder.exclude(TestGetTextInProlog.class, "(|(implementation=sjsxp-*)(implementation=com.ibm.ws.prereq.xlxp.jar)(implementation=xml.jar))");
-        
+        builder.exclude(
+                TestGetTextInProlog.class,
+                "(|(implementation=sjsxp-*)(implementation=com.ibm.ws.prereq.xlxp.jar)(implementation=xml.jar))");
+
         // DTDReader is not supported for all StAX implementations
-        builder.exclude(TestDTDReader.class, "(|(implementation=stax-1.2.0.jar)(implementation=wstx-asl-3.*))");
-        
+        builder.exclude(
+                TestDTDReader.class,
+                "(|(implementation=stax-1.2.0.jar)(implementation=wstx-asl-3.*))");
+
         // TODO: investigate why this fails; didn't occur with the old TestCloseInputStream test
         builder.exclude(TestClose.class, "(&(implementation=stax-1.2.0.jar)(type=InputStream))");
-        
+
         return builder.build();
     }
 }

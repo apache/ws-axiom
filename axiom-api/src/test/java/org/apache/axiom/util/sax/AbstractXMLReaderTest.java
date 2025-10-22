@@ -28,14 +28,14 @@ import org.xml.sax.SAXException;
 
 public class AbstractXMLReaderTest extends TestCase {
     public static TestSuite suite() throws Exception {
-        return new XMLReaderTestSuiteBuilder(new AbstractXMLReader() {
-            @Override
-            public void parse(String systemId) throws IOException, SAXException {
-            }
-            
-            @Override
-            public void parse(InputSource input) throws IOException, SAXException {
-            }
-        }).build();
+        return new XMLReaderTestSuiteBuilder(
+                        new AbstractXMLReader() {
+                            @Override
+                            public void parse(String systemId) throws IOException, SAXException {}
+
+                            @Override
+                            public void parse(InputSource input) throws IOException, SAXException {}
+                        })
+                .build();
     }
 }

@@ -26,9 +26,9 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 
 /**
- * Partial {@link NamespaceContext} implementation that takes care of the
- * implicit namespace bindings (for the {@code xml} and {@code xmlns}
- * prefixes) defined in the {@link NamespaceContext} Javadoc.
+ * Partial {@link NamespaceContext} implementation that takes care of the implicit namespace
+ * bindings (for the {@code xml} and {@code xmlns} prefixes) defined in the {@link NamespaceContext}
+ * Javadoc.
  */
 public abstract class AbstractNamespaceContext implements NamespaceContext {
     @Override
@@ -45,17 +45,15 @@ public abstract class AbstractNamespaceContext implements NamespaceContext {
     }
 
     /**
-     * Get namespace URI bound to a prefix in the current scope. The contract of
-     * this method is the same as
-     * {@link NamespaceContext#getNamespaceURI(String)}, except that the
-     * implementation is not required to handle the implicit namespace bindings.
-     * 
-     * @param prefix
-     *            prefix to look up
+     * Get namespace URI bound to a prefix in the current scope. The contract of this method is the
+     * same as {@link NamespaceContext#getNamespaceURI(String)}, except that the implementation is
+     * not required to handle the implicit namespace bindings.
+     *
+     * @param prefix prefix to look up
      * @return namespace URI bound to prefix in the current scope
      */
     protected abstract String doGetNamespaceURI(String prefix);
-    
+
     @Override
     public final String getPrefix(String namespaceURI) {
         if (namespaceURI == null) {
@@ -68,15 +66,13 @@ public abstract class AbstractNamespaceContext implements NamespaceContext {
             return doGetPrefix(namespaceURI);
         }
     }
-    
+
     /**
-     * Get prefix bound to namespace URI in the current scope. The contract of
-     * this method is the same as {@link NamespaceContext#getPrefix(String)},
-     * except that the implementation is not required to handle the implicit
-     * namespace bindings.
-     * 
-     * @param namespaceURI
-     *            URI of namespace to lookup
+     * Get prefix bound to namespace URI in the current scope. The contract of this method is the
+     * same as {@link NamespaceContext#getPrefix(String)}, except that the implementation is not
+     * required to handle the implicit namespace bindings.
+     *
+     * @param namespaceURI URI of namespace to lookup
      * @return prefix bound to namespace URI in current context
      */
     protected abstract String doGetPrefix(String namespaceURI);
@@ -95,15 +91,12 @@ public abstract class AbstractNamespaceContext implements NamespaceContext {
     }
 
     /**
-     * Get all prefixes bound to a namespace URI in the current scope. The
-     * contract of this method is the same as
-     * {@link NamespaceContext#getPrefixes(String)}, except that the
-     * implementation is not required to handle the implicit namespace bindings.
-     * 
-     * @param namespaceURI
-     *            URI of namespace to lookup
-     * @return iterator for all prefixes bound to the namespace URI in the
-     *         current scope
+     * Get all prefixes bound to a namespace URI in the current scope. The contract of this method
+     * is the same as {@link NamespaceContext#getPrefixes(String)}, except that the implementation
+     * is not required to handle the implicit namespace bindings.
+     *
+     * @param namespaceURI URI of namespace to lookup
+     * @return iterator for all prefixes bound to the namespace URI in the current scope
      */
     protected abstract Iterator<String> doGetPrefixes(String namespaceURI);
 }

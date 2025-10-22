@@ -29,25 +29,25 @@ final class PartInputStream extends InputStream {
     private WritableBlob content;
     private InputStream in;
     private WritableBlobFactory<?> blobFactory;
-    
+
     PartInputStream(WritableBlob content) throws IOException {
         this.content = content;
         in = getInputStream(content);
     }
-    
+
     PartInputStream(InputStream in, WritableBlobFactory<?> blobFactory) {
         this.in = in;
         this.blobFactory = blobFactory;
     }
-    
+
     private static InputStream getInputStream(WritableBlob content) throws IOException {
         if (content instanceof MemoryBlob) {
-            return ((MemoryBlob)content).readOnce();
+            return ((MemoryBlob) content).readOnce();
         } else {
             return content.getInputStream();
         }
     }
-    
+
     void detach() throws IOException {
         if (blobFactory == null) {
             throw new IllegalStateException();
@@ -60,7 +60,7 @@ final class PartInputStream extends InputStream {
         }
         blobFactory = null;
     }
-    
+
     @Override
     public int available() throws IOException {
         return in == null ? 0 : in.available();

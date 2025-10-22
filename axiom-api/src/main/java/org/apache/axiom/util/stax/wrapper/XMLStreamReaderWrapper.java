@@ -36,20 +36,20 @@ public class XMLStreamReaderWrapper implements XMLStreamReader {
 
     /**
      * Constructor.
-     * 
+     *
      * @param parent the parent reader
      */
     public XMLStreamReaderWrapper(XMLStreamReader parent) {
         this.parent = parent;
     }
-    
+
     /**
      * Get the parent stream reader. This method is declared as protected because it should only be
      * used by subclasses. However, stream reader wrappers that can safely be unwrapped may
      * implement the {@link org.apache.axiom.ext.stax.DelegatingXMLStreamReader} interface to make
      * this a public method. Note that a corresponding <code>setParent</code> method is
      * intentionally omitted because {@link XMLStreamReaderWrapper} is immutable.
-     * 
+     *
      * @return the parent stream reader that is wrapped by this object
      */
     protected XMLStreamReader getParent() {

@@ -29,15 +29,15 @@ import org.apache.commons.logging.LogFactory;
 
 class PriorityBasedOMMetaFactoryLocator implements OMMetaFactoryLocator {
     private static final Log log = LogFactory.getLog(PriorityBasedOMMetaFactoryLocator.class);
-    
-    private final Map<String,OMMetaFactory> factories = new HashMap<String,OMMetaFactory>();
-    
+
+    private final Map<String, OMMetaFactory> factories = new HashMap<String, OMMetaFactory>();
+
     void loadImplementations(List<Implementation> implementations) {
-        Map<String,Integer> priorityMap = new HashMap<String,Integer>();
+        Map<String, Integer> priorityMap = new HashMap<String, Integer>();
         factories.clear();
         for (Implementation implementation : implementations) {
             Feature[] features = implementation.getFeatures();
-            for (int i=0; i<features.length; i++) {
+            for (int i = 0; i < features.length; i++) {
                 Feature feature = features[i];
                 String name = feature.getName();
                 int priority = feature.getPriority();
@@ -50,7 +50,7 @@ class PriorityBasedOMMetaFactoryLocator implements OMMetaFactoryLocator {
         }
         if (log.isDebugEnabled()) {
             StringBuilder buffer = new StringBuilder("Meta factories:");
-            for (Map.Entry<String,OMMetaFactory> entry : factories.entrySet()) {
+            for (Map.Entry<String, OMMetaFactory> entry : factories.entrySet()) {
                 buffer.append("\n  ");
                 buffer.append(entry.getKey());
                 buffer.append(": ");
@@ -59,7 +59,7 @@ class PriorityBasedOMMetaFactoryLocator implements OMMetaFactoryLocator {
             log.debug(buffer);
         }
     }
-    
+
     @Override
     public OMMetaFactory getOMMetaFactory(String feature) {
         return factories.get(feature);

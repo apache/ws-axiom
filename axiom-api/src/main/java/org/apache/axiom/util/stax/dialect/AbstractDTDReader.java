@@ -61,7 +61,7 @@ abstract class AbstractDTDReader implements DTDReader {
             }
         }
     }
-    
+
     @Override
     public String getRootName() {
         parse();

@@ -24,5 +24,6 @@ import javax.xml.stream.XMLStreamWriter;
 
 abstract class AbstractStAXDialect implements StAXDialect {
     public abstract XMLStreamReader normalize(XMLStreamReader reader);
+
     public abstract XMLStreamWriter normalize(XMLStreamWriter writer);
 }

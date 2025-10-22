@@ -27,9 +27,9 @@ public class OMCloneOptions {
     private boolean preserveModel;
 
     /**
-     * Determine whether {@link Blob} objects should be fetched when cloning {@link OMText}
-     * nodes. See {@link #setFetchBlobs(boolean)} for more information about this option.
-     * 
+     * Determine whether {@link Blob} objects should be fetched when cloning {@link OMText} nodes.
+     * See {@link #setFetchBlobs(boolean)} for more information about this option.
+     *
      * @return the current value of this option
      */
     public boolean isFetchBlobs() {
@@ -37,19 +37,17 @@ public class OMCloneOptions {
     }
 
     /**
-     * Specify whether {@link Blob} objects should be fetched when cloning {@link OMText}
-     * nodes. If this option is set to <code>false</code> (default) then an {@link OMText} node
-     * backed by a {@link BlobProvider} will be cloned by copying the reference to that
-     * {@link BlobProvider} to the cloned {@link OMText} node. This implies that if the
-     * original tree was constructed from an XOP encoded stream, then the clone may become unusable
-     * if that stream is closed. If this option is set to <code>true</code>, then
-     * {@link BlobProvider} references will be replaced by {@link Blob} references. In
-     * addition, the necessary actions are taken to ensure that the content of these
-     * {@link Blob} instances is fetched into memory or temporary storage, so that the clones
-     * remain usable even after the underlying stream is closed.
-     * 
-     * @param fetchBlobs
-     *            the value to set for this option
+     * Specify whether {@link Blob} objects should be fetched when cloning {@link OMText} nodes. If
+     * this option is set to <code>false</code> (default) then an {@link OMText} node backed by a
+     * {@link BlobProvider} will be cloned by copying the reference to that {@link BlobProvider} to
+     * the cloned {@link OMText} node. This implies that if the original tree was constructed from
+     * an XOP encoded stream, then the clone may become unusable if that stream is closed. If this
+     * option is set to <code>true</code>, then {@link BlobProvider} references will be replaced by
+     * {@link Blob} references. In addition, the necessary actions are taken to ensure that the
+     * content of these {@link Blob} instances is fetched into memory or temporary storage, so that
+     * the clones remain usable even after the underlying stream is closed.
+     *
+     * @param fetchBlobs the value to set for this option
      */
     public void setFetchBlobs(boolean fetchBlobs) {
         this.fetchBlobs = fetchBlobs;
@@ -57,9 +55,9 @@ public class OMCloneOptions {
 
     /**
      * Determine whether {@link OMSourcedElement} nodes should be cloned as {@link OMSourcedElement}
-     * nodes by copying the corresponding {@link OMDataSource} objects. See
-     * {@link #setCopyOMDataSources(boolean)} for more information about this option.
-     * 
+     * nodes by copying the corresponding {@link OMDataSource} objects. See {@link
+     * #setCopyOMDataSources(boolean)} for more information about this option.
+     *
      * @return the current value of this option
      */
     public boolean isCopyOMDataSources() {
@@ -75,17 +73,17 @@ public class OMCloneOptions {
      * to clone {@link OMSourcedElement} nodes as {@link OMSourcedElement} nodes by copying the
      * corresponding {@link OMDataSource} instances. Note that there are several cases where this is
      * not possible:
+     *
      * <ul>
-     * <li>There is no {@link OMDataSource} set.
-     * <li>The {@link OMDataSource} is destructive (or doesn't implement {@link OMDataSourceExt}.
-     * <li>The {@link OMSourcedElement} is expanded.
+     *   <li>There is no {@link OMDataSource} set.
+     *   <li>The {@link OMDataSource} is destructive (or doesn't implement {@link OMDataSourceExt}.
+     *   <li>The {@link OMSourcedElement} is expanded.
      * </ul>
-     * <p>
-     * In these cases, {@link OMSourcedElement} nodes will always be cloned as simple
-     * {@link OMElement} instances.
-     * 
-     * @param copyOMDataSources
-     *            the value to set for this option
+     *
+     * <p>In these cases, {@link OMSourcedElement} nodes will always be cloned as simple {@link
+     * OMElement} instances.
+     *
+     * @param copyOMDataSources the value to set for this option
      */
     public void setCopyOMDataSources(boolean copyOMDataSources) {
         this.copyOMDataSources = copyOMDataSources;
@@ -94,21 +92,20 @@ public class OMCloneOptions {
     /**
      * Determine whether domain specific extensions to the object model should be preserved. See
      * {@link #setPreserveModel(boolean)} for more information about this option.
-     * 
+     *
      * @return the current value of this option
      */
     public boolean isPreserveModel() {
         return preserveModel;
     }
-    
+
     /**
      * Specify whether domain specific extensions to the object model should be preserved. If this
      * option is set to <code>false</code> (default), then the object model is always cloned as
      * plain XML even if the original uses domain specific extensions such as SOAP. If this option
      * is set to <code>true</code>, then domain specific extensions are preserved.
-     * 
-     * @param preserveModel
-     *            the value to set for this option
+     *
+     * @param preserveModel the value to set for this option
      */
     public void setPreserveModel(boolean preserveModel) {
         this.preserveModel = preserveModel;

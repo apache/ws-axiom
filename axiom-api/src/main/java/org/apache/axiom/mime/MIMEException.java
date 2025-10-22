@@ -18,9 +18,7 @@
  */
 package org.apache.axiom.mime;
 
-/**
- * Indicates a MIME processing error.
- */
+/** Indicates a MIME processing error. */
 public class MIMEException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 

@@ -36,11 +36,11 @@ public class ScopedNamespaceContextTest extends TestCase {
     private static Set<String> getPrefixes(NamespaceContext nc, String namespaceURI) {
         Set<String> result = new HashSet<String>();
         for (Iterator<?> it = nc.getPrefixes(namespaceURI); it.hasNext(); ) {
-            result.add((String)it.next());
+            result.add((String) it.next());
         }
         return result;
     }
-    
+
     public void testSimple() {
         ScopedNamespaceContext nc = new ScopedNamespaceContext();
         nc.setPrefix("", "urn:ns1");
@@ -56,7 +56,7 @@ public class ScopedNamespaceContextTest extends TestCase {
         assertEquals(Collections.singleton("a"), getPrefixes(nc, "urn:ns2"));
         assertEquals(Collections.singleton("b"), getPrefixes(nc, "urn:ns3"));
     }
-    
+
     public void testMultiplePrefixes() {
         ScopedNamespaceContext nc = new ScopedNamespaceContext();
         nc.setPrefix("", "urn:ns1");
@@ -64,10 +64,9 @@ public class ScopedNamespaceContextTest extends TestCase {
         nc.setPrefix("b", "urn:ns1");
         String prefix = nc.getPrefix("urn:ns1");
         assertTrue(prefix.equals("") || prefix.equals("b"));
-        assertEquals(new HashSet<String>(Arrays.asList("", "b")),
-                     getPrefixes(nc, "urn:ns1"));
+        assertEquals(new HashSet<String>(Arrays.asList("", "b")), getPrefixes(nc, "urn:ns1"));
     }
-    
+
     public void testScope() {
         ScopedNamespaceContext nc = new ScopedNamespaceContext();
         nc.setPrefix("ns1", "urn:ns1");
@@ -103,7 +102,7 @@ public class ScopedNamespaceContextTest extends TestCase {
         assertEquals(XMLConstants.NULL_NS_URI, nc.getNamespaceURI("ns2"));
         assertEquals(XMLConstants.NULL_NS_URI, nc.getNamespaceURI("ns3"));
     }
-    
+
     public void testMaskedPrefix() {
         ScopedNamespaceContext nc = new ScopedNamespaceContext();
         nc.setPrefix("p", "urn:ns1");
@@ -117,7 +116,7 @@ public class ScopedNamespaceContextTest extends TestCase {
         assertEquals("p", nc.getPrefix("urn:ns1"));
         assertEquals(Collections.singleton("p"), getPrefixes(nc, "urn:ns1"));
     }
-    
+
     public void testImplicitNamespaces() {
         NamespaceContextTestUtils.checkImplicitNamespaces(new ScopedNamespaceContext());
     }

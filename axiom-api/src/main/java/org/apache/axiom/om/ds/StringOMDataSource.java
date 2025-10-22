@@ -26,9 +26,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.util.StAXUtils;
 
-/**
- * {@link OMDataSource} implementation backed by a {@link String}.
- */
+/** {@link OMDataSource} implementation backed by a {@link String}. */
 public final class StringOMDataSource extends AbstractPullOMDataSource {
     private String data;
 

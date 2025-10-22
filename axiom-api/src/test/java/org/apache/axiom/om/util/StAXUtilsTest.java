@@ -25,14 +25,19 @@ import junit.framework.TestCase;
 
 public class StAXUtilsTest extends TestCase {
     public void testInputFactoryIsImmutable() throws Exception {
-        assertThrows(IllegalStateException.class, () ->
-            StAXUtils.getXMLInputFactory().setProperty("javax.xml.stream.isValidating",
-                    Boolean.TRUE));
+        assertThrows(
+                IllegalStateException.class,
+                () ->
+                        StAXUtils.getXMLInputFactory()
+                                .setProperty("javax.xml.stream.isValidating", Boolean.TRUE));
     }
-    
+
     public void testOutputFactoryIsImmutable() throws Exception {
-        assertThrows(IllegalStateException.class, () ->
-            StAXUtils.getXMLOutputFactory().setProperty("javax.xml.stream.isRepairingNamespaces",
-                    Boolean.TRUE));
+        assertThrows(
+                IllegalStateException.class,
+                () ->
+                        StAXUtils.getXMLOutputFactory()
+                                .setProperty(
+                                        "javax.xml.stream.isRepairingNamespaces", Boolean.TRUE));
     }
 }

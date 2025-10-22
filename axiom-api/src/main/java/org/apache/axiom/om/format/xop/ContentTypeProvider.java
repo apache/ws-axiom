@@ -22,15 +22,15 @@ import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.ContentType;
 
 /**
- * Determines the content type for non-root MIME parts in an XOP package. Note that in an
- * XOP package, the {@code Content-Type} header is only required for the root part, and the
- * content type of non-root MIME parts is not part of the infoset. This API purely
- * exists to customize the serialization of an XML infoset into an XOP package.
+ * Determines the content type for non-root MIME parts in an XOP package. Note that in an XOP
+ * package, the {@code Content-Type} header is only required for the root part, and the content type
+ * of non-root MIME parts is not part of the infoset. This API purely exists to customize the
+ * serialization of an XML infoset into an XOP package.
  */
 public interface ContentTypeProvider {
     /**
      * Determine the content type to use for a MIME part.
-     * 
+     *
      * @param blob the content of the MIME part
      * @return the content type, or {@code null} if there is no specific content type
      */

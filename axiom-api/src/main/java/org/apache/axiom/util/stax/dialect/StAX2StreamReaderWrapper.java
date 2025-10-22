@@ -25,8 +25,8 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 import org.codehaus.stax2.DTDInfo;
 
 /**
- * {@link XMLStreamReaderWrapper} implementation that exposes the {@link DTDReader} extension
- * based on the {@link DTDInfo} defined by "StAX2".
+ * {@link XMLStreamReaderWrapper} implementation that exposes the {@link DTDReader} extension based
+ * on the {@link DTDInfo} defined by "StAX2".
  */
 class StAX2StreamReaderWrapper extends XMLStreamReaderWrapper implements DTDReader {
     public StAX2StreamReaderWrapper(XMLStreamReader parent) {
@@ -44,16 +44,16 @@ class StAX2StreamReaderWrapper extends XMLStreamReaderWrapper implements DTDRead
 
     @Override
     public String getRootName() {
-        return ((DTDInfo)getParent()).getDTDRootName();
+        return ((DTDInfo) getParent()).getDTDRootName();
     }
 
     @Override
     public String getPublicId() {
-        return ((DTDInfo)getParent()).getDTDPublicId();
+        return ((DTDInfo) getParent()).getDTDPublicId();
     }
 
     @Override
     public String getSystemId() {
-        return ((DTDInfo)getParent()).getDTDSystemId();
+        return ((DTDInfo) getParent()).getDTDSystemId();
     }
 }

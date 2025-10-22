@@ -22,29 +22,31 @@ package org.apache.axiom.soap;
 import org.apache.axiom.om.OMSourcedElement;
 
 /**
- * <P>An object representing the contents in the SOAP header part of the SOAP envelope. The
- * immediate children of a <CODE> SOAPHeader</CODE> object can be represented only as <CODE>
- * SOAPHeaderBlock</CODE> objects.</P> <P>B <CODE>SOAPHeaderBlock</CODE> object can have other
- * <CODE>OMElement</CODE> objects as its children.</P>
+ * An object representing the contents in the SOAP header part of the SOAP envelope. The immediate
+ * children of a <CODE> SOAPHeader</CODE> object can be represented only as <CODE>
+ * SOAPHeaderBlock</CODE> objects.
+ *
+ * <p>B <CODE>SOAPHeaderBlock</CODE> object can have other <CODE>OMElement</CODE> objects as its
+ * children.
  */
 public interface SOAPHeaderBlock extends OMSourcedElement {
-    
+
     /**
-     * A SOAPHeaderBlock may be represented as an unexpanded OMSourcedElement.
-     * In such cases, the underlying OMDataSource may have a property that contains
-     * the value of the ROLE/ACTOR, RELAY or MUST_UNDERSTAND setting.
+     * A SOAPHeaderBlock may be represented as an unexpanded OMSourcedElement. In such cases, the
+     * underlying OMDataSource may have a property that contains the value of the ROLE/ACTOR, RELAY
+     * or MUST_UNDERSTAND setting.
      */
     public String ROLE_PROPERTY = "org.apache.axiom.soap.SOAPHeader.ROLE";
+
     public String RELAY_PROPERTY = "org.apache.axiom.soap.SOAPHeader.RELAY";
     public String MUST_UNDERSTAND_PROPERTY = "org.apache.axiom.soap.SOAPHeader.MUST_UNDERSTAND";
-    
+
     /**
      * Sets the actor associated with this <CODE> SOAPHeaderBlock</CODE> object to the specified
      * actor.
      *
      * @param roleURI a <CODE>String</CODE> giving the URI of the actor to set
-     * @throws IllegalArgumentException
-     *          if there is a problem in setting the actor.
+     * @throws IllegalArgumentException if there is a problem in setting the actor.
      * @see #getRole() getRole()
      */
     void setRole(String roleURI);
@@ -59,27 +61,28 @@ public interface SOAPHeaderBlock extends OMSourcedElement {
 
     /**
      * Sets the mustUnderstand attribute for this <CODE> SOAPHeaderBlock</CODE> object to be on or
-     * off. <P>If the mustUnderstand attribute is on, the actor who receives the
-     * <CODE>SOAPHeaderBlock</CODE> must process it correctly. This ensures, for example, that if
-     * the <CODE> SOAPHeaderBlock</CODE> object modifies the message, that the message is being
-     * modified correctly.</P>
+     * off.
      *
-     * @param mustUnderstand <CODE>true</CODE> to set the mustUnderstand attribute on;
-     *                       <CODE>false</CODE> to turn if off
-     * @throws IllegalArgumentException
-     *          if there is a problem in setting the actor.
+     * <p>If the mustUnderstand attribute is on, the actor who receives the <CODE>SOAPHeaderBlock
+     * </CODE> must process it correctly. This ensures, for example, that if the <CODE>
+     *  SOAPHeaderBlock</CODE> object modifies the message, that the message is being modified
+     * correctly.
+     *
+     * @param mustUnderstand <CODE>true</CODE> to set the mustUnderstand attribute on; <CODE>false
+     *     </CODE> to turn if off
+     * @throws IllegalArgumentException if there is a problem in setting the actor.
      * @see #getMustUnderstand() getMustUnderstand()
      */
     void setMustUnderstand(boolean mustUnderstand);
 
     /**
      * Returns the boolean value of the {@code mustUnderstand} attribute for this header block.
-     * 
+     *
      * @return <code>true</code> if a {@code mustUnderstand} attribute is present and its value is
-     *         equivalent to true, <code>false</code> if the {@code mustUnderstand} is not present
-     *         or its value is equivalent to false
-     * @throws SOAPProcessingException
-     *             if the {@code mustUnderstand} attribute is present, but has an invalid value
+     *     equivalent to true, <code>false</code> if the {@code mustUnderstand} is not present or
+     *     its value is equivalent to false
+     * @throws SOAPProcessingException if the {@code mustUnderstand} attribute is present, but has
+     *     an invalid value
      */
     boolean getMustUnderstand() throws SOAPProcessingException;
 
@@ -93,7 +96,6 @@ public interface SOAPHeaderBlock extends OMSourcedElement {
      */
     void setProcessed();
 
-
     /**
      * Sets the relay attribute for this SOAPHeaderBlock to be either true or false. The SOAP relay
      * attribute is set to true to indicate that the SOAP header block must be relayed by any node
@@ -104,7 +106,7 @@ public interface SOAPHeaderBlock extends OMSourcedElement {
     void setRelay(boolean relay);
 
     /**
-     * Returns the relay  status associated with this <CODE> SOAPHeaderBlock</CODE> object.
+     * Returns the relay status associated with this <CODE> SOAPHeaderBlock</CODE> object.
      *
      * @return a <CODE>boolean</CODE> giving the relay status
      */

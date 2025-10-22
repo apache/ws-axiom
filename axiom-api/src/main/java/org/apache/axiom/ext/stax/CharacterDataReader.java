@@ -25,49 +25,42 @@ import java.io.Writer;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * Optional interface implemented by {@link javax.xml.stream.XMLStreamReader}
- * implementations that support writing character data directly to a
- * {@link Writer}.
- * <p>
- * All the requirements outlined in {@link org.apache.axiom.ext.stax} apply to
- * this extension interface. In particular, to get a reference to the extension,
- * the consumer MUST call {@link javax.xml.stream.XMLStreamReader#getProperty(String)}
- * with {@link #PROPERTY} as the property name.
+ * Optional interface implemented by {@link javax.xml.stream.XMLStreamReader} implementations that
+ * support writing character data directly to a {@link Writer}.
+ *
+ * <p>All the requirements outlined in {@link org.apache.axiom.ext.stax} apply to this extension
+ * interface. In particular, to get a reference to the extension, the consumer MUST call {@link
+ * javax.xml.stream.XMLStreamReader#getProperty(String)} with {@link #PROPERTY} as the property
+ * name.
  */
 public interface CharacterDataReader {
     /**
-     * The name of the property used to look up this extension interface from a
-     * {@link javax.xml.stream.XMLStreamReader} implementation.
+     * The name of the property used to look up this extension interface from a {@link
+     * javax.xml.stream.XMLStreamReader} implementation.
      */
     String PROPERTY = CharacterDataReader.class.getName();
-    
+
     /**
-     * Output the character data for the current event to the given writer. In
-     * general, the implementation behaves such that
-     * <code>reader.writeTextTo(writer)</code> has the same effect as
-     * <code>writer.write(reader.getText())</code>. However, the implementation
-     * MAY choose to split the character data differently. E.g. it MAY write the
-     * character data in multiple chunks or it MAY choose to process more
-     * character data in a single event than would be returned by
-     * {@link javax.xml.stream.XMLStreamReader#getText()}. Therefore, using this
-     * method together with {@link javax.xml.stream.XMLStreamReader#getText()},
-     * {@link javax.xml.stream.XMLStreamReader#getTextCharacters()},
-     * {@link javax.xml.stream.XMLStreamReader#getTextStart()},
-     * {@link javax.xml.stream.XMLStreamReader#getTextLength()} or
-     * {@link javax.xml.stream.XMLStreamReader#getTextCharacters(int, char[], int, int)}
-     * is not supported and may lead to undefined results.
-     * <p>
-     * The implementation SHOULD avoid any unnecessary conversions between
-     * strings and character arrays.
-     * 
-     * @param writer
-     *            the writer to write the character data to
-     * @throws XMLStreamException
-     *             if the underlying XML source is not well-formed
-     * @throws IOException
-     *             if an I/O error occurs when writing the character data
-     * @throws IllegalStateException
-     *             if this state is not a valid text state.
+     * Output the character data for the current event to the given writer. In general, the
+     * implementation behaves such that <code>reader.writeTextTo(writer)</code> has the same effect
+     * as <code>writer.write(reader.getText())</code>. However, the implementation MAY choose to
+     * split the character data differently. E.g. it MAY write the character data in multiple chunks
+     * or it MAY choose to process more character data in a single event than would be returned by
+     * {@link javax.xml.stream.XMLStreamReader#getText()}. Therefore, using this method together
+     * with {@link javax.xml.stream.XMLStreamReader#getText()}, {@link
+     * javax.xml.stream.XMLStreamReader#getTextCharacters()}, {@link
+     * javax.xml.stream.XMLStreamReader#getTextStart()}, {@link
+     * javax.xml.stream.XMLStreamReader#getTextLength()} or {@link
+     * javax.xml.stream.XMLStreamReader#getTextCharacters(int, char[], int, int)} is not supported
+     * and may lead to undefined results.
+     *
+     * <p>The implementation SHOULD avoid any unnecessary conversions between strings and character
+     * arrays.
+     *
+     * @param writer the writer to write the character data to
+     * @throws XMLStreamException if the underlying XML source is not well-formed
+     * @throws IOException if an I/O error occurs when writing the character data
+     * @throws IllegalStateException if this state is not a valid text state.
      */
     void writeTextTo(Writer writer) throws XMLStreamException, IOException;
 }

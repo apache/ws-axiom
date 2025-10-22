@@ -37,7 +37,7 @@ import javax.xml.transform.Source;
 public class WrappingXMLInputFactory extends XMLInputFactoryWrapper {
     /**
      * Constructor.
-     * 
+     *
      * @param parent the parent factory
      */
     public WrappingXMLInputFactory(XMLInputFactory parent) {
@@ -48,22 +48,20 @@ public class WrappingXMLInputFactory extends XMLInputFactoryWrapper {
      * Wrap a reader created from this factory. Implementations should override this method if they
      * which to wrap {@link XMLEventReader} instances created from the factory. The default
      * implementation simply returns the unwrapped reader.
-     * 
-     * @param reader
-     *            the reader to wrap
+     *
+     * @param reader the reader to wrap
      * @return the wrapped reader
      */
     protected XMLEventReader wrap(XMLEventReader reader) {
         return reader;
     }
-    
+
     /**
      * Wrap a reader created from this factory. Implementations should override this method if they
      * which to wrap {@link XMLStreamReader} instances created from the factory. The default
      * implementation simply returns the unwrapped reader.
-     * 
-     * @param reader
-     *            the reader to wrap
+     *
+     * @param reader the reader to wrap
      * @return the wrapped reader
      */
     protected XMLStreamReader wrap(XMLStreamReader reader) {

@@ -23,23 +23,23 @@ import java.util.regex.Pattern;
 
 final class Version {
     private static final Pattern pattern = Pattern.compile("([0-9]+(\\.[0-9]+)*)([\\.-].*)?");
-    
+
     private final int[] components;
-    
+
     Version(String versionString) {
         Matcher matcher = pattern.matcher(versionString);
         if (matcher.matches()) {
             String[] componentStrings = matcher.group(1).split("\\.");
             int l = componentStrings.length;
             components = new int[l];
-            for (int i=0; i<l; i++) {
+            for (int i = 0; i < l; i++) {
                 components[i] = Integer.parseInt(componentStrings[i]);
             }
         } else {
             components = new int[0];
         }
     }
-    
+
     int getComponent(int idx) {
         return idx < components.length ? components[idx] : 0;
     }

@@ -22,16 +22,15 @@ package org.apache.axiom.util.stax;
 import javax.xml.stream.Location;
 
 /**
- * Dummy {@link Location} implementation. It always returns -1 for the location
- * and <code>null</code> for the publicId and systemId. It may be used by
- * {@link javax.xml.stream.XMLStreamReader} implementations that don't support
- * the concept of location.
+ * Dummy {@link Location} implementation. It always returns -1 for the location and <code>null
+ * </code> for the publicId and systemId. It may be used by {@link javax.xml.stream.XMLStreamReader}
+ * implementations that don't support the concept of location.
  */
 public class DummyLocation implements Location {
     public static final DummyLocation INSTANCE = new DummyLocation();
 
     protected DummyLocation() {}
-    
+
     @Override
     public int getLineNumber() {
         return -1;

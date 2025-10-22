@@ -23,27 +23,25 @@ import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
-/**
- * {@link IOException} that wraps an {@link XMLStreamException}.
- */
+/** {@link IOException} that wraps an {@link XMLStreamException}. */
 public class XMLStreamIOException extends IOException {
     private static final long serialVersionUID = -2209565480803762583L;
 
     /**
      * Constructor.
-     * 
+     *
      * @param cause the {@link XMLStreamException} to wrap
      */
     public XMLStreamIOException(XMLStreamException cause) {
         super(cause);
     }
-    
+
     /**
      * Get the wrapped {@link XMLStreamException}.
-     * 
+     *
      * @return the wrapped exception
      */
     public XMLStreamException getXMLStreamException() {
-        return (XMLStreamException)getCause();
+        return (XMLStreamException) getCause();
     }
 }

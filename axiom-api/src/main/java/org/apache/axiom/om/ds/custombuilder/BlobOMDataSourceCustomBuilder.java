@@ -30,20 +30,16 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.BlobOMDataSource;
 
-/**
- * {@link CustomBuilder} implementation that creates a {@link BlobOMDataSource}.
- */
+/** {@link CustomBuilder} implementation that creates a {@link BlobOMDataSource}. */
 public final class BlobOMDataSourceCustomBuilder implements CustomBuilder {
     private final WritableBlobFactory<?> blobFactory;
     private final String encoding;
-    
+
     /**
      * Constructor.
-     * 
-     * @param blobFactory
-     *            determines the type of blobs to create
-     * @param encoding
-     *            the encoding used to store data in the blobs
+     *
+     * @param blobFactory determines the type of blobs to create
+     * @param encoding the encoding used to store data in the blobs
      */
     public BlobOMDataSourceCustomBuilder(WritableBlobFactory<?> blobFactory, String encoding) {
         this.blobFactory = blobFactory;

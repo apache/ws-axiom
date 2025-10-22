@@ -163,9 +163,9 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         // because Woodstox does.
         if (hasNext()) {
             return super.next();
-        } else {    
+        } else {
             throw new IllegalStateException();
-        } 
+        }
     }
 
     @Override

@@ -42,7 +42,7 @@ public class XMLInputFactoryWrapper extends XMLInputFactory {
 
     /**
      * Constructor.
-     * 
+     *
      * @param parent the parent factory
      */
     public XMLInputFactoryWrapper(XMLInputFactory parent) {

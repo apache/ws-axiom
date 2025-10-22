@@ -18,23 +18,15 @@
  */
 package org.apache.axiom.mime;
 
-/**
- * A MIME header.
- */
+/** A MIME header. */
 public final class Header {
-    /**
-     * The name of the {@code Content-Type} header.
-     */
+    /** The name of the {@code Content-Type} header. */
     public static final String CONTENT_TYPE = "Content-Type";
 
-    /**
-     * The name of the {@code Content-ID} header.
-     */
+    /** The name of the {@code Content-ID} header. */
     public static final String CONTENT_ID = "Content-ID";
 
-    /**
-     * The name of the {@code Content-Transfer-Encoding} header.
-     */
+    /** The name of the {@code Content-Transfer-Encoding} header. */
     public static final String CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
 
     private final String name;
@@ -42,11 +34,9 @@ public final class Header {
 
     /**
      * Constructor.
-     * 
-     * @param name
-     *            the name of the header
-     * @param value
-     *            the value of the header
+     *
+     * @param name the name of the header
+     * @param value the value of the header
      */
     public Header(String name, String value) {
         this.name = name;
@@ -55,7 +45,7 @@ public final class Header {
 
     /**
      * Get the name of this header.
-     * 
+     *
      * @return the name of this header
      */
     public String getName() {
@@ -64,7 +54,7 @@ public final class Header {
 
     /**
      * Get the value of this header.
-     * 
+     *
      * @return the value of this header
      */
     public String getValue() {

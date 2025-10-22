@@ -23,29 +23,29 @@ package org.apache.axiom.om;
 public interface OMDocType extends OMNode {
     /**
      * Get the root name, i.e. the name immediately following the {@code DOCTYPE} keyword.
-     * 
+     *
      * @return the root name; must not be <code>null</code>
      */
     String getRootName();
 
     /**
      * Get the public ID of the external subset.
-     * 
+     *
      * @return the public ID, or <code>null</code> if there is no external subset or no public ID
-     *         has been specified for the external subset
+     *     has been specified for the external subset
      */
     String getPublicId();
 
     /**
      * Get the system ID of the external subset.
-     * 
+     *
      * @return the system ID, or <code>null</code> if there is no external subset
      */
     String getSystemId();
-    
+
     /**
      * Get the internal subset.
-     * 
+     *
      * @return the internal subset, or <code>null</code> if there is none
      */
     String getInternalSubset();

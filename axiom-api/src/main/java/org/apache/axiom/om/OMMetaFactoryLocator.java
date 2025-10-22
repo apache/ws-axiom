@@ -25,11 +25,10 @@ package org.apache.axiom.om;
 public interface OMMetaFactoryLocator {
     /**
      * Get the {@link OMMetaFactory} for the given feature.
-     * 
-     * @param feature
-     *            the requested feature
+     *
+     * @param feature the requested feature
      * @return the meta factory or <code>null</code> if no meta factory with the given feature is
-     *         available
+     *     available
      */
     OMMetaFactory getOMMetaFactory(String feature);
 }

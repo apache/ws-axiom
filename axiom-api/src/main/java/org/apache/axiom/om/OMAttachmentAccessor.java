@@ -20,18 +20,15 @@ package org.apache.axiom.om;
 
 import org.apache.axiom.blob.Blob;
 
-/**
- * Interface to look up MIME parts.
- */
+/** Interface to look up MIME parts. */
 public interface OMAttachmentAccessor {
     /**
      * Get the content of the MIME part identified by a given content ID.
-     * 
-     * @param contentID
-     *            the raw content ID (without the surrounding angle brackets and {@code cid:}
-     *            prefix) of the MIME part
-     * @return the content of the MIME part referred by the content ID or
-     *         <code>null</code> if the MIME part referred by the content ID does not exist
+     *
+     * @param contentID the raw content ID (without the surrounding angle brackets and {@code cid:}
+     *     prefix) of the MIME part
+     * @return the content of the MIME part referred by the content ID or <code>null</code> if the
+     *     MIME part referred by the content ID does not exist
      */
     public Blob getBlob(String contentID);
 }

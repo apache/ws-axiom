@@ -40,9 +40,12 @@ public class TestDisallowDoctypeDeclWithExternalSubset extends DialectTestCase {
             boolean gotException = false;
             boolean reachedDocumentElement = false;
             try {
-                XMLStreamReader reader = factory.createXMLStreamReader(new StringReader(
-                        "<?xml version='1.0'?><!DOCTYPE root SYSTEM '" + server.getBaseURL() +
-                        "dummy.dtd'><root/>"));
+                XMLStreamReader reader =
+                        factory.createXMLStreamReader(
+                                new StringReader(
+                                        "<?xml version='1.0'?><!DOCTYPE root SYSTEM '"
+                                                + server.getBaseURL()
+                                                + "dummy.dtd'><root/>"));
                 try {
                     while (reader.hasNext()) {
                         if (reader.next() == XMLStreamConstants.START_ELEMENT) {
@@ -59,7 +62,9 @@ public class TestDisallowDoctypeDeclWithExternalSubset extends DialectTestCase {
             }
             assertTrue("Expected exception", gotException);
             assertFalse("The parser tried to load external DTD subset", server.isRequestReceived());
-            assertFalse("The parser failed to throw an exception before reaching the document element", reachedDocumentElement);
+            assertFalse(
+                    "The parser failed to throw an exception before reaching the document element",
+                    reachedDocumentElement);
         } finally {
             server.stop();
         }

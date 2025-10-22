@@ -37,8 +37,9 @@ public class TestDisallowDoctypeDeclWithInternalSubset extends DialectTestCase {
         boolean gotException = false;
         boolean reachedDocumentElement = false;
         try {
-            XMLStreamReader reader = factory.createXMLStreamReader(new StringReader(
-                    "<?xml version='1.0'?><!DOCTYPE root []><root/>"));
+            XMLStreamReader reader =
+                    factory.createXMLStreamReader(
+                            new StringReader("<?xml version='1.0'?><!DOCTYPE root []><root/>"));
             try {
                 while (reader.hasNext()) {
                     if (reader.next() == XMLStreamConstants.START_ELEMENT) {
@@ -54,6 +55,8 @@ public class TestDisallowDoctypeDeclWithInternalSubset extends DialectTestCase {
             gotException = true;
         }
         assertTrue("Expected exception", gotException);
-        assertFalse("The parser failed to throw an exception before reaching the document element", reachedDocumentElement);
+        assertFalse(
+                "The parser failed to throw an exception before reaching the document element",
+                reachedDocumentElement);
     }
 }

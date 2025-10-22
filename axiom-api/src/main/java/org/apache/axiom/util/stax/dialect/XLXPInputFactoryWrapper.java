@@ -42,7 +42,7 @@ class XLXPInputFactoryWrapper extends NormalizingXMLInputFactoryWrapper {
         // order markers, although this type of document is explicitly supported by the XML
         // specification:
         // * XLXP parses the document, XMLStreamReader#getEncoding incorrectly reports
-        //   UTF-8 as the detected encoding. 
+        //   UTF-8 as the detected encoding.
         // * XLXP2 simply fails on UTF-16 documents without BOM.
         EncodingDetectionHelper helper = new EncodingDetectionHelper(stream);
         stream = helper.getInputStream();

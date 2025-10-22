@@ -30,8 +30,7 @@ final class CloseShieldReader extends Reader {
     }
 
     @Override
-    public void close() throws IOException {
-    }
+    public void close() throws IOException {}
 
     @Override
     public void mark(int readAheadLimit) throws IOException {

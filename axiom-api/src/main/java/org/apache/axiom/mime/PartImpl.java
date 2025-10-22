@@ -36,27 +36,23 @@ import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Actual implementation of the {@link Part} interface.
- */
+/** Actual implementation of the {@link Part} interface. */
 final class PartImpl implements Part {
     /**
-     * The part has not been read yet. In this case the parser is in state
-     * {@link EntityState#T_BODY}.
+     * The part has not been read yet. In this case the parser is in state {@link
+     * EntityState#T_BODY}.
      */
     private static final int STATE_UNREAD = 0;
-    
-    /**
-     * The part has been read into a memory or file based buffer.
-     */
+
+    /** The part has been read into a memory or file based buffer. */
     private static final int STATE_BUFFERED = 1;
-    
+
     /**
      * The part content is being streamed, i.a. the application code consumes the part content
      * without buffering.
      */
     private static final int STATE_STREAMING = 2;
-    
+
     /**
      * The part content has been discarded and can no longer be read. This state is reached either
      * when the content has been streamed or when it is discarded explicitly after being buffered.
@@ -64,53 +60,56 @@ final class PartImpl implements Part {
     private static final int STATE_DISCARDED = 3;
 
     private static final Log log = LogFactory.getLog(PartImpl.class);
-    
+
     private final MultipartBody message;
     private final WritableBlobFactory<?> blobFactory;
-    
+
     private final String contentID;
     private final List<Header> headers;
     private ContentType contentType;
-    
+
     private int state = STATE_UNREAD;
-    
+
     /**
      * The MIME parser from which the content of this part is read. This is only set if the state is
      * {@link #STATE_UNREAD} or {@link #STATE_STREAMING}.
      */
     private MimeTokenStream parser;
-    
-    /**
-     * The content of this part. This is only set if the state is {@link #STATE_BUFFERED}.
-     */
+
+    /** The content of this part. This is only set if the state is {@link #STATE_BUFFERED}. */
     private WritableBlob content;
-    
+
     private PartBlob blob;
-    
+
     private PartInputStream partInputStream;
-    
+
     private PartImpl nextPart;
-    
-    PartImpl(MultipartBody message, WritableBlobFactory<?> blobFactory, String contentID, List<Header> headers, MimeTokenStream parser) {
+
+    PartImpl(
+            MultipartBody message,
+            WritableBlobFactory<?> blobFactory,
+            String contentID,
+            List<Header> headers,
+            MimeTokenStream parser) {
         this.message = message;
         this.blobFactory = blobFactory;
         this.contentID = contentID;
         this.headers = headers;
         this.parser = parser;
     }
-    
+
     @Override
     public String getHeader(String name) {
         String value = null;
-        for (int i=0, l=headers.size(); i<l; i++) {
+        for (int i = 0, l = headers.size(); i < l; i++) {
             Header header = headers.get(i);
             if (header.getName().equalsIgnoreCase(name)) {
                 value = header.getValue();
                 break;
             }
         }
-        if(log.isDebugEnabled()){
-            log.debug("getHeader name=(" + name + ") value=(" + value +")");
+        if (log.isDebugEnabled()) {
+            log.debug("getHeader name=(" + name + ") value=(" + value + ")");
         }
         return value;
     }
@@ -136,7 +135,7 @@ final class PartImpl implements Part {
         }
         return contentType;
     }
-    
+
     @Override
     public PartBlob getPartBlob() {
         if (blob == null) {
@@ -149,19 +148,20 @@ final class PartImpl implements Part {
         switch (state) {
             case STATE_UNREAD:
                 fetch();
-                // Fall through
+            // Fall through
             case STATE_BUFFERED:
                 return content;
             default:
-                throw new IllegalStateException("The content of the MIME part has already been consumed");
+                throw new IllegalStateException(
+                        "The content of the MIME part has already been consumed");
         }
     }
-    
+
     @Override
     public Blob getBlob() {
         WritableBlob blob = getContent();
         if (blob instanceof OverflowableBlob) {
-            WritableBlob overflowBlob = ((OverflowableBlob)blob).getOverflowBlob();
+            WritableBlob overflowBlob = ((OverflowableBlob) blob).getOverflowBlob();
             if (overflowBlob != null) {
                 blob = overflowBlob;
             }
@@ -169,13 +169,17 @@ final class PartImpl implements Part {
         return blob;
     }
 
-    private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
+    private static void checkParserState(EntityState state, EntityState expected)
+            throws IllegalStateException {
         if (expected != state) {
-            throw new IllegalStateException("Internal error: expected parser to be in state "
-                    + expected + ", but got " + state);
+            throw new IllegalStateException(
+                    "Internal error: expected parser to be in state "
+                            + expected
+                            + ", but got "
+                            + state);
         }
     }
-    
+
     private InputStream getDecodedInputStream() {
         InputStream in = parser.getDecodedInputStream();
         if (log.isDebugEnabled()) {
@@ -183,7 +187,7 @@ final class PartImpl implements Part {
         }
         return in;
     }
-    
+
     @Override
     public void fetch() {
         switch (state) {
@@ -198,9 +202,12 @@ final class PartImpl implements Part {
                     content.readFrom(getDecodedInputStream());
                 } catch (StreamCopyException ex) {
                     if (ex.getOperation() == StreamCopyException.READ) {
-                        throw new MIMEException("Failed to fetch the MIME part content", ex.getCause());
+                        throw new MIMEException(
+                                "Failed to fetch the MIME part content", ex.getCause());
                     } else {
-                        throw new MIMEException("Failed to write the MIME part content to temporary storage", ex.getCause());
+                        throw new MIMEException(
+                                "Failed to write the MIME part content to temporary storage",
+                                ex.getCause());
                     }
                 }
                 moveToNextPart();
@@ -218,7 +225,7 @@ final class PartImpl implements Part {
                 state = STATE_DISCARDED;
         }
     }
-    
+
     private void moveToNextPart() {
         try {
             checkParserState(parser.next(), EntityState.T_END_BODYPART);
@@ -227,7 +234,8 @@ final class PartImpl implements Part {
                 while (parser.next() != EntityState.T_END_MULTIPART) {
                     // Just loop
                 }
-            } else if (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART) {
+            } else if (state != EntityState.T_START_BODYPART
+                    && state != EntityState.T_END_MULTIPART) {
                 throw new IllegalStateException("Internal error: unexpected parser state " + state);
             }
         } catch (IOException ex) {
@@ -237,7 +245,7 @@ final class PartImpl implements Part {
         }
         parser = null;
     }
-    
+
     @Override
     public InputStream getInputStream(boolean preserve) {
         if (!preserve && state == STATE_UNREAD) {
@@ -258,7 +266,7 @@ final class PartImpl implements Part {
             }
         }
     }
-    
+
     @Override
     public void discard() {
         try {
@@ -267,7 +275,8 @@ final class PartImpl implements Part {
                     EntityState parserState;
                     do {
                         parserState = parser.next();
-                    } while (parserState != EntityState.T_START_BODYPART && parserState != EntityState.T_END_MULTIPART);
+                    } while (parserState != EntityState.T_START_BODYPART
+                            && parserState != EntityState.T_END_MULTIPART);
                     state = STATE_DISCARDED;
                     break;
                 case STATE_BUFFERED:
@@ -279,7 +288,7 @@ final class PartImpl implements Part {
             throw new MIMEException(ex);
         }
     }
-    
+
     PartImpl getNextPart() {
         if (nextPart == null) {
             message.getNextPart();

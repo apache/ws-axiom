@@ -25,14 +25,14 @@ import javax.xml.namespace.NamespaceContext;
 
 /**
  * Wrapper that fixes the behavior of {@link NamespaceContext#getNamespaceURI(String)}. The Javadoc
- * of that method clearly specifies that the return value of that method may never be
- * <code>null</code>. In particular, the expected result for an unbound prefix is
- * {@link XMLConstants#NULL_NS_URI}. However, many implementations incorrectly return
- * <code>null</code> in that case.
+ * of that method clearly specifies that the return value of that method may never be <code>null
+ * </code>. In particular, the expected result for an unbound prefix is {@link
+ * XMLConstants#NULL_NS_URI}. However, many implementations incorrectly return <code>null</code> in
+ * that case.
  */
 class NamespaceURICorrectingNamespaceContextWrapper implements NamespaceContext {
     private final NamespaceContext parent;
-    
+
     public NamespaceURICorrectingNamespaceContextWrapper(NamespaceContext parent) {
         this.parent = parent;
     }

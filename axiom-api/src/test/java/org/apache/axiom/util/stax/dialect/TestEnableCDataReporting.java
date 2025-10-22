@@ -30,8 +30,10 @@ public class TestEnableCDataReporting extends DialectTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
-        XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<a><![CDATA[test]]></a>"));
+        XMLInputFactory factory =
+                staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
+        XMLStreamReader reader =
+                factory.createXMLStreamReader(new StringReader("<a><![CDATA[test]]></a>"));
         reader.nextTag();
         assertEquals(XMLStreamReader.CDATA, reader.next());
         assertEquals("test", reader.getText());

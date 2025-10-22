@@ -34,7 +34,9 @@ public class TestDisallowDoctypeDeclWithDenialOfService extends DialectTestCase 
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         factory = staxImpl.getDialect().disallowDoctypeDecl(factory);
-        InputStream in = TestDisallowDoctypeDeclWithDenialOfService.class.getResourceAsStream("doctype_dos.xml");
+        InputStream in =
+                TestDisallowDoctypeDeclWithDenialOfService.class.getResourceAsStream(
+                        "doctype_dos.xml");
         try {
             boolean gotException = false;
             boolean reachedDocumentElement = false;
@@ -55,7 +57,9 @@ public class TestDisallowDoctypeDeclWithDenialOfService extends DialectTestCase 
                 gotException = true;
             }
             assertTrue("Expected exception", gotException);
-            assertFalse("The parser failed to throw an exception before reaching the document element", reachedDocumentElement);
+            assertFalse(
+                    "The parser failed to throw an exception before reaching the document element",
+                    reachedDocumentElement);
         } finally {
             in.close();
         }

@@ -25,14 +25,11 @@ public interface SOAPFaultText extends OMElement {
     /**
      * lang is a mandatory attribute within the SOAPFaultText which must have
      * SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI as the namespace URI and
-     * SOAP12constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX or a capitalization thereof as the
-     * prefix
+     * SOAP12constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX or a capitalization thereof as the prefix
      *
      * @param lang
      */
     void setLang(String lang);
 
     String getLang();
-
-
 }

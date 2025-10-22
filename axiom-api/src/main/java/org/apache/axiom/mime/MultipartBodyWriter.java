@@ -27,22 +27,23 @@ import org.apache.axiom.util.UIDGenerator;
 
 /**
  * Writes a MIME multipart body as used by XOP/MTOM and SOAP with Attachments. MIME parts are
- * written using {@link #writePart(ContentType, ContentTransferEncoding, String, List)} or
- * {@link #writePart(Blob, ContentType, ContentTransferEncoding, String, List)}. Calls to both methods can be mixed, i.e.
- * it is not required to use the same method for all MIME parts. Instead, the caller should choose
- * the most convenient method for each part (depending on the form in which the content is
- * available). After all parts have been written, {@link #complete()} must be called to write the
- * final MIME boundary.
- * <p>
- * The following semantics are defined for the {@code contentTransferEncoding} and {@code contentID}
- * arguments of the two write methods:
+ * written using {@link #writePart(ContentType, ContentTransferEncoding, String, List)} or {@link
+ * #writePart(Blob, ContentType, ContentTransferEncoding, String, List)}. Calls to both methods can
+ * be mixed, i.e. it is not required to use the same method for all MIME parts. Instead, the caller
+ * should choose the most convenient method for each part (depending on the form in which the
+ * content is available). After all parts have been written, {@link #complete()} must be called to
+ * write the final MIME boundary.
+ *
+ * <p>The following semantics are defined for the {@code contentTransferEncoding} and {@code
+ * contentID} arguments of the two write methods:
+ *
  * <ul>
- * <li>The content transfer encoding specified by the {@code contentTransferEncoding} argument is
- * applied by the write method; the caller only provides the unencoded data. The implementation
- * ensures that the MIME part has a
- * {@code Content-Transfer-Encoding} header appropriate for the applied encoding.</li>
- * <li>The content ID passed as argument is always the raw ID (without the angle brackets). The
- * implementation translates this into a properly formatted {@code Content-ID} header.</li>
+ *   <li>The content transfer encoding specified by the {@code contentTransferEncoding} argument is
+ *       applied by the write method; the caller only provides the unencoded data. The
+ *       implementation ensures that the MIME part has a {@code Content-Transfer-Encoding} header
+ *       appropriate for the applied encoding.
+ *   <li>The content ID passed as argument is always the raw ID (without the angle brackets). The
+ *       implementation translates this into a properly formatted {@code Content-ID} header.
  * </ul>
  */
 public final class MultipartBodyWriter {
@@ -67,25 +68,22 @@ public final class MultipartBodyWriter {
         public void write(byte[] b) throws IOException {
             parent.write(b);
         }
-        
+
         @Override
         public void close() throws IOException {
             writeAscii("\r\n");
         }
     }
-    
+
     private final OutputStream out;
     private final String boundary;
     private final byte[] buffer = new byte[256];
 
     /**
      * Constructor.
-     * 
-     * @param out
-     *            the output stream to write the multipart body to
-     * @param boundary
-     *            the MIME boundary
-     * 
+     *
+     * @param out the output stream to write the multipart body to
+     * @param boundary the MIME boundary
      * @see UIDGenerator#generateMimeBoundary()
      */
     public MultipartBodyWriter(OutputStream out, String boundary) {
@@ -95,12 +93,12 @@ public final class MultipartBodyWriter {
 
     void writeAscii(String s) throws IOException {
         int count = 0;
-        for (int i=0, len=s.length(); i<len; i++) {
+        for (int i = 0, len = s.length(); i < len; i++) {
             char c = s.charAt(i);
             if (c >= 128) {
                 throw new IOException("Illegal character '" + c + "'");
             }
-            buffer[count++] = (byte)c;
+            buffer[count++] = (byte) c;
             if (count == buffer.length) {
                 out.write(buffer);
                 count = 0;
@@ -110,28 +108,27 @@ public final class MultipartBodyWriter {
             out.write(buffer, 0, count);
         }
     }
-    
+
     /**
      * Start writing a MIME part. The methods returns an {@link OutputStream} that the caller can
-     * use to write the content of the MIME part. After writing the content,
-     * {@link OutputStream#close()} must be called to complete the writing of the MIME part.
-     * 
-     * @param contentType
-     *            the content type of the MIME part; may be {@code null}
-     * @param contentTransferEncoding
-     *            the content transfer encoding to be used (see above); must not be
-     *            <code>null</code>
-     * @param contentID
-     *            the content ID of the MIME part (see above); may be {@code null}
-     * @param extraHeaders
-     *            a list of {@link Header} objects with additional headers to write to the MIME
-     *            part; may be {@code null}
+     * use to write the content of the MIME part. After writing the content, {@link
+     * OutputStream#close()} must be called to complete the writing of the MIME part.
+     *
+     * @param contentType the content type of the MIME part; may be {@code null}
+     * @param contentTransferEncoding the content transfer encoding to be used (see above); must not
+     *     be <code>null</code>
+     * @param contentID the content ID of the MIME part (see above); may be {@code null}
+     * @param extraHeaders a list of {@link Header} objects with additional headers to write to the
+     *     MIME part; may be {@code null}
      * @return an output stream to write the content of the MIME part
-     * @throws IOException
-     *             if an I/O error occurs when writing to the underlying stream
+     * @throws IOException if an I/O error occurs when writing to the underlying stream
      */
-    public OutputStream writePart(ContentType contentType, ContentTransferEncoding contentTransferEncoding,
-            String contentID, List<Header> extraHeaders) throws IOException {
+    public OutputStream writePart(
+            ContentType contentType,
+            ContentTransferEncoding contentTransferEncoding,
+            String contentID,
+            List<Header> extraHeaders)
+            throws IOException {
         writeAscii("--");
         writeAscii(boundary);
         // RFC 2046 explicitly says that Content-Type is not mandatory (and defaults to
@@ -158,37 +155,37 @@ public final class MultipartBodyWriter {
         writeAscii("\r\n\r\n");
         return contentTransferEncoding.encode(new PartOutputStream(out));
     }
-    
+
     /**
      * Write a MIME part.
-     * 
-     * @param blob
-     *            the content of the MIME part to write
-     * @param contentType
-     *            the content type; may be {@code null}
-     * @param contentTransferEncoding
-     *            the content transfer encoding to be used (see above); must not be
-     *            <code>null</code>
-     * @param contentID
-     *            the content ID of the MIME part (see above)
-     * @param extraHeaders
-     *            a list of {@link Header} objects with additional headers to write to the MIME part
-     * @throws IOException
-     *             if an I/O error occurs when writing the part to the underlying stream
+     *
+     * @param blob the content of the MIME part to write
+     * @param contentType the content type; may be {@code null}
+     * @param contentTransferEncoding the content transfer encoding to be used (see above); must not
+     *     be <code>null</code>
+     * @param contentID the content ID of the MIME part (see above)
+     * @param extraHeaders a list of {@link Header} objects with additional headers to write to the
+     *     MIME part
+     * @throws IOException if an I/O error occurs when writing the part to the underlying stream
      */
-    public void writePart(Blob blob, ContentType contentType, ContentTransferEncoding contentTransferEncoding, String contentID, List<Header> extraHeaders)
+    public void writePart(
+            Blob blob,
+            ContentType contentType,
+            ContentTransferEncoding contentTransferEncoding,
+            String contentID,
+            List<Header> extraHeaders)
             throws IOException {
-        OutputStream partOutputStream = writePart(contentType, contentTransferEncoding, contentID, extraHeaders);
+        OutputStream partOutputStream =
+                writePart(contentType, contentTransferEncoding, contentID, extraHeaders);
         blob.writeTo(partOutputStream);
         partOutputStream.close();
     }
-    
+
     /**
      * Complete writing of the MIME multipart package. This method does <b>not</b> close the
      * underlying stream.
-     * 
-     * @throws IOException
-     *             if an I/O error occurs when writing to the underlying stream
+     *
+     * @throws IOException if an I/O error occurs when writing to the underlying stream
      */
     public void complete() throws IOException {
         writeAscii("--");

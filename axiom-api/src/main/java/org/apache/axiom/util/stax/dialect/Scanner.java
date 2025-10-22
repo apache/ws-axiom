@@ -23,15 +23,15 @@ import javax.xml.stream.XMLStreamException;
 final class Scanner {
     private final String s;
     private int pos;
-    
+
     Scanner(String s) {
         this.s = s;
     }
-    
+
     int peek() {
         return pos == s.length() ? -1 : s.charAt(pos);
     }
-    
+
     String getName() {
         int start = pos;
         while (pos < s.length()) {
@@ -39,7 +39,14 @@ final class Scanner {
             // This corresponds to the NameChar production, except for characters above 0x80.
             // We expect that the underlying parser strictly enforces the grammar and we don't
             // care here about NameStartChar and characters above 0x80.
-            if ('a' <= c && c <= 'z' || 'A' <= c && c <= 'Z' || '0' <= c && c <= '9' || c == ':' || c == '_' || c == '-' || c == '.' || c > 0x80) {
+            if ('a' <= c && c <= 'z'
+                    || 'A' <= c && c <= 'Z'
+                    || '0' <= c && c <= '9'
+                    || c == ':'
+                    || c == '_'
+                    || c == '-'
+                    || c == '.'
+                    || c > 0x80) {
                 pos++;
             } else {
                 break;
@@ -65,15 +72,15 @@ final class Scanner {
             throw new XMLStreamException("Expected quote char at position " + pos);
         }
     }
-    
+
     void expect(String seq) throws XMLStreamException {
         boolean found;
-        if (pos+seq.length() > s.length()) {
+        if (pos + seq.length() > s.length()) {
             found = false;
         } else {
             found = true;
-            for (int i=0; i<seq.length(); i++) {
-                if (s.charAt(pos+i) != seq.charAt(i)) {
+            for (int i = 0; i < seq.length(); i++) {
+                if (s.charAt(pos + i) != seq.charAt(i)) {
                     found = false;
                     break;
                 }
@@ -85,7 +92,7 @@ final class Scanner {
             throw new XMLStreamException("Expected \"" + seq + "\" at position " + pos);
         }
     }
-    
+
     void skipSpace() {
         while (pos < s.length()) {
             char c = s.charAt(pos);

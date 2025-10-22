@@ -32,13 +32,13 @@ import org.apache.commons.codec.binary.Base64;
 public class Base64UtilsTest extends TestCase {
     public void testDecode() {
         Random random = new Random(43219876);
-        for (int len=0; len<20; len++) {
+        for (int len = 0; len < 20; len++) {
             byte[] data = new byte[len];
             random.nextBytes(data);
             assertThat(Base64Utils.decode(Base64.encodeBase64String(data))).isEqualTo(data);
         }
     }
-    
+
     public void testMissingPadding() {
         assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("cw"));
     }
@@ -46,15 +46,17 @@ public class Base64UtilsTest extends TestCase {
     public void testTooMuchPadding() {
         assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("cw==="));
     }
-    
+
     public void testNonZeroRemainder() {
         assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("//=="));
     }
-    
-    public void testSpace() throws Exception{
+
+    public void testSpace() throws Exception {
         assertEquals(
                 "any carnal pleasure.",
-                new String(Base64Utils.decode(" YW55IG\tNhcm5hbC\r\nBwb  GVhc3VyZS4 = "), StandardCharsets.UTF_8));
+                new String(
+                        Base64Utils.decode(" YW55IG\tNhcm5hbC\r\nBwb  GVhc3VyZS4 = "),
+                        StandardCharsets.UTF_8));
     }
 
     public void testInvalidCharacter() {

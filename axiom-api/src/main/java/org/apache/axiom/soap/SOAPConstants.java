@@ -22,6 +22,7 @@ package org.apache.axiom.soap;
 public interface SOAPConstants {
     /** Field SOAP_DEFAULT_NAMESPACE_PREFIX */
     static final String SOAP_DEFAULT_NAMESPACE_PREFIX = "soapenv";
+
     /** Field SOAPENVELOPE_LOCAL_NAME */
     static final String SOAPENVELOPE_LOCAL_NAME = "Envelope";
 
@@ -30,20 +31,24 @@ public interface SOAPConstants {
 
     /** Field BODY_LOCAL_NAME */
     static final String BODY_LOCAL_NAME = "Body";
+
     /** Field BODY_NAMESPACE_PREFIX */
-    static final String BODY_NAMESPACE_PREFIX =
-            SOAP_DEFAULT_NAMESPACE_PREFIX;
+    static final String BODY_NAMESPACE_PREFIX = SOAP_DEFAULT_NAMESPACE_PREFIX;
+
     /** Field BODY_FAULT_LOCAL_NAME */
     static final String BODY_FAULT_LOCAL_NAME = "Fault";
 
     /** Field ATTR_MUSTUNDERSTAND */
     static final String ATTR_MUSTUNDERSTAND = "mustUnderstand";
+
     static final String ATTR_MUSTUNDERSTAND_TRUE = "true";
     static final String ATTR_MUSTUNDERSTAND_FALSE = "false";
     static final String ATTR_MUSTUNDERSTAND_0 = "0";
     static final String ATTR_MUSTUNDERSTAND_1 = "1";
+
     /** Field SOAPFAULT_LOCAL_NAME */
     static final String SOAPFAULT_LOCAL_NAME = "Fault";
+
     /** Field SOAPFAULT_DETAIL_LOCAL_NAME */
     static final String SOAPFAULT_DETAIL_LOCAL_NAME = "detail";
 

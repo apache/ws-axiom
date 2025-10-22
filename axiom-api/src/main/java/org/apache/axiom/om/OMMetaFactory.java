@@ -26,10 +26,10 @@ import org.apache.axiom.soap.SOAPFactory;
  * provides instances for plain XML, SOAP 1.1 and SOAP 1.2 object model factories for that
  * implementation. Currently the two OM implementations provided by Axiom are LLOM (linked list) and
  * DOOM (DOM compatible).
- * <p>
- * The factories returned by {@link #getOMFactory()}, {@link #getSOAP11Factory()} and
- * {@link #getSOAP12Factory()} MUST be stateless (and thread safe). The implementation MUST return
- * the same instance on every invocation, i.e. instantiate the factory for each OM type only once.
+ *
+ * <p>The factories returned by {@link #getOMFactory()}, {@link #getSOAP11Factory()} and {@link
+ * #getSOAP12Factory()} MUST be stateless (and thread safe). The implementation MUST return the same
+ * instance on every invocation, i.e. instantiate the factory for each OM type only once.
  */
 public interface OMMetaFactory {
     /**
@@ -38,14 +38,14 @@ public interface OMMetaFactory {
      * @return the OM factory instance
      */
     OMFactory getOMFactory();
-    
+
     /**
      * Get the OM factory instance for the SOAP 1.1 infoset model.
      *
      * @return the OM factory instance
      */
     SOAPFactory getSOAP11Factory();
-    
+
     /**
      * Get the OM factory instance for the SOAP 1.2 infoset model.
      *

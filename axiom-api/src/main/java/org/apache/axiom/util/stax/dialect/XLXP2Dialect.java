@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 class XLXP2Dialect extends AbstractStAXDialect {
     public static final StAXDialect INSTANCE = new XLXP2Dialect();
-    
+
     @Override
     public String getName() {
         return "XLXP2";

@@ -24,48 +24,44 @@ import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 
 /**
- * Defines a particular StAX writer configuration. An implementation of this
- * interface must satisfy the following requirements:
+ * Defines a particular StAX writer configuration. An implementation of this interface must satisfy
+ * the following requirements:
+ *
  * <ol>
- * <li>It MUST be immutable.
- * <li>It MUST either be a singleton or properly implement
- * {@link Object#equals(Object)} and {@link Object#hashCode()}.
+ *   <li>It MUST be immutable.
+ *   <li>It MUST either be a singleton or properly implement {@link Object#equals(Object)} and
+ *       {@link Object#hashCode()}.
  * </ol>
- * These two requirements ensure that instances of this interface may be used as
- * cache keys.
- * 
+ *
+ * These two requirements ensure that instances of this interface may be used as cache keys.
+ *
  * @see StAXParserConfiguration
  * @deprecated
  */
 public interface StAXWriterConfiguration {
-    /**
-     * The default configuration.
-     */
-    StAXWriterConfiguration DEFAULT = new StAXWriterConfiguration() {
-        @Override
-        public XMLOutputFactory configure(XMLOutputFactory factory, StAXDialect dialect) {
-            return factory;
-        }
+    /** The default configuration. */
+    StAXWriterConfiguration DEFAULT =
+            new StAXWriterConfiguration() {
+                @Override
+                public XMLOutputFactory configure(XMLOutputFactory factory, StAXDialect dialect) {
+                    return factory;
+                }
 
-        @Override
-        public String toString() {
-            return "DEFAULT";
-        }
-    };
+                @Override
+                public String toString() {
+                    return "DEFAULT";
+                }
+            };
 
     /**
-     * Apply the configuration to the given factory. The method MAY optionally
-     * wrap the factory.
-     * 
-     * @param factory
-     *            the factory to configure
-     * @param dialect
-     *            The dialect of the StAX implementation as detected by
-     *            {@link StAXDialectDetector}. The implementation may use this
-     *            information to configure implementation specific settings.
-     * @return The configured factory. This may be the original factory (if the
-     *         implementation only changes the factory properties), or a
-     *         wrapper.
+     * Apply the configuration to the given factory. The method MAY optionally wrap the factory.
+     *
+     * @param factory the factory to configure
+     * @param dialect The dialect of the StAX implementation as detected by {@link
+     *     StAXDialectDetector}. The implementation may use this information to configure
+     *     implementation specific settings.
+     * @return The configured factory. This may be the original factory (if the implementation only
+     *     changes the factory properties), or a wrapper.
      */
     XMLOutputFactory configure(XMLOutputFactory factory, StAXDialect dialect);
 }

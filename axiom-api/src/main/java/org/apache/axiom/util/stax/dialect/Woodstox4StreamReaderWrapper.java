@@ -132,6 +132,6 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements C
     @Override
     public void writeTextTo(Writer writer) throws XMLStreamException, IOException {
         // Allow efficient access to character data, even if coalescing is enabled
-        ((XMLStreamReader2)getParent()).getText(writer, false);
+        ((XMLStreamReader2) getParent()).getText(writer, false);
     }
 }

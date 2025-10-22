@@ -22,16 +22,14 @@ package org.apache.axiom.soap;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 
-
 /**
  * An element in the <CODE>SOAPBody</CODE> object that contains error and/or status information.
  * This information may relate to errors in the <CODE>OMMessage</CODE> object or to problems that
  * are not related to the content in the message itself. Problems not related to the message itself
- * are generally errors in processing, such as the inability to communicate with an upstream
- * server.
- * <p>
- * The <CODE>SOAPFault</CODE> interface provides methods for retrieving the information contained in
- * a <CODE> SOAPFault</CODE> object and for setting the fault code, the fault actor, and a string
+ * are generally errors in processing, such as the inability to communicate with an upstream server.
+ *
+ * <p>The <CODE>SOAPFault</CODE> interface provides methods for retrieving the information contained
+ * in a <CODE> SOAPFault</CODE> object and for setting the fault code, the fault actor, and a string
  * describing the fault. B fault code is one of the codes defined in the SOAP 1.1 specification that
  * describe the fault. An actor is an intermediate recipient to whom a message was routed. The
  * message path may include one or more actors, or, if no actors are specified, the message goes
@@ -67,9 +65,9 @@ public interface SOAPFault extends OMElement {
     /**
      * Get the SOAP fault node. The fault node provides information about which SOAP node on the
      * SOAP message path caused the fault to happen. This is only supported by SOAP 1.2.
-     * 
+     *
      * @return the fault node or <code>null</code> if there is no fault node or if fault nodes are
-     *         not supported by the SOAP version
+     *     not supported by the SOAP version
      */
     SOAPFaultNode getNode();
 
@@ -93,13 +91,12 @@ public interface SOAPFault extends OMElement {
 
     /**
      * Returns Exception if there is one in the SOAP fault.
-     * <p>
-     * If the exception is like; &lt;SOAPFault&gt; &lt;Detail&gt; &lt;Exception&gt; stack trace goes
-     * here &lt;/Exception&gt; &lt;/Detail&gt; &lt;/SOAPFault&gt;
+     *
+     * <p>If the exception is like; &lt;SOAPFault&gt; &lt;Detail&gt; &lt;Exception&gt; stack trace
+     * goes here &lt;/Exception&gt; &lt;/Detail&gt; &lt;/SOAPFault&gt;
      *
      * @return Returns Exception.
      * @throws org.apache.axiom.om.OMException
-     *
      */
     Exception getException() throws OMException;
 

@@ -23,13 +23,11 @@ import java.util.List;
 
 import org.apache.axiom.blob.Blob;
 
-/**
- * A MIME part.
- */
+/** A MIME part. */
 public interface Part {
     /**
      * Get the headers of this part.
-     * 
+     *
      * @return the headers
      */
     List<Header> getHeaders();
@@ -37,17 +35,16 @@ public interface Part {
     /**
      * Get the value of a specific header. If there are multiple headers with the same name, only
      * the first value is returned.
-     * 
-     * @param name
-     *            the header name
+     *
+     * @param name the header name
      * @return the value of the header, or {@code null} if the part doesn't have a header with the
-     *         given name
+     *     given name
      */
     String getHeader(String name);
 
     /**
      * Get the content type of this part.
-     * 
+     *
      * @return the parsed value of the {@code Content-Type} header
      */
     ContentType getContentType();
@@ -55,42 +52,37 @@ public interface Part {
     /**
      * Get the content ID of this part, i.e. the value of the {@code Content-ID} header with the
      * enclosing brackets removed.
-     * 
+     *
      * @return the content ID of the part or {@code null} if the part doesn't have a content ID
      */
     String getContentID();
 
     /**
      * Get the content of this part as a {@link Blob}.
-     * 
+     *
      * @return the content of this part
      */
     Blob getBlob();
 
     /**
      * Get the {@link PartBlob} instance created by the configured {@link PartBlobFactory}.
-     * 
+     *
      * @return the {@link PartBlob} instance
      */
     PartBlob getPartBlob();
 
     /**
      * Get the content of this part as an {@link InputStream}.
-     * 
-     * @param preserve
-     *            {@code true} if the content should be preserved so that it can be read multiple
-     *            times, {@code false} to discard the content when it is read
+     *
+     * @param preserve {@code true} if the content should be preserved so that it can be read
+     *     multiple times, {@code false} to discard the content when it is read
      * @return the content of the part
      */
     InputStream getInputStream(boolean preserve);
 
-    /**
-     * Make sure that this part has been fully read from the underlying stream.
-     */
+    /** Make sure that this part has been fully read from the underlying stream. */
     void fetch();
 
-    /**
-     * Discard the content of this part.
-     */
+    /** Discard the content of this part. */
     void discard();
 }

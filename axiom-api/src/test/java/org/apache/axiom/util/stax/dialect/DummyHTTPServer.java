@@ -23,13 +23,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * Dummy HTTP server used to determine if a parser attempts to access an external HTTP resource.
- */
+/** Dummy HTTP server used to determine if a parser attempts to access an external HTTP resource. */
 public class DummyHTTPServer implements Runnable {
     private ServerSocket serverSocket;
     private volatile boolean requestReceived;
-    
+
     @Override
     public void run() {
         while (true) {
@@ -52,11 +50,11 @@ public class DummyHTTPServer implements Runnable {
         serverSocket = new ServerSocket(0);
         new Thread(this).start();
     }
-    
+
     public void stop() throws IOException {
         serverSocket.close();
     }
-    
+
     public String getBaseURL() {
         return "http://127.0.0.1:" + serverSocket.getLocalPort() + "/";
     }

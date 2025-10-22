@@ -39,11 +39,12 @@ import java.util.Stack;
 public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
 
     private static final Log log = LogFactory.getLog(XMLStreamReaderValidator.class);
-    private static boolean IS_ADV_DEBUG_ENABLED = false;  // Turn this on to trace every event
-    
-    private boolean throwExceptions = false;   // Indicates whether OMException should be thrown if errors are disovered
-    private Stack<QName> stack = new Stack<QName>(); // Stack keeps track of the nested element QName
-    
+    private static boolean IS_ADV_DEBUG_ENABLED = false; // Turn this on to trace every event
+
+    private boolean throwExceptions =
+            false; // Indicates whether OMException should be thrown if errors are disovered
+    private Stack<QName> stack =
+            new Stack<QName>(); // Stack keeps track of the nested element QName
 
     /**
      * @param delegate XMLStreamReader to validate
@@ -54,14 +55,13 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
         this.throwExceptions = throwExceptions;
     }
 
- 
     @Override
     public int next() throws XMLStreamException {
         int event = super.next();
         trackEvent(event);
         return event;
     }
-    
+
     @Override
     public String getElementText() throws XMLStreamException {
         String text = super.getElementText();
@@ -78,101 +78,102 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
 
     private void trackEvent(int event) throws XMLStreamException {
         logParserState();
-        
+
         // Make sure that the start element and end element events match.
-        // Mismatched events are a key indication that the delegate stream reader is 
+        // Mismatched events are a key indication that the delegate stream reader is
         // broken or corrupted.
         switch (event) {
-        case XMLStreamConstants.START_ELEMENT:
-            stack.push(super.getName());
-            break;
-        case XMLStreamConstants.END_ELEMENT:
-            QName delegateQName = super.getName();
-            if (stack.isEmpty()) {
-                reportError("An END_ELEMENT event for " + delegateQName + 
-                        " was encountered, but the START_ELEMENT stack is empty.");
-            } else {
-                QName expectedQName = stack.pop();
-                
-                if (!expectedQName.equals(delegateQName)) {
-                    reportError("An END_ELEMENT event for " + delegateQName + 
-                            " was encountered, but this doesn't match the corresponding START_ELEMENT " + 
-                            expectedQName + " event.");
+            case XMLStreamConstants.START_ELEMENT:
+                stack.push(super.getName());
+                break;
+            case XMLStreamConstants.END_ELEMENT:
+                QName delegateQName = super.getName();
+                if (stack.isEmpty()) {
+                    reportError(
+                            "An END_ELEMENT event for "
+                                    + delegateQName
+                                    + " was encountered, but the START_ELEMENT stack is empty.");
+                } else {
+                    QName expectedQName = stack.pop();
+
+                    if (!expectedQName.equals(delegateQName)) {
+                        reportError(
+                                "An END_ELEMENT event for "
+                                        + delegateQName
+                                        + " was encountered, but this doesn't match the corresponding START_ELEMENT "
+                                        + expectedQName
+                                        + " event.");
+                    }
                 }
-            }
-            break;
-        case XMLStreamConstants.END_DOCUMENT:
-            if (!stack.isEmpty()) {
-                reportError("An unexpected END_DOCUMENT event was encountered; element stack: " + stack);
-            }
-            break;
-        default :
-        
+                break;
+            case XMLStreamConstants.END_DOCUMENT:
+                if (!stack.isEmpty()) {
+                    reportError(
+                            "An unexpected END_DOCUMENT event was encountered; element stack: "
+                                    + stack);
+                }
+                break;
+            default:
         }
     }
-    
+
     private void reportError(String message) throws XMLStreamException {
         log.debug(message);
         if (throwExceptions) {
             throw new XMLStreamException(message);
         }
     }
-    
-    /**
-     * Dump the current event of the delegate.
-     */
+
+    /** Dump the current event of the delegate. */
     protected void logParserState() {
         if (IS_ADV_DEBUG_ENABLED) {
             int currentEvent = super.getEventType();
-            
+
             switch (currentEvent) {
-            case XMLStreamConstants.START_ELEMENT:
-                log.trace("START_ELEMENT: ");
-                log.trace("  QName: " + super.getName());
-                break;
-            case XMLStreamConstants.START_DOCUMENT:
-                log.trace("START_DOCUMENT: ");
-                break;
-            case XMLStreamConstants.CHARACTERS:
-                log.trace("CHARACTERS: ");
-                log.trace(   "[" + super.getText() + "]");
-                break;
-            case XMLStreamConstants.CDATA:
-                log.trace("CDATA: ");
-                log.trace(   "[" + super.getText() + "]");
-                break;
-            case XMLStreamConstants.END_ELEMENT:
-                log.trace("END_ELEMENT: ");
-                log.trace("  QName: " + super.getName());
-                break;
-            case XMLStreamConstants.END_DOCUMENT:
-                log.trace("END_DOCUMENT: ");
-                break;
-            case XMLStreamConstants.SPACE:
-                log.trace("SPACE: ");
-                log.trace(   "[" + super.getText() + "]");
-                break;
-            case XMLStreamConstants.COMMENT:
-                log.trace("COMMENT: ");
-                log.trace(   "[" + super.getText() + "]");
-                break;
-            case XMLStreamConstants.DTD:
-                log.trace("DTD: ");
-                log.trace(   "[" + super.getText() + "]");
-                break;
-            case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                log.trace("PROCESSING_INSTRUCTION: ");
-                log.trace("   [" + super.getPITarget() + "][" +
-                        super.getPIData() + "]");
-                break;
-            case XMLStreamConstants.ENTITY_REFERENCE:
-                log.trace("ENTITY_REFERENCE: ");
-                log.trace("    " + super.getLocalName() + "[" +
-                        super.getText() + "]");
-                break;
-            default :
-                log.trace("UNKNOWN_STATE: " + currentEvent);
-            
+                case XMLStreamConstants.START_ELEMENT:
+                    log.trace("START_ELEMENT: ");
+                    log.trace("  QName: " + super.getName());
+                    break;
+                case XMLStreamConstants.START_DOCUMENT:
+                    log.trace("START_DOCUMENT: ");
+                    break;
+                case XMLStreamConstants.CHARACTERS:
+                    log.trace("CHARACTERS: ");
+                    log.trace("[" + super.getText() + "]");
+                    break;
+                case XMLStreamConstants.CDATA:
+                    log.trace("CDATA: ");
+                    log.trace("[" + super.getText() + "]");
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    log.trace("END_ELEMENT: ");
+                    log.trace("  QName: " + super.getName());
+                    break;
+                case XMLStreamConstants.END_DOCUMENT:
+                    log.trace("END_DOCUMENT: ");
+                    break;
+                case XMLStreamConstants.SPACE:
+                    log.trace("SPACE: ");
+                    log.trace("[" + super.getText() + "]");
+                    break;
+                case XMLStreamConstants.COMMENT:
+                    log.trace("COMMENT: ");
+                    log.trace("[" + super.getText() + "]");
+                    break;
+                case XMLStreamConstants.DTD:
+                    log.trace("DTD: ");
+                    log.trace("[" + super.getText() + "]");
+                    break;
+                case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                    log.trace("PROCESSING_INSTRUCTION: ");
+                    log.trace("   [" + super.getPITarget() + "][" + super.getPIData() + "]");
+                    break;
+                case XMLStreamConstants.ENTITY_REFERENCE:
+                    log.trace("ENTITY_REFERENCE: ");
+                    log.trace("    " + super.getLocalName() + "[" + super.getText() + "]");
+                    break;
+                default:
+                    log.trace("UNKNOWN_STATE: " + currentEvent);
             }
         }
     }

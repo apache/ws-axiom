@@ -38,9 +38,8 @@ public interface SOAPFaultReason extends OMElement {
      * works for all SOAP versions. Since SOAP 1.1 doesn't support localized fault reasons, the
      * locale is effectively ignored in that version. For SOAP 1.2 the method extracts the text from
      * the {@link SOAPFaultText} that best matches the given locale, falling back to English.
-     * 
-     * @param locale
-     *            the requested locale
+     *
+     * @param locale the requested locale
      * @return the reason text
      */
     String getFaultReasonText(Locale locale);

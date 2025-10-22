@@ -31,35 +31,40 @@ import junit.framework.TestCase;
 public class UIDGeneratorTest extends TestCase {
     public void testGenerateContentIdFormat() {
         // This is actually a bit more restrictive than necessary
-        assertTrue(Pattern.matches("\\w+(\\.\\w+)*@\\w+(\\.\\w+)", UIDGenerator.generateContentId()));
+        assertTrue(
+                Pattern.matches("\\w+(\\.\\w+)*@\\w+(\\.\\w+)", UIDGenerator.generateContentId()));
     }
-    
+
     public void testGenerateContentIdUniqueness() {
         // Not very sophisticated, but should catch stupid regressions
         Set<String> values = new HashSet<String>();
-        for (int i=0; i<1000; i++) {
+        for (int i = 0; i < 1000; i++) {
             assertTrue(values.add(UIDGenerator.generateContentId()));
         }
     }
-    
+
     public void testGenerateMimeBoundaryLength() {
         assertTrue(UIDGenerator.generateMimeBoundary().length() <= 70);
     }
-    
+
     public void testGenerateUIDThreadSafety() {
         Set<String> generatedIds = Collections.synchronizedSet(new HashSet<String>());
         AtomicInteger errorCount = new AtomicInteger(0);
         Thread[] threads = new Thread[100];
         for (int i = 0; i < threads.length; i++) {
-            threads[i] = new Thread(() -> {
-                for (int j=0; j<1000; j++) {
-                    String id = UIDGenerator.generateUID();
-                    if (!generatedIds.add(id)) {
-                        System.out.println("ERROR - Same UID has been generated before. UID: " + id);
-                        errorCount.incrementAndGet();
-                    }
-                }
-            });
+            threads[i] =
+                    new Thread(
+                            () -> {
+                                for (int j = 0; j < 1000; j++) {
+                                    String id = UIDGenerator.generateUID();
+                                    if (!generatedIds.add(id)) {
+                                        System.out.println(
+                                                "ERROR - Same UID has been generated before. UID: "
+                                                        + id);
+                                        errorCount.incrementAndGet();
+                                    }
+                                }
+                            });
             threads[i].start();
         }
 
@@ -70,20 +75,22 @@ public class UIDGeneratorTest extends TestCase {
                 e.printStackTrace();
             }
         }
-        
+
         assertEquals(0, errorCount.get());
     }
-    
+
     public void testGenerateURNString() {
         Thread[] threads = new Thread[100];
         String[][] urns = new String[threads.length][1000];
         for (int i = 0; i < threads.length; i++) {
             String[] threadURNs = urns[i];
-            threads[i] = new Thread(() -> {
-                for (int j=0; j<threadURNs.length; j++) {
-                    threadURNs[j] = UIDGenerator.generateURNString();
-                }
-            });
+            threads[i] =
+                    new Thread(
+                            () -> {
+                                for (int j = 0; j < threadURNs.length; j++) {
+                                    threadURNs[j] = UIDGenerator.generateURNString();
+                                }
+                            });
             threads[i].start();
         }
 

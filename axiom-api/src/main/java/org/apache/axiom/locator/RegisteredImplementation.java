@@ -27,8 +27,9 @@ class RegisteredImplementation {
     private final Implementation implementation;
     private final List<ServiceRegistration<?>> registrations;
     private final List<ServiceReference<?>> references;
-    
-    RegisteredImplementation(Implementation implementation,
+
+    RegisteredImplementation(
+            Implementation implementation,
             List<ServiceRegistration<?>> registrations,
             List<ServiceReference<?>> references) {
         this.implementation = implementation;

@@ -29,13 +29,13 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.Result;
 
 /**
- * {@link XMLOutputFactory} wrapper that wraps all {@link XMLEventWriter} and {@link XMLStreamWriter}
- * instances created from it.
+ * {@link XMLOutputFactory} wrapper that wraps all {@link XMLEventWriter} and {@link
+ * XMLStreamWriter} instances created from it.
  */
 public class WrappingXMLOutputFactory extends XMLOutputFactoryWrapper {
     /**
      * Constructor.
-     * 
+     *
      * @param parent the parent factory
      */
     public WrappingXMLOutputFactory(XMLOutputFactory parent) {
@@ -46,22 +46,20 @@ public class WrappingXMLOutputFactory extends XMLOutputFactoryWrapper {
      * Wrap a writer created from this factory. Implementations should override this method if they
      * wish to wrap {@link XMLEventWriter} instances created from the factory. The default
      * implementation simply returns the unwrapped writer.
-     * 
-     * @param writer
-     *            the writer to wrap
+     *
+     * @param writer the writer to wrap
      * @return the wrapped writer
      */
     protected XMLEventWriter wrap(XMLEventWriter writer) {
         return writer;
     }
-    
+
     /**
      * Wrap a writer created from this factory. Implementations should override this method if they
      * wish to wrap {@link XMLStreamWriter} instances created from the factory. The default
      * implementation simply returns the unwrapped writer.
-     * 
-     * @param writer
-     *            the writer to wrap
+     *
+     * @param writer the writer to wrap
      * @return the wrapped writer
      */
     protected XMLStreamWriter wrap(XMLStreamWriter writer) {

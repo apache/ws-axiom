@@ -19,17 +19,16 @@
 package org.apache.axiom.om;
 
 /**
- * Represent XOP encoded data. Since an XOP message is a MIME package with
- * a root part in XML and a set of additional (binary) parts referenced from
- * the main part, this class encapsulates an API dependent object
- * representing the main part and an {@link OMAttachmentAccessor} giving access
- * to the attachments. Instances of this class can be obtained from
- * {@link OMContainer#getXOPEncodedStreamReader(boolean)}.
+ * Represent XOP encoded data. Since an XOP message is a MIME package with a root part in XML and a
+ * set of additional (binary) parts referenced from the main part, this class encapsulates an API
+ * dependent object representing the main part and an {@link OMAttachmentAccessor} giving access to
+ * the attachments. Instances of this class can be obtained from {@link
+ * OMContainer#getXOPEncodedStreamReader(boolean)}.
  */
 public final class XOPEncoded<T> {
     private final T rootPart;
     private final OMAttachmentAccessor attachmentAccessor;
-    
+
     public XOPEncoded(T rootPart, OMAttachmentAccessor attachmentAccessor) {
         this.rootPart = rootPart;
         this.attachmentAccessor = attachmentAccessor;
@@ -37,7 +36,7 @@ public final class XOPEncoded<T> {
 
     /**
      * Get the root part of the XOP message.
-     * 
+     *
      * @return the root part
      */
     public T getRootPart() {
@@ -45,9 +44,8 @@ public final class XOPEncoded<T> {
     }
 
     /**
-     * Get the accessor for the additional MIME parts referenced by the
-     * root part.
-     * 
+     * Get the accessor for the additional MIME parts referenced by the root part.
+     *
      * @return the attachment accessor
      */
     public OMAttachmentAccessor getAttachmentAccessor() {

@@ -26,14 +26,13 @@ import javax.xml.namespace.NamespaceContext;
 import org.apache.axiom.util.namespace.AbstractNamespaceContext;
 
 /**
- * {@link NamespaceContext} wrapper that adds support for the implicit namespace
- * bindings for the {@code xml} and {@code xmlns} prefixes. This wrapper may
- * be used to fix the behavior of broken {@link NamespaceContext}
- * implementations.
+ * {@link NamespaceContext} wrapper that adds support for the implicit namespace bindings for the
+ * {@code xml} and {@code xmlns} prefixes. This wrapper may be used to fix the behavior of broken
+ * {@link NamespaceContext} implementations.
  */
 class ImplicitNamespaceContextWrapper extends AbstractNamespaceContext {
     private final NamespaceContext parent;
-    
+
     public ImplicitNamespaceContextWrapper(NamespaceContext parent) {
         this.parent = parent;
     }
@@ -42,7 +41,7 @@ class ImplicitNamespaceContextWrapper extends AbstractNamespaceContext {
     protected String doGetNamespaceURI(String prefix) {
         return parent.getNamespaceURI(prefix);
     }
-    
+
     @Override
     protected String doGetPrefix(String namespaceURI) {
         return parent.getPrefix(namespaceURI);

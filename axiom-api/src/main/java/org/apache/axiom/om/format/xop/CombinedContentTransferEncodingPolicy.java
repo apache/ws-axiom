@@ -23,9 +23,9 @@ import org.apache.axiom.mime.ContentTransferEncoding;
 import org.apache.axiom.mime.ContentType;
 
 /**
- * {@link ContentTransferEncodingPolicy} implementation that combines multiple other
- * {@link ContentTransferEncodingPolicy} instances into a single policy. It returns the
- * first non-null {@link ContentTransferEncoding}.
+ * {@link ContentTransferEncodingPolicy} implementation that combines multiple other {@link
+ * ContentTransferEncodingPolicy} instances into a single policy. It returns the first non-null
+ * {@link ContentTransferEncoding}.
  */
 public final class CombinedContentTransferEncodingPolicy implements ContentTransferEncodingPolicy {
     private final ContentTransferEncodingPolicy[] policies;

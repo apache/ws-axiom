@@ -24,10 +24,10 @@ public class SOAPCloneOptions extends OMCloneOptions {
     private Boolean processedFlag;
 
     /**
-     * Determine how the {@link SOAPHeaderBlock#isProcessed()} flag should be set on cloned
-     * {@link SOAPHeaderBlock} nodes. See {@link #setProcessedFlag(Boolean)} for more information
-     * about this option.
-     * 
+     * Determine how the {@link SOAPHeaderBlock#isProcessed()} flag should be set on cloned {@link
+     * SOAPHeaderBlock} nodes. See {@link #setProcessedFlag(Boolean)} for more information about
+     * this option.
+     *
      * @return the current value of this option
      */
     public Boolean getProcessedFlag() {
@@ -35,13 +35,12 @@ public class SOAPCloneOptions extends OMCloneOptions {
     }
 
     /**
-     * Specify how the {@link SOAPHeaderBlock#isProcessed()} flag should be set on cloned
-     * {@link SOAPHeaderBlock} nodes. If this option is set to <code>null</code> (default), the flag
-     * will be copied from the original node. Otherwise, the flag will have the value determined by
-     * the option value.
-     * 
-     * @param processedFlag
-     *            the value to set for this option
+     * Specify how the {@link SOAPHeaderBlock#isProcessed()} flag should be set on cloned {@link
+     * SOAPHeaderBlock} nodes. If this option is set to <code>null</code> (default), the flag will
+     * be copied from the original node. Otherwise, the flag will have the value determined by the
+     * option value.
+     *
+     * @param processedFlag the value to set for this option
      */
     public void setProcessedFlag(Boolean processedFlag) {
         this.processedFlag = processedFlag;

@@ -24,12 +24,10 @@ import org.apache.axiom.testutils.io.InstrumentedStream;
 import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
-/**
- * Tests that {@link XMLStreamReader#close()} doesn't close the underlying stream.
- */
+/** Tests that {@link XMLStreamReader#close()} doesn't close the underlying stream. */
 public class TestClose extends DialectTestCase {
     private final StreamType streamType;
-    
+
     public TestClose(StAXImplementationAdapter staxImpl, StreamType streamType) {
         super(staxImpl);
         this.streamType = streamType;
@@ -39,7 +37,8 @@ public class TestClose extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
         InstrumentedStream in = streamType.instrumentStream(streamType.getStream(XMLSample.SIMPLE));
-        XMLStreamReader reader = streamType.createXMLStreamReader(staxImpl.newNormalizedXMLInputFactory(), in);
+        XMLStreamReader reader =
+                streamType.createXMLStreamReader(staxImpl.newNormalizedXMLInputFactory(), in);
         reader.close();
         assertFalse(in.isClosed());
     }

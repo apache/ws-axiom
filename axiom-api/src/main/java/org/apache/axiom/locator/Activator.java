@@ -31,12 +31,12 @@ import org.osgi.util.tracker.BundleTracker;
 
 /**
  * The OSGi bundle activator for the {@code axiom-api} bundle. This activator sets up an OSGi
- * specific {@link OMMetaFactoryLocator} and injects it into {@link OMAbstractFactory} using
- * {@link OMAbstractFactory#setMetaFactoryLocator(OMMetaFactoryLocator)}.
+ * specific {@link OMMetaFactoryLocator} and injects it into {@link OMAbstractFactory} using {@link
+ * OMAbstractFactory#setMetaFactoryLocator(OMMetaFactoryLocator)}.
  */
 public class Activator implements BundleActivator {
     private static final Log log = LogFactory.getLog(Activator.class);
-    
+
     private BundleTracker<List<RegisteredImplementation>> tracker;
 
     @Override
@@ -45,7 +45,9 @@ public class Activator implements BundleActivator {
         OMAbstractFactory.setMetaFactoryLocator(locator);
         // Bundle.STARTING covers the case where the implementation bundle has
         // "Bundle-ActivationPolicy: lazy".
-        tracker = new BundleTracker<List<RegisteredImplementation>>(context, Bundle.STARTING | Bundle.ACTIVE, locator);
+        tracker =
+                new BundleTracker<List<RegisteredImplementation>>(
+                        context, Bundle.STARTING | Bundle.ACTIVE, locator);
         tracker.open();
         log.debug("OSGi support enabled");
     }

@@ -25,7 +25,7 @@ package org.apache.axiom.om.ds.custombuilder;
 public interface CustomBuilderSupport {
     /**
      * Register a custom builder.
-     * 
+     *
      * @param selector specifies the elements to which the custom builder will be applied
      * @param customBuilder
      */

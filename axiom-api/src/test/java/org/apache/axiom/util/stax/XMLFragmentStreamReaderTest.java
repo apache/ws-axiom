@@ -31,10 +31,9 @@ import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 
 public class XMLFragmentStreamReaderTest extends TestCase {
     /**
-     * Test comparing the output of {@link XMLFragmentStreamReader} with that
-     * of a native StAX parser. In particular this tests the behavior for START_DOCUMENT
-     * and END_DOCUMENT events.
-     * 
+     * Test comparing the output of {@link XMLFragmentStreamReader} with that of a native StAX
+     * parser. In particular this tests the behavior for START_DOCUMENT and END_DOCUMENT events.
+     *
      * @throws Exception
      */
     public void test() throws Exception {
@@ -48,9 +47,10 @@ public class XMLFragmentStreamReaderTest extends TestCase {
         expected.close();
         reader.close();
     }
-    
+
     public void testWithoutProceedToNext() throws Exception {
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a><b/><c/></a>"));
+        XMLStreamReader reader =
+                StAXUtils.createXMLStreamReader(new StringReader("<a><b/><c/></a>"));
         reader.nextTag();
         reader.nextTag();
         XMLStreamReader fragmentReader = new XMLFragmentStreamReader(reader, false);

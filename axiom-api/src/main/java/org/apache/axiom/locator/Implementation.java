@@ -26,7 +26,7 @@ final class Implementation {
     private final String name;
     private final OMMetaFactory metaFactory;
     private final Feature[] features;
-    
+
     Implementation(String name, OMMetaFactory metaFactory, Feature[] features) {
         this.name = name;
         this.metaFactory = metaFactory;
@@ -47,7 +47,11 @@ final class Implementation {
 
     @Override
     public String toString() {
-        return name + "(metaFactory=" + metaFactory.getClass().getName()
-                + ",features=" + (features != null ? Arrays.asList(features) : null) + ")";
+        return name
+                + "(metaFactory="
+                + metaFactory.getClass().getName()
+                + ",features="
+                + (features != null ? Arrays.asList(features) : null)
+                + ")";
     }
 }

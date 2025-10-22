@@ -32,6 +32,8 @@ public class XMLReaderTestSuiteBuilder extends MatrixTestSuiteBuilder {
     protected void addTests() {
         addTest(new TestGetSetFeature(xmlReader, "http://xml.org/sax/features/namespaces"));
         addTest(new TestGetSetFeature(xmlReader, "http://xml.org/sax/features/namespace-prefixes"));
-        addTest(new TestGetSetFeature(xmlReader, "http://xml.org/sax/features/external-general-entities"));
+        addTest(
+                new TestGetSetFeature(
+                        xmlReader, "http://xml.org/sax/features/external-general-entities"));
     }
 }

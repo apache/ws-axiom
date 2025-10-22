@@ -25,18 +25,20 @@ public interface MTOMConstants {
 
     /** If the Message is MTOM optimised then <code>MTOM_TYPE</code> */
     String MTOM_TYPE = "application/xop+xml";
+
     /** If the message is Soap with Attachments <code>SWA_TYPE</code> */
     String SWA_TYPE = "text/xml";
+
     String SWA_TYPE_12 = "application/soap+xml";
 
     /**
-     * @deprecated 
+     * @deprecated
      */
     String ROOT_PART = "SoapPart";
-    
+
     /**
      * @deprecated This was used in old versions of Axis2 as the key identifying the attachments map
-     *             in the message context. You should no longer use this.
+     *     in the message context. You should no longer use this.
      */
     String ATTACHMENTS = "Attachments";
 }

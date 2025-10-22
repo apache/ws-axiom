@@ -30,27 +30,30 @@ import org.xml.sax.ext.LexicalHandler;
 
 /**
  * Partial implementation of the {@link XMLReader} interface. It implements all the getters and
- * setters so that subclasses only need to implement {@link XMLReader#parse(InputSource)} and
- * {@link XMLReader#parse(String)}. Subclasses can access the various handlers and properties set on
- * the reader through protected attributes.
+ * setters so that subclasses only need to implement {@link XMLReader#parse(InputSource)} and {@link
+ * XMLReader#parse(String)}. Subclasses can access the various handlers and properties set on the
+ * reader through protected attributes.
  */
 public abstract class AbstractXMLReader implements XMLReader {
     private static final String URI_NAMESPACES = "http://xml.org/sax/features/namespaces";
-    private static final String URI_NAMESPACE_PREFIXES = "http://xml.org/sax/features/namespace-prefixes";
-    private static final String URI_EXTERNAL_GENERAL_ENTITIES = "http://xml.org/sax/features/external-general-entities";
-    
-    private static final String URI_LEXICAL_HANDLER = "http://xml.org/sax/properties/lexical-handler";
-    
+    private static final String URI_NAMESPACE_PREFIXES =
+            "http://xml.org/sax/features/namespace-prefixes";
+    private static final String URI_EXTERNAL_GENERAL_ENTITIES =
+            "http://xml.org/sax/features/external-general-entities";
+
+    private static final String URI_LEXICAL_HANDLER =
+            "http://xml.org/sax/properties/lexical-handler";
+
     protected boolean namespaces = true;
     protected boolean namespacePrefixes = false;
     protected boolean externalGeneralEntities = true;
-    
+
     protected ContentHandler contentHandler;
     protected LexicalHandler lexicalHandler;
     protected DTDHandler dtdHandler;
     protected EntityResolver entityResolver;
     protected ErrorHandler errorHandler;
-    
+
     @Override
     public ContentHandler getContentHandler() {
         return contentHandler;
@@ -108,7 +111,7 @@ public abstract class AbstractXMLReader implements XMLReader {
     @Override
     public void setFeature(String name, boolean value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
-        
+
         if (URI_NAMESPACES.equals(name)) {
             namespaces = value;
         } else if (URI_NAMESPACE_PREFIXES.equals(name)) {
@@ -123,7 +126,7 @@ public abstract class AbstractXMLReader implements XMLReader {
     @Override
     public Object getProperty(String name)
             throws SAXNotRecognizedException, SAXNotSupportedException {
-        
+
         if (URI_LEXICAL_HANDLER.equals(name)) {
             return lexicalHandler;
         } else {
@@ -135,11 +138,9 @@ public abstract class AbstractXMLReader implements XMLReader {
     public void setProperty(String name, Object value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         if (URI_LEXICAL_HANDLER.equals(name)) {
-            lexicalHandler = (LexicalHandler)value;
+            lexicalHandler = (LexicalHandler) value;
         } else {
             throw new SAXNotRecognizedException(name);
         }
     }
-
-
 }

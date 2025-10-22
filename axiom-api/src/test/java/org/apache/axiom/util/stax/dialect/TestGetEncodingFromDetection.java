@@ -36,20 +36,24 @@ public class TestGetEncodingFromDetection extends DialectTestCase {
     private final String javaEncoding;
     private final Set<String> xmlEncodings;
 
-    public TestGetEncodingFromDetection(StAXImplementationAdapter staxImpl, String javaEncoding, String... xmlEncodings) {
+    public TestGetEncodingFromDetection(
+            StAXImplementationAdapter staxImpl, String javaEncoding, String... xmlEncodings) {
         super(staxImpl);
         this.javaEncoding = javaEncoding;
         this.xmlEncodings = new HashSet<String>(Arrays.asList(xmlEncodings));
         addTestParameter("javaEncoding", javaEncoding);
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
-        XMLStreamReader reader = factory.createXMLStreamReader(new ByteArrayInputStream(
-                "<?xml version=\"1.0\"?><root/>".getBytes(javaEncoding)));
+        XMLStreamReader reader =
+                factory.createXMLStreamReader(
+                        new ByteArrayInputStream(
+                                "<?xml version=\"1.0\"?><root/>".getBytes(javaEncoding)));
         String actualEncoding = reader.getEncoding();
-        assertTrue("Expected one of " + xmlEncodings + ", but got " + actualEncoding,
-                   xmlEncodings.contains(actualEncoding));
+        assertTrue(
+                "Expected one of " + xmlEncodings + ", but got " + actualEncoding,
+                xmlEncodings.contains(actualEncoding));
     }
 }

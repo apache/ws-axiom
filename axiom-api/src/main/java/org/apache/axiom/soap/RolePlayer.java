@@ -22,15 +22,15 @@ package org.apache.axiom.soap;
 import java.util.List;
 
 /**
- * This interface represents the thing which provides us with the SOAP roles in a given
- * context.  Used to search through SOAP header blocks.
+ * This interface represents the thing which provides us with the SOAP roles in a given context.
+ * Used to search through SOAP header blocks.
  */
 public interface RolePlayer {
     /**
-     * Get a list of the roles supported.  NOTE: the "next" role is automatically supported,
-     * and the "none" role (for SOAP 1.2) is automatically disallowed.  The roles returned
-     * should only be the non-standard ones, since the ultimate destination role is also
-     * handled by the isUltimateDestination method below.
+     * Get a list of the roles supported. NOTE: the "next" role is automatically supported, and the
+     * "none" role (for SOAP 1.2) is automatically disallowed. The roles returned should only be the
+     * non-standard ones, since the ultimate destination role is also handled by the
+     * isUltimateDestination method below.
      *
      * @return a List containing URI Strings, one per custom role supported, or null
      */

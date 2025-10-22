@@ -38,52 +38,52 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Detects StAX dialects and normalizes factories for a given StAX implementation.
- * <p>
- * Note that this class internally maintains a cache of detected dialects. The overhead caused by
+ *
+ * <p>Note that this class internally maintains a cache of detected dialects. The overhead caused by
  * invocations of methods in this class is thus small.
  */
 public class StAXDialectDetector {
     private static final Log log = LogFactory.getLog(StAXDialectDetector.class);
-    
+
     private static final Attributes.Name IMPLEMENTATION_TITLE =
             new Attributes.Name("Implementation-Title");
-    
+
     private static final Attributes.Name IMPLEMENTATION_VENDOR =
-        new Attributes.Name("Implementation-Vendor");
+            new Attributes.Name("Implementation-Vendor");
 
     private static final Attributes.Name IMPLEMENTATION_VERSION =
             new Attributes.Name("Implementation-Version");
-    
+
     private static final Attributes.Name BUNDLE_SYMBOLIC_NAME =
             new Attributes.Name("Bundle-SymbolicName");
-    
-    private static final Attributes.Name BUNDLE_VENDOR =
-            new Attributes.Name("Bundle-Vendor");
 
-    private static final Attributes.Name BUNDLE_VERSION =
-            new Attributes.Name("Bundle-Version");
+    private static final Attributes.Name BUNDLE_VENDOR = new Attributes.Name("Bundle-Vendor");
 
-    private static final JBossFactoryUnwrapper jbossXMLInputFactoryUnwrapper = JBossFactoryUnwrapper.create(XMLInputFactory.class);
-    private static final JBossFactoryUnwrapper jbossXMLOutputFactoryUnwrapper = JBossFactoryUnwrapper.create(XMLOutputFactory.class);
-    
+    private static final Attributes.Name BUNDLE_VERSION = new Attributes.Name("Bundle-Version");
+
+    private static final JBossFactoryUnwrapper jbossXMLInputFactoryUnwrapper =
+            JBossFactoryUnwrapper.create(XMLInputFactory.class);
+    private static final JBossFactoryUnwrapper jbossXMLOutputFactoryUnwrapper =
+            JBossFactoryUnwrapper.create(XMLOutputFactory.class);
+
     /**
      * Map that stores detected dialects by location. The location is the URL corresponding to the
-     * root folder of the classpath entry from which the StAX implementation is loaded. Note that
-     * in the case of a JAR file, this is not the URL pointing to the JAR, but a {@code jar:}
-     * URL that points to the root folder of the archive.
+     * root folder of the classpath entry from which the StAX implementation is loaded. Note that in
+     * the case of a JAR file, this is not the URL pointing to the JAR, but a {@code jar:} URL that
+     * points to the root folder of the archive.
      */
-    private static final Map<URL,StAXDialect> dialectByUrl =
-            Collections.synchronizedMap(new HashMap<URL,StAXDialect>());
+    private static final Map<URL, StAXDialect> dialectByUrl =
+            Collections.synchronizedMap(new HashMap<URL, StAXDialect>());
 
     private StAXDialectDetector() {}
-    
+
     /**
      * Get the URL corresponding to the root folder of the classpath entry from which a given
      * resource is loaded. This URL can be used to load other resources from the same classpath
      * entry (JAR file or directory).
-     * 
+     *
      * @return the root URL or <code>null</code> if the resource can't be found or if it is not
-     *         possible to determine the root URL
+     *     possible to determine the root URL
      */
     private static URL getRootUrlForResource(ClassLoader classLoader, String resource) {
         if (classLoader == null) {
@@ -99,8 +99,11 @@ public class StAXDialectDetector {
         String file = url.getFile();
         if (file.endsWith(resource)) {
             try {
-                return new URL(url.getProtocol(), url.getHost(), url.getPort(),
-                        file.substring(0, file.length()-resource.length()));
+                return new URL(
+                        url.getProtocol(),
+                        url.getHost(),
+                        url.getPort(),
+                        file.substring(0, file.length() - resource.length()));
             } catch (MalformedURLException ex) {
                 return null;
             }
@@ -108,57 +111,56 @@ public class StAXDialectDetector {
             return null;
         }
     }
-    
+
     private static URL getRootUrlForClass(Class<?> cls) {
-        return getRootUrlForResource(cls.getClassLoader(),
-                cls.getName().replace('.', '/') + ".class");
+        return getRootUrlForResource(
+                cls.getClassLoader(), cls.getName().replace('.', '/') + ".class");
     }
-    
+
     /**
      * Detect the dialect of a given {@link XMLInputFactory} and normalize it.
-     * 
+     *
      * @param factory the factory to normalize
      * @return the normalized factory
-     * 
      * @see StAXDialect#normalize(XMLInputFactory)
      */
     public static XMLInputFactory normalize(XMLInputFactory factory) {
         return getDialect(factory).normalize(factory);
     }
-    
+
     /**
      * Detect the dialect of a given {@link XMLOutputFactory} and normalize it.
-     * 
+     *
      * @param factory the factory to normalize
      * @return the normalized factory
-     * 
      * @see StAXDialect#normalize(XMLOutputFactory)
      * @deprecated
      */
     public static XMLOutputFactory normalize(XMLOutputFactory factory) {
         return getDialect(factory).normalize(factory);
     }
-    
+
     /**
      * Detect the dialect of a given StAX implementation.
-     * <p>
-     * Note that to detect the StAX dialect of a given {@link XMLInputFactory} or
-     * {@link XMLOutputFactory} instance, it is generally preferable to use
-     * {@link #getDialect(XMLInputFactory)} or {@link #getDialect(XMLOutputFactory)} instead of this
+     *
+     * <p>Note that to detect the StAX dialect of a given {@link XMLInputFactory} or {@link
+     * XMLOutputFactory} instance, it is generally preferable to use {@link
+     * #getDialect(XMLInputFactory)} or {@link #getDialect(XMLOutputFactory)} instead of this
      * method.
-     * 
-     * @param implementationClass
-     *            any class that is part of the StAX implementation; typically this should be a
-     *            {@link XMLInputFactory}, {@link XMLOutputFactory},
-     *            {@link javax.xml.stream.XMLStreamReader} or
-     *            {@link javax.xml.stream.XMLStreamWriter} implementation
+     *
+     * @param implementationClass any class that is part of the StAX implementation; typically this
+     *     should be a {@link XMLInputFactory}, {@link XMLOutputFactory}, {@link
+     *     javax.xml.stream.XMLStreamReader} or {@link javax.xml.stream.XMLStreamWriter}
+     *     implementation
      * @return the detected dialect
      */
     public static StAXDialect getDialect(Class<?> implementationClass) {
         URL rootUrl = getRootUrlForClass(implementationClass);
         if (rootUrl == null) {
-            log.warn("Unable to determine location of StAX implementation containing class "
-                    + implementationClass.getName() + "; using default dialect");
+            log.warn(
+                    "Unable to determine location of StAX implementation containing class "
+                            + implementationClass.getName()
+                            + "; using default dialect");
             return UnknownStAXDialect.INSTANCE;
         }
         return getDialect(implementationClass.getClassLoader(), rootUrl);
@@ -166,32 +168,30 @@ public class StAXDialectDetector {
 
     /**
      * Detect the StAX dialect of a given {@link XMLInputFactory} instance.
-     * 
-     * @param factory
-     *            the factory instance
+     *
+     * @param factory the factory instance
      * @return the detected dialect
      */
     public static StAXDialect getDialect(XMLInputFactory factory) {
         if (jbossXMLInputFactoryUnwrapper != null) {
-            factory = (XMLInputFactory)jbossXMLInputFactoryUnwrapper.unwrap(factory);
+            factory = (XMLInputFactory) jbossXMLInputFactoryUnwrapper.unwrap(factory);
         }
         return getDialect(factory.getClass());
     }
-    
+
     /**
      * Detect the StAX dialect of a given {@link XMLOutputFactory} instance.
-     * 
-     * @param factory
-     *            the factory instance
+     *
+     * @param factory the factory instance
      * @return the detected dialect
      */
     public static StAXDialect getDialect(XMLOutputFactory factory) {
         if (jbossXMLOutputFactoryUnwrapper != null) {
-            factory = (XMLOutputFactory)jbossXMLOutputFactoryUnwrapper.unwrap(factory);
+            factory = (XMLOutputFactory) jbossXMLOutputFactoryUnwrapper.unwrap(factory);
         }
         return getDialect(factory.getClass());
     }
-    
+
     private static StAXDialect getDialect(ClassLoader classLoader, URL rootUrl) {
         StAXDialect dialect = dialectByUrl.get(rootUrl);
         if (dialect != null) {
@@ -202,7 +202,7 @@ public class StAXDialectDetector {
             return dialect;
         }
     }
-    
+
     private static StAXDialect detectDialect(ClassLoader classLoader, URL rootUrl) {
         StAXDialect dialect = detectDialectFromJarManifest(rootUrl);
         if (dialect == null) {
@@ -221,7 +221,7 @@ public class StAXDialectDetector {
             return dialect;
         }
     }
-    
+
     private static StAXDialect detectDialectFromJarManifest(URL rootUrl) {
         if (rootUrl.getProtocol().equals("jrt")) {
             // We get here for the StAX implementation in the JRE for Java 9 and above. There is no
@@ -259,13 +259,23 @@ public class StAXDialectDetector {
             versionString = attrs.getValue(BUNDLE_VERSION);
         }
         if (log.isDebugEnabled()) {
-            log.debug("StAX implementation at " + rootUrl + " is:\n" +
-                    "  Title:         " + title + "\n" +
-                    "  Symbolic name: " + symbolicName + "\n" +
-                    "  Vendor:        " + vendor + "\n" +
-                    "  Version:       " + versionString);
+            log.debug(
+                    "StAX implementation at "
+                            + rootUrl
+                            + " is:\n"
+                            + "  Title:         "
+                            + title
+                            + "\n"
+                            + "  Symbolic name: "
+                            + symbolicName
+                            + "\n"
+                            + "  Vendor:        "
+                            + vendor
+                            + "\n"
+                            + "  Version:       "
+                            + versionString);
         }
-        
+
         if (title != null && title.toLowerCase(Locale.ENGLISH).contains("woodstox")) {
             Version version = new Version(versionString);
             return version.getComponent(0) >= 4 ? Woodstox4Dialect.INSTANCE : null;
@@ -275,8 +285,9 @@ public class StAXDialectDetector {
             // Weblogic's StAX implementation doesn't support CDATA section reporting and there are
             // a couple of additional test cases (with respect to BEA's reference implementation)
             // that fail.
-            log.warn("Weblogic's StAX implementation is unsupported and some Axiom features will not work " +
-            		"as expected! Please use Woodstox instead.");
+            log.warn(
+                    "Weblogic's StAX implementation is unsupported and some Axiom features will not work "
+                            + "as expected! Please use Woodstox instead.");
             // This is the best match we can return in this case.
             return BEADialect.INSTANCE;
         } else if ("BEA".equals(vendor)) {
@@ -304,15 +315,17 @@ public class StAXDialectDetector {
     @SuppressWarnings("ReturnValueIgnored")
     private static StAXDialect detectDialectFromClasses(ClassLoader classLoader, URL rootUrl) {
         Class<?> cls;
-        
+
         // Try Sun's implementation found in JREs
         cls = loadClass(classLoader, rootUrl, "com.sun.xml.internal.stream.XMLOutputFactoryImpl");
         if (cls != null) {
-            // Some JREs (such as IBM Java 1.7) include com.sun.xml.internal.stream.XMLOutputFactoryImpl
-            // for compatibility (in which case it extends the XMLOutputFactory implementation from
-            // another StAX implementation, e.g. XLXP). Detect this situation by checking the superclass.
+            // Some JREs (such as IBM Java 1.7) include
+            // com.sun.xml.internal.stream.XMLOutputFactoryImpl for compatibility (in which case it
+            // extends the XMLOutputFactory implementation from another StAX implementation, e.g.
+            // XLXP). Detect this situation by checking the superclass.
             Class<?> superClass = cls.getSuperclass();
-            if (superClass == XMLOutputFactory.class || superClass.getName().startsWith("com.sun.")) {
+            if (superClass == XMLOutputFactory.class
+                    || superClass.getName().startsWith("com.sun.")) {
                 // Check if the implementation has the bug fixed here:
                 // https://sjsxp.dev.java.net/source/browse/sjsxp/zephyr/src/com/sun/xml/stream/ZephyrWriterFactory.java?rev=1.8&r1=1.4&r2=1.5
                 boolean isUnsafeStreamResult;
@@ -325,7 +338,7 @@ public class StAXDialectDetector {
                 return new SJSXPDialect(isUnsafeStreamResult);
             }
         }
-        
+
         // Try IBM's XL XP-J
         cls = loadClass(classLoader, rootUrl, "com.ibm.xml.xlxp.api.stax.StAXImplConstants");
         if (cls != null) {
@@ -335,7 +348,7 @@ public class StAXDialectDetector {
         if (cls != null) {
             return new XLXP2Dialect();
         }
-        
+
         return null;
     }
 }
