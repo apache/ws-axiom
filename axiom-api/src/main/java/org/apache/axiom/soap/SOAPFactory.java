@@ -140,10 +140,6 @@ public interface SOAPFactory extends OMFactory {
 
     SOAPBody createSOAPBody() throws SOAPProcessingException;
 
-    /* ========================
-       =  SOAPFaultCode       =
-       ======================== */
-
     /**
      * Code eii under SOAPFault (parent)
      *
@@ -153,10 +149,6 @@ public interface SOAPFactory extends OMFactory {
     SOAPFaultCode createSOAPFaultCode(SOAPFault parent) throws SOAPProcessingException;
 
     SOAPFaultCode createSOAPFaultCode() throws SOAPProcessingException;
-
-    /*========================
-   =  SOAPFaultCodeValue  =
-   ======================== */
 
     /**
      * Value eii under Code (parent)
@@ -168,22 +160,15 @@ public interface SOAPFactory extends OMFactory {
 
     SOAPFaultValue createSOAPFaultValue() throws SOAPProcessingException;
 
-    /*========================
-      =  SOAPFaultSubCode    =
-      ======================== */
-
     /**
      * SubCode eii under Value (parent)
      *
      * @param parent
      * @return Returns SOAPFaultValue.
      */
-
-    //added
     SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent)
             throws SOAPProcessingException;
 
-    //changed
     SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent)
             throws SOAPProcessingException;
 
@@ -198,10 +183,6 @@ public interface SOAPFactory extends OMFactory {
     SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent)
             throws SOAPProcessingException;
 
-    /*========================
-   =  SOAPFaultReason     =
-   ======================== */
-
     /**
      * Reason eii under SOAPFault (parent)
      *
@@ -211,10 +192,6 @@ public interface SOAPFactory extends OMFactory {
     SOAPFaultReason createSOAPFaultReason(SOAPFault parent) throws SOAPProcessingException;
 
     SOAPFaultReason createSOAPFaultReason() throws SOAPProcessingException;
-
-    /*========================
-      =  SOAPFaultReasonText     =
-      ======================== */
 
     /**
      * SubCode eii under SubCode (parent)
@@ -226,10 +203,6 @@ public interface SOAPFactory extends OMFactory {
 
     SOAPFaultText createSOAPFaultText() throws SOAPProcessingException;
 
-    /*========================
-   =  SOAPFaultNode       =
-   ======================== */
-
     /**
      * Node eii under SOAPFault (parent)
      *
@@ -240,10 +213,6 @@ public interface SOAPFactory extends OMFactory {
 
     SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException;
 
-    /*========================
-      =  SOAPFaultRole       =
-      ======================== */
-
     /**
      * Role eii under SOAPFault (parent)
      *
@@ -253,10 +222,6 @@ public interface SOAPFactory extends OMFactory {
     SOAPFaultRole createSOAPFaultRole(SOAPFault parent) throws SOAPProcessingException;
 
     SOAPFaultRole createSOAPFaultRole() throws SOAPProcessingException;
-
-    /*========================
-      =  SOAPFaultDetail     =
-      ======================== */
 
     /**
      * Detail eii under SOAPFault (parent)
