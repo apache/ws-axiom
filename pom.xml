@@ -291,7 +291,7 @@
         <groovy.version>5.0.2</groovy.version>
         <auto-service.version>1.1.1</auto-service.version>
         <asm.version>9.9</asm.version>
-        <errorprone.version>2.42.0</errorprone.version>
+        <errorprone.version>2.43.0</errorprone.version>
         <junit5.version>6.0.0</junit5.version>
         <mime4j.version>0.8.13</mime4j.version>
         <surefire.version>3.5.4</surefire.version>
