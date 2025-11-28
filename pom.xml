@@ -938,6 +938,9 @@
                             <allowSnapshotRepositories>true</allowSnapshotRepositories>
                             <allowSnapshotPluginRepositories>true</allowSnapshotPluginRepositories>
                         </requireNoRepositories>
+                        <requirePluginVersions>
+                            <banSnapshots>false</banSnapshots>
+                        </requirePluginVersions>
                     </rules>
                 </configuration>
             </plugin>
