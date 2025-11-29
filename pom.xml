@@ -279,6 +279,8 @@
 
     <properties>
         <maven.compiler.target>11</maven.compiler.target>
+        <!-- A more recent Java version is required by some of the Maven plugins in the build. -->
+        <minimalJavaBuildVersion>21</minimalJavaBuildVersion>
 
         <failIfNoTests>false</failIfNoTests>
         <shade.plugin.version>3.6.1</shade.plugin.version>
@@ -912,37 +914,29 @@
                         <goals>
                             <goal>enforce</goal>
                         </goals>
+                        <configuration>
+                            <rules>
+                                <requireNoRepositories>
+                                    <message>The POM must not include repository definitions since non Apache repositories threaten the build stability.</message>
+                                    <banRepositories>true</banRepositories>
+                                    <!-- We need the Eclipse P2 repository for one of the Eclipse releases. If we select the
+                                        repository carefully, then it is reasonable to assume that this doesn't threaten
+                                        the build stability. -->
+                                    <allowedRepositories>
+                                        <allowedRepository>eclipse_2021_09</allowedRepository>
+                                    </allowedRepositories>
+                                    <banPluginRepositories>true</banPluginRepositories>
+                                    <!-- We still need to allow the Apache snapshot repository -->
+                                    <allowSnapshotRepositories>true</allowSnapshotRepositories>
+                                    <allowSnapshotPluginRepositories>true</allowSnapshotPluginRepositories>
+                                </requireNoRepositories>
+                                <requirePluginVersions>
+                                    <banSnapshots>false</banSnapshots>
+                                </requirePluginVersions>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <rules>
-                        <requireJavaVersion>
-                            <!-- A more recent Java version is required by some of the Maven plugins in the build. -->
-                            <version>21</version>
-                        </requireJavaVersion>
-                        <requireMavenVersion>
-                            <!-- Require a recent Maven version for consistent build results -->
-                            <version>3.3.1</version>
-                        </requireMavenVersion>
-                        <requireNoRepositories>
-                            <message>The POM must not include repository definitions since non Apache repositories threaten the build stability.</message>
-                            <banRepositories>true</banRepositories>
-                            <!-- We need the Eclipse P2 repository for one of the Eclipse releases. If we select the
-                                 repository carefully, then it is reasonable to assume that this doesn't threaten
-                                 the build stability. -->
-                            <allowedRepositories>
-                                <allowedRepository>eclipse_2021_09</allowedRepository>
-                            </allowedRepositories>
-                            <banPluginRepositories>true</banPluginRepositories>
-                            <!-- We still need to allow the Apache snapshot repository -->
-                            <allowSnapshotRepositories>true</allowSnapshotRepositories>
-                            <allowSnapshotPluginRepositories>true</allowSnapshotPluginRepositories>
-                        </requireNoRepositories>
-                        <requirePluginVersions>
-                            <banSnapshots>false</banSnapshots>
-                        </requirePluginVersions>
-                    </rules>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.github.veithen.alta</groupId>
