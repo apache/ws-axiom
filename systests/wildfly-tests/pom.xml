@@ -82,16 +82,6 @@
         </testResources>
         <plugins>
             <plugin>
-                <groupId>com.github.veithen.maven</groupId>
-                <artifactId>hermetic-maven-plugin</artifactId>
-                <configuration>
-                    <!-- Wildfly/Arquillian doesn't support custom security managers and will instead
-                         set up Wildfly's security manager, for which the generated policy isn't
-                         appropriate. -->
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>

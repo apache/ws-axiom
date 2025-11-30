@@ -1083,18 +1083,6 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.github.veithen.maven</groupId>
-                <artifactId>hermetic-maven-plugin</artifactId>
-                <version>0.9.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate-policy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin><!-- This serves two purposes:
                       (1) we want to generate source JARs for all builds, not just release builds;
                       (2) we need (some of) the source JARs to generate the Javadoc in the apidocs module. -->
