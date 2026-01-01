@@ -21,9 +21,6 @@ package org.apache.axiom.attachments.lifecycle.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.Hashtable;
 
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
@@ -163,24 +160,10 @@ public class LifecycleManagerImpl implements LifecycleManager {
         if(log.isDebugEnabled()){
             log.debug("Start RegisterVMShutdownHook()");
         }
-        try{
-            hook = AccessController.doPrivileged(new PrivilegedExceptionAction<VMShutdownHook>() {
-                @Override
-                public VMShutdownHook run() throws SecurityException, IllegalStateException, IllegalArgumentException {
-                    VMShutdownHook hook = VMShutdownHook.hook();
-                    if(!hook.isRegistered()){
-                        Runtime.getRuntime().addShutdownHook(hook);
-                        hook.setRegistered(true);
-                    }
-                    return hook;
-                }
-            });
-        }catch (PrivilegedActionException e) {
-            if (log.isDebugEnabled()) {
-                log.debug("Exception thrown from AccessController: " + e);
-                log.debug("VM Shutdown Hook not registered.");
-            }
-            throw new RuntimeException(e);
+        VMShutdownHook hook = VMShutdownHook.hook();
+        if(!hook.isRegistered()){
+            Runtime.getRuntime().addShutdownHook(hook);
+            hook.setRegistered(true);
         }
         if(log.isDebugEnabled()){
             log.debug("Exit RegisterVMShutdownHook()");

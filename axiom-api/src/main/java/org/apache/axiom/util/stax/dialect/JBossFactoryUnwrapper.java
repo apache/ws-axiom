@@ -19,8 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.lang.reflect.Field;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -43,14 +41,7 @@ final class JBossFactoryUnwrapper {
         wrapperClass = Class.forName("__redirected.__" + factoryType.getSimpleName());
         try {
             actual = wrapperClass.getDeclaredField("actual");
-            AccessController.doPrivileged(
-                    new PrivilegedAction<Void>() {
-                        @Override
-                        public Void run() {
-                            actual.setAccessible(true);
-                            return null;
-                        }
-                    });
+            actual.setAccessible(true);
         } catch (Exception ex) {
             log.error(
                     "Found JBoss wrapper class for "

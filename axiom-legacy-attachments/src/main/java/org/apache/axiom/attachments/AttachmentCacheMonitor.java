@@ -27,9 +27,6 @@ import java.util.TimerTask;
 
 import java.io.File;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -254,16 +251,7 @@ public final class AttachmentCacheMonitor {
         }
     }
 
-    private boolean deleteFile(final String fileName ) {
-        return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-                @Override
-                public Boolean run() {
-                    return _deleteFile(fileName);
-                }
-            });
-    }
-
-    private boolean _deleteFile(String fileName) {
+    private boolean deleteFile(String fileName) {
         boolean ret = false;
         File file = new File(fileName);
         if (file.exists()) {

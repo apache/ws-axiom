@@ -37,8 +37,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -376,48 +374,37 @@ public class StAXUtils {
 
     private static XMLInputFactory newXMLInputFactory(
             final ClassLoader classLoader, final StAXParserConfiguration configuration) {
-
-        return AccessController.doPrivileged(
-                new PrivilegedAction<XMLInputFactory>() {
-                    @Override
-                    public XMLInputFactory run() {
-                        ClassLoader savedClassLoader;
-                        if (classLoader == null) {
-                            savedClassLoader = null;
-                        } else {
-                            savedClassLoader = Thread.currentThread().getContextClassLoader();
-                            Thread.currentThread().setContextClassLoader(classLoader);
-                        }
-                        try {
-                            XMLInputFactory factory = XMLInputFactory.newInstance();
-                            // Woodstox 3.x by default creates coalescing parsers. Even if this
-                            // violates
-                            // the StAX specs (see WSTX-140), for compatibility with Woodstox 3.x,
-                            // we always enable
-                            // coalescing mode. Note that we need to do that before loading
-                            // XMLInputFactory.properties so that this setting can be overridden.
-                            factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-                            Map<String, Object> props =
-                                    loadFactoryProperties(
-                                            classLoader, "XMLInputFactory.properties");
-                            if (props != null) {
-                                for (Map.Entry<String, Object> entry : props.entrySet()) {
-                                    factory.setProperty(entry.getKey(), entry.getValue());
-                                }
-                            }
-                            StAXDialect dialect = StAXDialectDetector.getDialect(factory);
-                            if (configuration != null) {
-                                factory = configuration.configure(factory, dialect);
-                            }
-                            return new ImmutableXMLInputFactory(
-                                    dialect.normalize(dialect.makeThreadSafe(factory)));
-                        } finally {
-                            if (savedClassLoader != null) {
-                                Thread.currentThread().setContextClassLoader(savedClassLoader);
-                            }
-                        }
-                    }
-                });
+        ClassLoader savedClassLoader;
+        if (classLoader == null) {
+            savedClassLoader = null;
+        } else {
+            savedClassLoader = Thread.currentThread().getContextClassLoader();
+            Thread.currentThread().setContextClassLoader(classLoader);
+        }
+        try {
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            // Woodstox 3.x by default creates coalescing parsers. Even if this violates the StAX
+            // specs (see WSTX-140), for compatibility with Woodstox 3.x, we always enable
+            // coalescing mode. Note that we need to do that before loading
+            // XMLInputFactory.properties so that this setting can be overridden.
+            factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
+            Map<String, Object> props =
+                    loadFactoryProperties(classLoader, "XMLInputFactory.properties");
+            if (props != null) {
+                for (Map.Entry<String, Object> entry : props.entrySet()) {
+                    factory.setProperty(entry.getKey(), entry.getValue());
+                }
+            }
+            StAXDialect dialect = StAXDialectDetector.getDialect(factory);
+            if (configuration != null) {
+                factory = configuration.configure(factory, dialect);
+            }
+            return new ImmutableXMLInputFactory(dialect.normalize(dialect.makeThreadSafe(factory)));
+        } finally {
+            if (savedClassLoader != null) {
+                Thread.currentThread().setContextClassLoader(savedClassLoader);
+            }
+        }
     }
 
     /**
@@ -453,42 +440,34 @@ public class StAXUtils {
      */
     private static XMLOutputFactory newXMLOutputFactory(
             final ClassLoader classLoader, final StAXWriterConfiguration configuration) {
-        return AccessController.doPrivileged(
-                new PrivilegedAction<XMLOutputFactory>() {
-                    @Override
-                    public XMLOutputFactory run() {
-                        ClassLoader savedClassLoader;
-                        if (classLoader == null) {
-                            savedClassLoader = null;
-                        } else {
-                            savedClassLoader = Thread.currentThread().getContextClassLoader();
-                            Thread.currentThread().setContextClassLoader(classLoader);
-                        }
-                        try {
-                            XMLOutputFactory factory = XMLOutputFactory.newInstance();
-                            factory.setProperty(
-                                    XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
-                            Map<String, Object> props =
-                                    loadFactoryProperties(
-                                            classLoader, "XMLOutputFactory.properties");
-                            if (props != null) {
-                                for (Map.Entry<String, Object> entry : props.entrySet()) {
-                                    factory.setProperty(entry.getKey(), entry.getValue());
-                                }
-                            }
-                            StAXDialect dialect = StAXDialectDetector.getDialect(factory);
-                            if (configuration != null) {
-                                factory = configuration.configure(factory, dialect);
-                            }
-                            return new ImmutableXMLOutputFactory(
-                                    dialect.normalize(dialect.makeThreadSafe(factory)));
-                        } finally {
-                            if (savedClassLoader != null) {
-                                Thread.currentThread().setContextClassLoader(savedClassLoader);
-                            }
-                        }
-                    }
-                });
+        ClassLoader savedClassLoader;
+        if (classLoader == null) {
+            savedClassLoader = null;
+        } else {
+            savedClassLoader = Thread.currentThread().getContextClassLoader();
+            Thread.currentThread().setContextClassLoader(classLoader);
+        }
+        try {
+            XMLOutputFactory factory = XMLOutputFactory.newInstance();
+            factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
+            Map<String, Object> props =
+                    loadFactoryProperties(classLoader, "XMLOutputFactory.properties");
+            if (props != null) {
+                for (Map.Entry<String, Object> entry : props.entrySet()) {
+                    factory.setProperty(entry.getKey(), entry.getValue());
+                }
+            }
+            StAXDialect dialect = StAXDialectDetector.getDialect(factory);
+            if (configuration != null) {
+                factory = configuration.configure(factory, dialect);
+            }
+            return new ImmutableXMLOutputFactory(
+                    dialect.normalize(dialect.makeThreadSafe(factory)));
+        } finally {
+            if (savedClassLoader != null) {
+                Thread.currentThread().setContextClassLoader(savedClassLoader);
+            }
+        }
     }
 
     /**
