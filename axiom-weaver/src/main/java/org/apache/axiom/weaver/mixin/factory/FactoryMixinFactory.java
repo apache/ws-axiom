@@ -39,7 +39,7 @@ public final class FactoryMixinFactory {
         }
         return Optional.of(
                 new Mixin(
-                        Opcodes.V11,
+                        Opcodes.V17,
                         iface.getSimpleName() + "FactoryMixin",
                         iface,
                         Collections.emptyList(),
