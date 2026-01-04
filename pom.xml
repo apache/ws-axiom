@@ -295,6 +295,7 @@
         <errorprone.version>2.45.0</errorprone.version>
         <mime4j.version>0.8.13</mime4j.version>
         <surefire.version>3.5.4</surefire.version>
+        <jaxws-rt.version>4.0.3</jaxws-rt.version>
 
         <skipDeploy>false</skipDeploy>
 
@@ -539,7 +540,7 @@
             <dependency>
                 <groupId>com.sun.xml.ws</groupId>
                 <artifactId>jaxws-rt</artifactId>
-                <version>4.0.3</version>
+                <version>${jaxws-rt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -97,19 +97,16 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.github.veithen.maven</groupId>
-                <artifactId>wsimport-maven-plugin</artifactId>
-                <version>0.3.0</version>
+                <groupId>com.sun.xml.ws</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>${jaxws-rt.version}</version>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>generate-test-sources</goal>
+                            <goal>wsimport-test</goal>
                         </goals>
                         <configuration>
-                            <wsdlFiles>
-                                <wsdlFile>src/test/wsdl/image-upload.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <generateService>true</generateService>
+                            <wsdlDirectory>src/test/wsdl</wsdlDirectory>
                             <extension>true</extension>
                         </configuration>
                     </execution>
