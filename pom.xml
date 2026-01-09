@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
-        <version>35</version>
+        <version>36</version>
     </parent>
 
     <groupId>org.apache.ws.commons.axiom</groupId>
@@ -278,7 +278,7 @@
     </distributionManagement>
 
     <properties>
-        <maven.compiler.target>17</maven.compiler.target>
+        <javaVersion>17</javaVersion>
         <!-- A more recent Java version is required by some of the Maven plugins in the build. -->
         <minimalJavaBuildVersion>21</minimalJavaBuildVersion>
 
