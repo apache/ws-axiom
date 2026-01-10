@@ -21,32 +21,26 @@ package org.apache.axiom.util.base64;
 
 // For internal use only
 class Base64Constants {
-    static final byte[] S_BASE64CHAR = { 'A', 'B', 'C', 'D', 'E', 'F',
-        'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-        'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
-        'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-        't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5',
-        '6', '7', '8', '9', '+', '/' };
+    static final byte[] S_BASE64CHAR = {
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+        'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+        'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1',
+        '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'
+    };
 
     static final byte S_BASE64PAD = '=';
 
-    /**
-     * Used in {@link #S_DECODETABLE} to indicate that a character is the padding character.
-     */
+    /** Used in {@link #S_DECODETABLE} to indicate that a character is the padding character. */
     static final byte PADDING = -1;
-    
-    /**
-     * Used in {@link #S_DECODETABLE} to indicate that a character is white space.
-     */
+
+    /** Used in {@link #S_DECODETABLE} to indicate that a character is white space. */
     static final byte WHITE_SPACE = -2;
-    
-    /**
-     * Used in {@link #S_DECODETABLE} to indicate that a character is invalid.
-     */
+
+    /** Used in {@link #S_DECODETABLE} to indicate that a character is invalid. */
     static final byte INVALID = -3;
 
     static final byte[] S_DECODETABLE = new byte[128];
-    
+
     static {
         for (int i = 0; i < S_DECODETABLE.length; i++) {
             S_DECODETABLE[i] = INVALID;

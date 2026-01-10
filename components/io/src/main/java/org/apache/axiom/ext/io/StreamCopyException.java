@@ -23,35 +23,32 @@ import java.io.IOException;
 
 /**
  * Signals that an I/O exception occurred while copying data from an input stream (or other data
- * source) to an output stream (or other data sink). The exception wraps the original
- * {@link IOException} together with information about the type of operation (read or write) that
- * failed.
+ * source) to an output stream (or other data sink). The exception wraps the original {@link
+ * IOException} together with information about the type of operation (read or write) that failed.
  */
 public class StreamCopyException extends IOException {
     private static final long serialVersionUID = -6489101119109339448L;
-    
+
     /**
-     * Indicates that the wrapped exception was triggered while reading from the input stream
-     * (or data source).
+     * Indicates that the wrapped exception was triggered while reading from the input stream (or
+     * data source).
      */
     public static final int READ = 1;
-    
+
     /**
-     * Indicates that the wrapped exception was triggered while writing to the output stream
-     * (or data sink).
+     * Indicates that the wrapped exception was triggered while writing to the output stream (or
+     * data sink).
      */
     public static final int WRITE = 2;
-    
+
     private final int operation;
-    
+
     /**
      * Constructor.
-     * 
-     * @param operation
-     *            indicates the type of operation that caused the exception; must be {@link #READ}
-     *            or {@link #WRITE}
-     * @param cause
-     *            the wrapped exception
+     *
+     * @param operation indicates the type of operation that caused the exception; must be {@link
+     *     #READ} or {@link #WRITE}
+     * @param cause the wrapped exception
      */
     public StreamCopyException(int operation, IOException cause) {
         super(cause);
@@ -60,7 +57,7 @@ public class StreamCopyException extends IOException {
 
     /**
      * Get information about the type of operation that fails.
-     * 
+     *
      * @return one of {@link #READ} or {@link #WRITE}
      */
     public int getOperation() {
@@ -69,7 +66,6 @@ public class StreamCopyException extends IOException {
 
     @Override
     public String getMessage() {
-        return operation == READ ? "Error reading from source"
-                                 : "Error writing to destination";
+        return operation == READ ? "Error reading from source" : "Error writing to destination";
     }
 }

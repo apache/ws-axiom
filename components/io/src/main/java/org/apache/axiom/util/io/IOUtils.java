@@ -28,24 +28,22 @@ import org.apache.axiom.ext.io.StreamCopyException;
 
 public final class IOUtils {
     private IOUtils() {}
-    
+
     /**
      * Copy bytes between streams. This method supports the {@link ReadFromSupport} interface. It
      * will not call {@link Closeable#close()} on either of the two streams.
-     * 
-     * @param in
-     *            the stream to read bytes from
-     * @param out
-     *            the stream to write bytes to
-     * @param length
-     *            the maximum number of bytes to copy, or -1 to copy an unlimited number of bytes
+     *
+     * @param in the stream to read bytes from
+     * @param out the stream to write bytes to
+     * @param length the maximum number of bytes to copy, or -1 to copy an unlimited number of bytes
      * @return the number of bytes copied
-     * @throws StreamCopyException
-     *             if a read/write operation on one of the streams triggered an {@link IOException}
+     * @throws StreamCopyException if a read/write operation on one of the streams triggered an
+     *     {@link IOException}
      */
-    public static long copy(InputStream in, OutputStream out, long length) throws StreamCopyException {
+    public static long copy(InputStream in, OutputStream out, long length)
+            throws StreamCopyException {
         if (out instanceof ReadFromSupport) {
-            return ((ReadFromSupport)out).readFrom(in, length);
+            return ((ReadFromSupport) out).readFrom(in, length);
         } else {
             byte[] buffer = new byte[4096];
             long read = 0;
@@ -53,7 +51,7 @@ public final class IOUtils {
             while (toRead > 0) {
                 int c;
                 try {
-                    c = in.read(buffer, 0, (int)Math.min(toRead, buffer.length));
+                    c = in.read(buffer, 0, (int) Math.min(toRead, buffer.length));
                 } catch (IOException ex) {
                     throw new StreamCopyException(StreamCopyException.READ, ex);
                 }

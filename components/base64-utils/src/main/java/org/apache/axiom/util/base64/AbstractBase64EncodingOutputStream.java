@@ -22,9 +22,7 @@ package org.apache.axiom.util.base64;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- * Base class for {@link OutputStream} implementations that encode data in base64.
- */
+/** Base class for {@link OutputStream} implementations that encode data in base64. */
 public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
     private final boolean ignoreFlush;
     private final byte[] in = new byte[3];
@@ -34,29 +32,27 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
 
     /**
      * Constructor.
-     * 
-     * @param ignoreFlush
-     *            Specifies if calls to {@link #flush()} should be ignored. Setting this to
-     *            <code>true</code> is particular useful in conjunction with
-     *            {@code DataHandler.writeTo(OutputStream)}: that method may call {@link #flush()}
-     *            after writing the data, but the call to {@code DataHandler.writeTo(OutputStream)}
-     *            must be followed by a call to {@link #close()} or {@link #complete()} which would
-     *            then output a single chunk with a few bytes. In some cases this may be
-     *            inconvenient.
+     *
+     * @param ignoreFlush Specifies if calls to {@link #flush()} should be ignored. Setting this to
+     *     <code>true</code> is particular useful in conjunction with {@code
+     *     DataHandler.writeTo(OutputStream)}: that method may call {@link #flush()} after writing
+     *     the data, but the call to {@code DataHandler.writeTo(OutputStream)} must be followed by a
+     *     call to {@link #close()} or {@link #complete()} which would then output a single chunk
+     *     with a few bytes. In some cases this may be inconvenient.
      */
     public AbstractBase64EncodingOutputStream(boolean ignoreFlush) {
         this.ignoreFlush = ignoreFlush;
     }
-    
+
     /**
-     * Default constructor. This constructor does the same as
-     * {@link #AbstractBase64EncodingOutputStream(boolean)} with <code>ignoreFlush</code> set to
-     * <code>false</code>.
+     * Default constructor. This constructor does the same as {@link
+     * #AbstractBase64EncodingOutputStream(boolean)} with <code>ignoreFlush</code> set to <code>
+     * false</code>.
      */
     public AbstractBase64EncodingOutputStream() {
         this(false);
     }
-    
+
     @Override
     public final void write(byte[] b, int off, int len) throws IOException {
         if (completed) {
@@ -85,7 +81,7 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
 
     @Override
     public final void write(int b) throws IOException {
-        in[rest++] = (byte)b;
+        in[rest++] = (byte) b;
         if (rest == 3) {
             encode(in, 0, 3);
             rest = 0;
@@ -94,7 +90,7 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
 
     /**
      * Write out any pending data, including padding if necessary.
-     * 
+     *
      * @throws IOException if an I/O error occurs
      */
     public final void complete() throws IOException {
@@ -106,7 +102,7 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
             completed = true;
         }
     }
-    
+
     private void encode(byte[] data, int off, int len) throws IOException {
         if (len == 1) {
             int i = data[off] & 0xff;
@@ -121,9 +117,10 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
             out[2] = Base64Constants.S_BASE64CHAR[(i << 2) & 0x3f];
             out[3] = Base64Constants.S_BASE64PAD;
         } else {
-            int i = ((data[off] & 0xff) << 16)
-                    + ((data[off + 1] & 0xff) << 8)
-                    + (data[off + 2] & 0xff);
+            int i =
+                    ((data[off] & 0xff) << 16)
+                            + ((data[off + 1] & 0xff) << 8)
+                            + (data[off + 2] & 0xff);
             out[0] = Base64Constants.S_BASE64CHAR[i >> 18];
             out[1] = Base64Constants.S_BASE64CHAR[(i >> 12) & 0x3f];
             out[2] = Base64Constants.S_BASE64CHAR[(i >> 6) & 0x3f];
@@ -145,34 +142,34 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
         complete();
         doClose();
     }
-    
+
     /**
-     * Write base64 encoded data. If necessary, the implementation should accumulate
-     * the data in a buffer before writing it to the underlying stream.
-     * 
+     * Write base64 encoded data. If necessary, the implementation should accumulate the data in a
+     * buffer before writing it to the underlying stream.
+     *
      * @param b a byte array of length 4
      * @throws IOException if an I/O error occurs
      */
     protected abstract void doWrite(byte[] b) throws IOException;
-    
+
     /**
-     * Write any pending data to the underlying stream, if applicable.
-     * Note that implementations should not flush the underlying stream.
-     * 
+     * Write any pending data to the underlying stream, if applicable. Note that implementations
+     * should not flush the underlying stream.
+     *
      * @throws IOException if an I/O error occurs
      */
     protected abstract void flushBuffer() throws IOException;
-    
+
     /**
      * Flush the underlying stream, if applicable.
-     * 
+     *
      * @throws IOException if an I/O error occurs
      */
     protected abstract void doFlush() throws IOException;
-    
+
     /**
      * Close the underlying stream, if applicable.
-     * 
+     *
      * @throws IOException if an I/O error occurs
      */
     protected abstract void doClose() throws IOException;

@@ -24,45 +24,42 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * {@link OutputStream} implementation that writes base64 encoded data to a {@link Writer}.
- * This class internally buffers the data before writing it to the underlying stream.
+ * {@link OutputStream} implementation that writes base64 encoded data to a {@link Writer}. This
+ * class internally buffers the data before writing it to the underlying stream.
  */
 public class Base64EncodingWriterOutputStream extends AbstractBase64EncodingOutputStream {
     private final Writer writer;
     private final char[] buffer;
     private int len;
-    
+
     /**
      * Constructor.
-     * 
-     * @param writer
-     *            the stream to write the encoded data to
-     * @param bufferSize
-     *            the buffer size to use
-     * @param ignoreFlush
-     *            specifies if calls to {@link #flush()} should be ignored; see
-     *            {@link AbstractBase64EncodingOutputStream#AbstractBase64EncodingOutputStream(boolean)}
-     *            for more information
+     *
+     * @param writer the stream to write the encoded data to
+     * @param bufferSize the buffer size to use
+     * @param ignoreFlush specifies if calls to {@link #flush()} should be ignored; see {@link
+     *     AbstractBase64EncodingOutputStream#AbstractBase64EncodingOutputStream(boolean)} for more
+     *     information
      */
     public Base64EncodingWriterOutputStream(Writer writer, int bufferSize, boolean ignoreFlush) {
         super(ignoreFlush);
         this.writer = writer;
         buffer = new char[bufferSize];
     }
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param writer the stream to write the encoded data to
      * @param bufferSize the buffer size to use
      */
     public Base64EncodingWriterOutputStream(Writer writer, int bufferSize) {
         this(writer, bufferSize, false);
     }
-    
+
     /**
      * Constructor that sets the buffer size to its default value of 4096 characters.
-     * 
+     *
      * @param writer the stream to write the encoded data to
      */
     public Base64EncodingWriterOutputStream(Writer writer) {
@@ -74,11 +71,11 @@ public class Base64EncodingWriterOutputStream extends AbstractBase64EncodingOutp
         if (buffer.length - len < 4) {
             flushBuffer();
         }
-        for (int i=0; i<4; i++) {
-            buffer[len++] = (char)(b[i] & 0xFF);
+        for (int i = 0; i < 4; i++) {
+            buffer[len++] = (char) (b[i] & 0xFF);
         }
     }
-    
+
     @Override
     protected void flushBuffer() throws IOException {
         writer.write(buffer, 0, len);

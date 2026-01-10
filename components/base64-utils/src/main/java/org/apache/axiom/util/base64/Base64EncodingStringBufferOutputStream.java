@@ -31,7 +31,7 @@ public class Base64EncodingStringBufferOutputStream extends AbstractBase64Encodi
 
     /**
      * Constructor.
-     * 
+     *
      * @param buffer the buffer to append the encoded data to
      */
     public Base64EncodingStringBufferOutputStream(StringBuffer buffer) {
@@ -40,7 +40,7 @@ public class Base64EncodingStringBufferOutputStream extends AbstractBase64Encodi
 
     /**
      * Constructor.
-     * 
+     *
      * @param buffer the buffer to append the encoded data to
      */
     public Base64EncodingStringBufferOutputStream(StringBuilder buffer) {
@@ -49,8 +49,8 @@ public class Base64EncodingStringBufferOutputStream extends AbstractBase64Encodi
 
     @Override
     protected void doWrite(byte[] b) throws IOException {
-        for (int i=0; i<4; i++) {
-            buffer.append((char)(b[i] & 0xFF));
+        for (int i = 0; i < 4; i++) {
+            buffer.append((char) (b[i] & 0xFF));
         }
     }
 
@@ -58,7 +58,7 @@ public class Base64EncodingStringBufferOutputStream extends AbstractBase64Encodi
     protected void flushBuffer() throws IOException {
         // Nothing to do
     }
-    
+
     @Override
     protected void doClose() throws IOException {
         // Nothing to do

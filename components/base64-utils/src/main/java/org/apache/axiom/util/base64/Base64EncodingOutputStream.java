@@ -23,18 +23,18 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * {@link OutputStream} implementation that writes base64 encoded data to another
- * {@link OutputStream} using ASCII encoding. This class internally buffers the data before writing
- * it to the underlying stream.
+ * {@link OutputStream} implementation that writes base64 encoded data to another {@link
+ * OutputStream} using ASCII encoding. This class internally buffers the data before writing it to
+ * the underlying stream.
  */
 public class Base64EncodingOutputStream extends AbstractBase64EncodingOutputStream {
     private final OutputStream parent;
     private final byte[] buffer;
     private int len;
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param parent the stream to write the encoded data to
      * @param bufferSize the buffer size to use
      */
@@ -42,10 +42,10 @@ public class Base64EncodingOutputStream extends AbstractBase64EncodingOutputStre
         this.parent = parent;
         buffer = new byte[bufferSize];
     }
-    
+
     /**
      * Constructor that sets the buffer size to its default value of 4096 characters.
-     * 
+     *
      * @param parent the stream to write the encoded data to
      */
     public Base64EncodingOutputStream(OutputStream parent) {
@@ -60,7 +60,7 @@ public class Base64EncodingOutputStream extends AbstractBase64EncodingOutputStre
         System.arraycopy(b, 0, buffer, len, 4);
         len += 4;
     }
-    
+
     @Override
     protected void flushBuffer() throws IOException {
         parent.write(buffer, 0, len);

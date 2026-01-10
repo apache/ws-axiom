@@ -22,18 +22,16 @@ package org.apache.axiom.util.base64;
 import java.io.IOException;
 import java.io.Writer;
 
-/**
- * Base class for {@link Writer} implementations that decode data in base64.
- */
+/** Base class for {@link Writer} implementations that decode data in base64. */
 public abstract class AbstractBase64DecodingWriter extends Writer {
     private final char[] in = new char[4];
     private final byte[] out = new byte[3];
     private int rest; // Number of characters remaining in the in buffer
 
     private static boolean isWhitespace(int c) {
-        return c <= 32 && (c == ' ' || c == '\n' || c == '\r' || c == '\t'); 
+        return c <= 32 && (c == ' ' || c == '\n' || c == '\r' || c == '\t');
     }
-    
+
     @Override
     public final void write(char[] cbuf, int off, int len) throws IOException {
         while (len > 0) {
@@ -55,7 +53,7 @@ public abstract class AbstractBase64DecodingWriter extends Writer {
     @Override
     public final void write(int c) throws IOException {
         if (!isWhitespace(c)) {
-            in[rest++] = (char)c;
+            in[rest++] = (char) c;
             if (rest == 4) {
                 decode(in, 0);
                 rest = 0;
@@ -74,19 +72,19 @@ public abstract class AbstractBase64DecodingWriter extends Writer {
         }
         throw new IOException("Invalid base64 char '" + c + "'");
     }
-    
+
     private void decode(char[] data, int off) throws IOException {
         int outlen = 3;
-        if (data[off+3] == Base64Constants.S_BASE64PAD) {
+        if (data[off + 3] == Base64Constants.S_BASE64PAD) {
             outlen = 2;
         }
-        if (data[off+2] == Base64Constants.S_BASE64PAD) {
+        if (data[off + 2] == Base64Constants.S_BASE64PAD) {
             outlen = 1;
         }
         int b0 = decode(data[off]);
-        int b1 = decode(data[off+1]);
-        int b2 = decode(data[off+2]);
-        int b3 = decode(data[off+3]);
+        int b1 = decode(data[off + 1]);
+        int b2 = decode(data[off + 2]);
+        int b3 = decode(data[off + 3]);
         switch (outlen) {
             case 1:
                 out[0] = (byte) (b0 << 2 & 0xfc | b1 >> 4 & 0x3);
@@ -102,20 +100,15 @@ public abstract class AbstractBase64DecodingWriter extends Writer {
         }
         doWrite(out, outlen);
     }
-    
+
     /**
-     * Write base64 decoded data. If necessary, the implementation should
-     * accumulate the data in a buffer before writing it to the underlying
-     * stream. The maximum number of bytes passed to this method in a single
-     * call is 3.
-     * 
-     * @param b
-     *            the byte array containing the data to write, starting at
-     *            offset 0
-     * @param len
-     *            the number of bytes to write
-     * @throws IOException
-     *             if an I/O error occurs
+     * Write base64 decoded data. If necessary, the implementation should accumulate the data in a
+     * buffer before writing it to the underlying stream. The maximum number of bytes passed to this
+     * method in a single call is 3.
+     *
+     * @param b the byte array containing the data to write, starting at offset 0
+     * @param len the number of bytes to write
+     * @throws IOException if an I/O error occurs
      */
     protected abstract void doWrite(byte[] b, int len) throws IOException;
 }

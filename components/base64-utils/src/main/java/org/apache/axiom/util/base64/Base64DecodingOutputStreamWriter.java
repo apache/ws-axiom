@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * {@link java.io.Writer} implementation that decodes base64 data and writes it
- * to a an {@link OutputStream}.
+ * {@link java.io.Writer} implementation that decodes base64 data and writes it to a an {@link
+ * OutputStream}.
  */
 public class Base64DecodingOutputStreamWriter extends AbstractBase64DecodingWriter {
     private final OutputStream stream;

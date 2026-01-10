@@ -23,24 +23,23 @@ import java.io.InputStream;
 
 /**
  * Optional interface implemented by {@link java.io.OutputStream} implementations that support
- * transferring data from an {@link InputStream}. This interface may be used to avoid allocating
- * a temporary buffer when there is a need to copy data from an input stream to an output stream.
+ * transferring data from an {@link InputStream}. This interface may be used to avoid allocating a
+ * temporary buffer when there is a need to copy data from an input stream to an output stream.
  */
 public interface ReadFromSupport {
     /**
-     * Read data from the given input stream and write it to this output stream.
-     * The method transfers data until one of the following conditions is met:
+     * Read data from the given input stream and write it to this output stream. The method
+     * transfers data until one of the following conditions is met:
+     *
      * <ul>
      *   <li>The end of the input stream is reached.
-     *   <li>The value of the <code>length</code> argument is different from <code>-1</code>
-     *       and the number of bytes transferred is equal to <code>length</code>.
+     *   <li>The value of the <code>length</code> argument is different from <code>-1</code> and the
+     *       number of bytes transferred is equal to <code>length</code>.
      * </ul>
-     * 
-     * @param inputStream
-     *            An input stream to read data from. This method will not close the stream.
-     * @param length
-     *            the number of bytes to transfer, or <code>-1</code> if the method should
-     *            transfer data until the end of the input stream is reached
+     *
+     * @param inputStream An input stream to read data from. This method will not close the stream.
+     * @param length the number of bytes to transfer, or <code>-1</code> if the method should
+     *     transfer data until the end of the input stream is reached
      * @throws StreamCopyException
      * @return the number of bytes transferred
      */
