@@ -20,6 +20,4 @@ package org.apache.axiom.om.impl.dom.intf;
 
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
-public interface DOOMSourcedElement extends DOOMNSAwareElement, AxiomSourcedElement {
-
-}
+public interface DOOMSourcedElement extends DOOMNSAwareElement, AxiomSourcedElement {}

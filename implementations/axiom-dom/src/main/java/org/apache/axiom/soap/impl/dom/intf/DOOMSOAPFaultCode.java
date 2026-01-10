@@ -20,6 +20,4 @@ package org.apache.axiom.soap.impl.dom.intf;
 
 import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultCode;
 
-public interface DOOMSOAPFaultCode extends DOOMSOAPElement, AxiomSOAPFaultCode {
-
-}
+public interface DOOMSOAPFaultCode extends DOOMSOAPElement, AxiomSOAPFaultCode {}

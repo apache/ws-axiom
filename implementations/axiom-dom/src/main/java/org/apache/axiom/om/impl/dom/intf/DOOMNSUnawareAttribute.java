@@ -20,6 +20,4 @@ package org.apache.axiom.om.impl.dom.intf;
 
 import org.apache.axiom.dom.DOMNSUnawareAttribute;
 
-public interface DOOMNSUnawareAttribute extends DOOMAttribute, DOMNSUnawareAttribute {
-
-}
+public interface DOOMNSUnawareAttribute extends DOOMAttribute, DOMNSUnawareAttribute {}

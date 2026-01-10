@@ -26,8 +26,9 @@ import junit.framework.TestSuite;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
-        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactoryLoader().load(null));
-        
+        SOAPTestSuiteBuilder builder =
+                new SOAPTestSuiteBuilder(new OMDOMMetaFactoryLoader().load(null));
+
         return builder.build();
     }
 }

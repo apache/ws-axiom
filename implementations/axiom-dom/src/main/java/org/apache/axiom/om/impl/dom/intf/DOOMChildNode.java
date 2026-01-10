@@ -21,6 +21,4 @@ package org.apache.axiom.om.impl.dom.intf;
 import org.apache.axiom.dom.DOMChildNode;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
 
-public interface DOOMChildNode extends DOOMNode, DOMChildNode, AxiomChildNode {
-
-}
+public interface DOOMChildNode extends DOOMNode, DOMChildNode, AxiomChildNode {}

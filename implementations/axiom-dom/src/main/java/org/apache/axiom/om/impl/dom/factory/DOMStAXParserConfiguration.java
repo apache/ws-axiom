@@ -26,7 +26,7 @@ import org.apache.axiom.util.stax.dialect.StAXDialect;
 final class DOMStAXParserConfiguration implements StAXParserConfiguration {
     private final boolean coalescing;
     private final boolean expandEntityReferences;
-    
+
     public DOMStAXParserConfiguration(boolean coalescing, boolean expandEntityReferences) {
         this.coalescing = coalescing;
         this.expandEntityReferences = expandEntityReferences;
@@ -37,7 +37,9 @@ final class DOMStAXParserConfiguration implements StAXParserConfiguration {
         if (!coalescing) {
             factory = StAXParserConfiguration.PRESERVE_CDATA_SECTIONS.configure(factory, dialect);
         }
-        factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.valueOf(expandEntityReferences));
+        factory.setProperty(
+                XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES,
+                Boolean.valueOf(expandEntityReferences));
         return factory;
     }
 
@@ -51,8 +53,9 @@ final class DOMStAXParserConfiguration implements StAXParserConfiguration {
         if (obj == this) {
             return true;
         } else if (obj instanceof DOMStAXParserConfiguration) {
-            DOMStAXParserConfiguration other = (DOMStAXParserConfiguration)obj;
-            return other.coalescing == coalescing && other.expandEntityReferences == expandEntityReferences;
+            DOMStAXParserConfiguration other = (DOMStAXParserConfiguration) obj;
+            return other.coalescing == coalescing
+                    && other.expandEntityReferences == expandEntityReferences;
         } else {
             return false;
         }
@@ -60,6 +63,10 @@ final class DOMStAXParserConfiguration implements StAXParserConfiguration {
 
     @Override
     public String toString() {
-        return "DOM(coalescing=" + coalescing + ",expandEntityReferences=" + expandEntityReferences + ")";
+        return "DOM(coalescing="
+                + coalescing
+                + ",expandEntityReferences="
+                + expandEntityReferences
+                + ")";
     }
 }

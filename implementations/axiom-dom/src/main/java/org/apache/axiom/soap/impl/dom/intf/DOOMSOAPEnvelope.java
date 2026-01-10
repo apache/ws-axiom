@@ -20,6 +20,4 @@ package org.apache.axiom.soap.impl.dom.intf;
 
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 
-public interface DOOMSOAPEnvelope extends DOOMSOAPElement, AxiomSOAPEnvelope {
-
-}
+public interface DOOMSOAPEnvelope extends DOOMSOAPElement, AxiomSOAPEnvelope {}

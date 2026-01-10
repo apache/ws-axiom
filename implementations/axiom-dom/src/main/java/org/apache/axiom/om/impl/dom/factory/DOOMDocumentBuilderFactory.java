@@ -26,21 +26,21 @@ import javax.xml.validation.Schema;
 
 import org.apache.axiom.om.impl.dom.intf.factory.DOOMNodeFactory;
 
-/**
- * Document builder factory that conforms to JAXP.
- */
+/** Document builder factory that conforms to JAXP. */
 public final class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
     private final DOOMNodeFactory factory;
     private Schema schema;
-    
+
     public DOOMDocumentBuilderFactory(DOOMNodeFactory factory) {
         this.factory = factory;
     }
-    
+
     @Override
-    public DocumentBuilder newDocumentBuilder()
-            throws ParserConfigurationException {
-        return new DOOMDocumentBuilder(factory, new DOMStAXParserConfiguration(isCoalescing(), isExpandEntityReferences()), schema);
+    public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
+        return new DOOMDocumentBuilder(
+                factory,
+                new DOMStAXParserConfiguration(isCoalescing(), isExpandEntityReferences()),
+                schema);
     }
 
     @Override
@@ -50,15 +50,13 @@ public final class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
     }
 
     @Override
-    public void setAttribute(String name, Object value)
-            throws IllegalArgumentException {
+    public void setAttribute(String name, Object value) throws IllegalArgumentException {
         // // TODO
         // throw new UnsupportedOperationException("TODO");
     }
 
     @Override
-    public void setFeature(String name, boolean value)
-            throws ParserConfigurationException {
+    public void setFeature(String name, boolean value) throws ParserConfigurationException {
         // TODO TODO OS
     }
 

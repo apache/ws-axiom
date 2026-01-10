@@ -21,6 +21,4 @@ package org.apache.axiom.soap.impl.dom.intf.soap12;
 import org.apache.axiom.soap.impl.dom.intf.DOOMSOAPHeaderBlock;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12HeaderBlock;
 
-public interface DOOMSOAP12HeaderBlock extends DOOMSOAPHeaderBlock, AxiomSOAP12HeaderBlock {
-
-}
+public interface DOOMSOAP12HeaderBlock extends DOOMSOAPHeaderBlock, AxiomSOAP12HeaderBlock {}

@@ -20,6 +20,4 @@ package org.apache.axiom.om.impl.dom.intf;
 
 import org.apache.axiom.dom.DOMNSUnawareElement;
 
-public interface DOOMNSUnawareElement extends DOOMElement, DOMNSUnawareElement {
-
-}
+public interface DOOMNSUnawareElement extends DOOMElement, DOMNSUnawareElement {}

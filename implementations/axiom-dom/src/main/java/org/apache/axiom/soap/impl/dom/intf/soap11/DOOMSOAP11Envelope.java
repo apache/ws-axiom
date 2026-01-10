@@ -21,6 +21,4 @@ package org.apache.axiom.soap.impl.dom.intf.soap11;
 import org.apache.axiom.soap.impl.dom.intf.DOOMSOAPEnvelope;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Envelope;
 
-public interface DOOMSOAP11Envelope extends DOOMSOAPEnvelope, AxiomSOAP11Envelope {
-
-}
+public interface DOOMSOAP11Envelope extends DOOMSOAPEnvelope, AxiomSOAP11Envelope {}

@@ -21,6 +21,4 @@ package org.apache.axiom.soap.impl.dom.intf.soap11;
 import org.apache.axiom.soap.impl.dom.intf.DOOMSOAPFaultRole;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultRole;
 
-public interface DOOMSOAP11FaultRole extends DOOMSOAPFaultRole, AxiomSOAP11FaultRole {
-
-}
+public interface DOOMSOAP11FaultRole extends DOOMSOAPFaultRole, AxiomSOAP11FaultRole {}

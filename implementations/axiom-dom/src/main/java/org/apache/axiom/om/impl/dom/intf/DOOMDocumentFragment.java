@@ -20,6 +20,4 @@ package org.apache.axiom.om.impl.dom.intf;
 
 import org.apache.axiom.dom.DOMDocumentFragment;
 
-public interface DOOMDocumentFragment extends DOOMParentNode, DOMDocumentFragment{
-
-}
+public interface DOOMDocumentFragment extends DOOMParentNode, DOMDocumentFragment {}

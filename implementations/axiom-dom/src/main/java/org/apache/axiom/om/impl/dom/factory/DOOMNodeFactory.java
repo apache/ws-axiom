@@ -22,9 +22,10 @@ import org.apache.axiom.core.NodeFactoryImpl;
 
 public final class DOOMNodeFactory extends NodeFactoryImpl {
     public static final DOOMNodeFactory INSTANCE = new DOOMNodeFactory();
-    
+
     private DOOMNodeFactory() {
-        super(DOOMNodeFactory.class.getClassLoader(),
+        super(
+                DOOMNodeFactory.class.getClassLoader(),
                 "org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl",
                 "org.apache.axiom.om.impl.dom",
                 "org.apache.axiom.soap.impl.dom",

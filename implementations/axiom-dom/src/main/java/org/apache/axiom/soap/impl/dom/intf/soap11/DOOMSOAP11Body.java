@@ -21,6 +21,4 @@ package org.apache.axiom.soap.impl.dom.intf.soap11;
 import org.apache.axiom.soap.impl.dom.intf.DOOMSOAPBody;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11Body;
 
-public interface DOOMSOAP11Body extends DOOMSOAPBody, AxiomSOAP11Body {
-
-}
+public interface DOOMSOAP11Body extends DOOMSOAPBody, AxiomSOAP11Body {}

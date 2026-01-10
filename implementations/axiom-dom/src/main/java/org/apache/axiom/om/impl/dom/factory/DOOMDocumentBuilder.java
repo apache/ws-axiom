@@ -41,8 +41,9 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
     private final DOOMNodeFactory factory;
     private final StAXParserConfiguration parserConfiguration;
     private final Schema schema;
-    
-    DOOMDocumentBuilder(DOOMNodeFactory factory, StAXParserConfiguration parserConfiguration, Schema schema) {
+
+    DOOMDocumentBuilder(
+            DOOMNodeFactory factory, StAXParserConfiguration parserConfiguration, Schema schema) {
         this.factory = factory;
         this.parserConfiguration = parserConfiguration;
         this.schema = schema;
@@ -97,15 +98,15 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
 
     @Override
     public void setErrorHandler(ErrorHandler eh) {
-        // TODO 
+        // TODO
     }
 
     @Override
     public Document parse(InputSource inputSource) throws SAXException, IOException {
-        OMDocument document = factory.createOMBuilder(parserConfiguration,
-                inputSource).getDocument();
+        OMDocument document =
+                factory.createOMBuilder(parserConfiguration, inputSource).getDocument();
         document.close(true);
-        return (Document)document;
+        return (Document) document;
     }
 
     @Override
@@ -113,7 +114,9 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
         return parse(new InputSource(is));
     }
 
-    /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.File) */
+    /**
+     * @see javax.xml.parsers.DocumentBuilder#parse(java.io.File)
+     */
     @Override
     public Document parse(File file) throws SAXException, IOException {
         FileInputStream in = new FileInputStream(file);

@@ -21,6 +21,4 @@ package org.apache.axiom.om.impl.dom.intf;
 import org.apache.axiom.dom.DOMTextNode;
 import org.apache.axiom.om.impl.intf.AxiomText;
 
-public interface DOOMTextNode extends DOOMLeafNode, DOMTextNode, AxiomText {
-
-}
+public interface DOOMTextNode extends DOOMLeafNode, DOMTextNode, AxiomText {}

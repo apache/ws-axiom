@@ -20,6 +20,4 @@ package org.apache.axiom.soap.impl.dom.intf;
 
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 
-public interface DOOMSOAPHeader extends DOOMSOAPElement, AxiomSOAPHeader {
-
-}
+public interface DOOMSOAPHeader extends DOOMSOAPElement, AxiomSOAPHeader {}

@@ -21,6 +21,4 @@ package org.apache.axiom.soap.impl.dom.intf;
 import org.apache.axiom.om.impl.dom.intf.DOOMDocument;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 
-public interface DOOMSOAPMessage extends DOOMDocument, AxiomSOAPMessage {
-
-}
+public interface DOOMSOAPMessage extends DOOMDocument, AxiomSOAPMessage {}

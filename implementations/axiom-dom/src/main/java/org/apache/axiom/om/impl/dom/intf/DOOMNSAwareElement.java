@@ -21,6 +21,4 @@ package org.apache.axiom.om.impl.dom.intf;
 import org.apache.axiom.dom.DOMNSAwareElement;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 
-public interface DOOMNSAwareElement extends DOOMElement, DOMNSAwareElement, AxiomElement {
-
-}
+public interface DOOMNSAwareElement extends DOOMElement, DOMNSAwareElement, AxiomElement {}

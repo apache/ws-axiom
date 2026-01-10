@@ -21,6 +21,4 @@ package org.apache.axiom.soap.impl.dom.intf;
 import org.apache.axiom.om.impl.dom.intf.DOOMNSAwareElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 
-public interface DOOMSOAPElement extends DOOMNSAwareElement, AxiomSOAPElement {
-
-}
+public interface DOOMSOAPElement extends DOOMNSAwareElement, AxiomSOAPElement {}

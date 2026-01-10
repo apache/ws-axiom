@@ -21,6 +21,4 @@ package org.apache.axiom.om.impl.dom.intf;
 import org.apache.axiom.dom.DOMCDATASection;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 
-public interface DOOMCDATASection extends DOOMTextNode, DOMCDATASection, AxiomCDATASection {
-
-}
+public interface DOOMCDATASection extends DOOMTextNode, DOMCDATASection, AxiomCDATASection {}

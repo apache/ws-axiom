@@ -21,6 +21,5 @@ package org.apache.axiom.om.impl.dom.intf;
 import org.apache.axiom.dom.DOMEntityReference;
 import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 
-public interface DOOMEntityReference extends DOOMChildNode, DOMEntityReference, AxiomEntityReference {
-
-}
+public interface DOOMEntityReference
+        extends DOOMChildNode, DOMEntityReference, AxiomEntityReference {}

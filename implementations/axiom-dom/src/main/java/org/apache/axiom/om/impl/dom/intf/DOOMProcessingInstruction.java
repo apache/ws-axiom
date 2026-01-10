@@ -21,6 +21,5 @@ package org.apache.axiom.om.impl.dom.intf;
 import org.apache.axiom.dom.DOMProcessingInstruction;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 
-public interface DOOMProcessingInstruction extends DOOMLeafNode, DOMProcessingInstruction, AxiomProcessingInstruction {
-
-}
+public interface DOOMProcessingInstruction
+        extends DOOMLeafNode, DOMProcessingInstruction, AxiomProcessingInstruction {}

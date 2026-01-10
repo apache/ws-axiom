@@ -21,6 +21,4 @@ package org.apache.axiom.om.impl.dom.intf;
 import org.apache.axiom.dom.DOMComment;
 import org.apache.axiom.om.impl.intf.AxiomComment;
 
-public interface DOOMComment extends DOOMLeafNode, DOMComment, AxiomComment {
-
-}
+public interface DOOMComment extends DOOMLeafNode, DOMComment, AxiomComment {}

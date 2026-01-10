@@ -21,6 +21,4 @@ package org.apache.axiom.soap.impl.dom.intf.soap12;
 import org.apache.axiom.soap.impl.dom.intf.DOOMSOAPFault;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Fault;
 
-public interface DOOMSOAP12Fault extends DOOMSOAPFault, AxiomSOAP12Fault {
-
-}
+public interface DOOMSOAP12Fault extends DOOMSOAPFault, AxiomSOAP12Fault {}

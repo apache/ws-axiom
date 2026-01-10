@@ -21,6 +21,4 @@ package org.apache.axiom.om.impl.dom.intf;
 import org.apache.axiom.dom.DOMDocumentType;
 import org.apache.axiom.om.impl.intf.AxiomDocType;
 
-public interface DOOMDocumentType extends DOOMLeafNode, DOMDocumentType, AxiomDocType {
-
-}
+public interface DOOMDocumentType extends DOOMLeafNode, DOMDocumentType, AxiomDocType {}

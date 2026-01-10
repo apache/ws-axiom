@@ -26,9 +26,14 @@ import org.apache.axiom.om.impl.dom.intf.factory.DOOMNodeFactory;
 
 public class OMDOMMetaFactoryLoader implements OMMetaFactoryLoader {
     @Override
-    public DOMMetaFactory load(Map<String,Object> properties) {
+    public DOMMetaFactory load(Map<String, Object> properties) {
         try {
-            return (DOOMNodeFactory)OMDOMMetaFactoryLoader.class.getClassLoader().loadClass("org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl").getField("INSTANCE").get(null);
+            return (DOOMNodeFactory)
+                    OMDOMMetaFactoryLoader.class
+                            .getClassLoader()
+                            .loadClass("org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl")
+                            .getField("INSTANCE")
+                            .get(null);
         } catch (ReflectiveOperationException ex) {
             throw new Error(ex);
         }

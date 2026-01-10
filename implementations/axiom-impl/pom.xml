@@ -213,17 +213,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.spotify.fmt</groupId>
-                <artifactId>fmt-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>buildutils-maven-plugin</artifactId>
                 <version>${project.version}</version>

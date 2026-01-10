@@ -20,6 +20,4 @@ package org.apache.axiom.om.impl.dom.intf;
 
 import org.apache.axiom.dom.DOMLeafNode;
 
-public interface DOOMLeafNode extends DOOMChildNode, DOMLeafNode {
-
-}
+public interface DOOMLeafNode extends DOOMChildNode, DOMLeafNode {}

@@ -26,14 +26,16 @@ import org.apache.axiom.ts.dom.w3c.DOMFeature;
 
 public final class DOMTests {
     private DOMTests() {}
-    
-    public static final DocumentBuilderFactoryFactory FACTORY = new DocumentBuilderFactoryFactory() {
-        @Override
-        public DocumentBuilderFactory newInstance() {
-            return new OMDOMMetaFactoryLoader().load(null).newDocumentBuilderFactory();
-        }
-    };
-    
+
+    public static final DocumentBuilderFactoryFactory FACTORY =
+            new DocumentBuilderFactoryFactory() {
+                @Override
+                public DocumentBuilderFactory newInstance() {
+                    return new OMDOMMetaFactoryLoader().load(null).newDocumentBuilderFactory();
+                }
+            };
+
     public static final DOMFeature[] UNSUPPORTED_FEATURES = {
-            DOMFeature.ENTITIES, DOMFeature.NOTATIONS, DOMFeature.TYPE_INFO, DOMFeature.BASE_URI };
+        DOMFeature.ENTITIES, DOMFeature.NOTATIONS, DOMFeature.TYPE_INFO, DOMFeature.BASE_URI
+    };
 }
