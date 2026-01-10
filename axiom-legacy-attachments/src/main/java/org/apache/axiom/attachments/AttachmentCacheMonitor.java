@@ -31,31 +31,29 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * The CacheMonitor is responsible for deleting temporary attachment files
- * after a timeout period has expired.
- * 
- * The register method is invoked when the attachment file is created.
- * The access method is invoked whenever the attachment file is accessed.
- * The checkForAgedFiles method is invoked whenever the monitor should look for 
- * files to cleanup (delete).
- * 
+ * The CacheMonitor is responsible for deleting temporary attachment files after a timeout period
+ * has expired.
+ *
+ * <p>The register method is invoked when the attachment file is created. The access method is
+ * invoked whenever the attachment file is accessed. The checkForAgedFiles method is invoked
+ * whenever the monitor should look for files to cleanup (delete).
  */
 public final class AttachmentCacheMonitor {
 
-    static Log log =
-         LogFactory.getLog(AttachmentCacheMonitor.class.getName());
+    static Log log = LogFactory.getLog(AttachmentCacheMonitor.class.getName());
 
     // Setting this property puts a limit on the lifetime of a cache file
     // The default is "0", which is interpreted as forever
     // The suggested value is 300 seconds
-    private int attachmentTimeoutSeconds = 0;  // Default is 0 (forever)
+    private int attachmentTimeoutSeconds = 0; // Default is 0 (forever)
     private int refreshSeconds = 0;
-    public static final String ATTACHMENT_TIMEOUT_PROPERTY = "org.apache.axiom.attachments.tempfile.expiration";
+    public static final String ATTACHMENT_TIMEOUT_PROPERTY =
+            "org.apache.axiom.attachments.tempfile.expiration";
 
     // HashMap
     // Key String = Absolute file name
     // Value Long = Last Access Time
-    private Map<String,Long> files = new HashMap<String,Long>();
+    private Map<String, Long> files = new HashMap<String, Long>();
 
     // Delete detection is batched
     private Long priorDeleteMillis = getTime();
@@ -64,9 +62,9 @@ public final class AttachmentCacheMonitor {
 
     private static AttachmentCacheMonitor _singleton = null;
 
-
     /**
      * Get or Create an AttachmentCacheMonitor singleton
+     *
      * @return the singleton instance
      */
     public static synchronized AttachmentCacheMonitor getAttachmentCacheMonitor() {
@@ -77,8 +75,8 @@ public final class AttachmentCacheMonitor {
     }
 
     /**
-     * Constructor
-     * Intentionally private.  Callers should use getAttachmentCacheMonitor
+     * Constructor Intentionally private. Callers should use getAttachmentCacheMonitor
+     *
      * @see getAttachmentCacheMonitor
      */
     private AttachmentCacheMonitor() {
@@ -88,10 +86,14 @@ public final class AttachmentCacheMonitor {
             attachmentTimeoutSeconds = Integer.valueOf(value).intValue();
         } catch (Throwable t) {
             // Swallow exception and use default, but log a warning message
-        	if (log.isDebugEnabled()) {
-        		log.debug("The value of " + value + " was not valid. The default " + 
-        		        attachmentTimeoutSeconds + " will be used instead.");
-        	}
+            if (log.isDebugEnabled()) {
+                log.debug(
+                        "The value of "
+                                + value
+                                + " was not valid. The default "
+                                + attachmentTimeoutSeconds
+                                + " will be used instead.");
+            }
         }
         refreshSeconds = attachmentTimeoutSeconds / 2;
 
@@ -101,23 +103,21 @@ public final class AttachmentCacheMonitor {
         }
 
         if (refreshSeconds > 0) {
-            timer = new Timer( true );
-            timer.schedule( new CleanupFilesTask(), 
-                    refreshSeconds * 1000, 
-                    refreshSeconds * 1000 );
+            timer = new Timer(true);
+            timer.schedule(new CleanupFilesTask(), refreshSeconds * 1000, refreshSeconds * 1000);
         }
     }
-    
+
     /**
      * @return timeout value in seconds
      */
     public synchronized int getTimeout() {
-    	return attachmentTimeoutSeconds;
+        return attachmentTimeoutSeconds;
     }
-    
+
     /**
-     * This method should
-     * Set a new timeout value 
+     * This method should Set a new timeout value
+     *
      * @param timeout new timeout value in seconds
      */
     public synchronized void setTimeout(int timeout) {
@@ -125,59 +125,56 @@ public final class AttachmentCacheMonitor {
         if (timeout == attachmentTimeoutSeconds) {
             return;
         }
-        
-    	attachmentTimeoutSeconds = timeout;
-    	
-    	// Reset the refresh
-    	refreshSeconds = attachmentTimeoutSeconds / 2;
-    	
-    	// Make sure to cancel the prior timer
-    	if (timer != null) {
+
+        attachmentTimeoutSeconds = timeout;
+
+        // Reset the refresh
+        refreshSeconds = attachmentTimeoutSeconds / 2;
+
+        // Make sure to cancel the prior timer
+        if (timer != null) {
             timer.cancel(); // Remove scheduled tasks from the prior timer
             timer = null;
         }
-    	
-    	// Make a new timer if necessary
+
+        // Make a new timer if necessary
         if (refreshSeconds > 0) {
-        	timer = new Timer( true );
-            timer.schedule( new CleanupFilesTask(), 
-                    refreshSeconds * 1000, 
-                    refreshSeconds * 1000 );
+            timer = new Timer(true);
+            timer.schedule(new CleanupFilesTask(), refreshSeconds * 1000, refreshSeconds * 1000);
         }
-        
-        if (log.isDebugEnabled()) { 
-        	log.debug("New timeout = " + attachmentTimeoutSeconds);
-        	log.debug("New refresh = " + refreshSeconds);
+
+        if (log.isDebugEnabled()) {
+            log.debug("New timeout = " + attachmentTimeoutSeconds);
+            log.debug("New refresh = " + refreshSeconds);
         }
     }
 
     /**
-     * Register a file name with the monitor.  
-     * This will allow the Monitor to remove the file after
+     * Register a file name with the monitor. This will allow the Monitor to remove the file after
      * the timeout period.
+     *
      * @param fileName
      */
-    public void  register(String fileName) {
-        if (attachmentTimeoutSeconds    > 0) {
+    public void register(String fileName) {
+        if (attachmentTimeoutSeconds > 0) {
             _register(fileName);
             _checkForAgedFiles();
         }
     }
-    
+
     /**
      * Indicates that the file was accessed.
+     *
      * @param fileName
      */
     public void access(String fileName) {
-        if (attachmentTimeoutSeconds    > 0) {
+        if (attachmentTimeoutSeconds > 0) {
             _access(fileName);
             _checkForAgedFiles();
         }
     }
-    
-    /**
-     * Check for aged files and remove the aged ones.
-     */
+
+    /** Check for aged files and remove the aged ones. */
     public void checkForAgedFiles() {
         if (attachmentTimeoutSeconds > 0) {
             _checkForAgedFiles();
@@ -188,7 +185,7 @@ public final class AttachmentCacheMonitor {
         Long currentTime = getTime();
         if (log.isDebugEnabled()) {
             log.debug("Register file " + fileName);
-            log.debug("Time = " + currentTime); 
+            log.debug("Time = " + currentTime);
         }
         files.put(fileName, currentTime);
     }
@@ -200,15 +197,19 @@ public final class AttachmentCacheMonitor {
             files.put(fileName, currentTime);
             if (log.isDebugEnabled()) {
                 log.debug("Access file " + fileName);
-                log.debug("Old Time = " + priorTime); 
-                log.debug("New Time = " + currentTime); 
+                log.debug("Old Time = " + priorTime);
+                log.debug("New Time = " + currentTime);
             }
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("The following file was already deleted and is no longer available: " + 
-                          fileName);
-                log.debug("The value of " + ATTACHMENT_TIMEOUT_PROPERTY + 
-                          " is " + attachmentTimeoutSeconds);
+                log.debug(
+                        "The following file was already deleted and is no longer available: "
+                                + fileName);
+                log.debug(
+                        "The value of "
+                                + ATTACHMENT_TIMEOUT_PROPERTY
+                                + " is "
+                                + attachmentTimeoutSeconds);
             }
         }
     }
@@ -216,36 +217,33 @@ public final class AttachmentCacheMonitor {
     private synchronized void _checkForAgedFiles() {
         Long currentTime = getTime();
         // Don't keep checking the map, only trigger
-        // the checking if it is plausible that 
+        // the checking if it is plausible that
         // files will need to be deleted.
         // I chose a value of ATTACHMENTT_TIMEOUT_SECONDS/4
-        if (isExpired(priorDeleteMillis,
-                      currentTime,
-                      refreshSeconds)) {
+        if (isExpired(priorDeleteMillis, currentTime, refreshSeconds)) {
             Iterator<String> it = files.keySet().iterator();
             while (it.hasNext()) {
                 String fileName = it.next();
                 Long lastAccess = files.get(fileName);
-                if (isExpired(lastAccess,
-                              currentTime,
-                              attachmentTimeoutSeconds)) {
+                if (isExpired(lastAccess, currentTime, attachmentTimeoutSeconds)) {
 
                     if (log.isDebugEnabled()) {
                         log.debug("Expired file " + fileName);
-                        log.debug("Old Time = " + lastAccess); 
-                        log.debug("New Time = " + currentTime); 
-                        log.debug("Elapsed Time (ms) = " + 
-                                  (currentTime.longValue() - lastAccess.longValue())); 
+                        log.debug("Old Time = " + lastAccess);
+                        log.debug("New Time = " + currentTime);
+                        log.debug(
+                                "Elapsed Time (ms) = "
+                                        + (currentTime.longValue() - lastAccess.longValue()));
                     }
 
                     deleteFile(fileName);
                     // Use the iterator to remove this
                     // file from the map (this avoids
                     // the dreaded ConcurrentModificationException
-                    it.remove(); 
-                }     
+                    it.remove();
+                }
             }
-               
+
             // Reset the prior delete time
             priorDeleteMillis = currentTime;
         }
@@ -267,25 +265,18 @@ public final class AttachmentCacheMonitor {
         return ret;
     }
 
-
     private Long getTime() {
         return new Long(System.currentTimeMillis());
     }
 
-    private boolean isExpired (Long oldTimeMillis, 
-                                      Long newTimeMillis, 
-                                      int thresholdSecs) {
-        long elapse = newTimeMillis.longValue() -
-            oldTimeMillis.longValue();
-        return (elapse > (thresholdSecs*1000));
+    private boolean isExpired(Long oldTimeMillis, Long newTimeMillis, int thresholdSecs) {
+        long elapse = newTimeMillis.longValue() - oldTimeMillis.longValue();
+        return (elapse > (thresholdSecs * 1000));
     }
-
 
     private class CleanupFilesTask extends TimerTask {
 
-        /**
-         * Trigger a checkForAgedFiles event
-         */
+        /** Trigger a checkForAgedFiles event */
         @Override
         public void run() {
             checkForAgedFiles();

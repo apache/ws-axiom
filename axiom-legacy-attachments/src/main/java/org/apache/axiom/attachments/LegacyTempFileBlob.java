@@ -54,7 +54,7 @@ final class LegacyTempFileBlob extends AbstractWritableBlob {
         ds.setContentType(contentType);
         return ds;
     }
-    
+
     @Override
     public long getSize() {
         return fileAccessor.getSize();

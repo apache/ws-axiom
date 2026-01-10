@@ -26,38 +26,37 @@ import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 public class CachedFileDataSource extends FileDataSource implements SizeAwareDataSource {
     private static final Log log = LogFactory.getLog(CachedFileDataSource.class);
 
     String contentType = null;
-    
+
     // The AttachmentCacheMonitor is used to delete expired copies of attachment files.
-    private static AttachmentCacheMonitor acm = 
-        AttachmentCacheMonitor.getAttachmentCacheMonitor();
-    
+    private static AttachmentCacheMonitor acm = AttachmentCacheMonitor.getAttachmentCacheMonitor();
+
     // Represents the absolute pathname of cached attachment file
     private String cachedFileName = null;
 
     public CachedFileDataSource(File file) {
         super(file);
         if (log.isDebugEnabled()) {
-        	log.debug("Enter CachedFileDataSource ctor");
+            log.debug("Enter CachedFileDataSource ctor");
         }
         if (file != null) {
-        	try {
-        		cachedFileName = file.getCanonicalPath();
-        	} catch (java.io.IOException e) {
-        		log.error("IOException caught: " + e);
-        	}
+            try {
+                cachedFileName = file.getCanonicalPath();
+            } catch (java.io.IOException e) {
+                log.error("IOException caught: " + e);
+            }
         }
         if (cachedFileName != null) {
-        	if (log.isDebugEnabled()) {
-        		log.debug("Cached file: " + cachedFileName);
-        		log.debug("Registering the file with AttachmentCacheMonitor and also marked it as being accessed");
-        	}
+            if (log.isDebugEnabled()) {
+                log.debug("Cached file: " + cachedFileName);
+                log.debug(
+                        "Registering the file with AttachmentCacheMonitor and also marked it as being accessed");
+            }
             // Tell the monitor that the file is being accessed.
-        	acm.access(cachedFileName);
+            acm.access(cachedFileName);
             // Register the file with the AttachmentCacheMonitor
             acm.register(cachedFileName);
         }

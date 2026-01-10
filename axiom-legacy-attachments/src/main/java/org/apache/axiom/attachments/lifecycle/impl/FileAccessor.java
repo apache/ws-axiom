@@ -33,39 +33,38 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * FileAccessor wraps the attachment temp file. It is created from PartOnFile.
- * The idea behind wrapping the file is to give rumtime an ability to track
- * when the file is accessed with streams or data handler  and accordingly trigger
- * events to handle the the files lifecycle.
- *
+ * FileAccessor wraps the attachment temp file. It is created from PartOnFile. The idea behind
+ * wrapping the file is to give rumtime an ability to track when the file is accessed with streams
+ * or data handler and accordingly trigger events to handle the the files lifecycle.
  */
-public class FileAccessor extends Observable{
+public class FileAccessor extends Observable {
     private static final Log log = LogFactory.getLog(FileAccessor.class);
     File file = null;
     LifecycleManager manager;
     private int accessCount = 0;
+
     public FileAccessor(LifecycleManager manager, File file) {
         super();
         this.manager = manager;
-        this.file = file;   
+        this.file = file;
     }
 
     public String getFileName() {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("getFileName()");
         }
         return file.getAbsolutePath();
     }
 
     public InputStream getInputStream() throws IOException {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("getInputStream()");
         }
         return new FileInputStream(file);
     }
 
-    public OutputStream getOutputStream() throws FileNotFoundException{
-        if(log.isDebugEnabled()){
+    public OutputStream getOutputStream() throws FileNotFoundException {
+        if (log.isDebugEnabled()) {
             log.debug("getOutputStream()");
         }
         return new FileOutputStream(file);
@@ -74,7 +73,7 @@ public class FileAccessor extends Observable{
     public long getSize() {
         return file.length();
     }
-    
+
     public File getFile() {
         return file;
     }
@@ -83,8 +82,7 @@ public class FileAccessor extends Observable{
         this.file = file;
     }
 
-	public int getAccessCount() {
-		return accessCount;
-	}
-
+    public int getAccessCount() {
+        return accessCount;
+    }
 }

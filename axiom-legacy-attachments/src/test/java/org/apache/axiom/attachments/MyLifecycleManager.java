@@ -41,7 +41,7 @@ public class MyLifecycleManager extends LifecycleManagerImpl {
         super.delete(file);
         files.remove(file);
     }
-    
+
     public int getFileCount() {
         return files.size();
     }

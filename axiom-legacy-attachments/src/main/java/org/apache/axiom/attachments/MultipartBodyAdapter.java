@@ -46,7 +46,7 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
     private static final Log log = LogFactory.getLog(MultipartBodyAdapter.class);
 
     private final MultipartBody message;
-    private final Map<String,DataHandler> map = new LinkedHashMap<String,DataHandler>();
+    private final Map<String, DataHandler> map = new LinkedHashMap<String, DataHandler>();
     private final int contentLength;
     private final CountingInputStream filterIS;
     private final Part rootPart;
@@ -57,11 +57,18 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
     /** Container to hold streams for direct access */
     private IncomingAttachmentStreams streams;
 
-    MultipartBodyAdapter(InputStream inStream, String contentTypeString,
-            WritableBlobFactory<?> attachmentBlobFactory, int contentLength) {
+    MultipartBodyAdapter(
+            InputStream inStream,
+            String contentTypeString,
+            WritableBlobFactory<?> attachmentBlobFactory,
+            int contentLength) {
         this.contentLength = contentLength;
         if (log.isDebugEnabled()) {
-            log.debug("Attachments contentLength=" + contentLength + ", contentTypeString=" + contentTypeString);
+            log.debug(
+                    "Attachments contentLength="
+                            + contentLength
+                            + ", contentTypeString="
+                            + contentTypeString);
         }
 
         // If the length is not known, install a filter so that we can retrieve it later.
@@ -72,18 +79,20 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
             filterIS = null;
         }
 
-        this.message = MultipartBody.builder()
-                .setInputStream(inStream)
-                .setContentType(contentTypeString)
-                .setAttachmentBlobFactory(attachmentBlobFactory)
-                .setPartBlobFactory(new PartDataHandlerBlobFactory() {
-                        @Override
-                        protected PartDataHandler createDataHandler(Part part) {
-                            return new LegacyPartDataHandler(part);
-                        }
-                    })
-                .setPartCreationListener(this)
-                .build();
+        this.message =
+                MultipartBody.builder()
+                        .setInputStream(inStream)
+                        .setContentType(contentTypeString)
+                        .setAttachmentBlobFactory(attachmentBlobFactory)
+                        .setPartBlobFactory(
+                                new PartDataHandlerBlobFactory() {
+                                    @Override
+                                    protected PartDataHandler createDataHandler(Part part) {
+                                        return new LegacyPartDataHandler(part);
+                                    }
+                                })
+                        .setPartCreationListener(this)
+                        .build();
 
         rootPart = message.getRootPart();
         String rootPartContentID = rootPart.getContentID();
@@ -104,7 +113,8 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
 
     private boolean fetchNext() {
         if (streams != null) {
-            throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
+            throw new IllegalStateException(
+                    "The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
         }
         if (partIterator == null) {
             partIterator = message.iterator();
@@ -181,17 +191,16 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
     IncomingAttachmentStreams getIncomingAttachmentStreams() {
         if (partIterator != null) {
             throw new IllegalStateException(
-                    "The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a " +
-                            "collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
+                    "The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a "
+                            + "collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
         }
-        
+
         if (streams == null) {
             streams = new IncomingAttachmentStreams(message);
         }
-        
+
         return streams;
     }
-
 
     @Override
     Set<String> getContentIDs(boolean fetchAll) {
@@ -202,7 +211,7 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
     }
 
     @Override
-    Map<String,DataHandler> getMap() {
+    Map<String, DataHandler> getMap() {
         fetchAll();
         return Collections.unmodifiableMap(map);
     }

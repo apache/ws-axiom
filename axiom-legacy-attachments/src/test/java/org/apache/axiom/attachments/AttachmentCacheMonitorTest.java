@@ -24,19 +24,17 @@ import org.apache.axiom.om.AbstractTestCase;
 
 public class AttachmentCacheMonitorTest extends AbstractTestCase {
     public void testCachedFilesExpired() throws Exception {
-        
+
         // Set file expiration to 10 seconds
         long INTERVAL = 3 * 1000; // 3 seconds for Thread to sleep
 
-       
         // Get the AttachmentCacheMonitor and force it to remove files after
         // 10 seconds.
         AttachmentCacheMonitor acm = AttachmentCacheMonitor.getAttachmentCacheMonitor();
         int previousTime = acm.getTimeout();
-        
-        try {
-            acm.setTimeout(10); 
 
+        try {
+            acm.setTimeout(10);
 
             File aFile = File.createTempFile("fileA", ".tmp");
             String aFileName = aFile.getCanonicalPath();
@@ -76,16 +74,15 @@ public class AttachmentCacheMonitorTest extends AbstractTestCase {
             // time since file C registration <= cached file expiration
             assertTrue("File C should still exist", cFile.exists());
 
-            Thread.sleep(10* INTERVAL);  // Give task loop time to delete aged files
-
+            Thread.sleep(10 * INTERVAL); // Give task loop time to delete aged files
 
             // All files should be gone by now
             assertFalse("File A should no longer exist", aFile.exists());
             assertFalse("File B should no longer exist", bFile.exists());
             assertFalse("File C should no longer exist", cFile.exists());
         } finally {
-       
-            // Reset the timeout to the previous value so that no 
+
+            // Reset the timeout to the previous value so that no
             // other tests are affected
             acm.setTimeout(previousTime);
         }

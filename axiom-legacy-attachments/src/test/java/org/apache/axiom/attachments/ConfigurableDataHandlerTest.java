@@ -29,31 +29,39 @@ import org.junit.Test;
 public class ConfigurableDataHandlerTest {
     @Test
     public void testContentTransferEncoding() {
-        ConfigurableDataHandler dh = new ConfigurableDataHandler(new byte[10],
-                "application/octet-stream");
+        ConfigurableDataHandler dh =
+                new ConfigurableDataHandler(new byte[10], "application/octet-stream");
         dh.setTransferEncoding("base64");
-        assertThat(ConfigurableDataHandler.CONTENT_TRANSFER_ENCODING_POLICY
-                .getContentTransferEncoding(DataHandlerUtils.toBlob(dh),
-                        new ContentType(MediaType.APPLICATION_OCTET_STREAM)))
-                                .isSameInstanceAs(ContentTransferEncoding.BASE64);
+        assertThat(
+                        ConfigurableDataHandler.CONTENT_TRANSFER_ENCODING_POLICY
+                                .getContentTransferEncoding(
+                                        DataHandlerUtils.toBlob(dh),
+                                        new ContentType(MediaType.APPLICATION_OCTET_STREAM)))
+                .isSameInstanceAs(ContentTransferEncoding.BASE64);
     }
 
     @Test
     public void testContentTransferEncodingNotSet() {
-        ConfigurableDataHandler dh = new ConfigurableDataHandler(new byte[10],
-                "application/octet-stream");
-        assertThat(ConfigurableDataHandler.CONTENT_TRANSFER_ENCODING_POLICY
-                .getContentTransferEncoding(DataHandlerUtils.toBlob(dh),
-                        new ContentType(MediaType.APPLICATION_OCTET_STREAM))).isNull();
+        ConfigurableDataHandler dh =
+                new ConfigurableDataHandler(new byte[10], "application/octet-stream");
+        assertThat(
+                        ConfigurableDataHandler.CONTENT_TRANSFER_ENCODING_POLICY
+                                .getContentTransferEncoding(
+                                        DataHandlerUtils.toBlob(dh),
+                                        new ContentType(MediaType.APPLICATION_OCTET_STREAM)))
+                .isNull();
     }
 
     @Test
     public void testContentTransferEncodingNotRecognized() {
-        ConfigurableDataHandler dh = new ConfigurableDataHandler(new byte[10],
-                "application/octet-stream");
+        ConfigurableDataHandler dh =
+                new ConfigurableDataHandler(new byte[10], "application/octet-stream");
         dh.setTransferEncoding("foobar");
-        assertThat(ConfigurableDataHandler.CONTENT_TRANSFER_ENCODING_POLICY
-                .getContentTransferEncoding(DataHandlerUtils.toBlob(dh),
-                        new ContentType(MediaType.APPLICATION_OCTET_STREAM))).isNull();
+        assertThat(
+                        ConfigurableDataHandler.CONTENT_TRANSFER_ENCODING_POLICY
+                                .getContentTransferEncoding(
+                                        DataHandlerUtils.toBlob(dh),
+                                        new ContentType(MediaType.APPLICATION_OCTET_STREAM)))
+                .isNull();
     }
 }

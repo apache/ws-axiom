@@ -47,10 +47,8 @@ public class ByteArrayDataSource implements org.apache.axiom.ext.activation.Size
 
     @Override
     public String getContentType() {
-        if (type == null)
-            return "application/octet-stream";
-        else
-            return type;
+        if (type == null) return "application/octet-stream";
+        else return type;
     }
 
     @Override
@@ -74,4 +72,3 @@ public class ByteArrayDataSource implements org.apache.axiom.ext.activation.Size
         return data == null ? 0 : data.length;
     }
 }
-

@@ -22,21 +22,21 @@ package org.apache.axiom.attachments.lifecycle.impl;
 import java.io.IOException;
 
 /**
- * The attachment life cycle manager supports create and delete operations on the FileAccessor(which holds attachment file).
- * These operations are coupled to events, the LifecycleManager needs to execute an operation when an even
- * causes that operation to trigger. For example a delete operation should execute when a deleteOnExit 
- * or deleteOnTimeInterval event occur on FileAccessor.
- * 
- * The LifecycleManager should execute operation on FileAccessor based on the Events that trigger them. 
- * EventHandler defines methods to execute LifecycleManager operation when a event occurs.
+ * The attachment life cycle manager supports create and delete operations on the FileAccessor(which
+ * holds attachment file). These operations are coupled to events, the LifecycleManager needs to
+ * execute an operation when an even causes that operation to trigger. For example a delete
+ * operation should execute when a deleteOnExit or deleteOnTimeInterval event occur on FileAccessor.
  *
+ * <p>The LifecycleManager should execute operation on FileAccessor based on the Events that trigger
+ * them. EventHandler defines methods to execute LifecycleManager operation when a event occurs.
  */
 public interface LifecycleEventHandler {
-    
+
     /**
-     * When a Event occurs in FileAccessor, execute the LifecycleManager Operation
-     * For example, if the delete behaviour is readOnce and if the inputstream on attachment is read 
-     * and closed the first time, the delete operation in LifecycleManager should be executed. 
+     * When a Event occurs in FileAccessor, execute the LifecycleManager Operation For example, if
+     * the delete behaviour is readOnce and if the inputstream on attachment is read and closed the
+     * first time, the delete operation in LifecycleManager should be executed.
+     *
      * @param eventId
      */
     public void handleEvent(int eventId) throws IOException;

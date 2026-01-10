@@ -26,49 +26,53 @@ import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 
 /**
  * Lifecycle Manager will be used to manage the lifecycle of attachment files.
- * 
- * Axiom forks attachment processing based on the size of attachment to be processed.
- * Attachments are either processed by storing them in memory or by storing them in 
- * file system based on the size of the attachment file. 
  *
- * Lifecycle Manager provides and organized way of managing attachments, by providing
- * calls to create and delete attachments.
+ * <p>Axiom forks attachment processing based on the size of attachment to be processed. Attachments
+ * are either processed by storing them in memory or by storing them in file system based on the
+ * size of the attachment file.
+ *
+ * <p>Lifecycle Manager provides and organized way of managing attachments, by providing calls to
+ * create and delete attachments.
  */
 public interface LifecycleManager {
 
     /**
      * Create a unique file in the designated directory
+     *
      * @param attachmentDir
      * @return the {@link FileAccessor} for the file created by this method
      * @throws IOException
-     */    
+     */
     public FileAccessor create(String attachmentDir) throws IOException;
-    
-    /** 
+
+    /**
      * Deletes attachment file
+     *
      * @param file
      * @throws IOException
      */
     public void delete(File file) throws IOException;
-    
+
     /**
-     * Mark the file for deletion on application/VM exit 
+     * Mark the file for deletion on application/VM exit
+     *
      * @param file
      * @throws IOException
      */
     public void deleteOnExit(File file) throws IOException;
-    
+
     /**
-     * Mark attachment file for deletion when designated time interval in seconds 
-     * has elapsed.
+     * Mark attachment file for deletion when designated time interval in seconds has elapsed.
+     *
      * @param interval
      * @param file
      * @throws IOException
      */
     public void deleteOnTimeInterval(int interval, File file) throws IOException;
-    
+
     /**
      * This method will return the file accessor associated with this file.
+     *
      * @param file
      * @return the {@link FileAccessor} object for the given file
      * @throws IOException

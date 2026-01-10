@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 package org.apache.axiom.attachments.lifecycle.impl;
 
 public class LifecycleEventDefinitions {

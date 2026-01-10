@@ -30,30 +30,26 @@ public interface DataHandlerExt {
      * similar to {@link DataHandler#getInputStream()} except that it can be invoked only once. If
      * the content has not been buffered yet, then the implementation may choose to enable streaming
      * of the content.
-     * <p>
-     * The implementation ensures that after the returned input steam is consumed, the data handler
-     * will be in the same state as after a call to {@link #purgeDataSource()}.
-     * 
+     *
+     * <p>The implementation ensures that after the returned input steam is consumed, the data
+     * handler will be in the same state as after a call to {@link #purgeDataSource()}.
+     *
      * @return the stream representing the content; never <code>null</code>
-     * @throws IOException
-     *             if an error occurs
+     * @throws IOException if an error occurs
      */
     InputStream readOnce() throws IOException;
-	
-	/**
-	 * This method will give users an option to trigger a purge
-	 * on temporary attachment files. Temp files are created for
-	 * attachment data that is greater than a threshold limit. 
-	 * On client side These temp attachment files are not deleted 
-	 * untilthe virtual machine exits as user can choose to read 
-	 * this dataHandler. So if user is not going to use the data 
-	 * handlers provided on this temproray files they can choose 
-	 * to purge the file. 
-	 */
-	public void purgeDataSource() throws IOException;
-	
-	/**
-	 * @deprecated Use {@link #readOnce()} or {@link #purgeDataSource()} instead.
-	 */
-	public void deleteWhenReadOnce() throws IOException;
+
+    /**
+     * This method will give users an option to trigger a purge on temporary attachment files. Temp
+     * files are created for attachment data that is greater than a threshold limit. On client side
+     * These temp attachment files are not deleted untilthe virtual machine exits as user can choose
+     * to read this dataHandler. So if user is not going to use the data handlers provided on this
+     * temproray files they can choose to purge the file.
+     */
+    public void purgeDataSource() throws IOException;
+
+    /**
+     * @deprecated Use {@link #readOnce()} or {@link #purgeDataSource()} instead.
+     */
+    public void deleteWhenReadOnce() throws IOException;
 }

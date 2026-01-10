@@ -32,8 +32,10 @@ public abstract class AbstractTestCase extends TestCase {
     public AbstractTestCase() {
         this(null);
     }
-    
-    /** @param testName  */
+
+    /**
+     * @param testName
+     */
     public AbstractTestCase(String testName) {
         super(testName);
     }
@@ -53,9 +55,11 @@ public abstract class AbstractTestCase extends TestCase {
         }
         return in;
     }
-    
-    public static OMElement getTestResourceAsElement(OMMetaFactory omMetaFactory, String relativePath) {
-        return OMXMLBuilderFactory.createOMBuilder(omMetaFactory.getOMFactory(), getTestResource(relativePath)).getDocumentElement();
+
+    public static OMElement getTestResourceAsElement(
+            OMMetaFactory omMetaFactory, String relativePath) {
+        return OMXMLBuilderFactory.createOMBuilder(
+                        omMetaFactory.getOMFactory(), getTestResource(relativePath))
+                .getDocumentElement();
     }
 }
-

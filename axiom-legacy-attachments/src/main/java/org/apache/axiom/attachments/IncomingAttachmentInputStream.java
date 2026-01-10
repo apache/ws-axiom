@@ -25,10 +25,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IncomingAttachmentInputStream extends InputStream {
-    private Map<String,String> _headers = null;
+    private Map<String, String> _headers = null;
 
-    private Map<String,String> _headersLowerCase = null;
-    
+    private Map<String, String> _headersLowerCase = null;
+
     private InputStream _stream = null;
     private IncomingAttachmentStreams parentContainer;
 
@@ -39,15 +39,19 @@ public class IncomingAttachmentInputStream extends InputStream {
     public static final String HEADER_CONTENT_LOCATION = "content-location";
     public static final String HEADER_CONTENT_ID = "content-id";
 
-    /** @param in  */
-    public IncomingAttachmentInputStream(InputStream in,
-                                         IncomingAttachmentStreams parentContainer) {
+    /**
+     * @param in
+     */
+    public IncomingAttachmentInputStream(
+            InputStream in, IncomingAttachmentStreams parentContainer) {
         _stream = in;
         this.parentContainer = parentContainer;
     }
 
-    /** @return MIME headers for this attachment. May be null if no headers were set. */
-    public Map<String,String> getHeaders() {
+    /**
+     * @return MIME headers for this attachment. May be null if no headers were set.
+     */
+    public Map<String, String> getHeaders() {
         return _headers;
     }
 
@@ -59,8 +63,8 @@ public class IncomingAttachmentInputStream extends InputStream {
      */
     public void addHeader(String name, String value) {
         if (_headers == null) {
-            _headers = new HashMap<String,String>();
-            _headersLowerCase = new HashMap<String,String>();
+            _headers = new HashMap<String, String>();
+            _headersLowerCase = new HashMap<String, String>();
         }
         _headers.put(name, value);
         _headersLowerCase.put(name.toLowerCase(), value);
@@ -74,23 +78,30 @@ public class IncomingAttachmentInputStream extends InputStream {
      */
     public String getHeader(String name) {
         Object header = null;
-        if (_headersLowerCase == null || (header = _headersLowerCase.get(name.toLowerCase())) == null) {
+        if (_headersLowerCase == null
+                || (header = _headersLowerCase.get(name.toLowerCase())) == null) {
             return null;
         }
         return header.toString();
     }
 
-    /** @return The header with HTTPConstants.HEADER_CONTENT_ID as the key. */
+    /**
+     * @return The header with HTTPConstants.HEADER_CONTENT_ID as the key.
+     */
     public String getContentId() {
         return getHeader(HEADER_CONTENT_ID);
     }
 
-    /** @return The header with HTTPConstants.HEADER_CONTENT_LOCATION as the key. */
+    /**
+     * @return The header with HTTPConstants.HEADER_CONTENT_LOCATION as the key.
+     */
     public String getContentLocation() {
         return getHeader(HEADER_CONTENT_LOCATION);
     }
 
-    /** @return The header with HTTPConstants.HEADER_CONTENT_TYPE as the key. */
+    /**
+     * @return The header with HTTPConstants.HEADER_CONTENT_TYPE as the key.
+     */
     public String getContentType() {
         return getHeader(HEADER_CONTENT_TYPE);
     }

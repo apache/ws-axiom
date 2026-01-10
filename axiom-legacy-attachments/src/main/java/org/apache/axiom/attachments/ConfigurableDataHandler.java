@@ -34,13 +34,25 @@ import java.net.URL;
 
 /**
  * This Axiom DataHandler inplementation allows the user to set custom values for the following MIME
- * body part headers. <ul> <li>content-transfer-encoding</li> <li>content-type</li> </ul> <p>Data
- * written to the MIME part gets encoded by content-transfer-encoding specified as above</p>
- * <p>
- * Usage is Similar to the javax.activation.DataHandler except for the setting of the above
- * properties. </p> <p>eg: </p> <p>    dataHandler = new ConfigurableDataHandler(new
- * ByteArrayDataSource(byteArray));</p> <p>    dataHandler.setTransferEncoding("quoted-printable");</p>
- * <p>    dataHandler.setContentType("image/jpg");</p>
+ * body part headers.
+ *
+ * <ul>
+ *   <li>content-transfer-encoding
+ *   <li>content-type
+ * </ul>
+ *
+ * <p>Data written to the MIME part gets encoded by content-transfer-encoding specified as above
+ *
+ * <p>Usage is Similar to the javax.activation.DataHandler except for the setting of the above
+ * properties.
+ *
+ * <p>eg:
+ *
+ * <p>dataHandler = new ConfigurableDataHandler(new ByteArrayDataSource(byteArray));
+ *
+ * <p>dataHandler.setTransferEncoding("quoted-printable");
+ *
+ * <p>dataHandler.setContentType("image/jpg");
  *
  * @see jakarta.activation.DataHandler
  */
@@ -49,30 +61,37 @@ public class ConfigurableDataHandler extends DataHandler {
 
     /**
      * {@link ContentTransferEncodingPolicy} implementation that recognizes blobs created from
-     * {@link ConfigurableDataHandler} objects and returns the content transfer encoding
-     * set using {@link ConfigurableDataHandler#setTransferEncoding(String)}.
+     * {@link ConfigurableDataHandler} objects and returns the content transfer encoding set using
+     * {@link ConfigurableDataHandler#setTransferEncoding(String)}.
      */
-    public static final ContentTransferEncodingPolicy CONTENT_TRANSFER_ENCODING_POLICY = new ContentTransferEncodingPolicy() {
-        @Override
-        public ContentTransferEncoding getContentTransferEncoding(Blob blob, ContentType contentType) {
-            DataHandler dataHandler = DataHandlerUtils.toDataHandler(blob);
-            if (!(dataHandler instanceof ConfigurableDataHandler)) {
-                return null;
-            }
-            String cte = ((ConfigurableDataHandler)dataHandler).getTransferEncoding();
-            if (cte == null) {
-                return null;
-            }
-            switch (cte) {
-                case "8bit": return ContentTransferEncoding.EIGHT_BIT;
-                case "binary": return ContentTransferEncoding.BINARY;
-                case "base64": return ContentTransferEncoding.BASE64;
-                default:
-                    log.warn(String.format("Unrecognized content transfer encoding: %s", cte));
-                    return null;
-            }
-        }
-    };
+    public static final ContentTransferEncodingPolicy CONTENT_TRANSFER_ENCODING_POLICY =
+            new ContentTransferEncodingPolicy() {
+                @Override
+                public ContentTransferEncoding getContentTransferEncoding(
+                        Blob blob, ContentType contentType) {
+                    DataHandler dataHandler = DataHandlerUtils.toDataHandler(blob);
+                    if (!(dataHandler instanceof ConfigurableDataHandler)) {
+                        return null;
+                    }
+                    String cte = ((ConfigurableDataHandler) dataHandler).getTransferEncoding();
+                    if (cte == null) {
+                        return null;
+                    }
+                    switch (cte) {
+                        case "8bit":
+                            return ContentTransferEncoding.EIGHT_BIT;
+                        case "binary":
+                            return ContentTransferEncoding.BINARY;
+                        case "base64":
+                            return ContentTransferEncoding.BASE64;
+                        default:
+                            log.warn(
+                                    String.format(
+                                            "Unrecognized content transfer encoding: %s", cte));
+                            return null;
+                    }
+                }
+            };
 
     private String transferEncoding;
 
@@ -90,13 +109,13 @@ public class ConfigurableDataHandler extends DataHandler {
         super(url);
     }
 
-//	public String getContentID() {
-//		return contentID;
-//	}
-//
-//	public void setContentID(String contentID) {
-//		this.contentID = contentID;
-//	}
+    //	public String getContentID() {
+    //		return contentID;
+    //	}
+    //
+    //	public void setContentID(String contentID) {
+    //		this.contentID = contentID;
+    //	}
 
     @Override
     public String getContentType() {
@@ -105,7 +124,6 @@ public class ConfigurableDataHandler extends DataHandler {
         } else {
             return super.getContentType();
         }
-
     }
 
     public void setContentType(String contentType) {
@@ -119,5 +137,4 @@ public class ConfigurableDataHandler extends DataHandler {
     public void setTransferEncoding(String transferEncoding) {
         this.transferEncoding = transferEncoding;
     }
-
 }

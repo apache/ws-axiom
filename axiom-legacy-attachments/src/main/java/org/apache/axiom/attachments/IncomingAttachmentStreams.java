@@ -36,8 +36,8 @@ public final class IncomingAttachmentStreams {
     private final Iterator<Part> partIterator;
 
     /**
-     * Boolean indicating weather or not the next stream can be read (next stream cannot be read until
-     * previous is consumed
+     * Boolean indicating weather or not the next stream can be read (next stream cannot be read
+     * until previous is consumed
      */
     private boolean readyToGetNextStream = true;
 
@@ -46,7 +46,9 @@ public final class IncomingAttachmentStreams {
         partIterator = message.iterator();
     }
 
-    /** @return True if the next stream can be read, false otherwise. */
+    /**
+     * @return True if the next stream can be read, false otherwise.
+     */
     public final boolean isReadyToGetNextStream() {
         return readyToGetNextStream;
     }
@@ -80,8 +82,9 @@ public final class IncomingAttachmentStreams {
         }
 
         if (part != null) {
-            IncomingAttachmentInputStream stream =  new IncomingAttachmentInputStream(part.getInputStream(false), this);
-    
+            IncomingAttachmentInputStream stream =
+                    new IncomingAttachmentInputStream(part.getInputStream(false), this);
+
             for (Header header : part.getHeaders()) {
                 String name = header.getName();
                 String value = header.getValue();
@@ -92,7 +95,7 @@ public final class IncomingAttachmentStreams {
                 }
                 stream.addHeader(name, value);
             }
-            
+
             readyToGetNextStream = false;
             return stream;
         } else {

@@ -36,7 +36,8 @@ import org.apache.axiom.om.OMException;
  * attachment parts.
  */
 class AttachmentSet extends AttachmentsDelegate {
-    private final Map<String,DataHandler> attachmentsMap = new LinkedHashMap<String,DataHandler>();
+    private final Map<String, DataHandler> attachmentsMap =
+            new LinkedHashMap<String, DataHandler>();
 
     @Override
     ContentType getContentType() {
@@ -52,7 +53,7 @@ class AttachmentSet extends AttachmentsDelegate {
     void addDataHandler(String contentID, DataHandler dataHandler) {
         attachmentsMap.put(contentID, dataHandler);
     }
-    
+
     @Override
     void removeDataHandler(String blobContentID) {
         attachmentsMap.remove(blobContentID);
@@ -84,12 +85,12 @@ class AttachmentSet extends AttachmentsDelegate {
     Set<String> getContentIDs(boolean fetchAll) {
         return attachmentsMap.keySet();
     }
-    
+
     @Override
-    Map<String,DataHandler> getMap() {
+    Map<String, DataHandler> getMap() {
         return Collections.unmodifiableMap(attachmentsMap);
     }
-    
+
     @Override
     long getContentLength() throws IOException {
         return -1;

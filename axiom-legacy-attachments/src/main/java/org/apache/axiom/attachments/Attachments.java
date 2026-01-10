@@ -25,7 +25,6 @@ import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
-import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.mime.ContentType;
@@ -47,7 +46,7 @@ import java.util.Map;
 
 public class Attachments implements OMAttachmentAccessor {
     private final AttachmentsDelegate delegate;
-   
+
     /**
      * <code>applicationType</code> used to distinguish between MTOM & SWA If the message is MTOM
      * optimised type is application/xop+xml If the message is SWA, type is ??have to find out
@@ -55,7 +54,7 @@ public class Attachments implements OMAttachmentAccessor {
     private String applicationType;
 
     private LifecycleManager manager;
-    
+
     public LifecycleManager getLifecycleManager() {
         if (manager == null) {
             manager = new LifecycleManagerImpl();
@@ -77,15 +76,27 @@ public class Attachments implements OMAttachmentAccessor {
      * @param attachmentRepoDir
      * @throws OMException
      */
-    public Attachments(LifecycleManager manager, InputStream inStream, String contentTypeString,
-                       boolean fileCacheEnable, String attachmentRepoDir,
-                       String fileThreshold) throws OMException {
-        this(manager, inStream, contentTypeString, fileCacheEnable, attachmentRepoDir, fileThreshold, 0);
+    public Attachments(
+            LifecycleManager manager,
+            InputStream inStream,
+            String contentTypeString,
+            boolean fileCacheEnable,
+            String attachmentRepoDir,
+            String fileThreshold)
+            throws OMException {
+        this(
+                manager,
+                inStream,
+                contentTypeString,
+                fileCacheEnable,
+                attachmentRepoDir,
+                fileThreshold,
+                0);
     }
-        
-        /**
-     * Moves the pointer to the beginning of the first MIME part. Reads
-     * till first MIME boundary is found or end of stream is reached.
+
+    /**
+     * Moves the pointer to the beginning of the first MIME part. Reads till first MIME boundary is
+     * found or end of stream is reached.
      *
      * @param inStream
      * @param contentTypeString
@@ -95,8 +106,15 @@ public class Attachments implements OMAttachmentAccessor {
      * @param contentLength
      * @throws OMException
      */
-    public Attachments(LifecycleManager manager, InputStream inStream, String contentTypeString, boolean fileCacheEnable,
-            String attachmentRepoDir, String fileThreshold, int contentLength) throws OMException {
+    public Attachments(
+            LifecycleManager manager,
+            InputStream inStream,
+            String contentTypeString,
+            boolean fileCacheEnable,
+            String attachmentRepoDir,
+            String fileThreshold,
+            int contentLength)
+            throws OMException {
         this.manager = manager;
         final int fileStorageThreshold;
         if (fileThreshold != null && (!"".equals(fileThreshold))) {
@@ -106,18 +124,23 @@ public class Attachments implements OMAttachmentAccessor {
         }
         WritableBlobFactory<?> attachmentBlobFactory;
         if (fileCacheEnable) {
-            WritableBlobFactory<?> tempFileBlobFactory = new LegacyTempFileBlobFactory(this, attachmentRepoDir);
+            WritableBlobFactory<?> tempFileBlobFactory =
+                    new LegacyTempFileBlobFactory(this, attachmentRepoDir);
             if (fileStorageThreshold > 0) {
-                attachmentBlobFactory = () -> Blobs.createOverflowableBlob(fileStorageThreshold, tempFileBlobFactory);
+                attachmentBlobFactory =
+                        () ->
+                                Blobs.createOverflowableBlob(
+                                        fileStorageThreshold, tempFileBlobFactory);
             } else {
                 attachmentBlobFactory = tempFileBlobFactory;
             }
         } else {
             attachmentBlobFactory = MemoryBlob.FACTORY;
         }
-        
-        delegate = new MultipartBodyAdapter(inStream, contentTypeString, attachmentBlobFactory,
-                contentLength);
+
+        delegate =
+                new MultipartBodyAdapter(
+                        inStream, contentTypeString, attachmentBlobFactory, contentLength);
     }
 
     /**
@@ -130,15 +153,26 @@ public class Attachments implements OMAttachmentAccessor {
      * @param attachmentRepoDir
      * @throws OMException
      */
-    public Attachments(InputStream inStream, String contentTypeString,
-                       boolean fileCacheEnable, String attachmentRepoDir,
-                       String fileThreshold) throws OMException {
-        this(null, inStream, contentTypeString, fileCacheEnable, attachmentRepoDir, fileThreshold, 0);
+    public Attachments(
+            InputStream inStream,
+            String contentTypeString,
+            boolean fileCacheEnable,
+            String attachmentRepoDir,
+            String fileThreshold)
+            throws OMException {
+        this(
+                null,
+                inStream,
+                contentTypeString,
+                fileCacheEnable,
+                attachmentRepoDir,
+                fileThreshold,
+                0);
     }
-        
-        /**
-     * Moves the pointer to the beginning of the first MIME part. Reads
-     * till first MIME boundary is found or end of stream is reached.
+
+    /**
+     * Moves the pointer to the beginning of the first MIME part. Reads till first MIME boundary is
+     * found or end of stream is reached.
      *
      * @param inStream
      * @param contentTypeString
@@ -148,11 +182,24 @@ public class Attachments implements OMAttachmentAccessor {
      * @param contentLength
      * @throws OMException
      */
-    public Attachments(InputStream inStream, String contentTypeString, boolean fileCacheEnable,
-            String attachmentRepoDir, String fileThreshold, int contentLength) throws OMException {
-            this(null, inStream, contentTypeString, fileCacheEnable,
-            attachmentRepoDir, fileThreshold, contentLength);
+    public Attachments(
+            InputStream inStream,
+            String contentTypeString,
+            boolean fileCacheEnable,
+            String attachmentRepoDir,
+            String fileThreshold,
+            int contentLength)
+            throws OMException {
+        this(
+                null,
+                inStream,
+                contentTypeString,
+                fileCacheEnable,
+                attachmentRepoDir,
+                fileThreshold,
+                contentLength);
     }
+
     /**
      * Sets file cache to false.
      *
@@ -160,8 +207,7 @@ public class Attachments implements OMAttachmentAccessor {
      * @param contentTypeString
      * @throws OMException
      */
-    public Attachments(InputStream inStream, String contentTypeString)
-            throws OMException {
+    public Attachments(InputStream inStream, String contentTypeString) throws OMException {
         this(null, inStream, contentTypeString, false, null, null);
     }
 
@@ -176,19 +222,19 @@ public class Attachments implements OMAttachmentAccessor {
     /**
      * Identify the type of message (MTOM or SOAP with attachments) represented by this object. Note
      * that this method is only meaningful if the instance was created from a stream.
-     * 
-     * @return One of the {@link MTOMConstants#MTOM_TYPE}, {@link MTOMConstants#SWA_TYPE} or
-     *         {@link MTOMConstants#SWA_TYPE_12} constants.
-     * @throws OMException
-     *             if the message doesn't have one of the supported types (i.e. is neither MTOM nor
-     *             SOAP with attachments) or if the instance was not created from a stream
+     *
+     * @return One of the {@link MTOMConstants#MTOM_TYPE}, {@link MTOMConstants#SWA_TYPE} or {@link
+     *     MTOMConstants#SWA_TYPE_12} constants.
+     * @throws OMException if the message doesn't have one of the supported types (i.e. is neither
+     *     MTOM nor SOAP with attachments) or if the instance was not created from a stream
      */
     public String getAttachmentSpecType() {
         if (this.applicationType == null) {
             ContentType contentType = delegate.getContentType();
             if (contentType == null) {
-                throw new OMException("Unable to determine the attachment spec type because the " +
-                		"Attachments object doesn't have a known content type");
+                throw new OMException(
+                        "Unable to determine the attachment spec type because the "
+                                + "Attachments object doesn't have a known content type");
             }
             applicationType = contentType.getParameter("type");
             if ((MTOMConstants.MTOM_TYPE).equalsIgnoreCase(applicationType)) {
@@ -211,12 +257,11 @@ public class Attachments implements OMAttachmentAccessor {
      * stream the content of the part. In addition, the {@link DataSource} linked to the returned
      * {@link DataHandler} MAY be of type {@link SizeAwareDataSource} in which case the caller can
      * use that interface to determine the size of the MIME part.
-     * 
-     * @param contentID
-     *            the raw content ID (without the surrounding angle brackets and {@code cid:}
-     *            prefix) of the MIME part
-     * @return the {@link DataHandler} of the MIME part referred by the content ID or
-     *         <code>null</code> if the MIME part referred by the content ID does not exist
+     *
+     * @param contentID the raw content ID (without the surrounding angle brackets and {@code cid:}
+     *     prefix) of the MIME part
+     * @return the {@link DataHandler} of the MIME part referred by the content ID or <code>null
+     *     </code> if the MIME part referred by the content ID does not exist
      */
     public DataHandler getDataHandler(String contentID) {
         return delegate.getDataHandler(contentID);
@@ -244,32 +289,32 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     *  @deprecated Use {@link #getRootPartInputStream()} instead.
+     * @deprecated Use {@link #getRootPartInputStream()} instead.
      */
     public InputStream getSOAPPartInputStream() throws OMException {
         return getRootPartInputStream();
     }
-    
+
     /**
      * @deprecated Use {@link #getRootPartContentID()} instead.
      */
     public String getSOAPPartContentID() {
         return getRootPartContentID();
     }
-    
+
     /**
      * @deprecated Use {@link #getRootPartContentType()} instead.
      */
     public String getSOAPPartContentType() {
         return getRootPartContentType();
     }
-    
+
     /**
      * Get an input stream for the root part of the MIME message. The root part is located as
      * described in the documentation of the {@link #getRootPartContentID()} method. Note that a new
      * stream is returned each time this method is called, i.e. the method does not consume the root
      * part. Instead it loads the root part into memory so that it can be read several times.
-     * 
+     *
      * @return the input stream for the root part
      */
     public InputStream getRootPartInputStream() throws OMException {
@@ -277,18 +322,16 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     * Get an input stream for the root part of the MIME message. This method is similar to
-     * {@link #getRootPartInputStream()}, but can be instructed to consume the root part. This
-     * allows streaming of the root part. If that feature is used, the root part will not be loaded
-     * into memory unless an attempt is made to access another part of the MIME message, in which
-     * case the remaining (i.e. unconsumed) content of the root part will be buffered. If the
-     * feature is not enabled, then this method behaves in the same way as
-     * {@link #getRootPartInputStream()}.
-     * 
-     * @param preserve
-     *            <code>true</code> if the content of the root part should be fetched into memory so
-     *            that it can be read several times, <code>false</code> if the root part should be
-     *            consumed
+     * Get an input stream for the root part of the MIME message. This method is similar to {@link
+     * #getRootPartInputStream()}, but can be instructed to consume the root part. This allows
+     * streaming of the root part. If that feature is used, the root part will not be loaded into
+     * memory unless an attempt is made to access another part of the MIME message, in which case
+     * the remaining (i.e. unconsumed) content of the root part will be buffered. If the feature is
+     * not enabled, then this method behaves in the same way as {@link #getRootPartInputStream()}.
+     *
+     * @param preserve <code>true</code> if the content of the root part should be fetched into
+     *     memory so that it can be read several times, <code>false</code> if the root part should
+     *     be consumed
      * @return the input stream for the root part
      */
     public InputStream getRootPartInputStream(boolean preserve) throws OMException {
@@ -298,12 +341,13 @@ public class Attachments implements OMAttachmentAccessor {
     /**
      * Get the content ID of the root part of the MIME message. This content ID is determined as
      * follows:
+     *
      * <ul>
-     * <li>If the content type of the MIME message has a {@code start} parameter, then the content
-     * ID will be extracted from that parameter.
-     * <li>Otherwise the content ID of the first MIME part of the MIME message is returned.
+     *   <li>If the content type of the MIME message has a {@code start} parameter, then the content
+     *       ID will be extracted from that parameter.
+     *   <li>Otherwise the content ID of the first MIME part of the MIME message is returned.
      * </ul>
-     * 
+     *
      * @return the content ID of the root part (without the surrounding angle brackets)
      */
     public String getRootPartContentID() {
@@ -313,10 +357,9 @@ public class Attachments implements OMAttachmentAccessor {
     /**
      * Get the content type of the root part of the MIME message. The root part is located as
      * described in the documentation of the {@link #getRootPartContentID()} method.
-     * 
+     *
      * @return the content type of the root part
-     * @throws OMException
-     *             if the content type could not be determined
+     * @throws OMException if the content type could not be determined
      */
     public String getRootPartContentType() {
         return delegate.getRootPartContentType();
@@ -328,17 +371,16 @@ public class Attachments implements OMAttachmentAccessor {
      * @return The stream container of type <code>IncomingAttachmentStreams</code>
      * @throws IllegalStateException if application has alreadt started using Part's directly
      */
-    public IncomingAttachmentStreams getIncomingAttachmentStreams()
-            throws IllegalStateException {
+    public IncomingAttachmentStreams getIncomingAttachmentStreams() throws IllegalStateException {
         return delegate.getIncomingAttachmentStreams();
     }
 
     /**
      * Get the content IDs of all MIME parts in the message. This includes the content ID of the
      * SOAP part as well as the content IDs of the attachments. Note that if this object has been
-     * created from a stream, a call to this method will force reading of all MIME parts that
-     * have not been fetched from the stream yet.
-     * 
+     * created from a stream, a call to this method will force reading of all MIME parts that have
+     * not been fetched from the stream yet.
+     *
      * @return an array with the content IDs in order of appearance in the message
      */
     public String[] getAllContentIDs() {
@@ -349,47 +391,45 @@ public class Attachments implements OMAttachmentAccessor {
     /**
      * Get the content IDs of all MIME parts in the message. This includes the content ID of the
      * SOAP part as well as the content IDs of the attachments. Note that if this object has been
-     * created from a stream, a call to this method will force reading of all MIME parts that
-     * have not been fetched from the stream yet.
-     * 
+     * created from a stream, a call to this method will force reading of all MIME parts that have
+     * not been fetched from the stream yet.
+     *
      * @return the set of content IDs
      */
     public Set<String> getContentIDSet() {
         return delegate.getContentIDs(true);
     }
-    
+
     /**
      * Get a map of all MIME parts in the message. This includes the SOAP part as well as the
-     * attachments. Note that if this object has been created from a stream, a call to this
-     * method will force reading of all MIME parts that have not been fetched from the stream yet.
-     * 
-     * @return A map of all MIME parts in the message, with content IDs as keys and
-     *         {@link DataHandler} objects as values.
+     * attachments. Note that if this object has been created from a stream, a call to this method
+     * will force reading of all MIME parts that have not been fetched from the stream yet.
+     *
+     * @return A map of all MIME parts in the message, with content IDs as keys and {@link
+     *     DataHandler} objects as values.
      */
-    public Map<String,DataHandler> getMap() {
+    public Map<String, DataHandler> getMap() {
         return delegate.getMap();
     }
 
     /**
      * Get the content IDs of the already loaded MIME parts in the message. This includes the
-     * content ID of the SOAP part as well as the content IDs of the attachments. If this
-     * object has been created from a stream, only the content IDs of the MIME parts that
-     * have already been fetched from the stream are returned. If this is not the desired
-     * behavior, {@link #getAllContentIDs()} or {@link #getContentIDSet()} should be used
-     * instead.
-     * 
+     * content ID of the SOAP part as well as the content IDs of the attachments. If this object has
+     * been created from a stream, only the content IDs of the MIME parts that have already been
+     * fetched from the stream are returned. If this is not the desired behavior, {@link
+     * #getAllContentIDs()} or {@link #getContentIDSet()} should be used instead.
+     *
      * @return List of content IDs in order of appearance in message
      */
     public List<String> getContentIDList() {
         return new ArrayList<String>(delegate.getContentIDs(false));
     }
-    
+
     /**
-     * If the Attachments is backed by an InputStream, then this
-     * method returns the length of the message contents
-     * (Length of the entire message - Length of the Transport Headers)
-     * @return length of message content or -1 if Attachments is not
-     * backed by an InputStream
+     * If the Attachments is backed by an InputStream, then this method returns the length of the
+     * message contents (Length of the entire message - Length of the Transport Headers)
+     *
+     * @return length of message content or -1 if Attachments is not backed by an InputStream
      */
     public long getContentLength() throws IOException {
         return delegate.getContentLength();

@@ -31,11 +31,12 @@ import org.apache.commons.logging.LogFactory;
 public class LifecycleManagerImpl implements LifecycleManager {
     private static final Log log = LogFactory.getLog(LifecycleManagerImpl.class);
 
-    //Hashtable to store file accessors.
-    private static Hashtable<String,FileAccessor> table = new Hashtable<String,FileAccessor>();
+    // Hashtable to store file accessors.
+    private static Hashtable<String, FileAccessor> table = new Hashtable<String, FileAccessor>();
     private VMShutdownHook hook = null;
+
     public LifecycleManagerImpl() {
-        super(); 
+        super();
     }
 
     /* (non-Javadoc)
@@ -43,7 +44,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
      */
     @Override
     public FileAccessor create(String attachmentDir) throws IOException {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("Start Create()");
         }
         File file = null;
@@ -55,8 +56,8 @@ public class LifecycleManagerImpl implements LifecycleManager {
             }
         }
         if (!dir.isDirectory()) {
-            throw new IllegalArgumentException("Given Attachment File Cache Location "
-                + dir + " should be a directory.");
+            throw new IllegalArgumentException(
+                    "Given Attachment File Cache Location " + dir + " should be a directory.");
         }
         // Generate unique id.  The UID generator is used so that we can limit
         // synchronization with the java random number generator.
@@ -65,11 +66,11 @@ public class LifecycleManagerImpl implements LifecycleManager {
         String fileString = "axiom" + id + ".att";
         file = new File(dir, fileString);
         FileAccessor fa = new FileAccessor(this, file);
-        //add the fileAccesor to table
+        // add the fileAccesor to table
         table.put(fileString, fa);
-        //Default behaviour
+        // Default behaviour
         deleteOnExit(file);
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("End Create()");
         }
         return fa;
@@ -80,37 +81,37 @@ public class LifecycleManagerImpl implements LifecycleManager {
      */
     @Override
     public void delete(File file) throws IOException {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("Start delete()");
         }
 
-        if(file!=null && file.exists()){
+        if (file != null && file.exists()) {
             table.remove(file.getName());
-            if(log.isDebugEnabled()){
+            if (log.isDebugEnabled()) {
                 log.debug("invoking file.delete()");
             }
 
-            if(file.delete()){
-                if(log.isDebugEnabled()){
+            if (file.delete()) {
+                if (log.isDebugEnabled()) {
                     log.debug("delete() successful");
                 }
-                //If file was registered with VMShutdown hook
-                //lets remove it from the list to be deleted on VMExit.
-                VMShutdownHook hook =VMShutdownHook.hook();
-                if(hook.isRegistered()){
+                // If file was registered with VMShutdown hook
+                // lets remove it from the list to be deleted on VMExit.
+                VMShutdownHook hook = VMShutdownHook.hook();
+                if (hook.isRegistered()) {
                     hook.remove(file);
                 }
-                if(log.isDebugEnabled()){
+                if (log.isDebugEnabled()) {
                     log.debug("File Purged and removed from Shutdown Hook Collection");
                 }
-            }else{
-                if(log.isDebugEnabled()){
+            } else {
+                if (log.isDebugEnabled()) {
                     log.debug("Cannot delete file, set to delete on VM shutdown");
                 }
                 deleteOnExit(file);
             }
         }
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("End delete()");
         }
     }
@@ -120,21 +121,21 @@ public class LifecycleManagerImpl implements LifecycleManager {
      */
     @Override
     public void deleteOnExit(File file) throws IOException {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("Start deleteOnExit()");
         }
-        if(hook == null){
+        if (hook == null) {
             hook = RegisterVMShutdownHook();
         }
 
-        if(file!=null){
-            if(log.isDebugEnabled()){
-                log.debug("Invoking deleteOnExit() for file = "+file.getAbsolutePath());
+        if (file != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Invoking deleteOnExit() for file = " + file.getAbsolutePath());
             }
             hook.add(file);
             table.remove(file.getName());
         }
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("End deleteOnExit()");
         }
     }
@@ -144,65 +145,62 @@ public class LifecycleManagerImpl implements LifecycleManager {
      */
     @Override
     public void deleteOnTimeInterval(int interval, File file) throws IOException {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("Start deleteOnTimeInterval()");
         }
 
         Thread t = new Thread(new LifecycleManagerImpl.FileDeletor(interval, file));
         t.setDaemon(true);
         t.start();
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("End deleteOnTimeInterval()");
         }
     }
 
-    private VMShutdownHook RegisterVMShutdownHook() throws RuntimeException{
-        if(log.isDebugEnabled()){
+    private VMShutdownHook RegisterVMShutdownHook() throws RuntimeException {
+        if (log.isDebugEnabled()) {
             log.debug("Start RegisterVMShutdownHook()");
         }
         VMShutdownHook hook = VMShutdownHook.hook();
-        if(!hook.isRegistered()){
+        if (!hook.isRegistered()) {
             Runtime.getRuntime().addShutdownHook(hook);
             hook.setRegistered(true);
         }
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("Exit RegisterVMShutdownHook()");
         }
         return hook;
     }
 
-    public class FileDeletor implements Runnable{
+    public class FileDeletor implements Runnable {
         int interval;
         File _file;
 
         public FileDeletor(int interval, File file) {
             super();
             this.interval = interval;
-            this._file = file;           
+            this._file = file;
         }
 
         @Override
         public void run() {
-            try{
-                Thread.sleep(interval*1000);
-                if(_file.exists()){
+            try {
+                Thread.sleep(interval * 1000);
+                if (_file.exists()) {
                     table.remove(_file.getName());
                     _file.delete();
                 }
-            }catch(InterruptedException e){
-                //Log Exception
-                if(log.isDebugEnabled()){
-                    log.warn("InterruptedException occured "+e.getMessage());
+            } catch (InterruptedException e) {
+                // Log Exception
+                if (log.isDebugEnabled()) {
+                    log.warn("InterruptedException occured " + e.getMessage());
                 }
             }
-        }        
+        }
     }
 
     @Override
-	public FileAccessor getFileAccessor(String fileName) throws IOException {		
-		return table.get(fileName);
-	}
-
+    public FileAccessor getFileAccessor(String fileName) throws IOException {
+        return table.get(fileName);
+    }
 }
-
-

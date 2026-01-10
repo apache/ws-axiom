@@ -25,8 +25,9 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 /*
- * VMShutdown Hook will be registered with Runtime object to be invoked 
+ * VMShutdown Hook will be registered with Runtime object to be invoked
  * when Virutal Machine is shutdown.
  * This class will be used to delete any cached attachments file that where
  * added by runtime to be deleted on VM shutdown.
@@ -38,59 +39,61 @@ public class VMShutdownHook extends Thread {
     private boolean isRegistered = false;
 
     static VMShutdownHook hook() {
-        if (instance == null){
-            if(log.isDebugEnabled()){
+        if (instance == null) {
+            if (log.isDebugEnabled()) {
                 log.debug("creating VMShutdownHook");
             }
-            instance = new VMShutdownHook();            
+            instance = new VMShutdownHook();
         }
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("returning VMShutdownHook instance");
         }
         return instance;
     }
 
-    private VMShutdownHook(){}
-    void remove(File file){
-        if(file == null){
+    private VMShutdownHook() {}
+
+    void remove(File file) {
+        if (file == null) {
             return;
         }
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("Removing File to Shutdown Hook Collection");
         }
         files.remove(file);
     }
+
     void add(File file) {
-        if(file == null){
+        if (file == null) {
             return;
         }
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("Adding File to Shutdown Hook Collection");
         }
-        files.add(file);   
+        files.add(file);
     }
 
     @Override
     public void run() {
-        if(log.isDebugEnabled()){
+        if (log.isDebugEnabled()) {
             log.debug("JVM running VM Shutdown Hook");
-        }       
-        for (File file : files){
-            if(log.isDebugEnabled()){
-                log.debug("Deleting File from Shutdown Hook Collection"+file.getAbsolutePath());
-            }    		
+        }
+        for (File file : files) {
+            if (log.isDebugEnabled()) {
+                log.debug("Deleting File from Shutdown Hook Collection" + file.getAbsolutePath());
+            }
             file.delete();
-        }    
-        if(log.isDebugEnabled()){
+        }
+        if (log.isDebugEnabled()) {
             log.debug("JVM Done running VM Shutdown Hook");
         }
     }
 
     public boolean isRegistered() {
-        if(log.isDebugEnabled()){
-            if(!isRegistered){
+        if (log.isDebugEnabled()) {
+            if (!isRegistered) {
                 log.debug("hook isRegistered= false");
-            }else{
+            } else {
                 log.debug("hook isRegistered= true");
             }
         }
