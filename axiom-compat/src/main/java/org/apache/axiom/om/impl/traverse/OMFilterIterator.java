@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMNode;
 
 /**
  * Abstract iterator that returns matching nodes from another iterator.
- * 
+ *
  * @deprecated
  */
 @SuppressWarnings("rawtypes")
@@ -34,17 +34,16 @@ public abstract class OMFilterIterator implements Iterator {
     private final Iterator parent;
     private OMNode nextNode;
     private boolean noMoreNodes;
-    
+
     public OMFilterIterator(Iterator parent) {
         this.parent = parent;
     }
 
     /**
      * Determine whether the given node matches the filter criteria.
-     * 
+     *
      * @param node the node to test
-     * @return true if the node matches, i.e. if it should be returned
-     *              by a call to {@link #next()}
+     * @return true if the node matches, i.e. if it should be returned by a call to {@link #next()}
      */
     protected abstract boolean matches(OMNode node);
 
@@ -56,7 +55,7 @@ public abstract class OMFilterIterator implements Iterator {
             return true;
         } else {
             while (parent.hasNext()) {
-                OMNode node = (OMNode)parent.next();
+                OMNode node = (OMNode) parent.next();
                 if (matches(node)) {
                     nextNode = node;
                     return true;

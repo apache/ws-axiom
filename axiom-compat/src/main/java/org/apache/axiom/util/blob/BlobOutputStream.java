@@ -26,15 +26,15 @@ import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.ext.io.StreamCopyException;
 
 /**
- * Output stream that is used to write to a blob. Instances of this class are returned by the
- * {@link WritableBlob#getOutputStream()} method.
- * 
+ * Output stream that is used to write to a blob. Instances of this class are returned by the {@link
+ * WritableBlob#getOutputStream()} method.
+ *
  * @deprecated
  */
 public abstract class BlobOutputStream extends OutputStream implements ReadFromSupport {
     /**
      * Get the blob to which this output stream belongs.
-     * 
+     *
      * @return the blob
      */
     public abstract WritableBlob getBlob();

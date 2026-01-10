@@ -24,6 +24,4 @@ import org.apache.axiom.util.base64.Base64Utils;
 /**
  * @deprecated Use {@link Base64Utils} instead.
  */
-public class Base64 extends Base64Utils {
-
-}
+public class Base64 extends Base64Utils {}

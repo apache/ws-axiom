@@ -28,18 +28,16 @@ import org.apache.axiom.om.OMNode;
 
 /**
  * Abstract base class for iterators over sets of OM nodes.
- * 
+ *
  * @deprecated
  */
 @SuppressWarnings("rawtypes")
 public abstract class OMAbstractIterator implements Iterator {
     private OMNode currentNode;
-    
-    /**
-     * The parent of the current node. This is used to detect concurrent modifications.
-     */
+
+    /** The parent of the current node. This is used to detect concurrent modifications. */
     private OMContainer currentParent;
-    
+
     private OMNode nextNode;
     private boolean noMoreNodes;
     private boolean nextCalled;
@@ -54,7 +52,7 @@ public abstract class OMAbstractIterator implements Iterator {
 
     /**
      * Get the next node.
-     * 
+     *
      * @param currentNode the predecessor of the node to retrieve
      * @return the next node
      */
@@ -68,7 +66,8 @@ public abstract class OMAbstractIterator implements Iterator {
             return true;
         } else {
             if (currentNode.getParent() != currentParent) {
-                throw new ConcurrentModificationException("The current node has been removed using a method other than Iterator#remove()");
+                throw new ConcurrentModificationException(
+                        "The current node has been removed using a method other than Iterator#remove()");
             }
             nextNode = getNextNode(currentNode);
             noMoreNodes = nextNode == null;

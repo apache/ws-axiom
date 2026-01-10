@@ -27,17 +27,17 @@ import org.apache.axiom.ext.io.StreamCopyException;
 
 /**
  * Stores binary data.
- * <p>
- * Not that blobs are not thread safe. While they support requesting multiple concurrent input
+ *
+ * <p>Not that blobs are not thread safe. While they support requesting multiple concurrent input
  * streams, these streams must be used in the same thread, unless appropriate synchronization or
  * locking is done.
- * 
+ *
  * @deprecated Use {@link org.apache.axiom.blob.Blob} instead.
  */
 public interface Blob {
     /**
      * Get an input stream to read the data in the blob.
-     * 
+     *
      * @return the input stream to read the data from
      * @throws IOException
      */
@@ -45,19 +45,17 @@ public interface Blob {
 
     /**
      * Write the data to a given output stream.
-     * 
-     * @param out
-     *            The output stream to write the data to. This method will not close the stream.
-     * @throws StreamCopyException
-     *             Thrown if there is an I/O when reading the data from the blob or when writing it
-     *             to the stream. {@link StreamCopyException#getOperation()} can be used to
-     *             determine whether the failed operation was a read or a write.
+     *
+     * @param out The output stream to write the data to. This method will not close the stream.
+     * @throws StreamCopyException Thrown if there is an I/O when reading the data from the blob or
+     *     when writing it to the stream. {@link StreamCopyException#getOperation()} can be used to
+     *     determine whether the failed operation was a read or a write.
      */
     void writeTo(OutputStream out) throws StreamCopyException;
 
     /**
      * Get the length of the data in the blob, i.e. the number of bytes.
-     * 
+     *
      * @return the length of the data in the blob
      */
     long getLength();

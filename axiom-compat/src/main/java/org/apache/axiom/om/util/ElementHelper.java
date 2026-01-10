@@ -48,7 +48,6 @@ import java.util.Iterator;
  * Helper class to provide extra utility stuff against elements. The code is designed to work with
  * any element implementation.
  */
-
 public class ElementHelper {
 
     private OMElement element;
@@ -64,14 +63,13 @@ public class ElementHelper {
 
     /**
      * @deprecated The algorithm used by this method is incorrect. See <a
-     *             href="https://issues.apache.org/jira/browse/AXIOM-356">AXIOM-356</a> for more
-     *             details.
+     *     href="https://issues.apache.org/jira/browse/AXIOM-356">AXIOM-356</a> for more details.
      */
     public QName resolveQName(String qname, boolean defaultToParentNameSpace) {
         int colon = qname.indexOf(':');
         if (colon < 0) {
             if (defaultToParentNameSpace) {
-                //get the parent ns and use it for the child
+                // get the parent ns and use it for the child
                 OMNamespace namespace = element.getNamespace();
                 if (namespace != null) {
                     // Guard against QName implementation sillyness.
@@ -81,13 +79,13 @@ public class ElementHelper {
                         return new QName(namespace.getNamespaceURI(), qname, namespace.getPrefix());
                 }
             }
-            //else things without no prefix are local.
+            // else things without no prefix are local.
             return new QName(qname);
         }
         String prefix = qname.substring(0, colon);
         String local = qname.substring(colon + 1);
         if (local.length() == 0) {
-            //empy local, exit accordingly
+            // empy local, exit accordingly
             return null;
         }
 
@@ -100,8 +98,7 @@ public class ElementHelper {
 
     /**
      * @deprecated The algorithm used by this method is incorrect. See <a
-     *             href="https://issues.apache.org/jira/browse/AXIOM-356">AXIOM-356</a> for more
-     *             details.
+     *     href="https://issues.apache.org/jira/browse/AXIOM-356">AXIOM-356</a> for more details.
      */
     public QName resolveQName(String qname) {
         return resolveQName(qname, true);
@@ -110,9 +107,7 @@ public class ElementHelper {
     /**
      * @deprecated
      */
-    public static void setNewElement(OMElement parent,
-                                     OMElement myElement,
-                                     OMElement newElement) {
+    public static void setNewElement(OMElement parent, OMElement myElement, OMElement newElement) {
         if (myElement != null) {
             myElement.discard();
         }
@@ -122,13 +117,12 @@ public class ElementHelper {
     /**
      * @deprecated please use OMElement.getFirstChildWithName(qname) instead!
      */
-    public static OMElement getChildWithName(OMElement parent,
-                                             String childName) {
+    public static OMElement getChildWithName(OMElement parent, String childName) {
         Iterator childrenIter = parent.getChildren();
         while (childrenIter.hasNext()) {
             OMNode node = (OMNode) childrenIter.next();
-            if (node.getType() == OMNode.ELEMENT_NODE &&
-                    childName.equals(((OMElement) node).getLocalName())) {
+            if (node.getType() == OMNode.ELEMENT_NODE
+                    && childName.equals(((OMElement) node).getLocalName())) {
                 return (OMElement) node;
             }
         }
@@ -143,19 +137,17 @@ public class ElementHelper {
     }
 
     public static String getContentID(XMLStreamReader parser) {
-        if (parser.getAttributeCount() > 0 &&
-                parser.getAttributeLocalName(0).equals("href")) {
+        if (parser.getAttributeCount() > 0 && parser.getAttributeLocalName(0).equals("href")) {
             return getContentIDFromHref(parser.getAttributeValue(0));
         } else {
-            throw new OMException(
-                    "Href attribute not found in XOP:Include element");
+            throw new OMException("Href attribute not found in XOP:Include element");
         }
     }
 
     /**
-     * Extract the content ID from a href attribute value, i.e. from a URI following the
-     * cid: scheme defined by RFC2392.
-     * 
+     * Extract the content ID from a href attribute value, i.e. from a URI following the cid: scheme
+     * defined by RFC2392.
+     *
      * @param href the value of the href attribute
      * @return the corresponding content ID
      */
@@ -174,7 +166,7 @@ public class ElementHelper {
             throw new IllegalArgumentException("The URL doesn't use the cid scheme");
         }
     }
-    
+
     /**
      * Some times two OMElements needs to be added to the same object tree. But in Axiom, a single
      * tree should always contain object created from the same type of factory (eg:
@@ -184,8 +176,7 @@ public class ElementHelper {
      * method will convert omElement to the given omFactory.
      *
      * @see AttributeHelper#importOMAttribute(OMAttribute, OMElement) to convert instances of
-     *      OMAttribute
-     * 
+     *     OMAttribute
      * @deprecated Use {@link OMFactory#importInformationItem(OMInformationItem)} instead.
      */
     public static OMElement importOMElement(OMElement omElement, OMFactory omFactory) {
@@ -193,24 +184,23 @@ public class ElementHelper {
         if (omElement.getOMFactory().getMetaFactory() == omFactory.getMetaFactory()) {
             return omElement;
         } else {
-            return (OMElement)omFactory.importInformationItem(omElement);
+            return (OMElement) omFactory.importInformationItem(omElement);
         }
     }
 
     /**
      * This is a method to convert regular OMElements to SOAPHeaderBlocks.
-     * 
+     *
      * @param omElement
      * @param factory
      * @return TODO
      * @throws Exception
-     * 
      * @deprecated Use {@link SOAPFactory#createSOAPHeaderBlock(OMElement)} instead.
      */
-    public static SOAPHeaderBlock toSOAPHeaderBlock(OMElement omElement, SOAPFactory factory) throws Exception {
-        if (omElement instanceof SOAPHeaderBlock)
-            return (SOAPHeaderBlock) omElement;
-        
+    public static SOAPHeaderBlock toSOAPHeaderBlock(OMElement omElement, SOAPFactory factory)
+            throws Exception {
+        if (omElement instanceof SOAPHeaderBlock) return (SOAPHeaderBlock) omElement;
+
         QName name = omElement.getQName();
         String localName = name.getLocalPart();
         OMNamespace namespace = factory.createOMNamespace(name.getNamespaceURI(), name.getPrefix());
@@ -220,17 +210,17 @@ public class ElementHelper {
         out.close();
         BlobOMDataSource ds = new BlobOMDataSource(blob, "utf-8");
         SOAPHeaderBlock block = factory.createSOAPHeaderBlock(localName, namespace, ds);
-        
+
         return block;
     }
-    
+
     /**
      * @deprecated Use {@link OMElement#getTextAsStream(boolean)} instead.
      */
     public static Reader getTextAsStream(OMElement element, boolean cache) {
         return element.getTextAsStream(cache);
     }
-    
+
     /**
      * @deprecated Use {@link OMElement#writeTextTo(Writer, boolean)} instead.
      */

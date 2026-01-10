@@ -22,10 +22,10 @@ package org.apache.axiom.util.stax.xop;
 import javax.xml.namespace.QName;
 
 /**
- * Interface defining constants used by {@link XOPDecodingStreamReader} and
- * {@link XOPEncodingStreamReader}.
- * <p>
- * For internal use only.
+ * Interface defining constants used by {@link XOPDecodingStreamReader} and {@link
+ * XOPEncodingStreamReader}.
+ *
+ * <p>For internal use only.
  */
 interface XOPConstants {
     String INCLUDE = "Include";

@@ -26,9 +26,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 
 /**
- * Iterator that selects elements based on prefix and local name.
- * Note that namespace URIs are not taken into account by the filter.
- * 
+ * Iterator that selects elements based on prefix and local name. Note that namespace URIs are not
+ * taken into account by the filter.
+ *
  * @deprecated
  */
 @SuppressWarnings("rawtypes")
@@ -44,18 +44,18 @@ public class OMQualifiedNameFilterIterator extends OMFilterIterator {
             localName = qualifiedName;
         } else {
             prefix = qualifiedName.substring(0, idx);
-            localName = qualifiedName.substring(idx+1);
+            localName = qualifiedName.substring(idx + 1);
         }
     }
 
     @Override
     protected boolean matches(OMNode node) {
         if (node instanceof OMElement) {
-            OMElement element = (OMElement)node;
+            OMElement element = (OMElement) node;
             if (!localName.equals(element.getLocalName())) {
                 return false;
             } else {
-                OMNamespace ns = ((OMElement)node).getNamespace();
+                OMNamespace ns = ((OMElement) node).getNamespace();
                 if (prefix == null) {
                     return ns == null || ns.getPrefix().length() == 0;
                 } else {

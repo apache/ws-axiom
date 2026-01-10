@@ -36,12 +36,13 @@ import java.io.UnsupportedEncodingException;
 public class ByteArrayDataSource extends OMDataSourceExtBase {
 
     private static final Log log = LogFactory.getLog(ByteArrayDataSource.class);
-	
+
     ByteArray byteArray = null;
-    
+
     /**
      * Constructor
-     * @param bytes 
+     *
+     * @param bytes
      * @param encoding
      */
     public ByteArrayDataSource(byte[] bytes, String encoding) {
@@ -49,20 +50,19 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
         byteArray.bytes = bytes;
         byteArray.encoding = encoding;
     }
-   
- 
+
     @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         if (log.isDebugEnabled()) {
             log.debug("getReader");
         }
-        return StAXUtils.createXMLStreamReader(new ByteArrayInputStream(byteArray.bytes),
-                                               byteArray.encoding);                                                                       
+        return StAXUtils.createXMLStreamReader(
+                new ByteArrayInputStream(byteArray.bytes), byteArray.encoding);
     }
 
     @Override
     public Object getObject() {
-       return byteArray;
+        return byteArray;
     }
 
     @Override
@@ -79,27 +79,26 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
 
     @Override
     public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
-        if (encoding == null)
-        {
-          encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING;
+        if (encoding == null) {
+            encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING;
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("getXMLBytes encoding="+encoding);
+            log.debug("getXMLBytes encoding=" + encoding);
         }
 
         // Return the byte array directly if it is the same encoding
         // Otherwise convert the bytes to the proper encoding
         if (!byteArray.encoding.equalsIgnoreCase(encoding)) {
             String text = new String(byteArray.bytes, byteArray.encoding);
-            
+
             // Convert the internal data structure to the new bytes/encoding
             byteArray.bytes = text.getBytes(encoding);
             byteArray.encoding = encoding;
         }
         return byteArray.bytes;
     }
-    
+
     @Override
     public void close() {
         byteArray = null;
@@ -110,12 +109,10 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
         // Return shallow copy
         return new ByteArrayDataSource(byteArray.bytes, byteArray.encoding);
     }
-    
-    /**
-     * Object containing the byte[]/encoding pair
-     */
+
+    /** Object containing the byte[]/encoding pair */
     public class ByteArray {
         public byte[] bytes;
         public String encoding;
-    }   
+    }
 }

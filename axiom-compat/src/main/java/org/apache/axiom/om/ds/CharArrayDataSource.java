@@ -36,9 +36,10 @@ import java.io.Writer;
 public class CharArrayDataSource extends OMDataSourceExtBase {
 
     char[] chars = null;
-   
+
     /**
      * Constructor
+     *
      * @param chars
      */
     public CharArrayDataSource(char[] chars) {
@@ -55,18 +56,17 @@ public class CharArrayDataSource extends OMDataSourceExtBase {
             throw new XMLStreamException(e);
         }
     }
-    
+
     @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         CharArrayReader reader = new CharArrayReader(chars);
-        
-        return StAXUtils.createXMLStreamReader(reader);                                                                   
+
+        return StAXUtils.createXMLStreamReader(reader);
     }
-    
-    
+
     @Override
     public Object getObject() {
-       return chars;
+        return chars;
     }
 
     @Override
@@ -83,11 +83,11 @@ public class CharArrayDataSource extends OMDataSourceExtBase {
 
     @Override
     public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
-        
+
         String text = new String(chars);
         return text.getBytes(encoding);
     }
-    
+
     @Override
     public void close() {
         chars = null;

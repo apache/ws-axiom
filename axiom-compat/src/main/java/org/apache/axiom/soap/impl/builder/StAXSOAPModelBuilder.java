@@ -39,29 +39,32 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
     protected StAXSOAPModelBuilder(SOAPModelBuilder target) {
         this.target = target;
     }
-    
+
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
         this(OMXMLBuilderFactory.createStAXSOAPModelBuilder(factory.getMetaFactory(), parser));
         validateSOAPVersion(factory, soapVersion);
     }
-    
+
     public StAXSOAPModelBuilder(XMLStreamReader parser) {
-        this(OMXMLBuilderFactory.createStAXSOAPModelBuilder(OMAbstractFactory.getMetaFactory(), parser));
+        this(
+                OMXMLBuilderFactory.createStAXSOAPModelBuilder(
+                        OMAbstractFactory.getMetaFactory(), parser));
     }
-    
+
     public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {
         this(parser);
         validateSOAPVersion(null, soapVersion);
     }
-    
+
     protected final void validateSOAPVersion(SOAPFactory factory, String soapVersion) {
-        SOAPFactory actualFactory = (SOAPFactory)getSOAPMessage().getOMFactory();
-        if (factory != null && actualFactory != factory ||
-                soapVersion != null && !actualFactory.getSOAPVersion().getEnvelopeURI().equals(soapVersion)) {
+        SOAPFactory actualFactory = (SOAPFactory) getSOAPMessage().getOMFactory();
+        if (factory != null && actualFactory != factory
+                || soapVersion != null
+                        && !actualFactory.getSOAPVersion().getEnvelopeURI().equals(soapVersion)) {
             throw new SOAPProcessingException("SOAP version mismatch");
         }
     }
-    
+
     @Override
     public SOAPEnvelope getSOAPEnvelope() {
         return target.getSOAPEnvelope();

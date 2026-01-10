@@ -25,9 +25,9 @@ import org.apache.axiom.om.OMNode;
 import javax.xml.namespace.QName;
 
 /**
- * @deprecated This type of iterator should always be created using
- *             {@link OMContainer#getChildrenWithLocalName(String)}, and this class should never be
- *             referenced directly. It will be removed in Axiom 1.3.
+ * @deprecated This type of iterator should always be created using {@link
+ *     OMContainer#getChildrenWithLocalName(String)}, and this class should never be referenced
+ *     directly. It will be removed in Axiom 1.3.
  */
 public class OMChildrenLocalNameIterator extends OMChildrenQNameIterator {
 
@@ -37,7 +37,7 @@ public class OMChildrenLocalNameIterator extends OMChildrenQNameIterator {
 
     /**
      * This version of equals returns true if the local parts match.
-     * 
+     *
      * @param searchQName
      * @param currentQName
      * @return true if equals

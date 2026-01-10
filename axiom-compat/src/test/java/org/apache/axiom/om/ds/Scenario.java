@@ -19,9 +19,9 @@
 package org.apache.axiom.om.ds;
 
 public class Scenario {
-	public static final int SER =0;
-	public static final int SER_SER = 1;
-	public static final int SAC = 2;
-	public static final int SER_SAC = 3;
-	public static final int SAC_SAC = 4;
+    public static final int SER = 0;
+    public static final int SER_SER = 1;
+    public static final int SAC = 2;
+    public static final int SER_SAC = 3;
+    public static final int SAC_SAC = 4;
 }

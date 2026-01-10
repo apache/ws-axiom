@@ -39,6 +39,4 @@ public class XPathEvaluator {
         }
         return xpath.selectNodes(element);
     }
-
-
 }

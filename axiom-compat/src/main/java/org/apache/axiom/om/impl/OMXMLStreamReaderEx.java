@@ -25,17 +25,16 @@ import org.apache.axiom.om.OMDataSource;
 /**
  * Interface that is used internally by Axiom and that should not be considered being part of the
  * public API.
- * 
+ *
  * @deprecated
  */
 public interface OMXMLStreamReaderEx extends XMLStreamReader {
     // *** Methods used by StreamingOMSerializer
-    
+
     /**
-     * If enabled, treat OMSourcedElements that have
-     * a OMDataSource as leaf nodes.  The caller
-     * should use the getDataSource method to obtain
-     * the OMDataSource for these events.
+     * If enabled, treat OMSourcedElements that have a OMDataSource as leaf nodes. The caller should
+     * use the getDataSource method to obtain the OMDataSource for these events.
+     *
      * @param value boolean
      */
     void enableDataSourceEvents(boolean value);

@@ -22,60 +22,52 @@ package org.apache.axiom.attachments.utils;
 /**
  * Various byte array searching utilities. This includes a "skip search", which is an optimized
  * search for finding a byte pattern in a large byte array.
- * 
+ *
  * @deprecated This class was part of the MIME parser in Axiom versions before 1.2.13 and is no
- *             longer used. It will be removed in Axiom 1.3. Please note that the code in this class
- *             is known to have issues; see <a
- *             href="https://issues.apache.org/jira/browse/AXIOM-449">AXIOM-449</a> and <a
- *             href="https://issues.apache.org/jira/browse/AXIOM-450">AXIOM-450</a> for more
- *             information.
+ *     longer used. It will be removed in Axiom 1.3. Please note that the code in this class is
+ *     known to have issues; see <a
+ *     href="https://issues.apache.org/jira/browse/AXIOM-449">AXIOM-449</a> and <a
+ *     href="https://issues.apache.org/jira/browse/AXIOM-450">AXIOM-450</a> for more information.
  */
 public class ByteSearch {
 
-    
     /**
-     * Search a byte sequence for a given pattern. The method uses the
-     * skip search algorithm. The search can be performed in forward
-     * or backward direction, i.e. beginning from the start or end of the
-     * byte sequence.
-     * 
-     * @param pattern  byte[] 
+     * Search a byte sequence for a given pattern. The method uses the skip search algorithm. The
+     * search can be performed in forward or backward direction, i.e. beginning from the start or
+     * end of the byte sequence.
+     *
+     * @param pattern byte[]
      * @param direction true if forward, false if backward
      * @param buffer byte[] to search
      * @param start index to start search
      * @param end index to end search (end index is not within the search)
-     * @param skip short[256]  A skipArray generated from a call to 
-     * generateSkipArray. 
+     * @param skip short[256] A skipArray generated from a call to generateSkipArray.
      * @return index or -1 if not found
      */
-    public static int skipSearch(byte[] pattern,
-                                 boolean direction,
-                                 byte[] buffer,
-                                 int start,
-                                 int end,
-                                 short[] skip) {
-        
+    public static int skipSearch(
+            byte[] pattern, boolean direction, byte[] buffer, int start, int end, short[] skip) {
+
         int patternLength = pattern.length;
-        
+
         // If patternLength is larger than buffer,
         // return not found
         if (patternLength > (end - start)) {
             return -1;
         }
-        
+
         if (direction) {
             int k = 0;
-            for (k = start + patternLength - 1; 
-                k < end; // end is exclusive
-                k += skip[buffer[k] & (0xff)])   // SKIP NOTE below
+            for (k = start + patternLength - 1;
+                    k < end; // end is exclusive
+                    k += skip[buffer[k] & (0xff)]) // SKIP NOTE below
             {
                 try {
                     // k is the location in the buffer
                     // that may match the last byte in the pattern.
-                    if (isEqual(pattern, buffer, (k-patternLength)+1, end)) {
-                        return (k-patternLength)+1;
+                    if (isEqual(pattern, buffer, (k - patternLength) + 1, end)) {
+                        return (k - patternLength) + 1;
                     }
-                    // SKIP NOTE: The next k index is calculated from 
+                    // SKIP NOTE: The next k index is calculated from
                     // the skip array.  Basically if the k byte is not
                     // within the pattern, we skip ahead the length of the
                     // pattern.  Otherwise we skip ahead a distance less
@@ -85,10 +77,7 @@ public class ByteSearch {
                 }
             }
         } else {
-            for (int k = end - patternLength; 
-                k <= start;
-                k -= skip[buffer[k] & (0xff)]) 
-            {
+            for (int k = end - patternLength; k <= start; k -= skip[buffer[k] & (0xff)]) {
                 try {
                     // k is the location in the buffer
                     // that may match the first byte in the pattern.
@@ -100,20 +89,19 @@ public class ByteSearch {
                 }
             }
         }
-        return -1;            
+        return -1;
     }
-    
+
     /**
-     * skipArray
-     * Builds a skip array for this pattern and direction.
-     * The skipArray is used in the optimized skipSearch
+     * skipArray Builds a skip array for this pattern and direction. The skipArray is used in the
+     * optimized skipSearch
+     *
      * @param pattern
      * @param direction
      * @return short[256]
      */
-    public static short[] getSkipArray(byte[] pattern,
-                    boolean direction) {
-        
+    public static short[] getSkipArray(byte[] pattern, boolean direction) {
+
         // The index key is a byte.
         // The short[key] is the number of bytes that can
         // be skipped that won't match the pattern
@@ -130,45 +118,43 @@ public class ByteSearch {
             // The skip distance is the distance of the
             // character from the end of the pattern.
             // The last character in the pattern is excluded.
-            for (int k = 0; k < pattern.length -1; k++) {
-                skip[pattern[k] & (0xff)] = (short)(pattern.length - k - 1);
+            for (int k = 0; k < pattern.length - 1; k++) {
+                skip[pattern[k] & (0xff)] = (short) (pattern.length - k - 1);
             }
         } else {
-            for (int k = pattern.length-2; k >= 0; k--) {
-                skip[pattern[k] &(0xff)] = (short)(pattern.length - k - 1);
+            for (int k = pattern.length - 2; k >= 0; k--) {
+                skip[pattern[k] & (0xff)] = (short) (pattern.length - k - 1);
             }
         }
         return skip;
     }
-    
+
     /**
-     * 
      * isEqual
+     *
      * @param pattern
      * @param buffer
      * @param start index
      * @param end index
      * @return true if the bytes in buffer[start] equal pattern
-     * 
      */
     public static boolean isEqual(byte[] pattern, byte[] buffer, int start, int end) {
-//        if (pattern.length >= end-start) {
-        if (pattern.length > end-start) {
+        //        if (pattern.length >= end-start) {
+        if (pattern.length > end - start) {
             return false;
         }
-        for (int j=0; j<pattern.length; j++) {
-            if (pattern[j] != buffer[start+j]) {
+        for (int j = 0; j < pattern.length; j++) {
+            if (pattern[j] != buffer[start + j]) {
                 return false;
             }
         }
         return true;
     }
-    
+
     /**
-     * search
-     * Look for the search bytes in the bytes array using a straight search.
-     * Use the skip search if the number of bytes to search is large or
-     * if this search is performed frequently.
+     * search Look for the search bytes in the bytes array using a straight search. Use the skip
+     * search if the number of bytes to search is large or if this search is performed frequently.
+     *
      * @param search byte[]
      * @param bytes byte[] to search
      * @param start starting index
@@ -176,28 +162,29 @@ public class ByteSearch {
      * @param direction boolean (true indicates forward search, false is backwards search
      * @return index or -1
      */
-    public static int search(byte[] search, 
-            byte[] bytes, int start, int end, 
-            boolean direction) {
-        
+    public static int search(byte[] search, byte[] bytes, int start, int end, boolean direction) {
+
         int idx = -1;
-        if (search == null || search.length == 0 ||
-            bytes == null || bytes.length == 0 ||
-            start < 0 || end <= 0) {
+        if (search == null
+                || search.length == 0
+                || bytes == null
+                || bytes.length == 0
+                || start < 0
+                || end <= 0) {
             return idx;
         }
-        
+
         // Search byte bytes array
         if (direction) {
-            for (int i=start; idx < 0 && i< end; i++) {
+            for (int i = start; idx < 0 && i < end; i++) {
                 if (bytes[i] == search[0]) {
                     // Potential match..check remaining bytes
-                    boolean found = true;  // assume found
-                    for (int i2=1; found && i2<search.length; i2++) {
-                        if (i+i2 >= end) {
+                    boolean found = true; // assume found
+                    for (int i2 = 1; found && i2 < search.length; i2++) {
+                        if (i + i2 >= end) {
                             found = false;
                         } else {
-                            found = (bytes[i+i2] == search[i2]); 
+                            found = (bytes[i + i2] == search[i2]);
                         }
                     }
                     // If found match, set return idx
@@ -207,15 +194,15 @@ public class ByteSearch {
                 }
             }
         } else {
-            for (int i=end-1; idx < 0 && i>=start; i--) {
+            for (int i = end - 1; idx < 0 && i >= start; i--) {
                 if (bytes[i] == search[0]) {
                     // Potential match..check remaining bytes
-                    boolean found = true;  // assume found
-                    for (int i2=1; found && i2<search.length; i2++) {
-                        if (i+i2 >= end) {
+                    boolean found = true; // assume found
+                    for (int i2 = 1; found && i2 < search.length; i2++) {
+                        if (i + i2 >= end) {
                             found = false;
                         } else {
-                            found = (bytes[i+i2] == search[i2]); 
+                            found = (bytes[i + i2] == search[i2]);
                         }
                     }
                     // If found match, set return idx
@@ -229,5 +216,3 @@ public class ByteSearch {
         return idx;
     }
 }
-
- 

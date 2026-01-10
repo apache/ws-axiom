@@ -67,7 +67,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
     @Override
     public void startDocument() throws SAXException {
 
-        // 
+        //
     }
 
     /**
@@ -79,8 +79,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @throws SAXException
      */
     @Override
-    public void characters(char ch[], int start, int length)
-            throws SAXException {
+    public void characters(char ch[], int start, int length) throws SAXException {
         try {
             writer.writeCharacters(ch, start, length);
         } catch (XMLStreamException e) {
@@ -97,8 +96,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @throws SAXException
      */
     @Override
-    public void ignorableWhitespace(char ch[], int start, int length)
-            throws SAXException {
+    public void ignorableWhitespace(char ch[], int start, int length) throws SAXException {
 
         // throw new UnsupportedOperationException();
     }
@@ -146,8 +144,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @throws SAXException
      */
     @Override
-    public void processingInstruction(String target, String data)
-            throws SAXException {
+    public void processingInstruction(String target, String data) throws SAXException {
 
         // throw new UnsupportedOperationException();
     }
@@ -160,8 +157,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @throws SAXException
      */
     @Override
-    public void startPrefixMapping(String prefix, String uri)
-            throws SAXException {
+    public void startPrefixMapping(String prefix, String uri) throws SAXException {
         try {
             writer.writeNamespace(prefix, uri);
             writer.setPrefix(prefix, uri);
@@ -179,9 +175,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @throws SAXException
      */
     @Override
-    public void endElement(String namespaceURI,
-                           String localName,
-                           String qName)
+    public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         try {
             writer.writeEndElement();
@@ -213,14 +207,10 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @throws SAXException
      */
     @Override
-    public void startElement(String namespaceURI,
-                             String localName,
-                             String qName,
-                             Attributes atts)
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
             throws SAXException {
         try {
-            log.info("writing element {" + namespaceURI + '}' + localName
-                    + " directly to stream ");
+            log.info("writing element {" + namespaceURI + '}' + localName + " directly to stream ");
             String prefix = getPrefix(qName);
 
             // it is only the prefix we want to learn from the QName! so we can get rid of the
@@ -233,8 +223,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
             if (atts != null) {
                 int attCount = atts.getLength();
                 for (int i = 0; i < attCount; i++) {
-                    writer.writeAttribute(atts.getURI(i), localName,
-                                          atts.getValue(i));
+                    writer.writeAttribute(atts.getURI(i), localName, atts.getValue(i));
                 }
             }
         } catch (XMLStreamException e) {

@@ -22,5 +22,4 @@ package org.apache.axiom.attachments;
 /**
  * @deprecated Please implement {@link org.apache.axiom.ext.activation.SizeAwareDataSource}
  */
-public interface SizeAwareDataSource extends org.apache.axiom.ext.activation.SizeAwareDataSource {
-}
+public interface SizeAwareDataSource extends org.apache.axiom.ext.activation.SizeAwareDataSource {}

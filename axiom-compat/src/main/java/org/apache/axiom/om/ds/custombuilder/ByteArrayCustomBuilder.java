@@ -28,19 +28,19 @@ import javax.xml.stream.XMLStreamException;
 
 import java.io.ByteArrayOutputStream;
 
-
 /**
  * @deprecated Use {@link BlobOMDataSourceCustomBuilder} instead.
  */
 public class ByteArrayCustomBuilder implements CustomBuilder {
     private String encoding = null;
-    
+
     /**
      * Constructor
-     * @param encoding 
+     *
+     * @param encoding
      */
     public ByteArrayCustomBuilder(String encoding) {
-        this.encoding = (encoding == null) ? "utf-8" :encoding;
+        this.encoding = (encoding == null) ? "utf-8" : encoding;
     }
 
     @Override
@@ -58,5 +58,4 @@ public class ByteArrayCustomBuilder implements CustomBuilder {
             throw new OMException(t);
         }
     }
-
 }

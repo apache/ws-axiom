@@ -40,20 +40,21 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * @deprecated This class has been deprecated without replacement. Generally there is no need for
- *             {@link OMDataSource} instances that are pull based (i.e. use an
- *             {@link XMLStreamReader}) and that are destructive. For these scenarios, simply use
- *             {@link OMXMLBuilderFactory} to create an {@link OMElement} and add it to the tree.
- *             Since this operation will not expand the element (in Axiom 1.3.x), the result will be
- *             the same as using an {@link OMSourcedElement} with a destructive {@link OMDataSource}.
+ *     {@link OMDataSource} instances that are pull based (i.e. use an {@link XMLStreamReader}) and
+ *     that are destructive. For these scenarios, simply use {@link OMXMLBuilderFactory} to create
+ *     an {@link OMElement} and add it to the tree. Since this operation will not expand the element
+ *     (in Axiom 1.3.x), the result will be the same as using an {@link OMSourcedElement} with a
+ *     destructive {@link OMDataSource}.
  */
 public class InputStreamDataSource extends OMDataSourceExtBase {
 
     Data data = null;
     private static final int BUFFER_LEN = 4096;
-    
+
     /**
      * Constructor
-     * @param is 
+     *
+     * @param is
      * @param encoding
      */
     public InputStreamDataSource(InputStream is, String encoding) {
@@ -61,7 +62,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         data.is = is;
         data.encoding = encoding;
     }
-   
+
     @Override
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         if (data == null) {
@@ -90,18 +91,17 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         }
         super.serialize(xmlWriter);
     }
-    
+
     @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         if (data == null) {
             throw new OMException("The InputStreamDataSource does not have a backing object");
         }
-        return StAXUtils.createXMLStreamReader(data.is,data.encoding);                                                                       
+        return StAXUtils.createXMLStreamReader(data.is, data.encoding);
     }
-    
+
     @Override
-    public InputStream getXMLInputStream(String encoding)  throws 
-        UnsupportedEncodingException{
+    public InputStream getXMLInputStream(String encoding) throws UnsupportedEncodingException {
         if (data == null) {
             throw new OMException("The InputStreamDataSource does not have a backing object");
         }
@@ -110,7 +110,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
 
     @Override
     public Object getObject() {
-       return data;
+        return data;
     }
 
     @Override
@@ -132,7 +132,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
 
     @Override
     public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
-        
+
         // Return the byte array directly if it is the same encoding
         // Otherwise convert the bytes to the proper encoding
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -145,7 +145,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         }
         return baos.toByteArray();
     }
-    
+
     @Override
     public void close() {
         if (data.is != null) {
@@ -158,9 +158,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         }
     }
 
-    /**
-     * Return a InputStreamDataSource backed by a ByteArrayInputStream
-     */
+    /** Return a InputStreamDataSource backed by a ByteArrayInputStream */
     @Override
     public OMDataSourceExt copy() {
         byte[] bytes;
@@ -174,16 +172,16 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         data.is = is1;
         return new InputStreamDataSource(is2, data.encoding);
     }
-    
+
     /**
      * Private utility to write the InputStream contents to the OutputStream.
+     *
      * @param is
      * @param os
      * @throws IOException
      */
-    private static void inputStream2OutputStream(InputStream is, 
-                                                 OutputStream os)
-    throws IOException {
+    private static void inputStream2OutputStream(InputStream is, OutputStream os)
+            throws IOException {
         byte[] buffer = new byte[BUFFER_LEN];
         int bytesRead = is.read(buffer);
         while (bytesRead > 0) {
@@ -191,10 +189,8 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
             bytesRead = is.read(buffer);
         }
     }
-    
-    /**
-     * Object containing the InputStream/encoding pair
-     */
+
+    /** Object containing the InputStream/encoding pair */
     public class Data {
         public String encoding;
         public InputStream is;

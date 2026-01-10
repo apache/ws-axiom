@@ -24,10 +24,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * LogOutputStream
- * Writes to log.debug()
- * Also counts the number of bytes
- * 
+ * LogOutputStream Writes to log.debug() Also counts the number of bytes
+ *
  * @deprecated
  */
 public class LogOutputStream extends OutputStream {
@@ -40,23 +38,23 @@ public class LogOutputStream extends OutputStream {
     private byte[] buffer = new byte[BUFFER_LEN];
     private int bufferIndex = 0;
     private int limit;
-    
+
     public LogOutputStream(Log log, int limit) {
-       isDebugEnabled = log.isDebugEnabled();
-       this.log = log;
-       this.limit = limit;
+        isDebugEnabled = log.isDebugEnabled();
+        this.log = log;
+        this.limit = limit;
     }
-    
+
     public long getLength() {
         return count;
     }
-    
+
     @Override
     public void close() throws IOException {
         if (bufferIndex > 0) {
             log.debug(new String(buffer, 0, bufferIndex));
             bufferIndex = 0;
-        } 
+        }
         buffer = null;
         temp = null;
         log = null;
@@ -69,19 +67,19 @@ public class LogOutputStream extends OutputStream {
 
     @Override
     public void write(byte[] b, int off, int len) throws IOException {
-       
-        // Adjust total count 
+
+        // Adjust total count
         // Adjust length to write
-        if (count >=  limit) {
+        if (count >= limit) {
             count += len;
             return;
         } else if (count + len >= limit) {
             count += len;
-            len = (int) (len - (limit - count));  // adjust length to write
+            len = (int) (len - (limit - count)); // adjust length to write
         } else {
             count += len;
         }
-        
+
         if (isDebugEnabled) {
             if (len + bufferIndex < BUFFER_LEN) {
                 // buffer the text
@@ -92,7 +90,7 @@ public class LogOutputStream extends OutputStream {
                 if (bufferIndex > 0) {
                     log.debug(new String(buffer, 0, bufferIndex));
                     bufferIndex = 0;
-                } 
+                }
                 // buffer or write remaining text
                 if (len + bufferIndex < BUFFER_LEN) {
                     System.arraycopy(b, off, buffer, bufferIndex, len);
@@ -102,7 +100,6 @@ public class LogOutputStream extends OutputStream {
                 }
             }
         }
-        
     }
 
     @Override
@@ -115,5 +112,4 @@ public class LogOutputStream extends OutputStream {
         temp[0] = (byte) b;
         this.write(temp, 0, 1);
     }
-
 }

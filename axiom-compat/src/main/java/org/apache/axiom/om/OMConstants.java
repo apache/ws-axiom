@@ -28,8 +28,7 @@ public interface OMConstants {
     /**
      * @deprecated This constant was used in early prototypes of Axis2 and is no longer relevant.
      */
-    String ARRAY_ITEM_NSURI =
-            "http://axis.apache.org/encoding/Arrays";
+    String ARRAY_ITEM_NSURI = "http://axis.apache.org/encoding/Arrays";
 
     /**
      * @deprecated This constant was used in early prototypes of Axis2 and is no longer relevant.
@@ -45,24 +44,25 @@ public interface OMConstants {
      * @deprecated This constant was used in early prototypes of Axis2 and is no longer relevant.
      */
     String ARRAY_ITEM_QNAME =
-            OMConstants.ARRAY_ITEM_NS_PREFIX + ':'
-                    + OMConstants.ARRAY_ITEM_LOCALNAME;
+            OMConstants.ARRAY_ITEM_NS_PREFIX + ':' + OMConstants.ARRAY_ITEM_LOCALNAME;
 
-    /** Field DEFAULT_CHAR_SET_ENCODING specifies the default character encoding scheme to be used */
+    /**
+     * Field DEFAULT_CHAR_SET_ENCODING specifies the default character encoding scheme to be used
+     */
     String DEFAULT_CHAR_SET_ENCODING = "utf-8";
+
     String DEFAULT_XML_VERSION = "1.0";
 
     /**
      * @deprecated Use {@link XMLConstants#XML_NS_URI} instead.
      */
-    String XMLNS_URI =
-            "http://www.w3.org/XML/1998/namespace";
+    String XMLNS_URI = "http://www.w3.org/XML/1998/namespace";
 
     /**
      * @deprecated Use {@link XMLConstants#XMLNS_ATTRIBUTE_NS_URI} instead.
      */
     String XMLNS_NS_URI = "http://www.w3.org/2000/xmlns/";
-    
+
     /**
      * @deprecated Use {@link XMLConstants#XMLNS_ATTRIBUTE} instead.
      */
@@ -71,22 +71,20 @@ public interface OMConstants {
     /**
      * @deprecated Use {@link XMLConstants#XML_NS_PREFIX} instead.
      */
-    String XMLNS_PREFIX =
-            "xml";
-    
+    String XMLNS_PREFIX = "xml";
+
     /**
      * @deprecated
      */
     String DEFAULT_DEFAULT_NAMESPACE = "\"\"";
-    
+
     String XMLATTRTYPE_CDATA = "CDATA";
     String XMLATTRTYPE_ID = "ID";
-    String XMLATTRTYPE_IDREF = "IDREF"; 
-    String XMLATTRTYPE_IDREFS = "IDREFS"; 
-    String XMLATTRTYPE_NMTOKEN = "NMTOKEN"; 
-    String XMLATTRTYPE_NMTOKENS = "NMTOKENS"; 
-    String XMLATTRTYPE_ENTITY = "ENTITY"; 
-    String XMLATTRTYPE_ENTITIES = "ENTITIES";  
-    String XMLATTRTYPE_NOTATION = "NOTATION"; 
-
+    String XMLATTRTYPE_IDREF = "IDREF";
+    String XMLATTRTYPE_IDREFS = "IDREFS";
+    String XMLATTRTYPE_NMTOKEN = "NMTOKEN";
+    String XMLATTRTYPE_NMTOKENS = "NMTOKENS";
+    String XMLATTRTYPE_ENTITY = "ENTITY";
+    String XMLATTRTYPE_ENTITIES = "ENTITIES";
+    String XMLATTRTYPE_NOTATION = "NOTATION";
 }

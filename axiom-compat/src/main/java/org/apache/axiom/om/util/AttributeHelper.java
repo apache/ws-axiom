@@ -33,17 +33,21 @@ public class AttributeHelper {
      * given omFactory.
      *
      * @see ElementHelper#importOMElement(OMElement, OMFactory) to convert instances of OMElement
-     * 
      * @deprecated Use {@link OMFactory#importInformationItem(OMInformationItem)} instead.
      */
     public static void importOMAttribute(OMAttribute omAttribute, OMElement omElement) {
         // first check whether the given OMAttribute has the same OMFactory
-        if (omAttribute.getOMFactory().getMetaFactory() == omElement.getOMFactory().getMetaFactory()) {
+        if (omAttribute.getOMFactory().getMetaFactory()
+                == omElement.getOMFactory().getMetaFactory()) {
             omElement.addAttribute(omAttribute);
         } else {
             OMNamespace ns = omAttribute.getNamespace();
-            omElement.addAttribute(omAttribute.getLocalName(), omAttribute.getAttributeValue(),
-                                   omElement.getOMFactory().createOMNamespace(ns.getNamespaceURI(), ns.getPrefix()));
+            omElement.addAttribute(
+                    omAttribute.getLocalName(),
+                    omAttribute.getAttributeValue(),
+                    omElement
+                            .getOMFactory()
+                            .createOMNamespace(ns.getNamespaceURI(), ns.getPrefix()));
         }
     }
 }

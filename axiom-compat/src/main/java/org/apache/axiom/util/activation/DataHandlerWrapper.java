@@ -30,7 +30,7 @@ import jakarta.activation.DataSource;
 
 /**
  * Base class for {@link DataHandler} wrappers.
- * 
+ *
  * @deprecated
  */
 public class DataHandlerWrapper extends DataHandler {
@@ -96,8 +96,7 @@ public class DataHandlerWrapper extends DataHandler {
     }
 
     @Override
-    public Object getTransferData(ActivationDataFlavor flavor)
-            throws IOException {
+    public Object getTransferData(ActivationDataFlavor flavor) throws IOException {
         return parent.getTransferData(flavor);
     }
 

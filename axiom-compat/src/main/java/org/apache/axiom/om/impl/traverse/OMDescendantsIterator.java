@@ -23,13 +23,13 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 
 /**
- * @deprecated This type of iterator should always be created using
- *             {@link OMContainer#getDescendants(boolean)}, and this class should never be
- *             referenced directly. It will be removed in Axiom 1.3.
+ * @deprecated This type of iterator should always be created using {@link
+ *     OMContainer#getDescendants(boolean)}, and this class should never be referenced directly. It
+ *     will be removed in Axiom 1.3.
  */
 public class OMDescendantsIterator extends OMAbstractIterator {
     private int level;
-    
+
     public OMDescendantsIterator(OMNode firstNode) {
         super(firstNode);
     }
@@ -37,7 +37,7 @@ public class OMDescendantsIterator extends OMAbstractIterator {
     @Override
     protected OMNode getNextNode(OMNode currentNode) {
         if (currentNode instanceof OMContainer) {
-            OMNode firstChild = ((OMContainer)currentNode).getFirstOMChild();
+            OMNode firstChild = ((OMContainer) currentNode).getFirstOMChild();
             if (firstChild != null) {
                 level++;
                 return firstChild;
@@ -51,7 +51,7 @@ public class OMDescendantsIterator extends OMAbstractIterator {
             } else if (level == 0) {
                 return null;
             } else {
-                node = (OMNode)node.getParent();
+                node = (OMNode) node.getParent();
                 level--;
             }
         }

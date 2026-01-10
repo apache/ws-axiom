@@ -32,12 +32,12 @@ import org.apache.commons.logging.LogFactory;
  * i.e. the methods related to the namespace context. Subclasses only need to implement write
  * methods that take a prefix together with the namespace URI argument. This class implements all
  * {@link XMLStreamWriter} methods that have a namespace URI argument, but no prefix argument.
- * 
+ *
  * @deprecated This class is no longer maintained.
  */
 public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     private static final Log log = LogFactory.getLog(AbstractXMLStreamWriter.class);
-    
+
     private final ScopedNamespaceContext namespaceContext = new ScopedNamespaceContext();
     private boolean inEmptyElement;
 
@@ -59,13 +59,14 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
 
     private void internalSetPrefix(String prefix, String uri) {
         if (inEmptyElement) {
-            log.warn("The behavior of XMLStreamWriter#setPrefix and " +
-            		"XMLStreamWriter#setDefaultNamespace is undefined when invoked in the " +
-            		"context of an empty element");
+            log.warn(
+                    "The behavior of XMLStreamWriter#setPrefix and "
+                            + "XMLStreamWriter#setDefaultNamespace is undefined when invoked in the "
+                            + "context of an empty element");
         }
         namespaceContext.setPrefix(prefix, uri);
     }
-    
+
     @Override
     public final void setDefaultNamespace(String uri) throws XMLStreamException {
         internalSetPrefix("", uri);
@@ -80,15 +81,17 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     public final void writeStartDocument() throws XMLStreamException {
         doWriteStartDocument();
     }
-    
+
     protected abstract void doWriteStartDocument() throws XMLStreamException;
 
     @Override
-    public final void writeStartDocument(String encoding, String version) throws XMLStreamException {
+    public final void writeStartDocument(String encoding, String version)
+            throws XMLStreamException {
         doWriteStartDocument(encoding, version);
     }
 
-    protected abstract void doWriteStartDocument(String encoding, String version) throws XMLStreamException;
+    protected abstract void doWriteStartDocument(String encoding, String version)
+            throws XMLStreamException;
 
     @Override
     public final void writeStartDocument(String version) throws XMLStreamException {
@@ -96,21 +99,21 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     }
 
     protected abstract void doWriteStartDocument(String version) throws XMLStreamException;
-    
+
     @Override
     public final void writeDTD(String dtd) throws XMLStreamException {
         doWriteDTD(dtd);
     }
 
     protected abstract void doWriteDTD(String dtd) throws XMLStreamException;
-    
+
     @Override
     public final void writeEndDocument() throws XMLStreamException {
         doWriteEndDocument();
     }
 
     protected abstract void doWriteEndDocument() throws XMLStreamException;
-    
+
     private String internalGetPrefix(String namespaceURI) throws XMLStreamException {
         String prefix = namespaceContext.getPrefix(namespaceURI);
         if (prefix == null) {
@@ -119,7 +122,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
             return prefix;
         }
     }
-    
+
     @Override
     public final void writeStartElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException {
@@ -129,14 +132,15 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     }
 
     @Override
-    public final void writeStartElement(String namespaceURI, String localName) throws XMLStreamException {
+    public final void writeStartElement(String namespaceURI, String localName)
+            throws XMLStreamException {
         doWriteStartElement(internalGetPrefix(namespaceURI), localName, namespaceURI);
         namespaceContext.startScope();
         inEmptyElement = false;
     }
 
-    protected abstract void doWriteStartElement(String prefix, String localName, String namespaceURI)
-            throws XMLStreamException;
+    protected abstract void doWriteStartElement(
+            String prefix, String localName, String namespaceURI) throws XMLStreamException;
 
     @Override
     public final void writeStartElement(String localName) throws XMLStreamException {
@@ -170,8 +174,8 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
         inEmptyElement = true;
     }
 
-    protected abstract void doWriteEmptyElement(String prefix, String localName, String namespaceURI)
-            throws XMLStreamException;
+    protected abstract void doWriteEmptyElement(
+            String prefix, String localName, String namespaceURI) throws XMLStreamException;
 
     @Override
     public final void writeEmptyElement(String localName) throws XMLStreamException {
@@ -180,9 +184,10 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     }
 
     protected abstract void doWriteEmptyElement(String localName) throws XMLStreamException;
-    
+
     @Override
-    public final void writeAttribute(String prefix, String namespaceURI, String localName, String value)
+    public final void writeAttribute(
+            String prefix, String namespaceURI, String localName, String value)
             throws XMLStreamException {
         doWriteAttribute(prefix, namespaceURI, localName, value);
     }
@@ -193,14 +198,15 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
         doWriteAttribute(internalGetPrefix(namespaceURI), namespaceURI, localName, value);
     }
 
-    protected abstract void doWriteAttribute(String prefix, String namespaceURI, String localName,
-            String value) throws XMLStreamException;
+    protected abstract void doWriteAttribute(
+            String prefix, String namespaceURI, String localName, String value)
+            throws XMLStreamException;
 
     @Override
     public final void writeAttribute(String localName, String value) throws XMLStreamException {
         doWriteAttribute(localName, value);
     }
-    
+
     protected abstract void doWriteAttribute(String localName, String value)
             throws XMLStreamException;
 
@@ -209,7 +215,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
         doWriteNamespace(prefix, namespaceURI);
         namespaceContext.setPrefix(prefix, namespaceURI);
     }
-    
+
     protected abstract void doWriteNamespace(String prefix, String namespaceURI)
             throws XMLStreamException;
 
@@ -226,7 +232,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
         doWriteCharacters(text, start, len);
         inEmptyElement = false;
     }
-    
+
     protected abstract void doWriteCharacters(char[] text, int start, int len)
             throws XMLStreamException;
 
@@ -235,7 +241,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
         doWriteCharacters(text);
         inEmptyElement = false;
     }
-    
+
     protected abstract void doWriteCharacters(String text) throws XMLStreamException;
 
     @Override
@@ -243,7 +249,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
         doWriteCData(data);
         inEmptyElement = false;
     }
-    
+
     protected abstract void doWriteCData(String data) throws XMLStreamException;
 
     @Override

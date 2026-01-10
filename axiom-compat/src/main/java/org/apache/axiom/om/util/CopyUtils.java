@@ -35,57 +35,49 @@ import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
 /**
- * CopyUtils provides static utility methods that are useful for creating a copy of 
- * an OM/SOAPEnvelope tree.  
- * During the expansion, the Source tree retains its shape
- * (OMSourcedElement nodes are not expanded).  
- * The Target tree has nodes that retain the class identity of the source node.  For 
- * example, a SOAPFault in the source tree will have a SOAPFault in the target tree.
+ * CopyUtils provides static utility methods that are useful for creating a copy of an
+ * OM/SOAPEnvelope tree. During the expansion, the Source tree retains its shape (OMSourcedElement
+ * nodes are not expanded). The Target tree has nodes that retain the class identity of the source
+ * node. For example, a SOAPFault in the source tree will have a SOAPFault in the target tree.
  */
 public class CopyUtils {
-    /**
-     * Private Constructor
-     */
-    private CopyUtils() {
-    }
-
+    /** Private Constructor */
+    private CopyUtils() {}
 
     /**
-     * @deprecated This method has the same effect as calling
-     *             {@link OMInformationItem#clone(OMCloneOptions)} on the source
-     *             {@link SOAPEnvelope} with the following options enabled:
-     *             <ul>
-     *             <li>{@link OMCloneOptions#setFetchBlobs(boolean)}
-     *             <li>{@link OMCloneOptions#setPreserveModel(boolean)}
-     *             <li>{@link OMCloneOptions#setCopyOMDataSources(boolean)}
-     *             </ul>
-     *             Instead of using this method, application code should use
-     *             {@link OMInformationItem#clone(OMCloneOptions)} directly and fine tune the
-     *             options for the particular use case.
+     * @deprecated This method has the same effect as calling {@link
+     *     OMInformationItem#clone(OMCloneOptions)} on the source {@link SOAPEnvelope} with the
+     *     following options enabled:
+     *     <ul>
+     *       <li>{@link OMCloneOptions#setFetchBlobs(boolean)}
+     *       <li>{@link OMCloneOptions#setPreserveModel(boolean)}
+     *       <li>{@link OMCloneOptions#setCopyOMDataSources(boolean)}
+     *     </ul>
+     *     Instead of using this method, application code should use {@link
+     *     OMInformationItem#clone(OMCloneOptions)} directly and fine tune the options for the
+     *     particular use case.
      */
     public static SOAPEnvelope copy(SOAPEnvelope sourceEnv) {
         SOAPCloneOptions options = new SOAPCloneOptions();
         options.setFetchBlobs(true);
         options.setPreserveModel(true);
         options.setCopyOMDataSources(true);
-        return (SOAPEnvelope)sourceEnv.clone(options);
+        return (SOAPEnvelope) sourceEnv.clone(options);
     }
 
     /**
      * Simple utility that takes an XMLStreamReader and writes it to an XMLStreamWriter
-     * 
+     *
      * @param reader
      * @param writer
      * @throws XMLStreamException
-     * 
      * @deprecated Instead use {@link OMXMLBuilderFactory#createStAXOMBuilder(XMLStreamReader)} to
-     *             create an {@link OMDocument} and then
-     *             {@link OMContainer#serializeAndConsume(XMLStreamWriter)} to write to the
-     *             {@link XMLStreamWriter}.
+     *     create an {@link OMDocument} and then {@link
+     *     OMContainer#serializeAndConsume(XMLStreamWriter)} to write to the {@link
+     *     XMLStreamWriter}.
      */
-    public static void reader2writer(XMLStreamReader reader, 
-                                     XMLStreamWriter writer)
-    throws XMLStreamException {
+    public static void reader2writer(XMLStreamReader reader, XMLStreamWriter writer)
+            throws XMLStreamException {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(reader);
         try {
             OMDocument omDocument = builder.getDocument();

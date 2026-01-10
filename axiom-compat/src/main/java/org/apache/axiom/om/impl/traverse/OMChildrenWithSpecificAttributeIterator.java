@@ -48,10 +48,8 @@ public class OMChildrenWithSpecificAttributeIterator extends OMFilterIterator {
      * @param attributeValue
      * @param detach
      */
-    public OMChildrenWithSpecificAttributeIterator(OMNode currentChild,
-                                                   QName attributeName,
-                                                   String attributeValue,
-                                                   boolean detach) {
+    public OMChildrenWithSpecificAttributeIterator(
+            OMNode currentChild, QName attributeName, String attributeValue, boolean detach) {
         super(new OMChildrenIterator(currentChild));
         this.attributeName = attributeName;
         this.attributeValue = attributeValue;
@@ -65,12 +63,11 @@ public class OMChildrenWithSpecificAttributeIterator extends OMFilterIterator {
     @Override
     protected boolean matches(OMNode node) {
         if (node instanceof OMElement) {
-            OMAttribute attr =
-                    ((OMElement) node).getAttribute(
-                            attributeName);
-            return (attr != null) && (doCaseSensitiveValueChecks ?
-                    attr.getAttributeValue().equals(attributeValue) :
-                    attr.getAttributeValue().equalsIgnoreCase(attributeValue));
+            OMAttribute attr = ((OMElement) node).getAttribute(attributeName);
+            return (attr != null)
+                    && (doCaseSensitiveValueChecks
+                            ? attr.getAttributeValue().equals(attributeValue)
+                            : attr.getAttributeValue().equalsIgnoreCase(attributeValue));
         } else {
             return false;
         }

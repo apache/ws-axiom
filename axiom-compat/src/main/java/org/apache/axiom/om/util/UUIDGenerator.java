@@ -31,17 +31,15 @@ import org.apache.axiom.util.UIDGenerator;
 
 /**
  * @deprecated Please use one of the specialized methods in the {@link UIDGenerator} class. In
- *             contrast to what its name suggests, the {@link #getUUID()} method doesn't return a
- *             UUID. It doesn't return a valid URN with uuid NID either. See <a
- *             href="https://issues.apache.org/jira/browse/AXIS2-4527">AXIS2-4527</a> for more
- *             information.
+ *     contrast to what its name suggests, the {@link #getUUID()} method doesn't return a UUID. It
+ *     doesn't return a valid URN with uuid NID either. See <a
+ *     href="https://issues.apache.org/jira/browse/AXIS2-4527">AXIS2-4527</a> for more information.
  */
 public class UUIDGenerator {
     /** This class will give UUIDs for axis2. */
-
     private static String baseUUID = null;
-    private static long incrementingValue = 0;
 
+    private static long incrementingValue = 0;
 
     private static Random myRand = null;
 

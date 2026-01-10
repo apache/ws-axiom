@@ -26,9 +26,9 @@ import org.apache.axiom.om.OMNode;
 import javax.xml.namespace.QName;
 
 /**
- * @deprecated This type of iterator should always be created using
- *             {@link OMContainer#getChildrenWithName(QName)}, and this class should never be
- *             referenced directly. It will be removed in Axiom 1.3.
+ * @deprecated This type of iterator should always be created using {@link
+ *     OMContainer#getChildrenWithName(QName)}, and this class should never be referenced directly.
+ *     It will be removed in Axiom 1.3.
  */
 public class OMChildrenQNameIterator extends OMFilterIterator {
     /** Field givenQName */
@@ -44,11 +44,12 @@ public class OMChildrenQNameIterator extends OMFilterIterator {
         super(new OMChildrenIterator(currentChild));
         this.givenQName = givenQName;
     }
-    
+
     /**
-     * Returns true if the qnames are equal.
-     * The default algorithm is to use the QName equality (which examines the namespace and localPart).
-     * You can extend this class to provide your own equality algorithm.
+     * Returns true if the qnames are equal. The default algorithm is to use the QName equality
+     * (which examines the namespace and localPart). You can extend this class to provide your own
+     * equality algorithm.
+     *
      * @param searchQName
      * @param currentQName
      * @return true if qnames are equal.
@@ -60,7 +61,7 @@ public class OMChildrenQNameIterator extends OMFilterIterator {
     @Override
     protected boolean matches(OMNode node) {
         if (node instanceof OMElement) {
-            QName thisQName = ((OMElement)node).getQName();
+            QName thisQName = ((OMElement) node).getQName();
             // A null givenName is an indicator to return all elements
             return givenQName == null || isEqual(givenQName, thisQName);
         } else {
@@ -69,27 +70,30 @@ public class OMChildrenQNameIterator extends OMFilterIterator {
     }
 
     /**
-     * Prior versions of the OMChildrenQNameIterator used the following
-     * logic to check equality.  This algorithm is incorrect; however some customers
-     * have dependency on this behavior.  This method is retained (but deprecated) to allow
-     * them an opportunity to use the old algorithm.
-     * 
+     * Prior versions of the OMChildrenQNameIterator used the following logic to check equality.
+     * This algorithm is incorrect; however some customers have dependency on this behavior. This
+     * method is retained (but deprecated) to allow them an opportunity to use the old algorithm.
+     *
      * @param searchQName
      * @param currentQName
      * @return true using legacy equality match
      * @deprecated
      */
     public static boolean isEquals_Legacy(QName searchQName, QName currentQName) {
-        
-        // if the given localname is null, whatever value this.qname has, its a match. But can one give a QName without a localName ??
+
+        // if the given localname is null, whatever value this.qname has, its a match. But can one
+        // give a QName without a localName ??
         String localPart = searchQName.getLocalPart();
-        boolean localNameMatch =(localPart == null) || (localPart.equals("")) ||
-            ((currentQName != null) && currentQName.getLocalPart().equals(localPart));
+        boolean localNameMatch =
+                (localPart == null)
+                        || (localPart.equals(""))
+                        || ((currentQName != null)
+                                && currentQName.getLocalPart().equals(localPart));
         String namespaceURI = searchQName.getNamespaceURI();
-        boolean namespaceURIMatch = (namespaceURI.equals(""))||
-            ((currentQName != null) && currentQName.getNamespaceURI().equals(namespaceURI));
+        boolean namespaceURIMatch =
+                (namespaceURI.equals(""))
+                        || ((currentQName != null)
+                                && currentQName.getNamespaceURI().equals(namespaceURI));
         return localNameMatch && namespaceURIMatch;
     }
-    
-    
 }

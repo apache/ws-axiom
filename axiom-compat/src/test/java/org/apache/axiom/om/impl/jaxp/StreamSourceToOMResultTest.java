@@ -40,18 +40,18 @@ import org.xml.sax.InputSource;
 
 @SuppressWarnings({"rawtypes", "deprecation"})
 public class StreamSourceToOMResultTest extends MatrixTestCase {
-    private static final String[] axiomImplementations = { "default", "dom" };
-    
+    private static final String[] axiomImplementations = {"default", "dom"};
+
     private final OMMetaFactory omMetaFactory;
     private final XMLSample file;
-    
+
     private StreamSourceToOMResultTest(String axiomImplementation, XMLSample file) {
         omMetaFactory = OMAbstractFactory.getMetaFactory(axiomImplementation);
         this.file = file;
         addTestParameter("axiomImplementation", axiomImplementation);
         addTestParameter("file", file.getName());
     }
-    
+
     @Override
     protected void runTest() throws Throwable {
         StreamSource source = new StreamSource(file.getUrl().toString());
@@ -70,16 +70,20 @@ public class StreamSourceToOMResultTest extends MatrixTestCase {
     }
 
     public static TestSuite suite() {
-        MatrixTestSuiteBuilder builder = new MatrixTestSuiteBuilder() {
-            @Override
-            protected void addTests() {
-                for (int i=0; i<axiomImplementations.length; i++) {
-                    for (Iterator it = Multiton.getInstances(XMLSample.class).iterator(); it.hasNext(); ) {
-                        addTest(new StreamSourceToOMResultTest(axiomImplementations[i], (XMLSample)it.next()));
+        MatrixTestSuiteBuilder builder =
+                new MatrixTestSuiteBuilder() {
+                    @Override
+                    protected void addTests() {
+                        for (int i = 0; i < axiomImplementations.length; i++) {
+                            for (Iterator it = Multiton.getInstances(XMLSample.class).iterator();
+                                    it.hasNext(); ) {
+                                addTest(
+                                        new StreamSourceToOMResultTest(
+                                                axiomImplementations[i], (XMLSample) it.next()));
+                            }
+                        }
                     }
-                }
-            }
-        };
+                };
         builder.exclude("(|(file=sax-attribute-namespace-bug.xml)(file=large.xml))");
         return builder.build();
     }

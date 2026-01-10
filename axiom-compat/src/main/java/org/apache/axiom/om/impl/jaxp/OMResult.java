@@ -28,17 +28,17 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 
 /**
- * @deprecated In order to create a {@link SAXResult} that builds an Axiom tree, create an
- *             {@link OMDocument} instance and call {@link OMContainer#getSAXResult()} on it.
+ * @deprecated In order to create a {@link SAXResult} that builds an Axiom tree, create an {@link
+ *     OMDocument} instance and call {@link OMContainer#getSAXResult()} on it.
  */
 public class OMResult extends SAXResult {
     private final OMDocument document;
-    
+
     public OMResult(OMFactory omFactory) {
         document = omFactory.createOMDocument();
         setHandler(document.getSAXResult().getHandler());
     }
-    
+
     public OMResult() {
         this(OMAbstractFactory.getOMFactory());
     }

@@ -44,20 +44,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * OMDataSourceExtBase is a convenient base class that can be extended
- * by other OMDataSourceExt implementations.
- * 
+ * OMDataSourceExtBase is a convenient base class that can be extended by other OMDataSourceExt
+ * implementations.
+ *
  * @deprecated As described in <a
- *             href="https://issues.apache.org/jira/browse/AXIOM-419">AXIOM-419</a>, this class has
- *             multiple issues and should no longer be used as a base class for {@link OMDataSource}
- *             implementations. Instead, use {@link AbstractOMDataSource},
- *             {@link AbstractPullOMDataSource} or {@link AbstractPushOMDataSource}.
+ *     href="https://issues.apache.org/jira/browse/AXIOM-419">AXIOM-419</a>, this class has multiple
+ *     issues and should no longer be used as a base class for {@link OMDataSource} implementations.
+ *     Instead, use {@link AbstractOMDataSource}, {@link AbstractPullOMDataSource} or {@link
+ *     AbstractPushOMDataSource}.
  */
 public abstract class OMDataSourceExtBase implements OMDataSourceExt {
 
     private static final Log log = LogFactory.getLog(OMDataSourceExtBase.class);
-	
-    private Map<String,Object> map;  // Map of properties
+
+    private Map<String, Object> map; // Map of properties
 
     @Override
     public Object getProperty(String key) {
@@ -70,24 +70,23 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
     @Override
     public Object setProperty(String key, Object value) {
         if (map == null) {
-            map = new HashMap<String,Object>();
+            map = new HashMap<String, Object>();
         }
         return map.put(key, value);
     }
-    
+
     @Override
     public boolean hasProperty(String key) {
         if (map == null) {
             return false;
-        } 
+        }
         return map.containsKey(key);
     }
-   
+
     @Override
-    public InputStream getXMLInputStream(String encoding)  throws 
-        UnsupportedEncodingException{
+    public InputStream getXMLInputStream(String encoding) throws UnsupportedEncodingException {
         if (log.isDebugEnabled()) {
-            log.debug("getXMLInputStream encoding="+encoding);
+            log.debug("getXMLInputStream encoding=" + encoding);
         }
         return new ByteArrayInputStream(getXMLBytes(encoding));
     }
@@ -95,7 +94,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
     @Override
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         if (log.isDebugEnabled()) {
-            log.debug("serialize output="+output+" format="+format);
+            log.debug("serialize output=" + output + " format=" + format);
         }
         try {
             // Write bytes to the output stream
@@ -108,7 +107,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
     @Override
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
         if (log.isDebugEnabled()) {
-            log.debug("serialize writer="+writer+" format="+format);
+            log.debug("serialize writer=" + writer + " format=" + format);
         }
         try {
             // Convert the bytes into a String and write it to the Writer
@@ -124,14 +123,14 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
     @Override
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         if (log.isDebugEnabled()) {
-            log.debug("serialize xmlWriter="+xmlWriter);
+            log.debug("serialize xmlWriter=" + xmlWriter);
         }
-        // Some XMLStreamWriters (e.g. MTOMXMLStreamWriter) 
-        // provide direct access to the OutputStream.  
+        // Some XMLStreamWriters (e.g. MTOMXMLStreamWriter)
+        // provide direct access to the OutputStream.
         // This allows faster writing.
         OutputStream os = getOutputStream(xmlWriter);
         if (os != null) {
-        	if (log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug("serialize OutputStream optimisation: true");
             }
             String encoding = getCharacterEncoding(xmlWriter);
@@ -139,24 +138,25 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
             format.setCharSetEncoding(encoding);
             serialize(os, format);
         } else {
-        	if (log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug("serialize OutputStream optimisation: false");
             }
-            // Read the bytes into a reader and 
+            // Read the bytes into a reader and
             // write to the writer.
             XMLStreamReader xmlReader = getReader();
             reader2writer(xmlReader, xmlWriter);
         }
     }
+
     /**
-     * Simple utility that takes an XMLStreamReader and writes it
-     * to an XMLStreamWriter
+     * Simple utility that takes an XMLStreamReader and writes it to an XMLStreamWriter
+     *
      * @param reader
      * @param writer
      * @throws XMLStreamException
      */
-    private static void reader2writer(XMLStreamReader reader, 
-                                     XMLStreamWriter writer) throws XMLStreamException {
+    private static void reader2writer(XMLStreamReader reader, XMLStreamWriter writer)
+            throws XMLStreamException {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(reader);
         try {
             OMDocument omDocument = builder.getDocument();
@@ -164,7 +164,8 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
             while (it.hasNext()) {
                 // TODO: this is extremely inefficient since next() will actually build the node!
                 OMNode omNode = it.next();
-                // TODO: quick fix required because OMChildrenIterator#next() no longer builds the node
+                // TODO: quick fix required because OMChildrenIterator#next() no longer builds the
+                // node
                 omNode.getNextOMSibling();
                 omNode.serializeAndConsume(writer);
             }
@@ -172,22 +173,22 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
             builder.close();
         }
     }
-    
+
     /**
-     * Some XMLStreamWriters expose an OutputStream that can be
-     * accessed directly.
+     * Some XMLStreamWriters expose an OutputStream that can be accessed directly.
+     *
      * @return OutputStream or null
      */
-    private static OutputStream getOutputStream(XMLStreamWriter writer) 
-     throws XMLStreamException {
+    private static OutputStream getOutputStream(XMLStreamWriter writer) throws XMLStreamException {
         if (writer instanceof MTOMXMLStreamWriter) {
             return ((MTOMXMLStreamWriter) writer).getOutputStream();
         }
         return null;
     }
-    
+
     /**
      * Get the character set encoding of the XMLStreamWriter
+     *
      * @return String or null
      */
     private static String getCharacterEncoding(XMLStreamWriter writer) {

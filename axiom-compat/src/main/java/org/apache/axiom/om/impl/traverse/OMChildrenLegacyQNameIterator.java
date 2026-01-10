@@ -24,9 +24,9 @@ import org.apache.axiom.om.OMNode;
 import javax.xml.namespace.QName;
 
 /**
- * Iterate over elements with the QName that uses the 
- * legacy algorithm.  This iterator is only retained for migrating
- * some existing customers that have a dependency on the old algorithm
+ * Iterate over elements with the QName that uses the legacy algorithm. This iterator is only
+ * retained for migrating some existing customers that have a dependency on the old algorithm
+ *
  * @deprecated
  */
 public class OMChildrenLegacyQNameIterator extends OMChildrenQNameIterator {
@@ -37,22 +37,27 @@ public class OMChildrenLegacyQNameIterator extends OMChildrenQNameIterator {
 
     /**
      * This version of equals returns true if the local parts match.
-     * 
+     *
      * @param searchQName
      * @param currentQName
      * @return true if equals
      */
     @Override
     public boolean isEqual(QName searchQName, QName currentQName) {
-        // if the given localname is null, whatever value this.qname has, its a match. 
+        // if the given localname is null, whatever value this.qname has, its a match.
         // But can one give a QName without a localName ??
         String localPart = searchQName.getLocalPart();
-        boolean localNameMatch =(localPart == null) || (localPart.equals("")) ||
-            ((currentQName != null) && currentQName.getLocalPart().equals(localPart));
-        
+        boolean localNameMatch =
+                (localPart == null)
+                        || (localPart.equals(""))
+                        || ((currentQName != null)
+                                && currentQName.getLocalPart().equals(localPart));
+
         String namespaceURI = searchQName.getNamespaceURI();
-        boolean namespaceURIMatch = (namespaceURI.equals(""))||
-            ((currentQName != null) && currentQName.getNamespaceURI().equals(namespaceURI));
+        boolean namespaceURIMatch =
+                (namespaceURI.equals(""))
+                        || ((currentQName != null)
+                                && currentQName.getNamespaceURI().equals(namespaceURI));
         return localNameMatch && namespaceURIMatch;
     }
 }

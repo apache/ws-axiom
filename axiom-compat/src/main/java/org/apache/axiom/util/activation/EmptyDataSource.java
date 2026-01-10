@@ -27,7 +27,7 @@ import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
 /**
  * A data source with empty (zero length) content.
- * 
+ *
  * @deprecated
  */
 public class EmptyDataSource implements SizeAwareDataSource {

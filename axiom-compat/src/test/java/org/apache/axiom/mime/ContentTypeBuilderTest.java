@@ -28,39 +28,39 @@ public class ContentTypeBuilderTest extends TestCase {
         assertEquals(MediaType.TEXT_XML, contentType.getMediaType());
         assertEquals("utf-8", contentType.getParameter("charset"));
     }
-    
+
     public void testFromExistingContentType() {
         ContentType contentType = new ContentType(MediaType.TEXT_XML, "charset", "utf-8");
         ContentTypeBuilder builder = new ContentTypeBuilder(contentType);
         assertEquals(MediaType.TEXT_XML, builder.getMediaType());
         assertEquals("utf-8", builder.getParameter("charset"));
     }
-    
+
     public void testParse() throws Exception {
         ContentTypeBuilder builder = new ContentTypeBuilder("text/xml; charset=utf-8");
         assertEquals(MediaType.TEXT_XML, builder.getMediaType());
         assertEquals("utf-8", builder.getParameter("charset"));
     }
-    
+
     public void testSetMediaType() throws Exception {
         ContentTypeBuilder builder = new ContentTypeBuilder("text/xml; charset=utf-8");
         builder.setMediaType(MediaType.APPLICATION_XML);
         assertEquals("application/xml; charset=\"utf-8\"", builder.toString());
     }
-    
+
     public void testGetParameterIgnoresCase() {
         ContentTypeBuilder builder = new ContentTypeBuilder(MediaType.TEXT_XML);
         builder.setParameter("charset", "utf-8");
         assertEquals("utf-8", builder.getParameter("CHARSET"));
     }
-    
+
     public void testSetParameterIgnoresCase() {
         ContentTypeBuilder builder = new ContentTypeBuilder(MediaType.TEXT_XML);
         builder.setParameter("charset", "utf-8");
         builder.setParameter("CHARSET", "us-ascii");
         assertEquals("us-ascii", builder.getParameter("charset"));
     }
-    
+
     public void testClearParameters() {
         ContentTypeBuilder builder = new ContentTypeBuilder(MediaType.TEXT_XML);
         builder.setParameter("charset", "utf-8");
@@ -69,7 +69,8 @@ public class ContentTypeBuilderTest extends TestCase {
     }
 
     public void testRemoveParameter() throws Exception {
-        ContentTypeBuilder builder = new ContentTypeBuilder("text/xml; charset=utf-8; x-param=value");
+        ContentTypeBuilder builder =
+                new ContentTypeBuilder("text/xml; charset=utf-8; x-param=value");
         builder.removeParameter("charset");
         assertEquals("text/xml; x-param=\"value\"", builder.toString());
     }

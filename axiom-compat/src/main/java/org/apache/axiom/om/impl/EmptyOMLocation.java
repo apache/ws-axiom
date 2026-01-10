@@ -24,5 +24,4 @@ import org.apache.axiom.util.stax.DummyLocation;
 /**
  * @deprecated Use {@link DummyLocation#INSTANCE} instead.
  */
-public class EmptyOMLocation extends DummyLocation {
-}
+public class EmptyOMLocation extends DummyLocation {}

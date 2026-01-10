@@ -24,16 +24,16 @@ package org.apache.axiom.om.ds;
 public class Behavior {
     // An OMDataSource must communicate whether the data source is
     // can be queried without destruction.  OM makes decisions about
-    // caching (etc) based on whether the data source query is 
+    // caching (etc) based on whether the data source query is
     // destructive or not destructive.
-    // 
+    //
     // The Behavior flag indicates the Behavior of this OMDataSource
     // DESTRUCTIVE:
     //    Indicates that the backing data can only be read one time.
     //    AFFECT ON OM:
-    //    The OM tree will automatically make a OM cache of the 
+    //    The OM tree will automatically make a OM cache of the
     //    the tree
-    // 
+    //
     // NOT_DESTRUCTIVE
     //    Indicates that the data may be queried multiple times.
     //    The InputStream's data is either copied or marks are used to
@@ -44,11 +44,11 @@ public class Behavior {
     // ONE_USE_UNSAFE:
     //    Indicates that the data may be queried only one time.  The
     //    second query will cause an immediate failure.  This is an unsafe
-    //    mode because it violates the OM contract.  The implementation of 
-    //    this mode is done by lying to the OM model.  We tell it that the 
+    //    mode because it violates the OM contract.  The implementation of
+    //    this mode is done by lying to the OM model.  We tell it that the
     //    data is not destructive, and yet we don't make a copy.
     //
-	
+
     public static final int DESTRUCTIVE = 0;
     public static final int NOT_DESTRUCTIVE = 1;
     public static final int ONE_USE_UNSAFE = 2;

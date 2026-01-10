@@ -25,13 +25,12 @@ import java.io.InputStream;
 
 /**
  * Utility class containing I/O helper methods.
- * 
+ *
  * @deprecated This class is no longer used and will be removed in Axiom 1.3. You may want to use <a
- *             href="http://commons.apache.org/proper/commons-io/">Commons IO</a> instead.
+ *     href="http://commons.apache.org/proper/commons-io/">Commons IO</a> instead.
  */
 public class IOUtils {
-    private IOUtils() {
-    }
+    private IOUtils() {}
 
     /**
      * Reads into a byte array. Ensures that the full buffer is read. Helper method, just calls
@@ -39,8 +38,7 @@ public class IOUtils {
      *
      * @see #readFully(java.io.InputStream, byte[], int, int)
      */
-    public static int readFully(InputStream in, byte[] b)
-            throws IOException {
+    public static int readFully(InputStream in, byte[] b) throws IOException {
         return readFully(in, b, 0, b.length);
     }
 
@@ -49,19 +47,17 @@ public class IOUtils {
      * number of bytes is read.
      *
      * @return Returns the number of bytes read, or -1 if the end of file is reached before any
-     *         bytes are read
+     *     bytes are read
      */
-    public static int readFully(InputStream in, byte[] b, int off, int len)
-            throws IOException {
+    public static int readFully(InputStream in, byte[] b, int off, int len) throws IOException {
         int total = 0;
-        for (; ;) {
+        for (; ; ) {
             int got = in.read(b, off + total, len - total);
             if (got < 0) {
                 return (total == 0) ? -1 : total;
             } else {
                 total += got;
-                if (total == len)
-                    return total;
+                if (total == len) return total;
             }
         }
     }

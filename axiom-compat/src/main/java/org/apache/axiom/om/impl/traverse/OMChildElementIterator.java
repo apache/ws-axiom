@@ -26,9 +26,9 @@ import org.apache.axiom.om.OMNode;
 import java.util.Iterator;
 
 /**
- * @deprecated This type of iterator should always be created using
- *             {@link OMElement#getChildElements()}, and this class should never be referenced
- *             directly. It will be removed in Axiom 1.3.
+ * @deprecated This type of iterator should always be created using {@link
+ *     OMElement#getChildElements()}, and this class should never be referenced directly. It will be
+ *     removed in Axiom 1.3.
  */
 @SuppressWarnings("rawtypes")
 public class OMChildElementIterator implements Iterator {
@@ -56,21 +56,20 @@ public class OMChildElementIterator implements Iterator {
 
     /**
      * Removes the last element returned by the iterator (optional operation) from the underlying
-     * collection. This method can be called only once per call to {@code next}.  The behavior of
-     * an iterator is unspecified if the underlying collection is modified while the iteration is in
+     * collection. This method can be called only once per call to {@code next}. The behavior of an
+     * iterator is unspecified if the underlying collection is modified while the iteration is in
      * progress in any way other than by calling this method.
      *
      * @throws UnsupportedOperationException if the {@code remove} operation is not supported by
-     *                                       this Iterator.
-     * @throws IllegalStateException         if the {@code next} method has not yet been called, or
-     *                                       the {@code remove} method has already been called
-     *                                       after the last call to the {@code next} method.
+     *     this Iterator.
+     * @throws IllegalStateException if the {@code next} method has not yet been called, or the
+     *     {@code remove} method has already been called after the last call to the {@code next}
+     *     method.
      */
     @Override
     public void remove() {
         if (!nextCalled) {
-            throw new IllegalStateException(
-                    "next method has not yet being called");
+            throw new IllegalStateException("next method has not yet being called");
         }
         if (removeCalled) {
             throw new IllegalStateException("remove has already being called");
@@ -85,8 +84,8 @@ public class OMChildElementIterator implements Iterator {
     }
 
     /**
-     * Returns {@code true} if the iteration has more elements. (In other words, returns
-     * {@code true} if {@code next} would return an element rather than throwing an exception.)
+     * Returns {@code true} if the iteration has more elements. (In other words, returns {@code
+     * true} if {@code next} would return an element rather than throwing an exception.)
      *
      * @return Returns {@code true} if the iterator has more elements.
      */
@@ -99,8 +98,7 @@ public class OMChildElementIterator implements Iterator {
      * Returns the next element in the iteration.
      *
      * @return Returns the next element in the iteration.
-     * @throws java.util.NoSuchElementException
-     *          iteration has no more elements.
+     * @throws java.util.NoSuchElementException iteration has no more elements.
      */
     @Override
     public Object next() {
@@ -112,7 +110,6 @@ public class OMChildElementIterator implements Iterator {
             do {
                 currentChild = currentChild.getNextOMSibling();
             } while (currentChild != null && currentChild.getType() != OMNode.ELEMENT_NODE);
-
 
             return lastChild;
         }

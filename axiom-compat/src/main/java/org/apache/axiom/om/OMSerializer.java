@@ -34,6 +34,5 @@ public interface OMSerializer {
      * @param writer
      * @throws XMLStreamException
      */
-    void serialize(XMLStreamReader reader, XMLStreamWriter writer)
-            throws XMLStreamException;
+    void serialize(XMLStreamReader reader, XMLStreamWriter writer) throws XMLStreamException;
 }

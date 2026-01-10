@@ -27,10 +27,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 
 /**
- * Iterator that selects elements based on {@link QName} equality,
- * i.e. namespace URI and local name.
- * Namespace prefixes are not taken into account by the filter.
- * 
+ * Iterator that selects elements based on {@link QName} equality, i.e. namespace URI and local
+ * name. Namespace prefixes are not taken into account by the filter.
+ *
  * @deprecated
  */
 @SuppressWarnings("rawtypes")
@@ -44,6 +43,6 @@ public class OMQNameFilterIterator extends OMFilterIterator {
 
     @Override
     protected boolean matches(OMNode node) {
-        return node instanceof OMElement && ((OMElement)node).getQName().equals(qname);
+        return node instanceof OMElement && ((OMElement) node).getQName().equals(qname);
     }
 }

@@ -30,7 +30,6 @@ public class EmptyIterator implements Iterator {
     @Override
     public void remove() {
         throw new UnsupportedOperationException();
-
     }
 
     @Override
@@ -43,4 +42,3 @@ public class EmptyIterator implements Iterator {
         throw new NoSuchElementException();
     }
 }
-

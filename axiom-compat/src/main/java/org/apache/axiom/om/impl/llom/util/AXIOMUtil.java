@@ -22,5 +22,4 @@ package org.apache.axiom.om.impl.llom.util;
 /**
  * @deprecated Use {@link org.apache.axiom.om.util.AXIOMUtil} instead.
  */
-public class AXIOMUtil extends org.apache.axiom.om.util.AXIOMUtil {
-}
+public class AXIOMUtil extends org.apache.axiom.om.util.AXIOMUtil {}
