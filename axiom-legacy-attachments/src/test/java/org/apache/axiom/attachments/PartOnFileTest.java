@@ -71,53 +71,6 @@ public class PartOnFileTest extends TestCase {
         assertEquals("image/jpeg", dh.getContentType());
     }
 
-    public void testGetAllheaders() throws Exception {
-
-//        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
-//		Attachments attachments = new Attachments(inStream, contentTypeString, true, temp.getPath(), "1");
-//
-//		Part p = attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
-//		
-//		if (!(p instanceof PartOnFile)) {
-//			fail("Expected PartOnFile");
-//		}
-//		
-//		assertEquals("<1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org>", p.getContentID());
-//
-//		// Check if the enumeration works
-//		p.addHeader("Some-New-Header", "TestNH");
-//		
-//		Enumeration e = p.getAllHeaders();
-//		boolean cTypeFound = false;
-//		boolean cTransferEncFound = false;
-//		boolean cIdFound = false;
-//		boolean snhFound = false;
-//
-//		while (e.hasMoreElements()) {
-//			Header h = (Header) e.nextElement();
-//			if (h.getName().toLowerCase().equals("content-type")) {
-//				cTypeFound = true;
-//			}
-//			
-//			if (h.getName().toLowerCase().equals("content-transfer-encoding")) {
-//				cTransferEncFound = true;
-//			}
-//			
-//			if (h.getName().toLowerCase().equals("content-id")) {
-//				cIdFound = true;
-//			}
-//			
-//			if (h.getName().toLowerCase().equals("some-new-header")) {
-//				snhFound = true;
-//			}
-//		}
-//		
-//		if (!cTypeFound || !cTransferEncFound || !cIdFound || !snhFound) {
-//			fail("Header enumeration failed");
-//		}
-
-    }
-
     private void createTemporaryDirectory() throws Exception {
         temp = File.createTempFile("partOnFileTest", ".tmp");
 
