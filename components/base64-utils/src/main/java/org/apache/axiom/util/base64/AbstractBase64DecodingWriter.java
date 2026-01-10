@@ -86,17 +86,14 @@ public abstract class AbstractBase64DecodingWriter extends Writer {
         int b2 = decode(data[off + 2]);
         int b3 = decode(data[off + 3]);
         switch (outlen) {
+            case 3:
+                out[2] = (byte) (b2 << 6 & 0xc0 | b3 & 0x3f);
+            // Fall through
+            case 2:
+                out[1] = (byte) (b1 << 4 & 0xf0 | b2 >> 2 & 0xf);
+            // Fall through
             case 1:
                 out[0] = (byte) (b0 << 2 & 0xfc | b1 >> 4 & 0x3);
-                break;
-            case 2:
-                out[0] = (byte) (b0 << 2 & 0xfc | b1 >> 4 & 0x3);
-                out[1] = (byte) (b1 << 4 & 0xf0 | b2 >> 2 & 0xf);
-                break;
-            case 3:
-                out[0] = (byte) (b0 << 2 & 0xfc | b1 >> 4 & 0x3);
-                out[1] = (byte) (b1 << 4 & 0xf0 | b2 >> 2 & 0xf);
-                out[2] = (byte) (b2 << 6 & 0xc0 | b3 & 0x3f);
         }
         doWrite(out, outlen);
     }
