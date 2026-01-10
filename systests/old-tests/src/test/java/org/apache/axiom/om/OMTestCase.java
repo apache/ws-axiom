@@ -43,8 +43,9 @@ public abstract class OMTestCase extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        builder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
+        builder =
+                OMXMLBuilderFactory.createSOAPModelBuilder(
+                        SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
         soapEnvelope = (SOAPEnvelope) builder.getDocumentElement();
     }
 

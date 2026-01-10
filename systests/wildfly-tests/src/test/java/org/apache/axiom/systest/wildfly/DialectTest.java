@@ -45,29 +45,37 @@ public class DialectTest {
         return ShrinkWrap.create(WebArchive.class, "dialect-test.war")
                 .addAsLibraries(new File("target/deps").listFiles());
     }
-    
+
     /**
      * Directly tests {@link StAXDialectDetector}.
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testStAXDialectDetector() throws Exception {
-        assertFalse(StAXDialectDetector.getDialect(XMLInputFactory.newInstance()).getName().equals("Unknown"));
-        assertFalse(StAXDialectDetector.getDialect(XMLOutputFactory.newInstance()).getName().equals("Unknown"));
+        assertFalse(
+                StAXDialectDetector.getDialect(XMLInputFactory.newInstance())
+                        .getName()
+                        .equals("Unknown"));
+        assertFalse(
+                StAXDialectDetector.getDialect(XMLOutputFactory.newInstance())
+                        .getName()
+                        .equals("Unknown"));
     }
-    
+
     /**
      * Tests that Axiom is able to read a DOCTYPE declaration. Since accessing the information in
      * the DOCTYPE declaration is not standardized by the StAX specification, this will fail if the
      * StAX dialect is not detected correctly.
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testDTD() throws Exception {
-        OMDocument document = OMXMLBuilderFactory.createOMBuilder(new StringReader("<!DOCTYPE root><root/>")).getDocument();
-        OMDocType dtd = (OMDocType)document.getFirstOMChild();
+        OMDocument document =
+                OMXMLBuilderFactory.createOMBuilder(new StringReader("<!DOCTYPE root><root/>"))
+                        .getDocument();
+        OMDocType dtd = (OMDocType) document.getFirstOMChild();
         assertEquals("root", dtd.getRootName());
     }
 }

@@ -38,29 +38,27 @@ public class OMBodyTest extends OMTestCase {
         soapBody = soapEnvelope.getBody();
     }
 
-    /**
-     * Ensure that invoking addChild twice on the same element only
-     * adds the child one time.
-     */
+    /** Ensure that invoking addChild twice on the same element only adds the child one time. */
     public void testAddChildTwice() {
         log.debug("Add Child Twice");
         OMElement om1 = soapFactory.createOMElement("child1", "http://myChild", "pre");
         OMElement om2 = soapFactory.createOMElement("child2", "http://myChild", "pre");
         soapBody.addChild(om1);
-        soapBody.addChild(om1);  // NOOP..Expected behavior: child removed and then added
+        soapBody.addChild(om1); // NOOP..Expected behavior: child removed and then added
         soapBody.addChild(om2);
-        
+
         OMElement node = soapBody.getFirstChildWithName(new QName("http://myChild", "child1"));
         node = (OMElement) node.detach();
-        
+
         assertTrue("Node is missing", node != null);
-        assertTrue("Node has the wrong name " + node.getLocalName(), 
-                   node.getLocalName().equals("child1"));
-        
+        assertTrue(
+                "Node has the wrong name " + node.getLocalName(),
+                node.getLocalName().equals("child1"));
+
         node = soapBody.getFirstChildWithName(new QName("http://myChild", "child2"));
         assertTrue("Node is missing", node != null);
-        assertTrue("Node has the wrong name " + node.getLocalName(), 
-                   node.getLocalName().equals("child2"));
+        assertTrue(
+                "Node has the wrong name " + node.getLocalName(),
+                node.getLocalName().equals("child2"));
     }
-
 }

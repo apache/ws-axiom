@@ -39,23 +39,25 @@ public class PsychoPathTest {
     private static ResultSequence evaluate(String xpath) throws Exception {
         InputStream is = PsychoPathTest.class.getResourceAsStream("test.xml");
         try {
-            OMFactory factory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
-            Document doc = (Document)OMXMLBuilderFactory.createOMBuilder(factory, is).getDocument();
+            OMFactory factory =
+                    OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
+            Document doc =
+                    (Document) OMXMLBuilderFactory.createOMBuilder(factory, is).getDocument();
             StaticContextBuilder scb = new StaticContextBuilder();
             XPath2Expression expr = new Engine().parseExpression(xpath, scb);
-            return expr.evaluate(new DynamicContextBuilder(scb), new Object[] { doc });
+            return expr.evaluate(new DynamicContextBuilder(scb), new Object[] {doc});
         } finally {
             is.close();
         }
     }
-    
+
     @Test
     public void testSingleNodeResult() throws Exception {
         ResultSequence rs = evaluate("/Persons/Person[1]/Name");
         assertEquals(1, rs.size());
         assertEquals("Albert Einstein", rs.item(0).getStringValue());
     }
-    
+
     @Ignore // TODO: doesn't work yet because Node#compareDocumentPosition is not implemented
     @Test
     public void testNodeSetResult() throws Exception {

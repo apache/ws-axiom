@@ -26,6 +26,4 @@ import java.lang.annotation.Target;
 
 @Retention(CLASS)
 @Target(TYPE)
-public @interface Singleton {
-
-}
+public @interface Singleton {}

@@ -59,7 +59,6 @@ public class CharacterEncodingTest extends TestCase {
 
         envelope.getBody().addChild(bodyChild);
 
-
         ByteArrayOutputStream byteOutStr = new ByteArrayOutputStream();
 
         OMOutputFormat outputFormat = new OMOutputFormat();
@@ -68,8 +67,7 @@ public class CharacterEncodingTest extends TestCase {
 
         ByteArrayInputStream byteInStr = new ByteArrayInputStream(byteOutStr.toByteArray());
 
-        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                byteInStr, UTF_16);
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(byteInStr, UTF_16);
 
         SOAPEnvelope resultEnv = builder.getSOAPEnvelope();
 
@@ -115,7 +113,8 @@ public class CharacterEncodingTest extends TestCase {
     }
 
     public void testFrenchAccents() throws Exception {
-        runtest("\u00e0\u00e2\u00e4\u00e7\u00e8\u00e9\u00ea\u00eb\u00ee\u00ef\u00f4\u00f6\u00f9\u00fb\u00fc");
+        runtest(
+                "\u00e0\u00e2\u00e4\u00e7\u00e8\u00e9\u00ea\u00eb\u00ee\u00ef\u00f4\u00f6\u00f9\u00fb\u00fc");
     }
 
     public void testGermanUmlauts() throws Exception {
@@ -124,8 +123,7 @@ public class CharacterEncodingTest extends TestCase {
 
     public void testWelcomeUnicode() throws Exception {
         // welcome in several languages
-        runtest(
-                "Chinese (trad.) : \u6b61\u8fce  ");
+        runtest("Chinese (trad.) : \u6b61\u8fce  ");
     }
 
     public void testWelcomeUnicode2() throws Exception {
@@ -136,8 +134,6 @@ public class CharacterEncodingTest extends TestCase {
 
     public void testWelcomeUnicode3() throws Exception {
         // welcome in several languages
-        runtest(
-                "Japanese : \u3088\u3046\u3053\u305d");
+        runtest("Japanese : \u3088\u3046\u3053\u305d");
     }
-
 }

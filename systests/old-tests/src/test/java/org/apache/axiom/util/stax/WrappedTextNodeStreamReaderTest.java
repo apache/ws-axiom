@@ -32,32 +32,30 @@ import junit.framework.TestCase;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 public class WrappedTextNodeStreamReaderTest extends TestCase {
     //
     // Tests that construct the Axiom tree and check the result
     //
-    
-    private void testUsingBuilder(QName wrapperElementName,
-                                  String testString,
-                                  int chunkSize) {
+
+    private void testUsingBuilder(QName wrapperElementName, String testString, int chunkSize) {
         StringReader reader = new StringReader(testString);
-        XMLStreamReader xmlStreamReader
-            = new WrappedTextNodeStreamReader(wrapperElementName, reader, chunkSize);
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(xmlStreamReader).getDocumentElement();
+        XMLStreamReader xmlStreamReader =
+                new WrappedTextNodeStreamReader(wrapperElementName, reader, chunkSize);
+        OMElement element =
+                OMXMLBuilderFactory.createStAXOMBuilder(xmlStreamReader).getDocumentElement();
         assertEquals(wrapperElementName, element.getQName());
         assertEquals(wrapperElementName.getPrefix(), element.getQName().getPrefix());
         assertEquals(testString, element.getText());
     }
-    
+
     public void testShortStringUsingBuilder() {
         testUsingBuilder(
                 new QName("urn:test", "test"),
                 "This is a test string for WrappedTextNodeStreamReader",
                 4096);
     }
-    
+
     public void testLongStringUsingBuilder() {
         // "Long" is relative to the chunk size
         testUsingBuilder(
@@ -65,41 +63,37 @@ public class WrappedTextNodeStreamReaderTest extends TestCase {
                 "This is a test string for WrappedTextNodeStreamReader",
                 10);
     }
-    
+
     public void testWrapperElementWithoutNamespaceUsingBuilder() {
         testUsingBuilder(
-                new QName("test"),
-                "This is a test string for WrappedTextNodeStreamReader",
-                4096);
+                new QName("test"), "This is a test string for WrappedTextNodeStreamReader", 4096);
     }
-    
+
     public void testWrapperElementWithPrefixUsingBuilder() {
         testUsingBuilder(
                 new QName("urn:test", "bar", "foo"),
                 "This is a test string for WrappedTextNodeStreamReader",
                 4096);
     }
-    
+
     //
     // Tests that construct the Axiom tree, serialize it using serializeAndConsume and
     // compare with the expected result.
     //
-    
-    private void testUsingSerializeAndConsume(QName wrapperElementName,
-                                              String testString,
-                                              int chunkSize,
-                                              String expectedXML) throws Exception {
+
+    private void testUsingSerializeAndConsume(
+            QName wrapperElementName, String testString, int chunkSize, String expectedXML)
+            throws Exception {
         StringReader reader = new StringReader(testString);
-        XMLStreamReader xmlStreamReader
-            = new WrappedTextNodeStreamReader(wrapperElementName, reader, chunkSize);
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(xmlStreamReader).getDocumentElement();
+        XMLStreamReader xmlStreamReader =
+                new WrappedTextNodeStreamReader(wrapperElementName, reader, chunkSize);
+        OMElement element =
+                OMXMLBuilderFactory.createStAXOMBuilder(xmlStreamReader).getDocumentElement();
         StringWriter writer = new StringWriter();
         element.serializeAndConsume(writer);
-        assertAbout(xml())
-                .that(writer.toString())
-                .hasSameContentAs(expectedXML);
+        assertAbout(xml()).that(writer.toString()).hasSameContentAs(expectedXML);
     }
-    
+
     public void testShortStringUsingSerializeAndConsume() throws Exception {
         String testString = "This is a test string for WrappedTextNodeStreamReader";
         testUsingSerializeAndConsume(

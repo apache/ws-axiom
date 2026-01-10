@@ -43,24 +43,20 @@ public class OMOutputTest extends TestCase {
 
         OMFactory fac = OMAbstractFactory.getOMFactory();
 
-        OMNamespace soap = fac.createOMNamespace(
-                "http://schemas.xmlsoap.org/soap/envelope/", "soap");
+        OMNamespace soap =
+                fac.createOMNamespace("http://schemas.xmlsoap.org/soap/envelope/", "soap");
         envelope = fac.createOMElement("Envelope", soap);
         OMElement body = fac.createOMElement("Body", soap);
 
-        OMNamespace dataName = fac.createOMNamespace(
-                "http://www.example.org/stuff", "m");
+        OMNamespace dataName = fac.createOMNamespace("http://www.example.org/stuff", "m");
         OMElement data = fac.createOMElement("data", dataName);
 
-        OMNamespace mime = fac.createOMNamespace(
-                "http://www.w3.org/2003/06/xmlmime", "mime");
+        OMNamespace mime = fac.createOMNamespace("http://www.w3.org/2003/06/xmlmime", "mime");
 
         OMElement text = fac.createOMElement("name", dataName);
-        OMAttribute cType1 = fac.createOMAttribute("contentType", mime,
-                                                 "text/plain");
+        OMAttribute cType1 = fac.createOMAttribute("contentType", mime, "text/plain");
         text.addAttribute(cType1);
-        byte[] byteArray = new byte[] { 13, 56, 65, 32, 12, 12, 7, -3, -2, -1,
-                98 };
+        byte[] byteArray = new byte[] {13, 56, 65, 32, 12, 12, 7, -3, -2, -1, 98};
         OMText textData = fac.createOMText(Blobs.createBlob(byteArray), false);
 
         envelope.addChild(body);

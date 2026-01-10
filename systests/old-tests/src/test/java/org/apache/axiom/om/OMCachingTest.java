@@ -33,11 +33,15 @@ public class OMCachingTest extends TestCase {
         OMElement documentElement = null;
         try {
             // first build the OM tree without caching and see whether up can cosume it again
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
+            OMXMLParserWrapper builder =
+                    OMXMLBuilderFactory.createOMBuilder(
+                            SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
             documentElement = builder.getDocumentElement();
             String envelopeString = documentElement.toStringWithConsume();
         } catch (XMLStreamException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e
+                    .printStackTrace(); // To change body of catch statement use File | Settings |
+                                        // File Templates.
         }
 
         try {
@@ -56,7 +60,9 @@ public class OMCachingTest extends TestCase {
         OMElement documentElement = null;
         try {
             // first build the OM tree without caching and see whether up can cosume it again
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
+            OMXMLParserWrapper builder =
+                    OMXMLBuilderFactory.createOMBuilder(
+                            SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
             documentElement = builder.getDocumentElement();
             String envelopeString = documentElement.toString();
             envelopeString = documentElement.toStringWithConsume();

@@ -22,7 +22,6 @@ package org.apache.axiom.soap;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.soap.SOAPEnvelope;
 
 import junit.framework.TestCase;
 
@@ -31,44 +30,42 @@ import junit.framework.TestCase;
  * http://issues.apache.org/jira/browse/AXIOM-113
  */
 public class SOAP11DefaultFaultConversionTest extends TestCase {
-    
+
     public void testConversion() {
-        
+
         String faultCode = "soapenv" + ":" + "Server";
         String faultReason = "/ by zero";
-        String faultDetail = "org.apache.axis2.AxisFault: / by zero \n" +
-                             "... 24 more)";
-        
+        String faultDetail = "org.apache.axis2.AxisFault: / by zero \n" + "... 24 more)";
+
         SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
-        
+
         SOAPEnvelope envelope = factory.getDefaultFaultEnvelope();
         SOAPFault fault = envelope.getBody().getFault();
-        
+
         fault.getCode().setText(faultCode);
-        
+
         fault.getReason().setText(faultReason);
-        
+
         OMElement exception = factory.createOMElement("Exception", null);
         exception.setText(faultDetail);
-        
+
         fault.getDetail().addDetailEntry(exception);
-        
+
         envelope.build();
-        
-        SOAPModelBuilder stAXSOAPModelBuilder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM),
-                envelope.getXMLStreamReader());
+
+        SOAPModelBuilder stAXSOAPModelBuilder =
+                OMXMLBuilderFactory.createStAXSOAPModelBuilder(
+                        OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM),
+                        envelope.getXMLStreamReader());
         SOAPEnvelope env = stAXSOAPModelBuilder.getSOAPEnvelope();
         env.getParent().build();
-        
-        fault = env.getBody().getFault();
-        
-        assertEquals(faultCode, fault.getCode().getText());
-        assertEquals(faultReason,fault.getReason().getText());
-        
-        exception = (OMElement)fault.getDetail().getFirstOMChild();
-        assertEquals(faultDetail, exception.getText());
-        
-    }
 
+        fault = env.getBody().getFault();
+
+        assertEquals(faultCode, fault.getCode().getText());
+        assertEquals(faultReason, fault.getReason().getText());
+
+        exception = (OMElement) fault.getDetail().getFirstOMChild();
+        assertEquals(faultDetail, exception.getText());
+    }
 }

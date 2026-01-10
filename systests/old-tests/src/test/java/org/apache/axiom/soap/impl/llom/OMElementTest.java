@@ -41,35 +41,41 @@ public class OMElementTest extends OMTestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        OMNamespace testingNamespace = factory.createOMNamespace(
-                "http://testing.ws.org", "ws");
+        OMNamespace testingNamespace = factory.createOMNamespace("http://testing.ws.org", "ws");
         firstElement = factory.createOMElement("FirstElement", testingNamespace);
-        secondElement = factory.createOMElement("SecondElement", factory.createOMNamespace(
-                "http://moretesting.ws.org", "ws"), firstElement);
+        secondElement =
+                factory.createOMElement(
+                        "SecondElement",
+                        factory.createOMNamespace("http://moretesting.ws.org", "ws"),
+                        firstElement);
     }
-    
+
     @Override
-    protected void tearDown() throws Exception {
-    }
+    protected void tearDown() throws Exception {}
 
     public void testChildDetachment() {
         OMNamespace testNamespace2 = factory.createOMNamespace("ftp://anotherTest.ws.org", "ws");
 
         secondElement.detach();
-        assertTrue("OMElement children detachment has not worked properly",
-                   !secondElement.equals(firstElement.getFirstElement()));
-        assertNull("First Element should not contain elements after detaching. ",
-                   firstElement.getFirstElement());
-        assertNull("First Element should not contain elements after detaching. ",
-                   firstElement.getFirstOMChild());
-        assertNull(secondElement.findNamespace(testNamespace2.getNamespaceURI(),
-                                               testNamespace2.getPrefix()));
+        assertTrue(
+                "OMElement children detachment has not worked properly",
+                !secondElement.equals(firstElement.getFirstElement()));
+        assertNull(
+                "First Element should not contain elements after detaching. ",
+                firstElement.getFirstElement());
+        assertNull(
+                "First Element should not contain elements after detaching. ",
+                firstElement.getFirstOMChild());
+        assertNull(
+                secondElement.findNamespace(
+                        testNamespace2.getNamespaceURI(), testNamespace2.getPrefix()));
 
         firstElement.addChild(secondElement);
         factory.createOMText(firstElement, "Some Sample Text");
 
-        assertTrue("First added child must be the first child",
-                   secondElement.equals(firstElement.getFirstOMChild()));
+        assertTrue(
+                "First added child must be the first child",
+                secondElement.equals(firstElement.getFirstOMChild()));
         Iterator children = firstElement.getChildren();
         int childCount = 0;
         while (children.hasNext()) {
@@ -79,13 +85,14 @@ public class OMElementTest extends OMTestCase {
         assertEquals("Children count should be two", childCount, 2);
 
         secondElement.detach();
-        assertTrue("First child should be the text child",
-                   firstElement.getFirstOMChild() instanceof OMText);
-
+        assertTrue(
+                "First child should be the text child",
+                firstElement.getFirstOMChild() instanceof OMText);
     }
 
     public void testAddDOOMElementAsChild() throws XMLStreamException {
-        OMFactory doomFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
+        OMFactory doomFactory =
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
         OMFactory llomFactory = OMAbstractFactory.getOMFactory();
         String text = "This was a DOOM Text";
 
@@ -94,8 +101,10 @@ public class OMElementTest extends OMTestCase {
         doomElement.setText(text);
         llomRoot.addChild(doomElement);
 
-        OMElement newElement = (OMXMLBuilderFactory.createStAXOMBuilder(this.factory, llomRoot
-                .getXMLStreamReader())).getDocumentElement();
+        OMElement newElement =
+                (OMXMLBuilderFactory.createStAXOMBuilder(
+                                this.factory, llomRoot.getXMLStreamReader()))
+                        .getDocumentElement();
         newElement.build();
         OMElement secondElement = newElement.getFirstElement();
         assertNotNull(secondElement);
@@ -103,7 +112,8 @@ public class OMElementTest extends OMTestCase {
     }
 
     public void testAddDOOMTextAsChild() throws XMLStreamException {
-        OMFactory doomFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
+        OMFactory doomFactory =
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
         OMFactory llomFactory = OMAbstractFactory.getOMFactory();
         String text = "This was a DOOM Text";
 
@@ -111,14 +121,17 @@ public class OMElementTest extends OMTestCase {
         OMText doomText = doomFactory.createOMText(text);
         llomRoot.addChild(doomText);
 
-        OMElement newElement = (OMXMLBuilderFactory.createStAXOMBuilder(this.factory, llomRoot
-                .getXMLStreamReader())).getDocumentElement();
+        OMElement newElement =
+                (OMXMLBuilderFactory.createStAXOMBuilder(
+                                this.factory, llomRoot.getXMLStreamReader()))
+                        .getDocumentElement();
         newElement.build();
         assertEquals(newElement.getText(), text);
     }
 
     public void testAddLLOMElementChildToDOOM() throws XMLStreamException {
-        OMFactory doomFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
+        OMFactory doomFactory =
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
         OMFactory llomFactory = OMAbstractFactory.getOMFactory();
         String text = "This was a LLOM Text";
 
@@ -127,8 +140,10 @@ public class OMElementTest extends OMTestCase {
         llomElement.setText(text);
         doomRoot.addChild(llomElement);
 
-        OMElement newElement = (OMXMLBuilderFactory.createStAXOMBuilder(this.factory, doomRoot
-                .getXMLStreamReader())).getDocumentElement();
+        OMElement newElement =
+                (OMXMLBuilderFactory.createStAXOMBuilder(
+                                this.factory, doomRoot.getXMLStreamReader()))
+                        .getDocumentElement();
         newElement.build();
         OMElement secondElement = newElement.getFirstElement();
         assertNotNull(secondElement);
@@ -136,7 +151,8 @@ public class OMElementTest extends OMTestCase {
     }
 
     public void testAddLLOMTextChildToDOOM() throws XMLStreamException {
-        OMFactory doomFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
+        OMFactory doomFactory =
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
         OMFactory llomFactory = OMAbstractFactory.getOMFactory();
         String text = "This was a DOOM Text";
 
@@ -146,10 +162,11 @@ public class OMElementTest extends OMTestCase {
         doomRoot.addChild(llomText);
         doomRoot.addChild(comment);
 
-        OMElement newElement = (OMXMLBuilderFactory.createStAXOMBuilder(this.factory, doomRoot
-                .getXMLStreamReader())).getDocumentElement();
+        OMElement newElement =
+                (OMXMLBuilderFactory.createStAXOMBuilder(
+                                this.factory, doomRoot.getXMLStreamReader()))
+                        .getDocumentElement();
         newElement.build();
         assertEquals(newElement.getText(), text);
     }
-
 }

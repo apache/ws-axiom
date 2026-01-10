@@ -47,7 +47,7 @@ import jakarta.xml.ws.soap.MTOMFeature;
 public class MTOMTest {
     /**
      * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-492">AXIOM-492</a>.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -55,31 +55,35 @@ public class MTOMTest {
         Server server = new Server();
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(0);
-        server.setConnectors(new Connector[] { connector });
+        server.setConnectors(new Connector[] {connector});
         ServletContextHandler handler = new ServletContextHandler("/");
-        HttpServlet servlet = new HttpServlet() {
-            @Override
-            protected void doPost(HttpServletRequest request, HttpServletResponse response)
-                    throws ServletException, IOException {
-                MultipartBody mp = MultipartBody.builder()
-                        .setInputStream(request.getInputStream())
-                        .setContentType(request.getContentType())
-                        .build();
-                OMXMLBuilderFactory.createSOAPModelBuilder(mp);
-                SOAPFactory factory = OMAbstractFactory.getSOAP12Factory();
-                SOAPMessage message = factory.createDefaultSOAPMessage();
-                OMElement responseElement = factory.createOMElement(
-                        "uploadImageResponse", factory.createOMNamespace("http://example.org/", "ns"),
-                        message.getSOAPEnvelope().getBody());
-                factory.createOMElement("return", null, responseElement).setText("OK");
-                response.setContentType(factory.getSOAPVersion().getMediaType().toString());
-                try {
-                    message.serialize(response.getOutputStream());
-                } catch (XMLStreamException ex) {
-                    throw new ServletException(ex);
-                }
-            }
-        };
+        HttpServlet servlet =
+                new HttpServlet() {
+                    @Override
+                    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+                            throws ServletException, IOException {
+                        MultipartBody mp =
+                                MultipartBody.builder()
+                                        .setInputStream(request.getInputStream())
+                                        .setContentType(request.getContentType())
+                                        .build();
+                        OMXMLBuilderFactory.createSOAPModelBuilder(mp);
+                        SOAPFactory factory = OMAbstractFactory.getSOAP12Factory();
+                        SOAPMessage message = factory.createDefaultSOAPMessage();
+                        OMElement responseElement =
+                                factory.createOMElement(
+                                        "uploadImageResponse",
+                                        factory.createOMNamespace("http://example.org/", "ns"),
+                                        message.getSOAPEnvelope().getBody());
+                        factory.createOMElement("return", null, responseElement).setText("OK");
+                        response.setContentType(factory.getSOAPVersion().getMediaType().toString());
+                        try {
+                            message.serialize(response.getOutputStream());
+                        } catch (XMLStreamException ex) {
+                            throw new ServletException(ex);
+                        }
+                    }
+                };
         ServletHolder servletHolder = new ServletHolder(servlet);
         servletHolder.setName("test");
         servletHolder.setInitOrder(1);
@@ -87,10 +91,13 @@ public class MTOMTest {
         server.setHandler(handler);
         server.start();
         try {
-            ImageServicePort imageService = new ImageService().getImageServicePort(new MTOMFeature());
-            ((BindingProvider)imageService).getRequestContext().put(
-                    BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-                    String.format("http://localhost:%d/", connector.getLocalPort()));
+            ImageServicePort imageService =
+                    new ImageService().getImageServicePort(new MTOMFeature());
+            ((BindingProvider) imageService)
+                    .getRequestContext()
+                    .put(
+                            BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+                            String.format("http://localhost:%d/", connector.getLocalPort()));
             assertThat(imageService.uploadImage(new byte[4096])).isEqualTo("OK");
         } finally {
             server.stop();

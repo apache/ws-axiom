@@ -46,29 +46,27 @@ public class ElementSerializerTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        reader = StAXUtils.createXMLStreamReader(SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
+        reader =
+                StAXUtils.createXMLStreamReader(
+                        SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
         writer = StAX.createNullXMLStreamWriter();
-        builder =
-                OMXMLBuilderFactory.createStAXSOAPModelBuilder(reader);
+        builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(reader);
     }
 
     public void testElementSerilization() throws Exception {
         OMElement elt = builder.getDocumentElement();
         elt.serialize(writer);
-
     }
 
     public void testElementSerilizationCacheOff() throws Exception {
         OMElement elt = builder.getDocumentElement();
         elt.serialize(writer);
-
     }
 
     public void testElementSerilizationChild() throws Exception {
         OMElement elt = builder.getDocumentElement();
         OMNode node = elt.getFirstOMChild().getNextOMSibling();
         node.serialize(writer);
-
     }
 
     public void testElementSerilizationSOAPBodyCacheOff() throws Exception {

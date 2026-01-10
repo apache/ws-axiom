@@ -27,7 +27,7 @@ import org.springframework.ws.soap.axiom.AxiomSoapMessageFactory;
 public class AxiomSoapMessageFactoryTest extends TestCase {
     /**
      * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-444">AXIOM-444</a>.
-     * 
+     *
      * @throws Exception
      */
     public void testCreateWebServiceMessage() throws Exception {

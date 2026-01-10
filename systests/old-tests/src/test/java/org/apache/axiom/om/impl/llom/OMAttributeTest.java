@@ -40,13 +40,14 @@ public class OMAttributeTest extends TestCase {
     }
 
     private String addAttributeMethod1(String xmlString) throws Exception {
-        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
+        OMXMLParserWrapper builder2 =
+                OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
         OMElement doc = builder2.getDocumentElement();
 
         OMFactory factory = OMAbstractFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
 
-        //code line to be tested
+        // code line to be tested
         OMAttribute at = factory.createOMAttribute("id", ns, "value");
         doc.addAttribute(at);
 
@@ -54,16 +55,16 @@ public class OMAttributeTest extends TestCase {
     }
 
     private String addAttributeMethod2(String xmlString) throws Exception {
-        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
+        OMXMLParserWrapper builder2 =
+                OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
         OMElement doc = builder2.getDocumentElement();
 
         OMFactory factory = OMAbstractFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
 
-        //code line to be tested
+        // code line to be tested
         doc.addAttribute("id", "value", ns);
 
         return doc.toString();
     }
-
 }

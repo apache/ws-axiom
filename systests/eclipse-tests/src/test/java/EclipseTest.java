@@ -41,9 +41,7 @@ import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * Tests that Axiom works out of the box in an Eclipse platform.
- */
+/** Tests that Axiom works out of the box in an Eclipse platform. */
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
 public class EclipseTest {
@@ -59,18 +57,23 @@ public class EclipseTest {
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link").start(false),
                 junitBundles());
     }
-    
+
     @Test
     public void testLLOM() {
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(new StringReader("<ns:test xmlns:ns='urn:ns'>test</ns:test>")).getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createOMBuilder(
+                                new StringReader("<ns:test xmlns:ns='urn:ns'>test</ns:test>"))
+                        .getDocumentElement();
         assertEquals(new QName("urn:ns", "test"), element.getQName());
     }
-    
+
     @Test
     public void testDOOM() throws Exception {
-        DOMMetaFactory metaFactory = (DOMMetaFactory)OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
-        Document document = metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        DOMMetaFactory metaFactory =
+                (DOMMetaFactory) OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
+        Document document =
+                metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:test", "p:root");
-        assertEquals(new QName("urn:test", "root"), ((OMElement)element).getQName());
+        assertEquals(new QName("urn:test", "root"), ((OMElement) element).getQName());
     }
 }

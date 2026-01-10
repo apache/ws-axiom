@@ -25,13 +25,14 @@ import org.apache.axiom.ts.om.cross.TestInsertSibling;
 
 public class LLOM2DOOMTest extends TestCase {
     public static TestSuite suite() {
-        CrossOMTestSuiteBuilder builder = new CrossOMTestSuiteBuilder(
-                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM),
-                OMAbstractFactory.getMetaFactory());
-        
+        CrossOMTestSuiteBuilder builder =
+                new CrossOMTestSuiteBuilder(
+                        OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM),
+                        OMAbstractFactory.getMetaFactory());
+
         // TODO
         builder.exclude(TestInsertSibling.class);
-        
+
         return builder.build();
     }
 }

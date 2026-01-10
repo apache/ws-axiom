@@ -31,16 +31,17 @@ public class SerializationTest extends TestCase {
         OMNamespace ns = fac.createOMNamespace("http://ws.apache.org/axis2/apacheconasia/06", "");
         OMElement personElem = fac.createOMElement("person", ns);
 
-        //Create and add using null namespace...this should pick up default namespace from parent
+        // Create and add using null namespace...this should pick up default namespace from parent
         OMElement nameElem = fac.createOMElement("name", null);
         nameElem.setText("John");
         personElem.addChild(nameElem);
 
         String xml = personElem.toString();
 
-        assertEquals("Incorrect namespace serialization", 2,
-                     xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
+        assertEquals(
+                "Incorrect namespace serialization",
+                2,
+                xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
         assertEquals("Incorrect serialization", 2, xml.split("xmlns=\"\"").length);
-
     }
 }

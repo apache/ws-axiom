@@ -37,7 +37,7 @@ public class AxiomSoapMessageTest extends TestCase {
      * Tests that {@link AxiomSoapMessage#setDocument(Document)} works correctly. There have been
      * issues with that method because Spring-WS instantiates {@link SOAPFactory} implementations
      * directly instead of using {@link OMAbstractFactory}.
-     * 
+     *
      * @throws Exception
      */
     public void testSetDocument() throws Exception {
@@ -46,9 +46,15 @@ public class AxiomSoapMessageTest extends TestCase {
         AxiomSoapMessage message = mf.createWebServiceMessage();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
-        Document document = dbf.newDocumentBuilder().parse(AxiomSoapMessageTest.class.getResource("soap-message.xml").toString());
+        Document document =
+                dbf.newDocumentBuilder()
+                        .parse(
+                                AxiomSoapMessageTest.class
+                                        .getResource("soap-message.xml")
+                                        .toString());
         message.setDocument(document);
-        Iterator<SoapHeaderElement> it = message.getEnvelope().getHeader().examineAllHeaderElements();
+        Iterator<SoapHeaderElement> it =
+                message.getEnvelope().getHeader().examineAllHeaderElements();
         assertTrue(it.hasNext());
         SoapHeaderElement headerElement = it.next();
         assertEquals(new QName("urn:test", "myHeader"), headerElement.getName());

@@ -26,6 +26,4 @@ import java.lang.annotation.Target;
 
 @Retention(CLASS)
 @Target(METHOD)
-public @interface Inject {
-
-}
+public @interface Inject {}

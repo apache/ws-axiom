@@ -25,11 +25,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that the method is a factory method. The return type of the method must be an
- * interface and the method must not have any arguments. The weaver will generate code that
- * creates a new instance of the class implementing the interface.
+ * Indicates that the method is a factory method. The return type of the method must be an interface
+ * and the method must not have any arguments. The weaver will generate code that creates a new
+ * instance of the class implementing the interface.
  */
 @Retention(CLASS)
 @Target(METHOD)
-public @interface FactoryMethod {
-}
+public @interface FactoryMethod {}
