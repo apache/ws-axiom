@@ -2,11 +2,7 @@
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
 	"features": {
 		"ghcr.io/devcontainers/features/java:1": {
-			"version": "21",
-			"installMaven": "true"
-		},
-		"ghcr.io/devcontainers-contrib/features/mvnd-sdkman:2": {
-			"jdkVersion": "none"
+			"version": "21"
 		},
 		// docker is useful to run diffoscope
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {}

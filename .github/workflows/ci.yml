@@ -48,7 +48,7 @@ jobs:
         distribution: 'zulu'
         java-version: ${{ matrix.java }}
     - name: Build
-      run: mvn -B -e -Papache-release -Dgpg.skip=true verify
+      run: ./mvnw -B -e -Papache-release -Dgpg.skip=true verify
     - name: Remove Snapshots
       run: find ~/.m2/repository -name '*-SNAPSHOT' -a -type d -print0 | xargs -0 rm -rf
   site:
@@ -71,7 +71,7 @@ jobs:
         distribution: 'zulu'
         java-version: 21
     - name: Build
-      run: mvn -B -e -Dmaven.test.skip=true package site-deploy
+      run: ./mvnw -B -e -Dmaven.test.skip=true package site-deploy
     - name: Remove Snapshots
       run: find ~/.m2/repository -name '*-SNAPSHOT' -a -type d -print0 | xargs -0 rm -rf
   deploy:
@@ -101,7 +101,7 @@ jobs:
         server-username: NEXUS_USER
         server-password: NEXUS_PW
     - name: Deploy
-      run: mvn -B -e -Papache-release -Dgpg.skip=true -Dmaven.test.skip=true deploy
+      run: ./mvnw -B -e -Papache-release -Dgpg.skip=true -Dmaven.test.skip=true deploy
       env:
         NEXUS_USER: ${{ secrets.NEXUS_USER }}
         NEXUS_PW: ${{ secrets.NEXUS_PW }}
