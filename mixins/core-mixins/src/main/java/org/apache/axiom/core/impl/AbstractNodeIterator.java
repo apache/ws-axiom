@@ -71,15 +71,14 @@ public abstract class AbstractNodeIterator<T extends CoreNode, S> implements Nod
             while (true) {
                 // Get to the next node
                 switch (axis) {
-                    case CHILDREN:
+                    case CHILDREN -> {
                         if (node == null) {
                             node = startNode.coreGetFirstChild();
                         } else {
                             node = ((CoreChildNode) node).coreGetNextSibling();
                         }
-                        break;
-                    case DESCENDANTS:
-                    case DESCENDANTS_OR_SELF:
+                    }
+                    case DESCENDANTS, DESCENDANTS_OR_SELF -> {
                         if (node == null) {
                             if (axis == Axis.DESCENDANTS) {
                                 node = startNode.coreGetFirstChild();
@@ -116,6 +115,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode, S> implements Nod
                                 visitChildren = false;
                             }
                         }
+                    }
                 }
                 if (node == null) {
                     nextNode = null;

@@ -69,13 +69,13 @@ final class DOMReader implements XmlReader {
         loop:
         while (true) {
             switch (state) {
-                case START:
+                case START -> {
                     if (rootNode instanceof Document) {
                         currentNode = rootNode;
                     }
                     state = NOT_VISITED;
-                    break;
-                case NOT_VISITED:
+                }
+                case NOT_VISITED -> {
                     if (currentNode == null) {
                         currentNode = rootNode;
                     } else {
@@ -86,8 +86,8 @@ final class DOMReader implements XmlReader {
                             currentNode = node;
                         }
                     }
-                    break;
-                case VISITED:
+                }
+                case VISITED -> {
                     if (currentNode == null || currentNode instanceof Document) {
                         throw new IllegalStateException();
                     } else if (currentNode == rootNode) {
@@ -101,25 +101,26 @@ final class DOMReader implements XmlReader {
                             state = NOT_VISITED;
                         }
                     }
-                    break;
-                default:
-                    throw new IllegalStateException();
+                }
+                default -> throw new IllegalStateException();
             }
             int nodeType = currentNode == null ? Node.DOCUMENT_NODE : currentNode.getNodeType();
             if (state == VISITED) {
                 // In the future, there may be other node types that generate events here
                 switch (nodeType) {
-                    case Node.ELEMENT_NODE:
+                    case Node.ELEMENT_NODE -> {
                         handler.endElement();
                         break loop;
-                    case Node.DOCUMENT_NODE:
+                    }
+                    case Node.DOCUMENT_NODE -> {
                         handler.completed();
                         state = COMPLETE;
                         break loop;
+                    }
                 }
             } else {
                 switch (nodeType) {
-                    case Node.DOCUMENT_NODE:
+                    case Node.DOCUMENT_NODE -> {
                         if (currentNode != null) {
                             Document document = (Document) currentNode;
                             if (dom3) {
@@ -135,7 +136,8 @@ final class DOMReader implements XmlReader {
                             handler.startFragment();
                         }
                         break loop;
-                    case Node.DOCUMENT_TYPE_NODE:
+                    }
+                    case Node.DOCUMENT_TYPE_NODE -> {
                         DocumentType docType = (DocumentType) currentNode;
                         handler.processDocumentTypeDeclaration(
                                 docType.getName(),
@@ -143,7 +145,8 @@ final class DOMReader implements XmlReader {
                                 docType.getSystemId(),
                                 docType.getInternalSubset());
                         break loop;
-                    case Node.ELEMENT_NODE:
+                    }
+                    case Node.ELEMENT_NODE -> {
                         Element element = (Element) currentNode;
                         String localName = element.getLocalName();
                         if (localName == null) {
@@ -187,28 +190,33 @@ final class DOMReader implements XmlReader {
                         }
                         handler.attributesCompleted();
                         break loop;
-                    case Node.TEXT_NODE:
+                    }
+                    case Node.TEXT_NODE -> {
                         handler.processCharacterData(
                                 currentNode.getNodeValue(),
                                 dom3 && ((Text) currentNode).isElementContentWhitespace());
                         break loop;
-                    case Node.CDATA_SECTION_NODE:
+                    }
+                    case Node.CDATA_SECTION_NODE -> {
                         handler.startCDATASection();
                         handler.processCharacterData(currentNode.getNodeValue(), false);
                         handler.endCDATASection();
                         break loop;
-                    case Node.COMMENT_NODE:
+                    }
+                    case Node.COMMENT_NODE -> {
                         handler.startComment();
                         handler.processCharacterData(currentNode.getNodeValue(), false);
                         handler.endComment();
                         break loop;
-                    case Node.PROCESSING_INSTRUCTION_NODE:
+                    }
+                    case Node.PROCESSING_INSTRUCTION_NODE -> {
                         ProcessingInstruction pi = (ProcessingInstruction) currentNode;
                         handler.startProcessingInstruction(pi.getTarget());
                         handler.processCharacterData(pi.getData(), false);
                         handler.endProcessingInstruction();
                         break loop;
-                    case Node.ENTITY_REFERENCE_NODE:
+                    }
+                    case Node.ENTITY_REFERENCE_NODE -> {
                         if (!expandEntityReferences) {
                             handler.processEntityReference(currentNode.getNodeName(), null);
                             state = VISITED;
@@ -217,10 +225,12 @@ final class DOMReader implements XmlReader {
                             // No event has been generated, so loop again
                             break;
                         }
-                    default:
+                    }
+                    default -> {
                         // TODO
                         throw new UnsupportedOperationException(
                                 "Unsupported node type " + nodeType);
+                    }
                 }
             }
         }

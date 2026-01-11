@@ -369,11 +369,12 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         }
         namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
         switch (((DOMNode) node).coreGetNodeType()) {
-            case NS_AWARE_ELEMENT:
+            case NS_AWARE_ELEMENT -> {
                 NSUtil.validateNamespace(namespaceURI, prefix);
                 ((DOMNSAwareElement) node).coreSetName(namespaceURI, localName, prefix);
                 return node;
-            case NS_AWARE_ATTRIBUTE:
+            }
+            case NS_AWARE_ATTRIBUTE -> {
                 if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
                     DOMNamespaceDeclaration decl = getDOMNodeFactory().createNamespaceDeclaration();
                     decl.coreSetOwnerDocument(this);
@@ -389,11 +390,12 @@ public abstract class DOMDocumentMixin implements DOMDocument {
                     ((DOMNSAwareAttribute) node).coreSetName(namespaceURI, localName, prefix);
                     return node;
                 }
-            case NAMESPACE_DECLARATION:
+            }
+            case NAMESPACE_DECLARATION -> {
                 // TODO
                 throw new UnsupportedOperationException();
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 

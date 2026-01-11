@@ -81,11 +81,8 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
         } else {
             int event = super.next();
             switch (event) {
-                case START_ELEMENT:
-                    depth++;
-                    break;
-                case END_ELEMENT:
-                    depth--;
+                case START_ELEMENT -> depth++;
+                case END_ELEMENT -> depth--;
             }
             return event;
         }

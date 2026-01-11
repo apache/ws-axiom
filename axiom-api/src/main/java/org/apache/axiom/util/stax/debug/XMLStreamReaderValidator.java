@@ -83,10 +83,8 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
         // Mismatched events are a key indication that the delegate stream reader is
         // broken or corrupted.
         switch (event) {
-            case XMLStreamConstants.START_ELEMENT:
-                stack.push(super.getName());
-                break;
-            case XMLStreamConstants.END_ELEMENT:
+            case XMLStreamConstants.START_ELEMENT -> stack.push(super.getName());
+            case XMLStreamConstants.END_ELEMENT -> {
                 QName delegateQName = super.getName();
                 if (stack.isEmpty()) {
                     reportError(
@@ -105,15 +103,14 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
                                         + " event.");
                     }
                 }
-                break;
-            case XMLStreamConstants.END_DOCUMENT:
+            }
+            case XMLStreamConstants.END_DOCUMENT -> {
                 if (!stack.isEmpty()) {
                     reportError(
                             "An unexpected END_DOCUMENT event was encountered; element stack: "
                                     + stack);
                 }
-                break;
-            default:
+            }
         }
     }
 
@@ -130,50 +127,45 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
             int currentEvent = super.getEventType();
 
             switch (currentEvent) {
-                case XMLStreamConstants.START_ELEMENT:
+                case XMLStreamConstants.START_ELEMENT -> {
                     log.trace("START_ELEMENT: ");
                     log.trace("  QName: " + super.getName());
-                    break;
-                case XMLStreamConstants.START_DOCUMENT:
-                    log.trace("START_DOCUMENT: ");
-                    break;
-                case XMLStreamConstants.CHARACTERS:
+                }
+                case XMLStreamConstants.START_DOCUMENT -> log.trace("START_DOCUMENT: ");
+                case XMLStreamConstants.CHARACTERS -> {
                     log.trace("CHARACTERS: ");
                     log.trace("[" + super.getText() + "]");
-                    break;
-                case XMLStreamConstants.CDATA:
+                }
+                case XMLStreamConstants.CDATA -> {
                     log.trace("CDATA: ");
                     log.trace("[" + super.getText() + "]");
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
+                }
+                case XMLStreamConstants.END_ELEMENT -> {
                     log.trace("END_ELEMENT: ");
                     log.trace("  QName: " + super.getName());
-                    break;
-                case XMLStreamConstants.END_DOCUMENT:
-                    log.trace("END_DOCUMENT: ");
-                    break;
-                case XMLStreamConstants.SPACE:
+                }
+                case XMLStreamConstants.END_DOCUMENT -> log.trace("END_DOCUMENT: ");
+                case XMLStreamConstants.SPACE -> {
                     log.trace("SPACE: ");
                     log.trace("[" + super.getText() + "]");
-                    break;
-                case XMLStreamConstants.COMMENT:
+                }
+                case XMLStreamConstants.COMMENT -> {
                     log.trace("COMMENT: ");
                     log.trace("[" + super.getText() + "]");
-                    break;
-                case XMLStreamConstants.DTD:
+                }
+                case XMLStreamConstants.DTD -> {
                     log.trace("DTD: ");
                     log.trace("[" + super.getText() + "]");
-                    break;
-                case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                }
+                case XMLStreamConstants.PROCESSING_INSTRUCTION -> {
                     log.trace("PROCESSING_INSTRUCTION: ");
                     log.trace("   [" + super.getPITarget() + "][" + super.getPIData() + "]");
-                    break;
-                case XMLStreamConstants.ENTITY_REFERENCE:
+                }
+                case XMLStreamConstants.ENTITY_REFERENCE -> {
                     log.trace("ENTITY_REFERENCE: ");
                     log.trace("    " + super.getLocalName() + "[" + super.getText() + "]");
-                    break;
-                default:
-                    log.trace("UNKNOWN_STATE: " + currentEvent);
+                }
+                default -> log.trace("UNKNOWN_STATE: " + currentEvent);
             }
         }
     }

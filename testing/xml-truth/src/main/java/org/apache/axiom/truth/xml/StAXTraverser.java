@@ -40,16 +40,14 @@ final class StAXTraverser implements Traverser {
     StAXTraverser(XMLStreamReader reader) {
         this.reader = reader;
         switch (reader.getEventType()) {
-            case XMLStreamReader.START_DOCUMENT:
-                depth = -1;
-                break;
-            case XMLStreamReader.START_ELEMENT:
+            case XMLStreamReader.START_DOCUMENT -> depth = -1;
+            case XMLStreamReader.START_ELEMENT -> {
                 depth = 0;
                 atStart = true;
-                break;
-            default:
-                throw new IllegalStateException(
-                        "The reader must be positioned at a START_DOCUMENT or START_ELEMENT event");
+            }
+            default ->
+                    throw new IllegalStateException(
+                            "The reader must be positioned at a START_DOCUMENT or START_ELEMENT event");
         }
     }
 
@@ -67,36 +65,29 @@ final class StAXTraverser implements Traverser {
             } else {
                 event = reader.hasNext() ? reader.next() : XMLStreamReader.END_DOCUMENT;
             }
-            switch (event) {
-                case XMLStreamReader.DTD:
-                    return Event.DOCUMENT_TYPE;
-                case XMLStreamReader.START_ELEMENT:
+            return switch (event) {
+                case XMLStreamReader.DTD -> Event.DOCUMENT_TYPE;
+                case XMLStreamReader.START_ELEMENT -> {
                     if (depth != -1) {
                         depth++;
                     }
-                    return Event.START_ELEMENT;
-                case XMLStreamReader.END_ELEMENT:
+                    yield Event.START_ELEMENT;
+                }
+                case XMLStreamReader.END_ELEMENT -> {
                     if (depth != -1) {
                         depth--;
                     }
-                    return Event.END_ELEMENT;
-                case XMLStreamReader.CHARACTERS:
-                    return Event.TEXT;
-                case XMLStreamReader.SPACE:
-                    return Event.WHITESPACE;
-                case XMLStreamReader.ENTITY_REFERENCE:
-                    return Event.ENTITY_REFERENCE;
-                case XMLStreamReader.COMMENT:
-                    return Event.COMMENT;
-                case XMLStreamReader.CDATA:
-                    return Event.CDATA_SECTION;
-                case XMLStreamReader.PROCESSING_INSTRUCTION:
-                    return Event.PROCESSING_INSTRUCTION;
-                case XMLStreamReader.END_DOCUMENT:
-                    return null;
-                default:
-                    throw new IllegalStateException();
-            }
+                    yield Event.END_ELEMENT;
+                }
+                case XMLStreamReader.CHARACTERS -> Event.TEXT;
+                case XMLStreamReader.SPACE -> Event.WHITESPACE;
+                case XMLStreamReader.ENTITY_REFERENCE -> Event.ENTITY_REFERENCE;
+                case XMLStreamReader.COMMENT -> Event.COMMENT;
+                case XMLStreamReader.CDATA -> Event.CDATA_SECTION;
+                case XMLStreamReader.PROCESSING_INSTRUCTION -> Event.PROCESSING_INSTRUCTION;
+                case XMLStreamReader.END_DOCUMENT -> null;
+                default -> throw new IllegalStateException();
+            };
         } catch (XMLStreamException ex) {
             throw new TraverserException(ex);
         }

@@ -71,14 +71,13 @@ public class UsesConstraintsTest {
         @Override
         public void frameworkEvent(FrameworkEvent event) {
             switch (event.getType()) {
-                case FrameworkEvent.STARTED:
-                    latch.countDown();
-                    break;
-                case FrameworkEvent.ERROR:
+                case FrameworkEvent.STARTED -> latch.countDown();
+                case FrameworkEvent.ERROR -> {
                     if (regex.matcher(event.getThrowable().getMessage()).matches()) {
                         System.out.println("Got expected");
                         gotExpectedError = true;
                     }
+                }
             }
         }
 

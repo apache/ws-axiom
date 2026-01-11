@@ -50,13 +50,11 @@ public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper
 
     private void inContent() throws StreamException {
         switch (state) {
-            case IN_XOP_INCLUDE:
-                throw new StreamException(
-                        "Expected xop:Include element information item to be empty");
-            case AFTER_XOP_INCLUDE:
-                throw new StreamException(SOLE_CHILD_MSG);
-            default:
-                state = State.CONTENT_SEEN;
+            case IN_XOP_INCLUDE ->
+                    throw new StreamException(
+                            "Expected xop:Include element information item to be empty");
+            case AFTER_XOP_INCLUDE -> throw new StreamException(SOLE_CHILD_MSG);
+            default -> state = State.CONTENT_SEEN;
         }
     }
 

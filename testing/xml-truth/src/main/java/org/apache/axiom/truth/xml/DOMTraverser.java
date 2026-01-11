@@ -54,6 +54,7 @@ final class DOMTraverser implements Traverser {
 
     @Override
     public Event next() {
+        loop:
         while (true) {
             boolean visited;
             if (node == null) {
@@ -80,12 +81,14 @@ final class DOMTraverser implements Traverser {
                 }
             }
             switch (node.getNodeType()) {
-                case Node.DOCUMENT_NODE:
+                case Node.DOCUMENT_NODE -> {
                     return null;
-                case Node.DOCUMENT_TYPE_NODE:
+                }
+                case Node.DOCUMENT_TYPE_NODE -> {
                     descend = false;
                     return Event.DOCUMENT_TYPE;
-                case Node.ELEMENT_NODE:
+                }
+                case Node.ELEMENT_NODE -> {
                     if (!visited) {
                         descend = true;
                         return Event.START_ELEMENT;
@@ -93,30 +96,35 @@ final class DOMTraverser implements Traverser {
                         descend = false;
                         return Event.END_ELEMENT;
                     }
-                case Node.TEXT_NODE:
+                }
+                case Node.TEXT_NODE -> {
                     descend = false;
                     return dom3 && ((Text) node).isElementContentWhitespace()
                             ? Event.WHITESPACE
                             : Event.TEXT;
-                case Node.ENTITY_REFERENCE_NODE:
+                }
+                case Node.ENTITY_REFERENCE_NODE -> {
                     if (expandEntityReferences) {
                         descend = !visited;
-                        break;
+                        continue loop;
                     } else {
                         descend = false;
                         return Event.ENTITY_REFERENCE;
                     }
-                case Node.COMMENT_NODE:
+                }
+                case Node.COMMENT_NODE -> {
                     descend = false;
                     return Event.COMMENT;
-                case Node.CDATA_SECTION_NODE:
+                }
+                case Node.CDATA_SECTION_NODE -> {
                     descend = false;
                     return Event.CDATA_SECTION;
-                case Node.PROCESSING_INSTRUCTION_NODE:
+                }
+                case Node.PROCESSING_INSTRUCTION_NODE -> {
                     descend = false;
                     return Event.PROCESSING_INSTRUCTION;
-                default:
-                    throw new IllegalStateException();
+                }
+                default -> throw new IllegalStateException();
             }
         }
     }

@@ -365,131 +365,105 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         switch (state) {
-            case STATE_DEFAULT:
+            case STATE_DEFAULT -> {
                 eventType = ignorable ? SPACE : CHARACTERS;
                 characterData = data;
                 state = STATE_EVENT_COMPLETE;
                 return;
-            case STATE_COLLECT_TEXT:
-            case STATE_COALESCE_CDATA_SECTION:
+            }
+            case STATE_COLLECT_TEXT, STATE_COALESCE_CDATA_SECTION -> {
                 accumulator.append(data);
                 return;
-            case STATE_NEXT_TAG:
+            }
+            case STATE_NEXT_TAG -> {
                 // TODO: check that the character data only contains whitespace!
-                break;
-            case STATE_SKIP_CONTENT:
-                break;
-            default:
-                throw new IllegalStateException();
+            }
+            case STATE_SKIP_CONTENT -> {}
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public void startProcessingInstruction(String target) throws StreamException {
         switch (state) {
-            case STATE_DEFAULT:
+            case STATE_DEFAULT -> {
                 eventType = PROCESSING_INSTRUCTION;
                 name = target;
                 startCollectingText();
-                break;
-            case STATE_COLLECT_TEXT:
-            case STATE_NEXT_TAG:
+            }
+            case STATE_COLLECT_TEXT, STATE_NEXT_TAG -> {
                 previousState = state;
                 state = STATE_SKIP_CONTENT;
-                break;
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public void endProcessingInstruction() throws StreamException {
         switch (state) {
-            case STATE_COLLECT_TEXT:
-                text = stopCollectingText();
-                break;
-            case STATE_SKIP_CONTENT:
-                state = previousState;
-                break;
-            default:
-                throw new IllegalStateException();
+            case STATE_COLLECT_TEXT -> text = stopCollectingText();
+            case STATE_SKIP_CONTENT -> state = previousState;
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public void startComment() throws StreamException {
         switch (state) {
-            case STATE_DEFAULT:
+            case STATE_DEFAULT -> {
                 eventType = COMMENT;
                 startCollectingText();
-                break;
-            case STATE_COLLECT_TEXT:
-            case STATE_NEXT_TAG:
+            }
+            case STATE_COLLECT_TEXT, STATE_NEXT_TAG -> {
                 previousState = state;
                 state = STATE_SKIP_CONTENT;
-                break;
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public void endComment() throws StreamException {
         switch (state) {
-            case STATE_COLLECT_TEXT:
-                text = stopCollectingText();
-                break;
-            case STATE_SKIP_CONTENT:
-                state = previousState;
-                break;
-            default:
-                throw new IllegalStateException();
+            case STATE_COLLECT_TEXT -> text = stopCollectingText();
+            case STATE_SKIP_CONTENT -> state = previousState;
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public void startCDATASection() throws StreamException {
         switch (state) {
-            case STATE_DEFAULT:
+            case STATE_DEFAULT -> {
                 eventType = CDATA;
                 startCollectingText();
-                break;
-            case STATE_COLLECT_TEXT:
-                state = STATE_COALESCE_CDATA_SECTION;
-                break;
-            default:
-                throw new IllegalStateException();
+            }
+            case STATE_COLLECT_TEXT -> state = STATE_COALESCE_CDATA_SECTION;
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public void endCDATASection() throws StreamException {
         switch (state) {
-            case STATE_COLLECT_TEXT:
-                text = stopCollectingText();
-                break;
-            case STATE_COALESCE_CDATA_SECTION:
-                state = STATE_COLLECT_TEXT;
-                break;
-            default:
-                throw new IllegalStateException();
+            case STATE_COLLECT_TEXT -> text = stopCollectingText();
+            case STATE_COALESCE_CDATA_SECTION -> state = STATE_COLLECT_TEXT;
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public void processEntityReference(String name, String replacementText) throws StreamException {
         switch (state) {
-            case STATE_DEFAULT:
+            case STATE_DEFAULT -> {
                 eventType = ENTITY_REFERENCE;
                 this.name = name;
                 text = replacementText;
                 state = STATE_EVENT_COMPLETE;
-                break;
-            case STATE_COLLECT_TEXT:
-                accumulator.append(replacementText);
-                break;
-            default:
-                throw new IllegalStateException();
+            }
+            case STATE_COLLECT_TEXT -> accumulator.append(replacementText);
+            default -> throw new IllegalStateException();
         }
     }
 
@@ -530,11 +504,8 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     public int next() throws XMLStreamException {
         try {
             switch (state) {
-                case STATE_EVENT_COMPLETE:
-                    state = STATE_DEFAULT;
-                    break;
-                case STATE_ERROR:
-                    throw new IllegalStateException();
+                case STATE_EVENT_COMPLETE -> state = STATE_DEFAULT;
+                case STATE_ERROR -> throw new IllegalStateException();
             }
             switch (eventType) {
                 case CHARACTERS:
@@ -660,12 +631,13 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     public String getElementText() throws XMLStreamException {
         startCollectingText();
         switch (next()) {
-            case END_ELEMENT:
+            case END_ELEMENT -> {
                 return stopCollectingText();
-            case START_ELEMENT:
-                throw new XMLStreamException("Element text content may not contain START_ELEMENT");
-            default:
-                throw new IllegalStateException();
+            }
+            case START_ELEMENT ->
+                    throw new XMLStreamException(
+                            "Element text content may not contain START_ELEMENT");
+            default -> throw new IllegalStateException();
         }
     }
 
@@ -729,9 +701,10 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public boolean isWhiteSpace() {
         switch (getEventType()) {
-            case SPACE:
+            case SPACE -> {
                 return true;
-            case CHARACTERS:
+            }
+            case CHARACTERS -> {
                 // XMLStreamReader Javadoc says that isWhiteSpace "returns true if the cursor
                 // points to a character data event that consists of all whitespace". This
                 // means that this method may return true for a CHARACTER event and we need
@@ -744,8 +717,10 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
                     }
                 }
                 return true;
-            default:
+            }
+            default -> {
                 return false;
+            }
         }
     }
 
@@ -844,35 +819,32 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public int getNamespaceCount() {
         switch (eventType) {
-            case START_ELEMENT:
-            case END_ELEMENT:
+            case START_ELEMENT, END_ELEMENT -> {
                 return scopeStack[depth + 1] - scopeStack[depth];
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public String getNamespacePrefix(int index) {
         switch (eventType) {
-            case START_ELEMENT:
-            case END_ELEMENT:
+            case START_ELEMENT, END_ELEMENT -> {
                 return emptyToNull(namespaceStack[2 * (scopeStack[depth] + index)]);
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public String getNamespaceURI(int index) {
         switch (eventType) {
-            case START_ELEMENT:
-            case END_ELEMENT:
+            case START_ELEMENT, END_ELEMENT -> {
                 // The XSLT implementation in the JRE doesn't like null values returned here.
                 // Returning empty strings is also what Woodstox does.
                 return namespaceStack[2 * (scopeStack[depth] + index) + 1];
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
@@ -899,29 +871,21 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public String getText() {
         switch (eventType) {
-            case CHARACTERS:
-            case CDATA:
-            case SPACE:
-            case COMMENT:
-            case DTD:
-            case ENTITY_REFERENCE:
+            case CHARACTERS, CDATA, SPACE, COMMENT, DTD, ENTITY_REFERENCE -> {
                 return internalGetText();
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public char[] getTextCharacters() {
         switch (eventType) {
-            case CHARACTERS:
-            case CDATA:
-            case SPACE:
-            case COMMENT:
+            case CHARACTERS, CDATA, SPACE, COMMENT -> {
                 // TODO: optimize this
                 return internalGetText().toCharArray();
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
@@ -937,27 +901,21 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public int getTextStart() {
         switch (eventType) {
-            case CHARACTERS:
-            case CDATA:
-            case SPACE:
-            case COMMENT:
+            case CHARACTERS, CDATA, SPACE, COMMENT -> {
                 return 0;
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public int getTextLength() {
         switch (eventType) {
-            case CHARACTERS:
-            case CDATA:
-            case SPACE:
-            case COMMENT:
+            case CHARACTERS, CDATA, SPACE, COMMENT -> {
                 // TODO: optimize this
                 return internalGetText().length();
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
@@ -979,14 +937,13 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public QName getName() {
         switch (eventType) {
-            case START_ELEMENT:
-            case END_ELEMENT:
+            case START_ELEMENT, END_ELEMENT -> {
                 return QNameCache.getQName(
                         elementStack[3 * depth],
                         elementStack[3 * depth + 1],
                         elementStack[3 * depth + 2]);
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
@@ -998,36 +955,34 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public String getNamespaceURI() {
         switch (eventType) {
-            case START_ELEMENT:
-            case END_ELEMENT:
+            case START_ELEMENT, END_ELEMENT -> {
                 return emptyToNull(elementStack[3 * depth]);
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public String getLocalName() {
         switch (eventType) {
-            case START_ELEMENT:
-            case END_ELEMENT:
+            case START_ELEMENT, END_ELEMENT -> {
                 return emptyToNull(elementStack[3 * depth + 1]);
-            case ENTITY_REFERENCE:
+            }
+            case ENTITY_REFERENCE -> {
                 return name;
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
     @Override
     public String getPrefix() {
         switch (eventType) {
-            case START_ELEMENT:
-            case END_ELEMENT:
+            case START_ELEMENT, END_ELEMENT -> {
                 // Saxon assumes that getPrefix returns "" instead of null.
                 return elementStack[3 * depth + 2];
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 

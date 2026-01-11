@@ -39,21 +39,24 @@ public class RootWhitespaceFilter extends XMLStreamReaderWrapper {
         while (true) {
             event = super.next();
             switch (event) {
-                case XMLStreamConstants.START_ELEMENT:
+                case XMLStreamConstants.START_ELEMENT -> {
                     depth++;
                     break loop;
-                case XMLStreamConstants.END_ELEMENT:
+                }
+                case XMLStreamConstants.END_ELEMENT -> {
                     depth--;
                     break loop;
-                case XMLStreamConstants.CHARACTERS:
-                case XMLStreamConstants.SPACE:
+                }
+                case XMLStreamConstants.CHARACTERS, XMLStreamConstants.SPACE -> {
                     if (depth > 0) {
                         break loop;
                     } else {
                         continue loop;
                     }
-                default:
+                }
+                default -> {
                     break loop;
+                }
             }
         }
         return event;

@@ -191,7 +191,7 @@ final class PartImpl implements Part {
     @Override
     public void fetch() {
         switch (state) {
-            case STATE_UNREAD:
+            case STATE_UNREAD -> {
                 checkParserState(parser.getState(), EntityState.T_BODY);
 
                 content = blobFactory.createBlob();
@@ -212,8 +212,8 @@ final class PartImpl implements Part {
                 }
                 moveToNextPart();
                 state = STATE_BUFFERED;
-                break;
-            case STATE_STREAMING:
+            }
+            case STATE_STREAMING -> {
                 // If the stream is still open, buffer the remaining content
                 try {
                     partInputStream.detach();
@@ -223,6 +223,7 @@ final class PartImpl implements Part {
                 partInputStream = null;
                 moveToNextPart();
                 state = STATE_DISCARDED;
+            }
         }
     }
 
@@ -271,16 +272,15 @@ final class PartImpl implements Part {
     public void discard() {
         try {
             switch (state) {
-                case STATE_UNREAD:
+                case STATE_UNREAD -> {
                     EntityState parserState;
                     do {
                         parserState = parser.next();
                     } while (parserState != EntityState.T_START_BODYPART
                             && parserState != EntityState.T_END_MULTIPART);
                     state = STATE_DISCARDED;
-                    break;
-                case STATE_BUFFERED:
-                    content.release();
+                }
+                case STATE_BUFFERED -> content.release();
             }
         } catch (MimeException ex) {
             throw new MIMEException(ex);

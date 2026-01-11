@@ -92,25 +92,26 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
 
     @Override
     public boolean isWhiteSpace() {
-        switch (getEventType()) {
-            case SPACE:
-                return true;
-            case CHARACTERS:
+        return switch (getEventType()) {
+            case SPACE -> true;
+            case CHARACTERS -> {
                 // XMLStreamReader Javadoc says that isWhiteSpace "returns true if the cursor
                 // points to a character data event that consists of all whitespace". This
                 // means that this method may return true for a CHARACTER event and we need
                 // to scan the text of the node.
                 String text = getText();
+                boolean ok = true;
                 for (int i = 0; i < text.length(); i++) {
                     char c = text.charAt(i);
                     if (c != ' ' && c != '\t' && c != '\r' && c != '\n') {
-                        return false;
+                        ok = false;
+                        break;
                     }
                 }
-                return true;
-            default:
-                return false;
-        }
+                yield ok;
+            }
+            default -> false;
+        };
     }
 
     @Override

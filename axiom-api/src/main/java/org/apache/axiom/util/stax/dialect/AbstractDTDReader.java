@@ -44,17 +44,18 @@ abstract class AbstractDTDReader implements DTDReader {
                 rootName = scanner.getName();
                 scanner.skipSpace();
                 switch (scanner.peek()) {
-                    case 'S':
+                    case 'S' -> {
                         scanner.expect("SYSTEM");
                         scanner.skipSpace();
                         systemId = scanner.getQuotedString();
-                        break;
-                    case 'P':
+                    }
+                    case 'P' -> {
                         scanner.expect("PUBLIC");
                         scanner.skipSpace();
                         publicId = scanner.getQuotedString();
                         scanner.skipSpace();
                         systemId = scanner.getQuotedString();
+                    }
                 }
             } catch (XMLStreamException ex) {
                 throw new RuntimeException("Unable to parse DOCTYPE declaration", ex);

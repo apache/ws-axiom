@@ -84,22 +84,24 @@ public class Base64Utils {
         int b1 = Base64Constants.S_DECODETABLE[ibuf[1]];
         int b2 = Base64Constants.S_DECODETABLE[ibuf[2]];
         int b3 = Base64Constants.S_DECODETABLE[ibuf[3]];
-        switch (outlen) {
-            case 1:
+        return switch (outlen) {
+            case 1 -> {
                 obuf[wp] = (byte) (b0 << 2 & 0xfc | b1 >> 4 & 0x3);
-                return 1;
-            case 2:
+                yield 1;
+            }
+            case 2 -> {
                 obuf[wp++] = (byte) (b0 << 2 & 0xfc | b1 >> 4 & 0x3);
                 obuf[wp] = (byte) (b1 << 4 & 0xf0 | b2 >> 2 & 0xf);
-                return 2;
-            case 3:
+                yield 2;
+            }
+            case 3 -> {
                 obuf[wp++] = (byte) (b0 << 2 & 0xfc | b1 >> 4 & 0x3);
                 obuf[wp++] = (byte) (b1 << 4 & 0xf0 | b2 >> 2 & 0xf);
                 obuf[wp] = (byte) (b2 << 6 & 0xc0 | b3 & 0x3f);
-                return 3;
-            default:
-                throw new RuntimeException("internalError00");
-        }
+                yield 3;
+            }
+            default -> throw new RuntimeException("internalError00");
+        };
     }
 
     /**
@@ -142,22 +144,22 @@ public class Base64Utils {
         int padding = 0;
         for (int i = 0; i < data.length(); i++) {
             switch (Base64Constants.S_DECODETABLE[data.charAt(i)]) {
-                case Base64Constants.PADDING:
+                case Base64Constants.PADDING -> {
                     if (padding == 2) {
                         throw new IllegalArgumentException("Too much padding");
                     }
                     padding++;
-                    break;
-                case Base64Constants.WHITE_SPACE:
-                    break;
-                case Base64Constants.INVALID:
-                    throw new IllegalArgumentException("Invalid character encountered");
-                default:
+                }
+                case Base64Constants.WHITE_SPACE -> {}
+                case Base64Constants.INVALID ->
+                        throw new IllegalArgumentException("Invalid character encountered");
+                default -> {
                     // Padding can only occur at the end
                     if (padding > 0) {
                         throw new IllegalArgumentException("Unexpected padding character");
                     }
                     symbols++;
+                }
             }
         }
         if ((symbols + padding) % 4 != 0) {

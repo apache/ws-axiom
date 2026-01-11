@@ -119,13 +119,11 @@ public class XMLStreamReaderUtils {
                 loop:
                 while (true) {
                     switch (reader.next()) {
-                        case XMLStreamConstants.CHARACTERS:
-                            writeTextTo(reader, out);
-                            break;
-                        case XMLStreamConstants.END_ELEMENT:
+                        case XMLStreamConstants.CHARACTERS -> writeTextTo(reader, out);
+                        case XMLStreamConstants.END_ELEMENT -> {
                             break loop;
-                        default:
-                            throw new XMLStreamException("Expected a CHARACTER event");
+                        }
+                        default -> throw new XMLStreamException("Expected a CHARACTER event");
                     }
                 }
                 out.close();

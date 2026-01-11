@@ -241,49 +241,36 @@ public final class TreeWalkerImpl implements XmlReader {
             }
 
             switch (state) {
-                case STATE_START_FRAGMENT:
-                    handler.startFragment();
-                    break;
-                case STATE_LEAF:
-                    ((CoreLeafNode) nextNode).internalSerialize(handler, preserve);
-                    break;
-                case STATE_ATTRIBUTE:
-                    ((CoreAttribute) nextNode).internalSerialize(handler, preserve);
-                    break;
-                case STATE_NOT_VISITED:
-                    ((CoreParentNode) nextNode).serializeStartEvent(handler);
-                    break;
-                case STATE_ATTRIBUTES_VISITED:
-                    handler.attributesCompleted();
-                    break;
-                case STATE_VISITED:
+                case STATE_START_FRAGMENT -> handler.startFragment();
+                case STATE_LEAF -> ((CoreLeafNode) nextNode).internalSerialize(handler, preserve);
+                case STATE_ATTRIBUTE ->
+                        ((CoreAttribute) nextNode).internalSerialize(handler, preserve);
+                case STATE_NOT_VISITED -> ((CoreParentNode) nextNode).serializeStartEvent(handler);
+                case STATE_ATTRIBUTES_VISITED -> handler.attributesCompleted();
+                case STATE_VISITED -> {
                     if (nextNode == null) {
                         handler.completed();
                     } else {
                         ((CoreParentNode) nextNode).serializeEndEvent(handler);
                     }
-                    break;
-                case STATE_PASS_THROUGH:
-                    {
-                        CoreParentNode parent = (CoreParentNode) nextNode;
-                        parent.coreGetInputContext().getBuilder().next();
-                        if (parent.coreGetInputContext() == null) {
-                            state = STATE_VISITED;
-                        }
-                        break;
+                }
+                case STATE_PASS_THROUGH -> {
+                    CoreParentNode parent = (CoreParentNode) nextNode;
+                    parent.coreGetInputContext().getBuilder().next();
+                    if (parent.coreGetInputContext() == null) {
+                        state = STATE_VISITED;
                     }
-                case STATE_STREAMING:
+                }
+                case STATE_STREAMING -> {
                     if (reader.proceed()) {
                         state = STATE_VISITED;
                         reader = null;
                     }
-                    break;
-                case STATE_CONTENT_VISITED:
-                    handler.processCharacterData(
-                            ((CoreParentNode) nextNode).internalGetContent(), false);
-                    break;
-                default:
-                    throw new IllegalStateException();
+                }
+                case STATE_CONTENT_VISITED ->
+                        handler.processCharacterData(
+                                ((CoreParentNode) nextNode).internalGetContent(), false);
+                default -> throw new IllegalStateException();
             }
             node = nextNode;
             return state == STATE_VISITED && (nextNode == null || nextNode instanceof CoreDocument);

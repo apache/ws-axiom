@@ -57,14 +57,14 @@ final class XMLSampleProperties {
             encoding = reader.getEncoding();
             while (reader.hasNext()) {
                 switch (reader.next()) {
-                    case XMLStreamReader.DTD:
+                    case XMLStreamReader.DTD -> {
                         hasDTD = true;
                         hasInternalSubset = reader.getText().length() > 0;
                         hasExternalSubset = ((DTDInfo) reader).getDTDSystemId() != null;
-                        break;
-                    case XMLStreamReader.ENTITY_REFERENCE:
+                    }
+                    case XMLStreamReader.ENTITY_REFERENCE -> {
                         hasEntityReferences = true;
-                        break;
+                    }
                 }
             }
             reader.close();

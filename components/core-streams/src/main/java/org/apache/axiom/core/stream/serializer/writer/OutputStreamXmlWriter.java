@@ -80,14 +80,11 @@ final class OutputStreamXmlWriter extends XmlWriter {
                 processingUnmappableCharacter = true;
                 try {
                     switch (coderResult.length()) {
-                        case 1:
-                            unmappableCharacterHandler.processUnmappableCharacter(
-                                    encoderIn.get(), this);
-                            break;
-                        case 2:
-                            throw new UnsupportedOperationException("TODO");
-                        default:
-                            throw new IllegalStateException();
+                        case 1 ->
+                                unmappableCharacterHandler.processUnmappableCharacter(
+                                        encoderIn.get(), this);
+                        case 2 -> throw new UnsupportedOperationException("TODO");
+                        default -> throw new IllegalStateException();
                     }
                     flush(encoderInAlt);
                 } finally {

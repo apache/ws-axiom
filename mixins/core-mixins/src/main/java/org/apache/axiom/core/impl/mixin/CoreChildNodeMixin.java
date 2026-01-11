@@ -125,16 +125,16 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
             CoreParentNode parent = coreGetParent();
             if (parent != null) {
                 switch (parent.getState()) {
-                    case CoreParentNode.DISCARDING:
-                    case CoreParentNode.DISCARDED:
-                        throw new NodeConsumedException();
-                    case CoreParentNode.INCOMPLETE:
+                    case CoreParentNode.DISCARDING, CoreParentNode.DISCARDED ->
+                            throw new NodeConsumedException();
+                    case CoreParentNode.INCOMPLETE -> {
                         if (parent.coreGetBuilder() != null) {
                             do {
                                 parent.internalBuildNext();
                             } while (parent.getState() == CoreParentNode.INCOMPLETE
                                     && (nextSibling = coreGetNextSiblingIfAvailable()) == null);
                         }
+                    }
                 }
             }
         }

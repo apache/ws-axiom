@@ -108,25 +108,18 @@ public class OMFactoryImpl implements OMFactory {
     private AxiomText createAxiomText(OMContainer parent, Object content, int type) {
         AxiomText node;
         switch (type) {
-            case OMNode.TEXT_NODE:
-                {
-                    node = nodeFactory.createCharacterDataNode();
-                    break;
-                }
-            case OMNode.SPACE_NODE:
-                {
-                    AxiomCharacterDataNode cdata = nodeFactory.createCharacterDataNode();
-                    cdata.coreSetIgnorable(true);
-                    node = cdata;
-                    break;
-                }
-            case OMNode.CDATA_SECTION_NODE:
-                {
-                    node = nodeFactory.createCDATASection();
-                    break;
-                }
-            default:
-                throw new IllegalArgumentException("Invalid node type");
+            case OMNode.TEXT_NODE -> {
+                node = nodeFactory.createCharacterDataNode();
+            }
+            case OMNode.SPACE_NODE -> {
+                AxiomCharacterDataNode cdata = nodeFactory.createCharacterDataNode();
+                cdata.coreSetIgnorable(true);
+                node = cdata;
+            }
+            case OMNode.CDATA_SECTION_NODE -> {
+                node = nodeFactory.createCDATASection();
+            }
+            default -> throw new IllegalArgumentException("Invalid node type");
         }
         if (parent != null) {
             ((AxiomContainer) parent).addChild(node);
@@ -410,55 +403,49 @@ public class OMFactoryImpl implements OMFactory {
     private AxiomChildNode importChildNode(OMNode child) {
         int type = child.getType();
         switch (type) {
-            case OMNode.ELEMENT_NODE:
+            case OMNode.ELEMENT_NODE -> {
                 return importElement((OMElement) child, AxiomNodeFactory::createNSAwareElement);
-            case OMNode.TEXT_NODE:
-            case OMNode.SPACE_NODE:
-            case OMNode.CDATA_SECTION_NODE:
-                {
-                    OMText text = (OMText) child;
-                    Object content;
-                    if (text.isBinary()) {
-                        content =
-                                new TextContent(
-                                        text.getContentID(), text.getBlob(), text.isOptimized());
-                    } else {
-                        content = text.getText();
-                    }
-                    return createAxiomText(null, content, type);
+            }
+            case OMNode.TEXT_NODE, OMNode.SPACE_NODE, OMNode.CDATA_SECTION_NODE -> {
+                OMText text = (OMText) child;
+                Object content;
+                if (text.isBinary()) {
+                    content =
+                            new TextContent(
+                                    text.getContentID(), text.getBlob(), text.isOptimized());
+                } else {
+                    content = text.getText();
                 }
-            case OMNode.PI_NODE:
-                {
-                    OMProcessingInstruction pi = (OMProcessingInstruction) child;
-                    AxiomProcessingInstruction importedPI =
-                            nodeFactory.createProcessingInstruction();
-                    importedPI.setTarget(pi.getTarget());
-                    importedPI.setValue(pi.getValue());
-                    return importedPI;
-                }
-            case OMNode.COMMENT_NODE:
-                {
-                    OMComment comment = (OMComment) child;
-                    AxiomComment importedComment = nodeFactory.createComment();
-                    importedComment.setValue(comment.getValue());
-                    return importedComment;
-                }
-            case OMNode.DTD_NODE:
-                {
-                    OMDocType docType = (OMDocType) child;
-                    AxiomDocType importedDocType = nodeFactory.createDocumentTypeDeclaration();
-                    importedDocType.coreSetRootName(docType.getRootName());
-                    importedDocType.coreSetPublicId(docType.getPublicId());
-                    importedDocType.coreSetSystemId(docType.getSystemId());
-                    importedDocType.coreSetInternalSubset(docType.getInternalSubset());
-                    return importedDocType;
-                }
-            case OMNode.ENTITY_REFERENCE_NODE:
+                return createAxiomText(null, content, type);
+            }
+            case OMNode.PI_NODE -> {
+                OMProcessingInstruction pi = (OMProcessingInstruction) child;
+                AxiomProcessingInstruction importedPI = nodeFactory.createProcessingInstruction();
+                importedPI.setTarget(pi.getTarget());
+                importedPI.setValue(pi.getValue());
+                return importedPI;
+            }
+            case OMNode.COMMENT_NODE -> {
+                OMComment comment = (OMComment) child;
+                AxiomComment importedComment = nodeFactory.createComment();
+                importedComment.setValue(comment.getValue());
+                return importedComment;
+            }
+            case OMNode.DTD_NODE -> {
+                OMDocType docType = (OMDocType) child;
+                AxiomDocType importedDocType = nodeFactory.createDocumentTypeDeclaration();
+                importedDocType.coreSetRootName(docType.getRootName());
+                importedDocType.coreSetPublicId(docType.getPublicId());
+                importedDocType.coreSetSystemId(docType.getSystemId());
+                importedDocType.coreSetInternalSubset(docType.getInternalSubset());
+                return importedDocType;
+            }
+            case OMNode.ENTITY_REFERENCE_NODE -> {
                 AxiomEntityReference importedEntityRef = nodeFactory.createEntityReference();
                 importedEntityRef.coreSetName(((OMEntityReference) child).getName());
                 return importedEntityRef;
-            default:
-                throw new IllegalArgumentException("Unsupported node type");
+            }
+            default -> throw new IllegalArgumentException("Unsupported node type");
         }
     }
 

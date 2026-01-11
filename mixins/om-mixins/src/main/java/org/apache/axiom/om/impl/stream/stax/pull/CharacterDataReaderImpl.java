@@ -41,7 +41,7 @@ final class CharacterDataReaderImpl implements CharacterDataReader {
     @Override
     public void writeTextTo(final Writer writer) throws XMLStreamException, IOException {
         switch (reader.getEventType()) {
-            case XMLStreamReader.CHARACTERS:
+            case XMLStreamReader.CHARACTERS -> {
                 Object data = reader.getCharacterData();
                 if (data instanceof CharacterData) {
                     ((CharacterData) data)
@@ -61,15 +61,12 @@ final class CharacterDataReaderImpl implements CharacterDataReader {
                 } else {
                     writer.write(data.toString());
                 }
-                break;
-            case XMLStreamReader.CDATA:
-            case XMLStreamReader.SPACE:
-            case XMLStreamReader.COMMENT:
+            }
+            case XMLStreamReader.CDATA, XMLStreamReader.SPACE, XMLStreamReader.COMMENT -> {
                 // TODO: optimize this for CDATA and COMMENT
                 writer.write(reader.getText());
-                break;
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 }

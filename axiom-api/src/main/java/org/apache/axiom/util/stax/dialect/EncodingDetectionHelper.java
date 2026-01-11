@@ -72,30 +72,28 @@ class EncodingDetectionHelper {
                         + ((startBytes[1] & 0xFF) << 16)
                         + ((startBytes[2] & 0xFF) << 8)
                         + (startBytes[3] & 0xFF);
-        switch (marker) {
-            case 0x0000FEFF:
-            case 0xFFFE0000:
-            case 0x0000FFFE:
-            case 0xFEFF0000:
-            case 0x0000003C:
-            case 0x3C000000:
-            case 0x00003C00:
-            case 0x003C0000:
-                return "UCS-4";
-            case 0x003C003F:
-                return "UTF-16BE";
-            case 0x3C003F00:
-                return "UTF-16LE";
-            case 0x3C3F786D:
-                return "UTF-8";
-            default:
+        return switch (marker) {
+            case 0x0000FEFF,
+                    0xFFFE0000,
+                    0x0000FFFE,
+                    0xFEFF0000,
+                    0x0000003C,
+                    0x3C000000,
+                    0x00003C00,
+                    0x003C0000 ->
+                    "UCS-4";
+            case 0x003C003F -> "UTF-16BE";
+            case 0x3C003F00 -> "UTF-16LE";
+            case 0x3C3F786D -> "UTF-8";
+            default -> {
                 if ((marker & 0xFFFF0000) == 0xFEFF0000) {
-                    return "UTF-16BE";
+                    yield "UTF-16BE";
                 } else if ((marker & 0xFFFF0000) == 0xFFFE0000) {
-                    return "UTF-16LE";
+                    yield "UTF-16LE";
                 } else {
-                    return "UTF-8";
+                    yield "UTF-8";
                 }
-        }
+            }
+        };
     }
 }

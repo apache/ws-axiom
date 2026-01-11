@@ -82,30 +82,23 @@ final class AxiomTraverser implements Traverser {
                 }
             }
         }
-        switch (node.getType()) {
-            case OMNode.DTD_NODE:
-                return Event.DOCUMENT_TYPE;
-            case OMNode.ELEMENT_NODE:
-                return visited ? Event.END_ELEMENT : Event.START_ELEMENT;
-            case OMNode.TEXT_NODE:
-                return Event.TEXT;
-            case OMNode.SPACE_NODE:
-                return Event.WHITESPACE;
-            case OMNode.ENTITY_REFERENCE_NODE:
+        return switch (node.getType()) {
+            case OMNode.DTD_NODE -> Event.DOCUMENT_TYPE;
+            case OMNode.ELEMENT_NODE -> visited ? Event.END_ELEMENT : Event.START_ELEMENT;
+            case OMNode.TEXT_NODE -> Event.TEXT;
+            case OMNode.SPACE_NODE -> Event.WHITESPACE;
+            case OMNode.ENTITY_REFERENCE_NODE -> {
                 if (expandEntityReferences) {
                     throw new UnsupportedOperationException();
                 } else {
-                    return Event.ENTITY_REFERENCE;
+                    yield Event.ENTITY_REFERENCE;
                 }
-            case OMNode.COMMENT_NODE:
-                return Event.COMMENT;
-            case OMNode.CDATA_SECTION_NODE:
-                return Event.CDATA_SECTION;
-            case OMNode.PI_NODE:
-                return Event.PROCESSING_INSTRUCTION;
-            default:
-                throw new IllegalStateException();
-        }
+            }
+            case OMNode.COMMENT_NODE -> Event.COMMENT;
+            case OMNode.CDATA_SECTION_NODE -> Event.CDATA_SECTION;
+            case OMNode.PI_NODE -> Event.PROCESSING_INSTRUCTION;
+            default -> throw new IllegalStateException();
+        };
     }
 
     @Override
@@ -157,16 +150,12 @@ final class AxiomTraverser implements Traverser {
 
     @Override
     public String getText() {
-        switch (node.getType()) {
-            case OMNode.TEXT_NODE:
-            case OMNode.SPACE_NODE:
-            case OMNode.CDATA_SECTION_NODE:
-                return ((OMText) node).getText();
-            case OMNode.COMMENT_NODE:
-                return ((OMComment) node).getValue();
-            default:
-                throw new IllegalStateException();
-        }
+        return switch (node.getType()) {
+            case OMNode.TEXT_NODE, OMNode.SPACE_NODE, OMNode.CDATA_SECTION_NODE ->
+                    ((OMText) node).getText();
+            case OMNode.COMMENT_NODE -> ((OMComment) node).getValue();
+            default -> throw new IllegalStateException();
+        };
     }
 
     @Override

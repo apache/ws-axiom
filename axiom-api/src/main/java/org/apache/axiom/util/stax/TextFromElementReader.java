@@ -83,27 +83,27 @@ class TextFromElementReader extends Reader {
                     while (true) {
                         int type = stream.next();
                         switch (type) {
-                            case XMLStreamReader.CHARACTERS:
-                            case XMLStreamReader.CDATA:
+                            case XMLStreamReader.CHARACTERS, XMLStreamReader.CDATA -> {
                                 if (skipDepth == 0) {
                                     sourceStart = 0;
                                     break eventLoop;
                                 }
-                                break;
-                            case XMLStreamReader.START_ELEMENT:
+                            }
+                            case XMLStreamReader.START_ELEMENT -> {
                                 if (allowNonTextChildren) {
                                     skipDepth++;
                                 } else {
                                     throw new IOException("Unexpected START_ELEMENT event");
                                 }
-                                break;
-                            case XMLStreamReader.END_ELEMENT:
+                            }
+                            case XMLStreamReader.END_ELEMENT -> {
                                 if (skipDepth == 0) {
                                     endOfStream = true;
                                     return read == 0 ? -1 : read;
                                 } else {
                                     skipDepth--;
                                 }
+                            }
                         }
                     }
                 }

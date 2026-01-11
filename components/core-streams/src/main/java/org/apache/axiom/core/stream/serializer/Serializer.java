@@ -384,41 +384,36 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                         // is a little performance boost to handle the more
                         // common TAB, NEW-LINE, CARRIAGE-RETURN
                         switch (ch) {
-                            case 0x09:
+                            case 0x09 -> {
                                 if (context == ATTRIBUTE_VALUE) {
                                     replacement = "&#x9;";
                                 }
-                                break;
-                            case 0x0A:
+                            }
+                            case 0x0A -> {
                                 if (context == ATTRIBUTE_VALUE) {
                                     replacement = "&#xa;";
                                 }
-                                break;
-                            case 0x0D:
+                            }
+                            case 0x0D -> {
                                 replacement = "&#xd;";
                                 // Leave whitespace carriage return as a real character
-                                break;
-                            default:
-                                generateCharacterReference = true;
-                                break;
+                            }
+                            default -> generateCharacterReference = true;
                         }
                     } else if (ch < 0x7F) {
                         switch (ch) {
-                            case '<':
-                                replacement = "&lt;";
-                                break;
-                            case '>':
+                            case '<' -> replacement = "&lt;";
+                            case '>' -> {
                                 if (context == MIXED_CONTENT && squareBrackets >= 2) {
                                     replacement = "&gt;";
                                 }
-                                break;
-                            case '&':
-                                replacement = "&amp;";
-                                break;
-                            case '"':
+                            }
+                            case '&' -> replacement = "&amp;";
+                            case '"' -> {
                                 if (context == ATTRIBUTE_VALUE) {
                                     replacement = "&quot;";
                                 }
+                            }
                         }
                     } else if (ch <= 0x9F) {
                         // Range 0x7F through 0x9F inclusive

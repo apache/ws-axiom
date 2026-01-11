@@ -133,16 +133,15 @@ public final class BuilderSpec {
     public static BuilderSpec from(XMLStreamReader reader) {
         int eventType = reader.getEventType();
         switch (eventType) {
-            case XMLStreamReader.START_DOCUMENT:
-                break;
-            case XMLStreamReader.START_ELEMENT:
+            case XMLStreamReader.START_DOCUMENT -> {}
+            case XMLStreamReader.START_ELEMENT -> {
                 reader = new XMLFragmentStreamReader(reader);
-                break;
-            default:
-                throw new OMException(
-                        "The supplied XMLStreamReader is in an unexpected state ("
-                                + XMLEventUtils.getEventTypeString(eventType)
-                                + ")");
+            }
+            default ->
+                    throw new OMException(
+                            "The supplied XMLStreamReader is in an unexpected state ("
+                                    + XMLEventUtils.getEventTypeString(eventType)
+                                    + ")");
         }
         return new BuilderSpec(
                 new FilteredXmlInput(

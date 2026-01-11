@@ -35,44 +35,19 @@ public final class XMLEventUtils {
      * @return a string representation of the event type
      */
     public static String getEventTypeString(int event) {
-        String state = null;
-        switch (event) {
-            case XMLStreamConstants.START_ELEMENT:
-                state = "START_ELEMENT";
-                break;
-            case XMLStreamConstants.START_DOCUMENT:
-                state = "START_DOCUMENT";
-                break;
-            case XMLStreamConstants.CHARACTERS:
-                state = "CHARACTERS";
-                break;
-            case XMLStreamConstants.CDATA:
-                state = "CDATA";
-                break;
-            case XMLStreamConstants.END_ELEMENT:
-                state = "END_ELEMENT";
-                break;
-            case XMLStreamConstants.END_DOCUMENT:
-                state = "END_DOCUMENT";
-                break;
-            case XMLStreamConstants.SPACE:
-                state = "SPACE";
-                break;
-            case XMLStreamConstants.COMMENT:
-                state = "COMMENT";
-                break;
-            case XMLStreamConstants.DTD:
-                state = "DTD";
-                break;
-            case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                state = "PROCESSING_INSTRUCTION";
-                break;
-            case XMLStreamConstants.ENTITY_REFERENCE:
-                state = "ENTITY_REFERENCE";
-                break;
-            default:
-                state = "UNKNOWN_STATE: " + event;
-        }
-        return state;
+        return switch (event) {
+            case XMLStreamConstants.START_ELEMENT -> "START_ELEMENT";
+            case XMLStreamConstants.START_DOCUMENT -> "START_DOCUMENT";
+            case XMLStreamConstants.CHARACTERS -> "CHARACTERS";
+            case XMLStreamConstants.CDATA -> "CDATA";
+            case XMLStreamConstants.END_ELEMENT -> "END_ELEMENT";
+            case XMLStreamConstants.END_DOCUMENT -> "END_DOCUMENT";
+            case XMLStreamConstants.SPACE -> "SPACE";
+            case XMLStreamConstants.COMMENT -> "COMMENT";
+            case XMLStreamConstants.DTD -> "DTD";
+            case XMLStreamConstants.PROCESSING_INSTRUCTION -> "PROCESSING_INSTRUCTION";
+            case XMLStreamConstants.ENTITY_REFERENCE -> "ENTITY_REFERENCE";
+            default -> "UNKNOWN_STATE: " + event;
+        };
     }
 }

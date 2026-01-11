@@ -128,19 +128,14 @@ final class StAXPullReader implements XmlReader {
             throw ex;
         }
         switch (textType) {
-            case XMLStreamConstants.CHARACTERS:
-                handler.processCharacterData(text, false);
-                break;
-            case XMLStreamConstants.SPACE:
-                handler.processCharacterData(text, true);
-                break;
-            case XMLStreamConstants.CDATA:
+            case XMLStreamConstants.CHARACTERS -> handler.processCharacterData(text, false);
+            case XMLStreamConstants.SPACE -> handler.processCharacterData(text, true);
+            case XMLStreamConstants.CDATA -> {
                 handler.startCDATASection();
                 handler.processCharacterData(text, false);
                 handler.endCDATASection();
-                break;
-            default:
-                throw new IllegalStateException();
+            }
+            default -> throw new IllegalStateException();
         }
     }
 
@@ -177,47 +172,35 @@ final class StAXPullReader implements XmlReader {
         // Note: if autoClose is enabled, then the parser may be null at this point
 
         switch (token) {
-            case XMLStreamConstants.START_DOCUMENT:
-                handler.startDocument(
-                        reader.getEncoding(),
-                        reader.getVersion(),
-                        reader.getCharacterEncodingScheme(),
-                        reader.standaloneSet() ? reader.isStandalone() : null);
-                break;
-            case XMLStreamConstants.START_ELEMENT:
-                {
-                    processElement();
-                    break;
-                }
-            case XMLStreamConstants.CHARACTERS:
-            case XMLStreamConstants.CDATA:
-            case XMLStreamConstants.SPACE:
-                processText(token);
-                break;
-            case XMLStreamConstants.END_ELEMENT:
-                handler.endElement();
-                break;
-            case XMLStreamConstants.END_DOCUMENT:
-                handler.completed();
-                break;
-            case XMLStreamConstants.COMMENT:
+            case XMLStreamConstants.START_DOCUMENT ->
+                    handler.startDocument(
+                            reader.getEncoding(),
+                            reader.getVersion(),
+                            reader.getCharacterEncodingScheme(),
+                            reader.standaloneSet() ? reader.isStandalone() : null);
+            case XMLStreamConstants.START_ELEMENT -> {
+                processElement();
+            }
+            case XMLStreamConstants.CHARACTERS,
+                    XMLStreamConstants.CDATA,
+                    XMLStreamConstants.SPACE ->
+                    processText(token);
+            case XMLStreamConstants.END_ELEMENT -> handler.endElement();
+            case XMLStreamConstants.END_DOCUMENT -> handler.completed();
+            case XMLStreamConstants.COMMENT -> {
                 handler.startComment();
                 handler.processCharacterData(reader.getText(), false);
                 handler.endComment();
-                break;
-            case XMLStreamConstants.DTD:
-                processDTD();
-                break;
-            case XMLStreamConstants.PROCESSING_INSTRUCTION:
+            }
+            case XMLStreamConstants.DTD -> processDTD();
+            case XMLStreamConstants.PROCESSING_INSTRUCTION -> {
                 handler.startProcessingInstruction(reader.getPITarget());
                 handler.processCharacterData(reader.getPIData(), false);
                 handler.endProcessingInstruction();
-                break;
-            case XMLStreamConstants.ENTITY_REFERENCE:
-                handler.processEntityReference(reader.getLocalName(), reader.getText());
-                break;
-            default:
-                throw new IllegalStateException();
+            }
+            case XMLStreamConstants.ENTITY_REFERENCE ->
+                    handler.processEntityReference(reader.getLocalName(), reader.getText());
+            default -> throw new IllegalStateException();
         }
 
         return token == XMLStreamReader.END_DOCUMENT;

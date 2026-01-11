@@ -224,17 +224,17 @@ public abstract class AxiomElementMixin implements AxiomElement {
             int depth = 0;
             while (reader.hasNext()) {
                 switch (reader.next()) {
-                    case XMLStreamReader.CHARACTERS:
-                    case XMLStreamReader.CDATA:
+                    case XMLStreamReader.CHARACTERS, XMLStreamReader.CDATA -> {
                         if (depth == 1) {
                             out.write(reader.getText());
                         }
-                        break;
-                    case XMLStreamReader.START_ELEMENT:
+                    }
+                    case XMLStreamReader.START_ELEMENT -> {
                         depth++;
-                        break;
-                    case XMLStreamReader.END_ELEMENT:
+                    }
+                    case XMLStreamReader.END_ELEMENT -> {
                         depth--;
+                    }
                 }
             }
         } catch (XMLStreamException ex) {

@@ -1035,7 +1035,7 @@
                         <compilerArg>-XDcompilePolicy=simple</compilerArg>
                         <compilerArg>-XDaddTypeAnnotationsToSymbol=true</compilerArg>
                         <compilerArg>--should-stop=ifError=FLOW</compilerArg>
-                        <compilerArg>-Xplugin:ErrorProne -XepExcludedPaths:.*/org/(jaxen|w3c)/.* -Xep:MissingOverride:ERROR</compilerArg>
+                        <compilerArg>-Xplugin:ErrorProne -XepExcludedPaths:.*/org/(jaxen|w3c)/.* -Xep:MissingOverride:ERROR -Xep:StatementSwitchToExpressionSwitch:ERROR</compilerArg>
                         <compilerArg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</compilerArg>
                         <compilerArg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</compilerArg>
                         <compilerArg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</compilerArg>

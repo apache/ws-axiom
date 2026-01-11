@@ -99,12 +99,8 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         this.context = context;
         if (context == null) {
             switch (getState()) {
-                case INCOMPLETE:
-                    coreSetState(COMPLETE);
-                    break;
-                case DISCARDING:
-                    coreSetState(DISCARDED);
-                    break;
+                case INCOMPLETE -> coreSetState(COMPLETE);
+                case DISCARDING -> coreSetState(DISCARDED);
             }
         } else {
             coreSetState(INCOMPLETE);
@@ -175,14 +171,13 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         CoreChildNode firstChild = coreGetFirstChildIfAvailable();
         if (firstChild == null) {
             switch (getState()) {
-                case DISCARDING:
-                case DISCARDED:
-                    throw new NodeConsumedException();
-                case INCOMPLETE:
+                case DISCARDING, DISCARDED -> throw new NodeConsumedException();
+                case INCOMPLETE -> {
                     do {
                         internalBuildNext();
                     } while ((firstChild = coreGetFirstChildIfAvailable()) == null
                             && getState() == INCOMPLETE);
+                }
             }
         }
         return firstChild;
@@ -504,16 +499,15 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     @Override
     public final void coreBuild() throws CoreModelException {
         switch (getState()) {
-            case DISCARDING:
-            case DISCARDED:
-                throw new NodeConsumedException();
-            case INCOMPLETE:
+            case DISCARDING, DISCARDED -> throw new NodeConsumedException();
+            case INCOMPLETE -> {
                 if (context != null) {
                     Builder builder = context.getBuilder();
                     do {
                         builder.next();
                     } while (context != null);
                 }
+            }
         }
     }
 

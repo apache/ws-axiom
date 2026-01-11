@@ -32,24 +32,23 @@ public abstract class AxiomCoreParentNodeMixin implements AxiomCoreParentNode {
     @Override
     public final boolean isComplete() {
         try {
-            switch (getState()) {
-                case COMPACT:
-                    return true;
-                case COMPLETE:
+            return switch (getState()) {
+                case COMPACT -> true;
+                case COMPLETE -> {
                     if (isExpanded()) {
                         CoreChildNode child = coreGetFirstChild();
                         while (child != null) {
                             if (!(child instanceof AxiomSourcedElement
                                     || ((AxiomSerializable) child).isComplete())) {
-                                return false;
+                                yield false;
                             }
                             child = child.coreGetNextSibling();
                         }
                     }
-                    return true;
-                default:
-                    return false;
-            }
+                    yield true;
+                }
+                default -> false;
+            };
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }

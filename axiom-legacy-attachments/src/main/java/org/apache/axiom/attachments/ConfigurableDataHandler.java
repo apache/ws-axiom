@@ -77,19 +77,17 @@ public class ConfigurableDataHandler extends DataHandler {
                     if (cte == null) {
                         return null;
                     }
-                    switch (cte) {
-                        case "8bit":
-                            return ContentTransferEncoding.EIGHT_BIT;
-                        case "binary":
-                            return ContentTransferEncoding.BINARY;
-                        case "base64":
-                            return ContentTransferEncoding.BASE64;
-                        default:
+                    return switch (cte) {
+                        case "8bit" -> ContentTransferEncoding.EIGHT_BIT;
+                        case "binary" -> ContentTransferEncoding.BINARY;
+                        case "base64" -> ContentTransferEncoding.BASE64;
+                        default -> {
                             log.warn(
                                     String.format(
                                             "Unrecognized content transfer encoding: %s", cte));
-                            return null;
-                    }
+                            yield null;
+                        }
+                    };
                 }
             };
 

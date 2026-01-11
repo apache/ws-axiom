@@ -106,76 +106,70 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
 
     @Override
     public int getEventType() {
-        switch (state) {
-            case STATE_START_DOCUMENT:
-                return START_DOCUMENT;
-            case STATE_IN_FRAGMENT:
-                return parent.getEventType();
-            case STATE_FRAGMENT_END:
-                return END_ELEMENT;
-            case STATE_END_DOCUMENT:
-                return END_DOCUMENT;
-            default:
-                // We will never get here; just make the compiler happy.
-                throw new IllegalStateException();
-        }
+        return switch (state) {
+            case STATE_START_DOCUMENT -> START_DOCUMENT;
+            case STATE_IN_FRAGMENT -> parent.getEventType();
+            case STATE_FRAGMENT_END -> END_ELEMENT;
+            case STATE_END_DOCUMENT -> END_DOCUMENT;
+            default -> throw new IllegalStateException();
+        };
     }
 
     @Override
     public int next() throws XMLStreamException {
-        switch (state) {
-            case STATE_START_DOCUMENT:
+        return switch (state) {
+            case STATE_START_DOCUMENT -> {
                 state = STATE_IN_FRAGMENT;
-                return START_ELEMENT;
-            case STATE_IN_FRAGMENT:
+                yield START_ELEMENT;
+            }
+            case STATE_IN_FRAGMENT -> {
                 int type = parent.next();
                 switch (type) {
-                    case START_ELEMENT:
-                        depth++;
-                        break;
-                    case END_ELEMENT:
+                    case START_ELEMENT -> depth++;
+                    case END_ELEMENT -> {
                         if (depth == 0) {
                             state = STATE_FRAGMENT_END;
                         } else {
                             depth--;
                         }
+                    }
                 }
-                return type;
-            case STATE_FRAGMENT_END:
+                yield type;
+            }
+            case STATE_FRAGMENT_END -> {
                 if (proceedToNext) {
                     parent.next();
                 }
                 state = STATE_END_DOCUMENT;
-                return END_DOCUMENT;
-            default:
-                throw new NoSuchElementException("End of document reached");
-        }
+                yield END_DOCUMENT;
+            }
+            default -> throw new NoSuchElementException("End of document reached");
+        };
     }
 
     @Override
     public int nextTag() throws XMLStreamException {
-        switch (state) {
-            case STATE_START_DOCUMENT:
+        return switch (state) {
+            case STATE_START_DOCUMENT -> {
                 state = STATE_IN_FRAGMENT;
-                return START_ELEMENT;
-            case STATE_END_DOCUMENT:
-            case STATE_FRAGMENT_END:
-                throw new NoSuchElementException();
-            default:
+                yield START_ELEMENT;
+            }
+            case STATE_END_DOCUMENT, STATE_FRAGMENT_END -> throw new NoSuchElementException();
+            default -> {
                 int result = parent.nextTag();
                 switch (result) {
-                    case START_ELEMENT:
-                        depth++;
-                        break;
-                    case END_ELEMENT:
+                    case START_ELEMENT -> depth++;
+                    case END_ELEMENT -> {
                         if (depth == 0) {
                             state = STATE_FRAGMENT_END;
                         } else {
                             depth--;
                         }
+                    }
                 }
-                return result;
-        }
+                yield result;
+            }
+        };
     }
 
     @Override
@@ -507,18 +501,17 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
     @Override
     public void require(int type, String namespaceURI, String localName) throws XMLStreamException {
         switch (state) {
-            case STATE_START_DOCUMENT:
+            case STATE_START_DOCUMENT -> {
                 if (type != START_DOCUMENT) {
                     throw new XMLStreamException("Expected START_DOCUMENT");
                 }
-                break;
-            case STATE_END_DOCUMENT:
+            }
+            case STATE_END_DOCUMENT -> {
                 if (type != END_DOCUMENT) {
                     throw new XMLStreamException("Expected END_DOCUMENT");
                 }
-                break;
-            default:
-                parent.require(type, namespaceURI, localName);
+            }
+            default -> parent.require(type, namespaceURI, localName);
         }
     }
 }

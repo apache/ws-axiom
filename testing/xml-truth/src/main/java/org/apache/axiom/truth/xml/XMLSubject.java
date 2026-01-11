@@ -389,12 +389,12 @@ public final class XMLSubject extends Subject {
                     break;
                 }
                 switch (expectedEvent) {
-                    case DOCUMENT_TYPE:
+                    case DOCUMENT_TYPE -> {
                         assertThat(actual.getRootName()).isEqualTo(expected.getRootName());
                         assertThat(actual.getPublicId()).isEqualTo(expected.getPublicId());
                         assertThat(actual.getSystemId()).isEqualTo(expected.getSystemId());
-                        break;
-                    case START_ELEMENT:
+                    }
+                    case START_ELEMENT -> {
                         QName actualQName = actual.getQName();
                         Map<QName, String> actualAttributes = actual.getAttributes();
                         QName expectedQName = expected.getQName();
@@ -412,27 +412,21 @@ public final class XMLSubject extends Subject {
                         if (!ignoreNamespaceDeclarations) {
                             assertThat(actual.getNamespaces()).isEqualTo(expected.getNamespaces());
                         }
-                        break;
-                    case END_ELEMENT:
-                        break;
-                    case TEXT:
-                    case WHITESPACE:
-                    case COMMENT:
-                    case CDATA_SECTION:
-                        assertThat(actual.getText()).isEqualTo(expected.getText());
-                        break;
-                    case ENTITY_REFERENCE:
+                    }
+                    case END_ELEMENT -> {}
+                    case TEXT, WHITESPACE, COMMENT, CDATA_SECTION ->
+                            assertThat(actual.getText()).isEqualTo(expected.getText());
+                    case ENTITY_REFERENCE -> {
                         if (expandEntityReferences) {
                             throw new IllegalStateException();
                         }
                         assertThat(actual.getEntityName()).isEqualTo(expected.getEntityName());
-                        break;
-                    case PROCESSING_INSTRUCTION:
+                    }
+                    case PROCESSING_INSTRUCTION -> {
                         assertThat(actual.getPITarget()).isEqualTo(expected.getPITarget());
                         assertThat(actual.getPIData()).isEqualTo(expected.getPIData());
-                        break;
-                    default:
-                        throw new IllegalStateException();
+                    }
+                    default -> throw new IllegalStateException();
                 }
             }
         } catch (TraverserException ex) {

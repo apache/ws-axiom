@@ -218,7 +218,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         try {
             switch (characterDataMode) {
-                case PASS_THROUGH:
+                case PASS_THROUGH -> {
                     if (ignorable) {
                         writeToBuffer(data.toString());
                         contentHandler.ignorableWhitespace(buffer, 0, bufferPos);
@@ -241,14 +241,10 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
                         contentHandler.characters(buffer, 0, bufferPos);
                         bufferPos = 0;
                     }
-                    break;
-                case BUFFER:
-                    writeToBuffer(data.toString());
-                    break;
-                case ACCUMULATE:
-                    accumulator.append(data);
-                    break;
-                case SKIP:
+                }
+                case BUFFER -> writeToBuffer(data.toString());
+                case ACCUMULATE -> accumulator.append(data);
+                case SKIP -> {}
             }
         } catch (SAXException ex) {
             throw new StreamException(ex);
