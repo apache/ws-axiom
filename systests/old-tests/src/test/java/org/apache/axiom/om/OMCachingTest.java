@@ -39,9 +39,8 @@ public class OMCachingTest extends TestCase {
             documentElement = builder.getDocumentElement();
             String envelopeString = documentElement.toStringWithConsume();
         } catch (XMLStreamException e) {
-            e
-                    .printStackTrace(); // To change body of catch statement use File | Settings |
-                                        // File Templates.
+            e.printStackTrace(); // To change body of catch statement use File | Settings |
+            // File Templates.
         }
 
         try {
