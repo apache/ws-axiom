@@ -366,10 +366,10 @@ public class DocumentNavigator extends DefaultNavigator {
     @Override
     public Iterator<?> getNamespaceAxisIterator(Object contextNode)
             throws UnsupportedAxisException {
-        if (!(contextNode instanceof OMContainer && contextNode instanceof OMElement)) {
+        if (!(contextNode instanceof OMElement)) {
             return JaxenConstants.EMPTY_ITERATOR;
         }
-        OMContainer omContextNode = (OMContainer) contextNode;
+        OMElement omContextNode = (OMElement) contextNode;
         List<OMNamespaceEx> nsList = new ArrayList<OMNamespaceEx>();
         Set<String> prefixes = new HashSet<String>();
         for (OMContainer context = omContextNode;
