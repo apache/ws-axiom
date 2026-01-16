@@ -284,7 +284,7 @@
 
         <failIfNoTests>false</failIfNoTests>
         <shade.plugin.version>3.6.1</shade.plugin.version>
-        <spring.version>7.0.2</spring.version>
+        <spring.version>7.0.3</spring.version>
         <springws.version>5.0.0</springws.version>
         <exam.version>4.14.0</exam.version>
         <jetty.version>12.1.5</jetty.version>
