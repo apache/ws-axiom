@@ -63,6 +63,7 @@
     <release><Version><name>Apache Axiom</name><created>2016-10-16</created><revision>1.2.20</revision></Version></release>
     <release><Version><name>Apache Axiom</name><created>2018-11-02</created><revision>1.2.21</revision></Version></release>
     <release><Version><name>Apache Axiom</name><created>2019-01-10</created><revision>1.2.22</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2025-01-28</created><revision>2.0.0</revision></Version></release>
     <repository>
       <SVNRepository>
         <location rdf:resource="http://svn.apache.org/repos/asf/webservices/axiom/trunk"/>
