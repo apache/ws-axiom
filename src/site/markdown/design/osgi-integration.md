@@ -45,7 +45,7 @@ containing them. This in turn has implications for the packaging of these artifa
 
 ## Requirements
 
-<a name="req1"/>
+<a name="req1"></a>
 
 **Requirement 1**: *The Axiom artifacts SHOULD be usable both as normal JAR files and as OSGi bundles.*
 
@@ -53,7 +53,7 @@ The alternative would be to produce two sets of artifacts during the build. This
 should be avoided in order to keep the build process as simple as possible.
 It should also be noted that the Geronimo Spec artifacts also meet this requirement.
 
-<a name="req2"/>
+<a name="req2"></a>
 
 **Requirement 2**: *All APIs defined by the `axiom-api` module, and in particular the
 `OMAbstractFactory` API MUST continue to work as expected in an OSGi environment, so that code
@@ -63,7 +63,7 @@ This requirement was already satisfied by the OSGi support introduced in Axiom 1
 It therefore also ensures that the transition to the new OSGi support in Axiom 1.2.13
 is transparent for applications that already use Axiom in an OSGi container.
 
-<a name="req3"/>
+<a name="req3"></a>
 
 **Requirement 3**: *`OMAbstractFactory` MUST select the same implementation
 regardless of the type of container (OSGi or non OSGi). The only exception is
@@ -71,7 +71,7 @@ related to the usage of system properties to specify the default `OMMetaFactory`
 implementation: in an OSGi environment, selecting an implementation class using
 a system property is not meaningful.*
 
-<a name="req4"/>
+<a name="req4"></a>
 
 **Requirement 4**: *Only classes belonging to the public API should be exported by the OSGi bundles.
 Implementation classes should not be exported. In particular,
@@ -102,7 +102,7 @@ changes to downstreams project to make this actually work:
 *   For Spring Web Services this issue is addressed by
     [SWS-822](https://jira.springsource.org/browse/SWS-822).
 
-<a name="req5"/>
+<a name="req5"></a>
 
 **Requirement 5**: *It MUST be possible to use a non standard (third party) Axiom implementation as a drop-in replacement
 for the standard LLOM and DOOM implementation, i.e. the `axiom-impl`
@@ -120,6 +120,8 @@ This requirement has several important implications:
 
 *   In accordance with [Requirement 2](#req2) and [Requirement 3](#req3)
     this requirement not only applies to an OSGi environment, but extends to non OSGi environments as well.
+
+<a name="req6"></a>
 
 **Requirement 6**: *The OSGi integration SHOULD remove the necessity for downstreams projects
 to produce their own custom OSGi bundles for Axiom. There SHOULD be one
@@ -140,7 +142,7 @@ compatible with its design, and in particular with [Requirement 4](#req4).
 Nevertheless, Axiom must provide the necessary APIs and features to meet the needs
 of these projects.
 
-<a name="req7"/>
+<a name="req7"></a>
 
 **Requirement 7**: *The Axiom OSGi integration SHOULD NOT rely on any particular OSGi framework such
 as Felix SCR (Declarative Services). When deployed in an OSGi environment, Axiom should have the same
@@ -151,13 +153,13 @@ of this extra dependency is seen as a nice to have. One of the reasons for using
 was to avoid introducing OSGi specific code into Axiom. However, there is no issue with
 having such code, provided that [Requirement 8](#req8) is satisfied.
 
-<a name="req8"/>
+<a name="req8"></a>
 
 **Requirement 8**: *In a non OSGi environment, Axiom MUST NOT have any OSGi related dependencies. That means
 that the OSGi integration must be written in such a way that no OSGi specific classes are
 ever loaded in a non OSGi environment.*
 
-<a name="req9"/>
+<a name="req9"></a>
 
 **Requirement 9**: *The OSGi integration MUST follow established best practices. It SHOULD be inspired by
 what has been done to add OSGi integration to APIs that have a similar structure as Axiom.*
