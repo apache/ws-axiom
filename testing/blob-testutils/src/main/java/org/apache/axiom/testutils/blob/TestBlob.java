@@ -22,6 +22,7 @@ package org.apache.axiom.testutils.blob;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 import com.google.common.base.Preconditions;
 
@@ -62,17 +63,34 @@ public class TestBlob implements Blob {
                     return value & 0xFF;
                 }
             }
+
+            @Override
+            public int read(byte[] b, int off, int len) throws IOException {
+                long remaining = length - position;
+                if (remaining <= 0) {
+                    return -1;
+                }
+                int toRead = (int) Math.min(len, remaining);
+                Arrays.fill(b, off, off + toRead, value);
+                position += toRead;
+                return toRead;
+            }
         };
     }
 
     @Override
     public void writeTo(OutputStream out) throws StreamCopyException {
-        for (long i = 0; i < length; i++) {
+        byte[] buf = new byte[(int) Math.min(length, 8192L)];
+        Arrays.fill(buf, value);
+        long remaining = length;
+        while (remaining > 0) {
+            int toWrite = (int) Math.min(remaining, buf.length);
             try {
-                out.write(value & 0xFF);
+                out.write(buf, 0, toWrite);
             } catch (IOException ex) {
                 throw new StreamCopyException(StreamCopyException.WRITE, ex);
             }
+            remaining -= toWrite;
         }
     }
 
