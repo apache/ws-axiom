@@ -150,8 +150,7 @@ public final class MediaType {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MediaType) {
-            MediaType other = (MediaType) obj;
+        if (obj instanceof MediaType other) {
             return primaryType.equalsIgnoreCase(other.primaryType)
                     && subType.equalsIgnoreCase(other.subType);
         } else {

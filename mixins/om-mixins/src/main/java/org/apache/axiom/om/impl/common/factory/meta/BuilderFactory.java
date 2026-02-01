@@ -70,13 +70,12 @@ public abstract class BuilderFactory<T extends OMXMLParserWrapper> {
 
                                 @Override
                                 public DeferredAction nodeAdded(CoreNode node, int depth) {
-                                    if (node instanceof AxiomSOAPMessage) {
-                                        message = (AxiomSOAPMessage) node;
+                                    if (node instanceof AxiomSOAPMessage m) {
+                                        message = m;
                                     } else if (message != null
-                                            && node instanceof AxiomSOAPEnvelope) {
+                                            && node instanceof AxiomSOAPEnvelope envelope) {
                                         message.initSOAPFactory(
-                                                (SOAPFactory)
-                                                        ((AxiomSOAPEnvelope) node).getOMFactory());
+                                                (SOAPFactory) envelope.getOMFactory());
                                     }
                                     return null;
                                 }

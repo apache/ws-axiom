@@ -35,15 +35,15 @@ public abstract class AxiomSOAPElementMixin implements AxiomSOAPElement {
 
     @Override
     public final void checkChild(OMNode child) {
-        if (child instanceof OMElement && !isChildElementAllowed((OMElement) child)) {
+        if (child instanceof OMElement element && !isChildElementAllowed(element)) {
             throw new SOAPProcessingException(
                     child.getClass().getName()
                             + " is not allowed as a child of "
                             + getClass().getName());
         }
-        if (child instanceof AxiomSOAPElement) {
+        if (child instanceof AxiomSOAPElement soapElement) {
             SOAPHelper soapHelper = getSOAPHelper();
-            SOAPHelper childSOAPHelper = ((AxiomSOAPElement) child).getSOAPHelper();
+            SOAPHelper childSOAPHelper = soapElement.getSOAPHelper();
             if (childSOAPHelper != soapHelper) {
                 throw new SOAPProcessingException(
                         "Cannot add a "

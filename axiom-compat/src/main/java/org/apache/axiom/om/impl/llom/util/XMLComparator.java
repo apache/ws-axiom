@@ -142,8 +142,7 @@ public class XMLComparator {
         Iterator elementOneChildren = elementOne.getChildren();
         while (elementOneChildren.hasNext()) {
             OMNode omNode = (OMNode) elementOneChildren.next();
-            if (omNode instanceof OMElement) {
-                OMElement elementOneChild = (OMElement) omNode;
+            if (omNode instanceof OMElement elementOneChild) {
                 OMElement elementTwoChild = null;
                 // Do the comparison only if the element is not ignorable
                 if (!isIgnorable(elementOneChild)) {

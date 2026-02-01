@@ -33,9 +33,9 @@ public class AxiomExceptionTranslator {
     public static OMException translate(CoreModelException ex) {
         if (ex instanceof NodeConsumedException) {
             return new NodeUnavailableException();
-        } else if (ex instanceof DeferredParsingException) {
+        } else if (ex instanceof DeferredParsingException deferredParsingException) {
             throw new org.apache.axiom.om.DeferredParsingException(
-                    ((DeferredParsingException) ex).getStreamException());
+                    deferredParsingException.getStreamException());
         } else {
             return new OMException(ex);
         }
@@ -43,8 +43,8 @@ public class AxiomExceptionTranslator {
 
     public static XMLStreamException toXMLStreamException(StreamException ex) {
         Throwable cause = ex.getCause();
-        if (cause instanceof XMLStreamException) {
-            return (XMLStreamException) cause;
+        if (cause instanceof XMLStreamException xmlStreamException) {
+            return xmlStreamException;
         } else {
             return new XMLStreamException(ex);
         }

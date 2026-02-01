@@ -27,8 +27,8 @@ public final class StAXExceptionUtil {
 
     public static StreamException toStreamException(XMLStreamException ex) {
         Throwable cause = ex.getCause();
-        if (cause instanceof StreamException) {
-            return (StreamException) cause;
+        if (cause instanceof StreamException streamException) {
+            return streamException;
         } else {
             return new StreamException(ex);
         }
@@ -36,8 +36,8 @@ public final class StAXExceptionUtil {
 
     public static XMLStreamException toXMLStreamException(StreamException ex) {
         Throwable cause = ex.getCause();
-        if (cause instanceof XMLStreamException) {
-            return (XMLStreamException) cause;
+        if (cause instanceof XMLStreamException xmlStreamException) {
+            return xmlStreamException;
         } else {
             return new XMLStreamException(ex.getMessage(), ex);
         }

@@ -106,8 +106,8 @@ public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock 
         // Copy the processed flag.  The other SOAPHeaderBlock information
         // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
         Boolean processedFlag =
-                options instanceof SOAPCloneOptions
-                        ? ((SOAPCloneOptions) options).getProcessedFlag()
+                options instanceof SOAPCloneOptions soapCloneOptions
+                        ? soapCloneOptions.getProcessedFlag()
                         : null;
         if ((processedFlag == null && ((SOAPHeaderBlock) other).isProcessed())
                 || (processedFlag != null && processedFlag.booleanValue())) {

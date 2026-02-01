@@ -35,8 +35,8 @@ final class LegacyPartDataHandler extends PartDataHandler implements DataHandler
 
     @Override
     protected DataSource createDataSource(Blob content, String contentType) {
-        if (content instanceof LegacyTempFileBlob) {
-            return ((LegacyTempFileBlob) content).getDataSource(contentType);
+        if (content instanceof LegacyTempFileBlob legacyTempFileBlob) {
+            return legacyTempFileBlob.getDataSource(contentType);
         } else {
             return null;
         }

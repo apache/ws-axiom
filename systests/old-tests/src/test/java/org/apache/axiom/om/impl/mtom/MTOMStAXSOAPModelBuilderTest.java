@@ -114,11 +114,8 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
         List<OMText> binaryNodes = new ArrayList<>();
         for (Iterator<OMSerializable> it = doc.getDescendants(false); it.hasNext(); ) {
             OMSerializable node = it.next();
-            if (node instanceof OMText) {
-                OMText text = (OMText) node;
-                if (text.isBinary()) {
-                    binaryNodes.add(text);
-                }
+            if (node instanceof OMText text && text.isBinary()) {
+                binaryNodes.add(text);
             }
         }
         assertFalse(binaryNodes.isEmpty());

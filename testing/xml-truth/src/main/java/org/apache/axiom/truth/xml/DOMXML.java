@@ -29,7 +29,7 @@ final class DOMXML implements XML {
 
     DOMXML(Node root) {
         this.root = root;
-        Document document = root instanceof Document ? (Document) root : root.getOwnerDocument();
+        Document document = root instanceof Document doc ? doc : root.getOwnerDocument();
         dom3 = document.getImplementation().hasFeature("XML", "3.0");
     }
 

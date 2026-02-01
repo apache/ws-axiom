@@ -59,9 +59,9 @@ public class TestWriteAfterCommit extends WritableBlobTestCase {
         } catch (IOException ex) {
             // OK
         }
-        if (out instanceof ReadFromSupport) {
+        if (out instanceof ReadFromSupport readFromSupport) {
             try {
-                ((ReadFromSupport) out).readFrom(new NullInputStream(10), -1);
+                readFromSupport.readFrom(new NullInputStream(10), -1);
                 fail("Expected exception");
             } catch (IllegalStateException ex) {
                 // OK

@@ -81,8 +81,8 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
                 .ignoringPrologAndEpilog()
                 .ignoringRedundantNamespaceDeclarations()
                 .hasSameContentAs(message.getInputStream());
-        if (payload instanceof OMSourcedElement) {
-            assertThat(((OMSourcedElement) payload).isExpanded()).isFalse();
+        if (payload instanceof OMSourcedElement sourcedElement) {
+            assertThat(sourcedElement.isExpanded()).isFalse();
         }
     }
 }

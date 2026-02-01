@@ -112,11 +112,11 @@ public abstract class AxiomDocumentMixin implements AxiomDocument {
 
     @Override
     public final void checkChild(OMNode child) {
-        if (child instanceof OMElement) {
+        if (child instanceof OMElement element) {
             if (getOMDocumentElement() != null) {
                 throw new OMException("Document element already exists");
             } else {
-                checkDocumentElement((OMElement) child);
+                checkDocumentElement(element);
             }
         }
     }

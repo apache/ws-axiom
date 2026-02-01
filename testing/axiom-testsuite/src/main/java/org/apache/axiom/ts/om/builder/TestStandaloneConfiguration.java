@@ -53,8 +53,8 @@ public class TestStandaloneConfiguration extends AxiomTestCase {
         OMDocType docType = null;
         while (docType == null && i.hasNext()) {
             OMNode obj = i.next();
-            if (obj instanceof OMDocType) {
-                docType = (OMDocType) obj;
+            if (obj instanceof OMDocType omDocType) {
+                docType = omDocType;
             }
         }
         assertTrue(docType != null);

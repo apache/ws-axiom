@@ -41,8 +41,8 @@ final class PartInputStream extends InputStream {
     }
 
     private static InputStream getInputStream(WritableBlob content) throws IOException {
-        if (content instanceof MemoryBlob) {
-            return ((MemoryBlob) content).readOnce();
+        if (content instanceof MemoryBlob memoryBlob) {
+            return memoryBlob.readOnce();
         } else {
             return content.getInputStream();
         }

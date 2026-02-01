@@ -68,8 +68,8 @@ public interface ElementMatcher<T extends CoreElement> {
             new ElementMatcher<CoreElement>() {
                 @Override
                 public boolean matches(CoreElement element, String namespaceURI, String name) {
-                    if (element instanceof CoreNSUnawareElement) {
-                        return name.equals(((CoreNSUnawareElement) element).coreGetName());
+                    if (element instanceof CoreNSUnawareElement nsUnawareElement) {
+                        return name.equals(nsUnawareElement.coreGetName());
                     } else {
                         CoreNSAwareElement nsAwareElement = (CoreNSAwareElement) element;
                         String prefix = nsAwareElement.coreGetPrefix();

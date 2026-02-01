@@ -408,8 +408,8 @@ public class OverflowBlob implements WritableBlob {
                 throw new StreamCopyException(StreamCopyException.READ, ex);
             }
             try {
-                if (out instanceof ReadFromSupport) {
-                    ((ReadFromSupport) out).readFrom(in, -1);
+                if (out instanceof ReadFromSupport readFromSupport) {
+                    readFromSupport.readFrom(in, -1);
                 } else {
                     byte[] buf = new byte[4096];
                     while (true) {

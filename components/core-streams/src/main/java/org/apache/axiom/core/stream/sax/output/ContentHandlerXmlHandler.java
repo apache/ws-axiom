@@ -223,14 +223,14 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
                         writeToBuffer(data.toString());
                         contentHandler.ignorableWhitespace(buffer, 0, bufferPos);
                         bufferPos = 0;
-                    } else if (data instanceof CharacterData) {
+                    } else if (data instanceof CharacterData characterData) {
                         try {
-                            ((CharacterData) data).writeTo(this);
+                            characterData.writeTo(this);
                         } catch (IOException ex) {
                             Throwable cause = ex.getCause();
                             SAXException saxException;
-                            if (cause instanceof SAXException) {
-                                saxException = (SAXException) cause;
+                            if (cause instanceof SAXException se) {
+                                saxException = se;
                             } else {
                                 saxException = new SAXException(ex);
                             }

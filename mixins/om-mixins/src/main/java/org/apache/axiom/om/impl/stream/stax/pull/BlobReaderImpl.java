@@ -38,7 +38,7 @@ final class BlobReaderImpl implements BlobReader {
     public boolean isBinary() {
         if (reader.getEventType() == XMLStreamReader.CHARACTERS) {
             Object data = reader.getCharacterData();
-            return data instanceof TextContent && ((TextContent) data).isBinary();
+            return data instanceof TextContent textContent && textContent.isBinary();
         } else {
             return false;
         }

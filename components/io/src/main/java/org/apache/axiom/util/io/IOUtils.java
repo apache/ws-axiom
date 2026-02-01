@@ -42,8 +42,8 @@ public final class IOUtils {
      */
     public static long copy(InputStream in, OutputStream out, long length)
             throws StreamCopyException {
-        if (out instanceof ReadFromSupport) {
-            return ((ReadFromSupport) out).readFrom(in, length);
+        if (out instanceof ReadFromSupport readFromSupport) {
+            return readFromSupport.readFrom(in, length);
         } else {
             byte[] buffer = new byte[4096];
             long read = 0;

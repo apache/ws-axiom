@@ -51,10 +51,9 @@ public class TestSerializeOMDataSourceWritingToOutputStream extends AxiomTestCas
         public void serialize(XMLStreamWriter writer) throws XMLStreamException {
             OutputStream out;
             String encoding;
-            if (writer instanceof MTOMXMLStreamWriter) {
-                MTOMXMLStreamWriter writer2 = (MTOMXMLStreamWriter) writer;
-                out = writer2.getOutputStream();
-                encoding = writer2.getCharSetEncoding();
+            if (writer instanceof MTOMXMLStreamWriter mtomWriter) {
+                out = mtomWriter.getOutputStream();
+                encoding = mtomWriter.getCharSetEncoding();
             } else {
                 out = null;
                 encoding = null;

@@ -489,13 +489,13 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     @Override
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         closeStartTag();
-        if (data instanceof CharacterData) {
+        if (data instanceof CharacterData characterData) {
             try {
-                ((CharacterData) data).writeTo(this);
+                characterData.writeTo(this);
             } catch (IOException ex) {
                 Throwable cause = ex.getCause();
-                if (cause instanceof StreamException) {
-                    throw (StreamException) cause;
+                if (cause instanceof StreamException streamException) {
+                    throw streamException;
                 } else {
                     throw new StreamException(ex);
                 }

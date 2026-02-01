@@ -80,19 +80,16 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameA
         try {
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-            if (writer instanceof MTOMXMLStreamWriter) {
-                MTOMXMLStreamWriter mtomWriter = (MTOMXMLStreamWriter) writer;
-                if (mtomWriter.isOptimized()) {
-                    marshaller.setAttachmentMarshaller(new AttachmentMarshallerImpl(mtomWriter));
-                }
+            if (writer instanceof MTOMXMLStreamWriter mtomWriter && mtomWriter.isOptimized()) {
+                marshaller.setAttachmentMarshaller(new AttachmentMarshallerImpl(mtomWriter));
             }
             marshaller.marshal(object, writer);
         } catch (JAXBException ex) {
             // Try to propagate the original exception if possible (to avoid unreadable stacktraces)
             Throwable cause = ex.getCause();
             while (cause != null) {
-                if (cause instanceof XMLStreamException) {
-                    throw (XMLStreamException) cause;
+                if (cause instanceof XMLStreamException xmlStreamException) {
+                    throw xmlStreamException;
                 }
                 cause = cause.getCause();
             }
@@ -102,8 +99,8 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameA
 
     private QName getQName() {
         if (cachedQName == null) {
-            if (object instanceof JAXBElement) {
-                cachedQName = ((JAXBElement<?>) object).getName();
+            if (object instanceof JAXBElement<?> jaxbElement) {
+                cachedQName = jaxbElement.getName();
             } else {
                 cachedQName = context.createJAXBIntrospector().getElementName(object);
                 if (cachedQName == null) {

@@ -70,8 +70,8 @@ public abstract class CoreCharacterDataNodeMixin implements CoreCharacterDataNod
         CoreCharacterDataNode o = (CoreCharacterDataNode) other;
         Object otherData = o.coreGetCharacterData();
         data =
-                otherData instanceof CloneableCharacterData
-                        ? ((CloneableCharacterData) otherData).clone(policy, options)
+                otherData instanceof CloneableCharacterData cloneableCharacterData
+                        ? cloneableCharacterData.clone(policy, options)
                         : otherData;
         coreSetIgnorable(o.coreIsIgnorable());
     }

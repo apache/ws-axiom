@@ -290,8 +290,8 @@ final class StAXPullReader implements XmlReader {
                     log.warn(
                             "Attempt to access a parser that has thrown a parse exception before; "
                                     + "rethrowing the original exception.");
-                    if (parserException instanceof XMLStreamException) {
-                        throw (XMLStreamException) parserException;
+                    if (parserException instanceof XMLStreamException xmlStreamException) {
+                        throw xmlStreamException;
                     } else {
                         throw (RuntimeException) parserException;
                     }

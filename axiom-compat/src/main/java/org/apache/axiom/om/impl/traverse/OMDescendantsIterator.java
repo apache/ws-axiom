@@ -36,8 +36,8 @@ public class OMDescendantsIterator extends OMAbstractIterator {
 
     @Override
     protected OMNode getNextNode(OMNode currentNode) {
-        if (currentNode instanceof OMContainer) {
-            OMNode firstChild = ((OMContainer) currentNode).getFirstOMChild();
+        if (currentNode instanceof OMContainer container) {
+            OMNode firstChild = container.getFirstOMChild();
             if (firstChild != null) {
                 level++;
                 return firstChild;

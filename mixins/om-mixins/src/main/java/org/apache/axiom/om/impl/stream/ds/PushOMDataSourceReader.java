@@ -73,9 +73,8 @@ final class PushOMDataSourceReader implements XmlReader {
                             handler, null, AxiomXMLStreamWriterExtensionFactory.INSTANCE);
             // Seed the namespace context with the namespace context from the parent
             OMContainer parent = root.getParent();
-            if (parent instanceof OMElement) {
-                for (Iterator<OMNamespace> it = ((OMElement) parent).getNamespacesInScope();
-                        it.hasNext(); ) {
+            if (parent instanceof OMElement element) {
+                for (Iterator<OMNamespace> it = element.getNamespacesInScope(); it.hasNext(); ) {
                     OMNamespace ns = it.next();
                     writer.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
                 }
@@ -86,8 +85,8 @@ final class PushOMDataSourceReader implements XmlReader {
             handler.completed();
         } catch (XMLStreamException ex) {
             Throwable cause = ex.getCause();
-            if (cause instanceof StreamException) {
-                throw (StreamException) cause;
+            if (cause instanceof StreamException streamException) {
+                throw streamException;
             } else {
                 throw new StreamException(ex);
             }

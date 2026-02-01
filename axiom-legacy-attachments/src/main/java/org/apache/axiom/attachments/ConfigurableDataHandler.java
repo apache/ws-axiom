@@ -70,10 +70,10 @@ public class ConfigurableDataHandler extends DataHandler {
                 public ContentTransferEncoding getContentTransferEncoding(
                         Blob blob, ContentType contentType) {
                     DataHandler dataHandler = DataHandlerUtils.toDataHandler(blob);
-                    if (!(dataHandler instanceof ConfigurableDataHandler)) {
+                    if (!(dataHandler instanceof ConfigurableDataHandler configurableDataHandler)) {
                         return null;
                     }
-                    String cte = ((ConfigurableDataHandler) dataHandler).getTransferEncoding();
+                    String cte = configurableDataHandler.getTransferEncoding();
                     if (cte == null) {
                         return null;
                     }

@@ -192,10 +192,9 @@ public abstract class DOMElementMixin implements DOMElement {
 
     @Override
     public final Attr setAttributeNodeNS(Attr _newAttr) throws DOMException {
-        if (!(_newAttr instanceof DOMAttribute)) {
+        if (!(_newAttr instanceof DOMAttribute newAttr)) {
             throw DOMExceptionUtil.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
         }
-        DOMAttribute newAttr = (DOMAttribute) _newAttr;
         CoreElement owner = newAttr.coreGetOwnerElement();
         if (owner == this) {
             // This means that the "new" attribute is already linked to the element
@@ -222,8 +221,7 @@ public abstract class DOMElementMixin implements DOMElement {
 
     @Override
     public final Attr removeAttributeNode(Attr oldAttr) throws DOMException {
-        if (oldAttr instanceof DOMAttribute) {
-            DOMAttribute attr = (DOMAttribute) oldAttr;
+        if (oldAttr instanceof DOMAttribute attr) {
             if (attr.coreGetOwnerElement() != this) {
                 throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
             } else {

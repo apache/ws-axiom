@@ -39,8 +39,8 @@ public abstract class CoreNodeMixin implements CoreNode {
     @Override
     public final CoreDocument coreGetOwnerDocument(boolean create) {
         CoreNode root = getRootOrOwnerDocument();
-        if (root instanceof CoreDocument) {
-            return (CoreDocument) root;
+        if (root instanceof CoreDocument document) {
+            return document;
         } else if (create) {
             CoreDocument ownerDocument = root.coreGetNodeFactory().getFactory2().createDocument();
             root.coreSetOwnerDocument(ownerDocument);

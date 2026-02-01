@@ -36,11 +36,11 @@ public final class DataHandlerUtils {
      *     DataHandler}
      */
     public static DataHandler getDataHandler(Blob blob) {
-        if (blob instanceof DataHandlerBlob) {
-            return ((DataHandlerBlob) blob).getDataHandler();
+        if (blob instanceof DataHandlerBlob dataHandlerBlob) {
+            return dataHandlerBlob.getDataHandler();
         }
-        if (blob instanceof PartDataHandlerBlob) {
-            return ((PartDataHandlerBlob) blob).getDataHandler();
+        if (blob instanceof PartDataHandlerBlob partDataHandlerBlob) {
+            return partDataHandlerBlob.getDataHandler();
         }
         return null;
     }
@@ -65,11 +65,11 @@ public final class DataHandlerUtils {
      * @return a {@link Blob} representing the {@link DataHandler}
      */
     public static Blob toBlob(DataHandler dh) {
-        if (dh instanceof BlobDataHandler) {
-            return ((BlobDataHandler) dh).getBlob();
+        if (dh instanceof BlobDataHandler blobDataHandler) {
+            return blobDataHandler.getBlob();
         }
-        if (dh instanceof PartDataHandler) {
-            return ((PartDataHandler) dh).getBlob();
+        if (dh instanceof PartDataHandler partDataHandler) {
+            return partDataHandler.getBlob();
         }
         return new DataHandlerBlob(dh);
     }

@@ -43,6 +43,6 @@ public class OMQNameFilterIterator extends OMFilterIterator {
 
     @Override
     protected boolean matches(OMNode node) {
-        return node instanceof OMElement && ((OMElement) node).getQName().equals(qname);
+        return node instanceof OMElement element && element.getQName().equals(qname);
     }
 }

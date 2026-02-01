@@ -38,8 +38,8 @@ public abstract class AxiomTextMixin implements AxiomText {
     private TextContent getTextContent(boolean force) {
         try {
             Object content = coreGetCharacterData();
-            if (content instanceof TextContent) {
-                return (TextContent) content;
+            if (content instanceof TextContent textContent) {
+                return textContent;
             } else if (force) {
                 TextContent textContent = new TextContent((String) content);
                 coreSetCharacterData(textContent, AxiomSemantics.INSTANCE);
@@ -93,8 +93,8 @@ public abstract class AxiomTextMixin implements AxiomText {
     public final char[] getTextCharacters() {
         try {
             Object content = coreGetCharacterData();
-            if (content instanceof TextContent) {
-                return ((TextContent) content).toCharArray();
+            if (content instanceof TextContent textContent) {
+                return textContent.toCharArray();
             } else {
                 return ((String) content).toCharArray();
             }
@@ -131,8 +131,8 @@ public abstract class AxiomTextMixin implements AxiomText {
     public final Blob getBlob() {
         try {
             Object content = coreGetCharacterData();
-            if (content instanceof TextContent) {
-                return ((TextContent) content).getBlob();
+            if (content instanceof TextContent textContent) {
+                return textContent.getBlob();
             } else {
                 throw new OMException("No DataHandler available");
             }
@@ -150,8 +150,8 @@ public abstract class AxiomTextMixin implements AxiomText {
     public final void buildWithAttachments() {
         if (isOptimized()) {
             Blob blob = getBlob();
-            if (blob instanceof PartBlob) {
-                ((PartBlob) blob).getPart().fetch();
+            if (blob instanceof PartBlob partBlob) {
+                partBlob.getPart().fetch();
             }
         }
     }

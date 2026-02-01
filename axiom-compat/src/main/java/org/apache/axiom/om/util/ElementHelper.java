@@ -199,7 +199,7 @@ public class ElementHelper {
      */
     public static SOAPHeaderBlock toSOAPHeaderBlock(OMElement omElement, SOAPFactory factory)
             throws Exception {
-        if (omElement instanceof SOAPHeaderBlock) return (SOAPHeaderBlock) omElement;
+        if (omElement instanceof SOAPHeaderBlock soapHeaderBlock) return soapHeaderBlock;
 
         QName name = omElement.getQName();
         String localName = name.getLocalPart();

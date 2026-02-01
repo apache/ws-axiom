@@ -156,20 +156,19 @@ public final class BuilderSpec {
     }
 
     public static BuilderSpec from(StAXParserConfiguration configuration, Source source) {
-        if (source instanceof SAXSource) {
-            return from((SAXSource) source, true);
-        } else if (source instanceof DOMSource) {
-            return from(((DOMSource) source).getNode(), true);
-        } else if (source instanceof StreamSource) {
-            StreamSource streamSource = (StreamSource) source;
+        if (source instanceof SAXSource saxSource) {
+            return from(saxSource, true);
+        } else if (source instanceof DOMSource domSource) {
+            return from(domSource.getNode(), true);
+        } else if (source instanceof StreamSource streamSource) {
             InputSource is = new InputSource();
             is.setByteStream(streamSource.getInputStream());
             is.setCharacterStream(streamSource.getReader());
             is.setPublicId(streamSource.getPublicId());
             is.setSystemId(streamSource.getSystemId());
             return from(configuration, is);
-        } else if (source instanceof StAXSource) {
-            return from(((StAXSource) source).getXMLStreamReader());
+        } else if (source instanceof StAXSource staxSource) {
+            return from(staxSource.getXMLStreamReader());
         } else {
             try {
                 return new BuilderSpec(

@@ -33,8 +33,8 @@ public final class SOAPHeaderBlockMapper implements Mapper<SOAPHeaderBlock, Axio
 
     @Override
     public SOAPHeaderBlock map(AxiomElement element) {
-        if (element instanceof SOAPHeaderBlock) {
-            return (SOAPHeaderBlock) element;
+        if (element instanceof SOAPHeaderBlock soapHeaderBlock) {
+            return soapHeaderBlock;
         } else {
             try {
                 AxiomSOAPHeaderBlock newElement =

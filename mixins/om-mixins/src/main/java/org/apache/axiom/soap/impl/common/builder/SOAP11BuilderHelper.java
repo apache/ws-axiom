@@ -58,8 +58,8 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
         } else if (elementLevel == 5) {
 
             String parentTagName = "";
-            if (parent instanceof Element) {
-                parentTagName = ((Element) parent).getTagName();
+            if (parent instanceof Element element) {
+                parentTagName = element.getTagName();
             } else {
                 parentTagName = parent.getLocalName();
             }

@@ -43,8 +43,8 @@ public final class NamespaceDeclarationMatcher implements AttributeMatcher {
 
     @Override
     public boolean matches(CoreAttribute attr, String namespaceURI, String name) {
-        if (attr instanceof CoreNamespaceDeclaration) {
-            String prefix = ((CoreNamespaceDeclaration) attr).coreGetDeclaredPrefix();
+        if (attr instanceof CoreNamespaceDeclaration namespaceDeclaration) {
+            String prefix = namespaceDeclaration.coreGetDeclaredPrefix();
             return name.equals(prefix);
         } else {
             return false;

@@ -49,10 +49,10 @@ public abstract class DigestTestCase extends AxiomTestCase {
         OMInformationItem node = createInformationItem();
         DigestGenerator digestGenerator = new DigestGenerator();
         byte[] digest;
-        if (node instanceof OMDocument) {
-            digest = digestGenerator.getDigest((OMDocument) node, algorithm);
-        } else if (node instanceof OMAttribute) {
-            digest = digestGenerator.getDigest((OMAttribute) node, algorithm);
+        if (node instanceof OMDocument document) {
+            digest = digestGenerator.getDigest(document, algorithm);
+        } else if (node instanceof OMAttribute attribute) {
+            digest = digestGenerator.getDigest(attribute, algorithm);
         } else {
             digest = digestGenerator.getDigest((OMNode) node, algorithm);
         }

@@ -160,14 +160,13 @@ public class XMLStreamWriterHandler implements XmlHandler {
             return;
         }
         try {
-            if (data instanceof TextContent) {
-                TextContent textContent = (TextContent) data;
+            if (data instanceof TextContent textContent) {
                 if (textContent.isBinary()) {
                     Object blobObject = textContent.getBlobObject();
-                    if (blobObject instanceof BlobProvider) {
+                    if (blobObject instanceof BlobProvider blobProvider) {
                         getBlobWriter()
                                 .writeBlob(
-                                        (BlobProvider) blobObject,
+                                        blobProvider,
                                         textContent.getContentID(),
                                         textContent.isOptimize());
                     } else {

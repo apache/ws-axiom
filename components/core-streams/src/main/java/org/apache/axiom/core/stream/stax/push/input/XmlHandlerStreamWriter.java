@@ -86,8 +86,8 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
 
     private static XMLStreamException toXMLStreamException(StreamException ex) {
         Throwable cause = ex.getCause();
-        if (cause instanceof XMLStreamException) {
-            return (XMLStreamException) cause;
+        if (cause instanceof XMLStreamException xmlStreamException) {
+            return xmlStreamException;
         } else {
             return new XMLStreamException(ex);
         }

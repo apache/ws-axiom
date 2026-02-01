@@ -39,8 +39,7 @@ public class MethodSignature {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MethodSignature) {
-            MethodSignature other = (MethodSignature) obj;
+        if (obj instanceof MethodSignature other) {
             return other.name.equals(name) && Arrays.equals(other.parameterTypes, parameterTypes);
         } else {
             return false;

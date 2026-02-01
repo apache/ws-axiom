@@ -94,9 +94,8 @@ public final class AxiomSemantics implements Semantics {
 
                 @Override
                 public void postProcess(OMCloneOptions options, CoreNode clone) {
-                    if (clone instanceof AxiomElement && ((AxiomElement) clone).isExpanded()) {
+                    if (clone instanceof AxiomElement element && element.isExpanded()) {
                         // Repair namespaces
-                        AxiomElement element = (AxiomElement) clone;
                         NSUtil.handleNamespace(element, element.getNamespace(), false, true);
                         CoreAttribute attr = element.coreGetFirstAttribute();
                         while (attr != null) {

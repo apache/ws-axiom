@@ -52,8 +52,7 @@ final class DOMStAXParserConfiguration implements StAXParserConfiguration {
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
-        } else if (obj instanceof DOMStAXParserConfiguration) {
-            DOMStAXParserConfiguration other = (DOMStAXParserConfiguration) obj;
+        } else if (obj instanceof DOMStAXParserConfiguration other) {
             return other.coalescing == coalescing
                     && other.expandEntityReferences == expandEntityReferences;
         } else {

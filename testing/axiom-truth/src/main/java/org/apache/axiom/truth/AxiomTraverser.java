@@ -53,8 +53,8 @@ final class AxiomTraverser implements Traverser {
     @Override
     public Event next() throws TraverserException {
         if (node == null) {
-            if (root instanceof OMDocument) {
-                node = ((OMDocument) root).getFirstOMChild();
+            if (root instanceof OMDocument document) {
+                node = document.getFirstOMChild();
             } else {
                 node = (OMElement) root;
             }
@@ -76,8 +76,8 @@ final class AxiomTraverser implements Traverser {
                 OMContainer parent = node.getParent();
                 if (parent instanceof OMDocument) {
                     return null;
-                } else {
-                    node = (OMElement) parent;
+                } else if (parent instanceof OMElement element) {
+                    node = element;
                     visited = true;
                 }
             }

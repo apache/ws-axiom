@@ -63,8 +63,7 @@ public class TestSetOptimize extends AxiomTestCase {
                             .getDocument();
             for (Iterator<OMSerializable> it = document.getDescendants(false); it.hasNext(); ) {
                 OMSerializable node = it.next();
-                if (node instanceof OMText) {
-                    OMText text = (OMText) node;
+                if (node instanceof OMText text) {
                     if (text.isBinary()) {
                         text.setOptimize(optimize);
                     }

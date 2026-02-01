@@ -67,20 +67,18 @@ public abstract class CloneTestCase extends SOAPTestCase {
      */
     protected void identityCheck(OMNode source, OMNode target, String depth) {
         // System.out.println(depth + source.getClass().getName());
-        if (source instanceof OMElement) {
+        if (source instanceof OMElement element) {
 
-            if (source instanceof OMSourcedElement) {
+            if (element instanceof OMSourcedElement sourcedElement) {
                 assertTrue(
                         "Source = "
-                                + source.getClass().getName()
+                                + element.getClass().getName()
                                 + "Target = "
                                 + target.getClass().getName(),
                         target instanceof OMSourcedElement);
-                assertEquals(
-                        ((OMSourcedElement) source).isExpanded(),
-                        ((OMSourcedElement) target).isExpanded());
-                if (((OMSourcedElement) source).isExpanded()) {
-                    Iterator<OMNode> i = ((OMElement) source).getChildren();
+                assertEquals(sourcedElement.isExpanded(), ((OMSourcedElement) target).isExpanded());
+                if (sourcedElement.isExpanded()) {
+                    Iterator<OMNode> i = element.getChildren();
                     Iterator<OMNode> j = ((OMElement) target).getChildren();
                     while (i.hasNext() && j.hasNext()) {
                         OMNode sourceChild = i.next();
@@ -93,8 +91,8 @@ public abstract class CloneTestCase extends SOAPTestCase {
                             j.hasNext());
                 }
             } else {
-                assertEquals(source.getClass(), target.getClass());
-                Iterator<OMNode> i = ((OMElement) source).getChildren();
+                assertEquals(element.getClass(), target.getClass());
+                Iterator<OMNode> i = element.getChildren();
                 Iterator<OMNode> j = ((OMElement) target).getChildren();
                 while (i.hasNext() && j.hasNext()) {
                     OMNode sourceChild = i.next();

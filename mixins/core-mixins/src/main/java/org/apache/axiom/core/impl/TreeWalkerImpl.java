@@ -125,8 +125,7 @@ public final class TreeWalkerImpl implements XmlReader {
                 }
             } else if (state == STATE_VISITED && previousNode == root) {
                 nextNode = null;
-            } else if (state == STATE_NOT_VISITED && previousNode instanceof CoreElement) {
-                final CoreElement element = (CoreElement) previousNode;
+            } else if (state == STATE_NOT_VISITED && previousNode instanceof CoreElement element) {
                 // TODO: handle case with preserve == false
                 CoreAttribute firstAttribute = element.coreGetFirstAttribute();
                 if (firstAttribute == null) {
@@ -169,8 +168,7 @@ public final class TreeWalkerImpl implements XmlReader {
             } else if (state == STATE_CONTENT_VISITED) {
                 nextNode = previousNode;
                 state = STATE_VISITED;
-            } else if (previousNode instanceof CoreChildNode) {
-                final CoreChildNode previousChildNode = (CoreChildNode) previousNode;
+            } else if (previousNode instanceof CoreChildNode previousChildNode) {
                 if (preserve) {
                     CoreChildNode sibling = previousChildNode.coreGetNextSibling();
                     if (sibling == null) {
@@ -224,9 +222,8 @@ public final class TreeWalkerImpl implements XmlReader {
             // More closely examine the case where we move to a node that has not
             // been visited yet. It may be a sourced element or a leaf node
             if (state == STATE_NOT_VISITED) {
-                if (nextNode instanceof CoreNSAwareElement) {
-                    XmlInput input =
-                            ((CoreNSAwareElement) nextNode).getXmlInput(preserve, incremental);
+                if (nextNode instanceof CoreNSAwareElement nsAwareElement) {
+                    XmlInput input = nsAwareElement.getXmlInput(preserve, incremental);
                     if (input != null) {
                         reader =
                                 input.createReader(

@@ -61,8 +61,8 @@ public final class NamespaceIterator implements Iterator<OMNamespace> {
                 } else {
                     declaredNamespaces = null;
                     OMContainer parent = element.getParent();
-                    if (parent instanceof OMElement) {
-                        element = (OMElement) parent;
+                    if (parent instanceof OMElement omElement) {
+                        element = omElement;
                     } else {
                         next = null;
                         break;

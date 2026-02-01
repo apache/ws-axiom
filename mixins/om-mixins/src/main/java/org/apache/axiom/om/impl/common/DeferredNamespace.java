@@ -65,10 +65,9 @@ public final class DeferredNamespace implements OMNamespace {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof OMNamespace)) {
+        if (!(obj instanceof OMNamespace other)) {
             return false;
         }
-        OMNamespace other = (OMNamespace) obj;
         String otherPrefix = other.getPrefix();
         String thisPrefix = getPrefix();
         return (uri.equals(other.getNamespaceURI())

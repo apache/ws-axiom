@@ -60,8 +60,8 @@ public class OMChildrenQNameIterator extends OMFilterIterator {
 
     @Override
     protected boolean matches(OMNode node) {
-        if (node instanceof OMElement) {
-            QName thisQName = ((OMElement) node).getQName();
+        if (node instanceof OMElement element) {
+            QName thisQName = element.getQName();
             // A null givenName is an indicator to return all elements
             return givenQName == null || isEqual(givenQName, thisQName);
         } else {

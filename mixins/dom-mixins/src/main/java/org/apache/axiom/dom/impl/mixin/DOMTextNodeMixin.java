@@ -36,8 +36,8 @@ public abstract class DOMTextNodeMixin implements DOMTextNode {
         DOMTextNode first = this;
         while (true) {
             CoreChildNode sibling = first.coreGetPreviousSibling();
-            if (sibling instanceof DOMTextNode) {
-                first = (DOMTextNode) sibling;
+            if (sibling instanceof DOMTextNode textNode) {
+                first = textNode;
             } else {
                 break;
             }
@@ -50,8 +50,8 @@ public abstract class DOMTextNodeMixin implements DOMTextNode {
             DOMTextNode last = this;
             while (true) {
                 CoreChildNode sibling = last.coreGetNextSibling();
-                if (sibling instanceof DOMTextNode) {
-                    last = (DOMTextNode) sibling;
+                if (sibling instanceof DOMTextNode textNode) {
+                    last = textNode;
                 } else {
                     break;
                 }

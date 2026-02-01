@@ -57,8 +57,7 @@ public class TestBuilderDetach extends AxiomTestCase {
         int binaryCount = 0;
         for (Iterator<OMNode> it = envelope.getDescendants(false); it.hasNext(); ) {
             OMNode node = it.next();
-            if (node instanceof OMText) {
-                OMText text = (OMText) node;
+            if (node instanceof OMText text) {
                 if (text.isBinary()) {
                     IOTestUtils.compareStreams(
                             sample.getPart(text.getContentID()), text.getBlob().getInputStream());

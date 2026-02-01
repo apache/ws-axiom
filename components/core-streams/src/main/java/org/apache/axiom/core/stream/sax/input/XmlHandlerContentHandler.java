@@ -79,8 +79,8 @@ public final class XmlHandlerContentHandler
 
     private static SAXException toSAXException(StreamException ex) {
         Throwable cause = ex.getCause();
-        if (cause instanceof SAXException) {
-            return (SAXException) cause;
+        if (cause instanceof SAXException saxException) {
+            return saxException;
         } else {
             return new SAXException(ex);
         }

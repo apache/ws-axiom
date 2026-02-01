@@ -115,8 +115,7 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
     }
 
     private void checkNewChild(Node newChild) {
-        if (newChild instanceof DOMNode) {
-            DOMNode newDomChild = (DOMNode) newChild;
+        if (newChild instanceof DOMNode newDomChild) {
             if (!coreHasSameOwnerDocument(newDomChild)) {
                 throw newDOMException(DOMException.WRONG_DOCUMENT_ERR);
             }
@@ -132,10 +131,10 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
     public final Node appendChild(Node newChild) {
         try {
             checkNewChild(newChild);
-            if (newChild instanceof CoreChildNode) {
-                coreAppendChild((CoreChildNode) newChild);
-            } else if (newChild instanceof CoreDocumentFragment) {
-                coreAppendChildren((CoreDocumentFragment) newChild);
+            if (newChild instanceof CoreChildNode childNode) {
+                coreAppendChild(childNode);
+            } else if (newChild instanceof CoreDocumentFragment documentFragment) {
+                coreAppendChildren(documentFragment);
             } else {
                 throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
             }
@@ -152,16 +151,15 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
             if (refChild == null) {
                 return appendChild(newChild);
             } else {
-                if (!(refChild instanceof CoreChildNode
-                        && ((CoreChildNode) refChild).coreGetParent() == this)) {
+                if (!(refChild instanceof CoreChildNode childNode
+                        && childNode.coreGetParent() == this)) {
                     throw newDOMException(DOMException.NOT_FOUND_ERR);
                 }
                 checkNewChild(newChild);
-                if (newChild instanceof CoreChildNode) {
-                    ((CoreChildNode) refChild).coreInsertSiblingBefore((CoreChildNode) newChild);
-                } else if (newChild instanceof CoreDocumentFragment) {
-                    ((CoreChildNode) refChild)
-                            .coreInsertSiblingsBefore((CoreDocumentFragment) newChild);
+                if (newChild instanceof CoreChildNode newChildNode) {
+                    ((CoreChildNode) refChild).coreInsertSiblingBefore(newChildNode);
+                } else if (newChild instanceof CoreDocumentFragment documentFragment) {
+                    ((CoreChildNode) refChild).coreInsertSiblingsBefore(documentFragment);
                 } else {
                     throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
                 }
@@ -175,23 +173,22 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
     @Override
     public final Node replaceChild(Node newChild, Node _oldChild) {
         try {
-            if (!(_oldChild instanceof CoreChildNode)) {
+            if (!(_oldChild instanceof CoreChildNode oldChild)) {
                 throw newDOMException(DOMException.NOT_FOUND_ERR);
             }
-            CoreChildNode oldChild = (CoreChildNode) _oldChild;
             if (oldChild.coreGetParent() != this) {
                 throw newDOMException(DOMException.NOT_FOUND_ERR);
             }
             checkNewChild(newChild);
-            if (newChild instanceof CoreChildNode) {
-                oldChild.coreReplaceWith(((CoreChildNode) newChild), DOMSemantics.INSTANCE);
-            } else if (newChild instanceof CoreDocumentFragment) {
+            if (newChild instanceof CoreChildNode childNode) {
+                oldChild.coreReplaceWith(childNode, DOMSemantics.INSTANCE);
+            } else if (newChild instanceof CoreDocumentFragment documentFragment) {
                 CoreChildNode nextSibling = oldChild.coreGetNextSibling();
                 oldChild.coreDetach(DOMSemantics.INSTANCE);
                 if (nextSibling == null) {
-                    coreAppendChildren((CoreDocumentFragment) newChild);
+                    coreAppendChildren(documentFragment);
                 } else {
-                    nextSibling.coreInsertSiblingsBefore((CoreDocumentFragment) newChild);
+                    nextSibling.coreInsertSiblingsBefore(documentFragment);
                 }
             } else {
                 throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);

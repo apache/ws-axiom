@@ -43,21 +43,20 @@ final class CharacterDataReaderImpl implements CharacterDataReader {
         switch (reader.getEventType()) {
             case XMLStreamReader.CHARACTERS -> {
                 Object data = reader.getCharacterData();
-                if (data instanceof CharacterData) {
-                    ((CharacterData) data)
-                            .writeTo(
-                                    new CharacterDataSink() {
-                                        @Override
-                                        public Writer getWriter() {
-                                            return writer;
-                                        }
+                if (data instanceof CharacterData characterData) {
+                    characterData.writeTo(
+                            new CharacterDataSink() {
+                                @Override
+                                public Writer getWriter() {
+                                    return writer;
+                                }
 
-                                        @Override
-                                        public AbstractBase64EncodingOutputStream
-                                                getBase64EncodingOutputStream() {
-                                            return new Base64EncodingWriterOutputStream(writer);
-                                        }
-                                    });
+                                @Override
+                                public AbstractBase64EncodingOutputStream
+                                        getBase64EncodingOutputStream() {
+                                    return new Base64EncodingWriterOutputStream(writer);
+                                }
+                            });
                 } else {
                     writer.write(data.toString());
                 }

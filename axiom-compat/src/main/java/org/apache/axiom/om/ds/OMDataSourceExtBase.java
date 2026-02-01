@@ -180,8 +180,8 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
      * @return OutputStream or null
      */
     private static OutputStream getOutputStream(XMLStreamWriter writer) throws XMLStreamException {
-        if (writer instanceof MTOMXMLStreamWriter) {
-            return ((MTOMXMLStreamWriter) writer).getOutputStream();
+        if (writer instanceof MTOMXMLStreamWriter mtomXmlStreamWriter) {
+            return mtomXmlStreamWriter.getOutputStream();
         }
         return null;
     }
@@ -192,8 +192,8 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
      * @return String or null
      */
     private static String getCharacterEncoding(XMLStreamWriter writer) {
-        if (writer instanceof MTOMXMLStreamWriter) {
-            return ((MTOMXMLStreamWriter) writer).getCharSetEncoding();
+        if (writer instanceof MTOMXMLStreamWriter mtomXmlStreamWriter) {
+            return mtomXmlStreamWriter.getCharSetEncoding();
         }
         return null;
     }

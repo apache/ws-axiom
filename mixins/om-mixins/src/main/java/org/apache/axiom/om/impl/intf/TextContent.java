@@ -124,9 +124,9 @@ public final class TextContent implements CloneableCharacterData {
      */
     public Blob getBlob() {
         Object blobObject = getBlobObject();
-        if (blobObject instanceof BlobProvider) {
+        if (blobObject instanceof BlobProvider blobProvider) {
             try {
-                return ((BlobProvider) blobObject).getBlob();
+                return blobProvider.getBlob();
             } catch (IOException ex) {
                 throw new OMException(ex);
             }
@@ -162,14 +162,14 @@ public final class TextContent implements CloneableCharacterData {
     @Override
     public <T> CharacterData clone(ClonePolicy<T> policy, T options) {
         if (binary
-                && options instanceof OMCloneOptions
-                && ((OMCloneOptions) options).isFetchBlobs()) {
+                && options instanceof OMCloneOptions omCloneOptions
+                && omCloneOptions.isFetchBlobs()) {
             // This will fetch the Blob from the BlobProvider if applicable.
             Blob blob = getBlob();
             // If the blob refers to a MIME part of an XOP encoded message, ensure that the part is
             // fetched.
-            if (blob instanceof PartBlob) {
-                ((PartBlob) blob).getPart().fetch();
+            if (blob instanceof PartBlob partBlob) {
+                partBlob.getPart().fetch();
             }
         }
         return new TextContent(this);

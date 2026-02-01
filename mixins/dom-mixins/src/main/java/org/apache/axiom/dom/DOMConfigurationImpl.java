@@ -116,9 +116,9 @@ public final class DOMConfigurationImpl implements DOMConfiguration {
     public void setParameter(String name, Object value) throws DOMException {
         Integer mask = (Integer) paramMap.get(name);
         if (mask != null) {
-            if (value instanceof Boolean) {
+            if (value instanceof Boolean b) {
                 if ((mask.intValue() & FIXED_MASK) == 0) {
-                    if (((Boolean) value).booleanValue()) {
+                    if (b.booleanValue()) {
                         params |= mask.intValue();
                     } else {
                         params &= ~mask.intValue();

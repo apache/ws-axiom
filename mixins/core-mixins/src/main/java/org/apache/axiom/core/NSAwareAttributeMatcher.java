@@ -64,16 +64,15 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
 
     @Override
     public boolean matches(CoreAttribute attr, String namespaceURI, String name) {
-        if (attr instanceof CoreNSAwareAttribute) {
-            CoreNSAwareAttribute nsAwareAttr = (CoreNSAwareAttribute) attr;
+        if (attr instanceof CoreNSAwareAttribute nsAwareAttr) {
             // Optimization: first compare the local names because they are in general
             // shorter and have higher "uniqueness"
             return name.equals(nsAwareAttr.coreGetLocalName())
                     && namespaceURI.equals(nsAwareAttr.coreGetNamespaceURI());
         } else if (matchNSUnawareAttributes
                 && namespaceURI.length() == 0
-                && attr instanceof CoreNSUnawareAttribute) {
-            return name.equals(((CoreNSUnawareAttribute) attr).coreGetName());
+                && attr instanceof CoreNSUnawareAttribute nsUnawareAttr) {
+            return name.equals(nsUnawareAttr.coreGetName());
         } else {
             return false;
         }
@@ -102,8 +101,8 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
     @Override
     public void update(CoreAttribute attr, String prefix, String value) throws CoreModelException {
         attr.coreSetCharacterData(value, semantics);
-        if (updatePrefix && attr instanceof CoreNSAwareAttribute) {
-            ((CoreNSAwareAttribute) attr).coreSetPrefix(prefix);
+        if (updatePrefix && attr instanceof CoreNSAwareAttribute nsAwareAttr) {
+            nsAwareAttr.coreSetPrefix(prefix);
         }
     }
 }

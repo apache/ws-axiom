@@ -51,8 +51,8 @@ public class SerializeToXMLStreamWriter extends SerializationStrategy {
         // Since Axiom has no way of knowing the encoding used by the XMLStreamWriter,
         // it will just keep the original one when writing the XML declaration. Adjust
         // the output encoding so that it will match the encoding in the XML declaration.
-        if (container instanceof OMDocument) {
-            encoding = ((OMDocument) container).getXMLEncoding();
+        if (container instanceof OMDocument document) {
+            encoding = document.getXMLEncoding();
         }
         if (encoding == null) {
             encoding = "UTF-8";

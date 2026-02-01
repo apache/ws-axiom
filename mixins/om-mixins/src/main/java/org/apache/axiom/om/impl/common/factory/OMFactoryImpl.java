@@ -475,16 +475,15 @@ public class OMFactoryImpl implements OMFactory {
 
     @Override
     public final OMInformationItem importInformationItem(OMInformationItem node) {
-        if (node instanceof OMNode) {
-            return importChildNode((OMNode) node);
-        } else if (node instanceof OMDocument) {
-            OMDocument document = (OMDocument) node;
+        if (node instanceof OMNode omNode) {
+            return importChildNode(omNode);
+        } else if (node instanceof OMDocument document) {
             AxiomDocument importedDocument = nodeFactory.createDocument();
             // TODO: other attributes
             importChildren(document, importedDocument);
             return importedDocument;
-        } else if (node instanceof OMAttribute) {
-            return importAttribute((OMAttribute) node);
+        } else if (node instanceof OMAttribute attribute) {
+            return importAttribute(attribute);
         } else {
             throw new IllegalArgumentException("Unsupported node type");
         }

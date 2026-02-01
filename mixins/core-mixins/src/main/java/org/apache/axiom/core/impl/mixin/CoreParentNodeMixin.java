@@ -291,8 +291,8 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         }
         CoreChildNode child = coreGetFirstChildIfAvailable();
         while (child != null) {
-            if (child instanceof CoreParentNode) {
-                ((CoreParentNode) child).coreDiscard(consumeInput);
+            if (child instanceof CoreParentNode parentNode) {
+                parentNode.coreDiscard(consumeInput);
             }
             child = child.coreGetNextSiblingIfAvailable();
         }
@@ -319,8 +319,8 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             boolean updateState;
             if (getState() == INCOMPLETE) {
                 CoreChildNode lastChild = coreGetLastKnownChild();
-                if (lastChild instanceof CoreParentNode) {
-                    ((CoreParentNode) lastChild).coreBuild();
+                if (lastChild instanceof CoreParentNode parentNode) {
+                    parentNode.coreBuild();
                 }
                 context.discard();
                 updateState = true;

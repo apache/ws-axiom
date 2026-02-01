@@ -415,31 +415,31 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         // If already expanded or this is not an OMDataSourceExt, then
         // create a copy of the OM Tree
         OMDataSource ds = o.getDataSource();
-        if (!(options instanceof OMCloneOptions)
-                || !((OMCloneOptions) options).isCopyOMDataSources()
-                || ds == null
-                || o.isExpanded()
-                || !(ds instanceof OMDataSourceExt)) {
-            return;
-        }
-
-        // If copying is destructive, then copy the OM tree
-        OMDataSourceExt sourceDS = (OMDataSourceExt) ds;
-        if (sourceDS.isDestructiveRead() || sourceDS.isDestructiveWrite()) {
-            return;
-        }
-        OMDataSourceExt targetDS = ((OMDataSourceExt) ds).copy();
-        if (targetDS == null) {
-            return;
-        }
-        // Otherwise create a target OMSE with the copied DataSource
-        init(targetDS);
-        definedNamespaceSet = o.internalIsDefinedNamespaceSet();
-        OMNamespace otherDefinedNamespace = o.internalGetDefinedNamespace();
-        if (otherDefinedNamespace instanceof DeferredNamespace) {
-            definedNamespace = new DeferredNamespace(this, otherDefinedNamespace.getNamespaceURI());
+        if (options instanceof OMCloneOptions omCloneOptions
+                && omCloneOptions.isCopyOMDataSources()
+                && ds != null
+                && !o.isExpanded()
+                && ds instanceof OMDataSourceExt sourceDS) {
+            // If copying is destructive, then copy the OM tree
+            if (sourceDS.isDestructiveRead() || sourceDS.isDestructiveWrite()) {
+                return;
+            }
+            OMDataSourceExt targetDS = sourceDS.copy();
+            if (targetDS == null) {
+                return;
+            }
+            // Otherwise create a target OMSE with the copied DataSource
+            init(targetDS);
+            definedNamespaceSet = o.internalIsDefinedNamespaceSet();
+            OMNamespace otherDefinedNamespace = o.internalGetDefinedNamespace();
+            if (otherDefinedNamespace instanceof DeferredNamespace) {
+                definedNamespace =
+                        new DeferredNamespace(this, otherDefinedNamespace.getNamespaceURI());
+            } else {
+                definedNamespace = otherDefinedNamespace;
+            }
         } else {
-            definedNamespace = otherDefinedNamespace;
+            return;
         }
     }
 

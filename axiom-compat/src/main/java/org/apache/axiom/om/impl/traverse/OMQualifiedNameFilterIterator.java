@@ -50,12 +50,11 @@ public class OMQualifiedNameFilterIterator extends OMFilterIterator {
 
     @Override
     protected boolean matches(OMNode node) {
-        if (node instanceof OMElement) {
-            OMElement element = (OMElement) node;
+        if (node instanceof OMElement element) {
             if (!localName.equals(element.getLocalName())) {
                 return false;
             } else {
-                OMNamespace ns = ((OMElement) node).getNamespace();
+                OMNamespace ns = element.getNamespace();
                 if (prefix == null) {
                     return ns == null || ns.getPrefix().length() == 0;
                 } else {

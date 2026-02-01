@@ -62,10 +62,10 @@ public class XMLReaderImpl extends AbstractXMLReader {
             throw new SAXException(ex);
         } catch (StreamException ex) {
             Throwable cause = ex.getCause();
-            if (cause instanceof SAXException) {
-                throw (SAXException) cause;
-            } else if (cause instanceof Exception) {
-                throw new SAXException((Exception) cause);
+            if (cause instanceof SAXException saxException) {
+                throw saxException;
+            } else if (cause instanceof Exception exception) {
+                throw new SAXException(exception);
             } else {
                 throw new SAXException(ex);
             }

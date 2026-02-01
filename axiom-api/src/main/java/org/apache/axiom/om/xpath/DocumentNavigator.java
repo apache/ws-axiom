@@ -259,8 +259,8 @@ public class DocumentNavigator extends DefaultNavigator {
     private StringBuffer getStringValue(OMNode node, StringBuffer buffer) {
         if (isText(node)) {
             buffer.append(((OMText) node).getText());
-        } else if (node instanceof OMElement) {
-            Iterator<OMNode> children = ((OMElement) node).getChildren();
+        } else if (node instanceof OMElement element) {
+            Iterator<OMNode> children = element.getChildren();
             while (children.hasNext()) {
                 getStringValue(children.next(), buffer);
             }
@@ -325,8 +325,8 @@ public class DocumentNavigator extends DefaultNavigator {
      */
     @Override
     public Iterator<?> getChildAxisIterator(Object contextNode) throws UnsupportedAxisException {
-        if (contextNode instanceof OMContainer) {
-            return ((OMContainer) contextNode).getChildren();
+        if (contextNode instanceof OMContainer container) {
+            return container.getChildren();
         }
         return JaxenConstants.EMPTY_ITERATOR;
     }
@@ -366,10 +366,9 @@ public class DocumentNavigator extends DefaultNavigator {
     @Override
     public Iterator<?> getNamespaceAxisIterator(Object contextNode)
             throws UnsupportedAxisException {
-        if (!(contextNode instanceof OMElement)) {
+        if (!(contextNode instanceof OMElement omContextNode)) {
             return JaxenConstants.EMPTY_ITERATOR;
         }
-        OMElement omContextNode = (OMElement) contextNode;
         List<OMNamespaceEx> nsList = new ArrayList<OMNamespaceEx>();
         Set<String> prefixes = new HashSet<String>();
         for (OMContainer context = omContextNode;
@@ -463,12 +462,12 @@ public class DocumentNavigator extends DefaultNavigator {
      */
     @Override
     public Iterator<?> getParentAxisIterator(Object contextNode) throws UnsupportedAxisException {
-        if (contextNode instanceof OMNode) {
-            return new SingleObjectIterator(((OMNode) contextNode).getParent());
-        } else if (contextNode instanceof OMNamespaceEx) {
-            return new SingleObjectIterator(((OMNamespaceEx) contextNode).getParent());
-        } else if (contextNode instanceof OMAttribute) {
-            return new SingleObjectIterator(((OMAttribute) contextNode).getOwner());
+        if (contextNode instanceof OMNode omNode) {
+            return new SingleObjectIterator(omNode.getParent());
+        } else if (contextNode instanceof OMNamespaceEx omNamespaceEx) {
+            return new SingleObjectIterator(omNamespaceEx.getParent());
+        } else if (contextNode instanceof OMAttribute omAttribute) {
+            return new SingleObjectIterator(omAttribute.getOwner());
         }
         return JaxenConstants.EMPTY_ITERATOR;
     }
@@ -499,8 +498,7 @@ public class DocumentNavigator extends DefaultNavigator {
     public Iterator<?> getFollowingSiblingAxisIterator(Object contextNode)
             throws UnsupportedAxisException {
         List<OMNode> list = new ArrayList<OMNode>();
-        if (contextNode != null && contextNode instanceof OMNode) {
-            OMNode node = (OMNode) contextNode;
+        if (contextNode != null && contextNode instanceof OMNode node) {
             while (true) {
                 node = node.getNextOMSibling();
                 if (node != null) {
@@ -525,8 +523,7 @@ public class DocumentNavigator extends DefaultNavigator {
     public Iterator<?> getPrecedingSiblingAxisIterator(Object contextNode)
             throws UnsupportedAxisException {
         List<OMNode> list = new ArrayList<OMNode>();
-        if (contextNode != null && contextNode instanceof OMNode) {
-            OMNode node = (OMNode) contextNode;
+        if (contextNode != null && contextNode instanceof OMNode node) {
             while (true) {
                 node = node.getPreviousOMSibling();
                 if (node != null) {
@@ -703,10 +700,10 @@ public class DocumentNavigator extends DefaultNavigator {
     public Object getParentNode(Object contextNode) throws UnsupportedAxisException {
         if (contextNode == null || contextNode instanceof OMDocument) {
             return null;
-        } else if (contextNode instanceof OMAttribute) {
-            return ((OMAttribute) contextNode).getOwner();
-        } else if (contextNode instanceof OMNamespaceEx) {
-            return ((OMNamespaceEx) contextNode).getParent();
+        } else if (contextNode instanceof OMAttribute attribute) {
+            return attribute.getOwner();
+        } else if (contextNode instanceof OMNamespaceEx ns) {
+            return ns.getParent();
         }
         return ((OMNode) contextNode).getParent();
     }

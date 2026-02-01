@@ -59,7 +59,7 @@ public abstract class AxiomSOAPBodyMixin implements AxiomSOAPBody {
     @Override
     public final SOAPFault getFault() {
         OMElement element = getFirstElement();
-        return element instanceof SOAPFault ? (SOAPFault) element : null;
+        return element instanceof SOAPFault soapFault ? soapFault : null;
     }
 
     @Override

@@ -62,8 +62,8 @@ public class OMChildrenWithSpecificAttributeIterator extends OMFilterIterator {
 
     @Override
     protected boolean matches(OMNode node) {
-        if (node instanceof OMElement) {
-            OMAttribute attr = ((OMElement) node).getAttribute(attributeName);
+        if (node instanceof OMElement element) {
+            OMAttribute attr = element.getAttribute(attributeName);
             return (attr != null)
                     && (doCaseSensitiveValueChecks
                             ? attr.getAttributeValue().equals(attributeValue)

@@ -81,10 +81,11 @@ public final class NamespaceContextPreservationFilterHandler extends XmlHandlerW
                         attr = attr.coreGetNextAttribute();
                     }
                     CoreParentNode parent = current.coreGetParent();
-                    if (!(parent instanceof CoreElement)) {
+                    if (parent instanceof CoreElement element) {
+                        current = element;
+                    } else {
                         break;
                     }
-                    current = (CoreElement) parent;
                 }
                 prefixesAlreadyBound = null;
                 done = true;

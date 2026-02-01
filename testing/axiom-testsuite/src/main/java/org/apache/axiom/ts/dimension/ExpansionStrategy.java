@@ -44,9 +44,9 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
 
                 @Override
                 public void apply(OMContainer container) {
-                    if (container instanceof OMSourcedElement) {
+                    if (container instanceof OMSourcedElement sourcedElement) {
                         // Do nothing, but check that the element isn't expanded already
-                        Assert.assertFalse(((OMSourcedElement) container).isExpanded());
+                        Assert.assertFalse(sourcedElement.isExpanded());
                     } else {
                         Assert.assertFalse(container.isComplete());
                     }
@@ -83,8 +83,8 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
                 @Override
                 public void apply(OMContainer container) {
                     container.getFirstOMChild();
-                    if (container instanceof OMSourcedElement) {
-                        Assert.assertTrue(((OMSourcedElement) container).isExpanded());
+                    if (container instanceof OMSourcedElement sourcedElement) {
+                        Assert.assertTrue(sourcedElement.isExpanded());
                     }
                     Assert.assertFalse(container.isComplete());
                 }
@@ -118,8 +118,8 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
                 public void apply(OMContainer container) {
                     container.getFirstOMChild();
                     container.build();
-                    if (container instanceof OMSourcedElement) {
-                        Assert.assertTrue(((OMSourcedElement) container).isExpanded());
+                    if (container instanceof OMSourcedElement sourcedElement) {
+                        Assert.assertTrue(sourcedElement.isExpanded());
                     }
                     Assert.assertTrue(container.isComplete());
                 }

@@ -144,8 +144,8 @@ public class TestSerialize extends AxiomTestCase {
                 assertEquals("Parent completion status", parentComplete, parent.isComplete());
             }
         }
-        if (ds instanceof PullOMDataSource) {
-            assertFalse(((PullOMDataSource) ds).hasUnclosedReaders());
+        if (ds instanceof PullOMDataSource pullOmDataSource) {
+            assertFalse(pullOmDataSource.hasUnclosedReaders());
         }
     }
 }

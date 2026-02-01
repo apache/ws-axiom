@@ -39,16 +39,16 @@ public final class OMDataSourceUtil {
     }
 
     public static boolean isDestructiveWrite(OMDataSource dataSource) {
-        if (dataSource instanceof OMDataSourceExt) {
-            return ((OMDataSourceExt) dataSource).isDestructiveWrite();
+        if (dataSource instanceof OMDataSourceExt dataSourceExt) {
+            return dataSourceExt.isDestructiveWrite();
         } else {
             return true;
         }
     }
 
     public static boolean isDestructiveRead(OMDataSource dataSource) {
-        if (dataSource instanceof OMDataSourceExt) {
-            return ((OMDataSourceExt) dataSource).isDestructiveRead();
+        if (dataSource instanceof OMDataSourceExt dataSourceExt) {
+            return dataSourceExt.isDestructiveRead();
         } else {
             return false;
         }

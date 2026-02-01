@@ -56,8 +56,8 @@ final class DataSourceUtils {
      * @return (an estimation of) the size of the data or <code>-1</code> if the size is unknown
      */
     static long getSize(DataSource ds) {
-        if (ds instanceof SizeAwareDataSource) {
-            return ((SizeAwareDataSource) ds).getSize();
+        if (ds instanceof SizeAwareDataSource sizeAwareDataSource) {
+            return sizeAwareDataSource.getSize();
         } else if (byteArrayDataSourceClass != null && byteArrayDataSourceClass.isInstance(ds)) {
             // Special optimization for JavaMail's ByteArrayDataSource (Axiom's ByteArrayDataSource
             // already implements SizeAwareDataSource and doesn't need further optimization):
@@ -69,10 +69,10 @@ final class DataSourceUtils {
                 // We will never get here...
                 return -1;
             }
-        } else if (ds instanceof FileDataSource) {
+        } else if (ds instanceof FileDataSource fileDataSource) {
             // Special optimization for FileDataSources: no need to open and read the file
             // to know its size!
-            return ((FileDataSource) ds).getFile().length();
+            return fileDataSource.getFile().length();
         } else {
             return -1;
         }

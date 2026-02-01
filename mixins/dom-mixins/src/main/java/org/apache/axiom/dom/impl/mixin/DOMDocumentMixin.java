@@ -350,7 +350,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     // TODO: need unit test to check that this method works as expected on an OMSourcedElement
     @Override
     public final Node renameNode(Node node, String namespaceURI, String qualifiedName) {
-        if (!(node instanceof DOMNode && ((DOMNode) node).coreHasSameOwnerDocument(this))) {
+        if (!(node instanceof DOMNode domNode && domNode.coreHasSameOwnerDocument(this))) {
             throw DOMExceptionUtil.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
         }
         // TODO: what about an attempt to rename a namespace unaware node?
@@ -420,15 +420,14 @@ public abstract class DOMDocumentMixin implements DOMDocument {
 
     @Override
     public final Node adoptNode(Node node) throws DOMException {
-        if (node instanceof DOMNode) {
-            DOMNode childNode = (DOMNode) node;
-            if (childNode instanceof CoreChildNode) {
-                ((CoreChildNode) childNode).coreDetach(this);
+        if (node instanceof DOMNode childNode) {
+            if (childNode instanceof CoreChildNode coreChildNode) {
+                coreChildNode.coreDetach(this);
             } else {
                 childNode.coreSetOwnerDocument(this);
             }
-            if (node instanceof DOMAttribute) {
-                ((DOMAttribute) node).coreSetSpecified(true);
+            if (childNode instanceof DOMAttribute domAttribute) {
+                domAttribute.coreSetSpecified(true);
             }
             return childNode;
         } else {
