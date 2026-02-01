@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
+import com.google.common.base.Preconditions;
+
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.io.StreamCopyException;
 
@@ -33,6 +35,14 @@ public class RandomBlob implements Blob {
     private final long length;
 
     public RandomBlob(long seed, int rangeStart, int rangeEnd, long length) {
+        Preconditions.checkArgument(
+                rangeStart >= 0 && rangeStart < 256,
+                "rangeStart must be in the range 0-255, got: %s",
+                rangeStart);
+        Preconditions.checkArgument(
+                rangeEnd > rangeStart && rangeEnd <= 256,
+                "rangeEnd must be in the range (rangeStart..256], got: %s",
+                rangeEnd);
         this.seed = seed;
         this.rangeStart = rangeStart;
         this.rangeEnd = rangeEnd;
