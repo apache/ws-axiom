@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.google.common.base.Preconditions;
+
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.io.StreamCopyException;
 
@@ -31,11 +33,18 @@ import org.apache.axiom.ext.io.StreamCopyException;
  * specified value.
  */
 public class TestBlob implements Blob {
-    final int value;
+    final byte value;
     final long length;
 
-    public TestBlob(int value, long length) {
+    public TestBlob(byte value, long length) {
         this.value = value;
+        this.length = length;
+    }
+
+    public TestBlob(int value, long length) {
+        Preconditions.checkArgument(
+                value >= 0 && value < 256, "value must be in the range 0-255, got: %s", value);
+        this.value = (byte) value;
         this.length = length;
     }
 
@@ -50,7 +59,7 @@ public class TestBlob implements Blob {
                     return -1;
                 } else {
                     position++;
-                    return value;
+                    return value & 0xFF;
                 }
             }
         };
@@ -60,7 +69,7 @@ public class TestBlob implements Blob {
     public void writeTo(OutputStream out) throws StreamCopyException {
         for (long i = 0; i < length; i++) {
             try {
-                out.write(value);
+                out.write(value & 0xFF);
             } catch (IOException ex) {
                 throw new StreamCopyException(StreamCopyException.WRITE, ex);
             }
