@@ -292,7 +292,7 @@
         <groovy.version>5.0.4</groovy.version>
         <auto-service.version>1.1.1</auto-service.version>
         <asm.version>9.9.1</asm.version>
-        <errorprone.version>2.46.0</errorprone.version>
+        <errorprone.version>2.47.0</errorprone.version>
         <mime4j.version>0.8.13</mime4j.version>
         <surefire.version>3.5.4</surefire.version>
         <jaxws-rt.version>4.0.3</jaxws-rt.version>
