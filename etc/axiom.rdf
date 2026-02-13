@@ -27,7 +27,7 @@
     <license rdf:resource="http://usefulinc.com/doap/licenses/asl20"/>
     <name>Apache Axiom</name>
     <homepage rdf:resource="http://ws.apache.org/axiom/"/>
-    <asfext:pmc rdf:resource="http://webservices.apache.org"/>
+    <asfext:pmc rdf:resource="http://ws.apache.org"/>
     <shortdesc>Apache Axiom is an XML object model supporting deferred parsing.</shortdesc>
     <description>Apache Axiom is a StAX-based, XML Infoset compliant object model which supports on-demand building of the object tree. It supports a novel "pull-through" model which allows one to turn off the tree building and directly access the underlying pull event stream. It also has built in support for XML Optimized Packaging (XOP) and MTOM, the combination of which allows XML to carry binary data efficiently and in a transparent manner. The combination of these is an easy to use API with a very high performant architecture!</description>
     <bug-database rdf:resource="http://issues.apache.org/jira/browse/AXIOM"/>
@@ -66,6 +66,7 @@
     <release><Version><name>Apache Axiom</name><created>2025-01-28</created><revision>2.0.0</revision></Version></release>
     <repository>
       <SVNRepository>
+        <!-- These look wrong -->
         <location rdf:resource="http://svn.apache.org/repos/asf/webservices/axiom/trunk"/>
         <browse rdf:resource="http://svn.apache.org/viewvc/webservices/axiom/trunk"/>
       </SVNRepository>
