@@ -64,34 +64,10 @@ Axiom 1.3 to meet the following requirements:
 
 ### Classes to be moved from `axiom-api` to `om-aspects`
 
-Up to version 1.2.12, the core Axiom code was organized in three modules,
-namely `axiom-api`, `axiom-impl` and `axiom-dom`, where `axiom-api`
-contains both the public API as well as implementation classes shared by LLOM and DOOM.
-Unfortunately the distinction between the public API and these shared implementation
-classes has become somewhat blurred over time. In Axiom 1.2.13 a new module
-called `axiom-common-impl` was introduced with the specific goal of separating the
-shared implementation classes from the public API; with the introduction of AspectJ
-in Axiom 1.2.15 this module is now called `om-aspects`.
-
-However, in Axiom 1.2.x it is generally not possible to move classes from
-`axiom-api` to `om-aspects` without the risk of breaking existing code.
+As described in the [`axiom-api` should only contain public API](adr/0001-no-impl-in-axiom-api.md)
+ADR, `axiom-api` should only contain Axiom's public API.
 A new major release gives us the opportunity to move the existing shared classes to
-`om-aspects` as well, so that in Axiom 1.3, `axiom-api` will only
-contain Axiom's public API. This is one of the important goals for Axiom 1.3
-because it has multiple benefits:
-  
-*   The more compact the public API is, the easier it is for users to understand the
-    API and to locate the features they are looking for.
-
-*   By definition, anything that is not part of the public API can be modified
-    without the risk of breaking application code. Clarifying the distinction between
-    the public API and internal implementation classes therefore gives the project
-    more flexibility to implement changes.
-
-*   Having a well defined abstract API allows to create alternative implementations
-    of that API.
-  
-This section identifies the classes and internal APIs that will be removed
+`om-aspects` as well. This section identifies the classes and internal APIs that will be removed
 from `axiom-api`.
 
 #### Builder implementations
