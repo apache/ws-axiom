@@ -17,10 +17,12 @@
   ~ under the License.
   -->
 
-Axiom 1.3 roadmap
-=================
+Roadmap
+=======
 
-## Introduction
+## Axiom 1.3
+
+### Introduction
 
 This page summarizes the planned changes for the next major release, i.e. Axiom 1.3.
 Note that it is not intended as a wish list for new features, but identifies a set of
@@ -38,19 +40,9 @@ The overall goals for the 1.3 are:
 *   Make the API more compact by clarifying the separation between the public API
     and implementation classes and moving implementation classes out of `axiom-api`.
 
-## API inconsistencies to be eliminated
+### API inconsistencies to be eliminated
 
-### Methods declared by the wrong interface in the node type hierarchy
-
-Some methods are declared at the wrong level in the node type hierarchy so that they may
-be called on nodes for which they are not meaningful:
-  
-*   `OMContainer` declares several methods that return child elements by name: `getChildrenWithLocalName`,
-    `getChildrenWithName`, `getChildrenWithNamespaceURI` and `getFirstChildWithName`.
-    Since the document element is unique, these methods are not meaningful for `OMDocument`
-    and they should be declared by `OMElement` instead.
-
-### Exception hierarchy
+#### Exception hierarchy
 
 The way exceptions are used in Axiom 1.2.x is not very consistent. In addition it doesn't allow application
 code to distinguish between different types of error cases. This should be improved in
@@ -74,12 +66,12 @@ Axiom 1.3 to meet the following requirements:
     packages (and their subpackages). However, in Axiom 1.2.x that exception is used by the MIME/attachments API
     as well.
 
-## Removal of unnecessary or irrelevant APIs
+### Removal of unnecessary or irrelevant APIs
 
 This section identifies APIs that have become unnecessary or irrelevant. Note that APIs that
 have already been deprecated in 1.2.x (and will be removed in 1.3 anyway) are not listed here.
 
-### `org.apache.axiom.om.impl.builder.XOPBuilder`
+#### `org.apache.axiom.om.impl.builder.XOPBuilder`
 
 The `XOPBuilder` interface is implemented by `XOPAwareStAXOMBuilder` and `MTOMStAXSOAPModelBuilder`.
 With the changes in r1164997 and r1207662, it is no longer used internally by Axiom.
@@ -98,7 +90,7 @@ used to create the builder. That is undesirable for two reasons:
 
 Therefore the `XOPBuilder` API will be removed in Axiom 1.3.
 
-## Classes to be moved from `axiom-api` to `om-aspects`
+### Classes to be moved from `axiom-api` to `om-aspects`
 
 Up to version 1.2.12, the core Axiom code was organized in three modules,
 namely `axiom-api`, `axiom-impl` and `axiom-dom`, where `axiom-api`
@@ -130,7 +122,7 @@ because it has multiple benefits:
 This section identifies the classes and internal APIs that will be removed
 from `axiom-api`.
 
-### Builder implementations
+#### Builder implementations
 
 In Axiom 1.2.13, the `OMXMLBuilderFactory` API allows to create any type of
 object model builder (plain XML, SOAP, XOP and MTOM). The API also defines two
@@ -158,7 +150,7 @@ be moved to `om-aspects`:
 
 *   TODO
 
-## Public APIs that need to be moved to another package
+### Public APIs that need to be moved to another package
 
 Some interfaces are part of the public API although they are placed in an
 `impl` package. These interfaces need to be moved to another package to make it
@@ -166,9 +158,9 @@ clear that they are not internal or implementation specific interfaces:
 
 *   `org.apache.axiom.om.impl.builder.CustomBuilder`
 
-## APIs that need to be overhauled
+### APIs that need to be overhauled
 
-### `MTOMXMLStreamReader`
+#### `MTOMXMLStreamReader`
 
 This should become an interface:
   
@@ -177,7 +169,7 @@ This should become an interface:
 
 *   This would allow us to move the implementation code out of `axiom-api`.
 
-### Attachment lifecycle manager
+#### Attachment lifecycle manager
 
 The `LifecycleManager` API has a couple of issues that can't be fixed without breaking
 backward compatibility:
@@ -188,7 +180,7 @@ backward compatibility:
 *   `LifecycleManager` is an abstract API (interface), but refers to `FileAccessor` which
     is placed in an `impl` package.
 
-### `SOAPVersion`
+#### `SOAPVersion`
 
 `SOAPVersion` should be changed from an interface to an abstract class so that one can
 define static methods to get the SOAP version by envelope namespace or media type. Alternatively,
@@ -197,38 +189,38 @@ upgrade to Java 8 (which allows static methods in interfaces).
 `SOAP11Version` and `SOAP12Version` should not be public, and the deprecated `getSingleton`
 methods should be removed.
   
-### `StAXParserConfiguration`
+#### `StAXParserConfiguration`
 
 The `StAXParserConfiguration` API relies on the assumption that the XML parser used by Axiom is
 an implementation of StAX. However, as noted above, this is not a strict requirement; an Axiom
 implementation could equally well use another API or provide its own XML parser.
 Therefore `StAXParserConfiguration` should be replaced by something more generic.
 
-### `OMMetaFactory`
+#### `OMMetaFactory`
 
 The argument order is not consistent across methods. See e.g. the two `createOMBuilder` methods that
 take an `InputSource` argument.
 
-### `OMElement`
+#### `OMElement`
 
 The argument order of the `addAttribute(String, String, OMNamespace)` method is inconsistent with that
 of the `createOMAttribute` method in `OMFactory`.
 
-### `OMOutputFormat`
+#### `OMOutputFormat`
 
 This class should be made immutable (which would require introducing a builder class) so that instances
 are safe to reuse.
 
-### `SOAPHeaderBlock`
+#### `SOAPHeaderBlock`
 
 `SOAPHeaderBlock` has a feature that allows to use properties on the `OMDataSource` to specify
 the role, relay and mustUnderstand attributes. That shouldn't be necessary; instead `OMSourcedElement`
 should allow setting attributes without expanding the `OMDataSource`. The `setProperty` method
 can then be removed from `OMDataSource`.
 
-## Miscellaneous
+### Miscellaneous
 
-### Make non coalescing mode the default
+#### Make non coalescing mode the default
 
 By default, Axiom configures the underlying parser in coalescing mode. The reason is purely historical.
 Axiom originally used Woodstox 3.x and that version implemented one aspect of the StAX
@@ -243,7 +235,7 @@ A new major release would be the right moment to change this and make non coales
 This enables a couple of optimizations (e.g. when reading and decoding base64 from a text node) and
 ensures that an XML document can be streamed with constant memory, even if it contains large text nodes.
 
-### Don't allow `addChild` to reorder children
+#### Don't allow `addChild` to reorder children
 
 The `SOAPEnvelope` implementations in LLOM and DOOM override the `addChild` method to
 reorder the nodes if an attempt is made to add a `SOAPHeader` after the `SOAPBody`.
@@ -253,3 +245,15 @@ to add the node as the last child.
 
 The `addChild` implementation for `SOAPEnvelope` should not do this. Instead it should
 just throw an exception if a `SOAPHeader` is added at the wrong position.
+
+## Axiom 3.0
+
+### Methods declared by the wrong interface in the node type hierarchy
+
+Some methods are declared at the wrong level in the node type hierarchy so that they may
+be called on nodes for which they are not meaningful:
+
+*   `OMContainer` declares several methods that return child elements by name: `getChildrenWithLocalName`,
+    `getChildrenWithName`, `getChildrenWithNamespaceURI` and `getFirstChildWithName`.
+    Since the document element is unique, these methods are not meaningful for `OMDocument`
+    and they should be declared by `OMElement` instead.
