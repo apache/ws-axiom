@@ -62,30 +62,6 @@ Axiom 1.3 to meet the following requirements:
 
     *   A parser error occurs during a deferred parsing operation.
 
-### Removal of unnecessary or irrelevant APIs
-
-This section identifies APIs that have become unnecessary or irrelevant. Note that APIs that
-have already been deprecated in 1.2.x (and will be removed in 1.3 anyway) are not listed here.
-
-#### `org.apache.axiom.om.impl.builder.XOPBuilder`
-
-The `XOPBuilder` interface is implemented by `XOPAwareStAXOMBuilder` and `MTOMStAXSOAPModelBuilder`.
-With the changes in r1164997 and r1207662, it is no longer used internally by Axiom.
-The interface declares methods that give access to the `Attachments` object that was
-used to create the builder. That is undesirable for two reasons:
-  
-*   For XOP/MTOM encoded messages, optimized binary data should always be accessed
-    through the `OMText` API and not by accessing MIME parts directly through
-    the `Attachments` API.
-
-*   The existence of the `XOPBuilder` API (and in particular the `getAttachments`
-    method defined by that interface) implies that an XOP/MTOM builder is necessarily
-    created from an `Attachments` object. However, it may be desirable to support other
-    ways to supply the MIME parts to the builder (e.g. using an implementation of the
-    `MimePartProvider` API).
-
-Therefore the `XOPBuilder` API will be removed in Axiom 1.3.
-
 ### Classes to be moved from `axiom-api` to `om-aspects`
 
 Up to version 1.2.12, the core Axiom code was organized in three modules,
