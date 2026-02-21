@@ -62,10 +62,6 @@ Axiom 1.3 to meet the following requirements:
 
     *   A parser error occurs during a deferred parsing operation.
 
-*   `OMException` should only be thrown by APIs in the `org.apache.axiom.om` and `org.apache.axiom.soap`
-    packages (and their subpackages). However, in Axiom 1.2.x that exception is used by the MIME/attachments API
-    as well.
-
 ### Removal of unnecessary or irrelevant APIs
 
 This section identifies APIs that have become unnecessary or irrelevant. Note that APIs that
