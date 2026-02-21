@@ -109,17 +109,6 @@ This should become an interface:
 
 *   This would allow us to move the implementation code out of `axiom-api`.
 
-#### Attachment lifecycle manager
-
-The `LifecycleManager` API has a couple of issues that can't be fixed without breaking
-backward compatibility:
-
-*   There is some overlap with the `AttachmentCacheMonitor` class. There should be a single API to
-    manage the lifecycle of buffered attachments.
-
-*   `LifecycleManager` is an abstract API (interface), but refers to `FileAccessor` which
-    is placed in an `impl` package.
-
 #### `SOAPVersion`
 
 `SOAPVersion` should be changed from an interface to an abstract class so that one can
