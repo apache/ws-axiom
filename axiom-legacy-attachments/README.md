@@ -1,0 +1,3 @@
+# axiom-legacy-attachments
+
+This module contains legacy MIME support for Apache Axiom. `axiom-legacy-attachments` provides compatibility support for older MIME-related integration paths and preserves behavior needed by existing users while newer MIME APIs (notably in the `org.apache.axiom.mime` package in `axiom-api`) and implementations are used elsewhere in the codebase. The code includes historical design flaws; for example, it uses `OMException` even though that exception was intended for `org.apache.axiom.om` and `org.apache.axiom.soap` APIs. It is also used by Axis2 through its public API, which means behavior and API surface in this module can't be changed easily without risking downstream compatibility breaks; for new code, prefer the newer MIME APIs.
