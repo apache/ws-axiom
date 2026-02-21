@@ -23,4 +23,3 @@ Design documents
 | Title/link | Status |
 | ---------- | ------ |
 | [OSGi integration and separation between API and implementation](osgi-integration.md) | Implemented |
-| [Fluent builders](fluent-builder.md) | Implemented |

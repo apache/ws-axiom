@@ -20,16 +20,12 @@
 Fluent builder conventions
 ==========================
 
-Builders are mutable objects which create other (often immutable) objects.
-They are used as an alternative to public constructors in order to avoid
-constructors with long argument lists and classes with many different constructors.
-Builders generally use the fluent pattern so that method calls to the setters
-of the builder can be chained.
+## Decision
 
 Axiom uses the following coding conventions for builders:
 
 *   A builder type is implemented as a public static final inner class of the class
-    to be built. The name of the class is `Builder` and it's constructor must not be public.
+    to be built. The name of the class is `Builder` and its constructor must not be public.
 
 *   A builder instance is created using a static method named `builder` defined on the
     type being built.
@@ -46,7 +42,19 @@ Axiom uses the following coding conventions for builders:
     be used to create a new instance similar to an existing one, and the expectation is that
     `someInstance.toBuilder().build()` would produce an instance that is equal (in the
     relevant sense) to `someInstance`.
-    
-    If the build type has a `toBuilder` method, then the builder type may need additional
+
+    If the built type has a `toBuilder` method, then the builder type may need additional
     methods allowing the caller to unset properties. In certain cases it may also be pertinent
     to add getter methods to support complex state transitions.
+
+## Rationale
+
+*   Builders are mutable objects which create other (often immutable) objects. They are used
+    as an alternative to public constructors in order to avoid constructors with long argument
+    lists and classes with many different constructors.
+
+*   Builders generally use the fluent pattern so that method calls to the setters of the
+    builder can be chained, improving readability.
+
+*   Having consistent conventions across the codebase makes the API predictable and easier
+    to use.
