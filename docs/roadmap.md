@@ -48,7 +48,7 @@ The way exceptions are used in Axiom 1.2.x is not very consistent. In addition i
 code to distinguish between different types of error cases. This should be improved in
 Axiom 1.3 to meet the following requirements:
   
-*   Although the two implementations of the Axiom API (LLOM and DOOM) use StAX as XML parser and serializer, this
+*   Although the two implementations of the Axiom API (LLOM and DOOM) use StAX as XML parser, this
     is not a strict requirement. The only strict requirements are that the implementation is able to
     construct a tree from a `XMLStreamReader` supplied by application code, is able to serialize
     a tree to an `XMLStreamWriter` and is able to construct an `XMLStreamReader` from a tree.
