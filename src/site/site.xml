@@ -72,10 +72,6 @@
             <item name="Quick start samples" href="quickstart-samples.html"/>
             <item name="User guide" href="userguide/userguide.html"/>
             <item name="Developer guide" href="devguide/devguide.html"/>
-            <item name="Design documents" collapse="true" href="design/index.html">
-                <item name="OSGi integration" href="design/osgi-integration.html"/>
-                <item name="Fluent builders" href="design/fluent-builder.html"/>
-            </item>
             <item name="Articles" href="articles.html"/>
             <item name="Javadocs" href="/apidocs/index.html"/>
             <item name="FAQ" href="faq.html"/>
