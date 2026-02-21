@@ -98,14 +98,6 @@ be moved to `om-aspects`:
 
 *   TODO
 
-### Public APIs that need to be moved to another package
-
-Some interfaces are part of the public API although they are placed in an
-`impl` package. These interfaces need to be moved to another package to make it
-clear that they are not internal or implementation specific interfaces:
-
-*   `org.apache.axiom.om.impl.builder.CustomBuilder`
-
 ### APIs that need to be overhauled
 
 #### `MTOMXMLStreamReader`
