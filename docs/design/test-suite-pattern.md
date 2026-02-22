@@ -1,0 +1,268 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+Reusable test suites and parameterization
+=========================================
+
+## Introduction
+
+The Axiom project provides reusable API test suites that can be applied to different
+implementations of the same API. For example, `saaj-testsuite` defines tests for the
+SAAJ API that can be executed against any `SAAJMetaFactory`, and `axiom-testsuite`
+defines tests for the Axiom API that can be executed against any `OMMetaFactory`.
+
+Most test suites also execute tests across multiple dimensions. For instance, SAAJ and
+SOAP tests run against both SOAP 1.1 and SOAP 1.2, while `OMTestSuiteBuilder` multiplies
+tests across XML samples, serialization strategies, builder factories, and more.
+
+This document examines the current pattern used to implement these test suites and
+evaluates whether JUnit 5's `@TestFactory` mechanism offers a better approach.
+
+## Current pattern: MatrixTestSuiteBuilder (JUnit 3)
+
+### Infrastructure classes
+
+The current pattern is built on the following custom infrastructure in the `testutils`
+module:
+
+*   **`MatrixTestCase`** — extends `junit.framework.TestCase`. Each test case is a
+    separate class that overrides `runTest()`. Test parameters (e.g. SOAP version) are
+    added via `addTestParameter(name, value)`, which appends `[name=value]` to the test
+    name for display purposes.
+
+*   **`MatrixTestSuiteBuilder`** — builds a `junit.framework.TestSuite` by collecting
+    `MatrixTestCase` instances via `addTest()` calls in the abstract `addTests()` method.
+    Supports exclusions using LDAP-style filters on test parameters.
+
+*   **Multiton / Adaptable / AdapterFactory** — a custom SPI framework in the `multiton`
+    module. `SOAPSpec` is a `Multiton` with instances `SOAP11` and `SOAP12`. Adapters
+    (such as `FactorySelector`) are registered via `AdapterFactory` implementations
+    discovered through `ServiceLoader` (using `@AutoService`).
+
+### How it works in saaj-testsuite
+
+The saaj-testsuite uses this pattern as follows:
+
+1.  Each test case is a separate class extending `SAAJTestCase` (which extends
+    `MatrixTestCase`). For example, `TestAddChildElementReification`,
+    `TestExamineMustUnderstandHeaderElements`, etc.
+
+2.  `SAAJTestSuiteBuilder` extends `MatrixTestSuiteBuilder`. Its `addTests()` method
+    calls a private `addTests(SOAPSpec)` helper for both `SOAPSpec.SOAP11` and
+    `SOAPSpec.SOAP12`, instantiating each test case class with the SAAJ implementation
+    and the SOAP spec.
+
+3.  `SOAPSpecAdapterFactory` implements `AdapterFactory<SOAPSpec>` and registers a
+    `FactorySelector` adapter for each SOAP version, mapping `SOAPSpec.SOAP11` to
+    `SOAPConstants.SOAP_1_1_PROTOCOL` and `SOAPSpec.SOAP12` to
+    `SOAPConstants.SOAP_1_2_PROTOCOL`.
+
+4.  `SAAJTestCase` provides convenience methods `newMessageFactory()` and
+    `newSOAPFactory()` that look up the `FactorySelector` adapter for the current
+    `SOAPSpec` and delegate to it.
+
+5.  Consumers create a JUnit 3 runner class with a `static suite()` method:
+
+    ```java
+    public class SAAJRITest extends TestCase {
+        public static TestSuite suite() throws Exception {
+            return new SAAJTestSuiteBuilder(new SAAJMetaFactoryImpl()).build();
+        }
+    }
+    ```
+
+### File inventory for saaj-testsuite
+
+For 6 test cases × 2 SOAP versions = 12 test instances, the current pattern requires:
+
+| File | Role |
+|------|------|
+| `SAAJTestCase.java` | Abstract base class for all SAAJ tests |
+| `SAAJTestSuiteBuilder.java` | Suite builder; registers all tests × SOAP versions |
+| `SAAJImplementation.java` | Wraps `SAAJMetaFactory` with reflective access |
+| `FactorySelector.java` | Adapter interface (`@AdapterType`) |
+| `SOAPSpecAdapterFactory.java` | Adapter factory registering `FactorySelector` per SOAP version |
+| `TestAddChildElementReification.java` | Test case class |
+| `TestAddChildElementLocalName.java` | Test case class |
+| `TestAddChildElementLocalNamePrefixAndURI.java` | Test case class |
+| `TestSetParentElement.java` | Test case class |
+| `TestGetOwnerDocument.java` | Test case class |
+| `TestExamineMustUnderstandHeaderElements.java` | Test case class |
+| `SAAJRITest.java` | JUnit 3 runner for the reference implementation |
+
+### Usage across the project
+
+The same pattern is used at much larger scale in other modules:
+
+| Module | Builder | `addTest()` calls | Estimated runtime tests |
+|--------|---------|-------------------|------------------------|
+| axiom-testsuite | `OMTestSuiteBuilder` | ~452 | Thousands (combinatorial) |
+| axiom-testsuite | `SOAPTestSuiteBuilder` | ~197 | Hundreds |
+| dom-testsuite | `DOMTestSuiteBuilder` | Many | Hundreds |
+| saaj-testsuite | `SAAJTestSuiteBuilder` | 6 | 12 |
+
+## Alternative: JUnit 5 @TestFactory + DynamicTest
+
+JUnit 5 provides a built-in mechanism for dynamic test generation that directly
+addresses the same use case.
+
+### Key JUnit 5 features
+
+*   **`@TestFactory`** — a method that returns a `Stream<DynamicNode>` (or `Collection`,
+    `Iterable`, etc.). Each `DynamicNode` becomes a test in the test tree.
+
+*   **`DynamicContainer`** — groups `DynamicNode` instances under a named container,
+    enabling hierarchical test organization (e.g. grouping by SOAP version).
+
+*   **`DynamicTest`** — a named test with an `Executable` body. Replaces the need for
+    a separate class per test case.
+
+*   **`@ParameterizedTest`** + `@MethodSource` — an alternative for simpler
+    parameterization where each test method receives parameters directly.
+
+### What saaj-testsuite would look like
+
+The reusable test suite module would define an abstract class:
+
+```java
+public abstract class SAAJTests {
+    private final SAAJImplementation impl;
+
+    protected SAAJTests(SAAJMetaFactory metaFactory) {
+        this.impl = new SAAJImplementation(metaFactory);
+    }
+
+    @TestFactory
+    Stream<DynamicContainer> saajTests() {
+        return Stream.of(SOAPSpec.SOAP11, SOAPSpec.SOAP12).map(spec ->
+            DynamicContainer.dynamicContainer(spec.getName(), Stream.of(
+                testAddChildElementReification(spec),
+                testExamineMustUnderstandHeaderElements(spec),
+                testAddChildElementLocalName(spec),
+                testAddChildElementLocalNamePrefixAndURI(spec),
+                testSetParentElement(spec),
+                testGetOwnerDocument(spec)
+            ))
+        );
+    }
+
+    private DynamicTest testAddChildElementReification(SOAPSpec spec) {
+        return DynamicTest.dynamicTest("addChildElementReification", () -> {
+            SOAPBody body = newMessageFactory(spec).createMessage().getSOAPBody();
+            SOAPElement child = body.addChildElement(
+                    (SOAPElement) body.getOwnerDocument().createElementNS("urn:test", "p:test"));
+            assertThat(child).isInstanceOf(SOAPBodyElement.class);
+        });
+    }
+
+    // ... other test methods ...
+
+    private MessageFactory newMessageFactory(SOAPSpec spec) throws SOAPException {
+        String protocol = spec == SOAPSpec.SOAP11
+                ? SOAPConstants.SOAP_1_1_PROTOCOL
+                : SOAPConstants.SOAP_1_2_PROTOCOL;
+        return impl.newMessageFactory(protocol);
+    }
+}
+```
+
+Consumers would subclass per implementation:
+
+```java
+class SAAJRITests extends SAAJTests {
+    SAAJRITests() {
+        super(new SAAJMetaFactoryImpl());
+    }
+}
+```
+
+### Comparison
+
+| Concern | MatrixTestSuiteBuilder (JUnit 3) | JUnit 5 @TestFactory |
+|---------|----------------------------------|----------------------|
+| Framework version | JUnit 3 | JUnit 5 (Jupiter) |
+| Test registration | Explicit `addTest()` in builder | Return `Stream<DynamicNode>` |
+| SOAP version parameterization | Multiton adapter SPI (`FactorySelector`, `SOAPSpecAdapterFactory`, `@AdapterType`, `@AutoService`) | `Stream.of(SOAPSpec.SOAP11, SOAPSpec.SOAP12)` or a simple `if`/`switch` |
+| One class per test case | Required | Not required — tests are methods returning `DynamicTest` |
+| Boilerplate for saaj-testsuite | 12 files | 2–3 files |
+| Test tree in IDE | Flat list with `[spec=SOAP11]` in name | Nested: SOAP11 > testName, SOAP12 > testName |
+| Exclusion mechanism | LDAP filter on parameter dictionary | Conditional logic, `@DisabledIf`, or `Assumptions.assumeThat()` |
+| Reusability across implementations | Subclass `TestCase` + pass factory to builder | Subclass base test class + pass factory to constructor |
+| Custom infrastructure needed | `MatrixTestSuiteBuilder`, `MatrixTestCase`, `Multiton`, `Adaptable`, `AdapterFactory`, `Adapters` | None (built into JUnit 5) |
+
+## Considerations for migration
+
+### saaj-testsuite (small suite)
+
+For the saaj-testsuite specifically, migrating to JUnit 5 `@TestFactory` would:
+
+*   Eliminate the `FactorySelector` adapter interface, `SOAPSpecAdapterFactory`, and the
+    `@AutoService` dependency for adapter registration.
+*   Collapse 6 test case classes into methods within a single class.
+*   Remove the need for `SAAJTestSuiteBuilder` entirely.
+*   Replace the `SAAJTestCase` base class with a simpler abstract class.
+*   Reduce the file count from 12 to approximately 3 (`SAAJImplementation`, `SAAJTests`,
+    `SAAJRITests`).
+
+The `SAAJImplementation` class (which uses reflection to access protected methods on
+`SAAJMetaFactory`) would be retained as-is.
+
+### Large suites (OMTestSuiteBuilder, SOAPTestSuiteBuilder)
+
+The larger suites present additional considerations:
+
+*   The one-class-per-test pattern, while verbose, keeps each test independently
+    navigable and organizes tests by the API area they cover.
+*   The exclusion mechanism (LDAP filters on test parameters) is heavily used by
+    consumers to skip known-failing tests for specific implementations. A JUnit 5
+    equivalent would need to provide comparable functionality.
+*   The sheer number of test case classes (hundreds) means migration would be a
+    substantial effort.
+*   A phased approach is possible: a JUnit 5 adapter that wraps `MatrixTestSuiteBuilder`
+    output into `DynamicTest` instances would allow consuming modules to migrate to
+    JUnit 5 runners without rewriting test case classes.
+
+### Hybrid approach: JUnit 5 adapter for MatrixTestSuiteBuilder
+
+A pragmatic intermediate step would be to create a JUnit 5 adapter that converts a
+`MatrixTestSuiteBuilder` into a `@TestFactory` method, allowing consumers to use JUnit 5
+without rewriting the test suites themselves:
+
+```java
+public abstract class MatrixTestFactory {
+    protected abstract MatrixTestSuiteBuilder createBuilder();
+
+    @TestFactory
+    Stream<DynamicTest> tests() {
+        TestSuite suite = createBuilder().build();
+        return Collections.list(suite.tests()).stream()
+                .map(test -> DynamicTest.dynamicTest(test.toString(), () -> {
+                    TestResult result = new TestResult();
+                    test.run(result);
+                    if (result.failureCount() > 0) {
+                        throw (Throwable) result.failures().nextElement()
+                                .thrownException();
+                    }
+                }));
+    }
+}
+```
+
+This would allow the project to migrate runners (consuming modules) to JUnit 5
+incrementally while preserving the existing test suite infrastructure.

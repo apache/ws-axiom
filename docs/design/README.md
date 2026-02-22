@@ -23,3 +23,4 @@ Design documents
 | Title/link | Status |
 | ---------- | ------ |
 | [OSGi integration and separation between API and implementation](osgi-integration.md) | Implemented |
+| [Reusable test suites and parameterization](test-suite-pattern.md) | In review |
