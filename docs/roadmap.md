@@ -66,11 +66,11 @@ Axiom 1.3 to meet the following requirements:
 
 #### `MTOMXMLStreamWriter`
 
-This should become an interface:
-  
-*   This would enable the implementation of proxies.
+This is currently an abstract class in the `org.apache.axiom.om.impl` package. Two changes are needed:
 
-*   This would allow us to move the implementation code out of `axiom-api`.
+*   It should become an interface. This would enable the implementation of proxies.
+
+*   It should be moved out of the `impl` package, since it is a public API.
 
 #### `SOAPVersion`
 
