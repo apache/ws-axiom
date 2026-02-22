@@ -68,8 +68,7 @@ Axiom 1.3 to meet the following requirements:
 
 This should become an interface:
   
-*   This would enable the implementation of proxies and maybe allow us to get rid of
-    `XMLStreamWriterFilter`.
+*   This would enable the implementation of proxies.
 
 *   This would allow us to move the implementation code out of `axiom-api`.
 
