@@ -48,12 +48,10 @@ The way exceptions are used in Axiom 1.2.x is not very consistent. In addition i
 code to distinguish between different types of error cases. This should be improved in
 Axiom 1.3 to meet the following requirements:
   
-*   Although the two implementations of the Axiom API (LLOM and DOOM) use StAX as XML parser, this
-    is not a strict requirement. The only strict requirements are that the implementation is able to
-    construct a tree from a `XMLStreamReader` supplied by application code, is able to serialize
-    a tree to an `XMLStreamWriter` and is able to construct an `XMLStreamReader` from a tree.
-    Therefore methods defined by the Axiom API should only declare `XMLStreamException` if they interact
-    directly with a StAX object supplied by application code.
+*   As noted in [ADR 0003](adr/0003-no-stax-assumption-in-api.md), the Axiom API should not be
+    designed around the assumption that StAX is used as the XML parser. Therefore methods defined
+    by the Axiom API should only declare `XMLStreamException` if they interact directly with a
+    StAX object supplied by application code.
 
 *   Axiom should have well-defined (and distinct) exceptions for at least the following two error cases:
 
@@ -124,9 +122,9 @@ methods should be removed.
 #### `StAXParserConfiguration`
 
 The `StAXParserConfiguration` API relies on the assumption that the XML parser used by Axiom is
-an implementation of StAX. However, as noted above, this is not a strict requirement; an Axiom
-implementation could equally well use another API or provide its own XML parser.
-Therefore `StAXParserConfiguration` should be replaced by something more generic.
+an implementation of StAX. However, as noted in [ADR 0003](adr/0003-no-stax-assumption-in-api.md),
+this is not a strict requirement. Therefore `StAXParserConfiguration` should be replaced by
+something more generic.
 
 #### `OMMetaFactory`
 
