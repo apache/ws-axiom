@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.saaj.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 import jakarta.xml.soap.SOAPElement;
 
@@ -39,8 +41,8 @@ public class TestSetParentElement extends SAAJTestCase {
                 (SOAPElement) parent.getOwnerDocument().createElementNS(null, "child2");
         child2.setParentElement(parent);
         NodeList children = parent.getChildNodes();
-        assertEquals(2, children.getLength());
-        assertSame(child1, children.item(0));
-        assertSame(child2, children.item(1));
+        assertThat(children.getLength()).isEqualTo(2);
+        assertThat(children.item(0)).isSameAs(child1);
+        assertThat(children.item(1)).isSameAs(child2);
     }
 }

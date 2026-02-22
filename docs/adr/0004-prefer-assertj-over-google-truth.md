@@ -23,7 +23,8 @@ Prefer AssertJ over Google Truth
 ## Decision
 
 New test code must use [AssertJ](https://assertj.github.io/doc/) as the assertion library.
-Existing usages of Google Truth should be migrated to AssertJ when the opportunity arises.
+Existing usages of Google Truth and plain JUnit assertions (`assertTrue`, `assertEquals`,
+`assertSame`, etc.) should be migrated to AssertJ when the opportunity arises.
 
 ## Rationale
 
@@ -37,3 +38,7 @@ Existing usages of Google Truth should be migrated to AssertJ when the opportuni
 
 *   AssertJ integrates well with IDEs and provides better error messages, making test
     failures easier to diagnose.
+
+*   AssertJ's fluent `assertThat` style is more expressive than JUnit's traditional
+    `assertEquals(expected, actual)` or `assertTrue(condition)` forms, which improves
+    readability and reduces the risk of swapping expected/actual arguments.

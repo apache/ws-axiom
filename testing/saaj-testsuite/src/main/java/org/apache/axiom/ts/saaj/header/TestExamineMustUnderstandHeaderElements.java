@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.saaj.header;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.InputStream;
 import java.util.Iterator;
 
@@ -46,9 +48,9 @@ public class TestExamineMustUnderstandHeaderElements extends SAAJTestCase {
             SOAPMessage message = newMessageFactory().createMessage(mimeHeaders, in);
             SOAPHeader header = message.getSOAPHeader();
             Iterator<?> it = header.examineMustUnderstandHeaderElements(null);
-            assertTrue(it.hasNext());
-            assertTrue(it.next() instanceof SOAPHeaderElement);
-            assertFalse(it.hasNext());
+            assertThat(it.hasNext()).isTrue();
+            assertThat(it.next()).isInstanceOf(SOAPHeaderElement.class);
+            assertThat(it.hasNext()).isFalse();
         } finally {
             in.close();
         }
