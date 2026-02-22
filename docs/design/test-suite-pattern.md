@@ -183,7 +183,7 @@ class SAAJRITests extends SAAJTests {
 | One class per test case | Required | Not required — tests are methods returning `DynamicTest` |
 | Boilerplate for saaj-testsuite | 10 files | 2–3 files |
 | Test tree in IDE | Flat list with `[spec=SOAP11]` in name | Nested: SOAP11 > testName, SOAP12 > testName |
-| Exclusion mechanism | LDAP filter on parameter dictionary | Conditional logic, `@DisabledIf`, or `Assumptions.assumeThat()` |
+| Exclusion mechanism | LDAP filter on parameter dictionary | LDAP filter on `MatrixTestNode` tree (see below) |
 | Reusability across implementations | Subclass `TestCase` + pass factory to builder | Subclass base test class + pass factory to constructor |
 | Custom infrastructure needed | `MatrixTestSuiteBuilder`, `MatrixTestCase` | None (built into JUnit 5) |
 
@@ -217,7 +217,7 @@ The larger suites present additional considerations:
     output into `DynamicTest` instances would allow consuming modules to migrate to
     JUnit 5 runners without rewriting test case classes.
 
-### Replacement for MatrixTestSuiteBuilder: TestNode tree
+### Replacement for MatrixTestSuiteBuilder: MatrixTestNode tree
 
 Since `DynamicContainer` and `DynamicTest` are `final` in JUnit 5, they cannot be
 subclassed to attach test parameters for LDAP-style filtering. Instead, a parallel
@@ -231,10 +231,10 @@ parameters needed for exclusion filtering.
  * Base class mirroring {@link DynamicNode}. Represents a node in the test tree
  * that can be filtered before conversion to JUnit 5's dynamic test API.
  */
-abstract class TestNode {
+abstract class MatrixTestNode {
     private final String displayName;
 
-    TestNode(String displayName) {
+    MatrixTestNode(String displayName) {
         this.displayName = displayName;
     }
 
@@ -252,22 +252,22 @@ abstract class TestNode {
  * Mirrors {@link DynamicContainer}. Represents a parameterized grouping level
  * in the test tree (e.g. a SOAP version, a serialization strategy).
  *
- * <p>Each {@code TestContainer} carries a single test parameter (name/value pair).
- * The full parameter dictionary for any leaf {@code TestCase} is the accumulation
- * of parameters from its ancestor {@code TestContainer} chain.
+ * <p>Each {@code MatrixTestContainer} carries a single test parameter (name/value
+ * pair). The full parameter dictionary for any leaf {@code MatrixTestCase} is the
+ * accumulation of parameters from its ancestor {@code MatrixTestContainer} chain.
  */
-class TestContainer extends TestNode {
+class MatrixTestContainer extends MatrixTestNode {
     private final String parameterName;
     private final String parameterValue;
-    private final List<TestNode> children = new ArrayList<>();
+    private final List<MatrixTestNode> children = new ArrayList<>();
 
-    TestContainer(String displayName, String parameterName, String parameterValue) {
-        super(displayName);
+    MatrixTestContainer(String parameterName, String parameterValue) {
+        super(parameterName + "=" + parameterValue);
         this.parameterName = parameterName;
         this.parameterValue = parameterValue;
     }
 
-    void addChild(TestNode child) {
+    void addChild(MatrixTestNode child) {
         children.add(child);
     }
 
@@ -295,11 +295,11 @@ class TestContainer extends TestNode {
  * Filtering is applied based on the accumulated parameters from ancestor
  * containers plus the test class name.
  */
-class TestCase extends TestNode {
+class MatrixTestCase extends MatrixTestNode {
     private final Class<?> testClass;
     private final Executable executable;
 
-    TestCase(String displayName, Class<?> testClass, Executable executable) {
+    MatrixTestCase(String displayName, Class<?> testClass, Executable executable) {
         super(displayName);
         this.testClass = testClass;
         this.executable = executable;
@@ -320,15 +320,15 @@ class TestCase extends TestNode {
 
 #### How filtering works
 
-Each `TestContainer` level represents one test dimension and carries a single parameter.
-As the tree is converted to `DynamicNode` instances via `toDynamicNode()`, parameters
-accumulate from the root down:
+Each `MatrixTestContainer` level represents one test dimension and carries a single
+parameter. As the tree is converted to `DynamicNode` instances via `toDynamicNode()`,
+parameters accumulate from the root down:
 
 ```
-TestContainer("SOAP11", "spec", "soap11")          → params: {spec=soap11}
-  TestContainer("Text", "strategy", "text")        → params: {spec=soap11, strategy=text}
-    TestCase("serializeToWriter", ...)              → filtered against {spec=soap11, strategy=text}
-    TestCase("serializeToStream", ...)              → filtered against {spec=soap11, strategy=text}
+MatrixTestContainer("spec", "soap11")               → params: {spec=soap11}
+  MatrixTestContainer("strategy", "text")            → params: {spec=soap11, strategy=text}
+    MatrixTestCase("serializeToWriter", ...)          → filtered against {spec=soap11, strategy=text}
+    MatrixTestCase("serializeToStream", ...)          → filtered against {spec=soap11, strategy=text}
 ```
 
 Consumers apply exclusions exactly as they do today:
@@ -337,7 +337,7 @@ Consumers apply exclusions exactly as they do today:
 class OMImplementationTests {
     @TestFactory
     Stream<DynamicNode> omTests() {
-        TestContainer root = new OMTestTreeBuilder(metaFactory).build();
+        MatrixTestContainer root = new OMTestTreeBuilder(metaFactory).build();
         List<Filter> excludes = new ArrayList<>();
         excludes.add(Filter.forClass(TestSerialize.class, "(spec=soap12)"));
         return root.toDynamicNode(new Hashtable<>(), excludes)
@@ -353,7 +353,7 @@ class OMImplementationTests {
 *   Parameters are distributed across the tree (one per container level) rather than
     accumulated on each leaf test case, making the structure explicit.
 *   Uses standard JUnit 5 `DynamicNode` for execution while keeping the filtering
-    infrastructure in the intermediate `TestNode` layer.
+    infrastructure in the intermediate `MatrixTestNode` layer.
 *   The LDAP-style filter mechanism is preserved unchanged.
 
 ### Hybrid approach: JUnit 5 adapter for MatrixTestSuiteBuilder
