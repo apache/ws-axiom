@@ -51,7 +51,12 @@ Axiom 1.3 to meet the following requirements:
 *   As noted in [ADR 0003](adr/0003-no-stax-assumption-in-api.md), the Axiom API should not be
     designed around the assumption that StAX is used as the XML parser. Therefore methods defined
     by the Axiom API should only declare `XMLStreamException` if they interact directly with a
-    StAX object supplied by application code.
+    StAX object supplied by application code. The following non-deprecated methods still violate
+    this principle:
+
+    *   `OMElement.toStringWithConsume()`
+    *   `AXIOMUtil.stringToOM(String)`
+    *   `AXIOMUtil.stringToOM(OMFactory, String)`
 
 *   Axiom should have well-defined (and distinct) exceptions for at least the following two error cases:
 
