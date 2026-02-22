@@ -62,6 +62,46 @@ Axiom 1.3 to meet the following requirements:
 
     *   A parser error occurs during a deferred parsing operation.
 
+### Miscellaneous
+
+#### Make non coalescing mode the default
+
+By default, Axiom configures the underlying parser in coalescing mode. The reason is purely historical.
+Axiom originally used Woodstox 3.x and that version implemented one aspect of the StAX
+specification incorrectly, namely [it configured the parser by default
+in coalescing mode](http://jira.codehaus.org/browse/WSTX-140), while the specification says otherwise. The problem is that (poorly
+written) code that uses Axiom with a parser in coalescing mode doesn't
+necessarily work with non coalescing mode. Therefore the choice was
+made to make coalescing mode the default in order to ensure
+compatibility when using a StAX implementation other than Woodstox 3.x.
+
+A new major release would be the right moment to change this and make non coalescing mode the default.
+This enables a couple of optimizations (e.g. when reading and decoding base64 from a text node) and
+ensures that an XML document can be streamed with constant memory, even if it contains large text nodes.
+
+#### Don't allow `addChild` to reorder children
+
+The `SOAPEnvelope` implementations in LLOM and DOOM override the `addChild` method to
+reorder the nodes if an attempt is made to add a `SOAPHeader` after the `SOAPBody`.
+This introduces unnecessary complexity in the implementation and is questionable from an OO
+design perspective because it breaks the general contract of the `addChild` method which is
+to add the node as the last child.
+
+The `addChild` implementation for `SOAPEnvelope` should not do this. Instead it should
+just throw an exception if a `SOAPHeader` is added at the wrong position.
+
+## Axiom 3.0
+
+### Methods declared by the wrong interface in the node type hierarchy
+
+Some methods are declared at the wrong level in the node type hierarchy so that they may
+be called on nodes for which they are not meaningful:
+
+*   `OMContainer` declares several methods that return child elements by name: `getChildrenWithLocalName`,
+    `getChildrenWithName`, `getChildrenWithNamespaceURI` and `getFirstChildWithName`.
+    Since the document element is unique, these methods are not meaningful for `OMDocument`
+    and they should be declared by `OMElement` instead.
+
 ### APIs that need to be overhauled
 
 #### `MTOMXMLStreamWriter`
@@ -109,43 +149,3 @@ are safe to reuse.
 the role, relay and mustUnderstand attributes. That shouldn't be necessary; instead `OMSourcedElement`
 should allow setting attributes without expanding the `OMDataSource`. The `setProperty` method
 can then be removed from `OMDataSource`.
-
-### Miscellaneous
-
-#### Make non coalescing mode the default
-
-By default, Axiom configures the underlying parser in coalescing mode. The reason is purely historical.
-Axiom originally used Woodstox 3.x and that version implemented one aspect of the StAX
-specification incorrectly, namely [it configured the parser by default
-in coalescing mode](http://jira.codehaus.org/browse/WSTX-140), while the specification says otherwise. The problem is that (poorly
-written) code that uses Axiom with a parser in coalescing mode doesn't
-necessarily work with non coalescing mode. Therefore the choice was
-made to make coalescing mode the default in order to ensure
-compatibility when using a StAX implementation other than Woodstox 3.x.
-
-A new major release would be the right moment to change this and make non coalescing mode the default.
-This enables a couple of optimizations (e.g. when reading and decoding base64 from a text node) and
-ensures that an XML document can be streamed with constant memory, even if it contains large text nodes.
-
-#### Don't allow `addChild` to reorder children
-
-The `SOAPEnvelope` implementations in LLOM and DOOM override the `addChild` method to
-reorder the nodes if an attempt is made to add a `SOAPHeader` after the `SOAPBody`.
-This introduces unnecessary complexity in the implementation and is questionable from an OO
-design perspective because it breaks the general contract of the `addChild` method which is
-to add the node as the last child.
-
-The `addChild` implementation for `SOAPEnvelope` should not do this. Instead it should
-just throw an exception if a `SOAPHeader` is added at the wrong position.
-
-## Axiom 3.0
-
-### Methods declared by the wrong interface in the node type hierarchy
-
-Some methods are declared at the wrong level in the node type hierarchy so that they may
-be called on nodes for which they are not meaningful:
-
-*   `OMContainer` declares several methods that return child elements by name: `getChildrenWithLocalName`,
-    `getChildrenWithName`, `getChildrenWithNamespaceURI` and `getFirstChildWithName`.
-    Since the document element is unique, these methods are not meaningful for `OMDocument`
-    and they should be declared by `OMElement` instead.
