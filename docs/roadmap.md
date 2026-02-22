@@ -64,7 +64,7 @@ Axiom 1.3 to meet the following requirements:
 
 ### APIs that need to be overhauled
 
-#### `MTOMXMLStreamReader`
+#### `MTOMXMLStreamWriter`
 
 This should become an interface:
   
