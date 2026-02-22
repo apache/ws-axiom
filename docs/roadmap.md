@@ -62,42 +62,6 @@ Axiom 1.3 to meet the following requirements:
 
     *   A parser error occurs during a deferred parsing operation.
 
-### Classes to be moved from `axiom-api` to `om-aspects`
-
-As described in the [`axiom-api` should only contain public API](adr/0001-no-impl-in-axiom-api.md)
-ADR, `axiom-api` should only contain Axiom's public API.
-A new major release gives us the opportunity to move the existing shared classes to
-`om-aspects` as well. This section identifies the classes and internal APIs that will be removed
-from `axiom-api`.
-
-#### Builder implementations
-
-In Axiom 1.2.13, the `OMXMLBuilderFactory` API allows to create any type of
-object model builder (plain XML, SOAP, XOP and MTOM). The API also defines two
-interfaces representing a builder: `OMXMLParserWrapper` and `SOAPModelBuilder`.
-This means that application code should no longer reference the builder implementation
-classes directly, but only `OMXMLBuilderFactory`, `OMXMLParserWrapper` and
-`SOAPModelBuilder`. In Axiom 1.3 the implementation classes can therefore be moved
-to `om-aspects`. They are:
-  
-*   `org.apache.axiom.om.impl.builder.StAXBuilder`
-
-*   `org.apache.axiom.om.impl.builder.StAXOMBuilder`
-
-*   `org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder`
-
-*   `org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder`
-
-*   `org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder`
-  
-TODO: there is one API that still references `StAXBuilder`, namely `BuilderAwareReader`;
-it needs to be changed (or removed)
-
-Together with these classes, the following interfaces and helper classes should also
-be moved to `om-aspects`:
-
-*   TODO
-
 ### APIs that need to be overhauled
 
 #### `MTOMXMLStreamReader`
