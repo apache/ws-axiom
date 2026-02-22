@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.saaj.element;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.XMLConstants;
 import jakarta.xml.soap.SOAPElement;
@@ -43,7 +43,7 @@ public class TestAddChildElementLocalNamePrefixAndURI extends SAAJTestCase {
         assertThat(element.getLocalName()).isEqualTo("child");
         assertThat(element.getNamespaceURI()).isEqualTo("urn:ns2");
         assertThat(element.getPrefix()).isEqualTo("ns2");
-        assertThat(element.getParentNode()).isSameInstanceAs(root);
+        assertThat(element.getParentNode()).isSameAs(root);
         NamedNodeMap attributes = element.getAttributes();
         assertThat(attributes.getLength()).isEqualTo(1);
         Attr attr = (Attr) attributes.item(0);

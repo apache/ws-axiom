@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.saaj.element;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.xml.soap.SOAPElement;
 
@@ -39,7 +39,7 @@ public class TestAddChildElementLocalName extends SAAJTestCase {
         assertThat(element.getLocalName()).isEqualTo("child");
         assertThat(element.getNamespaceURI()).isNull();
         assertThat(element.getPrefix()).isNull();
-        assertThat(element.getParentNode()).isSameInstanceAs(root);
+        assertThat(element.getParentNode()).isSameAs(root);
         assertThat(element.getAttributes().getLength()).isEqualTo(0);
     }
 }
