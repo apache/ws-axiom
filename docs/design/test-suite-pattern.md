@@ -217,6 +217,145 @@ The larger suites present additional considerations:
     output into `DynamicTest` instances would allow consuming modules to migrate to
     JUnit 5 runners without rewriting test case classes.
 
+### Replacement for MatrixTestSuiteBuilder: TestNode tree
+
+Since `DynamicContainer` and `DynamicTest` are `final` in JUnit 5, they cannot be
+subclassed to attach test parameters for LDAP-style filtering. Instead, a parallel
+class hierarchy can act as a factory for `DynamicNode` instances while carrying the
+parameters needed for exclusion filtering.
+
+#### Class hierarchy
+
+```java
+/**
+ * Base class mirroring {@link DynamicNode}. Represents a node in the test tree
+ * that can be filtered before conversion to JUnit 5's dynamic test API.
+ */
+abstract class TestNode {
+    private final String displayName;
+
+    TestNode(String displayName) {
+        this.displayName = displayName;
+    }
+
+    String getDisplayName() {
+        return displayName;
+    }
+
+    abstract DynamicNode toDynamicNode(Dictionary<String, String> inheritedParameters,
+            List<Filter> excludes);
+}
+```
+
+```java
+/**
+ * Mirrors {@link DynamicContainer}. Represents a parameterized grouping level
+ * in the test tree (e.g. a SOAP version, a serialization strategy).
+ *
+ * <p>Each {@code TestContainer} carries a single test parameter (name/value pair).
+ * The full parameter dictionary for any leaf {@code TestCase} is the accumulation
+ * of parameters from its ancestor {@code TestContainer} chain.
+ */
+class TestContainer extends TestNode {
+    private final String parameterName;
+    private final String parameterValue;
+    private final List<TestNode> children = new ArrayList<>();
+
+    TestContainer(String displayName, String parameterName, String parameterValue) {
+        super(displayName);
+        this.parameterName = parameterName;
+        this.parameterValue = parameterValue;
+    }
+
+    void addChild(TestNode child) {
+        children.add(child);
+    }
+
+    @Override
+    DynamicNode toDynamicNode(Dictionary<String, String> inheritedParameters,
+            List<Filter> excludes) {
+        Hashtable<String, String> params = new Hashtable<>();
+        // Copy inherited parameters from ancestor containers
+        for (Enumeration<String> e = inheritedParameters.keys(); e.hasMoreElements(); ) {
+            String key = e.nextElement();
+            params.put(key, inheritedParameters.get(key));
+        }
+        params.put(parameterName, parameterValue);
+        return DynamicContainer.dynamicContainer(getDisplayName(),
+                children.stream()
+                        .map(child -> child.toDynamicNode(params, excludes))
+                        .filter(Objects::nonNull));
+    }
+}
+```
+
+```java
+/**
+ * Mirrors {@link DynamicTest}. A leaf test case with an executable body.
+ * Filtering is applied based on the accumulated parameters from ancestor
+ * containers plus the test class name.
+ */
+class TestCase extends TestNode {
+    private final Class<?> testClass;
+    private final Executable executable;
+
+    TestCase(String displayName, Class<?> testClass, Executable executable) {
+        super(displayName);
+        this.testClass = testClass;
+        this.executable = executable;
+    }
+
+    @Override
+    DynamicNode toDynamicNode(Dictionary<String, String> inheritedParameters,
+            List<Filter> excludes) {
+        for (Filter exclude : excludes) {
+            if (exclude.matches(testClass, inheritedParameters)) {
+                return null; // Excluded
+            }
+        }
+        return DynamicTest.dynamicTest(getDisplayName(), executable);
+    }
+}
+```
+
+#### How filtering works
+
+Each `TestContainer` level represents one test dimension and carries a single parameter.
+As the tree is converted to `DynamicNode` instances via `toDynamicNode()`, parameters
+accumulate from the root down:
+
+```
+TestContainer("SOAP11", "spec", "soap11")          → params: {spec=soap11}
+  TestContainer("Text", "strategy", "text")        → params: {spec=soap11, strategy=text}
+    TestCase("serializeToWriter", ...)              → filtered against {spec=soap11, strategy=text}
+    TestCase("serializeToStream", ...)              → filtered against {spec=soap11, strategy=text}
+```
+
+Consumers apply exclusions exactly as they do today:
+
+```java
+class OMImplementationTests {
+    @TestFactory
+    Stream<DynamicNode> omTests() {
+        TestContainer root = new OMTestTreeBuilder(metaFactory).build();
+        List<Filter> excludes = new ArrayList<>();
+        excludes.add(Filter.forClass(TestSerialize.class, "(spec=soap12)"));
+        return root.toDynamicNode(new Hashtable<>(), excludes)
+                .children(); // unwrap the root container
+    }
+}
+```
+
+#### Benefits over MatrixTestSuiteBuilder
+
+*   Produces a hierarchical test tree in the IDE (grouped by dimension) instead of a
+    flat list with parameter suffixes in the test name.
+*   Parameters are distributed across the tree (one per container level) rather than
+    accumulated on each leaf test case, making the structure explicit.
+*   Uses standard JUnit 5 `DynamicNode` for execution while keeping the filtering
+    infrastructure in the intermediate `TestNode` layer.
+*   The LDAP-style filter mechanism is preserved unchanged.
+
 ### Hybrid approach: JUnit 5 adapter for MatrixTestSuiteBuilder
 
 A pragmatic intermediate step would be to create a JUnit 5 adapter that converts a
