@@ -50,11 +50,6 @@ module:
     `MatrixTestCase` instances via `addTest()` calls in the abstract `addTests()` method.
     Supports exclusions using LDAP-style filters on test parameters.
 
-*   **Multiton / Adaptable / AdapterFactory** — a custom SPI framework in the `multiton`
-    module. `SOAPSpec` is a `Multiton` with instances `SOAP11` and `SOAP12`. Adapters
-    (such as `FactorySelector`) are registered via `AdapterFactory` implementations
-    discovered through `ServiceLoader` (using `@AutoService`).
-
 ### How it works in saaj-testsuite
 
 The saaj-testsuite uses this pattern as follows:
@@ -68,16 +63,10 @@ The saaj-testsuite uses this pattern as follows:
     `SOAPSpec.SOAP12`, instantiating each test case class with the SAAJ implementation
     and the SOAP spec.
 
-3.  `SOAPSpecAdapterFactory` implements `AdapterFactory<SOAPSpec>` and registers a
-    `FactorySelector` adapter for each SOAP version, mapping `SOAPSpec.SOAP11` to
-    `SOAPConstants.SOAP_1_1_PROTOCOL` and `SOAPSpec.SOAP12` to
-    `SOAPConstants.SOAP_1_2_PROTOCOL`.
+3.  `SAAJTestCase` provides convenience methods `newMessageFactory()` and
+    `newSOAPFactory()` that create the appropriate factory for the current SOAP version.
 
-4.  `SAAJTestCase` provides convenience methods `newMessageFactory()` and
-    `newSOAPFactory()` that look up the `FactorySelector` adapter for the current
-    `SOAPSpec` and delegate to it.
-
-5.  Consumers create a JUnit 3 runner class with a `static suite()` method:
+4.  Consumers create a JUnit 3 runner class with a `static suite()` method:
 
     ```java
     public class SAAJRITest extends TestCase {
@@ -89,15 +78,13 @@ The saaj-testsuite uses this pattern as follows:
 
 ### File inventory for saaj-testsuite
 
-For 6 test cases × 2 SOAP versions = 12 test instances, the current pattern requires:
+For 6 test cases × 2 SOAP versions = 12 test instances, the main files are:
 
 | File | Role |
 |------|------|
 | `SAAJTestCase.java` | Abstract base class for all SAAJ tests |
 | `SAAJTestSuiteBuilder.java` | Suite builder; registers all tests × SOAP versions |
 | `SAAJImplementation.java` | Wraps `SAAJMetaFactory` with reflective access |
-| `FactorySelector.java` | Adapter interface (`@AdapterType`) |
-| `SOAPSpecAdapterFactory.java` | Adapter factory registering `FactorySelector` per SOAP version |
 | `TestAddChildElementReification.java` | Test case class |
 | `TestAddChildElementLocalName.java` | Test case class |
 | `TestAddChildElementLocalNamePrefixAndURI.java` | Test case class |
@@ -150,7 +137,7 @@ public abstract class SAAJTests {
 
     @TestFactory
     Stream<DynamicContainer> saajTests() {
-        return Stream.of(SOAPSpec.SOAP11, SOAPSpec.SOAP12).map(spec ->
+        return Multiton.getInstances(SOAPSpec.class).stream().map(spec ->
             DynamicContainer.dynamicContainer(spec.getName(), Stream.of(
                 testAddChildElementReification(spec),
                 testExamineMustUnderstandHeaderElements(spec),
@@ -164,7 +151,9 @@ public abstract class SAAJTests {
 
     private DynamicTest testAddChildElementReification(SOAPSpec spec) {
         return DynamicTest.dynamicTest("addChildElementReification", () -> {
-            SOAPBody body = newMessageFactory(spec).createMessage().getSOAPBody();
+            MessageFactory mf = spec.getAdapter(FactorySelector.class)
+                    .newMessageFactory(impl);
+            SOAPBody body = mf.createMessage().getSOAPBody();
             SOAPElement child = body.addChildElement(
                     (SOAPElement) body.getOwnerDocument().createElementNS("urn:test", "p:test"));
             assertThat(child).isInstanceOf(SOAPBodyElement.class);
@@ -172,13 +161,6 @@ public abstract class SAAJTests {
     }
 
     // ... other test methods ...
-
-    private MessageFactory newMessageFactory(SOAPSpec spec) throws SOAPException {
-        String protocol = spec == SOAPSpec.SOAP11
-                ? SOAPConstants.SOAP_1_1_PROTOCOL
-                : SOAPConstants.SOAP_1_2_PROTOCOL;
-        return impl.newMessageFactory(protocol);
-    }
 }
 ```
 
@@ -198,13 +180,12 @@ class SAAJRITests extends SAAJTests {
 |---------|----------------------------------|----------------------|
 | Framework version | JUnit 3 | JUnit 5 (Jupiter) |
 | Test registration | Explicit `addTest()` in builder | Return `Stream<DynamicNode>` |
-| SOAP version parameterization | Multiton adapter SPI (`FactorySelector`, `SOAPSpecAdapterFactory`, `@AdapterType`, `@AutoService`) | `Stream.of(SOAPSpec.SOAP11, SOAPSpec.SOAP12)` or a simple `if`/`switch` |
 | One class per test case | Required | Not required — tests are methods returning `DynamicTest` |
-| Boilerplate for saaj-testsuite | 12 files | 2–3 files |
+| Boilerplate for saaj-testsuite | 10 files | 2–3 files |
 | Test tree in IDE | Flat list with `[spec=SOAP11]` in name | Nested: SOAP11 > testName, SOAP12 > testName |
 | Exclusion mechanism | LDAP filter on parameter dictionary | Conditional logic, `@DisabledIf`, or `Assumptions.assumeThat()` |
 | Reusability across implementations | Subclass `TestCase` + pass factory to builder | Subclass base test class + pass factory to constructor |
-| Custom infrastructure needed | `MatrixTestSuiteBuilder`, `MatrixTestCase`, `Multiton`, `Adaptable`, `AdapterFactory`, `Adapters` | None (built into JUnit 5) |
+| Custom infrastructure needed | `MatrixTestSuiteBuilder`, `MatrixTestCase` | None (built into JUnit 5) |
 
 ## Considerations for migration
 
@@ -212,12 +193,10 @@ class SAAJRITests extends SAAJTests {
 
 For the saaj-testsuite specifically, migrating to JUnit 5 `@TestFactory` would:
 
-*   Eliminate the `FactorySelector` adapter interface, `SOAPSpecAdapterFactory`, and the
-    `@AutoService` dependency for adapter registration.
 *   Collapse 6 test case classes into methods within a single class.
 *   Remove the need for `SAAJTestSuiteBuilder` entirely.
 *   Replace the `SAAJTestCase` base class with a simpler abstract class.
-*   Reduce the file count from 12 to approximately 3 (`SAAJImplementation`, `SAAJTests`,
+*   Reduce the file count from 10 to approximately 3 (`SAAJImplementation`, `SAAJTests`,
     `SAAJRITests`).
 
 The `SAAJImplementation` class (which uses reflection to access protected methods on
