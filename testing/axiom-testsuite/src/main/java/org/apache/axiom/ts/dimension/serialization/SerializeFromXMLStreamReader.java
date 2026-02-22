@@ -23,7 +23,7 @@ import java.io.StringWriter;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 
 /**
  * Serializes an {@link OMContainer} by processing the result of {@link
@@ -37,7 +37,7 @@ public class SerializeFromXMLStreamReader extends SerializationStrategy {
     }
 
     @Override
-    public void addTestParameters(MatrixTestCase testCase) {
+    public void addTestParameters(TestParameterTarget testCase) {
         testCase.addTestParameter("serializationStrategy", "XMLStreamReader");
         testCase.addTestParameter("cache", cache);
     }

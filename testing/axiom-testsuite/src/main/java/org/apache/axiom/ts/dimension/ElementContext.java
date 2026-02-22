@@ -31,7 +31,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.junit.Assert;
 import org.w3c.dom.Document;
@@ -47,7 +47,7 @@ public abstract class ElementContext extends Multiton implements Dimension {
     public static final ElementContext ORPHAN =
             new ElementContext() {
                 @Override
-                public void addTestParameters(MatrixTestCase testCase) {
+                public void addTestParameters(TestParameterTarget testCase) {
                     testCase.addTestParameter("container", "none");
                 }
 
@@ -66,7 +66,7 @@ public abstract class ElementContext extends Multiton implements Dimension {
     public static final ElementContext ELEMENT =
             new ElementContext() {
                 @Override
-                public void addTestParameters(MatrixTestCase testCase) {
+                public void addTestParameters(TestParameterTarget testCase) {
                     testCase.addTestParameter("container", "element");
                     testCase.addTestParameter("complete", true);
                 }
@@ -98,7 +98,7 @@ public abstract class ElementContext extends Multiton implements Dimension {
     public static final ElementContext INCOMPLETE_ELEMENT =
             new ElementContext() {
                 @Override
-                public void addTestParameters(MatrixTestCase testCase) {
+                public void addTestParameters(TestParameterTarget testCase) {
                     testCase.addTestParameter("container", "element");
                     testCase.addTestParameter("complete", "false");
                 }

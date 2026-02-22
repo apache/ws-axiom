@@ -23,7 +23,7 @@ import java.io.OutputStream;
 
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.testutils.suite.Dimension;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 
 public abstract class State implements Dimension {
     public static final State NEW =
@@ -74,7 +74,7 @@ public abstract class State implements Dimension {
     }
 
     @Override
-    public final void addTestParameters(MatrixTestCase testCase) {
+    public final void addTestParameters(TestParameterTarget testCase) {
         testCase.addTestParameter("state", name);
     }
 

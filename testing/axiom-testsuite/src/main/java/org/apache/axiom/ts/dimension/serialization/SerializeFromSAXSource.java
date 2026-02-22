@@ -24,7 +24,7 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 import org.xml.sax.XMLReader;
 
 /**
@@ -39,7 +39,7 @@ public class SerializeFromSAXSource extends SerializationStrategy {
     }
 
     @Override
-    public void addTestParameters(MatrixTestCase testCase) {
+    public void addTestParameters(TestParameterTarget testCase) {
         testCase.addTestParameter("serializationStrategy", "SAXSource");
         testCase.addTestParameter("cache", cache);
     }

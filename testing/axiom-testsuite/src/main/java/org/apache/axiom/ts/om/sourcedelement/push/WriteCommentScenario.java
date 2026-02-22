@@ -27,12 +27,12 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 import org.junit.Assert;
 
 public class WriteCommentScenario implements PushOMDataSourceScenario {
     @Override
-    public void addTestParameters(MatrixTestCase testCase) {
+    public void addTestParameters(TestParameterTarget testCase) {
         testCase.addTestParameter("scenario", "writeComment");
     }
 

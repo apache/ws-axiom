@@ -28,7 +28,7 @@ import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.testutils.suite.Dimension;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
@@ -52,7 +52,7 @@ public abstract class BuilderFactory extends Multiton implements Dimension {
                         XMLStreamReaderComparator comparator) {}
 
                 @Override
-                public void addTestParameters(MatrixTestCase testCase) {
+                public void addTestParameters(TestParameterTarget testCase) {
                     testCase.addTestParameter("source", "parser");
                 }
 

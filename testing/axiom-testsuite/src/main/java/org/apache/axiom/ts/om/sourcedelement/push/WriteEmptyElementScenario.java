@@ -25,13 +25,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 import org.junit.Assert;
 
 /** Scenario that uses {@link XMLStreamWriter#writeEmptyElement(String, String, String)}. */
 public class WriteEmptyElementScenario implements PushOMDataSourceScenario {
     @Override
-    public void addTestParameters(MatrixTestCase testCase) {
+    public void addTestParameters(TestParameterTarget testCase) {
         testCase.addTestParameter("scenario", "writeEmptyElement");
     }
 

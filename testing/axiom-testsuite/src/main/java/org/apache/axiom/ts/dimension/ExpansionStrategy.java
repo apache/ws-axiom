@@ -25,7 +25,7 @@ import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.junit.Assert;
 
@@ -38,7 +38,7 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
     public static final ExpansionStrategy DONT_EXPAND =
             new ExpansionStrategy() {
                 @Override
-                public void addTestParameters(MatrixTestCase testCase) {
+                public void addTestParameters(TestParameterTarget testCase) {
                     testCase.addTestParameter("expand", "no");
                 }
 
@@ -76,7 +76,7 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
     public static final ExpansionStrategy PARTIAL =
             new ExpansionStrategy() {
                 @Override
-                public void addTestParameters(MatrixTestCase testCase) {
+                public void addTestParameters(TestParameterTarget testCase) {
                     testCase.addTestParameter("expand", "partially");
                 }
 
@@ -110,7 +110,7 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
     public static final ExpansionStrategy FULL =
             new ExpansionStrategy() {
                 @Override
-                public void addTestParameters(MatrixTestCase testCase) {
+                public void addTestParameters(TestParameterTarget testCase) {
                     testCase.addTestParameter("expand", "fully");
                 }
 

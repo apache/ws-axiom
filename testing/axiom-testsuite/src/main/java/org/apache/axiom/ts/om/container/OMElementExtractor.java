@@ -28,7 +28,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.w3c.dom.Document;
@@ -42,7 +42,7 @@ final class OMElementExtractor extends OMContainerExtractor {
     }
 
     @Override
-    public void addTestParameters(MatrixTestCase testCase) {
+    public void addTestParameters(TestParameterTarget testCase) {
         testCase.addTestParameter("container", "element");
         testCase.addTestParameter("detached", detached);
     }

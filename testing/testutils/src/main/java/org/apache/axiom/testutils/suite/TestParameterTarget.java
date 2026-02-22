@@ -18,6 +18,14 @@
  */
 package org.apache.axiom.testutils.suite;
 
-public interface Dimension {
-    void addTestParameters(TestParameterTarget target);
+/**
+ * Receives test parameter registrations. This interface decouples {@link Dimension} from {@link
+ * MatrixTestCase} so that dimensions can be reused with other test tree structures.
+ */
+public interface TestParameterTarget {
+    void addTestParameter(String name, String value);
+
+    void addTestParameter(String name, boolean value);
+
+    void addTestParameter(String name, int value);
 }

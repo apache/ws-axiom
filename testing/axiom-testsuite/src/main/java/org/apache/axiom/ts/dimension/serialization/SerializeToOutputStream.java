@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 
 /** Serializes an {@link OMContainer} using {@link OMContainer#serialize(OutputStream, boolean)}. */
 public class SerializeToOutputStream extends SerializationStrategy {
@@ -33,7 +33,7 @@ public class SerializeToOutputStream extends SerializationStrategy {
     }
 
     @Override
-    public void addTestParameters(MatrixTestCase testCase) {
+    public void addTestParameters(TestParameterTarget testCase) {
         testCase.addTestParameter("serializationStrategy", "OutputStream");
         testCase.addTestParameter("cache", cache);
     }

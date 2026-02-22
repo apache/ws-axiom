@@ -22,7 +22,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.testing.multiton.AdapterType;
 import org.apache.axiom.testutils.suite.Dimension;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 
 @AdapterType
 public abstract class SOAPElementTypeAdapter implements Dimension {
@@ -45,7 +45,7 @@ public abstract class SOAPElementTypeAdapter implements Dimension {
     }
 
     @Override
-    public final void addTestParameters(MatrixTestCase testCase) {
+    public final void addTestParameters(TestParameterTarget testCase) {
         testCase.addTestParameter("type", type.getSimpleName());
     }
 

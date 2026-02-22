@@ -22,13 +22,13 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 
 public abstract class NoNamespaceStrategy extends Multiton implements Dimension {
     public static final NoNamespaceStrategy NULL =
             new NoNamespaceStrategy() {
                 @Override
-                public void addTestParameters(MatrixTestCase testCase) {
+                public void addTestParameters(TestParameterTarget testCase) {
                     testCase.addTestParameter("ns", "null");
                 }
 
@@ -41,7 +41,7 @@ public abstract class NoNamespaceStrategy extends Multiton implements Dimension 
     public static final NoNamespaceStrategy NULL_PREFIX =
             new NoNamespaceStrategy() {
                 @Override
-                public void addTestParameters(MatrixTestCase testCase) {
+                public void addTestParameters(TestParameterTarget testCase) {
                     testCase.addTestParameter("ns", "nullPrefix");
                 }
 
@@ -54,7 +54,7 @@ public abstract class NoNamespaceStrategy extends Multiton implements Dimension 
     public static final NoNamespaceStrategy EMPTY =
             new NoNamespaceStrategy() {
                 @Override
-                public void addTestParameters(MatrixTestCase testCase) {
+                public void addTestParameters(TestParameterTarget testCase) {
                     testCase.addTestParameter("ns", "empty");
                 }
 
