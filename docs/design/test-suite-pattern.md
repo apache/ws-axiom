@@ -252,19 +252,49 @@ abstract class MatrixTestNode {
  * Mirrors {@link DynamicContainer}. Represents a parameterized grouping level
  * in the test tree (e.g. a SOAP version, a serialization strategy).
  *
- * <p>Each {@code MatrixTestContainer} carries a single test parameter (name/value
- * pair). The full parameter dictionary for any leaf {@code MatrixTestCase} is the
- * accumulation of parameters from its ancestor {@code MatrixTestContainer} chain.
+ * <p>Each {@code MatrixTestContainer} corresponds to a single {@link Dimension}
+ * value (e.g. one particular {@code SerializationStrategy}). Because a
+ * {@code Dimension} may contribute multiple test parameters (for example,
+ * {@code SerializeToWriter} adds both {@code serializationStrategy=Writer} and
+ * {@code cache=true}), the container stores a map of parameters rather than a
+ * single name/value pair. The full parameter dictionary for any leaf
+ * {@code MatrixTestCase} is the accumulation of parameters from its ancestor
+ * {@code MatrixTestContainer} chain.
  */
 class MatrixTestContainer extends MatrixTestNode {
-    private final String parameterName;
-    private final String parameterValue;
+    private final Map<String, String> parameters;
     private final List<MatrixTestNode> children = new ArrayList<>();
 
-    MatrixTestContainer(String parameterName, String parameterValue) {
-        super(parameterName + "=" + parameterValue);
-        this.parameterName = parameterName;
-        this.parameterValue = parameterValue;
+    MatrixTestContainer(Map<String, String> parameters) {
+        super(parameters.entrySet().stream()
+                .map(e -> e.getKey() + "=" + e.getValue())
+                .collect(Collectors.joining(", ")));
+        this.parameters = parameters;
+    }
+
+    MatrixTestContainer(Dimension dimension) {
+        this(collectParameters(dimension));
+    }
+
+    private static Map<String, String> collectParameters(Dimension dimension) {
+        Map<String, String> params = new LinkedHashMap<>();
+        dimension.addTestParameters(new TestParameterTarget() {
+            @Override
+            public void addTestParameter(String name, String value) {
+                params.put(name, value);
+            }
+
+            @Override
+            public void addTestParameter(String name, boolean value) {
+                addTestParameter(name, String.valueOf(value));
+            }
+
+            @Override
+            public void addTestParameter(String name, int value) {
+                addTestParameter(name, String.valueOf(value));
+            }
+        });
+        return params;
     }
 
     void addChild(MatrixTestNode child) {
@@ -280,7 +310,7 @@ class MatrixTestContainer extends MatrixTestNode {
             String key = e.nextElement();
             params.put(key, inheritedParameters.get(key));
         }
-        params.put(parameterName, parameterValue);
+        parameters.forEach(params::put);
         return DynamicContainer.dynamicContainer(getDisplayName(),
                 children.stream()
                         .map(child -> child.toDynamicNode(params, excludes))
@@ -320,16 +350,20 @@ class MatrixTestCase extends MatrixTestNode {
 
 #### How filtering works
 
-Each `MatrixTestContainer` level represents one test dimension and carries a single
-parameter. As the tree is converted to `DynamicNode` instances via `toDynamicNode()`,
-parameters accumulate from the root down:
+Each `MatrixTestContainer` level represents one `Dimension` value and carries one or
+more parameters contributed by that dimension. As the tree is converted to `DynamicNode`
+instances via `toDynamicNode()`, parameters accumulate from the root down:
 
 ```
-MatrixTestContainer("spec", "soap11")               → params: {spec=soap11}
-  MatrixTestContainer("strategy", "text")            → params: {spec=soap11, strategy=text}
-    MatrixTestCase("serializeToWriter", ...)          → filtered against {spec=soap11, strategy=text}
-    MatrixTestCase("serializeToStream", ...)          → filtered against {spec=soap11, strategy=text}
+MatrixTestContainer(SOAPSpec.SOAP11)                 → params: {spec=soap11}
+  MatrixTestContainer(SerializeToWriter(cache=true)) → params: {spec=soap11, serializationStrategy=Writer, cache=true}
+    MatrixTestCase("serializeElement", ...)           → filtered against {spec=soap11, serializationStrategy=Writer, cache=true}
+    MatrixTestCase("serializeDocument", ...)          → filtered against {spec=soap11, serializationStrategy=Writer, cache=true}
 ```
+
+Note that `SerializeToWriter` contributes two parameters (`serializationStrategy` and
+`cache`) to a single container level, matching the existing `Dimension` contract where
+`addTestParameters()` may call `addTestParameter()` multiple times.
 
 Consumers apply exclusions exactly as they do today:
 
@@ -350,8 +384,9 @@ class OMImplementationTests {
 
 *   Produces a hierarchical test tree in the IDE (grouped by dimension) instead of a
     flat list with parameter suffixes in the test name.
-*   Parameters are distributed across the tree (one per container level) rather than
-    accumulated on each leaf test case, making the structure explicit.
+*   Parameters are distributed across the tree (one `Dimension` per container level,
+    possibly contributing multiple parameters) rather than accumulated on each leaf
+    test case, making the structure explicit.
 *   Uses standard JUnit 5 `DynamicNode` for execution while keeping the filtering
     infrastructure in the intermediate `MatrixTestNode` layer.
 *   The LDAP-style filter mechanism is preserved unchanged.
