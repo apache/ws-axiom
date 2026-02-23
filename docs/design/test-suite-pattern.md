@@ -217,12 +217,20 @@ The larger suites present additional considerations:
     output into `DynamicTest` instances would allow consuming modules to migrate to
     JUnit 5 runners without rewriting test case classes.
 
-### Replacement for MatrixTestSuiteBuilder: MatrixTestNode tree
+### Replacement for MatrixTestSuiteBuilder: MatrixTestNode tree with Guice
 
 Since `DynamicContainer` and `DynamicTest` are `final` in JUnit 5, they cannot be
 subclassed to attach test parameters for LDAP-style filtering. Instead, a parallel
-class hierarchy can act as a factory for `DynamicNode` instances while carrying the
+class hierarchy acts as a factory for `DynamicNode` instances while carrying the
 parameters needed for exclusion filtering.
+
+Tests continue to be structured as one test case per class extending
+`junit.framework.TestCase`, with each class overriding `runTest()`. Rather than
+receiving test parameters via constructor arguments, test cases declare their
+dependencies using `@Inject` annotations and are instantiated by Google Guice.
+`MatrixTestContainer` builds a Guice injector hierarchy — one child injector per
+dimension value — so that by the time a leaf `MatrixTestCase` is reached, the
+accumulated injector can satisfy all `@Inject` dependencies for the test case class.
 
 #### Class hierarchy
 
@@ -230,9 +238,14 @@ parameters needed for exclusion filtering.
 /**
  * Base class mirroring {@link DynamicNode}. Represents a node in the test tree
  * that can be filtered before conversion to JUnit 5's dynamic test API.
+ *
+ * <p>The {@code parentInjector} parameter threads through the tree: each
+ * {@link MatrixTestContainer} creates child injectors from it, and each
+ * {@link MatrixTestCase} uses it to instantiate the test class.
  */
 abstract class MatrixTestNode {
-    abstract Stream<DynamicNode> toDynamicNodes(Dictionary<String, String> inheritedParameters,
+    abstract Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
+            Dictionary<String, String> inheritedParameters,
             List<Filter> excludes);
 }
 ```
@@ -245,23 +258,28 @@ abstract class MatrixTestNode {
  * <p>A {@code MatrixTestContainer} holds a list of {@link Dimension} instances
  * of a given type (e.g. all {@code SOAPSpec} values, or all
  * {@code SerializationStrategy} values). When {@link #toDynamicNodes} is called,
- * it produces one {@link DynamicContainer} per dimension instance. Each
- * dimension's test parameters are extracted at that point to determine the
- * display name and to merge into the inherited parameter dictionary. Because a
- * {@code Dimension} may contribute multiple test parameters (for example,
- * {@code SerializeToWriter} adds both {@code serializationStrategy=Writer} and
- * {@code cache=true}), these parameters also determine the display name. The
- * full parameter dictionary for any leaf {@code MatrixTestCase} is the
- * accumulation of parameters from its ancestor {@code MatrixTestContainer}
- * chain.
+ * it produces one {@link DynamicContainer} per dimension instance. For each
+ * dimension instance, a <em>child Guice injector</em> is created from the
+ * parent injector, binding the dimension type to that specific instance. This
+ * child injector is then propagated to all children, forming a hierarchy where
+ * each path from root to leaf accumulates all dimension bindings.
+ *
+ * <p>Because a {@code Dimension} may contribute multiple test parameters (for
+ * example, {@code SerializeToWriter} adds both {@code serializationStrategy=Writer}
+ * and {@code cache=true}), the test parameters extracted from each dimension
+ * determine both the display name and the filter dictionary. The full parameter
+ * dictionary for any leaf {@code MatrixTestCase} is the accumulation of
+ * parameters from its ancestor {@code MatrixTestContainer} chain.
  *
  * @param <D> the dimension type
  */
 class MatrixTestContainer<D extends Dimension> extends MatrixTestNode {
+    private final Class<D> dimensionType;
     private final List<D> dimensions;
     private final List<MatrixTestNode> children = new ArrayList<>();
 
-    MatrixTestContainer(List<D> dimensions) {
+    MatrixTestContainer(Class<D> dimensionType, List<D> dimensions) {
+        this.dimensionType = dimensionType;
         this.dimensions = dimensions;
     }
 
@@ -270,9 +288,19 @@ class MatrixTestContainer<D extends Dimension> extends MatrixTestNode {
     }
 
     @Override
-    Stream<DynamicNode> toDynamicNodes(Dictionary<String, String> inheritedParameters,
+    Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
+            Dictionary<String, String> inheritedParameters,
             List<Filter> excludes) {
         return dimensions.stream().map(dimension -> {
+            // Create a child injector that binds this dimension value.
+            Injector childInjector = parentInjector.createChildInjector(new AbstractModule() {
+                @Override
+                protected void configure() {
+                    bind(dimensionType).toInstance(dimension);
+                }
+            });
+
+            // Extract test parameters from the dimension for display and filtering.
             Map<String, String> parameters = new LinkedHashMap<>();
             dimension.addTestParameters(new TestParameterTarget() {
                 @Override
@@ -302,7 +330,7 @@ class MatrixTestContainer<D extends Dimension> extends MatrixTestNode {
                     .collect(Collectors.joining(", "));
             return DynamicContainer.dynamicContainer(displayName,
                     children.stream()
-                            .flatMap(child -> child.toDynamicNodes(params, excludes)));
+                            .flatMap(child -> child.toDynamicNodes(childInjector, params, excludes)));
         });
     }
 }
@@ -310,31 +338,183 @@ class MatrixTestContainer<D extends Dimension> extends MatrixTestNode {
 
 ```java
 /**
- * Mirrors {@link DynamicTest}. A leaf test case with an executable body.
- * Filtering is applied based on the accumulated parameters from ancestor
- * containers plus the test class name.
+ * Mirrors {@link DynamicTest}. A leaf node that instantiates a
+ * {@link junit.framework.TestCase} subclass via Guice and executes it.
+ *
+ * <p>The test class must have an injectable constructor (either a no-arg
+ * constructor or one annotated with {@code @Inject}). Field injection is
+ * also supported. The injector received from the ancestor
+ * {@code MatrixTestContainer} chain will have bindings for all dimension
+ * types, plus any implementation-level bindings from the root injector
+ * (e.g. {@code OMMetaFactory}, {@code SAAJImplementation}).
+ *
+ * <p>Once the instance is created, it is executed via {@link TestCase#runBare()},
+ * which invokes the full {@code setUp()} → {@code runTest()} → {@code tearDown()}
+ * lifecycle.
  */
 class MatrixTestCase extends MatrixTestNode {
-    private final Class<?> testClass;
-    private final Executable executable;
+    private final Class<? extends TestCase> testClass;
 
-    MatrixTestCase(Class<?> testClass, Executable executable) {
+    MatrixTestCase(Class<? extends TestCase> testClass) {
         this.testClass = testClass;
-        this.executable = executable;
     }
 
     @Override
-    Stream<DynamicNode> toDynamicNodes(Dictionary<String, String> inheritedParameters,
+    Stream<DynamicNode> toDynamicNodes(Injector injector,
+            Dictionary<String, String> inheritedParameters,
             List<Filter> excludes) {
         for (Filter exclude : excludes) {
             if (exclude.matches(testClass, inheritedParameters)) {
                 return Stream.empty(); // Excluded
             }
         }
-        return Stream.of(DynamicTest.dynamicTest(testClass.getSimpleName(), executable));
+        return Stream.of(DynamicTest.dynamicTest(testClass.getSimpleName(), () -> {
+            TestCase testInstance = injector.getInstance(testClass);
+            testInstance.setName(testClass.getSimpleName());
+            testInstance.runBare();
+        }));
     }
 }
 ```
+
+#### Guice injector hierarchy
+
+The injector hierarchy mirrors the `MatrixTestContainer` nesting. The root injector
+is created by the consumer and binds implementation-level objects. Each
+`MatrixTestContainer` level creates one child injector per dimension value, binding
+the dimension type. By the time a leaf `MatrixTestCase` is reached, the injector
+can satisfy all `@Inject` dependencies.
+
+```
+Root Injector
+  binds: SAAJImplementation → instance
+  │
+  ├─ Child Injector (SOAPSpec → SOAP11)
+  │    │
+  │    ├─ MatrixTestCase → injector.getInstance(TestAddChildElementReification.class)
+  │    │                   → testInstance.runBare()
+  │    └─ MatrixTestCase → injector.getInstance(TestGetOwnerDocument.class)
+  │                        → testInstance.runBare()
+  │
+  └─ Child Injector (SOAPSpec → SOAP12)
+       │
+       ├─ MatrixTestCase → injector.getInstance(TestAddChildElementReification.class)
+       │                   → testInstance.runBare()
+       └─ MatrixTestCase → injector.getInstance(TestGetOwnerDocument.class)
+                           → testInstance.runBare()
+```
+
+For suites with multiple dimensions the nesting deepens:
+
+```
+Root Injector
+  binds: OMMetaFactory → instance
+  │
+  ├─ Child Injector (SOAPSpec → SOAP11)
+  │    │
+  │    ├─ Child Injector (SerializationStrategy → SerializeToWriter)
+  │    │    └─ MatrixTestCase → injector has {OMMetaFactory, SOAPSpec, SerializationStrategy}
+  │    │
+  │    └─ Child Injector (SerializationStrategy → SerializeToOutputStream)
+  │         └─ MatrixTestCase → injector has {OMMetaFactory, SOAPSpec, SerializationStrategy}
+  │
+  └─ Child Injector (SOAPSpec → SOAP12)
+       └─ ...
+```
+
+#### What test case classes look like
+
+Test case classes continue to extend `junit.framework.TestCase` (or a domain-specific
+subclass) and override `runTest()`. The key difference is that dependencies are injected
+by Guice rather than passed via constructor arguments.
+
+**Before (constructor parameters):**
+
+```java
+public class TestAddChildElementReification extends SAAJTestCase {
+    public TestAddChildElementReification(SAAJImplementation saajImplementation, SOAPSpec spec) {
+        super(saajImplementation, spec);
+    }
+
+    @Override
+    protected void runTest() throws Throwable {
+        SOAPBody body = newMessageFactory().createMessage().getSOAPBody();
+        SOAPElement child = body.addChildElement(
+                (SOAPElement) body.getOwnerDocument().createElementNS("urn:test", "p:test"));
+        assertThat(child).isInstanceOf(SOAPBodyElement.class);
+    }
+}
+```
+
+**After (Guice injection):**
+
+```java
+public class TestAddChildElementReification extends SAAJTestCase {
+    @Override
+    protected void runTest() throws Throwable {
+        SOAPBody body = newMessageFactory().createMessage().getSOAPBody();
+        SOAPElement child = body.addChildElement(
+                (SOAPElement) body.getOwnerDocument().createElementNS("urn:test", "p:test"));
+        assertThat(child).isInstanceOf(SOAPBodyElement.class);
+    }
+}
+```
+
+The intermediate base class `SAAJTestCase` uses `@Inject` for its dependencies:
+
+```java
+public abstract class SAAJTestCase extends TestCase {
+    @Inject protected SAAJImplementation saajImplementation;
+    @Inject protected SOAPSpec spec;
+
+    protected final MessageFactory newMessageFactory() throws SOAPException {
+        return spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation);
+    }
+
+    protected final SOAPFactory newSOAPFactory() throws SOAPException {
+        return spec.getAdapter(FactorySelector.class).newSOAPFactory(saajImplementation);
+    }
+}
+```
+
+For the larger axiom-testsuite, intermediate classes follow the same pattern:
+
+```java
+public abstract class AxiomTestCase extends TestCase {
+    @Inject protected OMMetaFactory metaFactory;
+}
+
+public abstract class SOAPTestCase extends AxiomTestCase {
+    @Inject protected SOAPSpec spec;
+    protected SOAPFactory soapFactory;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        soapFactory = spec.getAdapter(FactorySelector.class).getFactory(metaFactory);
+    }
+}
+```
+
+Test cases with multiple dimensions simply inject all of them:
+
+```java
+public class TestSerializeWithXSITypeAttribute extends SOAPTestCase {
+    @Inject private SerializationStrategy serializationStrategy;
+
+    @Override
+    protected void runTest() throws Throwable {
+        XML xml = serializationStrategy.serialize(
+                soapFactory.getDefaultSOAPEnvelope().getBody());
+        // ... assertions ...
+    }
+}
+```
+
+Note that the existing `Dimension.addTestParameters()` mechanism is **not** used by test
+case classes at all. Parameters are extracted only by `MatrixTestContainer` for display
+names and filter matching. Test cases interact with dimensions purely as typed objects
+obtained through injection.
 
 #### How filtering works
 
@@ -344,34 +524,99 @@ called, each container produces one `DynamicContainer` per dimension instance, a
 parameters accumulate from the root down:
 
 ```
-MatrixTestContainer([SOAPSpec.SOAP11, SOAPSpec.SOAP12])
-  MatrixTestContainer([SerializeToWriter(cache=true), ...])
-    MatrixTestCase(SerializeElement.class, ...)
-    MatrixTestCase(SerializeDocument.class, ...)
+MatrixTestContainer(SOAPSpec.class, [SOAPSpec.SOAP11, SOAPSpec.SOAP12])
+  MatrixTestContainer(SerializationStrategy.class, [SerializeToWriter, ...])
+    MatrixTestCase(TestSerializeElement.class)
+    MatrixTestCase(TestSerializeDocument.class)
 
-→ spec=soap11
-    → serializationStrategy=Writer, cache=true
-        → SerializeElement  (filtered against {spec=soap11, serializationStrategy=Writer, cache=true})
-        → SerializeDocument (filtered against {spec=soap11, serializationStrategy=Writer, cache=true})
+→ spec=soap11                                      [child injector binds SOAPSpec]
+    → serializationStrategy=Writer, cache=true      [child injector binds SerializationStrategy]
+        → TestSerializeElement  (filtered against {spec=soap11, serializationStrategy=Writer, cache=true})
+        → TestSerializeDocument (filtered against {spec=soap11, serializationStrategy=Writer, cache=true})
   spec=soap12
     → serializationStrategy=Writer, cache=true
         → ...
 ```
 
-Note that `SerializeToWriter` contributes two parameters (`serializationStrategy` and
-`cache`) to a single container level, matching the existing `Dimension` contract where
-`addTestParameters()` may call `addTestParameter()` multiple times.
+Consumers apply exclusions and create the root injector:
 
-Consumers apply exclusions exactly as they do today:
+```java
+class SAAJRITests {
+    @TestFactory
+    Stream<DynamicNode> saajTests() {
+        SAAJImplementation impl = new SAAJImplementation(new SAAJMetaFactoryImpl());
+        Injector rootInjector = Guice.createInjector(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(SAAJImplementation.class).toInstance(impl);
+            }
+        });
+
+        MatrixTestContainer<SOAPSpec> root = new MatrixTestContainer<>(
+                SOAPSpec.class, Multiton.getInstances(SOAPSpec.class));
+        root.addChild(new MatrixTestCase(TestAddChildElementReification.class));
+        root.addChild(new MatrixTestCase(TestExamineMustUnderstandHeaderElements.class));
+        root.addChild(new MatrixTestCase(TestAddChildElementLocalName.class));
+        root.addChild(new MatrixTestCase(TestAddChildElementLocalNamePrefixAndURI.class));
+        root.addChild(new MatrixTestCase(TestSetParentElement.class));
+        root.addChild(new MatrixTestCase(TestGetOwnerDocument.class));
+
+        List<Filter> excludes = new ArrayList<>();
+        return root.toDynamicNodes(rootInjector, new Hashtable<>(), excludes);
+    }
+}
+```
+
+For large suites, a builder class constructs the tree:
+
+```java
+class OMTestTreeBuilder {
+    private final OMMetaFactory metaFactory;
+
+    OMTestTreeBuilder(OMMetaFactory metaFactory) {
+        this.metaFactory = metaFactory;
+    }
+
+    Injector createRootInjector() {
+        return Guice.createInjector(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(OMMetaFactory.class).toInstance(metaFactory);
+            }
+        });
+    }
+
+    MatrixTestNode build() {
+        // Top-level container groups by SOAPSpec
+        MatrixTestContainer<SOAPSpec> bySpec = new MatrixTestContainer<>(
+                SOAPSpec.class, Multiton.getInstances(SOAPSpec.class));
+
+        // Nested container groups by SerializationStrategy
+        MatrixTestContainer<SerializationStrategy> bySerialization = new MatrixTestContainer<>(
+                SerializationStrategy.class,
+                Multiton.getInstances(SerializationStrategy.class));
+        bySerialization.addChild(new MatrixTestCase(TestSerializeWithXSITypeAttribute.class));
+        bySerialization.addChild(new MatrixTestCase(TestSerializeDocument.class));
+        bySpec.addChild(bySerialization);
+
+        // Tests that only vary by SOAPSpec (no serialization dimension)
+        bySpec.addChild(new MatrixTestCase(TestGetSOAPVersion.class));
+
+        return bySpec;
+    }
+}
+```
 
 ```java
 class OMImplementationTests {
     @TestFactory
     Stream<DynamicNode> omTests() {
-        MatrixTestContainer<?> root = new OMTestTreeBuilder(metaFactory).build();
+        OMTestTreeBuilder builder = new OMTestTreeBuilder(myMetaFactory);
+        Injector rootInjector = builder.createRootInjector();
+        MatrixTestNode root = builder.build();
         List<Filter> excludes = new ArrayList<>();
-        excludes.add(Filter.forClass(TestSerialize.class, "(spec=soap12)"));
-        return root.toDynamicNodes(new Hashtable<>(), excludes);
+        excludes.add(Filter.forClass(TestSerializeDocument.class, "(spec=soap12)"));
+        return root.toDynamicNodes(rootInjector, new Hashtable<>(), excludes);
     }
 }
 ```
@@ -386,32 +631,14 @@ class OMImplementationTests {
 *   Uses standard JUnit 5 `DynamicNode` for execution while keeping the filtering
     infrastructure in the intermediate `MatrixTestNode` layer.
 *   The LDAP-style filter mechanism is preserved unchanged.
-
-### Hybrid approach: JUnit 5 adapter for MatrixTestSuiteBuilder
-
-A pragmatic intermediate step would be to create a JUnit 5 adapter that converts a
-`MatrixTestSuiteBuilder` into a `@TestFactory` method, allowing consumers to use JUnit 5
-without rewriting the test suites themselves:
-
-```java
-public abstract class MatrixTestFactory {
-    protected abstract MatrixTestSuiteBuilder createBuilder();
-
-    @TestFactory
-    Stream<DynamicTest> tests() {
-        TestSuite suite = createBuilder().build();
-        return Collections.list(suite.tests()).stream()
-                .map(test -> DynamicTest.dynamicTest(test.toString(), () -> {
-                    TestResult result = new TestResult();
-                    test.run(result);
-                    if (result.failureCount() > 0) {
-                        throw (Throwable) result.failures().nextElement()
-                                .thrownException();
-                    }
-                }));
-    }
-}
-```
-
-This would allow the project to migrate runners (consuming modules) to JUnit 5
-incrementally while preserving the existing test suite infrastructure.
+*   **Guice injection decouples test cases from the tree structure.** Test cases declare
+    what they need (`@Inject SOAPSpec spec`) without knowing how or where in the tree
+    hierarchy that binding is provided. Adding a new dimension to the tree does not
+    require changing test case constructors.
+*   **No boilerplate parameter passing in builders.** The current pattern requires each
+    `addTest()` call to manually pass all dimension values to the test constructor.
+    With Guice, `MatrixTestCase` only needs the test class; the injector supplies
+    everything.
+*   **Test case base classes become simpler.** Intermediate classes like `SAAJTestCase`,
+    `SOAPTestCase`, and `AxiomTestCase` no longer need constructor parameters or chains
+    of `super(...)` calls — they simply declare `@Inject` fields.
