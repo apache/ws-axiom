@@ -232,16 +232,6 @@ parameters needed for exclusion filtering.
  * that can be filtered before conversion to JUnit 5's dynamic test API.
  */
 abstract class MatrixTestNode {
-    private final String displayName;
-
-    MatrixTestNode(String displayName) {
-        this.displayName = displayName;
-    }
-
-    String getDisplayName() {
-        return displayName;
-    }
-
     abstract DynamicNode toDynamicNode(Dictionary<String, String> inheritedParameters,
             List<Filter> excludes);
 }
@@ -253,35 +243,36 @@ abstract class MatrixTestNode {
  * in the test tree (e.g. a SOAP version, a serialization strategy).
  *
  * <p>Each {@code MatrixTestContainer} corresponds to a single {@link Dimension}
- * value (e.g. one particular {@code SerializationStrategy}). Because a
- * {@code Dimension} may contribute multiple test parameters (for example,
- * {@code SerializeToWriter} adds both {@code serializationStrategy=Writer} and
- * {@code cache=true}), the container stores a map of parameters rather than a
- * single name/value pair. The full parameter dictionary for any leaf
+ * value (e.g. one particular {@code SerializationStrategy}). The {@code Dimension}
+ * is stored as-is; its test parameters are extracted lazily when
+ * {@link #toDynamicNode(Dictionary, List)} is called. Because a {@code Dimension}
+ * may contribute multiple test parameters (for example, {@code SerializeToWriter}
+ * adds both {@code serializationStrategy=Writer} and {@code cache=true}), these
+ * parameters also determine the display name and are merged into the inherited
+ * parameter dictionary. The full parameter dictionary for any leaf
  * {@code MatrixTestCase} is the accumulation of parameters from its ancestor
  * {@code MatrixTestContainer} chain.
  */
 class MatrixTestContainer extends MatrixTestNode {
-    private final Map<String, String> parameters;
+    private final Dimension dimension;
     private final List<MatrixTestNode> children = new ArrayList<>();
 
-    MatrixTestContainer(Map<String, String> parameters) {
-        super(parameters.entrySet().stream()
-                .map(e -> e.getKey() + "=" + e.getValue())
-                .collect(Collectors.joining(", ")));
-        this.parameters = parameters;
-    }
-
     MatrixTestContainer(Dimension dimension) {
-        this(collectParameters(dimension));
+        this.dimension = dimension;
     }
 
-    private static Map<String, String> collectParameters(Dimension dimension) {
-        Map<String, String> params = new LinkedHashMap<>();
+    void addChild(MatrixTestNode child) {
+        children.add(child);
+    }
+
+    @Override
+    DynamicNode toDynamicNode(Dictionary<String, String> inheritedParameters,
+            List<Filter> excludes) {
+        Map<String, String> parameters = new LinkedHashMap<>();
         dimension.addTestParameters(new TestParameterTarget() {
             @Override
             public void addTestParameter(String name, String value) {
-                params.put(name, value);
+                parameters.put(name, value);
             }
 
             @Override
@@ -294,16 +285,6 @@ class MatrixTestContainer extends MatrixTestNode {
                 addTestParameter(name, String.valueOf(value));
             }
         });
-        return params;
-    }
-
-    void addChild(MatrixTestNode child) {
-        children.add(child);
-    }
-
-    @Override
-    DynamicNode toDynamicNode(Dictionary<String, String> inheritedParameters,
-            List<Filter> excludes) {
         Hashtable<String, String> params = new Hashtable<>();
         // Copy inherited parameters from ancestor containers
         for (Enumeration<String> e = inheritedParameters.keys(); e.hasMoreElements(); ) {
@@ -311,7 +292,10 @@ class MatrixTestContainer extends MatrixTestNode {
             params.put(key, inheritedParameters.get(key));
         }
         parameters.forEach(params::put);
-        return DynamicContainer.dynamicContainer(getDisplayName(),
+        String displayName = parameters.entrySet().stream()
+                .map(e -> e.getKey() + "=" + e.getValue())
+                .collect(Collectors.joining(", "));
+        return DynamicContainer.dynamicContainer(displayName,
                 children.stream()
                         .map(child -> child.toDynamicNode(params, excludes))
                         .filter(Objects::nonNull));
@@ -329,8 +313,7 @@ class MatrixTestCase extends MatrixTestNode {
     private final Class<?> testClass;
     private final Executable executable;
 
-    MatrixTestCase(String displayName, Class<?> testClass, Executable executable) {
-        super(displayName);
+    MatrixTestCase(Class<?> testClass, Executable executable) {
         this.testClass = testClass;
         this.executable = executable;
     }
@@ -343,7 +326,7 @@ class MatrixTestCase extends MatrixTestNode {
                 return null; // Excluded
             }
         }
-        return DynamicTest.dynamicTest(getDisplayName(), executable);
+        return DynamicTest.dynamicTest(testClass.getSimpleName(), executable);
     }
 }
 ```
@@ -357,8 +340,8 @@ instances via `toDynamicNode()`, parameters accumulate from the root down:
 ```
 MatrixTestContainer(SOAPSpec.SOAP11)                 → params: {spec=soap11}
   MatrixTestContainer(SerializeToWriter(cache=true)) → params: {spec=soap11, serializationStrategy=Writer, cache=true}
-    MatrixTestCase("serializeElement", ...)           → filtered against {spec=soap11, serializationStrategy=Writer, cache=true}
-    MatrixTestCase("serializeDocument", ...)          → filtered against {spec=soap11, serializationStrategy=Writer, cache=true}
+    MatrixTestCase(SerializeElement.class, ...)        → filtered against {spec=soap11, serializationStrategy=Writer, cache=true}
+    MatrixTestCase(SerializeDocument.class, ...)      → filtered against {spec=soap11, serializationStrategy=Writer, cache=true}
 ```
 
 Note that `SerializeToWriter` contributes two parameters (`serializationStrategy` and
