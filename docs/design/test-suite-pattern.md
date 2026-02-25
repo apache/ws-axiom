@@ -229,7 +229,7 @@ Tests continue to be structured as one test case per class extending
 receiving test parameters via constructor arguments, test cases declare their
 dependencies using `@Inject` annotations and are instantiated by Google Guice.
 `MatrixTestContainer` builds a Guice injector hierarchy — one child injector per
-dimension value — so that by the time a leaf `MatrixTestCase` is reached, the
+dimension value — so that by the time a leaf `MatrixTest` is reached, the
 accumulated injector can satisfy all `@Inject` dependencies for the test case class.
 
 #### Class hierarchy
@@ -241,7 +241,7 @@ accumulated injector can satisfy all `@Inject` dependencies for the test case cl
  *
  * <p>The {@code parentInjector} parameter threads through the tree: each
  * {@link MatrixTestContainer} creates child injectors from it, and each
- * {@link MatrixTestCase} uses it to instantiate the test class.
+ * {@link MatrixTest} uses it to instantiate the test class.
  */
 abstract class MatrixTestNode {
     abstract Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
@@ -268,7 +268,7 @@ abstract class MatrixTestNode {
  * example, {@code SerializeToWriter} adds both {@code serializationStrategy=Writer}
  * and {@code cache=true}), the test parameters extracted from each dimension
  * determine both the display name and the filter dictionary. The full parameter
- * dictionary for any leaf {@code MatrixTestCase} is the accumulation of
+ * dictionary for any leaf {@code MatrixTest} is the accumulation of
  * parameters from its ancestor {@code MatrixTestContainer} chain.
  *
  * @param <D> the dimension type
@@ -352,10 +352,10 @@ class MatrixTestContainer<D extends Dimension> extends MatrixTestNode {
  * which invokes the full {@code setUp()} → {@code runTest()} → {@code tearDown()}
  * lifecycle.
  */
-class MatrixTestCase extends MatrixTestNode {
+class MatrixTest extends MatrixTestNode {
     private final Class<? extends TestCase> testClass;
 
-    MatrixTestCase(Class<? extends TestCase> testClass) {
+    MatrixTest(Class<? extends TestCase> testClass) {
         this.testClass = testClass;
     }
 
@@ -382,7 +382,7 @@ class MatrixTestCase extends MatrixTestNode {
 The injector hierarchy mirrors the `MatrixTestContainer` nesting. The root injector
 is created by the consumer and binds implementation-level objects. Each
 `MatrixTestContainer` level creates one child injector per dimension value, binding
-the dimension type. By the time a leaf `MatrixTestCase` is reached, the injector
+the dimension type. By the time a leaf `MatrixTest` is reached, the injector
 can satisfy all `@Inject` dependencies.
 
 ```
@@ -391,16 +391,16 @@ Root Injector
   │
   ├─ Child Injector (SOAPSpec → SOAP11)
   │    │
-  │    ├─ MatrixTestCase → injector.getInstance(TestAddChildElementReification.class)
-  │    │                   → testInstance.runBare()
-  │    └─ MatrixTestCase → injector.getInstance(TestGetOwnerDocument.class)
-  │                        → testInstance.runBare()
+  │    ├─ MatrixTest → injector.getInstance(TestAddChildElementReification.class)
+  │    │               → testInstance.runBare()
+  │    └─ MatrixTest → injector.getInstance(TestGetOwnerDocument.class)
+  │                    → testInstance.runBare()
   │
   └─ Child Injector (SOAPSpec → SOAP12)
        │
-       ├─ MatrixTestCase → injector.getInstance(TestAddChildElementReification.class)
-       │                   → testInstance.runBare()
-       └─ MatrixTestCase → injector.getInstance(TestGetOwnerDocument.class)
+       ├─ MatrixTest → injector.getInstance(TestAddChildElementReification.class)
+       │               → testInstance.runBare()
+       └─ MatrixTest → injector.getInstance(TestGetOwnerDocument.class)
                            → testInstance.runBare()
 ```
 
@@ -413,10 +413,10 @@ Root Injector
   ├─ Child Injector (SOAPSpec → SOAP11)
   │    │
   │    ├─ Child Injector (SerializationStrategy → SerializeToWriter)
-  │    │    └─ MatrixTestCase → injector has {OMMetaFactory, SOAPSpec, SerializationStrategy}
+  │    │    └─ MatrixTest → injector has {OMMetaFactory, SOAPSpec, SerializationStrategy}
   │    │
   │    └─ Child Injector (SerializationStrategy → SerializeToOutputStream)
-  │         └─ MatrixTestCase → injector has {OMMetaFactory, SOAPSpec, SerializationStrategy}
+  │         └─ MatrixTest → injector has {OMMetaFactory, SOAPSpec, SerializationStrategy}
   │
   └─ Child Injector (SOAPSpec → SOAP12)
        └─ ...
@@ -526,8 +526,8 @@ parameters accumulate from the root down:
 ```
 MatrixTestContainer(SOAPSpec.class, [SOAPSpec.SOAP11, SOAPSpec.SOAP12])
   MatrixTestContainer(SerializationStrategy.class, [SerializeToWriter, ...])
-    MatrixTestCase(TestSerializeElement.class)
-    MatrixTestCase(TestSerializeDocument.class)
+    MatrixTest(TestSerializeElement.class)
+    MatrixTest(TestSerializeDocument.class)
 
 → spec=soap11                                      [child injector binds SOAPSpec]
     → serializationStrategy=Writer, cache=true      [child injector binds SerializationStrategy]
@@ -554,12 +554,12 @@ class SAAJRITests {
 
         MatrixTestContainer<SOAPSpec> root = new MatrixTestContainer<>(
                 SOAPSpec.class, Multiton.getInstances(SOAPSpec.class));
-        root.addChild(new MatrixTestCase(TestAddChildElementReification.class));
-        root.addChild(new MatrixTestCase(TestExamineMustUnderstandHeaderElements.class));
-        root.addChild(new MatrixTestCase(TestAddChildElementLocalName.class));
-        root.addChild(new MatrixTestCase(TestAddChildElementLocalNamePrefixAndURI.class));
-        root.addChild(new MatrixTestCase(TestSetParentElement.class));
-        root.addChild(new MatrixTestCase(TestGetOwnerDocument.class));
+        root.addChild(new MatrixTest(TestAddChildElementReification.class));
+        root.addChild(new MatrixTest(TestExamineMustUnderstandHeaderElements.class));
+        root.addChild(new MatrixTest(TestAddChildElementLocalName.class));
+        root.addChild(new MatrixTest(TestAddChildElementLocalNamePrefixAndURI.class));
+        root.addChild(new MatrixTest(TestSetParentElement.class));
+        root.addChild(new MatrixTest(TestGetOwnerDocument.class));
 
         List<Filter> excludes = new ArrayList<>();
         return root.toDynamicNodes(rootInjector, new Hashtable<>(), excludes);
@@ -595,12 +595,12 @@ class OMTestTreeBuilder {
         MatrixTestContainer<SerializationStrategy> bySerialization = new MatrixTestContainer<>(
                 SerializationStrategy.class,
                 Multiton.getInstances(SerializationStrategy.class));
-        bySerialization.addChild(new MatrixTestCase(TestSerializeWithXSITypeAttribute.class));
-        bySerialization.addChild(new MatrixTestCase(TestSerializeDocument.class));
+        bySerialization.addChild(new MatrixTest(TestSerializeWithXSITypeAttribute.class));
+        bySerialization.addChild(new MatrixTest(TestSerializeDocument.class));
         bySpec.addChild(bySerialization);
 
         // Tests that only vary by SOAPSpec (no serialization dimension)
-        bySpec.addChild(new MatrixTestCase(TestGetSOAPVersion.class));
+        bySpec.addChild(new MatrixTest(TestGetSOAPVersion.class));
 
         return bySpec;
     }
@@ -637,7 +637,7 @@ class OMImplementationTests {
     require changing test case constructors.
 *   **No boilerplate parameter passing in builders.** The current pattern requires each
     `addTest()` call to manually pass all dimension values to the test constructor.
-    With Guice, `MatrixTestCase` only needs the test class; the injector supplies
+    With Guice, `MatrixTest` only needs the test class; the injector supplies
     everything.
 *   **Test case base classes become simpler.** Intermediate classes like `SAAJTestCase`,
     `SOAPTestCase`, and `AxiomTestCase` no longer need constructor parameters or chains
