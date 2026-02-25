@@ -26,26 +26,22 @@
         <version>2.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>testutils</artifactId>
+    <artifactId>matrix-testsuite</artifactId>
 
-    <name>Axiom Test Utilities</name>
+    <name>Axiom Matrix Test Suite</name>
     <description>
-        Contains utility classes used by the test suites in Axiom.
+        Contains the matrix test suite infrastructure used by the test suites in Axiom.
     </description>
     <url>http://ws.apache.org/axiom/</url>
 
     <dependencies>
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.google.truth</groupId>
-            <artifactId>truth</artifactId>
+        <dependency><!-- We use this only for LDAP like filters -->
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.framework</artifactId>
         </dependency>
     </dependencies>
 </project>

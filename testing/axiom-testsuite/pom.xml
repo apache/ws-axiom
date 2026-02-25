@@ -76,6 +76,11 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>matrix-testsuite</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>url-registry</artifactId>
             <version>${project.version}</version>
         </dependency>

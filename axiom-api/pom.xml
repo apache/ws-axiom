@@ -95,6 +95,12 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>matrix-testsuite</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>xml-testsuite</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>

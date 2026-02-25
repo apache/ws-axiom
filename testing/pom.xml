@@ -40,6 +40,7 @@
         <module>saaj-testsuite</module>
         <module>soap-testsuite</module>
         <module>spring-ws-testsuite</module>
+        <module>matrix-testsuite</module>
         <module>testutils</module>
         <module>xml-testsuite</module>
         <module>xml-truth</module>
