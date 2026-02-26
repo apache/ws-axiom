@@ -417,7 +417,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
             addAttribute(
                     qname.getLocalPart(),
                     value,
-                    new OMNamespaceImpl(qname.getNamespaceURI(), qname.getLocalPart()));
+                    new OMNamespaceImpl(qname.getNamespaceURI(), qname.getPrefix()));
         }
     }
 
