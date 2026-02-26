@@ -229,6 +229,9 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeadersToProcessWithNamespace(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeadersToProcessWithParser(metaFactory, spec));
         for (HeaderBlockAttribute attribute : getInstances(HeaderBlockAttribute.class)) {
+            if (attribute.isSupported(spec)) {
+                addTest(new org.apache.axiom.ts.soap.headerblock.TestSetAttributeNamespacePrefix(metaFactory, spec, attribute));
+            }
             if (attribute.isBoolean()) {
                 if (attribute.isSupported(spec)) {
                     for (int j=0; j<booleanLiterals.length; j++) {
