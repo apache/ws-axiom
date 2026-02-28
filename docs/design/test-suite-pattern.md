@@ -484,13 +484,14 @@ MatrixTestContainer(SOAPSpec.class, [SOAPSpec.SOAP11, SOAPSpec.SOAP12])
     → TestGetOwnerDocument             (filtered against {spec=soap12})
 ```
 
-Consumers build a `MatrixTestSuite` and return its dynamic nodes:
+The **test suite author** (in `saaj-testsuite`) defines the suite structure — which
+test classes to include, which dimensions to iterate over, and what Guice bindings
+are needed — accepting only the implementation-specific factory as a parameter:
 
 ```java
-class SAAJRITests {
-    @TestFactory
-    Stream<DynamicNode> saajTests() {
-        SAAJImplementation impl = new SAAJImplementation(new SAAJMetaFactoryImpl());
+public class SAAJTestSuite {
+    public static MatrixTestSuite create(SAAJMetaFactory metaFactory) {
+        SAAJImplementation impl = new SAAJImplementation(metaFactory);
         MatrixTestSuite suite = new MatrixTestSuite(new AbstractModule() {
             @Override
             protected void configure() {
@@ -508,6 +509,19 @@ class SAAJRITests {
         specs.addChild(new MatrixTest(TestGetOwnerDocument.class));
         suite.addChild(specs);
 
+        return suite;
+    }
+}
+```
+
+The **consumer** (in the implementation module) supplies the concrete factory and
+any implementation-specific exclusion filters:
+
+```java
+class SAAJRITests {
+    @TestFactory
+    Stream<DynamicNode> saajTests() {
+        MatrixTestSuite suite = SAAJTestSuite.create(new SAAJMetaFactoryImpl());
         List<Filter> excludes = new ArrayList<>();
         excludes.add(Filter.forClass(TestGetOwnerDocument.class, "(spec=soap12)"));
         return suite.toDynamicNodes(excludes);
