@@ -215,8 +215,8 @@ accumulated injector can satisfy all `@Inject` dependencies for the test case cl
  * {@link MatrixTestContainer} creates child injectors from it, and each
  * {@link MatrixTest} uses it to instantiate the test class.
  */
-abstract class MatrixTestNode {
-    abstract Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
+public abstract class MatrixTestNode {
+    public abstract Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
             Dictionary<String, String> inheritedParameters,
             List<Filter> excludes);
 }
@@ -243,22 +243,22 @@ abstract class MatrixTestNode {
  *
  * @param <D> the dimension type
  */
-class MatrixTestContainer<D extends Dimension> extends MatrixTestNode {
+public class MatrixTestContainer<D extends Dimension> extends MatrixTestNode {
     private final Class<D> dimensionType;
     private final List<D> dimensions;
     private final List<MatrixTestNode> children = new ArrayList<>();
 
-    MatrixTestContainer(Class<D> dimensionType, List<D> dimensions) {
+    public MatrixTestContainer(Class<D> dimensionType, List<D> dimensions) {
         this.dimensionType = dimensionType;
         this.dimensions = dimensions;
     }
 
-    void addChild(MatrixTestNode child) {
+    public void addChild(MatrixTestNode child) {
         children.add(child);
     }
 
     @Override
-    Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
+    public Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
             Dictionary<String, String> inheritedParameters,
             List<Filter> excludes) {
         return dimensions.stream().map(dimension -> {
@@ -322,15 +322,15 @@ class MatrixTestContainer<D extends Dimension> extends MatrixTestNode {
  * which invokes the full {@code setUp()} → {@code runTest()} → {@code tearDown()}
  * lifecycle.
  */
-class MatrixTest extends MatrixTestNode {
+public class MatrixTest extends MatrixTestNode {
     private final Class<? extends TestCase> testClass;
 
-    MatrixTest(Class<? extends TestCase> testClass) {
+    public MatrixTest(Class<? extends TestCase> testClass) {
         this.testClass = testClass;
     }
 
     @Override
-    Stream<DynamicNode> toDynamicNodes(Injector injector,
+    public Stream<DynamicNode> toDynamicNodes(Injector injector,
             Dictionary<String, String> inheritedParameters,
             List<Filter> excludes) {
         for (Filter exclude : excludes) {
