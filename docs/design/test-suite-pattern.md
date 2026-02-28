@@ -212,7 +212,7 @@ accumulated injector can satisfy all `@Inject` dependencies for the test case cl
  * that can be filtered before conversion to JUnit 5's dynamic test API.
  *
  * <p>The {@code parentInjector} parameter threads through the tree: each
- * {@link MatrixTestContainer} creates child injectors from it, and each
+ * {@link DimensionFanOutNode} creates child injectors from it, and each
  * {@link MatrixTest} uses it to instantiate the test class.
  */
 public abstract class MatrixTestNode {
@@ -227,7 +227,7 @@ public abstract class MatrixTestNode {
  * Mirrors {@link DynamicContainer}. Represents a parameterized grouping level
  * in the test tree (e.g. a SOAP version).
  *
- * <p>A {@code MatrixTestContainer} holds a list of {@link Dimension} instances
+ * <p>A {@code DimensionFanOutNode} holds a list of {@link Dimension} instances
  * of a given type (e.g. all {@code SOAPSpec} values). When
  * {@link #toDynamicNodes} is called, it produces one {@link DynamicContainer}
  * per dimension instance. For each dimension instance, a <em>child Guice
@@ -239,16 +239,16 @@ public abstract class MatrixTestNode {
  * <p>The test parameters extracted from each dimension determine both the
  * display name and the filter dictionary. The full parameter dictionary for any
  * leaf {@code MatrixTest} is the accumulation of parameters from its ancestor
- * {@code MatrixTestContainer} chain.
+ * {@code DimensionFanOutNode} chain.
  *
  * @param <D> the dimension type
  */
-public class MatrixTestContainer<D extends Dimension> extends MatrixTestNode {
+public class DimensionFanOutNode<D extends Dimension> extends MatrixTestNode {
     private final Class<D> dimensionType;
     private final List<D> dimensions;
     private final List<MatrixTestNode> children = new ArrayList<>();
 
-    public MatrixTestContainer(Class<D> dimensionType, List<D> dimensions) {
+    public DimensionFanOutNode(Class<D> dimensionType, List<D> dimensions) {
         this.dimensionType = dimensionType;
         this.dimensions = dimensions;
     }
@@ -380,9 +380,9 @@ public class MatrixTestSuite {
 
 #### Guice injector hierarchy
 
-The injector hierarchy mirrors the `MatrixTestContainer` nesting. The root injector
+The injector hierarchy mirrors the `DimensionFanOutNode` nesting. The root injector
 is created by the consumer and binds implementation-level objects. Each
-`MatrixTestContainer` level creates one child injector per dimension value, binding
+`DimensionFanOutNode` level creates one child injector per dimension value, binding
 the dimension type. By the time a leaf `MatrixTest` is reached, the injector
 can satisfy all `@Inject` dependencies.
 
@@ -461,18 +461,18 @@ public abstract class SAAJTestCase extends TestCase {
 ```
 
 Note that the existing `Dimension.addTestParameters()` mechanism is **not** used by test
-case classes at all. Parameters are extracted only by `MatrixTestContainer` for display
+case classes at all. Parameters are extracted only by `DimensionFanOutNode` for display
 names and filter matching. Test cases interact with dimensions purely as typed objects
 obtained through injection.
 
 #### How filtering works
 
-Each `MatrixTestContainer` level holds a list of `Dimension` instances (e.g. all
+Each `DimensionFanOutNode` level holds a list of `Dimension` instances (e.g. all
 `SOAPSpec` values). When `toDynamicNodes()` is called, each container produces one
 `DynamicContainer` per dimension instance, and parameters accumulate from the root down:
 
 ```
-MatrixTestContainer(SOAPSpec.class, [SOAPSpec.SOAP11, SOAPSpec.SOAP12])
+DimensionFanOutNode(SOAPSpec.class, [SOAPSpec.SOAP11, SOAPSpec.SOAP12])
   MatrixTest(TestAddChildElementReification.class)
   MatrixTest(TestGetOwnerDocument.class)
 
@@ -499,8 +499,8 @@ public class SAAJTestSuite {
             }
         });
 
-        MatrixTestContainer<SOAPSpec> specs = new MatrixTestContainer<>(
-                SOAPSpec.class, Multiton.getInstances(SOAPSpec.class));
+        DimensionFanOutNode<SOAPSpec> specs = new DimensionFanOutNode<>(
+            SOAPSpec.class, Multiton.getInstances(SOAPSpec.class));
         specs.addChild(new MatrixTest(TestAddChildElementReification.class));
         specs.addChild(new MatrixTest(TestExamineMustUnderstandHeaderElements.class));
         specs.addChild(new MatrixTest(TestAddChildElementLocalName.class));
