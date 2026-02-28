@@ -218,7 +218,7 @@ accumulated injector can satisfy all `@Inject` dependencies for the test case cl
 public abstract class MatrixTestNode {
     abstract Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
             Dictionary<String, String> inheritedParameters,
-            List<Filter> excludes);
+            MatrixTestFilters excludes);
 }
 ```
 
@@ -260,7 +260,7 @@ public class DimensionFanOutNode<D extends Dimension> extends MatrixTestNode {
     @Override
     Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
             Dictionary<String, String> inheritedParameters,
-            List<Filter> excludes) {
+            MatrixTestFilters excludes) {
         return dimensions.stream().map(dimension -> {
             // Create a child injector that binds this dimension value.
             Injector childInjector = parentInjector.createChildInjector(new AbstractModule() {
@@ -332,11 +332,9 @@ public class MatrixTest extends MatrixTestNode {
     @Override
     Stream<DynamicNode> toDynamicNodes(Injector injector,
             Dictionary<String, String> inheritedParameters,
-            List<Filter> excludes) {
-        for (Filter exclude : excludes) {
-            if (exclude.matches(testClass, inheritedParameters)) {
-                return Stream.empty(); // Excluded
-            }
+            MatrixTestFilters excludes) {
+        if (excludes.test(testClass, inheritedParameters)) {
+            return Stream.empty(); // Excluded
         }
         return Stream.of(DynamicTest.dynamicTest(testClass.getSimpleName(), () -> {
             TestCase testInstance = injector.getInstance(testClass);
@@ -350,7 +348,7 @@ public class MatrixTest extends MatrixTestNode {
 ```java
 /**
  * Root of a test suite. Owns the Guice root injector and the tree of
- * {@link MatrixTestNode} instances. Provides a {@link #toDynamicNodes(List)}
+ * {@link MatrixTestNode} instances. Provides a {@link #toDynamicNodes(MatrixTestFilters)}
  * method that converts the tree to JUnit 5 dynamic nodes, applying the
  * supplied exclusion filters.
  *
@@ -370,7 +368,7 @@ public class MatrixTestSuite {
         children.add(child);
     }
 
-    public Stream<DynamicNode> toDynamicNodes(List<Filter> excludes) {
+    public Stream<DynamicNode> toDynamicNodes(MatrixTestFilters excludes) {
         return children.stream()
                 .flatMap(child -> child.toDynamicNodes(
                         rootInjector, new Hashtable<>(), excludes));
@@ -522,8 +520,9 @@ class SAAJRITests {
     @TestFactory
     Stream<DynamicNode> saajTests() {
         MatrixTestSuite suite = SAAJTestSuite.create(new SAAJMetaFactoryImpl());
-        List<Filter> excludes = new ArrayList<>();
-        excludes.add(Filter.forClass(TestGetOwnerDocument.class, "(spec=soap12)"));
+        MatrixTestFilters excludes = MatrixTestFilters.builder()
+                .add(TestGetOwnerDocument.class, "(spec=soap12)")
+                .build();
         return suite.toDynamicNodes(excludes);
     }
 }
