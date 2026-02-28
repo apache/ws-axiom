@@ -216,7 +216,7 @@ accumulated injector can satisfy all `@Inject` dependencies for the test case cl
  * {@link MatrixTest} uses it to instantiate the test class.
  */
 public abstract class MatrixTestNode {
-    public abstract Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
+    abstract Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
             Dictionary<String, String> inheritedParameters,
             List<Filter> excludes);
 }
@@ -258,7 +258,7 @@ public class MatrixTestContainer<D extends Dimension> extends MatrixTestNode {
     }
 
     @Override
-    public Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
+    Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
             Dictionary<String, String> inheritedParameters,
             List<Filter> excludes) {
         return dimensions.stream().map(dimension -> {
@@ -330,7 +330,7 @@ public class MatrixTest extends MatrixTestNode {
     }
 
     @Override
-    public Stream<DynamicNode> toDynamicNodes(Injector injector,
+    Stream<DynamicNode> toDynamicNodes(Injector injector,
             Dictionary<String, String> inheritedParameters,
             List<Filter> excludes) {
         for (Filter exclude : excludes) {
@@ -343,6 +343,37 @@ public class MatrixTest extends MatrixTestNode {
             testInstance.setName(testClass.getSimpleName());
             testInstance.runBare();
         }));
+    }
+}
+```
+
+```java
+/**
+ * Root of a test suite. Owns the Guice root injector and the tree of
+ * {@link MatrixTestNode} instances. Provides a {@link #toDynamicNodes(List)}
+ * method that converts the tree to JUnit 5 dynamic nodes, applying the
+ * supplied exclusion filters.
+ *
+ * <p>Exclusion filters are <em>not</em> owned by the suite itself because
+ * they are specific to each consumer (implementation under test), whereas
+ * the suite structure and bindings are defined by the test suite author.
+ */
+public class MatrixTestSuite {
+    private final Injector rootInjector;
+    private final List<MatrixTestNode> children = new ArrayList<>();
+
+    public MatrixTestSuite(Module... modules) {
+        this.rootInjector = Guice.createInjector(modules);
+    }
+
+    public void addChild(MatrixTestNode child) {
+        children.add(child);
+    }
+
+    public Stream<DynamicNode> toDynamicNodes(List<Filter> excludes) {
+        return children.stream()
+                .flatMap(child -> child.toDynamicNodes(
+                        rootInjector, new Hashtable<>(), excludes));
     }
 }
 ```
@@ -453,32 +484,33 @@ MatrixTestContainer(SOAPSpec.class, [SOAPSpec.SOAP11, SOAPSpec.SOAP12])
     → TestGetOwnerDocument             (filtered against {spec=soap12})
 ```
 
-Consumers apply exclusions and create the root injector:
+Consumers build a `MatrixTestSuite` and return its dynamic nodes:
 
 ```java
 class SAAJRITests {
     @TestFactory
     Stream<DynamicNode> saajTests() {
         SAAJImplementation impl = new SAAJImplementation(new SAAJMetaFactoryImpl());
-        Injector rootInjector = Guice.createInjector(new AbstractModule() {
+        MatrixTestSuite suite = new MatrixTestSuite(new AbstractModule() {
             @Override
             protected void configure() {
                 bind(SAAJImplementation.class).toInstance(impl);
             }
         });
 
-        MatrixTestContainer<SOAPSpec> root = new MatrixTestContainer<>(
+        MatrixTestContainer<SOAPSpec> specs = new MatrixTestContainer<>(
                 SOAPSpec.class, Multiton.getInstances(SOAPSpec.class));
-        root.addChild(new MatrixTest(TestAddChildElementReification.class));
-        root.addChild(new MatrixTest(TestExamineMustUnderstandHeaderElements.class));
-        root.addChild(new MatrixTest(TestAddChildElementLocalName.class));
-        root.addChild(new MatrixTest(TestAddChildElementLocalNamePrefixAndURI.class));
-        root.addChild(new MatrixTest(TestSetParentElement.class));
-        root.addChild(new MatrixTest(TestGetOwnerDocument.class));
+        specs.addChild(new MatrixTest(TestAddChildElementReification.class));
+        specs.addChild(new MatrixTest(TestExamineMustUnderstandHeaderElements.class));
+        specs.addChild(new MatrixTest(TestAddChildElementLocalName.class));
+        specs.addChild(new MatrixTest(TestAddChildElementLocalNamePrefixAndURI.class));
+        specs.addChild(new MatrixTest(TestSetParentElement.class));
+        specs.addChild(new MatrixTest(TestGetOwnerDocument.class));
+        suite.addChild(specs);
 
         List<Filter> excludes = new ArrayList<>();
         excludes.add(Filter.forClass(TestGetOwnerDocument.class, "(spec=soap12)"));
-        return root.toDynamicNodes(rootInjector, new Hashtable<>(), excludes);
+        return suite.toDynamicNodes(excludes);
     }
 }
 ```
