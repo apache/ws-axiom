@@ -212,8 +212,9 @@ accumulated injector can satisfy all `@Inject` dependencies for the test case cl
  * that can be filtered before conversion to JUnit 5's dynamic test API.
  *
  * <p>The {@code parentInjector} parameter threads through the tree: each
- * {@link DimensionFanOutNode} creates child injectors from it, and each
- * {@link MatrixTest} uses it to instantiate the test class.
+ * fan-out node ({@link DimensionFanOutNode}, {@link ParameterFanOutNode}) creates
+ * child injectors from it, and each {@link MatrixTest} uses it to instantiate
+ * the test class.
  */
 public abstract class MatrixTestNode {
     abstract Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
@@ -224,72 +225,55 @@ public abstract class MatrixTestNode {
 
 ```java
 /**
- * Mirrors {@link DynamicContainer}. Represents a parameterized grouping level
- * in the test tree (e.g. a SOAP version).
+ * Abstract base class for fan-out nodes that iterate over a list of values,
+ * creating one {@link DynamicContainer} per value. For each value, a child
+ * Guice injector is created that binds the value type to the specific instance.
  *
- * <p>A {@code DimensionFanOutNode} holds a list of {@link Dimension} instances
- * of a given type (e.g. all {@code SOAPSpec} values). When
- * {@link #toDynamicNodes} is called, it produces one {@link DynamicContainer}
- * per dimension instance. For each dimension instance, a <em>child Guice
- * injector</em> is created from the parent injector, binding the dimension type
- * to that specific instance. This child injector is then propagated to all
- * children, forming a hierarchy where each path from root to leaf accumulates
- * all dimension bindings.
+ * <p>Subclasses define how test parameters (used for display names and LDAP
+ * filter matching) are extracted from each value:
+ * <ul>
+ *   <li>{@link DimensionFanOutNode} — for types that implement {@link Dimension},
+ *       using {@link Dimension#addTestParameters}.
+ *   <li>{@link ParameterFanOutNode} — for arbitrary types, using a caller-supplied
+ *       parameter name and {@link Function}.
+ * </ul>
  *
- * <p>The test parameters extracted from each dimension determine both the
- * display name and the filter dictionary. The full parameter dictionary for any
- * leaf {@code MatrixTest} is the accumulation of parameters from its ancestor
- * {@code DimensionFanOutNode} chain.
- *
- * @param <D> the dimension type
+ * @param <T> the value type
  */
-public class DimensionFanOutNode<D extends Dimension> extends MatrixTestNode {
-    private final Class<D> dimensionType;
-    private final List<D> dimensions;
+public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
+    private final Class<T> type;
+    private final List<T> values;
     private final List<MatrixTestNode> children = new ArrayList<>();
 
-    public DimensionFanOutNode(Class<D> dimensionType, List<D> dimensions) {
-        this.dimensionType = dimensionType;
-        this.dimensions = dimensions;
+    protected AbstractFanOutNode(Class<T> type, List<T> values) {
+        this.type = type;
+        this.values = values;
     }
 
     public void addChild(MatrixTestNode child) {
         children.add(child);
     }
 
+    /**
+     * Extracts test parameters from the given value. The returned map entries
+     * are used for the display name and for LDAP filter matching.
+     */
+    protected abstract Map<String, String> extractParameters(T value);
+
     @Override
     Stream<DynamicNode> toDynamicNodes(Injector parentInjector,
             Dictionary<String, String> inheritedParameters,
             MatrixTestFilters excludes) {
-        return dimensions.stream().map(dimension -> {
-            // Create a child injector that binds this dimension value.
+        return values.stream().map(value -> {
             Injector childInjector = parentInjector.createChildInjector(new AbstractModule() {
                 @Override
                 protected void configure() {
-                    bind(dimensionType).toInstance(dimension);
+                    bind(type).toInstance(value);
                 }
             });
 
-            // Extract test parameters from the dimension for display and filtering.
-            Map<String, String> parameters = new LinkedHashMap<>();
-            dimension.addTestParameters(new TestParameterTarget() {
-                @Override
-                public void addTestParameter(String name, String value) {
-                    parameters.put(name, value);
-                }
-
-                @Override
-                public void addTestParameter(String name, boolean value) {
-                    addTestParameter(name, String.valueOf(value));
-                }
-
-                @Override
-                public void addTestParameter(String name, int value) {
-                    addTestParameter(name, String.valueOf(value));
-                }
-            });
+            Map<String, String> parameters = extractParameters(value);
             Hashtable<String, String> params = new Hashtable<>();
-            // Copy inherited parameters from ancestor containers
             for (Enumeration<String> e = inheritedParameters.keys(); e.hasMoreElements(); ) {
                 String key = e.nextElement();
                 params.put(key, inheritedParameters.get(key));
@@ -302,6 +286,80 @@ public class DimensionFanOutNode<D extends Dimension> extends MatrixTestNode {
                     children.stream()
                             .flatMap(child -> child.toDynamicNodes(childInjector, params, excludes)));
         });
+    }
+}
+```
+
+```java
+/**
+ * Fan-out node for types that implement {@link Dimension}. Parameters are
+ * extracted via {@link Dimension#addTestParameters}.
+ *
+ * <p>For types that do <em>not</em> implement {@code Dimension}, use
+ * {@link ParameterFanOutNode} instead.
+ *
+ * @param <D> the dimension type
+ */
+public class DimensionFanOutNode<D extends Dimension> extends AbstractFanOutNode<D> {
+    public DimensionFanOutNode(Class<D> dimensionType, List<D> dimensions) {
+        super(dimensionType, dimensions);
+    }
+
+    @Override
+    protected Map<String, String> extractParameters(D dimension) {
+        Map<String, String> parameters = new LinkedHashMap<>();
+        dimension.addTestParameters(new TestParameterTarget() {
+            @Override
+            public void addTestParameter(String name, String value) {
+                parameters.put(name, value);
+            }
+
+            @Override
+            public void addTestParameter(String name, boolean value) {
+                addTestParameter(name, String.valueOf(value));
+            }
+
+            @Override
+            public void addTestParameter(String name, int value) {
+                addTestParameter(name, String.valueOf(value));
+            }
+        });
+        return parameters;
+    }
+}
+```
+
+```java
+/**
+ * Fan-out node for arbitrary value types that do not implement {@link Dimension}.
+ * The caller supplies a parameter name and a {@link Function} that maps each
+ * value to its parameter value (used for display names and LDAP filter matching).
+ *
+ * <p>For example, {@code SOAPSpec} does not implement {@code Dimension}, so
+ * it is handled with:
+ *
+ * <pre>
+ * new ParameterFanOutNode&lt;&gt;(SOAPSpec.class,
+ *         Multiton.getInstances(SOAPSpec.class),
+ *         "spec", SOAPSpec::getName)
+ * </pre>
+ *
+ * @param <T> the value type
+ */
+public class ParameterFanOutNode<T> extends AbstractFanOutNode<T> {
+    private final String parameterName;
+    private final Function<T, String> parameterValueFunction;
+
+    public ParameterFanOutNode(Class<T> type, List<T> values,
+            String parameterName, Function<T, String> parameterValueFunction) {
+        super(type, values);
+        this.parameterName = parameterName;
+        this.parameterValueFunction = parameterValueFunction;
+    }
+
+    @Override
+    protected Map<String, String> extractParameters(T value) {
+        return Map.of(parameterName, parameterValueFunction.apply(value));
     }
 }
 ```
@@ -378,11 +436,11 @@ public class MatrixTestSuite {
 
 #### Guice injector hierarchy
 
-The injector hierarchy mirrors the `DimensionFanOutNode` nesting. The root injector
-is created by the consumer and binds implementation-level objects. Each
-`DimensionFanOutNode` level creates one child injector per dimension value, binding
-the dimension type. By the time a leaf `MatrixTest` is reached, the injector
-can satisfy all `@Inject` dependencies.
+The injector hierarchy mirrors the fan-out node nesting. The root injector is created
+by the consumer and binds implementation-level objects. Each `DimensionFanOutNode` or
+`ParameterFanOutNode` level creates one child injector per value, binding the value type.
+By the time a leaf `MatrixTest` is reached, the injector can satisfy all `@Inject`
+dependencies.
 
 ```
 Root Injector
@@ -459,18 +517,20 @@ public abstract class SAAJTestCase extends TestCase {
 ```
 
 Note that the existing `Dimension.addTestParameters()` mechanism is **not** used by test
-case classes at all. Parameters are extracted only by `DimensionFanOutNode` for display
-names and filter matching. Test cases interact with dimensions purely as typed objects
-obtained through injection.
+case classes at all. Parameters are extracted only by `DimensionFanOutNode` (via
+`Dimension.addTestParameters()`) or `ParameterFanOutNode` (via the supplied function) for
+display names and filter matching. Test cases interact with values purely as typed
+objects obtained through injection.
 
 #### How filtering works
 
-Each `DimensionFanOutNode` level holds a list of `Dimension` instances (e.g. all
-`SOAPSpec` values). When `toDynamicNodes()` is called, each container produces one
-`DynamicContainer` per dimension instance, and parameters accumulate from the root down:
+Each fan-out node level holds a list of values. When `toDynamicNodes()` is called,
+each node produces one `DynamicContainer` per value, and parameters accumulate from
+the root down. For types that implement `Dimension`, use `DimensionFanOutNode`; for
+arbitrary types (like `SOAPSpec`), use `ParameterFanOutNode`:
 
 ```
-DimensionFanOutNode(SOAPSpec.class, [SOAPSpec.SOAP11, SOAPSpec.SOAP12])
+ParameterFanOutNode(SOAPSpec.class, [SOAPSpec.SOAP11, SOAPSpec.SOAP12], "spec", SOAPSpec::getName)
   MatrixTest(TestAddChildElementReification.class)
   MatrixTest(TestGetOwnerDocument.class)
 
@@ -497,8 +557,9 @@ public class SAAJTestSuite {
             }
         });
 
-        DimensionFanOutNode<SOAPSpec> specs = new DimensionFanOutNode<>(
-            SOAPSpec.class, Multiton.getInstances(SOAPSpec.class));
+        ParameterFanOutNode<SOAPSpec> specs = new ParameterFanOutNode<>(
+            SOAPSpec.class, Multiton.getInstances(SOAPSpec.class),
+            "spec", SOAPSpec::getName);
         specs.addChild(new MatrixTest(TestAddChildElementReification.class));
         specs.addChild(new MatrixTest(TestExamineMustUnderstandHeaderElements.class));
         specs.addChild(new MatrixTest(TestAddChildElementLocalName.class));
