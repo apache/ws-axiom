@@ -18,14 +18,7 @@
  */
 package org.apache.axiom.testutils.suite;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestSuite;
-
-import org.osgi.framework.Filter;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.InvalidSyntaxException;
 
 /**
  * Builds a matrix test suite. This is an abstract class. Subclasses are expected to implement the
@@ -34,56 +27,34 @@ import org.osgi.framework.InvalidSyntaxException;
  * parameter values. The resulting set can then be filtered using LDAP filter expressions.
  */
 public abstract class MatrixTestSuiteBuilder {
-    private static class Exclude {
-        private final Class<? extends MatrixTestCase> testClass;
-        private final Filter filter;
-
-        public Exclude(Class<? extends MatrixTestCase> testClass, Filter filter) {
-            this.testClass = testClass;
-            this.filter = filter;
-        }
-
-        public boolean accept(MatrixTestCase test) {
-            return (testClass == null || test.getClass().equals(testClass))
-                    && (filter == null || filter.match(test.getTestParameters()));
-        }
-    }
-
-    private final List<Exclude> excludes = new ArrayList<>();
+    private final MatrixTestFilters.Builder excludesBuilder = MatrixTestFilters.builder();
+    private MatrixTestFilters excludes;
     private TestSuite suite;
 
     public final void exclude(Class<? extends MatrixTestCase> testClass, String filter) {
-        try {
-            excludes.add(
-                    new Exclude(
-                            testClass, filter == null ? null : FrameworkUtil.createFilter(filter)));
-        } catch (InvalidSyntaxException ex) {
-            throw new IllegalArgumentException("Invalid filter expression", ex);
-        }
+        excludesBuilder.add(testClass, filter);
     }
 
     public final void exclude(Class<? extends MatrixTestCase> testClass) {
-        exclude(testClass, null);
+        excludesBuilder.add(testClass);
     }
 
     public final void exclude(String filter) {
-        exclude(null, filter);
+        excludesBuilder.add(filter);
     }
 
     protected abstract void addTests();
 
     public final TestSuite build() {
+        excludes = excludesBuilder.build();
         suite = new TestSuite();
         addTests();
         return suite;
     }
 
     protected final void addTest(MatrixTestCase test) {
-        for (Exclude exclude : excludes) {
-            if (exclude.accept(test)) {
-                return;
-            }
+        if (!excludes.test(test.getClass(), test.getTestParameters())) {
+            suite.addTest(test);
         }
-        suite.addTest(test);
     }
 }
