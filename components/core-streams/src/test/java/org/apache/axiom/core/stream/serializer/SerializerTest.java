@@ -114,7 +114,7 @@ public class SerializerTest {
 
     @Test(expected = StreamException.class)
     public void testUnmappableCharacterInComment() throws Exception {
-        Serializer handler = new Serializer(NullOutputStream.NULL_OUTPUT_STREAM, "iso-8859-1");
+        Serializer handler = new Serializer(NullOutputStream.INSTANCE, "iso-8859-1");
         handler.startFragment();
         handler.startComment();
         handler.processCharacterData("\u20AC", false);
@@ -124,7 +124,7 @@ public class SerializerTest {
 
     @Test(expected = StreamException.class)
     public void testUnmappableCharacterInCDATASection() throws Exception {
-        Serializer handler = new Serializer(NullOutputStream.NULL_OUTPUT_STREAM, "ascii");
+        Serializer handler = new Serializer(NullOutputStream.INSTANCE, "ascii");
         handler.startFragment();
         handler.startCDATASection();
         handler.processCharacterData("c'est la fête!", false);
@@ -134,7 +134,7 @@ public class SerializerTest {
 
     @Test(expected = StreamException.class)
     public void testUnmappableCharacterInProcessingInstruction() throws Exception {
-        Serializer handler = new Serializer(NullOutputStream.NULL_OUTPUT_STREAM, "ascii");
+        Serializer handler = new Serializer(NullOutputStream.INSTANCE, "ascii");
         handler.startFragment();
         handler.startProcessingInstruction("test");
         handler.processCharacterData("c'est la fête!", false);
@@ -144,7 +144,7 @@ public class SerializerTest {
 
     @Test(expected = StreamException.class)
     public void testUnmappableCharacterInName() throws Exception {
-        Serializer handler = new Serializer(NullOutputStream.NULL_OUTPUT_STREAM, "iso-8859-15");
+        Serializer handler = new Serializer(NullOutputStream.INSTANCE, "iso-8859-15");
         handler.startFragment();
         handler.startElement("", "\u0370", "");
         handler.attributesCompleted();
@@ -154,7 +154,7 @@ public class SerializerTest {
 
     @Test(expected = IllegalCharacterSequenceException.class)
     public void testIllegalCharacterSequenceInComment() throws Exception {
-        Serializer handler = new Serializer(new NullWriter());
+        Serializer handler = new Serializer(NullWriter.INSTANCE);
         handler.startFragment();
         handler.startComment();
         handler.processCharacterData("abc--def", false);
@@ -164,7 +164,7 @@ public class SerializerTest {
 
     @Test(expected = IllegalCharacterSequenceException.class)
     public void testIllegalCharacterSequenceInProcessingInstruction() throws Exception {
-        Serializer handler = new Serializer(new NullWriter());
+        Serializer handler = new Serializer(NullWriter.INSTANCE);
         handler.startFragment();
         handler.startProcessingInstruction("test");
         handler.processCharacterData("aaa???>bbb", false);
@@ -174,7 +174,7 @@ public class SerializerTest {
 
     @Test(expected = IllegalCharacterSequenceException.class)
     public void testIllegalCharacterSequenceInCDATASection() throws Exception {
-        Serializer handler = new Serializer(new NullWriter());
+        Serializer handler = new Serializer(NullWriter.INSTANCE);
         handler.startFragment();
         handler.startCDATASection();
         handler.processCharacterData("xxx]]]", false);

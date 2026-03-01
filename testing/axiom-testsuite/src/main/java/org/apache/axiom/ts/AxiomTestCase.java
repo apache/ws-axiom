@@ -57,7 +57,7 @@ public abstract class AxiomTestCase extends MatrixTestCase {
         assertFalse("Expected the node to be incomplete", container.isComplete());
         boolean isConsumed;
         try {
-            container.serialize(NullOutputStream.NULL_OUTPUT_STREAM);
+            container.serialize(NullOutputStream.INSTANCE);
             isConsumed = false;
         } catch (Exception ex) {
             isConsumed = true;

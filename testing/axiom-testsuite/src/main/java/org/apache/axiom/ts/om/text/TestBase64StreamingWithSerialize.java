@@ -47,6 +47,6 @@ public class TestBase64StreamingWithSerialize extends AxiomTestCase {
         OMText text =
                 factory.createOMText(new TestBlob('A', Runtime.getRuntime().maxMemory()), false);
         elem.addChild(text);
-        elem.serialize(NullOutputStream.NULL_OUTPUT_STREAM);
+        elem.serialize(NullOutputStream.INSTANCE);
     }
 }
