@@ -24,9 +24,7 @@ import javax.xml.namespace.QName;
 import jakarta.xml.soap.SOAPElement;
 import jakarta.xml.soap.SOAPPart;
 
-import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
-import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -35,10 +33,6 @@ import org.w3c.dom.Node;
  * SOAPElement} as well as the properties of the returned document.
  */
 public class TestGetOwnerDocument extends SAAJTestCase {
-    public TestGetOwnerDocument(SAAJImplementation saajImplementation, SOAPSpec spec) {
-        super(saajImplementation, spec);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document doc = newSOAPFactory().createElement(new QName("test")).getOwnerDocument();

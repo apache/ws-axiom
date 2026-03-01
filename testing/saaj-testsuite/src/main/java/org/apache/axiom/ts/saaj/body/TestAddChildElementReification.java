@@ -24,15 +24,9 @@ import jakarta.xml.soap.SOAPBody;
 import jakarta.xml.soap.SOAPBodyElement;
 import jakarta.xml.soap.SOAPElement;
 
-import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
-import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class TestAddChildElementReification extends SAAJTestCase {
-    public TestAddChildElementReification(SAAJImplementation saajImplementation, SOAPSpec spec) {
-        super(saajImplementation, spec);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         SOAPBody body = newMessageFactory().createMessage().getSOAPBody();

@@ -28,17 +28,10 @@ import jakarta.xml.soap.SOAPHeader;
 import jakarta.xml.soap.SOAPHeaderElement;
 import jakarta.xml.soap.SOAPMessage;
 
-import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
-import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestExamineMustUnderstandHeaderElements extends SAAJTestCase {
-    public TestExamineMustUnderstandHeaderElements(
-            SAAJImplementation saajImplementation, SOAPSpec spec) {
-        super(saajImplementation, spec);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         MimeHeaders mimeHeaders = new MimeHeaders();

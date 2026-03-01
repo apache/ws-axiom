@@ -16,27 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.saaj;
+package org.apache.axiom.testutils.suite;
 
-import jakarta.xml.soap.MessageFactory;
-import jakarta.xml.soap.SOAPException;
-import jakarta.xml.soap.SOAPFactory;
+import java.util.Dictionary;
+import java.util.stream.Stream;
 
-import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.DynamicNode;
 
-import com.google.inject.Inject;
+import com.google.inject.Injector;
 
-import junit.framework.TestCase;
-
-public abstract class SAAJTestCase extends TestCase {
-    @Inject protected SAAJImplementation saajImplementation;
-    @Inject protected SOAPSpec spec;
-
-    protected final MessageFactory newMessageFactory() throws SOAPException {
-        return spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation);
-    }
-
-    protected final SOAPFactory newSOAPFactory() throws SOAPException {
-        return spec.getAdapter(FactorySelector.class).newSOAPFactory(saajImplementation);
-    }
+/**
+ * Represents a node in the test tree that can be filtered before conversion to JUnit 5's dynamic
+ * test API.
+ *
+ * <p>The {@code parentInjector} parameter threads through the tree: each fan-out node ({@link
+ * DimensionFanOutNode}, {@link ParameterFanOutNode}) creates child injectors from it, and each
+ * {@link MatrixTest} uses it to instantiate the test class.
+ */
+public abstract class MatrixTestNode {
+    abstract Stream<DynamicNode> toDynamicNodes(
+            Injector parentInjector,
+            Dictionary<String, String> inheritedParameters,
+            MatrixTestFilters excludes);
 }

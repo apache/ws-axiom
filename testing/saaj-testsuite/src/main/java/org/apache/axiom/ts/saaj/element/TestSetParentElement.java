@@ -23,16 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import javax.xml.namespace.QName;
 import jakarta.xml.soap.SOAPElement;
 
-import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
-import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.NodeList;
 
 public class TestSetParentElement extends SAAJTestCase {
-    public TestSetParentElement(SAAJImplementation saajImplementation, SOAPSpec spec) {
-        super(saajImplementation, spec);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         SOAPElement parent = newSOAPFactory().createElement(new QName("parent"));

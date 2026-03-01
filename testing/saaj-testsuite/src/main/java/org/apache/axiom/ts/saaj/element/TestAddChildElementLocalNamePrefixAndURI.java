@@ -23,19 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import javax.xml.XMLConstants;
 import jakarta.xml.soap.SOAPElement;
 
-import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
-import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.Attr;
 import org.w3c.dom.NamedNodeMap;
 
 /** Tests the behavior of {@link SOAPElement#addChildElement(String, String, String)}. */
 public class TestAddChildElementLocalNamePrefixAndURI extends SAAJTestCase {
-    public TestAddChildElementLocalNamePrefixAndURI(
-            SAAJImplementation saajImplementation, SOAPSpec spec) {
-        super(saajImplementation, spec);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         SOAPElement root = newSOAPFactory().createElement("root", "ns1", "urn:ns1");

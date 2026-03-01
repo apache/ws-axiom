@@ -22,16 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.xml.soap.SOAPElement;
 
-import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
-import org.apache.axiom.ts.soap.SOAPSpec;
 
 /** Tests the behavior of {@link SOAPElement#addChildElement(String)}. */
 public class TestAddChildElementLocalName extends SAAJTestCase {
-    public TestAddChildElementLocalName(SAAJImplementation saajImplementation, SOAPSpec spec) {
-        super(saajImplementation, spec);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         SOAPElement root = newSOAPFactory().createElement("root", "p", "urn:test");

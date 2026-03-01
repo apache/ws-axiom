@@ -39,6 +39,14 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+        </dependency>
         <dependency><!-- We use this only for LDAP like filters -->
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.framework</artifactId>
