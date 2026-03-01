@@ -22,7 +22,7 @@ import jakarta.xml.soap.SAAJMetaFactory;
 
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTest;
-import org.apache.axiom.testutils.suite.MatrixTestSuite;
+import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.ts.saaj.body.TestAddChildElementReification;
 import org.apache.axiom.ts.saaj.element.TestAddChildElementLocalName;
@@ -35,10 +35,10 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import com.google.inject.AbstractModule;
 
 public class SAAJTestSuite {
-    public static MatrixTestSuite create(SAAJMetaFactory metaFactory) {
+    public static InjectorNode create(SAAJMetaFactory metaFactory) {
         SAAJImplementation impl = new SAAJImplementation(metaFactory);
-        MatrixTestSuite suite =
-                new MatrixTestSuite(
+        InjectorNode suite =
+                new InjectorNode(
                         new AbstractModule() {
                             @Override
                             protected void configure() {

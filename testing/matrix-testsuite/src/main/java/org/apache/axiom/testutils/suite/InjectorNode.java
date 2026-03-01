@@ -20,45 +20,42 @@ package org.apache.axiom.testutils.suite;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
 /**
- * Root of a test suite. Owns the Guice root injector and the tree of {@link MatrixTestNode}
- * instances. Provides a {@link #toDynamicNodes(BiPredicate)} method that converts the tree to JUnit
- * 5 dynamic nodes, applying the supplied exclusion predicate.
+ * A node that creates a child Guice injector from the supplied modules and threads it through its
+ * children. Can be used at any level of the test tree to introduce additional bindings.
  *
- * <p>Exclusion filters are <em>not</em> owned by the suite itself because they are specific to each
- * consumer (implementation under test), whereas the suite structure and bindings are defined by the
+ * <p>Exclusion filters are <em>not</em> owned by this node because they are specific to each
+ * consumer (implementation under test), whereas the tree structure and bindings are defined by the
  * test suite author.
  */
-public class MatrixTestSuite {
-    private final Injector rootInjector;
+public class InjectorNode extends MatrixTestNode {
+    private final Module[] modules;
     private final List<MatrixTestNode> children = new ArrayList<>();
 
-    public MatrixTestSuite(Module... modules) {
-        this.rootInjector = Guice.createInjector(modules);
+    public InjectorNode(Module... modules) {
+        this.modules = modules;
     }
 
     public void addChild(MatrixTestNode child) {
         children.add(child);
     }
 
-    public Stream<DynamicNode> toDynamicNodes(
+    @Override
+    Stream<DynamicNode> toDynamicNodes(
+            Injector parentInjector,
+            Dictionary<String, String> inheritedParameters,
             BiPredicate<Class<?>, Dictionary<String, String>> excludes) {
+        Injector injector = parentInjector.createChildInjector(modules);
         return children.stream()
-                .flatMap(child -> child.toDynamicNodes(rootInjector, new Hashtable<>(), excludes));
-    }
-
-    public Stream<DynamicNode> toDynamicNodes() {
-        return toDynamicNodes((testClass, parameters) -> false);
+                .flatMap(child -> child.toDynamicNodes(injector, inheritedParameters, excludes));
     }
 }

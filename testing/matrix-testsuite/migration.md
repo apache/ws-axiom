@@ -17,11 +17,11 @@
   ~ under the License.
   -->
 
-# Migration guide: MatrixTestSuiteBuilder → MatrixTestSuite
+# Migration guide: MatrixTestSuiteBuilder → InjectorNode
 
 This document describes how to migrate a test suite from the old
 `MatrixTestSuiteBuilder` / `MatrixTestCase` pattern (JUnit 3) to the new
-`MatrixTestSuite` / `MatrixTestNode` pattern (JUnit 5 + Guice).
+`InjectorNode` / `MatrixTestNode` pattern (JUnit 5 + Guice).
 
 For a completed example of this migration, see the `saaj-testsuite` module.
 
@@ -132,10 +132,10 @@ public class TestAddChildElementReification extends SAAJTestCase {
 The old `*TestSuiteBuilder` class extends `MatrixTestSuiteBuilder` and overrides
 `addTests()` to register test instances for each dimension combination.
 
-**Replace it** with a class that has a static factory method returning a
-`MatrixTestSuite`. The factory method:
+**Replace it** with a class that has a static factory method returning an
+`InjectorNode`. The factory method:
 
-1. Creates a `MatrixTestSuite` with a Guice module that binds
+1. Creates an `InjectorNode` with a Guice module that binds
    implementation-level objects.
 2. Creates fan-out nodes for each dimension.
 3. Adds `MatrixTest` leaf nodes for each test case class.
@@ -172,9 +172,9 @@ public class SAAJTestSuiteBuilder extends MatrixTestSuiteBuilder {
 
 ```java
 public class SAAJTestSuite {
-    public static MatrixTestSuite create(SAAJMetaFactory metaFactory) {
+    public static InjectorNode create(SAAJMetaFactory metaFactory) {
         SAAJImplementation impl = new SAAJImplementation(metaFactory);
-        MatrixTestSuite suite = new MatrixTestSuite(new AbstractModule() {
+        InjectorNode suite = new InjectorNode(new AbstractModule() {
             @Override
             protected void configure() {
                 bind(SAAJImplementation.class).toInstance(impl);
@@ -281,7 +281,7 @@ is in place and all consumers have been updated.
 - [ ] Base test case class: extends `TestCase`, uses `@Inject` fields, no
       constructor
 - [ ] All test case classes: constructor removed, `runTest()` unchanged
-- [ ] Suite factory class: creates `MatrixTestSuite` with Guice module, builds
+- [ ] Suite factory class: creates `InjectorNode` with Guice module, builds
       fan-out tree with `MatrixTest` leaves
 - [ ] Consumer test class: uses `@TestFactory` returning `Stream<DynamicNode>`
 - [ ] Exclusions: converted to `MatrixTestFilters.builder()` calls

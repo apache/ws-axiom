@@ -19,11 +19,13 @@
 package org.apache.axiom.testutils.suite;
 
 import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
 
+import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 /**
@@ -39,4 +41,21 @@ public abstract class MatrixTestNode {
             Injector parentInjector,
             Dictionary<String, String> inheritedParameters,
             BiPredicate<Class<?>, Dictionary<String, String>> excludes);
+
+    /**
+     * Converts this node (and its subtree) to JUnit 5 dynamic nodes, applying the supplied
+     * exclusion predicate.
+     *
+     * <p>This allows using a {@code MatrixTestNode} directly without wrapping it in a {@link
+     * InjectorNode}.
+     */
+    public final Stream<DynamicNode> toDynamicNodes(
+            BiPredicate<Class<?>, Dictionary<String, String>> excludes) {
+        return toDynamicNodes(Guice.createInjector(), new Hashtable<>(), excludes);
+    }
+
+    /** Converts this node (and its subtree) to JUnit 5 dynamic nodes without any exclusions. */
+    public final Stream<DynamicNode> toDynamicNodes() {
+        return toDynamicNodes((testClass, parameters) -> false);
+    }
 }

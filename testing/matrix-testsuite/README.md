@@ -102,10 +102,11 @@ executes it through `TestCase.runBare()` (which runs the full `setUp()` →
 `runTest()` → `tearDown()` lifecycle). The test is skipped if matched by the
 exclusion filters.
 
-### `MatrixTestSuite`
+### `InjectorNode`
 
-Root of a test suite. Owns the Guice root injector (created from caller-supplied
-modules) and a list of top-level `MatrixTestNode` children. Provides:
+A node that creates a child Guice injector from the supplied modules and threads
+it through its children. Can be used at any level of the test tree to introduce
+additional bindings. Provides:
 
 ```java
 public Stream<DynamicNode> toDynamicNodes(BiPredicate<Class<?>, Dictionary<String, String>> excludes)
@@ -144,15 +145,15 @@ public class TestSomeBehavior extends MyTestCase {
 
 ## Defining a test suite
 
-The test suite author creates a factory method that builds a `MatrixTestSuite`,
+The test suite author creates a factory method that builds an `InjectorNode`,
 adds fan-out nodes for each dimension, and registers test classes as `MatrixTest`
 leaf nodes:
 
 ```java
 public class MyTestSuite {
-    public static MatrixTestSuite create(SomeFactory factory) {
+    public static InjectorNode create(SomeFactory factory) {
         SomeImplementation impl = new SomeImplementation(factory);
-        MatrixTestSuite suite = new MatrixTestSuite(new AbstractModule() {
+        InjectorNode suite = new InjectorNode(new AbstractModule() {
             @Override
             protected void configure() {
                 bind(SomeImplementation.class).toInstance(impl);
@@ -181,7 +182,7 @@ Consumers create a JUnit 5 test class with a `@TestFactory` method:
 class MyImplTest {
     @TestFactory
     Stream<DynamicNode> tests() {
-        MatrixTestSuite suite = MyTestSuite.create(new MyFactoryImpl());
+        InjectorNode suite = MyTestSuite.create(new MyFactoryImpl());
         MatrixTestFilters excludes = MatrixTestFilters.builder()
                 .add(TestSomeBehavior.class, "(dimension=problematicValue)")
                 .build();
