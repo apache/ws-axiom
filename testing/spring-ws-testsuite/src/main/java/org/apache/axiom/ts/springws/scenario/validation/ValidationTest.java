@@ -18,7 +18,8 @@
  */
 package org.apache.axiom.ts.springws.scenario.validation;
 
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Iterator;
 
@@ -41,13 +42,19 @@ public class ValidationTest extends ScenarioTestCase {
 
         assertEquals(105.37, client.getQuote("GOOG"), 0.001);
 
-        SoapFaultClientException ex =
-                assertThrows(SoapFaultClientException.class, () -> client.getQuote("TOOLONG"));
-        assertEquals(spec.getSenderFaultCode(), ex.getFaultCode());
-        Iterator<SoapFaultDetailElement> it = ex.getSoapFault().getFaultDetail().getDetailEntries();
-        assertTrue(it.hasNext());
-        assertEquals(
-                new QName("http://springframework.org/spring-ws", "ValidationError"),
-                it.next().getName());
+        assertThatThrownBy(() -> client.getQuote("TOOLONG"))
+                .isInstanceOfSatisfying(
+                        SoapFaultClientException.class,
+                        ex -> {
+                            assertThat(ex.getFaultCode()).isEqualTo(spec.getSenderFaultCode());
+                            Iterator<SoapFaultDetailElement> it =
+                                    ex.getSoapFault().getFaultDetail().getDetailEntries();
+                            assertThat(it.hasNext()).isTrue();
+                            assertThat(it.next().getName())
+                                    .isEqualTo(
+                                            new QName(
+                                                    "http://springframework.org/spring-ws",
+                                                    "ValidationError"));
+                        });
     }
 }

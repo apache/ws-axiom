@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.ByteArrayInputStream;
 
@@ -40,7 +40,7 @@ public class TestGetEncoding extends DialectTestCase {
                                         .getBytes("iso-8859-15")));
         assertEquals("iso-8859-15", reader.getEncoding());
         reader.next();
-        assertThrows(IllegalStateException.class, reader::getEncoding);
+        assertThatThrownBy(reader::getEncoding).isInstanceOf(IllegalStateException.class);
         reader.close();
     }
 }

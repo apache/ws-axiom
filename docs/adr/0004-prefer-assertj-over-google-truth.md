@@ -24,7 +24,8 @@ Prefer AssertJ over Google Truth
 
 New test code must use [AssertJ](https://assertj.github.io/doc/) as the assertion library.
 Existing usages of Google Truth and plain JUnit assertions (`assertTrue`, `assertEquals`,
-`assertSame`, etc.) should be migrated to AssertJ when the opportunity arises.
+`assertSame`, `assertThrows`, etc.) should be migrated to AssertJ when the opportunity arises.
+For `assertThrows`, use AssertJ's `assertThatThrownBy` or `assertThatExceptionOfType` instead.
 
 ## Rationale
 

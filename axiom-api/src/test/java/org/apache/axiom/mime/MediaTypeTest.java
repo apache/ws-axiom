@@ -19,7 +19,7 @@
 package org.apache.axiom.mime;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.text.ParseException;
 
@@ -79,11 +79,11 @@ public class MediaTypeTest extends TestCase {
     }
 
     public void testParseInvalid1() {
-        assertThrows(ParseException.class, () -> new MediaType("text/"));
+        assertThatThrownBy(() -> new MediaType("text/")).isInstanceOf(ParseException.class);
     }
 
     public void testParseInvalid2() {
-        assertThrows(ParseException.class, () -> new MediaType("text/xml;"));
+        assertThatThrownBy(() -> new MediaType("text/xml;")).isInstanceOf(ParseException.class);
     }
 
     public void testIsXML() throws Exception {

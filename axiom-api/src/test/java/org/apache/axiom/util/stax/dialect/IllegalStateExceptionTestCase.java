@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -35,7 +35,7 @@ public abstract class IllegalStateExceptionTestCase extends EventSpecificTestCas
     @Override
     protected final void runTest(XMLStreamReader reader) throws Throwable {
         if (expectException) {
-            assertThrows(IllegalStateException.class, () -> invoke(reader));
+            assertThatThrownBy(() -> invoke(reader)).isInstanceOf(IllegalStateException.class);
         } else {
             invoke(reader);
         }

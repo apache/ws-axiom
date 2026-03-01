@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.springws.soap.messagefactory;
 
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.InputStream;
 
@@ -42,11 +42,12 @@ public class TestCreateWebServiceMessageFromInputStreamVersionMismatch extends S
 
     @Override
     protected void runTest(SoapMessageFactory messageFactory) throws Throwable {
-        assertThrows(
-                SoapMessageCreationException.class,
-                () ->
-                        messageFactory.createWebServiceMessage(
-                                new TransportInputStreamImpl(
-                                        SOAPSampleSet.NO_HEADER.getMessage(spec.getAltSpec()))));
+        assertThatThrownBy(
+                        () ->
+                                messageFactory.createWebServiceMessage(
+                                        new TransportInputStreamImpl(
+                                                SOAPSampleSet.NO_HEADER.getMessage(
+                                                        spec.getAltSpec()))))
+                .isInstanceOf(SoapMessageCreationException.class);
     }
 }

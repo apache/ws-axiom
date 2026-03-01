@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -43,10 +43,6 @@ public class TestReplaceChildNullNewChild extends DOMTestCase {
         Element root = document.createElementNS(null, "root");
         Element child = document.createElementNS(null, "child");
         root.appendChild(child);
-        assertThrows(
-                Exception.class,
-                () -> {
-                    root.replaceChild(null, child);
-                });
+        assertThatThrownBy(() -> root.replaceChild(null, child)).isInstanceOf(Exception.class);
     }
 }

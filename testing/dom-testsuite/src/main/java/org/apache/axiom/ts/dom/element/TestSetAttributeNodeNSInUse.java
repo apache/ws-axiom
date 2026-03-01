@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -41,13 +41,9 @@ public class TestSetAttributeNodeNSInUse extends DOMTestCase {
         Element element2 = document.createElementNS(null, "test");
         Attr attr = document.createAttributeNS(null, "test");
         element1.setAttributeNodeNS(attr);
-        assertThat(
-                        assertThrows(
-                                        DOMException.class,
-                                        () -> {
-                                            element2.setAttributeNodeNS(attr);
-                                        })
-                                .code)
-                .isEqualTo(DOMException.INUSE_ATTRIBUTE_ERR);
+        assertThatThrownBy(() -> element2.setAttributeNodeNS(attr))
+                .isInstanceOfSatisfying(
+                        DOMException.class,
+                        ex -> assertThat(ex.code).isEqualTo(DOMException.INUSE_ATTRIBUTE_ERR));
     }
 }

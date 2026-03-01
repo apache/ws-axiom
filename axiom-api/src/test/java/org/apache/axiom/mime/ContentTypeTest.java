@@ -19,7 +19,7 @@
 package org.apache.axiom.mime;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.text.ParseException;
 
@@ -27,13 +27,13 @@ import junit.framework.TestCase;
 
 public class ContentTypeTest extends TestCase {
     public void testNullMediaType() {
-        assertThrows(NullPointerException.class, () -> new ContentType((MediaType) null));
+        assertThatThrownBy(() -> new ContentType((MediaType) null))
+                .isInstanceOf(NullPointerException.class);
     }
 
     public void testNullParameter() {
-        assertThrows(
-                NullPointerException.class,
-                () -> new ContentType(MediaType.TEXT_PLAIN, "charset", null));
+        assertThatThrownBy(() -> new ContentType(MediaType.TEXT_PLAIN, "charset", null))
+                .isInstanceOf(NullPointerException.class);
     }
 
     public void testImmutable() {
@@ -87,31 +87,36 @@ public class ContentTypeTest extends TestCase {
     }
 
     public void testParseInvalid1() {
-        assertThrows(ParseException.class, () -> new ContentType("text/xml; ?"));
+        assertThatThrownBy(() -> new ContentType("text/xml; ?")).isInstanceOf(ParseException.class);
     }
 
     public void testParseInvalid2() {
-        assertThrows(ParseException.class, () -> new ContentType("text/"));
+        assertThatThrownBy(() -> new ContentType("text/")).isInstanceOf(ParseException.class);
     }
 
     public void testParseInvalid3() {
-        assertThrows(ParseException.class, () -> new ContentType("text/xml; charset="));
+        assertThatThrownBy(() -> new ContentType("text/xml; charset="))
+                .isInstanceOf(ParseException.class);
     }
 
     public void testParseInvalid4() {
-        assertThrows(ParseException.class, () -> new ContentType("text/xml; charset=\"asc"));
+        assertThatThrownBy(() -> new ContentType("text/xml; charset=\"asc"))
+                .isInstanceOf(ParseException.class);
     }
 
     public void testParseInvalid5() {
-        assertThrows(ParseException.class, () -> new ContentType("text/xml; param=\"test\\"));
+        assertThatThrownBy(() -> new ContentType("text/xml; param=\"test\\"))
+                .isInstanceOf(ParseException.class);
     }
 
     public void testParseInvalid6() {
-        assertThrows(ParseException.class, () -> new ContentType("text/xml; param;"));
+        assertThatThrownBy(() -> new ContentType("text/xml; param;"))
+                .isInstanceOf(ParseException.class);
     }
 
     public void testParseInvalid7() {
-        assertThrows(ParseException.class, () -> new ContentType("text/xml; param"));
+        assertThatThrownBy(() -> new ContentType("text/xml; param"))
+                .isInstanceOf(ParseException.class);
     }
 
     public void testToString() {

@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -42,13 +42,9 @@ public class TestAppendChildSelf extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:test", "test");
-        assertThat(
-                        assertThrows(
-                                        DOMException.class,
-                                        () -> {
-                                            element.appendChild(element);
-                                        })
-                                .code)
-                .isEqualTo(DOMException.HIERARCHY_REQUEST_ERR);
+        assertThatThrownBy(() -> element.appendChild(element))
+                .isInstanceOfSatisfying(
+                        DOMException.class,
+                        ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
     }
 }

@@ -19,7 +19,7 @@
 package org.apache.axiom.attachments;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -243,13 +243,14 @@ public class AttachmentsTest extends AbstractTestCase {
                 "multipart/related; boundary=\""
                         + MTOMSample.SAMPLE1.getBoundary()
                         + "\"; type=\"text/xml\"; start=\"<wrong-content-id@example.org>\"";
-        assertThrows(
-                MIMEException.class,
-                () -> {
-                    Attachments attachments =
-                            new Attachments(MTOMSample.SAMPLE1.getInputStream(), contentType);
-                    attachments.getRootPartContentType();
-                });
+        assertThatThrownBy(
+                        () -> {
+                            Attachments attachments =
+                                    new Attachments(
+                                            MTOMSample.SAMPLE1.getInputStream(), contentType);
+                            attachments.getRootPartContentType();
+                        })
+                .isInstanceOf(MIMEException.class);
     }
 
     public void testGetIncomingAttachmentStreams() throws Exception {
@@ -329,7 +330,8 @@ public class AttachmentsTest extends AbstractTestCase {
         attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
 
         // This should throw an error
-        assertThrows(IllegalStateException.class, attachments::getIncomingAttachmentStreams);
+        assertThatThrownBy(attachments::getIncomingAttachmentStreams)
+                .isInstanceOf(IllegalStateException.class);
 
         inStream.close();
     }
@@ -350,22 +352,22 @@ public class AttachmentsTest extends AbstractTestCase {
         attachments.getRootPartInputStream();
 
         // These should throw an error
-        assertThrows(
-                IllegalStateException.class,
-                () ->
-                        attachments.getDataHandler(
-                                "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
+        assertThatThrownBy(
+                        () ->
+                                attachments.getDataHandler(
+                                        "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"))
+                .isInstanceOf(IllegalStateException.class);
 
         // Additionally, we also need to ensure mutual exclusion if someone
         // tries to access part data directly
 
-        assertThrows(IllegalStateException.class, attachments::getAllContentIDs);
+        assertThatThrownBy(attachments::getAllContentIDs).isInstanceOf(IllegalStateException.class);
 
-        assertThrows(
-                IllegalStateException.class,
-                () ->
-                        attachments.getDataHandler(
-                                "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
+        assertThatThrownBy(
+                        () ->
+                                attachments.getDataHandler(
+                                        "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"))
+                .isInstanceOf(IllegalStateException.class);
     }
 
     public void testRemoveDataHandlerAfterParsing() {
@@ -721,7 +723,8 @@ public class AttachmentsTest extends AbstractTestCase {
     }
 
     public void testGetAttachmentSpecTypeWithoutStream() {
-        assertThrows(OMException.class, () -> new Attachments().getAttachmentSpecType());
+        assertThatThrownBy(() -> new Attachments().getAttachmentSpecType())
+                .isInstanceOf(OMException.class);
     }
 
     private void testGetSizeOnDataSource(boolean useFiles) throws Exception {
@@ -766,11 +769,11 @@ public class AttachmentsTest extends AbstractTestCase {
                             new ExceptionInputStream(in, 1050),
                             MTOMSample.SAMPLE1.getContentType());
             // TODO: decide what exception should be thrown exactly here
-            assertThrows(
-                    MIMEException.class,
-                    () ->
-                            attachments.getDataHandler(
-                                    "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
+            assertThatThrownBy(
+                            () ->
+                                    attachments.getDataHandler(
+                                            "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"))
+                    .isInstanceOf(MIMEException.class);
         } finally {
             in.close();
         }
@@ -787,7 +790,7 @@ public class AttachmentsTest extends AbstractTestCase {
                     attachments.getDataHandler(
                             "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
             // TODO: decide what exception should be thrown exactly here
-            assertThrows(MIMEException.class, dh::getInputStream);
+            assertThatThrownBy(dh::getInputStream).isInstanceOf(MIMEException.class);
         } finally {
             in.close();
         }

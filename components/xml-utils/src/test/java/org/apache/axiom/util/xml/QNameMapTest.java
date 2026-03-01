@@ -19,7 +19,7 @@
 package org.apache.axiom.util.xml;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.namespace.QName;
 
@@ -35,8 +35,8 @@ public class QNameMapTest {
 
     @Test
     public void testGetWithNullLocalPart() {
-        assertThrows(
-                IllegalArgumentException.class, () -> new QNameMap<Object>().get("urn:test", null));
+        assertThatThrownBy(() -> new QNameMap<Object>().get("urn:test", null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

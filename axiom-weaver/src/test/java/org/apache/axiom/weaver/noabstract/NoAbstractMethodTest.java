@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.weaver.noabstract;
 
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.apache.axiom.weaver.SimpleImplementationClassNameMapper;
 import org.apache.axiom.weaver.Weaver;
@@ -31,8 +31,7 @@ public class NoAbstractMethodTest {
     public void testMixinWithAbstractMethod() {
         ClassLoader cl = InnerClassTest.class.getClassLoader();
         Weaver weaver = new Weaver(cl, new SimpleImplementationClassNameMapper("impl"));
-        assertThrows(
-                MixinFactoryException.class,
-                () -> weaver.loadWeavablePackage("org.apache.axiom.weaver.noabstract"));
+        assertThatThrownBy(() -> weaver.loadWeavablePackage("org.apache.axiom.weaver.noabstract"))
+                .isInstanceOf(MixinFactoryException.class);
     }
 }

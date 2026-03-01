@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.blob.suite;
 
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
@@ -31,6 +31,6 @@ public class TestGetSizeIllegalState extends WritableBlobTestCase {
 
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
-        assertThrows(IllegalStateException.class, blob::getSize);
+        assertThatThrownBy(blob::getSize).isInstanceOf(IllegalStateException.class);
     }
 }

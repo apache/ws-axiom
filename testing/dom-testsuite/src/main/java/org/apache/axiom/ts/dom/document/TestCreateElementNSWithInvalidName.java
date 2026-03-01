@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.dom.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -35,13 +35,9 @@ public class TestCreateElementNSWithInvalidName extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
-        assertThat(
-                        assertThrows(
-                                        DOMException.class,
-                                        () -> {
-                                            doc.createElementNS("urn:ns", "IN|/ALID");
-                                        })
-                                .code)
-                .isEqualTo(DOMException.INVALID_CHARACTER_ERR);
+        assertThatThrownBy(() -> doc.createElementNS("urn:ns", "IN|/ALID"))
+                .isInstanceOfSatisfying(
+                        DOMException.class,
+                        ex -> assertThat(ex.code).isEqualTo(DOMException.INVALID_CHARACTER_ERR));
     }
 }

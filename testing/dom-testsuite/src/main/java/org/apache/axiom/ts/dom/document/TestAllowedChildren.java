@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.dom.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -41,39 +41,27 @@ public class TestAllowedChildren extends DOMTestCase {
 
         // Document Object Model (DOM) Level 3 Core Specification, section 1.1.1
         // says that text nodes are not allowed as children of a document.
-        assertThat(
-                        assertThrows(
-                                        DOMException.class,
-                                        () -> {
-                                            doc.appendChild(doc.createTextNode("    "));
-                                        })
-                                .code)
-                .isEqualTo(DOMException.HIERARCHY_REQUEST_ERR);
+        assertThatThrownBy(() -> doc.appendChild(doc.createTextNode("    ")))
+                .isInstanceOfSatisfying(
+                        DOMException.class,
+                        ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
 
         doc.appendChild(doc.createElement("root1"));
 
         // Multiple document elements are not allowed
-        assertThat(
-                        assertThrows(
-                                        DOMException.class,
-                                        () -> {
-                                            doc.appendChild(doc.createElement("root2"));
-                                        })
-                                .code)
-                .isEqualTo(DOMException.HIERARCHY_REQUEST_ERR);
+        assertThatThrownBy(() -> doc.appendChild(doc.createElement("root2")))
+                .isInstanceOfSatisfying(
+                        DOMException.class,
+                        ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
 
         // PIs and comments after the document element are allowed
         doc.appendChild(doc.createProcessingInstruction("pi", "data"));
         doc.appendChild(doc.createComment("some comment"));
 
         // Again, text nodes are not allowed
-        assertThat(
-                        assertThrows(
-                                        DOMException.class,
-                                        () -> {
-                                            doc.appendChild(doc.createTextNode("    "));
-                                        })
-                                .code)
-                .isEqualTo(DOMException.HIERARCHY_REQUEST_ERR);
+        assertThatThrownBy(() -> doc.appendChild(doc.createTextNode("    ")))
+                .isInstanceOfSatisfying(
+                        DOMException.class,
+                        ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
     }
 }

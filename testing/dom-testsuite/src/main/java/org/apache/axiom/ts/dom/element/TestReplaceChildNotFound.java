@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -46,13 +46,9 @@ public class TestReplaceChildNotFound extends DOMTestCase {
         root.appendChild(document.createElementNS(null, "child"));
         Text node1 = document.createTextNode("test1");
         Text node2 = document.createTextNode("test2");
-        assertThat(
-                        assertThrows(
-                                        DOMException.class,
-                                        () -> {
-                                            root.replaceChild(node2, node1);
-                                        })
-                                .code)
-                .isEqualTo(DOMException.NOT_FOUND_ERR);
+        assertThatThrownBy(() -> root.replaceChild(node2, node1))
+                .isInstanceOfSatisfying(
+                        DOMException.class,
+                        ex -> assertThat(ex.code).isEqualTo(DOMException.NOT_FOUND_ERR));
     }
 }

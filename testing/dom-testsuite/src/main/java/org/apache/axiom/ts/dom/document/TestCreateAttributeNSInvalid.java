@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.dom.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -42,15 +42,13 @@ public class TestCreateAttributeNSInvalid extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
-        assertThat(
-                        assertThrows(
-                                        DOMException.class,
-                                        () -> {
-                                            document.createAttributeNS(
-                                                    DOMUtils.getNamespaceURI(qname),
-                                                    DOMUtils.getQualifiedName(qname));
-                                        })
-                                .code)
-                .isEqualTo(DOMException.NAMESPACE_ERR);
+        assertThatThrownBy(
+                        () ->
+                                document.createAttributeNS(
+                                        DOMUtils.getNamespaceURI(qname),
+                                        DOMUtils.getQualifiedName(qname)))
+                .isInstanceOfSatisfying(
+                        DOMException.class,
+                        ex -> assertThat(ex.code).isEqualTo(DOMException.NAMESPACE_ERR));
     }
 }

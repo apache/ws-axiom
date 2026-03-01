@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.stream.XMLOutputFactory;
 
@@ -31,6 +31,7 @@ public class TestCreateXMLStreamWriterWithNullEncoding extends DialectTestCase {
     protected void runTest() throws Throwable {
         XMLOutputFactory factory = staxImpl.newNormalizedXMLOutputFactory();
         // This should cause an exception
-        assertThrows(Throwable.class, () -> factory.createXMLStreamWriter(System.out, null));
+        assertThatThrownBy(() -> factory.createXMLStreamWriter(System.out, null))
+                .isInstanceOf(Throwable.class);
     }
 }

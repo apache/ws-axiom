@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -47,13 +47,9 @@ public class TestRemoveAttributeNodeNotOwner extends DOMTestCase {
         Element element2 = document.createElementNS(null, "test");
         Attr attr2 = document.createAttributeNS(null, "attr");
         element2.setAttributeNodeNS(attr2);
-        assertThat(
-                        assertThrows(
-                                        DOMException.class,
-                                        () -> {
-                                            element1.removeAttributeNode(attr2);
-                                        })
-                                .code)
-                .isEqualTo(DOMException.NOT_FOUND_ERR);
+        assertThatThrownBy(() -> element1.removeAttributeNode(attr2))
+                .isInstanceOfSatisfying(
+                        DOMException.class,
+                        ex -> assertThat(ex.code).isEqualTo(DOMException.NOT_FOUND_ERR));
     }
 }

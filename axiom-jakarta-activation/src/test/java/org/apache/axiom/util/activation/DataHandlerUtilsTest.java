@@ -19,7 +19,7 @@
 package org.apache.axiom.util.activation;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,9 +38,7 @@ public class DataHandlerUtilsTest {
     @Test
     public void testToBlobWriteError() {
         ExceptionOutputStream out = new ExceptionOutputStream(0);
-        StreamCopyException ex =
-                assertThrows(
-                        StreamCopyException.class,
+        assertThatThrownBy(
                         () -> {
                             DataHandlerUtils.toBlob(
                                             new DataHandler(
@@ -48,9 +46,13 @@ public class DataHandlerUtilsTest {
                                                             new byte[10],
                                                             "application/octet-stream")))
                                     .writeTo(out);
+                        })
+                .isInstanceOfSatisfying(
+                        StreamCopyException.class,
+                        ex -> {
+                            assertThat(ex.getOperation()).isEqualTo(StreamCopyException.WRITE);
+                            assertThat(ex.getCause()).isSameAs(out.getException());
                         });
-        assertThat(ex.getOperation()).isEqualTo(StreamCopyException.WRITE);
-        assertThat(ex.getCause()).isSameAs(out.getException());
     }
 
     @Test
@@ -77,14 +79,16 @@ public class DataHandlerUtilsTest {
                         throw new UnsupportedOperationException();
                     }
                 };
-        StreamCopyException ex =
-                assertThrows(
-                        StreamCopyException.class,
+        assertThatThrownBy(
                         () -> {
                             DataHandlerUtils.toBlob(new DataHandler(ds))
                                     .writeTo(NullOutputStream.INSTANCE);
+                        })
+                .isInstanceOfSatisfying(
+                        StreamCopyException.class,
+                        ex -> {
+                            assertThat(ex.getOperation()).isEqualTo(StreamCopyException.READ);
+                            assertThat(ex.getCause().getMessage()).isEqualTo("Read error");
                         });
-        assertThat(ex.getOperation()).isEqualTo(StreamCopyException.READ);
-        assertThat(ex.getCause().getMessage()).isEqualTo("Read error");
     }
 }

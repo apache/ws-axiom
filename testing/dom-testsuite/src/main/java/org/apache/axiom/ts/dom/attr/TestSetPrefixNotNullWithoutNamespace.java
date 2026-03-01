@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.dom.attr;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -42,13 +42,9 @@ public class TestSetPrefixNotNullWithoutNamespace extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Attr attr = document.createAttributeNS(null, "test");
-        assertThat(
-                        assertThrows(
-                                        DOMException.class,
-                                        () -> {
-                                            attr.setPrefix("p");
-                                        })
-                                .code)
-                .isEqualTo(DOMException.NAMESPACE_ERR);
+        assertThatThrownBy(() -> attr.setPrefix("p"))
+                .isInstanceOfSatisfying(
+                        DOMException.class,
+                        ex -> assertThat(ex.code).isEqualTo(DOMException.NAMESPACE_ERR));
     }
 }

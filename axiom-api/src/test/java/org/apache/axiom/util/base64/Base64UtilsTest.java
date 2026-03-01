@@ -20,7 +20,7 @@
 package org.apache.axiom.util.base64;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
@@ -40,15 +40,18 @@ public class Base64UtilsTest extends TestCase {
     }
 
     public void testMissingPadding() {
-        assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("cw"));
+        assertThatThrownBy(() -> Base64Utils.decode("cw"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     public void testTooMuchPadding() {
-        assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("cw==="));
+        assertThatThrownBy(() -> Base64Utils.decode("cw==="))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     public void testNonZeroRemainder() {
-        assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("//=="));
+        assertThatThrownBy(() -> Base64Utils.decode("//=="))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     public void testSpace() throws Exception {
@@ -60,10 +63,12 @@ public class Base64UtilsTest extends TestCase {
     }
 
     public void testInvalidCharacter() {
-        assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("//-/"));
+        assertThatThrownBy(() -> Base64Utils.decode("//-/"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     public void testInvalidPadding() {
-        assertThrows(IllegalArgumentException.class, () -> Base64Utils.decode("//=/"));
+        assertThatThrownBy(() -> Base64Utils.decode("//=/"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

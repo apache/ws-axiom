@@ -19,7 +19,7 @@
 package org.apache.axiom.core.stream.stax.pull.output;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -164,6 +164,6 @@ public class StAXPivotTest {
                         XmlHandler::attributesCompleted);
         assertThat(pivot.getEventType()).isEqualTo(XMLStreamReader.START_DOCUMENT);
         assertThat(pivot.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
-        assertThrows(XMLStreamException.class, () -> pivot.getElementText());
+        assertThatThrownBy(() -> pivot.getElementText()).isInstanceOf(XMLStreamException.class);
     }
 }

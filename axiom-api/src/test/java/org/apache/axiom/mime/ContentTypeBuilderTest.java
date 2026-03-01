@@ -19,7 +19,7 @@
 package org.apache.axiom.mime;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import junit.framework.TestCase;
 
@@ -76,7 +76,8 @@ public class ContentTypeBuilderTest extends TestCase {
 
     public void testNullParameterName() {
         ContentType.Builder builder = ContentType.builder();
-        assertThrows(NullPointerException.class, () -> builder.setParameter(null, "value"));
+        assertThatThrownBy(() -> builder.setParameter(null, "value"))
+                .isInstanceOf(NullPointerException.class);
     }
 
     public void testNullParameterValue() {
