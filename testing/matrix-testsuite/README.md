@@ -57,10 +57,11 @@ Root Injector
 ### Filtering
 
 Parameters accumulate from the root down through the tree. At each leaf, the
-accumulated parameter dictionary is checked against `MatrixTestFilters` — an
-immutable set of LDAP-style filter expressions optionally scoped to a test class.
+accumulated parameter dictionary is checked against a
+`BiPredicate<Class<?>, Dictionary<String, String>>` exclusion predicate.
 Excluded tests produce an empty `Stream<DynamicNode>` and do not appear in the
-test tree.
+test tree. `MatrixTestFilters` is a convenient implementation of this predicate
+that supports LDAP-style filter expressions optionally scoped to a test class.
 
 ## Classes
 
@@ -72,7 +73,7 @@ Abstract base class for all nodes in the test tree. Defines a single method:
 abstract Stream<DynamicNode> toDynamicNodes(
         Injector parentInjector,
         Dictionary<String, String> inheritedParameters,
-        MatrixTestFilters excludes);
+        BiPredicate<Class<?>, Dictionary<String, String>> excludes);
 ```
 
 ### `AbstractFanOutNode<T>`
@@ -107,7 +108,7 @@ Root of a test suite. Owns the Guice root injector (created from caller-supplied
 modules) and a list of top-level `MatrixTestNode` children. Provides:
 
 ```java
-public Stream<DynamicNode> toDynamicNodes(MatrixTestFilters excludes)
+public Stream<DynamicNode> toDynamicNodes(BiPredicate<Class<?>, Dictionary<String, String>> excludes)
 ```
 
 ### `MatrixTestFilters`

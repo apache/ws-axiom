@@ -24,6 +24,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -74,7 +75,7 @@ public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
     Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
             Dictionary<String, String> inheritedParameters,
-            MatrixTestFilters excludes) {
+            BiPredicate<Class<?>, Dictionary<String, String>> excludes) {
         return values.stream()
                 .map(
                         value -> {

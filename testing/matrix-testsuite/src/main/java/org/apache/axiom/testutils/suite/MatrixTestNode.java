@@ -19,6 +19,7 @@
 package org.apache.axiom.testutils.suite;
 
 import java.util.Dictionary;
+import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
@@ -37,5 +38,5 @@ public abstract class MatrixTestNode {
     abstract Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
             Dictionary<String, String> inheritedParameters,
-            MatrixTestFilters excludes);
+            BiPredicate<Class<?>, Dictionary<String, String>> excludes);
 }

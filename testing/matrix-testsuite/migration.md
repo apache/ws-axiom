@@ -228,7 +228,7 @@ public class SAAJRITest {
     @TestFactory
     public Stream<DynamicNode> saajTests() {
         return SAAJTestSuite.create(new SAAJMetaFactoryImpl())
-                .toDynamicNodes(MatrixTestFilters.builder().build());
+                .toDynamicNodes();
     }
 }
 ```

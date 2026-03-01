@@ -19,6 +19,7 @@
 package org.apache.axiom.testutils.suite;
 
 import java.util.Dictionary;
+import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
@@ -50,7 +51,7 @@ public class MatrixTest extends MatrixTestNode {
     Stream<DynamicNode> toDynamicNodes(
             Injector injector,
             Dictionary<String, String> inheritedParameters,
-            MatrixTestFilters excludes) {
+            BiPredicate<Class<?>, Dictionary<String, String>> excludes) {
         if (excludes.test(testClass, inheritedParameters)) {
             return Stream.empty();
         }

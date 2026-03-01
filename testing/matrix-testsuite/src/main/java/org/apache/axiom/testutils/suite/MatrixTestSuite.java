@@ -19,8 +19,10 @@
 package org.apache.axiom.testutils.suite;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
@@ -31,8 +33,8 @@ import com.google.inject.Module;
 
 /**
  * Root of a test suite. Owns the Guice root injector and the tree of {@link MatrixTestNode}
- * instances. Provides a {@link #toDynamicNodes(MatrixTestFilters)} method that converts the tree to
- * JUnit 5 dynamic nodes, applying the supplied exclusion filters.
+ * instances. Provides a {@link #toDynamicNodes(BiPredicate)} method that converts the tree to JUnit
+ * 5 dynamic nodes, applying the supplied exclusion predicate.
  *
  * <p>Exclusion filters are <em>not</em> owned by the suite itself because they are specific to each
  * consumer (implementation under test), whereas the suite structure and bindings are defined by the
@@ -50,8 +52,13 @@ public class MatrixTestSuite {
         children.add(child);
     }
 
-    public Stream<DynamicNode> toDynamicNodes(MatrixTestFilters excludes) {
+    public Stream<DynamicNode> toDynamicNodes(
+            BiPredicate<Class<?>, Dictionary<String, String>> excludes) {
         return children.stream()
                 .flatMap(child -> child.toDynamicNodes(rootInjector, new Hashtable<>(), excludes));
+    }
+
+    public Stream<DynamicNode> toDynamicNodes() {
+        return toDynamicNodes((testClass, parameters) -> false);
     }
 }
