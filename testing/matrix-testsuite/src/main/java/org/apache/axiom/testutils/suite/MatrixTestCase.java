@@ -18,14 +18,14 @@
  */
 package org.apache.axiom.testutils.suite;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
 /** A test case that can be executed multiple times with different parameters. */
 public abstract class MatrixTestCase extends TestCase implements TestParameterTarget {
-    private final Dictionary<String, String> parameters = new Hashtable<>();
+    private final Map<String, String> parameters = new HashMap<>();
 
     public MatrixTestCase() {
         setName(getClass().getName());
@@ -47,7 +47,7 @@ public abstract class MatrixTestCase extends TestCase implements TestParameterTa
         addTestParameter(name, String.valueOf(value));
     }
 
-    public final Dictionary<String, String> getTestParameters() {
+    public final Map<String, String> getTestParameters() {
         return parameters;
     }
 

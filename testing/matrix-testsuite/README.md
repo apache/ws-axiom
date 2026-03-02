@@ -57,8 +57,8 @@ Root Injector
 ### Filtering
 
 Parameters accumulate from the root down through the tree. At each leaf, the
-accumulated parameter dictionary is checked against a
-`BiPredicate<Class<?>, Dictionary<String, String>>` exclusion predicate.
+accumulated parameter map is checked against a
+`BiPredicate<Class<?>, Map<String, String>>` exclusion predicate.
 Excluded tests produce an empty `Stream<DynamicNode>` and do not appear in the
 test tree. `MatrixTestFilters` is a convenient implementation of this predicate
 that supports LDAP-style filter expressions optionally scoped to a test class.
@@ -72,8 +72,8 @@ Abstract base class for all nodes in the test tree. Defines a single method:
 ```java
 abstract Stream<DynamicNode> toDynamicNodes(
         Injector parentInjector,
-        Dictionary<String, String> inheritedParameters,
-        BiPredicate<Class<?>, Dictionary<String, String>> excludes);
+        Map<String, String> inheritedParameters,
+        BiPredicate<Class<?>, Map<String, String>> excludes);
 ```
 
 ### `AbstractFanOutNode<T>`
@@ -109,13 +109,13 @@ it through its children. Can be used at any level of the test tree to introduce
 additional bindings. Provides:
 
 ```java
-public Stream<DynamicNode> toDynamicNodes(BiPredicate<Class<?>, Dictionary<String, String>> excludes)
+public Stream<DynamicNode> toDynamicNodes(BiPredicate<Class<?>, Map<String, String>> excludes)
 ```
 
 ### `MatrixTestFilters`
 
 Immutable set of exclusion filters. Each filter entry optionally constrains by
-test class and/or an LDAP filter expression on the parameter dictionary (using
+test class and/or an LDAP filter expression on the parameter map (using
 OSGi's `FrameworkUtil.createFilter()`). Built via `MatrixTestFilters.builder()`.
 
 ## Writing a test case

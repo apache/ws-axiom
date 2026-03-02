@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.testutils.suite;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
@@ -39,8 +39,8 @@ import com.google.inject.Injector;
 public abstract class MatrixTestNode {
     abstract Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
-            Dictionary<String, String> inheritedParameters,
-            BiPredicate<Class<?>, Dictionary<String, String>> excludes);
+            Map<String, String> inheritedParameters,
+            BiPredicate<Class<?>, Map<String, String>> excludes);
 
     /**
      * Converts this node (and its subtree) to JUnit 5 dynamic nodes, applying the supplied
@@ -50,8 +50,8 @@ public abstract class MatrixTestNode {
      * InjectorNode}.
      */
     public final Stream<DynamicNode> toDynamicNodes(
-            BiPredicate<Class<?>, Dictionary<String, String>> excludes) {
-        return toDynamicNodes(Guice.createInjector(), new Hashtable<>(), excludes);
+            BiPredicate<Class<?>, Map<String, String>> excludes) {
+        return toDynamicNodes(Guice.createInjector(), new HashMap<>(), excludes);
     }
 
     /** Converts this node (and its subtree) to JUnit 5 dynamic nodes without any exclusions. */

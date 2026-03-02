@@ -19,8 +19,8 @@
 package org.apache.axiom.testutils.suite;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
@@ -52,8 +52,8 @@ public class InjectorNode extends MatrixTestNode {
     @Override
     Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
-            Dictionary<String, String> inheritedParameters,
-            BiPredicate<Class<?>, Dictionary<String, String>> excludes) {
+            Map<String, String> inheritedParameters,
+            BiPredicate<Class<?>, Map<String, String>> excludes) {
         Injector injector = parentInjector.createChildInjector(modules);
         return children.stream()
                 .flatMap(child -> child.toDynamicNodes(injector, inheritedParameters, excludes));

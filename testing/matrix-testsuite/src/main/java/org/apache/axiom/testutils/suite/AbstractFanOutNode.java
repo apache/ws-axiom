@@ -19,9 +19,7 @@
 package org.apache.axiom.testutils.suite;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiPredicate;
@@ -74,8 +72,8 @@ public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
     @Override
     Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
-            Dictionary<String, String> inheritedParameters,
-            BiPredicate<Class<?>, Dictionary<String, String>> excludes) {
+            Map<String, String> inheritedParameters,
+            BiPredicate<Class<?>, Map<String, String>> excludes) {
         return values.stream()
                 .map(
                         value -> {
@@ -89,13 +87,8 @@ public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
                                             });
 
                             Map<String, String> parameters = extractParameters(value);
-                            Hashtable<String, String> params = new Hashtable<>();
-                            for (Enumeration<String> e = inheritedParameters.keys();
-                                    e.hasMoreElements(); ) {
-                                String key = e.nextElement();
-                                params.put(key, inheritedParameters.get(key));
-                            }
-                            parameters.forEach(params::put);
+                            HashMap<String, String> params = new HashMap<>(inheritedParameters);
+                            params.putAll(parameters);
                             String displayName =
                                     parameters.entrySet().stream()
                                             .map(e -> e.getKey() + "=" + e.getValue())

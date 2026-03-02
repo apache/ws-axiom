@@ -19,6 +19,8 @@
 package org.apache.axiom.testutils.suite;
 
 import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.function.BiPredicate;
 
 import com.google.common.collect.ImmutableList;
@@ -32,7 +34,7 @@ import org.osgi.framework.InvalidSyntaxException;
  * on test parameters. Implements {@link BiPredicate} where {@link #test} returns {@code true} if
  * the given test class and parameters match any of the configured filters.
  */
-public final class MatrixTestFilters implements BiPredicate<Class<?>, Dictionary<String, String>> {
+public final class MatrixTestFilters implements BiPredicate<Class<?>, Map<String, String>> {
     private static class Entry {
         private final Class<?> testClass;
         private final Filter filter;
@@ -89,9 +91,10 @@ public final class MatrixTestFilters implements BiPredicate<Class<?>, Dictionary
     }
 
     @Override
-    public boolean test(Class<?> testClass, Dictionary<String, String> parameters) {
+    public boolean test(Class<?> testClass, Map<String, String> parameters) {
+        Hashtable<String, String> hashtable = new Hashtable<>(parameters);
         for (Entry entry : entries) {
-            if (entry.matches(testClass, parameters)) {
+            if (entry.matches(testClass, hashtable)) {
                 return true;
             }
         }
