@@ -18,11 +18,10 @@
  */
 package org.apache.axiom.testutils.suite;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Dictionary;
-import java.util.List;
 import java.util.function.BiPredicate;
+
+import com.google.common.collect.ImmutableList;
 
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
@@ -50,7 +49,7 @@ public final class MatrixTestFilters implements BiPredicate<Class<?>, Dictionary
     }
 
     public static final class Builder {
-        private final List<Entry> entries = new ArrayList<>();
+        private final ImmutableList.Builder<Entry> entries = ImmutableList.builder();
 
         private Builder() {}
 
@@ -75,14 +74,14 @@ public final class MatrixTestFilters implements BiPredicate<Class<?>, Dictionary
         }
 
         public MatrixTestFilters build() {
-            return new MatrixTestFilters(entries);
+            return new MatrixTestFilters(entries.build());
         }
     }
 
-    private final List<Entry> entries;
+    private final ImmutableList<Entry> entries;
 
-    private MatrixTestFilters(List<Entry> entries) {
-        this.entries = Collections.unmodifiableList(new ArrayList<>(entries));
+    private MatrixTestFilters(ImmutableList<Entry> entries) {
+        this.entries = entries;
     }
 
     public static Builder builder() {
