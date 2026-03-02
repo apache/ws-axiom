@@ -136,7 +136,8 @@ The old `*TestSuiteBuilder` class extends `MatrixTestSuiteBuilder` and overrides
 `InjectorNode`. The factory method:
 
 1. Creates an `InjectorNode` with a Guice module that binds
-   implementation-level objects.
+   implementation-level objects. Pass a single `Module` directly (convenience
+   constructor) or an `ImmutableList<Module>` when you need multiple modules.
 2. Creates fan-out nodes for each dimension.
 3. Adds `MatrixTest` leaf nodes for each test case class.
 

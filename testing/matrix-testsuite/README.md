@@ -106,7 +106,8 @@ exclusion filters.
 
 A node that creates a child Guice injector from the supplied modules and threads
 it through its children. Can be used at any level of the test tree to introduce
-additional bindings. Provides:
+additional bindings. Accepts either an `ImmutableList<Module>` (primary
+constructor) or a single `Module` (convenience constructor). Provides:
 
 ```java
 public Stream<DynamicNode> toDynamicNodes(BiPredicate<Class<?>, Map<String, String>> excludes)

@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
@@ -38,11 +39,25 @@ import com.google.inject.Module;
  * test suite author.
  */
 public class InjectorNode extends MatrixTestNode {
-    private final Module[] modules;
+    private final ImmutableList<Module> modules;
     private final List<MatrixTestNode> children = new ArrayList<>();
 
-    public InjectorNode(Module... modules) {
+    /**
+     * Creates a new node with the given list of modules.
+     *
+     * @param modules the Guice modules to install when creating the child injector
+     */
+    public InjectorNode(ImmutableList<Module> modules) {
         this.modules = modules;
+    }
+
+    /**
+     * Convenience constructor for the common case of a single module.
+     *
+     * @param module the Guice module to install when creating the child injector
+     */
+    public InjectorNode(Module module) {
+        this(ImmutableList.of(module));
     }
 
     public void addChild(MatrixTestNode child) {
