@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.testutils.suite;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,18 +48,13 @@ import com.google.inject.Injector;
  *
  * @param <T> the value type
  */
-public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
+public abstract class AbstractFanOutNode<T> extends ParentNode {
     private final Class<T> type;
     private final List<T> values;
-    private final List<MatrixTestNode> children = new ArrayList<>();
 
     protected AbstractFanOutNode(Class<T> type, List<T> values) {
         this.type = type;
         this.values = values;
-    }
-
-    public void addChild(MatrixTestNode child) {
-        children.add(child);
     }
 
     /**
@@ -95,13 +89,7 @@ public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
                                             .collect(Collectors.joining(", "));
                             return DynamicContainer.dynamicContainer(
                                     displayName,
-                                    children.stream()
-                                            .flatMap(
-                                                    child ->
-                                                            child.toDynamicNodes(
-                                                                    childInjector,
-                                                                    params,
-                                                                    excludes)));
+                                    childDynamicNodes(childInjector, params, excludes));
                         });
     }
 }

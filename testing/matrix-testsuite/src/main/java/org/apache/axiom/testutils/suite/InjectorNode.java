@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.testutils.suite;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
@@ -38,9 +36,8 @@ import com.google.inject.Module;
  * consumer (implementation under test), whereas the tree structure and bindings are defined by the
  * test suite author.
  */
-public class InjectorNode extends MatrixTestNode {
+public class InjectorNode extends ParentNode {
     private final ImmutableList<Module> modules;
-    private final List<MatrixTestNode> children = new ArrayList<>();
 
     /**
      * Creates a new node with the given list of modules.
@@ -60,17 +57,12 @@ public class InjectorNode extends MatrixTestNode {
         this(ImmutableList.of(module));
     }
 
-    public void addChild(MatrixTestNode child) {
-        children.add(child);
-    }
-
     @Override
     Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
             Map<String, String> inheritedParameters,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
-        Injector injector = parentInjector.createChildInjector(modules);
-        return children.stream()
-                .flatMap(child -> child.toDynamicNodes(injector, inheritedParameters, excludes));
+        return childDynamicNodes(
+                parentInjector.createChildInjector(modules), inheritedParameters, excludes);
     }
 }
