@@ -19,8 +19,9 @@
 package org.apache.axiom.testutils.suite;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Fan-out node for types that implement {@link Dimension}. Parameters are extracted via {@link
@@ -32,7 +33,7 @@ import java.util.Map;
  * @param <D> the dimension type
  */
 public class DimensionFanOutNode<D extends Dimension> extends AbstractFanOutNode<D> {
-    public DimensionFanOutNode(Class<D> dimensionType, List<D> dimensions) {
+    public DimensionFanOutNode(Class<D> dimensionType, ImmutableList<D> dimensions) {
         super(dimensionType, dimensions);
     }
 

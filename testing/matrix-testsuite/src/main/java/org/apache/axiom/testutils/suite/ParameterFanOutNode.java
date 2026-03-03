@@ -18,9 +18,10 @@
  */
 package org.apache.axiom.testutils.suite;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Fan-out node for arbitrary value types that do not implement {@link Dimension}. The caller
@@ -35,7 +36,7 @@ public class ParameterFanOutNode<T> extends AbstractFanOutNode<T> {
 
     public ParameterFanOutNode(
             Class<T> type,
-            List<T> values,
+            ImmutableList<T> values,
             String parameterName,
             Function<T, String> parameterValueFunction) {
         super(type, values);

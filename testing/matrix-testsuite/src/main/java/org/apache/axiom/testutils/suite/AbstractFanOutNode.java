@@ -19,7 +19,6 @@
 package org.apache.axiom.testutils.suite;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
@@ -28,6 +27,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.DynamicContainer;
 import org.junit.jupiter.api.DynamicNode;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 
@@ -50,9 +50,9 @@ import com.google.inject.Injector;
  */
 public abstract class AbstractFanOutNode<T> extends ParentNode {
     private final Class<T> type;
-    private final List<T> values;
+    private final ImmutableList<T> values;
 
-    protected AbstractFanOutNode(Class<T> type, List<T> values) {
+    protected AbstractFanOutNode(Class<T> type, ImmutableList<T> values) {
         this.type = type;
         this.values = values;
     }
