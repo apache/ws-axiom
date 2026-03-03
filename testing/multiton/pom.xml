@@ -33,4 +33,11 @@
         Implementation of the multiton pattern used in the test suites.
     </description>
     <url>http://ws.apache.org/axiom/</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+    </dependencies>
 </project>

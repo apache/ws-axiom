@@ -22,11 +22,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Base class for multitons. A multiton is a class that has a fixed set of instances.
@@ -43,7 +42,7 @@ import java.util.Map;
  */
 @SuppressWarnings({"unchecked"})
 public abstract class Multiton extends Adaptable {
-    private static final Map<Class<?>, List<?>> instancesMap = new HashMap<>();
+    private static final Map<Class<?>, ImmutableList<?>> instancesMap = new HashMap<>();
 
     /**
      * Get all instances of the given multiton. See the Javadoc of the {@link Multiton} class for
@@ -53,10 +52,11 @@ public abstract class Multiton extends Adaptable {
      * @return the list of instances
      * @throws MultitonInstantiationException if an error occurred
      */
-    public static synchronized <T extends Multiton> List<T> getInstances(Class<T> multitonClass) {
-        List<T> instances = (List<T>) instancesMap.get(multitonClass);
+    public static synchronized <T extends Multiton> ImmutableList<T> getInstances(
+            Class<T> multitonClass) {
+        ImmutableList<T> instances = (ImmutableList<T>) instancesMap.get(multitonClass);
         if (instances == null) {
-            instances = new ArrayList<>();
+            ImmutableList.Builder<T> builder = ImmutableList.builder();
             for (Field field : multitonClass.getDeclaredFields()) {
                 int mod = field.getModifiers();
                 if (Modifier.isPublic(mod)
@@ -64,7 +64,7 @@ public abstract class Multiton extends Adaptable {
                         && Modifier.isFinal(mod)
                         && multitonClass.isAssignableFrom(field.getType())) {
                     try {
-                        instances.add(multitonClass.cast(field.get(null)));
+                        builder.add(multitonClass.cast(field.get(null)));
                     } catch (IllegalAccessException ex) {
                         throw new MultitonInstantiationException(ex);
                     }
@@ -90,7 +90,7 @@ public abstract class Multiton extends Adaptable {
                     method.setAccessible(true);
                     try {
                         for (Object instance : (Object[]) method.invoke(null)) {
-                            instances.add(multitonClass.cast(instance));
+                            builder.add(multitonClass.cast(instance));
                         }
                     } catch (IllegalAccessException ex) {
                         throw new MultitonInstantiationException(ex);
@@ -99,7 +99,7 @@ public abstract class Multiton extends Adaptable {
                     }
                 }
             }
-            instances = Collections.unmodifiableList(instances);
+            instances = builder.build();
             instancesMap.put(multitonClass, instances);
         }
         return instances;
