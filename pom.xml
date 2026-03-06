@@ -283,7 +283,7 @@
         <minimalJavaBuildVersion>21</minimalJavaBuildVersion>
 
         <failIfNoTests>false</failIfNoTests>
-        <shade.plugin.version>3.6.1</shade.plugin.version>
+        <shade.plugin.version>3.6.2</shade.plugin.version>
         <spring.version>7.0.5</spring.version>
         <springws.version>5.0.0</springws.version>
         <exam.version>4.14.0</exam.version>
