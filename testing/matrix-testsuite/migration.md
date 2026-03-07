@@ -17,13 +17,26 @@
   ~ under the License.
   -->
 
-# Migration guide: MatrixTestSuiteBuilder → InjectorNode
+# Migration guide: MatrixTestSuiteBuilder → MatrixTestNode
 
 This document describes how to migrate a test suite from the old
 `MatrixTestSuiteBuilder` / `MatrixTestCase` pattern (JUnit 3) to the new
-`InjectorNode` / `MatrixTestNode` pattern (JUnit 5 + Guice).
+`MatrixTestNode` pattern (JUnit 5 + Guice).
 
-For a completed example of this migration, see the `saaj-testsuite` module.
+There are two common shapes:
+
+- **Reusable API test suites** — the test suite is defined in one module and
+  consumed by one or more implementation modules. These use `InjectorNode` at
+  the root to bind implementation-level objects. See the `saaj-testsuite`
+  module for a completed example.
+- **Self-contained test suites** — the test case, suite structure, and consumer
+  live in a single class. These typically don't need `InjectorNode` at all;
+  fan-out nodes with `MatrixTest` leaves are sufficient. See
+  `StAXPivotTransformerTest` in `components/core-streams` for an example.
+
+The step-by-step guide below focuses on reusable API test suites. For
+self-contained suites, see the [simplified migration](#simplified-migration-for-self-contained-tests)
+section at the end.
 
 ## Prerequisites
 
@@ -138,14 +151,17 @@ The old `*TestSuiteBuilder` class extends `MatrixTestSuiteBuilder` and overrides
 1. Creates an `InjectorNode` with a Guice module that binds
    implementation-level objects. Pass a single `Module` directly (convenience
    constructor) or an `ImmutableList<Module>` when you need multiple modules.
-   Child nodes are supplied via an `ImmutableList<MatrixTestNode>` parameter.
+   Child nodes are supplied via an `ImmutableList<MatrixTestNode>` parameter,
+   or a single `MatrixTestNode` directly (convenience constructor).
 2. Creates fan-out nodes for each dimension.
 3. Adds `MatrixTest` leaf nodes as children of the fan-out nodes at construction
    time.
 
 Use `ParameterFanOutNode` for types that don't implement `Dimension` (supplying a
 parameter name and a function to extract the display value). Use
-`DimensionFanOutNode` for types that implement `Dimension`.
+`DimensionFanOutNode` for types that implement `Dimension`. Both fan-out nodes
+also accept a single `MatrixTestNode` child directly (convenience constructor)
+instead of an `ImmutableList<MatrixTestNode>`.
 
 **Before:**
 
@@ -176,25 +192,22 @@ public class SAAJTestSuiteBuilder extends MatrixTestSuiteBuilder {
 ```java
 public class SAAJTestSuite {
     public static InjectorNode create(SAAJMetaFactory metaFactory) {
-        SAAJImplementation impl = new SAAJImplementation(metaFactory);
-
-        ParameterFanOutNode<SOAPSpec> specs = new ParameterFanOutNode<>(
-                SOAPSpec.class,
-                Multiton.getInstances(SOAPSpec.class),
-                "spec",
-                SOAPSpec::getName,
-                ImmutableList.of(
-                        new MatrixTest(TestAddChildElementReification.class),
-                        new MatrixTest(TestGetOwnerDocument.class)));
-
-        InjectorNode suite = new InjectorNode(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(SAAJImplementation.class).toInstance(impl);
-            }
-        }, ImmutableList.of(specs));
-
-        return suite;
+        return new InjectorNode(
+                new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(SAAJImplementation.class)
+                                .toInstance(new SAAJImplementation(metaFactory));
+                    }
+                },
+                new ParameterFanOutNode<>(
+                        SOAPSpec.class,
+                        Multiton.getInstances(SOAPSpec.class),
+                        "spec",
+                        SOAPSpec::getName,
+                        ImmutableList.of(
+                                new MatrixTest(TestAddChildElementReification.class),
+                                new MatrixTest(TestGetOwnerDocument.class))));
     }
 }
 ```
@@ -280,7 +293,94 @@ or 4 APIs directly. (Note: test case classes still extend
 The old `*TestSuiteBuilder` class can be deleted once the new `*TestSuite` factory
 is in place and all consumers have been updated.
 
+## Simplified migration for self-contained tests
+
+When the test case, suite builder, and consumer are all in a single class (i.e.
+the class extends `MatrixTestCase` and has a `static suite()` method), the
+migration is simpler because there is no separate base class or suite factory:
+
+1. Change the class to extend `TestCase` directly and declare dimension values
+   as `@Inject` fields instead of constructor parameters.
+2. Remove the constructor and all `addTestParameter()` calls.
+3. Replace the `static suite()` method with a `@TestFactory` method that builds
+   the fan-out tree directly and calls `toDynamicNodes()` on the root node.
+   No `InjectorNode` is needed unless you have additional bindings beyond the
+   dimension values.
+
+**Before:**
+
+```java
+public class StAXPivotTransformerTest extends MatrixTestCase {
+    private final XSLTImplementation xsltImplementation;
+    private final XMLSample sample;
+
+    public StAXPivotTransformerTest(
+            XSLTImplementation xsltImplementation, XMLSample sample) {
+        this.xsltImplementation = xsltImplementation;
+        this.sample = sample;
+        addTestParameter("xslt", xsltImplementation.getName());
+        addTestParameter("sample", sample.getName());
+    }
+
+    @Override
+    protected void runTest() throws Throwable {
+        // ... test logic ...
+    }
+
+    public static TestSuite suite() {
+        return new MatrixTestSuiteBuilder() {
+            @Override
+            protected void addTests() {
+                for (XSLTImplementation xsltImplementation :
+                        getInstances(XSLTImplementation.class)) {
+                    for (XMLSample sample : getInstances(XMLSample.class)) {
+                        addTest(new StAXPivotTransformerTest(xsltImplementation, sample));
+                    }
+                }
+            }
+        }.build();
+    }
+}
+```
+
+**After:**
+
+```java
+public class StAXPivotTransformerTest extends TestCase {
+    @Inject private XSLTImplementation xsltImplementation;
+    @Inject private XMLSample sample;
+
+    @Override
+    protected void runTest() throws Throwable {
+        // ... test logic unchanged ...
+    }
+
+    @TestFactory
+    public static Stream<DynamicNode> suite() {
+        return new ParameterFanOutNode<>(
+                XSLTImplementation.class,
+                Multiton.getInstances(XSLTImplementation.class),
+                "xslt",
+                XSLTImplementation::getName,
+                new ParameterFanOutNode<>(
+                        XMLSample.class,
+                        Multiton.getInstances(XMLSample.class),
+                        "sample",
+                        XMLSample::getName,
+                        new MatrixTest(StAXPivotTransformerTest.class)))
+                .toDynamicNodes();
+    }
+}
+```
+
+Note that filtering logic (e.g. skipping values based on a condition like
+`xsltImplementation.supportsStAXSource()`) that was previously expressed as
+`if` guards in the `addTests()` loop should be handled differently — for
+example by filtering the list of instances passed to the fan-out node.
+
 ## Checklist
+
+### Reusable API test suites
 
 - [ ] Base test case class: extends `TestCase`, uses `@Inject` fields, no
       constructor
@@ -292,4 +392,12 @@ is in place and all consumers have been updated.
 - [ ] Exclusions: converted to `MatrixTestFilters.builder()` calls
 - [ ] `pom.xml`: `junit-jupiter`, `guice`, and (if needed) `multiton` added
 - [ ] Old builder class deleted
+- [ ] Tests pass: `mvn clean test -pl <module> -am`
+
+### Self-contained test suites
+
+- [ ] Test class: extends `TestCase`, uses `@Inject` fields, no constructor
+- [ ] `static suite()` replaced with `@TestFactory` method building fan-out
+      tree and calling `toDynamicNodes()`
+- [ ] `pom.xml`: `junit-jupiter`, `guice`, and (if needed) `multiton` added
 - [ ] Tests pass: `mvn clean test -pl <module> -am`
