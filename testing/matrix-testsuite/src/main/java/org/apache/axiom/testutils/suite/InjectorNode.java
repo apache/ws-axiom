@@ -40,11 +40,13 @@ public class InjectorNode extends ParentNode {
     private final ImmutableList<Module> modules;
 
     /**
-     * Creates a new node with the given list of modules.
+     * Creates a new node with the given list of modules and child nodes.
      *
      * @param modules the Guice modules to install when creating the child injector
+     * @param children the child nodes of this node
      */
-    public InjectorNode(ImmutableList<Module> modules) {
+    public InjectorNode(ImmutableList<Module> modules, ImmutableList<MatrixTestNode> children) {
+        super(children);
         this.modules = modules;
     }
 
@@ -52,9 +54,10 @@ public class InjectorNode extends ParentNode {
      * Convenience constructor for the common case of a single module.
      *
      * @param module the Guice module to install when creating the child injector
+     * @param children the child nodes of this node
      */
-    public InjectorNode(Module module) {
-        this(ImmutableList.of(module));
+    public InjectorNode(Module module, ImmutableList<MatrixTestNode> children) {
+        this(ImmutableList.of(module), children);
     }
 
     @Override

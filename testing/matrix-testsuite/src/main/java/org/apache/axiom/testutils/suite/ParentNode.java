@@ -18,22 +18,25 @@
  */
 package org.apache.axiom.testutils.suite;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicNode;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Injector;
 
-/** A {@link MatrixTestNode} that maintains an ordered list of child nodes. */
+/**
+ * A {@link MatrixTestNode} that holds an immutable, ordered list of child nodes.
+ *
+ * <p>Children are supplied at construction time; instances are immutable after creation.
+ */
 public abstract class ParentNode extends MatrixTestNode {
-    private final List<MatrixTestNode> children = new ArrayList<>();
+    private final ImmutableList<MatrixTestNode> children;
 
-    public final void addChild(MatrixTestNode child) {
-        children.add(child);
+    protected ParentNode(ImmutableList<MatrixTestNode> children) {
+        this.children = children;
     }
 
     protected final Stream<DynamicNode> childDynamicNodes(

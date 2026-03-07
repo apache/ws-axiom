@@ -32,11 +32,27 @@ import org.apache.axiom.ts.saaj.element.TestSetParentElement;
 import org.apache.axiom.ts.saaj.header.TestExamineMustUnderstandHeaderElements;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 
 public class SAAJTestSuite {
     public static InjectorNode create(SAAJMetaFactory metaFactory) {
         SAAJImplementation impl = new SAAJImplementation(metaFactory);
+
+        ParameterFanOutNode<SOAPSpec> specs =
+                new ParameterFanOutNode<>(
+                        SOAPSpec.class,
+                        Multiton.getInstances(SOAPSpec.class),
+                        "spec",
+                        SOAPSpec::getName,
+                        ImmutableList.of(
+                                new MatrixTest(TestAddChildElementReification.class),
+                                new MatrixTest(TestExamineMustUnderstandHeaderElements.class),
+                                new MatrixTest(TestAddChildElementLocalName.class),
+                                new MatrixTest(TestAddChildElementLocalNamePrefixAndURI.class),
+                                new MatrixTest(TestSetParentElement.class),
+                                new MatrixTest(TestGetOwnerDocument.class)));
+
         InjectorNode suite =
                 new InjectorNode(
                         new AbstractModule() {
@@ -44,21 +60,8 @@ public class SAAJTestSuite {
                             protected void configure() {
                                 bind(SAAJImplementation.class).toInstance(impl);
                             }
-                        });
-
-        ParameterFanOutNode<SOAPSpec> specs =
-                new ParameterFanOutNode<>(
-                        SOAPSpec.class,
-                        Multiton.getInstances(SOAPSpec.class),
-                        "spec",
-                        SOAPSpec::getName);
-        specs.addChild(new MatrixTest(TestAddChildElementReification.class));
-        specs.addChild(new MatrixTest(TestExamineMustUnderstandHeaderElements.class));
-        specs.addChild(new MatrixTest(TestAddChildElementLocalName.class));
-        specs.addChild(new MatrixTest(TestAddChildElementLocalNamePrefixAndURI.class));
-        specs.addChild(new MatrixTest(TestSetParentElement.class));
-        specs.addChild(new MatrixTest(TestGetOwnerDocument.class));
-        suite.addChild(specs);
+                        },
+                        ImmutableList.of(specs));
 
         return suite;
     }

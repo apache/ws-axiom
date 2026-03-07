@@ -86,6 +86,9 @@ value, it:
 3. Produces a `DynamicContainer` containing the results of recursing into its
    child nodes.
 
+Child nodes are supplied at construction time via an `ImmutableList<MatrixTestNode>`
+parameter; the resulting instance is immutable.
+
 Subclasses:
 
 - **`DimensionFanOutNode<D extends Dimension>`** — for types that implement the
@@ -106,8 +109,9 @@ exclusion filters.
 
 A node that creates a child Guice injector from the supplied modules and threads
 it through its children. Can be used at any level of the test tree to introduce
-additional bindings. Accepts either an `ImmutableList<Module>` (primary
-constructor) or a single `Module` (convenience constructor). Provides:
+additional bindings. Accepts an `ImmutableList<Module>` (primary constructor) or
+a single `Module` (convenience constructor), together with an
+`ImmutableList<MatrixTestNode>` of child nodes. Provides:
 
 ```java
 public Stream<DynamicNode> toDynamicNodes(BiPredicate<Class<?>, Map<String, String>> excludes)
@@ -154,21 +158,22 @@ leaf nodes:
 public class MyTestSuite {
     public static InjectorNode create(SomeFactory factory) {
         SomeImplementation impl = new SomeImplementation(factory);
-        InjectorNode suite = new InjectorNode(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(SomeImplementation.class).toInstance(impl);
-            }
-        });
 
         ParameterFanOutNode<SomeDimension> dimensions = new ParameterFanOutNode<>(
                 SomeDimension.class,
                 Multiton.getInstances(SomeDimension.class),
                 "dimension",
-                SomeDimension::getName);
-        dimensions.addChild(new MatrixTest(TestSomeBehavior.class));
-        dimensions.addChild(new MatrixTest(TestOtherBehavior.class));
-        suite.addChild(dimensions);
+                SomeDimension::getName,
+                ImmutableList.of(
+                        new MatrixTest(TestSomeBehavior.class),
+                        new MatrixTest(TestOtherBehavior.class)));
+
+        InjectorNode suite = new InjectorNode(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(SomeImplementation.class).toInstance(impl);
+            }
+        }, ImmutableList.of(dimensions));
 
         return suite;
     }

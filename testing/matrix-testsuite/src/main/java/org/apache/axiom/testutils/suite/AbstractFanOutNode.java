@@ -52,7 +52,9 @@ public abstract class AbstractFanOutNode<T> extends ParentNode {
     private final Class<T> type;
     private final ImmutableList<T> values;
 
-    protected AbstractFanOutNode(Class<T> type, ImmutableList<T> values) {
+    protected AbstractFanOutNode(
+            Class<T> type, ImmutableList<T> values, ImmutableList<MatrixTestNode> children) {
+        super(children);
         this.type = type;
         this.values = values;
     }

@@ -138,8 +138,10 @@ The old `*TestSuiteBuilder` class extends `MatrixTestSuiteBuilder` and overrides
 1. Creates an `InjectorNode` with a Guice module that binds
    implementation-level objects. Pass a single `Module` directly (convenience
    constructor) or an `ImmutableList<Module>` when you need multiple modules.
+   Child nodes are supplied via an `ImmutableList<MatrixTestNode>` parameter.
 2. Creates fan-out nodes for each dimension.
-3. Adds `MatrixTest` leaf nodes for each test case class.
+3. Adds `MatrixTest` leaf nodes as children of the fan-out nodes at construction
+   time.
 
 Use `ParameterFanOutNode` for types that don't implement `Dimension` (supplying a
 parameter name and a function to extract the display value). Use
@@ -175,22 +177,22 @@ public class SAAJTestSuiteBuilder extends MatrixTestSuiteBuilder {
 public class SAAJTestSuite {
     public static InjectorNode create(SAAJMetaFactory metaFactory) {
         SAAJImplementation impl = new SAAJImplementation(metaFactory);
-        InjectorNode suite = new InjectorNode(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(SAAJImplementation.class).toInstance(impl);
-            }
-        });
 
         ParameterFanOutNode<SOAPSpec> specs = new ParameterFanOutNode<>(
                 SOAPSpec.class,
                 Multiton.getInstances(SOAPSpec.class),
                 "spec",
-                SOAPSpec::getName);
-        specs.addChild(new MatrixTest(TestAddChildElementReification.class));
-        specs.addChild(new MatrixTest(TestGetOwnerDocument.class));
-        // ...
-        suite.addChild(specs);
+                SOAPSpec::getName,
+                ImmutableList.of(
+                        new MatrixTest(TestAddChildElementReification.class),
+                        new MatrixTest(TestGetOwnerDocument.class)));
+
+        InjectorNode suite = new InjectorNode(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(SAAJImplementation.class).toInstance(impl);
+            }
+        }, ImmutableList.of(specs));
 
         return suite;
     }
@@ -199,8 +201,9 @@ public class SAAJTestSuite {
 
 Key differences:
 
-- Test classes are registered **once** as `MatrixTest` instances under the
-  appropriate fan-out node, rather than once per dimension combination.
+- Test classes are registered **once** as `MatrixTest` instances, passed as
+  children to the appropriate fan-out node at construction time, rather than once
+  per dimension combination.
 - Dimension values are listed via `Multiton.getInstances()` (or an explicit list)
   in the fan-out node, not iterated manually.
 - No constructor arguments are passed to test classes.
@@ -283,7 +286,8 @@ is in place and all consumers have been updated.
       constructor
 - [ ] All test case classes: constructor removed, `runTest()` unchanged
 - [ ] Suite factory class: creates `InjectorNode` with Guice module, builds
-      fan-out tree with `MatrixTest` leaves
+      immutable fan-out tree with `MatrixTest` leaves supplied at construction
+      time
 - [ ] Consumer test class: uses `@TestFactory` returning `Stream<DynamicNode>`
 - [ ] Exclusions: converted to `MatrixTestFilters.builder()` calls
 - [ ] `pom.xml`: `junit-jupiter`, `guice`, and (if needed) `multiton` added

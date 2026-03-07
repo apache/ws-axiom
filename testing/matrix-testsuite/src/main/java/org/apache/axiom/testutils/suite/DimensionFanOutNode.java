@@ -33,8 +33,11 @@ import com.google.common.collect.ImmutableList;
  * @param <D> the dimension type
  */
 public class DimensionFanOutNode<D extends Dimension> extends AbstractFanOutNode<D> {
-    public DimensionFanOutNode(Class<D> dimensionType, ImmutableList<D> dimensions) {
-        super(dimensionType, dimensions);
+    public DimensionFanOutNode(
+            Class<D> dimensionType,
+            ImmutableList<D> dimensions,
+            ImmutableList<MatrixTestNode> children) {
+        super(dimensionType, dimensions, children);
     }
 
     @Override
