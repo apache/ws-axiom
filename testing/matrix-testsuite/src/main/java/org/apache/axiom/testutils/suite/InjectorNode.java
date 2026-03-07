@@ -60,6 +60,26 @@ public class InjectorNode extends ParentNode {
         this(ImmutableList.of(module), children);
     }
 
+    /**
+     * Convenience constructor for the case of a single child.
+     *
+     * @param modules the Guice modules to install when creating the child injector
+     * @param child the single child node of this node
+     */
+    public InjectorNode(ImmutableList<Module> modules, MatrixTestNode child) {
+        this(modules, ImmutableList.of(child));
+    }
+
+    /**
+     * Convenience constructor for the case of a single module and a single child.
+     *
+     * @param module the Guice module to install when creating the child injector
+     * @param child the single child node of this node
+     */
+    public InjectorNode(Module module, MatrixTestNode child) {
+        this(ImmutableList.of(module), ImmutableList.of(child));
+    }
+
     @Override
     Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,

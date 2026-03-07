@@ -37,9 +37,14 @@ import com.google.inject.AbstractModule;
 
 public class SAAJTestSuite {
     public static InjectorNode create(SAAJMetaFactory metaFactory) {
-        SAAJImplementation impl = new SAAJImplementation(metaFactory);
-
-        ParameterFanOutNode<SOAPSpec> specs =
+        return new InjectorNode(
+                new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(SAAJImplementation.class)
+                                .toInstance(new SAAJImplementation(metaFactory));
+                    }
+                },
                 new ParameterFanOutNode<>(
                         SOAPSpec.class,
                         Multiton.getInstances(SOAPSpec.class),
@@ -51,18 +56,6 @@ public class SAAJTestSuite {
                                 new MatrixTest(TestAddChildElementLocalName.class),
                                 new MatrixTest(TestAddChildElementLocalNamePrefixAndURI.class),
                                 new MatrixTest(TestSetParentElement.class),
-                                new MatrixTest(TestGetOwnerDocument.class)));
-
-        InjectorNode suite =
-                new InjectorNode(
-                        new AbstractModule() {
-                            @Override
-                            protected void configure() {
-                                bind(SAAJImplementation.class).toInstance(impl);
-                            }
-                        },
-                        ImmutableList.of(specs));
-
-        return suite;
+                                new MatrixTest(TestGetOwnerDocument.class))));
     }
 }

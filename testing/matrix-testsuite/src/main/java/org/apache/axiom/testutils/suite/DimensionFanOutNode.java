@@ -40,6 +40,18 @@ public class DimensionFanOutNode<D extends Dimension> extends AbstractFanOutNode
         super(dimensionType, dimensions, children);
     }
 
+    /**
+     * Convenience constructor for the case of a single child.
+     *
+     * @param dimensionType the dimension type
+     * @param dimensions the dimension values to fan out over
+     * @param child the single child node
+     */
+    public DimensionFanOutNode(
+            Class<D> dimensionType, ImmutableList<D> dimensions, MatrixTestNode child) {
+        this(dimensionType, dimensions, ImmutableList.of(child));
+    }
+
     @Override
     protected Map<String, String> extractParameters(D dimension) {
         Map<String, String> parameters = new LinkedHashMap<>();
