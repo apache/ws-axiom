@@ -144,7 +144,15 @@ public class SerializerTest {
     public void testUnmappableCharacterInName() throws Exception {
         Serializer handler = new Serializer(NullOutputStream.INSTANCE, "iso-8859-15");
         handler.startFragment();
-        assertThatThrownBy(() -> handler.startElement("", "\u0370", ""))
+        assertThatThrownBy(
+                        () -> {
+                            // Even though the unmappable character is passed to startElement, the
+                            // exception will be thrown later because the data to be encoded is
+                            // buffered.
+                            handler.startElement("", "\u0370", "");
+                            handler.attributesCompleted();
+                            handler.endElement();
+                        })
                 .isInstanceOf(StreamException.class);
     }
 
