@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Vector;
 
@@ -33,14 +33,14 @@ import org.apache.ws.security.components.crypto.CryptoFactory;
 import org.apache.ws.security.message.WSSecEncrypt;
 import org.apache.ws.security.message.WSSecHeader;
 import org.apache.ws.security.message.WSSecSignature;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 public class WSS4JTest {
     private Crypto crypto;
 
-    @Before
+    @BeforeEach
     public void setUp() throws WSSecurityException {
         crypto = CryptoFactory.getInstance();
     }
