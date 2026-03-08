@@ -93,10 +93,13 @@ Subclasses:
 
 - **`DimensionFanOutNode<D extends Dimension>`** — for types that implement the
   `Dimension` interface. Parameters are extracted via
-  `Dimension.addTestParameters()`.
+  `Dimension.addTestParameters()`. The value is bound as a plain (unannotated)
+  type binding.
 
 - **`ParameterFanOutNode<T>`** — for arbitrary types. The caller supplies a
   parameter name and a `Function<T, String>` to extract the parameter value.
+  The value is bound with a `@Named` annotation whose value is the parameter
+  name; injection sites must use `@Inject @Named("paramName")`.
 
 ### `MatrixTest`
 
@@ -130,10 +133,14 @@ override `runTest()`. Dependencies are declared with `@Inject` — either on fie
 or via constructor. The test case does **not** receive parameters through its
 constructor and does **not** call `addTestParameter()`.
 
+For values bound by `DimensionFanOutNode`, use a plain `@Inject`. For values
+bound by `ParameterFanOutNode`, add `@Named("paramName")` matching the
+parameter name passed to the fan-out node.
+
 ```java
 public abstract class MyTestCase extends TestCase {
     @Inject protected SomeImplementation impl;
-    @Inject protected SomeDimension dimension;
+    @Inject @Named("dimension") protected SomeDimension dimension;
 
     // convenience methods using impl and dimension ...
 }

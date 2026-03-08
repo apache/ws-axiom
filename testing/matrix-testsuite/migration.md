@@ -97,13 +97,16 @@ public abstract class SAAJTestCase extends MatrixTestCase {
 ```java
 public abstract class SAAJTestCase extends TestCase {
     @Inject protected SAAJImplementation saajImplementation;
-    @Inject protected SOAPSpec spec;
+    @Inject @Named("spec") protected SOAPSpec spec;
 
     protected final MessageFactory newMessageFactory() throws SOAPException {
         return spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation);
     }
 }
 ```
+
+Note: the `@Named("spec")` annotation is required because `ParameterFanOutNode`
+binds values with `@Named` using the parameter name. Use `com.google.inject.name.Named`.
 
 ### 2. Update each test case class
 
@@ -158,10 +161,12 @@ The old `*TestSuiteBuilder` class extends `MatrixTestSuiteBuilder` and overrides
    time.
 
 Use `ParameterFanOutNode` for types that don't implement `Dimension` (supplying a
-parameter name and a function to extract the display value). Use
-`DimensionFanOutNode` for types that implement `Dimension`. Both fan-out nodes
-also accept a single `MatrixTestNode` child directly (convenience constructor)
-instead of an `ImmutableList<MatrixTestNode>`.
+parameter name and a function to extract the display value); the value is bound
+with `@Named(parameterName)`, so injection sites must use
+`@Inject @Named("...")`. Use `DimensionFanOutNode` for types that implement
+`Dimension` (plain unannotated binding). Both fan-out nodes also accept a single
+`MatrixTestNode` child directly (convenience constructor) instead of an
+`ImmutableList<MatrixTestNode>`.
 
 **Before:**
 
@@ -347,8 +352,8 @@ public class StAXPivotTransformerTest extends MatrixTestCase {
 
 ```java
 public class StAXPivotTransformerTest extends TestCase {
-    @Inject private XSLTImplementation xsltImplementation;
-    @Inject private XMLSample sample;
+    @Inject @Named("xslt") private XSLTImplementation xsltImplementation;
+    @Inject @Named("sample") private XMLSample sample;
 
     @Override
     protected void runTest() throws Throwable {
