@@ -19,10 +19,8 @@
 package org.apache.axiom.ts.omdom.element;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -30,18 +28,11 @@ import org.w3c.dom.Element;
  * Tests that after a node has been removed from its parent using {@link OMNode#detach()}, it will
  * have a new owner document.
  */
-public class TestDetach extends AxiomTestCase {
-    public TestDetach(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestDetach extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document =
-                ((DOMMetaFactory) metaFactory)
-                        .newDocumentBuilderFactory()
-                        .newDocumentBuilder()
-                        .newDocument();
+                metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Element parent = document.createElementNS(null, "parent");
         Element child = document.createElementNS(null, "child");
         parent.appendChild(child);

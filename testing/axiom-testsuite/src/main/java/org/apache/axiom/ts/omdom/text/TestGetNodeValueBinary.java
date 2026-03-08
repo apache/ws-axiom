@@ -24,18 +24,13 @@ import java.io.ByteArrayInputStream;
 
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Text;
 
-public class TestGetNodeValueBinary extends AxiomTestCase {
-    public TestGetNodeValueBinary(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestGetNodeValueBinary extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();

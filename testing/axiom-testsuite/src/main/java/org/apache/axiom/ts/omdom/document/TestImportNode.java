@@ -23,9 +23,7 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
@@ -33,19 +31,18 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-public class TestImportNode extends ConformanceTestCase {
-    public TestImportNode(OMMetaFactory metaFactory, XMLSample file) {
-        super(metaFactory, file);
-    }
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
+public class TestImportNode extends OMDOMTestCase {
+    @Inject
+    @Named("file")
+    private XMLSample file;
 
     @Override
     protected void runTest() throws Throwable {
         Document doc = DOMImplementation.XERCES.parse(new InputSource(file.getUrl().toString()));
-        Document doc2 =
-                ((DOMMetaFactory) metaFactory)
-                        .newDocumentBuilderFactory()
-                        .newDocumentBuilder()
-                        .newDocument();
+        Document doc2 = metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Node n = doc2.importNode(doc.getDocumentElement(), true);
         assertAbout(xml())
                 .that(xml(OMElement.class, (OMElement) n))

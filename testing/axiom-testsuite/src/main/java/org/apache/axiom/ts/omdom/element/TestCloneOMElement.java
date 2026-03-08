@@ -20,19 +20,14 @@ package org.apache.axiom.ts.omdom.element;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Element;
 
 /**
  * Tests that the element returned by {@link OMElement#cloneOMElement()} has a different owner
  * document than the original element.
  */
-public class TestCloneOMElement extends AxiomTestCase {
-    public TestCloneOMElement(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestCloneOMElement extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();

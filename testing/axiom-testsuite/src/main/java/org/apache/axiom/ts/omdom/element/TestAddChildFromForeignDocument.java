@@ -22,10 +22,8 @@ import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -33,15 +31,10 @@ import org.w3c.dom.Element;
  * Tests that {@link OMContainer#addChild(OMNode)} automatically adopts (in the sense of DOM) the
  * child node if it doesn't have the same owner document.
  */
-public class TestAddChildFromForeignDocument extends AxiomTestCase {
-    public TestAddChildFromForeignDocument(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestAddChildFromForeignDocument extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        DocumentBuilder db =
-                ((DOMMetaFactory) metaFactory).newDocumentBuilderFactory().newDocumentBuilder();
+        DocumentBuilder db = metaFactory.newDocumentBuilderFactory().newDocumentBuilder();
         Document document1 = db.newDocument();
         Element element1 = document1.createElementNS(null, "element1");
         Document document2 = db.newDocument();

@@ -20,9 +20,7 @@ package org.apache.axiom.ts.omdom.document;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -32,17 +30,11 @@ import org.w3c.dom.DocumentType;
  * Document} created with the {@link DOMImplementation#createDocument(String, String,
  * DocumentType)}.
  */
-public class TestGetOMFactory2 extends AxiomTestCase {
-    public TestGetOMFactory2(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestGetOMFactory2 extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document =
-                ((DOMMetaFactory) metaFactory)
-                        .getDOMImplementation()
-                        .createDocument("urn:test", "root", null);
+                metaFactory.getDOMImplementation().createDocument("urn:test", "root", null);
         assertSame(metaFactory.getOMFactory(), ((OMDocument) document).getOMFactory());
     }
 }

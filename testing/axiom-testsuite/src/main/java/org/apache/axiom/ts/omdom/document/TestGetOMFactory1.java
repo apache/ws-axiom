@@ -22,27 +22,18 @@ import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Document;
 
 /**
  * Tests that {@link OMInformationItem#getOMFactory()} returns the expected instance for a {@link
  * Document} created with the {@link DocumentBuilder#newDocument()}.
  */
-public class TestGetOMFactory1 extends AxiomTestCase {
-    public TestGetOMFactory1(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestGetOMFactory1 extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document =
-                ((DOMMetaFactory) metaFactory)
-                        .newDocumentBuilderFactory()
-                        .newDocumentBuilder()
-                        .newDocument();
+                metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         assertSame(metaFactory.getOMFactory(), ((OMDocument) document).getOMFactory());
     }
 }

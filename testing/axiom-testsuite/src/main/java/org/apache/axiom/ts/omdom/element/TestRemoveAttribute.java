@@ -21,8 +21,7 @@ package org.apache.axiom.ts.omdom.element;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,11 +30,7 @@ import org.w3c.dom.Element;
  * Tests that the owner document of an attribute changes if it is removed using {@link
  * OMElement#removeAttribute(OMAttribute)}.
  */
-public class TestRemoveAttribute extends AxiomTestCase {
-    public TestRemoveAttribute(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestRemoveAttribute extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();

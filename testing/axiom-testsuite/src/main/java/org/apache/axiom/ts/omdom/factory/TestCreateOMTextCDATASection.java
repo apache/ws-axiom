@@ -19,21 +19,16 @@
 package org.apache.axiom.ts.omdom.factory;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.CDATASection;
 
 /**
  * Tests that {@link OMFactory#createOMText(String, int)} creates a node that implements {@link
  * CDATASection} if the specified type is {@link OMNode#CDATA_SECTION_NODE}.
  */
-public class TestCreateOMTextCDATASection extends AxiomTestCase {
-    public TestCreateOMTextCDATASection(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestCreateOMTextCDATASection extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMText text =

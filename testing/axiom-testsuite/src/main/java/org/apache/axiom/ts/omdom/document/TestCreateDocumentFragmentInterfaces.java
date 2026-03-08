@@ -19,9 +19,7 @@
 package org.apache.axiom.ts.omdom.document;
 
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 
@@ -29,18 +27,11 @@ import org.w3c.dom.DocumentFragment;
  * Tests that the {@link DocumentFragment} instances created by {@link
  * Document#createDocumentFragment()} don't implement any Axiom interfaces.
  */
-public class TestCreateDocumentFragmentInterfaces extends AxiomTestCase {
-    public TestCreateDocumentFragmentInterfaces(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestCreateDocumentFragmentInterfaces extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document =
-                ((DOMMetaFactory) metaFactory)
-                        .newDocumentBuilderFactory()
-                        .newDocumentBuilder()
-                        .newDocument();
+                metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         DocumentFragment fragment = document.createDocumentFragment();
         assertFalse(fragment instanceof OMInformationItem);
     }

@@ -20,15 +20,10 @@ package org.apache.axiom.ts.omdom.factory;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Attr;
 
-public class TestCreateOMAttribute extends AxiomTestCase {
-    public TestCreateOMAttribute(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestCreateOMAttribute extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();

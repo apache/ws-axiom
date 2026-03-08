@@ -23,21 +23,19 @@ import static com.google.common.truth.Truth.assertThat;
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 
-public class TestInsertBeforeForbidden extends AxiomTestCase {
-    private final boolean build;
-
-    public TestInsertBeforeForbidden(OMMetaFactory metaFactory, boolean build) {
-        super(metaFactory);
-        this.build = build;
-        addTestParameter("build", build);
-    }
+public class TestInsertBeforeForbidden extends OMDOMTestCase {
+    @Inject
+    @Named("build")
+    private boolean build;
 
     @Override
     protected void runTest() throws Throwable {

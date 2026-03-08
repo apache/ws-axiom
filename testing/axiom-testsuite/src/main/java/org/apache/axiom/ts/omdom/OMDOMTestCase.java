@@ -16,18 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.ts.omdom;
 
-import java.util.stream.Stream;
+import com.google.inject.Inject;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactoryLoader;
-import org.apache.axiom.ts.omdom.OMDOMTestSuite;
-import org.junit.jupiter.api.TestFactory;
-import org.junit.jupiter.api.DynamicNode;
+import junit.framework.TestCase;
 
-public class OMDOMImplementationTest {
-    @TestFactory
-    public Stream<DynamicNode> tests() {
-        return OMDOMTestSuite.create(new OMDOMMetaFactoryLoader().load(null)).toDynamicNodes();
-    }
+import org.apache.axiom.om.dom.DOMMetaFactory;
+
+public abstract class OMDOMTestCase extends TestCase {
+    @Inject protected DOMMetaFactory metaFactory;
 }

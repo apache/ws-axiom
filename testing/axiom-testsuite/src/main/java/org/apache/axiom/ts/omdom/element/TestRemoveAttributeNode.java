@@ -23,8 +23,7 @@ import static com.google.common.truth.Truth.assertThat;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
@@ -33,11 +32,7 @@ import org.w3c.dom.Element;
  * same owner document as the element. This test case uses a scenario where the element is created
  * using the Axiom API, i.e. where the owner document is created lazily.
  */
-public class TestRemoveAttributeNode extends AxiomTestCase {
-    public TestRemoveAttributeNode(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestRemoveAttributeNode extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();

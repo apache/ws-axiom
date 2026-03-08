@@ -19,10 +19,8 @@
 package org.apache.axiom.ts.omdom.element;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
-import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -30,18 +28,10 @@ import org.w3c.dom.Element;
  * Tests that the return value of {@link OMNamedInformationItem#getNamespace()} is correctly
  * normalized for elements created using {@link Document#createElementNS(String, String)}.
  */
-public class TestGetNamespaceNormalized extends AxiomTestCase {
-    public TestGetNamespaceNormalized(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestGetNamespaceNormalized extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Document doc =
-                ((DOMMetaFactory) metaFactory)
-                        .newDocumentBuilderFactory()
-                        .newDocumentBuilder()
-                        .newDocument();
+        Document doc = metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Element element = doc.createElementNS(null, "test");
         assertNull(((OMElement) element).getNamespace());
     }

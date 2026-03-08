@@ -23,18 +23,13 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import java.io.StringReader;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /** Tests {@link Node#cloneNode(boolean)} on an element that is not completely built. */
-public class TestCloneNodeIncomplete extends AxiomTestCase {
-    public TestCloneNodeIncomplete(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestCloneNodeIncomplete extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Element element =

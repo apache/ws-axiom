@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.element;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -28,11 +27,7 @@ import org.w3c.dom.Node;
  * Tests the behavior of {@link Node#removeChild(Node)} on an element that has not been built
  * completely.
  */
-public class TestRemoveChildIncomplete extends AxiomTestCase {
-    public TestRemoveChildIncomplete(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestRemoveChildIncomplete extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Element element =

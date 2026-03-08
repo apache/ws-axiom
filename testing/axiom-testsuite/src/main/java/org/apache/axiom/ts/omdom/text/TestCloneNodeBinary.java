@@ -20,16 +20,11 @@ package org.apache.axiom.ts.omdom.text;
 
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Text;
 
-public class TestCloneNodeBinary extends AxiomTestCase {
-    public TestCloneNodeBinary(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestCloneNodeBinary extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();

@@ -21,9 +21,8 @@ package org.apache.axiom.ts.omdom.element;
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -37,11 +36,7 @@ import org.w3c.dom.NodeList;
  *
  * @see TestAppendChildIncomplete
  */
-public class TestInsertBeforeIncomplete extends AxiomTestCase {
-    public TestInsertBeforeIncomplete(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
-
+public class TestInsertBeforeIncomplete extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
