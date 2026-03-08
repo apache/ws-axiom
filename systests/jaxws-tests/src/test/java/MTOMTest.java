@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 
@@ -39,7 +39,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.example.ImageService;
 import org.example.ImageServicePort;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import jakarta.xml.ws.BindingProvider;
 import jakarta.xml.ws.soap.MTOMFeature;
