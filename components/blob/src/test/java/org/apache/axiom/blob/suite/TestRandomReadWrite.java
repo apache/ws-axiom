@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.blob.suite;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,8 +26,6 @@ import java.util.Random;
 
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-
-import com.google.common.collect.Range;
 
 public class TestRandomReadWrite extends SizeSensitiveWritableBlobTestCase {
     public TestRandomReadWrite(WritableBlobFactory<?> factory, int size) {
@@ -64,7 +62,7 @@ public class TestRandomReadWrite extends SizeSensitiveWritableBlobTestCase {
                 if (b == -1) {
                     break;
                 }
-                assertThat(b).isIn(Range.closedOpen(0, 256));
+                assertThat(b).isBetween(0, 255);
                 data2[offset++] = (byte) b;
             } else {
                 int bufferOffset = random.nextInt(512);
@@ -74,7 +72,7 @@ public class TestRandomReadWrite extends SizeSensitiveWritableBlobTestCase {
                     break;
                 }
                 int newOffset = offset + read;
-                assertThat(newOffset).isAtMost(data2.length);
+                assertThat(newOffset).isLessThanOrEqualTo(data2.length);
                 System.arraycopy(buffer, bufferOffset, data2, offset, read);
                 offset = newOffset;
             }

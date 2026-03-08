@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.blob.suite;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -43,7 +43,7 @@ public class TestSkip extends WritableBlobTestCase {
             assertThat(IOUtils.toByteArray(in, 3)).isEqualTo(new byte[] {9, 7, 5});
             // The skip method in FileInputStream returns 10 instead of 2
             // (see http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6294974).
-            assertThat(in.skip(10)).isAnyOf(2L, 10L);
+            assertThat(in.skip(10)).isIn(2L, 10L);
             assertThat(in.read()).isEqualTo(-1);
         } finally {
             in.close();

@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.blob.suite;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
