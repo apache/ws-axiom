@@ -20,7 +20,7 @@ package org.apache.axiom.core.stream;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NamespaceRepairingFilterTest {
     @Test

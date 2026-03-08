@@ -18,12 +18,12 @@
  */
 package org.apache.axiom.core.stream.serializer.writer;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OutputStreamXmlWriterTest {
     @Test

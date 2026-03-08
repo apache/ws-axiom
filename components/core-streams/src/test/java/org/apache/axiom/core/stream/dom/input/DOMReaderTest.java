@@ -18,14 +18,14 @@
  */
 package org.apache.axiom.core.stream.dom.input;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.core.stream.serializer;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.ByteArrayOutputStream;
@@ -28,7 +28,7 @@ import java.nio.charset.StandardCharsets;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.io.output.NullWriter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SerializerTest {
     @Test

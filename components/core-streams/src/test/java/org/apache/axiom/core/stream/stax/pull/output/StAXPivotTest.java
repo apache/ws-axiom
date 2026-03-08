@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.core.stream.stax.pull.output;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.stream.XMLStreamConstants;
@@ -27,7 +27,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class StAXPivotTest {
     private static StAXPivot createStAXPivot(Action... actions) throws StreamException {
