@@ -18,69 +18,36 @@
  */
 package org.apache.axiom.core.stream.stax.pull.output;
 
-import static com.google.common.truth.Truth.assertAbout;
-import static org.apache.axiom.testing.multiton.Multiton.getInstances;
-import static org.apache.axiom.truth.xml.XMLTruth.xml;
+import java.util.stream.Stream;
 
-import java.io.StringWriter;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.stax.StAXSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.apache.axiom.core.stream.dom.input.DOMInput;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
-import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
-import org.w3c.dom.Document;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-import junit.framework.TestSuite;
+import com.google.common.collect.ImmutableList;
 
-public class StAXPivotTransformerTest extends MatrixTestCase {
-    private final XSLTImplementation xsltImplementation;
-    private final XMLSample sample;
-
-    public StAXPivotTransformerTest(XSLTImplementation xsltImplementation, XMLSample sample) {
-        this.xsltImplementation = xsltImplementation;
-        this.sample = sample;
-        addTestParameter("xslt", xsltImplementation.getName());
-        addTestParameter("sample", sample.getName());
-    }
-
-    @Override
-    protected void runTest() throws Throwable {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        factory.setExpandEntityReferences(false);
-        factory.setCoalescing(true);
-        factory.setIgnoringComments(true);
-        Document document = factory.newDocumentBuilder().parse(sample.getUrl().toString());
-        StAXPivot pivot = new StAXPivot(null);
-        pivot.setReader(new DOMInput(document, false).createReader(pivot));
-        StringWriter sw = new StringWriter();
-        xsltImplementation
-                .newTransformerFactory()
-                .newTransformer()
-                .transform(new StAXSource(pivot), new StreamResult(sw));
-        assertAbout(xml()).that(sw.toString()).hasSameContentAs(document);
-    }
-
-    public static TestSuite suite() {
-        return new MatrixTestSuiteBuilder() {
-            @Override
-            protected void addTests() {
-                for (XSLTImplementation xsltImplementation :
-                        getInstances(XSLTImplementation.class)) {
-                    if (xsltImplementation.supportsStAXSource()) {
-                        for (XMLSample sample : getInstances(XMLSample.class)) {
-                            if (!sample.hasDTD()) {
-                                addTest(new StAXPivotTransformerTest(xsltImplementation, sample));
-                            }
-                        }
-                    }
-                }
-            }
-        }.build();
+public class StAXPivotTransformerTest {
+    @TestFactory
+    public Stream<DynamicNode> tests() {
+        return new ParameterFanOutNode<>(
+                        XSLTImplementation.class,
+                        Multiton.getInstances(XSLTImplementation.class).stream()
+                                .filter(XSLTImplementation::supportsStAXSource)
+                                .collect(ImmutableList.toImmutableList()),
+                        "xslt",
+                        XSLTImplementation::getName,
+                        new ParameterFanOutNode<>(
+                                XMLSample.class,
+                                Multiton.getInstances(XMLSample.class).stream()
+                                        .filter(s -> !s.hasDTD())
+                                        .collect(ImmutableList.toImmutableList()),
+                                "sample",
+                                XMLSample::getName,
+                                new MatrixTest(StAXPivotTransformerTestCase.class)))
+                .toDynamicNodes();
     }
 }
