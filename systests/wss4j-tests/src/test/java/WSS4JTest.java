@@ -18,21 +18,27 @@
  */
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Vector;
+import java.io.FileInputStream;
+import java.security.KeyStore;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.crypto.SecretKey;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.ws.security.WSConstants;
-import org.apache.ws.security.WSEncryptionPart;
-import org.apache.ws.security.WSSecurityEngine;
-import org.apache.ws.security.WSSecurityException;
-import org.apache.ws.security.components.crypto.Crypto;
-import org.apache.ws.security.components.crypto.CryptoFactory;
-import org.apache.ws.security.message.WSSecEncrypt;
-import org.apache.ws.security.message.WSSecHeader;
-import org.apache.ws.security.message.WSSecSignature;
+import org.apache.wss4j.common.WSEncryptionPart;
+import org.apache.wss4j.common.crypto.Crypto;
+import org.apache.wss4j.common.crypto.CryptoFactory;
+import org.apache.wss4j.common.ext.WSSecurityException;
+import org.apache.wss4j.dom.WSConstants;
+import org.apache.wss4j.dom.engine.WSSecurityEngine;
+import org.apache.wss4j.dom.handler.WSHandlerResult;
+import org.apache.wss4j.dom.message.WSSecEncrypt;
+import org.apache.wss4j.dom.message.WSSecHeader;
+import org.apache.wss4j.dom.message.WSSecSignature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -52,27 +58,28 @@ public class WSS4JTest {
                 .getSOAPMessage();
     }
 
-    private void testSignature(String file, Vector<WSEncryptionPart> parts) throws Exception {
-        WSSecSignature sign = new WSSecSignature();
-        sign.setUserInfo("key1", "password");
-        sign.setKeyIdentifierType(WSConstants.BST_DIRECT_REFERENCE);
-        sign.setParts(parts);
-
+    private void testSignature(String file, List<WSEncryptionPart> parts) throws Exception {
         SOAPMessage message = load(file);
         Document doc = (Document) message;
 
-        WSSecHeader secHeader = new WSSecHeader();
-        secHeader.insertSecurityHeader(doc);
+        WSSecHeader secHeader = new WSSecHeader(doc);
+        secHeader.insertSecurityHeader();
 
-        Document signedDoc = sign.build(doc, crypto, secHeader);
+        WSSecSignature sign = new WSSecSignature(secHeader);
+        sign.setUserInfo("key1", "password");
+        sign.setKeyIdentifierType(WSConstants.BST_DIRECT_REFERENCE);
+        sign.getParts().addAll(parts);
+
+        Document signedDoc = sign.build(crypto);
 
         WSSecurityEngine secEngine = new WSSecurityEngine();
-        assertThat(secEngine.processSecurityHeader(signedDoc, null, null, crypto)).hasSize(2);
+        WSHandlerResult results = secEngine.processSecurityHeader(signedDoc, null, null, crypto);
+        assertThat(results.getResults()).hasSize(2);
     }
 
     @Test
     public void testSignHeaderAndBody() throws Exception {
-        Vector<WSEncryptionPart> parts = new Vector<WSEncryptionPart>();
+        List<WSEncryptionPart> parts = new ArrayList<>();
         parts.add(new WSEncryptionPart("header", "urn:ns1", ""));
         parts.add(new WSEncryptionPart("Body", "http://schemas.xmlsoap.org/soap/envelope/", ""));
         testSignature("envelope1.xml", parts);
@@ -80,23 +87,29 @@ public class WSS4JTest {
 
     @Test
     public void testSignPartById() throws Exception {
-        Vector<WSEncryptionPart> parts = new Vector<WSEncryptionPart>();
+        List<WSEncryptionPart> parts = new ArrayList<>();
         parts.add(new WSEncryptionPart("my-id"));
         testSignature("envelope2.xml", parts);
     }
 
     @Test
     public void testEncryptHeader() throws Exception {
-        Vector<WSEncryptionPart> parts = new Vector<WSEncryptionPart>();
-        parts.add(new WSEncryptionPart("header", "urn:ns1", "Header"));
-        WSSecEncrypt encrypt = new WSSecEncrypt();
-        encrypt.setUserInfo("key2", "password");
-        encrypt.setEncryptSymmKey(false);
-        encrypt.setParts(parts);
         SOAPMessage message = load("envelope1.xml");
         Document doc = (Document) message;
-        WSSecHeader secHeader = new WSSecHeader();
-        secHeader.insertSecurityHeader(doc);
-        encrypt.build(doc, crypto, secHeader);
+
+        WSSecHeader secHeader = new WSSecHeader(doc);
+        secHeader.insertSecurityHeader();
+
+        WSSecEncrypt encrypt = new WSSecEncrypt(secHeader);
+        encrypt.setEncryptSymmKey(false);
+        encrypt.getParts().add(new WSEncryptionPart("header", "urn:ns1", "Header"));
+
+        KeyStore ks = KeyStore.getInstance("JCEKS");
+        try (FileInputStream fis = new FileInputStream("target/keystore")) {
+            ks.load(fis, "password".toCharArray());
+        }
+        SecretKey secretKey = (SecretKey) ks.getKey("key2", "password".toCharArray());
+
+        encrypt.build(crypto, secretKey);
     }
 }

@@ -44,9 +44,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.security</groupId>
-            <artifactId>wss4j</artifactId>
-            <version>1.6.19</version>
+            <groupId>org.apache.wss4j</groupId>
+            <artifactId>wss4j-ws-security-dom</artifactId>
+            <version>4.0.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -145,9 +145,9 @@
                         <configuration>
                             <alias>key1</alias>
                             <dname>cn=dummy</dname>
-                            <keyalg>DSA</keyalg>
-                            <keysize>1024</keysize>
-                            <sigalg>SHA1withDSA</sigalg>
+                            <keyalg>RSA</keyalg>
+                            <keysize>2048</keysize>
+                            <sigalg>SHA256withRSA</sigalg>
                         </configuration>
                     </execution>
                     <execution>
@@ -158,8 +158,8 @@
                         </goals>
                         <configuration>
                             <alias>key2</alias>
-                            <keyalg>DES</keyalg>
-                            <keysize>56</keysize>
+                            <keyalg>AES</keyalg>
+                            <keysize>128</keysize>
                         </configuration>
                     </execution>
                 </executions>
