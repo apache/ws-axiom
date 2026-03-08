@@ -18,15 +18,18 @@
  */
 package org.apache.axiom.util.sax;
 
+import java.util.stream.Stream;
+
 import javax.xml.parsers.SAXParserFactory;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-public class ValidationTest extends TestCase {
-    public static TestSuite suite() throws Exception {
-        return new XMLReaderTestSuiteBuilder(
+public class ValidationTest {
+    @TestFactory
+    public Stream<DynamicNode> tests() throws Exception {
+        return XMLReaderTestSuite.create(
                         SAXParserFactory.newInstance().newSAXParser().getXMLReader())
-                .build();
+                .toDynamicNodes();
     }
 }

@@ -18,18 +18,19 @@
  */
 package org.apache.axiom.util.sax;
 
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
+import junit.framework.TestCase;
+
 import org.xml.sax.XMLReader;
 
-public class TestGetSetFeature extends MatrixTestCase {
-    private final XMLReader xmlReader;
-    private final String feature;
+public class TestGetSetFeature extends TestCase {
+    @Inject private XMLReader xmlReader;
 
-    public TestGetSetFeature(XMLReader xmlReader, String feature) {
-        this.xmlReader = xmlReader;
-        this.feature = feature;
-        addTestParameter("feature", feature);
-    }
+    @Inject
+    @Named("feature")
+    private String feature;
 
     @Override
     protected void runTest() throws Throwable {
