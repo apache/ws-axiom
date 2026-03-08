@@ -18,61 +18,24 @@
  */
 package org.apache.axiom.core.stream.serializer;
 
-import static com.google.common.truth.Truth.assertAbout;
-import static org.apache.axiom.testing.multiton.Multiton.getInstances;
-import static org.apache.axiom.truth.xml.XMLTruth.xml;
+import java.util.stream.Stream;
 
-import java.io.StringReader;
-import java.io.StringWriter;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.apache.axiom.core.stream.XmlReader;
-import org.apache.axiom.core.stream.dom.input.DOMInput;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
-import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-import junit.framework.TestSuite;
-
-public class SerializerConformanceTest extends MatrixTestCase {
-    private final XMLSample sample;
-
-    public SerializerConformanceTest(XMLSample sample) {
-        this.sample = sample;
-        addTestParameter("sample", sample.getName());
-    }
-
-    @Override
-    protected void runTest() throws Throwable {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        factory.setExpandEntityReferences(false);
-        Document document = factory.newDocumentBuilder().parse(sample.getUrl().toString());
-        StringWriter sw = new StringWriter();
-        XmlReader reader = new DOMInput(document, false).createReader(new Serializer(sw));
-        while (!reader.proceed()) {
-            // Just loop
-        }
-        InputSource is = new InputSource(new StringReader(sw.toString()));
-        is.setSystemId(sample.getUrl().toString());
-        assertAbout(xml())
-                .that(is)
-                .ignoringWhitespaceInPrologAndEpilog()
-                .treatingElementContentWhitespaceAsText() // TODO
-                .hasSameContentAs(document);
-    }
-
-    public static TestSuite suite() {
-        return new MatrixTestSuiteBuilder() {
-            @Override
-            protected void addTests() {
-                for (XMLSample sample : getInstances(XMLSample.class)) {
-                    addTest(new SerializerConformanceTest(sample));
-                }
-            }
-        }.build();
+public class SerializerConformanceTest {
+    @TestFactory
+    public Stream<DynamicNode> tests() {
+        return new ParameterFanOutNode<>(
+                        XMLSample.class,
+                        Multiton.getInstances(XMLSample.class),
+                        "sample",
+                        XMLSample::getName,
+                        new MatrixTest(SerializerConformanceTestCase.class))
+                .toDynamicNodes();
     }
 }

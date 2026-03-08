@@ -32,9 +32,9 @@ There are two common shapes:
 - **Self-contained test suites** — the test case, suite structure, and consumer
   live in a single class. After migration, these are split into a test case
   class (e.g. `StAXPivotTransformerTestCase`) and a suite class (e.g.
-  `StAXPivotTransformerTestSuite`). They typically don't need `InjectorNode`
+  `StAXPivotTransformerTest`). They typically don't need `InjectorNode`
   at all; fan-out nodes with `MatrixTest` leaves are sufficient. See
-  `StAXPivotTransformerTestSuite` / `StAXPivotTransformerTestCase` in
+  `StAXPivotTransformerTest` / `StAXPivotTransformerTestCase` in
   `components/core-streams` for an example.
 
 The step-by-step guide below focuses on reusable API test suites. For
@@ -312,10 +312,9 @@ However, the result must be **two** classes:
   `TestCase` and contains the test logic. Name it with a `*TestCase` suffix
   (not `*Test`) so that Maven Surefire does not try to run it directly as a
   JUnit 3/4 test.
-- A **suite class** (e.g. `StAXPivotTransformerTestSuite`) with a `@TestFactory`
+- A **suite class** (e.g. `StAXPivotTransformerTest`) with a `@TestFactory`
   method that builds the fan-out tree and returns `Stream<DynamicNode>`. Name
-  it with a `*TestSuite` suffix (not `*Test`) so that Maven Surefire does not
-  try to run it as a JUnit 3/4 test either.
+  it with a `*Test` suffix so that Maven Surefire discovers and runs it.
 
 Steps:
 
@@ -324,7 +323,7 @@ Steps:
    constructor parameters.
 2. Remove the constructor and all `addTestParameter()` calls.
 3. Remove the `static suite()` method.
-4. Create a new suite class with a `*TestSuite` suffix. Add a `@TestFactory`
+4. Create a new suite class with a `*Test` suffix. Add a `@TestFactory`
    **instance** method called `tests` that builds the fan-out tree and calls
    `toDynamicNodes()` on the root node.
    No `InjectorNode` is needed unless you have additional bindings beyond the
@@ -383,10 +382,10 @@ public class StAXPivotTransformerTestCase extends TestCase {
 }
 ```
 
-**After** (`StAXPivotTransformerTestSuite.java` — JUnit 5 suite):
+**After** (`StAXPivotTransformerTest.java` — JUnit 5 suite):
 
 ```java
-public class StAXPivotTransformerTestSuite {
+public class StAXPivotTransformerTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
         return new ParameterFanOutNode<>(
@@ -430,7 +429,7 @@ example by filtering the list of instances passed to the fan-out node.
 
 - [ ] Test case class: renamed to `*TestCase` suffix, extends `TestCase`, uses
       `@Inject` fields, no constructor, `static suite()` removed
-- [ ] Suite class: named with `*TestSuite` suffix, has `@TestFactory` instance
+- [ ] Suite class: named with `*Test` suffix, has `@TestFactory` instance
       method `tests()` building fan-out tree and calling `toDynamicNodes()`
 - [ ] `pom.xml`: `junit-jupiter`, `guice`, and (if needed) `multiton` added
 - [ ] Tests pass: `mvn clean test -pl <module> -am`
