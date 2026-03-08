@@ -27,7 +27,7 @@ import com.sun.xml.messaging.saaj.soap.SAAJMetaFactoryImpl;
 
 public class SAAJRITest {
     @TestFactory
-    public Stream<DynamicNode> saajTests() {
+    public Stream<DynamicNode> tests() {
         return SAAJTestSuite.create(new SAAJMetaFactoryImpl()).toDynamicNodes();
     }
 }

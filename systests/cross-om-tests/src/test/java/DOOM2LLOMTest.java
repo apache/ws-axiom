@@ -25,7 +25,7 @@ import org.junit.jupiter.api.TestFactory;
 
 public class DOOM2LLOMTest {
     @TestFactory
-    public Stream<DynamicNode> crossOMTests() {
+    public Stream<DynamicNode> tests() {
         return CrossOMTestSuite.create(
                         OMAbstractFactory.getMetaFactory(),
                         OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM))

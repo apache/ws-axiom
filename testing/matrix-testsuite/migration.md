@@ -231,7 +231,7 @@ Key differences:
 The old consumer class uses JUnit 3's `static suite()` method.
 
 **Replace it** with a JUnit 5 class that has a `@TestFactory` method returning
-`Stream<DynamicNode>`.
+`Stream<DynamicNode>`. By convention, the method should be called `tests`.
 
 **Before:**
 
@@ -248,7 +248,7 @@ public class SAAJRITest extends TestCase {
 ```java
 public class SAAJRITest {
     @TestFactory
-    public Stream<DynamicNode> saajTests() {
+    public Stream<DynamicNode> tests() {
         return SAAJTestSuite.create(new SAAJMetaFactoryImpl())
                 .toDynamicNodes();
     }
@@ -307,8 +307,9 @@ migration is simpler because there is no separate base class or suite factory:
 1. Change the class to extend `TestCase` directly and declare dimension values
    as `@Inject` fields instead of constructor parameters.
 2. Remove the constructor and all `addTestParameter()` calls.
-3. Replace the `static suite()` method with a `@TestFactory` method that builds
-   the fan-out tree directly and calls `toDynamicNodes()` on the root node.
+3. Replace the `static suite()` method with a `@TestFactory` method called
+   `tests` that builds the fan-out tree directly and calls `toDynamicNodes()`
+   on the root node.
    No `InjectorNode` is needed unless you have additional bindings beyond the
    dimension values.
 
@@ -361,7 +362,7 @@ public class StAXPivotTransformerTest extends TestCase {
     }
 
     @TestFactory
-    public static Stream<DynamicNode> suite() {
+    public static Stream<DynamicNode> tests() {
         return new ParameterFanOutNode<>(
                 XSLTImplementation.class,
                 Multiton.getInstances(XSLTImplementation.class),
@@ -402,7 +403,7 @@ example by filtering the list of instances passed to the fan-out node.
 ### Self-contained test suites
 
 - [ ] Test class: extends `TestCase`, uses `@Inject` fields, no constructor
-- [ ] `static suite()` replaced with `@TestFactory` method building fan-out
-      tree and calling `toDynamicNodes()`
+- [ ] `static suite()` replaced with `@TestFactory` method `tests()` building
+      fan-out tree and calling `toDynamicNodes()`
 - [ ] `pom.xml`: `junit-jupiter`, `guice`, and (if needed) `multiton` added
 - [ ] Tests pass: `mvn clean test -pl <module> -am`
