@@ -30,9 +30,12 @@ There are two common shapes:
   the root to bind implementation-level objects. See the `saaj-testsuite`
   module for a completed example.
 - **Self-contained test suites** — the test case, suite structure, and consumer
-  live in a single class. These typically don't need `InjectorNode` at all;
-  fan-out nodes with `MatrixTest` leaves are sufficient. See
-  `StAXPivotTransformerTest` in `components/core-streams` for an example.
+  live in a single class. After migration, these are split into a test case
+  class (e.g. `StAXPivotTransformerTestCase`) and a suite class (e.g.
+  `StAXPivotTransformerTestSuite`). They typically don't need `InjectorNode`
+  at all; fan-out nodes with `MatrixTest` leaves are sufficient. See
+  `StAXPivotTransformerTestSuite` / `StAXPivotTransformerTestCase` in
+  `components/core-streams` for an example.
 
 The step-by-step guide below focuses on reusable API test suites. For
 self-contained suites, see the [simplified migration](#simplified-migration-for-self-contained-tests)
@@ -302,16 +305,33 @@ is in place and all consumers have been updated.
 
 When the test case, suite builder, and consumer are all in a single class (i.e.
 the class extends `MatrixTestCase` and has a `static suite()` method), the
-migration is simpler because there is no separate base class or suite factory:
+migration is simpler because there is no separate base class or suite factory.
+However, the result must be **two** classes:
 
-1. Change the class to extend `TestCase` directly and declare dimension values
-   as `@Inject` fields instead of constructor parameters.
+- A **test case class** (e.g. `StAXPivotTransformerTestCase`) that extends
+  `TestCase` and contains the test logic. Name it with a `*TestCase` suffix
+  (not `*Test`) so that Maven Surefire does not try to run it directly as a
+  JUnit 3/4 test.
+- A **suite class** (e.g. `StAXPivotTransformerTestSuite`) with a `@TestFactory`
+  method that builds the fan-out tree and returns `Stream<DynamicNode>`. Name
+  it with a `*TestSuite` suffix (not `*Test`) so that Maven Surefire does not
+  try to run it as a JUnit 3/4 test either.
+
+Steps:
+
+1. Rename the class to a `*TestCase` suffix. Change it to extend `TestCase`
+   directly and declare dimension values as `@Inject` fields instead of
+   constructor parameters.
 2. Remove the constructor and all `addTestParameter()` calls.
-3. Replace the `static suite()` method with a `@TestFactory` method called
-   `tests` that builds the fan-out tree directly and calls `toDynamicNodes()`
-   on the root node.
+3. Remove the `static suite()` method.
+4. Create a new suite class with a `*TestSuite` suffix. Add a `@TestFactory`
+   **instance** method called `tests` that builds the fan-out tree and calls
+   `toDynamicNodes()` on the root node.
    No `InjectorNode` is needed unless you have additional bindings beyond the
    dimension values.
+
+Note: the `@TestFactory` method **must not be static** — JUnit 5 requires it
+to be an instance method.
 
 **Before:**
 
@@ -349,10 +369,10 @@ public class StAXPivotTransformerTest extends MatrixTestCase {
 }
 ```
 
-**After:**
+**After** (`StAXPivotTransformerTestCase.java` — test logic):
 
 ```java
-public class StAXPivotTransformerTest extends TestCase {
+public class StAXPivotTransformerTestCase extends TestCase {
     @Inject @Named("xslt") private XSLTImplementation xsltImplementation;
     @Inject @Named("sample") private XMLSample sample;
 
@@ -360,9 +380,15 @@ public class StAXPivotTransformerTest extends TestCase {
     protected void runTest() throws Throwable {
         // ... test logic unchanged ...
     }
+}
+```
 
+**After** (`StAXPivotTransformerTestSuite.java` — JUnit 5 suite):
+
+```java
+public class StAXPivotTransformerTestSuite {
     @TestFactory
-    public static Stream<DynamicNode> tests() {
+    public Stream<DynamicNode> tests() {
         return new ParameterFanOutNode<>(
                 XSLTImplementation.class,
                 Multiton.getInstances(XSLTImplementation.class),
@@ -373,7 +399,7 @@ public class StAXPivotTransformerTest extends TestCase {
                         Multiton.getInstances(XMLSample.class),
                         "sample",
                         XMLSample::getName,
-                        new MatrixTest(StAXPivotTransformerTest.class)))
+                        new MatrixTest(StAXPivotTransformerTestCase.class)))
                 .toDynamicNodes();
     }
 }
@@ -402,8 +428,9 @@ example by filtering the list of instances passed to the fan-out node.
 
 ### Self-contained test suites
 
-- [ ] Test class: extends `TestCase`, uses `@Inject` fields, no constructor
-- [ ] `static suite()` replaced with `@TestFactory` method `tests()` building
-      fan-out tree and calling `toDynamicNodes()`
+- [ ] Test case class: renamed to `*TestCase` suffix, extends `TestCase`, uses
+      `@Inject` fields, no constructor, `static suite()` removed
+- [ ] Suite class: named with `*TestSuite` suffix, has `@TestFactory` instance
+      method `tests()` building fan-out tree and calling `toDynamicNodes()`
 - [ ] `pom.xml`: `junit-jupiter`, `guice`, and (if needed) `multiton` added
 - [ ] Tests pass: `mvn clean test -pl <module> -am`
