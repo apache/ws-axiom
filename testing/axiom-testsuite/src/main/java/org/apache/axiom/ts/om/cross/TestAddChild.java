@@ -21,13 +21,8 @@ package org.apache.axiom.ts.om.cross;
 import static com.google.common.truth.Truth.assertThat;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 
 public class TestAddChild extends CrossOMTestCase {
-    public TestAddChild(OMMetaFactory metaFactory, OMMetaFactory altMetaFactory) {
-        super(metaFactory, altMetaFactory);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         OMElement parent = metaFactory.getOMFactory().createOMElement("parent", null);

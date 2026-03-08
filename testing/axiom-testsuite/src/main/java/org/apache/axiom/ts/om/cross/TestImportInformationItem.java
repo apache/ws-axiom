@@ -21,20 +21,17 @@ package org.apache.axiom.ts.om.cross;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.XMLSampleAdapter;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestImportInformationItem extends CrossOMTestCase {
-    private final XMLSample file;
-
-    public TestImportInformationItem(
-            OMMetaFactory metaFactory, OMMetaFactory altMetaFactory, XMLSample file) {
-        super(metaFactory, altMetaFactory);
-        this.file = file;
-        addTestParameter("file", file.getName());
-    }
+    @Inject
+    @Named("file")
+    private XMLSample file;
 
     @Override
     protected void runTest() throws Throwable {

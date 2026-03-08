@@ -18,15 +18,19 @@
  */
 package org.apache.axiom.ts.om.cross;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
+import junit.framework.TestCase;
+
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public abstract class CrossOMTestCase extends MatrixTestCase {
-    protected final OMMetaFactory metaFactory;
-    protected final OMMetaFactory altMetaFactory;
+public abstract class CrossOMTestCase extends TestCase {
+    @Inject
+    @Named("metaFactory")
+    protected OMMetaFactory metaFactory;
 
-    public CrossOMTestCase(OMMetaFactory metaFactory, OMMetaFactory altMetaFactory) {
-        this.metaFactory = metaFactory;
-        this.altMetaFactory = altMetaFactory;
-    }
+    @Inject
+    @Named("altMetaFactory")
+    protected OMMetaFactory altMetaFactory;
 }

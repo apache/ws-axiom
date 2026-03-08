@@ -20,21 +20,18 @@ package org.apache.axiom.ts.om.cross;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 
 public class TestInsertSibling extends CrossOMTestCase {
-    private final boolean before;
-
-    public TestInsertSibling(
-            OMMetaFactory metaFactory, OMMetaFactory altMetaFactory, boolean before) {
-        super(metaFactory, altMetaFactory);
-        this.before = before;
-        addTestParameter("before", before);
-    }
+    @Inject
+    @Named("before")
+    private boolean before;
 
     @Override
     protected void runTest() throws Throwable {

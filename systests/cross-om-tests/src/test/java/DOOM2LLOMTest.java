@@ -16,19 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.stream.Stream;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.ts.om.cross.CrossOMTestSuiteBuilder;
+import org.apache.axiom.ts.om.cross.CrossOMTestSuite;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-public class DOOM2LLOMTest extends TestCase {
-    public static TestSuite suite() {
-        CrossOMTestSuiteBuilder builder =
-                new CrossOMTestSuiteBuilder(
+public class DOOM2LLOMTest {
+    @TestFactory
+    public Stream<DynamicNode> crossOMTests() {
+        return CrossOMTestSuite.create(
                         OMAbstractFactory.getMetaFactory(),
-                        OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM));
-
-        return builder.build();
+                        OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM))
+                .toDynamicNodes();
     }
 }
