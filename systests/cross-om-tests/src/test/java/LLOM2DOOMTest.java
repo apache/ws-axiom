@@ -19,21 +19,16 @@
 import java.util.stream.Stream;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.testutils.suite.MatrixTestFilters;
 import org.apache.axiom.ts.om.cross.CrossOMTestSuite;
-import org.apache.axiom.ts.om.cross.TestInsertSibling;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 
 public class LLOM2DOOMTest {
     @TestFactory
     public Stream<DynamicNode> crossOMTests() {
-        // TODO
-        MatrixTestFilters excludes =
-                MatrixTestFilters.builder().add(TestInsertSibling.class).build();
         return CrossOMTestSuite.create(
                         OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM),
                         OMAbstractFactory.getMetaFactory())
-                .toDynamicNodes(excludes);
+                .toDynamicNodes();
     }
 }
