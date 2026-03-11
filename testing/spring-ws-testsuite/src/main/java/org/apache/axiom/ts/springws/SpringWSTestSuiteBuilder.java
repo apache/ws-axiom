@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.springws;
 
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.springws.scenario.ScenarioConfig;
@@ -46,29 +47,25 @@ public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
 
     @Override
     protected void addTests() {
-        addSimpleTests(messageFactoryConfigurator, SOAPSpec.SOAP11);
-        addSimpleTests(messageFactoryConfigurator, SOAPSpec.SOAP12);
         addTest(new TestCreateWebServiceMessageFromInputStreamMTOM(messageFactoryConfigurator));
-        addScenarioTests(
-                new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator),
-                SOAPSpec.SOAP11);
-        addScenarioTests(
-                new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator),
-                SOAPSpec.SOAP12);
-        if (altMessageFactoryConfigurator != messageFactoryConfigurator) {
+        for (SOAPSpec spec : Multiton.getInstances(SOAPSpec.class)) {
+            addTest(new TestCreateWebServiceMessage(messageFactoryConfigurator, spec));
+            addTest(
+                    new TestCreateWebServiceMessageFromInputStream(
+                            messageFactoryConfigurator, spec));
+            addTest(
+                    new TestCreateWebServiceMessageFromInputStreamVersionMismatch(
+                            messageFactoryConfigurator, spec));
             addScenarioTests(
-                    new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator),
-                    SOAPSpec.SOAP11);
-            addScenarioTests(
-                    new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator),
-                    SOAPSpec.SOAP12);
+                    new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator),
+                    spec);
+            if (altMessageFactoryConfigurator != messageFactoryConfigurator) {
+                addScenarioTests(
+                        new ScenarioConfig(
+                                messageFactoryConfigurator, altMessageFactoryConfigurator),
+                        spec);
+            }
         }
-    }
-
-    private void addSimpleTests(MessageFactoryConfigurator mfc, SOAPSpec spec) {
-        addTest(new TestCreateWebServiceMessage(mfc, spec));
-        addTest(new TestCreateWebServiceMessageFromInputStream(mfc, spec));
-        addTest(new TestCreateWebServiceMessageFromInputStreamVersionMismatch(mfc, spec));
     }
 
     private void addScenarioTests(ScenarioConfig config, SOAPSpec spec) {
