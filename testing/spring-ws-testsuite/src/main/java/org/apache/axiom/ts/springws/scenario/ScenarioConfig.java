@@ -18,9 +18,11 @@
  */
 package org.apache.axiom.ts.springws.scenario;
 
+import org.apache.axiom.testutils.suite.Dimension;
+import org.apache.axiom.testutils.suite.TestParameterTarget;
 import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 
-public final class ScenarioConfig {
+public final class ScenarioConfig implements Dimension {
     private final MessageFactoryConfigurator clientMessageFactoryConfigurator;
     private final MessageFactoryConfigurator serverMessageFactoryConfigurator;
 
@@ -37,5 +39,11 @@ public final class ScenarioConfig {
 
     public final MessageFactoryConfigurator getServerMessageFactoryConfigurator() {
         return serverMessageFactoryConfigurator;
+    }
+
+    @Override
+    public void addTestParameters(TestParameterTarget target) {
+        target.addTestParameter("client", clientMessageFactoryConfigurator.getName());
+        target.addTestParameter("server", serverMessageFactoryConfigurator.getName());
     }
 }

@@ -43,8 +43,7 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
     public ScenarioTestCase(ScenarioConfig config, SOAPSpec spec) {
         super(spec);
         this.config = config;
-        addTestParameter("client", config.getClientMessageFactoryConfigurator().getName());
-        addTestParameter("server", config.getServerMessageFactoryConfigurator().getName());
+        config.addTestParameters(this);
     }
 
     @Override
