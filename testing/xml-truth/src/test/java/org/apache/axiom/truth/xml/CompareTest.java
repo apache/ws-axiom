@@ -18,59 +18,41 @@
  */
 package org.apache.axiom.truth.xml;
 
-import static com.google.common.truth.Truth.assertAbout;
-import static org.apache.axiom.testing.multiton.Multiton.getInstances;
-import static org.apache.axiom.truth.xml.XMLTruth.xml;
+import java.util.stream.Stream;
 
-import junit.framework.TestSuite;
-
-import org.apache.axiom.testutils.suite.MatrixTestCase;
-import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-public class CompareTest extends MatrixTestCase {
-    private XMLSample sample;
-    private final XMLObjectFactory left;
-    private final XMLObjectFactory right;
-    private boolean expandEntityReferences;
+import com.google.common.collect.ImmutableList;
 
-    public CompareTest(
-            XMLSample sample,
-            XMLObjectFactory left,
-            XMLObjectFactory right,
-            boolean expandEntityReferences) {
-        this.sample = sample;
-        this.left = left;
-        this.right = right;
-        this.expandEntityReferences = expandEntityReferences;
-        addTestParameter("sample", sample.getName());
-        addTestParameter("left", left.getName());
-        addTestParameter("right", right.getName());
-        addTestParameter("expandEntityReferences", expandEntityReferences);
-    }
-
-    @Override
-    protected void runTest() throws Throwable {
-        assertAbout(xml())
-                .that(left.toXMLObject(sample))
-                .ignoringWhitespaceInPrologAndEpilog()
-                .expandingEntityReferences(expandEntityReferences)
-                .hasSameContentAs(right.toXMLObject(sample));
-    }
-
-    public static TestSuite suite() {
-        return new MatrixTestSuiteBuilder() {
-            @Override
-            protected void addTests() {
-                for (XMLSample sample : getInstances(XMLSample.class)) {
-                    for (XMLObjectFactory left : getInstances(XMLObjectFactory.class)) {
-                        for (XMLObjectFactory right : getInstances(XMLObjectFactory.class)) {
-                            addTest(new CompareTest(sample, left, right, true));
-                            addTest(new CompareTest(sample, left, right, false));
-                        }
-                    }
-                }
-            }
-        }.build();
+public class CompareTest {
+    @TestFactory
+    public Stream<DynamicNode> tests() {
+        return new ParameterFanOutNode<>(
+                        XMLSample.class,
+                        Multiton.getInstances(XMLSample.class),
+                        "sample",
+                        XMLSample::getName,
+                        new ParameterFanOutNode<>(
+                                XMLObjectFactory.class,
+                                Multiton.getInstances(XMLObjectFactory.class),
+                                "left",
+                                XMLObjectFactory::getName,
+                                new ParameterFanOutNode<>(
+                                        XMLObjectFactory.class,
+                                        Multiton.getInstances(XMLObjectFactory.class),
+                                        "right",
+                                        XMLObjectFactory::getName,
+                                        new ParameterFanOutNode<>(
+                                                Boolean.class,
+                                                ImmutableList.of(true, false),
+                                                "expandEntityReferences",
+                                                String::valueOf,
+                                                new MatrixTest(CompareTestCase.class)))))
+                .toDynamicNodes();
     }
 }
