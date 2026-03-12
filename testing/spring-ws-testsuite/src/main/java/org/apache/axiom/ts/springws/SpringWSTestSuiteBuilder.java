@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.springws;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -47,6 +50,13 @@ public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
 
     @Override
     protected void addTests() {
+        List<ScenarioConfig> configs = new ArrayList<>();
+        configs.add(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator));
+        if (altMessageFactoryConfigurator != messageFactoryConfigurator) {
+            configs.add(
+                    new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator));
+        }
+
         addTest(new TestCreateWebServiceMessageFromInputStreamMTOM(messageFactoryConfigurator));
         for (SOAPSpec spec : Multiton.getInstances(SOAPSpec.class)) {
             addTest(new TestCreateWebServiceMessage(messageFactoryConfigurator, spec));
@@ -56,25 +66,15 @@ public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(
                     new TestCreateWebServiceMessageFromInputStreamVersionMismatch(
                             messageFactoryConfigurator, spec));
-            addScenarioTests(
-                    new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator),
-                    spec);
-            if (altMessageFactoryConfigurator != messageFactoryConfigurator) {
-                addScenarioTests(
-                        new ScenarioConfig(
-                                messageFactoryConfigurator, altMessageFactoryConfigurator),
-                        spec);
+            for (ScenarioConfig config : configs) {
+                addTest(new ClientServerTest(config, spec));
+                addTest(new WSAddressingDOMTest(config, spec));
+                addTest(new JAXB2Test(config, spec));
+                addTest(new BrokerScenarioTest(config, spec));
+                addTest(new ValidationTest(config, spec));
+                addTest(new SecureEchoTest(config, spec));
+                addTest(new SoapActionTest(config, spec));
             }
         }
-    }
-
-    private void addScenarioTests(ScenarioConfig config, SOAPSpec spec) {
-        addTest(new ClientServerTest(config, spec));
-        addTest(new WSAddressingDOMTest(config, spec));
-        addTest(new JAXB2Test(config, spec));
-        addTest(new BrokerScenarioTest(config, spec));
-        addTest(new ValidationTest(config, spec));
-        addTest(new SecureEchoTest(config, spec));
-        addTest(new SoapActionTest(config, spec));
     }
 }
