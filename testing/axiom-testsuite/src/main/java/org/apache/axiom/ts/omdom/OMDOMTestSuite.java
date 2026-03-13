@@ -22,6 +22,7 @@ import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
 
@@ -42,7 +43,7 @@ public class OMDOMTestSuite {
                         bind(DOMMetaFactory.class).toInstance(metaFactory);
                     }
                 },
-                ImmutableList.of(
+                new ParentNode(
                         new MatrixTest(
                                 org.apache.axiom.ts.omdom.attr.TestGetNamespaceNormalized.class),
                         new MatrixTest(
@@ -53,7 +54,7 @@ public class OMDOMTestSuite {
                                 ImmutableList.of(true, false),
                                 "build",
                                 String::valueOf,
-                                ImmutableList.of(
+                                new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.omdom.document
                                                         .TestAppendChildForbidden.class),

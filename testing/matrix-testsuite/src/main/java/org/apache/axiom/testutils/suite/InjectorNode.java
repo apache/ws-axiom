@@ -30,54 +30,35 @@ import com.google.inject.Module;
 
 /**
  * A node that creates a child Guice injector from the supplied modules and threads it through its
- * children. Can be used at any level of the test tree to introduce additional bindings.
+ * single child. Can be used at any level of the test tree to introduce additional bindings.
  *
  * <p>Exclusion filters are <em>not</em> owned by this node because they are specific to each
  * consumer (implementation under test), whereas the tree structure and bindings are defined by the
  * test suite author.
  */
-public class InjectorNode extends ParentNode {
+public class InjectorNode extends MatrixTestNode {
     private final ImmutableList<Module> modules;
+    private final MatrixTestNode child;
 
     /**
-     * Creates a new node with the given list of modules and child nodes.
+     * Creates a new node with the given list of modules and a single child node.
      *
      * @param modules the Guice modules to install when creating the child injector
-     * @param children the child nodes of this node
+     * @param child the child node of this node
      */
-    public InjectorNode(ImmutableList<Module> modules, ImmutableList<MatrixTestNode> children) {
-        super(children);
+    public InjectorNode(ImmutableList<Module> modules, MatrixTestNode child) {
         this.modules = modules;
+        this.child = child;
     }
 
     /**
      * Convenience constructor for the common case of a single module.
      *
      * @param module the Guice module to install when creating the child injector
-     * @param children the child nodes of this node
-     */
-    public InjectorNode(Module module, ImmutableList<MatrixTestNode> children) {
-        this(ImmutableList.of(module), children);
-    }
-
-    /**
-     * Convenience constructor for the case of a single child.
-     *
-     * @param modules the Guice modules to install when creating the child injector
-     * @param child the single child node of this node
-     */
-    public InjectorNode(ImmutableList<Module> modules, MatrixTestNode child) {
-        this(modules, ImmutableList.of(child));
-    }
-
-    /**
-     * Convenience constructor for the case of a single module and a single child.
-     *
-     * @param module the Guice module to install when creating the child injector
-     * @param child the single child node of this node
+     * @param child the child node of this node
      */
     public InjectorNode(Module module, MatrixTestNode child) {
-        this(ImmutableList.of(module), ImmutableList.of(child));
+        this(ImmutableList.of(module), child);
     }
 
     @Override
@@ -85,7 +66,7 @@ public class InjectorNode extends ParentNode {
             Injector parentInjector,
             Map<String, String> inheritedParameters,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
-        return childDynamicNodes(
+        return child.toDynamicNodes(
                 parentInjector.createChildInjector(modules), inheritedParameters, excludes);
     }
 }

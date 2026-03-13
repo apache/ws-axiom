@@ -157,8 +157,8 @@ The old `*TestSuiteBuilder` class extends `MatrixTestSuiteBuilder` and overrides
 1. Creates an `InjectorNode` with a Guice module that binds
    implementation-level objects. Pass a single `Module` directly (convenience
    constructor) or an `ImmutableList<Module>` when you need multiple modules.
-   Child nodes are supplied via an `ImmutableList<MatrixTestNode>` parameter,
-   or a single `MatrixTestNode` directly (convenience constructor).
+   The child node is a single `MatrixTestNode`; use `ParentNode` when you need
+   to group multiple children.
 2. Creates fan-out nodes for each dimension.
 3. Adds `MatrixTest` leaf nodes as children of the fan-out nodes at construction
    time.
@@ -167,9 +167,8 @@ Use `ParameterFanOutNode` for types that don't implement `Dimension` (supplying 
 parameter name and a function to extract the display value); the value is bound
 with `@Named(parameterName)`, so injection sites must use
 `@Inject @Named("...")`. Use `DimensionFanOutNode` for types that implement
-`Dimension` (plain unannotated binding). Both fan-out nodes also accept a single
-`MatrixTestNode` child directly (convenience constructor) instead of an
-`ImmutableList<MatrixTestNode>`.
+`Dimension` (plain unannotated binding). Both fan-out node types accept a single
+`MatrixTestNode` child; use `ParentNode` to group multiple children.
 
 **Before:**
 
@@ -213,9 +212,9 @@ public class SAAJTestSuite {
                         Multiton.getInstances(SOAPSpec.class),
                         "spec",
                         SOAPSpec::getName,
-                        ImmutableList.of(
+                        new ParentNode(
                                 new MatrixTest(TestAddChildElementReification.class),
-                                new MatrixTest(TestGetOwnerDocument.class))));
+                                new MatrixTest(TestGetOwnerDocument.class)))));
     }
 }
 ```
@@ -418,7 +417,7 @@ example by filtering the list of instances passed to the fan-out node.
 - [ ] All test case classes: constructor removed, `runTest()` unchanged
 - [ ] Suite factory class: creates `InjectorNode` with Guice module, builds
       immutable fan-out tree with `MatrixTest` leaves supplied at construction
-      time
+      time; uses `ParentNode` to group multiple children
 - [ ] Consumer test class: uses `@TestFactory` returning `Stream<DynamicNode>`
 - [ ] Exclusions: converted to `MatrixTestFilters.builder()` calls
 - [ ] `pom.xml`: `junit-jupiter`, `guice`, and (if needed) `multiton` added

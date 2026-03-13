@@ -22,6 +22,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
 
@@ -43,7 +44,7 @@ public class CrossOMTestSuite {
                                 .toInstance(altMetaFactory);
                     }
                 },
-                ImmutableList.of(
+                new ParentNode(
                         new MatrixTest(TestAddChild.class),
                         new ParameterFanOutNode<>(
                                 XMLSample.class,

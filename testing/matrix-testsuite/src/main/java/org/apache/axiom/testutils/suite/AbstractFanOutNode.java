@@ -53,15 +53,15 @@ import com.google.inject.Module;
  *
  * @param <T> the value type
  */
-public abstract class AbstractFanOutNode<T> extends ParentNode {
+public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
     protected final Class<T> type;
     private final ImmutableList<T> values;
+    private final MatrixTestNode child;
 
-    protected AbstractFanOutNode(
-            Class<T> type, ImmutableList<T> values, ImmutableList<MatrixTestNode> children) {
-        super(children);
+    protected AbstractFanOutNode(Class<T> type, ImmutableList<T> values, MatrixTestNode child) {
         this.type = type;
         this.values = values;
+        this.child = child;
     }
 
     /**
@@ -106,7 +106,7 @@ public abstract class AbstractFanOutNode<T> extends ParentNode {
                                             .collect(Collectors.joining(", "));
                             return DynamicContainer.dynamicContainer(
                                     displayName,
-                                    childDynamicNodes(childInjector, params, excludes));
+                                    child.toDynamicNodes(childInjector, params, excludes));
                         });
     }
 }

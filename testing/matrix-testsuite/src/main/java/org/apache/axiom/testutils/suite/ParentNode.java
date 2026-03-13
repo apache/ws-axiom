@@ -28,22 +28,31 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Injector;
 
 /**
- * A {@link MatrixTestNode} that holds an immutable, ordered list of child nodes.
+ * A {@link MatrixTestNode} that groups an immutable, ordered list of child nodes without injecting
+ * anything or adding parameters. The child nodes' dynamic nodes are simply concatenated.
  *
  * <p>Children are supplied at construction time; instances are immutable after creation.
  */
-public abstract class ParentNode extends MatrixTestNode {
+public final class ParentNode extends MatrixTestNode {
     private final ImmutableList<MatrixTestNode> children;
 
-    protected ParentNode(ImmutableList<MatrixTestNode> children) {
+    public ParentNode(ImmutableList<MatrixTestNode> children) {
         this.children = children;
     }
 
-    protected final Stream<DynamicNode> childDynamicNodes(
-            Injector injector,
-            Map<String, String> parameters,
+    public ParentNode(MatrixTestNode... children) {
+        this(ImmutableList.copyOf(children));
+    }
+
+    @Override
+    Stream<DynamicNode> toDynamicNodes(
+            Injector parentInjector,
+            Map<String, String> inheritedParameters,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
         return children.stream()
-                .flatMap(child -> child.toDynamicNodes(injector, parameters, excludes));
+                .flatMap(
+                        child ->
+                                child.toDynamicNodes(
+                                        parentInjector, inheritedParameters, excludes));
     }
 }

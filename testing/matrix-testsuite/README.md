@@ -32,7 +32,8 @@ Google Guice dependency injection to produce hierarchical, filterable test trees
 
 A test suite is a tree of `MatrixTestNode` instances. Interior nodes are
 **fan-out nodes** that iterate over a list of dimension values, creating one
-`DynamicContainer` per value. Leaf nodes are **`MatrixTest`** instances that
+`DynamicContainer` per value. `ParentNode` groups multiple child nodes into a
+flat sequence. Leaf nodes are **`MatrixTest`** instances that
 instantiate and run a `junit.framework.TestCase` subclass.
 
 ### Guice injector hierarchy
@@ -84,10 +85,10 @@ value, it:
 1. Creates a child Guice injector binding `T` to the value.
 2. Extracts test parameters (via the abstract `extractParameters` method).
 3. Produces a `DynamicContainer` containing the results of recursing into its
-   child nodes.
+   single child node.
 
-Child nodes are supplied at construction time via an `ImmutableList<MatrixTestNode>`
-parameter; the resulting instance is immutable.
+Extends `MatrixTestNode` directly and holds exactly one child node. When
+multiple children are needed, wrap them in a `ParentNode`.
 
 Subclasses:
 
@@ -111,14 +112,22 @@ exclusion filters.
 ### `InjectorNode`
 
 A node that creates a child Guice injector from the supplied modules and threads
-it through its children. Can be used at any level of the test tree to introduce
-additional bindings. Accepts an `ImmutableList<Module>` (primary constructor) or
-a single `Module` (convenience constructor), together with an
-`ImmutableList<MatrixTestNode>` of child nodes. Provides:
+it through its single child. Can be used at any level of the test tree to introduce
+additional bindings. Extends `MatrixTestNode` directly and holds exactly one child
+node. When multiple children are needed, wrap them in a `ParentNode`. Accepts an
+`ImmutableList<Module>` (primary constructor) or a single `Module` (convenience
+constructor), together with a single `MatrixTestNode` child. Provides:
 
 ```java
 public Stream<DynamicNode> toDynamicNodes(BiPredicate<Class<?>, Map<String, String>> excludes)
 ```
+
+### `ParentNode`
+
+A concrete node that groups a list of child nodes without injecting anything or
+adding parameters. The children's dynamic nodes are simply concatenated in order.
+Use `ParentNode` whenever a fan-out node or `InjectorNode` needs to hold more
+than one child.
 
 ### `MatrixTestFilters`
 
@@ -171,7 +180,7 @@ public class MyTestSuite {
                 Multiton.getInstances(SomeDimension.class),
                 "dimension",
                 SomeDimension::getName,
-                ImmutableList.of(
+                new ParentNode(
                         new MatrixTest(TestSomeBehavior.class),
                         new MatrixTest(TestOtherBehavior.class)));
 
@@ -180,7 +189,7 @@ public class MyTestSuite {
             protected void configure() {
                 bind(SomeImplementation.class).toInstance(impl);
             }
-        }, ImmutableList.of(dimensions));
+        }, dimensions);
 
         return suite;
     }

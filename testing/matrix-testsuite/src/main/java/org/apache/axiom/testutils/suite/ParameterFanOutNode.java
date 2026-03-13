@@ -42,28 +42,10 @@ public class ParameterFanOutNode<T> extends AbstractFanOutNode<T> {
             ImmutableList<T> values,
             String parameterName,
             Function<T, String> parameterValueFunction,
-            ImmutableList<MatrixTestNode> children) {
-        super(type, values, children);
+            MatrixTestNode child) {
+        super(type, values, child);
         this.parameterName = parameterName;
         this.parameterValueFunction = parameterValueFunction;
-    }
-
-    /**
-     * Convenience constructor for the case of a single child.
-     *
-     * @param type the value type
-     * @param values the values to fan out over
-     * @param parameterName the parameter name
-     * @param parameterValueFunction maps each value to its parameter value string
-     * @param child the single child node
-     */
-    public ParameterFanOutNode(
-            Class<T> type,
-            ImmutableList<T> values,
-            String parameterName,
-            Function<T, String> parameterValueFunction,
-            MatrixTestNode child) {
-        this(type, values, parameterName, parameterValueFunction, ImmutableList.of(child));
     }
 
     @Override

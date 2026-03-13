@@ -23,6 +23,7 @@ import jakarta.xml.soap.SAAJMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.ts.saaj.body.TestAddChildElementReification;
 import org.apache.axiom.ts.saaj.element.TestAddChildElementLocalName;
@@ -32,7 +33,6 @@ import org.apache.axiom.ts.saaj.element.TestSetParentElement;
 import org.apache.axiom.ts.saaj.header.TestExamineMustUnderstandHeaderElements;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 
 public class SAAJTestSuite {
@@ -50,7 +50,7 @@ public class SAAJTestSuite {
                         Multiton.getInstances(SOAPSpec.class),
                         "spec",
                         SOAPSpec::getName,
-                        ImmutableList.of(
+                        new ParentNode(
                                 new MatrixTest(TestAddChildElementReification.class),
                                 new MatrixTest(TestExamineMustUnderstandHeaderElements.class),
                                 new MatrixTest(TestAddChildElementLocalName.class),

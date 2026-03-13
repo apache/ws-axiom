@@ -34,22 +34,8 @@ import com.google.common.collect.ImmutableList;
  */
 public class DimensionFanOutNode<D extends Dimension> extends AbstractFanOutNode<D> {
     public DimensionFanOutNode(
-            Class<D> dimensionType,
-            ImmutableList<D> dimensions,
-            ImmutableList<MatrixTestNode> children) {
-        super(dimensionType, dimensions, children);
-    }
-
-    /**
-     * Convenience constructor for the case of a single child.
-     *
-     * @param dimensionType the dimension type
-     * @param dimensions the dimension values to fan out over
-     * @param child the single child node
-     */
-    public DimensionFanOutNode(
             Class<D> dimensionType, ImmutableList<D> dimensions, MatrixTestNode child) {
-        this(dimensionType, dimensions, ImmutableList.of(child));
+        super(dimensionType, dimensions, child);
     }
 
     @Override
