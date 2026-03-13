@@ -23,23 +23,23 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import junit.framework.TestCase;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.soap.SOAPFactory;
+import org.junit.jupiter.api.Test;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.axiom.AxiomSoapMessage;
 import org.springframework.ws.soap.axiom.AxiomSoapMessageFactory;
 import org.w3c.dom.Document;
 
-public class AxiomSoapMessageTest extends TestCase {
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class AxiomSoapMessageTest {
     /**
      * Tests that {@link AxiomSoapMessage#setDocument(Document)} works correctly. There have been
      * issues with that method because Spring-WS instantiates {@link SOAPFactory} implementations
      * directly instead of using {@link OMAbstractFactory}.
-     *
-     * @throws Exception
      */
+    @Test
     public void testSetDocument() throws Exception {
         AxiomSoapMessageFactory mf = new AxiomSoapMessageFactory();
         mf.afterPropertiesSet();
@@ -55,8 +55,8 @@ public class AxiomSoapMessageTest extends TestCase {
         message.setDocument(document);
         Iterator<SoapHeaderElement> it =
                 message.getEnvelope().getHeader().examineAllHeaderElements();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         SoapHeaderElement headerElement = it.next();
-        assertEquals(new QName("urn:test", "myHeader"), headerElement.getName());
+        assertThat(headerElement.getName()).isEqualTo(new QName("urn:test", "myHeader"));
     }
 }

@@ -18,18 +18,18 @@
  */
 package org.apache.axiom.systest.springws;
 
-import junit.framework.TestCase;
-
 import org.apache.axiom.soap.SOAPMessage;
+import org.junit.jupiter.api.Test;
 import org.springframework.ws.soap.axiom.AxiomSoapMessage;
 import org.springframework.ws.soap.axiom.AxiomSoapMessageFactory;
 
-public class AxiomSoapMessageFactoryTest extends TestCase {
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class AxiomSoapMessageFactoryTest {
     /**
      * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-444">AXIOM-444</a>.
-     *
-     * @throws Exception
      */
+    @Test
     public void testCreateWebServiceMessage() throws Exception {
         AxiomSoapMessageFactory mf = new AxiomSoapMessageFactory();
         mf.afterPropertiesSet();
@@ -37,6 +37,6 @@ public class AxiomSoapMessageFactoryTest extends TestCase {
         SOAPMessage message = swsMessage.getAxiomMessage();
         // Spring-WS uses SOAPFactory#createSOAPMessage(OMXMLParserWrapper) with a null argument.
         // We need to make sure that we nevertheless get a SOAPMessage that is in state complete.
-        assertTrue(message.isComplete());
+        assertThat(message.isComplete()).isTrue();
     }
 }
