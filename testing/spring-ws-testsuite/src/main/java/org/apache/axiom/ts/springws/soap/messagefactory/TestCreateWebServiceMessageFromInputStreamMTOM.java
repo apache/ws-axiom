@@ -21,8 +21,6 @@ package org.apache.axiom.ts.springws.soap.messagefactory;
 import java.io.InputStream;
 
 import org.apache.axiom.ts.soap.MTOMSample;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 import org.apache.axiom.ts.springws.SimpleTestCase;
 import org.springframework.ws.soap.SoapMessage;
 import org.springframework.ws.soap.SoapMessageFactory;
@@ -32,10 +30,6 @@ import org.springframework.ws.soap.SoapMessageFactory;
  * SoapMessageFactory#createWebServiceMessage(InputStream)}.
  */
 public class TestCreateWebServiceMessageFromInputStreamMTOM extends SimpleTestCase {
-    public TestCreateWebServiceMessageFromInputStreamMTOM(MessageFactoryConfigurator mfc) {
-        super(mfc, SOAPSpec.SOAP12);
-    }
-
     @Override
     protected void runTest(SoapMessageFactory messageFactory) throws Throwable {
         SoapMessage message =

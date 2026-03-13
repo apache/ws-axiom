@@ -18,16 +18,10 @@
  */
 package org.apache.axiom.ts.springws.scenario.jaxb2;
 
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.springws.scenario.ScenarioConfig;
 import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 public class JAXB2Test extends ScenarioTestCase {
-    public JAXB2Test(ScenarioConfig config, SOAPSpec spec) {
-        super(config, spec);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         GetQuoteRequest request = new GetQuoteRequest();

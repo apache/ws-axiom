@@ -18,15 +18,16 @@
  */
 package org.apache.axiom.ts.springws;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.stream.Stream;
 
-public class SpringWSTest extends TestCase {
-    public static TestSuite suite() {
-        SpringWSTestSuiteBuilder builder =
-                new SpringWSTestSuiteBuilder(
-                        MessageFactoryConfigurator.SAAJ, MessageFactoryConfigurator.SAAJ);
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-        return builder.build();
+public class SpringWSTest {
+    @TestFactory
+    public Stream<DynamicNode> tests() {
+        return SpringWSTestSuite.create(
+                        MessageFactoryConfigurator.SAAJ, MessageFactoryConfigurator.SAAJ)
+                .toDynamicNodes();
     }
 }

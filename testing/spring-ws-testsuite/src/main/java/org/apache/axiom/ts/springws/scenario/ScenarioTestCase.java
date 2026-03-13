@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.springws.scenario;
 
-import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.springws.SpringWSTestCase;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
@@ -35,16 +34,12 @@ import org.springframework.mock.env.MockPropertySource;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 
+import com.google.inject.Inject;
+
 public abstract class ScenarioTestCase extends SpringWSTestCase {
-    private final ScenarioConfig config;
+    @Inject private ScenarioConfig config;
     private Server server;
     protected GenericXmlApplicationContext context;
-
-    public ScenarioTestCase(ScenarioConfig config, SOAPSpec spec) {
-        super(spec);
-        this.config = config;
-        config.addTestParameters(this);
-    }
 
     @Override
     protected void setUp() throws Exception {

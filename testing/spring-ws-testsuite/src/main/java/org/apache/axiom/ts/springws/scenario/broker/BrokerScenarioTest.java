@@ -25,8 +25,6 @@ import java.util.Locale;
 
 import javax.xml.transform.Source;
 
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.springws.scenario.ScenarioConfig;
 import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
 import org.springframework.ws.server.endpoint.annotation.XPathParam;
 import org.springframework.ws.soap.client.SoapFaultClientException;
@@ -44,10 +42,6 @@ import org.springframework.ws.soap.client.SoapFaultClientException;
  * </ul>
  */
 public class BrokerScenarioTest extends ScenarioTestCase {
-    public BrokerScenarioTest(ScenarioConfig config, SOAPSpec spec) {
-        super(config, spec);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         BrokerClient client = context.getBean(BrokerClient.class);

@@ -18,28 +18,31 @@
  */
 package org.apache.axiom.ts.springws;
 
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.mock.env.MockPropertySource;
 
-public abstract class SpringWSTestCase extends MatrixTestCase {
-    protected final SOAPSpec spec;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
-    public SpringWSTestCase(SOAPSpec spec) {
-        this.spec = spec;
-        addTestParameter("soapVersion", spec.getAdapter(SOAPSpecAdapter.class).getSoapVersion());
-    }
+import junit.framework.TestCase;
+
+public abstract class SpringWSTestCase extends TestCase {
+    @Inject
+    @Named("soapVersion")
+    protected SOAPSpec spec;
 
     protected void configureContext(
             GenericApplicationContext context,
             MessageFactoryConfigurator messageFactoryConfigurator,
             Resource configResource) {
-        context.getEnvironment()
-                .getPropertySources()
-                .addFirst(new MatrixTestCasePropertySource(this));
+        MockPropertySource propertySource = new MockPropertySource("testParameters");
+        propertySource.setProperty(
+                "soapVersion", spec.getAdapter(SOAPSpecAdapter.class).getSoapVersion());
+        context.getEnvironment().getPropertySources().addFirst(propertySource);
         messageFactoryConfigurator.configure(context);
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
         reader.loadBeanDefinitions(new ClassPathResource("common.xml", SpringWSTestCase.class));

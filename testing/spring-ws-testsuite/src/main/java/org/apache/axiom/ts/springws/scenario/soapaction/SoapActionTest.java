@@ -23,8 +23,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.springws.scenario.ScenarioConfig;
 import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
@@ -32,10 +30,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class SoapActionTest extends ScenarioTestCase {
-    public SoapActionTest(ScenarioConfig config, SOAPSpec spec) {
-        super(config, spec);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();

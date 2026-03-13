@@ -25,17 +25,11 @@ import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.springws.scenario.ScenarioConfig;
 import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
 import org.springframework.ws.soap.SoapFaultDetailElement;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
 public class ValidationTest extends ScenarioTestCase {
-    public ValidationTest(ScenarioConfig config, SOAPSpec spec) {
-        super(config, spec);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         StockQuoteClient client = context.getBean(StockQuoteClient.class);

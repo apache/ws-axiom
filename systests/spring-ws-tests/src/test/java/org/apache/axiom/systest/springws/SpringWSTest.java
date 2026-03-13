@@ -18,22 +18,25 @@
  */
 package org.apache.axiom.systest.springws;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.stream.Stream;
 
+import org.apache.axiom.testutils.suite.MatrixTestFilters;
 import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
-import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
+import org.apache.axiom.ts.springws.SpringWSTestSuite;
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStreamVersionMismatch;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-public class SpringWSTest extends TestCase {
-    public static TestSuite suite() {
-        SpringWSTestSuiteBuilder builder =
-                new SpringWSTestSuiteBuilder(
-                        new AxiomMessageFactoryConfigurator(), MessageFactoryConfigurator.SAAJ);
-
+public class SpringWSTest {
+    @TestFactory
+    public Stream<DynamicNode> tests() {
         // Since Spring-WS 3.1.4, the behavior differs between the Axiom and SAAJ implementations.
-        builder.exclude(TestCreateWebServiceMessageFromInputStreamVersionMismatch.class);
-
-        return builder.build();
+        MatrixTestFilters excludes =
+                MatrixTestFilters.builder()
+                        .add(TestCreateWebServiceMessageFromInputStreamVersionMismatch.class)
+                        .build();
+        return SpringWSTestSuite.create(
+                        new AxiomMessageFactoryConfigurator(), MessageFactoryConfigurator.SAAJ)
+                .toDynamicNodes(excludes);
     }
 }
