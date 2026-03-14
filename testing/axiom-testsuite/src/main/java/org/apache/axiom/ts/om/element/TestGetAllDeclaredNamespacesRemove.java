@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.element;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -59,7 +59,7 @@ public class TestGetAllDeclaredNamespacesRemove extends AxiomTestCase {
                 }
                 seenPrefixes.add(prefix);
             }
-            assertThat(seenPrefixes).containsAtLeastElementsIn(prefixes);
+            assertThat(seenPrefixes).containsAll(prefixes);
             for (String prefix : prefixes) {
                 OMNamespace ns = element.findNamespaceURI(prefix);
                 if (prefix.equals(prefixToRemove)) {

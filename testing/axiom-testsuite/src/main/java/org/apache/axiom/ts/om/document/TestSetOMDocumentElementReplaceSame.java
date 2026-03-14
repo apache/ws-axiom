@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.document;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -41,9 +41,9 @@ public class TestSetOMDocumentElementReplaceSame extends AxiomTestCase {
         OMDocument document = factory.createOMDocument();
         OMElement root = factory.createOMElement("root", null, document);
         document.setOMDocumentElement(root);
-        assertThat(document.getOMDocumentElement()).isSameInstanceAs(root);
+        assertThat(document.getOMDocumentElement()).isSameAs(root);
         assertThat(root.getPreviousOMSibling()).isNull();
         assertThat(root.getNextOMSibling()).isNull();
-        assertThat(root.getParent()).isSameInstanceAs(document);
+        assertThat(root.getParent()).isSameAs(document);
     }
 }

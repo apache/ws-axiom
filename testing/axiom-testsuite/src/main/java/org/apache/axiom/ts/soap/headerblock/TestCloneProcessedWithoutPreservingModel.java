@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;

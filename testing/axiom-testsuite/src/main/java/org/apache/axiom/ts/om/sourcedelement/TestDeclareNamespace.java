@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Iterator;
 
@@ -56,7 +56,7 @@ public class TestDeclareNamespace extends AxiomTestCase {
         assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns2");
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertThat(it.hasNext()).isTrue();
-        assertThat(it.next()).isSameInstanceAs(ns);
+        assertThat(it.next()).isSameAs(ns);
         assertThat(it.hasNext()).isFalse();
     }
 }

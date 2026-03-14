@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Iterator;
 
@@ -58,11 +58,11 @@ public class TestAddAttribute extends AxiomTestCase {
         // Force expansion; this should not overwrite the attribute we just added
         assertThat(element.getFirstOMChild()).isNotNull();
         OMAttribute attr2 = element.getAttribute(new QName("attr"));
-        assertThat(attr2).isSameInstanceAs(attr);
+        assertThat(attr2).isSameAs(attr);
         assertThat(attr2.getAttributeValue()).isEqualTo("newvalue");
         Iterator<OMAttribute> it = element.getAllAttributes();
         assertThat(it.hasNext()).isTrue();
-        assertThat(it.next()).isSameInstanceAs(attr);
+        assertThat(it.next()).isSameAs(attr);
         assertThat(it.hasNext()).isFalse();
     }
 }

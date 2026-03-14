@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.cross;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -46,7 +46,7 @@ public class TestInsertSibling extends CrossOMTestCase {
         }
         OMComment sibling =
                 (OMComment) (before ? child.getPreviousOMSibling() : child.getNextOMSibling());
-        assertThat(sibling).isNotSameInstanceAs(orgSibling);
+        assertThat(sibling).isNotSameAs(orgSibling);
         assertThat(sibling.getValue()).isEqualTo("test");
     }
 }

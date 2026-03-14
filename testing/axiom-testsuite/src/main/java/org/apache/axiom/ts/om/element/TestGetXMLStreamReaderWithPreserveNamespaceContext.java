@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.element;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.InputStream;
 import java.util.HashSet;
@@ -70,7 +70,7 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTes
             prefixes.add(reader.getNamespacePrefix(i));
         }
         if (preserveNamespaceContext) {
-            assertThat(prefixes).containsExactly("soapenv", "xsd", "xsi", "ns", "p");
+            assertThat(prefixes).containsExactlyInAnyOrder("soapenv", "xsd", "xsi", "ns", "p");
         } else {
             assertThat(prefixes).containsExactly("ns");
         }

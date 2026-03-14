@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.xop;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.OutputStream;
 import java.io.StringWriter;

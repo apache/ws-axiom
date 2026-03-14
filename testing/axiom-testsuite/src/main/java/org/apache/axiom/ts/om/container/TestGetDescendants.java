@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.container;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Iterator;
 

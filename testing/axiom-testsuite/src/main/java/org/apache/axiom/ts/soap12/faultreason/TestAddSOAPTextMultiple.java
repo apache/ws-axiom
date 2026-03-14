@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.soap12.faultreason;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -44,8 +44,8 @@ public class TestAddSOAPTextMultiple extends SOAPTestCase {
         text2.setText("Systemfehler");
         reason.addSOAPText(text2);
         OMNode child = reason.getFirstOMChild();
-        assertThat(child).isSameInstanceAs(text1);
+        assertThat(child).isSameAs(text1);
         child = child.getNextOMSibling();
-        assertThat(child).isSameInstanceAs(text2);
+        assertThat(child).isSameAs(text2);
     }
 }

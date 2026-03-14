@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringWriter;
 
@@ -59,7 +59,7 @@ public class TestSetDataSource extends AxiomTestCase {
         assertTrue("Expected OMSourcedElement child", firstChild instanceof OMSourcedElement);
         OMSourcedElement child = (OMSourcedElement) firstChild;
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        assertThat(child.getDataSource()).isSameInstanceAs(nonDestructiveOMDataSource1);
+        assertThat(child.getDataSource()).isSameAs(nonDestructiveOMDataSource1);
 
         // Write out the body
         StringWriter sw = new StringWriter();

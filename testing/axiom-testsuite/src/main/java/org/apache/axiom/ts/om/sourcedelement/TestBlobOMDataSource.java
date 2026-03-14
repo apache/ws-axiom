@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.stream.XMLStreamReader;
 
@@ -56,7 +56,7 @@ public class TestBlobOMDataSource extends AxiomTestCase {
         assertTrue("Expected OMSourcedElement child", firstChild instanceof OMSourcedElement);
         OMSourcedElement child = (OMSourcedElement) firstChild;
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        assertThat(child.getDataSource()).isSameInstanceAs(ds);
+        assertThat(child.getDataSource()).isSameAs(ds);
 
         // A BlobOMDataSource does not consume the backing object when read.
         // Thus getting the XMLStreamReader of the BlobOMDataSource should not
@@ -85,6 +85,6 @@ public class TestBlobOMDataSource extends AxiomTestCase {
                 !child.isExpanded());
 
         // Test getting the raw bytes from the BlobOMDataSource.
-        assertThat(child.getDataSource()).isSameInstanceAs(ds);
+        assertThat(child.getDataSource()).isSameAs(ds);
     }
 }

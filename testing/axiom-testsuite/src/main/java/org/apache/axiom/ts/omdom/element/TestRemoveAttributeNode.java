@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.omdom.element;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
@@ -40,6 +40,6 @@ public class TestRemoveAttributeNode extends OMDOMTestCase {
         OMAttribute attr = element.addAttribute("attr", "value", null);
         ((Element) element).removeAttributeNode((Attr) attr);
         assertThat(((Attr) attr).getOwnerDocument())
-                .isSameInstanceAs(((Element) element).getOwnerDocument());
+                .isSameAs(((Element) element).getOwnerDocument());
     }
 }

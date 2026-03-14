@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Iterator;
 
@@ -49,7 +49,7 @@ public class TestCreateSOAPFaultWithException extends SOAPTestCase {
         SOAPFault fault = soapFactory.createSOAPFault(body, new Exception("Testing soap fault"));
         if (body != null) {
             assertThat(body.hasFault()).isTrue();
-            assertThat(body.getFault()).isSameInstanceAs(fault);
+            assertThat(body.getFault()).isSameAs(fault);
         }
         assertThat(fault.isComplete()).isTrue();
         SOAPFaultDetail detail = fault.getDetail();

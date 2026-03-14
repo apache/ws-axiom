@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.xop;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.apache.axiom.ts.xml.XOPSample.XOP_SPEC_SAMPLE;
 
 import java.io.ByteArrayOutputStream;
