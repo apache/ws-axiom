@@ -51,33 +51,33 @@ public class TestGetChildrenWithName4 extends AxiomTestCase {
 
         // Test for fully qualified names
         QName qName = new QName(NS_A, "sample");
-        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
+        assertThat(documentElement.getChildrenWithName(qName)).toIterable().hasSize(1);
         qName = new QName(NS_B, "sample");
-        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
+        assertThat(documentElement.getChildrenWithName(qName)).toIterable().hasSize(1);
         qName = new QName(NS_C, "sample");
-        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(0);
+        assertThat(documentElement.getChildrenWithName(qName)).toIterable().isEmpty();
 
         // Test for QName with no namespace.
         // Axiom 1.2.x implemented a legacy behavior where an empty namespace URI was interpreted
         // as a wildcard (see AXIOM-11). In Axiom 1.3.x, the matching is always strict.
         qName = new QName("", "sample");
-        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(0);
+        assertThat(documentElement.getChildrenWithName(qName)).toIterable().isEmpty();
 
         // Now add an unqualified sample element to the documentElement
         factory.createOMElement("sample", null, documentElement);
 
         // Repeat the tests
         qName = new QName(NS_A, "sample");
-        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
+        assertThat(documentElement.getChildrenWithName(qName)).toIterable().hasSize(1);
         qName = new QName(NS_B, "sample");
-        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
+        assertThat(documentElement.getChildrenWithName(qName)).toIterable().hasSize(1);
         qName = new QName(NS_C, "sample");
-        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(0);
+        assertThat(documentElement.getChildrenWithName(qName)).toIterable().isEmpty();
 
         // Since there actually is an unqualified element child, the most accurate
         // interpretation of getChildrenWithName should be to return this one
         // child
         qName = new QName("", "sample");
-        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
+        assertThat(documentElement.getChildrenWithName(qName)).toIterable().hasSize(1);
     }
 }

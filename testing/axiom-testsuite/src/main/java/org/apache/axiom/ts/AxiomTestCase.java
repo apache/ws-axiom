@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts;
 
-import java.util.Iterator;
-
 import javax.xml.stream.XMLInputFactory;
 
 import org.apache.axiom.om.OMContainer;
@@ -63,16 +61,6 @@ public abstract class AxiomTestCase extends MatrixTestCase {
             isConsumed = true;
         }
         assertTrue(isConsumed);
-    }
-
-    protected static int getChildrenCount(Iterator<?> childrenIter) {
-        int childCount = 0;
-        while (childrenIter.hasNext()) {
-            childrenIter.next();
-            childCount++;
-        }
-
-        return childCount;
     }
 
     protected static int getNumberOfOccurrences(String xml, String pattern) {

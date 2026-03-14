@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.element;
 
-import java.util.Iterator;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.namespace.QName;
 
@@ -43,11 +43,10 @@ public class TestGetChildrenWithName2 extends AxiomTestCase {
         OMElement e = factory.createOMElement("Employee", testNamespace, documentElement);
         e.setText("Apache Developer");
 
-        Iterator<OMElement> childrenIter =
-                documentElement.getChildrenWithName(
-                        new QName("http://test.ws.org", "Employee", "test"));
-
-        int childCount = getChildrenCount(childrenIter);
-        assertEquals("Iterator must return 1 child with the given qname", childCount, 1);
+        assertThat(
+                        documentElement.getChildrenWithName(
+                                new QName("http://test.ws.org", "Employee", "test")))
+                .toIterable()
+                .hasSize(1);
     }
 }
