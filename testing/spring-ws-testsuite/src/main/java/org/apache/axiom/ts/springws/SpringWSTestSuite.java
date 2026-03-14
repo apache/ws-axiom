@@ -25,6 +25,7 @@ import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.testutils.suite.ParentNode;
+import org.apache.axiom.testutils.suite.SelectorNode;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.springws.scenario.ScenarioConfig;
 import org.apache.axiom.ts.springws.scenario.broker.BrokerScenarioTest;
@@ -40,8 +41,6 @@ import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMess
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStreamVersionMismatch;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.AbstractModule;
-import com.google.inject.name.Names;
 
 public class SpringWSTestSuite {
     public static MatrixTestNode create(
@@ -54,54 +53,39 @@ public class SpringWSTestSuite {
                     new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator));
         }
 
-        AbstractModule mfcModule =
-                new AbstractModule() {
-                    @Override
-                    protected void configure() {
-                        bind(MessageFactoryConfigurator.class)
-                                .toInstance(messageFactoryConfigurator);
-                    }
-                };
-
-        return new ParentNode(
-                new InjectorNode(
-                        ImmutableList.of(
-                                mfcModule,
-                                new AbstractModule() {
-                                    @Override
-                                    protected void configure() {
-                                        bind(SOAPSpec.class)
-                                                .annotatedWith(Names.named("soapVersion"))
-                                                .toInstance(SOAPSpec.SOAP12);
-                                    }
-                                }),
-                        new MatrixTest(TestCreateWebServiceMessageFromInputStreamMTOM.class)),
-                new ParameterFanOutNode<>(
-                        SOAPSpec.class,
-                        Multiton.getInstances(SOAPSpec.class),
-                        "soapVersion",
-                        spec -> spec.getAdapter(SOAPSpecAdapter.class).getSoapVersion(),
-                        new ParentNode(
-                                new InjectorNode(
-                                        mfcModule,
-                                        new ParentNode(
-                                                new MatrixTest(TestCreateWebServiceMessage.class),
+        return new ParameterFanOutNode<>(
+                SOAPSpec.class,
+                Multiton.getInstances(SOAPSpec.class),
+                "soapVersion",
+                spec -> spec.getAdapter(SOAPSpecAdapter.class).getSoapVersion(),
+                new ParentNode(
+                        new InjectorNode(
+                                binder ->
+                                        binder.bind(MessageFactoryConfigurator.class)
+                                                .toInstance(messageFactoryConfigurator),
+                                new ParentNode(
+                                        new MatrixTest(TestCreateWebServiceMessage.class),
+                                        new MatrixTest(
+                                                TestCreateWebServiceMessageFromInputStream.class),
+                                        new MatrixTest(
+                                                TestCreateWebServiceMessageFromInputStreamVersionMismatch
+                                                        .class),
+                                        new SelectorNode(
+                                                "soapVersion",
+                                                "SOAP_12",
                                                 new MatrixTest(
-                                                        TestCreateWebServiceMessageFromInputStream
-                                                                .class),
-                                                new MatrixTest(
-                                                        TestCreateWebServiceMessageFromInputStreamVersionMismatch
-                                                                .class))),
-                                new DimensionFanOutNode<>(
-                                        ScenarioConfig.class,
-                                        configs.build(),
-                                        new ParentNode(
-                                                new MatrixTest(ClientServerTest.class),
-                                                new MatrixTest(WSAddressingDOMTest.class),
-                                                new MatrixTest(JAXB2Test.class),
-                                                new MatrixTest(BrokerScenarioTest.class),
-                                                new MatrixTest(ValidationTest.class),
-                                                new MatrixTest(SecureEchoTest.class),
-                                                new MatrixTest(SoapActionTest.class))))));
+                                                        TestCreateWebServiceMessageFromInputStreamMTOM
+                                                                .class)))),
+                        new DimensionFanOutNode<>(
+                                ScenarioConfig.class,
+                                configs.build(),
+                                new ParentNode(
+                                        new MatrixTest(ClientServerTest.class),
+                                        new MatrixTest(WSAddressingDOMTest.class),
+                                        new MatrixTest(JAXB2Test.class),
+                                        new MatrixTest(BrokerScenarioTest.class),
+                                        new MatrixTest(ValidationTest.class),
+                                        new MatrixTest(SecureEchoTest.class),
+                                        new MatrixTest(SoapActionTest.class)))));
     }
 }
