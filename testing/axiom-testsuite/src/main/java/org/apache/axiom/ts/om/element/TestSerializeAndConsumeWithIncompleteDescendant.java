@@ -18,9 +18,12 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -51,6 +54,7 @@ public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCa
         StringWriter out = new StringWriter();
         root.serializeAndConsume(out);
         assertEquals("<root><child><elem>text</elem></child></root>", out.toString());
-        assertConsumed(incompleteElement);
+        assertThatThrownBy(incompleteElement::getFirstOMChild)
+                .isInstanceOf(NodeUnavailableException.class);
     }
 }

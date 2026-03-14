@@ -20,12 +20,10 @@ package org.apache.axiom.ts;
 
 import javax.xml.stream.XMLInputFactory;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
-import org.apache.commons.io.output.NullOutputStream;
 
 public abstract class AxiomTestCase extends MatrixTestCase {
     public static final StAXParserConfiguration TEST_PARSER_CONFIGURATION =
@@ -49,17 +47,5 @@ public abstract class AxiomTestCase extends MatrixTestCase {
 
     public AxiomTestCase(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
-    }
-
-    protected void assertConsumed(OMContainer container) {
-        assertFalse("Expected the node to be incomplete", container.isComplete());
-        boolean isConsumed;
-        try {
-            container.serialize(NullOutputStream.INSTANCE);
-            isConsumed = false;
-        } catch (Exception ex) {
-            isConsumed = true;
-        }
-        assertTrue(isConsumed);
     }
 }

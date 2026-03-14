@@ -20,12 +20,14 @@ package org.apache.axiom.ts.om.container;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -84,9 +86,9 @@ public class TestSerialize extends ConformanceTestCase {
             if (serializationStrategy.isCaching()) {
                 assertTrue(container.isComplete());
             } else {
-                // TODO: need to investigate why assertConsumed is not working here
                 assertFalse(container.isComplete());
-                //                assertConsumed(element);
+                assertThatThrownBy(container::getFirstOMChild)
+                        .isInstanceOf(NodeUnavailableException.class);
             }
         } finally {
             builder.close();

@@ -18,8 +18,11 @@
  */
 package org.apache.axiom.ts.om.document;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -45,6 +48,6 @@ public class TestSerializeAndConsume extends AxiomTestCase {
                 OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<elem>text</elem>"))
                         .getDocument();
         document.serializeAndConsume(NullOutputStream.INSTANCE);
-        assertConsumed(document);
+        assertThatThrownBy(document::getFirstOMChild).isInstanceOf(NodeUnavailableException.class);
     }
 }

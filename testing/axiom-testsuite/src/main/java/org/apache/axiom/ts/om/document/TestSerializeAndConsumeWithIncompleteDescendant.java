@@ -20,10 +20,12 @@ package org.apache.axiom.ts.om.document;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -55,6 +57,7 @@ public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCa
         StringWriter out = new StringWriter();
         document.serializeAndConsume(out);
         assertAbout(xml()).that(out.toString()).hasSameContentAs("<root><elem>text</elem></root>");
-        assertConsumed(incompleteElement);
+        assertThatThrownBy(incompleteElement::getFirstOMChild)
+                .isInstanceOf(NodeUnavailableException.class);
     }
 }
