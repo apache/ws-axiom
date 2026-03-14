@@ -62,14 +62,4 @@ public abstract class AxiomTestCase extends MatrixTestCase {
         }
         assertTrue(isConsumed);
     }
-
-    protected static int getNumberOfOccurrences(String xml, String pattern) {
-        int index = -1;
-        int count = 0;
-        while ((index = xml.indexOf(pattern, index + 1)) != -1) {
-            count++;
-        }
-
-        return count;
-    }
 }

@@ -18,6 +18,10 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.apache.commons.lang3.StringUtils;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -49,9 +53,10 @@ public class TestDeclareDefaultNamespace1 extends AxiomTestCase {
                 omFac.createOMElement(
                         "ChildElementTwo", omFac.createOMNamespace("http://one.org", ""), childOne);
 
-        assertEquals(
-                2,
-                getNumberOfOccurrences(
-                        documentElement.toStringWithConsume(), "xmlns=\"http://one.org\""));
+        assertThat(documentElement.toStringWithConsume())
+                .satisfies(
+                        s ->
+                                assertThat(StringUtils.countMatches(s, "xmlns=\"http://one.org\""))
+                                        .isEqualTo(2));
     }
 }
