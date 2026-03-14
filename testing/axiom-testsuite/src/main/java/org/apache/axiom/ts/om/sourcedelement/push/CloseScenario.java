@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -27,7 +29,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.testutils.suite.TestParameterTarget;
-import org.junit.Assert;
 
 /**
  * Scenario that calls {@link XMLStreamWriter#close()} which is forbidden by the contract of {@link
@@ -47,12 +48,7 @@ public class CloseScenario implements PushOMDataSourceScenario {
     @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeEmptyElement(null, "root", null);
-        try {
-            writer.close();
-            Assert.fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException ex) {
-            // Expected
-        }
+        assertThatThrownBy(writer::close).isInstanceOf(UnsupportedOperationException.class);
     }
 
     @Override

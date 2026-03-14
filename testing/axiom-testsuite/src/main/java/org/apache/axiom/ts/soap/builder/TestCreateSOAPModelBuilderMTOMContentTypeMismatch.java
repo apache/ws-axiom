@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.mime.ContentType;
@@ -105,16 +107,14 @@ public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends SOAPTestC
         mp.writeTo(out);
         out.close();
         // Now attempt to create an Axiom builder
-        try {
-            OMXMLBuilderFactory.createSOAPModelBuilder(
-                    metaFactory,
-                    MultipartBody.builder()
-                            .setInputStream(blob.getInputStream())
-                            .setContentType(contentType)
-                            .build());
-            fail("Expected SOAPProcessingException");
-        } catch (SOAPProcessingException ex) {
-            // Expected
-        }
+        assertThatThrownBy(
+                        () ->
+                                OMXMLBuilderFactory.createSOAPModelBuilder(
+                                        metaFactory,
+                                        MultipartBody.builder()
+                                                .setInputStream(blob.getInputStream())
+                                                .setContentType(contentType)
+                                                .build()))
+                .isInstanceOf(SOAPProcessingException.class);
     }
 }

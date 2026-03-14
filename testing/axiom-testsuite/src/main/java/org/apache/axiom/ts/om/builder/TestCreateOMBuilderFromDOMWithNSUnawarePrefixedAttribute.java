@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -34,13 +36,12 @@ public class TestCreateOMBuilderFromDOMWithNSUnawarePrefixedAttribute extends Ax
     protected void runTest() throws Throwable {
         Element domElement = DOMImplementation.XERCES.newDocument().createElementNS(null, "test");
         domElement.setAttribute("p:attr", "value");
-        try {
-            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domElement, false)
-                    .getDocument()
-                    .build();
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThatThrownBy(
+                        () ->
+                                OMXMLBuilderFactory.createOMBuilder(
+                                                metaFactory.getOMFactory(), domElement, false)
+                                        .getDocument()
+                                        .build())
+                .isInstanceOf(OMException.class);
     }
 }

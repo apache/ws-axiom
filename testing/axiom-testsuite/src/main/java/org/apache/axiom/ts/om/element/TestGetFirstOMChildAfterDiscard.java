@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.NodeUnavailableException;
@@ -48,11 +50,6 @@ public class TestGetFirstOMChildAfterDiscard extends AxiomTestCase {
                                         "<element><!--comment--><a/><!--comment--></element>"))
                         .getDocumentElement();
         element.discard();
-        try {
-            element.getFirstOMChild();
-            fail("Expected NodeUnavailableException");
-        } catch (NodeUnavailableException ex) {
-            // Expected
-        }
+        assertThatThrownBy(element::getFirstOMChild).isInstanceOf(NodeUnavailableException.class);
     }
 }

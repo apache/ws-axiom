@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.NodeUnavailableException;
@@ -48,11 +50,7 @@ public class TestAddChildDiscarded extends AxiomTestCase {
         // Partially build the parent
         parent.getFirstOMChild();
         parent.discard();
-        try {
-            parent.addChild(factory.createOMElement("c", null));
-            fail("Expected NodeUnavailableException");
-        } catch (NodeUnavailableException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> parent.addChild(factory.createOMElement("c", null)))
+                .isInstanceOf(NodeUnavailableException.class);
     }
 }

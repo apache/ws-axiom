@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -44,15 +47,10 @@ public class TestAddAttributeWithInvalidNamespace1 extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = factory.createOMNamespace("", "p");
-        try {
-            element.addAttribute("attr", "value", ns);
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            assertEquals(
-                    "Cannot create a prefixed attribute with an empty namespace name",
-                    ex.getMessage());
-            // No namespace declaration should have been added before throwing the exception
-            assertFalse(element.getAllDeclaredNamespaces().hasNext());
-        }
+        assertThatThrownBy(() -> element.addAttribute("attr", "value", ns))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot create a prefixed attribute with an empty namespace name");
+        // No namespace declaration should have been added before throwing the exception
+        assertThat(element.getAllDeclaredNamespaces().hasNext()).isFalse();
     }
 }

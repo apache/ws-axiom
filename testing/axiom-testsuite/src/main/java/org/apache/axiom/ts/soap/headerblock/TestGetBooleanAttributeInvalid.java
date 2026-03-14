@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -51,11 +53,11 @@ public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));
         headerBlock.addAttribute(attribute.getName(spec), value, header.getNamespace());
-        try {
-            attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock);
-            fail("Expected SOAPProcessingException");
-        } catch (SOAPProcessingException ex) {
-            // Expected
-        }
+        assertThatThrownBy(
+                        () ->
+                                attribute
+                                        .getAdapter(BooleanAttributeAccessor.class)
+                                        .getValue(headerBlock))
+                .isInstanceOf(SOAPProcessingException.class);
     }
 }

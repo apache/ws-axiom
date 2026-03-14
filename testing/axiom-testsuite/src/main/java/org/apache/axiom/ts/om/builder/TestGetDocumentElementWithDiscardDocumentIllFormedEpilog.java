@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMElement;
@@ -45,11 +47,6 @@ public class TestGetDocumentElementWithDiscardDocumentIllFormedEpilog extends Ax
                 OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<root/> there shouldn't be text here!"));
         OMElement element = builder.getDocumentElement(true);
-        try {
-            element.build();
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThatThrownBy(element::build).isInstanceOf(OMException.class);
     }
 }

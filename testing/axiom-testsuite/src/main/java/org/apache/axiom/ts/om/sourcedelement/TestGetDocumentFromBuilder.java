@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -44,17 +46,8 @@ public class TestGetDocumentFromBuilder extends AxiomTestCase {
         // Force expansion
         element.getFirstOMChild();
         OMXMLParserWrapper builder = element.getBuilder();
-        try {
-            builder.getDocument();
-            fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException ex) {
-            // Expected
-        }
-        try {
-            builder.getDocumentElement();
-            fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException ex) {
-            // Expected
-        }
+        assertThatThrownBy(builder::getDocument).isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(builder::getDocumentElement)
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 }

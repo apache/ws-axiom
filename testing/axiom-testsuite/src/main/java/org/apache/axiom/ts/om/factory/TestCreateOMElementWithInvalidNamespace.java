@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 
@@ -36,11 +38,14 @@ public class TestCreateOMElementWithInvalidNamespace extends CreateOMElementTest
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        try {
-            variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", "p");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            // Expected
-        }
+        assertThatThrownBy(
+                        () ->
+                                variant.createOMElement(
+                                        factory,
+                                        parentSupplier.createParent(factory),
+                                        "test",
+                                        "",
+                                        "p"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.node;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -36,11 +38,6 @@ public class TestInsertSiblingBeforeOnChild extends AxiomTestCase {
         OMElement element = factory.createOMElement("test", null);
         OMText text = factory.createOMText("test");
         element.addChild(text);
-        try {
-            text.insertSiblingBefore(element);
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> text.insertSiblingBefore(element)).isInstanceOf(OMException.class);
     }
 }

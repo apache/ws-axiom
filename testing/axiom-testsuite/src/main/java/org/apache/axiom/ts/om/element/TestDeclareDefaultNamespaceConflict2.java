@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -42,11 +44,7 @@ public class TestDeclareDefaultNamespaceConflict2 extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("urn:ns1", "");
         OMElement element = factory.createOMElement("test", ns);
-        try {
-            element.declareDefaultNamespace("urn:ns2");
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> element.declareDefaultNamespace("urn:ns2"))
+                .isInstanceOf(OMException.class);
     }
 }

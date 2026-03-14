@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -62,12 +64,9 @@ public class TestSerializeAndConsumeConsumed extends AxiomTestCase {
 
         // try to find the children of the document element. This should produce an
         // error since the underlying stream is fully consumed without building the object tree
-        try {
-            documentElement.serializeAndConsume(StAX.createNullXMLStreamWriter());
-            fail("Expected NodeUnavailableException");
-        } catch (NodeUnavailableException e) {
-            // wea re cool
-        }
+        assertThatThrownBy(
+                        () -> documentElement.serializeAndConsume(StAX.createNullXMLStreamWriter()))
+                .isInstanceOf(NodeUnavailableException.class);
 
         documentElement.close(false);
     }

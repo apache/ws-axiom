@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMContainer;
@@ -43,11 +45,7 @@ public class TestAddChildWithExistingDocumentElement extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMDocument document = factory.createOMDocument();
         document.addChild(factory.createOMElement(new QName("root1")));
-        try {
-            document.addChild(factory.createOMElement(new QName("root2")));
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> document.addChild(factory.createOMElement(new QName("root2"))))
+                .isInstanceOf(OMException.class);
     }
 }

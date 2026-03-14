@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -27,7 +29,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.testutils.suite.TestParameterTarget;
-import org.junit.Assert;
 
 /**
  * Scenario that attempts to use {@link XMLStreamWriter#writeStartDocument()}, {@link
@@ -48,31 +49,15 @@ public class WriteStartEndDocumentScenario implements PushOMDataSourceScenario {
 
     @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-        try {
-            writer.writeStartDocument();
-            Assert.fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException ex) {
-            // Expected
-        }
-        try {
-            writer.writeStartDocument("1.0");
-            Assert.fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException ex) {
-            // Expected
-        }
-        try {
-            writer.writeStartDocument("UTF-8", "1.0");
-            Assert.fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException ex) {
-            // Expected
-        }
+        assertThatThrownBy(writer::writeStartDocument)
+                .isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(() -> writer.writeStartDocument("1.0"))
+                .isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(() -> writer.writeStartDocument("UTF-8", "1.0"))
+                .isInstanceOf(UnsupportedOperationException.class);
         writer.writeEmptyElement(null, "root", null);
-        try {
-            writer.writeEndDocument();
-            Assert.fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException ex) {
-            // Expected
-        }
+        assertThatThrownBy(writer::writeEndDocument)
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 
     @Override

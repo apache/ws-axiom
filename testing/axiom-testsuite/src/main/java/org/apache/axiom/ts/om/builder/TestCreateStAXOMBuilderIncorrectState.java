@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamConstants;
@@ -48,11 +50,10 @@ public class TestCreateStAXOMBuilderIncorrectState extends AxiomTestCase {
         while (reader.getEventType() != XMLStreamReader.CHARACTERS) {
             reader.next();
         }
-        try {
-            OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader);
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThatThrownBy(
+                        () ->
+                                OMXMLBuilderFactory.createStAXOMBuilder(
+                                        metaFactory.getOMFactory(), reader))
+                .isInstanceOf(OMException.class);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -55,13 +57,10 @@ public class TestGetReaderException extends AxiomTestCase {
                                 return true;
                             }
                         });
-        try {
-            element.getLocalName();
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            Throwable cause = ex.getCause();
-            assertTrue(cause instanceof XMLStreamException);
-            assertEquals("Test exception", cause.getMessage());
-        }
+        assertThatThrownBy(element::getLocalName)
+                .isInstanceOf(OMException.class)
+                .cause()
+                .isInstanceOf(XMLStreamException.class)
+                .hasMessage("Test exception");
     }
 }

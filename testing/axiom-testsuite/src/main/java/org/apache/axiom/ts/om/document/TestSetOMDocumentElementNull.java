@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -37,11 +39,7 @@ public class TestSetOMDocumentElementNull extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMDocument document = factory.createOMDocument();
-        try {
-            document.setOMDocumentElement(null);
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> document.setOMDocumentElement(null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

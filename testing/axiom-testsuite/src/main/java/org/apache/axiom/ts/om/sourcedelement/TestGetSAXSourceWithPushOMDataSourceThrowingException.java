@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -59,13 +59,10 @@ public class TestGetSAXSourceWithPushOMDataSourceThrowingException extends Axiom
         SAXSource saxSource = element.getSAXSource(true);
         XMLReader reader = saxSource.getXMLReader();
         reader.setContentHandler(SAX.createNullContentHandler());
-        try {
-            reader.parse(saxSource.getInputSource());
-            fail("Expected SAXException");
-        } catch (SAXException ex) {
-            Throwable cause = ex.getCause();
-            assertThat(cause).isInstanceOf(XMLStreamException.class);
-            assertThat(cause.getMessage()).isEqualTo("TEST");
-        }
+        assertThatThrownBy(() -> reader.parse(saxSource.getInputSource()))
+                .isInstanceOf(SAXException.class)
+                .cause()
+                .isInstanceOf(XMLStreamException.class)
+                .hasMessage("TEST");
     }
 }

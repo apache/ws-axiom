@@ -22,6 +22,8 @@ import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamReader;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
@@ -45,14 +47,14 @@ public class TestDTD extends SOAPTestCase {
         String message = "<!DOCTYPE test []>" + soapFactory.getDefaultEnvelope();
         XMLStreamReader parser = StAXUtils.createXMLStreamReader(new StringReader(message));
         ;
-        try {
-            SOAPModelBuilder builder =
-                    OMXMLBuilderFactory.createStAXSOAPModelBuilder(metaFactory, parser);
-            // The processing must fail before we can get the SOAPEnvelope
-            builder.getSOAPEnvelope();
-            fail("Expected SOAPProcessingException");
-        } catch (SOAPProcessingException ex) {
-            // Expected
-        }
+        assertThatThrownBy(
+                        () -> {
+                            SOAPModelBuilder builder =
+                                    OMXMLBuilderFactory.createStAXSOAPModelBuilder(
+                                            metaFactory, parser);
+                            // The processing must fail before we can get the SOAPEnvelope
+                            builder.getSOAPEnvelope();
+                        })
+                .isInstanceOf(SOAPProcessingException.class);
     }
 }

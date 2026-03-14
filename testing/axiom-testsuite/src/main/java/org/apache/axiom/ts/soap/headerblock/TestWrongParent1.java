@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -43,11 +45,6 @@ public class TestWrongParent1 extends SOAPTestCase {
         SOAPHeaderBlock hb =
                 soapFactory.createSOAPHeaderBlock(
                         "MyHeader", soapFactory.createOMNamespace("urn:test", "p"));
-        try {
-            parent.addChild(hb);
-            fail("Expected SOAPProcessingException");
-        } catch (SOAPProcessingException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> parent.addChild(hb)).isInstanceOf(SOAPProcessingException.class);
     }
 }

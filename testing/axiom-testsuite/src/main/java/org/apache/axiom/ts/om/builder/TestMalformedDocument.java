@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
@@ -39,12 +41,7 @@ public class TestMalformedDocument extends AxiomTestCase {
                                 metaFactory.getOMFactory(),
                                 new StringReader("<Root><Child attr='a' attr='a'/></Root>"))
                         .getDocument();
-        try {
-            document.serialize(new ByteArrayOutputStream());
-            fail("Expected exception");
-        } catch (Exception ex) {
-            // We expect an exception here
-        }
+        assertThatThrownBy(() -> document.serialize(new ByteArrayOutputStream()));
         document.close(false);
     }
 }

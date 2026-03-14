@@ -20,6 +20,8 @@ package org.apache.axiom.ts.soap.message;
 
 import javax.xml.namespace.QName;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -43,11 +45,7 @@ public class TestSetOMDocumentElementNonSOAPEnvelope extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPMessage message = soapFactory.createSOAPMessage();
         OMElement element = soapFactory.createOMElement(new QName("test"));
-        try {
-            message.setOMDocumentElement(element);
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> message.setOMDocumentElement(element))
+                .isInstanceOf(OMException.class);
     }
 }

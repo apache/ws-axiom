@@ -20,6 +20,8 @@ package org.apache.axiom.ts.soap.envelope;
 
 import javax.xml.namespace.QName;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -51,12 +53,8 @@ public class TestAddElementAfterBody extends SOAPTestCase {
         if (spec.isAllowsElementsAfterBody()) {
             env.addChild(elem);
         } else {
-            try {
-                env.addChild(elem);
-                fail("Expected SOAPProcessingException");
-            } catch (SOAPProcessingException ex) {
-                // expected
-            }
+            assertThatThrownBy(() -> env.addChild(elem))
+                    .isInstanceOf(SOAPProcessingException.class);
         }
     }
 }

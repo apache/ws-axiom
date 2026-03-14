@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamReader;
@@ -59,15 +61,14 @@ public class TestGetChildElementsConsumed extends AxiomTestCase {
 
         // try to find the children of the document element. This should produce an
         // error since the underlying stream is fully consumed without building the object tree
-        try {
-            Iterator<OMElement> childElements = documentElement.getChildElements();
-            while (childElements.hasNext()) {
-                childElements.next();
-            }
-            fail("Expected NodeUnavailableException");
-        } catch (NodeUnavailableException ex) {
-            // Expected
-        }
+        assertThatThrownBy(
+                        () -> {
+                            Iterator<OMElement> childElements = documentElement.getChildElements();
+                            while (childElements.hasNext()) {
+                                childElements.next();
+                            }
+                        })
+                .isInstanceOf(NodeUnavailableException.class);
 
         documentElement.close(false);
     }

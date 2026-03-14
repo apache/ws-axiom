@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -41,11 +43,6 @@ public class TestRemoveAttributeNotOwner extends AxiomTestCase {
         element1.addAttribute("attr", "value", null);
         OMElement element2 = factory.createOMElement("test", null);
         OMAttribute attr = element2.addAttribute("attr", "value", null);
-        try {
-            element1.removeAttribute(attr);
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> element1.removeAttribute(attr)).isInstanceOf(OMException.class);
     }
 }

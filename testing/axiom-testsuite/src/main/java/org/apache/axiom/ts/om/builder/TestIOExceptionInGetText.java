@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -67,22 +69,12 @@ public class TestIOExceptionInGetText extends AxiomTestCase {
                 OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
                         .getDocumentElement();
 
-        try {
-            element.getNextOMSibling();
-            fail("Expected exception");
-        } catch (Exception ex) {
-            // Expected
-        }
+        assertThatThrownBy(element::getNextOMSibling);
 
         assertTrue(invocationCounter.getInvocationCount() > 0);
         invocationCounter.reset();
 
-        try {
-            element.getNextOMSibling();
-            fail("Expected exception");
-        } catch (Exception ex) {
-            // Expected
-        }
+        assertThatThrownBy(element::getNextOMSibling);
 
         assertEquals(0, invocationCounter.getInvocationCount());
     }

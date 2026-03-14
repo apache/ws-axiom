@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.omdom.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.StringReader;
 
@@ -46,11 +47,11 @@ public class TestAppendChildForbidden extends OMDOMTestCase {
             omDocument.build();
         }
         Document document = (Document) omDocument;
-        try {
-            document.appendChild(document.createElementNS(null, "test"));
-            fail("Expected DOMException");
-        } catch (DOMException ex) {
-            assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR);
-        }
+        assertThatThrownBy(() -> document.appendChild(document.createElementNS(null, "test")))
+                .isInstanceOf(DOMException.class)
+                .satisfies(
+                        e ->
+                                assertThat(((DOMException) e).code)
+                                        .isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
     }
 }

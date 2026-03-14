@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMException;
@@ -40,11 +42,6 @@ public class TestGetDocumentElementWithIllFormedDocument extends AxiomTestCase {
         OMXMLParserWrapper builder =
                 OMXMLBuilderFactory.createOMBuilder(
                         metaFactory.getOMFactory(), new StringReader("<!--comment1-->"));
-        try {
-            builder.getDocumentElement();
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThatThrownBy(builder::getDocumentElement).isInstanceOf(OMException.class);
     }
 }

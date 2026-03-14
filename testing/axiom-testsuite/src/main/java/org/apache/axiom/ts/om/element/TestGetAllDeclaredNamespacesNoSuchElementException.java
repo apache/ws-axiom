@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -43,11 +45,6 @@ public class TestGetAllDeclaredNamespacesNoSuchElementException extends AxiomTes
                         metaFactory.getOMFactory(), "<e xmlns:p='urn:test' p:attr='test'/>");
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         it.next();
-        try {
-            it.next();
-            fail("Expected NoSuchElementException");
-        } catch (NoSuchElementException ex) {
-            // Expected
-        }
+        assertThatThrownBy(it::next).isInstanceOf(NoSuchElementException.class);
     }
 }

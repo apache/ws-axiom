@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.fault;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -42,11 +44,7 @@ public class TestWrongParent2 extends SOAPTestCase {
         SOAPEnvelope parent = soapFactory.createSOAPEnvelope();
         OMElement child1 = soapFactory.createSOAPHeader(parent);
         SOAPFault fault = soapFactory.createSOAPFault();
-        try {
-            child1.insertSiblingAfter(fault);
-            fail("Expected SOAPProcessingException");
-        } catch (SOAPProcessingException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> child1.insertSiblingAfter(fault))
+                .isInstanceOf(SOAPProcessingException.class);
     }
 }

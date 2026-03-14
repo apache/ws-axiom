@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -37,11 +39,7 @@ public class TestDeclareNamespaceInvalid1 extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMElement element = metaFactory.getOMFactory().createOMElement(new QName("test"));
-        try {
-            element.declareNamespace("", "ns");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> element.declareNamespace("", "ns"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

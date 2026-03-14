@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -37,13 +39,8 @@ public class TestCreateOMAttributeWithInvalidNamespace1 extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("", "p");
-        try {
-            factory.createOMAttribute("attr", ns, "value");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            assertEquals(
-                    "Cannot create a prefixed attribute with an empty namespace name",
-                    ex.getMessage());
-        }
+        assertThatThrownBy(() -> factory.createOMAttribute("attr", ns, "value"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot create a prefixed attribute with an empty namespace name");
     }
 }

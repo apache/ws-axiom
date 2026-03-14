@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -37,11 +39,8 @@ public class TestCreateOMAttributeWithInvalidNamespace2 extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("urn:test", "");
-        try {
-            factory.createOMAttribute("attr", ns, "value");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            assertEquals("Cannot create an unprefixed attribute with a namespace", ex.getMessage());
-        }
+        assertThatThrownBy(() -> factory.createOMAttribute("attr", ns, "value"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot create an unprefixed attribute with a namespace");
     }
 }

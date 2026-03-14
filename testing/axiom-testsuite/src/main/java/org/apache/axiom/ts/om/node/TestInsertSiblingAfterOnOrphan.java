@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.node;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -38,11 +40,6 @@ public class TestInsertSiblingAfterOnOrphan extends AxiomTestCase {
         OMFactory fac = metaFactory.getOMFactory();
         OMText text1 = fac.createOMText("text1");
         OMText text2 = fac.createOMText("text2");
-        try {
-            text1.insertSiblingBefore(text2);
-            fail("Expected OMException because node has no parent");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> text1.insertSiblingBefore(text2)).isInstanceOf(OMException.class);
     }
 }

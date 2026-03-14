@@ -20,6 +20,8 @@ package org.apache.axiom.ts.soap.header;
 
 import javax.xml.namespace.QName;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -40,11 +42,7 @@ public class TestAddHeaderBlockFromQNameWithoutNamespace extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPHeader header = soapFactory.createSOAPHeader(envelope);
-        try {
-            header.addHeaderBlock(new QName("test"));
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> header.addHeaderBlock(new QName("test")))
+                .isInstanceOf(OMException.class);
     }
 }

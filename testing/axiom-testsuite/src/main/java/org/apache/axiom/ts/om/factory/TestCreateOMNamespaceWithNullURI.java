@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -28,11 +30,7 @@ public class TestCreateOMNamespaceWithNullURI extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        try {
-            metaFactory.getOMFactory().createOMNamespace(null, "t");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> metaFactory.getOMFactory().createOMNamespace(null, "t"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

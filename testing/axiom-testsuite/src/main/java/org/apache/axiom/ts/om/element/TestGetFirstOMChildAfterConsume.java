@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamReader;
@@ -53,11 +55,6 @@ public class TestGetFirstOMChildAfterConsume extends AxiomTestCase {
         while (reader.hasNext()) {
             reader.next();
         }
-        try {
-            element.getFirstOMChild();
-            fail("Expected NodeUnavailableException");
-        } catch (NodeUnavailableException ex) {
-            // Expected
-        }
+        assertThatThrownBy(element::getFirstOMChild).isInstanceOf(NodeUnavailableException.class);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
@@ -48,11 +50,6 @@ public class TestGetChildElementsConcurrentModification extends AxiomTestCase {
         it.next();
         OMElement child2 = it.next();
         child2.detach();
-        try {
-            it.next();
-            fail("Expected ConcurrentModificationException");
-        } catch (ConcurrentModificationException ex) {
-            // Expected
-        }
+        assertThatThrownBy(it::next).isInstanceOf(ConcurrentModificationException.class);
     }
 }

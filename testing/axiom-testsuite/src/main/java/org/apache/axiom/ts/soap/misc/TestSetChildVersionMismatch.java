@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.misc;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -37,11 +39,7 @@ public class TestSetChildVersionMismatch extends GetSetChildTestCase {
     @Override
     protected void runTest(OMElement parent, SOAPElementTypeAdapter adapter) {
         OMElement child = adapter.create(altSoapFactory);
-        try {
-            adapter.getSetter().invoke(parent, child);
-            fail("Expected SOAPProcessingException");
-        } catch (SOAPProcessingException ex) {
-            // Expected
-        }
+        assertThatThrownBy(() -> adapter.getSetter().invoke(parent, child))
+                .isInstanceOf(SOAPProcessingException.class);
     }
 }
