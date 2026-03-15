@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import com.google.common.collect.ImmutableList;
+import com.google.inject.name.Names;
 import org.apache.axiom.testutils.suite.MatrixTestFilters;
 import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
@@ -37,13 +38,19 @@ public class StreamSourceToOMResultTest {
                         .add("(|(file=sax-attribute-namespace-bug.xml)(file=large.xml))")
                         .build();
         return new ParameterFanOutNode<>(
-                        String.class,
                         ImmutableList.of("default", "dom"),
+                        (binder, value) ->
+                                binder.bind(String.class)
+                                        .annotatedWith(Names.named("axiomImplementation"))
+                                        .toInstance(value),
                         "axiomImplementation",
                         s -> s,
                         new ParameterFanOutNode<>(
-                                XMLSample.class,
                                 Multiton.getInstances(XMLSample.class),
+                                (binder, value) ->
+                                        binder.bind(XMLSample.class)
+                                                .annotatedWith(Names.named("file"))
+                                                .toInstance(value),
                                 "file",
                                 XMLSample::getName,
                                 new MatrixTest(StreamSourceToOMResultTestCase.class)))

@@ -43,14 +43,20 @@ public class CrossOMTestSuite {
                 new ParentNode(
                         new MatrixTest(TestAddChild.class),
                         new ParameterFanOutNode<>(
-                                XMLSample.class,
                                 Multiton.getInstances(XMLSample.class),
+                                (binder, value) ->
+                                        binder.bind(XMLSample.class)
+                                                .annotatedWith(Names.named("file"))
+                                                .toInstance(value),
                                 "file",
                                 XMLSample::getName,
                                 new MatrixTest(TestImportInformationItem.class)),
                         new ParameterFanOutNode<>(
-                                Boolean.class,
                                 ImmutableList.of(false, true),
+                                (binder, value) ->
+                                        binder.bind(Boolean.class)
+                                                .annotatedWith(Names.named("before"))
+                                                .toInstance(value),
                                 "before",
                                 String::valueOf,
                                 new MatrixTest(TestInsertSibling.class))));

@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.name.Names;
 
 /**
  * Fan-out node for arbitrary value types that do not implement {@link Dimension}. The caller
@@ -36,18 +35,12 @@ public class ParameterFanOutNode<T> extends AbstractFanOutNode<T> {
     private final Function<T, String> parameterValueFunction;
 
     public ParameterFanOutNode(
-            Class<T> type,
             ImmutableList<T> values,
+            Binding<T> binding,
             String parameterName,
             Function<T, String> parameterValueFunction,
             MatrixTestNode child) {
-        super(
-                values,
-                (binder, value) ->
-                        binder.bind(type)
-                                .annotatedWith(Names.named(parameterName))
-                                .toInstance(value),
-                child);
+        super(values, binding, child);
         this.parameterName = parameterName;
         this.parameterValueFunction = parameterValueFunction;
     }

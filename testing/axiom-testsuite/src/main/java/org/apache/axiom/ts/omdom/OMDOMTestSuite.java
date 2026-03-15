@@ -27,6 +27,7 @@ import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.name.Names;
 
 /**
  * Builds a test suite for Axiom implementations that also implement DOM. Note that this test suite
@@ -44,8 +45,11 @@ public class OMDOMTestSuite {
                                 org.apache.axiom.ts.omdom.attr.TestSetValueOnNamespaceDeclaration
                                         .class),
                         new ParameterFanOutNode<>(
-                                Boolean.class,
                                 ImmutableList.of(true, false),
+                                (binder, value) ->
+                                        binder.bind(Boolean.class)
+                                                .annotatedWith(Names.named("build"))
+                                                .toInstance(value),
                                 "build",
                                 String::valueOf,
                                 new ParentNode(
@@ -61,8 +65,11 @@ public class OMDOMTestSuite {
                         new MatrixTest(org.apache.axiom.ts.omdom.document.TestGetOMFactory1.class),
                         new MatrixTest(org.apache.axiom.ts.omdom.document.TestGetOMFactory2.class),
                         new ParameterFanOutNode<>(
-                                XMLSample.class,
                                 Multiton.getInstances(XMLSample.class),
+                                (binder, value) ->
+                                        binder.bind(XMLSample.class)
+                                                .annotatedWith(Names.named("file"))
+                                                .toInstance(value),
                                 "file",
                                 XMLSample::getName,
                                 new MatrixTest(

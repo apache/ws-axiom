@@ -20,6 +20,8 @@ package org.apache.axiom.core.stream.serializer;
 
 import java.util.stream.Stream;
 
+import com.google.inject.name.Names;
+
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.ParameterFanOutNode;
@@ -31,8 +33,11 @@ public class SerializerConformanceTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
         return new ParameterFanOutNode<>(
-                        XMLSample.class,
                         Multiton.getInstances(XMLSample.class),
+                        (binder, value) ->
+                                binder.bind(XMLSample.class)
+                                        .annotatedWith(Names.named("sample"))
+                                        .toInstance(value),
                         "sample",
                         XMLSample::getName,
                         new MatrixTest(SerializerConformanceTestCase.class))

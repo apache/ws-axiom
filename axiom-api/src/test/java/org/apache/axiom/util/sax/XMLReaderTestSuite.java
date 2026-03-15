@@ -24,17 +24,21 @@ import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.xml.sax.XMLReader;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.name.Names;
 
 public class XMLReaderTestSuite {
     public static InjectorNode create(XMLReader xmlReader) {
         return new InjectorNode(
                 binder -> binder.bind(XMLReader.class).toInstance(xmlReader),
                 new ParameterFanOutNode<>(
-                        String.class,
                         ImmutableList.of(
                                 "http://xml.org/sax/features/namespaces",
                                 "http://xml.org/sax/features/namespace-prefixes",
                                 "http://xml.org/sax/features/external-general-entities"),
+                        (binder, value) ->
+                                binder.bind(String.class)
+                                        .annotatedWith(Names.named("feature"))
+                                        .toInstance(value),
                         "feature",
                         s -> s,
                         new MatrixTest(TestGetSetFeature.class)));

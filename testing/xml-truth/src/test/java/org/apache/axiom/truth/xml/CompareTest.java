@@ -28,28 +28,43 @@ import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.name.Names;
 
 public class CompareTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
         return new ParameterFanOutNode<>(
-                        XMLSample.class,
                         Multiton.getInstances(XMLSample.class),
+                        (binder, value) ->
+                                binder.bind(XMLSample.class)
+                                        .annotatedWith(Names.named("sample"))
+                                        .toInstance(value),
                         "sample",
                         XMLSample::getName,
                         new ParameterFanOutNode<>(
-                                XMLObjectFactory.class,
                                 Multiton.getInstances(XMLObjectFactory.class),
+                                (binder, value) ->
+                                        binder.bind(XMLObjectFactory.class)
+                                                .annotatedWith(Names.named("left"))
+                                                .toInstance(value),
                                 "left",
                                 XMLObjectFactory::getName,
                                 new ParameterFanOutNode<>(
-                                        XMLObjectFactory.class,
                                         Multiton.getInstances(XMLObjectFactory.class),
+                                        (binder, value) ->
+                                                binder.bind(XMLObjectFactory.class)
+                                                        .annotatedWith(Names.named("right"))
+                                                        .toInstance(value),
                                         "right",
                                         XMLObjectFactory::getName,
                                         new ParameterFanOutNode<>(
-                                                Boolean.class,
                                                 ImmutableList.of(true, false),
+                                                (binder, value) ->
+                                                        binder.bind(Boolean.class)
+                                                                .annotatedWith(
+                                                                        Names.named(
+                                                                                "expandEntityReferences"))
+                                                                .toInstance(value),
                                                 "expandEntityReferences",
                                                 String::valueOf,
                                                 new MatrixTest(CompareTestCase.class)))))
