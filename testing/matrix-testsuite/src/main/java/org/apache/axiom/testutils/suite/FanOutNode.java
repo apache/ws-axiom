@@ -31,41 +31,28 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Injector;
 
 /**
- * Abstract base class for fan-out nodes that iterate over a list of values, creating one {@link
- * DynamicContainer} per value. For each value, a child Guice injector is created that binds the
- * value type to the specific instance.
- *
- * <p>Subclasses define how test parameters (used for display names and LDAP filter matching) are
- * extracted from each value:
- *
- * <ul>
- *   <li>{@link DimensionFanOutNode} — for types that implement {@link Dimension}, using {@link
- *       Dimension#addTestParameters}. The value is bound as a plain (unannotated) type binding.
- *   <li>{@link ParameterFanOutNode} — for arbitrary types, using a caller-supplied parameter name
- *       and {@link java.util.function.Function}. The value is bound with a {@code @Named}
- *       annotation whose value is the parameter name; injection sites must use
- *       {@code @Inject @Named("paramName")}.
- * </ul>
+ * Fan-out node that iterates over a list of values, creating one {@link DynamicContainer} per
+ * value. For each value, a child Guice injector is created that binds the value type to the
+ * specific instance.
  *
  * @param <T> the value type
  */
-public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
+public final class FanOutNode<T> extends MatrixTestNode {
     private final ImmutableList<T> values;
     private final Binding<T> binding;
+    private final ParameterBinding<? super T> parameterBinding;
     private final MatrixTestNode child;
 
-    protected AbstractFanOutNode(
-            ImmutableList<T> values, Binding<T> binding, MatrixTestNode child) {
+    public FanOutNode(
+            ImmutableList<T> values,
+            Binding<T> binding,
+            ParameterBinding<? super T> parameterBinding,
+            MatrixTestNode child) {
         this.values = values;
         this.binding = binding;
+        this.parameterBinding = parameterBinding;
         this.child = child;
     }
-
-    /**
-     * Extracts test parameters from the given value. The returned map entries are used for the
-     * display name and for LDAP filter matching.
-     */
-    protected abstract Map<String, String> extractParameters(T value);
 
     @Override
     Stream<DynamicNode> toDynamicNodes(
@@ -78,17 +65,32 @@ public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
                             Injector childInjector =
                                     parentInjector.createChildInjector(
                                             binder -> binding.configure(binder, value));
+                            Map<String, String> parameters = new HashMap<>(inheritedParameters);
+                            parameterBinding.addTestParameters(
+                                    new TestParameterTarget() {
+                                        @Override
+                                        public void addTestParameter(String name, String value) {
+                                            parameters.put(name, value);
+                                        }
 
-                            Map<String, String> parameters = extractParameters(value);
-                            HashMap<String, String> params = new HashMap<>(inheritedParameters);
-                            params.putAll(parameters);
+                                        @Override
+                                        public void addTestParameter(String name, boolean value) {
+                                            addTestParameter(name, String.valueOf(value));
+                                        }
+
+                                        @Override
+                                        public void addTestParameter(String name, int value) {
+                                            addTestParameter(name, String.valueOf(value));
+                                        }
+                                    },
+                                    value);
                             String displayName =
                                     parameters.entrySet().stream()
                                             .map(e -> e.getKey() + "=" + e.getValue())
                                             .collect(Collectors.joining(", "));
                             return DynamicContainer.dynamicContainer(
                                     displayName,
-                                    child.toDynamicNodes(childInjector, params, excludes));
+                                    child.toDynamicNodes(childInjector, parameters, excludes));
                         });
     }
 }

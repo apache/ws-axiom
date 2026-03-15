@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTest;
-import org.apache.axiom.testutils.suite.ParameterFanOutNode;
+import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
@@ -33,31 +33,29 @@ import com.google.inject.name.Names;
 public class CompareTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
-        return new ParameterFanOutNode<>(
+        return new FanOutNode<>(
                         Multiton.getInstances(XMLSample.class),
                         (binder, value) ->
                                 binder.bind(XMLSample.class)
                                         .annotatedWith(Names.named("sample"))
                                         .toInstance(value),
-                        "sample",
-                        XMLSample::getName,
-                        new ParameterFanOutNode<>(
+                        (params, value) -> params.addTestParameter("sample", value.getName()),
+                        new FanOutNode<>(
                                 Multiton.getInstances(XMLObjectFactory.class),
                                 (binder, value) ->
                                         binder.bind(XMLObjectFactory.class)
                                                 .annotatedWith(Names.named("left"))
                                                 .toInstance(value),
-                                "left",
-                                XMLObjectFactory::getName,
-                                new ParameterFanOutNode<>(
+                                (params, value) -> params.addTestParameter("left", value.getName()),
+                                new FanOutNode<>(
                                         Multiton.getInstances(XMLObjectFactory.class),
                                         (binder, value) ->
                                                 binder.bind(XMLObjectFactory.class)
                                                         .annotatedWith(Names.named("right"))
                                                         .toInstance(value),
-                                        "right",
-                                        XMLObjectFactory::getName,
-                                        new ParameterFanOutNode<>(
+                                        (params, value) ->
+                                                params.addTestParameter("right", value.getName()),
+                                        new FanOutNode<>(
                                                 ImmutableList.of(true, false),
                                                 (binder, value) ->
                                                         binder.bind(Boolean.class)
@@ -65,8 +63,10 @@ public class CompareTest {
                                                                         Names.named(
                                                                                 "expandEntityReferences"))
                                                                 .toInstance(value),
-                                                "expandEntityReferences",
-                                                String::valueOf,
+                                                (params, value) ->
+                                                        params.addTestParameter(
+                                                                "expandEntityReferences",
+                                                                String.valueOf(value)),
                                                 new MatrixTest(CompareTestCase.class)))))
                 .toDynamicNodes();
     }

@@ -25,7 +25,7 @@ import org.apache.axiom.testutils.suite.MatrixTest;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.name.Names;
 import org.apache.axiom.testutils.suite.MatrixTestFilters;
-import org.apache.axiom.testutils.suite.ParameterFanOutNode;
+import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
@@ -37,19 +37,17 @@ public class StreamSourceToOMResultTest {
                 MatrixTestFilters.builder()
                         .add("(|(file=sax-attribute-namespace-bug.xml)(file=large.xml))")
                         .build();
-        return new ParameterFanOutNode<>(
+        return new FanOutNode<>(
                         ImmutableList.of("default", "dom"),
                         (binder, value) ->
                                 binder.bind(String.class)
                                         .annotatedWith(Names.named("axiomImplementation"))
                                         .toInstance(value),
-                        "axiomImplementation",
-                        s -> s,
-                        new ParameterFanOutNode<>(
+                        (params, value) -> params.addTestParameter("axiomImplementation", value),
+                        new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
-                                "file",
-                                XMLSample::getName,
+                                (params, value) -> params.addTestParameter("file", value.getName()),
                                 new MatrixTest(StreamSourceToOMResultTestCase.class)))
                 .toDynamicNodes(excludes);
     }

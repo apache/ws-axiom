@@ -23,7 +23,7 @@ import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.ParentNode;
-import org.apache.axiom.testutils.suite.ParameterFanOutNode;
+import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
 
 import com.google.common.collect.ImmutableList;
@@ -44,14 +44,14 @@ public class OMDOMTestSuite {
                         new MatrixTest(
                                 org.apache.axiom.ts.omdom.attr.TestSetValueOnNamespaceDeclaration
                                         .class),
-                        new ParameterFanOutNode<>(
+                        new FanOutNode<>(
                                 ImmutableList.of(true, false),
                                 (binder, value) ->
                                         binder.bind(Boolean.class)
                                                 .annotatedWith(Names.named("build"))
                                                 .toInstance(value),
-                                "build",
-                                String::valueOf,
+                                (params, value) ->
+                                        params.addTestParameter("build", String.valueOf(value)),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.omdom.document
@@ -64,11 +64,10 @@ public class OMDOMTestSuite {
                                         .TestCreateDocumentFragmentInterfaces.class),
                         new MatrixTest(org.apache.axiom.ts.omdom.document.TestGetOMFactory1.class),
                         new MatrixTest(org.apache.axiom.ts.omdom.document.TestGetOMFactory2.class),
-                        new ParameterFanOutNode<>(
+                        new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
-                                "file",
-                                XMLSample::getName,
+                                (params, value) -> params.addTestParameter("file", value.getName()),
                                 new MatrixTest(
                                         org.apache.axiom.ts.omdom.document.TestImportNode.class)),
                         new MatrixTest(

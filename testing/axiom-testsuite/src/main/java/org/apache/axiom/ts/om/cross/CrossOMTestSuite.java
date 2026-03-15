@@ -23,7 +23,7 @@ import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.ParentNode;
-import org.apache.axiom.testutils.suite.ParameterFanOutNode;
+import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
 
 import com.google.common.collect.ImmutableList;
@@ -42,20 +42,19 @@ public class CrossOMTestSuite {
                 },
                 new ParentNode(
                         new MatrixTest(TestAddChild.class),
-                        new ParameterFanOutNode<>(
+                        new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
-                                "file",
-                                XMLSample::getName,
+                                (params, value) -> params.addTestParameter("file", value.getName()),
                                 new MatrixTest(TestImportInformationItem.class)),
-                        new ParameterFanOutNode<>(
+                        new FanOutNode<>(
                                 ImmutableList.of(false, true),
                                 (binder, value) ->
                                         binder.bind(Boolean.class)
                                                 .annotatedWith(Names.named("before"))
                                                 .toInstance(value),
-                                "before",
-                                String::valueOf,
+                                (params, value) ->
+                                        params.addTestParameter("before", String.valueOf(value)),
                                 new MatrixTest(TestInsertSibling.class))));
     }
 }

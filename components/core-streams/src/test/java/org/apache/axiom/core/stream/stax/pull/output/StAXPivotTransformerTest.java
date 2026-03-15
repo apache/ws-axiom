@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTest;
-import org.apache.axiom.testutils.suite.ParameterFanOutNode;
+import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.junit.jupiter.api.DynamicNode;
@@ -33,20 +33,19 @@ import com.google.common.collect.ImmutableList;
 public class StAXPivotTransformerTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
-        return new ParameterFanOutNode<>(
+        return new FanOutNode<>(
                         Multiton.getInstances(XSLTImplementation.class).stream()
                                 .filter(XSLTImplementation::supportsStAXSource)
                                 .collect(ImmutableList.toImmutableList()),
                         (binder, value) -> binder.bind(XSLTImplementation.class).toInstance(value),
-                        "xslt",
-                        XSLTImplementation::getName,
-                        new ParameterFanOutNode<>(
+                        (params, value) -> params.addTestParameter("xslt", value.getName()),
+                        new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class).stream()
                                         .filter(s -> !s.hasDTD())
                                         .collect(ImmutableList.toImmutableList()),
                                 (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
-                                "sample",
-                                XMLSample::getName,
+                                (params, value) ->
+                                        params.addTestParameter("sample", value.getName()),
                                 new MatrixTest(StAXPivotTransformerTestCase.class)))
                 .toDynamicNodes();
     }

@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTest;
-import org.apache.axiom.testutils.suite.ParameterFanOutNode;
+import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
@@ -30,11 +30,10 @@ import org.junit.jupiter.api.TestFactory;
 public class SerializerConformanceTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
-        return new ParameterFanOutNode<>(
+        return new FanOutNode<>(
                         Multiton.getInstances(XMLSample.class),
                         (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
-                        "sample",
-                        XMLSample::getName,
+                        (params, value) -> params.addTestParameter("sample", value.getName()),
                         new MatrixTest(SerializerConformanceTestCase.class))
                 .toDynamicNodes();
     }

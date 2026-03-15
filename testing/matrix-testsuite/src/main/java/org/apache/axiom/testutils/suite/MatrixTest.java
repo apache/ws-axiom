@@ -34,8 +34,8 @@ import junit.framework.TestCase;
  *
  * <p>The test class must have an injectable constructor (either a no-arg constructor or one
  * annotated with {@code @Inject}). Field injection is also supported. The injector received from
- * the ancestor {@link AbstractFanOutNode} chain will have bindings for all dimension types, plus
- * any implementation-level bindings from the root injector.
+ * the ancestor {@link FanOutNode} chain will have bindings for all dimension types, plus any
+ * implementation-level bindings from the root injector.
  *
  * <p>Once the instance is created, it is executed via {@link TestCase#runBare()}, which invokes the
  * full {@code setUp()} → {@code runTest()} → {@code tearDown()} lifecycle.

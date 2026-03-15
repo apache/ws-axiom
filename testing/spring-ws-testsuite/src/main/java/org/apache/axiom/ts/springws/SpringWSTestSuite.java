@@ -19,11 +19,11 @@
 package org.apache.axiom.ts.springws;
 
 import org.apache.axiom.testing.multiton.Multiton;
-import org.apache.axiom.testutils.suite.DimensionFanOutNode;
+import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
-import org.apache.axiom.testutils.suite.ParameterFanOutNode;
+import org.apache.axiom.testutils.suite.ParameterBinding;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.testutils.suite.SelectorNode;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -53,11 +53,13 @@ public class SpringWSTestSuite {
                     new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator));
         }
 
-        return new ParameterFanOutNode<>(
+        return new FanOutNode<>(
                 Multiton.getInstances(SOAPSpec.class),
                 (binder, value) -> binder.bind(SOAPSpec.class).toInstance(value),
-                "soapVersion",
-                spec -> spec.getAdapter(SOAPSpecAdapter.class).getSoapVersion(),
+                (params, value) ->
+                        params.addTestParameter(
+                                "soapVersion",
+                                value.getAdapter(SOAPSpecAdapter.class).getSoapVersion()),
                 new ParentNode(
                         new InjectorNode(
                                 binder ->
@@ -76,10 +78,11 @@ public class SpringWSTestSuite {
                                                 new MatrixTest(
                                                         TestCreateWebServiceMessageFromInputStreamMTOM
                                                                 .class)))),
-                        new DimensionFanOutNode<>(
+                        new FanOutNode<>(
                                 configs.build(),
                                 (binder, value) ->
                                         binder.bind(ScenarioConfig.class).toInstance(value),
+                                ParameterBinding.DIMENSION,
                                 new ParentNode(
                                         new MatrixTest(ClientServerTest.class),
                                         new MatrixTest(WSAddressingDOMTest.class),

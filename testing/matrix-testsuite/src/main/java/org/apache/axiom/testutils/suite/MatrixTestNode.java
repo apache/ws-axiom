@@ -32,9 +32,8 @@ import com.google.inject.Injector;
  * Represents a node in the test tree that can be filtered before conversion to JUnit 5's dynamic
  * test API.
  *
- * <p>The {@code parentInjector} parameter threads through the tree: each fan-out node ({@link
- * DimensionFanOutNode}, {@link ParameterFanOutNode}) creates child injectors from it, and each
- * {@link MatrixTest} uses it to instantiate the test class.
+ * <p>The {@code parentInjector} parameter threads through the tree: each {@link FanOutNode} creates
+ * child injectors from it, and each {@link MatrixTest} uses it to instantiate the test class.
  */
 public abstract class MatrixTestNode {
     abstract Stream<DynamicNode> toDynamicNodes(

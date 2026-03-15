@@ -24,7 +24,7 @@ import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.ParentNode;
-import org.apache.axiom.testutils.suite.ParameterFanOutNode;
+import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.ts.saaj.body.TestAddChildElementReification;
 import org.apache.axiom.ts.saaj.element.TestAddChildElementLocalName;
 import org.apache.axiom.ts.saaj.element.TestAddChildElementLocalNamePrefixAndURI;
@@ -39,11 +39,10 @@ public class SAAJTestSuite {
                 binder ->
                         binder.bind(SAAJImplementation.class)
                                 .toInstance(new SAAJImplementation(metaFactory)),
-                new ParameterFanOutNode<>(
+                new FanOutNode<>(
                         Multiton.getInstances(SOAPSpec.class),
                         (binder, value) -> binder.bind(SOAPSpec.class).toInstance(value),
-                        "spec",
-                        SOAPSpec::getName,
+                        (params, value) -> params.addTestParameter("spec", value.getName()),
                         new ParentNode(
                                 new MatrixTest(TestAddChildElementReification.class),
                                 new MatrixTest(TestExamineMustUnderstandHeaderElements.class),
