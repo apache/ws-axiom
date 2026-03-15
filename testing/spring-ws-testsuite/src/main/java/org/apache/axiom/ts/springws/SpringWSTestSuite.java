@@ -41,7 +41,6 @@ import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMess
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStreamVersionMismatch;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.name.Names;
 
 public class SpringWSTestSuite {
     public static MatrixTestNode create(
@@ -56,10 +55,7 @@ public class SpringWSTestSuite {
 
         return new ParameterFanOutNode<>(
                 Multiton.getInstances(SOAPSpec.class),
-                (binder, value) ->
-                        binder.bind(SOAPSpec.class)
-                                .annotatedWith(Names.named("soapVersion"))
-                                .toInstance(value),
+                (binder, value) -> binder.bind(SOAPSpec.class).toInstance(value),
                 "soapVersion",
                 spec -> spec.getAdapter(SOAPSpecAdapter.class).getSoapVersion(),
                 new ParentNode(

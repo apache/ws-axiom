@@ -20,8 +20,6 @@ package org.apache.axiom.ts.saaj;
 
 import jakarta.xml.soap.SAAJMetaFactory;
 
-import com.google.inject.name.Names;
-
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.InjectorNode;
@@ -43,10 +41,7 @@ public class SAAJTestSuite {
                                 .toInstance(new SAAJImplementation(metaFactory)),
                 new ParameterFanOutNode<>(
                         Multiton.getInstances(SOAPSpec.class),
-                        (binder, value) ->
-                                binder.bind(SOAPSpec.class)
-                                        .annotatedWith(Names.named("spec"))
-                                        .toInstance(value),
+                        (binder, value) -> binder.bind(SOAPSpec.class).toInstance(value),
                         "spec",
                         SOAPSpec::getName,
                         new ParentNode(

@@ -66,10 +66,7 @@ public class OMDOMTestSuite {
                         new MatrixTest(org.apache.axiom.ts.omdom.document.TestGetOMFactory2.class),
                         new ParameterFanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
-                                (binder, value) ->
-                                        binder.bind(XMLSample.class)
-                                                .annotatedWith(Names.named("file"))
-                                                .toInstance(value),
+                                (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
                                 "file",
                                 XMLSample::getName,
                                 new MatrixTest(

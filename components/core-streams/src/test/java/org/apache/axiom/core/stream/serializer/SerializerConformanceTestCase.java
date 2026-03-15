@@ -27,7 +27,6 @@ import java.io.StringWriter;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.core.stream.dom.input.DOMInput;
 import org.apache.axiom.ts.xml.XMLSample;
@@ -37,9 +36,7 @@ import org.xml.sax.InputSource;
 import junit.framework.TestCase;
 
 public class SerializerConformanceTestCase extends TestCase {
-    @Inject
-    @Named("sample")
-    private XMLSample sample;
+    @Inject private XMLSample sample;
 
     @Override
     protected void runTest() throws Throwable {

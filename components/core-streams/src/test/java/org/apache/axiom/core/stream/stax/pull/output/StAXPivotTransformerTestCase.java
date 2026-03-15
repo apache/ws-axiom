@@ -33,18 +33,13 @@ import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 import junit.framework.TestCase;
 
 public class StAXPivotTransformerTestCase extends TestCase {
-    @Inject
-    @Named("xslt")
-    private XSLTImplementation xsltImplementation;
+    @Inject private XSLTImplementation xsltImplementation;
 
-    @Inject
-    @Named("sample")
-    private XMLSample sample;
+    @Inject private XMLSample sample;
 
     @Override
     protected void runTest() throws Throwable {

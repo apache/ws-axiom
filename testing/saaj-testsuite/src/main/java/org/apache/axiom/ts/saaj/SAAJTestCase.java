@@ -25,16 +25,13 @@ import jakarta.xml.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 import junit.framework.TestCase;
 
 public abstract class SAAJTestCase extends TestCase {
     @Inject protected SAAJImplementation saajImplementation;
 
-    @Inject
-    @Named("spec")
-    protected SOAPSpec spec;
+    @Inject protected SOAPSpec spec;
 
     protected final MessageFactory newMessageFactory() throws SOAPException {
         return spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation);

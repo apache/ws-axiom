@@ -32,12 +32,9 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestImportNode extends OMDOMTestCase {
-    @Inject
-    @Named("file")
-    private XMLSample file;
+    @Inject private XMLSample file;
 
     @Override
     protected void runTest() throws Throwable {

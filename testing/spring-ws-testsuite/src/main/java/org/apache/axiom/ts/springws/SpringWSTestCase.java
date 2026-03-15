@@ -26,14 +26,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.mock.env.MockPropertySource;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 import junit.framework.TestCase;
 
 public abstract class SpringWSTestCase extends TestCase {
-    @Inject
-    @Named("soapVersion")
-    protected SOAPSpec spec;
+    @Inject protected SOAPSpec spec;
 
     protected void configureContext(
             GenericApplicationContext context,

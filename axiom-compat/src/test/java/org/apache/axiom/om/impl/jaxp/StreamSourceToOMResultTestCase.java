@@ -42,9 +42,7 @@ public class StreamSourceToOMResultTestCase extends TestCase {
     @Named("axiomImplementation")
     private String axiomImplementation;
 
-    @Inject
-    @Named("file")
-    private XMLSample file;
+    @Inject private XMLSample file;
 
     @Override
     @SuppressWarnings({"deprecation"})

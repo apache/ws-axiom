@@ -29,7 +29,6 @@ import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.name.Names;
 
 public class StAXPivotTransformerTest {
     @TestFactory
@@ -38,20 +37,14 @@ public class StAXPivotTransformerTest {
                         Multiton.getInstances(XSLTImplementation.class).stream()
                                 .filter(XSLTImplementation::supportsStAXSource)
                                 .collect(ImmutableList.toImmutableList()),
-                        (binder, value) ->
-                                binder.bind(XSLTImplementation.class)
-                                        .annotatedWith(Names.named("xslt"))
-                                        .toInstance(value),
+                        (binder, value) -> binder.bind(XSLTImplementation.class).toInstance(value),
                         "xslt",
                         XSLTImplementation::getName,
                         new ParameterFanOutNode<>(
                                 Multiton.getInstances(XMLSample.class).stream()
                                         .filter(s -> !s.hasDTD())
                                         .collect(ImmutableList.toImmutableList()),
-                                (binder, value) ->
-                                        binder.bind(XMLSample.class)
-                                                .annotatedWith(Names.named("sample"))
-                                                .toInstance(value),
+                                (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
                                 "sample",
                                 XMLSample::getName,
                                 new MatrixTest(StAXPivotTransformerTestCase.class)))
