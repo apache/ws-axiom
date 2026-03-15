@@ -116,8 +116,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.body.TestGetFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFaultFakeFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFaultWithParser(metaFactory, spec));
-        for (int i = 0; i < generalQNames.length; i++) {
-            QName qname = generalQNames[i];
+        for (QName qname : generalQNames) {
             addTest(
                     new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameWithParser(
                             metaFactory, spec, qname));
@@ -134,8 +133,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(
                 new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameWithParserNoLookahead(
                         metaFactory, spec));
-        for (int i = 0; i < noFaultQNames.length; i++) {
-            QName qname = noFaultQNames[i];
+        for (QName qname : noFaultQNames) {
             addTest(
                     new org.apache.axiom.ts.soap.body.TestGetFaultNoFault(
                             metaFactory, spec, qname));
@@ -218,8 +216,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(
                 new org.apache.axiom.ts.soap.envelope.TestGetOrCreateHeaderWithParserNoHeader(
                         metaFactory, spec));
-        for (int i = 0; i < generalQNames.length; i++) {
-            QName qname = generalQNames[i];
+        for (QName qname : generalQNames) {
             addTest(
                     new org.apache.axiom.ts.soap.envelope.TestGetSOAPBodyFirstElementLocalNameAndNS(
                             metaFactory, spec, qname));
@@ -392,19 +389,19 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             }
             if (attribute.isBoolean()) {
                 if (attribute.isSupported(spec)) {
-                    for (int j = 0; j < booleanLiterals.length; j++) {
+                    for (BooleanLiteral booleanLiteral : booleanLiterals) {
                         addTest(
                                 new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttribute(
-                                        metaFactory, spec, attribute, booleanLiterals[j]));
+                                        metaFactory, spec, attribute, booleanLiteral));
                     }
                     addTest(
                             new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeDefault(
                                     metaFactory, spec, attribute));
-                    for (int j = 0; j < invalidBooleanLiterals.length; j++) {
+                    for (String invalidBooleanLiteral : invalidBooleanLiterals) {
                         addTest(
                                 new org.apache.axiom.ts.soap.headerblock
                                         .TestGetBooleanAttributeInvalid(
-                                        metaFactory, spec, attribute, invalidBooleanLiterals[j]));
+                                        metaFactory, spec, attribute, invalidBooleanLiteral));
                     }
                     addTest(
                             new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttribute(
@@ -498,10 +495,8 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     protected void addTests() {
         addTests(SOAPSpec.SOAP11);
         addTests(SOAPSpec.SOAP12);
-        for (int i = 0; i < badSOAPFiles.length; i++) {
-            addTest(
-                    new org.apache.axiom.ts.soap.builder.BadInputTest(
-                            metaFactory, badSOAPFiles[i]));
+        for (String badSOAPFile : badSOAPFiles) {
+            addTest(new org.apache.axiom.ts.soap.builder.BadInputTest(metaFactory, badSOAPFile));
         }
         for (SOAPSample msg : goodSOAPFiles) {
             addTest(new org.apache.axiom.ts.soap.builder.MessageTest(metaFactory, msg));
