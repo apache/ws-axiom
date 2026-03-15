@@ -80,7 +80,7 @@ public class SpringWSTestSuite {
                                                 new MatrixTest(
                                                         TestCreateWebServiceMessageFromInputStreamMTOM
                                                                 .class)))),
-                        new DimensionFanOutNode<ScenarioConfig>(
+                        new DimensionFanOutNode<>(
                                 configs.build(),
                                 (binder, value) ->
                                         binder.bind(ScenarioConfig.class).toInstance(value),
