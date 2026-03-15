@@ -36,7 +36,9 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 public class SAAJTestSuite {
     public static InjectorNode create(SAAJMetaFactory metaFactory) {
         return new InjectorNode(
-                binder -> binder.bind(SAAJMetaFactory.class).toInstance(metaFactory),
+                binder ->
+                        binder.bind(SAAJImplementation.class)
+                                .toInstance(new SAAJImplementation(metaFactory)),
                 new ParameterFanOutNode<>(
                         SOAPSpec.class,
                         Multiton.getInstances(SOAPSpec.class),
