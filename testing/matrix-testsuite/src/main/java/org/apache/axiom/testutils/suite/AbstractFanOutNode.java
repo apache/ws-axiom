@@ -28,16 +28,12 @@ import org.junit.jupiter.api.DynamicContainer;
 import org.junit.jupiter.api.DynamicNode;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 
 /**
  * Abstract base class for fan-out nodes that iterate over a list of values, creating one {@link
  * DynamicContainer} per value. For each value, a child Guice injector is created that binds the
- * value type to the specific instance. The binding is created by {@link
- * #createBindingModule(Object)}, which subclasses may override (e.g. {@link ParameterFanOutNode}
- * adds a {@code @Named} annotation).
+ * value type to the specific instance.
  *
  * <p>Subclasses define how test parameters (used for display names and LDAP filter matching) are
  * extracted from each value:
@@ -54,13 +50,14 @@ import com.google.inject.Module;
  * @param <T> the value type
  */
 public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
-    protected final Class<T> type;
     private final ImmutableList<T> values;
+    private final Binding<T> binding;
     private final MatrixTestNode child;
 
-    protected AbstractFanOutNode(Class<T> type, ImmutableList<T> values, MatrixTestNode child) {
-        this.type = type;
+    protected AbstractFanOutNode(
+            ImmutableList<T> values, Binding<T> binding, MatrixTestNode child) {
         this.values = values;
+        this.binding = binding;
         this.child = child;
     }
 
@@ -69,22 +66,6 @@ public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
      * display name and for LDAP filter matching.
      */
     protected abstract Map<String, String> extractParameters(T value);
-
-    /**
-     * Creates the Guice module that binds the value for a given fan-out iteration. Subclasses may
-     * override this to customise the binding (e.g. adding a binding annotation).
-     *
-     * @param value the current iteration value
-     * @return a module that provides the binding for {@code value}
-     */
-    protected Module createBindingModule(T value) {
-        return new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(type).toInstance(value);
-            }
-        };
-    }
 
     @Override
     Stream<DynamicNode> toDynamicNodes(
@@ -95,7 +76,8 @@ public abstract class AbstractFanOutNode<T> extends MatrixTestNode {
                 .map(
                         value -> {
                             Injector childInjector =
-                                    parentInjector.createChildInjector(createBindingModule(value));
+                                    parentInjector.createChildInjector(
+                                            binder -> binding.configure(binder, value));
 
                             Map<String, String> parameters = extractParameters(value);
                             HashMap<String, String> params = new HashMap<>(inheritedParameters);

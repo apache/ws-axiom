@@ -35,7 +35,7 @@ import com.google.common.collect.ImmutableList;
 public class DimensionFanOutNode<D extends Dimension> extends AbstractFanOutNode<D> {
     public DimensionFanOutNode(
             Class<D> dimensionType, ImmutableList<D> dimensions, MatrixTestNode child) {
-        super(dimensionType, dimensions, child);
+        super(dimensions, (binder, value) -> binder.bind(dimensionType).toInstance(value), child);
     }
 
     @Override

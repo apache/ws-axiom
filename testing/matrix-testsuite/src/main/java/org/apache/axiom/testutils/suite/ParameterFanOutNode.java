@@ -22,8 +22,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.AbstractModule;
-import com.google.inject.Module;
 import com.google.inject.name.Names;
 
 /**
@@ -43,19 +41,15 @@ public class ParameterFanOutNode<T> extends AbstractFanOutNode<T> {
             String parameterName,
             Function<T, String> parameterValueFunction,
             MatrixTestNode child) {
-        super(type, values, child);
+        super(
+                values,
+                (binder, value) ->
+                        binder.bind(type)
+                                .annotatedWith(Names.named(parameterName))
+                                .toInstance(value),
+                child);
         this.parameterName = parameterName;
         this.parameterValueFunction = parameterValueFunction;
-    }
-
-    @Override
-    protected Module createBindingModule(T value) {
-        return new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(type).annotatedWith(Names.named(parameterName)).toInstance(value);
-            }
-        };
     }
 
     @Override
