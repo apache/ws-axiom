@@ -27,7 +27,6 @@ import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.AbstractModule;
 
 /**
  * Builds a test suite for Axiom implementations that also implement DOM. Note that this test suite
@@ -37,12 +36,7 @@ import com.google.inject.AbstractModule;
 public class OMDOMTestSuite {
     public static InjectorNode create(DOMMetaFactory metaFactory) {
         return new InjectorNode(
-                new AbstractModule() {
-                    @Override
-                    protected void configure() {
-                        bind(DOMMetaFactory.class).toInstance(metaFactory);
-                    }
-                },
+                binder -> binder.bind(DOMMetaFactory.class).toInstance(metaFactory),
                 new ParentNode(
                         new MatrixTest(
                                 org.apache.axiom.ts.omdom.attr.TestGetNamespaceNormalized.class),

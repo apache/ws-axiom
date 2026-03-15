@@ -27,22 +27,18 @@ import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 
 public class CrossOMTestSuite {
     public static InjectorNode create(OMMetaFactory metaFactory, OMMetaFactory altMetaFactory) {
         return new InjectorNode(
-                new AbstractModule() {
-                    @Override
-                    protected void configure() {
-                        bind(OMMetaFactory.class)
-                                .annotatedWith(Names.named("metaFactory"))
-                                .toInstance(metaFactory);
-                        bind(OMMetaFactory.class)
-                                .annotatedWith(Names.named("altMetaFactory"))
-                                .toInstance(altMetaFactory);
-                    }
+                binder -> {
+                    binder.bind(OMMetaFactory.class)
+                            .annotatedWith(Names.named("metaFactory"))
+                            .toInstance(metaFactory);
+                    binder.bind(OMMetaFactory.class)
+                            .annotatedWith(Names.named("altMetaFactory"))
+                            .toInstance(altMetaFactory);
                 },
                 new ParentNode(
                         new MatrixTest(TestAddChild.class),

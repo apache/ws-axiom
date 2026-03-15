@@ -33,18 +33,10 @@ import org.apache.axiom.ts.saaj.element.TestSetParentElement;
 import org.apache.axiom.ts.saaj.header.TestExamineMustUnderstandHeaderElements;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.AbstractModule;
-
 public class SAAJTestSuite {
     public static InjectorNode create(SAAJMetaFactory metaFactory) {
         return new InjectorNode(
-                new AbstractModule() {
-                    @Override
-                    protected void configure() {
-                        bind(SAAJImplementation.class)
-                                .toInstance(new SAAJImplementation(metaFactory));
-                    }
-                },
+                binder -> binder.bind(SAAJMetaFactory.class).toInstance(metaFactory),
                 new ParameterFanOutNode<>(
                         SOAPSpec.class,
                         Multiton.getInstances(SOAPSpec.class),

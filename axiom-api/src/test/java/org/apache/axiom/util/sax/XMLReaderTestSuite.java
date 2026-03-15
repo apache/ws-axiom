@@ -24,17 +24,11 @@ import org.apache.axiom.testutils.suite.ParameterFanOutNode;
 import org.xml.sax.XMLReader;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.AbstractModule;
 
 public class XMLReaderTestSuite {
     public static InjectorNode create(XMLReader xmlReader) {
         return new InjectorNode(
-                new AbstractModule() {
-                    @Override
-                    protected void configure() {
-                        bind(XMLReader.class).toInstance(xmlReader);
-                    }
-                },
+                binder -> binder.bind(XMLReader.class).toInstance(xmlReader),
                 new ParameterFanOutNode<>(
                         String.class,
                         ImmutableList.of(
