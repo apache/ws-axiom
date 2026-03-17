@@ -24,15 +24,11 @@ import org.apache.axiom.testutils.io.InstrumentedStream;
 import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
+import com.google.inject.Inject;
+
 /** Tests that {@link XMLStreamReader#close()} doesn't close the underlying stream. */
 public class TestClose extends DialectTestCase {
-    private final StreamType streamType;
-
-    public TestClose(StAXImplementationAdapter staxImpl, StreamType streamType) {
-        super(staxImpl);
-        this.streamType = streamType;
-        addTestParameter("type", streamType.getType().getSimpleName());
-    }
+    @Inject private StreamType streamType;
 
     @Override
     protected void runTest() throws Throwable {

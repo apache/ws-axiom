@@ -30,10 +30,6 @@ import javax.xml.stream.XMLStreamReader;
  * {@link TestIsCharacters}.
  */
 public class TestIsCharactersOnCDATASection extends DialectTestCase {
-    public TestIsCharactersOnCDATASection(StAXImplementationAdapter staxImpl) {
-        super(staxImpl);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();

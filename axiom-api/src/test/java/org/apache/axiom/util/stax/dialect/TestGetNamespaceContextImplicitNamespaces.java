@@ -26,10 +26,6 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.testutils.namespace.NamespaceContextTestUtils;
 
 public class TestGetNamespaceContextImplicitNamespaces extends DialectTestCase {
-    public TestGetNamespaceContextImplicitNamespaces(StAXImplementationAdapter staxImpl) {
-        super(staxImpl);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();

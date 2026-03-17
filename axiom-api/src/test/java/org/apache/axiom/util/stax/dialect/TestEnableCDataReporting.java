@@ -24,10 +24,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestEnableCDataReporting extends DialectTestCase {
-    public TestEnableCDataReporting(StAXImplementationAdapter staxImpl) {
-        super(staxImpl);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory =

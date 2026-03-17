@@ -27,10 +27,6 @@ import org.apache.commons.io.output.NullOutputStream;
  * (i.e. behaves as if it implicitly calls {@link XMLStreamWriter#setPrefix(String, String)}).
  */
 public class TestGetPrefixAfterWriteNamespace extends DialectTestCase {
-    public TestGetPrefixAfterWriteNamespace(StAXImplementationAdapter staxImpl) {
-        super(staxImpl);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         XMLStreamWriter writer =

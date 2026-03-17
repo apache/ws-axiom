@@ -23,10 +23,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import javax.xml.stream.XMLOutputFactory;
 
 public class TestCreateXMLStreamWriterWithNullEncoding extends DialectTestCase {
-    public TestCreateXMLStreamWriterWithNullEncoding(StAXImplementationAdapter staxImpl) {
-        super(staxImpl);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         XMLOutputFactory factory = staxImpl.newNormalizedXMLOutputFactory();

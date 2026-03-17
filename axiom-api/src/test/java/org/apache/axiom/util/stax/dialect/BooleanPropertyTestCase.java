@@ -20,14 +20,13 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamReader;
 
-public abstract class BooleanPropertyTestCase extends EventSpecificTestCase {
-    private final boolean expected;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
-    public BooleanPropertyTestCase(
-            StAXImplementationAdapter staxImpl, int event, boolean expected) {
-        super(staxImpl, event);
-        this.expected = expected;
-    }
+public abstract class BooleanPropertyTestCase extends EventSpecificTestCase {
+    @Inject
+    @Named("expected")
+    private boolean expected;
 
     @Override
     protected void runTest(XMLStreamReader reader) throws Throwable {

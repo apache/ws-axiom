@@ -19,12 +19,13 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.ByteArrayInputStream;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * Checks that {@link XMLStreamReader#getEncoding()} returns accurate information for XML documents
@@ -33,16 +34,13 @@ import javax.xml.stream.XMLStreamReader;
  * (Fifth Edition).
  */
 public class TestGetEncodingFromDetection extends DialectTestCase {
-    private final String javaEncoding;
-    private final Set<String> xmlEncodings;
+    @Inject
+    @Named("javaEncoding")
+    private String javaEncoding;
 
-    public TestGetEncodingFromDetection(
-            StAXImplementationAdapter staxImpl, String javaEncoding, String... xmlEncodings) {
-        super(staxImpl);
-        this.javaEncoding = javaEncoding;
-        this.xmlEncodings = new HashSet<String>(Arrays.asList(xmlEncodings));
-        addTestParameter("javaEncoding", javaEncoding);
-    }
+    @Inject
+    @Named("xmlEncodings")
+    private Set<String> xmlEncodings;
 
     @Override
     protected void runTest() throws Throwable {

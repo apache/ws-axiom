@@ -23,7 +23,8 @@ import java.io.InputStream;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.util.xml.stream.XMLEventUtils;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * Base class for test cases that test the behavior of a {@link XMLStreamReader} method for specific
@@ -31,13 +32,9 @@ import org.apache.axiom.util.xml.stream.XMLEventUtils;
  * type.
  */
 public abstract class EventSpecificTestCase extends DialectTestCase {
-    private final int event;
-
-    public EventSpecificTestCase(StAXImplementationAdapter staxImpl, int event) {
-        super(staxImpl);
-        this.event = event;
-        addTestParameter("event", XMLEventUtils.getEventTypeString(event));
-    }
+    @Inject
+    @Named("event")
+    private int event;
 
     @Override
     protected final void runTest() throws Throwable {

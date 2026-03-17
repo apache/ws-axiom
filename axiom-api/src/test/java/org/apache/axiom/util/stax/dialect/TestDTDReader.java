@@ -28,10 +28,6 @@ import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestDTDReader extends DialectTestCase {
-    public TestDTDReader(StAXImplementationAdapter staxImpl) {
-        super(staxImpl);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         InputStream in = XMLSample.DTD_FULL.getInputStream();

@@ -26,10 +26,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class TestDisallowDoctypeDeclWithDenialOfService extends DialectTestCase {
-    public TestDisallowDoctypeDeclWithDenialOfService(StAXImplementationAdapter staxImpl) {
-        super(staxImpl);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();

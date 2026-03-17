@@ -28,10 +28,6 @@ import javax.xml.stream.XMLStreamReader;
  * created from a character stream.
  */
 public class TestGetEncodingWithCharacterStream extends DialectTestCase {
-    public TestGetEncodingWithCharacterStream(StAXImplementationAdapter staxImpl) {
-        super(staxImpl);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();

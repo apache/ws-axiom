@@ -27,10 +27,6 @@ import org.apache.axiom.testutils.concurrent.Action;
 import org.apache.axiom.testutils.concurrent.ConcurrentTestUtils;
 
 public class TestCreateXMLStreamReaderThreadSafety extends DialectTestCase {
-    public TestCreateXMLStreamReaderThreadSafety(StAXImplementationAdapter staxImpl) {
-        super(staxImpl);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         final XMLInputFactory factory =

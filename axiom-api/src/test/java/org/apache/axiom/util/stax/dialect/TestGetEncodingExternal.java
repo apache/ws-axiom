@@ -29,10 +29,6 @@ import javax.xml.stream.XMLStreamReader;
  * XMLInputFactory#createXMLStreamReader(java.io.InputStream, String)}.
  */
 public class TestGetEncodingExternal extends DialectTestCase {
-    public TestGetEncodingExternal(StAXImplementationAdapter staxImpl) {
-        super(staxImpl);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();

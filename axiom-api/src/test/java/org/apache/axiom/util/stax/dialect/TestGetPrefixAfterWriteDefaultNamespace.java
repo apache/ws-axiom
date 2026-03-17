@@ -27,10 +27,6 @@ import org.apache.commons.io.output.NullOutputStream;
  * (i.e. behaves as if it implicitly calls {@link XMLStreamWriter#setDefaultNamespace(String)}).
  */
 public class TestGetPrefixAfterWriteDefaultNamespace extends DialectTestCase {
-    public TestGetPrefixAfterWriteDefaultNamespace(StAXImplementationAdapter staxImpl) {
-        super(staxImpl);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         XMLStreamWriter writer =

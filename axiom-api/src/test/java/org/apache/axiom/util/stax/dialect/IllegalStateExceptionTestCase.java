@@ -23,14 +23,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public abstract class IllegalStateExceptionTestCase extends EventSpecificTestCase {
-    private final boolean expectException;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
-    public IllegalStateExceptionTestCase(
-            StAXImplementationAdapter staxImpl, int event, boolean expectException) {
-        super(staxImpl, event);
-        this.expectException = expectException;
-    }
+public abstract class IllegalStateExceptionTestCase extends EventSpecificTestCase {
+    @Inject
+    @Named("expectException")
+    private boolean expectException;
 
     @Override
     protected final void runTest(XMLStreamReader reader) throws Throwable {
