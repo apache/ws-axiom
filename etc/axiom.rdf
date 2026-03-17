@@ -65,11 +65,10 @@
     <release><Version><name>Apache Axiom</name><created>2019-01-10</created><revision>1.2.22</revision></Version></release>
     <release><Version><name>Apache Axiom</name><created>2025-01-28</created><revision>2.0.0</revision></Version></release>
     <repository>
-      <SVNRepository>
-        <!-- These look wrong -->
-        <location rdf:resource="http://svn.apache.org/repos/asf/webservices/axiom/trunk"/>
-        <browse rdf:resource="http://svn.apache.org/viewvc/webservices/axiom/trunk"/>
-      </SVNRepository>
+      <GitRepository>
+        <location rdf:resource="https://github.com/apache/ws-axiom"/>
+        <browse rdf:resource="https://github.com/apache/ws-axiom"/>
+      </GitRepository>
     </repository>
     <maintainer>
       <foaf:Person>
