@@ -18,14 +18,19 @@
  */
 package org.apache.axiom.blob;
 
-import org.apache.axiom.blob.suite.WritableBlobTestSuiteBuilder;
+import java.util.stream.Stream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.apache.axiom.blob.suite.WritableBlobTestSuite;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-public class MemoryBlobTest extends TestCase {
-    public static TestSuite suite() {
-        return new WritableBlobTestSuiteBuilder(MemoryBlob.FACTORY, new int[] {10000}, true, false)
-                .build();
+import com.google.common.collect.ImmutableList;
+
+public class MemoryBlobTest {
+    @TestFactory
+    public Stream<DynamicNode> tests() {
+        return WritableBlobTestSuite.create(
+                        MemoryBlob.FACTORY, ImmutableList.of(10000), true, false)
+                .toDynamicNodes();
     }
 }

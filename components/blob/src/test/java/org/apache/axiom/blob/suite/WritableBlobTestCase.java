@@ -20,9 +20,10 @@ package org.apache.axiom.blob.suite;
 
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public abstract class WritableBlobTestCase extends MatrixTestCase {
+import junit.framework.TestCase;
+
+public abstract class WritableBlobTestCase extends TestCase {
     private final WritableBlobFactory<?> factory;
     private final State initialState;
 

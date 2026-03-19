@@ -31,8 +31,12 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.commons.io.IOUtils;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestReadFromSupport extends SizeSensitiveWritableBlobTestCase {
-    public TestReadFromSupport(WritableBlobFactory<?> factory, int size) {
+    @Inject
+    public TestReadFromSupport(WritableBlobFactory<?> factory, @Named("size") int size) {
         super(factory, State.NEW, size);
     }
 

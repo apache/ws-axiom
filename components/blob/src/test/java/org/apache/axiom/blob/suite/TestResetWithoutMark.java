@@ -28,7 +28,10 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.io.IOUtils;
 
+import com.google.inject.Inject;
+
 public class TestResetWithoutMark extends WritableBlobTestCase {
+    @Inject
     public TestResetWithoutMark(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }

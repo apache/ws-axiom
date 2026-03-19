@@ -23,10 +23,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 
+import com.google.inject.Inject;
+
 public class TestGetInputStreamIllegalState extends WritableBlobTestCase {
+    @Inject
     public TestGetInputStreamIllegalState(WritableBlobFactory<?> factory, State state) {
         super(factory, state);
-        state.addTestParameters(this);
     }
 
     @Override

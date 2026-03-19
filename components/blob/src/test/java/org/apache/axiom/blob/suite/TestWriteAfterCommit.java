@@ -26,7 +26,10 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.commons.io.input.NullInputStream;
 
+import com.google.inject.Inject;
+
 public class TestWriteAfterCommit extends WritableBlobTestCase {
+    @Inject
     public TestWriteAfterCommit(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }

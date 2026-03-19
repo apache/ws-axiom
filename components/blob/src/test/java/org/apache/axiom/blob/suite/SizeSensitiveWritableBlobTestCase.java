@@ -27,6 +27,5 @@ public abstract class SizeSensitiveWritableBlobTestCase extends WritableBlobTest
             WritableBlobFactory<?> factory, State initialState, int size) {
         super(factory, initialState);
         this.size = size;
-        addTestParameter("size", size);
     }
 }

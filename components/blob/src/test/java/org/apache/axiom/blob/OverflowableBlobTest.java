@@ -18,18 +18,22 @@
  */
 package org.apache.axiom.blob;
 
-import org.apache.axiom.blob.suite.WritableBlobTestSuiteBuilder;
+import java.util.stream.Stream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.apache.axiom.blob.suite.WritableBlobTestSuite;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-public class OverflowableBlobTest extends TestCase {
-    public static TestSuite suite() {
-        return new WritableBlobTestSuiteBuilder(
+import com.google.common.collect.ImmutableList;
+
+public class OverflowableBlobTest {
+    @TestFactory
+    public Stream<DynamicNode> tests() {
+        return WritableBlobTestSuite.create(
                         () -> Blobs.createOverflowableBlob(16 * 1024, "test", ".dat", null),
-                        new int[] {10000, 16 * 1024, 100000},
+                        ImmutableList.of(10000, 16 * 1024, 100000),
                         true,
                         false)
-                .build();
+                .toDynamicNodes();
     }
 }

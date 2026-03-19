@@ -28,8 +28,12 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.testutils.io.InstrumentedOutputStream;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestWriteTo extends SizeSensitiveWritableBlobTestCase {
-    public TestWriteTo(WritableBlobFactory<?> factory, int size) {
+    @Inject
+    public TestWriteTo(WritableBlobFactory<?> factory, @Named("size") int size) {
         super(factory, State.NEW, size);
     }
 

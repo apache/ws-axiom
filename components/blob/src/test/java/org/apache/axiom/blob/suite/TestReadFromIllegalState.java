@@ -24,10 +24,12 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.io.input.NullInputStream;
 
+import com.google.inject.Inject;
+
 public class TestReadFromIllegalState extends WritableBlobTestCase {
+    @Inject
     public TestReadFromIllegalState(WritableBlobFactory<?> factory, State state) {
         super(factory, state);
-        state.addTestParameters(this);
     }
 
     @Override

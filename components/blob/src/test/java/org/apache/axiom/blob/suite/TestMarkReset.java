@@ -28,8 +28,12 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.io.IOUtils;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestMarkReset extends SizeSensitiveWritableBlobTestCase {
-    public TestMarkReset(WritableBlobFactory<?> factory, int size) {
+    @Inject
+    public TestMarkReset(WritableBlobFactory<?> factory, @Named("size") int size) {
         super(factory, State.NEW, size);
     }
 

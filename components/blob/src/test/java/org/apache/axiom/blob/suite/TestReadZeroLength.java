@@ -27,7 +27,10 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 
+import com.google.inject.Inject;
+
 public class TestReadZeroLength extends WritableBlobTestCase {
+    @Inject
     public TestReadZeroLength(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }

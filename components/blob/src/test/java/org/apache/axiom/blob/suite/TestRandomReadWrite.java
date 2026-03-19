@@ -27,8 +27,12 @@ import java.util.Random;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestRandomReadWrite extends SizeSensitiveWritableBlobTestCase {
-    public TestRandomReadWrite(WritableBlobFactory<?> factory, int size) {
+    @Inject
+    public TestRandomReadWrite(WritableBlobFactory<?> factory, @Named("size") int size) {
         super(factory, State.NEW, size);
     }
 

@@ -27,8 +27,12 @@ import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.testutils.io.ExceptionOutputStream;
 import org.apache.commons.io.input.NullInputStream;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestWriteToWithError extends SizeSensitiveWritableBlobTestCase {
-    public TestWriteToWithError(WritableBlobFactory<?> factory, int size) {
+    @Inject
+    public TestWriteToWithError(WritableBlobFactory<?> factory, @Named("size") int size) {
         super(factory, State.NEW, size);
     }
 

@@ -27,7 +27,10 @@ import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.commons.io.input.NullInputStream;
 
+import com.google.inject.Inject;
+
 public class TestReadFromWithError extends WritableBlobTestCase {
+    @Inject
     public TestReadFromWithError(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }

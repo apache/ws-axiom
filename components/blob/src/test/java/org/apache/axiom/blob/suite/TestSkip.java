@@ -27,7 +27,10 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.io.IOUtils;
 
+import com.google.inject.Inject;
+
 public class TestSkip extends WritableBlobTestCase {
+    @Inject
     public TestSkip(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }

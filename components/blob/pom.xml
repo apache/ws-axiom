@@ -41,13 +41,13 @@
             <artifactId>commons-logging</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
