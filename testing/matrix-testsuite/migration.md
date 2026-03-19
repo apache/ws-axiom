@@ -100,16 +100,13 @@ public abstract class SAAJTestCase extends MatrixTestCase {
 ```java
 public abstract class SAAJTestCase extends TestCase {
     @Inject protected SAAJImplementation saajImplementation;
-    @Inject @Named("spec") protected SOAPSpec spec;
+    @Inject protected SOAPSpec spec;
 
     protected final MessageFactory newMessageFactory() throws SOAPException {
         return spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation);
     }
 }
 ```
-
-Note: the `@Named("spec")` annotation is required because `ParameterFanOutNode`
-binds values with `@Named` using the parameter name. Use `com.google.inject.name.Named`.
 
 ### 2. Update each test case class
 
@@ -163,12 +160,12 @@ The old `*TestSuiteBuilder` class extends `MatrixTestSuiteBuilder` and overrides
 3. Adds `MatrixTest` leaf nodes as children of the fan-out nodes at construction
    time.
 
-Use `ParameterFanOutNode` for types that don't implement `Dimension` (supplying a
-parameter name and a function to extract the display value); the value is bound
-with `@Named(parameterName)`, so injection sites must use
-`@Inject @Named("...")`. Use `DimensionFanOutNode` for types that implement
-`Dimension` (plain unannotated binding). Both fan-out node types accept a single
-`MatrixTestNode` child; use `ParentNode` to group multiple children.
+Use `FanOutNode` for each dimension, supplying:
+- an `ImmutableList<T>` of values (e.g. from `Multiton.getInstances()`),
+- a `Binding<T>` lambda that configures the Guice binding for each value,
+- a `ParameterBinding<? super T>` lambda that registers test parameters for
+  display and filtering,
+- a single `MatrixTestNode` child; use `ParentNode` to group multiple children.
 
 **Before:**
 
@@ -200,21 +197,16 @@ public class SAAJTestSuiteBuilder extends MatrixTestSuiteBuilder {
 public class SAAJTestSuite {
     public static InjectorNode create(SAAJMetaFactory metaFactory) {
         return new InjectorNode(
-                new AbstractModule() {
-                    @Override
-                    protected void configure() {
-                        bind(SAAJImplementation.class)
-                                .toInstance(new SAAJImplementation(metaFactory));
-                    }
-                },
-                new ParameterFanOutNode<>(
-                        SOAPSpec.class,
+                binder ->
+                        binder.bind(SAAJImplementation.class)
+                                .toInstance(new SAAJImplementation(metaFactory)),
+                new FanOutNode<>(
                         Multiton.getInstances(SOAPSpec.class),
-                        "spec",
-                        SOAPSpec::getName,
+                        (binder, value) -> binder.bind(SOAPSpec.class).toInstance(value),
+                        (params, value) -> params.addTestParameter("spec", value.getName()),
                         new ParentNode(
                                 new MatrixTest(TestAddChildElementReification.class),
-                                new MatrixTest(TestGetOwnerDocument.class)))));
+                                new MatrixTest(TestGetOwnerDocument.class))));
     }
 }
 ```
@@ -371,8 +363,8 @@ public class StAXPivotTransformerTest extends MatrixTestCase {
 
 ```java
 public class StAXPivotTransformerTestCase extends TestCase {
-    @Inject @Named("xslt") private XSLTImplementation xsltImplementation;
-    @Inject @Named("sample") private XMLSample sample;
+    @Inject private XSLTImplementation xsltImplementation;
+    @Inject private XMLSample sample;
 
     @Override
     protected void runTest() throws Throwable {
@@ -387,17 +379,16 @@ public class StAXPivotTransformerTestCase extends TestCase {
 public class StAXPivotTransformerTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
-        return new ParameterFanOutNode<>(
-                XSLTImplementation.class,
-                Multiton.getInstances(XSLTImplementation.class),
-                "xslt",
-                XSLTImplementation::getName,
-                new ParameterFanOutNode<>(
-                        XMLSample.class,
-                        Multiton.getInstances(XMLSample.class),
-                        "sample",
-                        XMLSample::getName,
-                        new MatrixTest(StAXPivotTransformerTestCase.class)))
+        return new FanOutNode<>(
+                        Multiton.getInstances(XSLTImplementation.class),
+                        (binder, value) -> binder.bind(XSLTImplementation.class).toInstance(value),
+                        (params, value) -> params.addTestParameter("xslt", value.getName()),
+                        new FanOutNode<>(
+                                Multiton.getInstances(XMLSample.class),
+                                (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
+                                (params, value) ->
+                                        params.addTestParameter("sample", value.getName()),
+                                new MatrixTest(StAXPivotTransformerTestCase.class)))
                 .toDynamicNodes();
     }
 }
@@ -405,8 +396,9 @@ public class StAXPivotTransformerTest {
 
 Note that filtering logic (e.g. skipping values based on a condition like
 `xsltImplementation.supportsStAXSource()`) that was previously expressed as
-`if` guards in the `addTests()` loop should be handled differently — for
-example by filtering the list of instances passed to the fan-out node.
+`if` guards in the `addTests()` loop should be handled by filtering the
+`ImmutableList` of values passed to the `FanOutNode` (e.g.
+`.stream().filter(...).collect(ImmutableList.toImmutableList())`).
 
 ## Checklist
 

@@ -77,30 +77,28 @@ abstract Stream<DynamicNode> toDynamicNodes(
         BiPredicate<Class<?>, Map<String, String>> excludes);
 ```
 
-### `AbstractFanOutNode<T>`
+### `FanOutNode<T>`
 
-Abstract fan-out node that iterates over a list of values of type `T`. For each
+Fan-out node that iterates over an `ImmutableList<T>` of values. For each
 value, it:
 
-1. Creates a child Guice injector binding `T` to the value.
-2. Extracts test parameters (via the abstract `extractParameters` method).
+1. Creates a child Guice injector using the supplied `Binding<T>` lambda.
+2. Registers test parameters via the supplied `ParameterBinding<? super T>`
+   lambda.
 3. Produces a `DynamicContainer` containing the results of recursing into its
    single child node.
 
-Extends `MatrixTestNode` directly and holds exactly one child node. When
-multiple children are needed, wrap them in a `ParentNode`.
+Holds exactly one child node. When multiple children are needed, wrap them in a
+`ParentNode`.
 
-Subclasses:
-
-- **`DimensionFanOutNode<D extends Dimension>`** — for types that implement the
-  `Dimension` interface. Parameters are extracted via
-  `Dimension.addTestParameters()`. The value is bound as a plain (unannotated)
-  type binding.
-
-- **`ParameterFanOutNode<T>`** — for arbitrary types. The caller supplies a
-  parameter name and a `Function<T, String>` to extract the parameter value.
-  The value is bound with a `@Named` annotation whose value is the parameter
-  name; injection sites must use `@Inject @Named("paramName")`.
+The `Binding<T>` lambda receives a `Binder` and the current value, and
+configures the Guice binding (e.g.
+`(binder, value) -> binder.bind(MyType.class).toInstance(value)`). The
+`ParameterBinding<? super T>` lambda registers test parameters for display and
+filtering (e.g.
+`(params, value) -> params.addTestParameter("name", value.getName())`).
+For types implementing `Dimension`, use the predefined
+`ParameterBinding.DIMENSION` constant.
 
 ### `MatrixTest`
 
@@ -142,14 +140,10 @@ override `runTest()`. Dependencies are declared with `@Inject` — either on fie
 or via constructor. The test case does **not** receive parameters through its
 constructor and does **not** call `addTestParameter()`.
 
-For values bound by `DimensionFanOutNode`, use a plain `@Inject`. For values
-bound by `ParameterFanOutNode`, add `@Named("paramName")` matching the
-parameter name passed to the fan-out node.
-
 ```java
 public abstract class MyTestCase extends TestCase {
     @Inject protected SomeImplementation impl;
-    @Inject @Named("dimension") protected SomeDimension dimension;
+    @Inject protected SomeDimension dimension;
 
     // convenience methods using impl and dimension ...
 }
@@ -175,21 +169,17 @@ public class MyTestSuite {
     public static InjectorNode create(SomeFactory factory) {
         SomeImplementation impl = new SomeImplementation(factory);
 
-        ParameterFanOutNode<SomeDimension> dimensions = new ParameterFanOutNode<>(
-                SomeDimension.class,
+        FanOutNode<SomeDimension> dimensions = new FanOutNode<>(
                 Multiton.getInstances(SomeDimension.class),
-                "dimension",
-                SomeDimension::getName,
+                (binder, value) -> binder.bind(SomeDimension.class).toInstance(value),
+                (params, value) -> params.addTestParameter("dimension", value.getName()),
                 new ParentNode(
                         new MatrixTest(TestSomeBehavior.class),
                         new MatrixTest(TestOtherBehavior.class)));
 
-        InjectorNode suite = new InjectorNode(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(SomeImplementation.class).toInstance(impl);
-            }
-        }, dimensions);
+        InjectorNode suite = new InjectorNode(
+                binder -> binder.bind(SomeImplementation.class).toInstance(impl),
+                dimensions);
 
         return suite;
     }
