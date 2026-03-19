@@ -47,7 +47,6 @@ public abstract class SOAPTestCase extends AxiomTestCase {
 
     protected SOAPHeaderBlock createSOAPHeaderBlock() {
         OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
-        ;
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
         SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
         return soapFactory.createSOAPHeaderBlock("testHeaderBlock", namespace, soapHeader);

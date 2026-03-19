@@ -46,7 +46,6 @@ public class TestDTD extends SOAPTestCase {
     protected void runTest() throws Throwable {
         String message = "<!DOCTYPE test []>" + soapFactory.getDefaultEnvelope();
         XMLStreamReader parser = StAXUtils.createXMLStreamReader(new StringReader(message));
-        ;
         assertThatThrownBy(
                         () -> {
                             SOAPModelBuilder builder =
