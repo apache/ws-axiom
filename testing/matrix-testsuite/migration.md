@@ -400,6 +400,39 @@ Note that filtering logic (e.g. skipping values based on a condition like
 `ImmutableList` of values passed to the `FanOutNode` (e.g.
 `.stream().filter(...).collect(ImmutableList.toImmutableList())`).
 
+## Tips and lessons learned
+
+### Injecting primitive types
+
+Guice can inject primitive types such as `boolean` directly — there is no need
+to use the boxed wrapper type. On the binding side, use the boxed type
+(`Boolean.class`) since `boolean.class` is not a valid Guice key:
+
+```java
+binder.bind(Boolean.class)
+        .annotatedWith(Names.named("deep"))
+        .toInstance(value);
+```
+
+On the injection side, a primitive field works fine:
+
+```java
+@Inject @Named("deep") private boolean deep;
+```
+
+### Use `@Named` to disambiguate primitive bindings
+
+When a test case (or its fan-out tree) involves more than one dimension of the
+same primitive type, Guice cannot distinguish the bindings by type alone. Use
+`@Named` (from `com.google.inject.name.Named`) on both the `@Inject` field and
+the corresponding `FanOutNode` binding (via `Names.named(...)`) to disambiguate.
+This also applies when a single primitive dimension exists — the annotation
+makes the binding self-documenting and avoids conflicts if another dimension of
+the same type is added later.
+
+See the `dom-testsuite` module for an example with two boolean dimensions
+(`"deep"` and `"newChildHasSiblings"`).
+
 ## Checklist
 
 ### Reusable API test suites
