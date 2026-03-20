@@ -78,15 +78,11 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.dom.document.TestCloneNode(dbf, file));
         }
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttribute(dbf));
-        for (int i = 0; i < validAttrQNames.length; i++) {
-            addTest(
-                    new org.apache.axiom.ts.dom.document.TestCreateAttributeNS(
-                            dbf, validAttrQNames[i]));
+        for (QName qname : validAttrQNames) {
+            addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNS(dbf, qname));
         }
-        for (int i = 0; i < invalidAttrQNames.length; i++) {
-            addTest(
-                    new org.apache.axiom.ts.dom.document.TestCreateAttributeNSInvalid(
-                            dbf, invalidAttrQNames[i]));
+        for (QName qname : invalidAttrQNames) {
+            addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSInvalid(dbf, qname));
         }
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateCDATASection(dbf));
@@ -198,19 +194,15 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSReplace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeWrongDocument(dbf));
-        for (int i = 0; i < validAttrQNames.length; i++) {
-            addTest(
-                    new org.apache.axiom.ts.dom.element.TestSetAttributeNS(
-                            dbf, validAttrQNames[i], "value"));
+        for (QName qname : validAttrQNames) {
+            addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, qname, "value"));
         }
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNSExisting(dbf));
         addTest(
                 new org.apache.axiom.ts.dom.element
                         .TestSetAttributeNSExistingDefaultNamespaceDeclaration(dbf));
-        for (int i = 0; i < invalidAttrQNames.length; i++) {
-            addTest(
-                    new org.apache.axiom.ts.dom.element.TestSetAttributeNSInvalid(
-                            dbf, invalidAttrQNames[i]));
+        for (QName qname : invalidAttrQNames) {
+            addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNSInvalid(dbf, qname));
         }
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithoutNamespace(dbf));
