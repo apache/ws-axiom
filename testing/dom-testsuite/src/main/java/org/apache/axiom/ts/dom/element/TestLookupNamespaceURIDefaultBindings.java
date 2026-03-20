@@ -21,7 +21,6 @@ package org.apache.axiom.ts.dom.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
@@ -33,10 +32,6 @@ import org.w3c.dom.Node;
  * bindings for the {@code xml} and {@code xmlns} prefixes.
  */
 public class TestLookupNamespaceURIDefaultBindings extends DOMTestCase {
-    public TestLookupNamespaceURIDefaultBindings(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

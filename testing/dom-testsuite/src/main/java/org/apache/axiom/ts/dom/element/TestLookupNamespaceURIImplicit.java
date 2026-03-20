@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,11 +29,6 @@ import org.w3c.dom.Node;
  * for namespaces not defined explicitly by attributes representing namespace declarations.
  */
 public class TestLookupNamespaceURIImplicit extends DOMTestCase {
-
-    public TestLookupNamespaceURIImplicit(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
 

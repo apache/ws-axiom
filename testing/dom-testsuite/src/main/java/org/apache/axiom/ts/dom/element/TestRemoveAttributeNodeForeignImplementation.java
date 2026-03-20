@@ -22,8 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -31,10 +29,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class TestRemoveAttributeNodeForeignImplementation extends DOMTestCase {
-    public TestRemoveAttributeNodeForeignImplementation(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

@@ -20,18 +20,12 @@ package org.apache.axiom.ts.dom.element;
 
 import java.io.StringReader;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 public class TestAttributes4 extends DOMTestCase {
-    public TestAttributes4(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document doc =

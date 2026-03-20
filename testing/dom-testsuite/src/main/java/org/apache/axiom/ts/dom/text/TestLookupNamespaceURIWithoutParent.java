@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.dom.text;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -30,10 +28,6 @@ import org.w3c.dom.Text;
  * parent.
  */
 public class TestLookupNamespaceURIWithoutParent extends DOMTestCase {
-    public TestLookupNamespaceURIWithoutParent(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

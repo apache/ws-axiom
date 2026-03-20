@@ -20,7 +20,6 @@
 package org.apache.axiom.ts.dom.document;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -30,10 +29,6 @@ import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.xerces.jaxp.validation.XMLSchemaFactory;
 
 public class TestValidator extends DOMTestCase {
-    public TestValidator(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         SchemaFactory factory = new XMLSchemaFactory();

@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -27,10 +25,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 public class TestCloneNodeWithAttributeHavingMultipleChildren extends DOMTestCase {
-    public TestCloneNodeWithAttributeHavingMultipleChildren(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

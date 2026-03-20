@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -30,10 +28,6 @@ import org.w3c.dom.Element;
  * already has an attribute with the same namespace URI and local name.
  */
 public class TestSetAttributeNSExisting extends DOMTestCase {
-    public TestSetAttributeNSExisting(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

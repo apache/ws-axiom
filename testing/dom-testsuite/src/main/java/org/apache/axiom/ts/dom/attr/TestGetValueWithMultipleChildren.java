@@ -20,17 +20,11 @@ package org.apache.axiom.ts.dom.attr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
 public class TestGetValueWithMultipleChildren extends DOMTestCase {
-    public TestGetValueWithMultipleChildren(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

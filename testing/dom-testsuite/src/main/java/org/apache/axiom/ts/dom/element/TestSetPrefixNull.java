@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,10 +28,6 @@ import org.w3c.dom.Node;
  * prefix is null.
  */
 public class TestSetPrefixNull extends DOMTestCase {
-    public TestSetPrefixNull(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

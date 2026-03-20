@@ -18,18 +18,12 @@
  */
 package org.apache.axiom.ts.dom.text;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 public class TestAppendData extends DOMTestCase {
-    public TestAppendData(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Exception {
         Document document = dbf.newDocumentBuilder().newDocument();

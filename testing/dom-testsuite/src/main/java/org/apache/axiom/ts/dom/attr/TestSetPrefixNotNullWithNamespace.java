@@ -20,8 +20,6 @@ package org.apache.axiom.ts.dom.attr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -32,10 +30,6 @@ import org.w3c.dom.Node;
  * is not null (and not an empty string) and the attribute has a namespace.
  */
 public class TestSetPrefixNotNullWithNamespace extends DOMTestCase {
-    public TestSetPrefixNotNullWithNamespace(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

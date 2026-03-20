@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,10 +28,6 @@ import org.w3c.dom.NodeList;
  * child being replaced is the first child (which uses a different code path in DOOM).
  */
 public class TestReplaceChildFirst extends ReplaceChildTestCase {
-    public TestReplaceChildFirst(DocumentBuilderFactory dbf, boolean newChildHasSiblings) {
-        super(dbf, newChildHasSiblings);
-    }
-
     @Override
     protected void runTest(Document doc, Node newChild) {
         Element parent = doc.createElementNS(null, "parent");

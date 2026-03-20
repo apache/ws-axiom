@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
@@ -31,10 +30,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class TestSetAttributeNodeWrongDocument extends DOMTestCase {
-    public TestSetAttributeNodeWrongDocument(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder db = dbf.newDocumentBuilder();

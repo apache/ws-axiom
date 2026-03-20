@@ -21,20 +21,14 @@ package org.apache.axiom.ts.dom.document;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
+
+import com.google.inject.Inject;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 
 public class TestCloneNode extends DOMTestCase {
-    private final XMLSample file;
-
-    public TestCloneNode(DocumentBuilderFactory dbf, XMLSample file) {
-        super(dbf);
-        this.file = file;
-        addTestParameter("file", file.getName());
-    }
+    @Inject private XMLSample file;
 
     @Override
     protected void runTest() throws Throwable {

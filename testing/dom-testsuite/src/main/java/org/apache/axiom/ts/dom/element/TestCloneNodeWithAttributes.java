@@ -18,23 +18,20 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /** Tests that {@link Node#cloneNode(boolean)} correctly clones the attributes of an element. */
 public class TestCloneNodeWithAttributes extends DOMTestCase {
-    private final boolean deep;
-
-    public TestCloneNodeWithAttributes(DocumentBuilderFactory dbf, boolean deep) {
-        super(dbf);
-        this.deep = deep;
-        addTestParameter("deep", deep);
-    }
+    @Inject
+    @Named("deep")
+    private boolean deep;
 
     @Override
     protected void runTest() throws Throwable {

@@ -21,7 +21,6 @@ package org.apache.axiom.ts.dom.document;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
@@ -34,10 +33,6 @@ import org.w3c.dom.Text;
  * document. In this case, the method is still expected to detach the node from its parent.
  */
 public class TestAdoptNodeToSameDocument extends DOMTestCase {
-    public TestAdoptNodeToSameDocument(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();

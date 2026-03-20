@@ -20,17 +20,11 @@ package org.apache.axiom.ts.dom.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class TestCreateElementWithSupplementaryCharacter extends DOMTestCase {
-    public TestCreateElementWithSupplementaryCharacter(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         String tagName = new String(new int[] {0x10000}, 0, 1);

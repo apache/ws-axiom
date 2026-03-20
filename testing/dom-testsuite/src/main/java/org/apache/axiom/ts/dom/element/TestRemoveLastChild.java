@@ -21,7 +21,6 @@ package org.apache.axiom.ts.dom.element;
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Element;
@@ -29,10 +28,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 public class TestRemoveLastChild extends DOMTestCase {
-    public TestRemoveLastChild(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();

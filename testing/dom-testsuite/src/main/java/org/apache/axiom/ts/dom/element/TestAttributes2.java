@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.StringReader;
 
 import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
@@ -33,10 +32,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.InputSource;
 
 public class TestAttributes2 extends DOMTestCase {
-    public TestAttributes2(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document doc =

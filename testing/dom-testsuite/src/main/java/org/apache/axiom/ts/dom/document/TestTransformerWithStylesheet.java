@@ -22,20 +22,13 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
-import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.w3c.dom.Document;
 
 public class TestTransformerWithStylesheet extends TransformerTestCase {
-    public TestTransformerWithStylesheet(
-            DocumentBuilderFactory dbf, XSLTImplementation xsltImplementation) {
-        super(dbf, xsltImplementation);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();

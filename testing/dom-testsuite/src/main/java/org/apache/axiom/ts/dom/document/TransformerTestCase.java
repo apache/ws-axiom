@@ -18,17 +18,11 @@
  */
 package org.apache.axiom.ts.dom.document;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 
-public abstract class TransformerTestCase extends DOMTestCase {
-    protected final XSLTImplementation xsltImplementation;
+import com.google.inject.Inject;
 
-    public TransformerTestCase(DocumentBuilderFactory dbf, XSLTImplementation xsltImplementation) {
-        super(dbf);
-        this.xsltImplementation = xsltImplementation;
-        addTestParameter("xslt", xsltImplementation.getName());
-    }
+public abstract class TransformerTestCase extends DOMTestCase {
+    @Inject protected XSLTImplementation xsltImplementation;
 }

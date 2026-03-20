@@ -22,23 +22,16 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
-import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 // This test failed with Saxon 8.9 because NodeImpl#compareDocumentPosition
 // threw an UnsupportedOperationException instead of a DOMException.
 public class TestTransformerWithIdentityStylesheet extends TransformerTestCase {
-    public TestTransformerWithIdentityStylesheet(
-            DocumentBuilderFactory dbf, XSLTImplementation xsltImplementation) {
-        super(dbf, xsltImplementation);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();

@@ -21,7 +21,6 @@ package org.apache.axiom.ts.dom.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.net.protocol.registry.InstrumentedDataProvider;
 import org.apache.axiom.net.protocol.registry.URLRegistration;
@@ -32,10 +31,6 @@ import org.w3c.dom.Document;
 
 /** Tests {@link DocumentBuilder#parse(String)}. */
 public class TestParseURI extends DOMTestCase {
-    public TestParseURI(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         InstrumentedDataProvider dataProvider =

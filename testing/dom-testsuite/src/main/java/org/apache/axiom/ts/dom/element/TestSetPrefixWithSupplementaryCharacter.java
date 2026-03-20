@@ -20,17 +20,11 @@ package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class TestSetPrefixWithSupplementaryCharacter extends DOMTestCase {
-    public TestSetPrefixWithSupplementaryCharacter(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         String prefix = new String(new int[] {0x10000}, 0, 1);

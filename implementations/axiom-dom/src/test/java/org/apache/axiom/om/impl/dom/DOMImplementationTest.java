@@ -18,14 +18,15 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.stream.Stream;
 
-import org.apache.axiom.ts.dom.DOMTestSuiteBuilder;
+import org.apache.axiom.ts.dom.DOMTestSuite;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-public class DOMImplementationTest extends TestCase {
-    public static TestSuite suite() {
-        DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(DOMTests.FACTORY);
-        return builder.build();
+public class DOMImplementationTest {
+    @TestFactory
+    public Stream<DynamicNode> tests() {
+        return DOMTestSuite.create(DOMTests.FACTORY).toDynamicNodes();
     }
 }

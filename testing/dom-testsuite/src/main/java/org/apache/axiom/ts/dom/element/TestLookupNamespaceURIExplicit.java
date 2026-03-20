@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.dom.element;
 
 import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
@@ -31,10 +30,6 @@ import org.w3c.dom.Node;
  * namespaces defined explicitly by attributes representing namespace declarations.
  */
 public class TestLookupNamespaceURIExplicit extends DOMTestCase {
-    public TestLookupNamespaceURIExplicit(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

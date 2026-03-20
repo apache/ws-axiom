@@ -21,7 +21,6 @@ package org.apache.axiom.ts.dom.document;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
@@ -31,10 +30,6 @@ import org.w3c.dom.Text;
 
 /** Tests the behavior of {@link Document#adoptNode(Node)}. */
 public class TestAdoptNode extends DOMTestCase {
-    public TestAdoptNode(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();

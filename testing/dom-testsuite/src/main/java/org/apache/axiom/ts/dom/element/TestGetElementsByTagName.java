@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,10 +25,6 @@ import org.w3c.dom.NodeList;
 
 /** Testing the NodeList returned with the elements's children */
 public class TestGetElementsByTagName extends DOMTestCase {
-    public TestGetElementsByTagName(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         String childElementLN = "Child";

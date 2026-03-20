@@ -20,8 +20,6 @@ package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,10 +29,6 @@ import org.w3c.dom.Element;
  * href="https://issues.apache.org/jira/browse/XERCESJ-1586">XERCESJ-1586</a>.
  */
 public class TestLookupNamespaceURIXercesJ1586 extends DOMTestCase {
-    public TestLookupNamespaceURIXercesJ1586(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

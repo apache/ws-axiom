@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.dom.text;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
@@ -27,10 +25,6 @@ import org.w3c.dom.Text;
 
 /** Tests that {@link CharacterData#getLength()} returns the expected result. */
 public class TestGetLength extends DOMTestCase {
-    public TestGetLength(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

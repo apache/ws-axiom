@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,10 +28,6 @@ import org.w3c.dom.Node;
  * masked by a child element (of the element that has the matching prefix).
  */
 public class TestLookupPrefixImplicitMasked extends DOMTestCase {
-    public TestLookupPrefixImplicitMasked(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

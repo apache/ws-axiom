@@ -20,8 +20,6 @@ package org.apache.axiom.ts.dom.documentfragment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
@@ -29,10 +27,6 @@ import org.w3c.dom.Node;
 
 /** Tests {@link Node#cloneNode(boolean)} with <code>deep</code> set to <code>true</code>. */
 public class TestCloneNodeDeep extends DOMTestCase {
-    public TestCloneNodeDeep(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

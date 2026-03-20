@@ -21,8 +21,6 @@ package org.apache.axiom.ts.dom.attr;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -34,10 +32,6 @@ import org.w3c.dom.Node;
  * prefix on an {@link Attr} that has no namespace.
  */
 public class TestSetPrefixNotNullWithoutNamespace extends DOMTestCase {
-    public TestSetPrefixNotNullWithoutNamespace(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

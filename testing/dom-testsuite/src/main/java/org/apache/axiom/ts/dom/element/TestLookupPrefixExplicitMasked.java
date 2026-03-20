@@ -20,8 +20,6 @@ package org.apache.axiom.ts.dom.element;
 
 import java.io.StringReader;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -33,10 +31,6 @@ import org.xml.sax.InputSource;
  * redeclared.
  */
 public class TestLookupPrefixExplicitMasked extends DOMTestCase {
-    public TestLookupPrefixExplicitMasked(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document =

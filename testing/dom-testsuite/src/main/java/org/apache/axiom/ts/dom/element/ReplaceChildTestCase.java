@@ -18,21 +18,18 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public abstract class ReplaceChildTestCase extends DOMTestCase {
-    private final boolean newChildHasSiblings;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
-    public ReplaceChildTestCase(DocumentBuilderFactory dbf, boolean newChildHasSiblings) {
-        super(dbf);
-        this.newChildHasSiblings = newChildHasSiblings;
-        addTestParameter("newChildHasSiblings", newChildHasSiblings);
-    }
+public abstract class ReplaceChildTestCase extends DOMTestCase {
+    @Inject
+    @Named("newChildHasSiblings")
+    private boolean newChildHasSiblings;
 
     @Override
     protected final void runTest() throws Throwable {

@@ -21,22 +21,16 @@ package org.apache.axiom.ts.dom.document;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
+
+import com.google.inject.Inject;
 import org.apache.axiom.ts.dom.DOMUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
 public class TestCreateAttributeNS extends DOMTestCase {
-    private final QName qname;
-
-    public TestCreateAttributeNS(DocumentBuilderFactory dbf, QName qname) {
-        super(dbf);
-        this.qname = qname;
-        addTestParameter("ns", qname.getNamespaceURI());
-        addTestParameter("name", DOMUtils.getQualifiedName(qname));
-    }
+    @Inject private QName qname;
 
     @Override
     protected void runTest() throws Throwable {

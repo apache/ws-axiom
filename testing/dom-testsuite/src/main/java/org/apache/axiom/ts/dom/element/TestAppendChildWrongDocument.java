@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.DOMException;
@@ -36,10 +35,6 @@ import org.w3c.dom.Text;
  * to append a child that has a different owner document.
  */
 public class TestAppendChildWrongDocument extends DOMTestCase {
-    public TestAppendChildWrongDocument(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         DocumentBuilder documentBuilder = dbf.newDocumentBuilder();

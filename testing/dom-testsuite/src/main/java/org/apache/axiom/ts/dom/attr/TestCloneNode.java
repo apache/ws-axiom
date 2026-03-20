@@ -20,21 +20,18 @@ package org.apache.axiom.ts.dom.attr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-public class TestCloneNode extends DOMTestCase {
-    private final boolean deep;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
-    public TestCloneNode(DocumentBuilderFactory dbf, boolean deep) {
-        super(dbf);
-        this.deep = deep;
-        addTestParameter("deep", deep);
-    }
+public class TestCloneNode extends DOMTestCase {
+    @Inject
+    @Named("deep")
+    private boolean deep;
 
     @Override
     protected void runTest() throws Throwable {

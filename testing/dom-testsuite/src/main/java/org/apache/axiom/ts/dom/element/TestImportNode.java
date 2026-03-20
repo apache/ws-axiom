@@ -21,9 +21,9 @@ package org.apache.axiom.ts.dom.element;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
+
+import com.google.inject.Inject;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
@@ -31,16 +31,8 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 public class TestImportNode extends DOMTestCase {
-    private final XMLSample file;
-    private final DOMImplementation from;
-
-    public TestImportNode(DocumentBuilderFactory dbf, XMLSample file, DOMImplementation from) {
-        super(dbf);
-        this.file = file;
-        addTestParameter("file", file.getName());
-        this.from = from;
-        addTestParameter("from", from.getName());
-    }
+    @Inject private XMLSample file;
+    @Inject private DOMImplementation from;
 
     @Override
     protected void runTest() throws Throwable {

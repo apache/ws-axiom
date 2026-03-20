@@ -20,17 +20,11 @@ package org.apache.axiom.ts.dom.documenttype;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 
 public class TestWithParser2 extends DOMTestCase {
-    public TestWithParser2(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document document =

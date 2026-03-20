@@ -20,12 +20,10 @@ package org.apache.axiom.ts.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import com.google.inject.Inject;
 
-public abstract class DOMTestCase extends MatrixTestCase {
-    protected final DocumentBuilderFactory dbf;
+import junit.framework.TestCase;
 
-    public DOMTestCase(DocumentBuilderFactory dbf) {
-        this.dbf = dbf;
-    }
+public abstract class DOMTestCase extends TestCase {
+    @Inject protected DocumentBuilderFactory dbf;
 }

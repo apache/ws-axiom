@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,10 +28,6 @@ import org.w3c.dom.NodeList;
  * child being replaced is neither the first nor the last child.
  */
 public class TestReplaceChildMiddle extends ReplaceChildTestCase {
-    public TestReplaceChildMiddle(DocumentBuilderFactory dbf, boolean newChildHasSiblings) {
-        super(dbf, newChildHasSiblings);
-    }
-
     @Override
     protected void runTest(Document doc, Node newChild) {
         Element parent = doc.createElementNS(null, "parent");

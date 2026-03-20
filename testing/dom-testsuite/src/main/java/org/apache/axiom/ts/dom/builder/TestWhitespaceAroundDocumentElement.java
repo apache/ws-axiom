@@ -22,8 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringReader;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -36,10 +34,6 @@ import org.xml.sax.InputSource;
  * doesn't allow text nodes as children of a document.
  */
 public class TestWhitespaceAroundDocumentElement extends DOMTestCase {
-    public TestWhitespaceAroundDocumentElement(DocumentBuilderFactory dbf) {
-        super(dbf);
-    }
-
     @Override
     protected void runTest() throws Throwable {
         Document doc =
