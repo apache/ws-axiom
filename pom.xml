@@ -295,7 +295,7 @@
         <errorprone.version>2.48.0</errorprone.version>
         <mime4j.version>0.8.13</mime4j.version>
         <surefire.version>3.5.5</surefire.version>
-        <jaxws-rt.version>4.0.3</jaxws-rt.version>
+        <jaxws-rt.version>4.0.4</jaxws-rt.version>
 
         <skipDeploy>false</skipDeploy>
 
