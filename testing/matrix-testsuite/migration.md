@@ -433,6 +433,64 @@ the same type is added later.
 See the `dom-testsuite` module for an example with two boolean dimensions
 (`"deep"` and `"newChildHasSiblings"`).
 
+### Constructor injection as an alternative to field injection
+
+The examples above use `@Inject` on fields, but in some cases it is necessary
+or more convenient to use **constructor injection** instead. This is the case
+when the base test case class stores dependencies in `final` fields set by
+the constructor. Converting those fields to non-final `@Inject` fields would
+require changing how the class and its subclasses are structured, which may
+not be desirable.
+
+With constructor injection, the existing constructor chain is preserved: subclass
+constructors receive dependencies as parameters and pass them up via `super(…)`.
+To make this work with Guice, simply add `@Inject` to the subclass constructor
+(there is no need to annotate the base class constructor). Guice will then inject
+the parameters when creating the test instance.
+
+**Base test case class** (no `@Inject` needed here — constructor stays as-is):
+
+```java
+public abstract class WritableBlobTestCase extends TestCase {
+    private final WritableBlobFactory<?> factory;
+    private final State initialState;
+
+    public WritableBlobTestCase(WritableBlobFactory<?> factory, State initialState) {
+        this.factory = factory;
+        this.initialState = initialState;
+    }
+    // ...
+}
+```
+
+**Simple subclass** — add `@Inject` to the constructor:
+
+```java
+public class TestAvailable extends WritableBlobTestCase {
+    @Inject
+    public TestAvailable(WritableBlobFactory<?> factory) {
+        super(factory, State.NEW);
+    }
+    // ...
+}
+```
+
+**Subclass with `@Named` parameter** — use `@Named` on the constructor
+parameter just as you would on a field:
+
+```java
+public class TestMarkReset extends SizeSensitiveWritableBlobTestCase {
+    @Inject
+    public TestMarkReset(WritableBlobFactory<?> factory, @Named("size") int size) {
+        super(factory, State.NEW, size);
+    }
+    // ...
+}
+```
+
+See the `blob` module (`WritableBlobTestCase` hierarchy) for a complete
+example.
+
 ## Checklist
 
 ### Reusable API test suites
