@@ -26,7 +26,10 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.w3c.dom.Document;
 
+import com.google.inject.Inject;
+
 public class TestLazySOAPFactorySelection extends SOAPTestCase {
+    @Inject
     public TestLazySOAPFactorySelection(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

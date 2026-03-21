@@ -33,12 +33,15 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that child elements of a {@link SOAPHeader} created using the DOM API are converted on the
  * fly and returned as {@link SOAPHeaderBlock} instances by {@link
  * SOAPHeader#examineAllHeaderBlocks()}.
  */
 public class TestExamineAllHeaderBlocks extends SOAPTestCase {
+    @Inject
     public TestExamineAllHeaderBlocks(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

@@ -33,7 +33,10 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.google.inject.Inject;
+
 public class TestExamineMustUnderstandHeaderBlocks extends SOAPTestCase {
+    @Inject
     public TestExamineMustUnderstandHeaderBlocks(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
