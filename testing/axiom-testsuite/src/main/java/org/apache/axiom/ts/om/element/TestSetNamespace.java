@@ -30,28 +30,27 @@ import org.apache.axiom.ts.om.SetNamespaceTestCase;
  * OMNamedInformationItem#setNamespace(OMNamespace, boolean)}.
  */
 public class TestSetNamespace extends SetNamespaceTestCase {
-    private final Boolean declare;
-
-    public TestSetNamespace(
-            OMMetaFactory metaFactory,
+    /**
+     * @param declare the value of the {@code declare} argument, or {@code null} to use the 1-arg
+     *     overload
+     */
+    public record Params(
             String namespaceURI,
             String prefix,
             Boolean declare,
             String prefixInScope,
             boolean invalid,
             String expectedPrefix,
-            boolean expectNSDecl) {
-        super(
-                metaFactory,
-                namespaceURI,
-                prefix,
-                prefixInScope,
-                invalid,
-                expectedPrefix,
-                expectNSDecl);
-        this.declare = declare;
-        if (declare != null) {
-            addTestParameter("declare", declare.booleanValue());
+            boolean expectNSDecl)
+            implements SetNamespaceTestCase.Params {}
+
+    private final Params params;
+
+    public TestSetNamespace(OMMetaFactory metaFactory, Params params) {
+        super(metaFactory, params);
+        this.params = params;
+        if (params.declare() != null) {
+            addTestParameter("declare", params.declare().booleanValue());
         }
     }
 
@@ -67,10 +66,10 @@ public class TestSetNamespace extends SetNamespaceTestCase {
 
     @Override
     protected void setNamespace(OMNamedInformationItem node, OMNamespace ns) {
-        if (declare == null) {
+        if (params.declare() == null) {
             ((OMElement) node).setNamespace(ns);
         } else {
-            node.setNamespace(ns, declare.booleanValue());
+            node.setNamespace(ns, params.declare().booleanValue());
         }
     }
 }

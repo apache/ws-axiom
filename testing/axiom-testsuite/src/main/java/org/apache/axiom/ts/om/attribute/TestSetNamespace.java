@@ -31,31 +31,13 @@ import org.apache.axiom.ts.om.SetNamespaceTestCase;
  * {@link OMAttribute}.
  */
 public class TestSetNamespace extends SetNamespaceTestCase {
-    private final boolean declare;
-    private final boolean owner;
-
     /**
-     * Constructor.
+     * Test parameters for {@link TestSetNamespace}.
      *
-     * @param metaFactory the meta factory
-     * @param namespaceURI the namespace URI to set or <code>null</code> to set a <code>null</code>
-     *     {@link OMNamespace}
-     * @param prefix the prefix to set or <code>null</code> to generate a prefix
-     * @param declare the value of the <code>declare</code> argument
+     * @param declare the value of the {@code declare} argument
      * @param owner flag indicating whether the attribute should have an owner element
-     * @param prefixInScope the prefix of an existing namespace declaration in scope for the given
-     *     namespace URI, or <code>null</code> if no matching namespace declaration is in scope
-     * @param invalid flag indicating whether the namespace is invalid and {@link
-     *     OMNamedInformationItem#setNamespace(OMNamespace, boolean)} is expected to throw an {@link
-     *     IllegalArgumentException}
-     * @param expectedPrefix the expected prefix of the attribute after the invocation of {@link
-     *     OMNamedInformationItem#setNamespace(OMNamespace, boolean)}, or null if the method is
-     *     expected to generate a prefix
-     * @param expectNSDecl indicates whether {@link OMNamedInformationItem#setNamespace(OMNamespace,
-     *     boolean)} is expected to generate a namespace declaration on the owner element
      */
-    public TestSetNamespace(
-            OMMetaFactory metaFactory,
+    public record Params(
             String namespaceURI,
             String prefix,
             boolean declare,
@@ -63,24 +45,21 @@ public class TestSetNamespace extends SetNamespaceTestCase {
             String prefixInScope,
             boolean invalid,
             String expectedPrefix,
-            boolean expectNSDecl) {
-        super(
-                metaFactory,
-                namespaceURI,
-                prefix,
-                prefixInScope,
-                invalid,
-                expectedPrefix,
-                expectNSDecl);
-        this.declare = declare;
-        this.owner = owner;
-        addTestParameter("declare", declare);
-        addTestParameter("owner", owner);
+            boolean expectNSDecl)
+            implements SetNamespaceTestCase.Params {}
+
+    private final Params params;
+
+    public TestSetNamespace(OMMetaFactory metaFactory, Params params) {
+        super(metaFactory, params);
+        this.params = params;
+        addTestParameter("declare", params.declare());
+        addTestParameter("owner", params.owner());
     }
 
     @Override
     protected boolean context() {
-        return owner;
+        return params.owner();
     }
 
     @Override
@@ -94,6 +73,6 @@ public class TestSetNamespace extends SetNamespaceTestCase {
 
     @Override
     protected void setNamespace(OMNamedInformationItem node, OMNamespace ns) {
-        node.setNamespace(ns, declare);
+        node.setNamespace(ns, params.declare());
     }
 }

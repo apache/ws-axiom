@@ -30,56 +30,66 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public abstract class SetNamespaceTestCase extends AxiomTestCase {
-    private final String namespaceURI;
-    private final String prefix;
-    private final String prefixInScope;
-    private final boolean invalid;
-    private final String expectedPrefix;
-    private final boolean expectNSDecl;
+    /**
+     * Common test parameters for {@link SetNamespaceTestCase} subclasses.
+     *
+     * @see OMNamedInformationItem#setNamespace(OMNamespace, boolean)
+     */
+    public interface Params {
+        /** The namespace URI to set or {@code null} to set a {@code null} {@link OMNamespace}. */
+        String namespaceURI();
+
+        /** The prefix to set or {@code null} to generate a prefix. */
+        String prefix();
+
+        /**
+         * The prefix of an existing namespace declaration in scope for the given namespace URI, or
+         * {@code null} if no matching namespace declaration is in scope.
+         */
+        String prefixInScope();
+
+        /**
+         * Flag indicating whether the namespace is invalid and {@link
+         * OMNamedInformationItem#setNamespace(OMNamespace, boolean)} is expected to throw an {@link
+         * IllegalArgumentException}.
+         */
+        boolean invalid();
+
+        /**
+         * The expected prefix of the attribute after the invocation of {@link
+         * OMNamedInformationItem#setNamespace(OMNamespace, boolean)}, or null if the method is
+         * expected to generate a prefix.
+         */
+        String expectedPrefix();
+
+        /**
+         * Indicates whether {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)} is
+         * expected to generate a namespace declaration on the owner element.
+         */
+        boolean expectNSDecl();
+    }
+
+    private final Params params;
 
     /**
      * Constructor.
      *
      * @param metaFactory the meta factory
-     * @param namespaceURI the namespace URI to set or <code>null</code> to set a <code>null</code>
-     *     {@link OMNamespace}
-     * @param prefix the prefix to set or <code>null</code> to generate a prefix
-     * @param prefixInScope the prefix of an existing namespace declaration in scope for the given
-     *     namespace URI, or <code>null</code> if no matching namespace declaration is in scope
-     * @param invalid flag indicating whether the namespace is invalid and {@link
-     *     OMNamedInformationItem#setNamespace(OMNamespace, boolean)} is expected to throw an {@link
-     *     IllegalArgumentException}
-     * @param expectedPrefix the expected prefix of the attribute after the invocation of {@link
-     *     OMNamedInformationItem#setNamespace(OMNamespace, boolean)}, or null if the method is
-     *     expected to generate a prefix
-     * @param expectNSDecl indicates whether {@link OMNamedInformationItem#setNamespace(OMNamespace,
-     *     boolean)} is expected to generate a namespace declaration on the owner element
+     * @param params the test parameters
      */
-    public SetNamespaceTestCase(
-            OMMetaFactory metaFactory,
-            String namespaceURI,
-            String prefix,
-            String prefixInScope,
-            boolean invalid,
-            String expectedPrefix,
-            boolean expectNSDecl) {
+    public SetNamespaceTestCase(OMMetaFactory metaFactory, Params params) {
         super(metaFactory);
-        this.namespaceURI = namespaceURI;
-        this.prefix = prefix;
-        this.prefixInScope = prefixInScope;
-        this.invalid = invalid;
-        this.expectedPrefix = expectedPrefix;
-        this.expectNSDecl = expectNSDecl;
-        if (namespaceURI != null) {
-            addTestParameter("uri", namespaceURI);
+        this.params = params;
+        if (params.namespaceURI() != null) {
+            addTestParameter("uri", params.namespaceURI());
         }
-        if (prefix != null) {
-            addTestParameter("prefix", prefix);
+        if (params.prefix() != null) {
+            addTestParameter("prefix", params.prefix());
         }
-        if (prefixInScope != null) {
-            addTestParameter("prefixInScope", prefixInScope);
+        if (params.prefixInScope() != null) {
+            addTestParameter("prefixInScope", params.prefixInScope());
         }
-        addTestParameter("invalid", invalid);
+        addTestParameter("invalid", params.invalid());
     }
 
     protected abstract boolean context();
@@ -98,11 +108,11 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
             OMNamespace dummyNS = factory.createOMNamespace("__dummy__", "__dummy__");
             OMElement parent = factory.createOMElement("parent", dummyNS);
             element = factory.createOMElement("test", dummyNS, parent);
-            if (prefixInScope != null) {
-                if (prefixInScope.length() == 0) {
-                    parent.declareDefaultNamespace(namespaceURI);
+            if (params.prefixInScope() != null) {
+                if (params.prefixInScope().length() == 0) {
+                    parent.declareDefaultNamespace(params.namespaceURI());
                 } else {
-                    parent.declareNamespace(namespaceURI, prefixInScope);
+                    parent.declareNamespace(params.namespaceURI(), params.prefixInScope());
                 }
             }
         } else {
@@ -110,54 +120,60 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
         }
         node = node(factory, element);
         OMNamespace ns =
-                namespaceURI == null ? null : factory.createOMNamespace(namespaceURI, prefix);
+                params.namespaceURI() == null
+                        ? null
+                        : factory.createOMNamespace(params.namespaceURI(), params.prefix());
         try {
             setNamespace(node, ns);
-            if (invalid) {
+            if (params.invalid()) {
                 fail("Expected IllegalArgumentException");
             }
         } catch (IllegalArgumentException ex) {
-            if (invalid) {
+            if (params.invalid()) {
                 return;
             } else {
                 throw ex;
             }
         }
         String expectedPrefix;
-        if (this.expectedPrefix == null) {
+        if (params.expectedPrefix() == null) {
             expectedPrefix = node.getPrefix();
             assertNotNull(expectedPrefix);
             assertFalse(expectedPrefix.length() == 0);
         } else {
-            expectedPrefix = this.expectedPrefix;
+            expectedPrefix = params.expectedPrefix();
             if (expectedPrefix.length() == 0) {
                 assertNull(node.getPrefix());
             } else {
                 assertEquals(expectedPrefix, node.getPrefix());
             }
         }
-        if (namespaceURI == null || namespaceURI.length() == 0) {
+        if (params.namespaceURI() == null || params.namespaceURI().length() == 0) {
             assertNull(node.getNamespace());
         } else {
             OMNamespace actualNS = node.getNamespace();
             assertEquals(expectedPrefix, actualNS.getPrefix());
-            assertEquals(namespaceURI, actualNS.getNamespaceURI());
+            assertEquals(params.namespaceURI(), actualNS.getNamespaceURI());
         }
-        if (namespaceURI == null || namespaceURI.length() == 0) {
+        if (params.namespaceURI() == null || params.namespaceURI().length() == 0) {
             assertNull(node.getNamespaceURI());
         } else {
-            assertEquals(namespaceURI, node.getNamespaceURI());
+            assertEquals(params.namespaceURI(), node.getNamespaceURI());
         }
         QName qname = node.getQName();
         assertEquals(expectedPrefix, qname.getPrefix());
-        assertEquals(namespaceURI == null ? "" : namespaceURI, qname.getNamespaceURI());
+        assertEquals(
+                params.namespaceURI() == null ? "" : params.namespaceURI(),
+                qname.getNamespaceURI());
         if (element != null) {
             Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-            if (expectNSDecl) {
+            if (params.expectNSDecl()) {
                 assertTrue(it.hasNext());
                 OMNamespace decl = it.next();
                 assertEquals(expectedPrefix, decl.getPrefix());
-                assertEquals(namespaceURI == null ? "" : namespaceURI, decl.getNamespaceURI());
+                assertEquals(
+                        params.namespaceURI() == null ? "" : params.namespaceURI(),
+                        decl.getNamespaceURI());
             }
             assertFalse(it.hasNext());
         }
