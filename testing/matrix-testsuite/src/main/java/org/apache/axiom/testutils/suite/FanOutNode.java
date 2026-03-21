@@ -21,8 +21,10 @@ package org.apache.axiom.testutils.suite;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.DynamicContainer;
 import org.junit.jupiter.api.DynamicNode;
@@ -38,20 +40,28 @@ import com.google.inject.Injector;
  * @param <T> the value type
  */
 public final class FanOutNode<T> extends MatrixTestNode {
-    private final ImmutableList<T> values;
+    private final Function<Injector, ? extends Iterable<T>> valuesFunction;
     private final Binding<T> binding;
     private final ParameterBinding<? super T> parameterBinding;
     private final MatrixTestNode child;
+
+    public FanOutNode(
+            Function<Injector, ? extends Iterable<T>> valuesFunction,
+            Binding<T> binding,
+            ParameterBinding<? super T> parameterBinding,
+            MatrixTestNode child) {
+        this.valuesFunction = valuesFunction;
+        this.binding = binding;
+        this.parameterBinding = parameterBinding;
+        this.child = child;
+    }
 
     public FanOutNode(
             ImmutableList<T> values,
             Binding<T> binding,
             ParameterBinding<? super T> parameterBinding,
             MatrixTestNode child) {
-        this.values = values;
-        this.binding = binding;
-        this.parameterBinding = parameterBinding;
-        this.child = child;
+        this(injector -> values, binding, parameterBinding, child);
     }
 
     @Override
@@ -59,7 +69,7 @@ public final class FanOutNode<T> extends MatrixTestNode {
             Injector parentInjector,
             Map<String, String> inheritedParameters,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
-        return values.stream()
+        return StreamSupport.stream(valuesFunction.apply(parentInjector).spliterator(), false)
                 .map(
                         value -> {
                             Injector childInjector =
