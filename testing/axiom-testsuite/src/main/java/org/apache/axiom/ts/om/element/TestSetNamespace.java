@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import com.google.common.collect.ImmutableList;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -43,6 +45,31 @@ public class TestSetNamespace extends SetNamespaceTestCase {
             String expectedPrefix,
             boolean expectNSDecl)
             implements SetNamespaceTestCase.Params {}
+
+    public static final ImmutableList<Params> PARAMS;
+
+    static {
+        ImmutableList.Builder<Params> builder = ImmutableList.builder();
+        for (int i = 0; i < 3; i++) {
+            Boolean declare = i == 0 ? null : Boolean.valueOf(i == 2);
+            boolean implicitDeclare = declare == null || declare.booleanValue();
+            // Valid
+            builder.add(new Params("urn:test", "p", declare, null, false, "p", implicitDeclare));
+            builder.add(new Params("urn:test", null, declare, null, false, null, implicitDeclare));
+            builder.add(new Params("urn:test", "p", declare, "p", false, "p", false));
+            builder.add(new Params("urn:test", "p", declare, "q", false, "p", implicitDeclare));
+            builder.add(new Params("urn:test", null, declare, "p", false, "p", false));
+            builder.add(new Params("urn:test", null, declare, "", false, "", false));
+            builder.add(new Params("urn:test", "", declare, null, false, "", implicitDeclare));
+            builder.add(new Params("urn:test", "", declare, "", false, "", false));
+            builder.add(new Params("", "", declare, null, false, "", false));
+            builder.add(new Params("", null, declare, null, false, "", false));
+            builder.add(new Params(null, null, declare, null, false, "", false));
+            // Invalid
+            builder.add(new Params("", "p", declare, null, true, null, false));
+        }
+        PARAMS = builder.build();
+    }
 
     private final Params params;
 

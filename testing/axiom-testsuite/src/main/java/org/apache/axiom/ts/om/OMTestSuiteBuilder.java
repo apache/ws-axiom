@@ -81,89 +81,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.attribute.TestHasNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestHasNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestSetLocalName(metaFactory));
-        for (int i = 0; i < 4; i++) {
-            boolean declare = (i & 1) != 0;
-            boolean owner = (i & 2) != 0;
-            // Valid
-            addTest(
-                    new org.apache.axiom.ts.om.attribute.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.attribute.TestSetNamespace.Params(
-                                    "urn:test",
-                                    "p",
-                                    declare,
-                                    owner,
-                                    null,
-                                    false,
-                                    "p",
-                                    declare && owner)));
-            addTest(
-                    new org.apache.axiom.ts.om.attribute.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.attribute.TestSetNamespace.Params(
-                                    "urn:test",
-                                    null,
-                                    declare,
-                                    owner,
-                                    null,
-                                    false,
-                                    null,
-                                    declare && owner)));
-            if (owner) {
-                addTest(
-                        new org.apache.axiom.ts.om.attribute.TestSetNamespace(
-                                metaFactory,
-                                new org.apache.axiom.ts.om.attribute.TestSetNamespace.Params(
-                                        "urn:test", "p", declare, true, "p", false, "p", false)));
-                addTest(
-                        new org.apache.axiom.ts.om.attribute.TestSetNamespace(
-                                metaFactory,
-                                new org.apache.axiom.ts.om.attribute.TestSetNamespace.Params(
-                                        "urn:test", "p", declare, true, "q", false, "p", declare)));
-                addTest(
-                        new org.apache.axiom.ts.om.attribute.TestSetNamespace(
-                                metaFactory,
-                                new org.apache.axiom.ts.om.attribute.TestSetNamespace.Params(
-                                        "urn:test", null, declare, true, "p", false, "p", false)));
-                addTest(
-                        new org.apache.axiom.ts.om.attribute.TestSetNamespace(
-                                metaFactory,
-                                new org.apache.axiom.ts.om.attribute.TestSetNamespace.Params(
-                                        "urn:test",
-                                        null,
-                                        declare,
-                                        true,
-                                        "",
-                                        false,
-                                        null,
-                                        declare)));
-            }
-            addTest(
-                    new org.apache.axiom.ts.om.attribute.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.attribute.TestSetNamespace.Params(
-                                    "", "", declare, owner, null, false, "", false)));
-            addTest(
-                    new org.apache.axiom.ts.om.attribute.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.attribute.TestSetNamespace.Params(
-                                    "", null, declare, owner, null, false, "", false)));
-            addTest(
-                    new org.apache.axiom.ts.om.attribute.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.attribute.TestSetNamespace.Params(
-                                    null, null, declare, owner, null, false, "", false)));
-            // Invalid
-            addTest(
-                    new org.apache.axiom.ts.om.attribute.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.attribute.TestSetNamespace.Params(
-                                    "urn:test", "", declare, owner, null, true, null, false)));
-            addTest(
-                    new org.apache.axiom.ts.om.attribute.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.attribute.TestSetNamespace.Params(
-                                    "", "p", declare, owner, null, true, null, false)));
+        for (var params : org.apache.axiom.ts.om.attribute.TestSetNamespace.PARAMS) {
+            addTest(new org.apache.axiom.ts.om.attribute.TestSetNamespace(metaFactory, params));
         }
         for (StreamType streamType : Multiton.getInstances(StreamType.class)) {
             addTest(
@@ -761,77 +680,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(
                 new org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant(
                         metaFactory));
-        for (int i = 0; i < 3; i++) {
-            Boolean declare = i == 0 ? null : Boolean.valueOf(i == 2);
-            boolean implicitDeclare = declare == null || declare.booleanValue();
-            // Valid
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    "urn:test", "p", declare, null, false, "p", implicitDeclare)));
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    "urn:test",
-                                    null,
-                                    declare,
-                                    null,
-                                    false,
-                                    null,
-                                    implicitDeclare)));
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    "urn:test", "p", declare, "p", false, "p", false)));
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    "urn:test", "p", declare, "q", false, "p", implicitDeclare)));
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    "urn:test", null, declare, "p", false, "p", false)));
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    "urn:test", null, declare, "", false, "", false)));
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    "urn:test", "", declare, null, false, "", implicitDeclare)));
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    "urn:test", "", declare, "", false, "", false)));
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    "", "", declare, null, false, "", false)));
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    "", null, declare, null, false, "", false)));
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    null, null, declare, null, false, "", false)));
-            // Invalid
-            addTest(
-                    new org.apache.axiom.ts.om.element.TestSetNamespace(
-                            metaFactory,
-                            new org.apache.axiom.ts.om.element.TestSetNamespace.Params(
-                                    "", "p", declare, null, true, null, false)));
+        for (var params : org.apache.axiom.ts.om.element.TestSetNamespace.PARAMS) {
+            addTest(new org.apache.axiom.ts.om.element.TestSetNamespace(metaFactory, params));
         }
         addTest(new org.apache.axiom.ts.om.element.TestSetText(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextEmptyString(metaFactory));

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.attribute;
 
+import com.google.common.collect.ImmutableList;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -47,6 +49,36 @@ public class TestSetNamespace extends SetNamespaceTestCase {
             String expectedPrefix,
             boolean expectNSDecl)
             implements SetNamespaceTestCase.Params {}
+
+    public static final ImmutableList<Params> PARAMS;
+
+    static {
+        ImmutableList.Builder<Params> builder = ImmutableList.builder();
+        for (int i = 0; i < 4; i++) {
+            boolean declare = (i & 1) != 0;
+            boolean owner = (i & 2) != 0;
+            // Valid
+            builder.add(
+                    new Params(
+                            "urn:test", "p", declare, owner, null, false, "p", declare && owner));
+            builder.add(
+                    new Params(
+                            "urn:test", null, declare, owner, null, false, null, declare && owner));
+            if (owner) {
+                builder.add(new Params("urn:test", "p", declare, true, "p", false, "p", false));
+                builder.add(new Params("urn:test", "p", declare, true, "q", false, "p", declare));
+                builder.add(new Params("urn:test", null, declare, true, "p", false, "p", false));
+                builder.add(new Params("urn:test", null, declare, true, "", false, null, declare));
+            }
+            builder.add(new Params("", "", declare, owner, null, false, "", false));
+            builder.add(new Params("", null, declare, owner, null, false, "", false));
+            builder.add(new Params(null, null, declare, owner, null, false, "", false));
+            // Invalid
+            builder.add(new Params("urn:test", "", declare, owner, null, true, null, false));
+            builder.add(new Params("", "p", declare, owner, null, true, null, false));
+        }
+        PARAMS = builder.build();
+    }
 
     private final Params params;
 
