@@ -238,24 +238,9 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         for (XMLSample file : getInstances(XMLSample.class)) {
             addTest(new org.apache.axiom.ts.om.document.TestClone(metaFactory, file));
         }
-        addTest(
-                new org.apache.axiom.ts.om.document.TestDigest(
-                        metaFactory, "digest1.xml", "MD5", "3e5d68c6607bc56c9c171560e4f19db9"));
-        addTest(
-                new org.apache.axiom.ts.om.document.TestDigest(
-                        metaFactory,
-                        "digest2.xml",
-                        "SHA1",
-                        "3c47a807517d867d42ffacb2d3e9da81895d5aac"));
-        addTest(
-                new org.apache.axiom.ts.om.document.TestDigest(
-                        metaFactory, "digest3.xml", "SHA", "41466144c1cab4234fb127cfb8cf92f9"));
-        addTest(
-                new org.apache.axiom.ts.om.document.TestDigest(
-                        metaFactory,
-                        "digest4.xml",
-                        "SHA",
-                        "be3b0836cd6f0ceacdf3d40b49a0468d03d2ba2e"));
+        for (var params : org.apache.axiom.ts.om.document.TestDigest.PARAMS) {
+            addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, params));
+        }
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElement(metaFactory));
         addTest(
                 new org.apache.axiom.ts.om.document.TestGetOMDocumentElementAfterDetach(

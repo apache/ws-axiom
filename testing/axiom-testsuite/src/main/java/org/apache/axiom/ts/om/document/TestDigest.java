@@ -26,19 +26,29 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
 
-public class TestDigest extends DigestTestCase {
-    private final String file;
+import com.google.common.collect.ImmutableList;
 
-    public TestDigest(
-            OMMetaFactory metaFactory, String file, String algorithm, String expectedDigest) {
-        super(metaFactory, algorithm, expectedDigest);
-        this.file = file;
-        addTestParameter("file", file);
+public class TestDigest extends DigestTestCase {
+    public record Params(String file, String algorithm, String expectedDigest) {}
+
+    public static final ImmutableList<Params> PARAMS =
+            ImmutableList.of(
+                    new Params("digest1.xml", "MD5", "3e5d68c6607bc56c9c171560e4f19db9"),
+                    new Params("digest2.xml", "SHA1", "3c47a807517d867d42ffacb2d3e9da81895d5aac"),
+                    new Params("digest3.xml", "SHA", "41466144c1cab4234fb127cfb8cf92f9"),
+                    new Params("digest4.xml", "SHA", "be3b0836cd6f0ceacdf3d40b49a0468d03d2ba2e"));
+
+    private final Params params;
+
+    public TestDigest(OMMetaFactory metaFactory, Params params) {
+        super(metaFactory, params.algorithm(), params.expectedDigest());
+        this.params = params;
+        addTestParameter("file", params.file());
     }
 
     @Override
     protected OMInformationItem createInformationItem() throws Exception {
-        InputStream in = TestDigest.class.getResourceAsStream(file);
+        InputStream in = TestDigest.class.getResourceAsStream(params.file());
         try {
             OMDocument document =
                     OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
