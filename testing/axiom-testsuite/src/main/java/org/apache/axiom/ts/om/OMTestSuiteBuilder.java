@@ -674,11 +674,9 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMCommentWithoutParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMDocTypeWithoutParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMDocument(metaFactory));
-        for (int i = 0; i < CreateOMElementVariant.INSTANCES.length; i++) {
-            CreateOMElementVariant variant = CreateOMElementVariant.INSTANCES[i];
-            for (int j = 0; j < CreateOMElementParentSupplier.INSTANCES.length; j++) {
-                CreateOMElementParentSupplier parentSupplier =
-                        CreateOMElementParentSupplier.INSTANCES[j];
+        for (CreateOMElementVariant variant : CreateOMElementVariant.INSTANCES) {
+            for (CreateOMElementParentSupplier parentSupplier :
+                    CreateOMElementParentSupplier.INSTANCES) {
                 if (parentSupplier.isSupported(variant)) {
                     if (variant.isSupportsDefaultNamespace()) {
                         addTest(
@@ -791,10 +789,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnOrphan(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnSelf(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeSameParent(metaFactory));
-        for (int i = 0; i < OMSourcedElementVariant.INSTANCES.length; i++) {
-            OMSourcedElementVariant variant = OMSourcedElementVariant.INSTANCES[i];
-            for (int j = 0; j < qnames.length; j++) {
-                QName qname = qnames[j];
+        for (OMSourcedElementVariant variant : OMSourcedElementVariant.INSTANCES) {
+            for (QName qname : qnames) {
                 addTest(
                         new org.apache.axiom.ts.om.sourcedelement.TestGetLocalName(
                                 metaFactory, variant, qname));
@@ -848,8 +844,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
                         metaFactory));
         addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetObject(metaFactory));
         addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetReaderException(metaFactory));
-        for (int i = 0; i < PushOMDataSourceScenario.INSTANCES.length; i++) {
-            PushOMDataSourceScenario scenario = PushOMDataSourceScenario.INSTANCES[i];
+        for (PushOMDataSourceScenario scenario : PushOMDataSourceScenario.INSTANCES) {
             addTest(
                     new org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource(
                             metaFactory, scenario, false));
@@ -875,10 +870,10 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4DefaultPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4QualifiedPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4Unqualified(metaFactory));
-        for (int i = 0; i < PushOMDataSourceScenario.INSTANCES.length; i++) {
+        for (PushOMDataSourceScenario scenario : PushOMDataSourceScenario.INSTANCES) {
             addTest(
                     new org.apache.axiom.ts.om.sourcedelement.TestPushOMDataSourceExpansion(
-                            metaFactory, PushOMDataSourceScenario.INSTANCES[i]));
+                            metaFactory, scenario));
         }
         addTest(
                 new org.apache.axiom.ts.om.sourcedelement.TestRemoveChildrenUnexpanded(
@@ -972,9 +967,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.xop.TestSetOptimize(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.xop.TestSetOptimizePlainOMText(metaFactory));
         addTest(new org.apache.axiom.ts.om.xop.XOPRoundtripTest(metaFactory));
-        Method[] methods = AXIOMXPathTestCase.class.getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            String methodName = methods[i].getName();
+        for (Method method : AXIOMXPathTestCase.class.getMethods()) {
+            String methodName = method.getName();
             if (methodName.startsWith("test")) {
                 addTest(new TestAXIOMXPath(metaFactory, methodName));
             }
