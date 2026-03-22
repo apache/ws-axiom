@@ -66,6 +66,18 @@ that supports LDAP-style filter expressions optionally scoped to a test class.
 
 ## Classes
 
+### `Binding<T>`
+
+Functional interface that configures a Guice binding for a value of type `T`.
+Defines a single method `void configure(Binder binder, T value)`. Typically used
+as a lambda passed to `FanOutNode`.
+
+Provides a static helper `Binding.singleton(Key<T> key)` that returns a binding
+which calls `binder.bind(key).toInstance(value)`. This covers the most common
+case and avoids repetitive lambda boilerplate. Use `Key.get(MyType.class)` for
+simple types, or `Key.get(Boolean.class, Names.named("flag"))` when a `@Named`
+qualifier is needed.
+
 ### `MatrixTestNode`
 
 Abstract base class for all nodes in the test tree. Defines a single method:
@@ -92,8 +104,8 @@ Holds exactly one child node. When multiple children are needed, wrap them in a
 `ParentNode`.
 
 The `Binding<T>` lambda receives a `Binder` and the current value, and
-configures the Guice binding (e.g.
-`(binder, value) -> binder.bind(MyType.class).toInstance(value)`). The
+configures the Guice binding. For the common case of binding the value as a
+singleton, use `Binding.singleton(Key.get(MyType.class))`. The
 `ParameterBinding<? super T>` lambda registers test parameters for display and
 filtering (e.g.
 `(params, value) -> params.addTestParameter("name", value.getName())`).
@@ -171,7 +183,7 @@ public class MyTestSuite {
 
         FanOutNode<SomeDimension> dimensions = new FanOutNode<>(
                 Multiton.getInstances(SomeDimension.class),
-                (binder, value) -> binder.bind(SomeDimension.class).toInstance(value),
+                Binding.singleton(Key.get(SomeDimension.class)),
                 (params, value) -> params.addTestParameter("dimension", value.getName()),
                 new ParentNode(
                         new MatrixTest(TestSomeBehavior.class),

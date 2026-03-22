@@ -19,7 +19,12 @@
 package org.apache.axiom.testutils.suite;
 
 import com.google.inject.Binder;
+import com.google.inject.Key;
 
 public interface Binding<T> {
     void configure(Binder binder, T value);
+
+    static <T> Binding<T> singleton(Key<T> key) {
+        return (binder, value) -> binder.bind(key).toInstance(value);
+    }
 }

@@ -21,6 +21,7 @@ package org.apache.axiom.ts.saaj;
 import jakarta.xml.soap.SAAJMetaFactory;
 
 import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.ParentNode;
@@ -33,6 +34,8 @@ import org.apache.axiom.ts.saaj.element.TestSetParentElement;
 import org.apache.axiom.ts.saaj.header.TestExamineMustUnderstandHeaderElements;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
+import com.google.inject.Key;
+
 public class SAAJTestSuite {
     public static InjectorNode create(SAAJMetaFactory metaFactory) {
         return new InjectorNode(
@@ -41,7 +44,7 @@ public class SAAJTestSuite {
                                 .toInstance(new SAAJImplementation(metaFactory)),
                 new FanOutNode<>(
                         Multiton.getInstances(SOAPSpec.class),
-                        (binder, value) -> binder.bind(SOAPSpec.class).toInstance(value),
+                        Binding.singleton(Key.get(SOAPSpec.class)),
                         (injector, value, params) ->
                                 params.addTestParameter("spec", value.getName()),
                         new ParentNode(

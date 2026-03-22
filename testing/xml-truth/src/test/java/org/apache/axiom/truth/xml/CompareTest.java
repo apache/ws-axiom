@@ -21,6 +21,7 @@ package org.apache.axiom.truth.xml;
 import java.util.stream.Stream;
 
 import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Key;
 import com.google.inject.name.Names;
 
 public class CompareTest {
@@ -35,36 +37,30 @@ public class CompareTest {
     public Stream<DynamicNode> tests() {
         return new FanOutNode<>(
                         Multiton.getInstances(XMLSample.class),
-                        (binder, value) ->
-                                binder.bind(XMLSample.class)
-                                        .annotatedWith(Names.named("sample"))
-                                        .toInstance(value),
+                        Binding.singleton(Key.get(XMLSample.class, Names.named("sample"))),
                         (injector, value, params) ->
                                 params.addTestParameter("sample", value.getName()),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLObjectFactory.class),
-                                (binder, value) ->
-                                        binder.bind(XMLObjectFactory.class)
-                                                .annotatedWith(Names.named("left"))
-                                                .toInstance(value),
+                                Binding.singleton(
+                                        Key.get(XMLObjectFactory.class, Names.named("left"))),
                                 (injector, value, params) ->
                                         params.addTestParameter("left", value.getName()),
                                 new FanOutNode<>(
                                         Multiton.getInstances(XMLObjectFactory.class),
-                                        (binder, value) ->
-                                                binder.bind(XMLObjectFactory.class)
-                                                        .annotatedWith(Names.named("right"))
-                                                        .toInstance(value),
+                                        Binding.singleton(
+                                                Key.get(
+                                                        XMLObjectFactory.class,
+                                                        Names.named("right"))),
                                         (injector, value, params) ->
                                                 params.addTestParameter("right", value.getName()),
                                         new FanOutNode<>(
                                                 ImmutableList.of(true, false),
-                                                (binder, value) ->
-                                                        binder.bind(Boolean.class)
-                                                                .annotatedWith(
-                                                                        Names.named(
-                                                                                "expandEntityReferences"))
-                                                                .toInstance(value),
+                                                Binding.singleton(
+                                                        Key.get(
+                                                                Boolean.class,
+                                                                Names.named(
+                                                                        "expandEntityReferences"))),
                                                 (injector, value, params) ->
                                                         params.addTestParameter(
                                                                 "expandEntityReferences",

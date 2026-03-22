@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.MatrixTestFilters;
@@ -37,6 +38,7 @@ import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 
@@ -55,8 +57,7 @@ public class DialectTestSuite {
                         new ParentNode(
                                 new FanOutNode<>(
                                         Multiton.getInstances(StreamType.class),
-                                        (binder, value) ->
-                                                binder.bind(StreamType.class).toInstance(value),
+                                        Binding.singleton(Key.get(StreamType.class)),
                                         (injector, value, params) ->
                                                 params.addTestParameter(
                                                         "type", value.getType().getSimpleName()),

@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
@@ -33,6 +34,7 @@ import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Key;
 import com.google.inject.name.Names;
 
 public class DOMTestSuite {
@@ -304,10 +306,7 @@ public class DOMTestSuite {
                                 org.apache.axiom.ts.dom.text.TestSplitTextWithoutParent.class),
                         new FanOutNode<>(
                                 ImmutableList.of(true, false),
-                                (binder, value) ->
-                                        binder.bind(Boolean.class)
-                                                .annotatedWith(Names.named("deep"))
-                                                .toInstance(value),
+                                Binding.singleton(Key.get(Boolean.class, Names.named("deep"))),
                                 (injector, value, params) -> params.addTestParameter("deep", value),
                                 new ParentNode(
                                         new MatrixTest(
@@ -317,10 +316,8 @@ public class DOMTestSuite {
                                                         .TestCloneNodeWithAttributes.class))),
                         new FanOutNode<>(
                                 ImmutableList.of(true, false),
-                                (binder, value) ->
-                                        binder.bind(Boolean.class)
-                                                .annotatedWith(Names.named("newChildHasSiblings"))
-                                                .toInstance(value),
+                                Binding.singleton(
+                                        Key.get(Boolean.class, Names.named("newChildHasSiblings"))),
                                 (injector, value, params) ->
                                         params.addTestParameter("newChildHasSiblings", value),
                                 new ParentNode(
@@ -338,7 +335,7 @@ public class DOMTestSuite {
                                                         .TestReplaceChildSingle.class))),
                         new FanOutNode<>(
                                 VALID_ATTR_QNAMES,
-                                (binder, value) -> binder.bind(QName.class).toInstance(value),
+                                Binding.singleton(Key.get(QName.class)),
                                 QNAME_PARAMS,
                                 new ParentNode(
                                         new MatrixTest(
@@ -349,7 +346,7 @@ public class DOMTestSuite {
                                                         .class))),
                         new FanOutNode<>(
                                 INVALID_ATTR_QNAMES,
-                                (binder, value) -> binder.bind(QName.class).toInstance(value),
+                                Binding.singleton(Key.get(QName.class)),
                                 QNAME_PARAMS,
                                 new ParentNode(
                                         new MatrixTest(
@@ -360,7 +357,7 @@ public class DOMTestSuite {
                                                         .TestSetAttributeNSInvalid.class))),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
-                                (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
+                                Binding.singleton(Key.get(XMLSample.class)),
                                 (injector, value, params) ->
                                         params.addTestParameter("file", value.getName()),
                                 new ParentNode(
@@ -369,9 +366,7 @@ public class DOMTestSuite {
                                                         .class),
                                         new FanOutNode<>(
                                                 Multiton.getInstances(DOMImplementation.class),
-                                                (binder, value) ->
-                                                        binder.bind(DOMImplementation.class)
-                                                                .toInstance(value),
+                                                Binding.singleton(Key.get(DOMImplementation.class)),
                                                 (injector, value, params) ->
                                                         params.addTestParameter(
                                                                 "from", value.getName()),
@@ -380,8 +375,7 @@ public class DOMTestSuite {
                                                                 .TestImportNode.class)))),
                         new FanOutNode<>(
                                 Multiton.getInstances(XSLTImplementation.class),
-                                (binder, value) ->
-                                        binder.bind(XSLTImplementation.class).toInstance(value),
+                                Binding.singleton(Key.get(XSLTImplementation.class)),
                                 (injector, value, params) ->
                                         params.addTestParameter("xslt", value.getName()),
                                 new ParentNode(

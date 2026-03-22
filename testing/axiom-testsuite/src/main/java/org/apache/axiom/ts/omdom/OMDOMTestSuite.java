@@ -20,6 +20,7 @@ package org.apache.axiom.ts.omdom;
 
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.ParentNode;
@@ -27,6 +28,7 @@ import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.ts.xml.XMLSample;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Key;
 import com.google.inject.name.Names;
 
 /**
@@ -46,10 +48,7 @@ public class OMDOMTestSuite {
                                         .class),
                         new FanOutNode<>(
                                 ImmutableList.of(true, false),
-                                (binder, value) ->
-                                        binder.bind(Boolean.class)
-                                                .annotatedWith(Names.named("build"))
-                                                .toInstance(value),
+                                Binding.singleton(Key.get(Boolean.class, Names.named("build"))),
                                 (injector, value, params) ->
                                         params.addTestParameter("build", String.valueOf(value)),
                                 new ParentNode(
@@ -66,7 +65,7 @@ public class OMDOMTestSuite {
                         new MatrixTest(org.apache.axiom.ts.omdom.document.TestGetOMFactory2.class),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
-                                (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
+                                Binding.singleton(Key.get(XMLSample.class)),
                                 (injector, value, params) ->
                                         params.addTestParameter("file", value.getName()),
                                 new MatrixTest(

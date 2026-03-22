@@ -19,6 +19,7 @@
 package org.apache.axiom.blob.suite;
 
 import org.apache.axiom.blob.WritableBlobFactory;
+import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.ConditionalNode;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
@@ -27,6 +28,7 @@ import org.apache.axiom.testutils.suite.ParameterBinding;
 import org.apache.axiom.testutils.suite.ParentNode;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 
@@ -52,7 +54,7 @@ public class WritableBlobTestSuite {
                         new MatrixTest(TestWriteAfterCommit.class),
                         new FanOutNode<>(
                                 ImmutableList.of(State.NEW, State.UNCOMMITTED, State.RELEASED),
-                                (binder, v) -> binder.bind(State.class).toInstance(v),
+                                Binding.singleton(Key.get(State.class)),
                                 ParameterBinding.DIMENSION,
                                 new ParentNode(
                                         new MatrixTest(TestGetInputStreamIllegalState.class),
@@ -61,17 +63,14 @@ public class WritableBlobTestSuite {
                         new FanOutNode<>(
                                 ImmutableList.of(
                                         State.UNCOMMITTED, State.COMMITTED, State.RELEASED),
-                                (binder, v) -> binder.bind(State.class).toInstance(v),
+                                Binding.singleton(Key.get(State.class)),
                                 ParameterBinding.DIMENSION,
                                 new ParentNode(
                                         new MatrixTest(TestGetOutputStreamIllegalState.class),
                                         new MatrixTest(TestReadFromIllegalState.class))),
                         new FanOutNode<>(
                                 sizes,
-                                (binder, v) ->
-                                        binder.bindConstant()
-                                                .annotatedWith(Names.named("size"))
-                                                .to(v),
+                                Binding.singleton(Key.get(Integer.class, Names.named("size"))),
                                 (injector, v, params) -> params.addTestParameter("size", v),
                                 new ParentNode(
                                         new MatrixTest(TestMarkReset.class),

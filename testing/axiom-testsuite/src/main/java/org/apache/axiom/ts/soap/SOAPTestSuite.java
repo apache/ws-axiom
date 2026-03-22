@@ -29,6 +29,7 @@ import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.ConditionalNode;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
@@ -118,24 +119,21 @@ public class SOAPTestSuite {
                         // Per-spec tests (SOAP11 + SOAP12)
                         new FanOutNode<>(
                                 Multiton.getInstances(SOAPSpec.class),
-                                (binder, value) -> binder.bind(SOAPSpec.class).toInstance(value),
+                                Binding.singleton(Key.get(SOAPSpec.class)),
                                 (injector, value, params) ->
                                         params.addTestParameter("spec", value.getName()),
                                 specTests()),
                         // Bad SOAP files (spec-independent)
                         new FanOutNode<>(
                                 badSOAPFiles,
-                                (binder, value) ->
-                                        binder.bind(String.class)
-                                                .annotatedWith(Names.named("file"))
-                                                .toInstance(value),
+                                Binding.singleton(Key.get(String.class, Names.named("file"))),
                                 (injector, value, params) -> params.addTestParameter("file", value),
                                 new MatrixTest(
                                         org.apache.axiom.ts.soap.builder.BadInputTest.class)),
                         // Good SOAP files (spec-independent)
                         new FanOutNode<>(
                                 goodSOAPFiles,
-                                (binder, value) -> binder.bind(SOAPSample.class).toInstance(value),
+                                Binding.singleton(Key.get(SOAPSample.class)),
                                 (injector, value, params) ->
                                         params.addTestParameter("message", value.getName()),
                                 new ParentNode(
@@ -148,17 +146,14 @@ public class SOAPTestSuite {
                                                 org.apache.axiom.ts.soap.envelope.TestClone.class),
                                         new FanOutNode<>(
                                                 getInstances(ExpansionStrategy.class),
-                                                (binder, value) ->
-                                                        binder.bind(ExpansionStrategy.class)
-                                                                .toInstance(value),
+                                                Binding.singleton(Key.get(ExpansionStrategy.class)),
                                                 ParameterBinding.DIMENSION,
                                                 new FanOutNode<>(
                                                         getInstances(SerializationStrategy.class),
-                                                        (binder, value) ->
-                                                                binder.bind(
-                                                                                SerializationStrategy
-                                                                                        .class)
-                                                                        .toInstance(value),
+                                                        Binding.singleton(
+                                                                Key.get(
+                                                                        SerializationStrategy
+                                                                                .class)),
                                                         ParameterBinding.DIMENSION,
                                                         new ParentNode(
                                                                 new MatrixTest(
@@ -188,7 +183,7 @@ public class SOAPTestSuite {
                 new MatrixTest(org.apache.axiom.ts.soap.body.TestGetFaultWithParser.class),
                 new FanOutNode<>(
                         generalQNames,
-                        (binder, value) -> binder.bind(QName.class).toInstance(value),
+                        Binding.singleton(Key.get(QName.class)),
                         QNAME_PARAMS,
                         new ParentNode(
                                 new MatrixTest(
@@ -199,10 +194,7 @@ public class SOAPTestSuite {
                                                 .TestGetFirstElementNSWithParser.class))),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
-                        (binder, value) ->
-                                binder.bind(Boolean.class)
-                                        .annotatedWith(Names.named("buildPayload"))
-                                        .toInstance(value),
+                        Binding.singleton(Key.get(Boolean.class, Names.named("buildPayload"))),
                         (injector, value, params) ->
                                 params.addTestParameter("buildPayload", String.valueOf(value)),
                         new MatrixTest(
@@ -213,7 +205,7 @@ public class SOAPTestSuite {
                                 .TestGetFirstElementLocalNameWithParserNoLookahead.class),
                 new FanOutNode<>(
                         noFaultQNames,
-                        (binder, value) -> binder.bind(QName.class).toInstance(value),
+                        Binding.singleton(Key.get(QName.class)),
                         QNAME_PARAMS,
                         new ParentNode(
                                 new MatrixTest(
@@ -236,8 +228,7 @@ public class SOAPTestSuite {
                 new MatrixTest(org.apache.axiom.ts.soap.body.TestHasFaultWithParser.class),
                 new FanOutNode<>(
                         getInstances(SerializationStrategy.class),
-                        (binder, value) ->
-                                binder.bind(SerializationStrategy.class).toInstance(value),
+                        Binding.singleton(Key.get(SerializationStrategy.class)),
                         ParameterBinding.DIMENSION,
                         new MatrixTest(
                                 org.apache.axiom.ts.soap.body.TestSerializeWithXSITypeAttribute
@@ -262,10 +253,7 @@ public class SOAPTestSuite {
                 // ── envelope package ──
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
-                        (binder, value) ->
-                                binder.bind(Boolean.class)
-                                        .annotatedWith(Names.named("header"))
-                                        .toInstance(value),
+                        Binding.singleton(Key.get(Boolean.class, Names.named("header"))),
                         (injector, value, params) ->
                                 params.addTestParameter("header", String.valueOf(value)),
                         new MatrixTest(
@@ -294,7 +282,7 @@ public class SOAPTestSuite {
                                 .class),
                 new FanOutNode<>(
                         generalQNames,
-                        (binder, value) -> binder.bind(QName.class).toInstance(value),
+                        Binding.singleton(Key.get(QName.class)),
                         QNAME_PARAMS,
                         new ParentNode(
                                 new MatrixTest(
@@ -322,10 +310,7 @@ public class SOAPTestSuite {
                 factoryElementTypeTests(),
                 new FanOutNode<>(
                         ImmutableList.of(true, false),
-                        (binder, value) ->
-                                binder.bind(Boolean.class)
-                                        .annotatedWith(Names.named("withParent"))
-                                        .toInstance(value),
+                        Binding.singleton(Key.get(Boolean.class, Names.named("withParent"))),
                         (injector, value, params) ->
                                 params.addTestParameter("withParent", String.valueOf(value)),
                         new MatrixTest(
@@ -342,8 +327,7 @@ public class SOAPTestSuite {
                 // ── fault package ──
                 new FanOutNode<>(
                         getInstances(SerializationStrategy.class),
-                        (binder, value) ->
-                                binder.bind(SerializationStrategy.class).toInstance(value),
+                        Binding.singleton(Key.get(SerializationStrategy.class)),
                         ParameterBinding.DIMENSION,
                         new FanOutNode<>(
                                 ImmutableList.of(
@@ -356,10 +340,8 @@ public class SOAPTestSuite {
                                             SOAPFaultChild.DETAIL,
                                             SOAPFaultChild.REASON
                                         }),
-                                (binder, value) ->
-                                        binder.bind(SOAPFaultChild[].class)
-                                                .annotatedWith(Names.named("inputOrder"))
-                                                .toInstance(value),
+                                Binding.singleton(
+                                        Key.get(SOAPFaultChild[].class, Names.named("inputOrder"))),
                                 (injector, value, params) -> {
                                     StringBuilder buffer = new StringBuilder();
                                     for (int i = 0; i < value.length; i++) {
@@ -469,10 +451,7 @@ public class SOAPTestSuite {
                 new MatrixTest(org.apache.axiom.ts.soap.headerblock.TestBlobOMDataSource.class),
                 new FanOutNode<>(
                         ImmutableList.<Boolean>of(Boolean.TRUE, Boolean.FALSE),
-                        (binder, value) ->
-                                binder.bind(Boolean.class)
-                                        .annotatedWith(Names.named("processed"))
-                                        .toInstance(value),
+                        Binding.singleton(Key.get(Boolean.class, Names.named("processed"))),
                         (injector, value, params) ->
                                 params.addTestParameter("processed", String.valueOf(value)),
                         new MatrixTest(org.apache.axiom.ts.soap.headerblock.TestClone.class)),
@@ -495,10 +474,7 @@ public class SOAPTestSuite {
                 // ── message package ──
                 new FanOutNode<>(
                         ImmutableList.of(true, false),
-                        (binder, value) ->
-                                binder.bind(Boolean.class)
-                                        .annotatedWith(Names.named("preserveModel"))
-                                        .toInstance(value),
+                        Binding.singleton(Key.get(Boolean.class, Names.named("preserveModel"))),
                         (injector, value, params) ->
                                 params.addTestParameter("preserveModel", String.valueOf(value)),
                         new ParentNode(
@@ -518,10 +494,7 @@ public class SOAPTestSuite {
                 // ── xpath package ──
                 new FanOutNode<>(
                         ImmutableList.of(true, false),
-                        (binder, value) ->
-                                binder.bind(Boolean.class)
-                                        .annotatedWith(Names.named("createDocument"))
-                                        .toInstance(value),
+                        Binding.singleton(Key.get(Boolean.class, Names.named("createDocument"))),
                         (injector, value, params) ->
                                 params.addTestParameter("createDocument", String.valueOf(value)),
                         new MatrixTest(
@@ -532,10 +505,7 @@ public class SOAPTestSuite {
     private static MatrixTestNode factoryElementTypeTests() {
         return new FanOutNode<>(
                 ImmutableList.copyOf(SOAPElementType.getAll()),
-                (binder, value) ->
-                        binder.bind(SOAPElementType.class)
-                                .annotatedWith(Names.named("type"))
-                                .toInstance(value),
+                Binding.singleton(Key.get(SOAPElementType.class, Names.named("type"))),
                 (injector, value, params) ->
                         value.getAdapter(SOAPElementTypeAdapter.class).addTestParameters(params),
                 new ParentNode(
@@ -549,10 +519,8 @@ public class SOAPTestSuite {
                                                                         SOAPElementType.class,
                                                                         Names.named("type")))
                                                         .getChildTypes()),
-                                (binder, value) ->
-                                        binder.bind(SOAPElementType.class)
-                                                .annotatedWith(Names.named("childType"))
-                                                .toInstance(value),
+                                Binding.singleton(
+                                        Key.get(SOAPElementType.class, Names.named("childType"))),
                                 (injector, value, params) ->
                                         params.addTestParameter(
                                                 "childType",
@@ -588,10 +556,7 @@ public class SOAPTestSuite {
                             .filter(type -> type.getQName(spec) != null)
                             .collect(ImmutableList.toImmutableList());
                 },
-                (binder, value) ->
-                        binder.bind(SOAPElementType.class)
-                                .annotatedWith(Names.named("type"))
-                                .toInstance(value),
+                Binding.singleton(Key.get(SOAPElementType.class, Names.named("type"))),
                 (injector, value, params) ->
                         params.addTestParameter(
                                 "type",
@@ -608,10 +573,7 @@ public class SOAPTestSuite {
                                     .filter(childType -> childType.getQName(spec) != null)
                                     .collect(ImmutableList.toImmutableList());
                         },
-                        (binder, value) ->
-                                binder.bind(SOAPElementType.class)
-                                        .annotatedWith(Names.named("childType"))
-                                        .toInstance(value),
+                        Binding.singleton(Key.get(SOAPElementType.class, Names.named("childType"))),
                         (injector, value, params) ->
                                 params.addTestParameter(
                                         "childType",
@@ -676,7 +638,7 @@ public class SOAPTestSuite {
     private static MatrixTestNode headerBlockAttributeTests() {
         return new FanOutNode<>(
                 getInstances(HeaderBlockAttribute.class),
-                (binder, value) -> binder.bind(HeaderBlockAttribute.class).toInstance(value),
+                Binding.singleton(Key.get(HeaderBlockAttribute.class)),
                 (injector, value, params) ->
                         params.addTestParameter(
                                 "attribute", value.getName(injector.getInstance(SOAPSpec.class))),
@@ -708,11 +670,10 @@ public class SOAPTestSuite {
                                                                                                 SOAPSpec
                                                                                                         .class)
                                                                                         .getBooleanLiterals()),
-                                                                (binder, value) ->
-                                                                        binder.bind(
-                                                                                        BooleanLiteral
-                                                                                                .class)
-                                                                                .toInstance(value),
+                                                                Binding.singleton(
+                                                                        Key.get(
+                                                                                BooleanLiteral
+                                                                                        .class)),
                                                                 (injector, value, params) ->
                                                                         params.addTestParameter(
                                                                                 "literal",
@@ -734,12 +695,11 @@ public class SOAPTestSuite {
                                                                                                 SOAPSpec
                                                                                                         .class)
                                                                                         .getInvalidBooleanLiterals()),
-                                                                (binder, value) ->
-                                                                        binder.bind(String.class)
-                                                                                .annotatedWith(
-                                                                                        Names.named(
-                                                                                                "value"))
-                                                                                .toInstance(value),
+                                                                Binding.singleton(
+                                                                        Key.get(
+                                                                                String.class,
+                                                                                Names.named(
+                                                                                        "value"))),
                                                                 (injector, value, params) ->
                                                                         params.addTestParameter(
                                                                                 "value", value),
@@ -750,12 +710,11 @@ public class SOAPTestSuite {
                                                                                 .class)),
                                                         new FanOutNode<>(
                                                                 ImmutableList.of(true, false),
-                                                                (binder, value) ->
-                                                                        binder.bind(Boolean.class)
-                                                                                .annotatedWith(
-                                                                                        Names.named(
-                                                                                                "value"))
-                                                                                .toInstance(value),
+                                                                Binding.singleton(
+                                                                        Key.get(
+                                                                                Boolean.class,
+                                                                                Names.named(
+                                                                                        "value"))),
                                                                 (injector, value, params) ->
                                                                         params.addTestParameter(
                                                                                 "value",
@@ -816,10 +775,7 @@ public class SOAPTestSuite {
                 new MatrixTest(org.apache.axiom.ts.soap12.envelope.TestBuildWithAttachments.class),
                 new FanOutNode<>(
                         ImmutableList.of(true, false),
-                        (binder, value) ->
-                                binder.bind(Boolean.class)
-                                        .annotatedWith(Names.named("buildSOAPPart"))
-                                        .toInstance(value),
+                        Binding.singleton(Key.get(Boolean.class, Names.named("buildSOAPPart"))),
                         (injector, value, params) ->
                                 params.addTestParameter("buildSOAPPart", String.valueOf(value)),
                         new MatrixTest(
@@ -875,10 +831,7 @@ public class SOAPTestSuite {
                 new MatrixTest(org.apache.axiom.ts.soap12.mtom.TestBuilderDetach.class),
                 new FanOutNode<>(
                         ImmutableList.of(true, false),
-                        (binder, value) ->
-                                binder.bind(Boolean.class)
-                                        .annotatedWith(Names.named("cache"))
-                                        .toInstance(value),
+                        Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
                         (injector, value, params) ->
                                 params.addTestParameter("cache", String.valueOf(value)),
                         new MatrixTest(

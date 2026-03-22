@@ -18,12 +18,14 @@
  */
 package org.apache.axiom.util.sax;
 
+import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.xml.sax.XMLReader;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Key;
 import com.google.inject.name.Names;
 
 public class XMLReaderTestSuite {
@@ -35,10 +37,7 @@ public class XMLReaderTestSuite {
                                 "http://xml.org/sax/features/namespaces",
                                 "http://xml.org/sax/features/namespace-prefixes",
                                 "http://xml.org/sax/features/external-general-entities"),
-                        (binder, value) ->
-                                binder.bind(String.class)
-                                        .annotatedWith(Names.named("feature"))
-                                        .toInstance(value),
+                        Binding.singleton(Key.get(String.class, Names.named("feature"))),
                         (injector, value, params) -> params.addTestParameter("feature", value),
                         new MatrixTest(TestGetSetFeature.class)));
     }

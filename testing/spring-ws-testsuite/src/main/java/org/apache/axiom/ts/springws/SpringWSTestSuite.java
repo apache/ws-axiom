@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.springws;
 
 import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
@@ -41,6 +42,7 @@ import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMess
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStreamVersionMismatch;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Key;
 
 public class SpringWSTestSuite {
     public static MatrixTestNode create(
@@ -55,7 +57,7 @@ public class SpringWSTestSuite {
 
         return new FanOutNode<>(
                 Multiton.getInstances(SOAPSpec.class),
-                (binder, value) -> binder.bind(SOAPSpec.class).toInstance(value),
+                Binding.singleton(Key.get(SOAPSpec.class)),
                 (injector, value, params) ->
                         params.addTestParameter(
                                 "soapVersion",
@@ -80,8 +82,7 @@ public class SpringWSTestSuite {
                                                                 .class)))),
                         new FanOutNode<>(
                                 configs.build(),
-                                (binder, value) ->
-                                        binder.bind(ScenarioConfig.class).toInstance(value),
+                                Binding.singleton(Key.get(ScenarioConfig.class)),
                                 ParameterBinding.DIMENSION,
                                 new ParentNode(
                                         new MatrixTest(ClientServerTest.class),

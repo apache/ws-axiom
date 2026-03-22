@@ -202,7 +202,7 @@ public class SAAJTestSuite {
                                 .toInstance(new SAAJImplementation(metaFactory)),
                 new FanOutNode<>(
                         Multiton.getInstances(SOAPSpec.class),
-                        (binder, value) -> binder.bind(SOAPSpec.class).toInstance(value),
+                        Binding.singleton(Key.get(SOAPSpec.class)),
                         (params, value) -> params.addTestParameter("spec", value.getName()),
                         new ParentNode(
                                 new MatrixTest(TestAddChildElementReification.class),
@@ -381,11 +381,11 @@ public class StAXPivotTransformerTest {
     public Stream<DynamicNode> tests() {
         return new FanOutNode<>(
                         Multiton.getInstances(XSLTImplementation.class),
-                        (binder, value) -> binder.bind(XSLTImplementation.class).toInstance(value),
+                        Binding.singleton(Key.get(XSLTImplementation.class)),
                         (params, value) -> params.addTestParameter("xslt", value.getName()),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
-                                (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
+                                Binding.singleton(Key.get(XMLSample.class)),
                                 (params, value) ->
                                         params.addTestParameter("sample", value.getName()),
                                 new MatrixTest(StAXPivotTransformerTestCase.class)))
@@ -407,6 +407,12 @@ Note that filtering logic (e.g. skipping values based on a condition like
 Guice can inject primitive types such as `boolean` directly — there is no need
 to use the boxed wrapper type. On the binding side, use the boxed type
 (`Boolean.class`) since `boolean.class` is not a valid Guice key:
+
+```java
+Binding.singleton(Key.get(Boolean.class, Names.named("deep")))
+```
+
+Or, if you need to write the binding manually:
 
 ```java
 binder.bind(Boolean.class)

@@ -21,14 +21,17 @@ package org.apache.axiom.om.impl.jaxp;
 import java.util.stream.Stream;
 
 import org.apache.axiom.testing.multiton.Multiton;
-import org.apache.axiom.testutils.suite.MatrixTest;
-import com.google.common.collect.ImmutableList;
-import com.google.inject.name.Names;
-import org.apache.axiom.testutils.suite.MatrixTestFilters;
+import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
+import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.MatrixTestFilters;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
+
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
 
 public class StreamSourceToOMResultTest {
     @TestFactory
@@ -39,15 +42,13 @@ public class StreamSourceToOMResultTest {
                         .build();
         return new FanOutNode<>(
                         ImmutableList.of("default", "dom"),
-                        (binder, value) ->
-                                binder.bind(String.class)
-                                        .annotatedWith(Names.named("axiomImplementation"))
-                                        .toInstance(value),
+                        Binding.singleton(
+                                Key.get(String.class, Names.named("axiomImplementation"))),
                         (injector, value, params) ->
                                 params.addTestParameter("axiomImplementation", value),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
-                                (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
+                                Binding.singleton(Key.get(XMLSample.class)),
                                 (injector, value, params) ->
                                         params.addTestParameter("file", value.getName()),
                                 new MatrixTest(StreamSourceToOMResultTestCase.class)))
