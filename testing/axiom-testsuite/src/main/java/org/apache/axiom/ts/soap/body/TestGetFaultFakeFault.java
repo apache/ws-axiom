@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
@@ -30,6 +31,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * return <code>null</code>.
  */
 public class TestGetFaultFakeFault extends SOAPTestCase {
+    @Inject
     public TestGetFaultFakeFault(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

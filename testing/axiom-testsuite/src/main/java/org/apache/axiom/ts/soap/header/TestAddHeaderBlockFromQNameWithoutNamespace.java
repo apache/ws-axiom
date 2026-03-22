@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.ts.soap.header;
 
-import javax.xml.namespace.QName;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
@@ -29,11 +29,14 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link SOAPHeader#addHeaderBlock(QName)} when passing a {@link QName} with
  * no namespace.
  */
 public class TestAddHeaderBlockFromQNameWithoutNamespace extends SOAPTestCase {
+    @Inject
     public TestAddHeaderBlockFromQNameWithoutNamespace(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

@@ -23,14 +23,17 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.BooleanLiteral;
+import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
+
+import com.google.inject.Inject;
 
 public class TestGetBooleanAttribute extends BooleanAttributeTestCase {
     private final BooleanLiteral literal;
 
+    @Inject
     public TestGetBooleanAttribute(
             OMMetaFactory metaFactory,
             SOAPSpec spec,
@@ -38,7 +41,6 @@ public class TestGetBooleanAttribute extends BooleanAttributeTestCase {
             BooleanLiteral literal) {
         super(metaFactory, spec, attribute);
         this.literal = literal;
-        addTestParameter("literal", literal.getLexicalRepresentation());
     }
 
     @Override

@@ -32,11 +32,14 @@ import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests {@link SOAPFactory#createSOAPFaultSubCode(SOAPFaultCode)} when used with a {@link
  * SOAPFaultCode} that has already a {@link SOAPFaultValue} child.
  */
 public class TestCreateSOAPFaultSubCode extends SOAPTestCase {
+    @Inject
     public TestCreateSOAPFaultSubCode(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP12);
     }

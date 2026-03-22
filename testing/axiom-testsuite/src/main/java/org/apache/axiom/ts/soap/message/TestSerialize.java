@@ -29,11 +29,14 @@ import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.soap.SOAPSample;
 
+import com.google.inject.Inject;
+
 public class TestSerialize extends AxiomTestCase {
     private final SOAPSample message;
     private final ExpansionStrategy expansionStrategy;
     private final SerializationStrategy serializationStrategy;
 
+    @Inject
     public TestSerialize(
             OMMetaFactory metaFactory,
             SOAPSample message,
@@ -43,9 +46,6 @@ public class TestSerialize extends AxiomTestCase {
         this.message = message;
         this.expansionStrategy = expansionStrategy;
         this.serializationStrategy = serializationStrategy;
-        addTestParameter("message", message.getName());
-        expansionStrategy.addTestParameters(this);
-        serializationStrategy.addTestParameters(this);
     }
 
     @Override

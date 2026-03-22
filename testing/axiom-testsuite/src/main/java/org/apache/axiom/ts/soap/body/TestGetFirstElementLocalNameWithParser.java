@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -29,6 +30,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a>.
  */
 public class TestGetFirstElementLocalNameWithParser extends FirstElementNameWithParserTestCase {
+    @Inject
     public TestGetFirstElementLocalNameWithParser(
             OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
         super(metaFactory, spec, qname, true);

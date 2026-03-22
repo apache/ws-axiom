@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMComment;
@@ -33,6 +34,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * document element.
  */
 public class TestCommentInEpilog extends SOAPTestCase {
+    @Inject
     public TestCommentInEpilog(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

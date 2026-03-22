@@ -28,6 +28,8 @@ import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that setting a SOAP header block attribute uses the correct namespace prefix from the
  * attribute's QName, not the attribute's local name.
@@ -41,11 +43,11 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 public class TestSetAttributeNamespacePrefix extends SOAPTestCase {
     private final HeaderBlockAttribute attribute;
 
+    @Inject
     public TestSetAttributeNamespacePrefix(
             OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
         super(metaFactory, spec);
         this.attribute = attribute;
-        addTestParameter("attribute", attribute.getName(spec));
     }
 
     @Override

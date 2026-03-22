@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import com.google.inject.Inject;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
@@ -30,6 +31,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 public class TestCloneOMElement extends SampleBasedSOAPTestCase {
+    @Inject
     public TestCloneOMElement(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }

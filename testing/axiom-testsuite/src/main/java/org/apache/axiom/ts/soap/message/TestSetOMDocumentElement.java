@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.message;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -31,6 +32,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * {@link SOAPEnvelope} as the root element of a {@link SOAPMessage}.
  */
 public class TestSetOMDocumentElement extends SOAPTestCase {
+    @Inject
     public TestSetOMDocumentElement(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

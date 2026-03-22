@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -28,6 +29,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * Tests that {@link SOAPBody#getFirstElementNS()} returns <code>null</code> if the body is empty.
  */
 public class TestGetFirstElementNSEmptyBody extends SOAPTestCase {
+    @Inject
     public TestGetFirstElementNSEmptyBody(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

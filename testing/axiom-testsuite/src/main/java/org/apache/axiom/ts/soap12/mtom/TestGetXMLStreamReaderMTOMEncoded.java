@@ -34,16 +34,20 @@ import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
     private static final QName XOP_INCLUDE =
             new QName("http://www.w3.org/2004/08/xop/include", "Include");
 
     private final boolean cache;
 
-    public TestGetXMLStreamReaderMTOMEncoded(OMMetaFactory metaFactory, boolean cache) {
+    @Inject
+    public TestGetXMLStreamReaderMTOMEncoded(
+            OMMetaFactory metaFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", cache);
     }
 
     @Override

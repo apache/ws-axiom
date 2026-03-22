@@ -27,11 +27,14 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link SOAPFaultClassifier#getValueAsQName()} on a {@link
  * SOAPFaultSubCode}.
  */
 public class TestGetValueAsQNameWithParser extends SampleBasedSOAPTestCase {
+    @Inject
     public TestGetValueAsQNameWithParser(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSample.SOAP12_FAULT);
     }

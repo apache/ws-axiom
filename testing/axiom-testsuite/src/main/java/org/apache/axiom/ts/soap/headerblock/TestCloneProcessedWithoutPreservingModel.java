@@ -27,6 +27,8 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Test cloning a {@link SOAPHeaderBlock} flagged as processed, but without preserving the model. In
  * this case the result is a plain {@link OMElement} instance and the processed flag is ignored.
@@ -34,6 +36,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * <p>This is a regression test for an issue in older Axiom versions.
  */
 public class TestCloneProcessedWithoutPreservingModel extends SOAPTestCase {
+    @Inject
     public TestCloneProcessedWithoutPreservingModel(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

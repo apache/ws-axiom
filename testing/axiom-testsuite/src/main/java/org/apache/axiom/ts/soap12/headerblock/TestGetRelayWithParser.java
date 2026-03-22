@@ -26,7 +26,10 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetRelayWithParser extends SampleBasedSOAPTestCase {
+    @Inject
     public TestGetRelayWithParser(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSample.SOAP12_RELAY);
     }

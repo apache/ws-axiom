@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -29,6 +30,7 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 /** Tests that the SOAP builder creates {@link OMComment} nodes for comments in the XML prolog. */
 public class TestCommentInProlog extends SOAPTestCase {
+    @Inject
     public TestCommentInProlog(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

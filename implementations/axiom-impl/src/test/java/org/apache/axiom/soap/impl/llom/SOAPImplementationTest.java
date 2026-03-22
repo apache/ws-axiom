@@ -18,17 +18,17 @@
  */
 package org.apache.axiom.soap.impl.llom;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.stream.Stream;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactoryLoader;
-import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
+import org.apache.axiom.ts.soap.SOAPTestSuite;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-public class SOAPImplementationTest extends TestCase {
-    public static TestSuite suite() {
-        SOAPTestSuiteBuilder builder =
-                new SOAPTestSuiteBuilder(new OMLinkedListMetaFactoryLoader().load(null));
-
-        return builder.build();
+public class SOAPImplementationTest {
+    @TestFactory
+    public Stream<DynamicNode> tests() {
+        return SOAPTestSuite.create(new OMLinkedListMetaFactoryLoader().load(null))
+                .toDynamicNodes();
     }
 }

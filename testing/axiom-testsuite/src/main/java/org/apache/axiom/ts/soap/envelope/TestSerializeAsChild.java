@@ -31,8 +31,11 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-474">AXIOM-474</a>. */
 public class TestSerializeAsChild extends SOAPTestCase {
+    @Inject
     public TestSerializeAsChild(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

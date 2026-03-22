@@ -39,7 +39,10 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import com.google.inject.Inject;
+
 public class TestCreateSOAPModelBuilderFromSAXSource extends SOAPTestCase {
+    @Inject
     public TestCreateSOAPModelBuilderFromSAXSource(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

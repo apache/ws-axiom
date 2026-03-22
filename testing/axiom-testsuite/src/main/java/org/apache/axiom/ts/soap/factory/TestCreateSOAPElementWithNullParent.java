@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
@@ -47,16 +49,14 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 public class TestCreateSOAPElementWithNullParent extends CreateSOAPElementWithoutParentTestCase {
     private final SOAPElementType parentType;
 
+    @Inject
     public TestCreateSOAPElementWithNullParent(
             OMMetaFactory metaFactory,
             SOAPSpec spec,
-            SOAPElementType type,
-            SOAPElementType parentType) {
+            @Named("childType") SOAPElementType type,
+            @Named("type") SOAPElementType parentType) {
         super(metaFactory, spec, type);
         this.parentType = parentType;
-        addTestParameter(
-                "parentType",
-                parentType.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
     }
 
     @Override

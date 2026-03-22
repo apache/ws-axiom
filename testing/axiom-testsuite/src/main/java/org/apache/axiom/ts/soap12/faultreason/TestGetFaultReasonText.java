@@ -28,7 +28,10 @@ import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetFaultReasonText extends SampleBasedSOAPTestCase {
+    @Inject
     public TestGetFaultReasonText(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSample.SOAP12_FAULT);
     }

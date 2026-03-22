@@ -37,6 +37,9 @@ import org.apache.axiom.testutils.blob.TestBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that attachments are streamed (i.e. not read entirely into memory) if the original message
  * was read from an input stream and {@link OMElement#serializeAndConsume(java.io.OutputStream,
@@ -46,9 +49,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestMTOMForwardStreaming extends AxiomTestCase {
     private final boolean buildSOAPPart;
 
-    public TestMTOMForwardStreaming(OMMetaFactory metaFactory, boolean buildSOAPPart) {
+    @Inject
+    public TestMTOMForwardStreaming(
+            OMMetaFactory metaFactory, @Named("buildSOAPPart") boolean buildSOAPPart) {
         super(metaFactory);
-        addTestParameter("buildSOAPPart", buildSOAPPart);
         this.buildSOAPPart = buildSOAPPart;
     }
 

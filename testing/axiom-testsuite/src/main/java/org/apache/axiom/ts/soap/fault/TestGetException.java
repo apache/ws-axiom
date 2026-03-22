@@ -28,7 +28,10 @@ import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetException extends SOAPTestCase {
+    @Inject
     public TestGetException(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

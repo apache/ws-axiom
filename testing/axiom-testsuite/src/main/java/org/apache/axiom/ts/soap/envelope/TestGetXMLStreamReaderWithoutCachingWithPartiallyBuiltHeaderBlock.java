@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
@@ -41,6 +42,7 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
  */
 public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock
         extends SampleBasedSOAPTestCase {
+    @Inject
     public TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock(
             OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.WSA);

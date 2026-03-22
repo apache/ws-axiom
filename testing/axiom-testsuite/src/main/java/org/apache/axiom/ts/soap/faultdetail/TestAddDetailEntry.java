@@ -30,8 +30,11 @@ import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 // SOAP Fault Detail Test (Programaticaly Created)
 public class TestAddDetailEntry extends SOAPTestCase {
+    @Inject
     public TestAddDetailEntry(OMMetaFactory omMetaFactory, SOAPSpec spec) {
         super(omMetaFactory, spec);
     }

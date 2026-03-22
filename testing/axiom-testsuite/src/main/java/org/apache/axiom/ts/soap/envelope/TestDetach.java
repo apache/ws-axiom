@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -32,6 +33,7 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
  * envelope from its containing document.
  */
 public class TestDetach extends SampleBasedSOAPTestCase {
+    @Inject
     public TestDetach(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
     }

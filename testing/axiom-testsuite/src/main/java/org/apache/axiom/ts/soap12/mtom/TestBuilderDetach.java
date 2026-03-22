@@ -34,7 +34,10 @@ import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
 
+import com.google.inject.Inject;
+
 public class TestBuilderDetach extends AxiomTestCase {
+    @Inject
     public TestBuilderDetach(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

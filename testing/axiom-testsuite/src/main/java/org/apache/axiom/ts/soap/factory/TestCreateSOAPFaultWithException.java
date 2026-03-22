@@ -33,14 +33,17 @@ import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestCreateSOAPFaultWithException extends SOAPTestCase {
     private final boolean withParent;
 
+    @Inject
     public TestCreateSOAPFaultWithException(
-            OMMetaFactory metaFactory, SOAPSpec spec, boolean withParent) {
+            OMMetaFactory metaFactory, SOAPSpec spec, @Named("withParent") boolean withParent) {
         super(metaFactory, spec);
         this.withParent = withParent;
-        addTestParameter("withParent", withParent);
     }
 
     @Override

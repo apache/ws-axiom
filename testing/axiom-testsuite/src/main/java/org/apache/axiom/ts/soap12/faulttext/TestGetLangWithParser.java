@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap12.faulttext;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -28,6 +29,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 public class TestGetLangWithParser extends SampleBasedSOAPTestCase {
+    @Inject
     public TestGetLangWithParser(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP12, SOAPSampleSet.SIMPLE_FAULT);
     }

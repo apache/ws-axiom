@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
@@ -34,7 +36,9 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  * SOAPFactory#createSOAPFaultRole()} and {@link SOAPFactory#createSOAPFaultDetail()}.
  */
 public class TestCreateSOAPElement extends CreateSOAPElementWithoutParentTestCase {
-    public TestCreateSOAPElement(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type) {
+    @Inject
+    public TestCreateSOAPElement(
+            OMMetaFactory metaFactory, SOAPSpec spec, @Named("type") SOAPElementType type) {
         super(metaFactory, spec, type);
     }
 

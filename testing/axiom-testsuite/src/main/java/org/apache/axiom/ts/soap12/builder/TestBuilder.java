@@ -46,7 +46,10 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestBuilder extends AxiomTestCase {
+    @Inject
     public TestBuilder(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

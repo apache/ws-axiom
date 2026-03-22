@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap11.faultcode;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -34,6 +35,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * {@link SOAPFaultCode}.
  */
 public class TestSetValueFromQName extends SOAPTestCase {
+    @Inject
     public TestSetValueFromQName(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP11);
     }

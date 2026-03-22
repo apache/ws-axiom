@@ -18,11 +18,11 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
@@ -37,6 +37,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.apache.axiom.util.UIDGenerator;
 
+import com.google.inject.Inject;
+
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
 import jakarta.mail.Session;
@@ -50,6 +52,7 @@ import jakarta.mail.internet.MimeMultipart;
  * message.
  */
 public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends SOAPTestCase {
+    @Inject
     public TestCreateSOAPModelBuilderMTOMContentTypeMismatch(
             OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

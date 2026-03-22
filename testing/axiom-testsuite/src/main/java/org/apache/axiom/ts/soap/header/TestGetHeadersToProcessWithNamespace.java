@@ -29,8 +29,11 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests the behavior of {@link SOAPHeader#getHeadersToProcess(RolePlayer, String)} */
 public class TestGetHeadersToProcessWithNamespace extends SOAPTestCase {
+    @Inject
     public TestGetHeadersToProcessWithNamespace(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

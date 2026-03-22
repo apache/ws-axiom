@@ -24,20 +24,23 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
+import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 public class TestSetBooleanAttribute extends BooleanAttributeTestCase {
     private final boolean value;
 
+    @Inject
     public TestSetBooleanAttribute(
             OMMetaFactory metaFactory,
             SOAPSpec spec,
             HeaderBlockAttribute attribute,
-            boolean value) {
+            @Named("value") boolean value) {
         super(metaFactory, spec, attribute);
-        addTestParameter("value", value);
         this.value = value;
     }
 

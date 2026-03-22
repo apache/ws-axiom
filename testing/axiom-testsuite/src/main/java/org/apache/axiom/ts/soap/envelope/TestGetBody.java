@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -26,6 +27,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestGetBody extends SOAPTestCase {
+    @Inject
     public TestGetBody(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

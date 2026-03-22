@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import com.google.inject.Inject;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringReader;
@@ -37,6 +38,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a> is no longer applicable.
  */
 public class TestGetFirstElementLocalNameWithParserNoLookahead extends SOAPTestCase {
+    @Inject
     public TestGetFirstElementLocalNameWithParserNoLookahead(
             OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

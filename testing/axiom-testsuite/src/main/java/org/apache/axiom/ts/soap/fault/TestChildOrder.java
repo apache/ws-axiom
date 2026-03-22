@@ -37,6 +37,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that the children added using methods such as {@link SOAPFault#setCode(SOAPFaultCode)} and
  * {@link SOAPFault#setReason(SOAPFaultReason)} appear in the order required by the SOAP specs when
@@ -48,27 +51,15 @@ public class TestChildOrder extends SOAPTestCase {
     private final SOAPFaultChild[] inputOrder;
     private final SerializationStrategy serializationStrategy;
 
+    @Inject
     public TestChildOrder(
             OMMetaFactory metaFactory,
             SOAPSpec spec,
-            SOAPFaultChild[] inputOrder,
+            @Named("inputOrder") SOAPFaultChild[] inputOrder,
             SerializationStrategy serializationStrategy) {
         super(metaFactory, spec);
         this.inputOrder = inputOrder;
         this.serializationStrategy = serializationStrategy;
-        StringBuilder buffer = new StringBuilder();
-        for (int i = 0; i < inputOrder.length; i++) {
-            if (i > 0) {
-                buffer.append(',');
-            }
-            buffer.append(
-                    inputOrder[i]
-                            .getAdapter(SOAPElementTypeAdapter.class)
-                            .getType()
-                            .getSimpleName());
-        }
-        addTestParameter("inputOrder", buffer.toString());
-        serializationStrategy.addTestParameters(this);
     }
 
     @Override

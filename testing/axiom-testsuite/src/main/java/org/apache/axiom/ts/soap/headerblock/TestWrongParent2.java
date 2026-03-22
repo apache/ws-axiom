@@ -30,11 +30,14 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMNode#insertSiblingAfter(OMNode)} throws an exception if an attempt is made to
  * add a {@link SOAPHeaderBlock} as a child of a SOAP element other than {@link SOAPHeader}.
  */
 public class TestWrongParent2 extends SOAPTestCase {
+    @Inject
     public TestWrongParent2(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

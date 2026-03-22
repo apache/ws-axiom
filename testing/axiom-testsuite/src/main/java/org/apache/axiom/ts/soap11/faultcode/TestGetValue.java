@@ -28,11 +28,14 @@ import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link SOAPFaultClassifier#getValue()} returns <code>null</code> when invoked on a
  * SOAP 1.1 {@link SOAPFaultCode}.
  */
 public class TestGetValue extends SOAPTestCase {
+    @Inject
     public TestGetValue(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP11);
     }

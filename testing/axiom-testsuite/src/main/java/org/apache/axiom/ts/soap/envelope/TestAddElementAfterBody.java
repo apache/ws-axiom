@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javax.xml.namespace.QName;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -36,10 +38,11 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 public class TestAddElementAfterBody extends SOAPTestCase {
     private final boolean header;
 
-    public TestAddElementAfterBody(OMMetaFactory metaFactory, SOAPSpec spec, boolean header) {
+    @Inject
+    public TestAddElementAfterBody(
+            OMMetaFactory metaFactory, SOAPSpec spec, @Named("header") boolean header) {
         super(metaFactory, spec);
         this.header = header;
-        addTestParameter("header", header);
     }
 
     @Override

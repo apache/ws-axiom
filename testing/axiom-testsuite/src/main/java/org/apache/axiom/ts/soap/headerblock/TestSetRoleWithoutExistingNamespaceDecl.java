@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
-import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
 import org.apache.axiom.om.OMAttribute;
@@ -28,8 +27,11 @@ import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests that {@link SOAPHeaderBlock#setRole(String)} adds a namespace declaration if necessary. */
 public class TestSetRoleWithoutExistingNamespaceDecl extends SOAPTestCase {
+    @Inject
     public TestSetRoleWithoutExistingNamespaceDecl(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

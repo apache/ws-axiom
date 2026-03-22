@@ -34,8 +34,11 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests functionality of BlobOMDataSource */
 public class TestBlobOMDataSource extends SOAPTestCase {
+    @Inject
     public TestBlobOMDataSource(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

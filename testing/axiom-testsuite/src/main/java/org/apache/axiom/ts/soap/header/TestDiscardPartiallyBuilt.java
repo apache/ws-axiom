@@ -30,12 +30,15 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMNode#discard()} on a {@link SOAPHeader} that is partially built,
  * more precisely in a situation where the builder is building a descendant that is not an immediate
  * child of the header.
  */
 public class TestDiscardPartiallyBuilt extends SampleBasedSOAPTestCase {
+    @Inject
     public TestDiscardPartiallyBuilt(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }

@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.ts.soap.message;
 
-import javax.xml.namespace.QName;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -31,12 +31,15 @@ import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} when an attempt is made
  * to set an {@link OMElement} that is not a {@link SOAPEnvelope} as the root element of a {@link
  * SOAPMessage}. In this case, an exception should be thrown.
  */
 public class TestSetOMDocumentElementNonSOAPEnvelope extends SOAPTestCase {
+    @Inject
     public TestSetOMDocumentElementNonSOAPEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

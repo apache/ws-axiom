@@ -28,7 +28,10 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetFaultReasonTextWithoutLangAttribute extends SOAPTestCase {
+    @Inject
     public TestGetFaultReasonTextWithoutLangAttribute(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP12);
     }

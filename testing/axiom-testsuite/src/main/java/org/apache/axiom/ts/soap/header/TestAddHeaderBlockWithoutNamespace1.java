@@ -28,11 +28,14 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link SOAPHeader#addHeaderBlock(String, OMNamespace)} when passing a
  * <code>null</code> value for the {@link OMNamespace} parameter.
  */
 public class TestAddHeaderBlockWithoutNamespace1 extends SOAPTestCase {
+    @Inject
     public TestAddHeaderBlockWithoutNamespace1(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

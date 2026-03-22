@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.message;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
@@ -36,10 +38,13 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 public class TestCloneIncomplete extends SOAPTestCase {
     private final boolean preserveModel;
 
-    public TestCloneIncomplete(OMMetaFactory metaFactory, SOAPSpec spec, boolean preserveModel) {
+    @Inject
+    public TestCloneIncomplete(
+            OMMetaFactory metaFactory,
+            SOAPSpec spec,
+            @Named("preserveModel") boolean preserveModel) {
         super(metaFactory, spec);
         this.preserveModel = preserveModel;
-        addTestParameter("preserveModel", preserveModel);
     }
 
     @Override

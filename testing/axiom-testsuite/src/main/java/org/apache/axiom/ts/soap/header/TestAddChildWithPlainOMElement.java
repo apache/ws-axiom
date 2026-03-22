@@ -28,8 +28,11 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /** Regression test for AXIOM-512. */
 public class TestAddChildWithPlainOMElement extends SOAPTestCase {
+    @Inject
     public TestAddChildWithPlainOMElement(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

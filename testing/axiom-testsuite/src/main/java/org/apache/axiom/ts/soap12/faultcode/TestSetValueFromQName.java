@@ -30,11 +30,14 @@ import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link SOAPFaultClassifier#setValue(QName)} when invoked on an empty SOAP
  * 1.2 {@link SOAPFaultCode}.
  */
 public class TestSetValueFromQName extends SOAPTestCase {
+    @Inject
     public TestSetValueFromQName(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP12);
     }

@@ -31,7 +31,10 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestExamineHeaderBlocksWithParser extends SampleBasedSOAPTestCase {
+    @Inject
     public TestExamineHeaderBlocksWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.HEADERS);
     }

@@ -19,6 +19,7 @@
 
 package org.apache.axiom.ts.soap.envelope;
 
+import com.google.inject.Inject;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -41,6 +42,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /** Regression test for WSCOMMONS-226. */
 public class TestSerializeAndConsumeWithOMSEInBody extends SOAPTestCase {
+    @Inject
     public TestSerializeAndConsumeWithOMSEInBody(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

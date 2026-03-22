@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import com.google.inject.Inject;
 import java.util.ArrayList;
 
 import org.apache.axiom.blob.MemoryBlob;
@@ -35,6 +36,7 @@ import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestRegisterCustomBuilder extends SOAPTestCase {
+    @Inject
     public TestRegisterCustomBuilder(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

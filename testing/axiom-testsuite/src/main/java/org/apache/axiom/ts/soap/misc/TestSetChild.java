@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.misc;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.soap.SOAPElementType;
@@ -25,11 +27,12 @@ import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class TestSetChild extends GetSetChildTestCase {
+    @Inject
     public TestSetChild(
             OMMetaFactory metaFactory,
             SOAPSpec spec,
-            SOAPElementType type,
-            SOAPElementType childType) {
+            @Named("type") SOAPElementType type,
+            @Named("childType") SOAPElementType childType) {
         super(metaFactory, spec, type, childType);
     }
 

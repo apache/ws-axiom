@@ -18,12 +18,14 @@
  */
 package org.apache.axiom.ts.soap.faultrole;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestSetRoleValue extends SOAPTestCase {
+    @Inject
     public TestSetRoleValue(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

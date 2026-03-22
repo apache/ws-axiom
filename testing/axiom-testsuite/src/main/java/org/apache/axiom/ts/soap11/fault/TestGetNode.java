@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap11.fault;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -28,6 +29,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * UnsupportedOperationException}) for SOAP 1.1 faults.
  */
 public class TestGetNode extends SOAPTestCase {
+    @Inject
     public TestGetNode(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP11);
     }

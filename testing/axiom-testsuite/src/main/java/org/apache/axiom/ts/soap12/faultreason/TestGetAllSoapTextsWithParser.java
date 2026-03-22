@@ -28,7 +28,10 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetAllSoapTextsWithParser extends SampleBasedSOAPTestCase {
+    @Inject
     public TestGetAllSoapTextsWithParser(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSample.SOAP12_FAULT);
     }

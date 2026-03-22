@@ -33,15 +33,17 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
+import com.google.inject.Inject;
+
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-107">AXIOM-107</a>. */
 public class TestSerializeWithXSITypeAttribute extends SampleBasedSOAPTestCase {
     private final SerializationStrategy serializationStrategy;
 
+    @Inject
     public TestSerializeWithXSITypeAttribute(
             OMMetaFactory metaFactory, SOAPSpec spec, SerializationStrategy serializationStrategy) {
         super(metaFactory, spec, SOAPSampleSet.XSI_TYPE);
         this.serializationStrategy = serializationStrategy;
-        serializationStrategy.addTestParameters(this);
     }
 
     @Override

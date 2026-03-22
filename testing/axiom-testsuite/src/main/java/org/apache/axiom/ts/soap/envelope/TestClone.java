@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SOAPSampleAdapter;
@@ -25,10 +26,10 @@ import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 public class TestClone extends CloneTestCase {
     private final SOAPSample message;
 
+    @Inject
     public TestClone(OMMetaFactory metaFactory, SOAPSample message) {
         super(metaFactory, message.getSOAPSpec());
         this.message = message;
-        addTestParameter("message", message.getName());
     }
 
     @Override

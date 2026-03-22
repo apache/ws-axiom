@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.header;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
@@ -26,6 +27,7 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 // Regression test for AXIOM-223 (see r567512)
 public class TestDiscardIncomplete extends SampleBasedSOAPTestCase {
+    @Inject
     public TestDiscardIncomplete(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.WSA);
     }

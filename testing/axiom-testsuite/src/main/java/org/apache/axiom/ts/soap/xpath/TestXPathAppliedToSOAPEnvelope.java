@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.xpath;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -30,11 +32,13 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 public class TestXPathAppliedToSOAPEnvelope extends SOAPTestCase {
     private boolean createDocument;
 
+    @Inject
     public TestXPathAppliedToSOAPEnvelope(
-            OMMetaFactory metaFactory, SOAPSpec spec, boolean createDocument) {
+            OMMetaFactory metaFactory,
+            SOAPSpec spec,
+            @Named("createDocument") boolean createDocument) {
         super(metaFactory, spec);
         this.createDocument = createDocument;
-        addTestParameter("createDocument", createDocument);
     }
 
     @Override

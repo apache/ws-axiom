@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPVersion;
@@ -25,6 +26,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestGetVersion extends SOAPTestCase {
+    @Inject
     public TestGetVersion(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
@@ -30,6 +31,7 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
  * This is a regression test for AXIOM-127.
  */
 public class TestAddHeaderToIncompleteEnvelope extends SampleBasedSOAPTestCase {
+    @Inject
     public TestAddHeaderToIncompleteEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
     }

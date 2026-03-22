@@ -27,11 +27,19 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.jspecify.annotations.Nullable;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 public class TestClone extends SOAPTestCase {
     private final Boolean processed;
 
-    public TestClone(OMMetaFactory metaFactory, SOAPSpec spec, Boolean processed) {
+    @Inject
+    public TestClone(
+            OMMetaFactory metaFactory,
+            SOAPSpec spec,
+            @Named("processed") @Nullable Boolean processed) {
         super(metaFactory, spec);
         this.processed = processed;
         addTestParameter("processed", String.valueOf(processed));

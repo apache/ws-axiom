@@ -26,9 +26,12 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
+import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * Tests that {@link SOAPHeaderBlock#getMustUnderstand()} (resp. {@link SOAPHeaderBlock#getRelay()})
@@ -38,14 +41,14 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
     private final String value;
 
+    @Inject
     public TestGetBooleanAttributeInvalid(
             OMMetaFactory metaFactory,
             SOAPSpec spec,
             HeaderBlockAttribute attribute,
-            String value) {
+            @Named("value") String value) {
         super(metaFactory, spec, attribute);
         this.value = value;
-        addTestParameter("value", value);
     }
 
     @Override

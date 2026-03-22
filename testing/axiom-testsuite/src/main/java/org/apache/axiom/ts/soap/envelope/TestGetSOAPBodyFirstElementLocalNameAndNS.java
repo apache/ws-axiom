@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -30,12 +31,11 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 public class TestGetSOAPBodyFirstElementLocalNameAndNS extends SOAPTestCase {
     private final QName qname;
 
+    @Inject
     public TestGetSOAPBodyFirstElementLocalNameAndNS(
             OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
         super(metaFactory, spec);
         this.qname = qname;
-        addTestParameter("prefix", qname.getPrefix());
-        addTestParameter("uri", qname.getNamespaceURI());
     }
 
     @Override

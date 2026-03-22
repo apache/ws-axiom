@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamReader;
@@ -38,6 +39,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * the methods taking a stream as input will generally reject DTDs at a much lower level.
  */
 public class TestDTD extends SOAPTestCase {
+    @Inject
     public TestDTD(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

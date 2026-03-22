@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soap.faulttext;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -26,6 +27,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestSetLang extends SOAPTestCase {
+    @Inject
     public TestSetLang(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

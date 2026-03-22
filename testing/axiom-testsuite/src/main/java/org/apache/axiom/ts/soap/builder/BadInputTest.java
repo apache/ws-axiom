@@ -19,6 +19,8 @@
 
 package org.apache.axiom.ts.soap.builder;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -28,10 +30,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class BadInputTest extends AxiomTestCase {
     private final String file;
 
-    public BadInputTest(OMMetaFactory metaFactory, String file) {
+    @Inject
+    public BadInputTest(OMMetaFactory metaFactory, @Named("file") String file) {
         super(metaFactory);
         this.file = file;
-        addTestParameter("file", file);
     }
 
     @Override
