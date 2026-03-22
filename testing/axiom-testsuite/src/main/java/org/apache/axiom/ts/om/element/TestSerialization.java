@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import com.google.common.collect.ImmutableList;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -47,18 +49,54 @@ public class TestSerialization extends AxiomTestCase {
     private static final String NS = "urn:ns";
     private static final String PREFIX = "p";
 
-    private final String parent;
-    private final String children;
-    private final String expected;
+    public record Params(String parent, String children, String expected) {}
 
-    public TestSerialization(
-            OMMetaFactory metaFactory, String parent, String children, String expected) {
+    public static final ImmutableList<Params> PARAMS =
+            ImmutableList.of(
+                    new Params(
+                            "D",
+                            "D",
+                            "<person xmlns=\"urn:ns\"><name>John</name><age>34</age><weight>50</weight></person>"),
+                    new Params(
+                            "D",
+                            "U",
+                            "<person xmlns=\"urn:ns\"><name xmlns=\"\">John</name><age xmlns=\"\">34</age><weight xmlns=\"\">50</weight></person>"),
+                    new Params(
+                            "D",
+                            "Q",
+                            "<person xmlns=\"urn:ns\"><p:name xmlns:p=\"urn:ns\">John</p:name><p:age xmlns:p=\"urn:ns\">34</p:age><p:weight xmlns:p=\"urn:ns\">50</p:weight></person>"),
+                    new Params(
+                            "Q",
+                            "Q",
+                            "<p:person xmlns:p=\"urn:ns\"><p:name>John</p:name><p:age>34</p:age><p:weight>50</p:weight></p:person>"),
+                    new Params(
+                            "Q",
+                            "U",
+                            "<p:person xmlns:p=\"urn:ns\"><name>John</name><age>34</age><weight>50</weight></p:person>"),
+                    new Params(
+                            "Q",
+                            "D",
+                            "<p:person xmlns:p=\"urn:ns\"><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></p:person>"),
+                    new Params(
+                            "U",
+                            "U",
+                            "<person><name>John</name><age>34</age><weight>50</weight></person>"),
+                    new Params(
+                            "U",
+                            "Q",
+                            "<person><p:name xmlns:p=\"urn:ns\">John</p:name><p:age xmlns:p=\"urn:ns\">34</p:age><p:weight xmlns:p=\"urn:ns\">50</p:weight></person>"),
+                    new Params(
+                            "U",
+                            "D",
+                            "<person><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></person>"));
+
+    private final Params params;
+
+    public TestSerialization(OMMetaFactory metaFactory, Params params) {
         super(metaFactory);
-        this.parent = parent;
-        this.children = children;
-        this.expected = expected;
-        addTestParameter("parent", parent);
-        addTestParameter("children", children);
+        this.params = params;
+        addTestParameter("parent", params.parent());
+        addTestParameter("children", params.children());
     }
 
     private static OMNamespace createNamespace(OMFactory factory, String type) {
@@ -77,8 +115,8 @@ public class TestSerialization extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
 
-        OMNamespace nsParent = createNamespace(fac, parent);
-        OMNamespace nsChildren = createNamespace(fac, children);
+        OMNamespace nsParent = createNamespace(fac, params.parent());
+        OMNamespace nsChildren = createNamespace(fac, params.children());
 
         OMElement personElem = fac.createOMElement("person", nsParent);
         OMElement nameElem = fac.createOMElement("name", nsChildren);
@@ -95,6 +133,6 @@ public class TestSerialization extends AxiomTestCase {
         personElem.addChild(ageElem);
         personElem.addChild(weightElem);
 
-        assertEquals(expected, personElem.toString());
+        assertEquals(params.expected(), personElem.toString());
     }
 }
