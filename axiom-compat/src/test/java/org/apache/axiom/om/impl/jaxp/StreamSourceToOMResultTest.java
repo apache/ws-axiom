@@ -43,11 +43,13 @@ public class StreamSourceToOMResultTest {
                                 binder.bind(String.class)
                                         .annotatedWith(Names.named("axiomImplementation"))
                                         .toInstance(value),
-                        (params, value) -> params.addTestParameter("axiomImplementation", value),
+                        (injector, value, params) ->
+                                params.addTestParameter("axiomImplementation", value),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
-                                (params, value) -> params.addTestParameter("file", value.getName()),
+                                (injector, value, params) ->
+                                        params.addTestParameter("file", value.getName()),
                                 new MatrixTest(StreamSourceToOMResultTestCase.class)))
                 .toDynamicNodes(excludes);
     }

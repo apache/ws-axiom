@@ -39,21 +39,23 @@ public class CompareTest {
                                 binder.bind(XMLSample.class)
                                         .annotatedWith(Names.named("sample"))
                                         .toInstance(value),
-                        (params, value) -> params.addTestParameter("sample", value.getName()),
+                        (injector, value, params) ->
+                                params.addTestParameter("sample", value.getName()),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLObjectFactory.class),
                                 (binder, value) ->
                                         binder.bind(XMLObjectFactory.class)
                                                 .annotatedWith(Names.named("left"))
                                                 .toInstance(value),
-                                (params, value) -> params.addTestParameter("left", value.getName()),
+                                (injector, value, params) ->
+                                        params.addTestParameter("left", value.getName()),
                                 new FanOutNode<>(
                                         Multiton.getInstances(XMLObjectFactory.class),
                                         (binder, value) ->
                                                 binder.bind(XMLObjectFactory.class)
                                                         .annotatedWith(Names.named("right"))
                                                         .toInstance(value),
-                                        (params, value) ->
+                                        (injector, value, params) ->
                                                 params.addTestParameter("right", value.getName()),
                                         new FanOutNode<>(
                                                 ImmutableList.of(true, false),
@@ -63,7 +65,7 @@ public class CompareTest {
                                                                         Names.named(
                                                                                 "expandEntityReferences"))
                                                                 .toInstance(value),
-                                                (params, value) ->
+                                                (injector, value, params) ->
                                                         params.addTestParameter(
                                                                 "expandEntityReferences",
                                                                 String.valueOf(value)),

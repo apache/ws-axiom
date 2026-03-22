@@ -45,7 +45,8 @@ public class CrossOMTestSuite {
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
-                                (params, value) -> params.addTestParameter("file", value.getName()),
+                                (injector, value, params) ->
+                                        params.addTestParameter("file", value.getName()),
                                 new MatrixTest(TestImportInformationItem.class)),
                         new FanOutNode<>(
                                 ImmutableList.of(false, true),
@@ -53,7 +54,7 @@ public class CrossOMTestSuite {
                                         binder.bind(Boolean.class)
                                                 .annotatedWith(Names.named("before"))
                                                 .toInstance(value),
-                                (params, value) ->
+                                (injector, value, params) ->
                                         params.addTestParameter("before", String.valueOf(value)),
                                 new MatrixTest(TestInsertSibling.class))));
     }

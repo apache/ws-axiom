@@ -18,8 +18,11 @@
  */
 package org.apache.axiom.testutils.suite;
 
-public interface ParameterBinding<T> {
-    ParameterBinding<Dimension> DIMENSION = (params, value) -> value.addTestParameters(params);
+import com.google.inject.Injector;
 
-    void addTestParameters(TestParameterTarget params, T value);
+public interface ParameterBinding<T> {
+    ParameterBinding<Dimension> DIMENSION =
+            (injector, value, params) -> value.addTestParameters(params);
+
+    void addTestParameters(Injector injector, T value, TestParameterTarget params);
 }

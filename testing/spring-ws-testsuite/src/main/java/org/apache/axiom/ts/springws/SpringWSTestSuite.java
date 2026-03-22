@@ -56,7 +56,7 @@ public class SpringWSTestSuite {
         return new FanOutNode<>(
                 Multiton.getInstances(SOAPSpec.class),
                 (binder, value) -> binder.bind(SOAPSpec.class).toInstance(value),
-                (params, value) ->
+                (injector, value, params) ->
                         params.addTestParameter(
                                 "soapVersion",
                                 value.getAdapter(SOAPSpecAdapter.class).getSoapVersion()),

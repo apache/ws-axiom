@@ -50,14 +50,14 @@ public class DialectTestSuite {
                                 binder.bind(StAXImplementationAdapter.class)
                                         .toInstance(
                                                 value.getAdapter(StAXImplementationAdapter.class)),
-                        (params, value) ->
+                        (injector, value, params) ->
                                 params.addTestParameter("implementation", value.getName()),
                         new ParentNode(
                                 new FanOutNode<>(
                                         Multiton.getInstances(StreamType.class),
                                         (binder, value) ->
                                                 binder.bind(StreamType.class).toInstance(value),
-                                        (params, value) ->
+                                        (injector, value, params) ->
                                                 params.addTestParameter(
                                                         "type", value.getType().getSimpleName()),
                                         new MatrixTest(TestClose.class)),
@@ -105,7 +105,7 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("xmlEncodings"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (params, value) ->
+                                        (injector, value, params) ->
                                                 params.addTestParameter(
                                                         "javaEncoding", value.getLeft()),
                                         new MatrixTest(TestGetEncodingFromDetection.class)),
@@ -134,7 +134,7 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expectException"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (params, value) ->
+                                        (injector, value, params) ->
                                                 params.addTestParameter(
                                                         "event",
                                                         XMLEventUtils.getEventTypeString(
@@ -164,7 +164,7 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expectException"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (params, value) ->
+                                        (injector, value, params) ->
                                                 params.addTestParameter(
                                                         "event",
                                                         XMLEventUtils.getEventTypeString(
@@ -207,7 +207,7 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expected"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (params, value) ->
+                                        (injector, value, params) ->
                                                 params.addTestParameter(
                                                         "event",
                                                         XMLEventUtils.getEventTypeString(
@@ -242,7 +242,7 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expected"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (params, value) ->
+                                        (injector, value, params) ->
                                                 params.addTestParameter(
                                                         "event",
                                                         XMLEventUtils.getEventTypeString(
@@ -272,7 +272,7 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expected"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (params, value) ->
+                                        (injector, value, params) ->
                                                 params.addTestParameter(
                                                         "event",
                                                         XMLEventUtils.getEventTypeString(

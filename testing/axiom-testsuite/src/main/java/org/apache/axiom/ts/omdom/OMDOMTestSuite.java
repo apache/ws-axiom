@@ -50,7 +50,7 @@ public class OMDOMTestSuite {
                                         binder.bind(Boolean.class)
                                                 .annotatedWith(Names.named("build"))
                                                 .toInstance(value),
-                                (params, value) ->
+                                (injector, value, params) ->
                                         params.addTestParameter("build", String.valueOf(value)),
                                 new ParentNode(
                                         new MatrixTest(
@@ -67,7 +67,8 @@ public class OMDOMTestSuite {
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
-                                (params, value) -> params.addTestParameter("file", value.getName()),
+                                (injector, value, params) ->
+                                        params.addTestParameter("file", value.getName()),
                                 new MatrixTest(
                                         org.apache.axiom.ts.omdom.document.TestImportNode.class)),
                         new MatrixTest(

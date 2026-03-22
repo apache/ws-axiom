@@ -42,7 +42,8 @@ public class SAAJTestSuite {
                 new FanOutNode<>(
                         Multiton.getInstances(SOAPSpec.class),
                         (binder, value) -> binder.bind(SOAPSpec.class).toInstance(value),
-                        (params, value) -> params.addTestParameter("spec", value.getName()),
+                        (injector, value, params) ->
+                                params.addTestParameter("spec", value.getName()),
                         new ParentNode(
                                 new MatrixTest(TestAddChildElementReification.class),
                                 new MatrixTest(TestExamineMustUnderstandHeaderElements.class),

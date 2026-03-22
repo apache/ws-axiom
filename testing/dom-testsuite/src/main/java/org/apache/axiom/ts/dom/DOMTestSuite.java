@@ -55,7 +55,7 @@ public class DOMTestSuite {
                     new QName("", XMLConstants.XMLNS_ATTRIBUTE, ""));
 
     private static final ParameterBinding<QName> QNAME_PARAMS =
-            (params, qname) -> {
+            (injector, qname, params) -> {
                 params.addTestParameter("ns", qname.getNamespaceURI());
                 params.addTestParameter("name", DOMUtils.getQualifiedName(qname));
             };
@@ -308,7 +308,7 @@ public class DOMTestSuite {
                                         binder.bind(Boolean.class)
                                                 .annotatedWith(Names.named("deep"))
                                                 .toInstance(value),
-                                (params, value) -> params.addTestParameter("deep", value),
+                                (injector, value, params) -> params.addTestParameter("deep", value),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.attr.TestCloneNode.class),
@@ -321,7 +321,7 @@ public class DOMTestSuite {
                                         binder.bind(Boolean.class)
                                                 .annotatedWith(Names.named("newChildHasSiblings"))
                                                 .toInstance(value),
-                                (params, value) ->
+                                (injector, value, params) ->
                                         params.addTestParameter("newChildHasSiblings", value),
                                 new ParentNode(
                                         new MatrixTest(
@@ -361,7 +361,8 @@ public class DOMTestSuite {
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
-                                (params, value) -> params.addTestParameter("file", value.getName()),
+                                (injector, value, params) ->
+                                        params.addTestParameter("file", value.getName()),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.document.TestCloneNode
@@ -371,7 +372,7 @@ public class DOMTestSuite {
                                                 (binder, value) ->
                                                         binder.bind(DOMImplementation.class)
                                                                 .toInstance(value),
-                                                (params, value) ->
+                                                (injector, value, params) ->
                                                         params.addTestParameter(
                                                                 "from", value.getName()),
                                                 new MatrixTest(
@@ -381,7 +382,8 @@ public class DOMTestSuite {
                                 Multiton.getInstances(XSLTImplementation.class),
                                 (binder, value) ->
                                         binder.bind(XSLTImplementation.class).toInstance(value),
-                                (params, value) -> params.addTestParameter("xslt", value.getName()),
+                                (injector, value, params) ->
+                                        params.addTestParameter("xslt", value.getName()),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.document

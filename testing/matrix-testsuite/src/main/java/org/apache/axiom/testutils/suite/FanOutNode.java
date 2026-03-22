@@ -77,6 +77,8 @@ public final class FanOutNode<T> extends MatrixTestNode {
                                             binder -> binding.configure(binder, value));
                             Map<String, String> parameters = new HashMap<>(inheritedParameters);
                             parameterBinding.addTestParameters(
+                                    parentInjector,
+                                    value,
                                     new TestParameterTarget() {
                                         @Override
                                         public void addTestParameter(String name, String value) {
@@ -92,8 +94,7 @@ public final class FanOutNode<T> extends MatrixTestNode {
                                         public void addTestParameter(String name, int value) {
                                             addTestParameter(name, String.valueOf(value));
                                         }
-                                    },
-                                    value);
+                                    });
                             String displayName =
                                     parameters.entrySet().stream()
                                             .map(e -> e.getKey() + "=" + e.getValue())

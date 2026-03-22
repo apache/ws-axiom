@@ -39,7 +39,7 @@ public class XMLReaderTestSuite {
                                 binder.bind(String.class)
                                         .annotatedWith(Names.named("feature"))
                                         .toInstance(value),
-                        (params, value) -> params.addTestParameter("feature", value),
+                        (injector, value, params) -> params.addTestParameter("feature", value),
                         new MatrixTest(TestGetSetFeature.class)));
     }
 }

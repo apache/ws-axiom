@@ -72,7 +72,7 @@ public class WritableBlobTestSuite {
                                         binder.bindConstant()
                                                 .annotatedWith(Names.named("size"))
                                                 .to(v),
-                                (params, v) -> params.addTestParameter("size", v),
+                                (injector, v, params) -> params.addTestParameter("size", v),
                                 new ParentNode(
                                         new MatrixTest(TestMarkReset.class),
                                         new MatrixTest(TestReadFrom.class),

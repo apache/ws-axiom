@@ -33,7 +33,8 @@ public class SerializerConformanceTest {
         return new FanOutNode<>(
                         Multiton.getInstances(XMLSample.class),
                         (binder, value) -> binder.bind(XMLSample.class).toInstance(value),
-                        (params, value) -> params.addTestParameter("sample", value.getName()),
+                        (injector, value, params) ->
+                                params.addTestParameter("sample", value.getName()),
                         new MatrixTest(SerializerConformanceTestCase.class))
                 .toDynamicNodes();
     }
