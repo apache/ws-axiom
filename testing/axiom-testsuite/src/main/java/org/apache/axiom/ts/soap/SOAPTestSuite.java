@@ -43,6 +43,7 @@ import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+import com.google.inject.util.Providers;
 
 public class SOAPTestSuite {
     private static final ImmutableList<String> badSOAPFiles =
@@ -450,12 +451,15 @@ public class SOAPTestSuite {
                 headerBlockAttributeTests(),
                 new MatrixTest(org.apache.axiom.ts.soap.headerblock.TestBlobOMDataSource.class),
                 new FanOutNode<>(
-                        ImmutableList.<Boolean>of(Boolean.TRUE, Boolean.FALSE),
-                        Binding.singleton(Key.get(Boolean.class, Names.named("processed"))),
+                        // This is non-standard because of the null value.
+                        injector -> Arrays.asList(Boolean.TRUE, Boolean.FALSE, null),
+                        (binder, value) ->
+                                binder.bind(Boolean.class)
+                                        .annotatedWith(Names.named("processed"))
+                                        .toProvider(Providers.of(value)),
                         (injector, value, params) ->
                                 params.addTestParameter("processed", String.valueOf(value)),
                         new MatrixTest(org.apache.axiom.ts.soap.headerblock.TestClone.class)),
-                nullProcessedCloneTest(),
                 new MatrixTest(
                         org.apache.axiom.ts.soap.headerblock
                                 .TestCloneProcessedWithoutPreservingModel.class),
@@ -741,19 +745,6 @@ public class SOAPTestSuite {
                                                                 org.apache.axiom.ts.soap.headerblock
                                                                         .TestSetBooleanAttributeUnsupported
                                                                         .class)))))));
-    }
-
-    /**
-     * Special handling for the null-processed case of headerblock.TestClone, which can't go through
-     * a FanOutNode&lt;Boolean&gt; since there's no way to bind null.
-     */
-    private static MatrixTestNode nullProcessedCloneTest() {
-        return new InjectorNode(
-                binder ->
-                        binder.bind(Boolean.class)
-                                .annotatedWith(Names.named("processed"))
-                                .toProvider(com.google.inject.util.Providers.of(null)),
-                new MatrixTest(org.apache.axiom.ts.soap.headerblock.TestClone.class));
     }
 
     private static MatrixTestNode soap11Tests() {
