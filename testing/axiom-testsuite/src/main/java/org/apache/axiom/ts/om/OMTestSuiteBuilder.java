@@ -61,10 +61,6 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
 
     public OMTestSuiteBuilder(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
-        // This test is particularly slow because it checks all XMLStreamReader methods on
-        // every event and many of these invocations throw exceptions. Exclude it because
-        // it doesn't add value (with respect to the other TestGetXMLStreamReader runs.
-        exclude(org.apache.axiom.ts.om.container.TestGetXMLStreamReader.class, "(file=large.xml)");
     }
 
     @Override
@@ -186,8 +182,12 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.comment.TestSerialize(metaFactory));
         for (XMLSample file : getInstances(XMLSample.class)) {
             for (OMContainerExtractor ce : getInstances(OMContainerExtractor.class)) {
-                // TODO: investigate why this causes problems
-                if (!file.getName().equals("character-references.xml")) {
+                // TODO: investigate why character-references.xml causes problems
+                // large.xml: this test is particularly slow because it checks all XMLStreamReader
+                // methods on every event and many of these invocations throw exceptions. It
+                // doesn't add value with respect to the other TestGetXMLStreamReader runs.
+                if (!file.getName().equals("character-references.xml")
+                        && !file.getName().equals("large.xml")) {
                     for (BuilderFactory bf : getInstances(BuilderFactory.class)) {
                         for (boolean cache : new boolean[] {false, true}) {
                             addTest(
