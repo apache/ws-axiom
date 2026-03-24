@@ -37,11 +37,6 @@ public abstract class GetSetChildTestCase extends SOAPTestCase {
         super(metaFactory, spec);
         this.type = type;
         this.childType = childType;
-        addTestParameter(
-                "type", type.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
-        addTestParameter(
-                "childType",
-                childType.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
     }
 
     @Override

@@ -34,7 +34,6 @@ public abstract class SOAPTestCase extends AxiomTestCase {
     public SOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory);
         this.spec = spec;
-        addTestParameter("spec", spec.getName());
     }
 
     @Override

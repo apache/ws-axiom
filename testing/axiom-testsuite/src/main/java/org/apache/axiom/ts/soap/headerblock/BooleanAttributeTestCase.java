@@ -30,6 +30,5 @@ public abstract class BooleanAttributeTestCase extends SOAPTestCase {
             OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
         super(metaFactory, spec);
         this.attribute = attribute;
-        addTestParameter("attribute", attribute.getName(spec));
     }
 }

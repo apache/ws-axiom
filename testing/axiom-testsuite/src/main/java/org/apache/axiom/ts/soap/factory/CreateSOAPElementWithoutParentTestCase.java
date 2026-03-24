@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.ts.soap.SOAPElementType;
-import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
@@ -38,7 +37,6 @@ public abstract class CreateSOAPElementWithoutParentTestCase extends SOAPTestCas
             OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type) {
         super(metaFactory, spec);
         this.type = type;
-        type.getAdapter(SOAPElementTypeAdapter.class).addTestParameters(this);
     }
 
     @Override

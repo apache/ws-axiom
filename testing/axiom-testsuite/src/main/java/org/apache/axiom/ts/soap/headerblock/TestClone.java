@@ -42,7 +42,6 @@ public class TestClone extends SOAPTestCase {
             @Named("processed") @Nullable Boolean processed) {
         super(metaFactory, spec);
         this.processed = processed;
-        addTestParameter("processed", String.valueOf(processed));
     }
 
     private void checkProcessed(SOAPHeader clonedHeader, SOAPHeaderBlock orgHeaderBlock) {
