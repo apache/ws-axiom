@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.apache.axiom.ts.dimension.ExpansionStrategy.DONT_EXPAND;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -29,13 +29,15 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+
 public class TestDiscard extends AxiomTestCase {
     private final ExpansionStrategy expansionStrategy;
 
+    @Inject
     public TestDiscard(OMMetaFactory metaFactory, ExpansionStrategy expansionStrategy) {
         super(metaFactory);
         this.expansionStrategy = expansionStrategy;
-        expansionStrategy.addTestParameters(this);
     }
 
     @Override

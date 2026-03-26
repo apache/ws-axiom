@@ -33,13 +33,16 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestSerialize extends AxiomTestCase {
     private final boolean base64;
 
-    public TestSerialize(OMMetaFactory metaFactory, boolean base64) {
+    @Inject
+    public TestSerialize(OMMetaFactory metaFactory, @Named("base64") boolean base64) {
         super(metaFactory);
         this.base64 = base64;
-        addTestParameter("base64", base64);
     }
 
     @Override

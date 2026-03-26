@@ -30,12 +30,15 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMContainer#getFirstOMChild()} throws the expected {@link
  * NodeUnavailableException} if the element has been discarded before the first child could be
  * created.
  */
 public class TestGetFirstOMChildAfterDiscard extends AxiomTestCase {
+    @Inject
     public TestGetFirstOMChildAfterDiscard(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

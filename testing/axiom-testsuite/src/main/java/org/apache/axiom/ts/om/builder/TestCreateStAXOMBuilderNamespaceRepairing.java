@@ -30,11 +30,14 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} performs namespace
  * repairing.
  */
 public class TestCreateStAXOMBuilderNamespaceRepairing extends AxiomTestCase {
+    @Inject
     public TestCreateStAXOMBuilderNamespaceRepairing(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

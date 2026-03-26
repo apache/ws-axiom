@@ -32,12 +32,15 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMXMLBuilderFactory#createStAXOMBuilder(OMFactory, XMLStreamReader)} throws an
  * exception if the supplied {@link XMLStreamReader} is not positioned on a {@link
  * XMLStreamConstants#START_DOCUMENT} or {@link XMLStreamConstants#END_DOCUMENT} event.
  */
 public class TestCreateStAXOMBuilderIncorrectState extends AxiomTestCase {
+    @Inject
     public TestCreateStAXOMBuilderIncorrectState(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

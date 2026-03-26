@@ -29,12 +29,15 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link XMLStreamReader#getName()} returns a {@link QName} with the correct prefix for
  * the {@link XMLStreamConstants#START_ELEMENT} event corresponding to an {@link OMSourcedElement},
  * even if the prefix is not known in advance.
  */
 public class TestGetName extends AxiomTestCase {
+    @Inject
     public TestGetName(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

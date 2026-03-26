@@ -25,8 +25,11 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests {@link OMFactory#createOMText(OMContainer, OMText)}. */
 public class TestCreateOMTextFromOMText extends AxiomTestCase {
+    @Inject
     public TestCreateOMTextFromOMText(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

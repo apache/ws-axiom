@@ -27,14 +27,17 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.w3c.dom.Element;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration extends AxiomTestCase {
     private final String prefix;
 
+    @Inject
     public TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration(
-            OMMetaFactory metaFactory, String prefix) {
+            OMMetaFactory metaFactory, @Named("prefix") String prefix) {
         super(metaFactory);
         this.prefix = prefix;
-        addTestParameter("prefix", prefix);
     }
 
     @Override

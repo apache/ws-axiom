@@ -34,8 +34,10 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.RandomUtils;
 import org.apache.axiom.testutils.blob.RandomBlob;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.testutils.io.IOTestUtils;
+import org.apache.axiom.ts.AxiomTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests that the content of the root part of an XOP message is buffered, i.e. that an attachment
@@ -52,6 +54,7 @@ import org.apache.axiom.testutils.io.IOTestUtils;
  * </ul>
  */
 public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
+    @Inject
     public TestReadAttachmentBeforeRootPartComplete(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

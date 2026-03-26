@@ -24,6 +24,8 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMContainer#getBuilder()} returns {@code null} on a programmatically created
  * node.
@@ -31,10 +33,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestGetBuilderNull extends AxiomTestCase {
     private final OMContainerFactory containerFactory;
 
+    @Inject
     public TestGetBuilderNull(OMMetaFactory metaFactory, OMContainerFactory containerFactory) {
         super(metaFactory);
         this.containerFactory = containerFactory;
-        containerFactory.addTestParameters(this);
     }
 
     @Override

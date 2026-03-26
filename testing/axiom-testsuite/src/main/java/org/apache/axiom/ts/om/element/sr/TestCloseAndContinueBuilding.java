@@ -29,6 +29,9 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that the rest of a document can still be built after calling {@link
  * OMContainer#getXMLStreamReader(boolean)} and closing the returned {@link XMLStreamReader}. A call
@@ -40,10 +43,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestCloseAndContinueBuilding extends AxiomTestCase {
     private final boolean cache;
 
-    public TestCloseAndContinueBuilding(OMMetaFactory metaFactory, boolean cache) {
+    @Inject
+    public TestCloseAndContinueBuilding(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", cache);
     }
 
     @Override

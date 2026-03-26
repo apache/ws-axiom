@@ -34,6 +34,8 @@ import org.apache.axiom.testutils.InvocationCounter;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Test the behavior of the builder when an exception is thrown by {@link
  * XMLStreamReader#getText()}. The test is only effective if the StAX implementation lazily loads
@@ -42,6 +44,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * longer attempts to access the parser.
  */
 public class TestIOExceptionInGetText extends AxiomTestCase {
+    @Inject
     public TestIOExceptionInGetText(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

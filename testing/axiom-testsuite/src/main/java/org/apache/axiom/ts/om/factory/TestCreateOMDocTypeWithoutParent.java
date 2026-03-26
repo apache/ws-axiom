@@ -22,7 +22,10 @@ import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestCreateOMDocTypeWithoutParent extends AxiomTestCase {
+    @Inject
     public TestCreateOMDocTypeWithoutParent(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

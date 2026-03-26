@@ -32,6 +32,9 @@ import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Test comparing the output of {@link OMContainer#getXMLStreamReader(boolean)} with that of a
  * native StAX parser.
@@ -41,19 +44,17 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
     private final OMContainerExtractor containerExtractor;
     private final boolean cache;
 
+    @Inject
     public TestGetXMLStreamReader(
             OMMetaFactory metaFactory,
             XMLSample file,
             BuilderFactory builderFactory,
             OMContainerExtractor containerExtractor,
-            boolean cache) {
+            @Named("cache") boolean cache) {
         super(metaFactory, file);
         this.builderFactory = builderFactory;
         this.containerExtractor = containerExtractor;
         this.cache = cache;
-        builderFactory.addTestParameters(this);
-        containerExtractor.addTestParameters(this);
-        addTestParameter("cache", cache);
     }
 
     @Override

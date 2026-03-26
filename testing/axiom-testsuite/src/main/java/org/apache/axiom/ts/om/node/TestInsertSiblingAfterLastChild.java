@@ -27,8 +27,11 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-153">AXIOM-153</a>. */
 public class TestInsertSiblingAfterLastChild extends AxiomTestCase {
+    @Inject
     public TestInsertSiblingAfterLastChild(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

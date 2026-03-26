@@ -22,7 +22,10 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
 
+import com.google.inject.Inject;
+
 public class TestDigest extends DigestTestCase {
+    @Inject
     public TestDigest(OMMetaFactory metaFactory) {
         super(metaFactory, "MD5", "a7066a04f134fc8b62c1745da10dcd26");
     }

@@ -34,12 +34,15 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that the content of the root part of an XOP/MTOM message is not buffered (i.e. read
  * entirely into memory) unless an attachment part is accessed. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-403">AXIOM-403</a>.
  */
 public class TestRootPartStreaming extends AxiomTestCase {
+    @Inject
     public TestRootPartStreaming(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

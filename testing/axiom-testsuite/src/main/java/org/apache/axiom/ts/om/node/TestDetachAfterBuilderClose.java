@@ -27,7 +27,10 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestDetachAfterBuilderClose extends AxiomTestCase {
+    @Inject
     public TestDetachAfterBuilderClose(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

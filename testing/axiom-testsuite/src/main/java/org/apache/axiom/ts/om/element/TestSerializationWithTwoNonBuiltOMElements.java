@@ -26,8 +26,11 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-65">AXIOM-65</a>. */
 public class TestSerializationWithTwoNonBuiltOMElements extends AxiomTestCase {
+    @Inject
     public TestSerializationWithTwoNonBuiltOMElements(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

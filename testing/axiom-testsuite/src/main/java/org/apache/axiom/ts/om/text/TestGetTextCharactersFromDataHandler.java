@@ -27,12 +27,15 @@ import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.codec.binary.Base64;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMText#getTextCharacters()} returns the expected result for an {@link OMText}
  * node backed by a {@link Blob}. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-442">AXIOM-442</a>.
  */
 public class TestGetTextCharactersFromDataHandler extends AxiomTestCase {
+    @Inject
     public TestGetTextCharactersFromDataHandler(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

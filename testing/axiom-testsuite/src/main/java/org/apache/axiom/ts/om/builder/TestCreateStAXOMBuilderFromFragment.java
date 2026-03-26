@@ -32,12 +32,15 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMXMLBuilderFactory#createStAXOMBuilder(OMFactory, XMLStreamReader)}
  * if the supplied {@link XMLStreamReader} is positioned on a {@link
  * XMLStreamConstants#START_ELEMENT} event.
  */
 public class TestCreateStAXOMBuilderFromFragment extends AxiomTestCase {
+    @Inject
     public TestCreateStAXOMBuilderFromFragment(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -27,7 +27,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestUndeclarePrefix extends AxiomTestCase {
+    @Inject
     public TestUndeclarePrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

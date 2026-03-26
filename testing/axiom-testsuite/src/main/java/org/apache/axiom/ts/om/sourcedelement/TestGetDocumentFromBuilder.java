@@ -28,12 +28,15 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMXMLParserWrapper#getDocument()} and {@link
  * OMXMLParserWrapper#getDocumentElement()} throw {@link UnsupportedOperationException} when invoked
  * on the builder associated with an {@link OMSourcedElement}.
  */
 public class TestGetDocumentFromBuilder extends AxiomTestCase {
+    @Inject
     public TestGetDocumentFromBuilder(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

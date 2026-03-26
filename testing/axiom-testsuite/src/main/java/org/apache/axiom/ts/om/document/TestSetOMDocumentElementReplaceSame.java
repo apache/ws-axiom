@@ -26,11 +26,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} if the argument is
  * already the document element.
  */
 public class TestSetOMDocumentElementReplaceSame extends AxiomTestCase {
+    @Inject
     public TestSetOMDocumentElementReplaceSame(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

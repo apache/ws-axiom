@@ -32,11 +32,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link Iterator#remove()} can be used on the iterator returned by {@link
  * OMElement#getAllDeclaredNamespaces()} to remove a namespace declaration.
  */
 public class TestGetAllDeclaredNamespacesRemove extends AxiomTestCase {
+    @Inject
     public TestGetAllDeclaredNamespacesRemove(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

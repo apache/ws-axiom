@@ -32,6 +32,8 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMContainer#serializeAndConsume(XMLStreamWriter)} throws an appropriate
  * exception if the part of the tree has already been consumed using {@link
@@ -40,6 +42,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 // TODO: in this scenario we should trigger a NodeUnavailableException as well; fix this with
 // AXIOM-288
 public class TestSerializeAndConsumeConsumed extends AxiomTestCase {
+    @Inject
     public TestSerializeAndConsumeConsumed(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

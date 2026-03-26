@@ -26,11 +26,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMAttribute#getQName()} returns the correct value for an attribute (without
  * namespace) created by {@link OMFactory#createOMAttribute(String, OMNamespace, String)}.
  */
 public class TestGetQNameWithoutNamespace extends AxiomTestCase {
+    @Inject
     public TestGetQNameWithoutNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

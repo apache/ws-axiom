@@ -26,11 +26,14 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the result of {@link OMSerializable#isComplete()} on an {@link OMElement} when deferred
  * parsing is in effect.
  */
 public class TestIsCompleteWithParser extends AxiomTestCase {
+    @Inject
     public TestIsCompleteWithParser(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -31,13 +31,16 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestCloneBinary extends AxiomTestCase {
     private boolean fetch;
 
-    public TestCloneBinary(OMMetaFactory metaFactory, boolean fetch) {
+    @Inject
+    public TestCloneBinary(OMMetaFactory metaFactory, @Named("fetch") boolean fetch) {
         super(metaFactory);
         this.fetch = fetch;
-        addTestParameter("fetch", fetch);
     }
 
     @Override

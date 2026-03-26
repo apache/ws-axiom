@@ -26,7 +26,10 @@ import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestAddNamespaces extends AxiomTestCase {
+    @Inject
     public TestAddNamespaces(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

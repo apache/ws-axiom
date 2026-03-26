@@ -29,7 +29,11 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
+import org.jspecify.annotations.Nullable;
 import org.xml.sax.InputSource;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement()} and {@link
@@ -39,13 +43,14 @@ public class TestGetDocumentElement extends AxiomTestCase {
     private final BuilderFactory builderFactory;
     private final Boolean discardDocument;
 
+    @Inject
     public TestGetDocumentElement(
-            OMMetaFactory metaFactory, BuilderFactory builderFactory, Boolean discardDocument) {
+            OMMetaFactory metaFactory,
+            BuilderFactory builderFactory,
+            @Named("discardDocument") @Nullable Boolean discardDocument) {
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.discardDocument = discardDocument;
-        builderFactory.addTestParameters(this);
-        addTestParameter("discardDocument", String.valueOf(discardDocument));
     }
 
     @Override

@@ -32,7 +32,10 @@ import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.testutils.blob.TestBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class XOPRoundtripTest extends AxiomTestCase {
+    @Inject
     public XOPRoundtripTest(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -23,8 +23,11 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests the behavior of {@link OMNamespace#getNamespaceURI()}. */
 public class TestGetNamespaceURI extends AxiomTestCase {
+    @Inject
     public TestGetNamespaceURI(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

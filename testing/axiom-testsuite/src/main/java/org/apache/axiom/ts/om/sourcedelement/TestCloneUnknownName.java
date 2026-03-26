@@ -29,6 +29,8 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMInformationItem#clone(OMCloneOptions)} on an {@link
  * OMSourcedElement} backed by a non destructive {@link OMDataSource} if the name of the element is
@@ -37,6 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * the original {@link OMSourcedElement}.
  */
 public class TestCloneUnknownName extends AxiomTestCase {
+    @Inject
     public TestCloneUnknownName(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -80,16 +80,6 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
     public SetNamespaceTestCase(OMMetaFactory metaFactory, Params params) {
         super(metaFactory);
         this.params = params;
-        if (params.namespaceURI() != null) {
-            addTestParameter("uri", params.namespaceURI());
-        }
-        if (params.prefix() != null) {
-            addTestParameter("prefix", params.prefix());
-        }
-        if (params.prefixInScope() != null) {
-            addTestParameter("prefixInScope", params.prefixInScope());
-        }
-        addTestParameter("invalid", params.invalid());
     }
 
     protected abstract boolean context();

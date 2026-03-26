@@ -35,6 +35,9 @@ import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that the {@link SAXSource} returned by {@link OMContainer#getSAXSource(boolean)} correctly
  * serializes an {@link OMSourcedElement} backed by an {@link AbstractPushOMDataSource}.
@@ -43,13 +46,14 @@ public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
     private final PushOMDataSourceScenario scenario;
     private boolean serializeParent;
 
+    @Inject
     public TestGetSAXSourceWithPushOMDataSource(
-            OMMetaFactory metaFactory, PushOMDataSourceScenario scenario, boolean serializeParent) {
+            OMMetaFactory metaFactory,
+            PushOMDataSourceScenario scenario,
+            @Named("serializeParent") boolean serializeParent) {
         super(metaFactory);
         this.scenario = scenario;
         this.serializeParent = serializeParent;
-        scenario.addTestParameters(this);
-        addTestParameter("serializeParent", serializeParent);
     }
 
     @Override

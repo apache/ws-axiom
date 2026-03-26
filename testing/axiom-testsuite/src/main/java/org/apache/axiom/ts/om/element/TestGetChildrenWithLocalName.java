@@ -30,7 +30,10 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
+import com.google.inject.Inject;
+
 public class TestGetChildrenWithLocalName extends AxiomTestCase {
+    @Inject
     public TestGetChildrenWithLocalName(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -25,11 +25,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#getTextAsQName()} if the element content has extra
  * surrounding whitespace.
  */
 public class TestGetTextAsQNameWithExtraWhitespace extends AxiomTestCase {
+    @Inject
     public TestGetTextAsQNameWithExtraWhitespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

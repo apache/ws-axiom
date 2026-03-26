@@ -31,6 +31,8 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.InputSource;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an element
  * with no namespace. The case considered in this test is an element created using a {@link
@@ -39,6 +41,7 @@ import org.xml.sax.InputSource;
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalizedWithSAXSource extends AxiomTestCase {
+    @Inject
     public TestGetNamespaceNormalizedWithSAXSource(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

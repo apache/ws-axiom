@@ -27,7 +27,10 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
 
+import com.google.inject.Inject;
+
 public class TestSerializeWithIgnoreXMLDeclaration extends XMLDeclarationSerializationTestCase {
+    @Inject
     public TestSerializeWithIgnoreXMLDeclaration(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -29,6 +29,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that adding an attribute also adds a namespace declaration if the attribute has a namespace
  * and a corresponding namespace declaration doesn't exist yet.
@@ -36,11 +38,11 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 public class TestAddAttributeWithoutExistingNamespaceDeclaration extends AxiomTestCase {
     private final AddAttributeStrategy strategy;
 
+    @Inject
     public TestAddAttributeWithoutExistingNamespaceDeclaration(
             OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
         this.strategy = strategy;
-        strategy.addTestParameters(this);
     }
 
     @Override

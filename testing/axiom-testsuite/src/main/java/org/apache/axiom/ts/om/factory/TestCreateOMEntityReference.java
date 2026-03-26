@@ -24,7 +24,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestCreateOMEntityReference extends AxiomTestCase {
+    @Inject
     public TestCreateOMEntityReference(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

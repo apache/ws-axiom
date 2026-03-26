@@ -25,8 +25,11 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests the behavior of {@link OMText#getNamespace()} for a prefixed QName. */
 public class TestGetNamespace extends AxiomTestCase {
+    @Inject
     public TestGetNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -28,8 +28,11 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Make sure the expanded OMSourcedElement behaves like a normal OMElement. */
 public class TestExpand extends AxiomTestCase {
+    @Inject
     public TestExpand(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

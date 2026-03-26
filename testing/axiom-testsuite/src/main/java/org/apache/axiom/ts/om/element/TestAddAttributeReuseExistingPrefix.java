@@ -27,12 +27,15 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that when {@link OMElement#addAttribute(String, String, OMNamespace)} is called with an
  * {@link OMNamespace} with a <code>null</code> prefix and a namespace declaration for the given
  * namespace URI is in scope, the method reuses the existing prefix instead of generating one.
  */
 public class TestAddAttributeReuseExistingPrefix extends AxiomTestCase {
+    @Inject
     public TestAddAttributeReuseExistingPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

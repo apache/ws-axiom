@@ -29,6 +29,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMContainer#addChild(OMNode)} if the parent has not been built
  * completely. In this case, the parent must be built before the new child is added (so that the
@@ -37,6 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * @see org.apache.axiom.ts.om.document.TestAddChildIncomplete
  */
 public class TestAddChildIncomplete extends AxiomTestCase {
+    @Inject
     public TestAddChildIncomplete(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

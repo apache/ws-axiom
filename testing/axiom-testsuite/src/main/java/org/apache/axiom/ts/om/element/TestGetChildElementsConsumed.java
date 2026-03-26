@@ -32,12 +32,15 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that an attempt to iterate over the child elements using {@link
  * OMElement#getChildElements()} results in the expected exception if the part of the document has
  * already been consumed by {@link OMContainer#getXMLStreamReaderWithoutCaching()}.
  */
 public class TestGetChildElementsConsumed extends AxiomTestCase {
+    @Inject
     public TestGetChildElementsConsumed(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

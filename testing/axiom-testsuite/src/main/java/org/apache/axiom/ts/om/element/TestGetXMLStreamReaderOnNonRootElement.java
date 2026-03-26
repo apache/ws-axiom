@@ -26,6 +26,9 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that {@link OMContainer#getXMLStreamReader(boolean)} produces the correct sequence of
  * events when called on an {@link OMElement} that is not the root element. Also tests that the rest
@@ -37,10 +40,11 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestGetXMLStreamReaderOnNonRootElement extends AxiomTestCase {
     private final boolean cache;
 
-    public TestGetXMLStreamReaderOnNonRootElement(OMMetaFactory metaFactory, boolean cache) {
+    @Inject
+    public TestGetXMLStreamReaderOnNonRootElement(
+            OMMetaFactory metaFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", cache);
     }
 
     @Override

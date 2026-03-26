@@ -23,7 +23,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestCreateOMDocument extends AxiomTestCase {
+    @Inject
     public TestCreateOMDocument(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

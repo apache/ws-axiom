@@ -25,12 +25,15 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#setText(QName)} if the {@link QName} has no namespace. In
  * this case the method must not generate a prefix (because it is not possible to bind a prefix to
  * the empty namespace name).
  */
 public class TestSetTextQNameWithoutNamespace extends AxiomTestCase {
+    @Inject
     public TestSetTextQNameWithoutNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

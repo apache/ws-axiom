@@ -37,17 +37,18 @@ import org.xml.sax.DTDHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import com.google.inject.Inject;
+
 public class TestGetSAXResultSAXParser extends AxiomTestCase {
     private final SAXImplementation saxImplementation;
     private final XMLSample file;
 
+    @Inject
     public TestGetSAXResultSAXParser(
             OMMetaFactory metaFactory, SAXImplementation saxImplementation, XMLSample file) {
         super(metaFactory);
         this.saxImplementation = saxImplementation;
         this.file = file;
-        addTestParameter("parser", saxImplementation.getName());
-        addTestParameter("file", file.getName());
     }
 
     @Override

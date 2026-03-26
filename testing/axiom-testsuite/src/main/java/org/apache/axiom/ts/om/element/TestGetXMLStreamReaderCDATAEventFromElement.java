@@ -29,7 +29,10 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetXMLStreamReaderCDATAEventFromElement extends AxiomTestCase {
+    @Inject
     public TestGetXMLStreamReaderCDATAEventFromElement(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

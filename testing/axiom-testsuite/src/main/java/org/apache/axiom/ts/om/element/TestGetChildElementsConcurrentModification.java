@@ -28,6 +28,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that the iterator returned by {@link OMElement#getChildElements()} throws a {@link
  * ConcurrentModificationException} if the current node is removed using a method other than {@link
@@ -35,6 +37,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-391">AXIOM-391</a>.
  */
 public class TestGetChildElementsConcurrentModification extends AxiomTestCase {
+    @Inject
     public TestGetChildElementsConcurrentModification(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

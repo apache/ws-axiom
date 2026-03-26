@@ -28,9 +28,12 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 import za.co.eskom.nrs.xmlvend.base.x20.schema.AdviceReqDocument;
 
 public class TestCreateStAXOMBuilderFromXmlBeansPullParser extends AxiomTestCase {
+    @Inject
     public TestCreateStAXOMBuilderFromXmlBeansPullParser(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

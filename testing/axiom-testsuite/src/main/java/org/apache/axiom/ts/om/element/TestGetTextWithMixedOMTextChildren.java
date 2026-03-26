@@ -25,11 +25,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#getText()} when invoked on an element containing a single
  * CDATA section.
  */
 public class TestGetTextWithMixedOMTextChildren extends AxiomTestCase {
+    @Inject
     public TestGetTextWithMixedOMTextChildren(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

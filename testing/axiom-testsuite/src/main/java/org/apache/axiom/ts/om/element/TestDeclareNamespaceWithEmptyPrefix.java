@@ -30,10 +30,13 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#declareNamespace(String, String)} with an empty prefix.
  */
 public class TestDeclareNamespaceWithEmptyPrefix extends AxiomTestCase {
+    @Inject
     public TestDeclareNamespaceWithEmptyPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

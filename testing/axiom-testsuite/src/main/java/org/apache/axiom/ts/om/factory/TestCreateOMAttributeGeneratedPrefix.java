@@ -24,11 +24,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMFactory#createOMAttribute(String, OMNamespace, String)} generates a prefix if
  * an {@link OMNamespace} object with a null prefix and a non empty namespace URI is given.
  */
 public class TestCreateOMAttributeGeneratedPrefix extends AxiomTestCase {
+    @Inject
     public TestCreateOMAttributeGeneratedPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

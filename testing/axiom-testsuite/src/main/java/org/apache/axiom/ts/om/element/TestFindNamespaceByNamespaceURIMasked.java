@@ -23,12 +23,15 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMElement#findNamespace(String, String)} returns <code>null</code> if the
  * matching namespace declaration is masked by another namespace declaration, i.e. if the
  * corresponding prefix is redeclared.
  */
 public class TestFindNamespaceByNamespaceURIMasked extends AxiomTestCase {
+    @Inject
     public TestFindNamespaceByNamespaceURIMasked(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

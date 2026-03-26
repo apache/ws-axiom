@@ -29,16 +29,19 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XOPSample;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestCreateOMBuilderXOP extends AxiomTestCase {
     private final XOPSample sample;
     private final boolean build;
 
-    public TestCreateOMBuilderXOP(OMMetaFactory metaFactory, XOPSample sample, boolean build) {
+    @Inject
+    public TestCreateOMBuilderXOP(
+            OMMetaFactory metaFactory, XOPSample sample, @Named("build") boolean build) {
         super(metaFactory);
         this.sample = sample;
-        addTestParameter("file", sample.getName());
         this.build = build;
-        addTestParameter("build", build);
     }
 
     @Override

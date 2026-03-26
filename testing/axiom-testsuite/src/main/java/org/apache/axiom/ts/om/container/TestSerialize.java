@@ -39,10 +39,13 @@ import org.apache.axiom.ts.xml.XMLSample;
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.InputSource;
 
+import com.google.inject.Inject;
+
 public class TestSerialize extends ConformanceTestCase {
     private final OMContainerExtractor containerExtractor;
     private final SerializationStrategy serializationStrategy;
 
+    @Inject
     public TestSerialize(
             OMMetaFactory metaFactory,
             XMLSample file,
@@ -51,8 +54,6 @@ public class TestSerialize extends ConformanceTestCase {
         super(metaFactory, file);
         this.containerExtractor = containerExtractor;
         this.serializationStrategy = serializationStrategy;
-        containerExtractor.addTestParameters(this);
-        serializationStrategy.addTestParameters(this);
     }
 
     @Override

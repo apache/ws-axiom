@@ -27,11 +27,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#removeAttribute(OMAttribute)} if the given attribute is
  * not owned by the element.
  */
 public class TestRemoveAttributeNotOwner extends AxiomTestCase {
+    @Inject
     public TestRemoveAttributeNotOwner(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

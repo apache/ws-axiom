@@ -30,14 +30,17 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /** Tests {@link OMElement#getNamespaceContext(boolean)}. */
 public class TestGetNamespaceContext extends AxiomTestCase {
     private final boolean detached;
 
-    public TestGetNamespaceContext(OMMetaFactory metaFactory, boolean detached) {
+    @Inject
+    public TestGetNamespaceContext(OMMetaFactory metaFactory, @Named("detached") boolean detached) {
         super(metaFactory);
         this.detached = detached;
-        addTestParameter("detached", detached);
     }
 
     @Override

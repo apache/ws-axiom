@@ -28,11 +28,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#setText(QName)} if the {@link QName} has a namespace URI
  * but an empty prefix. In this case, the method is expected to generate a prefix.
  */
 public class TestSetTextQNameWithEmptyPrefix extends AxiomTestCase {
+    @Inject
     public TestSetTextQNameWithEmptyPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

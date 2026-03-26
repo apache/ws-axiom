@@ -24,11 +24,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMText#getNamespace()} for an unprefixed QName and no default
  * namespace in scope.
  */
 public class TestGetNamespaceNoNamespace extends AxiomTestCase {
+    @Inject
     public TestGetNamespaceNoNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

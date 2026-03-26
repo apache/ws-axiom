@@ -34,6 +34,9 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.xml.sax.ContentHandler;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that the {@link SAXSource} returned by {@link OMContainer#getSAXSource(boolean)} generates
  * {@link ContentHandler#startPrefixMapping(String, String)} events for namespace mappings in scope
@@ -61,13 +64,14 @@ public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
     private final XSLTImplementation xsltImplementation;
     private final boolean cache;
 
+    @Inject
     public TestGetSAXSourceIdentityTransformOnFragment(
-            OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, boolean cache) {
+            OMMetaFactory metaFactory,
+            XSLTImplementation xsltImplementation,
+            @Named("cache") boolean cache) {
         super(metaFactory);
         this.xsltImplementation = xsltImplementation;
         this.cache = cache;
-        addTestParameter("xslt", xsltImplementation.getName());
-        addTestParameter("cache", cache);
     }
 
     private InputStream getInput() {

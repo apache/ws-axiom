@@ -23,8 +23,11 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests the behavior of {@link OMElement#getTextAsQName()} if the element is empty. */
 public class TestGetTextAsQNameEmpty extends AxiomTestCase {
+    @Inject
     public TestGetTextAsQNameEmpty(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

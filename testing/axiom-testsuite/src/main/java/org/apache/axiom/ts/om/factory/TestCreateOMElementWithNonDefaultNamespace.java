@@ -25,7 +25,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 
+import com.google.inject.Inject;
+
 public class TestCreateOMElementWithNonDefaultNamespace extends CreateOMElementTestCase {
+    @Inject
     public TestCreateOMElementWithNonDefaultNamespace(
             OMMetaFactory metaFactory,
             CreateOMElementVariant variant,

@@ -28,12 +28,15 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean,
  * OMXMLStreamReaderConfiguration)} with {@link
  * OMXMLStreamReaderConfiguration#isNamespaceURIInterning()} set to <code>true</code>.
  */
 public class TestGetXMLStreamReaderWithNamespaceURIInterning extends AxiomTestCase {
+    @Inject
     public TestGetXMLStreamReaderWithNamespaceURIInterning(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

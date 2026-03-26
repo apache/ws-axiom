@@ -26,11 +26,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMNamedInformationItem#getNamespaceURI()} returns the namespace URI when
  * invoked on an {@link OMElement} that has a namespace.
  */
 public class TestGetNamespaceURIWithNamespace extends AxiomTestCase {
+    @Inject
     public TestGetNamespaceURIWithNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

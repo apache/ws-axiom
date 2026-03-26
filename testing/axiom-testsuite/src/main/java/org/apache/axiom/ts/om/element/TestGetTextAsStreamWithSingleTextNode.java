@@ -29,7 +29,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.io.IOUtils;
 
+import com.google.inject.Inject;
+
 public class TestGetTextAsStreamWithSingleTextNode extends AxiomTestCase {
+    @Inject
     public TestGetTextAsStreamWithSingleTextNode(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

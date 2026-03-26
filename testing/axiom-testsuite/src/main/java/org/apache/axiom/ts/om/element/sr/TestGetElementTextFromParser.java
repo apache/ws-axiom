@@ -32,6 +32,9 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.xml.sax.InputSource;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestGetElementTextFromParser extends AxiomTestCase {
     private final BuilderFactory builderFactory;
     private final boolean cache;
@@ -46,15 +49,16 @@ public class TestGetElementTextFromParser extends AxiomTestCase {
      * @param build the number of descendants that should be built before calling {@link
      *     OMContainer#getXMLStreamReader(boolean)}
      */
+    @Inject
     public TestGetElementTextFromParser(
-            OMMetaFactory metaFactory, BuilderFactory builderFactory, boolean cache, int build) {
+            OMMetaFactory metaFactory,
+            BuilderFactory builderFactory,
+            @Named("cache") boolean cache,
+            @Named("build") int build) {
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.cache = cache;
         this.build = build;
-        builderFactory.addTestParameters(this);
-        addTestParameter("cache", cache);
-        addTestParameter("build", build);
     }
 
     @Override

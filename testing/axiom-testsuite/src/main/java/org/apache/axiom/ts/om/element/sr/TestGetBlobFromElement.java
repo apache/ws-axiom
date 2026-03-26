@@ -33,6 +33,9 @@ import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests {@link XMLStreamReaderUtils#getBlobFromElement(XMLStreamReader)} on an {@link
  * XMLStreamReader} returned by {@link OMElement#getXMLStreamReader(boolean)}.
@@ -40,10 +43,10 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 public class TestGetBlobFromElement extends AxiomTestCase {
     private final boolean cache;
 
-    public TestGetBlobFromElement(OMMetaFactory metaFactory, boolean cache) {
+    @Inject
+    public TestGetBlobFromElement(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", cache);
     }
 
     @Override

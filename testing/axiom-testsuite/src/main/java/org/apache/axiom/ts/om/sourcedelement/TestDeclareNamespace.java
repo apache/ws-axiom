@@ -29,11 +29,14 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that declaring a namespace on an {@link OMSourcedElement} overrides a corresponding
  * namespace declaration that may be produced during expansion.
  */
 public class TestDeclareNamespace extends AxiomTestCase {
+    @Inject
     public TestDeclareNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

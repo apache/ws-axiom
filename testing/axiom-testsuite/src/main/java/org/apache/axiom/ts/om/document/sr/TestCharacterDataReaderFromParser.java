@@ -31,6 +31,9 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that the {@link CharacterDataReader} returned by {@link OMContainer#getXMLStreamReader()}
  * for an OM tree created by a builder correctly implements the {@link DTDReader} extension.
@@ -38,10 +41,11 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestCharacterDataReaderFromParser extends AxiomTestCase {
     private final boolean cache;
 
-    public TestCharacterDataReaderFromParser(OMMetaFactory metaFactory, boolean cache) {
+    @Inject
+    public TestCharacterDataReaderFromParser(
+            OMMetaFactory metaFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", cache);
     }
 
     @Override

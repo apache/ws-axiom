@@ -26,12 +26,15 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that the completeness status (as returned by {@link OMElement#isComplete()}) is updated
  * correctly after an incomplete child is added to a programmatically created element. This is a
  * regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-315">AXIOM-315</a>.
  */
 public class TestIsCompleteAfterAddingIncompleteChild extends AxiomTestCase {
+    @Inject
     public TestIsCompleteAfterAddingIncompleteChild(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

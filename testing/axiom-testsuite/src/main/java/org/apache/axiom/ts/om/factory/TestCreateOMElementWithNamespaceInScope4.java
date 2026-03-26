@@ -24,12 +24,15 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 
+import com.google.inject.Inject;
+
 /**
  * Tests a scenario that gave incorrect results in previous Axiom versions because {@link
  * OMElement#findNamespace(String, String)} interpreted an empty prefix in the same way as <code>
  * null</code>.
  */
 public class TestCreateOMElementWithNamespaceInScope4 extends CreateOMElementTestCase {
+    @Inject
     public TestCreateOMElementWithNamespaceInScope4(
             OMMetaFactory metaFactory, CreateOMElementVariant variant) {
         super(metaFactory, variant, null);

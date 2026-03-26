@@ -27,11 +27,14 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#setText(QName)} when invoked on an element that has
  * children.
  */
 public class TestSetTextQNameWithExistingChildren extends AxiomTestCase {
+    @Inject
     public TestSetTextQNameWithExistingChildren(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

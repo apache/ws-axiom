@@ -35,24 +35,25 @@ import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.jspecify.annotations.Nullable;
 import org.xml.sax.InputSource;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
     private final SAXImplementation implementation;
     private final Boolean expandEntityReferences;
 
+    @Inject
     public TestCreateOMBuilderFromSAXSource(
             OMMetaFactory metaFactory,
             XMLSample file,
             SAXImplementation implementation,
-            Boolean expandEntityReferences) {
+            @Named("expandEntityReferences") @Nullable Boolean expandEntityReferences) {
         super(metaFactory, file);
         this.implementation = implementation;
-        addTestParameter("implementation", implementation.getName());
         this.expandEntityReferences = expandEntityReferences;
-        if (expandEntityReferences != null) {
-            addTestParameter("expandEntityReferences", expandEntityReferences.booleanValue());
-        }
     }
 
     @Override

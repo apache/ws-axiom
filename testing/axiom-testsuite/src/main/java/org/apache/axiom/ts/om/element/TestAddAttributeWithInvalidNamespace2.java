@@ -30,6 +30,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace2;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMElement#addAttribute(String, String, OMNamespace)} throws an exception if the
  * specified namespace is invalid, i.e. if the {@link OMNamespace} object specifies a non-empty
@@ -38,6 +40,7 @@ import org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace2
  * @see TestCreateOMAttributeWithInvalidNamespace2
  */
 public class TestAddAttributeWithInvalidNamespace2 extends AxiomTestCase {
+    @Inject
     public TestAddAttributeWithInvalidNamespace2(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

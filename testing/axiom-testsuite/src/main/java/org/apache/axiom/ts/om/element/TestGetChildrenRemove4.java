@@ -27,8 +27,11 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** test whether the children count reduces. */
 public class TestGetChildrenRemove4 extends AxiomTestCase {
+    @Inject
     public TestGetChildrenRemove4(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

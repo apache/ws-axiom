@@ -27,7 +27,10 @@ import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.om.XMLSampleAdapter;
 import org.apache.axiom.ts.xml.XMLSample;
 
+import com.google.inject.Inject;
+
 public class TestCloneOMElement2 extends ConformanceTestCase {
+    @Inject
     public TestCloneOMElement2(OMMetaFactory metaFactory, XMLSample file) {
         super(metaFactory, file);
     }

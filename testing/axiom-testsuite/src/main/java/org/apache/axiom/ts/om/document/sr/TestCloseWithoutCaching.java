@@ -33,6 +33,8 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link XMLStreamReader#close()} on the {@link XMLStreamReader} returned by
  * a call {@link OMContainer#getXMLStreamReaderWithoutCaching()} on an {@link OMDocument} created by
@@ -40,6 +42,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * rest of the document.
  */
 public class TestCloseWithoutCaching extends AxiomTestCase {
+    @Inject
     public TestCloseWithoutCaching(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

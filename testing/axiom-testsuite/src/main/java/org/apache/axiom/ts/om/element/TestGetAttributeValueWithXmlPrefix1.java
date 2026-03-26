@@ -26,12 +26,15 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Test that {@link OMElement#getAttributeValue(QName)} works properly for an attribute with the
  * {@code xml} prefix, even if this prefix is not declared explicitly. This is a regression test for
  * <a href="https://issues.apache.org/jira/browse/AXIS2-329">AXIS2-329</a>.
  */
 public class TestGetAttributeValueWithXmlPrefix1 extends AxiomTestCase {
+    @Inject
     public TestGetAttributeValueWithXmlPrefix1(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

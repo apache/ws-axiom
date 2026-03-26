@@ -27,7 +27,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestDeclareNamespace1 extends AxiomTestCase {
+    @Inject
     public TestDeclareNamespace1(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

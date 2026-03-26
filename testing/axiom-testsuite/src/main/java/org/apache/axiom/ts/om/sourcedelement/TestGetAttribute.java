@@ -30,11 +30,14 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMElement#getAttribute(QName)} causes expansion of {@link OMSourcedElement}
  * instances.
  */
 public class TestGetAttribute extends AxiomTestCase {
+    @Inject
     public TestGetAttribute(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

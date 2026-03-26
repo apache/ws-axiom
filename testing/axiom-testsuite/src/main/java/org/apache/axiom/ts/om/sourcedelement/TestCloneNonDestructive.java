@@ -32,13 +32,17 @@ import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestCloneNonDestructive extends AxiomTestCase {
     private final boolean copyOMDataSources;
 
-    public TestCloneNonDestructive(OMMetaFactory metaFactory, boolean copyOMDataSources) {
+    @Inject
+    public TestCloneNonDestructive(
+            OMMetaFactory metaFactory, @Named("copyOMDataSources") boolean copyOMDataSources) {
         super(metaFactory);
         this.copyOMDataSources = copyOMDataSources;
-        addTestParameter("copyOMDataSources", copyOMDataSources);
     }
 
     @Override

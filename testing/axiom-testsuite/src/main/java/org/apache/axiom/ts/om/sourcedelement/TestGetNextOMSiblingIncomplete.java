@@ -27,11 +27,14 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMElement#getNextOMSibling()} doesn't change the state of an {@link
  * OMSourcedElement} that is expanded but not complete.
  */
 public class TestGetNextOMSiblingIncomplete extends AxiomTestCase {
+    @Inject
     public TestGetNextOMSiblingIncomplete(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

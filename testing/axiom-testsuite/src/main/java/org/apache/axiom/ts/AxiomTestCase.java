@@ -22,10 +22,11 @@ import javax.xml.stream.XMLInputFactory;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 
-public abstract class AxiomTestCase extends MatrixTestCase {
+import junit.framework.TestCase;
+
+public abstract class AxiomTestCase extends TestCase {
     public static final StAXParserConfiguration TEST_PARSER_CONFIGURATION =
             new StAXParserConfiguration() {
                 @Override
@@ -47,5 +48,9 @@ public abstract class AxiomTestCase extends MatrixTestCase {
 
     public AxiomTestCase(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
+        setName(getClass().getName());
     }
+
+    @Override
+    protected abstract void runTest() throws Throwable;
 }

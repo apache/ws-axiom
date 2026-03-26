@@ -25,6 +25,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
  * requested to create an element with a namespace but no namespace prefix is given and no matching
@@ -32,6 +34,7 @@ import org.apache.axiom.om.OMNamespace;
  * generate a prefix.
  */
 public class TestCreateOMElementWithGeneratedPrefix extends CreateOMElementTestCase {
+    @Inject
     public TestCreateOMElementWithGeneratedPrefix(
             OMMetaFactory metaFactory,
             CreateOMElementVariant variant,

@@ -27,6 +27,9 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that when {@link OMElement#addAttribute(String, String, OMNamespace)} is called with an
  * {@link OMNamespace} with a <code>null</code> prefix and no namespace declaration for the given
@@ -35,11 +38,12 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
     private final boolean defaultNamespaceInScope;
 
+    @Inject
     public TestAddAttributeGeneratedPrefix(
-            OMMetaFactory metaFactory, boolean defaultNamespaceInScope) {
+            OMMetaFactory metaFactory,
+            @Named("defaultNamespaceInScope") boolean defaultNamespaceInScope) {
         super(metaFactory);
         this.defaultNamespaceInScope = defaultNamespaceInScope;
-        addTestParameter("defaultNamespaceInScope", defaultNamespaceInScope);
     }
 
     @Override

@@ -31,7 +31,10 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestWrappedTextNodeOMDataSourceFromReader extends AxiomTestCase {
+    @Inject
     public TestWrappedTextNodeOMDataSourceFromReader(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

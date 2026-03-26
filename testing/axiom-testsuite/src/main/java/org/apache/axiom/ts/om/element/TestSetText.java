@@ -24,8 +24,11 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests the behavior of {@link OMElement#setText(String)} when invoked on an empty element. */
 public class TestSetText extends AxiomTestCase {
+    @Inject
     public TestSetText(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

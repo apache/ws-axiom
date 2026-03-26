@@ -30,6 +30,8 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.io.output.NullOutputStream;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link
  * org.apache.axiom.om.OMContainer#serializeAndConsume(java.io.OutputStream)} when invoked on an
@@ -37,6 +39,7 @@ import org.apache.commons.io.output.NullOutputStream;
  * href="https://issues.apache.org/jira/browse/AXIOM-24">AXIOM-24</a>.
  */
 public class TestSerializeAndConsume extends AxiomTestCase {
+    @Inject
     public TestSerializeAndConsume(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -30,6 +30,8 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.Text;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that the {@link OMAttribute} instances created by {@link
  * OMFactory#createOMAttribute(String, OMNamespace, String)} only implement the expected interfaces.
@@ -38,6 +40,7 @@ import org.w3c.dom.Text;
  * and {@link EntityReference} nodes).
  */
 public class TestCreateOMAttributeInterfaces extends AxiomTestCase {
+    @Inject
     public TestCreateOMAttributeInterfaces(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

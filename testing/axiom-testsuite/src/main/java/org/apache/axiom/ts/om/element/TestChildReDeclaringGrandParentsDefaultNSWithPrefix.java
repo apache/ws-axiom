@@ -25,7 +25,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestChildReDeclaringGrandParentsDefaultNSWithPrefix extends AxiomTestCase {
+    @Inject
     public TestChildReDeclaringGrandParentsDefaultNSWithPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -27,11 +27,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the result of {@link OMDocument#getOMDocumentElement()} for an {@link OMDocument}
  * constructed from a stream.
  */
 public class TestGetOMDocumentElementWithParser extends AxiomTestCase {
+    @Inject
     public TestGetOMDocumentElementWithParser(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

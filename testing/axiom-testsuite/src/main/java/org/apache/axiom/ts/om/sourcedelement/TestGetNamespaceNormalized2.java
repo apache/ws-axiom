@@ -28,6 +28,8 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMElement#getNamespace()} returns <code>null</code> for an {@link
  * OMSourcedElement} created using {@link OMFactory#createOMElement(OMDataSource, QName)} and a
@@ -37,6 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalized2 extends AxiomTestCase {
+    @Inject
     public TestGetNamespaceNormalized2(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

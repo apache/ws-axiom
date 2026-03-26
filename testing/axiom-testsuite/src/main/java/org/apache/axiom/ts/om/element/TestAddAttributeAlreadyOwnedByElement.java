@@ -28,11 +28,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Test that calling {@link OMElement#addAttribute(OMAttribute)} with an attribute that is already
  * owned by the element is a no-op.
  */
 public class TestAddAttributeAlreadyOwnedByElement extends AxiomTestCase {
+    @Inject
     public TestAddAttributeAlreadyOwnedByElement(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

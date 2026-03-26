@@ -24,11 +24,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMFactory#createOMText(OMContainer, String)} can be used to create an orphaned
  * node by setting <code>parent</code> to <code>null</code>.
  */
 public class TestCreateOMTextWithNullParent extends AxiomTestCase {
+    @Inject
     public TestCreateOMTextWithNullParent(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

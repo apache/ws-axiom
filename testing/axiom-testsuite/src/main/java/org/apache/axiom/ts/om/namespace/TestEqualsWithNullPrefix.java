@@ -23,11 +23,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMNamespace#equals(String, String)} for an {@link OMNamespace}
  * instance with non prefix.
  */
 public class TestEqualsWithNullPrefix extends AxiomTestCase {
+    @Inject
     public TestEqualsWithNullPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

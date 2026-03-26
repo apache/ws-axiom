@@ -28,8 +28,11 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Test that a document that is not well formed triggers an appropriate error. */
 public class TestMalformedDocument extends AxiomTestCase {
+    @Inject
     public TestMalformedDocument(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

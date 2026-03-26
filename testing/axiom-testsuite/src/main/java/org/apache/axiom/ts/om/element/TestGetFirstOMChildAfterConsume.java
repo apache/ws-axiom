@@ -32,12 +32,15 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMContainer#getFirstOMChild()} throws the expected {@link
  * NodeUnavailableException} if the element has been consumed using {@link
  * OMContainer#getXMLStreamReaderWithoutCaching()}.
  */
 public class TestGetFirstOMChildAfterConsume extends AxiomTestCase {
+    @Inject
     public TestGetFirstOMChildAfterConsume(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

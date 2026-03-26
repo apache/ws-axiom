@@ -29,17 +29,21 @@ import org.apache.axiom.ts.StreamTypeAdapter;
 import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestDetachWithStream extends AxiomTestCase {
     private final StreamType streamType;
     private final boolean useStreamSource;
 
+    @Inject
     public TestDetachWithStream(
-            OMMetaFactory metaFactory, StreamType streamType, boolean useStreamSource) {
+            OMMetaFactory metaFactory,
+            StreamType streamType,
+            @Named("useStreamSource") boolean useStreamSource) {
         super(metaFactory);
         this.streamType = streamType;
         this.useStreamSource = useStreamSource;
-        addTestParameter("streamType", streamType.getType().getSimpleName());
-        addTestParameter("useStreamSource", useStreamSource);
     }
 
     @Override

@@ -30,11 +30,14 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Test that {@link Iterator#remove()} behaves correctly on the iterator returned by {@link
  * OMContainer#getDescendants(boolean)} when used to remove an element with child nodes.
  */
 public class TestGetDescendantsRemoveSubtree extends AxiomTestCase {
+    @Inject
     public TestGetDescendantsRemoveSubtree(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

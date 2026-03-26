@@ -35,13 +35,15 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+
 public class TestDetach extends AxiomTestCase {
     private final ExpansionStrategy expansionStrategy;
 
+    @Inject
     public TestDetach(OMMetaFactory metaFactory, ExpansionStrategy expansionStrategy) {
         super(metaFactory);
         this.expansionStrategy = expansionStrategy;
-        expansionStrategy.addTestParameters(this);
     }
 
     @Override

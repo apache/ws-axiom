@@ -27,8 +27,11 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** test the remove exception behavior, consecutive remove calls */
 public class TestGetChildrenRemove2 extends AxiomTestCase {
+    @Inject
     public TestGetChildrenRemove2(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -30,12 +30,15 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that the iterator returned by {@link OMContainer#getChildren()} throws a {@link
  * ConcurrentModificationException} if the current node is removed using a method other than {@link
  * Iterator#remove()}.
  */
 public class TestGetChildrenConcurrentModification extends AxiomTestCase {
+    @Inject
     public TestGetChildrenConcurrentModification(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

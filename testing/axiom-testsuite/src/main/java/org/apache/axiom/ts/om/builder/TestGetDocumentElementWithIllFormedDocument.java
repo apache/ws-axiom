@@ -28,11 +28,14 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMXMLParserWrapper#getDocumentElement()} throws an exception (instead of
  * returning <code>null</code>) if the input document has no document element.
  */
 public class TestGetDocumentElementWithIllFormedDocument extends AxiomTestCase {
+    @Inject
     public TestGetDocumentElementWithIllFormedDocument(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

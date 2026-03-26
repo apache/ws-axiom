@@ -31,13 +31,17 @@ import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestDetachWithDOM extends AxiomTestCase {
     private final boolean useDOMSource;
 
-    public TestDetachWithDOM(OMMetaFactory metaFactory, boolean useDOMSource) {
+    @Inject
+    public TestDetachWithDOM(
+            OMMetaFactory metaFactory, @Named("useDOMSource") boolean useDOMSource) {
         super(metaFactory);
         this.useDOMSource = useDOMSource;
-        addTestParameter("useDOMSource", useDOMSource);
     }
 
     @Override

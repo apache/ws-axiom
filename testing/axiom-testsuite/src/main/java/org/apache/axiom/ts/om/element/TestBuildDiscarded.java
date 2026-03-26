@@ -30,11 +30,14 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMSerializable#build()} on an {@link OMElement} that has been
  * discarded. In this case the method is expected to throw a {@link NodeUnavailableException}.
  */
 public class TestBuildDiscarded extends AxiomTestCase {
+    @Inject
     public TestBuildDiscarded(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

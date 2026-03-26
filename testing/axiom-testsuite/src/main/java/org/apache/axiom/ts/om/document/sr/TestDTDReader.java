@@ -27,11 +27,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that the {@link XMLStreamReader} returned by {@link OMContainer#getXMLStreamReader()} for a
  * programmatically created OM tree correctly implements the {@link DTDReader} extension.
  */
 public class TestDTDReader extends AxiomTestCase {
+    @Inject
     public TestDTDReader(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

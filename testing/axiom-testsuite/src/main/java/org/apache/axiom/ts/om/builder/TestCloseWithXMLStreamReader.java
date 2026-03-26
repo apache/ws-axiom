@@ -30,7 +30,10 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
+import com.google.inject.Inject;
+
 public class TestCloseWithXMLStreamReader extends AxiomTestCase {
+    @Inject
     public TestCloseWithXMLStreamReader(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

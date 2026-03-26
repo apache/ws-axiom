@@ -23,11 +23,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#resolveQName(String)} if the prefix of the QName is not
  * bound in the namespace context of the element.
  */
 public class TestResolveQNameWithUnboundPrefix extends AxiomTestCase {
+    @Inject
     public TestResolveQNameWithUnboundPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

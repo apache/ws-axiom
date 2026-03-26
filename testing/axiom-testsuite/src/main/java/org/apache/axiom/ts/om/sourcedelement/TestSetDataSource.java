@@ -31,9 +31,12 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+
 /** Verifies that a OMDataSource can be replaced with another one */
 @SuppressWarnings("deprecation")
 public class TestSetDataSource extends AxiomTestCase {
+    @Inject
     public TestSetDataSource(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

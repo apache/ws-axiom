@@ -30,12 +30,15 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.io.InstrumentedWriter;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#writeTextTo(Writer, boolean)} in the simple case with a
  * single {@link OMText} child. The test case also checks that the method doesn't call {@link
  * Writer#close()}.
  */
 public class TestWriteTextTo extends AxiomTestCase {
+    @Inject
     public TestWriteTextTo(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

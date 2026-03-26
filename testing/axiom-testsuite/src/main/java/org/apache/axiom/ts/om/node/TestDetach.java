@@ -29,17 +29,22 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /** Tests the behavior of {@link OMNode#detach()}. */
 public class TestDetach extends AxiomTestCase {
     private final boolean document;
     private final boolean build;
 
-    public TestDetach(OMMetaFactory metaFactory, boolean document, boolean build) {
+    @Inject
+    public TestDetach(
+            OMMetaFactory metaFactory,
+            @Named("document") boolean document,
+            @Named("build") boolean build) {
         super(metaFactory);
         this.document = document;
         this.build = build;
-        addTestParameter("document", document);
-        addTestParameter("build", build);
     }
 
     @Override

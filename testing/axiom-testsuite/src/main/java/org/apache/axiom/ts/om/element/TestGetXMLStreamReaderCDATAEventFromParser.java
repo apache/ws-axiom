@@ -31,8 +31,11 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 // Regression test for AXIOM-144 and AXIOM-146
 public class TestGetXMLStreamReaderCDATAEventFromParser extends AxiomTestCase {
+    @Inject
     public TestGetXMLStreamReaderCDATAEventFromParser(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

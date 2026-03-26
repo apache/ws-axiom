@@ -29,8 +29,11 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
+import com.google.inject.Inject;
+
 /** Test the element iterator */
 public class TestGetChildrenWithName extends AxiomTestCase {
+    @Inject
     public TestGetChildrenWithName(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

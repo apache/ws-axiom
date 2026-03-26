@@ -25,11 +25,14 @@ import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.apache.axiom.om.xpath.DocumentNavigator;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link DocumentNavigator#getAttributeQName(Object)} returns the correct result for an
  * attribute with namespace.
  */
 public class TestGetAttributeQName extends AxiomTestCase {
+    @Inject
     public TestGetAttributeQName(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -32,7 +32,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import com.google.inject.Inject;
+
 public class TestGetSAXSourceWithPushOMDataSourceThrowingException extends AxiomTestCase {
+    @Inject
     public TestGetSAXSourceWithPushOMDataSourceThrowingException(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

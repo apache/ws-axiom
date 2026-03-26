@@ -23,8 +23,11 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+
 @SuppressWarnings("deprecation")
 public class TestSetDataSourceOnAlreadyExpandedElement extends AxiomTestCase {
+    @Inject
     public TestSetDataSourceOnAlreadyExpandedElement(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -32,7 +32,10 @@ import org.apache.axiom.om.ds.WrappedTextNodeOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetObject extends AxiomTestCase {
+    @Inject
     public TestGetObject(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

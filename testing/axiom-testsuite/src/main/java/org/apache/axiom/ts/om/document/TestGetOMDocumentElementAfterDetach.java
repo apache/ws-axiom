@@ -25,12 +25,15 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMDocument#getOMDocumentElement()} returns <code>null</code> after the existing
  * document element has been removed using {@link OMNode#detach()}. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-361">AXIOM-361</a>.
  */
 public class TestGetOMDocumentElementAfterDetach extends AxiomTestCase {
+    @Inject
     public TestGetOMDocumentElementAfterDetach(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

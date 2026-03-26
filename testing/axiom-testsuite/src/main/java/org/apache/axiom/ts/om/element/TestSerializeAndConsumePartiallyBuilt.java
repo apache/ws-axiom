@@ -26,11 +26,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMElement#serializeAndConsume(java.io.Writer)} correctly serializes an object
  * model tree that has been partially built. This is a regression test for AXIOM-151.
  */
 public class TestSerializeAndConsumePartiallyBuilt extends AxiomTestCase {
+    @Inject
     public TestSerializeAndConsumePartiallyBuilt(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

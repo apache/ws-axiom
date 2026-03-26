@@ -29,7 +29,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.XMLSampleAdapter;
 import org.apache.axiom.ts.xml.XMLSample;
 
+import com.google.inject.Inject;
+
 public class TestClose extends AxiomTestCase {
+    @Inject
     public TestClose(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

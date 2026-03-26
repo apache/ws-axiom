@@ -32,17 +32,21 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestGetDescendants extends AxiomTestCase {
     private final OMContainerFactory containerFactory;
     private final boolean includeSelf;
 
+    @Inject
     public TestGetDescendants(
-            OMMetaFactory metaFactory, OMContainerFactory containerFactory, boolean includeSelf) {
+            OMMetaFactory metaFactory,
+            OMContainerFactory containerFactory,
+            @Named("includeSelf") boolean includeSelf) {
         super(metaFactory);
         this.containerFactory = containerFactory;
-        containerFactory.addTestParameters(this);
         this.includeSelf = includeSelf;
-        addTestParameter("includeSelf", includeSelf);
     }
 
     @Override

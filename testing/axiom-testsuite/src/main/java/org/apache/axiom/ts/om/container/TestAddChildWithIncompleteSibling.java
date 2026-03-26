@@ -31,6 +31,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMContainer#addChild(OMNode)} works properly on a container that has been
  * created programmatically, but that has a child that is itself incomplete.
@@ -41,11 +43,11 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestAddChildWithIncompleteSibling extends AxiomTestCase {
     private final OMContainerFactory containerFactory;
 
+    @Inject
     public TestAddChildWithIncompleteSibling(
             OMMetaFactory metaFactory, OMContainerFactory containerFactory) {
         super(metaFactory);
         this.containerFactory = containerFactory;
-        containerFactory.addTestParameters(this);
     }
 
     @Override

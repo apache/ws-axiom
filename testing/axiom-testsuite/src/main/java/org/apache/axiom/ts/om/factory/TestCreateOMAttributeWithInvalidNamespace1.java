@@ -25,12 +25,15 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMFactory#createOMAttribute(String, OMNamespace, String)} throws an exception
  * if the specified namespace is invalid, i.e. if the {@link OMNamespace} object specifies a prefix
  * for an empty namespace.
  */
 public class TestCreateOMAttributeWithInvalidNamespace1 extends AxiomTestCase {
+    @Inject
     public TestCreateOMAttributeWithInvalidNamespace1(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

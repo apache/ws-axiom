@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.ts.om.xop;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.apache.axiom.ts.xml.XOPSample.XOP_SPEC_SAMPLE;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -35,6 +35,9 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 import jakarta.mail.Multipart;
 import jakarta.mail.internet.MimeMultipart;
 import jakarta.mail.util.ByteArrayDataSource;
@@ -42,10 +45,10 @@ import jakarta.mail.util.ByteArrayDataSource;
 public class TestSetOptimize extends AxiomTestCase {
     private final boolean optimize;
 
-    public TestSetOptimize(OMMetaFactory metaFactory, boolean optimize) {
+    @Inject
+    public TestSetOptimize(OMMetaFactory metaFactory, @Named("optimize") boolean optimize) {
         super(metaFactory);
         this.optimize = optimize;
-        addTestParameter("optimize", optimize);
     }
 
     @Override

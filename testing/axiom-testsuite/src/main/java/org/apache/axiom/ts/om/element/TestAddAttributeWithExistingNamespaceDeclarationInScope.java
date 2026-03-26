@@ -29,6 +29,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that adding an attribute doesn't create an additional namespace declaration if a
  * corresponding declaration is already in scope.
@@ -36,11 +38,11 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 public class TestAddAttributeWithExistingNamespaceDeclarationInScope extends AxiomTestCase {
     private final AddAttributeStrategy strategy;
 
+    @Inject
     public TestAddAttributeWithExistingNamespaceDeclarationInScope(
             OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
         this.strategy = strategy;
-        strategy.addTestParameters(this);
     }
 
     @Override

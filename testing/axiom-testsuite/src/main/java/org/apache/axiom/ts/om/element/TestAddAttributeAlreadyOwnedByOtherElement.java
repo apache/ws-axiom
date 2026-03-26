@@ -26,11 +26,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Test that calling {@link OMElement#addAttribute(OMAttribute)} with an attribute that is already
  * owned by another element will clone the attribute.
  */
 public class TestAddAttributeAlreadyOwnedByOtherElement extends AxiomTestCase {
+    @Inject
     public TestAddAttributeAlreadyOwnedByOtherElement(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

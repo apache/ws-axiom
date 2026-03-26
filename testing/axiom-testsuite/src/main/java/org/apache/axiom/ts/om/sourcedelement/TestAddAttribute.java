@@ -32,6 +32,8 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that adding an attribute to an {@link OMSourcedElement} overrides a corresponding attribute
  * that may be produced during expansion.
@@ -39,10 +41,10 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 public class TestAddAttribute extends AxiomTestCase {
     private final AddAttributeStrategy strategy;
 
+    @Inject
     public TestAddAttribute(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
         this.strategy = strategy;
-        strategy.addTestParameters(this);
     }
 
     @Override

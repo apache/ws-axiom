@@ -26,8 +26,11 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests the behavior of {@link OMElement#removeAttribute(OMAttribute)}. */
 public class TestRemoveAttribute extends AxiomTestCase {
+    @Inject
     public TestRemoveAttribute(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

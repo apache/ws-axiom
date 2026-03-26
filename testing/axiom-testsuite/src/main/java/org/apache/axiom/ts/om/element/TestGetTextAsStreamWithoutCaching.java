@@ -39,7 +39,10 @@ import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
+    @Inject
     public TestGetTextAsStreamWithoutCaching(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

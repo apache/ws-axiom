@@ -29,12 +29,15 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that for an {@link OMElement}, a {@link LexicalHandler#startDTD(String, String, String)}
  * event sent to the {@link LexicalHandler} linked to the {@link SAXResult} object returned by
  * {@link OMContainer#getSAXResult()} is silently ignored.
  */
 public class TestGetSAXResultWithDTD extends AxiomTestCase {
+    @Inject
     public TestGetSAXResultWithDTD(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

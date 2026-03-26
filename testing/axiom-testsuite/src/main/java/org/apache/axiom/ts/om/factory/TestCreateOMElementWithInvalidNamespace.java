@@ -23,11 +23,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMFactory} forbids creating prefixed elements with an empty namespace name.
  * Neither XML 1.0 nor XML 1.1 allow binding a prefix to the empty namespace name.
  */
 public class TestCreateOMElementWithInvalidNamespace extends CreateOMElementTestCase {
+    @Inject
     public TestCreateOMElementWithInvalidNamespace(
             OMMetaFactory metaFactory,
             CreateOMElementVariant variant,

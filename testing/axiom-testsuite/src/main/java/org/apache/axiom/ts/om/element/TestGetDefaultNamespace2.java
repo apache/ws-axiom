@@ -24,6 +24,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#getDefaultNamespace()} in the special case where the
  * element has no namespace and was created as a child element of an element having a default
@@ -35,6 +37,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-400">AXIOM-400</a>.
  */
 public class TestGetDefaultNamespace2 extends AxiomTestCase {
+    @Inject
     public TestGetDefaultNamespace2(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

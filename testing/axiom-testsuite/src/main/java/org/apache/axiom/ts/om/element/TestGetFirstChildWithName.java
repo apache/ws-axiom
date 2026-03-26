@@ -26,8 +26,11 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests the behavior of {@link OMElement#getFirstChildWithName(QName)}. */
 public class TestGetFirstChildWithName extends AxiomTestCase {
+    @Inject
     public TestGetFirstChildWithName(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

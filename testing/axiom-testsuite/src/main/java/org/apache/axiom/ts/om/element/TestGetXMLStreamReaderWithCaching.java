@@ -29,11 +29,14 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that the object model can still be accessed after using {@link
  * OMContainer#getXMLStreamReader()}.
  */
 public class TestGetXMLStreamReaderWithCaching extends AxiomTestCase {
+    @Inject
     public TestGetXMLStreamReaderWithCaching(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

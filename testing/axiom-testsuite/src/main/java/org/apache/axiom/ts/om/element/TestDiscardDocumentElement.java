@@ -28,11 +28,14 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMNode#discard()} on an incomplete {@link OMElement} that is a
  * document element, i.e. the parent of which is an {@link OMDocument}.
  */
 public class TestDiscardDocumentElement extends AxiomTestCase {
+    @Inject
     public TestDiscardDocumentElement(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -31,6 +31,9 @@ import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.util.UIDGenerator;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestCreateOMTextFromBlobProvider extends AxiomTestCase {
     static class TestBlobProvider implements BlobProvider {
         private Blob blob;
@@ -50,10 +53,11 @@ public class TestCreateOMTextFromBlobProvider extends AxiomTestCase {
 
     private final boolean nullContentID;
 
-    public TestCreateOMTextFromBlobProvider(OMMetaFactory metaFactory, boolean nullContentID) {
+    @Inject
+    public TestCreateOMTextFromBlobProvider(
+            OMMetaFactory metaFactory, @Named("nullContentId") boolean nullContentID) {
         super(metaFactory);
         this.nullContentID = nullContentID;
-        addTestParameter("nullContentId", nullContentID);
     }
 
     @Override

@@ -30,7 +30,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestDetachWithDifferentBuilder extends AxiomTestCase {
+    @Inject
     public TestDetachWithDifferentBuilder(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

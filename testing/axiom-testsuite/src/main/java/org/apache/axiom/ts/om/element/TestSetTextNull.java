@@ -22,11 +22,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#setText(String)} when invoked with a <code>null</code>
  * parameter.
  */
 public class TestSetTextNull extends AxiomTestCase {
+    @Inject
     public TestSetTextNull(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

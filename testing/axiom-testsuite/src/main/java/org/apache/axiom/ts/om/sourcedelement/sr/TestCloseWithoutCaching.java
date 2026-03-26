@@ -28,6 +28,9 @@ import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that calling {@link XMLStreamReader#close()} on an {@link XMLStreamReader} returned by
  * {@link OMContainer#getXMLStreamReaderWithoutCaching()} for an OM tree containing an {@link
@@ -36,10 +39,10 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 public class TestCloseWithoutCaching extends AxiomTestCase {
     private final int events;
 
-    public TestCloseWithoutCaching(OMMetaFactory metaFactory, int events) {
+    @Inject
+    public TestCloseWithoutCaching(OMMetaFactory metaFactory, @Named("events") int events) {
         super(metaFactory);
         this.events = events;
-        addTestParameter("events", events);
     }
 
     @Override

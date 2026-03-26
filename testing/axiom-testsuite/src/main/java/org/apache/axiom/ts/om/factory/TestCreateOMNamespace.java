@@ -22,7 +22,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestCreateOMNamespace extends AxiomTestCase {
+    @Inject
     public TestCreateOMNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

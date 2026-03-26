@@ -30,14 +30,17 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /** Tests {@link OMContainer#removeChildren()} on an {@link OMElement}. */
 public class TestRemoveChildren extends AxiomTestCase {
     private final boolean complete;
 
-    public TestRemoveChildren(OMMetaFactory metaFactory, boolean complete) {
+    @Inject
+    public TestRemoveChildren(OMMetaFactory metaFactory, @Named("complete") boolean complete) {
         super(metaFactory);
         this.complete = complete;
-        addTestParameter("complete", complete);
     }
 
     @Override

@@ -31,11 +31,14 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMXMLBuilderFactory#createOMBuilder(StAXParserConfiguration,
  * InputStream)} with {@link StAXParserConfiguration#STANDALONE}.
  */
 public class TestStandaloneConfiguration extends AxiomTestCase {
+    @Inject
     public TestStandaloneConfiguration(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

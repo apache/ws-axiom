@@ -28,6 +28,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that when adding multiple attributes with different namespaces, a corresponding namespace
  * declaration is generated for each of them.
@@ -35,10 +37,10 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 public class TestAddAttributeMultiple extends AxiomTestCase {
     private final AddAttributeStrategy strategy;
 
+    @Inject
     public TestAddAttributeMultiple(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
         this.strategy = strategy;
-        strategy.addTestParameters(this);
     }
 
     @Override

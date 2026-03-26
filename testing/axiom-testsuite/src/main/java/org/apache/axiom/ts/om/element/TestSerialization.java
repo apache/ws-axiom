@@ -18,13 +18,14 @@
  */
 package org.apache.axiom.ts.om.element;
 
-import com.google.common.collect.ImmutableList;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
+
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
 
 /**
  * Tests proper serialization for different combinations of namespaces on the element and its
@@ -92,11 +93,10 @@ public class TestSerialization extends AxiomTestCase {
 
     private final Params params;
 
+    @Inject
     public TestSerialization(OMMetaFactory metaFactory, Params params) {
         super(metaFactory);
         this.params = params;
-        addTestParameter("parent", params.parent());
-        addTestParameter("children", params.children());
     }
 
     private static OMNamespace createNamespace(OMFactory factory, String type) {

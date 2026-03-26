@@ -24,12 +24,15 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Test that {@link org.apache.axiom.om.OMContainer#addChild(org.apache.axiom.om.OMNode)} behaves
  * correctly if the child to be added already has a parent.
  */
 // TODO: update Javadoc of OMContainer
 public class TestAddChildWithParent extends AxiomTestCase {
+    @Inject
     public TestAddChildWithParent(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

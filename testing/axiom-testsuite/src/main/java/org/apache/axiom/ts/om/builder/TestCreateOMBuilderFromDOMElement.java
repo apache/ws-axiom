@@ -30,12 +30,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMXMLBuilderFactory#createOMBuilder(Node, boolean)} can be used to create a
  * builder from an {@link Element} and that the resulting Axiom tree corresponds to a the subtree
  * defined by that element.
  */
 public class TestCreateOMBuilderFromDOMElement extends AxiomTestCase {
+    @Inject
     public TestCreateOMBuilderFromDOMElement(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -25,6 +25,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
  * requested to create an element without namespace and the specified namespace prefix is <code>null
@@ -32,6 +34,7 @@ import org.apache.axiom.om.OMNamespace;
  * for an element without namespace this is not possible and an empty prefix must be used instead.
  */
 public class TestCreateOMElementWithoutNamespaceNullPrefix extends CreateOMElementTestCase {
+    @Inject
     public TestCreateOMElementWithoutNamespaceNullPrefix(
             OMMetaFactory metaFactory,
             CreateOMElementVariant variant,

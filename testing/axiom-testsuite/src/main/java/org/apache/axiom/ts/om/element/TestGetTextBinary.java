@@ -31,6 +31,9 @@ import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.codec.binary.Base64;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that {@link OMElement#getText()} returns the expected value (i.e. base64 encoded data) for
  * an element that has an {@link OMText} child constructed from a {@link Blob}.
@@ -38,10 +41,10 @@ import org.apache.commons.codec.binary.Base64;
 public class TestGetTextBinary extends AxiomTestCase {
     private final boolean compact;
 
-    public TestGetTextBinary(OMMetaFactory metaFactory, boolean compact) {
+    @Inject
+    public TestGetTextBinary(OMMetaFactory metaFactory, @Named("compact") boolean compact) {
         super(metaFactory);
         this.compact = compact;
-        addTestParameter("compact", compact);
     }
 
     @Override

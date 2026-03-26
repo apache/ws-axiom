@@ -18,14 +18,15 @@
  */
 package org.apache.axiom.ts.om.element;
 
-import com.google.common.collect.ImmutableList;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.om.SetNamespaceTestCase;
+
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link OMElement#setNamespace(OMNamespace)} and {@link
@@ -73,12 +74,10 @@ public class TestSetNamespace extends SetNamespaceTestCase {
 
     private final Params params;
 
+    @Inject
     public TestSetNamespace(OMMetaFactory metaFactory, Params params) {
         super(metaFactory, params);
         this.params = params;
-        if (params.declare() != null) {
-            addTestParameter("declare", params.declare().booleanValue());
-        }
     }
 
     @Override

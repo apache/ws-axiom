@@ -26,13 +26,17 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestGetDescendants extends AxiomTestCase {
     private final boolean includeSelf;
 
-    public TestGetDescendants(OMMetaFactory metaFactory, boolean includeSelf) {
+    @Inject
+    public TestGetDescendants(
+            OMMetaFactory metaFactory, @Named("includeSelf") boolean includeSelf) {
         super(metaFactory);
         this.includeSelf = includeSelf;
-        addTestParameter("includeSelf", includeSelf);
     }
 
     @Override

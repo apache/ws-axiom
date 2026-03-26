@@ -28,12 +28,15 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests Axiom's behavior when {@link OMElement#declareNamespace(OMNamespace)} is used to add a
  * namespace declaration that binds a prefix to an empty namespace URI. This is forbidden by both
  * XML 1.0 and XML 1.1.
  */
 public class TestDeclareNamespaceInvalid2 extends AxiomTestCase {
+    @Inject
     public TestDeclareNamespaceInvalid2(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

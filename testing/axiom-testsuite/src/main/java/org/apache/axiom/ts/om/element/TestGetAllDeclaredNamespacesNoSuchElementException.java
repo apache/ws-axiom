@@ -29,11 +29,14 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that the iterator returned by {@link OMElement#getAllDeclaredNamespaces()} respects the
  * {@link Iterator} contract with respect to throwing {@link NoSuchElementException}.
  */
 public class TestGetAllDeclaredNamespacesNoSuchElementException extends AxiomTestCase {
+    @Inject
     public TestGetAllDeclaredNamespacesNoSuchElementException(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

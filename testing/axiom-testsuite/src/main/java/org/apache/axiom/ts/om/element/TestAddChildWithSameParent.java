@@ -25,6 +25,9 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests the behavior of {@link OMContainer#addChild(OMNode)} when used to add a node to an element
  * it is already a child of. In this case, the expected result is that the node is moved to the end
@@ -33,10 +36,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestAddChildWithSameParent extends AxiomTestCase {
     private final boolean build;
 
-    public TestAddChildWithSameParent(OMMetaFactory metaFactory, boolean build) {
+    @Inject
+    public TestAddChildWithSameParent(OMMetaFactory metaFactory, @Named("build") boolean build) {
         super(metaFactory);
         this.build = build;
-        addTestParameter("build", build);
     }
 
     @Override

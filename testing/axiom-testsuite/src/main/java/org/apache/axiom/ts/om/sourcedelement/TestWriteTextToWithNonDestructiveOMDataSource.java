@@ -34,7 +34,10 @@ import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.CharacterStreamComparator;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase {
+    @Inject
     public TestWriteTextToWithNonDestructiveOMDataSource(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

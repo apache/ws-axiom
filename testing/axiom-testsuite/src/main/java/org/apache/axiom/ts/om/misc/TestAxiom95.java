@@ -23,8 +23,11 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-95">AXIOM-95</a>. */
 public class TestAxiom95 extends AxiomTestCase {
+    @Inject
     public TestAxiom95(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

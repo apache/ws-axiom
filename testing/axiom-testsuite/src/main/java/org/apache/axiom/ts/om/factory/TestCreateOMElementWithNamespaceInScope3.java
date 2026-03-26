@@ -25,6 +25,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} if an empty
  * namespace prefix is given and an existing namespace declaration for the same URI but non empty
@@ -32,6 +34,7 @@ import org.apache.axiom.om.OMNamespace;
  * the existing prefix.
  */
 public class TestCreateOMElementWithNamespaceInScope3 extends CreateOMElementTestCase {
+    @Inject
     public TestCreateOMElementWithNamespaceInScope3(
             OMMetaFactory metaFactory, CreateOMElementVariant variant) {
         super(metaFactory, variant, null);

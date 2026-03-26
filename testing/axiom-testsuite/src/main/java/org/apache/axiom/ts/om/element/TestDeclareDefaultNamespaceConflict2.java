@@ -27,6 +27,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMElement#declareDefaultNamespace(String)} throws an exception if an attempt is
  * made to add a namespace declaration that would conflict with the namespace information of the
@@ -35,6 +37,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-376">AXIOM-376</a>.
  */
 public class TestDeclareDefaultNamespaceConflict2 extends AxiomTestCase {
+    @Inject
     public TestDeclareDefaultNamespaceConflict2(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

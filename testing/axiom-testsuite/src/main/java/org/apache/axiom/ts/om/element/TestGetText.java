@@ -24,11 +24,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#getText()} when invoked on an element with a single child
  * of type {@link OMText}.
  */
 public class TestGetText extends AxiomTestCase {
+    @Inject
     public TestGetText(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

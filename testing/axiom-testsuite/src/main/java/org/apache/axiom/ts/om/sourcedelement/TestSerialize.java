@@ -38,6 +38,9 @@ import org.apache.axiom.ts.dimension.serialization.XML;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 import org.xml.sax.InputSource;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /** Tests various ways to serialize an {@link OMSourcedElement}. */
 public class TestSerialize extends AxiomTestCase {
     private final boolean push;
@@ -64,15 +67,16 @@ public class TestSerialize extends AxiomTestCase {
      * @param count the number of times the {@link OMSourcedElement} will be serialized; the only
      *     meaningful values are 1 and 2
      */
+    @Inject
     public TestSerialize(
             OMMetaFactory metaFactory,
-            boolean push,
-            boolean destructive,
+            @Named("push") boolean push,
+            @Named("destructive") boolean destructive,
             ElementContext elementContext,
             ExpansionStrategy expansionStrategy,
             SerializationStrategy serializationStrategy,
-            boolean serializeParent,
-            int count) {
+            @Named("serializeParent") boolean serializeParent,
+            @Named("count") int count) {
         super(metaFactory);
         this.push = push;
         this.destructive = destructive;
@@ -81,13 +85,6 @@ public class TestSerialize extends AxiomTestCase {
         this.serializationStrategy = serializationStrategy;
         this.serializeParent = serializeParent;
         this.count = count;
-        addTestParameter("push", push);
-        addTestParameter("destructive", destructive);
-        elementContext.addTestParameters(this);
-        expansionStrategy.addTestParameters(this);
-        serializationStrategy.addTestParameters(this);
-        addTestParameter("serializeParent", serializeParent);
-        addTestParameter("count", count);
     }
 
     @Override

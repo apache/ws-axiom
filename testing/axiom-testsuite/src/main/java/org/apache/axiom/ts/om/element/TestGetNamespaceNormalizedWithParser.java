@@ -26,6 +26,8 @@ import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an element
  * with no namespace. The case considered in this test is an element created using a parser and that
@@ -33,6 +35,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalizedWithParser extends AxiomTestCase {
+    @Inject
     public TestGetNamespaceNormalizedWithParser(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -28,11 +28,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMContainer#getXMLStreamReaderWithoutCaching()} correctly generated events for
  * an element that has been partially built. This is a regression test for AXIOM-393.
  */
 public class TestGetXMLStreamReaderWithoutCachingPartiallyBuilt extends AxiomTestCase {
+    @Inject
     public TestGetXMLStreamReaderWithoutCachingPartiallyBuilt(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -29,7 +29,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.w3c.dom.Element;
 
+import com.google.inject.Inject;
+
 public class TestCreateOMBuilderFromDOMWithNSUnawareUnprefixedAttribute extends AxiomTestCase {
+    @Inject
     public TestCreateOMBuilderFromDOMWithNSUnawareUnprefixedAttribute(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

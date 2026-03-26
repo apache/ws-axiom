@@ -29,6 +29,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
+import com.google.inject.Inject;
+
 /**
  * Test checking that adding an attribute correctly generates a new namespace declaration if an
  * equivalent namespace declaration exists but is masked. The test attempts to create the following
@@ -50,11 +52,11 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCase {
     private final AddAttributeStrategy strategy;
 
+    @Inject
     public TestAddAttributeWithMaskedNamespaceDeclaration(
             OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
         this.strategy = strategy;
-        strategy.addTestParameters(this);
     }
 
     @Override

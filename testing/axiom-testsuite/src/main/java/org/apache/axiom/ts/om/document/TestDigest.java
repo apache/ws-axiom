@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
 
 public class TestDigest extends DigestTestCase {
     public record Params(String file, String algorithm, String expectedDigest) {}
@@ -40,10 +41,10 @@ public class TestDigest extends DigestTestCase {
 
     private final Params params;
 
+    @Inject
     public TestDigest(OMMetaFactory metaFactory, Params params) {
         super(metaFactory, params.algorithm(), params.expectedDigest());
         this.params = params;
-        addTestParameter("file", params.file());
     }
 
     @Override

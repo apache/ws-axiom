@@ -23,7 +23,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestCreateOMNamespaceWithNullURI extends AxiomTestCase {
+    @Inject
     public TestCreateOMNamespaceWithNullURI(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

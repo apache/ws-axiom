@@ -24,11 +24,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMNamedInformationItem#getPrefix()} returns <code>null</code> when invoked on
  * an {@link OMElement} that has a namespace without a prefix.
  */
 public class TestGetPrefixWithDefaultNamespace extends AxiomTestCase {
+    @Inject
     public TestGetPrefixWithDefaultNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

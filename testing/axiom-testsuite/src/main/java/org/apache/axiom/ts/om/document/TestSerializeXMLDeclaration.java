@@ -26,7 +26,10 @@ import java.nio.charset.StandardCharsets;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 
+import com.google.inject.Inject;
+
 public class TestSerializeXMLDeclaration extends XMLDeclarationSerializationTestCase {
+    @Inject
     public TestSerializeXMLDeclaration(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

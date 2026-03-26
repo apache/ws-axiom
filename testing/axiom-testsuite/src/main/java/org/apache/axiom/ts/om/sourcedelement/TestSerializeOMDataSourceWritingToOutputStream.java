@@ -39,6 +39,9 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializeToOutputStream;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests serialization with an {@link OMDataSource} that uses {@link
  * MTOMXMLStreamWriter#getOutputStream()}.
@@ -85,15 +88,14 @@ public class TestSerializeOMDataSourceWritingToOutputStream extends AxiomTestCas
     private final SerializationStrategy serializationStrategy;
     private final boolean serializeParent;
 
+    @Inject
     public TestSerializeOMDataSourceWritingToOutputStream(
             OMMetaFactory metaFactory,
             SerializationStrategy serializationStrategy,
-            boolean serializeParent) {
+            @Named("serializeParent") boolean serializeParent) {
         super(metaFactory);
         this.serializationStrategy = serializationStrategy;
         this.serializeParent = serializeParent;
-        serializationStrategy.addTestParameters(this);
-        addTestParameter("serializeParent", serializeParent);
     }
 
     @Override

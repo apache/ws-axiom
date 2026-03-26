@@ -26,13 +26,16 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestGetNamespaceContext extends AxiomTestCase {
     private final boolean cache;
 
-    public TestGetNamespaceContext(OMMetaFactory metaFactory, boolean cache) {
+    @Inject
+    public TestGetNamespaceContext(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", cache);
     }
 
     @Override

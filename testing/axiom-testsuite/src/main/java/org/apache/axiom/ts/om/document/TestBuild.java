@@ -26,7 +26,10 @@ import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
+import com.google.inject.Inject;
+
 public class TestBuild extends AxiomTestCase {
+    @Inject
     public TestBuild(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

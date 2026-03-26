@@ -24,7 +24,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 
+import com.google.inject.Inject;
+
 public class TestGetNamespace extends LazyNameTestCase {
+    @Inject
     public TestGetNamespace(
             OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
         super(metaFactory, variant, qname);

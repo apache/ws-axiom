@@ -29,17 +29,21 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.xml.sax.InputSource;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestCommentEvent extends AxiomTestCase {
     private final BuilderFactory builderFactory;
     private final boolean cache;
 
+    @Inject
     public TestCommentEvent(
-            OMMetaFactory metaFactory, BuilderFactory builderFactory, boolean cache) {
+            OMMetaFactory metaFactory,
+            BuilderFactory builderFactory,
+            @Named("cache") boolean cache) {
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.cache = cache;
-        builderFactory.addTestParameters(this);
-        addTestParameter("cache", cache);
     }
 
     @Override

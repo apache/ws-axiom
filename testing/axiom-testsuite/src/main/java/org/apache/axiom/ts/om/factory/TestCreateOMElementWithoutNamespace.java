@@ -22,12 +22,15 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
  * requested to create an element without namespace. In this case, no namespace declaration is added
  * to the created element.
  */
 public class TestCreateOMElementWithoutNamespace extends CreateOMElementTestCase {
+    @Inject
     public TestCreateOMElementWithoutNamespace(
             OMMetaFactory metaFactory,
             CreateOMElementVariant variant,

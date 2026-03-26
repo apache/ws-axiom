@@ -28,6 +28,8 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean,
  * OMXMLStreamReaderConfiguration)} when {@link
@@ -36,6 +38,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-485">AXIOM-485</a>.
  */
 public class TestGetXMLStreamReaderWithPreserveNamespaceContext2 extends AxiomTestCase {
+    @Inject
     public TestGetXMLStreamReaderWithPreserveNamespaceContext2(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

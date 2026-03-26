@@ -29,7 +29,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestSerialize extends AxiomTestCase {
+    @Inject
     public TestSerialize(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

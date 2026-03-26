@@ -32,25 +32,26 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.jspecify.annotations.Nullable;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
     private final DOMImplementation implementation;
     private final Boolean expandEntityReferences;
 
+    @Inject
     public TestCreateOMBuilderFromDOM(
             OMMetaFactory metaFactory,
             XMLSample file,
             DOMImplementation implementation,
-            Boolean expandEntityReferences) {
+            @Named("expandEntityReferences") @Nullable Boolean expandEntityReferences) {
         super(metaFactory, file);
         this.implementation = implementation;
-        addTestParameter("implementation", implementation.getName());
         this.expandEntityReferences = expandEntityReferences;
-        if (expandEntityReferences != null) {
-            addTestParameter("expandEntityReferences", expandEntityReferences.booleanValue());
-        }
     }
 
     private Document loadDocument(boolean expandEntityReferences) throws Exception {

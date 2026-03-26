@@ -35,7 +35,10 @@ import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends AxiomTestCase {
+    @Inject
     public TestGetTextAsStreamWithNonDestructiveOMDataSource(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

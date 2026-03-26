@@ -30,6 +30,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMElement#serializeAndConsume(java.io.Writer)} consumes incomplete descendants,
  * even if the element itself is complete (more precisely, created programmatically). This situation
@@ -38,6 +40,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * </code> set to true) is added to an existing tree.
  */
 public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCase {
+    @Inject
     public TestSerializeAndConsumeWithIncompleteDescendant(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

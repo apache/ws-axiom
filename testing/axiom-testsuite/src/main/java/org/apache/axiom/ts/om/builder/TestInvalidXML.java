@@ -30,7 +30,10 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.InvocationCounter;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestInvalidXML extends AxiomTestCase {
+    @Inject
     public TestInvalidXML(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

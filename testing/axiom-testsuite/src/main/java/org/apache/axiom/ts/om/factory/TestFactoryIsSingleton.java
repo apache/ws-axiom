@@ -22,12 +22,15 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that the {@link OMFactory} returned by {@link OMMetaFactory} is a singleton. More precisely
  * this unit test checks that subsequent calls to {@link OMMetaFactory#getOMFactory()} return the
  * same instance.
  */
 public class TestFactoryIsSingleton extends AxiomTestCase {
+    @Inject
     public TestFactoryIsSingleton(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

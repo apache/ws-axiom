@@ -33,6 +33,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
+import com.google.inject.Inject;
+
 /**
  * Test that adding an attribute has the expected effect when an attribute with the same name and
  * namespace URI already exists.
@@ -40,10 +42,10 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 public class TestAddAttributeReplace extends AxiomTestCase {
     private final AddAttributeStrategy strategy;
 
+    @Inject
     public TestAddAttributeReplace(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
         this.strategy = strategy;
-        strategy.addTestParameters(this);
     }
 
     @Override

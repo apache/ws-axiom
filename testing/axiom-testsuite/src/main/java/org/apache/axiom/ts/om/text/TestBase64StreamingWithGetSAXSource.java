@@ -38,6 +38,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that when an {@link OMText} node is serialized by the {@link SAXSource} returned by {@link
  * OMContainer#getSAXSource(boolean)}, the implementation doesn't construct an in-memory base64
@@ -72,6 +74,7 @@ public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
         }
     }
 
+    @Inject
     public TestBase64StreamingWithGetSAXSource(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

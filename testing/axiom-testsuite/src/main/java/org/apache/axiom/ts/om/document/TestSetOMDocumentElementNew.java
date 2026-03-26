@@ -28,11 +28,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} if there is no existing
  * document element.
  */
 public class TestSetOMDocumentElementNew extends AxiomTestCase {
+    @Inject
     public TestSetOMDocumentElementNew(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

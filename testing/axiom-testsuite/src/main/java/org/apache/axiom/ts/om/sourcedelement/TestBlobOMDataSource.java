@@ -32,8 +32,11 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.BlobOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests functionality of BlobOMDataSource */
 public class TestBlobOMDataSource extends AxiomTestCase {
+    @Inject
     public TestBlobOMDataSource(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

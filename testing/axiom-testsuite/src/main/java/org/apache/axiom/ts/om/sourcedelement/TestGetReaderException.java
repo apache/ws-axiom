@@ -31,12 +31,15 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMSourcedElement} if {@link OMDataSource#getReader()} throws an
  * exception. In this case, the code must complete properly (and not end in an infinite loop) and
  * propagate the original exception (wrapped in an {@link OMException}).
  */
 public class TestGetReaderException extends AxiomTestCase {
+    @Inject
     public TestGetReaderException(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

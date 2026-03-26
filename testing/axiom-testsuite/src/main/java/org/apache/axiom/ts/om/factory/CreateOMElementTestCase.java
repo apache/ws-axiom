@@ -37,9 +37,5 @@ public abstract class CreateOMElementTestCase extends AxiomTestCase {
         super(metaFactory);
         this.variant = variant;
         this.parentSupplier = parentSupplier;
-        addTestParameter("variant", variant.getName());
-        if (parentSupplier != null) {
-            addTestParameter("parent", parentSupplier.getName());
-        }
     }
 }

@@ -25,6 +25,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
  * requested to create an element without namespace as a child of an element that has a default
@@ -35,6 +37,7 @@ import org.apache.axiom.om.OMNamespace;
  * href="https://issues.apache.org/jira/browse/AXIOM-400">AXIOM-400</a>.
  */
 public class TestCreateOMElementWithoutNamespace2 extends CreateOMElementTestCase {
+    @Inject
     public TestCreateOMElementWithoutNamespace2(
             OMMetaFactory metaFactory, CreateOMElementVariant variant) {
         super(metaFactory, variant, null);

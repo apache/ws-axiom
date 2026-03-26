@@ -33,7 +33,10 @@ import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order.Item;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
+import com.google.inject.Inject;
+
 public class TestGetSAXResultXMLBeans extends AxiomTestCase {
+    @Inject
     public TestGetSAXResultXMLBeans(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

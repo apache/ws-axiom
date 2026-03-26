@@ -31,11 +31,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that an attempt to use {@link OMContainer#addChild(OMNode)} to add an {@link OMElement} to
  * an {@link OMDocument} that already has a document element results in an exception.
  */
 public class TestAddChildWithExistingDocumentElement extends AxiomTestCase {
+    @Inject
     public TestAddChildWithExistingDocumentElement(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

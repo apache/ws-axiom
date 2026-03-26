@@ -24,10 +24,13 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that the default attribute type for programmatically created attributes is {@code CDATA}.
  */
 public class TestGetAttributeTypeDefault extends AxiomTestCase {
+    @Inject
     public TestGetAttributeTypeDefault(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

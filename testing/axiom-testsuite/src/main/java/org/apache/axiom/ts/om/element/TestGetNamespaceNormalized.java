@@ -25,6 +25,9 @@ import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an element
  * with no namespace. The case considered in this test is a programmatically created element without
@@ -42,10 +45,11 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestGetNamespaceNormalized extends AxiomTestCase {
     private final boolean useNull;
 
-    public TestGetNamespaceNormalized(OMMetaFactory metaFactory, boolean useNull) {
+    @Inject
+    public TestGetNamespaceNormalized(
+            OMMetaFactory metaFactory, @Named("useNull") boolean useNull) {
         super(metaFactory);
         this.useNull = useNull;
-        addTestParameter("useNull", useNull);
     }
 
     @Override

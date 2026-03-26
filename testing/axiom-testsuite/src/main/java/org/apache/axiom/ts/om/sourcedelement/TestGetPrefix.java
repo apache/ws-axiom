@@ -23,7 +23,10 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 
+import com.google.inject.Inject;
+
 public class TestGetPrefix extends LazyNameTestCase {
+    @Inject
     public TestGetPrefix(OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
         super(metaFactory, variant, qname);
     }

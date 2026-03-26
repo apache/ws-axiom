@@ -27,12 +27,15 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the OMSourcedElement localName, namespace and prefix settings before and after
  * serialization Document: testDocument (which uses the default namespace) Type of Serialization:
  * Serialize and cache Prefix test
  */
 public class TestName1DefaultPrefix extends AxiomTestCase {
+    @Inject
     public TestName1DefaultPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

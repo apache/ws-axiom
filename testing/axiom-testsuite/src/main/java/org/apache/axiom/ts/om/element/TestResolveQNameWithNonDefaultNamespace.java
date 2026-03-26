@@ -25,7 +25,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestResolveQNameWithNonDefaultNamespace extends AxiomTestCase {
+    @Inject
     public TestResolveQNameWithNonDefaultNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

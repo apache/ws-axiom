@@ -27,12 +27,15 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMSourcedElement} calls {@link XMLStreamReader#close()} on the {@link
  * XMLStreamReader} returned by {@link OMDataSource#getReader()} when the element is completely
  * built.
  */
 public class TestCloseOnComplete extends AxiomTestCase {
+    @Inject
     public TestCloseOnComplete(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

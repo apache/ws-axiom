@@ -28,11 +28,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMElement#declareNamespace(OMNamespace)} generates a new prefix if the prefix
  * specified in the {@link OMNamespace} object is <code>null</code>.
  */
 public class TestDeclareNamespaceWithGeneratedPrefix1 extends AxiomTestCase {
+    @Inject
     public TestDeclareNamespaceWithGeneratedPrefix1(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

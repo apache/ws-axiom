@@ -32,18 +32,22 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /** Tests {@link OMContainer#removeChildren()} on an {@link OMContainer}. */
 public class TestRemoveChildren extends AxiomTestCase {
     private final boolean complete;
     private final boolean accessDocumentElement;
 
+    @Inject
     public TestRemoveChildren(
-            OMMetaFactory metaFactory, boolean complete, boolean accessDocumentElement) {
+            OMMetaFactory metaFactory,
+            @Named("complete") boolean complete,
+            @Named("accessDocumentElement") boolean accessDocumentElement) {
         super(metaFactory);
         this.complete = complete;
         this.accessDocumentElement = accessDocumentElement;
-        addTestParameter("complete", complete);
-        addTestParameter("accessDocumentElement", accessDocumentElement);
     }
 
     @Override

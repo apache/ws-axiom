@@ -27,11 +27,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMFactory#createOMElement(OMDataSource, QName)} if the data source
  * is <code>null</code>.
  */
 public class TestCreateOMElementWithNullOMDataSource2 extends AxiomTestCase {
+    @Inject
     public TestCreateOMElementWithNullOMDataSource2(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -30,12 +30,15 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement(boolean)} with <code>
  * discardDocument</code> set to <code>true</code> and a document that has an epilog that is not
  * well formed. This situation should be detected.
  */
 public class TestGetDocumentElementWithDiscardDocumentIllFormedEpilog extends AxiomTestCase {
+    @Inject
     public TestGetDocumentElementWithDiscardDocumentIllFormedEpilog(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

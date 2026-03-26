@@ -31,7 +31,10 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
+import com.google.inject.Inject;
+
 public class TestCloseWithSystemId extends AxiomTestCase {
+    @Inject
     public TestCloseWithSystemId(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

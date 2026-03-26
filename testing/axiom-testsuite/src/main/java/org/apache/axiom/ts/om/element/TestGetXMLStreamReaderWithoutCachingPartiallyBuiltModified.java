@@ -29,6 +29,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMContainer#getXMLStreamReaderWithoutCaching()} in the specific case
  * where the element is partially built and the last created node has been modified. In Axiom 1.2.14
@@ -36,6 +38,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * pull through mode.
  */
 public class TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified extends AxiomTestCase {
+    @Inject
     public TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

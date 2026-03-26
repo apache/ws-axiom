@@ -27,6 +27,8 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMElement#getNamespace()} returns <code>null</code> even if an {@link
  * OMNamespace} object with empty prefix and namespace URI was passed to {@link
@@ -36,6 +38,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalized extends AxiomTestCase {
+    @Inject
     public TestGetNamespaceNormalized(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

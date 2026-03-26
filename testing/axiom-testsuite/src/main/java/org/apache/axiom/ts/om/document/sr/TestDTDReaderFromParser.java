@@ -28,6 +28,9 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that the {@link XMLStreamReader} returned by {@link OMContainer#getXMLStreamReader()} for
  * an OM tree created by a builder correctly implements the {@link DTDReader} extension.
@@ -36,12 +39,14 @@ public class TestDTDReaderFromParser extends AxiomTestCase {
     private final boolean build;
     private final boolean cache;
 
-    public TestDTDReaderFromParser(OMMetaFactory metaFactory, boolean build, boolean cache) {
+    @Inject
+    public TestDTDReaderFromParser(
+            OMMetaFactory metaFactory,
+            @Named("build") boolean build,
+            @Named("cache") boolean cache) {
         super(metaFactory);
         this.build = build;
         this.cache = cache;
-        addTestParameter("build", build);
-        addTestParameter("cache", cache);
     }
 
     @Override

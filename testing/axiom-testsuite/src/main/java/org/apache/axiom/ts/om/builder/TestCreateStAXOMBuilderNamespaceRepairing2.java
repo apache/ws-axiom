@@ -30,6 +30,8 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} correctly performs
  * namespace repairing in cases where a namespace declaration of the form {@code xmlns=""} is
@@ -37,6 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-408">AXIOM-408</a>.
  */
 public class TestCreateStAXOMBuilderNamespaceRepairing2 extends AxiomTestCase {
+    @Inject
     public TestCreateStAXOMBuilderNamespaceRepairing2(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

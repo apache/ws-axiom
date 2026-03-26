@@ -26,13 +26,15 @@ import org.apache.axiom.ts.StreamTypeAdapter;
 import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
+import com.google.inject.Inject;
+
 public class TestCloseWithStream extends AxiomTestCase {
     private final StreamType streamType;
 
+    @Inject
     public TestCloseWithStream(OMMetaFactory metaFactory, StreamType streamType) {
         super(metaFactory);
         this.streamType = streamType;
-        addTestParameter("type", streamType.getType().getSimpleName());
     }
 
     @Override

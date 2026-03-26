@@ -28,9 +28,12 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests that {@link OMElement#cloneOMElement()} performs namespace repairing. */
 // TODO: this is actually undocumented; in addition, it should probably made configurable
 public class TestCloneOMElementNamespaceRepairing extends AxiomTestCase {
+    @Inject
     public TestCloneOMElementNamespaceRepairing(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

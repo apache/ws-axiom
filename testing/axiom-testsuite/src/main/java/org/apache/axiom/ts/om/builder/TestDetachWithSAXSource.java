@@ -28,7 +28,10 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.InputSource;
 
+import com.google.inject.Inject;
+
 public class TestDetachWithSAXSource extends AxiomTestCase {
+    @Inject
     public TestDetachWithSAXSource(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

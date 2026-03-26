@@ -25,6 +25,8 @@ import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an
  * attribute without namespace, even if during creation an {@link OMNamespace} object with empty
@@ -34,6 +36,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalized extends AxiomTestCase {
+    @Inject
     public TestGetNamespaceNormalized(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

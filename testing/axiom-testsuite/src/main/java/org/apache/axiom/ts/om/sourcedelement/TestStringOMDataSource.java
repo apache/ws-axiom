@@ -33,8 +33,11 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests functionality of ByteArrayDataSource */
 public class TestStringOMDataSource extends AxiomTestCase {
+    @Inject
     public TestStringOMDataSource(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

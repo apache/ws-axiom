@@ -30,6 +30,9 @@ import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that {@link OMContainer#getXMLStreamReader(boolean)} produces the correct sequence of
  * events when called on an {@link OMElement} that is not the root element and that may be partially
@@ -39,13 +42,12 @@ public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends AxiomT
     private final boolean cache;
     private final int build;
 
+    @Inject
     public TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt(
-            OMMetaFactory metaFactory, boolean cache, int build) {
+            OMMetaFactory metaFactory, @Named("cache") boolean cache, @Named("build") int build) {
         super(metaFactory);
         this.cache = cache;
         this.build = build;
-        addTestParameter("cache", cache);
-        addTestParameter("build", build);
     }
 
     @Override

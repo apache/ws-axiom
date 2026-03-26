@@ -24,7 +24,10 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
 
+import com.google.inject.Inject;
+
 public class TestDigestWithNamespace extends DigestTestCase {
+    @Inject
     public TestDigestWithNamespace(OMMetaFactory metaFactory) {
         super(metaFactory, "MD5", "76e696f6b648837de0fa32e2ad8f1250");
     }

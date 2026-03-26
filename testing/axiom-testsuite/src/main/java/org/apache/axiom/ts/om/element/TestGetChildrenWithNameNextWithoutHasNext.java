@@ -28,6 +28,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests that the iterator returned by {@link OMContainer#getChildrenWithName(QName)} returns the
  * correct element when {@link Iterator#next()} is used without calling {@link Iterator#hasNext()}
@@ -36,6 +38,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-172">AXIOM-172</a>.
  */
 public class TestGetChildrenWithNameNextWithoutHasNext extends AxiomTestCase {
+    @Inject
     public TestGetChildrenWithNameNextWithoutHasNext(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

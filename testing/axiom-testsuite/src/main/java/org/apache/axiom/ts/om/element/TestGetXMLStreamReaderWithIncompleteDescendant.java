@@ -31,6 +31,9 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that the sequence of events produced by the {@link XMLStreamReader} returned by {@link
  * OMContainer#getXMLStreamReader(boolean)} is correct for a programmatically created {@link
@@ -43,11 +46,11 @@ import org.apache.axiom.ts.AxiomTestCase;
 public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCase {
     private final boolean cache;
 
+    @Inject
     public TestGetXMLStreamReaderWithIncompleteDescendant(
-            OMMetaFactory metaFactory, boolean cache) {
+            OMMetaFactory metaFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", cache);
     }
 
     @Override

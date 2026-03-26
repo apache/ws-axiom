@@ -26,11 +26,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Test {@link OMElement#getAllAttributes()} on a parsed document. Also check that the iterator
  * doesn't attempt to return namespace declarations.
  */
 public class TestGetAllAttributes2 extends AxiomTestCase {
+    @Inject
     public TestGetAllAttributes2(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

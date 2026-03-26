@@ -24,6 +24,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMFactory#createOMAttribute(String, OMNamespace, String)} if an
  * {@link OMNamespace} object with a null prefix and an empty namespace URI is given. Since it is
@@ -31,6 +33,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * namespace, this should give the same result as specifying an empty prefix.
  */
 public class TestCreateOMAttributeNullPrefixNoNamespace extends AxiomTestCase {
+    @Inject
     public TestCreateOMAttributeNullPrefixNoNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

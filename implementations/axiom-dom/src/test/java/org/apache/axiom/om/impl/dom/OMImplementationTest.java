@@ -18,32 +18,32 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.stream.Stream;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactoryLoader;
-import org.apache.axiom.ts.om.OMTestSuiteBuilder;
+import org.apache.axiom.testutils.suite.MatrixTestFilters;
+import org.apache.axiom.ts.om.OMTestSuite;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
 import org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-public class OMImplementationTest extends TestCase {
-    public static TestSuite suite() {
-        OMTestSuiteBuilder builder =
-                new OMTestSuiteBuilder(new OMDOMMetaFactoryLoader().load(null));
-
-        // TODO: investigate why this is not working with DOOM
-        builder.exclude(TestGetChildrenWithName4.class);
-
-        // TODO: if there is a comment node surrounded by text, then these text nodes need to be
-        // merged
-        builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
-
-        // TODO: need to evaluate if the test case is correct
-        builder.exclude(
-                TestGetSAXSourceWithPushOMDataSource.class,
-                "(&(scenario=getNamespaceContext)(serializeParent=false))");
-
-        return builder.build();
+public class OMImplementationTest {
+    @TestFactory
+    public Stream<DynamicNode> tests() {
+        return OMTestSuite.create(new OMDOMMetaFactoryLoader().load(null))
+                .toDynamicNodes(
+                        MatrixTestFilters.builder()
+                                // TODO: investigate why this is not working with DOOM
+                                .add(TestGetChildrenWithName4.class)
+                                // TODO: if there is a comment node surrounded by text, then these
+                                // text nodes need to be merged
+                                .add(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))")
+                                // TODO: need to evaluate if the test case is correct
+                                .add(
+                                        TestGetSAXSourceWithPushOMDataSource.class,
+                                        "(&(scenario=getNamespaceContext)(serializeParent=false))")
+                                .build());
     }
 }

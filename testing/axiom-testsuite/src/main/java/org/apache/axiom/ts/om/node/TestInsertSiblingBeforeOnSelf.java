@@ -27,7 +27,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestInsertSiblingBeforeOnSelf extends AxiomTestCase {
+    @Inject
     public TestInsertSiblingBeforeOnSelf(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

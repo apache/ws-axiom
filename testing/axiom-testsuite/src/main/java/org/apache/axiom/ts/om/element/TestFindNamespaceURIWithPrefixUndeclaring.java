@@ -24,7 +24,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 public class TestFindNamespaceURIWithPrefixUndeclaring extends AxiomTestCase {
+    @Inject
     public TestFindNamespaceURIWithPrefixUndeclaring(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

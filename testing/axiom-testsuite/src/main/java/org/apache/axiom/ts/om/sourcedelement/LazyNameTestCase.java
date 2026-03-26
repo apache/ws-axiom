@@ -33,10 +33,6 @@ public abstract class LazyNameTestCase extends AxiomTestCase {
         super(metaFactory);
         this.variant = variant;
         this.qname = qname;
-        addTestParameter("variant", variant.getName());
-        variant.addTestProperties(this);
-        addTestParameter("prefix", qname.getPrefix());
-        addTestParameter("uri", qname.getNamespaceURI());
     }
 
     @Override

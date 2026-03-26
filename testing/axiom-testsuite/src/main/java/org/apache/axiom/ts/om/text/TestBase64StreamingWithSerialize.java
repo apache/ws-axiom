@@ -26,6 +26,8 @@ import org.apache.axiom.testutils.blob.TestBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.io.output.NullOutputStream;
 
+import com.google.inject.Inject;
+
 /**
  * Test that when an {@link OMText} node is written to an XMLStreamWriter without MTOM support, the
  * implementation doesn't construct an in-memory base64 representation of the complete binary
@@ -34,6 +36,7 @@ import org.apache.commons.io.output.NullOutputStream;
  * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-236">AXIOM-236</a>.
  */
 public class TestBase64StreamingWithSerialize extends AxiomTestCase {
+    @Inject
     public TestBase64StreamingWithSerialize(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

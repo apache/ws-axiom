@@ -21,13 +21,16 @@ package org.apache.axiom.ts.om.xpath;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 public class TestAXIOMXPath extends AxiomTestCase {
     private final AXIOMXPathTestCase test;
 
-    public TestAXIOMXPath(OMMetaFactory metaFactory, String methodName) {
+    @Inject
+    public TestAXIOMXPath(OMMetaFactory metaFactory, @Named("methodName") String methodName) {
         super(metaFactory);
         test = new AXIOMXPathTestCase(methodName, metaFactory);
-        addTestParameter("test", methodName.substring(4));
     }
 
     @Override

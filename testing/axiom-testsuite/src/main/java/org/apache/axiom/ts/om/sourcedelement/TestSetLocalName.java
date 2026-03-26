@@ -29,6 +29,9 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests that the effect of {@link OMNamedInformationItem#setLocalName(String)} on a {@link
  * OMSourcedElement} is the same on expanded and unexpanded elements. In both cases, it must behave
@@ -38,10 +41,10 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 public class TestSetLocalName extends AxiomTestCase {
     private boolean expand;
 
-    public TestSetLocalName(OMMetaFactory metaFactory, boolean expand) {
+    @Inject
+    public TestSetLocalName(OMMetaFactory metaFactory, @Named("expand") boolean expand) {
         super(metaFactory);
         this.expand = expand;
-        addTestParameter("expand", expand);
     }
 
     @Override

@@ -25,11 +25,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMElement#getAttributeValue(QName)} if the element has no attribute
  * with the given QName.
  */
 public class TestGetAttributeValueNonExisting extends AxiomTestCase {
+    @Inject
     public TestGetAttributeValueNonExisting(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -29,15 +29,17 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.xml.stream.XMLEventUtils;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 public class TestSerialize extends AxiomTestCase {
     private final int type;
 
-    public TestSerialize(OMMetaFactory metaFactory, int type) {
+    @Inject
+    public TestSerialize(OMMetaFactory metaFactory, @Named("type") int type) {
         super(metaFactory);
         this.type = type;
-        addTestParameter("type", XMLEventUtils.getEventTypeString(type));
     }
 
     @Override

@@ -31,11 +31,14 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMContainer#addChild(OMNode)} if the parent has been discarded. In
  * this case the method is expected to throw a {@link NodeUnavailableException}.
  */
 public class TestAddChildDiscarded extends AxiomTestCase {
+    @Inject
     public TestAddChildDiscarded(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

@@ -33,6 +33,9 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean,
  * OMXMLStreamReaderConfiguration)} in conjunction with {@link
@@ -42,13 +45,14 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTes
     private final boolean preserveNamespaceContext;
     private final boolean cache;
 
+    @Inject
     public TestGetXMLStreamReaderWithPreserveNamespaceContext(
-            OMMetaFactory metaFactory, boolean preserveNamespaceContext, boolean cache) {
+            OMMetaFactory metaFactory,
+            @Named("preserveNamespaceContext") boolean preserveNamespaceContext,
+            @Named("cache") boolean cache) {
         super(metaFactory);
         this.preserveNamespaceContext = preserveNamespaceContext;
-        addTestParameter("preserveNamespaceContext", preserveNamespaceContext);
         this.cache = cache;
-        addTestParameter("cache", cache);
     }
 
     @Override

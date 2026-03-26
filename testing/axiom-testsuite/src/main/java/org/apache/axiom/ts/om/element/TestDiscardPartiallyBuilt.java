@@ -31,12 +31,15 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests the behavior of {@link OMNode#discard()} on an element that is partially built, more
  * precisely in a situation where the builder is building a descendant that is not an immediate
  * child of the element.
  */
 public class TestDiscardPartiallyBuilt extends AxiomTestCase {
+    @Inject
     public TestDiscardPartiallyBuilt(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

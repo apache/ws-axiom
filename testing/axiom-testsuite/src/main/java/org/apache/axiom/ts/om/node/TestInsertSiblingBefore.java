@@ -25,8 +25,11 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /** Tests the behavior of {@link OMNode#insertSiblingBefore(OMNode)}. */
 public class TestInsertSiblingBefore extends AxiomTestCase {
+    @Inject
     public TestInsertSiblingBefore(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

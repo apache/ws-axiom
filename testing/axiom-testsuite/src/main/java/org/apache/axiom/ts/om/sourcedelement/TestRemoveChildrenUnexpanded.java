@@ -28,12 +28,15 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Tests {@link OMContainer#removeChildren()} on an {@link OMSourcedElement} that is not expanded.
  * In this case the sourced element needs to be expanded to build any attributes present on the
  * element and to ensure that the information about the name of the element is complete.
  */
 public class TestRemoveChildrenUnexpanded extends AxiomTestCase {
+    @Inject
     public TestRemoveChildrenUnexpanded(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
