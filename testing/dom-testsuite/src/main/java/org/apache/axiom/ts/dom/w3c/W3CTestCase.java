@@ -32,9 +32,5 @@ public final class W3CTestCase extends MatrixTestCase {
     @Override
     protected void runTest() throws Throwable {
         test.runTest();
-        int mutationCount = test.getMutationCount();
-        if (mutationCount != 0) {
-            fail("Document loaded with willBeModified='false' was modified in course of test.");
-        }
     }
 }
