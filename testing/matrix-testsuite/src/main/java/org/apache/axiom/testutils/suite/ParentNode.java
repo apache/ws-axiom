@@ -34,9 +34,9 @@ import com.google.inject.Injector;
  * <p>Children are supplied at construction time; instances are immutable after creation.
  */
 public final class ParentNode extends MatrixTestNode {
-    private final ImmutableList<MatrixTestNode> children;
+    private final ImmutableList<? extends MatrixTestNode> children;
 
-    public ParentNode(ImmutableList<MatrixTestNode> children) {
+    public ParentNode(ImmutableList<? extends MatrixTestNode> children) {
         this.children = children;
     }
 
