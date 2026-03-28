@@ -45,7 +45,7 @@ public final class ParentNode extends MatrixTestNode {
     }
 
     @Override
-    Stream<DynamicNode> toDynamicNodes(
+    protected Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
             Map<String, String> inheritedParameters,
             BiPredicate<Class<?>, Map<String, String>> excludes) {

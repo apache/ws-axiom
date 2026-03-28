@@ -36,7 +36,7 @@ import com.google.inject.Injector;
  * child injectors from it, and each {@link MatrixTest} uses it to instantiate the test class.
  */
 public abstract class MatrixTestNode {
-    abstract Stream<DynamicNode> toDynamicNodes(
+    protected abstract Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
             Map<String, String> inheritedParameters,
             BiPredicate<Class<?>, Map<String, String>> excludes);
