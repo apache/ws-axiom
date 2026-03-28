@@ -74,7 +74,7 @@ public abstract class W3CDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         suite.build(
                 new DOMTestSink() {
                     @Override
-                    public void addTest(Class testClass) {
+                    public void addTest(Class<? extends DOMTestCase> testClass) {
                         try {
                             if (!unsupportedFeatures.isEmpty()) {
                                 Set<DOMFeature> usedFeatures = new HashSet<DOMFeature>();
@@ -92,9 +92,7 @@ public abstract class W3CDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
                                 }
                             }
                             Constructor<? extends DOMTestCase> testConstructor =
-                                    ((Class<?>) testClass)
-                                            .asSubclass(DOMTestCase.class)
-                                            .getConstructor(DOMTestDocumentBuilderFactory.class);
+                                    testClass.getConstructor(DOMTestDocumentBuilderFactory.class);
                             DOMTestCase test;
                             try {
                                 test = testConstructor.newInstance(new Object[] {factory});

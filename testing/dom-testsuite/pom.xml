@@ -187,6 +187,7 @@
                         <configuration>
                             <target>
                                 <patch patchfile="src/w3c/resolveURI.patch" dir="${project.build.directory}/w3c/java" strip="1" />
+                                <patch patchfile="src/w3c/DOMTestSink.patch" dir="${project.build.directory}/w3c/java" strip="1" />
                             </target>
                         </configuration>
                     </execution>
