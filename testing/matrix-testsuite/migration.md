@@ -148,8 +148,8 @@ public class TestAddChildElementReification extends SAAJTestCase {
 The old `*TestSuiteBuilder` class extends `MatrixTestSuiteBuilder` and overrides
 `addTests()` to register test instances for each dimension combination.
 
-**Replace it** with a class that has a static factory method returning an
-`InjectorNode`. The factory method:
+**Replace it** with a class that has a static factory method returning a
+`MatrixTestNode`. The factory method:
 
 1. Creates an `InjectorNode` with a Guice module that binds
    implementation-level objects. Pass a single `Module` directly (convenience
@@ -195,7 +195,7 @@ public class SAAJTestSuiteBuilder extends MatrixTestSuiteBuilder {
 
 ```java
 public class SAAJTestSuite {
-    public static InjectorNode create(SAAJMetaFactory metaFactory) {
+    public static MatrixTestNode create(SAAJMetaFactory metaFactory) {
         return new InjectorNode(
                 binder ->
                         binder.bind(SAAJImplementation.class)

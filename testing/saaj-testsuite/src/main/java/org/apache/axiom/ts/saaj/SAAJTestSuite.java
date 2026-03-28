@@ -24,6 +24,7 @@ import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.ts.saaj.body.TestAddChildElementReification;
@@ -37,7 +38,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import com.google.inject.Key;
 
 public class SAAJTestSuite {
-    public static InjectorNode create(SAAJMetaFactory metaFactory) {
+    public static MatrixTestNode create(SAAJMetaFactory metaFactory) {
         return new InjectorNode(
                 binder ->
                         binder.bind(SAAJImplementation.class)

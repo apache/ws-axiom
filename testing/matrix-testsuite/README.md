@@ -178,7 +178,7 @@ leaf nodes:
 
 ```java
 public class MyTestSuite {
-    public static InjectorNode create(SomeFactory factory) {
+    public static MatrixTestNode create(SomeFactory factory) {
         SomeImplementation impl = new SomeImplementation(factory);
 
         FanOutNode<SomeDimension> dimensions = new FanOutNode<>(
@@ -189,7 +189,7 @@ public class MyTestSuite {
                         new MatrixTest(TestSomeBehavior.class),
                         new MatrixTest(TestOtherBehavior.class)));
 
-        InjectorNode suite = new InjectorNode(
+        MatrixTestNode suite = new InjectorNode(
                 binder -> binder.bind(SomeImplementation.class).toInstance(impl),
                 dimensions);
 
@@ -206,7 +206,7 @@ Consumers create a JUnit 5 test class with a `@TestFactory` method:
 class MyImplTest {
     @TestFactory
     Stream<DynamicNode> tests() {
-        InjectorNode suite = MyTestSuite.create(new MyFactoryImpl());
+        MatrixTestNode suite = MyTestSuite.create(new MyFactoryImpl());
         MatrixTestFilters excludes = MatrixTestFilters.builder()
                 .add(TestSomeBehavior.class, "(dimension=problematicValue)")
                 .build();

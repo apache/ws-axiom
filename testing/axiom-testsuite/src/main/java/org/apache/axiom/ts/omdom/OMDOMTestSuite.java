@@ -22,6 +22,7 @@ import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.testutils.suite.FanOutNode;
@@ -37,7 +38,7 @@ import com.google.inject.name.Names;
  * with a standard DOM implementation) should go to <code>dom-testsuite</code>.
  */
 public class OMDOMTestSuite {
-    public static InjectorNode create(DOMMetaFactory metaFactory) {
+    public static MatrixTestNode create(DOMMetaFactory metaFactory) {
         return new InjectorNode(
                 binder -> binder.bind(DOMMetaFactory.class).toInstance(metaFactory),
                 new ParentNode(

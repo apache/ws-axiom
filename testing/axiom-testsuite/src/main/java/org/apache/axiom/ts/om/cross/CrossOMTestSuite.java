@@ -22,6 +22,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.testutils.suite.FanOutNode;
@@ -32,7 +33,7 @@ import com.google.inject.Key;
 import com.google.inject.name.Names;
 
 public class CrossOMTestSuite {
-    public static InjectorNode create(OMMetaFactory metaFactory, OMMetaFactory altMetaFactory) {
+    public static MatrixTestNode create(OMMetaFactory metaFactory, OMMetaFactory altMetaFactory) {
         return new InjectorNode(
                 binder -> {
                     binder.bind(OMMetaFactory.class)

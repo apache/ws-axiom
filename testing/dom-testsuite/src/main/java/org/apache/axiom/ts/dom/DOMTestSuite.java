@@ -26,6 +26,7 @@ import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.ParameterBinding;
 import org.apache.axiom.testutils.suite.ParentNode;
@@ -62,7 +63,7 @@ public class DOMTestSuite {
                 params.addTestParameter("name", DOMUtils.getQualifiedName(qname));
             };
 
-    public static InjectorNode create(DocumentBuilderFactoryFactory dbff) {
+    public static MatrixTestNode create(DocumentBuilderFactoryFactory dbff) {
         DocumentBuilderFactory dbf = dbff.newInstance();
         dbf.setNamespaceAware(true);
         return new InjectorNode(

@@ -73,7 +73,7 @@ public class OMTestSuite {
                 params.addTestParameter("uri", qname.getNamespaceURI());
             };
 
-    public static InjectorNode create(OMMetaFactory metaFactory) {
+    public static MatrixTestNode create(OMMetaFactory metaFactory) {
         return new InjectorNode(
                 binder -> binder.bind(OMMetaFactory.class).toInstance(metaFactory),
                 new ParentNode(

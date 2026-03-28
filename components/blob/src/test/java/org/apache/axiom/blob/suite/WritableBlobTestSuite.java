@@ -23,6 +23,7 @@ import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.ConditionalNode;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.ParameterBinding;
 import org.apache.axiom.testutils.suite.ParentNode;
@@ -33,7 +34,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 
 public class WritableBlobTestSuite {
-    public static InjectorNode create(
+    public static MatrixTestNode create(
             WritableBlobFactory<?> factory,
             ImmutableList<Integer> sizes,
             boolean outputStreamHasReadFromSupport,
