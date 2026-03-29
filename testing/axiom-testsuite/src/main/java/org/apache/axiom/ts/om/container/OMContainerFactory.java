@@ -22,14 +22,14 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 
 public abstract class OMContainerFactory extends Multiton implements Dimension {
     public static final OMContainerFactory DOCUMENT =
             new OMContainerFactory() {
                 @Override
-                public void addTestParameters(TestParameterTarget testCase) {
-                    testCase.addTestParameter("container", "document");
+                public void addLabels(LabelTarget testCase) {
+                    testCase.addLabel("container", "document");
                 }
 
                 @Override
@@ -41,8 +41,8 @@ public abstract class OMContainerFactory extends Multiton implements Dimension {
     public static final OMContainerFactory ELEMENT =
             new OMContainerFactory() {
                 @Override
-                public void addTestParameters(TestParameterTarget testCase) {
-                    testCase.addTestParameter("container", "element");
+                public void addLabels(LabelTarget testCase) {
+                    testCase.addLabel("container", "element");
                 }
 
                 @Override

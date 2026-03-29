@@ -40,15 +40,14 @@ public class StAXPivotTransformerTest {
                                 .filter(XSLTImplementation::supportsStAXSource)
                                 .collect(ImmutableList.toImmutableList()),
                         Binding.singleton(Key.get(XSLTImplementation.class)),
-                        (injector, value, params) ->
-                                params.addTestParameter("xslt", value.getName()),
+                        (injector, value, labels) -> labels.addLabel("xslt", value.getName()),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class).stream()
                                         .filter(s -> !s.hasDTD())
                                         .collect(ImmutableList.toImmutableList()),
                                 Binding.singleton(Key.get(XMLSample.class)),
-                                (injector, value, params) ->
-                                        params.addTestParameter("sample", value.getName()),
+                                (injector, value, labels) ->
+                                        labels.addLabel("sample", value.getName()),
                                 new MatrixTest(StAXPivotTransformerTestCase.class)))
                 .toDynamicNodes();
     }

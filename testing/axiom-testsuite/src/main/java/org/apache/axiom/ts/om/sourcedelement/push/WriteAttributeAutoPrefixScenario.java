@@ -27,7 +27,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.junit.Assert;
 
 /**
@@ -36,8 +36,8 @@ import org.junit.Assert;
  */
 public class WriteAttributeAutoPrefixScenario implements PushOMDataSourceScenario {
     @Override
-    public void addTestParameters(TestParameterTarget testCase) {
-        testCase.addTestParameter("scenario", "writeAttributeAutoPrefix");
+    public void addLabels(LabelTarget testCase) {
+        testCase.addLabel("scenario", "writeAttributeAutoPrefix");
     }
 
     @Override

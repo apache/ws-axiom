@@ -39,7 +39,7 @@ public class XMLReaderTestSuite {
                                 "http://xml.org/sax/features/namespace-prefixes",
                                 "http://xml.org/sax/features/external-general-entities"),
                         Binding.singleton(Key.get(String.class, Names.named("feature"))),
-                        (injector, value, params) -> params.addTestParameter("feature", value),
+                        (injector, value, labels) -> labels.addLabel("feature", value),
                         new MatrixTest(TestGetSetFeature.class)));
     }
 }

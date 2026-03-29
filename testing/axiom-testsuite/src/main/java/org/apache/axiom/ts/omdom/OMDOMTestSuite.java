@@ -50,8 +50,8 @@ public class OMDOMTestSuite {
                         new FanOutNode<>(
                                 ImmutableList.of(true, false),
                                 Binding.singleton(Key.get(Boolean.class, Names.named("build"))),
-                                (injector, value, params) ->
-                                        params.addTestParameter("build", String.valueOf(value)),
+                                (injector, value, labels) ->
+                                        labels.addLabel("build", String.valueOf(value)),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.omdom.document
@@ -67,8 +67,8 @@ public class OMDOMTestSuite {
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 Binding.singleton(Key.get(XMLSample.class)),
-                                (injector, value, params) ->
-                                        params.addTestParameter("file", value.getName()),
+                                (injector, value, labels) ->
+                                        labels.addLabel("file", value.getName()),
                                 new MatrixTest(
                                         org.apache.axiom.ts.omdom.document.TestImportNode.class)),
                         new MatrixTest(

@@ -18,14 +18,10 @@
  */
 package org.apache.axiom.testutils.suite;
 
-/**
- * Receives test parameter registrations. This interface decouples {@link Dimension} from {@link
- * MatrixTestCase} so that dimensions can be reused with other test tree structures.
- */
-public interface TestParameterTarget {
-    void addTestParameter(String name, String value);
+import com.google.inject.Injector;
 
-    void addTestParameter(String name, boolean value);
+public interface LabelBinding<T> {
+    LabelBinding<Dimension> DIMENSION = (injector, value, labels) -> value.addLabels(labels);
 
-    void addTestParameter(String name, int value);
+    void addLabels(Injector injector, T value, LabelTarget labels);
 }

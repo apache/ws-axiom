@@ -27,14 +27,14 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.junit.Assert;
 
 /** Scenario that uses {@link XMLStreamWriter#writeCharacters(char[], int, int)}. */
 public class WriteCharactersCharArrayScenario implements PushOMDataSourceScenario {
     @Override
-    public void addTestParameters(TestParameterTarget testCase) {
-        testCase.addTestParameter("scenario", "writeCharactersCharArray");
+    public void addLabels(LabelTarget testCase) {
+        testCase.addLabel("scenario", "writeCharactersCharArray");
     }
 
     @Override

@@ -31,8 +31,8 @@ import org.osgi.framework.InvalidSyntaxException;
 
 /**
  * An immutable set of filters that match matrix test cases by class and/or LDAP filter expressions
- * on test parameters. Implements {@link BiPredicate} where {@link #test} returns {@code true} if
- * the given test class and parameters match any of the configured filters.
+ * on labels. Implements {@link BiPredicate} where {@link #test} returns {@code true} if the given
+ * test class and labels match any of the configured filters.
  */
 public final class MatrixTestFilters implements BiPredicate<Class<?>, Map<String, String>> {
     private static class Entry {
@@ -44,9 +44,9 @@ public final class MatrixTestFilters implements BiPredicate<Class<?>, Map<String
             this.filter = filter;
         }
 
-        boolean matches(Class<?> clazz, Dictionary<String, String> parameters) {
+        boolean matches(Class<?> clazz, Dictionary<String, String> labels) {
             return (testClass == null || clazz.equals(testClass))
-                    && (filter == null || filter.match(parameters));
+                    && (filter == null || filter.match(labels));
         }
     }
 
@@ -91,8 +91,8 @@ public final class MatrixTestFilters implements BiPredicate<Class<?>, Map<String
     }
 
     @Override
-    public boolean test(Class<?> testClass, Map<String, String> parameters) {
-        Hashtable<String, String> hashtable = new Hashtable<>(parameters);
+    public boolean test(Class<?> testClass, Map<String, String> labels) {
+        Hashtable<String, String> hashtable = new Hashtable<>(labels);
         for (Entry entry : entries) {
             if (entry.matches(testClass, hashtable)) {
                 return true;

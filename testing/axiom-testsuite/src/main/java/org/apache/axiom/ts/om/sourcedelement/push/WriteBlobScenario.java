@@ -31,7 +31,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.junit.Assert;
 
@@ -43,8 +43,8 @@ public class WriteBlobScenario implements PushOMDataSourceScenario {
     private final Blob blob = new RandomBlob(1024);
 
     @Override
-    public void addTestParameters(TestParameterTarget testCase) {
-        testCase.addTestParameter("scenario", "writeDataHandler");
+    public void addLabels(LabelTarget testCase) {
+        testCase.addLabel("scenario", "writeDataHandler");
     }
 
     @Override

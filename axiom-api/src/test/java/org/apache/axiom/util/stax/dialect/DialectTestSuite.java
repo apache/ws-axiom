@@ -52,14 +52,14 @@ public class DialectTestSuite {
                                 binder.bind(StAXImplementationAdapter.class)
                                         .toInstance(
                                                 value.getAdapter(StAXImplementationAdapter.class)),
-                        (injector, value, params) ->
-                                params.addTestParameter("implementation", value.getName()),
+                        (injector, value, labels) ->
+                                labels.addLabel("implementation", value.getName()),
                         new ParentNode(
                                 new FanOutNode<>(
                                         Multiton.getInstances(StreamType.class),
                                         Binding.singleton(Key.get(StreamType.class)),
-                                        (injector, value, params) ->
-                                                params.addTestParameter(
+                                        (injector, value, labels) ->
+                                                labels.addLabel(
                                                         "type", value.getType().getSimpleName()),
                                         new MatrixTest(TestClose.class)),
                                 new MatrixTest(TestCreateXMLEventWriterWithNullEncoding.class),
@@ -106,9 +106,8 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("xmlEncodings"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, params) ->
-                                                params.addTestParameter(
-                                                        "javaEncoding", value.getLeft()),
+                                        (injector, value, labels) ->
+                                                labels.addLabel("javaEncoding", value.getLeft()),
                                         new MatrixTest(TestGetEncodingFromDetection.class)),
                                 new MatrixTest(TestGetEncoding.class),
                                 new MatrixTest(TestGetEncodingWithCharacterStream.class),
@@ -135,8 +134,8 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expectException"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, params) ->
-                                                params.addTestParameter(
+                                        (injector, value, labels) ->
+                                                labels.addLabel(
                                                         "event",
                                                         XMLEventUtils.getEventTypeString(
                                                                 value.getLeft())),
@@ -165,8 +164,8 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expectException"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, params) ->
-                                                params.addTestParameter(
+                                        (injector, value, labels) ->
+                                                labels.addLabel(
                                                         "event",
                                                         XMLEventUtils.getEventTypeString(
                                                                 value.getLeft())),
@@ -208,8 +207,8 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expected"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, params) ->
-                                                params.addTestParameter(
+                                        (injector, value, labels) ->
+                                                labels.addLabel(
                                                         "event",
                                                         XMLEventUtils.getEventTypeString(
                                                                 value.getLeft())),
@@ -243,8 +242,8 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expected"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, params) ->
-                                                params.addTestParameter(
+                                        (injector, value, labels) ->
+                                                labels.addLabel(
                                                         "event",
                                                         XMLEventUtils.getEventTypeString(
                                                                 value.getLeft())),
@@ -273,8 +272,8 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expected"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, params) ->
-                                                params.addTestParameter(
+                                        (injector, value, labels) ->
+                                                labels.addLabel(
                                                         "event",
                                                         XMLEventUtils.getEventTypeString(
                                                                 value.getLeft())),

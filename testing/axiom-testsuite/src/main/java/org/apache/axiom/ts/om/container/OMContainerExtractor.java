@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.xml.sax.InputSource;
 
 /** Extracts an {@link OMContainer} instance from a test file. */
@@ -34,8 +34,8 @@ public abstract class OMContainerExtractor extends Multiton implements Dimension
     public static final OMContainerExtractor DOCUMENT =
             new OMContainerExtractor() {
                 @Override
-                public void addTestParameters(TestParameterTarget testCase) {
-                    testCase.addTestParameter("container", "document");
+                public void addLabels(LabelTarget testCase) {
+                    testCase.addLabel("container", "document");
                 }
 
                 @Override

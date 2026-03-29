@@ -25,7 +25,7 @@ import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.junit.Assert;
 
@@ -38,8 +38,8 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
     public static final ExpansionStrategy DONT_EXPAND =
             new ExpansionStrategy() {
                 @Override
-                public void addTestParameters(TestParameterTarget testCase) {
-                    testCase.addTestParameter("expand", "no");
+                public void addLabels(LabelTarget testCase) {
+                    testCase.addLabel("expand", "no");
                 }
 
                 @Override
@@ -76,8 +76,8 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
     public static final ExpansionStrategy PARTIAL =
             new ExpansionStrategy() {
                 @Override
-                public void addTestParameters(TestParameterTarget testCase) {
-                    testCase.addTestParameter("expand", "partially");
+                public void addLabels(LabelTarget testCase) {
+                    testCase.addLabel("expand", "partially");
                 }
 
                 @Override
@@ -110,8 +110,8 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
     public static final ExpansionStrategy FULL =
             new ExpansionStrategy() {
                 @Override
-                public void addTestParameters(TestParameterTarget testCase) {
-                    testCase.addTestParameter("expand", "fully");
+                public void addLabels(LabelTarget testCase) {
+                    testCase.addLabel("expand", "fully");
                 }
 
                 @Override

@@ -48,11 +48,11 @@ public final class ConditionalNode extends MatrixTestNode {
     @Override
     protected Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
-            Map<String, String> inheritedParameters,
+            Map<String, String> inheritedLabels,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
         if (!predicate.test(parentInjector)) {
             return Stream.empty();
         }
-        return child.toDynamicNodes(parentInjector, inheritedParameters, excludes);
+        return child.toDynamicNodes(parentInjector, inheritedLabels, excludes);
     }
 }

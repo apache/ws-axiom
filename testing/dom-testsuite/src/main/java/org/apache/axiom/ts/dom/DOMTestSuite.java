@@ -28,7 +28,7 @@ import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
-import org.apache.axiom.testutils.suite.ParameterBinding;
+import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
@@ -57,10 +57,10 @@ public class DOMTestSuite {
                     new QName("urn:test", "p", XMLConstants.XMLNS_ATTRIBUTE),
                     new QName("", XMLConstants.XMLNS_ATTRIBUTE, ""));
 
-    private static final ParameterBinding<QName> QNAME_PARAMS =
-            (injector, qname, params) -> {
-                params.addTestParameter("ns", qname.getNamespaceURI());
-                params.addTestParameter("name", DOMUtils.getQualifiedName(qname));
+    private static final LabelBinding<QName> QNAME_LABELS =
+            (injector, qname, labels) -> {
+                labels.addLabel("ns", qname.getNamespaceURI());
+                labels.addLabel("name", DOMUtils.getQualifiedName(qname));
             };
 
     public static MatrixTestNode create(DocumentBuilderFactoryFactory dbff) {
@@ -308,7 +308,7 @@ public class DOMTestSuite {
                         new FanOutNode<>(
                                 ImmutableList.of(true, false),
                                 Binding.singleton(Key.get(Boolean.class, Names.named("deep"))),
-                                (injector, value, params) -> params.addTestParameter("deep", value),
+                                (injector, value, labels) -> labels.addLabel("deep", value),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.attr.TestCloneNode.class),
@@ -319,8 +319,8 @@ public class DOMTestSuite {
                                 ImmutableList.of(true, false),
                                 Binding.singleton(
                                         Key.get(Boolean.class, Names.named("newChildHasSiblings"))),
-                                (injector, value, params) ->
-                                        params.addTestParameter("newChildHasSiblings", value),
+                                (injector, value, labels) ->
+                                        labels.addLabel("newChildHasSiblings", value),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.element
@@ -337,7 +337,7 @@ public class DOMTestSuite {
                         new FanOutNode<>(
                                 VALID_ATTR_QNAMES,
                                 Binding.singleton(Key.get(QName.class)),
-                                QNAME_PARAMS,
+                                QNAME_LABELS,
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.document
@@ -348,7 +348,7 @@ public class DOMTestSuite {
                         new FanOutNode<>(
                                 INVALID_ATTR_QNAMES,
                                 Binding.singleton(Key.get(QName.class)),
-                                QNAME_PARAMS,
+                                QNAME_LABELS,
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.document
@@ -359,8 +359,8 @@ public class DOMTestSuite {
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 Binding.singleton(Key.get(XMLSample.class)),
-                                (injector, value, params) ->
-                                        params.addTestParameter("file", value.getName()),
+                                (injector, value, labels) ->
+                                        labels.addLabel("file", value.getName()),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.document.TestCloneNode
@@ -368,17 +368,16 @@ public class DOMTestSuite {
                                         new FanOutNode<>(
                                                 Multiton.getInstances(DOMImplementation.class),
                                                 Binding.singleton(Key.get(DOMImplementation.class)),
-                                                (injector, value, params) ->
-                                                        params.addTestParameter(
-                                                                "from", value.getName()),
+                                                (injector, value, labels) ->
+                                                        labels.addLabel("from", value.getName()),
                                                 new MatrixTest(
                                                         org.apache.axiom.ts.dom.element
                                                                 .TestImportNode.class)))),
                         new FanOutNode<>(
                                 Multiton.getInstances(XSLTImplementation.class),
                                 Binding.singleton(Key.get(XSLTImplementation.class)),
-                                (injector, value, params) ->
-                                        params.addTestParameter("xslt", value.getName()),
+                                (injector, value, labels) ->
+                                        labels.addLabel("xslt", value.getName()),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.document

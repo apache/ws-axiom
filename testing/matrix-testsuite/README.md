@@ -57,8 +57,8 @@ Root Injector
 
 ### Filtering
 
-Parameters accumulate from the root down through the tree. At each leaf, the
-accumulated parameter map is checked against a
+Labels accumulate from the root down through the tree. At each leaf, the
+accumulated label map is checked against a
 `BiPredicate<Class<?>, Map<String, String>>` exclusion predicate.
 Excluded tests produce an empty `Stream<DynamicNode>` and do not appear in the
 test tree. `MatrixTestFilters` is a convenient implementation of this predicate
@@ -85,7 +85,7 @@ Abstract base class for all nodes in the test tree. Defines a single method:
 ```java
 abstract Stream<DynamicNode> toDynamicNodes(
         Injector parentInjector,
-        Map<String, String> inheritedParameters,
+        Map<String, String> inheritedLabels,
         BiPredicate<Class<?>, Map<String, String>> excludes);
 ```
 
@@ -95,7 +95,7 @@ Fan-out node that iterates over an `ImmutableList<T>` of values. For each
 value, it:
 
 1. Creates a child Guice injector using the supplied `Binding<T>` lambda.
-2. Registers test parameters via the supplied `ParameterBinding<? super T>`
+2. Registers labels via the supplied `LabelBinding<? super T>`
    lambda.
 3. Produces a `DynamicContainer` containing the results of recursing into its
    single child node.
@@ -106,11 +106,11 @@ Holds exactly one child node. When multiple children are needed, wrap them in a
 The `Binding<T>` lambda receives a `Binder` and the current value, and
 configures the Guice binding. For the common case of binding the value as a
 singleton, use `Binding.singleton(Key.get(MyType.class))`. The
-`ParameterBinding<? super T>` lambda registers test parameters for display and
+`LabelBinding<? super T>` lambda registers labels for display and
 filtering (e.g.
-`(params, value) -> params.addTestParameter("name", value.getName())`).
+`(labels, value) -> labels.addLabel("name", value.getName())`).
 For types implementing `Dimension`, use the predefined
-`ParameterBinding.DIMENSION` constant.
+`LabelBinding.DIMENSION` constant.
 
 ### `MatrixTest`
 
@@ -135,22 +135,22 @@ public Stream<DynamicNode> toDynamicNodes(BiPredicate<Class<?>, Map<String, Stri
 ### `ParentNode`
 
 A concrete node that groups a list of child nodes without injecting anything or
-adding parameters. The children's dynamic nodes are simply concatenated in order.
+adding labels. The children's dynamic nodes are simply concatenated in order.
 Use `ParentNode` whenever a fan-out node or `InjectorNode` needs to hold more
 than one child.
 
 ### `MatrixTestFilters`
 
 Immutable set of exclusion filters. Each filter entry optionally constrains by
-test class and/or an LDAP filter expression on the parameter map (using
+test class and/or an LDAP filter expression on the label map (using
 OSGi's `FrameworkUtil.createFilter()`). Built via `MatrixTestFilters.builder()`.
 
 ## Writing a test case
 
 Test cases extend `junit.framework.TestCase` (or a domain-specific subclass) and
 override `runTest()`. Dependencies are declared with `@Inject` — either on fields
-or via constructor. The test case does **not** receive parameters through its
-constructor and does **not** call `addTestParameter()`.
+or via constructor. The test case does **not** receive labels through its
+constructor and does **not** call `addLabel()`.
 
 ```java
 public abstract class MyTestCase extends TestCase {
@@ -184,7 +184,7 @@ public class MyTestSuite {
         FanOutNode<SomeDimension> dimensions = new FanOutNode<>(
                 Multiton.getInstances(SomeDimension.class),
                 Binding.singleton(Key.get(SomeDimension.class)),
-                (params, value) -> params.addTestParameter("dimension", value.getName()),
+                (labels, value) -> labels.addLabel("dimension", value.getName()),
                 new ParentNode(
                         new MatrixTest(TestSomeBehavior.class),
                         new MatrixTest(TestOtherBehavior.class)));

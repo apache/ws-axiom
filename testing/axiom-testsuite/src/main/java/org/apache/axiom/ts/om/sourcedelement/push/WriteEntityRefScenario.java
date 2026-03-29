@@ -27,14 +27,14 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.junit.Assert;
 
 /** Scenario that uses {@link XMLStreamWriter#writeEntityRef(String)}. */
 public class WriteEntityRefScenario implements PushOMDataSourceScenario {
     @Override
-    public void addTestParameters(TestParameterTarget testCase) {
-        testCase.addTestParameter("scenario", "writeEntityRef");
+    public void addLabels(LabelTarget testCase) {
+        testCase.addLabel("scenario", "writeEntityRef");
     }
 
     @Override

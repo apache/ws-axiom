@@ -38,7 +38,7 @@ import com.google.inject.Injector;
 public abstract class MatrixTestNode {
     protected abstract Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
-            Map<String, String> inheritedParameters,
+            Map<String, String> inheritedLabels,
             BiPredicate<Class<?>, Map<String, String>> excludes);
 
     /**
@@ -55,6 +55,6 @@ public abstract class MatrixTestNode {
 
     /** Converts this node (and its subtree) to JUnit 5 dynamic nodes without any exclusions. */
     public final Stream<DynamicNode> toDynamicNodes() {
-        return toDynamicNodes((testClass, parameters) -> false);
+        return toDynamicNodes((testClass, labels) -> false);
     }
 }

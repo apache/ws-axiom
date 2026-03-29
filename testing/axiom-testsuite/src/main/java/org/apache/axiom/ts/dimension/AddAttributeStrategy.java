@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 
 /**
  * Defines a strategy (in terms of usage of particular API methods) to add an attribute to an
@@ -38,8 +38,8 @@ public abstract class AddAttributeStrategy extends Multiton implements Dimension
     public static final AddAttributeStrategy FACTORY =
             new AddAttributeStrategy() {
                 @Override
-                public void addTestParameters(TestParameterTarget testCase) {
-                    testCase.addTestParameter("addAttribute", "factory");
+                public void addLabels(LabelTarget testCase) {
+                    testCase.addLabel("addAttribute", "factory");
                 }
 
                 @Override
@@ -56,8 +56,8 @@ public abstract class AddAttributeStrategy extends Multiton implements Dimension
     public static final AddAttributeStrategy DIRECT =
             new AddAttributeStrategy() {
                 @Override
-                public void addTestParameters(TestParameterTarget testCase) {
-                    testCase.addTestParameter("addAttribute", "direct");
+                public void addLabels(LabelTarget testCase) {
+                    testCase.addLabel("addAttribute", "direct");
                 }
 
                 @Override

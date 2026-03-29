@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.junit.Assert;
 
 /**
@@ -34,8 +34,8 @@ import org.junit.Assert;
  */
 public class WriteAttributeNamespaceUnawareScenario implements PushOMDataSourceScenario {
     @Override
-    public void addTestParameters(TestParameterTarget testCase) {
-        testCase.addTestParameter("scenario", "writeAttributeNoNamespace");
+    public void addLabels(LabelTarget testCase) {
+        testCase.addLabel("scenario", "writeAttributeNoNamespace");
     }
 
     @Override

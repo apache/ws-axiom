@@ -22,7 +22,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 
 /** Serializes an {@link OMContainer} using {@link OMContainer#serialize(Writer, boolean)}. */
 public class SerializeToWriter extends SerializationStrategy {
@@ -33,9 +33,9 @@ public class SerializeToWriter extends SerializationStrategy {
     }
 
     @Override
-    public void addTestParameters(TestParameterTarget testCase) {
-        testCase.addTestParameter("serializationStrategy", "Writer");
-        testCase.addTestParameter("cache", cache);
+    public void addLabels(LabelTarget testCase) {
+        testCase.addLabel("serializationStrategy", "Writer");
+        testCase.addLabel("cache", cache);
     }
 
     @Override

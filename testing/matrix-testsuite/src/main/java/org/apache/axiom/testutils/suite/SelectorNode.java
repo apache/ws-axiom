@@ -28,30 +28,30 @@ import org.junit.jupiter.api.DynamicNode;
 import com.google.inject.Injector;
 
 /**
- * A node that only delegates to its child if a given parameter has a given value. The parameter is
- * removed from the inherited parameters before delegating.
+ * A node that only delegates to its child if a given label has a given value. The label is removed
+ * from the inherited labels before delegating.
  */
 public final class SelectorNode extends MatrixTestNode {
-    private final String parameterName;
-    private final String parameterValue;
+    private final String labelName;
+    private final String labelValue;
     private final MatrixTestNode child;
 
-    public SelectorNode(String parameterName, String parameterValue, MatrixTestNode child) {
-        this.parameterName = parameterName;
-        this.parameterValue = parameterValue;
+    public SelectorNode(String labelName, String labelValue, MatrixTestNode child) {
+        this.labelName = labelName;
+        this.labelValue = labelValue;
         this.child = child;
     }
 
     @Override
     protected Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
-            Map<String, String> inheritedParameters,
+            Map<String, String> inheritedLabels,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
-        if (!parameterValue.equals(inheritedParameters.get(parameterName))) {
+        if (!labelValue.equals(inheritedLabels.get(labelName))) {
             return Stream.empty();
         }
-        Map<String, String> filteredParameters = new HashMap<>(inheritedParameters);
-        filteredParameters.remove(parameterName);
-        return child.toDynamicNodes(parentInjector, filteredParameters, excludes);
+        Map<String, String> filteredLabels = new HashMap<>(inheritedLabels);
+        filteredLabels.remove(labelName);
+        return child.toDynamicNodes(parentInjector, filteredLabels, excludes);
     }
 }

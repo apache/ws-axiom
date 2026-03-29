@@ -64,9 +64,9 @@ public class InjectorNode extends MatrixTestNode {
     @Override
     protected Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
-            Map<String, String> inheritedParameters,
+            Map<String, String> inheritedLabels,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
         return child.toDynamicNodes(
-                parentInjector.createChildInjector(modules), inheritedParameters, excludes);
+                parentInjector.createChildInjector(modules), inheritedLabels, excludes);
     }
 }

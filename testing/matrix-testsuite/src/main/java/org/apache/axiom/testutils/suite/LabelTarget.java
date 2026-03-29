@@ -18,11 +18,14 @@
  */
 package org.apache.axiom.testutils.suite;
 
-import com.google.inject.Injector;
+/**
+ * Receives label registrations. This interface decouples {@link Dimension} from {@link
+ * MatrixTestCase} so that dimensions can be reused with other test tree structures.
+ */
+public interface LabelTarget {
+    void addLabel(String name, String value);
 
-public interface ParameterBinding<T> {
-    ParameterBinding<Dimension> DIMENSION =
-            (injector, value, params) -> value.addTestParameters(params);
+    void addLabel(String name, boolean value);
 
-    void addTestParameters(Injector injector, T value, TestParameterTarget params);
+    void addLabel(String name, int value);
 }

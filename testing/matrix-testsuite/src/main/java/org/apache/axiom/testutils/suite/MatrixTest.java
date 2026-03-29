@@ -50,9 +50,9 @@ public class MatrixTest extends MatrixTestNode {
     @Override
     protected Stream<DynamicNode> toDynamicNodes(
             Injector injector,
-            Map<String, String> inheritedParameters,
+            Map<String, String> inheritedLabels,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
-        if (excludes.test(testClass, inheritedParameters)) {
+        if (excludes.test(testClass, inheritedLabels)) {
             return Stream.empty();
         }
         return Stream.of(

@@ -24,7 +24,7 @@ import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
-import org.apache.axiom.testutils.suite.ParameterBinding;
+import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.testutils.suite.SelectorNode;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -58,8 +58,8 @@ public class SpringWSTestSuite {
         return new FanOutNode<>(
                 Multiton.getInstances(SOAPSpec.class),
                 Binding.singleton(Key.get(SOAPSpec.class)),
-                (injector, value, params) ->
-                        params.addTestParameter(
+                (injector, value, labels) ->
+                        labels.addLabel(
                                 "soapVersion",
                                 value.getAdapter(SOAPSpecAdapter.class).getSoapVersion()),
                 new ParentNode(
@@ -83,7 +83,7 @@ public class SpringWSTestSuite {
                         new FanOutNode<>(
                                 configs.build(),
                                 Binding.singleton(Key.get(ScenarioConfig.class)),
-                                ParameterBinding.DIMENSION,
+                                LabelBinding.DIMENSION,
                                 new ParentNode(
                                         new MatrixTest(ClientServerTest.class),
                                         new MatrixTest(WSAddressingDOMTest.class),

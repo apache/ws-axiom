@@ -27,13 +27,13 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.junit.Assert;
 
 public class WriteProcessingInstruction1Scenario implements PushOMDataSourceScenario {
     @Override
-    public void addTestParameters(TestParameterTarget testCase) {
-        testCase.addTestParameter("scenario", "writeProcessingInstruction1");
+    public void addLabels(LabelTarget testCase) {
+        testCase.addLabel("scenario", "writeProcessingInstruction1");
     }
 
     @Override

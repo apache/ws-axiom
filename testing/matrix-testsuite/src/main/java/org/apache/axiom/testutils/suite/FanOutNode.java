@@ -42,32 +42,32 @@ import com.google.inject.Injector;
 public final class FanOutNode<T> extends MatrixTestNode {
     private final Function<Injector, ? extends Iterable<T>> valuesFunction;
     private final Binding<T> binding;
-    private final ParameterBinding<? super T> parameterBinding;
+    private final LabelBinding<? super T> labelBinding;
     private final MatrixTestNode child;
 
     public FanOutNode(
             Function<Injector, ? extends Iterable<T>> valuesFunction,
             Binding<T> binding,
-            ParameterBinding<? super T> parameterBinding,
+            LabelBinding<? super T> labelBinding,
             MatrixTestNode child) {
         this.valuesFunction = valuesFunction;
         this.binding = binding;
-        this.parameterBinding = parameterBinding;
+        this.labelBinding = labelBinding;
         this.child = child;
     }
 
     public FanOutNode(
             ImmutableList<T> values,
             Binding<T> binding,
-            ParameterBinding<? super T> parameterBinding,
+            LabelBinding<? super T> labelBinding,
             MatrixTestNode child) {
-        this(injector -> values, binding, parameterBinding, child);
+        this(injector -> values, binding, labelBinding, child);
     }
 
     @Override
     protected Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
-            Map<String, String> inheritedParameters,
+            Map<String, String> inheritedLabels,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
         return StreamSupport.stream(valuesFunction.apply(parentInjector).spliterator(), false)
                 .map(
@@ -75,33 +75,33 @@ public final class FanOutNode<T> extends MatrixTestNode {
                             Injector childInjector =
                                     parentInjector.createChildInjector(
                                             binder -> binding.configure(binder, value));
-                            Map<String, String> parameters = new HashMap<>(inheritedParameters);
-                            parameterBinding.addTestParameters(
+                            Map<String, String> labels = new HashMap<>(inheritedLabels);
+                            labelBinding.addLabels(
                                     parentInjector,
                                     value,
-                                    new TestParameterTarget() {
+                                    new LabelTarget() {
                                         @Override
-                                        public void addTestParameter(String name, String value) {
-                                            parameters.put(name, value);
+                                        public void addLabel(String name, String value) {
+                                            labels.put(name, value);
                                         }
 
                                         @Override
-                                        public void addTestParameter(String name, boolean value) {
-                                            addTestParameter(name, String.valueOf(value));
+                                        public void addLabel(String name, boolean value) {
+                                            addLabel(name, String.valueOf(value));
                                         }
 
                                         @Override
-                                        public void addTestParameter(String name, int value) {
-                                            addTestParameter(name, String.valueOf(value));
+                                        public void addLabel(String name, int value) {
+                                            addLabel(name, String.valueOf(value));
                                         }
                                     });
                             String displayName =
-                                    parameters.entrySet().stream()
+                                    labels.entrySet().stream()
                                             .map(e -> e.getKey() + "=" + e.getValue())
                                             .collect(Collectors.joining(", "));
                             return DynamicContainer.dynamicContainer(
                                     displayName,
-                                    child.toDynamicNodes(childInjector, parameters, excludes));
+                                    child.toDynamicNodes(childInjector, labels, excludes));
                         });
     }
 }

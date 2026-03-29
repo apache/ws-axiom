@@ -38,8 +38,7 @@ public class SOAPDOMTestSuite {
                 new FanOutNode<>(
                         Multiton.getInstances(SOAPSpec.class),
                         Binding.singleton(Key.get(SOAPSpec.class)),
-                        (injector, value, params) ->
-                                params.addTestParameter("spec", value.getName()),
+                        (injector, value, labels) -> labels.addLabel("spec", value.getName()),
                         new ParentNode(
                                 new MatrixTest(
                                         org.apache.axiom.ts.soapdom.header

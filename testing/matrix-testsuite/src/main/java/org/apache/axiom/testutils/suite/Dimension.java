@@ -19,5 +19,5 @@
 package org.apache.axiom.testutils.suite;
 
 public interface Dimension {
-    void addTestParameters(TestParameterTarget target);
+    void addLabels(LabelTarget target);
 }

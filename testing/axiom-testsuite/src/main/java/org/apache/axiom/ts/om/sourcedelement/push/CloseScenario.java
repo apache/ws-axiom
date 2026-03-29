@@ -28,7 +28,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 
 /**
  * Scenario that calls {@link XMLStreamWriter#close()} which is forbidden by the contract of {@link
@@ -36,8 +36,8 @@ import org.apache.axiom.testutils.suite.TestParameterTarget;
  */
 public class CloseScenario implements PushOMDataSourceScenario {
     @Override
-    public void addTestParameters(TestParameterTarget testCase) {
-        testCase.addTestParameter("scenario", "close");
+    public void addLabels(LabelTarget testCase) {
+        testCase.addLabel("scenario", "close");
     }
 
     @Override

@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 public abstract class OMSourcedElementVariant {
@@ -103,7 +103,7 @@ public abstract class OMSourcedElementVariant {
                 && (namespaceURIRequiresExpansion || qname.getNamespaceURI().length() != 0);
     }
 
-    public void addTestProperties(TestParameterTarget target) {
+    public void addTestProperties(LabelTarget target) {
         // Empty. May be overridden in subclasses.
     }
 

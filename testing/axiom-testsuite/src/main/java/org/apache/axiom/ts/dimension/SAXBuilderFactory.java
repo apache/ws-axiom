@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.xml.sax.InputSource;
 
@@ -54,8 +54,8 @@ final class SAXBuilderFactory extends BuilderFactory {
     }
 
     @Override
-    public void addTestParameters(TestParameterTarget testCase) {
-        testCase.addTestParameter("source", implementation.getName() + "-sax");
+    public void addLabels(LabelTarget testCase) {
+        testCase.addLabel("source", implementation.getName() + "-sax");
     }
 
     @Override

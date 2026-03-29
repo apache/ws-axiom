@@ -38,22 +38,21 @@ public class CompareTest {
         return new FanOutNode<>(
                         Multiton.getInstances(XMLSample.class),
                         Binding.singleton(Key.get(XMLSample.class, Names.named("sample"))),
-                        (injector, value, params) ->
-                                params.addTestParameter("sample", value.getName()),
+                        (injector, value, labels) -> labels.addLabel("sample", value.getName()),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLObjectFactory.class),
                                 Binding.singleton(
                                         Key.get(XMLObjectFactory.class, Names.named("left"))),
-                                (injector, value, params) ->
-                                        params.addTestParameter("left", value.getName()),
+                                (injector, value, labels) ->
+                                        labels.addLabel("left", value.getName()),
                                 new FanOutNode<>(
                                         Multiton.getInstances(XMLObjectFactory.class),
                                         Binding.singleton(
                                                 Key.get(
                                                         XMLObjectFactory.class,
                                                         Names.named("right"))),
-                                        (injector, value, params) ->
-                                                params.addTestParameter("right", value.getName()),
+                                        (injector, value, labels) ->
+                                                labels.addLabel("right", value.getName()),
                                         new FanOutNode<>(
                                                 ImmutableList.of(true, false),
                                                 Binding.singleton(
@@ -61,8 +60,8 @@ public class CompareTest {
                                                                 Boolean.class,
                                                                 Names.named(
                                                                         "expandEntityReferences"))),
-                                                (injector, value, params) ->
-                                                        params.addTestParameter(
+                                                (injector, value, labels) ->
+                                                        labels.addLabel(
                                                                 "expandEntityReferences",
                                                                 String.valueOf(value)),
                                                 new MatrixTest(CompareTestCase.class)))))

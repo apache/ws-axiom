@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.springws.scenario;
 
 import org.apache.axiom.testutils.suite.Dimension;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 
 public final class ScenarioConfig implements Dimension {
@@ -42,8 +42,8 @@ public final class ScenarioConfig implements Dimension {
     }
 
     @Override
-    public void addTestParameters(TestParameterTarget target) {
-        target.addTestParameter("client", clientMessageFactoryConfigurator.getName());
-        target.addTestParameter("server", serverMessageFactoryConfigurator.getName());
+    public void addLabels(LabelTarget target) {
+        target.addLabel("client", clientMessageFactoryConfigurator.getName());
+        target.addLabel("server", serverMessageFactoryConfigurator.getName());
     }
 }

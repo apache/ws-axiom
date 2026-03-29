@@ -44,13 +44,12 @@ public class StreamSourceToOMResultTest {
                         ImmutableList.of("default", "dom"),
                         Binding.singleton(
                                 Key.get(String.class, Names.named("axiomImplementation"))),
-                        (injector, value, params) ->
-                                params.addTestParameter("axiomImplementation", value),
+                        (injector, value, labels) -> labels.addLabel("axiomImplementation", value),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 Binding.singleton(Key.get(XMLSample.class)),
-                                (injector, value, params) ->
-                                        params.addTestParameter("file", value.getName()),
+                                (injector, value, labels) ->
+                                        labels.addLabel("file", value.getName()),
                                 new MatrixTest(StreamSourceToOMResultTestCase.class)))
                 .toDynamicNodes(excludes);
     }

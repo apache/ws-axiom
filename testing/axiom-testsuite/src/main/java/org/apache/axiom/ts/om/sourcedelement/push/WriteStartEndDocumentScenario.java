@@ -28,7 +28,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 
 /**
  * Scenario that attempts to use {@link XMLStreamWriter#writeStartDocument()}, {@link
@@ -38,8 +38,8 @@ import org.apache.axiom.testutils.suite.TestParameterTarget;
  */
 public class WriteStartEndDocumentScenario implements PushOMDataSourceScenario {
     @Override
-    public void addTestParameters(TestParameterTarget testCase) {
-        testCase.addTestParameter("scenario", "writeStartEndDocument");
+    public void addLabels(LabelTarget testCase) {
+        testCase.addLabel("scenario", "writeStartEndDocument");
     }
 
     @Override

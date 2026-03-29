@@ -27,7 +27,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.TestParameterTarget;
+import org.apache.axiom.testutils.suite.LabelTarget;
 import org.junit.Assert;
 
 /**
@@ -44,10 +44,10 @@ public class WriteNamespaceScenario implements PushOMDataSourceScenario {
     }
 
     @Override
-    public void addTestParameters(TestParameterTarget testCase) {
-        testCase.addTestParameter("scenario", "writeNamespace");
-        testCase.addTestParameter("prefix", prefix);
-        testCase.addTestParameter("uri", namespaceURI);
+    public void addLabels(LabelTarget testCase) {
+        testCase.addLabel("scenario", "writeNamespace");
+        testCase.addLabel("prefix", prefix);
+        testCase.addLabel("uri", namespaceURI);
     }
 
     @Override

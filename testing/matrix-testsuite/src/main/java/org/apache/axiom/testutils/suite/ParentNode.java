@@ -47,12 +47,9 @@ public final class ParentNode extends MatrixTestNode {
     @Override
     protected Stream<DynamicNode> toDynamicNodes(
             Injector parentInjector,
-            Map<String, String> inheritedParameters,
+            Map<String, String> inheritedLabels,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
         return children.stream()
-                .flatMap(
-                        child ->
-                                child.toDynamicNodes(
-                                        parentInjector, inheritedParameters, excludes));
+                .flatMap(child -> child.toDynamicNodes(parentInjector, inheritedLabels, excludes));
     }
 }

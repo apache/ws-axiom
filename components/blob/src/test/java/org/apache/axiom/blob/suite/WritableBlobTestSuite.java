@@ -25,7 +25,7 @@ import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
-import org.apache.axiom.testutils.suite.ParameterBinding;
+import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.ParentNode;
 
 import com.google.common.collect.ImmutableList;
@@ -56,7 +56,7 @@ public class WritableBlobTestSuite {
                         new FanOutNode<>(
                                 ImmutableList.of(State.NEW, State.UNCOMMITTED, State.RELEASED),
                                 Binding.singleton(Key.get(State.class)),
-                                ParameterBinding.DIMENSION,
+                                LabelBinding.DIMENSION,
                                 new ParentNode(
                                         new MatrixTest(TestGetInputStreamIllegalState.class),
                                         new MatrixTest(TestGetSizeIllegalState.class),
@@ -65,14 +65,14 @@ public class WritableBlobTestSuite {
                                 ImmutableList.of(
                                         State.UNCOMMITTED, State.COMMITTED, State.RELEASED),
                                 Binding.singleton(Key.get(State.class)),
-                                ParameterBinding.DIMENSION,
+                                LabelBinding.DIMENSION,
                                 new ParentNode(
                                         new MatrixTest(TestGetOutputStreamIllegalState.class),
                                         new MatrixTest(TestReadFromIllegalState.class))),
                         new FanOutNode<>(
                                 sizes,
                                 Binding.singleton(Key.get(Integer.class, Names.named("size"))),
-                                (injector, v, params) -> params.addTestParameter("size", v),
+                                (injector, v, labels) -> labels.addLabel("size", v),
                                 new ParentNode(
                                         new MatrixTest(TestMarkReset.class),
                                         new MatrixTest(TestReadFrom.class),
