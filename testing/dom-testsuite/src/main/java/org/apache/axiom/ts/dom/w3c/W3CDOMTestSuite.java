@@ -70,7 +70,7 @@ public final class W3CDOMTestSuite {
             throw new Error(ex);
         }
 
-        ImmutableList.Builder<W3CTestNode> testNodes = ImmutableList.builder();
+        ImmutableList.Builder<DOMTestNode> testNodes = ImmutableList.builder();
         suite.build(
                 new DOMTestSink() {
                     @Override
@@ -100,7 +100,7 @@ public final class W3CDOMTestSuite {
                                 throw ex.getTargetException();
                             }
                             test.setFramework(JUnitTestFramework.INSTANCE);
-                            testNodes.add(new W3CTestNode(test));
+                            testNodes.add(new DOMTestNode(test));
                         } catch (Throwable ex) {
                             // TODO
                             throw new Error(ex);

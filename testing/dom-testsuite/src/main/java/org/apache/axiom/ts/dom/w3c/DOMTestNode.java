@@ -30,10 +30,10 @@ import org.w3c.domts.DOMTestCase;
 
 import com.google.inject.Injector;
 
-public final class W3CTestNode extends MatrixTestNode {
+public final class DOMTestNode extends MatrixTestNode {
     private final DOMTestCase test;
 
-    public W3CTestNode(DOMTestCase test) {
+    public DOMTestNode(DOMTestCase test) {
         this.test = test;
     }
 
