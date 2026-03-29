@@ -24,7 +24,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.ts.dom.DocumentBuilderFactoryFactory;
-import org.apache.axiom.ts.dom.w3c.W3CTestCase;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 
 public class XercesTest extends TestCase {
@@ -38,9 +37,7 @@ public class XercesTest extends TestCase {
                             }
                         });
 
-        builder.exclude(
-                W3CTestCase.class,
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)");
+        builder.exclude("(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)");
 
         return builder.build();
     }

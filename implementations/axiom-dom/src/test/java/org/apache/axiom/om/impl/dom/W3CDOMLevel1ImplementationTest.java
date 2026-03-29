@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.dom;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.axiom.ts.dom.w3c.W3CTestCase;
 import org.apache.axiom.ts.dom.w3c.level1.W3CDOMLevel1TestSuiteBuilder;
 
 public class W3CDOMLevel1ImplementationTest extends TestCase {
@@ -30,59 +29,39 @@ public class W3CDOMLevel1ImplementationTest extends TestCase {
                 new W3CDOMLevel1TestSuiteBuilder(DOMTests.FACTORY, DOMTests.UNSUPPORTED_FEATURES);
 
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/attrspecifiedvalueremove)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentcreateelementdefaultattr)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentgetelementsbytagnametotallength)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreateentref)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreateentref1)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreatepi)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreatepi1)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/elementremoveattribute)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/elementremoveattributerestoredefaultvalue)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/elementsetattributenomodificationallowederr)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/namednodemapremovenameditem)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/namednodemapremovenameditemgetvalue)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/processinginstructionsetdatanomodificationallowederr)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_elementnormalize)");
         builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_elementnormalize2)");
+        builder.exclude("(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)");
         builder.exclude(
-                W3CTestCase.class,
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)");
-        builder.exclude(
-                W3CTestCase.class,
                 "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrinsertbefore7)");
-        builder.exclude(
-                W3CTestCase.class,
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrnormalize)");
+        builder.exclude("(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrnormalize)");
 
         return builder.build();
     }
