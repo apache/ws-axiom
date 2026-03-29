@@ -18,36 +18,42 @@
  */
 package org.apache.axiom.ts.dom.w3c.level2;
 
+import java.util.stream.Stream;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
+import org.apache.axiom.testutils.suite.MatrixTestFilters;
 import org.apache.axiom.ts.dom.DocumentBuilderFactoryFactory;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-public class XercesTest extends TestCase {
-    public static TestSuite suite() {
-        W3CDOMLevel2TestSuiteBuilder builder =
-                new W3CDOMLevel2TestSuiteBuilder(
+public class XercesTest {
+    @TestFactory
+    Stream<DynamicNode> tests() {
+        return W3CDOMLevel2TestSuite.create(
                         new DocumentBuilderFactoryFactory() {
                             @Override
                             public DocumentBuilderFactory newInstance() {
                                 return new DocumentBuilderFactoryImpl();
                             }
-                        });
-
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/createAttributeNS06)");
-        builder.exclude("(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/createDocument08)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/createDocumentType04)");
-        builder.exclude("(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/getNamedItemNS03)");
-        builder.exclude("(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/getNamedItemNS04)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/namednodemapgetnameditemns01)");
-        builder.exclude("(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/setAttributeNS10)");
-
-        return builder.build();
+                        })
+                .toDynamicNodes(
+                        MatrixTestFilters.builder()
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/createAttributeNS06)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/createDocument08)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/createDocumentType04)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/getNamedItemNS03)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/getNamedItemNS04)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/namednodemapgetnameditemns01)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/setAttributeNS10)")
+                                .build());
     }
 }

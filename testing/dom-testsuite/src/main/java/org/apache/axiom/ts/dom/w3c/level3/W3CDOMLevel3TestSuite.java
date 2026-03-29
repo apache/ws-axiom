@@ -16,24 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom.w3c.level1;
+package org.apache.axiom.ts.dom.w3c.level3;
 
+import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.ts.dom.DocumentBuilderFactoryFactory;
 import org.apache.axiom.ts.dom.w3c.DOMFeature;
-import org.apache.axiom.ts.dom.w3c.W3CDOMTestSuiteBuilder;
-import org.w3c.domts.DOMTestDocumentBuilderFactory;
-import org.w3c.domts.DOMTestSuite;
-import org.w3c.domts.level1.core.alltests;
+import org.apache.axiom.ts.dom.w3c.W3CDOMTestSuite;
+import org.w3c.domts.level3.core.alltests;
 
-public final class W3CDOMLevel1TestSuiteBuilder extends W3CDOMTestSuiteBuilder {
-    public W3CDOMLevel1TestSuiteBuilder(
+public final class W3CDOMLevel3TestSuite {
+    public static MatrixTestNode create(
             DocumentBuilderFactoryFactory dbff, DOMFeature... unsupportedFeatures) {
-        super(dbff, unsupportedFeatures);
-    }
-
-    @Override
-    protected DOMTestSuite createDOMTestSuite(DOMTestDocumentBuilderFactory factory)
-            throws Exception {
-        return new alltests(factory);
+        return W3CDOMTestSuite.create(alltests::new, dbff, unsupportedFeatures);
     }
 }

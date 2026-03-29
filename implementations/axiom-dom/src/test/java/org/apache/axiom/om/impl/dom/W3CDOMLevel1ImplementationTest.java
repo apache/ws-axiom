@@ -18,51 +18,55 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.stream.Stream;
 
-import org.apache.axiom.ts.dom.w3c.level1.W3CDOMLevel1TestSuiteBuilder;
+import org.apache.axiom.testutils.suite.MatrixTestFilters;
+import org.apache.axiom.ts.dom.w3c.level1.W3CDOMLevel1TestSuite;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
-public class W3CDOMLevel1ImplementationTest extends TestCase {
-    public static TestSuite suite() {
-        W3CDOMLevel1TestSuiteBuilder builder =
-                new W3CDOMLevel1TestSuiteBuilder(DOMTests.FACTORY, DOMTests.UNSUPPORTED_FEATURES);
-
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/attrspecifiedvalueremove)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentcreateelementdefaultattr)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentgetelementsbytagnametotallength)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreateentref)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreateentref1)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreatepi)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreatepi1)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/elementremoveattribute)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/elementremoveattributerestoredefaultvalue)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/elementsetattributenomodificationallowederr)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/namednodemapremovenameditem)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/namednodemapremovenameditemgetvalue)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/processinginstructionsetdatanomodificationallowederr)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_elementnormalize)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_elementnormalize2)");
-        builder.exclude("(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)");
-        builder.exclude(
-                "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrinsertbefore7)");
-        builder.exclude("(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrnormalize)");
-
-        return builder.build();
+public class W3CDOMLevel1ImplementationTest {
+    @TestFactory
+    Stream<DynamicNode> tests() {
+        return W3CDOMLevel1TestSuite.create(DOMTests.FACTORY, DOMTests.UNSUPPORTED_FEATURES)
+                .toDynamicNodes(
+                        MatrixTestFilters.builder()
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/attrspecifiedvalueremove)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentcreateelementdefaultattr)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentgetelementsbytagnametotallength)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreateentref)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreateentref1)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreatepi)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/documentinvalidcharacterexceptioncreatepi1)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/elementremoveattribute)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/elementremoveattributerestoredefaultvalue)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/elementsetattributenomodificationallowederr)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/namednodemapremovenameditem)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/namednodemapremovenameditemgetvalue)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/processinginstructionsetdatanomodificationallowederr)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_elementnormalize)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_elementnormalize2)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrinsertbefore7)")
+                                .add(
+                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrnormalize)")
+                                .build());
     }
 }

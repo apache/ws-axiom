@@ -24,7 +24,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.testutils.suite.MatrixTestNode;
+import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.ts.dom.DocumentBuilderFactoryFactory;
 import org.objectweb.asm.ClassReader;
 import org.w3c.domts.DOMTestCase;
@@ -34,18 +35,16 @@ import org.w3c.domts.DOMTestSink;
 import org.w3c.domts.DOMTestSuite;
 import org.w3c.domts.DocumentBuilderSetting;
 
-public abstract class W3CDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
-    private final DocumentBuilderFactoryFactory dbff;
-    private final Set<DOMFeature> unsupportedFeatures;
+import com.google.common.collect.ImmutableList;
 
-    public W3CDOMTestSuiteBuilder(
-            DocumentBuilderFactoryFactory dbff, DOMFeature... unsupportedFeatures) {
-        this.dbff = dbff;
-        this.unsupportedFeatures = new HashSet<DOMFeature>(Arrays.asList(unsupportedFeatures));
-    }
+public final class W3CDOMTestSuite {
+    public static MatrixTestNode create(
+            DOMTestSuiteFactory domTestSuiteFactory,
+            DocumentBuilderFactoryFactory dbff,
+            DOMFeature... unsupportedFeatures) {
+        Set<DOMFeature> unsupportedFeaturesSet =
+                new HashSet<DOMFeature>(Arrays.asList(unsupportedFeatures));
 
-    @Override
-    protected final void addTests() {
         final DOMTestDocumentBuilderFactory factory;
         try {
             factory =
@@ -65,18 +64,19 @@ public abstract class W3CDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
 
         DOMTestSuite suite;
         try {
-            suite = createDOMTestSuite(factory);
+            suite = domTestSuiteFactory.create(factory);
         } catch (Exception ex) {
             // TODO
             throw new Error(ex);
         }
 
+        ImmutableList.Builder<W3CTestNode> testNodes = ImmutableList.builder();
         suite.build(
                 new DOMTestSink() {
                     @Override
                     public void addTest(Class<? extends DOMTestCase> testClass) {
                         try {
-                            if (!unsupportedFeatures.isEmpty()) {
+                            if (!unsupportedFeaturesSet.isEmpty()) {
                                 Set<DOMFeature> usedFeatures = new HashSet<DOMFeature>();
                                 DOMFeature.matchFeatures(testClass, usedFeatures);
                                 ClassReader classReader =
@@ -86,7 +86,7 @@ public abstract class W3CDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
                                 DOMTSClassVisitor cv = new DOMTSClassVisitor(usedFeatures);
                                 classReader.accept(
                                         cv, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-                                usedFeatures.retainAll(unsupportedFeatures);
+                                usedFeatures.retainAll(unsupportedFeaturesSet);
                                 if (!usedFeatures.isEmpty()) {
                                     return;
                                 }
@@ -100,15 +100,13 @@ public abstract class W3CDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
                                 throw ex.getTargetException();
                             }
                             test.setFramework(JUnitTestFramework.INSTANCE);
-                            W3CDOMTestSuiteBuilder.this.addTest(new W3CTestCase(test));
+                            testNodes.add(new W3CTestNode(test));
                         } catch (Throwable ex) {
                             // TODO
                             throw new Error(ex);
                         }
                     }
                 });
+        return new ParentNode(testNodes.build());
     }
-
-    protected abstract DOMTestSuite createDOMTestSuite(DOMTestDocumentBuilderFactory factory)
-            throws Exception;
 }
