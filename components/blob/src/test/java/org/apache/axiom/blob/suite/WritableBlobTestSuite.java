@@ -72,7 +72,7 @@ public class WritableBlobTestSuite {
                         new FanOutNode<>(
                                 sizes,
                                 Binding.singleton(Key.get(Integer.class, Names.named("size"))),
-                                (injector, v, labels) -> labels.addLabel("size", v),
+                                LabelBinding.simpleInt("size"),
                                 new ParentNode(
                                         new MatrixTest(TestMarkReset.class),
                                         new MatrixTest(TestReadFrom.class),

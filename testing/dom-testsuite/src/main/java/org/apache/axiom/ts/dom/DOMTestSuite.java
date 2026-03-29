@@ -308,7 +308,7 @@ public class DOMTestSuite {
                         new FanOutNode<>(
                                 ImmutableList.of(true, false),
                                 Binding.singleton(Key.get(Boolean.class, Names.named("deep"))),
-                                (injector, value, labels) -> labels.addLabel("deep", value),
+                                LabelBinding.simpleBoolean("deep"),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.attr.TestCloneNode.class),
@@ -319,8 +319,7 @@ public class DOMTestSuite {
                                 ImmutableList.of(true, false),
                                 Binding.singleton(
                                         Key.get(Boolean.class, Names.named("newChildHasSiblings"))),
-                                (injector, value, labels) ->
-                                        labels.addLabel("newChildHasSiblings", value),
+                                LabelBinding.simpleBoolean("newChildHasSiblings"),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.element
@@ -359,8 +358,7 @@ public class DOMTestSuite {
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 Binding.singleton(Key.get(XMLSample.class)),
-                                (injector, value, labels) ->
-                                        labels.addLabel("file", value.getName()),
+                                LabelBinding.simpleString("file", XMLSample::getName),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.document.TestCloneNode
@@ -368,16 +366,15 @@ public class DOMTestSuite {
                                         new FanOutNode<>(
                                                 Multiton.getInstances(DOMImplementation.class),
                                                 Binding.singleton(Key.get(DOMImplementation.class)),
-                                                (injector, value, labels) ->
-                                                        labels.addLabel("from", value.getName()),
+                                                LabelBinding.simpleString(
+                                                        "from", DOMImplementation::getName),
                                                 new MatrixTest(
                                                         org.apache.axiom.ts.dom.element
                                                                 .TestImportNode.class)))),
                         new FanOutNode<>(
                                 Multiton.getInstances(XSLTImplementation.class),
                                 Binding.singleton(Key.get(XSLTImplementation.class)),
-                                (injector, value, labels) ->
-                                        labels.addLabel("xslt", value.getName()),
+                                LabelBinding.simpleString("xslt", XSLTImplementation::getName),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.dom.document

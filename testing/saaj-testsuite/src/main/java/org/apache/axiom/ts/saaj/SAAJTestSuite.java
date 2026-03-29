@@ -24,6 +24,7 @@ import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.testutils.suite.FanOutNode;
@@ -46,7 +47,7 @@ public class SAAJTestSuite {
                 new FanOutNode<>(
                         Multiton.getInstances(SOAPSpec.class),
                         Binding.singleton(Key.get(SOAPSpec.class)),
-                        (injector, value, labels) -> labels.addLabel("spec", value.getName()),
+                        LabelBinding.simpleString("spec", SOAPSpec::getName),
                         new ParentNode(
                                 new MatrixTest(TestAddChildElementReification.class),
                                 new MatrixTest(TestExamineMustUnderstandHeaderElements.class),

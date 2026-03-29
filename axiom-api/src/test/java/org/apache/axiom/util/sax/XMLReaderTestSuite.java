@@ -20,6 +20,7 @@ package org.apache.axiom.util.sax;
 
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.FanOutNode;
@@ -39,7 +40,7 @@ public class XMLReaderTestSuite {
                                 "http://xml.org/sax/features/namespace-prefixes",
                                 "http://xml.org/sax/features/external-general-entities"),
                         Binding.singleton(Key.get(String.class, Names.named("feature"))),
-                        (injector, value, labels) -> labels.addLabel("feature", value),
+                        LabelBinding.simpleString("feature"),
                         new MatrixTest(TestGetSetFeature.class)));
     }
 }

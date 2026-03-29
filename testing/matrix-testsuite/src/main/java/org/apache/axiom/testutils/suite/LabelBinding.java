@@ -18,10 +18,38 @@
  */
 package org.apache.axiom.testutils.suite;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
+
 import com.google.inject.Injector;
 
 public interface LabelBinding<T> {
     LabelBinding<Dimension> DIMENSION = (injector, value, labels) -> value.addLabels(labels);
 
     void addLabels(Injector injector, T value, LabelTarget labels);
+
+    static <T> LabelBinding<T> simpleString(String label, Function<T, String> fn) {
+        return (injector, value, labels) -> labels.addLabel(label, fn.apply(value));
+    }
+
+    static <T> LabelBinding<T> simpleBoolean(String label, Predicate<T> fn) {
+        return (injector, value, labels) -> labels.addLabel(label, fn.test(value));
+    }
+
+    static <T> LabelBinding<T> simpleInt(String label, ToIntFunction<T> fn) {
+        return (injector, value, labels) -> labels.addLabel(label, fn.applyAsInt(value));
+    }
+
+    static LabelBinding<String> simpleString(String label) {
+        return simpleString(label, v -> v);
+    }
+
+    static LabelBinding<Boolean> simpleBoolean(String label) {
+        return simpleBoolean(label, v -> v);
+    }
+
+    static LabelBinding<Integer> simpleInt(String label) {
+        return simpleInt(label, v -> v);
+    }
 }

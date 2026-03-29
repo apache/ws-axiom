@@ -24,6 +24,7 @@ import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.FanOutNode;
+import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
@@ -38,21 +39,20 @@ public class CompareTest {
         return new FanOutNode<>(
                         Multiton.getInstances(XMLSample.class),
                         Binding.singleton(Key.get(XMLSample.class, Names.named("sample"))),
-                        (injector, value, labels) -> labels.addLabel("sample", value.getName()),
+                        LabelBinding.simpleString("sample", XMLSample::getName),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLObjectFactory.class),
                                 Binding.singleton(
                                         Key.get(XMLObjectFactory.class, Names.named("left"))),
-                                (injector, value, labels) ->
-                                        labels.addLabel("left", value.getName()),
+                                LabelBinding.simpleString("left", XMLObjectFactory::getName),
                                 new FanOutNode<>(
                                         Multiton.getInstances(XMLObjectFactory.class),
                                         Binding.singleton(
                                                 Key.get(
                                                         XMLObjectFactory.class,
                                                         Names.named("right"))),
-                                        (injector, value, labels) ->
-                                                labels.addLabel("right", value.getName()),
+                                        LabelBinding.simpleString(
+                                                "right", XMLObjectFactory::getName),
                                         new FanOutNode<>(
                                                 ImmutableList.of(true, false),
                                                 Binding.singleton(
@@ -60,10 +60,8 @@ public class CompareTest {
                                                                 Boolean.class,
                                                                 Names.named(
                                                                         "expandEntityReferences"))),
-                                                (injector, value, labels) ->
-                                                        labels.addLabel(
-                                                                "expandEntityReferences",
-                                                                String.valueOf(value)),
+                                                LabelBinding.simpleBoolean(
+                                                        "expandEntityReferences"),
                                                 new MatrixTest(CompareTestCase.class)))))
                 .toDynamicNodes();
     }

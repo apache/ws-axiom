@@ -106,11 +106,36 @@ Holds exactly one child node. When multiple children are needed, wrap them in a
 The `Binding<T>` lambda receives a `Binder` and the current value, and
 configures the Guice binding. For the common case of binding the value as a
 singleton, use `Binding.singleton(Key.get(MyType.class))`. The
-`LabelBinding<? super T>` lambda registers labels for display and
-filtering (e.g.
-`(labels, value) -> labels.addLabel("name", value.getName())`).
+`LabelBinding<? super T>` registers labels for display and filtering.
+For the common case of a single label derived from the value, use one of the
+`LabelBinding.simpleString` / `simpleBoolean` / `simpleInt` factory methods
+(e.g. `LabelBinding.simpleString("name", MyType::getName)`).
 For types implementing `Dimension`, use the predefined
 `LabelBinding.DIMENSION` constant.
+
+### `LabelBinding<T>`
+
+Functional interface that registers labels for a fan-out value. Defines a single
+method `void addLabels(Injector injector, T value, LabelTarget labels)`. Provides
+several static factory methods for the common case of a single label:
+
+| Method | Value type | Example |
+|---|---|---|
+| `simpleString(label, fn)` | `String` | `LabelBinding.simpleString("name", MyType::getName)` |
+| `simpleBoolean(label, fn)` | `boolean` | `LabelBinding.simpleBoolean("flag", MyType::isEnabled)` |
+| `simpleInt(label, fn)` | `int` | `LabelBinding.simpleInt("size", MyType::getSize)` |
+
+Each of these also has an identity overload (no function argument) for use when
+the fan-out value is already the label value:
+
+| Method | Fan-out type | Example |
+|---|---|---|
+| `simpleString(label)` | `String` | `LabelBinding.simpleString("feature")` |
+| `simpleBoolean(label)` | `Boolean` | `LabelBinding.simpleBoolean("cache")` |
+| `simpleInt(label)` | `Integer` | `LabelBinding.simpleInt("count")` |
+
+For types implementing `Dimension` (which contribute multiple labels), use
+the predefined `LabelBinding.DIMENSION` constant.
 
 ### `MatrixTest`
 
@@ -184,7 +209,7 @@ public class MyTestSuite {
         FanOutNode<SomeDimension> dimensions = new FanOutNode<>(
                 Multiton.getInstances(SomeDimension.class),
                 Binding.singleton(Key.get(SomeDimension.class)),
-                (labels, value) -> labels.addLabel("dimension", value.getName()),
+                LabelBinding.simpleString("dimension", SomeDimension::getName),
                 new ParentNode(
                         new MatrixTest(TestSomeBehavior.class),
                         new MatrixTest(TestOtherBehavior.class)));

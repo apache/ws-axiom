@@ -58,10 +58,8 @@ public class SpringWSTestSuite {
         return new FanOutNode<>(
                 Multiton.getInstances(SOAPSpec.class),
                 Binding.singleton(Key.get(SOAPSpec.class)),
-                (injector, value, labels) ->
-                        labels.addLabel(
-                                "soapVersion",
-                                value.getAdapter(SOAPSpecAdapter.class).getSoapVersion()),
+                LabelBinding.simpleString(
+                        "soapVersion", v -> v.getAdapter(SOAPSpecAdapter.class).getSoapVersion()),
                 new ParentNode(
                         new InjectorNode(
                                 binder ->

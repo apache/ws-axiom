@@ -26,6 +26,7 @@ import javax.xml.stream.XMLStreamConstants;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
+import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.MatrixTestFilters;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
@@ -52,15 +53,13 @@ public class DialectTestSuite {
                                 binder.bind(StAXImplementationAdapter.class)
                                         .toInstance(
                                                 value.getAdapter(StAXImplementationAdapter.class)),
-                        (injector, value, labels) ->
-                                labels.addLabel("implementation", value.getName()),
+                        LabelBinding.simpleString("implementation", StAXImplementation::getName),
                         new ParentNode(
                                 new FanOutNode<>(
                                         Multiton.getInstances(StreamType.class),
                                         Binding.singleton(Key.get(StreamType.class)),
-                                        (injector, value, labels) ->
-                                                labels.addLabel(
-                                                        "type", value.getType().getSimpleName()),
+                                        LabelBinding.simpleString(
+                                                "type", v -> v.getType().getSimpleName()),
                                         new MatrixTest(TestClose.class)),
                                 new MatrixTest(TestCreateXMLEventWriterWithNullEncoding.class),
                                 new MatrixTest(TestCreateXMLStreamReaderThreadSafety.class),
@@ -106,8 +105,7 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("xmlEncodings"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, labels) ->
-                                                labels.addLabel("javaEncoding", value.getLeft()),
+                                        LabelBinding.simpleString("javaEncoding", Pair::getLeft),
                                         new MatrixTest(TestGetEncodingFromDetection.class)),
                                 new MatrixTest(TestGetEncoding.class),
                                 new MatrixTest(TestGetEncodingWithCharacterStream.class),
@@ -134,11 +132,9 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expectException"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, labels) ->
-                                                labels.addLabel(
-                                                        "event",
-                                                        XMLEventUtils.getEventTypeString(
-                                                                value.getLeft())),
+                                        LabelBinding.simpleString(
+                                                "event",
+                                                v -> XMLEventUtils.getEventTypeString(v.getLeft())),
                                         new MatrixTest(
                                                 TestGetLocalNameIllegalStateException.class)),
                                 new FanOutNode<>(
@@ -164,11 +160,9 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expectException"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, labels) ->
-                                                labels.addLabel(
-                                                        "event",
-                                                        XMLEventUtils.getEventTypeString(
-                                                                value.getLeft())),
+                                        LabelBinding.simpleString(
+                                                "event",
+                                                v -> XMLEventUtils.getEventTypeString(v.getLeft())),
                                         new ParentNode(
                                                 new MatrixTest(
                                                         TestGetNameIllegalStateException.class),
@@ -207,11 +201,9 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expected"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, labels) ->
-                                                labels.addLabel(
-                                                        "event",
-                                                        XMLEventUtils.getEventTypeString(
-                                                                value.getLeft())),
+                                        LabelBinding.simpleString(
+                                                "event",
+                                                v -> XMLEventUtils.getEventTypeString(v.getLeft())),
                                         new MatrixTest(TestHasName.class)),
                                 new FanOutNode<>(
                                         ImmutableList.of(
@@ -242,11 +234,9 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expected"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, labels) ->
-                                                labels.addLabel(
-                                                        "event",
-                                                        XMLEventUtils.getEventTypeString(
-                                                                value.getLeft())),
+                                        LabelBinding.simpleString(
+                                                "event",
+                                                v -> XMLEventUtils.getEventTypeString(v.getLeft())),
                                         new MatrixTest(TestHasText.class)),
                                 new MatrixTest(TestIsCharactersOnCDATASection.class),
                                 new FanOutNode<>(
@@ -272,11 +262,9 @@ public class DialectTestSuite {
                                                     .annotatedWith(Names.named("expected"))
                                                     .toInstance(value.getRight());
                                         },
-                                        (injector, value, labels) ->
-                                                labels.addLabel(
-                                                        "event",
-                                                        XMLEventUtils.getEventTypeString(
-                                                                value.getLeft())),
+                                        LabelBinding.simpleString(
+                                                "event",
+                                                v -> XMLEventUtils.getEventTypeString(v.getLeft())),
                                         new MatrixTest(TestIsCharacters.class)),
                                 new MatrixTest(TestIsStandalone.class),
                                 new MatrixTest(TestNextAfterEndDocument.class),

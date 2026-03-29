@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
+import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.MatrixTestFilters;
 import org.apache.axiom.ts.xml.XMLSample;
@@ -44,12 +45,11 @@ public class StreamSourceToOMResultTest {
                         ImmutableList.of("default", "dom"),
                         Binding.singleton(
                                 Key.get(String.class, Names.named("axiomImplementation"))),
-                        (injector, value, labels) -> labels.addLabel("axiomImplementation", value),
+                        LabelBinding.simpleString("axiomImplementation"),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 Binding.singleton(Key.get(XMLSample.class)),
-                                (injector, value, labels) ->
-                                        labels.addLabel("file", value.getName()),
+                                LabelBinding.simpleString("file", XMLSample::getName),
                                 new MatrixTest(StreamSourceToOMResultTestCase.class)))
                 .toDynamicNodes(excludes);
     }

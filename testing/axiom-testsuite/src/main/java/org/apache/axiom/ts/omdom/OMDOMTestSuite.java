@@ -22,6 +22,7 @@ import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.ParentNode;
@@ -50,8 +51,7 @@ public class OMDOMTestSuite {
                         new FanOutNode<>(
                                 ImmutableList.of(true, false),
                                 Binding.singleton(Key.get(Boolean.class, Names.named("build"))),
-                                (injector, value, labels) ->
-                                        labels.addLabel("build", String.valueOf(value)),
+                                LabelBinding.simpleBoolean("build"),
                                 new ParentNode(
                                         new MatrixTest(
                                                 org.apache.axiom.ts.omdom.document
@@ -67,8 +67,7 @@ public class OMDOMTestSuite {
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 Binding.singleton(Key.get(XMLSample.class)),
-                                (injector, value, labels) ->
-                                        labels.addLabel("file", value.getName()),
+                                LabelBinding.simpleString("file", XMLSample::getName),
                                 new MatrixTest(
                                         org.apache.axiom.ts.omdom.document.TestImportNode.class)),
                         new MatrixTest(
