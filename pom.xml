@@ -287,7 +287,7 @@
         <spring.version>7.0.6</spring.version>
         <springws.version>5.0.1</springws.version>
         <exam.version>4.14.0</exam.version>
-        <jetty.version>12.1.7</jetty.version>
+        <jetty.version>12.1.8</jetty.version>
         <log4j.version>2.25.4</log4j.version>
         <groovy.version>5.0.5</groovy.version>
         <auto-service.version>1.1.1</auto-service.version>
