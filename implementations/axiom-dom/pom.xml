@@ -250,7 +250,7 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>enforce</goal>
+                            <goal>detect-cycles</goal>
                         </goals>
                         <configuration>
                             <ignore>
