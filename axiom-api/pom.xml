@@ -253,37 +253,88 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>de.obqo.decycle</groupId>
+                <artifactId>decycle-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <skipTest>true</skipTest>
+                            <ignoring>
+                                <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMAbstractFactory</from>
+                                    <to>org.apache.axiom.soap.SOAPFactory</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMMetaFactory</from>
+                                    <to>org.apache.axiom.soap.SOAPFactory</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMMetaFactorySPI</from>
+                                    <to>org.apache.axiom.soap.SOAPModelBuilder</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMXMLBuilderFactory</from>
+                                    <to>org.apache.axiom.soap.SOAPFactory</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMXMLBuilderFactory</from>
+                                    <to>org.apache.axiom.soap.SOAPMessage</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMXMLBuilderFactory</from>
+                                    <to>org.apache.axiom.soap.SOAPModelBuilder</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMXMLBuilderFactory</from>
+                                    <to>org.apache.axiom.soap.SOAPProcessingException</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMXMLBuilderFactory</from>
+                                    <to>org.apache.axiom.soap.SOAPVersion</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMOutputFormat</from>
+                                    <to>org.apache.axiom.soap.SOAPVersion</to>
+                                </ignoredDependency>
+                                <!-- The public API shouldn't depend on classes in o.a.a.om.util -->
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMMetaFactorySPI</from>
+                                    <to>org.apache.axiom.om.util.StAXParserConfiguration</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMXMLBuilderFactory</from>
+                                    <to>org.apache.axiom.om.util.StAXParserConfiguration</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.OMOutputFormat</from>
+                                    <to>org.apache.axiom.om.util.StAXWriterConfiguration</to>
+                                </ignoredDependency>
+                                <!-- StAXUtils is in the wrong package (should be o.a.a.util.stax) -->
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.ds.AbstractPushOMDataSource</from>
+                                    <to>org.apache.axiom.om.util.StAXUtils</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.ds.BlobOMDataSource</from>
+                                    <to>org.apache.axiom.om.util.StAXUtils</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.ds.StringOMDataSource</from>
+                                    <to>org.apache.axiom.om.util.StAXUtils</to>
+                                </ignoredDependency>
+                            </ignoring>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.github.veithen.phos</groupId>
                 <artifactId>enforcer-maven-plugin</artifactId>
                 <executions>
-                    <execution>
-                        <id>detect-cycles</id>
-                        <goals>
-                            <goal>detect-cycles</goal>
-                        </goals>
-                        <configuration>
-                            <ignore>
-                                <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
-                                org.apache.axiom.om.OMAbstractFactory -&gt; org.apache.axiom.soap.SOAPFactory,
-                                org.apache.axiom.om.OMMetaFactory -&gt; org.apache.axiom.soap.SOAPFactory,
-                                org.apache.axiom.om.OMMetaFactorySPI -&gt; org.apache.axiom.soap.SOAPModelBuilder,
-                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.soap.SOAPFactory,
-                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.soap.SOAPMessage,
-                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.soap.SOAPModelBuilder,
-                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.soap.SOAPProcessingException,
-                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.soap.SOAPVersion,
-                                org.apache.axiom.om.OMOutputFormat -&gt; org.apache.axiom.soap.SOAPVersion,
-                                <!-- The public API shouldn't depend on classes in o.a.a.om.util -->
-                                org.apache.axiom.om.OMMetaFactorySPI -&gt; org.apache.axiom.om.util.StAXParserConfiguration,
-                                org.apache.axiom.om.OMXMLBuilderFactory -&gt; org.apache.axiom.om.util.StAXParserConfiguration,
-                                org.apache.axiom.om.OMOutputFormat -&gt; org.apache.axiom.om.util.StAXWriterConfiguration,
-                                <!-- StAXUtils is in the wrong package (should be o.a.a.util.stax) -->
-                                org.apache.axiom.om.ds.AbstractPushOMDataSource -&gt; org.apache.axiom.om.util.StAXUtils,
-                                org.apache.axiom.om.ds.BlobOMDataSource -&gt; org.apache.axiom.om.util.StAXUtils,
-                                org.apache.axiom.om.ds.StringOMDataSource -&gt; org.apache.axiom.om.util.StAXUtils,
-                            </ignore>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>enforce-layering</id>
                         <goals>

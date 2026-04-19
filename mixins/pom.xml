@@ -41,13 +41,16 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.github.veithen.phos</groupId>
-                <artifactId>enforcer-maven-plugin</artifactId>
+                <groupId>de.obqo.decycle</groupId>
+                <artifactId>decycle-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>detect-cycles</goal>
+                            <goal>check</goal>
                         </goals>
+                        <configuration>
+                            <skipTest>true</skipTest>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -245,24 +245,46 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.github.veithen.phos</groupId>
-                <artifactId>enforcer-maven-plugin</artifactId>
+                <groupId>de.obqo.decycle</groupId>
+                <artifactId>decycle-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>detect-cycles</goal>
+                            <goal>check</goal>
                         </goals>
                         <configuration>
-                            <ignore>
-                                <!-- TODO: inject the reference to the singleton into mixins directly -->
-                                org.apache.axiom.om.impl.dom.CoreNodeImpl -&gt; org.apache.axiom.om.impl.dom.factory.DOOMNodeFactory,
-                                org.apache.axiom.om.impl.dom.CoreNodeImpl -&gt; org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl,
-                                org.apache.axiom.om.impl.dom.DOOMNSAwareElementImpl -&gt; org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl,
-                                org.apache.axiom.om.impl.dom.CoreChildNodeImpl -&gt; org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl,
-                                org.apache.axiom.om.impl.dom.AxiomCoreParentNodeImpl -&gt; org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl,
-                                org.apache.axiom.om.impl.dom.DOOMNSAwareAttributeImpl -&gt; org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl,
-                                org.apache.axiom.om.impl.dom.DOOMNamespaceDeclarationImpl -&gt; org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl
-                            </ignore>
+                            <skipTest>true</skipTest>
+                            <!-- TODO: inject the reference to the singleton into mixins directly -->
+                            <ignoring>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.impl.dom.CoreNodeImpl</from>
+                                    <to>org.apache.axiom.om.impl.dom.factory.DOOMNodeFactory</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.impl.dom.CoreNodeImpl</from>
+                                    <to>org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.impl.dom.DOOMNSAwareElementImpl</from>
+                                    <to>org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.impl.dom.CoreChildNodeImpl</from>
+                                    <to>org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.impl.dom.AxiomCoreParentNodeImpl</from>
+                                    <to>org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.impl.dom.DOOMNSAwareAttributeImpl</from>
+                                    <to>org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.impl.dom.DOOMNamespaceDeclarationImpl</from>
+                                    <to>org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl</to>
+                                </ignoredDependency>
+                            </ignoring>
                         </configuration>
                     </execution>
                 </executions>

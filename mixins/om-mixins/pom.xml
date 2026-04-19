@@ -74,22 +74,43 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.github.veithen.phos</groupId>
-                <artifactId>enforcer-maven-plugin</artifactId>
+                <groupId>de.obqo.decycle</groupId>
+                <artifactId>decycle-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>detect-cycles</goal>
+                            <goal>check</goal>
                         </goals>
                         <configuration>
-                            <ignore>
+                            <skipTest>true</skipTest>
+                            <ignoring>
                                 <!-- TODO: inject the reference to the singleton into mixins directly -->
-                                org.apache.axiom.om.impl.intf.AxiomInformationItem -&gt; org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory,
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.om.impl.intf.AxiomInformationItem</from>
+                                    <to>org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory</to>
+                                </ignoredDependency>
                                 <!-- TODO: figure out how to break those cycles properly -->
-                                org.apache.axiom.soap.impl.intf.SOAPHelper -&gt; org.apache.axiom.om.impl.intf.factory.AxiomElementType,
-                                org.apache.axiom.soap.impl.intf.soap11.SOAP11Helper -&gt; org.apache.axiom.om.impl.intf.factory.AxiomElementType,
-                                org.apache.axiom.soap.impl.intf.soap12.SOAP12Helper -&gt; org.apache.axiom.om.impl.intf.factory.AxiomElementType
-                            </ignore>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.soap.impl.intf.SOAPHelper</from>
+                                    <to>org.apache.axiom.om.impl.intf.factory.AxiomElementType</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.soap.impl.intf.soap11.SOAP11Helper</from>
+                                    <to>org.apache.axiom.om.impl.intf.factory.AxiomElementType</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.soap.impl.intf.soap11.SOAP11Helper</from>
+                                    <to>org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.soap.impl.intf.soap12.SOAP12Helper</from>
+                                    <to>org.apache.axiom.om.impl.intf.factory.AxiomElementType</to>
+                                </ignoredDependency>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.soap.impl.intf.soap12.SOAP12Helper</from>
+                                    <to>org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory</to>
+                                </ignoredDependency>
+                            </ignoring>
                         </configuration>
                     </execution>
                 </executions>

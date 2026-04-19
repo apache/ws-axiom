@@ -116,18 +116,22 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.github.veithen.phos</groupId>
-                <artifactId>enforcer-maven-plugin</artifactId>
+                <groupId>de.obqo.decycle</groupId>
+                <artifactId>decycle-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>detect-cycles</goal>
+                            <goal>check</goal>
                         </goals>
                         <configuration>
-                            <ignore>
-                                <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
-                                org.apache.axiom.attachments.lifecycle.LifecycleManager -&gt; org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
-                            </ignore>
+                            <skipTest>true</skipTest>
+                            <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
+                            <ignoring>
+                                <ignoredDependency>
+                                    <from>org.apache.axiom.attachments.lifecycle.LifecycleManager</from>
+                                    <to>org.apache.axiom.attachments.lifecycle.impl.FileAccessor</to>
+                                </ignoredDependency>
+                            </ignoring>
                         </configuration>
                     </execution>
                 </executions>
