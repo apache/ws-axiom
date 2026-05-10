@@ -18,15 +18,19 @@
  */
 package org.apache.axiom.ts.soap.body;
 
-import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestHasFaultNoFault extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     private final QName qname;
 
     @Inject

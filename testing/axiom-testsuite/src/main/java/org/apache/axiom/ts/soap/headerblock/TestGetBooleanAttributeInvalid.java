@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -39,6 +40,8 @@ import com.google.inject.name.Named;
  * attribute is present but has an invalid value.
  */
 public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     private final String value;
 
     @Inject

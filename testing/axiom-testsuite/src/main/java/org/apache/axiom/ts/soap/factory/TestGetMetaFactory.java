@@ -18,17 +18,21 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMFactory#getMetaFactory()} returns the reference of the {@link OMMetaFactory}
  * from which the reference to the {@link OMFactory} was obtained.
  */
 public class TestGetMetaFactory extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestGetMetaFactory(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

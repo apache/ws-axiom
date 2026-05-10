@@ -37,11 +37,16 @@ import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     protected final QName qname;
     private final boolean supportsOptimization;
 

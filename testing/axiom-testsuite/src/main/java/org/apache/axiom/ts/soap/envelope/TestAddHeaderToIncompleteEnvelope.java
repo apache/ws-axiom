@@ -18,19 +18,23 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Test the behavior when adding a header to an envelope that has not yet been built completely.
  * This is a regression test for AXIOM-127.
  */
 public class TestAddHeaderToIncompleteEnvelope extends SampleBasedSOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestAddHeaderToIncompleteEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.NO_HEADER);

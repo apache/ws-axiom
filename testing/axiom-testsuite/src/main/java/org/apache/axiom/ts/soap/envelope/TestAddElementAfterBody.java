@@ -18,24 +18,28 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-import javax.xml.namespace.QName;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * Test that attempts to add an arbitrary element to the SOAP envelope (after the body). This is
  * allowed in SOAP 1.1, but not in SOAP 1.2.
  */
 public class TestAddElementAfterBody extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     private final boolean header;
 
     @Inject

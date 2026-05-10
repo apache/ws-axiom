@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -37,6 +38,8 @@ import com.google.inject.Inject;
  * add a {@link SOAPFault} as a child of a SOAP element other than {@link SOAPBody}.
  */
 public class TestWrongParent2 extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestWrongParent2(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

@@ -28,6 +28,7 @@ import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
@@ -35,6 +36,8 @@ import com.google.inject.Inject;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-474">AXIOM-474</a>. */
 public class TestSerializeAsChild extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestSerializeAsChild(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

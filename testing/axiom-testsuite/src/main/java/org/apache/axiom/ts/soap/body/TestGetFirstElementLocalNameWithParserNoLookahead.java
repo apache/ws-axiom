@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.body;
 
-import com.google.inject.Inject;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringReader;
@@ -28,9 +27,12 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests that {@link SOAPBody#getFirstElementLocalName()} returns the expected result if the parser
@@ -38,6 +40,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a> is no longer applicable.
  */
 public class TestGetFirstElementLocalNameWithParserNoLookahead extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestGetFirstElementLocalNameWithParserNoLookahead(
             OMMetaFactory metaFactory, SOAPSpec spec) {

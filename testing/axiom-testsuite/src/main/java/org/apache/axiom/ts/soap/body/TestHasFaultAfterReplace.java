@@ -18,13 +18,15 @@
  */
 package org.apache.axiom.ts.soap.body;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests that {@link SOAPBody#hasFault()} returns the correct value after a {@link SOAPFault} child
@@ -33,6 +35,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * updated correctly in all situations. This is a regression test for this issue.
  */
 public class TestHasFaultAfterReplace extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestHasFaultAfterReplace(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

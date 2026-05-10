@@ -18,17 +18,19 @@
  */
 package org.apache.axiom.ts.soap.message;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * Tests that the clone of a {@link SOAPMessage} created by {@link
@@ -36,6 +38,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * OMCloneOptions#isPreserveModel()} is <code>true</code>.
  */
 public class TestClone extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     private final boolean preserveModel;
 
     @Inject

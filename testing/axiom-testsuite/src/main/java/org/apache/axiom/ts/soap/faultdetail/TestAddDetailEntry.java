@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -34,6 +35,8 @@ import com.google.inject.Inject;
 
 // SOAP Fault Detail Test (Programaticaly Created)
 public class TestAddDetailEntry extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestAddDetailEntry(OMMetaFactory omMetaFactory, SOAPSpec spec) {
         super(omMetaFactory, spec);

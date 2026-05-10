@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
@@ -34,6 +35,8 @@ import com.google.inject.Inject;
 
 /** Tests {@link OMDocument#getCharsetEncoding()} on a {@link SOAPMessage} created by a builder. */
 public class TestGetCharsetEncodingWithParser extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestGetCharsetEncodingWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

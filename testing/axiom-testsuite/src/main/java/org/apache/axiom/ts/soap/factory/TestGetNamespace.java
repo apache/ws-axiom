@@ -18,14 +18,18 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetNamespace extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestGetNamespace(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

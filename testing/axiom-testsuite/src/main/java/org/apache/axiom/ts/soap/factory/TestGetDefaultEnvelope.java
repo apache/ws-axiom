@@ -33,6 +33,8 @@ import com.google.inject.Inject;
 
 /** Checks the content of the SOAP envelope returned by {@link SOAPFactory#getDefaultEnvelope()}. */
 public class TestGetDefaultEnvelope extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestGetDefaultEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

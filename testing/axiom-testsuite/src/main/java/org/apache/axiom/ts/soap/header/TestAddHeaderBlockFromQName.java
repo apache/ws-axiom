@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -31,6 +32,8 @@ import com.google.inject.Inject;
 
 /** Tests the behavior of {@link SOAPHeader#addHeaderBlock(QName)}. */
 public class TestAddHeaderBlockFromQName extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestAddHeaderBlockFromQName(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
-import com.google.inject.Inject;
 import java.io.StringReader;
 
 import javax.xml.namespace.QName;
@@ -29,8 +28,11 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link SOAPEnvelope#getSOAPBodyFirstElementLocalName()} and {@link
@@ -39,6 +41,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * of the element without actually instantiating the corresponding {@link OMElement}.
  */
 public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     private final QName qname;
 
     @Inject

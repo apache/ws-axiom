@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
@@ -36,6 +37,8 @@ import com.google.inject.Inject;
  * SOAP 1.1 messages.
  */
 public class TestGetBooleanAttributeUnspported extends BooleanAttributeTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestGetBooleanAttributeUnspported(
             OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {

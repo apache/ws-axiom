@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPCloneOptions;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
@@ -36,6 +37,8 @@ import com.google.inject.Inject;
  * <p>This is a regression test for an issue in older Axiom versions.
  */
 public class TestCloneProcessedWithoutPreservingModel extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestCloneProcessedWithoutPreservingModel(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

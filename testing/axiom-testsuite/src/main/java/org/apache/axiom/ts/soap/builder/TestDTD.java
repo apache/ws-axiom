@@ -18,20 +18,22 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
-import com.google.inject.Inject;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamReader;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests that the SOAP model builder rejects attempts to create a DTD. Note that this test is
@@ -39,6 +41,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * the methods taking a stream as input will generally reject DTDs at a much lower level.
  */
 public class TestDTD extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestDTD(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

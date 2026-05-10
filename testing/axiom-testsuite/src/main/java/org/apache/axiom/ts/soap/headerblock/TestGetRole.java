@@ -18,16 +18,20 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetRole extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestGetRole(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

@@ -18,20 +18,24 @@
  */
 package org.apache.axiom.ts.soap.body;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests that a call to {@link SOAPBody#hasFault()} doesn't cause expansion of an {@link
  * OMSourcedElement} with an unknown name that is the first child of the SOAP body.
  */
 public class TestHasFaultWithOMSEUnknownName extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestHasFaultWithOMSEUnknownName(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

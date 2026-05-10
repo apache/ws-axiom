@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -30,6 +31,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 import com.google.inject.Inject;
 
 public class TestAddSOAPTextMultiple extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestAddSOAPTextMultiple(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP12);

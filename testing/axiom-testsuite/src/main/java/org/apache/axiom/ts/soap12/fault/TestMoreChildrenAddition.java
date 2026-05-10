@@ -18,14 +18,18 @@
  */
 package org.apache.axiom.ts.soap12.fault;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestMoreChildrenAddition extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestMoreChildrenAddition(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP12);

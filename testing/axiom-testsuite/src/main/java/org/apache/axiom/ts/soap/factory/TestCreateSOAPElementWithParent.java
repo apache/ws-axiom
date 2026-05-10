@@ -20,8 +20,6 @@ package org.apache.axiom.ts.soap.factory;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -39,6 +37,9 @@ import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * Tests {@link SOAPFactory#createSOAPHeader(SOAPEnvelope)}, {@link
  * SOAPFactory#createSOAPBody(SOAPEnvelope)}, {@link SOAPFactory#createSOAPFault(SOAPBody)}, {@link
@@ -53,6 +54,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * and {@link SOAPFactory#createSOAPFaultDetail(SOAPFault)} with a non null parent.
  */
 public class TestCreateSOAPElementWithParent extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     private final SOAPElementType type;
     private final SOAPElementType parentType;
 

@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -31,7 +30,11 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
+import com.google.inject.Inject;
+
 public class TestCloneWithSourcedElement2 extends CloneTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestCloneWithSourcedElement2(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

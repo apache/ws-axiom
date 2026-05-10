@@ -18,17 +18,21 @@
  */
 package org.apache.axiom.ts.soap11.fault;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests that {@link SOAPFault#getNode()} returns <code>null</code> (instead of throwing an {@link
  * UnsupportedOperationException}) for SOAP 1.1 faults.
  */
 public class TestGetNode extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestGetNode(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP11);

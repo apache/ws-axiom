@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
@@ -34,6 +35,8 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 public class TestSetBooleanAttribute extends BooleanAttributeTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     private final boolean value;
 
     @Inject

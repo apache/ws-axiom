@@ -18,18 +18,13 @@
  */
 package org.apache.axiom.ts.soap;
 
-import com.google.inject.Inject;
-
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPFactory;
 
 import junit.framework.TestCase;
 
 public abstract class SOAPTestCase extends TestCase {
     protected final OMMetaFactory metaFactory;
     protected final SOAPSpec spec;
-    @Inject protected SOAPFactory soapFactory;
-    @Inject @AltSOAPFactory protected SOAPFactory altSoapFactory;
 
     public SOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
         this.metaFactory = metaFactory;

@@ -18,23 +18,27 @@
  */
 package org.apache.axiom.ts.soap11.faultcode;
 
-import com.google.inject.Inject;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link SOAPFaultClassifier#setValue(QName)} when invoked on a SOAP 1.1
  * {@link SOAPFaultCode}.
  */
 public class TestSetValueFromQName extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestSetValueFromQName(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP11);

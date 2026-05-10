@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -33,6 +34,8 @@ import com.google.inject.Inject;
 
 /** Tests the behavior of {@link SOAPHeader#getHeadersToProcess(RolePlayer, String)} */
 public class TestGetHeadersToProcessWithNamespace extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestGetHeadersToProcessWithNamespace(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

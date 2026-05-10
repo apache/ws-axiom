@@ -18,17 +18,19 @@
  */
 package org.apache.axiom.ts.soap.message;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * Tests that {@link OMInformationItem#clone(OMCloneOptions)} correctly clones a {@link SOAPMessage}
@@ -36,6 +38,8 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
  * returns the correct factory (which is determined lazily) on the clone.
  */
 public class TestCloneIncomplete extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     private final boolean preserveModel;
 
     @Inject

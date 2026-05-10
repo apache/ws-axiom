@@ -39,6 +39,8 @@ import com.google.inject.Inject;
  * SOAPFaultCode} that has already a {@link SOAPFaultValue} child.
  */
 public class TestCreateSOAPFaultSubCode extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestCreateSOAPFaultSubCode(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP12);

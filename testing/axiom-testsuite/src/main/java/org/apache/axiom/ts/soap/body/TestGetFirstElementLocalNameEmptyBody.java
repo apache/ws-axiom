@@ -18,18 +18,22 @@
  */
 package org.apache.axiom.ts.soap.body;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests that {@link SOAPBody#getFirstElementLocalName()} returns <code>null</code> if the body is
  * empty.
  */
 public class TestGetFirstElementLocalNameEmptyBody extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestGetFirstElementLocalNameEmptyBody(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

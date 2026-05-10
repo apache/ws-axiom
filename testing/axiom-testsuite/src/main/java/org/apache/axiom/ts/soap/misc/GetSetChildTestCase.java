@@ -20,12 +20,17 @@ package org.apache.axiom.ts.soap.misc;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 public abstract class GetSetChildTestCase extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     protected final SOAPElementType type;
     protected final SOAPElementType childType;
 

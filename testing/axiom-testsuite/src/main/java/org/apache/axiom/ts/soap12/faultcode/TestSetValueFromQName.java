@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultValue;
@@ -37,6 +38,8 @@ import com.google.inject.Inject;
  * 1.2 {@link SOAPFaultCode}.
  */
 public class TestSetValueFromQName extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestSetValueFromQName(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP12);

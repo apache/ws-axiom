@@ -18,20 +18,24 @@
  */
 package org.apache.axiom.ts.soap.message;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} when used to set a
  * {@link SOAPEnvelope} as the root element of a {@link SOAPMessage}.
  */
 public class TestSetOMDocumentElement extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestSetOMDocumentElement(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

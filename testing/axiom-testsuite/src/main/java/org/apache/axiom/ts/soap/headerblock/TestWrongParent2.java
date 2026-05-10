@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -37,6 +38,8 @@ import com.google.inject.Inject;
  * add a {@link SOAPHeaderBlock} as a child of a SOAP element other than {@link SOAPHeader}.
  */
 public class TestWrongParent2 extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestWrongParent2(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

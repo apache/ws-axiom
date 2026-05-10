@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -37,6 +38,8 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 public class TestCreateSOAPFaultWithException extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     private final boolean withParent;
 
     @Inject

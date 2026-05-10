@@ -24,6 +24,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
@@ -48,6 +49,8 @@ import com.google.inject.name.Named;
  * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-392">AXIOM-392</a>.
  */
 public class TestChildOrder extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     private final SOAPFaultChild[] inputOrder;
     private final SerializationStrategy serializationStrategy;
 

@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPCloneOptions;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -33,6 +34,8 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 public class TestClone extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     private final Boolean processed;
 
     @Inject

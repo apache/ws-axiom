@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
-import com.google.inject.Inject;
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -30,11 +29,15 @@ import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+import com.google.inject.Inject;
+
 /**
  * Checks the content of the SOAP envelope returned by {@link
  * SOAPFactory#createDefaultSOAPMessage()}.
  */
 public class TestCreateDefaultSOAPMessage extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestCreateDefaultSOAPMessage(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

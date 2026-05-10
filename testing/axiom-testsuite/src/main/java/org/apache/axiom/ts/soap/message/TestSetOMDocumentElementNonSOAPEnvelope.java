@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
@@ -39,6 +40,8 @@ import com.google.inject.Inject;
  * SOAPMessage}. In this case, an exception should be thrown.
  */
 public class TestSetOMDocumentElementNonSOAPEnvelope extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestSetOMDocumentElementNonSOAPEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

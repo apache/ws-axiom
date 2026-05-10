@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -31,6 +32,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 import com.google.inject.Inject;
 
 public class TestGetException extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestGetException(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

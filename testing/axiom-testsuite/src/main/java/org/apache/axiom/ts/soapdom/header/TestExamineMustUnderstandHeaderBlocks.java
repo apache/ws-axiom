@@ -26,6 +26,7 @@ import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -36,6 +37,8 @@ import org.w3c.dom.Element;
 import com.google.inject.Inject;
 
 public class TestExamineMustUnderstandHeaderBlocks extends SOAPTestCase {
+    @Inject private SOAPFactory soapFactory;
+
     @Inject
     public TestExamineMustUnderstandHeaderBlocks(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
