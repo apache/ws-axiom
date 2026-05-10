@@ -124,7 +124,6 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <skipTest>true</skipTest>
                             <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
                             <ignoring>
                                 <ignoredDependency>

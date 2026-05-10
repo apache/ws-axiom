@@ -82,7 +82,6 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <skipTest>true</skipTest>
                             <ignoring>
                                 <!-- TODO: inject the reference to the singleton into mixins directly -->
                                 <ignoredDependency>

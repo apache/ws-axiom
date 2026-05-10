@@ -261,7 +261,6 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <skipTest>true</skipTest>
                             <ignoring>
                                 <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
                                 <ignoredDependency>

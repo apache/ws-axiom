@@ -48,9 +48,6 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <configuration>
-                            <skipTest>true</skipTest>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
