@@ -18,21 +18,11 @@
  */
 package org.apache.axiom.ts.soap;
 
-import com.google.inject.Inject;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPFactory;
+import com.google.inject.BindingAnnotation;
 
-import junit.framework.TestCase;
-
-public abstract class SOAPTestCase extends TestCase {
-    protected final OMMetaFactory metaFactory;
-    protected final SOAPSpec spec;
-    @Inject protected SOAPFactory soapFactory;
-    @Inject @AltSOAPFactory protected SOAPFactory altSoapFactory;
-
-    public SOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
-        this.metaFactory = metaFactory;
-        this.spec = spec;
-    }
-}
+@BindingAnnotation
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AltSOAPFactory {}

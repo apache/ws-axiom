@@ -28,6 +28,7 @@ import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.ParentNode;
+import org.apache.axiom.ts.soap.SOAPFactoryModule;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 import com.google.inject.Key;
@@ -40,15 +41,18 @@ public class SOAPDOMTestSuite {
                         Multiton.getInstances(SOAPSpec.class),
                         Binding.singleton(Key.get(SOAPSpec.class)),
                         LabelBinding.simpleString("spec", SOAPSpec::getName),
-                        new ParentNode(
-                                new MatrixTest(
-                                        org.apache.axiom.ts.soapdom.header
-                                                .TestExamineAllHeaderBlocks.class),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.soapdom.header
-                                                .TestExamineMustUnderstandHeaderBlocks.class),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.soapdom.message
-                                                .TestLazySOAPFactorySelection.class))));
+                        new InjectorNode(
+                                new SOAPFactoryModule(),
+                                new ParentNode(
+                                        new MatrixTest(
+                                                org.apache.axiom.ts.soapdom.header
+                                                        .TestExamineAllHeaderBlocks.class),
+                                        new MatrixTest(
+                                                org.apache.axiom.ts.soapdom.header
+                                                        .TestExamineMustUnderstandHeaderBlocks
+                                                        .class),
+                                        new MatrixTest(
+                                                org.apache.axiom.ts.soapdom.message
+                                                        .TestLazySOAPFactorySelection.class)))));
     }
 }

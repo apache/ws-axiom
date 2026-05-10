@@ -41,7 +41,9 @@ import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.AbstractModule;
 import com.google.inject.Key;
+import com.google.inject.Provides;
 import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
 
@@ -122,7 +124,7 @@ public class SOAPTestSuite {
                                 Multiton.getInstances(SOAPSpec.class),
                                 Binding.singleton(Key.get(SOAPSpec.class)),
                                 LabelBinding.simpleString("spec", SOAPSpec::getName),
-                                specTests()),
+                                new InjectorNode(new SOAPFactoryModule(), specTests())),
                         // Bad SOAP files (spec-independent)
                         new FanOutNode<>(
                                 badSOAPFiles,
@@ -135,36 +137,53 @@ public class SOAPTestSuite {
                                 goodSOAPFiles,
                                 Binding.singleton(Key.get(SOAPSample.class)),
                                 LabelBinding.simpleString("message", SOAPSample::getName),
-                                new ParentNode(
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.soap.builder.MessageTest.class),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.soap.builder
-                                                        .TestRegisterCustomBuilderForPayload.class),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.soap.envelope.TestClone.class),
-                                        new FanOutNode<>(
-                                                getInstances(ExpansionStrategy.class),
-                                                Binding.singleton(Key.get(ExpansionStrategy.class)),
-                                                LabelBinding.DIMENSION,
+                                new InjectorNode(
+                                        ImmutableList.of(
+                                                new AbstractModule() {
+                                                    @Provides
+                                                    SOAPSpec provideSOAPSpec(SOAPSample sample) {
+                                                        return sample.getSOAPSpec();
+                                                    }
+                                                },
+                                                new SOAPFactoryModule()),
+                                        new ParentNode(
+                                                new MatrixTest(
+                                                        org.apache.axiom.ts.soap.builder.MessageTest
+                                                                .class),
+                                                new MatrixTest(
+                                                        org.apache.axiom.ts.soap.builder
+                                                                .TestRegisterCustomBuilderForPayload
+                                                                .class),
+                                                new MatrixTest(
+                                                        org.apache.axiom.ts.soap.envelope.TestClone
+                                                                .class),
                                                 new FanOutNode<>(
-                                                        getInstances(SerializationStrategy.class),
+                                                        getInstances(ExpansionStrategy.class),
                                                         Binding.singleton(
-                                                                Key.get(
-                                                                        SerializationStrategy
-                                                                                .class)),
+                                                                Key.get(ExpansionStrategy.class)),
                                                         LabelBinding.DIMENSION,
-                                                        new ParentNode(
-                                                                new MatrixTest(
-                                                                        org.apache.axiom.ts.soap
-                                                                                .envelope
-                                                                                .TestSerialize
+                                                        new FanOutNode<>(
+                                                                getInstances(
+                                                                        SerializationStrategy
                                                                                 .class),
-                                                                new MatrixTest(
-                                                                        org.apache.axiom.ts.soap
-                                                                                .message
-                                                                                .TestSerialize
-                                                                                .class)))))),
+                                                                Binding.singleton(
+                                                                        Key.get(
+                                                                                SerializationStrategy
+                                                                                        .class)),
+                                                                LabelBinding.DIMENSION,
+                                                                new ParentNode(
+                                                                        new MatrixTest(
+                                                                                org.apache.axiom.ts
+                                                                                        .soap
+                                                                                        .envelope
+                                                                                        .TestSerialize
+                                                                                        .class),
+                                                                        new MatrixTest(
+                                                                                org.apache.axiom.ts
+                                                                                        .soap
+                                                                                        .message
+                                                                                        .TestSerialize
+                                                                                        .class))))))),
                         // SOAP 1.1 specific tests
                         soap11Tests(),
                         // SOAP 1.2 specific tests
@@ -730,83 +749,119 @@ public class SOAPTestSuite {
     }
 
     private static MatrixTestNode soap11Tests() {
-        return new ParentNode(
-                new MatrixTest(org.apache.axiom.ts.soap11.builder.TestBuilder.class),
-                new MatrixTest(org.apache.axiom.ts.soap11.fault.TestGetNode.class),
-                new MatrixTest(org.apache.axiom.ts.soap11.fault.TestSetNode.class),
-                new MatrixTest(org.apache.axiom.ts.soap11.faultcode.TestGetValue.class),
-                new MatrixTest(org.apache.axiom.ts.soap11.faultcode.TestGetValueWithParser.class),
-                new MatrixTest(org.apache.axiom.ts.soap11.faultcode.TestSetValueFromQName.class),
-                new MatrixTest(org.apache.axiom.ts.soap11.faultreason.TestAddSOAPText.class),
-                new MatrixTest(org.apache.axiom.ts.soap11.faultreason.TestGetFirstSOAPText.class),
-                new MatrixTest(org.apache.axiom.ts.soap11.faultreason.TestGetTextWithCDATA.class));
+        return new InjectorNode(
+                ImmutableList.of(
+                        binder -> binder.bind(SOAPSpec.class).toInstance(SOAPSpec.SOAP11),
+                        new SOAPFactoryModule()),
+                new ParentNode(
+                        new MatrixTest(org.apache.axiom.ts.soap11.builder.TestBuilder.class),
+                        new MatrixTest(org.apache.axiom.ts.soap11.fault.TestGetNode.class),
+                        new MatrixTest(org.apache.axiom.ts.soap11.fault.TestSetNode.class),
+                        new MatrixTest(org.apache.axiom.ts.soap11.faultcode.TestGetValue.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap11.faultcode.TestGetValueWithParser.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap11.faultcode.TestSetValueFromQName.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap11.faultreason.TestAddSOAPText.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap11.faultreason.TestGetFirstSOAPText.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap11.faultreason.TestGetTextWithCDATA
+                                        .class)));
     }
 
     private static MatrixTestNode soap12Tests() {
-        return new ParentNode(
-                new MatrixTest(org.apache.axiom.ts.soap12.builder.TestBuilder.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.envelope.TestBuildWithAttachments.class),
-                new FanOutNode<>(
-                        ImmutableList.of(true, false),
-                        Binding.singleton(Key.get(Boolean.class, Names.named("buildSOAPPart"))),
-                        LabelBinding.simpleBoolean("buildSOAPPart"),
+        return new InjectorNode(
+                ImmutableList.of(
+                        binder -> binder.bind(SOAPSpec.class).toInstance(SOAPSpec.SOAP12),
+                        new SOAPFactoryModule()),
+                new ParentNode(
+                        new MatrixTest(org.apache.axiom.ts.soap12.builder.TestBuilder.class),
                         new MatrixTest(
-                                org.apache.axiom.ts.soap12.envelope.TestMTOMForwardStreaming
-                                        .class)),
-                new MatrixTest(org.apache.axiom.ts.soap12.factory.TestCreateSOAPFaultSubCode.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.fault.TestGetNode.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.fault.TestGetNodeWithParser.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.fault.TestSetNode.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.faultcode.TestGetSubCodeWithParser.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.faultcode.TestGetValueWithParser.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQName.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQNameWithExistingValue
-                                .class),
-                new MatrixTest(org.apache.axiom.ts.soap12.faultreason.TestAddSOAPText.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultreason.TestAddSOAPTextMultiple.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultreason
-                                .TestAddSOAPTextWithSOAPVersionMismatch.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultreason.TestGetAllSoapTextsWithParser.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.faultreason.TestGetFaultReasonText.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultreason.TestGetFaultReasonTextCaseSensitivity
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultreason
-                                .TestGetFaultReasonTextWithoutLangAttribute.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.faultreason.TestGetFirstSOAPText.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultreason.TestGetFirstSOAPTextWithParser
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultsubcode.TestGetSubCodeNestedWithParser
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultsubcode.TestGetSubCodeWithParser.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultsubcode.TestGetValueNestedWithParser.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultsubcode.TestGetValueAsQNameWithParser
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.faultsubcode.TestGetValueWithParser.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.faulttext.TestGetLangWithParser.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.soap12.header.TestExamineMustUnderstandHeaderBlocks
-                                .class),
-                new MatrixTest(org.apache.axiom.ts.soap12.headerblock.TestGetRelayWithParser.class),
-                new MatrixTest(org.apache.axiom.ts.soap12.mtom.TestBuilderDetach.class),
-                new FanOutNode<>(
-                        ImmutableList.of(true, false),
-                        Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
-                        LabelBinding.simpleBoolean("cache"),
+                                org.apache.axiom.ts.soap12.envelope.TestBuildWithAttachments.class),
+                        new FanOutNode<>(
+                                ImmutableList.of(true, false),
+                                Binding.singleton(
+                                        Key.get(Boolean.class, Names.named("buildSOAPPart"))),
+                                LabelBinding.simpleBoolean("buildSOAPPart"),
+                                new MatrixTest(
+                                        org.apache.axiom.ts.soap12.envelope.TestMTOMForwardStreaming
+                                                .class)),
                         new MatrixTest(
-                                org.apache.axiom.ts.soap12.mtom.TestGetXMLStreamReaderMTOMEncoded
-                                        .class)));
+                                org.apache.axiom.ts.soap12.factory.TestCreateSOAPFaultSubCode
+                                        .class),
+                        new MatrixTest(org.apache.axiom.ts.soap12.fault.TestGetNode.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.fault.TestGetNodeWithParser.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition.class),
+                        new MatrixTest(org.apache.axiom.ts.soap12.fault.TestSetNode.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultcode.TestGetSubCodeWithParser
+                                        .class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultcode.TestGetValueWithParser.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQName.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultcode
+                                        .TestSetValueFromQNameWithExistingValue.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultreason.TestAddSOAPText.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultreason.TestAddSOAPTextMultiple
+                                        .class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultreason
+                                        .TestAddSOAPTextWithSOAPVersionMismatch.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultreason.TestGetAllSoapTextsWithParser
+                                        .class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultreason.TestGetFaultReasonText
+                                        .class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultreason
+                                        .TestGetFaultReasonTextCaseSensitivity.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultreason
+                                        .TestGetFaultReasonTextWithoutLangAttribute.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultreason.TestGetFirstSOAPText.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultreason
+                                        .TestGetFirstSOAPTextWithParser.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultsubcode
+                                        .TestGetSubCodeNestedWithParser.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultsubcode.TestGetSubCodeWithParser
+                                        .class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultsubcode.TestGetValueNestedWithParser
+                                        .class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultsubcode
+                                        .TestGetValueAsQNameWithParser.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faultsubcode.TestGetValueWithParser
+                                        .class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.faulttext.TestGetLangWithParser.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.header
+                                        .TestExamineMustUnderstandHeaderBlocks.class),
+                        new MatrixTest(
+                                org.apache.axiom.ts.soap12.headerblock.TestGetRelayWithParser
+                                        .class),
+                        new MatrixTest(org.apache.axiom.ts.soap12.mtom.TestBuilderDetach.class),
+                        new FanOutNode<>(
+                                ImmutableList.of(true, false),
+                                Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
+                                LabelBinding.simpleBoolean("cache"),
+                                new MatrixTest(
+                                        org.apache.axiom.ts.soap12.mtom
+                                                .TestGetXMLStreamReaderMTOMEncoded.class))));
     }
 }
