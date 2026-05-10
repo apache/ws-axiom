@@ -20,15 +20,17 @@ package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
-public abstract class SOAPTestCase extends AxiomTestCase {
+import junit.framework.TestCase;
+
+public abstract class SOAPTestCase extends TestCase {
+    protected final OMMetaFactory metaFactory;
     protected final SOAPSpec spec;
     protected SOAPFactory soapFactory;
     protected SOAPFactory altSoapFactory;
 
     public SOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory);
+        this.metaFactory = metaFactory;
         this.spec = spec;
     }
 
