@@ -20,6 +20,9 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
@@ -32,7 +35,11 @@ public class TestSetRole extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
+        OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
+        SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
+        SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
+        SOAPHeaderBlock soapHeaderBlock =
+                soapFactory.createSOAPHeaderBlock("testHeaderBlock", namespace, soapHeader);
         soapHeaderBlock.setRole("http://example.org/my-role");
         assertEquals(
                 "SOAP HeaderBlock Test : - After calling setRole method, getRole method returns incorrect role value",

@@ -23,6 +23,8 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
@@ -46,7 +48,11 @@ public class TestSetBooleanAttribute extends BooleanAttributeTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
+        OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
+        SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
+        SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
+        SOAPHeaderBlock soapHeaderBlock =
+                soapFactory.createSOAPHeaderBlock("testHeaderBlock", namespace, soapHeader);
         BooleanAttributeAccessor accessor = attribute.getAdapter(BooleanAttributeAccessor.class);
         accessor.setValue(soapHeaderBlock, value);
         assertEquals(value, accessor.getValue(soapHeaderBlock));
