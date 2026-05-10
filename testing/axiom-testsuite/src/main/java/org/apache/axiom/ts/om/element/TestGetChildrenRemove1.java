@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -46,12 +48,7 @@ public class TestGetChildrenRemove1 extends AxiomTestCase {
         Iterator<OMNode> iter = elt.getChildren();
 
         // this is supposed to throw an illegal state exception
-        try {
-            iter.remove();
-            fail("remove should throw an exception");
-        } catch (IllegalStateException e) {
-            // ok. this is what should happen
-        }
+        assertThatThrownBy(() -> iter.remove()).isInstanceOf(IllegalStateException.class);
 
         elt.close(false);
     }

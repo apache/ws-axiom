@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.namespace.QName;
@@ -70,13 +72,11 @@ public class TestCreateSOAPElementWithParent extends SOAPTestCase {
         OMElement parent = parentType.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory);
         QName expectedName = type.getQName(spec);
         if (expectedName == null) {
-            try {
-                type.getAdapter(SOAPElementTypeAdapter.class)
-                        .create(soapFactory, parentType, parent);
-                fail("Expect UnsupportedOperationException");
-            } catch (UnsupportedOperationException ex) {
-                // Expected
-            }
+            assertThatThrownBy(
+                            () ->
+                                    type.getAdapter(SOAPElementTypeAdapter.class)
+                                            .create(soapFactory, parentType, parent))
+                    .isInstanceOf(UnsupportedOperationException.class);
         } else {
             String expectedPrefix =
                     expectedName.getNamespaceURI().length() == 0

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.faultreason;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -37,11 +39,10 @@ public class TestAddSOAPTextWithSOAPVersionMismatch extends SOAPTestCase {
         SOAPFaultReason soap12FaultReason = soapFactory.createSOAPFaultReason(soap12Fault);
         SOAPFault soap11Fault = altSoapFactory.createSOAPFault();
         SOAPFaultReason soap11FaultReason = altSoapFactory.createSOAPFaultReason(soap11Fault);
-        try {
-            soap12FaultReason.addSOAPText(altSoapFactory.createSOAPFaultText(soap11FaultReason));
-            fail("SOAP11FaultText should not be added to SOAP12FaultReason");
-        } catch (Exception e) {
-            assertTrue(true);
-        }
+        assertThatThrownBy(
+                        () ->
+                                soap12FaultReason.addSOAPText(
+                                        altSoapFactory.createSOAPFaultText(soap11FaultReason)))
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 }

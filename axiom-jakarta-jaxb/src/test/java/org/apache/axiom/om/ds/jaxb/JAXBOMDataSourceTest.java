@@ -19,7 +19,8 @@
 package org.apache.axiom.om.ds.jaxb;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -183,14 +184,12 @@ public class JAXBOMDataSourceTest {
         object.setId("test");
         OMSourcedElement element = omFactory.createOMElement(new JAXBOMDataSource(context, object));
         XMLStreamException exception = new XMLStreamException("TEST");
-        try {
-            element.serialize(
-                    new ExceptionXMLStreamWriterWrapper(
-                            StAX.createNullXMLStreamWriter(), exception));
-            fail("Expected XMLStreamException");
-        } catch (XMLStreamException ex) {
-            assertThat(ex).isSameAs(exception);
-        }
+        assertThatThrownBy(
+                        () ->
+                                element.serialize(
+                                        new ExceptionXMLStreamWriterWrapper(
+                                                StAX.createNullXMLStreamWriter(), exception)))
+                .isSameAs(exception);
     }
 
     /**

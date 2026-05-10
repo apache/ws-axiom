@@ -18,11 +18,13 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 import java.util.NoSuchElementException;
 
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
@@ -37,15 +39,9 @@ public class TestNextAfterEndDocument extends DialectTestCase {
         while (reader.next() != XMLStreamReader.END_DOCUMENT) {
             // Just loop
         }
-        try {
-            reader.next();
-            fail("Expected exception");
-        } catch (IllegalStateException ex) {
-            // Expected
-        } catch (NoSuchElementException ex) {
-            // This is also OK
-        } catch (XMLStreamException ex) {
-            fail("Expected IllegalStateException or NoSuchElementException");
-        }
+        assertThatThrownBy(() -> reader.next())
+                .satisfiesAnyOf(
+                        e -> assertThat(e).isInstanceOf(IllegalStateException.class),
+                        e -> assertThat(e).isInstanceOf(NoSuchElementException.class));
     }
 }

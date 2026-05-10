@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.fault;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -42,12 +44,7 @@ public class TestSetNode extends SOAPTestCase {
                 "SOAP 1.2 Fault Test:- Fault node local name mismatch",
                 SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME,
                 soapFault.getNode().getLocalName());
-        try {
-            soapFault.setNode(altSoapFactory.createSOAPFaultNode());
-            fail("SOAP11FaultNode should nott be set in to a SOAP12Fault");
-
-        } catch (Exception e) {
-            assertTrue(true);
-        }
+        assertThatThrownBy(() -> soapFault.setNode(altSoapFactory.createSOAPFaultNode()))
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 }

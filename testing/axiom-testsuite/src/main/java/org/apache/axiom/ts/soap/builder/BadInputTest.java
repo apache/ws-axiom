@@ -19,6 +19,8 @@
 
 package org.apache.axiom.ts.soap.builder;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.apache.axiom.om.OMMetaFactory;
@@ -38,19 +40,18 @@ public class BadInputTest extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        try {
-            SOAPEnvelope soapEnvelope =
-                    OMXMLBuilderFactory.createSOAPModelBuilder(
-                                    metaFactory,
-                                    BadInputTest.class
-                                            .getClassLoader()
-                                            .getResourceAsStream("badsoap/" + file),
-                                    null)
-                            .getSOAPEnvelope();
-            OMTestUtils.walkThrough(soapEnvelope);
-            fail("this must failed gracefully with SOAPProcessingException");
-        } catch (SOAPProcessingException e) {
-            return;
-        }
+        assertThatThrownBy(
+                        () -> {
+                            SOAPEnvelope soapEnvelope =
+                                    OMXMLBuilderFactory.createSOAPModelBuilder(
+                                                    metaFactory,
+                                                    BadInputTest.class
+                                                            .getClassLoader()
+                                                            .getResourceAsStream("badsoap/" + file),
+                                                    null)
+                                            .getSOAPEnvelope();
+                            OMTestUtils.walkThrough(soapEnvelope);
+                        })
+                .isInstanceOf(SOAPProcessingException.class);
     }
 }

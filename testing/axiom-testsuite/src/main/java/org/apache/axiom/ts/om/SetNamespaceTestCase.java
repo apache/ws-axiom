@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -113,17 +115,12 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
                 params.namespaceURI() == null
                         ? null
                         : factory.createOMNamespace(params.namespaceURI(), params.prefix());
-        try {
+        if (params.invalid()) {
+            assertThatThrownBy(() -> setNamespace(node, ns))
+                    .isInstanceOf(IllegalArgumentException.class);
+            return;
+        } else {
             setNamespace(node, ns);
-            if (params.invalid()) {
-                fail("Expected IllegalArgumentException");
-            }
-        } catch (IllegalArgumentException ex) {
-            if (params.invalid()) {
-                return;
-            } else {
-                throw ex;
-            }
         }
         String expectedPrefix;
         if (params.expectedPrefix() == null) {

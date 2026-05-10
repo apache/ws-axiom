@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap11.faultreason;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -35,12 +37,7 @@ public class TestGetFirstSOAPText extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
         SOAPFaultReason faultReason = soapFactory.createSOAPFaultReason(fault);
-        try {
-            faultReason.getFirstSOAPText();
-        } catch (UnsupportedOperationException e) {
-            // Cool, continue.
-            return;
-        }
-        fail("Didn't get expected Exception for getFirstSOAPText()!");
+        assertThatThrownBy(() -> faultReason.getFirstSOAPText())
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 }

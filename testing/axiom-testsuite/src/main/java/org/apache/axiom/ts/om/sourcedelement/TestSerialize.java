@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.StringReader;
 
@@ -107,17 +108,15 @@ public class TestSerialize extends AxiomTestCase {
                                             && !serializationStrategy.isCaching()
                                             && !parentComplete);
             XML result;
-            try {
+            if (expectException) {
+                assertThatThrownBy(
+                                () ->
+                                        serializationStrategy.serialize(
+                                                serializeParent ? parent : element))
+                        .isInstanceOf(Exception.class);
+                continue;
+            } else {
                 result = serializationStrategy.serialize(serializeParent ? parent : element);
-                if (expectException) {
-                    fail("Expected exception");
-                }
-            } catch (Exception ex) {
-                if (!expectException) {
-                    throw ex;
-                } else {
-                    continue;
-                }
             }
             InputSource expectedXML =
                     new InputSource(new StringReader(TestDocument.DOCUMENT1.getContent()));

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -50,12 +52,7 @@ public class TestGetChildrenRemove2 extends AxiomTestCase {
         iter.remove();
 
         // this call must generate an exception
-        try {
-            iter.remove();
-            fail("calling remove twice without a call to next is prohibited");
-        } catch (IllegalStateException e) {
-            // ok if we come here :)
-        }
+        assertThatThrownBy(() -> iter.remove()).isInstanceOf(IllegalStateException.class);
 
         elt.close(false);
     }

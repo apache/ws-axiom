@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap11.fault;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -33,12 +35,7 @@ public class TestSetNode extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
-        try {
-            soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault));
-        } catch (UnsupportedOperationException e) {
-            // Exactly!
-            return;
-        }
-        fail("Didn't get UnsupportedOperationException");
+        assertThatThrownBy(() -> soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault)))
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 }
