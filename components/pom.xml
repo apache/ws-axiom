@@ -38,20 +38,4 @@
         <module>io</module>
         <module>xml-utils</module>
     </modules>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>de.obqo.decycle</groupId>
-                <artifactId>decycle-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

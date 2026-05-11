@@ -207,26 +207,19 @@
             <plugin>
                 <groupId>de.obqo.decycle</groupId>
                 <artifactId>decycle-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <!-- TODO: inject the reference to the singleton into mixins directly -->
-                            <ignoring>
-                                <ignoredDependency>
-                                    <from>org.apache.axiom.om.impl.llom.CoreNodeImpl</from>
-                                    <to>org.apache.axiom.om.impl.llom.factory.AxiomNodeFactoryImpl</to>
-                                </ignoredDependency>
-                                <ignoredDependency>
-                                    <from>org.apache.axiom.om.impl.llom.CoreNodeImpl</from>
-                                    <to>org.apache.axiom.om.impl.llom.factory.LLOMNodeFactory</to>
-                                </ignoredDependency>
-                            </ignoring>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <!-- TODO: inject the reference to the singleton into mixins directly -->
+                    <ignoring>
+                        <ignoredDependency>
+                            <from>org.apache.axiom.om.impl.llom.CoreNodeImpl</from>
+                            <to>org.apache.axiom.om.impl.llom.factory.AxiomNodeFactoryImpl</to>
+                        </ignoredDependency>
+                        <ignoredDependency>
+                            <from>org.apache.axiom.om.impl.llom.CoreNodeImpl</from>
+                            <to>org.apache.axiom.om.impl.llom.factory.LLOMNodeFactory</to>
+                        </ignoredDependency>
+                    </ignoring>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>${project.groupId}</groupId>

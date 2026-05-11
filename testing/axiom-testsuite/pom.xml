@@ -199,6 +199,13 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>de.obqo.decycle</groupId>
+                <artifactId>decycle-maven-plugin</artifactId>
+                <configuration>
+                    <excluding>**.*TestSuite</excluding>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

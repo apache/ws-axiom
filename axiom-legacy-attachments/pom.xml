@@ -118,22 +118,15 @@
             <plugin>
                 <groupId>de.obqo.decycle</groupId>
                 <artifactId>decycle-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
-                            <ignoring>
-                                <ignoredDependency>
-                                    <from>org.apache.axiom.attachments.lifecycle.LifecycleManager</from>
-                                    <to>org.apache.axiom.attachments.lifecycle.impl.FileAccessor</to>
-                                </ignoredDependency>
-                            </ignoring>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
+                    <ignoring>
+                        <ignoredDependency>
+                            <from>org.apache.axiom.attachments.lifecycle.LifecycleManager</from>
+                            <to>org.apache.axiom.attachments.lifecycle.impl.FileAccessor</to>
+                        </ignoredDependency>
+                    </ignoring>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
