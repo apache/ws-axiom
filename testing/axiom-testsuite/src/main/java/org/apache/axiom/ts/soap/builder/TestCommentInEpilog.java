@@ -36,11 +36,12 @@ import com.google.inject.Inject;
  * document element.
  */
 public class TestCommentInEpilog extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestCommentInEpilog(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestCommentInEpilog(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

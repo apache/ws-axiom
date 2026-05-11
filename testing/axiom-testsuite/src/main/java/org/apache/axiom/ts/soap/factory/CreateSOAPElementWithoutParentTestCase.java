@@ -25,7 +25,6 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.ts.soap.SOAPElementType;
@@ -35,9 +34,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 public abstract class CreateSOAPElementWithoutParentTestCase extends SOAPTestCase {
     protected final SOAPElementType type;
 
-    public CreateSOAPElementWithoutParentTestCase(
-            OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type) {
-        super(metaFactory, spec);
+    public CreateSOAPElementWithoutParentTestCase(SOAPSpec spec, SOAPElementType type) {
+        super(spec);
         this.type = type;
     }
 

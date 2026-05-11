@@ -18,20 +18,23 @@
  */
 package org.apache.axiom.ts.soap;
 
+import com.google.inject.Inject;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 
 public abstract class SampleBasedSOAPTestCase extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
+
     private final SOAPSample sample;
 
-    public SampleBasedSOAPTestCase(
-            OMMetaFactory metaFactory, SOAPSpec spec, SOAPSampleSet sampleSet) {
-        super(metaFactory, spec);
+    public SampleBasedSOAPTestCase(SOAPSpec spec, SOAPSampleSet sampleSet) {
+        super(spec);
         sample = sampleSet.getMessage(spec);
     }
 
-    public SampleBasedSOAPTestCase(OMMetaFactory metaFactory, SOAPSample sample) {
-        super(metaFactory, sample.getSOAPSpec());
+    public SampleBasedSOAPTestCase(SOAPSample sample) {
+        super(sample.getSOAPSpec());
         this.sample = sample;
     }
 

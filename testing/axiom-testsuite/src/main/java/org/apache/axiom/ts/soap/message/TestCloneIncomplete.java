@@ -38,16 +38,14 @@ import com.google.inject.name.Named;
  * returns the correct factory (which is determined lazily) on the clone.
  */
 public class TestCloneIncomplete extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
 
     private final boolean preserveModel;
 
     @Inject
-    public TestCloneIncomplete(
-            OMMetaFactory metaFactory,
-            SOAPSpec spec,
-            @Named("preserveModel") boolean preserveModel) {
-        super(metaFactory, spec);
+    public TestCloneIncomplete(SOAPSpec spec, @Named("preserveModel") boolean preserveModel) {
+        super(spec);
         this.preserveModel = preserveModel;
     }
 

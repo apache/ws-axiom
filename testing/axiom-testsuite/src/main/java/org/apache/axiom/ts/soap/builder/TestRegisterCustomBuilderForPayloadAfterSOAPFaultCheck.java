@@ -21,7 +21,6 @@ package org.apache.axiom.ts.soap.builder;
 import com.google.inject.Inject;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.custombuilder.BlobOMDataSourceCustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
@@ -43,9 +42,8 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck
         extends SampleBasedSOAPTestCase {
     @Inject
-    public TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(
-            OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.WSA);
+    public TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.WSA);
     }
 
     @Override

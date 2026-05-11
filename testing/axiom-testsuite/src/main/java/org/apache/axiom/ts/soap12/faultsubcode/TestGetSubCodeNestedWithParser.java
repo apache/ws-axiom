@@ -18,18 +18,18 @@
  */
 package org.apache.axiom.ts.soap12.faultsubcode;
 
-import com.google.inject.Inject;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetSubCodeNestedWithParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetSubCodeNestedWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSample.SOAP12_FAULT);
+    public TestGetSubCodeNestedWithParser() {
+        super(SOAPSample.SOAP12_FAULT);
     }
 
     @Override

@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap11.fault;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -34,8 +33,8 @@ public class TestGetNode extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetNode(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP11);
+    public TestGetNode() {
+        super(SOAPSpec.SOAP11);
     }
 
     @Override

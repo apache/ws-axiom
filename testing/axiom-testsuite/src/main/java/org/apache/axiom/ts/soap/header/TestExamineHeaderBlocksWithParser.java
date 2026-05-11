@@ -24,7 +24,6 @@ import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
@@ -35,8 +34,8 @@ import com.google.inject.Inject;
 
 public class TestExamineHeaderBlocksWithParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestExamineHeaderBlocksWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.HEADERS);
+    public TestExamineHeaderBlocksWithParser(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.HEADERS);
     }
 
     @Override

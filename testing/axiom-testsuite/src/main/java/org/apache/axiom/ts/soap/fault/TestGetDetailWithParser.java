@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap.fault;
 
 import com.google.inject.Inject;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
@@ -28,8 +27,8 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 public class TestGetDetailWithParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetDetailWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
+    public TestGetDetailWithParser(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.SIMPLE_FAULT);
     }
 
     @Override

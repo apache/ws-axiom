@@ -30,7 +30,6 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.util.StAXUtils;
@@ -47,8 +46,8 @@ public class TestSerializeAndConsumeWithOMSEInBody extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestSerializeAndConsumeWithOMSEInBody(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestSerializeAndConsumeWithOMSEInBody(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

@@ -21,7 +21,6 @@ package org.apache.axiom.ts.soap.faultdetail;
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -38,8 +37,8 @@ public class TestAddDetailEntry extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestAddDetailEntry(OMMetaFactory omMetaFactory, SOAPSpec spec) {
-        super(omMetaFactory, spec);
+    public TestAddDetailEntry(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -36,8 +35,8 @@ public class TestAddHeaderToIncompleteEnvelope extends SampleBasedSOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestAddHeaderToIncompleteEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
+    public TestAddHeaderToIncompleteEnvelope(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.NO_HEADER);
     }
 
     @Override

@@ -25,7 +25,6 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -44,8 +43,8 @@ public class TestCreateSOAPFaultWithException extends SOAPTestCase {
 
     @Inject
     public TestCreateSOAPFaultWithException(
-            OMMetaFactory metaFactory, SOAPSpec spec, @Named("withParent") boolean withParent) {
-        super(metaFactory, spec);
+            SOAPSpec spec, @Named("withParent") boolean withParent) {
+        super(spec);
         this.withParent = withParent;
     }
 

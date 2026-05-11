@@ -22,7 +22,6 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
@@ -34,8 +33,8 @@ public class TestGetFirstElementLocalNameWithParser2 extends SampleBasedSOAPTest
 
     @Inject
     public TestGetFirstElementLocalNameWithParser2(
-            OMMetaFactory metaFactory, SOAPSpec spec, @Named("buildPayload") boolean buildPayload) {
-        super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
+            SOAPSpec spec, @Named("buildPayload") boolean buildPayload) {
+        super(spec, SOAPSampleSet.NO_HEADER);
         this.buildPayload = buildPayload;
     }
 

@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.faultdetail;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultDetail;
@@ -31,9 +30,8 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 /** Tests parsing of a SOAP fault that has detail entries that use a default namespace. */
 public class TestDetailEntriesUsingDefaultNamespaceWithParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestDetailEntriesUsingDefaultNamespaceWithParser(
-            OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.FAULT_DETAIL_DEFAULT_NAMESPACE);
+    public TestDetailEntriesUsingDefaultNamespaceWithParser(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.FAULT_DETAIL_DEFAULT_NAMESPACE);
     }
 
     @Override

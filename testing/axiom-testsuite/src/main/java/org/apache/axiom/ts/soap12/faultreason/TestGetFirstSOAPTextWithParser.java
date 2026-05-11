@@ -18,18 +18,18 @@
  */
 package org.apache.axiom.ts.soap12.faultreason;
 
-import com.google.inject.Inject;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetFirstSOAPTextWithParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetFirstSOAPTextWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12, SOAPSampleSet.SIMPLE_FAULT);
+    public TestGetFirstSOAPTextWithParser() {
+        super(SOAPSpec.SOAP12, SOAPSampleSet.SIMPLE_FAULT);
     }
 
     @Override

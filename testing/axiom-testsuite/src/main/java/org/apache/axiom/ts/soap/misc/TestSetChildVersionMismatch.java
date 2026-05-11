@@ -21,7 +21,6 @@ package org.apache.axiom.ts.soap.misc;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.AltSOAPFactory;
@@ -37,11 +36,10 @@ public class TestSetChildVersionMismatch extends GetSetChildTestCase {
 
     @Inject
     public TestSetChildVersionMismatch(
-            OMMetaFactory metaFactory,
             SOAPSpec spec,
             @Named("type") SOAPElementType type,
             @Named("childType") SOAPElementType childType) {
-        super(metaFactory, spec, type, childType);
+        super(spec, type, childType);
     }
 
     @Override

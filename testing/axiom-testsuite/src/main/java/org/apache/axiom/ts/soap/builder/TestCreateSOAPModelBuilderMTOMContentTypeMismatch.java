@@ -52,10 +52,11 @@ import jakarta.mail.internet.MimeMultipart;
  * message.
  */
 public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
+
     @Inject
-    public TestCreateSOAPModelBuilderMTOMContentTypeMismatch(
-            OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestCreateSOAPModelBuilderMTOMContentTypeMismatch(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

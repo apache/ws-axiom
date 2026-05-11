@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.header;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -35,8 +34,8 @@ public class TestAddHeaderBlockFromQName extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestAddHeaderBlockFromQName(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestAddHeaderBlockFromQName(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

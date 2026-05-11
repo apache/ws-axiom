@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap.body;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -38,8 +37,8 @@ public class TestHasFaultAfterReplace extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestHasFaultAfterReplace(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestHasFaultAfterReplace(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

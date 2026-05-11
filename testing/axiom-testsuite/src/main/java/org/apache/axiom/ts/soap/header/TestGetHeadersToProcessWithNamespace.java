@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.header;
 
 import java.util.Iterator;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -37,8 +36,8 @@ public class TestGetHeadersToProcessWithNamespace extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetHeadersToProcessWithNamespace(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestGetHeadersToProcessWithNamespace(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

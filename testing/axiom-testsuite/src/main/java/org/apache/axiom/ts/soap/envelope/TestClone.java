@@ -24,11 +24,13 @@ import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 
 public class TestClone extends CloneTestCase {
+    @Inject private OMMetaFactory metaFactory;
+
     private final SOAPSample message;
 
     @Inject
-    public TestClone(OMMetaFactory metaFactory, SOAPSample message) {
-        super(metaFactory, message.getSOAPSpec());
+    public TestClone(SOAPSample message) {
+        super(message.getSOAPSpec());
         this.message = message;
     }
 

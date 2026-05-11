@@ -21,7 +21,6 @@ package org.apache.axiom.ts.soap.header;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -39,8 +38,8 @@ import com.google.inject.Inject;
  */
 public class TestDiscardPartiallyBuilt extends SampleBasedSOAPTestCase {
     @Inject
-    public TestDiscardPartiallyBuilt(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.WSA);
+    public TestDiscardPartiallyBuilt(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.WSA);
     }
 
     @Override

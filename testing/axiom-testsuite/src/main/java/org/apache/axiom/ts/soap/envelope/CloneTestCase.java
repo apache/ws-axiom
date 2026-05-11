@@ -22,7 +22,6 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.soap.SOAPCloneOptions;
@@ -33,8 +32,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 import java.util.Iterator;
 
 public abstract class CloneTestCase extends SOAPTestCase {
-    public CloneTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public CloneTestCase(SOAPSpec spec) {
+        super(spec);
     }
 
     /**

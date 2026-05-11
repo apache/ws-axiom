@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap.envelope;
 
 import com.google.inject.Inject;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
@@ -34,8 +33,8 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
  */
 public class TestGetOrCreateHeaderWithParserNoHeader extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetOrCreateHeaderWithParserNoHeader(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
+    public TestGetOrCreateHeaderWithParserNoHeader(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.NO_HEADER);
     }
 
     @Override

@@ -22,7 +22,6 @@ import com.google.inject.Inject;
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
@@ -32,8 +31,8 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 // SOAP Fault Detail Test (With Parser)
 public class TestGetAllDetailEntriesWithParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetAllDetailEntriesWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
+    public TestGetAllDetailEntriesWithParser(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.SIMPLE_FAULT);
     }
 
     @Override

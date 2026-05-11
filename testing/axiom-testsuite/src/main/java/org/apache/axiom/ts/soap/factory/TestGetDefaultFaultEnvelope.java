@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -31,8 +30,8 @@ public class TestGetDefaultFaultEnvelope extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetDefaultFaultEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestGetDefaultFaultEnvelope(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

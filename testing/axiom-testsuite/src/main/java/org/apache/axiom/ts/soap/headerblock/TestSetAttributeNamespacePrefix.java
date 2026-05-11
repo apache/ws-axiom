@@ -21,7 +21,6 @@ package org.apache.axiom.ts.soap.headerblock;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -47,9 +46,8 @@ public class TestSetAttributeNamespacePrefix extends SOAPTestCase {
     private final HeaderBlockAttribute attribute;
 
     @Inject
-    public TestSetAttributeNamespacePrefix(
-            OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
-        super(metaFactory, spec);
+    public TestSetAttributeNamespacePrefix(SOAPSpec spec, HeaderBlockAttribute attribute) {
+        super(spec);
         this.attribute = attribute;
     }
 

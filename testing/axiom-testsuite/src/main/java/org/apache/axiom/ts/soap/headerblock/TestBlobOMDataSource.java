@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.blob.Blobs;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
@@ -42,8 +41,8 @@ public class TestBlobOMDataSource extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestBlobOMDataSource(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestBlobOMDataSource(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

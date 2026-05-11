@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap12.fault;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -35,8 +34,8 @@ public class TestSetNode extends SOAPTestCase {
     @Inject @AltSOAPFactory private SOAPFactory altSoapFactory;
 
     @Inject
-    public TestSetNode(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+    public TestSetNode() {
+        super(SOAPSpec.SOAP12);
     }
 
     @Override

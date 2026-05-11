@@ -21,7 +21,6 @@ package org.apache.axiom.ts.soap.body;
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
@@ -31,9 +30,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  */
 public class TestGetFirstElementLocalNameWithParser extends FirstElementNameWithParserTestCase {
     @Inject
-    public TestGetFirstElementLocalNameWithParser(
-            OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
-        super(metaFactory, spec, qname, true);
+    public TestGetFirstElementLocalNameWithParser(SOAPSpec spec, QName qname) {
+        super(spec, qname, true);
     }
 
     @Override

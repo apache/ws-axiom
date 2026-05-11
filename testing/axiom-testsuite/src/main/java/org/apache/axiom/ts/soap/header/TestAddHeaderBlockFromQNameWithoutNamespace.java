@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -40,8 +39,8 @@ public class TestAddHeaderBlockFromQNameWithoutNamespace extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestAddHeaderBlockFromQNameWithoutNamespace(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestAddHeaderBlockFromQNameWithoutNamespace(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

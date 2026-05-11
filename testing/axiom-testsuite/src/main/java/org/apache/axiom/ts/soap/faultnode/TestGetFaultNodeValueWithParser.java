@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap.faultnode;
 
 import com.google.inject.Inject;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -27,8 +26,8 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 public class TestGetFaultNodeValueWithParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetFaultNodeValueWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.CUSTOM_ROLE_FAULT);
+    public TestGetFaultNodeValueWithParser(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.CUSTOM_ROLE_FAULT);
     }
 
     @Override

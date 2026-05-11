@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.ts.soap.SOAPSample;
@@ -32,8 +31,8 @@ import com.google.inject.Inject;
 
 public class TestGetAllSoapTextsWithParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetAllSoapTextsWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSample.SOAP12_FAULT);
+    public TestGetAllSoapTextsWithParser() {
+        super(SOAPSample.SOAP12_FAULT);
     }
 
     @Override

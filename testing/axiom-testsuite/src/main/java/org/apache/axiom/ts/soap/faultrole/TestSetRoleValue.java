@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.faultrole;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -30,8 +29,8 @@ public class TestSetRoleValue extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestSetRoleValue(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestSetRoleValue(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

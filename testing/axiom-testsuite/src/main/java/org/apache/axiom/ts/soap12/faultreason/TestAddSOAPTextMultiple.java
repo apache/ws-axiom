@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap12.faultreason;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultReason;
@@ -34,8 +33,8 @@ public class TestAddSOAPTextMultiple extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestAddSOAPTextMultiple(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+    public TestAddSOAPTextMultiple() {
+        super(SOAPSpec.SOAP12);
     }
 
     @Override

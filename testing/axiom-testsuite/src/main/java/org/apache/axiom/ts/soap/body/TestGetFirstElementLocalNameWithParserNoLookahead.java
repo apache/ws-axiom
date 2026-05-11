@@ -40,12 +40,12 @@ import com.google.inject.Inject;
  * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a> is no longer applicable.
  */
 public class TestGetFirstElementLocalNameWithParserNoLookahead extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetFirstElementLocalNameWithParserNoLookahead(
-            OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestGetFirstElementLocalNameWithParserNoLookahead(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

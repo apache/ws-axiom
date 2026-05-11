@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap.xpath;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -38,10 +37,8 @@ public class TestXPathAppliedToSOAPEnvelope extends SOAPTestCase {
 
     @Inject
     public TestXPathAppliedToSOAPEnvelope(
-            OMMetaFactory metaFactory,
-            SOAPSpec spec,
-            @Named("createDocument") boolean createDocument) {
-        super(metaFactory, spec);
+            SOAPSpec spec, @Named("createDocument") boolean createDocument) {
+        super(spec);
         this.createDocument = createDocument;
     }
 

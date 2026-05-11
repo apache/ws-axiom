@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.faultdetail;
 
 import java.io.StringWriter;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -37,8 +36,8 @@ public class TestSerialization extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestSerialization(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestSerialization(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

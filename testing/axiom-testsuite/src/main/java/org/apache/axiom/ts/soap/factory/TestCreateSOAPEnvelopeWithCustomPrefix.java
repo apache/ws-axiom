@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.factory;
 
 import java.util.Iterator;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -35,8 +34,8 @@ public class TestCreateSOAPEnvelopeWithCustomPrefix extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestCreateSOAPEnvelopeWithCustomPrefix(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestCreateSOAPEnvelopeWithCustomPrefix(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

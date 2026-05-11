@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPFactory;
@@ -39,11 +38,8 @@ public class TestClone extends SOAPTestCase {
     private final Boolean processed;
 
     @Inject
-    public TestClone(
-            OMMetaFactory metaFactory,
-            SOAPSpec spec,
-            @Named("processed") @Nullable Boolean processed) {
-        super(metaFactory, spec);
+    public TestClone(SOAPSpec spec, @Named("processed") @Nullable Boolean processed) {
+        super(spec);
         this.processed = processed;
     }
 

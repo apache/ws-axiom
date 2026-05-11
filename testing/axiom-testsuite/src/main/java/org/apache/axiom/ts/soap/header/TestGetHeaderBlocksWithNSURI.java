@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.header;
 
 import java.util.ArrayList;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -35,8 +34,8 @@ public class TestGetHeaderBlocksWithNSURI extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetHeaderBlocksWithNSURI(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestGetHeaderBlocksWithNSURI(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

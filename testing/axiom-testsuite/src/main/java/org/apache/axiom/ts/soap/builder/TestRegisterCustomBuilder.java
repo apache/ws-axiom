@@ -36,9 +36,11 @@ import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestRegisterCustomBuilder extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
+
     @Inject
-    public TestRegisterCustomBuilder(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestRegisterCustomBuilder(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

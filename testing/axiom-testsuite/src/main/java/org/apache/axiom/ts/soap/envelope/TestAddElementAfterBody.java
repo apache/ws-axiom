@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -43,9 +42,8 @@ public class TestAddElementAfterBody extends SOAPTestCase {
     private final boolean header;
 
     @Inject
-    public TestAddElementAfterBody(
-            OMMetaFactory metaFactory, SOAPSpec spec, @Named("header") boolean header) {
-        super(metaFactory, spec);
+    public TestAddElementAfterBody(SOAPSpec spec, @Named("header") boolean header) {
+        super(spec);
         this.header = header;
     }
 

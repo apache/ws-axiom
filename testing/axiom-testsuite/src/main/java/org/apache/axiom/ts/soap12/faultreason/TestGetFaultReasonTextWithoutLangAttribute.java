@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Locale;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultText;
@@ -35,8 +34,8 @@ public class TestGetFaultReasonTextWithoutLangAttribute extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetFaultReasonTextWithoutLangAttribute(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+    public TestGetFaultReasonTextWithoutLangAttribute() {
+        super(SOAPSpec.SOAP12);
     }
 
     @Override

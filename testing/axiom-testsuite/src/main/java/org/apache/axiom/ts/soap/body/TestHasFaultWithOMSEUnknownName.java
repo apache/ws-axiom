@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.body;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.soap.SOAPBody;
@@ -37,8 +36,8 @@ public class TestHasFaultWithOMSEUnknownName extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestHasFaultWithOMSEUnknownName(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestHasFaultWithOMSEUnknownName(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

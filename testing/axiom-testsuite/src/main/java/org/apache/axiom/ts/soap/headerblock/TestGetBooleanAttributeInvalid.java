@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -46,11 +45,8 @@ public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
 
     @Inject
     public TestGetBooleanAttributeInvalid(
-            OMMetaFactory metaFactory,
-            SOAPSpec spec,
-            HeaderBlockAttribute attribute,
-            @Named("value") String value) {
-        super(metaFactory, spec, attribute);
+            SOAPSpec spec, HeaderBlockAttribute attribute, @Named("value") String value) {
+        super(spec, attribute);
         this.value = value;
     }
 

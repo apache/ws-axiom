@@ -41,11 +41,12 @@ import com.google.inject.Inject;
  * the methods taking a stream as input will generally reject DTDs at a much lower level.
  */
 public class TestDTD extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestDTD(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestDTD(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

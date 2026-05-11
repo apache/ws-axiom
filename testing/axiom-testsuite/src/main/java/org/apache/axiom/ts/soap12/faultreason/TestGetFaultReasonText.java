@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Locale;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.ts.soap.SOAPSample;
@@ -32,8 +31,8 @@ import com.google.inject.Inject;
 
 public class TestGetFaultReasonText extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetFaultReasonText(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSample.SOAP12_FAULT);
+    public TestGetFaultReasonText() {
+        super(SOAPSample.SOAP12_FAULT);
     }
 
     @Override

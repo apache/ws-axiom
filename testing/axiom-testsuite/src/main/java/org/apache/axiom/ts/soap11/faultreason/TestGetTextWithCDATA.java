@@ -37,9 +37,11 @@ import org.apache.axiom.ts.AxiomTestCase;
 import com.google.inject.Inject;
 
 public class TestGetTextWithCDATA extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
+
     @Inject
-    public TestGetTextWithCDATA(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP11);
+    public TestGetTextWithCDATA() {
+        super(SOAPSpec.SOAP11);
     }
 
     @Override

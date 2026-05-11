@@ -25,7 +25,6 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -43,9 +42,8 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock
         extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock(
-            OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.WSA);
+    public TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.WSA);
     }
 
     @Override

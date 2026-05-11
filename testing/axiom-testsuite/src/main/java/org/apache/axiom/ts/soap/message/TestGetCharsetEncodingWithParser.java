@@ -35,11 +35,12 @@ import com.google.inject.Inject;
 
 /** Tests {@link OMDocument#getCharsetEncoding()} on a {@link SOAPMessage} created by a builder. */
 public class TestGetCharsetEncodingWithParser extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetCharsetEncodingWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestGetCharsetEncodingWithParser(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

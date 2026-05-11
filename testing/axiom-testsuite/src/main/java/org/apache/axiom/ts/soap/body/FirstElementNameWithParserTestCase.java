@@ -45,14 +45,15 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 import com.google.inject.Inject;
 
 public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
 
     protected final QName qname;
     private final boolean supportsOptimization;
 
     public FirstElementNameWithParserTestCase(
-            OMMetaFactory metaFactory, SOAPSpec spec, QName qname, boolean supportsOptimization) {
-        super(metaFactory, spec);
+            SOAPSpec spec, QName qname, boolean supportsOptimization) {
+        super(spec);
         this.qname = qname;
         this.supportsOptimization = supportsOptimization;
     }

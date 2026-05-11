@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap12.factory;
 
 import java.util.Iterator;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -42,8 +41,8 @@ public class TestCreateSOAPFaultSubCode extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestCreateSOAPFaultSubCode(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+    public TestCreateSOAPFaultSubCode() {
+        super(SOAPSpec.SOAP12);
     }
 
     @Override

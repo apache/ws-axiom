@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap.misc;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
@@ -34,12 +33,8 @@ public abstract class GetSetChildTestCase extends SOAPTestCase {
     protected final SOAPElementType type;
     protected final SOAPElementType childType;
 
-    public GetSetChildTestCase(
-            OMMetaFactory metaFactory,
-            SOAPSpec spec,
-            SOAPElementType type,
-            SOAPElementType childType) {
-        super(metaFactory, spec);
+    public GetSetChildTestCase(SOAPSpec spec, SOAPElementType type, SOAPElementType childType) {
+        super(spec);
         this.type = type;
         this.childType = childType;
     }

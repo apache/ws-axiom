@@ -31,11 +31,12 @@ import com.google.inject.Inject;
  * from which the reference to the {@link OMFactory} was obtained.
  */
 public class TestGetMetaFactory extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetMetaFactory(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestGetMetaFactory(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

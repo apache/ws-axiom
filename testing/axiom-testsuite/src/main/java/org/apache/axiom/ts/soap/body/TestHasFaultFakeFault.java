@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap.body;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -36,8 +35,8 @@ public class TestHasFaultFakeFault extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestHasFaultFakeFault(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestHasFaultFakeFault(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

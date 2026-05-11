@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.header;
 
 import java.util.Iterator;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -35,8 +34,8 @@ public class TestExtractAllHeaderBlocks extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestExtractAllHeaderBlocks(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestExtractAllHeaderBlocks(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.soap12.faultcode;
 
-import com.google.inject.Inject;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -27,10 +25,12 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetValueWithParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetValueWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12, SOAPSampleSet.SIMPLE_FAULT);
+    public TestGetValueWithParser() {
+        super(SOAPSpec.SOAP12, SOAPSampleSet.SIMPLE_FAULT);
     }
 
     @Override

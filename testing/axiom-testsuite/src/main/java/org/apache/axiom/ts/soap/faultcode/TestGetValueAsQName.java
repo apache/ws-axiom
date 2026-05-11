@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.faultcode;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -34,8 +33,8 @@ public class TestGetValueAsQName extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetValueAsQName(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestGetValueAsQName(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

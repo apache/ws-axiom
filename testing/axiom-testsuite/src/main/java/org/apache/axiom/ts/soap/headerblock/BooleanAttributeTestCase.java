@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
@@ -26,9 +25,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 public abstract class BooleanAttributeTestCase extends SOAPTestCase {
     protected final HeaderBlockAttribute attribute;
 
-    public BooleanAttributeTestCase(
-            OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
-        super(metaFactory, spec);
+    public BooleanAttributeTestCase(SOAPSpec spec, HeaderBlockAttribute attribute) {
+        super(spec);
         this.attribute = attribute;
     }
 }

@@ -21,15 +21,14 @@ package org.apache.axiom.ts.soap.body;
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 /** Tests {@link SOAPBody#getFault()} in the case where the body doesn't contain a SOAP fault. */
 public class TestGetFaultWithParserNoFault extends FirstElementNameWithParserTestCase {
     @Inject
-    public TestGetFaultWithParserNoFault(OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
-        super(metaFactory, spec, qname, false);
+    public TestGetFaultWithParserNoFault(SOAPSpec spec, QName qname) {
+        super(spec, qname, false);
     }
 
     @Override

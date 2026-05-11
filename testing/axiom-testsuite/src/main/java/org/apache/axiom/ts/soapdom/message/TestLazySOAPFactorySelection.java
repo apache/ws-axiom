@@ -29,9 +29,11 @@ import org.w3c.dom.Document;
 import com.google.inject.Inject;
 
 public class TestLazySOAPFactorySelection extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
+
     @Inject
-    public TestLazySOAPFactorySelection(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestLazySOAPFactorySelection(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

@@ -34,11 +34,12 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 import com.google.inject.Inject;
 
 public class TestCreateSOAPHeaderBlockFromOMElement extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestCreateSOAPHeaderBlockFromOMElement(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestCreateSOAPHeaderBlockFromOMElement(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

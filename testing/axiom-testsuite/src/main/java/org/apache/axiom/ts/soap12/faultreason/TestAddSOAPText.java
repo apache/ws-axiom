@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap12.faultreason;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
@@ -31,8 +30,8 @@ public class TestAddSOAPText extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestAddSOAPText(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+    public TestAddSOAPText() {
+        super(SOAPSpec.SOAP12);
     }
 
     @Override

@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap12.faultsubcode;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultSubCode;
@@ -35,8 +34,8 @@ import com.google.inject.Inject;
  */
 public class TestGetValueAsQNameWithParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetValueAsQNameWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSample.SOAP12_FAULT);
+    public TestGetValueAsQNameWithParser() {
+        super(SOAPSample.SOAP12_FAULT);
     }
 
     @Override

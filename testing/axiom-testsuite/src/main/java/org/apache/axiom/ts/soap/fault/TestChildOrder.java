@@ -23,7 +23,6 @@ import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -56,11 +55,10 @@ public class TestChildOrder extends SOAPTestCase {
 
     @Inject
     public TestChildOrder(
-            OMMetaFactory metaFactory,
             SOAPSpec spec,
             @Named("inputOrder") SOAPFaultChild[] inputOrder,
             SerializationStrategy serializationStrategy) {
-        super(metaFactory, spec);
+        super(spec);
         this.inputOrder = inputOrder;
         this.serializationStrategy = serializationStrategy;
     }

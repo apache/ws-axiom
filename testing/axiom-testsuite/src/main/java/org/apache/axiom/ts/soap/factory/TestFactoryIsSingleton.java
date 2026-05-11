@@ -30,9 +30,11 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * {@link OMMetaFactory#getSOAP12Factory()} return the same instances.
  */
 public class TestFactoryIsSingleton extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
+
     @Inject
-    public TestFactoryIsSingleton(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestFactoryIsSingleton(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

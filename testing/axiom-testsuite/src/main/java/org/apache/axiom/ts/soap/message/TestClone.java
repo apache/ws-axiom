@@ -22,7 +22,6 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
@@ -43,11 +42,8 @@ public class TestClone extends SOAPTestCase {
     private final boolean preserveModel;
 
     @Inject
-    public TestClone(
-            OMMetaFactory metaFactory,
-            SOAPSpec spec,
-            @Named("preserveModel") boolean preserveModel) {
-        super(metaFactory, spec);
+    public TestClone(SOAPSpec spec, @Named("preserveModel") boolean preserveModel) {
+        super(spec);
         this.preserveModel = preserveModel;
     }
 

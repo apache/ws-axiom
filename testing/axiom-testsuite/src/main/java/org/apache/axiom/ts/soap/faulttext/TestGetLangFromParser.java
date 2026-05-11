@@ -18,17 +18,17 @@
  */
 package org.apache.axiom.ts.soap.faulttext;
 
-import com.google.inject.Inject;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
+import com.google.inject.Inject;
+
 public class TestGetLangFromParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetLangFromParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
+    public TestGetLangFromParser(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.SIMPLE_FAULT);
     }
 
     @Override

@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap12.fault;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -31,8 +30,8 @@ public class TestMoreChildrenAddition extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestMoreChildrenAddition(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+    public TestMoreChildrenAddition() {
+        super(SOAPSpec.SOAP12);
     }
 
     @Override

@@ -21,7 +21,6 @@ package org.apache.axiom.ts.soap.headerblock;
 import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
@@ -35,8 +34,8 @@ public class TestSetRoleWithoutExistingNamespaceDecl extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestSetRoleWithoutExistingNamespaceDecl(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestSetRoleWithoutExistingNamespaceDecl(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

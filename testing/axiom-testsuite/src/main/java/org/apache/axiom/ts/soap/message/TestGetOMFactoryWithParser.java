@@ -35,11 +35,12 @@ import com.google.inject.Inject;
  * factory is auto-detected based on the namespace URI of the SOAP envelope.
  */
 public class TestGetOMFactoryWithParser extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetOMFactoryWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestGetOMFactoryWithParser(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

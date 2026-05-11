@@ -22,7 +22,6 @@ import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultClassifier;
@@ -40,8 +39,8 @@ public class TestSetValueFromQName extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestSetValueFromQName(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP11);
+    public TestSetValueFromQName() {
+        super(SOAPSpec.SOAP11);
     }
 
     @Override

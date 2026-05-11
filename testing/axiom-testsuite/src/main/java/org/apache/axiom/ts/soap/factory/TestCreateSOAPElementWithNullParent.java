@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap.factory;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -54,11 +53,10 @@ public class TestCreateSOAPElementWithNullParent extends CreateSOAPElementWithou
 
     @Inject
     public TestCreateSOAPElementWithNullParent(
-            OMMetaFactory metaFactory,
             SOAPSpec spec,
             @Named("childType") SOAPElementType type,
             @Named("type") SOAPElementType parentType) {
-        super(metaFactory, spec, type);
+        super(spec, type);
         this.parentType = parentType;
     }
 

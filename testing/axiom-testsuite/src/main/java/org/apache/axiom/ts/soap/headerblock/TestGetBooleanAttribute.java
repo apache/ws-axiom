@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -38,11 +37,8 @@ public class TestGetBooleanAttribute extends BooleanAttributeTestCase {
 
     @Inject
     public TestGetBooleanAttribute(
-            OMMetaFactory metaFactory,
-            SOAPSpec spec,
-            HeaderBlockAttribute attribute,
-            BooleanLiteral literal) {
-        super(metaFactory, spec, attribute);
+            SOAPSpec spec, HeaderBlockAttribute attribute, BooleanLiteral literal) {
+        super(spec, attribute);
         this.literal = literal;
     }
 

@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap.faultcode;
 
 import com.google.inject.Inject;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -32,8 +31,8 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
  */
 public class TestGetValueAsQNameWithParser extends SampleBasedSOAPTestCase {
     @Inject
-    public TestGetValueAsQNameWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
+    public TestGetValueAsQNameWithParser(SOAPSpec spec) {
+        super(spec, SOAPSampleSet.SIMPLE_FAULT);
     }
 
     @Override

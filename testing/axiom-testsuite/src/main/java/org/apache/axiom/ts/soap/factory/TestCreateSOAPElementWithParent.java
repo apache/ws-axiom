@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -61,11 +60,10 @@ public class TestCreateSOAPElementWithParent extends SOAPTestCase {
 
     @Inject
     public TestCreateSOAPElementWithParent(
-            OMMetaFactory metaFactory,
             SOAPSpec spec,
             @Named("childType") SOAPElementType type,
             @Named("type") SOAPElementType parentType) {
-        super(metaFactory, spec);
+        super(spec);
         this.type = type;
         this.parentType = parentType;
     }

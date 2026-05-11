@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -33,8 +32,8 @@ public class TestGetRole extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetRole(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestGetRole(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

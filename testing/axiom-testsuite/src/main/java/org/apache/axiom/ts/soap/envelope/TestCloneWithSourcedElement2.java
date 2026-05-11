@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap.envelope;
 
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
@@ -36,8 +35,8 @@ public class TestCloneWithSourcedElement2 extends CloneTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestCloneWithSourcedElement2(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestCloneWithSourcedElement2(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

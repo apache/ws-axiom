@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap.faulttext;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultText;
@@ -32,8 +31,8 @@ public class TestSetLang extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestSetLang(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestSetLang(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

@@ -21,7 +21,6 @@ package org.apache.axiom.ts.soap.envelope;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -36,9 +35,8 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNS extends SOAPTestCase {
     private final QName qname;
 
     @Inject
-    public TestGetSOAPBodyFirstElementLocalNameAndNS(
-            OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
-        super(metaFactory, spec);
+    public TestGetSOAPBodyFirstElementLocalNameAndNS(SOAPSpec spec, QName qname) {
+        super(spec);
         this.qname = qname;
     }
 

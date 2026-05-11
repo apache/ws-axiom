@@ -42,9 +42,11 @@ import org.xml.sax.XMLReader;
 import com.google.inject.Inject;
 
 public class TestCreateSOAPModelBuilderFromSAXSource extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
+
     @Inject
-    public TestCreateSOAPModelBuilderFromSAXSource(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestCreateSOAPModelBuilderFromSAXSource(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

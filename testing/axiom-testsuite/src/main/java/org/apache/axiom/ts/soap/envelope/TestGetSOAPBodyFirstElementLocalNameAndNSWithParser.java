@@ -41,14 +41,14 @@ import com.google.inject.Inject;
  * of the element without actually instantiating the corresponding {@link OMElement}.
  */
 public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTestCase {
+    @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
 
     private final QName qname;
 
     @Inject
-    public TestGetSOAPBodyFirstElementLocalNameAndNSWithParser(
-            OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
-        super(metaFactory, spec);
+    public TestGetSOAPBodyFirstElementLocalNameAndNSWithParser(SOAPSpec spec, QName qname) {
+        super(spec);
         this.qname = qname;
     }
 

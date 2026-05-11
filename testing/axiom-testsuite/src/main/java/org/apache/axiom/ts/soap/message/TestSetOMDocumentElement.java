@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.message;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
@@ -37,8 +36,8 @@ public class TestSetOMDocumentElement extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestSetOMDocumentElement(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestSetOMDocumentElement(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override

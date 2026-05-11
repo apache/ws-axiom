@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPVersion;
@@ -31,8 +30,8 @@ public class TestGetVersion extends SOAPTestCase {
     @Inject private SOAPFactory soapFactory;
 
     @Inject
-    public TestGetVersion(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+    public TestGetVersion(SOAPSpec spec) {
+        super(spec);
     }
 
     @Override
