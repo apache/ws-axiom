@@ -18,13 +18,14 @@
  */
 package org.apache.axiom.ts.soap.faultcode;
 
-import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link SOAPFaultClassifier#getValueAsQName()} on a {@link SOAPFaultCode}.

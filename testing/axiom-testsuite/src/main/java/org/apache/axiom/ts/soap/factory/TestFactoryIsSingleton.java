@@ -18,24 +18,22 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
-import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.soap.FactorySelector;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
+
+import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that the SOAP factories returned by {@link OMMetaFactory} are singletons. More precisely
  * this unit test checks that subsequent calls to {@link OMMetaFactory#getSOAP11Factory()} and
  * {@link OMMetaFactory#getSOAP12Factory()} return the same instances.
  */
-public class TestFactoryIsSingleton extends SOAPTestCase {
+public class TestFactoryIsSingleton extends TestCase {
+    @Inject private SOAPSpec spec;
     @Inject private OMMetaFactory metaFactory;
-
-    @Inject
-    public TestFactoryIsSingleton(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

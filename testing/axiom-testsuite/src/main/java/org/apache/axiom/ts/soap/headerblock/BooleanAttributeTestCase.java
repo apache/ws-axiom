@@ -20,13 +20,15 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public abstract class BooleanAttributeTestCase extends SOAPTestCase {
+import junit.framework.TestCase;
+
+public abstract class BooleanAttributeTestCase extends TestCase {
+    protected final SOAPSpec spec;
     protected final HeaderBlockAttribute attribute;
 
     public BooleanAttributeTestCase(SOAPSpec spec, HeaderBlockAttribute attribute) {
-        super(spec);
+        this.spec = spec;
         this.attribute = attribute;
     }
 }

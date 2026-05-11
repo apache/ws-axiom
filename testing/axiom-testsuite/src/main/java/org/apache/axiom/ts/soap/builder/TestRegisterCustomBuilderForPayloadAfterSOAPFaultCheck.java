@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
-import com.google.inject.Inject;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMSourcedElement;
@@ -31,6 +30,8 @@ import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests that a custom builder registered with {@link

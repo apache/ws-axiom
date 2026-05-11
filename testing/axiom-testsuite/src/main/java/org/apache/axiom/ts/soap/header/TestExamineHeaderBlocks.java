@@ -26,17 +26,14 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-public class TestExamineHeaderBlocks extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestExamineHeaderBlocks(SOAPSpec spec) {
-        super(spec);
-    }
+public class TestExamineHeaderBlocks extends TestCase {
+    @Inject private SOAPSpec spec;
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
-import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
@@ -31,6 +30,8 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
+
+import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link OMContainer#getXMLStreamReaderWithoutCaching()} on a {@link

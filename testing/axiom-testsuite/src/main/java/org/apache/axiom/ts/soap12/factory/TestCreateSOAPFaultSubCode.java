@@ -28,22 +28,17 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests {@link SOAPFactory#createSOAPFaultSubCode(SOAPFaultCode)} when used with a {@link
  * SOAPFaultCode} that has already a {@link SOAPFaultValue} child.
  */
-public class TestCreateSOAPFaultSubCode extends SOAPTestCase {
+public class TestCreateSOAPFaultSubCode extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestCreateSOAPFaultSubCode() {
-        super(SOAPSpec.SOAP12);
-    }
 
     @Override
     protected void runTest() throws Throwable {

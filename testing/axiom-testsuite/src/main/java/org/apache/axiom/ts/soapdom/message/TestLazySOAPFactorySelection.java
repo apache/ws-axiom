@@ -21,20 +21,17 @@ package org.apache.axiom.ts.soapdom.message;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.Document;
 
 import com.google.inject.Inject;
 
-public class TestLazySOAPFactorySelection extends SOAPTestCase {
-    @Inject private OMMetaFactory metaFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestLazySOAPFactorySelection(SOAPSpec spec) {
-        super(spec);
-    }
+public class TestLazySOAPFactorySelection extends TestCase {
+    @Inject private SOAPSpec spec;
+    @Inject private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

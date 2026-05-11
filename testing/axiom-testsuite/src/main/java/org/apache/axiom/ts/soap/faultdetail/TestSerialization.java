@@ -26,19 +26,14 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-// Regression test for AXIOM-196
-public class TestSerialization extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestSerialization(SOAPSpec spec) {
-        super(spec);
-    }
+// Regression test for AXIOM-196
+public class TestSerialization extends TestCase {
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

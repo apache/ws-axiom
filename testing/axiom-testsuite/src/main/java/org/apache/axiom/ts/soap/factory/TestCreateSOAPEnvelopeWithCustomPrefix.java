@@ -25,18 +25,15 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-/** Tests the behavior of {@link SOAPFactory#createSOAPEnvelope(OMNamespace)}. */
-public class TestCreateSOAPEnvelopeWithCustomPrefix extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestCreateSOAPEnvelopeWithCustomPrefix(SOAPSpec spec) {
-        super(spec);
-    }
+/** Tests the behavior of {@link SOAPFactory#createSOAPEnvelope(OMNamespace)}. */
+public class TestCreateSOAPEnvelopeWithCustomPrefix extends TestCase {
+    @Inject private SOAPSpec spec;
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

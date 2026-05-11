@@ -20,19 +20,14 @@ package org.apache.axiom.ts.soap.envelope;
 
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-// Regression test for AXIOM-218
-public class TestGetBodyOnEnvelopeWithHeaderOnly extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestGetBodyOnEnvelopeWithHeaderOnly(SOAPSpec spec) {
-        super(spec);
-    }
+// Regression test for AXIOM-218
+public class TestGetBodyOnEnvelopeWithHeaderOnly extends TestCase {
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

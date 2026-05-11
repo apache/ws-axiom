@@ -34,7 +34,6 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.apache.axiom.util.UIDGenerator;
 
 import com.google.inject.Inject;
@@ -45,19 +44,16 @@ import jakarta.mail.Session;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
+import junit.framework.TestCase;
 
 /**
  * Tests that {@link OMXMLBuilderFactory#createSOAPModelBuilder(OMMetaFactory, MultipartBody)}
  * produces an error if the SOAP version used in the root part doesn't match the Content-Type of the
  * message.
  */
-public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends SOAPTestCase {
+public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends TestCase {
     @Inject private OMMetaFactory metaFactory;
-
-    @Inject
-    public TestCreateSOAPModelBuilderMTOMContentTypeMismatch(SOAPSpec spec) {
-        super(spec);
-    }
+    @Inject private SOAPSpec spec;
 
     @Override
     protected void runTest() throws Throwable {

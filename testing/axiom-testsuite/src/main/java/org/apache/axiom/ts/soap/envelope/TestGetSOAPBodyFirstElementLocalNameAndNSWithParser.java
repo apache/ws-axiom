@@ -29,10 +29,10 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests the behavior of {@link SOAPEnvelope#getSOAPBodyFirstElementLocalName()} and {@link
@@ -40,17 +40,10 @@ import com.google.inject.Inject;
  * In this case, the Axiom implementation may choose to use a special optimization to get the name
  * of the element without actually instantiating the corresponding {@link OMElement}.
  */
-public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTestCase {
+public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends TestCase {
     @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
-
-    private final QName qname;
-
-    @Inject
-    public TestGetSOAPBodyFirstElementLocalNameAndNSWithParser(SOAPSpec spec, QName qname) {
-        super(spec);
-        this.qname = qname;
-    }
+    @Inject private QName qname;
 
     @Override
     protected void runTest() throws Throwable {

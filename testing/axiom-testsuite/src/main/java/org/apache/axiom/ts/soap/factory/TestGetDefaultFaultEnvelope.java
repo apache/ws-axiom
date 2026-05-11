@@ -21,18 +21,15 @@ package org.apache.axiom.ts.soap.factory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-/** Tests the behavior of {@link org.apache.axiom.soap.SOAPFactory#getDefaultFaultEnvelope()}. */
-public class TestGetDefaultFaultEnvelope extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestGetDefaultFaultEnvelope(SOAPSpec spec) {
-        super(spec);
-    }
+/** Tests the behavior of {@link org.apache.axiom.soap.SOAPFactory#getDefaultFaultEnvelope()}. */
+public class TestGetDefaultFaultEnvelope extends TestCase {
+    @Inject private SOAPSpec spec;
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

@@ -21,18 +21,13 @@ package org.apache.axiom.ts.soap12.faultreason;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-public class TestGetFirstSOAPText extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestGetFirstSOAPText() {
-        super(SOAPSpec.SOAP12);
-    }
+public class TestGetFirstSOAPText extends TestCase {
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

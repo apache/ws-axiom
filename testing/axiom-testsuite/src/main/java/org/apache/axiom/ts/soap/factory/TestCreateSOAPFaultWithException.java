@@ -30,23 +30,18 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-public class TestCreateSOAPFaultWithException extends SOAPTestCase {
+import junit.framework.TestCase;
+
+public class TestCreateSOAPFaultWithException extends TestCase {
     @Inject private SOAPFactory soapFactory;
 
-    private final boolean withParent;
-
     @Inject
-    public TestCreateSOAPFaultWithException(
-            SOAPSpec spec, @Named("withParent") boolean withParent) {
-        super(spec);
-        this.withParent = withParent;
-    }
+    @Named("withParent")
+    private boolean withParent;
 
     @Override
     protected void runTest() throws Throwable {

@@ -20,22 +20,17 @@ package org.apache.axiom.ts.soap11.fault;
 
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that {@link SOAPFault#getNode()} returns <code>null</code> (instead of throwing an {@link
  * UnsupportedOperationException}) for SOAP 1.1 faults.
  */
-public class TestGetNode extends SOAPTestCase {
+public class TestGetNode extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestGetNode() {
-        super(SOAPSpec.SOAP11);
-    }
 
     @Override
     protected void runTest() throws Throwable {

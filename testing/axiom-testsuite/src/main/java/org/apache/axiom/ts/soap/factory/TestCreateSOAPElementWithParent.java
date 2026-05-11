@@ -34,10 +34,11 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+
+import junit.framework.TestCase;
 
 /**
  * Tests {@link SOAPFactory#createSOAPHeader(SOAPEnvelope)}, {@link
@@ -52,21 +53,17 @@ import com.google.inject.name.Named;
  * SOAPFactory#createSOAPFaultNode(SOAPFault)}, {@link SOAPFactory#createSOAPFaultRole(SOAPFault)}
  * and {@link SOAPFactory#createSOAPFaultDetail(SOAPFault)} with a non null parent.
  */
-public class TestCreateSOAPElementWithParent extends SOAPTestCase {
+public class TestCreateSOAPElementWithParent extends TestCase {
+    @Inject private SOAPSpec spec;
     @Inject private SOAPFactory soapFactory;
 
-    private final SOAPElementType type;
-    private final SOAPElementType parentType;
+    @Inject
+    @Named("childType")
+    private SOAPElementType type;
 
     @Inject
-    public TestCreateSOAPElementWithParent(
-            SOAPSpec spec,
-            @Named("childType") SOAPElementType type,
-            @Named("type") SOAPElementType parentType) {
-        super(spec);
-        this.type = type;
-        this.parentType = parentType;
-    }
+    @Named("type")
+    private SOAPElementType parentType;
 
     @Override
     protected void runTest() throws Throwable {

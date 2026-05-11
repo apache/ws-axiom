@@ -23,24 +23,19 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import junit.framework.TestCase;
+
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-141">AXIOM-141</a>. */
-public class TestXPathAppliedToSOAPEnvelope extends SOAPTestCase {
+public class TestXPathAppliedToSOAPEnvelope extends TestCase {
     @Inject private SOAPFactory soapFactory;
 
-    private boolean createDocument;
-
     @Inject
-    public TestXPathAppliedToSOAPEnvelope(
-            SOAPSpec spec, @Named("createDocument") boolean createDocument) {
-        super(spec);
-        this.createDocument = createDocument;
-    }
+    @Named("createDocument")
+    private boolean createDocument;
 
     @Override
     protected void runTest() throws Throwable {

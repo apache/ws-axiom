@@ -27,25 +27,23 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+
+import junit.framework.TestCase;
 
 /**
  * Test that attempts to add an arbitrary element to the SOAP envelope (after the body). This is
  * allowed in SOAP 1.1, but not in SOAP 1.2.
  */
-public class TestAddElementAfterBody extends SOAPTestCase {
+public class TestAddElementAfterBody extends TestCase {
+    @Inject private SOAPSpec spec;
     @Inject private SOAPFactory soapFactory;
 
-    private final boolean header;
-
     @Inject
-    public TestAddElementAfterBody(SOAPSpec spec, @Named("header") boolean header) {
-        super(spec);
-        this.header = header;
-    }
+    @Named("header")
+    private boolean header;
 
     @Override
     protected void runTest() throws Throwable {

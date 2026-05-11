@@ -25,22 +25,17 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests the behavior of {@link SOAPHeader#addHeaderBlock(String, OMNamespace)} when passing an
  * {@link OMNamespace} object with an empty namespace URI.
  */
-public class TestAddHeaderBlockWithoutNamespace2 extends SOAPTestCase {
+public class TestAddHeaderBlockWithoutNamespace2 extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestAddHeaderBlockWithoutNamespace2(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

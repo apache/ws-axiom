@@ -28,23 +28,18 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} when an attempt is made
  * to set an {@link OMElement} that is not a {@link SOAPEnvelope} as the root element of a {@link
  * SOAPMessage}. In this case, an exception should be thrown.
  */
-public class TestSetOMDocumentElementNonSOAPEnvelope extends SOAPTestCase {
+public class TestSetOMDocumentElementNonSOAPEnvelope extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestSetOMDocumentElementNonSOAPEnvelope(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

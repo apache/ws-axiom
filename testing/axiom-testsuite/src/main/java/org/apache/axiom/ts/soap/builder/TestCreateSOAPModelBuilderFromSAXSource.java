@@ -35,19 +35,16 @@ import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 import com.google.inject.Inject;
 
-public class TestCreateSOAPModelBuilderFromSAXSource extends SOAPTestCase {
-    @Inject private OMMetaFactory metaFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestCreateSOAPModelBuilderFromSAXSource(SOAPSpec spec) {
-        super(spec);
-    }
+public class TestCreateSOAPModelBuilderFromSAXSource extends TestCase {
+    @Inject private OMMetaFactory metaFactory;
+    @Inject private SOAPSpec spec;
 
     @Override
     protected void runTest() throws Throwable {

@@ -22,18 +22,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-public class TestSetNode extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestSetNode() {
-        super(SOAPSpec.SOAP11);
-    }
+public class TestSetNode extends TestCase {
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

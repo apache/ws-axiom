@@ -21,23 +21,18 @@ package org.apache.axiom.ts.soap.body;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests the behavior of {@link SOAPBody#getFault()} if the {@link SOAPBody} contains a plain {@link
  * OMElement} with a name corresponding to a SOAP fault. In this case, the method is expected to
  * return <code>null</code>.
  */
-public class TestGetFaultFakeFault extends SOAPTestCase {
+public class TestGetFaultFakeFault extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestGetFaultFakeFault(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

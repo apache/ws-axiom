@@ -21,19 +21,14 @@ package org.apache.axiom.ts.soap.envelope;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-// Make sure order of header/body creation doesn't matter
-public class TestBodyHeaderOrder extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestBodyHeaderOrder(SOAPSpec spec) {
-        super(spec);
-    }
+// Make sure order of header/body creation doesn't matter
+public class TestBodyHeaderOrder extends TestCase {
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

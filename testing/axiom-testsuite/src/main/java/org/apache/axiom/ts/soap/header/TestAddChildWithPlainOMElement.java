@@ -25,19 +25,14 @@ import java.util.Iterator;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-/** Regression test for AXIOM-512. */
-public class TestAddChildWithPlainOMElement extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestAddChildWithPlainOMElement(SOAPSpec spec) {
-        super(spec);
-    }
+/** Regression test for AXIOM-512. */
+public class TestAddChildWithPlainOMElement extends TestCase {
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

@@ -33,6 +33,8 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 import com.google.inject.Inject;
 
 public class TestExamineMustUnderstandHeaderBlocksWithParser extends SampleBasedSOAPTestCase {
+    @Inject private SOAPSpec spec;
+
     @Inject
     public TestExamineMustUnderstandHeaderBlocksWithParser(SOAPSpec spec) {
         super(spec, SOAPSampleSet.HEADERS);

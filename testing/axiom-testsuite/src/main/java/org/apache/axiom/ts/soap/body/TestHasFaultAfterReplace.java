@@ -22,10 +22,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that {@link SOAPBody#hasFault()} returns the correct value after a {@link SOAPFault} child
@@ -33,13 +33,8 @@ import com.google.inject.Inject;
  * Axiom attempted to cache the result of {@link SOAPBody#hasFault()}, but this cached value was not
  * updated correctly in all situations. This is a regression test for this issue.
  */
-public class TestHasFaultAfterReplace extends SOAPTestCase {
+public class TestHasFaultAfterReplace extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestHasFaultAfterReplace(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

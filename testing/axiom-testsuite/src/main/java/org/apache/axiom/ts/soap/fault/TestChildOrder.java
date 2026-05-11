@@ -32,13 +32,14 @@ import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPFaultChild;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that the children added using methods such as {@link SOAPFault#setCode(SOAPFaultCode)} and
@@ -47,21 +48,14 @@ import com.google.inject.name.Named;
  *
  * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-392">AXIOM-392</a>.
  */
-public class TestChildOrder extends SOAPTestCase {
+public class TestChildOrder extends TestCase {
+    @Inject private SOAPSpec spec;
     @Inject private SOAPFactory soapFactory;
 
-    private final SOAPFaultChild[] inputOrder;
-    private final SerializationStrategy serializationStrategy;
-
     @Inject
-    public TestChildOrder(
-            SOAPSpec spec,
-            @Named("inputOrder") SOAPFaultChild[] inputOrder,
-            SerializationStrategy serializationStrategy) {
-        super(spec);
-        this.inputOrder = inputOrder;
-        this.serializationStrategy = serializationStrategy;
-    }
+    private @Named("inputOrder") SOAPFaultChild[] inputOrder;
+
+    @Inject private SerializationStrategy serializationStrategy;
 
     @Override
     protected void runTest() throws Throwable {

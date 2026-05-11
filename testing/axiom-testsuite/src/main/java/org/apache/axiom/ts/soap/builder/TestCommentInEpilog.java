@@ -26,23 +26,18 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that the SOAP builder creates {@link OMComment} nodes for comments appearing after the
  * document element.
  */
-public class TestCommentInEpilog extends SOAPTestCase {
+public class TestCommentInEpilog extends TestCase {
     @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestCommentInEpilog(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

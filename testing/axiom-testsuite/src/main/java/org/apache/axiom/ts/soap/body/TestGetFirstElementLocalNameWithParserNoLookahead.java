@@ -29,24 +29,19 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that {@link SOAPBody#getFirstElementLocalName()} returns the expected result if the parser
  * has already progressed past the start of the payload and the optimization described in <a
  * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a> is no longer applicable.
  */
-public class TestGetFirstElementLocalNameWithParserNoLookahead extends SOAPTestCase {
+public class TestGetFirstElementLocalNameWithParserNoLookahead extends TestCase {
     @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestGetFirstElementLocalNameWithParserNoLookahead(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

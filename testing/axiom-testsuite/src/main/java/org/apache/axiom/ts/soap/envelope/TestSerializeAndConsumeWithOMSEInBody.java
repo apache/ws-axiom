@@ -36,19 +36,14 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-/** Regression test for WSCOMMONS-226. */
-public class TestSerializeAndConsumeWithOMSEInBody extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestSerializeAndConsumeWithOMSEInBody(SOAPSpec spec) {
-        super(spec);
-    }
+/** Regression test for WSCOMMONS-226. */
+public class TestSerializeAndConsumeWithOMSEInBody extends TestCase {
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

@@ -24,21 +24,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-public class TestGetSOAPBodyFirstElementLocalNameAndNS extends SOAPTestCase {
+import junit.framework.TestCase;
+
+public class TestGetSOAPBodyFirstElementLocalNameAndNS extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    private final QName qname;
-
-    @Inject
-    public TestGetSOAPBodyFirstElementLocalNameAndNS(SOAPSpec spec, QName qname) {
-        super(spec);
-        this.qname = qname;
-    }
+    @Inject private QName qname;
 
     @Override
     protected void runTest() throws Throwable {

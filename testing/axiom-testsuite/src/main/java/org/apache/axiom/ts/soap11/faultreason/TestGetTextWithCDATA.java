@@ -30,19 +30,14 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.apache.axiom.ts.AxiomTestCase;
 
 import com.google.inject.Inject;
 
-public class TestGetTextWithCDATA extends SOAPTestCase {
-    @Inject private OMMetaFactory metaFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestGetTextWithCDATA() {
-        super(SOAPSpec.SOAP11);
-    }
+public class TestGetTextWithCDATA extends TestCase {
+    @Inject private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

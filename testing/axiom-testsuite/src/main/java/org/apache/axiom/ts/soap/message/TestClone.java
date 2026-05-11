@@ -26,26 +26,24 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that the clone of a {@link SOAPMessage} created by {@link
  * OMInformationItem#clone(OMCloneOptions)} is a {@link SOAPMessage} if and only if {@link
  * OMCloneOptions#isPreserveModel()} is <code>true</code>.
  */
-public class TestClone extends SOAPTestCase {
+public class TestClone extends TestCase {
+    @Inject private SOAPSpec spec;
     @Inject private SOAPFactory soapFactory;
 
-    private final boolean preserveModel;
-
     @Inject
-    public TestClone(SOAPSpec spec, @Named("preserveModel") boolean preserveModel) {
-        super(spec);
-        this.preserveModel = preserveModel;
-    }
+    @Named("preserveModel")
+    private boolean preserveModel;
 
     @Override
     protected void runTest() throws Throwable {

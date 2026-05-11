@@ -25,23 +25,20 @@ import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that {@link OMInformationItem#getOMFactory()} returns the expected {@link SOAPFactory} when
  * invoked on a {@link SOAPMessage} created by a builder. Note that this is non trivial because the
  * factory is auto-detected based on the namespace URI of the SOAP envelope.
  */
-public class TestGetOMFactoryWithParser extends SOAPTestCase {
+public class TestGetOMFactoryWithParser extends TestCase {
+    @Inject private SOAPSpec spec;
     @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestGetOMFactoryWithParser(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

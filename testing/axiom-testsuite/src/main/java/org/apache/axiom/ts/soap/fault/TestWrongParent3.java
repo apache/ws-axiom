@@ -27,22 +27,17 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that {@link OMNode#insertSiblingBefore(OMNode)} throws an exception if an attempt is made
  * to add a {@link SOAPFault} as a child of a SOAP element other than {@link SOAPBody}.
  */
-public class TestWrongParent3 extends SOAPTestCase {
+public class TestWrongParent3 extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestWrongParent3(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

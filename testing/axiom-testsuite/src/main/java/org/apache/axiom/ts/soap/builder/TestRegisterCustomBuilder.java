@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
-import com.google.inject.Inject;
 import java.util.ArrayList;
 
 import org.apache.axiom.blob.MemoryBlob;
@@ -30,18 +29,17 @@ import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
 
-public class TestRegisterCustomBuilder extends SOAPTestCase {
+import com.google.inject.Inject;
+
+import junit.framework.TestCase;
+
+public class TestRegisterCustomBuilder extends TestCase {
     @Inject private OMMetaFactory metaFactory;
-
-    @Inject
-    public TestRegisterCustomBuilder(SOAPSpec spec) {
-        super(spec);
-    }
+    @Inject private SOAPSpec spec;
 
     @Override
     protected void runTest() throws Throwable {

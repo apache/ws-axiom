@@ -20,18 +20,13 @@ package org.apache.axiom.ts.soap.faultnode;
 
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultNode;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-public class TestSetFaultNodeValue extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestSetFaultNodeValue(SOAPSpec spec) {
-        super(spec);
-    }
+public class TestSetFaultNodeValue extends TestCase {
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

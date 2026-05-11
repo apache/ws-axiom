@@ -27,22 +27,17 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultValue;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests the behavior of {@link SOAPFaultClassifier#setValue(QName)} when invoked on a SOAP 1.2
  * {@link SOAPFaultCode} that already has a {@link SOAPFaultValue} child.
  */
-public class TestSetValueFromQNameWithExistingValue extends SOAPTestCase {
+public class TestSetValueFromQNameWithExistingValue extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestSetValueFromQNameWithExistingValue() {
-        super(SOAPSpec.SOAP12);
-    }
 
     @Override
     protected void runTest() throws Throwable {

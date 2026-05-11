@@ -29,24 +29,21 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that child elements of a {@link SOAPHeader} created using the DOM API are converted on the
  * fly and returned as {@link SOAPHeaderBlock} instances by {@link
  * SOAPHeader#examineAllHeaderBlocks()}.
  */
-public class TestExamineAllHeaderBlocks extends SOAPTestCase {
+public class TestExamineAllHeaderBlocks extends TestCase {
+    @Inject private SOAPSpec spec;
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestExamineAllHeaderBlocks(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

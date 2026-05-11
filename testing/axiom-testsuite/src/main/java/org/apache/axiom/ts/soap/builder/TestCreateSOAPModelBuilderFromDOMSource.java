@@ -31,19 +31,16 @@ import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import com.google.inject.Inject;
 
-public class TestCreateSOAPModelBuilderFromDOMSource extends SOAPTestCase {
-    @Inject private OMMetaFactory metaFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestCreateSOAPModelBuilderFromDOMSource(SOAPSpec spec) {
-        super(spec);
-    }
+public class TestCreateSOAPModelBuilderFromDOMSource extends TestCase {
+    @Inject private OMMetaFactory metaFactory;
+    @Inject private SOAPSpec spec;
 
     @Override
     protected void runTest() throws Throwable {

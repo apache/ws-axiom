@@ -24,10 +24,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Test cloning a {@link SOAPHeaderBlock} flagged as processed, but without preserving the model. In
@@ -35,13 +35,8 @@ import com.google.inject.Inject;
  *
  * <p>This is a regression test for an issue in older Axiom versions.
  */
-public class TestCloneProcessedWithoutPreservingModel extends SOAPTestCase {
+public class TestCloneProcessedWithoutPreservingModel extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestCloneProcessedWithoutPreservingModel(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

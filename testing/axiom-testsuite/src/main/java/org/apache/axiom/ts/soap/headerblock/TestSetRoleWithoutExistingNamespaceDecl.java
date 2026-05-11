@@ -25,18 +25,15 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-/** Tests that {@link SOAPHeaderBlock#setRole(String)} adds a namespace declaration if necessary. */
-public class TestSetRoleWithoutExistingNamespaceDecl extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestSetRoleWithoutExistingNamespaceDecl(SOAPSpec spec) {
-        super(spec);
-    }
+/** Tests that {@link SOAPHeaderBlock#setRole(String)} adds a namespace declaration if necessary. */
+public class TestSetRoleWithoutExistingNamespaceDecl extends TestCase {
+    @Inject private SOAPSpec spec;
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

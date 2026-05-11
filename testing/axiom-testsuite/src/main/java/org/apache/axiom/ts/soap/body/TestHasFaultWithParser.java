@@ -18,12 +18,13 @@
  */
 package org.apache.axiom.ts.soap.body;
 
-import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
+
+import com.google.inject.Inject;
 
 public class TestHasFaultWithParser extends SampleBasedSOAPTestCase {
     @Inject

@@ -28,19 +28,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-public class TestCreateSOAPHeaderBlockFromOMElement extends SOAPTestCase {
+import junit.framework.TestCase;
+
+public class TestCreateSOAPHeaderBlockFromOMElement extends TestCase {
     @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestCreateSOAPHeaderBlockFromOMElement(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

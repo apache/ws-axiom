@@ -26,9 +26,10 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that setting a SOAP header block attribute uses the correct namespace prefix from the
@@ -40,16 +41,10 @@ import com.google.inject.Inject;
  * used as its own namespace prefix (e.g. {@code xmlns:role="..."} and {@code role:role="..."}
  * instead of reusing the SOAP envelope prefix).
  */
-public class TestSetAttributeNamespacePrefix extends SOAPTestCase {
+public class TestSetAttributeNamespacePrefix extends TestCase {
+    @Inject private SOAPSpec spec;
     @Inject private SOAPFactory soapFactory;
-
-    private final HeaderBlockAttribute attribute;
-
-    @Inject
-    public TestSetAttributeNamespacePrefix(SOAPSpec spec, HeaderBlockAttribute attribute) {
-        super(spec);
-        this.attribute = attribute;
-    }
+    @Inject private HeaderBlockAttribute attribute;
 
     @Override
     protected void runTest() throws Throwable {

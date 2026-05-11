@@ -25,22 +25,17 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests that {@link SOAPFaultClassifier#getValue()} returns <code>null</code> when invoked on a
  * SOAP 1.1 {@link SOAPFaultCode}.
  */
-public class TestGetValue extends SOAPTestCase {
+public class TestGetValue extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestGetValue() {
-        super(SOAPSpec.SOAP11);
-    }
 
     @Override
     protected void runTest() throws Throwable {

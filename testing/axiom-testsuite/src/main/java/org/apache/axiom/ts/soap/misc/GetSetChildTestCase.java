@@ -23,18 +23,20 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-public abstract class GetSetChildTestCase extends SOAPTestCase {
+import junit.framework.TestCase;
+
+public abstract class GetSetChildTestCase extends TestCase {
     @Inject private SOAPFactory soapFactory;
 
+    protected final SOAPSpec spec;
     protected final SOAPElementType type;
     protected final SOAPElementType childType;
 
     public GetSetChildTestCase(SOAPSpec spec, SOAPElementType type, SOAPElementType childType) {
-        super(spec);
+        this.spec = spec;
         this.type = type;
         this.childType = childType;
     }

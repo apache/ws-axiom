@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import junit.framework.TestCase;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringReader;
@@ -40,20 +42,20 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
+public abstract class FirstElementNameWithParserTestCase extends TestCase {
     @Inject private OMMetaFactory metaFactory;
     @Inject private SOAPFactory soapFactory;
 
+    protected final SOAPSpec spec;
     protected final QName qname;
     private final boolean supportsOptimization;
 
     public FirstElementNameWithParserTestCase(
             SOAPSpec spec, QName qname, boolean supportsOptimization) {
-        super(spec);
+        this.spec = spec;
         this.qname = qname;
         this.supportsOptimization = supportsOptimization;
     }

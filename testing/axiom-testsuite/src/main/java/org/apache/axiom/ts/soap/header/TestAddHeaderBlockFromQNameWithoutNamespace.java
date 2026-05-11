@@ -26,22 +26,17 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Tests the behavior of {@link SOAPHeader#addHeaderBlock(QName)} when passing a {@link QName} with
  * no namespace.
  */
-public class TestAddHeaderBlockFromQNameWithoutNamespace extends SOAPTestCase {
+public class TestAddHeaderBlockFromQNameWithoutNamespace extends TestCase {
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestAddHeaderBlockFromQNameWithoutNamespace(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

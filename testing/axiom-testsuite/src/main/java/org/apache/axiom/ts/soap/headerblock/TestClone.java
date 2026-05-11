@@ -25,23 +25,20 @@ import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.jspecify.annotations.Nullable;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-public class TestClone extends SOAPTestCase {
+import junit.framework.TestCase;
+
+public class TestClone extends TestCase {
     @Inject private SOAPFactory soapFactory;
 
-    private final Boolean processed;
-
     @Inject
-    public TestClone(SOAPSpec spec, @Named("processed") @Nullable Boolean processed) {
-        super(spec);
-        this.processed = processed;
-    }
+    @Named("processed")
+    @Nullable
+    private Boolean processed;
 
     private void checkProcessed(SOAPHeader clonedHeader, SOAPHeaderBlock orgHeaderBlock) {
         SOAPHeaderBlock clonedHeaderBlock =

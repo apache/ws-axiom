@@ -19,18 +19,13 @@
 package org.apache.axiom.ts.soap.envelope;
 
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
 
-public class TestGetBodyOnEmptyEnvelope extends SOAPTestCase {
-    @Inject private SOAPFactory soapFactory;
+import junit.framework.TestCase;
 
-    @Inject
-    public TestGetBodyOnEmptyEnvelope(SOAPSpec spec) {
-        super(spec);
-    }
+public class TestGetBodyOnEmptyEnvelope extends TestCase {
+    @Inject private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

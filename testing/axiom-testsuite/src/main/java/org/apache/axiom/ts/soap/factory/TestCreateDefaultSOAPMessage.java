@@ -26,21 +26,18 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 import com.google.inject.Inject;
+
+import junit.framework.TestCase;
 
 /**
  * Checks the content of the SOAP envelope returned by {@link
  * SOAPFactory#createDefaultSOAPMessage()}.
  */
-public class TestCreateDefaultSOAPMessage extends SOAPTestCase {
+public class TestCreateDefaultSOAPMessage extends TestCase {
+    @Inject private SOAPSpec spec;
     @Inject private SOAPFactory soapFactory;
-
-    @Inject
-    public TestCreateDefaultSOAPMessage(SOAPSpec spec) {
-        super(spec);
-    }
 
     @Override
     protected void runTest() throws Throwable {

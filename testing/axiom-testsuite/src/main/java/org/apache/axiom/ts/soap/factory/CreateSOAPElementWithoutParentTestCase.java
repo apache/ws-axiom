@@ -29,13 +29,15 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public abstract class CreateSOAPElementWithoutParentTestCase extends SOAPTestCase {
+import junit.framework.TestCase;
+
+public abstract class CreateSOAPElementWithoutParentTestCase extends TestCase {
+    protected final SOAPSpec spec;
     protected final SOAPElementType type;
 
     public CreateSOAPElementWithoutParentTestCase(SOAPSpec spec, SOAPElementType type) {
-        super(spec);
+        this.spec = spec;
         this.type = type;
     }
 

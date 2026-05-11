@@ -21,19 +21,22 @@ package org.apache.axiom.ts.soap.envelope;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import java.util.Iterator;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
-import java.util.Iterator;
+import junit.framework.TestCase;
 
-public abstract class CloneTestCase extends SOAPTestCase {
+public abstract class CloneTestCase extends TestCase {
+    protected final SOAPSpec spec;
+
     public CloneTestCase(SOAPSpec spec) {
-        super(spec);
+        this.spec = spec;
     }
 
     /**
