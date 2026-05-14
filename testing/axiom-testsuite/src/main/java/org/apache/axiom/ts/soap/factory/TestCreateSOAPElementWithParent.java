@@ -20,6 +20,7 @@ package org.apache.axiom.ts.soap.factory;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -83,17 +84,17 @@ public class TestCreateSOAPElementWithParent extends TestCase {
             OMElement child =
                     type.getAdapter(SOAPElementTypeAdapter.class)
                             .create(soapFactory, parentType, parent);
-            assertTrue(child.isComplete());
+            assertThat(child.isComplete()).isTrue();
             QName actualName = child.getQName();
-            assertEquals(expectedName, actualName);
-            assertEquals(expectedPrefix, actualName.getPrefix());
-            assertSame(parent, child.getParent());
-            assertSame(child, parent.getFirstOMChild());
-            assertNull(child.getNextOMSibling());
+            assertThat(actualName).isEqualTo(expectedName);
+            assertThat(actualName.getPrefix()).isEqualTo(expectedPrefix);
+            assertThat(child.getParent()).isSameAs(parent);
+            assertThat(parent.getFirstOMChild()).isSameAs(child);
+            assertThat(child.getNextOMSibling()).isNull();
             // All relevant namespaces have already been declared on the parent
-            assertFalse(child.getAllDeclaredNamespaces().hasNext());
-            assertFalse(child.getAllAttributes().hasNext());
-            assertNull(child.getFirstOMChild());
+            assertThat(child.getAllDeclaredNamespaces().hasNext()).isFalse();
+            assertThat(child.getAllAttributes().hasNext()).isFalse();
+            assertThat(child.getFirstOMChild()).isNull();
         }
     }
 }

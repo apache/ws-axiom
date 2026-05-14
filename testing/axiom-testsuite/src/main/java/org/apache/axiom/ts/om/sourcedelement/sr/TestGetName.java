@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
@@ -53,11 +55,11 @@ public class TestGetName extends AxiomTestCase {
                         factory.createOMNamespace("urn:ns", null));
         root.addChild(el);
         XMLStreamReader reader = root.getXMLStreamReader();
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         QName name = reader.getName();
-        assertEquals("p", name.getPrefix());
-        assertEquals("urn:ns", name.getNamespaceURI());
-        assertEquals("el", name.getLocalPart());
+        assertThat(name.getPrefix()).isEqualTo("p");
+        assertThat(name.getNamespaceURI()).isEqualTo("urn:ns");
+        assertThat(name.getLocalPart()).isEqualTo("el");
     }
 }

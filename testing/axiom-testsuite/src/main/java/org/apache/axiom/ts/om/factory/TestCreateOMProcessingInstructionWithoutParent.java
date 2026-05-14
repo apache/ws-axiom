@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -34,8 +36,8 @@ public class TestCreateOMProcessingInstructionWithoutParent extends AxiomTestCas
     protected void runTest() throws Throwable {
         OMProcessingInstruction pi =
                 metaFactory.getOMFactory().createOMProcessingInstruction(null, "mypi", "data");
-        assertNull(pi.getParent());
-        assertEquals("mypi", pi.getTarget());
-        assertEquals("data", pi.getValue());
+        assertThat(pi.getParent()).isNull();
+        assertThat(pi.getTarget()).isEqualTo("mypi");
+        assertThat(pi.getValue()).isEqualTo("data");
     }
 }

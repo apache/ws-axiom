@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.attribute;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -42,6 +44,6 @@ public class TestGetNamespaceURIWithNamespace extends AxiomTestCase {
         OMAttribute attr =
                 factory.createOMAttribute(
                         "name", factory.createOMNamespace("urn:ns", "p"), "value");
-        assertEquals("urn:ns", attr.getNamespaceURI());
+        assertThat(attr.getNamespaceURI()).isEqualTo("urn:ns");
     }
 }

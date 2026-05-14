@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.message;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
@@ -58,11 +60,11 @@ public class TestCloneIncomplete extends TestCase {
         options.setPreserveModel(preserveModel);
         OMInformationItem clone = message.clone(options);
         if (preserveModel) {
-            assertTrue(clone instanceof SOAPMessage);
-            assertSame(soapFactory, clone.getOMFactory());
+            assertThat(clone).isInstanceOf(SOAPMessage.class);
+            assertThat(clone.getOMFactory()).isSameAs(soapFactory);
         } else {
-            assertTrue(clone instanceof OMDocument);
-            assertFalse(clone instanceof SOAPMessage);
+            assertThat(clone).isInstanceOf(OMDocument.class);
+            assertThat(clone).isNotInstanceOf(SOAPMessage.class);
         }
     }
 }

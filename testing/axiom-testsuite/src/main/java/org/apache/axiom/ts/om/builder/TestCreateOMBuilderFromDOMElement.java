@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMElement;
@@ -52,7 +54,7 @@ public class TestCreateOMBuilderFromDOMElement extends AxiomTestCase {
         OMElement omB =
                 OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domB, true)
                         .getDocumentElement();
-        assertEquals("b", omB.getLocalName());
-        assertNull(omB.getNextOMSibling());
+        assertThat(omB.getLocalName()).isEqualTo("b");
+        assertThat(omB.getNextOMSibling()).isNull();
     }
 }

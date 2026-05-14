@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
@@ -37,6 +39,6 @@ public class TestDetach extends OMDOMTestCase {
         Element child = document.createElementNS(null, "child");
         parent.appendChild(child);
         ((OMElement) child).detach();
-        assertNotSame(document, child.getOwnerDocument());
+        assertThat(child.getOwnerDocument()).isNotSameAs(document);
     }
 }

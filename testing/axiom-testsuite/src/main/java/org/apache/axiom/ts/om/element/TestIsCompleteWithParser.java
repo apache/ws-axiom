@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMElement;
@@ -44,10 +46,10 @@ public class TestIsCompleteWithParser extends AxiomTestCase {
                 OMXMLBuilderFactory.createOMBuilder(
                                 metaFactory.getOMFactory(), new StringReader("<a><b/></a>"))
                         .getDocumentElement();
-        assertFalse(element.isComplete());
+        assertThat(element.isComplete()).isFalse();
         element.getFirstElement().getNextOMSibling();
-        assertTrue(element.isComplete());
+        assertThat(element.isComplete()).isTrue();
         element.getNextOMSibling();
-        assertTrue(element.isComplete());
+        assertThat(element.isComplete()).isTrue();
     }
 }

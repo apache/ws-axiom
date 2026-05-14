@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faultnode;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -33,8 +35,7 @@ public class TestGetFaultNodeValueWithParser extends SampleBasedSOAPTestCase {
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        assertEquals(
-                "http://gateway.corp.example.org/",
-                envelope.getBody().getFault().getNode().getFaultNodeValue());
+        assertThat(envelope.getBody().getFault().getNode().getFaultNodeValue())
+                .isEqualTo("http://gateway.corp.example.org/");
     }
 }

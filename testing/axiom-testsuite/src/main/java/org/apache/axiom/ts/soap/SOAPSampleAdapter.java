@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -25,7 +27,6 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.testing.multiton.AdapterType;
-import org.junit.Assert;
 import org.xml.sax.InputSource;
 
 /**
@@ -52,9 +53,8 @@ public final class SOAPSampleAdapter {
     public SOAPEnvelope getSOAPEnvelope(OMMetaFactory metaFactory) {
         SOAPEnvelope envelope = getBuilder(metaFactory).getSOAPEnvelope();
         // TODO: this is not the right place to assert this
-        Assert.assertSame(
-                sample.getSOAPSpec().getEnvelopeNamespaceURI(),
-                ((SOAPFactory) envelope.getOMFactory()).getSoapVersionURI());
+        assertThat(((SOAPFactory) envelope.getOMFactory()).getSoapVersionURI())
+                .isSameAs(sample.getSOAPSpec().getEnvelopeNamespaceURI());
         return envelope;
     }
 }

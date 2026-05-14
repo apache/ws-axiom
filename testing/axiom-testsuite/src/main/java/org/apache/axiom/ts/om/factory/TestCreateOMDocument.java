@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -34,11 +36,11 @@ public class TestCreateOMDocument extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMDocument document = metaFactory.getOMFactory().createOMDocument();
-        assertNotNull(document);
-        assertNull(document.getFirstOMChild());
+        assertThat(document).isNotNull();
+        assertThat(document.getFirstOMChild()).isNull();
 
         // OMDocument doesn't extend OMNode. Therefore, the OMDocument implementation
         // should not implement OMNode either. This is a regression test for AXIOM-385.
-        assertFalse(document instanceof OMNode);
+        assertThat(document).isNotInstanceOf(OMNode.class);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.xpath;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.xpath.AXIOMXPath;
@@ -56,6 +58,6 @@ public class TestXPathAppliedToSOAPEnvelope extends TestCase {
         AXIOMXPath XPath = new AXIOMXPath(XPathString);
         OMNode node = (OMNode) XPath.selectSingleNode(envelope);
 
-        assertNotNull(node);
+        assertThat(node).isNotNull();
     }
 }

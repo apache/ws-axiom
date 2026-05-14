@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.faultcode;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -35,12 +37,8 @@ public class TestGetSubCodeWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultCode faultCode = envelope.getBody().getFault().getCode();
-        assertNotNull(
-                "SOAP 1.2 Fault Code Test with parser :- getSubCode method returns null",
-                faultCode.getSubCode());
-        assertEquals(
-                "SOAP 1.2 Fault Code Test with parser : - subcode local name mismatch",
-                SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME,
-                faultCode.getSubCode().getLocalName());
+        assertThat(faultCode.getSubCode()).isNotNull();
+        assertThat(faultCode.getSubCode().getLocalName())
+                .isEqualTo(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -42,6 +44,6 @@ public class TestGetPrefixWithNamespace extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("urn:ns", "test", "p"));
-        assertEquals("p", element.getPrefix());
+        assertThat(element.getPrefix()).isEqualTo("p");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -28,7 +30,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.junit.Assert;
 
 /** Scenario that uses {@link XMLStreamWriter#writeEntityRef(String)}. */
 public class WriteEntityRefScenario implements PushOMDataSourceScenario {
@@ -52,9 +53,9 @@ public class WriteEntityRefScenario implements PushOMDataSourceScenario {
     @Override
     public void validate(OMElement element, boolean blobsPreserved) {
         OMNode child = element.getFirstOMChild();
-        Assert.assertTrue(child instanceof OMEntityReference);
+        assertThat(child).isInstanceOf(OMEntityReference.class);
         OMEntityReference entref = (OMEntityReference) child;
-        Assert.assertEquals("test", entref.getName());
-        Assert.assertNull(entref.getReplacementText());
+        assertThat(entref.getName()).isEqualTo("test");
+        assertThat(entref.getReplacementText()).isNull();
     }
 }

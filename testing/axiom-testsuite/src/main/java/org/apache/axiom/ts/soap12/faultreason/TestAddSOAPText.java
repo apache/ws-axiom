@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.faultreason;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
@@ -34,8 +36,6 @@ public class TestAddSOAPText extends TestCase {
         SOAPFault fault = soapFactory.createSOAPFault();
         SOAPFaultReason faultReason = soapFactory.createSOAPFaultReason(fault);
         faultReason.addSOAPText(soapFactory.createSOAPFaultText(faultReason));
-        assertFalse(
-                "SOAP 1.2 FaultReason Test : - After calling addSOAPText, getFirstSOAPText returns null",
-                faultReason.getFirstSOAPText() == null);
+        assertThat(faultReason.getFirstSOAPText()).isNotNull();
     }
 }

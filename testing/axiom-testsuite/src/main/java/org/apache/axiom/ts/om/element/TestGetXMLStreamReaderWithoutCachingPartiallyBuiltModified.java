@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.namespace.QName;
@@ -53,7 +55,7 @@ public class TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified extends 
 
         OMElement b = root.getFirstChildWithName(new QName("b"));
         b.addAttribute("att", "value", null);
-        assertFalse(b.isComplete());
+        assertThat(b.isComplete()).isFalse();
 
         XMLStreamReader reader = root.getXMLStreamReaderWithoutCaching();
 
@@ -61,12 +63,12 @@ public class TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified extends 
         for (int i = 0; i < 4; i++) {
             reader.next();
         }
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.getEventType());
-        assertEquals("b", reader.getLocalName());
+        assertThat(reader.getEventType()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(reader.getLocalName()).isEqualTo("b");
 
         // The previously added attribute must be visible
-        assertEquals(1, reader.getAttributeCount());
-        assertEquals("att", reader.getAttributeLocalName(0));
-        assertEquals("value", reader.getAttributeValue(0));
+        assertThat(reader.getAttributeCount()).isEqualTo(1);
+        assertThat(reader.getAttributeLocalName(0)).isEqualTo("att");
+        assertThat(reader.getAttributeValue(0)).isEqualTo("value");
     }
 }

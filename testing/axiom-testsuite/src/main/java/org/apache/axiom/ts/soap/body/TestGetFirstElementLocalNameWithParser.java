@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 
@@ -36,6 +38,6 @@ public class TestGetFirstElementLocalNameWithParser extends FirstElementNameWith
 
     @Override
     protected void runTest(SOAPBody body) throws Throwable {
-        assertEquals(qname.getLocalPart(), body.getFirstElementLocalName());
+        assertThat(body.getFirstElementLocalName()).isEqualTo(qname.getLocalPart());
     }
 }

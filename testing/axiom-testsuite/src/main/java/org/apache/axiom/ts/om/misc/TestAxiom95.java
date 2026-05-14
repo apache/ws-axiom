@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.misc;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -43,6 +45,6 @@ public class TestAxiom95 extends AxiomTestCase {
 
         //        System.out.println("serializedXML = " + serializedXML);
 
-        assertTrue(serializedXML.indexOf("xmlns=\"\"") == -1);
+        assertThat(serializedXML).doesNotContain("xmlns=\"\"");
     }
 }

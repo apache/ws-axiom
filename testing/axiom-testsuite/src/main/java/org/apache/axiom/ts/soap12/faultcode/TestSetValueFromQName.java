@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.faultcode;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -44,12 +46,12 @@ public class TestSetValueFromQName extends TestCase {
         SOAPFaultCode code = soapFactory.createSOAPFaultCode();
         code.setValue(new QName("urn:test", "MyFaultCode", "p"));
         SOAPFaultValue value = code.getValue();
-        assertNotNull(value);
-        assertEquals("p:MyFaultCode", value.getText());
+        assertThat(value).isNotNull();
+        assertThat(value.getText()).isEqualTo("p:MyFaultCode");
         Iterator<OMNamespace> it = value.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMNamespace ns = it.next();
-        assertEquals("p", ns.getPrefix());
-        assertEquals("urn:test", ns.getNamespaceURI());
+        assertThat(ns.getPrefix()).isEqualTo("p");
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:test");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.attribute;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -46,6 +48,6 @@ public class TestGetNamespaceNormalized extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("", "");
         OMAttribute attr = factory.createOMAttribute("parent", ns, "value");
-        assertNull(attr.getNamespace());
+        assertThat(attr.getNamespace()).isNull();
     }
 }

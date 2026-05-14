@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.fault;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.SortedSet;
@@ -77,10 +79,10 @@ public class TestChildOrder extends TestCase {
         Element domFault = document.getDocumentElement();
         Node child = domFault.getFirstChild();
         for (SOAPFaultChild type : outputOrder) {
-            assertNotNull(child);
-            assertEquals(type.getQName(spec).getLocalPart(), child.getLocalName());
+            assertThat(child).isNotNull();
+            assertThat(child.getLocalName()).isEqualTo(type.getQName(spec).getLocalPart());
             child = child.getNextSibling();
         }
-        assertNull(child);
+        assertThat(child).isNull();
     }
 }

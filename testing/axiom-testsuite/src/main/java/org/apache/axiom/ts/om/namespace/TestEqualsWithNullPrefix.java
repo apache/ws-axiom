@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.namespace;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -39,6 +41,6 @@ public class TestEqualsWithNullPrefix extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("http://www.w3.org/XML/1998/namespace", null);
-        assertTrue(ns.equals("http://www.w3.org/XML/1998/namespace", null));
+        assertThat(ns.equals("http://www.w3.org/XML/1998/namespace", null)).isTrue();
     }
 }

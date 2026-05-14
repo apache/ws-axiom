@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
@@ -28,11 +30,11 @@ public class TestCreateOMAttribute extends OMDOMTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMAttribute attr = factory.createOMAttribute("attr", null, "value");
-        assertTrue(attr instanceof Attr);
+        assertThat(attr).isInstanceOf(Attr.class);
         Attr domAttr = (Attr) attr;
-        assertNull(domAttr.getOwnerElement());
-        assertNotNull(domAttr.getOwnerDocument());
-        assertEquals("attr", domAttr.getLocalName());
-        assertEquals("value", domAttr.getValue());
+        assertThat(domAttr.getOwnerElement()).isNull();
+        assertThat(domAttr.getOwnerDocument()).isNotNull();
+        assertThat(domAttr.getLocalName()).isEqualTo("attr");
+        assertThat(domAttr.getValue()).isEqualTo("value");
     }
 }

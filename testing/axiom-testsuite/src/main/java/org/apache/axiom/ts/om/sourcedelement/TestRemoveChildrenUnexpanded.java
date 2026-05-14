@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMAttribute;
@@ -50,12 +52,12 @@ public class TestRemoveChildrenUnexpanded extends AxiomTestCase {
         element.removeChildren();
         // Check that the attribute has been added
         Iterator<OMAttribute> it = element.getAllAttributes();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMAttribute attr = it.next();
-        assertEquals("attr", attr.getLocalName());
-        assertEquals("value", attr.getAttributeValue());
-        assertFalse(it.hasNext());
+        assertThat(attr.getLocalName()).isEqualTo("attr");
+        assertThat(attr.getAttributeValue()).isEqualTo("value");
+        assertThat(it.hasNext()).isFalse();
         // Check that the element is empty
-        assertNull(element.getFirstOMChild());
+        assertThat(element.getFirstOMChild()).isNull();
     }
 }

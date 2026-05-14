@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -42,7 +44,7 @@ public class TestGetTextAsQName extends AxiomTestCase {
         OMElement child = factory.createOMElement("child", null, parent);
         child.setText("p:value");
         QName textAsQName = child.getTextAsQName();
-        assertEquals(new QName("urn:ns", "value"), textAsQName);
-        assertEquals("p", textAsQName.getPrefix());
+        assertThat(textAsQName).isEqualTo(new QName("urn:ns", "value"));
+        assertThat(textAsQName.getPrefix()).isEqualTo("p");
     }
 }

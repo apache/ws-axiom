@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -41,7 +43,7 @@ public class TestGetNamespace extends AxiomTestCase {
         element.declareNamespace("urn:ns", "p");
         OMText text = factory.createOMText(element, "p:value");
         OMNamespace ns = text.getNamespace();
-        assertEquals("urn:ns", ns.getNamespaceURI());
-        assertEquals("p", ns.getPrefix());
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns");
+        assertThat(ns.getPrefix()).isEqualTo("p");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -36,10 +38,10 @@ public class TestCreateOMDocTypeWithoutParent extends AxiomTestCase {
                 metaFactory
                         .getOMFactory()
                         .createOMDocType(null, "root", "publicId", "systemId", "internalSubset");
-        assertNull(dtd.getParent());
-        assertEquals("root", dtd.getRootName());
-        assertEquals("publicId", dtd.getPublicId());
-        assertEquals("systemId", dtd.getSystemId());
-        assertEquals("internalSubset", dtd.getInternalSubset());
+        assertThat(dtd.getParent()).isNull();
+        assertThat(dtd.getRootName()).isEqualTo("root");
+        assertThat(dtd.getPublicId()).isEqualTo("publicId");
+        assertThat(dtd.getSystemId()).isEqualTo("systemId");
+        assertThat(dtd.getInternalSubset()).isEqualTo("internalSubset");
     }
 }

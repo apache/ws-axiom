@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -27,7 +29,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.junit.Assert;
 
 /**
  * Tests that {@link XMLStreamWriter#getNamespaceContext()} gives access to pre-existing namespace
@@ -46,7 +47,7 @@ public class GetNamespaceContextScenario implements PushOMDataSourceScenario {
 
     @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-        Assert.assertEquals("urn:test", writer.getNamespaceContext().getNamespaceURI("p"));
+        assertThat(writer.getNamespaceContext().getNamespaceURI("p")).isEqualTo("urn:test");
         writer.writeStartElement(null, "root", null);
         writer.writeEndElement();
     }

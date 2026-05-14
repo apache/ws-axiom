@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.namespace.QName;
@@ -48,6 +50,6 @@ public class TestGetFirstChildWithNameOnIncompleteElement extends AxiomTestCase 
                                 new StringReader("<root><a/><b/><c/></root>"))
                         .getDocumentElement();
         OMElement b = element.getFirstChildWithName(new QName("b"));
-        assertFalse(b.isComplete());
+        assertThat(b.isComplete()).isFalse();
     }
 }

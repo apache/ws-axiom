@@ -19,6 +19,8 @@
 
 package org.apache.axiom.ts.soap.header;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.soap.RolePlayer;
@@ -45,7 +47,7 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
         RolePlayer rp = new MyRolePlayer(true, roles);
 
         Iterator<SOAPHeaderBlock> headers = soapHeader.getHeadersToProcess(rp);
-        assertTrue("No headers!", headers.hasNext());
+        assertThat(headers.hasNext()).isTrue();
 
         int numHeaders = 0;
         while (headers.hasNext()) {
@@ -53,12 +55,12 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
             numHeaders++;
         }
 
-        assertEquals("Didn't get right number of headers (with custom role)", 6, numHeaders);
+        assertThat(numHeaders).isEqualTo(6);
 
         rp = new MyRolePlayer(true);
 
         headers = soapHeader.getHeadersToProcess(rp);
-        assertTrue(headers.hasNext());
+        assertThat(headers.hasNext()).isTrue();
 
         numHeaders = 0;
         while (headers.hasNext()) {
@@ -66,13 +68,13 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
             numHeaders++;
         }
 
-        assertEquals("Didn't get right number of headers (no custom role)", 5, numHeaders);
+        assertThat(numHeaders).isEqualTo(5);
 
         // Intermediary test
         rp = new MyRolePlayer(false);
 
         headers = soapHeader.getHeadersToProcess(rp);
-        assertTrue(headers.hasNext());
+        assertThat(headers.hasNext()).isTrue();
 
         numHeaders = 0;
         while (headers.hasNext()) {
@@ -80,6 +82,6 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
             numHeaders++;
         }
 
-        assertEquals("Didn't get right number of headers (no custom role)", 2, numHeaders);
+        assertThat(numHeaders).isEqualTo(2);
     }
 }

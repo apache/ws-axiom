@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.header;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -38,9 +40,9 @@ public class TestAddHeaderBlockFromQName extends TestCase {
         SOAPEnvelope env = soapFactory.getDefaultEnvelope();
         SOAPHeader header = env.getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));
-        assertSame(headerBlock, header.getFirstOMChild());
-        assertEquals("test", headerBlock.getLocalName());
-        assertEquals("p", headerBlock.getPrefix());
-        assertEquals("urn:test", headerBlock.getNamespaceURI());
+        assertThat(header.getFirstOMChild()).isSameAs(headerBlock);
+        assertThat(headerBlock.getLocalName()).isEqualTo("test");
+        assertThat(headerBlock.getPrefix()).isEqualTo("p");
+        assertThat(headerBlock.getNamespaceURI()).isEqualTo("urn:test");
     }
 }

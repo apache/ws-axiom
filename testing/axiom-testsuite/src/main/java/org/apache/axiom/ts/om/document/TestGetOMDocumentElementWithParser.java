@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMDocument;
@@ -48,7 +50,7 @@ public class TestGetOMDocumentElementWithParser extends AxiomTestCase {
                                 new StringReader("<!-- comment --><root/><!-- comment -->"))
                         .getDocument();
         OMElement documentElement = document.getOMDocumentElement();
-        assertNotNull(documentElement);
-        assertEquals("root", documentElement.getLocalName());
+        assertThat(documentElement).isNotNull();
+        assertThat(documentElement.getLocalName()).isEqualTo("root");
     }
 }

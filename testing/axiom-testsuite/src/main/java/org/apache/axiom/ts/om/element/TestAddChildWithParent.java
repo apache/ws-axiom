@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -45,8 +47,8 @@ public class TestAddChildWithParent extends AxiomTestCase {
         OMText text = factory.createOMText("test");
         element1.addChild(text);
         element2.addChild(text);
-        assertSame(element2, text.getParent());
-        assertNull(element1.getFirstOMChild());
-        assertSame(text, element2.getFirstOMChild());
+        assertThat(text.getParent()).isSameAs(element2);
+        assertThat(element1.getFirstOMChild()).isNull();
+        assertThat(element2.getFirstOMChild()).isSameAs(text);
     }
 }

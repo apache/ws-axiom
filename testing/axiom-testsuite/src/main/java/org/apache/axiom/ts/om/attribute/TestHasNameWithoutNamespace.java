@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.attribute;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMAttribute;
@@ -41,7 +43,7 @@ public class TestHasNameWithoutNamespace extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMAttribute attr = metaFactory.getOMFactory().createOMAttribute("name", null, "value");
-        assertTrue(attr.hasName(new QName("name")));
-        assertFalse(attr.hasName(new QName("urn:test", "name")));
+        assertThat(attr.hasName(new QName("name"))).isTrue();
+        assertThat(attr.hasName(new QName("urn:test", "name"))).isFalse();
     }
 }

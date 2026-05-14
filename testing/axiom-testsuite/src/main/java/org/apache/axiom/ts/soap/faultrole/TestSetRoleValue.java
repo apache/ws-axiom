@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faultrole;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultRole;
 
@@ -32,6 +34,6 @@ public class TestSetRoleValue extends TestCase {
     protected void runTest() throws Throwable {
         SOAPFaultRole role = soapFactory.createSOAPFaultRole();
         role.setRoleValue("urn:some:role");
-        assertEquals("urn:some:role", role.getText());
+        assertThat(role.getText()).isEqualTo("urn:some:role");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faultdetail;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultDetail;
@@ -34,17 +36,13 @@ public class TestWSCommons202 extends TestCase {
         SOAPFaultDetail soapFaultDetail = soapFactory.createSOAPFaultDetail();
         soapFaultDetail.setText("a");
 
-        assertTrue(soapFaultDetail.getText().trim().equals("a"));
-        assertTrue(
-                "Text serialization has problems. It had serialized same text twice",
-                soapFaultDetail.toString().indexOf("aa") == -1);
+        assertThat(soapFaultDetail.getText().trim()).isEqualTo("a");
+        assertThat(soapFaultDetail.toString()).doesNotContain("aa");
 
         OMElement omElement = soapFactory.createOMElement("DummyElement", null);
         soapFaultDetail.addChild(omElement);
         omElement.setText("Some text is here");
 
-        assertTrue(
-                "Children of SOAP Fault Detail element are not serialized properly",
-                soapFaultDetail.toString().indexOf("Some text is here") != -1);
+        assertThat(soapFaultDetail.toString()).contains("Some text is here");
     }
 }

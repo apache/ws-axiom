@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -50,6 +52,6 @@ public class TestGetChildrenWithNameNextWithoutHasNext extends AxiomTestCase {
         factory.createOMElement(new QName("child1"), element);
         OMElement child2 = factory.createOMElement(new QName("child2"), element);
         Iterator<OMElement> it = element.getChildrenWithName(new QName("child2"));
-        assertSame(child2, it.next());
+        assertThat(it.next()).isSameAs(child2);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringWriter;
 
 import org.apache.axiom.om.OMElement;
@@ -38,6 +40,6 @@ public class TestWriteTextToWithNonTextNodes extends AxiomTestCase {
         OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<a>A<b>B</b>C</a>");
         StringWriter out = new StringWriter();
         element.writeTextTo(out, true);
-        assertEquals(element.getText(), out.toString());
+        assertThat(out.toString()).isEqualTo(element.getText());
     }
 }

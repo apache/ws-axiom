@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
@@ -35,6 +37,6 @@ public class TestHasFaultWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPBody body = envelope.getBody();
-        assertTrue("Body Test With parser :- hasFault method returns false", body.hasFault());
+        assertThat(body.hasFault()).isTrue();
     }
 }

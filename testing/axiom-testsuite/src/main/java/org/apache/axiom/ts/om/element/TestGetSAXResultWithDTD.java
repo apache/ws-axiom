@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.transform.sax.SAXResult;
 
 import org.apache.axiom.om.OMContainer;
@@ -55,7 +57,7 @@ public class TestGetSAXResultWithDTD extends AxiomTestCase {
         contentHandler.endElement("", "test", "test");
         contentHandler.endDocument();
         OMNode child = root.getFirstOMChild();
-        assertTrue(child instanceof OMElement);
-        assertEquals("test", ((OMElement) child).getLocalName());
+        assertThat(child).isInstanceOf(OMElement.class);
+        assertThat(((OMElement) child).getLocalName()).isEqualTo("test");
     }
 }

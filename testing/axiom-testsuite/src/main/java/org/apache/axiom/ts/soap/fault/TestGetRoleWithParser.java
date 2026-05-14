@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.fault;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
@@ -35,12 +37,7 @@ public class TestGetRoleWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFault soapFaultWithParser = envelope.getBody().getFault();
-        assertNotNull(
-                "Fault Test with parser: - getRole method returns null",
-                soapFaultWithParser.getRole());
-        assertEquals(
-                "Fault Test with parser: - Fault role local name mismatch",
-                spec.getFaultRoleQName(),
-                soapFaultWithParser.getRole().getQName());
+        assertThat(soapFaultWithParser.getRole()).isNotNull();
+        assertThat(soapFaultWithParser.getRole().getQName()).isEqualTo(spec.getFaultRoleQName());
     }
 }

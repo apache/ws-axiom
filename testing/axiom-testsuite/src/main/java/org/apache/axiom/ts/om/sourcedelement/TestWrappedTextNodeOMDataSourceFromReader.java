@@ -19,6 +19,8 @@
 
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import java.util.Random;
 
@@ -52,6 +54,6 @@ public class TestWrappedTextNodeOMDataSourceFromReader extends AxiomTestCase {
                 new WrappedTextNodeOMDataSourceFromReader(qname, new StringReader(testData));
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(ds, qname);
-        assertEquals(testData, element.getText());
+        assertThat(element.getText()).isEqualTo(testData);
     }
 }

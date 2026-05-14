@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.fail;
+
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 

@@ -21,6 +21,7 @@ package org.apache.axiom.ts.om.element;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMElement;
@@ -58,7 +59,7 @@ public class TestDiscardPartiallyBuilt extends AxiomTestCase {
         // Navigate to the text node so that the element is partially built
         OMElement b = element.getFirstElement().getFirstElement();
         OMText text = (OMText) b.getFirstOMChild();
-        assertEquals("text", text.getText());
+        assertThat(text.getText()).isEqualTo("text");
 
         element.discard();
         assertAbout(xml())
@@ -67,6 +68,6 @@ public class TestDiscardPartiallyBuilt extends AxiomTestCase {
 
         // Force the builder to complete the document. If the discard method didn't adjust the
         // element depth correctly, then an exception will occur here
-        assertNull(root.getNextOMSibling());
+        assertThat(root.getNextOMSibling()).isNull();
     }
 }

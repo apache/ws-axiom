@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMDataSource;
@@ -45,10 +47,10 @@ public class TestCloseOnComplete extends AxiomTestCase {
         PullOMDataSource ds = new PullOMDataSource("<root><a/></root>");
         OMSourcedElement element = metaFactory.getOMFactory().createOMElement(ds);
         OMNode child = element.getFirstOMChild();
-        assertFalse(element.isComplete());
-        assertTrue(ds.hasUnclosedReaders());
+        assertThat(element.isComplete()).isFalse();
+        assertThat(ds.hasUnclosedReaders()).isTrue();
         child.getNextOMSibling();
-        assertTrue(element.isComplete());
-        assertFalse(ds.hasUnclosedReaders());
+        assertThat(element.isComplete()).isTrue();
+        assertThat(ds.hasUnclosedReaders()).isFalse();
     }
 }

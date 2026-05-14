@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMDocument;
@@ -49,6 +51,6 @@ public class TestDiscardDocumentElement extends AxiomTestCase {
                         .getDocument();
         OMElement element = document.getOMDocumentElement();
         element.discard();
-        assertNull(document.getFirstOMChild());
+        assertThat(document.getFirstOMChild()).isNull();
     }
 }

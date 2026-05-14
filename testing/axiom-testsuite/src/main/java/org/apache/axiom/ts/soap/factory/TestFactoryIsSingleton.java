@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.soap.FactorySelector;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -38,7 +40,7 @@ public class TestFactoryIsSingleton extends TestCase {
     @Override
     protected void runTest() throws Throwable {
         FactorySelector factorySelector = spec.getAdapter(FactorySelector.class);
-        assertSame(
-                factorySelector.getFactory(metaFactory), factorySelector.getFactory(metaFactory));
+        assertThat(factorySelector.getFactory(metaFactory))
+                .isSameAs(factorySelector.getFactory(metaFactory));
     }
 }

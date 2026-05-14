@@ -21,6 +21,7 @@ package org.apache.axiom.ts.soap.envelope;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -72,13 +73,9 @@ public abstract class CloneTestCase extends TestCase {
         if (source instanceof OMElement element) {
 
             if (element instanceof OMSourcedElement sourcedElement) {
-                assertTrue(
-                        "Source = "
-                                + element.getClass().getName()
-                                + "Target = "
-                                + target.getClass().getName(),
-                        target instanceof OMSourcedElement);
-                assertEquals(sourcedElement.isExpanded(), ((OMSourcedElement) target).isExpanded());
+                assertThat(target).isInstanceOf(OMSourcedElement.class);
+                assertThat(((OMSourcedElement) target).isExpanded())
+                        .isEqualTo(sourcedElement.isExpanded());
                 if (sourcedElement.isExpanded()) {
                     Iterator<OMNode> i = element.getChildren();
                     Iterator<OMNode> j = ((OMElement) target).getChildren();
@@ -87,13 +84,10 @@ public abstract class CloneTestCase extends TestCase {
                         OMNode targetChild = j.next();
                         identityCheck(sourceChild, targetChild, depth + "  ");
                     }
-                    assertEquals(
-                            "Source and Target have different number of children",
-                            i.hasNext(),
-                            j.hasNext());
+                    assertThat(j.hasNext()).isEqualTo(i.hasNext());
                 }
             } else {
-                assertEquals(element.getClass(), target.getClass());
+                assertThat(target.getClass()).isEqualTo(element.getClass());
                 Iterator<OMNode> i = element.getChildren();
                 Iterator<OMNode> j = ((OMElement) target).getChildren();
                 while (i.hasNext() && j.hasNext()) {
@@ -101,13 +95,10 @@ public abstract class CloneTestCase extends TestCase {
                     OMNode targetChild = j.next();
                     identityCheck(sourceChild, targetChild, depth + "  ");
                 }
-                assertEquals(
-                        "Source and Target have different number of children",
-                        i.hasNext(),
-                        j.hasNext());
+                assertThat(j.hasNext()).isEqualTo(i.hasNext());
             }
         } else {
-            assertEquals(source.getClass(), target.getClass());
+            assertThat(target.getClass()).isEqualTo(source.getClass());
         }
     }
 }

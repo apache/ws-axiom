@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -45,13 +47,13 @@ public class TestDeclareNamespaceWithGeneratedPrefix3 extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = element.declareNamespace("urn:ns", null);
-        assertEquals("urn:ns", ns.getNamespaceURI());
-        assertNotNull(ns.getPrefix());
-        assertTrue(ns.getPrefix().length() > 0);
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns");
+        assertThat(ns.getPrefix()).isNotNull();
+        assertThat(ns.getPrefix().length() > 0).isTrue();
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMNamespace ns2 = it.next();
-        assertEquals(ns, ns2);
-        assertFalse(it.hasNext());
+        assertThat(ns2).isEqualTo(ns);
+        assertThat(it.hasNext()).isFalse();
     }
 }

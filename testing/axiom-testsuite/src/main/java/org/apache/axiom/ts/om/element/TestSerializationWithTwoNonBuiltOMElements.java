@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMElement;
@@ -54,7 +56,7 @@ public class TestSerializationWithTwoNonBuiltOMElements extends AxiomTestCase {
                         .getDocumentElement(true);
         rootElement.addChild(childTwo);
 
-        assertTrue(expectedXML.equals(rootElement.toString()));
+        assertThat(expectedXML.equals(rootElement.toString())).isTrue();
 
         childOne.close(false);
         childTwo.close(false);

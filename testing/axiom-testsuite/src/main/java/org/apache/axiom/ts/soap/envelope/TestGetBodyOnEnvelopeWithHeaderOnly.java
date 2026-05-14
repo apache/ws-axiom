@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 
@@ -33,6 +35,6 @@ public class TestGetBodyOnEnvelopeWithHeaderOnly extends TestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         soapFactory.createSOAPHeader(envelope);
-        assertNull(envelope.getBody());
+        assertThat(envelope.getBody()).isNull();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMAttribute;
@@ -54,14 +56,14 @@ public class TestSetBooleanAttribute extends BooleanAttributeTestCase {
                 soapFactory.createSOAPHeaderBlock("testHeaderBlock", namespace, soapHeader);
         BooleanAttributeAccessor accessor = attribute.getAdapter(BooleanAttributeAccessor.class);
         accessor.setValue(soapHeaderBlock, value);
-        assertEquals(value, accessor.getValue(soapHeaderBlock));
+        assertThat(accessor.getValue(soapHeaderBlock)).isEqualTo(value);
         Iterator<OMAttribute> it = soapHeaderBlock.getAllAttributes();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMAttribute att = it.next();
         OMNamespace ns = att.getNamespace();
-        assertEquals(spec.getEnvelopeNamespaceURI(), ns.getNamespaceURI());
-        assertEquals(attribute.getName(spec), att.getLocalName());
-        assertEquals(spec.getCanonicalRepresentation(value), att.getAttributeValue());
-        assertFalse(it.hasNext());
+        assertThat(ns.getNamespaceURI()).isEqualTo(spec.getEnvelopeNamespaceURI());
+        assertThat(att.getLocalName()).isEqualTo(attribute.getName(spec));
+        assertThat(att.getAttributeValue()).isEqualTo(spec.getCanonicalRepresentation(value));
+        assertThat(it.hasNext()).isFalse();
     }
 }

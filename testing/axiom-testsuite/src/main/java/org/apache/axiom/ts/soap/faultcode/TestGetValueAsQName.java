@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faultcode;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -39,6 +41,6 @@ public class TestGetValueAsQName extends TestCase {
         SOAPFaultCode code = soapFactory.createSOAPFaultCode(fault);
         QName value = new QName("urn:test", "myFaultCode");
         code.setValue(value);
-        assertEquals(value, code.getValueAsQName());
+        assertThat(code.getValueAsQName()).isEqualTo(value);
     }
 }

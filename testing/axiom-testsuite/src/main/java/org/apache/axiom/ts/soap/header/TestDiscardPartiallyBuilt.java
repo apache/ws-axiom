@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.header;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -50,10 +52,10 @@ public class TestDiscardPartiallyBuilt extends SampleBasedSOAPTestCase {
                         new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));
         from.getFirstElement().getFirstOMChild();
         // Just in case getFirstChildWithName or getFirstElement did stupid things
-        assertFalse(from.isComplete());
+        assertThat(from.isComplete()).isFalse();
 
         header.discard();
         OMElement body = envelope.getFirstElement();
-        assertTrue(body instanceof SOAPBody);
+        assertThat(body).isInstanceOf(SOAPBody.class);
     }
 }

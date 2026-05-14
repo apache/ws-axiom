@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPVersion;
@@ -36,6 +38,6 @@ public class TestGetVersion extends TestCase {
         SOAPHeaderBlock h =
                 soapFactory.createSOAPHeaderBlock(
                         "myHeader", soapFactory.createOMNamespace("urn:test", "p"));
-        assertSame(spec.getAdapter(SOAPVersion.class), h.getVersion());
+        assertThat(h.getVersion()).isSameAs(spec.getAdapter(SOAPVersion.class));
     }
 }

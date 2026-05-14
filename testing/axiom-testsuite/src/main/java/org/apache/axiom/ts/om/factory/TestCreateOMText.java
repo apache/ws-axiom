@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -41,9 +43,7 @@ public class TestCreateOMText extends AxiomTestCase {
         OMElement omElement = factory.createOMElement("chinthaka", namespace);
         String text = "sampleText";
         OMText omText = factory.createOMText(omElement, text);
-        assertTrue("Programatically created OMText should have done = true ", omText.isComplete());
-        assertTrue(
-                "Programatically created OMText should have correct text value ",
-                text.equals(omText.getText()));
+        assertThat(omText.isComplete()).isTrue();
+        assertThat(omText.getText()).isEqualTo(text);
     }
 }

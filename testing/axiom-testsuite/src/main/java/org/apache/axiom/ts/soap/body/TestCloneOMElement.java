@@ -21,6 +21,7 @@ package org.apache.axiom.ts.soap.body;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -44,8 +45,8 @@ public class TestCloneOMElement extends SampleBasedSOAPTestCase {
         OMElement secondClonedBodyElement = body.cloneOMElement();
 
         // cloneOMElement creates plain OMElements
-        assertFalse(firstClonedBodyElement instanceof SOAPBody);
-        assertFalse(secondClonedBodyElement instanceof SOAPBody);
+        assertThat(firstClonedBodyElement).isNotInstanceOf(SOAPBody.class);
+        assertThat(secondClonedBodyElement).isNotInstanceOf(SOAPBody.class);
 
         // first check whether both have the same information
         assertAbout(xml())
@@ -61,8 +62,8 @@ public class TestCloneOMElement extends SampleBasedSOAPTestCase {
                 .hasSameContentAs(xml(OMElement.class, firstClonedBodyElement));
 
         // The clone is expected to be orphaned
-        assertNull(firstClonedBodyElement.getParent());
-        assertNull(secondClonedBodyElement.getParent());
+        assertThat(firstClonedBodyElement.getParent()).isNull();
+        assertThat(secondClonedBodyElement.getParent()).isNull();
 
         envelope.close(false);
     }

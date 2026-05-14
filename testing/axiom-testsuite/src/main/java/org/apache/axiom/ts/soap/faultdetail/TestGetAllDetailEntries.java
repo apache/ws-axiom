@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faultdetail;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -43,25 +45,13 @@ public class TestGetAllDetailEntries extends TestCase {
         SOAPFaultDetail soapFaultDetail = soapFactory.createSOAPFaultDetail(fault);
         OMNamespace omNamespace = soapFactory.createOMNamespace("http://www.test.org", "test");
         Iterator<OMElement> iterator = soapFaultDetail.getAllDetailEntries();
-        assertFalse(
-                "SOAP Fault Detail Test : - After creating SOAP11FaultDetail element, it has DetailEntries",
-                iterator.hasNext());
+        assertThat(iterator.hasNext()).isFalse();
         soapFaultDetail.addDetailEntry(soapFactory.createOMElement("DetailEntry", omNamespace));
         iterator = soapFaultDetail.getAllDetailEntries();
         OMElement detailEntry = iterator.next();
-        assertNotNull(
-                "SOAP Fault Detail Test : - After calling addDetailEntry method, getAllDetailEntries method returns empty iterator",
-                detailEntry);
-        assertEquals(
-                "SOAP Fault Detail Test : - detailEntry local name mismatch",
-                "DetailEntry",
-                detailEntry.getLocalName());
-        assertEquals(
-                "SOAP Fault Detail Test : - detailEntry namespace uri mismatch",
-                "http://www.test.org",
-                detailEntry.getNamespace().getNamespaceURI());
-        assertFalse(
-                "SOAP Fault Detail Test : - After calling addDetailEntry method once, getAllDetailEntries method returns an iterator with two objects",
-                iterator.hasNext());
+        assertThat(detailEntry).isNotNull();
+        assertThat(detailEntry.getLocalName()).isEqualTo("DetailEntry");
+        assertThat(detailEntry.getNamespace().getNamespaceURI()).isEqualTo("http://www.test.org");
+        assertThat(iterator.hasNext()).isFalse();
     }
 }

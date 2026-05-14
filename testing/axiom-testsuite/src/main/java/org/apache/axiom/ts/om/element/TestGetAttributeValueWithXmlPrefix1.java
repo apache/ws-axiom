@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -47,9 +49,7 @@ public class TestGetAttributeValueWithXmlPrefix1 extends AxiomTestCase {
                         "<wsp:Policy xml:base=\"uri:thisBase\" "
                                 + "xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\">"
                                 + "</wsp:Policy>");
-        assertEquals(
-                "Attribute value mismatch",
-                "uri:thisBase",
-                elem.getAttributeValue(new QName(XMLConstants.XML_NS_URI, "base")));
+        assertThat(elem.getAttributeValue(new QName(XMLConstants.XML_NS_URI, "base")))
+                .isEqualTo("uri:thisBase");
     }
 }

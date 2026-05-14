@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
@@ -35,6 +37,6 @@ public class TestCreateOMTextCDATASection extends OMDOMTestCase {
                 metaFactory
                         .getOMFactory()
                         .createOMText("cdata section content", OMNode.CDATA_SECTION_NODE);
-        assertTrue(text instanceof CDATASection);
+        assertThat(text).isInstanceOf(CDATASection.class);
     }
 }

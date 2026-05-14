@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -36,14 +38,14 @@ public class TestGetNamespaceURI extends LazyNameTestCase {
     protected void runTest(OMSourcedElement element) throws Throwable {
         String uri = qname.getNamespaceURI();
         if (uri.length() == 0) {
-            assertNull(element.getNamespaceURI());
+            assertThat(element.getNamespaceURI()).isNull();
         } else {
-            assertEquals(uri, element.getNamespaceURI());
+            assertThat(element.getNamespaceURI()).isEqualTo(uri);
         }
         if (variant.isNamespaceURIRequiresExpansion()) {
-            assertTrue(element.isExpanded());
+            assertThat(element.isExpanded()).isTrue();
         } else {
-            assertFalse(element.isExpanded());
+            assertThat(element.isExpanded()).isFalse();
         }
     }
 }

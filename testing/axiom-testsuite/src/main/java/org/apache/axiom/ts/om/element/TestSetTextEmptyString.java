@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -39,6 +41,6 @@ public class TestSetTextEmptyString extends AxiomTestCase {
         OMElement element = metaFactory.getOMFactory().createOMElement("test", null);
         element.setText("some text");
         element.setText("");
-        assertNull(element.getFirstOMChild());
+        assertThat(element.getFirstOMChild()).isNull();
     }
 }

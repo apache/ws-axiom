@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -53,9 +55,9 @@ public class TestAddChildIncomplete extends AxiomTestCase {
                         .getDocumentElement();
         parent.addChild(factory.createOMElement("c", null));
         Iterator<OMNode> it = parent.getChildren();
-        assertEquals("a", ((OMElement) it.next()).getLocalName());
-        assertEquals("b", ((OMElement) it.next()).getLocalName());
-        assertEquals("c", ((OMElement) it.next()).getLocalName());
-        assertFalse(it.hasNext());
+        assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("a");
+        assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("b");
+        assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("c");
+        assertThat(it.hasNext()).isFalse();
     }
 }

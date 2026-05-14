@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -36,6 +38,6 @@ public class TestGetMetaFactory extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        assertSame(metaFactory, metaFactory.getOMFactory().getMetaFactory());
+        assertThat(metaFactory.getOMFactory().getMetaFactory()).isSameAs(metaFactory);
     }
 }

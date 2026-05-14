@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -40,7 +42,7 @@ public class TestSerializeModifiedOMSEWithNonDestructiveDataSource extends Axiom
     @Override
     protected void runTest() throws Throwable {
         OMDataSourceExt ds = new StringOMDataSource("<element><child/></element>");
-        assertFalse(ds.isDestructiveWrite());
+        assertThat(ds.isDestructiveWrite()).isFalse();
 
         OMFactory f = metaFactory.getOMFactory();
         OMElement element = f.createOMElement(ds, "element", null);
@@ -49,12 +51,12 @@ public class TestSerializeModifiedOMSEWithNonDestructiveDataSource extends Axiom
 
         StringWriter sw = new StringWriter();
         element.serialize(sw);
-        assertTrue(sw.toString().indexOf("TEST") != -1);
+        assertThat(sw.toString()).contains("TEST");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         element.serialize(baos);
-        assertTrue(new String(baos.toByteArray(), StandardCharsets.UTF_8).indexOf("TEST") != -1);
+        assertThat(new String(baos.toByteArray(), StandardCharsets.UTF_8)).contains("TEST");
 
-        assertTrue(element.toString().indexOf("TEST") != -1);
+        assertThat(element.toString()).contains("TEST");
     }
 }

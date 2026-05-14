@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPFactory;
 
 import com.google.inject.Inject;
@@ -29,6 +31,6 @@ public class TestGetBodyOnEmptyEnvelope extends TestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        assertNull(soapFactory.createSOAPEnvelope().getBody());
+        assertThat(soapFactory.createSOAPEnvelope().getBody()).isNull();
     }
 }

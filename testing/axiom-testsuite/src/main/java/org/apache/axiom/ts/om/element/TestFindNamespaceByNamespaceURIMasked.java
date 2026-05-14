@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
@@ -42,7 +44,7 @@ public class TestFindNamespaceByNamespaceURIMasked extends AxiomTestCase {
                 AXIOMUtil.stringToOM(
                         metaFactory.getOMFactory(),
                         "<root xmlns:p='urn:ns1'><child xmlns:p='urn:ns2'/></a>");
-        assertNull(root.getFirstElement().findNamespace("urn:ns1", null));
+        assertThat(root.getFirstElement().findNamespace("urn:ns1", null)).isNull();
         root.close(false);
     }
 }

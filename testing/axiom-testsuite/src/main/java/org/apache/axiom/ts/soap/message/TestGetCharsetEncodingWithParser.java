@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.message;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -53,6 +55,6 @@ public class TestGetCharsetEncodingWithParser extends TestCase {
                 OMXMLBuilderFactory.createSOAPModelBuilder(
                                 metaFactory, new ByteArrayInputStream(baos.toByteArray()), encoding)
                         .getSOAPMessage();
-        assertEquals(encoding, message.getCharsetEncoding());
+        assertThat(message.getCharsetEncoding()).isEqualTo(encoding);
     }
 }

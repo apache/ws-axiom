@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -49,13 +51,13 @@ public class TestGetDescendants extends AxiomTestCase {
         // (the iterator must never return <g>, which is a sibling of <a>).
         Iterator<OMNode> it = element.getFirstElement().getDescendants(includeSelf);
         if (includeSelf) {
-            assertEquals("a", ((OMElement) it.next()).getLocalName());
+            assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("a");
         }
-        assertEquals("b", ((OMElement) it.next()).getLocalName());
-        assertEquals("c", ((OMElement) it.next()).getLocalName());
-        assertEquals("d", ((OMElement) it.next()).getLocalName());
-        assertEquals("e", ((OMElement) it.next()).getLocalName());
-        assertEquals("f", ((OMElement) it.next()).getLocalName());
-        assertFalse(it.hasNext());
+        assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("b");
+        assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("c");
+        assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("d");
+        assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("e");
+        assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("f");
+        assertThat(it.hasNext()).isFalse();
     }
 }

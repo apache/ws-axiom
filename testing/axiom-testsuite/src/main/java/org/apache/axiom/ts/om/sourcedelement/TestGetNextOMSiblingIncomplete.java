@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -48,10 +50,10 @@ public class TestGetNextOMSiblingIncomplete extends AxiomTestCase {
         parent.addChild(omse);
         // Cause expansion of the sourced element without building it completely
         omse.getLocalName();
-        assertTrue(omse.isExpanded());
-        assertFalse(omse.isComplete());
+        assertThat(omse.isExpanded()).isTrue();
+        assertThat(omse.isComplete()).isFalse();
         // Call getNextOMSibling(); this should not build the element
         omse.getNextOMSibling();
-        assertFalse(omse.isComplete());
+        assertThat(omse.isComplete()).isFalse();
     }
 }

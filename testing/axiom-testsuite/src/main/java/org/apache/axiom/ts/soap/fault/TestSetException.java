@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.fault;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -39,16 +41,16 @@ public class TestSetException extends TestCase {
         Exception exception = new Exception("Test exception message");
         fault.setException(exception);
         SOAPFaultDetail detail = fault.getDetail();
-        assertNotNull(detail);
+        assertThat(detail).isNotNull();
         Iterator<OMElement> it = detail.getAllDetailEntries();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMElement entry = it.next();
-        assertNotNull(entry);
-        assertEquals(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, entry.getLocalName());
-        assertNull(entry.getNamespace());
+        assertThat(entry).isNotNull();
+        assertThat(entry.getLocalName()).isEqualTo(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY);
+        assertThat(entry.getNamespace()).isNull();
         String text = entry.getText();
-        assertTrue(text.startsWith(Exception.class.getName() + ": Test exception message"));
-        assertTrue(text.contains("at " + TestSetException.class.getName()));
-        assertFalse(it.hasNext());
+        assertThat(text).startsWith(Exception.class.getName() + ": Test exception message");
+        assertThat(text).contains("at " + TestSetException.class.getName());
+        assertThat(it.hasNext()).isFalse();
     }
 }

@@ -19,6 +19,8 @@
 
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -43,8 +45,8 @@ public class TestGetQNameWithNamespace extends AxiomTestCase {
         OMElement elem = factory.createOMElement(localName, namespace, prefix);
         QName qname = elem.getQName();
 
-        assertEquals("Localname mismatch", localName, qname.getLocalPart());
-        assertEquals("Namespace mismatch", namespace, qname.getNamespaceURI());
-        assertEquals("namespace prefix mismatch", prefix, qname.getPrefix());
+        assertThat(qname.getLocalPart()).isEqualTo(localName);
+        assertThat(qname.getNamespaceURI()).isEqualTo(namespace);
+        assertThat(qname.getPrefix()).isEqualTo(prefix);
     }
 }

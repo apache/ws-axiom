@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -55,7 +57,13 @@ public class TestMultipleDefaultNS extends AxiomTestCase {
         OMNamespace omElementTwoChildNS = omElementTwoChild.getNamespace();
         // TODO: LLOM's and DOOM's behaviors are slightly different here; need to check if both are
         // allowed
-        assertTrue(omElementOneChildNS == null || "".equals(omElementOneChildNS.getNamespaceURI()));
-        assertTrue(omElementTwoChildNS == null || "".equals(omElementTwoChildNS.getNamespaceURI()));
+        assertThat(omElementOneChildNS)
+                .satisfiesAnyOf(
+                        ns -> assertThat(ns).isNull(),
+                        ns -> assertThat(ns.getNamespaceURI()).isEmpty());
+        assertThat(omElementTwoChildNS)
+                .satisfiesAnyOf(
+                        ns -> assertThat(ns).isNull(),
+                        ns -> assertThat(ns.getNamespaceURI()).isEmpty());
     }
 }

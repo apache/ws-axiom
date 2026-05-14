@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -53,10 +55,10 @@ public class TestSetTextQName extends AxiomTestCase {
                 foundNamespace = true;
             }
         }
-        assertTrue("Namespace of the text is not defined in the parent element", foundNamespace);
+        assertThat(foundNamespace).isTrue();
 
-        assertTrue(element.toString().contains("ns:test"));
-        assertEquals("ns:test", element.getText());
-        assertEquals(qname, element.getTextAsQName());
+        assertThat(element.toString()).contains("ns:test");
+        assertThat(element.getText()).isEqualTo("ns:test");
+        assertThat(element.getTextAsQName()).isEqualTo(qname);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.fault;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -43,7 +45,7 @@ public class TestGetException extends TestCase {
         detailEntry.setText("This is an exception message");
         detail.addDetailEntry(detailEntry);
         Exception exception = fault.getException();
-        assertNotNull(exception);
-        assertEquals("This is an exception message", exception.getMessage());
+        assertThat(exception).isNotNull();
+        assertThat(exception.getMessage()).isEqualTo("This is an exception message");
     }
 }

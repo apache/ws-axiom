@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -33,7 +35,7 @@ public class TestCreateOMCommentWithoutParent extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMComment comment = metaFactory.getOMFactory().createOMComment(null, "my comment");
-        assertNull(comment.getParent());
-        assertEquals("my comment", comment.getValue());
+        assertThat(comment.getParent()).isNull();
+        assertThat(comment.getValue()).isEqualTo("my comment");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.XMLConstants;
 
 import org.apache.axiom.om.OMElement;
@@ -36,6 +38,6 @@ public class TestRemoveAttributeNSNamespaceDeclaration extends OMDOMTestCase {
         OMElement element = factory.createOMElement("test", null);
         element.declareNamespace("urn:test", "ns");
         ((Element) element).removeAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "ns");
-        assertFalse(element.getAllDeclaredNamespaces().hasNext());
+        assertThat(element.getAllDeclaredNamespaces().hasNext()).isFalse();
     }
 }

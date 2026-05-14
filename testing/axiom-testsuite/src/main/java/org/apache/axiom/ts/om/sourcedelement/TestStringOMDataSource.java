@@ -55,9 +55,9 @@ public class TestStringOMDataSource extends AxiomTestCase {
         OMSourcedElement omse = factory.createOMElement(somds, localName, ns);
         parent.addChild(omse);
         OMNode firstChild = parent.getFirstOMChild();
-        assertTrue("Expected OMSourcedElement child", firstChild instanceof OMSourcedElement);
+        assertThat(firstChild).isInstanceOf(OMSourcedElement.class);
         OMSourcedElement child = (OMSourcedElement) firstChild;
-        assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
+        assertThat(child.isExpanded()).isFalse();
         assertThat(child.getDataSource()).isInstanceOf(StringOMDataSource.class);
 
         // A StringOMDataSource does not consume the backing object when read.
@@ -65,7 +65,7 @@ public class TestStringOMDataSource extends AxiomTestCase {
         // cause expansion of the OMSourcedElement.
         XMLStreamReader reader = child.getXMLStreamReader();
         reader.next();
-        assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
+        assertThat(child.isExpanded()).isFalse();
 
         // Likewise, a StringOMDataSource does not consume the backing object when
         // written.  Thus serializing the OMSourcedElement should not cause the expansion
@@ -73,9 +73,8 @@ public class TestStringOMDataSource extends AxiomTestCase {
         StringWriter out = new StringWriter();
         parent.serialize(out);
         //        System.out.println(output);
-        assertTrue(
-                "The payload was not present in the output", out.toString().indexOf(payload1) > 0);
-        assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
+        assertThat(out.toString()).contains(payload1);
+        assertThat(child.isExpanded()).isFalse();
 
         // Test getting the raw content from the StringOMDataSource.
         StringOMDataSource ds = (StringOMDataSource) child.getDataSource();
@@ -83,6 +82,6 @@ public class TestStringOMDataSource extends AxiomTestCase {
 
         // Validate close
         ds.close();
-        assertTrue("Close should free the resource", ds.getObject() == null);
+        assertThat(ds.getObject()).isNull();
     }
 }

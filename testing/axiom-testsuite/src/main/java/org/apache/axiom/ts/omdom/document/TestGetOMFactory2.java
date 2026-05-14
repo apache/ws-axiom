@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
@@ -35,6 +37,6 @@ public class TestGetOMFactory2 extends OMDOMTestCase {
     protected void runTest() throws Throwable {
         Document document =
                 metaFactory.getDOMImplementation().createDocument("urn:test", "root", null);
-        assertSame(metaFactory.getOMFactory(), ((OMDocument) document).getOMFactory());
+        assertThat(((OMDocument) document).getOMFactory()).isSameAs(metaFactory.getOMFactory());
     }
 }

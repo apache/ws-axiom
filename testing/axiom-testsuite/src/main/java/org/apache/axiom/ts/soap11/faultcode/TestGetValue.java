@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap11.faultcode;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -43,6 +45,6 @@ public class TestGetValue extends TestCase {
         SOAPFault fault = soapFactory.createSOAPFault(env.getBody());
         SOAPFaultCode code = soapFactory.createSOAPFaultCode(fault);
         code.setText(new QName("urn:test", "test"));
-        assertNull(code.getValue());
+        assertThat(code.getValue()).isNull();
     }
 }

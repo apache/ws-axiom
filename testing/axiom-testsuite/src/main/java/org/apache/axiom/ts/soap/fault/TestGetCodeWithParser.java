@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.fault;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
@@ -35,12 +37,7 @@ public class TestGetCodeWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFault soapFaultWithParser = envelope.getBody().getFault();
-        assertNotNull(
-                "Fault Test with parser: - getCode method returns null",
-                soapFaultWithParser.getCode());
-        assertEquals(
-                "Fault Test with parser: - Fault code local name mismatch",
-                spec.getFaultCodeQName(),
-                soapFaultWithParser.getCode().getQName());
+        assertThat(soapFaultWithParser.getCode()).isNotNull();
+        assertThat(soapFaultWithParser.getCode().getQName()).isEqualTo(spec.getFaultCodeQName());
     }
 }

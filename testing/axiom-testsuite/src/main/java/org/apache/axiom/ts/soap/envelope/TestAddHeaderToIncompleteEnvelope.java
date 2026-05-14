@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -41,8 +43,8 @@ public class TestAddHeaderToIncompleteEnvelope extends SampleBasedSOAPTestCase {
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        assertNull(envelope.getHeader());
+        assertThat(envelope.getHeader()).isNull();
         SOAPHeader header = soapFactory.createSOAPHeader(envelope);
-        assertSame(header, envelope.getHeader());
+        assertThat(envelope.getHeader()).isSameAs(header);
     }
 }

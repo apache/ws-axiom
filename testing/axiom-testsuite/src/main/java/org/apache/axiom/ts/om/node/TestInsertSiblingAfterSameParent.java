@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.node;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -49,11 +51,11 @@ public class TestInsertSiblingAfterSameParent extends AxiomTestCase {
         parent.addChild(text2);
         parent.addChild(text3);
         text1.insertSiblingAfter(text3);
-        assertSame(parent, text3.getParent());
+        assertThat(text3.getParent()).isSameAs(parent);
         Iterator<OMNode> it = parent.getChildren();
-        assertSame(text1, it.next());
-        assertSame(text3, it.next());
-        assertSame(text2, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.next()).isSameAs(text1);
+        assertThat(it.next()).isSameAs(text3);
+        assertThat(it.next()).isSameAs(text2);
+        assertThat(it.hasNext()).isFalse();
     }
 }

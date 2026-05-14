@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -54,13 +56,13 @@ public class TestSetTextQNameWithExistingChildren extends AxiomTestCase {
         QName qname = new QName("urn:ns1", "test", "ns");
         element.setText(qname);
 
-        assertEquals("ns:test", element.getText());
+        assertThat(element.getText()).isEqualTo("ns:test");
 
         // Check that OMElement#setText() has created the expected nodes
         OMNode child = element.getFirstOMChild();
-        assertTrue(child instanceof OMText);
-        assertSame(element, child.getParent());
-        assertEquals("ns:test", ((OMText) child).getText());
-        assertNull(child.getNextOMSibling());
+        assertThat(child).isInstanceOf(OMText.class);
+        assertThat(child.getParent()).isSameAs(element);
+        assertThat(((OMText) child).getText()).isEqualTo("ns:test");
+        assertThat(child.getNextOMSibling()).isNull();
     }
 }

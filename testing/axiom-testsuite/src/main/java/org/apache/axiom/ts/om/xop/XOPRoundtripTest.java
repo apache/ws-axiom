@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.xop;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stax.StAXSource;
@@ -54,9 +56,9 @@ public class XOPRoundtripTest extends AxiomTestCase {
                                 xopEncodedStream.getAttachmentAccessor())
                         .getDocumentElement();
         OMText child = (OMText) element2.getFirstOMChild();
-        assertNotNull(child);
-        assertTrue(child.isBinary());
-        assertTrue(child.isOptimized());
-        assertSame(blob, child.getBlob());
+        assertThat(child).isNotNull();
+        assertThat(child.isBinary()).isTrue();
+        assertThat(child.isOptimized()).isTrue();
+        assertThat(child.getBlob()).isSameAs(blob);
     }
 }

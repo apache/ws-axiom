@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.namespace.QName;
@@ -61,19 +63,19 @@ public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCas
                 OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>"))
                         .getDocumentElement(true);
         root.addChild(child);
-        assertFalse(child.isComplete());
+        assertThat(child.isComplete()).isFalse();
         XMLStreamReader stream = root.getXMLStreamReader(cache);
-        assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
-        assertEquals("root", stream.getLocalName());
-        assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
-        assertEquals("a", stream.getLocalName());
-        assertEquals(XMLStreamReader.CHARACTERS, stream.next());
-        assertEquals("test", stream.getText());
-        assertEquals(XMLStreamReader.END_ELEMENT, stream.next());
-        assertEquals("a", stream.getLocalName());
-        assertEquals(XMLStreamReader.END_ELEMENT, stream.next());
-        assertEquals("root", stream.getLocalName());
-        assertEquals(XMLStreamReader.END_DOCUMENT, stream.next());
-        assertEquals(cache, child.isComplete());
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(stream.getLocalName()).isEqualTo("root");
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(stream.getLocalName()).isEqualTo("a");
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.CHARACTERS);
+        assertThat(stream.getText()).isEqualTo("test");
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.END_ELEMENT);
+        assertThat(stream.getLocalName()).isEqualTo("a");
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.END_ELEMENT);
+        assertThat(stream.getLocalName()).isEqualTo("root");
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.END_DOCUMENT);
+        assertThat(child.isComplete()).isEqualTo(cache);
     }
 }

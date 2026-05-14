@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -28,7 +30,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.junit.Assert;
 
 public class WriteProcessingInstruction2Scenario implements PushOMDataSourceScenario {
     @Override
@@ -51,9 +52,9 @@ public class WriteProcessingInstruction2Scenario implements PushOMDataSourceScen
     @Override
     public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         OMNode child = element.getFirstOMChild();
-        Assert.assertTrue(child instanceof OMProcessingInstruction);
+        assertThat(child).isInstanceOf(OMProcessingInstruction.class);
         OMProcessingInstruction pi = (OMProcessingInstruction) child;
-        Assert.assertEquals("target", pi.getTarget());
-        Assert.assertEquals("data", pi.getValue());
+        assertThat(pi.getTarget()).isEqualTo("target");
+        assertThat(pi.getValue()).isEqualTo("data");
     }
 }

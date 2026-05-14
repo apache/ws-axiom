@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -52,9 +54,9 @@ public class TestGetNamespaceNormalized extends AxiomTestCase {
                         new StringOMDataSource("<element>content</element>"), "element", ns);
         // This actually returns the "declared" namespace because the sourced element is not
         // expanded yet. Nevertheless the value should have been normalized to null.
-        assertNull(element.getNamespace());
+        assertThat(element.getNamespace()).isNull();
         // Now expand the element and check getNamespace() again
         element.getFirstOMChild();
-        assertNull(element.getNamespace());
+        assertThat(element.getNamespace()).isNull();
     }
 }

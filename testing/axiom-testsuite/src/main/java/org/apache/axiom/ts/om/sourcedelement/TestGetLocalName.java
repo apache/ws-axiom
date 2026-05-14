@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -34,11 +36,11 @@ public class TestGetLocalName extends LazyNameTestCase {
 
     @Override
     protected void runTest(OMSourcedElement element) throws Throwable {
-        assertEquals(qname.getLocalPart(), element.getLocalName());
+        assertThat(element.getLocalName()).isEqualTo(qname.getLocalPart());
         if (variant.isLocalNameRequiresExpansion()) {
-            assertTrue(element.isExpanded());
+            assertThat(element.isExpanded()).isTrue();
         } else {
-            assertFalse(element.isExpanded());
+            assertThat(element.isExpanded()).isFalse();
         }
     }
 }

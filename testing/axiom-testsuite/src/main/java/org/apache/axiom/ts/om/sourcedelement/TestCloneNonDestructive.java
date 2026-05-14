@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.nio.charset.StandardCharsets;
 
 import javax.xml.namespace.QName;
@@ -58,13 +60,13 @@ public class TestCloneNonDestructive extends AxiomTestCase {
         options.setCopyOMDataSources(copyOMDataSources);
         OMElement clone = (OMElement) element.clone(options);
         if (copyOMDataSources) {
-            assertTrue(clone instanceof OMSourcedElement);
-            assertFalse(element.isExpanded());
+            assertThat(clone).isInstanceOf(OMSourcedElement.class);
+            assertThat(element.isExpanded()).isFalse();
         } else {
-            assertFalse(clone instanceof OMSourcedElement);
-            assertTrue(clone.isComplete());
+            assertThat(clone).isNotInstanceOf(OMSourcedElement.class);
+            assertThat(clone.isComplete()).isTrue();
         }
-        assertEquals("test", clone.getText());
-        assertEquals("wrapper", clone.getLocalName());
+        assertThat(clone.getText()).isEqualTo("test");
+        assertThat(clone.getLocalName()).isEqualTo("wrapper");
     }
 }

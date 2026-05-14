@@ -21,6 +21,7 @@ package org.apache.axiom.ts.om.element;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMContainer;
@@ -54,18 +55,18 @@ public class TestRemoveChildren extends AxiomTestCase {
             element.build();
         }
         OMElement firstChild = (OMElement) element.getFirstOMChild();
-        assertEquals(complete, element.isComplete());
-        assertEquals(complete, firstChild.isComplete());
+        assertThat(element.isComplete()).isEqualTo(complete);
+        assertThat(firstChild.isComplete()).isEqualTo(complete);
         element.removeChildren();
         // We still need to be able to get the content of the child we retrieved before
         // calling removeChildren.
-        assertEquals("A", firstChild.getText());
+        assertThat(firstChild.getText()).isEqualTo("A");
         // Test that the child has been detached correctly.
-        assertNull(firstChild.getParent());
-        assertNull(firstChild.getPreviousOMSibling());
-        assertNull(firstChild.getNextOMSibling());
+        assertThat(firstChild.getParent()).isNull();
+        assertThat(firstChild.getPreviousOMSibling()).isNull();
+        assertThat(firstChild.getNextOMSibling()).isNull();
         // Test that the element is now empty.
-        assertNull(element.getFirstOMChild());
+        assertThat(element.getFirstOMChild()).isNull();
         // Check that the element is in a clean state and that we are able to add
         // new children.
         element.addChild(factory.createOMElement("c", null));

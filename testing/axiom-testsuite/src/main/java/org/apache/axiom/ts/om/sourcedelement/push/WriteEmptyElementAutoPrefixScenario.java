@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -26,7 +28,6 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.junit.Assert;
 
 /**
  * Tests that {@link XMLStreamWriter#writeEmptyElement(String, String)} automatically selects an
@@ -55,8 +56,8 @@ public class WriteEmptyElementAutoPrefixScenario implements PushOMDataSourceScen
     @Override
     public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         OMElement child = element.getFirstElement();
-        Assert.assertEquals("p", child.getPrefix());
-        Assert.assertEquals("urn:test", child.getNamespaceURI());
-        Assert.assertEquals("child", child.getLocalName());
+        assertThat(child.getPrefix()).isEqualTo("p");
+        assertThat(child.getNamespaceURI()).isEqualTo("urn:test");
+        assertThat(child.getLocalName()).isEqualTo("child");
     }
 }

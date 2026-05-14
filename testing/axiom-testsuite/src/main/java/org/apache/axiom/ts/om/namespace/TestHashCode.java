@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.namespace;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -37,6 +39,6 @@ public class TestHashCode extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns1 = factory.createOMNamespace("urn:ns", "ns");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns", "ns");
-        assertEquals(ns1.hashCode(), ns2.hashCode());
+        assertThat(ns2.hashCode()).isEqualTo(ns1.hashCode());
     }
 }

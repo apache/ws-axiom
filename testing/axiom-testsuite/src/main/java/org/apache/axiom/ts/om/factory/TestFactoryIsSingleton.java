@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -37,6 +39,6 @@ public class TestFactoryIsSingleton extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        assertSame(metaFactory.getOMFactory(), metaFactory.getOMFactory());
+        assertThat(metaFactory.getOMFactory()).isSameAs(metaFactory.getOMFactory());
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMAttribute;
@@ -58,10 +60,10 @@ public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
         OMAttribute attr =
                 element.addAttribute("attr", "value", factory.createOMNamespace("urn:test", null));
         OMNamespace ns = attr.getNamespace();
-        assertTrue(ns.getPrefix().length() > 0);
+        assertThat(ns.getPrefix()).isNotEmpty();
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
-        assertEquals(ns, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(ns);
+        assertThat(it.hasNext()).isFalse();
     }
 }

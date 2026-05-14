@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.DTDReader;
@@ -64,13 +66,13 @@ public class TestDTDReaderFromParser extends AxiomTestCase {
         // Note that according to the specification of the DTDReader interface, it is
         // allowed to look up the extension before reaching the DTD event.
         DTDReader dtdReader = (DTDReader) reader.getProperty(DTDReader.PROPERTY);
-        assertNotNull(dtdReader);
+        assertThat(dtdReader).isNotNull();
         while (reader.next() != XMLStreamReader.DTD) {
             // Just loop
         }
-        assertEquals("web-app", dtdReader.getRootName());
-        assertEquals(
-                "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN", dtdReader.getPublicId());
-        assertEquals("http://java.sun.com/dtd/web-app_2_3.dtd", dtdReader.getSystemId());
+        assertThat(dtdReader.getRootName()).isEqualTo("web-app");
+        assertThat(dtdReader.getPublicId())
+                .isEqualTo("-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN");
+        assertThat(dtdReader.getSystemId()).isEqualTo("http://java.sun.com/dtd/web-app_2_3.dtd");
     }
 }

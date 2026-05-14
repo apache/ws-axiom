@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.message;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -53,18 +55,18 @@ public class TestClone extends TestCase {
         options.setPreserveModel(preserveModel);
         OMInformationItem clone = message.clone(options);
         if (preserveModel) {
-            assertTrue(clone instanceof SOAPMessage);
+            assertThat(clone).isInstanceOf(SOAPMessage.class);
         } else {
-            assertTrue(clone instanceof OMDocument);
-            assertFalse(clone instanceof SOAPMessage);
+            assertThat(clone).isInstanceOf(OMDocument.class);
+            assertThat(clone).isNotInstanceOf(SOAPMessage.class);
         }
         OMElement envelope = ((OMDocument) clone).getOMDocumentElement();
         if (preserveModel) {
-            assertTrue(envelope instanceof SOAPEnvelope);
+            assertThat(envelope).isInstanceOf(SOAPEnvelope.class);
         } else {
-            assertFalse(envelope instanceof SOAPEnvelope);
+            assertThat(envelope).isNotInstanceOf(SOAPEnvelope.class);
         }
-        assertEquals("Envelope", envelope.getLocalName());
-        assertEquals(spec.getEnvelopeNamespaceURI(), envelope.getNamespaceURI());
+        assertThat(envelope.getLocalName()).isEqualTo("Envelope");
+        assertThat(envelope.getNamespaceURI()).isEqualTo(spec.getEnvelopeNamespaceURI());
     }
 }

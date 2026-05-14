@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamReader;
@@ -54,13 +56,15 @@ public class TestCommentEvent extends AxiomTestCase {
                         new InputSource(new StringReader("<a><!--comment text--></a>")));
         OMElement element = builder.getDocumentElement();
         XMLStreamReader reader = element.getXMLStreamReader(cache);
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals(XMLStreamReader.COMMENT, reader.next());
-        assertEquals("comment text", reader.getText());
-        assertEquals(
-                "comment text",
-                new String(
-                        reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength()));
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.COMMENT);
+        assertThat(reader.getText()).isEqualTo("comment text");
+        assertThat(
+                        new String(
+                                reader.getTextCharacters(),
+                                reader.getTextStart(),
+                                reader.getTextLength()))
+                .isEqualTo("comment text");
         StringBuffer text = new StringBuffer();
         char[] buf = new char[5];
         for (int sourceStart = 0; ; sourceStart += buf.length) {
@@ -70,7 +74,7 @@ public class TestCommentEvent extends AxiomTestCase {
                 break;
             }
         }
-        assertEquals("comment text", text.toString());
+        assertThat(text.toString()).isEqualTo("comment text");
         element.close(false);
     }
 }

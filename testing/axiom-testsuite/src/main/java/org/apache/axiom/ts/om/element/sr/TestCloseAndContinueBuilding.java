@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.namespace.QName;
@@ -59,12 +61,12 @@ public class TestCloseAndContinueBuilding extends AxiomTestCase {
                         .getDocumentElement();
         OMElement a = (OMElement) root.getFirstOMChild();
         XMLStreamReader reader = a.getXMLStreamReader(cache);
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals(new QName("b"), reader.getName());
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(reader.getName()).isEqualTo(new QName("b"));
         reader.close();
-        assertFalse(root.isComplete());
+        assertThat(root.isComplete()).isFalse();
         OMElement c = (OMElement) a.getNextOMSibling();
-        assertEquals("content", c.getText());
+        assertThat(c.getText()).isEqualTo("content");
     }
 }

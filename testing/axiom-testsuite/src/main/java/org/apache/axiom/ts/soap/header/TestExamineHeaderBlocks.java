@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.header;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMNamespace;
@@ -44,19 +46,11 @@ public class TestExamineHeaderBlocks extends TestCase {
         soapHeader.addHeaderBlock("echoOk1", namespace).setRole("urn:test-role");
         soapHeader.addHeaderBlock("echoOk2", namespace).setRole(roleNextURI);
         Iterator<SOAPHeaderBlock> iterator = soapHeader.examineHeaderBlocks(roleNextURI);
-        assertTrue(iterator.hasNext());
+        assertThat(iterator.hasNext()).isTrue();
         SOAPHeaderBlock headerBlockWithRole = iterator.next();
-        assertEquals(
-                "SOAP Header Test : - headerBlockWithRole local name mismatch",
-                "echoOk2",
-                headerBlockWithRole.getLocalName());
-        assertEquals(
-                "SOAP Header Test : - headerBlockWithRole role value mismatch",
-                roleNextURI,
-                headerBlockWithRole.getRole());
+        assertThat(headerBlockWithRole.getLocalName()).isEqualTo("echoOk2");
+        assertThat(headerBlockWithRole.getRole()).isEqualTo(roleNextURI);
 
-        assertFalse(
-                "SOAP Header Test : - header has one headerBlock with role, but examineHeaderBlocks(String role) method returns an iterator with more than one object",
-                iterator.hasNext());
+        assertThat(iterator.hasNext()).isFalse();
     }
 }

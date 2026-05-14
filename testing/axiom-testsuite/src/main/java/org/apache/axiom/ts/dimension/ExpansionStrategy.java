@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dimension;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMSourcedElement;
@@ -27,7 +29,6 @@ import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.LabelTarget;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
-import org.junit.Assert;
 
 /**
  * Defines if and how an {@link OMContainer} is to be built or expanded during the execution of a
@@ -46,9 +47,9 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
                 public void apply(OMContainer container) {
                     if (container instanceof OMSourcedElement sourcedElement) {
                         // Do nothing, but check that the element isn't expanded already
-                        Assert.assertFalse(sourcedElement.isExpanded());
+                        assertThat(sourcedElement.isExpanded()).isFalse();
                     } else {
-                        Assert.assertFalse(container.isComplete());
+                        assertThat(container.isComplete()).isFalse();
                     }
                 }
 
@@ -84,9 +85,9 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
                 public void apply(OMContainer container) {
                     container.getFirstOMChild();
                     if (container instanceof OMSourcedElement sourcedElement) {
-                        Assert.assertTrue(sourcedElement.isExpanded());
+                        assertThat(sourcedElement.isExpanded()).isTrue();
                     }
-                    Assert.assertFalse(container.isComplete());
+                    assertThat(container.isComplete()).isFalse();
                 }
 
                 @Override
@@ -119,9 +120,9 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
                     container.getFirstOMChild();
                     container.build();
                     if (container instanceof OMSourcedElement sourcedElement) {
-                        Assert.assertTrue(sourcedElement.isExpanded());
+                        assertThat(sourcedElement.isExpanded()).isTrue();
                     }
-                    Assert.assertTrue(container.isComplete());
+                    assertThat(container.isComplete()).isTrue();
                 }
 
                 @Override

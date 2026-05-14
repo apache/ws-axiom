@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.node;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -43,13 +45,13 @@ public class TestDetachFirstChild extends AxiomTestCase {
         if (build) {
             root.build();
         } else {
-            assertFalse(root.isComplete());
+            assertThat(root.isComplete()).isFalse();
         }
         OMNode oldFirstChild = root.getFirstOMChild();
-        assertNotNull(oldFirstChild);
+        assertThat(oldFirstChild).isNotNull();
         oldFirstChild.detach();
         OMNode newFirstChild = root.getFirstOMChild();
-        assertNotNull(newFirstChild);
-        assertNotSame(oldFirstChild, newFirstChild);
+        assertThat(newFirstChild).isNotNull();
+        assertThat(newFirstChild).isNotSameAs(oldFirstChild);
     }
 }

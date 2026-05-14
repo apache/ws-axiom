@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -26,7 +28,6 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.junit.Assert;
 
 /**
  * Tests that {@link XMLStreamWriter#writeStartElement(String, String, String)} creates the correct
@@ -58,9 +59,9 @@ public class WriteStartElementWithDefaultNamespaceDeclaredOnParentScenario
     @Override
     public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         OMElement child = element.getFirstElement();
-        Assert.assertNull(child.getPrefix());
-        Assert.assertEquals("urn:test", child.getNamespaceURI());
-        Assert.assertEquals("child", child.getLocalName());
-        Assert.assertFalse(child.getAllDeclaredNamespaces().hasNext());
+        assertThat(child.getPrefix()).isNull();
+        assertThat(child.getNamespaceURI()).isEqualTo("urn:test");
+        assertThat(child.getLocalName()).isEqualTo("child");
+        assertThat(child.getAllDeclaredNamespaces().hasNext()).isFalse();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -40,13 +42,13 @@ public class TestSetText extends AxiomTestCase {
         element.setText(text);
 
         // Check that OMElement#getText() returns a matching value
-        assertEquals("Text value mismatch", text, element.getText());
+        assertThat(element.getText()).isEqualTo(text);
 
         // Check that OMElement#setText() has created the expected nodes
         OMNode child = element.getFirstOMChild();
-        assertTrue(child instanceof OMText);
-        assertSame(element, child.getParent());
-        assertEquals(text, ((OMText) child).getText());
-        assertNull(child.getNextOMSibling());
+        assertThat(child).isInstanceOf(OMText.class);
+        assertThat(child.getParent()).isSameAs(element);
+        assertThat(((OMText) child).getText()).isEqualTo(text);
+        assertThat(child.getNextOMSibling()).isNull();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 
@@ -39,10 +41,10 @@ public class TestGetFirstElementNSWithParser extends FirstElementNameWithParserT
     protected void runTest(SOAPBody body) throws Throwable {
         OMNamespace ns = body.getFirstElementNS();
         if (qname.getNamespaceURI().length() == 0) {
-            assertNull(ns);
+            assertThat(ns).isNull();
         } else {
-            assertEquals(qname.getNamespaceURI(), ns.getNamespaceURI());
-            assertEquals(qname.getPrefix(), ns.getPrefix());
+            assertThat(ns.getNamespaceURI()).isEqualTo(qname.getNamespaceURI());
+            assertThat(ns.getPrefix()).isEqualTo(qname.getPrefix());
         }
     }
 }

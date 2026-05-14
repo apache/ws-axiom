@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -33,10 +35,8 @@ public class TestGetFault extends TestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPBody body = soapFactory.createSOAPBody(envelope);
-        assertNull("Body Test:- After creating a soap body it has a fault", body.getFault());
+        assertThat(body.getFault()).isNull();
         body.addFault(new Exception("This an exception for testing"));
-        assertNotNull(
-                "Body Test:- After calling addFault method, getFault method returns null",
-                body.getFault());
+        assertThat(body.getFault()).isNotNull();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -41,6 +43,6 @@ public class TestSetTextQNameNull extends AxiomTestCase {
         OMElement element = metaFactory.getOMFactory().createOMElement("test", null);
         element.setText("some text");
         element.setText((QName) null);
-        assertNull(element.getFirstOMChild());
+        assertThat(element.getFirstOMChild()).isNull();
     }
 }

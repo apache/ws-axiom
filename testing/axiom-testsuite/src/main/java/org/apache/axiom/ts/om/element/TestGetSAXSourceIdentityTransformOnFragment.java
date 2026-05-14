@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.InputStream;
 
 import javax.xml.transform.Transformer;
@@ -91,8 +93,8 @@ public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
         transformer.transform(element.getSAXSource(cache), outputDocument.getSAXResult());
 
         OMNamespace ns = outputDocument.getOMDocumentElement().findNamespaceURI("p");
-        assertNotNull(ns);
-        assertEquals("urn:some:namespace", ns.getNamespaceURI());
+        assertThat(ns).isNotNull();
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:some:namespace");
 
         element.close(false);
     }

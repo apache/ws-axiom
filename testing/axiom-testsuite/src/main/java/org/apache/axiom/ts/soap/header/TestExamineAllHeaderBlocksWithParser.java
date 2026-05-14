@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.header;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -37,18 +39,18 @@ public class TestExamineAllHeaderBlocksWithParser extends SampleBasedSOAPTestCas
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         Iterator<SOAPHeaderBlock> iterator = envelope.getHeader().examineAllHeaderBlocks();
-        assertTrue(iterator.hasNext());
+        assertThat(iterator.hasNext()).isTrue();
         SOAPHeaderBlock headerBlock = iterator.next();
-        assertEquals("MessageID", headerBlock.getLocalName());
-        assertTrue(iterator.hasNext());
+        assertThat(headerBlock.getLocalName()).isEqualTo("MessageID");
+        assertThat(iterator.hasNext()).isTrue();
         headerBlock = iterator.next();
-        assertEquals("ReplyTo", headerBlock.getLocalName());
-        assertTrue(iterator.hasNext());
+        assertThat(headerBlock.getLocalName()).isEqualTo("ReplyTo");
+        assertThat(iterator.hasNext()).isTrue();
         headerBlock = iterator.next();
-        assertEquals("To", headerBlock.getLocalName());
-        assertTrue(iterator.hasNext());
+        assertThat(headerBlock.getLocalName()).isEqualTo("To");
+        assertThat(iterator.hasNext()).isTrue();
         headerBlock = iterator.next();
-        assertEquals("Action", headerBlock.getLocalName());
-        assertFalse(iterator.hasNext());
+        assertThat(headerBlock.getLocalName()).isEqualTo("Action");
+        assertThat(iterator.hasNext()).isFalse();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.om.OMElement;
@@ -45,6 +47,6 @@ public class TestGetTextWithMixedOMTextChildren extends AxiomTestCase {
         final String text = "this is <some> text in a CDATA";
         factory.createOMText(omElement, normalText);
         factory.createOMText(omElement, text, XMLStreamConstants.CDATA);
-        assertEquals(normalText + text, omElement.getText());
+        assertThat(omElement.getText()).isEqualTo(normalText + text);
     }
 }

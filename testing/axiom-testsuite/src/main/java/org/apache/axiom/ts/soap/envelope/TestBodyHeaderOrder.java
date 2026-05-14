@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -35,6 +37,6 @@ public class TestBodyHeaderOrder extends TestCase {
         SOAPEnvelope env = soapFactory.createSOAPEnvelope();
         soapFactory.createSOAPBody(env);
         soapFactory.createSOAPHeader(env);
-        assertTrue("Header isn't the first child!", env.getFirstElement() instanceof SOAPHeader);
+        assertThat(env.getFirstElement()).isInstanceOf(SOAPHeader.class);
     }
 }

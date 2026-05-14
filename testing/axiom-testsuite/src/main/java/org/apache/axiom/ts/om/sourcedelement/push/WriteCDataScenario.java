@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -28,7 +30,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.junit.Assert;
 
 public class WriteCDataScenario implements PushOMDataSourceScenario {
     @Override
@@ -51,9 +52,9 @@ public class WriteCDataScenario implements PushOMDataSourceScenario {
     @Override
     public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         OMNode child = element.getFirstOMChild();
-        Assert.assertTrue(child instanceof OMText);
+        assertThat(child).isInstanceOf(OMText.class);
         OMText text = (OMText) child;
-        Assert.assertEquals(OMNode.CDATA_SECTION_NODE, text.getType());
-        Assert.assertEquals("content", text.getText());
+        assertThat(text.getType()).isEqualTo(OMNode.CDATA_SECTION_NODE);
+        assertThat(text.getText()).isEqualTo("content");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -54,6 +56,6 @@ public class TestAddAttributeWithExistingNamespaceDeclarationInScope extends Axi
         OMElement child = factory.createOMElement(new QName("test"), root);
         strategy.addAttribute(child, "test", ns, "test");
         Iterator<OMNamespace> it = child.getAllDeclaredNamespaces();
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isFalse();
     }
 }

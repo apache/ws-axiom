@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.header;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMNamespace;
@@ -42,36 +44,20 @@ public class TestAddHeaderBlock extends TestCase {
         SOAPHeaderBlock headerBlock1 = soapHeader.addHeaderBlock("echoOk1", namespace);
         SOAPHeaderBlock headerBlock2 = soapHeader.addHeaderBlock("echoOk2", namespace);
         Iterator<OMNode> iterator = soapHeader.getChildren();
-        assertSame(headerBlock1, iterator.next());
-        assertSame(soapHeader, headerBlock1.getParent());
-        assertNotNull(
-                "SOAP Header Test : - After calling addHeaderBlock method twice, getChildren method returns empty iterator",
-                headerBlock1);
-        assertEquals(
-                "SOAP Header Test : - HeaderBlock1 local name mismatch",
-                "echoOk1",
-                headerBlock1.getLocalName());
-        assertEquals(
-                "SOAP Header Test : - HeaderBlock1 namespace uri mismatch",
-                "http://www.example.org",
-                headerBlock1.getNamespace().getNamespaceURI());
+        assertThat(iterator.next()).isSameAs(headerBlock1);
+        assertThat(headerBlock1.getParent()).isSameAs(soapHeader);
+        assertThat(headerBlock1).isNotNull();
+        assertThat(headerBlock1.getLocalName()).isEqualTo("echoOk1");
+        assertThat(headerBlock1.getNamespace().getNamespaceURI())
+                .isEqualTo("http://www.example.org");
 
-        assertSame(headerBlock2, iterator.next());
-        assertSame(soapHeader, headerBlock2.getParent());
-        assertNotNull(
-                "SOAP Header Test : - After calling addHeaderBlock method twice, getChildren method returns an iterator with only one object",
-                headerBlock2);
-        assertEquals(
-                "SOAP Header Test : - HeaderBlock2 local name mismatch",
-                "echoOk2",
-                headerBlock2.getLocalName());
-        assertEquals(
-                "SOAP Header Test : - HeaderBlock2 namespace uri mismatch",
-                "http://www.example.org",
-                headerBlock2.getNamespace().getNamespaceURI());
+        assertThat(iterator.next()).isSameAs(headerBlock2);
+        assertThat(headerBlock2.getParent()).isSameAs(soapHeader);
+        assertThat(headerBlock2).isNotNull();
+        assertThat(headerBlock2.getLocalName()).isEqualTo("echoOk2");
+        assertThat(headerBlock2.getNamespace().getNamespaceURI())
+                .isEqualTo("http://www.example.org");
 
-        assertFalse(
-                "SOAP Header Test : - After calling addHeaderBlock method twice, getChildren method returns an iterator with more than two elements",
-                iterator.hasNext());
+        assertThat(iterator.hasNext()).isFalse();
     }
 }

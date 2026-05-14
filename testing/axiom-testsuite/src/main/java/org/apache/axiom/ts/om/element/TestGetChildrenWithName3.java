@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -51,6 +53,6 @@ public class TestGetChildrenWithName3 extends AxiomTestCase {
                 documentElement.getChildrenWithName(
                         new QName("http://test.ws.org", "Employee", "test"));
         OMElement employee = childrenIter.next(); // should walk past OMText
-        assertEquals("Employee test was incorrect", employee.getText(), "Apache Developer");
+        assertThat(employee.getText()).isEqualTo("Apache Developer");
     }
 }

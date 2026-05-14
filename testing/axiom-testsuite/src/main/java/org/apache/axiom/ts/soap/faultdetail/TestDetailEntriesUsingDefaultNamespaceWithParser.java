@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faultdetail;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -39,10 +41,10 @@ public class TestDetailEntriesUsingDefaultNamespaceWithParser extends SampleBase
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultDetail soapFaultDetail = envelope.getBody().getFault().getDetail();
         OMElement detailElement = soapFaultDetail.getFirstElement();
-        assertEquals("AddNumbersHandlerFault", detailElement.getLocalName());
+        assertThat(detailElement.getLocalName()).isEqualTo("AddNumbersHandlerFault");
         OMNamespace ns = detailElement.getNamespace();
         // At some point, there was a bug in Axiom that caused the prefix to be null
-        assertEquals("", ns.getPrefix());
-        assertEquals("http://www.example.org/addnumbershandler", ns.getNamespaceURI());
+        assertThat(ns.getPrefix()).isEqualTo("");
+        assertThat(ns.getNamespaceURI()).isEqualTo("http://www.example.org/addnumbershandler");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.header;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMNamespace;
@@ -51,21 +53,12 @@ public class TestExamineMustUnderstandHeaderBlocks extends TestCase {
         Iterator iterator =
                 soapHeader.examineMustUnderstandHeaderBlocks(
                         "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
-        assertTrue(iterator.hasNext());
+        assertThat(iterator.hasNext()).isTrue();
         SOAPHeaderBlock headerBlock = (SOAPHeaderBlock) iterator.next();
-        assertFalse(
-                "SOAP Header Test : - examineMustUnderstandHeaderBlocks method returns empty iterator",
-                headerBlock == null);
-        assertTrue(
-                "SOAP Header Test : - HeaderBlock local name mismatch",
-                headerBlock.getLocalName().equals("echoOk2"));
-        assertTrue(
-                "SOAP Header Test : - HeaderBlock role value mismatch",
-                headerBlock
-                        .getRole()
-                        .equals("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver"));
-        assertFalse(
-                "SOAP Header Test : - examineMustUnderstandHeaderBlocks method returns an iterator with more than one object",
-                iterator.hasNext());
+        assertThat(headerBlock).isNotNull();
+        assertThat(headerBlock.getLocalName()).isEqualTo("echoOk2");
+        assertThat(headerBlock.getRole())
+                .isEqualTo("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
+        assertThat(iterator.hasNext()).isFalse();
     }
 }

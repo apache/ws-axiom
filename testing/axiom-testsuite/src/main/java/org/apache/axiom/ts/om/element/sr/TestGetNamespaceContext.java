@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
 
@@ -47,13 +49,13 @@ public class TestGetNamespaceContext extends AxiomTestCase {
         XMLStreamReader stream =
                 cache ? element.getXMLStreamReader() : element.getXMLStreamReaderWithoutCaching();
         stream.next();
-        assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
-        assertEquals("b", stream.getLocalName());
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(stream.getLocalName()).isEqualTo("b");
         NamespaceContext context = stream.getNamespaceContext();
-        assertEquals("urn:ns1", context.getNamespaceURI(""));
-        assertEquals("urn:ns2", context.getNamespaceURI("ns2"));
-        assertEquals("urn:ns3", context.getNamespaceURI("ns3"));
-        assertEquals("ns2", context.getPrefix("urn:ns2"));
+        assertThat(context.getNamespaceURI("")).isEqualTo("urn:ns1");
+        assertThat(context.getNamespaceURI("ns2")).isEqualTo("urn:ns2");
+        assertThat(context.getNamespaceURI("ns3")).isEqualTo("urn:ns3");
+        assertThat(context.getPrefix("urn:ns2")).isEqualTo("ns2");
         element.close(false);
     }
 }

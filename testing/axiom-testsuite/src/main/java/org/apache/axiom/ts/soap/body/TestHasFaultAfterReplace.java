@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
@@ -39,9 +41,9 @@ public class TestHasFaultAfterReplace extends TestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPBody body = soapFactory.getDefaultFaultEnvelope().getBody();
-        assertTrue(body.hasFault());
+        assertThat(body.hasFault()).isTrue();
         body.getFault().detach();
         soapFactory.createOMElement("echo", soapFactory.createOMNamespace("urn:test", "echo"));
-        assertFalse(body.hasFault());
+        assertThat(body.hasFault()).isFalse();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -45,10 +47,10 @@ public class TestGetChildrenWithNamespaceURI extends AxiomTestCase {
                                         "<root><a xmlns='urn:ns1'/><b xmlns='urn:ns2'/><c xmlns='urn:ns1'/></root>"))
                         .getDocumentElement();
         Iterator<OMElement> it = element.getChildrenWithNamespaceURI("urn:ns1");
-        assertTrue(it.hasNext());
-        assertEquals("a", it.next().getLocalName());
-        assertTrue(it.hasNext());
-        assertEquals("c", it.next().getLocalName());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next().getLocalName()).isEqualTo("a");
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next().getLocalName()).isEqualTo("c");
+        assertThat(it.hasNext()).isFalse();
     }
 }

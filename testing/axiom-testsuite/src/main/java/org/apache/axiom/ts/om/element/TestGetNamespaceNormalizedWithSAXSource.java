@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.parsers.SAXParser;
@@ -59,6 +61,6 @@ public class TestGetNamespaceNormalizedWithSAXSource extends AxiomTestCase {
         OMElement element =
                 OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source)
                         .getDocumentElement();
-        assertNull(element.getNamespace());
+        assertThat(element.getNamespace()).isNull();
     }
 }

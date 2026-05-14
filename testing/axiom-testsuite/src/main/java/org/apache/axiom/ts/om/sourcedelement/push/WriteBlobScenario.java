@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
@@ -33,7 +35,6 @@ import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.testutils.suite.LabelTarget;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
-import org.junit.Assert;
 
 /**
  * Tests that {@link BlobWriter#writeBlob(Blob, String, boolean)} creates an {@link OMText} backed
@@ -67,8 +68,8 @@ public class WriteBlobScenario implements PushOMDataSourceScenario {
     public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         OMText child = (OMText) element.getFirstOMChild();
         if (blobsPreserved) {
-            Assert.assertTrue(child.isBinary());
-            Assert.assertSame(blob, child.getBlob());
+            assertThat(child.isBinary()).isTrue();
+            assertThat(child.getBlob()).isSameAs(blob);
         } else {
             // TODO: this will only work if a single text node was created
             child.setBinary(true);

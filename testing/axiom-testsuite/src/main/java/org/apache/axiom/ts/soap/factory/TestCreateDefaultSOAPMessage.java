@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMNode;
@@ -43,19 +45,19 @@ public class TestCreateDefaultSOAPMessage extends TestCase {
     protected void runTest() throws Throwable {
         SOAPMessage message = soapFactory.createDefaultSOAPMessage();
         SOAPEnvelope env = message.getSOAPEnvelope();
-        assertNotNull(env);
-        assertSame(env, message.getFirstOMChild());
-        assertNull(env.getNextOMSibling());
+        assertThat(env).isNotNull();
+        assertThat(message.getFirstOMChild()).isSameAs(env);
+        assertThat(env.getNextOMSibling()).isNull();
 
         // Check correct SOAP version
-        assertEquals(spec.getEnvelopeNamespaceURI(), env.getNamespaceURI());
+        assertThat(env.getNamespaceURI()).isEqualTo(spec.getEnvelopeNamespaceURI());
 
         // Check the children
         Iterator<OMNode> it = env.getChildren();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMNode child = it.next();
-        assertTrue(child instanceof SOAPBody);
-        assertNull(((SOAPBody) child).getFirstOMChild());
-        assertFalse(it.hasNext());
+        assertThat(child).isInstanceOf(SOAPBody.class);
+        assertThat(((SOAPBody) child).getFirstOMChild()).isNull();
+        assertThat(it.hasNext()).isFalse();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.header;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMNamespace;
@@ -54,10 +56,10 @@ public class TestGetHeadersToProcessWithNamespace extends TestCase {
         Iterator<SOAPHeaderBlock> it =
                 header.getHeadersToProcess(
                         new MyRolePlayer(false, new String[] {myRole}), ns1.getNamespaceURI());
-        assertTrue(it.hasNext());
-        assertSame(headerBlock1, it.next());
-        assertTrue(it.hasNext());
-        assertSame(headerBlock3, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(headerBlock1);
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(headerBlock3);
+        assertThat(it.hasNext()).isFalse();
     }
 }

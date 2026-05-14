@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.node;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -42,6 +44,6 @@ public class TestInsertSiblingAfter extends AxiomTestCase {
         OMText text2 = fac.createOMText("text2");
         parent.addChild(text1);
         text1.insertSiblingAfter(text2);
-        assertSame(parent, text2.getParent());
+        assertThat(text2.getParent()).isSameAs(parent);
     }
 }

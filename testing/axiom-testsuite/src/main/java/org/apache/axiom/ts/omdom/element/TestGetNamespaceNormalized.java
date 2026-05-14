@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
@@ -33,6 +35,6 @@ public class TestGetNamespaceNormalized extends OMDOMTestCase {
     protected void runTest() throws Throwable {
         Document doc = metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Element element = doc.createElementNS(null, "test");
-        assertNull(((OMElement) element).getNamespace());
+        assertThat(((OMElement) element).getNamespace()).isNull();
     }
 }

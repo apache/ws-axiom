@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap11.faultreason;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
@@ -40,6 +42,6 @@ public class TestAddSOAPText extends TestCase {
             // Cool, continue.
             gotFault = true;
         }
-        assertTrue("Didn't get expected Exception for addSOAPText()!", gotFault);
+        assertThat(gotFault).isTrue();
     }
 }

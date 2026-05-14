@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -34,7 +36,7 @@ public class TestGetNamespace extends TestCase {
     @Override
     protected void runTest() throws Throwable {
         OMNamespace ns = soapFactory.getNamespace();
-        assertEquals(SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX, ns.getPrefix());
-        assertEquals(spec.getEnvelopeNamespaceURI(), ns.getNamespaceURI());
+        assertThat(ns.getPrefix()).isEqualTo(SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+        assertThat(ns.getNamespaceURI()).isEqualTo(spec.getEnvelopeNamespaceURI());
     }
 }

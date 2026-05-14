@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -28,7 +30,6 @@ import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.junit.Assert;
 
 public class WriteCommentScenario implements PushOMDataSourceScenario {
     @Override
@@ -51,7 +52,7 @@ public class WriteCommentScenario implements PushOMDataSourceScenario {
     @Override
     public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         OMNode child = element.getFirstOMChild();
-        Assert.assertTrue(child instanceof OMComment);
-        Assert.assertEquals("comment", ((OMComment) child).getValue());
+        assertThat(child).isInstanceOf(OMComment.class);
+        assertThat(((OMComment) child).getValue()).isEqualTo("comment");
     }
 }

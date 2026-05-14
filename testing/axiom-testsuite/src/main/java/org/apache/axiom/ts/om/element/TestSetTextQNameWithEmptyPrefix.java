@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -47,12 +49,12 @@ public class TestSetTextQNameWithEmptyPrefix extends AxiomTestCase {
         QName qname = new QName("urn:test", "test");
         element.setText(qname);
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMNamespace ns = it.next();
-        assertEquals("urn:test", ns.getNamespaceURI());
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:test");
         String prefix = ns.getPrefix();
-        assertTrue(prefix.length() > 0);
-        assertEquals(prefix + ":test", element.getText());
-        assertFalse(it.hasNext());
+        assertThat(prefix).isNotEmpty();
+        assertThat(element.getText()).isEqualTo(prefix + ":test");
+        assertThat(it.hasNext()).isFalse();
     }
 }

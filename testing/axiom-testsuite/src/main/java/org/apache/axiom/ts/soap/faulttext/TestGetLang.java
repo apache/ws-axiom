@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faulttext;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.XMLConstants;
 
 import org.apache.axiom.soap.SOAPFactory;
@@ -34,11 +36,11 @@ public class TestGetLang extends TestCase {
     protected void runTest() throws Throwable {
         SOAPFaultText faultText = soapFactory.createSOAPFaultText();
         faultText.setText("test");
-        assertNull(faultText.getLang());
+        assertThat(faultText.getLang()).isNull();
         faultText.addAttribute(
                 "lang",
                 "fr",
                 soapFactory.createOMNamespace(XMLConstants.XML_NS_URI, XMLConstants.XML_NS_PREFIX));
-        assertEquals("fr", faultText.getLang());
+        assertThat(faultText.getLang()).isEqualTo("fr");
     }
 }

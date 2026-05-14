@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
@@ -33,6 +35,7 @@ public class TestCloneOMElement extends OMDOMTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         OMElement clone = element.cloneOMElement();
-        assertNotSame(((Element) element).getOwnerDocument(), ((Element) clone).getOwnerDocument());
+        assertThat(((Element) clone).getOwnerDocument())
+                .isNotSameAs(((Element) element).getOwnerDocument());
     }
 }

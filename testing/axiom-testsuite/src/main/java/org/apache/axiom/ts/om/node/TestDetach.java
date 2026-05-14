@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.node;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMComment;
@@ -65,21 +67,21 @@ public class TestDetach extends AxiomTestCase {
         if (build) {
             root.build();
         } else {
-            assertFalse(root.isComplete());
+            assertThat(root.isComplete()).isFalse();
         }
         OMComment a = (OMComment) root.getFirstOMChild();
-        assertEquals("a", a.getValue());
+        assertThat(a.getValue()).isEqualTo("a");
         OMElement b = (OMElement) a.getNextOMSibling();
-        assertEquals("b", b.getLocalName());
+        assertThat(b.getLocalName()).isEqualTo("b");
         OMNode returnValue = b.detach();
-        assertSame(b, returnValue); // Detach is expected to do a "return this"
-        assertNull(b.getParent());
-        assertNull(b.getPreviousOMSibling());
-        assertNull(b.getNextOMSibling());
+        assertThat(returnValue).isSameAs(b); // Detach is expected to do a "return this"
+        assertThat(b.getParent()).isNull();
+        assertThat(b.getPreviousOMSibling()).isNull();
+        assertThat(b.getNextOMSibling()).isNull();
         OMComment c = (OMComment) a.getNextOMSibling();
-        assertEquals("c", c.getValue());
-        assertSame(c, a.getNextOMSibling());
-        assertSame(a, c.getPreviousOMSibling());
+        assertThat(c.getValue()).isEqualTo("c");
+        assertThat(a.getNextOMSibling()).isSameAs(c);
+        assertThat(c.getPreviousOMSibling()).isSameAs(a);
         root.close(false);
     }
 }

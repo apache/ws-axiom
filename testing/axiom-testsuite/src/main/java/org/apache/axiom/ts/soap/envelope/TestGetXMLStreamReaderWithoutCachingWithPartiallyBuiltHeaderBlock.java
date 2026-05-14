@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
@@ -56,11 +58,11 @@ public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock
                                         new QName(
                                                 "http://www.w3.org/2005/08/addressing", "ReplyTo"));
         headerBlock.getFirstElement().getFirstOMChild();
-        assertFalse(headerBlock.isComplete());
+        assertThat(headerBlock.isComplete()).isFalse();
         XMLStreamReader reader = envelope.getXMLStreamReaderWithoutCaching();
         while (reader.hasNext()) {
             reader.next();
         }
-        assertFalse(headerBlock.isComplete());
+        assertThat(headerBlock.isComplete()).isFalse();
     }
 }

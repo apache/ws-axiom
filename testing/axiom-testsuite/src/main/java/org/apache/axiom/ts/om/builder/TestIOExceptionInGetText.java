@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -74,11 +75,11 @@ public class TestIOExceptionInGetText extends AxiomTestCase {
 
         assertThatThrownBy(element::getNextOMSibling);
 
-        assertTrue(invocationCounter.getInvocationCount() > 0);
+        assertThat(invocationCounter.getInvocationCount()).isGreaterThan(0);
         invocationCounter.reset();
 
         assertThatThrownBy(element::getNextOMSibling);
 
-        assertEquals(0, invocationCounter.getInvocationCount());
+        assertThat(invocationCounter.getInvocationCount()).isEqualTo(0);
     }
 }

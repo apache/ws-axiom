@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -40,8 +42,8 @@ public class TestGetDefaultNamespace extends AxiomTestCase {
         OMElement parent = factory.createOMElement("parent", "urn:ns1", "");
         OMElement child = factory.createOMElement(new QName("urn:ns2", "child", "p"), parent);
         OMNamespace ns = child.getDefaultNamespace();
-        assertNotNull(ns);
-        assertEquals("", ns.getPrefix());
-        assertEquals("urn:ns1", ns.getNamespaceURI());
+        assertThat(ns).isNotNull();
+        assertThat(ns.getPrefix()).isEqualTo("");
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns1");
     }
 }

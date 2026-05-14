@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Document;
@@ -33,6 +35,6 @@ public class TestCreateDocumentFragmentInterfaces extends OMDOMTestCase {
         Document document =
                 metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         DocumentFragment fragment = document.createDocumentFragment();
-        assertFalse(fragment instanceof OMInformationItem);
+        assertThat(fragment).isNotInstanceOf(OMInformationItem.class);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringWriter;
 
 import org.apache.axiom.om.OMElement;
@@ -56,8 +58,8 @@ public class TestName2Unqualified extends AxiomTestCase {
 
         // Test getting the namespace, localpart and prefix.  This should used not result in
         // expansion
-        assertTrue(element.getLocalName().equals("library"));
-        assertNull(element.getNamespace());
+        assertThat(element.getLocalName()).isEqualTo("library");
+        assertThat(element.getNamespace()).isNull();
 
         // Serialize and consume.  This should not cause expansion and currently won't update
         // the name of the element.
@@ -65,11 +67,11 @@ public class TestName2Unqualified extends AxiomTestCase {
         root.serializeAndConsume(writer);
         String result = writer.toString();
 
-        assertTrue(element.getLocalName().equals("library"));
-        assertNull(element.getNamespace());
+        assertThat(element.getLocalName()).isEqualTo("library");
+        assertThat(element.getNamespace()).isNull();
         // Make sure that the serialized string does not contain default prefix declaration
-        assertTrue(result.indexOf("xmlns=") < 0);
+        assertThat(result).doesNotContain("xmlns=");
 
-        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        assertThat(result).contains("1930110111");
     }
 }

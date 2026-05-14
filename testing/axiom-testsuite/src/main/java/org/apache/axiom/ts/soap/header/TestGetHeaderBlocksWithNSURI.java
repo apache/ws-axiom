@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.header;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.ArrayList;
 
 import org.apache.axiom.om.OMNamespace;
@@ -43,13 +45,8 @@ public class TestGetHeaderBlocksWithNSURI extends TestCase {
                 "echoOk2", soapFactory.createOMNamespace("http://www.test1.org", "test1"));
         ArrayList<SOAPHeaderBlock> arrayList =
                 soapHeader.getHeaderBlocksWithNSURI("http://www.test1.org");
-        assertEquals(
-                "SOAP Header Test : - getHeaderBlocksWithNSURI returns an arrayList of incorrect size",
-                1,
-                arrayList.size());
-        assertEquals(
-                "SOAP Header Test : - headerBlock of given namespace uri mismatch",
-                "http://www.test1.org",
-                arrayList.get(0).getNamespace().getNamespaceURI());
+        assertThat(arrayList).hasSize(1);
+        assertThat(arrayList.get(0).getNamespace().getNamespaceURI())
+                .isEqualTo("http://www.test1.org");
     }
 }

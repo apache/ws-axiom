@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -71,8 +73,8 @@ public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCas
         OMElement element3 = factory.createOMElement(new QName("c"), element2);
         strategy.addAttribute(element3, "attr", ns1, "test");
         Iterator<OMNamespace> it = element3.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
-        assertEquals(ns1, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(ns1);
+        assertThat(it.hasNext()).isFalse();
     }
 }

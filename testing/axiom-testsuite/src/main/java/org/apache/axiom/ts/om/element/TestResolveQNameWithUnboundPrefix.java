@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
@@ -40,6 +42,6 @@ public class TestResolveQNameWithUnboundPrefix extends AxiomTestCase {
         OMElement element =
                 AXIOMUtil.stringToOM(
                         metaFactory.getOMFactory(), "<p:root xmlns:p='urn:ns1' xmlns='urn:ns2'/>");
-        assertNull(element.resolveQName("ns:test"));
+        assertThat(element.resolveQName("ns:test")).isNull();
     }
 }

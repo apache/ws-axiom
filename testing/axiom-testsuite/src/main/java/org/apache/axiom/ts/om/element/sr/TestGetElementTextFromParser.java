@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -82,9 +84,9 @@ public class TestGetElementTextFromParser extends AxiomTestCase {
         }
 
         XMLStreamReader reader = element.getXMLStreamReader(cache);
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
 
-        assertEquals("ABCD", reader.getElementText());
+        assertThat(reader.getElementText()).isEqualTo("ABCD");
     }
 }

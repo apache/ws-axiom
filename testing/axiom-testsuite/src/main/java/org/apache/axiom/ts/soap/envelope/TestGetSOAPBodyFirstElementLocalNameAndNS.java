@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -40,13 +42,13 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNS extends TestCase {
                 soapFactory.createOMElement(
                         qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
         envelope.getBody().addChild(bodyElement);
-        assertEquals(qname.getLocalPart(), envelope.getSOAPBodyFirstElementLocalName());
+        assertThat(envelope.getSOAPBodyFirstElementLocalName()).isEqualTo(qname.getLocalPart());
         OMNamespace ns = envelope.getSOAPBodyFirstElementNS();
         if (qname.getNamespaceURI().length() == 0) {
-            assertNull(ns);
+            assertThat(ns).isNull();
         } else {
-            assertEquals(qname.getNamespaceURI(), ns.getNamespaceURI());
-            assertEquals(qname.getPrefix(), ns.getPrefix());
+            assertThat(ns.getNamespaceURI()).isEqualTo(qname.getNamespaceURI());
+            assertThat(ns.getPrefix()).isEqualTo(qname.getPrefix());
         }
     }
 }

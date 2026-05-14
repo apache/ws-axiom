@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.faultsubcode;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.ts.soap.SOAPSample;
@@ -34,12 +36,7 @@ public class TestGetValueWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultSubCode subCode = envelope.getBody().getFault().getCode().getSubCode();
-        assertNotNull(
-                "SOAP 1.2 SOAPFaultSubCode Test In FaultCode With Parser : - getValue method returns null",
-                subCode.getValue());
-        assertEquals(
-                "SOAP 1.2 SOAPFaultSubCode Test In FaultCode With Parser : - Value text mismatch",
-                "m:MessageTimeout_In_First_Subcode",
-                subCode.getValue().getText());
+        assertThat(subCode.getValue()).isNotNull();
+        assertThat(subCode.getValue().getText()).isEqualTo("m:MessageTimeout_In_First_Subcode");
     }
 }

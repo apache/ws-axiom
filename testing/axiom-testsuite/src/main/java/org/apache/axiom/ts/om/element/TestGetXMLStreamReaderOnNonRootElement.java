@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMContainer;
@@ -54,16 +56,16 @@ public class TestGetXMLStreamReaderOnNonRootElement extends AxiomTestCase {
                         metaFactory.getOMFactory(), "<a><b><c/></b><d>content</d></a>");
         OMElement b = (OMElement) root.getFirstOMChild();
         XMLStreamReader stream = b.getXMLStreamReader(cache);
-        assertEquals(XMLStreamReader.START_DOCUMENT, stream.getEventType());
-        assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
-        assertEquals("b", stream.getLocalName());
-        assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
-        assertEquals("c", stream.getLocalName());
-        assertEquals(XMLStreamReader.END_ELEMENT, stream.next());
-        assertEquals(XMLStreamReader.END_ELEMENT, stream.next());
-        assertEquals(XMLStreamReader.END_DOCUMENT, stream.next());
+        assertThat(stream.getEventType()).isEqualTo(XMLStreamReader.START_DOCUMENT);
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(stream.getLocalName()).isEqualTo("b");
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(stream.getLocalName()).isEqualTo("c");
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.END_ELEMENT);
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.END_ELEMENT);
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.END_DOCUMENT);
         OMElement d = (OMElement) b.getNextOMSibling();
-        assertEquals("content", d.getText());
+        assertThat(d.getText()).isEqualTo("content");
         root.close(false);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMElement;
@@ -51,6 +53,6 @@ public class TestGetElementText extends AxiomTestCase {
         }
 
         String elementText = xmlStreamReader.getElementText();
-        assertEquals("this is a TEXTthis is a TEXT block 2", elementText);
+        assertThat(elementText).isEqualTo("this is a TEXTthis is a TEXT block 2");
     }
 }

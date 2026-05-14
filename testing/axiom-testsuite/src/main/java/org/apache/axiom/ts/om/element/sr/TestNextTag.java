@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMElement;
@@ -39,15 +41,15 @@ public class TestNextTag extends AxiomTestCase {
                 AXIOMUtil.stringToOM(
                         metaFactory.getOMFactory(), "<a> <b> </b> <?pi?> <!--comment--> <c/> </a>");
         XMLStreamReader stream = element.getXMLStreamReaderWithoutCaching();
-        assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
+        assertThat(stream.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         stream.nextTag();
-        assertEquals(XMLStreamReader.START_ELEMENT, stream.getEventType());
-        assertEquals("b", stream.getLocalName());
+        assertThat(stream.getEventType()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(stream.getLocalName()).isEqualTo("b");
         stream.nextTag();
-        assertEquals(XMLStreamReader.END_ELEMENT, stream.getEventType());
+        assertThat(stream.getEventType()).isEqualTo(XMLStreamReader.END_ELEMENT);
         stream.nextTag();
-        assertEquals(XMLStreamReader.START_ELEMENT, stream.getEventType());
-        assertEquals("c", stream.getLocalName());
+        assertThat(stream.getEventType()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(stream.getLocalName()).isEqualTo("c");
         element.close(false);
     }
 }

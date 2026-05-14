@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.nio.charset.StandardCharsets;
 
 import org.apache.axiom.blob.Blob;
@@ -46,6 +48,6 @@ public class TestGetTextCharactersFromDataHandler extends AxiomTestCase {
         OMText text = metaFactory.getOMFactory().createOMText(blob, true);
         char[] chars = text.getTextCharacters();
         byte[] decoded = Base64.decodeBase64(new String(chars));
-        assertEquals("test content", new String(decoded, StandardCharsets.UTF_8));
+        assertThat(new String(decoded, StandardCharsets.UTF_8)).isEqualTo("test content");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.attribute;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -40,6 +42,6 @@ public class TestGetAttributeTypeDefault extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
         OMAttribute at = factory.createOMAttribute("id", ns, "value");
-        assertEquals("CDATA", at.getAttributeType());
+        assertThat(at.getAttributeType()).isEqualTo("CDATA");
     }
 }

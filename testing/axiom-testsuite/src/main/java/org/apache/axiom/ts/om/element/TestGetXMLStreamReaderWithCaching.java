@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamReader;
@@ -68,7 +70,7 @@ public class TestGetXMLStreamReaderWithCaching extends AxiomTestCase {
             count++;
         }
 
-        assertEquals("Number of elements need to be 2", count, 2);
+        assertThat(count).isEqualTo(2);
 
         documentElement.close(false);
     }

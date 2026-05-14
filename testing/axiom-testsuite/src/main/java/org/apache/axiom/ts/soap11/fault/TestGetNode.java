@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap11.fault;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 
@@ -35,8 +37,6 @@ public class TestGetNode extends TestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
-        assertNull(
-                "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a node",
-                soapFault.getNode());
+        assertThat(soapFault.getNode()).isNull();
     }
 }

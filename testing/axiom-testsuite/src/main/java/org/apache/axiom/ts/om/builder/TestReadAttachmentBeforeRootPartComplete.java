@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.OutputStream;
 
 import org.apache.axiom.blob.Blob;
@@ -95,12 +97,12 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
         OMElement root = builder.getDocumentElement();
         OMElement child1 = (OMElement) root.getFirstOMChild();
         OMText text = (OMText) child1.getFirstOMChild();
-        assertTrue(text.isBinary());
+        assertThat(text.isBinary()).isTrue();
         // Access the Blob
         Blob blob = text.getBlob();
         IOTestUtils.compareStreams(orgBlob.getInputStream(), blob.getInputStream());
         OMElement child2 = (OMElement) child1.getNextOMSibling();
-        assertFalse(child2.isComplete());
-        assertEquals(s, child2.getText());
+        assertThat(child2.isComplete()).isFalse();
+        assertThat(child2.getText()).isEqualTo(s);
     }
 }

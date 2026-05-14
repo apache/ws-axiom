@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -35,6 +37,6 @@ public class TestGetFirstElementNSEmptyBody extends TestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
-        assertNull(envelope.getBody().getFirstElementNS());
+        assertThat(envelope.getBody().getFirstElementNS()).isNull();
     }
 }

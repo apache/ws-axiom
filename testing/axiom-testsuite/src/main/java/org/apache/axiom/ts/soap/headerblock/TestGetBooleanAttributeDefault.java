@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.soap.SOAPFactory;
@@ -47,6 +49,7 @@ public class TestGetBooleanAttributeDefault extends BooleanAttributeTestCase {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock =
                 header.addHeaderBlock(new QName("http://example.org", "test", "h"));
-        assertFalse(attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock));
+        assertThat(attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock))
+                .isFalse();
     }
 }

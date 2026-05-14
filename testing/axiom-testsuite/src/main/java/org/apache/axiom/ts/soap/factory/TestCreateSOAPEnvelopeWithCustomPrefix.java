@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMNamespace;
@@ -40,12 +42,12 @@ public class TestCreateSOAPEnvelopeWithCustomPrefix extends TestCase {
         String prefix = "my-soap";
         OMNamespace ns = soapFactory.createOMNamespace(spec.getEnvelopeNamespaceURI(), prefix);
         SOAPEnvelope env = soapFactory.createSOAPEnvelope(ns);
-        assertEquals(prefix, env.getNamespace().getPrefix());
-        assertEquals(spec.getEnvelopeNamespaceURI(), env.getNamespace().getNamespaceURI());
-        assertEquals(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, env.getLocalName());
+        assertThat(env.getNamespace().getPrefix()).isEqualTo(prefix);
+        assertThat(env.getNamespace().getNamespaceURI()).isEqualTo(spec.getEnvelopeNamespaceURI());
+        assertThat(env.getLocalName()).isEqualTo(SOAPConstants.SOAPENVELOPE_LOCAL_NAME);
         Iterator<OMNamespace> it = env.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
-        assertEquals(ns, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(ns);
+        assertThat(it.hasNext()).isFalse();
     }
 }

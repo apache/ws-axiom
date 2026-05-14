@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -38,8 +40,6 @@ public class TestGetRoleWithParser extends SampleBasedSOAPTestCase {
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         Iterator<SOAPHeaderBlock> iterator = envelope.getHeader().examineAllHeaderBlocks();
         iterator.next();
-        assertTrue(
-                "SOAP HeaderBlock Test With Parser : - getRole method returns incorrect role value",
-                iterator.next().getRole().equals(spec.getNextRoleURI()));
+        assertThat(iterator.next().getRole()).isEqualTo(spec.getNextRoleURI());
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -38,13 +40,8 @@ public class TestGetRole extends TestCase {
         SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
         SOAPHeaderBlock soapHeaderBlock =
                 soapFactory.createSOAPHeaderBlock("testHeaderBlock", namespace, soapHeader);
-        assertNull(
-                "SOAP HeaderBlock Test : - After creating SOAPHeaderBlock, it has a role",
-                soapHeaderBlock.getRole());
+        assertThat(soapHeaderBlock.getRole()).isNull();
         soapHeaderBlock.setRole("http://example.org/my-role");
-        assertEquals(
-                "SOAP HeaderBlock Test : - After calling setRole method, getRole method returns incorrect role value",
-                "http://example.org/my-role",
-                soapHeaderBlock.getRole());
+        assertThat(soapHeaderBlock.getRole()).isEqualTo("http://example.org/my-role");
     }
 }

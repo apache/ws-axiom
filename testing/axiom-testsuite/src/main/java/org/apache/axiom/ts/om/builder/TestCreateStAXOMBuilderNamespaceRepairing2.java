@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -56,18 +58,18 @@ public class TestCreateStAXOMBuilderNamespaceRepairing2 extends AxiomTestCase {
                         .getDocumentElement();
 
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMNamespace ns = it.next();
-        assertEquals("", ns.getPrefix());
-        assertEquals("urn:test", ns.getNamespaceURI());
-        assertFalse(it.hasNext());
+        assertThat(ns.getPrefix()).isEqualTo("");
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:test");
+        assertThat(it.hasNext()).isFalse();
 
         OMElement child = element.getFirstElement();
         it = child.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         ns = it.next();
-        assertEquals("", ns.getPrefix());
-        assertEquals("", ns.getNamespaceURI());
-        assertFalse(it.hasNext());
+        assertThat(ns.getPrefix()).isEqualTo("");
+        assertThat(ns.getNamespaceURI()).isEqualTo("");
+        assertThat(it.hasNext()).isFalse();
     }
 }

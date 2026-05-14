@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -133,6 +135,6 @@ public class TestSerialization extends AxiomTestCase {
         personElem.addChild(ageElem);
         personElem.addChild(weightElem);
 
-        assertEquals(params.expected(), personElem.toString());
+        assertThat(personElem.toString()).isEqualTo(params.expected());
     }
 }

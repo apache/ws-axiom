@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -125,44 +126,42 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
         String expectedPrefix;
         if (params.expectedPrefix() == null) {
             expectedPrefix = node.getPrefix();
-            assertNotNull(expectedPrefix);
-            assertFalse(expectedPrefix.length() == 0);
+            assertThat(expectedPrefix).isNotNull();
+            assertThat(expectedPrefix).isNotEmpty();
         } else {
             expectedPrefix = params.expectedPrefix();
             if (expectedPrefix.length() == 0) {
-                assertNull(node.getPrefix());
+                assertThat(node.getPrefix()).isNull();
             } else {
-                assertEquals(expectedPrefix, node.getPrefix());
+                assertThat(node.getPrefix()).isEqualTo(expectedPrefix);
             }
         }
         if (params.namespaceURI() == null || params.namespaceURI().length() == 0) {
-            assertNull(node.getNamespace());
+            assertThat(node.getNamespace()).isNull();
         } else {
             OMNamespace actualNS = node.getNamespace();
-            assertEquals(expectedPrefix, actualNS.getPrefix());
-            assertEquals(params.namespaceURI(), actualNS.getNamespaceURI());
+            assertThat(actualNS.getPrefix()).isEqualTo(expectedPrefix);
+            assertThat(actualNS.getNamespaceURI()).isEqualTo(params.namespaceURI());
         }
         if (params.namespaceURI() == null || params.namespaceURI().length() == 0) {
-            assertNull(node.getNamespaceURI());
+            assertThat(node.getNamespaceURI()).isNull();
         } else {
-            assertEquals(params.namespaceURI(), node.getNamespaceURI());
+            assertThat(node.getNamespaceURI()).isEqualTo(params.namespaceURI());
         }
         QName qname = node.getQName();
-        assertEquals(expectedPrefix, qname.getPrefix());
-        assertEquals(
-                params.namespaceURI() == null ? "" : params.namespaceURI(),
-                qname.getNamespaceURI());
+        assertThat(qname.getPrefix()).isEqualTo(expectedPrefix);
+        assertThat(qname.getNamespaceURI())
+                .isEqualTo(params.namespaceURI() == null ? "" : params.namespaceURI());
         if (element != null) {
             Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
             if (params.expectNSDecl()) {
-                assertTrue(it.hasNext());
+                assertThat(it.hasNext()).isTrue();
                 OMNamespace decl = it.next();
-                assertEquals(expectedPrefix, decl.getPrefix());
-                assertEquals(
-                        params.namespaceURI() == null ? "" : params.namespaceURI(),
-                        decl.getNamespaceURI());
+                assertThat(decl.getPrefix()).isEqualTo(expectedPrefix);
+                assertThat(decl.getNamespaceURI())
+                        .isEqualTo(params.namespaceURI() == null ? "" : params.namespaceURI());
             }
-            assertFalse(it.hasNext());
+            assertThat(it.hasNext()).isFalse();
         }
     }
 }

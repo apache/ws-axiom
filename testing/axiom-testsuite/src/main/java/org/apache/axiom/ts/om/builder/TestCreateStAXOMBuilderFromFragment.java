@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamConstants;
@@ -58,12 +60,12 @@ public class TestCreateStAXOMBuilderFromFragment extends AxiomTestCase {
         OMElement element =
                 OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
                         .getDocumentElement();
-        assertEquals("b", element.getLocalName());
+        assertThat(element.getLocalName()).isEqualTo("b");
         OMNode child = element.getFirstOMChild();
-        assertTrue(child instanceof OMText);
-        assertNull(element.getNextOMSibling());
+        assertThat(child).isInstanceOf(OMText.class);
+        assertThat(element.getNextOMSibling()).isNull();
         // Check that the original reader is now positioned on the event just following </b>
-        assertEquals(XMLStreamReader.END_ELEMENT, reader.getEventType());
-        assertEquals("a", reader.getLocalName());
+        assertThat(reader.getEventType()).isEqualTo(XMLStreamReader.END_ELEMENT);
+        assertThat(reader.getLocalName()).isEqualTo("a");
     }
 }

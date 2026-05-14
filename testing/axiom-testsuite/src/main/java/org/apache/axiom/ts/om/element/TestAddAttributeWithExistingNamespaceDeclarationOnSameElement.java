@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -53,8 +55,8 @@ public class TestAddAttributeWithExistingNamespaceDeclarationOnSameElement exten
         element.declareNamespace(ns);
         strategy.addAttribute(element, "test", ns, "test");
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
-        assertEquals(ns, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(ns);
+        assertThat(it.hasNext()).isFalse();
     }
 }

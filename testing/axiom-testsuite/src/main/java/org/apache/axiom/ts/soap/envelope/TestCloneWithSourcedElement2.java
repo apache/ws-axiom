@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
@@ -66,6 +68,6 @@ public class TestCloneWithSourcedElement2 extends CloneTestCase {
         copyAndCheck(sourceEnv);
 
         // The source SOAPHeaderBlock should not be expanded in the process
-        assertFalse(shb.isExpanded());
+        assertThat(shb.isExpanded()).isFalse();
     }
 }

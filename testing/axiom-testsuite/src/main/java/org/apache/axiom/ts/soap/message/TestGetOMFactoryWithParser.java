@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.message;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
@@ -47,6 +49,6 @@ public class TestGetOMFactoryWithParser extends TestCase {
                         .getMessage(spec)
                         .getAdapter(SOAPSampleAdapter.class)
                         .getSOAPMessage(metaFactory);
-        assertSame(soapFactory, message.getOMFactory());
+        assertThat(message.getOMFactory()).isSameAs(soapFactory);
     }
 }

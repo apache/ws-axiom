@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -28,7 +30,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.junit.Assert;
 
 /** Scenario that uses {@link XMLStreamWriter#writeCharacters(char[], int, int)}. */
 public class WriteCharactersCharArrayScenario implements PushOMDataSourceScenario {
@@ -56,11 +57,11 @@ public class WriteCharactersCharArrayScenario implements PushOMDataSourceScenari
     @Override
     public void validate(OMElement element, boolean blobsPreserved) {
         OMNode child = element.getFirstOMChild();
-        Assert.assertTrue(child instanceof OMText);
-        Assert.assertEquals("test", ((OMText) child).getText());
+        assertThat(child).isInstanceOf(OMText.class);
+        assertThat(((OMText) child).getText()).isEqualTo("test");
         child = child.getNextOMSibling();
-        Assert.assertTrue(child instanceof OMText);
-        Assert.assertEquals("case", ((OMText) child).getText());
-        Assert.assertNull(child.getNextOMSibling());
+        assertThat(child).isInstanceOf(OMText.class);
+        assertThat(((OMText) child).getText()).isEqualTo("case");
+        assertThat(child.getNextOMSibling()).isNull();
     }
 }

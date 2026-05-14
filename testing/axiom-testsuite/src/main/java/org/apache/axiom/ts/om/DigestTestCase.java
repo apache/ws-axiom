@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
@@ -56,7 +58,7 @@ public abstract class DigestTestCase extends AxiomTestCase {
         } else {
             digest = digestGenerator.getDigest((OMNode) node, algorithm);
         }
-        assertEquals(expectedDigest, DigestUtils.toHexString(digest));
+        assertThat(DigestUtils.toHexString(digest)).isEqualTo(expectedDigest);
     }
 
     protected abstract OMInformationItem createInformationItem() throws Exception;

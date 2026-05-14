@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -43,8 +45,8 @@ public class TestCreateOMAttributeGeneratedPrefix extends AxiomTestCase {
                 factory.createOMAttribute(
                         "attr", factory.createOMNamespace("urn:ns", null), "value");
         OMNamespace ns = attr.getNamespace();
-        assertEquals("urn:ns", ns.getNamespaceURI());
-        assertNotNull(ns.getPrefix());
-        assertTrue(ns.getPrefix().length() > 0);
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns");
+        assertThat(ns.getPrefix()).isNotNull();
+        assertThat(ns.getPrefix()).isNotEmpty();
     }
 }

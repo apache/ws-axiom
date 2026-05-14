@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMDataSource;
@@ -50,9 +52,9 @@ public class TestGetNamespaceNormalized2 extends AxiomTestCase {
         OMSourcedElement element =
                 factory.createOMElement(
                         new StringOMDataSource("<element>content</element>"), new QName("element"));
-        assertNull(element.getNamespace());
+        assertThat(element.getNamespace()).isNull();
         // Expand the element
         element.getFirstOMChild();
-        assertNull(element.getNamespace());
+        assertThat(element.getNamespace()).isNull();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faultdetail;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringWriter;
 
 import org.apache.axiom.om.OMNamespace;
@@ -47,7 +49,7 @@ public class TestSerialization extends TestCase {
         StringWriter out = new StringWriter();
         soapFaultDetail.serialize(out);
         String msg = out.toString();
-        assertTrue(msg.indexOf("DetailEntry1") != -1);
-        assertTrue(msg.indexOf("DetailEntry2") != -1);
+        assertThat(msg).contains("DetailEntry1");
+        assertThat(msg).contains("DetailEntry2");
     }
 }

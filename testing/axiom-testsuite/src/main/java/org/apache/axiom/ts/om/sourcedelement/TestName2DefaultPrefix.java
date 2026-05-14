@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringWriter;
 
 import org.apache.axiom.om.OMElement;
@@ -57,12 +59,10 @@ public class TestName2DefaultPrefix extends AxiomTestCase {
 
         // Test getting the namespace, localpart and prefix.  This should used not result in
         // expansion
-        assertTrue(element.getLocalName().equals("library"));
-        assertTrue(
-                element.getNamespace()
-                        .getNamespaceURI()
-                        .equals("http://www.sosnoski.com/uwjws/library"));
-        assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
+        assertThat(element.getLocalName()).isEqualTo("library");
+        assertThat(element.getNamespace().getNamespaceURI())
+                .isEqualTo("http://www.sosnoski.com/uwjws/library");
+        assertThat(element.getNamespace().getPrefix()).isEqualTo("DUMMYPREFIX");
 
         // Serialize and consume.  This should not cause expansion and currently won't update
         // the name of the element.
@@ -70,15 +70,13 @@ public class TestName2DefaultPrefix extends AxiomTestCase {
         root.serializeAndConsume(writer);
         String result = writer.toString();
 
-        assertTrue(element.getLocalName().equals("library"));
-        assertTrue(
-                element.getNamespace()
-                        .getNamespaceURI()
-                        .equals("http://www.sosnoski.com/uwjws/library"));
-        assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
+        assertThat(element.getLocalName()).isEqualTo("library");
+        assertThat(element.getNamespace().getNamespaceURI())
+                .isEqualTo("http://www.sosnoski.com/uwjws/library");
+        assertThat(element.getNamespace().getPrefix()).isEqualTo("DUMMYPREFIX");
         // Make sure that the serialized string does not contain DUMMYPREFIX
-        assertTrue(result.indexOf("DUMMYPREFIX") < 0);
+        assertThat(result).doesNotContain("DUMMYPREFIX");
 
-        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        assertThat(result).contains("1930110111");
     }
 }

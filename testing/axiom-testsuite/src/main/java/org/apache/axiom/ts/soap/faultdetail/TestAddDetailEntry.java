@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faultdetail;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -47,31 +49,13 @@ public class TestAddDetailEntry extends TestCase {
         soapFaultDetail.addDetailEntry(soapFactory.createOMElement("DetailEntry2", omNamespace));
         Iterator<OMElement> iterator = soapFaultDetail.getAllDetailEntries();
         OMElement detailEntry1 = iterator.next();
-        assertNotNull(
-                "SOAP Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns empty iterator",
-                detailEntry1);
-        assertEquals(
-                "SOAP Fault Detail Test : - detailEntry1 local name mismatch",
-                "DetailEntry1",
-                detailEntry1.getLocalName());
-        assertEquals(
-                "SOAP Fault Detail Test : - detailEntry1 namespace uri mismatch",
-                "http://www.test.org",
-                detailEntry1.getNamespace().getNamespaceURI());
+        assertThat(detailEntry1).isNotNull();
+        assertThat(detailEntry1.getLocalName()).isEqualTo("DetailEntry1");
+        assertThat(detailEntry1.getNamespace().getNamespaceURI()).isEqualTo("http://www.test.org");
         OMElement detailEntry2 = iterator.next();
-        assertNotNull(
-                "SOAP Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns an iterator with only one object",
-                detailEntry2);
-        assertEquals(
-                "SOAP Fault Detail Test : - detailEntry2 local name mismatch",
-                "DetailEntry2",
-                detailEntry2.getLocalName());
-        assertEquals(
-                "SOAP Fault Detail Test : - detailEntry2 namespace uri mismatch",
-                "http://www.test.org",
-                detailEntry2.getNamespace().getNamespaceURI());
-        assertFalse(
-                "SOAP Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns an iterator with three objects",
-                iterator.hasNext());
+        assertThat(detailEntry2).isNotNull();
+        assertThat(detailEntry2.getLocalName()).isEqualTo("DetailEntry2");
+        assertThat(detailEntry2.getNamespace().getNamespaceURI()).isEqualTo("http://www.test.org");
+        assertThat(iterator.hasNext()).isFalse();
     }
 }

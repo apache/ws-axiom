@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -59,12 +61,12 @@ public class TestCharacterDataReaderFromParser extends AxiomTestCase {
         XMLStreamReader reader = doc.getXMLStreamReader(cache);
         CharacterDataReader cdataReader =
                 (CharacterDataReader) reader.getProperty(CharacterDataReader.PROPERTY);
-        assertNotNull(cdataReader);
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
+        assertThat(cdataReader).isNotNull();
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         StringWriter sw = new StringWriter();
         while (reader.next() == XMLStreamReader.CHARACTERS) {
             cdataReader.writeTextTo(sw);
         }
-        assertEquals(text, sw.toString());
+        assertThat(sw.toString()).isEqualTo(text);
     }
 }

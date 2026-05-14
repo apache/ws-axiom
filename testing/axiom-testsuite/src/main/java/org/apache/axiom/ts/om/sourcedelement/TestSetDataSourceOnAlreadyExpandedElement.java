@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -39,12 +41,12 @@ public class TestSetDataSourceOnAlreadyExpandedElement extends AxiomTestCase {
                         metaFactory.getOMFactory(), false, true);
         // Make sure the OMSourcedElement is expanded
         element.getFirstOMChild();
-        assertTrue(element.isExpanded());
+        assertThat(element.isExpanded()).isTrue();
         // Now set a new data source
         element.setDataSource(new PullOMDataSource(TestDocument.DOCUMENT2.getContent()));
-        assertFalse(element.isExpanded());
+        assertThat(element.isExpanded()).isFalse();
         // getNextOMSibling should not expand the element
-        assertNull(element.getNextOMSibling());
-        assertFalse(element.isExpanded());
+        assertThat(element.getNextOMSibling()).isNull();
+        assertThat(element.isExpanded()).isFalse();
     }
 }

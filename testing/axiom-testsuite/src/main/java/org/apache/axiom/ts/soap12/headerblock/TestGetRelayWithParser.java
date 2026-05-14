@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.headerblock;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -36,8 +38,8 @@ public class TestGetRelayWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         Iterator<SOAPHeaderBlock> iterator = envelope.getHeader().examineAllHeaderBlocks();
-        assertFalse(iterator.next().getRelay());
-        assertTrue(iterator.next().getRelay());
-        assertFalse(iterator.next().getRelay());
+        assertThat(iterator.next().getRelay()).isFalse();
+        assertThat(iterator.next().getRelay()).isTrue();
+        assertThat(iterator.next().getRelay()).isFalse();
     }
 }

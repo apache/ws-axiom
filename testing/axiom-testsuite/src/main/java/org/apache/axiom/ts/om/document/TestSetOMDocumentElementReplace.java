@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -51,18 +53,18 @@ public class TestSetOMDocumentElementReplace extends AxiomTestCase {
                         .getDocument();
         OMElement documentElement = factory.createOMElement("new", null);
         document.setOMDocumentElement(documentElement);
-        assertSame(documentElement, document.getOMDocumentElement());
+        assertThat(document.getOMDocumentElement()).isSameAs(documentElement);
         Iterator<OMNode> it = document.getChildren();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMNode child = it.next();
-        assertTrue(child instanceof OMComment);
-        assertEquals("comment1", ((OMComment) child).getValue());
-        assertTrue(it.hasNext());
-        assertSame(documentElement, it.next());
-        assertTrue(it.hasNext());
+        assertThat(child).isInstanceOf(OMComment.class);
+        assertThat(((OMComment) child).getValue()).isEqualTo("comment1");
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(documentElement);
+        assertThat(it.hasNext()).isTrue();
         child = it.next();
-        assertTrue(child instanceof OMComment);
-        assertEquals("comment2", ((OMComment) child).getValue());
-        assertFalse(it.hasNext());
+        assertThat(child).isInstanceOf(OMComment.class);
+        assertThat(((OMComment) child).getValue()).isEqualTo("comment2");
+        assertThat(it.hasNext()).isFalse();
     }
 }

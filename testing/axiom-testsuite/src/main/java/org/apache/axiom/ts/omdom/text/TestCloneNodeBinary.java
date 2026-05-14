@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
@@ -31,7 +33,7 @@ public class TestCloneNodeBinary extends OMDOMTestCase {
         Blob blob = new RandomBlob(666L, 1000);
         Text text = (Text) factory.createOMText(blob, false);
         String base64 = text.getData();
-        assertTrue(base64.length() > 0);
-        assertEquals(base64, ((Text) text.cloneNode(true)).getData());
+        assertThat(base64).isNotEmpty();
+        assertThat(((Text) text.cloneNode(true)).getData()).isEqualTo(base64);
     }
 }

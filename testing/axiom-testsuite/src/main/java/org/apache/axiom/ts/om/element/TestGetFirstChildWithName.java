@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -49,18 +51,18 @@ public class TestGetFirstChildWithName extends AxiomTestCase {
         factory.createOMElement("a", ns1, parent);
 
         // Check that it's really the first element that is returned
-        assertSame(child1, parent.getFirstChildWithName(new QName("urn:ns1", "a")));
+        assertThat(parent.getFirstChildWithName(new QName("urn:ns1", "a"))).isSameAs(child1);
 
         // Test with a child that is not the first one
-        assertSame(child2, parent.getFirstChildWithName(new QName("urn:ns2", "b")));
+        assertThat(parent.getFirstChildWithName(new QName("urn:ns2", "b"))).isSameAs(child2);
 
         // Check that the namespace URI is taken into account
-        assertNull(parent.getFirstChildWithName(new QName("b")));
+        assertThat(parent.getFirstChildWithName(new QName("b"))).isNull();
 
         // Check that the prefix of the given QName is not taken into account
-        assertSame(child3, parent.getFirstChildWithName(new QName("urn:ns1", "b", "ns2")));
+        assertThat(parent.getFirstChildWithName(new QName("urn:ns1", "b", "ns2"))).isSameAs(child3);
 
         // Test with null namespace
-        assertSame(child4, parent.getFirstChildWithName(new QName("c")));
+        assertThat(parent.getFirstChildWithName(new QName("c"))).isSameAs(child4);
     }
 }

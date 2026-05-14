@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -35,14 +37,14 @@ public class TestGetPrefix extends LazyNameTestCase {
     protected void runTest(OMSourcedElement element) throws Throwable {
         String prefix = qname.getPrefix();
         if (prefix.length() == 0) {
-            assertNull(element.getPrefix());
+            assertThat(element.getPrefix()).isNull();
         } else {
-            assertEquals(prefix, element.getPrefix());
+            assertThat(element.getPrefix()).isEqualTo(prefix);
         }
         if (variant.isPrefixRequiresExpansion(qname)) {
-            assertTrue(element.isExpanded());
+            assertThat(element.isExpanded()).isTrue();
         } else {
-            assertFalse(element.isExpanded());
+            assertThat(element.isExpanded()).isFalse();
         }
     }
 }

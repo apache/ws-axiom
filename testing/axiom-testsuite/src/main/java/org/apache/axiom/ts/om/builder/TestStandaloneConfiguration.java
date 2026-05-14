@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.InputStream;
 import java.util.Iterator;
 
@@ -50,7 +52,7 @@ public class TestStandaloneConfiguration extends AxiomTestCase {
                 OMXMLBuilderFactory.createOMBuilder(
                         metaFactory.getOMFactory(), StAXParserConfiguration.STANDALONE, is);
         OMElement root = builder.getDocumentElement();
-        assertTrue(root.getLocalName().equals("web-app"));
+        assertThat(root.getLocalName().equals("web-app")).isTrue();
         OMDocument document = builder.getDocument();
         Iterator<OMNode> i = document.getChildren();
         OMDocType docType = null;
@@ -60,7 +62,7 @@ public class TestStandaloneConfiguration extends AxiomTestCase {
                 docType = omDocType;
             }
         }
-        assertTrue(docType != null);
+        assertThat(docType != null).isTrue();
         root.close(false);
     }
 }

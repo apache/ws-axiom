@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.fault;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -32,16 +34,10 @@ public class TestGetNode extends TestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
-        assertNull(
-                "SOAP 1.2 Fault Test:- After creating a SOAP12Fault, it has a node",
-                soapFault.getNode());
+        assertThat(soapFault.getNode()).isNull();
         soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault));
-        assertNotNull(
-                "SOAP 1.2 Fault Test:- After calling setNode method, Fault has no node",
-                soapFault.getNode());
-        assertEquals(
-                "SOAP 1.2 Fault Test:- Fault node local name mismatch",
-                SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME,
-                soapFault.getNode().getLocalName());
+        assertThat(soapFault.getNode()).isNotNull();
+        assertThat(soapFault.getNode().getLocalName())
+                .isEqualTo(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME);
     }
 }

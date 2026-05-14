@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -55,7 +57,7 @@ public class TestCloneOMElementNamespaceRepairing extends AxiomTestCase {
 
         // Check that the child has no namespace declarations (to validate the correctness of the
         // test)
-        assertFalse(child.getAllDeclaredNamespaces().hasNext());
+        assertThat(child.getAllDeclaredNamespaces().hasNext()).isFalse();
 
         // Clone the child and check that namespace declarations have been generated automatically
         OMElement clone = child.cloneOMElement();
@@ -66,6 +68,6 @@ public class TestCloneOMElementNamespaceRepairing extends AxiomTestCase {
         for (Iterator<OMNamespace> it = clone.getAllDeclaredNamespaces(); it.hasNext(); ) {
             actualNSDecls.add(it.next());
         }
-        assertEquals(expectedNSDecls, actualNSDecls);
+        assertThat(actualNSDecls).isEqualTo(expectedNSDecls);
     }
 }

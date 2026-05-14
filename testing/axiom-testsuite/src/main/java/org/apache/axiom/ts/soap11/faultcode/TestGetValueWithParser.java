@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap11.faultcode;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
@@ -35,6 +37,6 @@ public class TestGetValueWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultCode code = envelope.getBody().getFault().getCode();
-        assertNull(code.getValue());
+        assertThat(code.getValue()).isNull();
     }
 }

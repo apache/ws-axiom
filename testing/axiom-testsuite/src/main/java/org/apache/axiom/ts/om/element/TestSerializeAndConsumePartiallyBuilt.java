@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -53,6 +55,6 @@ public class TestSerializeAndConsumePartiallyBuilt extends AxiomTestCase {
 
         StringWriter out = new StringWriter();
         root.serializeAndConsume(out);
-        assertEquals(xml, out.toString());
+        assertThat(out.toString()).isEqualTo(xml);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.message;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -40,6 +42,6 @@ public class TestSetOMDocumentElement extends TestCase {
         SOAPMessage message = soapFactory.createSOAPMessage();
         OMElement envelope = soapFactory.getDefaultEnvelope();
         message.setOMDocumentElement(envelope);
-        assertSame(envelope, message.getFirstOMChild());
+        assertThat(message.getFirstOMChild()).isSameAs(envelope);
     }
 }

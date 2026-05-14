@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamReader;
@@ -64,6 +66,6 @@ public class TestGetXMLStreamReaderWithoutCachingPartiallyBuilt extends AxiomTes
                 depth--;
             }
         }
-        assertEquals(0, depth);
+        assertThat(depth).isEqualTo(0);
     }
 }

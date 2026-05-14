@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.DTDReader;
@@ -50,11 +52,11 @@ public class TestDTDReader extends AxiomTestCase {
         // Note that according to the specification of the DTDReader interface, it is
         // allowed to look up the extension before reaching the DTD event.
         DTDReader dtdReader = (DTDReader) reader.getProperty(DTDReader.PROPERTY);
-        assertNotNull(dtdReader);
-        assertEquals(XMLStreamReader.DTD, reader.next());
-        assertEquals("root", dtdReader.getRootName());
-        assertEquals("-//MY//DTD", dtdReader.getPublicId());
-        assertEquals("my.dtd", dtdReader.getSystemId());
-        assertEquals("<!ELEMENT root (#PCDATA)>", reader.getText());
+        assertThat(dtdReader).isNotNull();
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.DTD);
+        assertThat(dtdReader.getRootName()).isEqualTo("root");
+        assertThat(dtdReader.getPublicId()).isEqualTo("-//MY//DTD");
+        assertThat(dtdReader.getSystemId()).isEqualTo("my.dtd");
+        assertThat(reader.getText()).isEqualTo("<!ELEMENT root (#PCDATA)>");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMComment;
@@ -48,6 +50,6 @@ public class TestCommentInEpilog extends TestCase {
                                         soapFactory.getDefaultEnvelope() + "<!--comment-->"))
                         .getSOAPEnvelope();
         OMNode sibling = envelope.getNextOMSibling();
-        assertTrue(sibling instanceof OMComment);
+        assertThat(sibling).isInstanceOf(OMComment.class);
     }
 }

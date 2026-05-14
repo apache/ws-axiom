@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMSourcedElement;
@@ -63,6 +65,6 @@ public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck
                         new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
 
         OMElement bodyElement = envelope.getBody().getFirstElement();
-        assertTrue(bodyElement instanceof OMSourcedElement);
+        assertThat(bodyElement).isInstanceOf(OMSourcedElement.class);
     }
 }

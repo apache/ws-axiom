@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.header;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMNamespace;
@@ -41,10 +43,10 @@ public class TestExtractAllHeaderBlocks extends TestCase {
         SOAPHeaderBlock h1 = header.addHeaderBlock("header1", ns);
         SOAPHeaderBlock h2 = header.addHeaderBlock("header2", ns);
         Iterator<SOAPHeaderBlock> it = header.extractAllHeaderBlocks();
-        assertTrue(it.hasNext());
-        assertSame(h1, it.next());
-        assertTrue(it.hasNext());
-        assertSame(h2, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(h1);
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(h2);
+        assertThat(it.hasNext()).isFalse();
     }
 }

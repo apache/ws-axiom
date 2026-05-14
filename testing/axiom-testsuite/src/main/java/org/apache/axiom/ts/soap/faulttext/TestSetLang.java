@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faulttext;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -34,22 +36,13 @@ public class TestSetLang extends TestCase {
     protected void runTest() throws Throwable {
         SOAPFaultText faultText = soapFactory.createSOAPFaultText();
         faultText.setLang("en");
-        assertEquals(
-                "SOAP Fault Text Test : - After calling setLang method, Lang attribute value mismatch",
-                "en",
-                faultText.getLang());
+        assertThat(faultText.getLang()).isEqualTo("en");
         OMAttribute langAttribute = faultText.getAllAttributes().next();
-        assertEquals(
-                "SOAP Fault Text Test : - After calling setLang method, Lang attribute local name mismaatch",
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
-                langAttribute.getLocalName());
-        assertEquals(
-                "SOAP Fault Text Test : - After calling setLang method, Lang attribute namespace prefix mismatch",
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX,
-                langAttribute.getNamespace().getPrefix());
-        assertEquals(
-                "SOAP Fault Text Test : - After calling setLang method, Lang attribute namespace uri mismatch",
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
-                langAttribute.getNamespace().getNamespaceURI());
+        assertThat(langAttribute.getLocalName())
+                .isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME);
+        assertThat(langAttribute.getNamespace().getPrefix())
+                .isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+        assertThat(langAttribute.getNamespace().getNamespaceURI())
+                .isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faultnode;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultNode;
 
@@ -32,6 +34,6 @@ public class TestSetFaultNodeValue extends TestCase {
     protected void runTest() throws Throwable {
         SOAPFaultNode node = soapFactory.createSOAPFaultNode();
         node.setFaultNodeValue("http://some.node");
-        assertEquals("http://some.node", node.getText());
+        assertThat(node.getText()).isEqualTo("http://some.node");
     }
 }

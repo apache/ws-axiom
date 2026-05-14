@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -47,7 +49,7 @@ public class TestGetChildrenRemove4 extends AxiomTestCase {
         int firstChildrenCount = 0;
         int secondChildrenCount = 0;
         while (iter.hasNext()) {
-            assertNotNull(iter.next());
+            assertThat(iter.next()).isNotNull();
             firstChildrenCount++;
         }
 
@@ -59,11 +61,10 @@ public class TestGetChildrenRemove4 extends AxiomTestCase {
         // reset the iterator
         iter = elt.getChildren(); // reset the iterator
         while (iter.hasNext()) {
-            assertNotNull(iter.next());
+            assertThat(iter.next()).isNotNull();
             secondChildrenCount++;
         }
-        assertEquals(
-                "children count must reduce from 1", firstChildrenCount - 1, secondChildrenCount);
+        assertThat(secondChildrenCount).isEqualTo(firstChildrenCount - 1);
 
         elt.close(false);
     }

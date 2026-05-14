@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -35,23 +37,14 @@ public class TestGetDefaultFaultEnvelope extends TestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
 
-        assertNotNull(
-                "Default FaultEnvelope must have a SOAPFault in it", envelope.getBody().getFault());
-        assertNotNull(
-                "Default FaultEnvelope must have a SOAPFaultCode in it",
-                envelope.getBody().getFault().getCode());
+        assertThat(envelope.getBody().getFault()).isNotNull();
+        assertThat(envelope.getBody().getFault().getCode()).isNotNull();
         if (spec == SOAPSpec.SOAP12) {
-            assertNotNull(
-                    "Default FaultEnvelope must have a SOAPFaultCodeValue in it",
-                    envelope.getBody().getFault().getCode().getValue());
+            assertThat(envelope.getBody().getFault().getCode().getValue()).isNotNull();
         }
-        assertNotNull(
-                "Default FaultEnvelope must have a SOAPFaultReason in it",
-                envelope.getBody().getFault().getReason());
+        assertThat(envelope.getBody().getFault().getReason()).isNotNull();
         if (spec == SOAPSpec.SOAP12) {
-            assertNotNull(
-                    "Default FaultEnvelope must have a SOAPFaultText in it",
-                    envelope.getBody().getFault().getReason().getFirstSOAPText());
+            assertThat(envelope.getBody().getFault().getReason().getFirstSOAPText()).isNotNull();
         }
     }
 }

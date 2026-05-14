@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -42,6 +44,6 @@ public class TestGetText extends AxiomTestCase {
         OMElement element = factory.createOMElement("test", null);
         String text = "The quick brown fox jumps over the lazy dog";
         factory.createOMText(element, text);
-        assertEquals("Text value mismatch", text, element.getText());
+        assertThat(element.getText()).isEqualTo(text);
     }
 }

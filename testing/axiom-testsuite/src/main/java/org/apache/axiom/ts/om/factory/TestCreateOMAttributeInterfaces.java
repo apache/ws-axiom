@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
@@ -50,6 +52,6 @@ public class TestCreateOMAttributeInterfaces extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("urn:test", "p");
         OMAttribute attr = factory.createOMAttribute("attr", ns, "value");
-        assertFalse(attr instanceof OMSerializable);
+        assertThat(attr).isNotInstanceOf(OMSerializable.class);
     }
 }

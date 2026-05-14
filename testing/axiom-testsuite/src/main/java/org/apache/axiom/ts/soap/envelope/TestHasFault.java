@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -32,10 +34,10 @@ public class TestHasFault extends TestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
-        assertFalse(envelope.hasFault());
+        assertThat(envelope.hasFault()).isFalse();
         SOAPBody body = soapFactory.createSOAPBody(envelope);
-        assertFalse(envelope.hasFault());
+        assertThat(envelope.hasFault()).isFalse();
         body.addFault(new Exception("This an exception for testing"));
-        assertTrue(envelope.hasFault());
+        assertThat(envelope.hasFault()).isTrue();
     }
 }

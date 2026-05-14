@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMFactory;
@@ -44,28 +46,28 @@ public class TestReplaceChildFirstIncomplete extends OMDOMTestCase {
         Element a2 = element.getOwnerDocument().createElementNS(null, "a2");
         element.replaceChild(a2, a);
         Element b = (Element) a2.getNextSibling();
-        assertNotNull(b);
+        assertThat(b).isNotNull();
         Element c = (Element) b.getNextSibling();
-        assertNotNull(c);
+        assertThat(c).isNotNull();
         // Check the other sibling relations
-        assertNull(a2.getPreviousSibling());
-        assertSame(a2, b.getPreviousSibling());
-        assertSame(b, c.getPreviousSibling());
-        assertNull(c.getNextSibling());
+        assertThat(a2.getPreviousSibling()).isNull();
+        assertThat(b.getPreviousSibling()).isSameAs(a2);
+        assertThat(c.getPreviousSibling()).isSameAs(b);
+        assertThat(c.getNextSibling()).isNull();
         // Check parent-child relations
-        assertSame(a2, element.getFirstChild());
-        assertSame(c, element.getLastChild());
-        assertSame(element, a2.getParentNode());
-        assertSame(element, b.getParentNode());
-        assertSame(element, c.getParentNode());
+        assertThat(element.getFirstChild()).isSameAs(a2);
+        assertThat(element.getLastChild()).isSameAs(c);
+        assertThat(a2.getParentNode()).isSameAs(element);
+        assertThat(b.getParentNode()).isSameAs(element);
+        assertThat(c.getParentNode()).isSameAs(element);
         NodeList children = element.getChildNodes();
-        assertEquals(3, children.getLength());
-        assertSame(a2, children.item(0));
-        assertSame(b, children.item(1));
-        assertSame(c, children.item(2));
+        assertThat(children.getLength()).isEqualTo(3);
+        assertThat(children.item(0)).isSameAs(a2);
+        assertThat(children.item(1)).isSameAs(b);
+        assertThat(children.item(2)).isSameAs(c);
         // Check that a has been detached properly
-        assertNull(a.getPreviousSibling());
-        assertNull(a.getNextSibling());
-        assertNull(a.getParentNode());
+        assertThat(a.getPreviousSibling()).isNull();
+        assertThat(a.getNextSibling()).isNull();
+        assertThat(a.getParentNode()).isNull();
     }
 }

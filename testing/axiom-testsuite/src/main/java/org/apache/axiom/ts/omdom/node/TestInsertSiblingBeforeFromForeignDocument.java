@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.node;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.axiom.om.OMElement;
@@ -43,8 +45,8 @@ public class TestInsertSiblingBeforeFromForeignDocument extends OMDOMTestCase {
         Element element2 = document2.createElementNS(null, "element2");
         ((OMNode) text).insertSiblingBefore((OMElement) element2);
         // Assert that the new child is not a copy, but the original element
-        assertSame(element2, element1.getFirstChild());
+        assertThat(element1.getFirstChild()).isSameAs(element2);
         // Assert that the owner document of element2 was changed
-        assertSame(document1, element2.getOwnerDocument());
+        assertThat(element2.getOwnerDocument()).isSameAs(document1);
     }
 }

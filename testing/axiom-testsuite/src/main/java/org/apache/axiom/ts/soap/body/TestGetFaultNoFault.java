@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.soap.SOAPBody;
@@ -37,6 +39,6 @@ public class TestGetFaultNoFault extends TestCase {
         body.addChild(
                 soapFactory.createOMElement(
                         qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
-        assertNull(body.getFault());
+        assertThat(body.getFault()).isNull();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -39,10 +41,10 @@ public class TestGetNamespacesInScopeWithDefaultNamespace extends AxiomTestCase 
         OMElement element =
                 AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<a xmlns='urn:test'><b/></a>");
         Iterator<OMNamespace> it = element.getFirstElement().getNamespacesInScope();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMNamespace ns = it.next();
-        assertEquals("", ns.getPrefix());
-        assertEquals("urn:test", ns.getNamespaceURI());
-        assertFalse(it.hasNext());
+        assertThat(ns.getPrefix()).isEqualTo("");
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:test");
+        assertThat(it.hasNext()).isFalse();
     }
 }

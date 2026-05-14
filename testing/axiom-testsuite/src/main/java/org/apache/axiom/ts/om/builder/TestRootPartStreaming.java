@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -84,6 +86,6 @@ public class TestRootPartStreaming extends AxiomTestCase {
 
         // We expect that after requesting the document element, only a small part (corresponding to
         // the size of the parser buffer) should have been read:
-        assertTrue(count1 < count2 / 2);
+        assertThat(count1).isLessThan(count2 / 2);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -36,12 +38,12 @@ public class TestRemoveAttribute extends OMDOMTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         Document ownerDocument = ((Element) element).getOwnerDocument();
-        assertNotNull(ownerDocument);
+        assertThat(ownerDocument).isNotNull();
         OMAttribute attr = element.addAttribute("attr", "value", null);
-        assertSame(ownerDocument, ((Attr) attr).getOwnerDocument());
+        assertThat(((Attr) attr).getOwnerDocument()).isSameAs(ownerDocument);
         element.removeAttribute(attr);
         Document newOwnerDocument = ((Attr) attr).getOwnerDocument();
-        assertNotNull(ownerDocument);
-        assertNotSame(ownerDocument, newOwnerDocument);
+        assertThat(ownerDocument).isNotNull();
+        assertThat(newOwnerDocument).isNotSameAs(ownerDocument);
     }
 }

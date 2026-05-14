@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -42,6 +44,6 @@ public class TestGetAttributeValueNonExisting extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         element.addAttribute("attr", "value", null);
-        assertNull(element.getAttributeValue(new QName("urn:ns", "attr2")));
+        assertThat(element.getAttributeValue(new QName("urn:ns", "attr2"))).isNull();
     }
 }

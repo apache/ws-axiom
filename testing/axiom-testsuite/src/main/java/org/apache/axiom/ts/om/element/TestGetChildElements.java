@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -48,10 +50,10 @@ public class TestGetChildElements extends AxiomTestCase {
         while (iter.hasNext()) {
             counter++;
             OMElement o = iter.next();
-            assertNotNull("Must return not null objects!", o);
-            assertTrue("All these should be elements!", o.getType() == OMNode.ELEMENT_NODE);
+            assertThat(o).isNotNull();
+            assertThat(o.getType()).isEqualTo(OMNode.ELEMENT_NODE);
         }
-        assertEquals("This element should contain only two elements ", 2, counter);
+        assertThat(counter).isEqualTo(2);
         elt.close(false);
     }
 }

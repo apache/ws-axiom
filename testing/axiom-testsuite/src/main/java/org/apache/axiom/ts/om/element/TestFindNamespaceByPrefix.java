@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -38,8 +40,8 @@ public class TestFindNamespaceByPrefix extends AxiomTestCase {
                 AXIOMUtil.stringToOM(
                         metaFactory.getOMFactory(), "<a:root xmlns:a='urn:a'><child/></a:root>");
         OMNamespace ns = root.getFirstElement().findNamespace(null, "a");
-        assertNotNull(ns);
-        assertEquals("urn:a", ns.getNamespaceURI());
+        assertThat(ns).isNotNull();
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:a");
         root.close(false);
     }
 }

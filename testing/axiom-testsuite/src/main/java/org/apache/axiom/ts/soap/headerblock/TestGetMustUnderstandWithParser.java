@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -37,11 +39,7 @@ public class TestGetMustUnderstandWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         Iterator<SOAPHeaderBlock> iterator = envelope.getHeader().examineAllHeaderBlocks();
-        assertTrue(
-                "SOAP HeaderBlock Test With Parser : - getMustUnderstand method returns incorrect value",
-                iterator.next().getMustUnderstand());
-        assertFalse(
-                "SOAP HeaderBlock Test With Parser : - getMustUnderstand method returns incorrect value",
-                iterator.next().getMustUnderstand());
+        assertThat(iterator.next().getMustUnderstand()).isTrue();
+        assertThat(iterator.next().getMustUnderstand()).isFalse();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -43,6 +45,6 @@ public class TestGetTextAsQNameWithExtraWhitespace extends AxiomTestCase {
         OMElement element = factory.createOMElement("test", null);
         element.declareNamespace("urn:test", "ns1");
         element.setText("  ns1:test  ");
-        assertEquals(new QName("urn:test", "test"), element.getTextAsQName());
+        assertThat(element.getTextAsQName()).isEqualTo(new QName("urn:test", "test"));
     }
 }

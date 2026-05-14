@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -59,6 +61,6 @@ public class TestGetNamespaceNormalized extends AxiomTestCase {
         OMNamespace ns = useNull ? null : factory.createOMNamespace("", "");
         OMElement child = factory.createOMElement("child", ns);
         parent.addChild(child);
-        assertNull(child.getNamespace());
+        assertThat(child.getNamespace()).isNull();
     }
 }

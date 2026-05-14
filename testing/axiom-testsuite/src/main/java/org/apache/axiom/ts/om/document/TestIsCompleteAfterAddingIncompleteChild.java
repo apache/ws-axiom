@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMDocument;
@@ -47,8 +49,8 @@ public class TestIsCompleteAfterAddingIncompleteChild extends AxiomTestCase {
                 OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<elem>text</elem>"))
                         .getDocumentElement(true);
         OMDocument document = factory.createOMDocument();
-        assertTrue(document.isComplete());
+        assertThat(document.isComplete()).isTrue();
         document.addChild(incompleteElement);
-        assertFalse(document.isComplete());
+        assertThat(document.isComplete()).isFalse();
     }
 }

@@ -60,7 +60,7 @@ public class TestInvalidXML extends AxiomTestCase {
 
         assertThat(exception).isNotNull();
 
-        assertTrue(invocationCounter.getInvocationCount() > 0);
+        assertThat(invocationCounter.getInvocationCount() > 0).isTrue();
         invocationCounter.reset();
 
         // Intentionally call builder again to make sure the same error is returned.

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -46,11 +48,11 @@ public class TestAddAttributeAlreadyOwnedByElement extends AxiomTestCase {
         OMElement element = factory.createOMElement(new QName("test"));
         OMAttribute att = element.addAttribute("test", "test", null);
         OMAttribute result = element.addAttribute(att);
-        assertSame(result, att);
-        assertSame(element, att.getOwner());
+        assertThat(att).isSameAs(result);
+        assertThat(att.getOwner()).isSameAs(element);
         Iterator<OMAttribute> it = element.getAllAttributes();
-        assertTrue(it.hasNext());
-        assertSame(att, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(att);
+        assertThat(it.hasNext()).isFalse();
     }
 }

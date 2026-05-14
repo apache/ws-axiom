@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
 
@@ -67,6 +69,6 @@ public class TestGetXMLStreamReaderWithNamespaceURIInterning extends AxiomTestCa
     }
 
     private static void assertInterned(String s) {
-        assertSame("String not interned", s.intern(), s);
+        assertThat(s).isSameAs(s.intern());
     }
 }

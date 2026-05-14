@@ -21,6 +21,7 @@ package org.apache.axiom.ts.om.builder;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMComment;
@@ -65,36 +66,36 @@ public class TestGetDocumentElement extends AxiomTestCase {
         } else {
             element = builder.getDocumentElement(discardDocument.booleanValue());
         }
-        assertNotNull("Document element can not be null", element);
-        assertEquals("Name of the document element is wrong", "root", element.getLocalName());
+        assertThat(element).isNotNull();
+        assertThat(element.getLocalName()).isEqualTo("root");
         if (Boolean.TRUE.equals(discardDocument)) {
             if (builderFactory.isDeferredParsing()) {
-                assertFalse(element.isComplete());
+                assertThat(element.isComplete()).isFalse();
             }
-            assertNull(element.getParent());
+            assertThat(element.getParent()).isNull();
             // Note: we can't test getNextOMSibling here because this would build the element
-            assertNull(element.getPreviousOMSibling());
+            assertThat(element.getPreviousOMSibling()).isNull();
             OMElement newParent = element.getOMFactory().createOMElement("newParent", null);
             newParent.addChild(element);
             if (builderFactory.isDeferredParsing()) {
-                assertFalse(element.isComplete());
-                assertFalse(builder.isCompleted());
+                assertThat(element.isComplete()).isFalse();
+                assertThat(builder.isCompleted()).isFalse();
             }
             assertAbout(xml())
                     .that(xml(OMElement.class, newParent))
                     .hasSameContentAs("<newParent><root/></newParent>");
-            assertTrue(element.isComplete());
+            assertThat(element.isComplete()).isTrue();
             // Since we discarded the document, the nodes in the epilog will not be accessible.
             // Therefore we expect that when the document element changes its completion status,
             // the builder will consume the epilog and change its completion status as well.
             // This gives the underlying parser a chance to release some resources.
-            assertTrue(builder.isCompleted());
+            assertThat(builder.isCompleted()).isTrue();
         } else {
             // The getDocumentElement doesn't detach the document element from the document:
-            assertSame(builder.getDocument(), element.getParent());
-            assertSame(builder.getDocument().getOMDocumentElement(), element);
-            assertTrue(element.getPreviousOMSibling() instanceof OMComment);
-            assertTrue(element.getNextOMSibling() instanceof OMComment);
+            assertThat(element.getParent()).isSameAs(builder.getDocument());
+            assertThat(element).isSameAs(builder.getDocument().getOMDocumentElement());
+            assertThat(element.getPreviousOMSibling()).isInstanceOf(OMComment.class);
+            assertThat(element.getNextOMSibling()).isInstanceOf(OMComment.class);
         }
     }
 }

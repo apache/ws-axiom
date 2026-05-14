@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -49,16 +52,16 @@ public class TestGetNamespacesInScope extends AxiomTestCase {
             count++;
             if (ns.getPrefix().equals("ns1")) {
                 ns1seen = true;
-                assertEquals("urn:ns1", ns.getNamespaceURI());
+                assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns1");
             } else if (ns.getPrefix().equals("ns2")) {
                 ns2seen = true;
-                assertEquals("urn:ns2", ns.getNamespaceURI());
+                assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns2");
             } else {
                 fail("Unexpected prefix: " + ns.getPrefix());
             }
         }
-        assertEquals("Number of namespaces in scope", 2, count);
-        assertTrue(ns1seen);
-        assertTrue(ns2seen);
+        assertThat(count).isEqualTo(2);
+        assertThat(ns1seen).isTrue();
+        assertThat(ns2seen).isTrue();
     }
 }

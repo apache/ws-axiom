@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -85,9 +86,9 @@ public class TestSerialize extends ConformanceTestCase {
                 throw ex;
             }
             if (serializationStrategy.isCaching()) {
-                assertTrue(container.isComplete());
+                assertThat(container.isComplete()).isTrue();
             } else {
-                assertFalse(container.isComplete());
+                assertThat(container.isComplete()).isFalse();
                 assertThatThrownBy(container::getFirstOMChild)
                         .isInstanceOf(NodeUnavailableException.class);
             }

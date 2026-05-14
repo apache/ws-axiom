@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -51,34 +53,34 @@ public class TestGetNamespaceContext extends AxiomTestCase {
                         .getDocumentElement();
         OMElement inner = root.getFirstElement().getFirstElement();
         NamespaceContext context = inner.getNamespaceContext(detached);
-        assertEquals("urn:test2", context.getNamespaceURI("p"));
-        assertEquals("urn:test3", context.getNamespaceURI("q"));
-        assertEquals("urn:test3", context.getNamespaceURI("r"));
-        assertEquals("urn:test4", context.getNamespaceURI(""));
-        assertEquals("", context.getNamespaceURI("unbound"));
+        assertThat(context.getNamespaceURI("p")).isEqualTo("urn:test2");
+        assertThat(context.getNamespaceURI("q")).isEqualTo("urn:test3");
+        assertThat(context.getNamespaceURI("r")).isEqualTo("urn:test3");
+        assertThat(context.getNamespaceURI("")).isEqualTo("urn:test4");
+        assertThat(context.getNamespaceURI("unbound")).isEqualTo("");
 
-        assertNull(context.getPrefix("urn:test1"));
-        assertEquals("p", context.getPrefix("urn:test2"));
+        assertThat(context.getPrefix("urn:test1")).isNull();
+        assertThat(context.getPrefix("urn:test2")).isEqualTo("p");
         String prefix = context.getPrefix("urn:test3");
-        assertTrue(prefix.equals("q") || prefix.equals("r"));
-        assertEquals("", context.getPrefix("urn:test4"));
-        assertNull(context.getPrefix("unbound"));
+        assertThat(prefix.equals("q") || prefix.equals("r")).isTrue();
+        assertThat(context.getPrefix("urn:test4")).isEqualTo("");
+        assertThat(context.getPrefix("unbound")).isNull();
 
         Iterator<?> it = context.getPrefixes("urn:test1");
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isFalse();
 
         it = context.getPrefixes("urn:test2");
-        assertTrue(it.hasNext());
-        assertEquals("p", it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo("p");
+        assertThat(it.hasNext()).isFalse();
 
         it = context.getPrefixes("urn:test3");
         Set<String> prefixes = new HashSet<>();
         while (it.hasNext()) {
             prefixes.add((String) it.next());
         }
-        assertEquals(2, prefixes.size());
-        assertTrue(prefixes.contains("q"));
-        assertTrue(prefixes.contains("r"));
+        assertThat(prefixes.size()).isEqualTo(2);
+        assertThat(prefixes.contains("q")).isTrue();
+        assertThat(prefixes.contains("r")).isTrue();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.faultreason;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
@@ -35,8 +37,6 @@ public class TestGetFirstSOAPTextWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultReason faultReason = envelope.getBody().getFault().getReason();
-        assertFalse(
-                "SOAP 1.2 FaultReason Test With Parser : - getFirstSOAPText method returns null",
-                faultReason.getFirstSOAPText() == null);
+        assertThat(faultReason.getFirstSOAPText()).isNotNull();
     }
 }

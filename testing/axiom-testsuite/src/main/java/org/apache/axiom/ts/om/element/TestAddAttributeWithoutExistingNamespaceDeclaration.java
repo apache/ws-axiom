@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -51,10 +53,10 @@ public class TestAddAttributeWithoutExistingNamespaceDeclaration extends AxiomTe
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
         strategy.addAttribute(element, "test", ns, "test");
-        assertEquals(ns, element.findNamespace(ns.getNamespaceURI(), ns.getPrefix()));
+        assertThat(element.findNamespace(ns.getNamespaceURI(), ns.getPrefix())).isEqualTo(ns);
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
-        assertEquals(ns, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(ns);
+        assertThat(it.hasNext()).isFalse();
     }
 }

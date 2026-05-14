@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.ArrayList;
 
 import org.apache.axiom.blob.MemoryBlob;
@@ -66,11 +68,11 @@ public class TestRegisterCustomBuilder extends TestCase {
                         new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
         SOAPHeader header = builder.getSOAPEnvelope().getHeader();
         ArrayList al = header.getHeaderBlocksWithNSURI("http://www.w3.org/2005/08/addressing");
-        assertEquals(al.size(), 4);
+        assertThat(al.size()).isEqualTo(4);
         for (int i = 0; i < al.size(); i++) {
             SOAPHeaderBlock shb = (SOAPHeaderBlock) al.get(i);
             if ("To".equals(shb.getLocalName())) {
-                assertNotNull(shb.getDataSource());
+                assertThat(shb.getDataSource()).isNotNull();
             }
         }
     }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -48,15 +50,15 @@ public class TestCreateOMElementWithGeneratedPrefix extends CreateOMElementTestC
         OMElement element =
                 variant.createOMElement(
                         factory, parentSupplier.createParent(factory), "test", "urn:test", null);
-        assertEquals("test", element.getLocalName());
+        assertThat(element.getLocalName()).isEqualTo("test");
         OMNamespace ns = element.getNamespace();
-        assertNotNull(ns);
-        assertEquals("urn:test", ns.getNamespaceURI());
+        assertThat(ns).isNotNull();
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:test");
         // Axiom auto-generates a prefix here
-        assertTrue(ns.getPrefix().length() != 0);
+        assertThat(ns.getPrefix()).isNotEmpty();
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
-        assertEquals(ns, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(ns);
+        assertThat(it.hasNext()).isFalse();
     }
 }

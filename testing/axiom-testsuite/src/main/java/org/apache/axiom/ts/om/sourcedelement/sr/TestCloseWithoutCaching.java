@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMContainer;
@@ -56,6 +58,6 @@ public class TestCloseWithoutCaching extends AxiomTestCase {
             reader.next();
         }
         reader.close();
-        assertFalse(ds.hasUnclosedReaders());
+        assertThat(ds.hasUnclosedReaders()).isFalse();
     }
 }

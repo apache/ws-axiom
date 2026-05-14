@@ -66,11 +66,11 @@ public class TestCreateOMTextFromBlobProvider extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         String contentID = nullContentID ? null : UIDGenerator.generateContentId();
         OMText text = factory.createOMText(contentID, prov, true);
-        assertFalse(prov.isBlobCreated());
+        assertThat(prov.isBlobCreated()).isFalse();
         assertThat(text.getBlob().getInputStream())
                 .asString(StandardCharsets.UTF_8)
                 .isEqualTo("Data");
-        assertTrue(prov.isBlobCreated());
+        assertThat(prov.isBlobCreated()).isTrue();
         if (contentID == null) {
             assertThat(text.getContentID()).isNotNull();
         } else {

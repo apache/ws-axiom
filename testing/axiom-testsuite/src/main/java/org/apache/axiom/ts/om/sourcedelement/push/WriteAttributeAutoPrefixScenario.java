@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -28,7 +30,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.junit.Assert;
 
 /**
  * Scenario that lets {@link XMLStreamWriter#writeAttribute(String, String, String)} automatically
@@ -57,11 +58,11 @@ public class WriteAttributeAutoPrefixScenario implements PushOMDataSourceScenari
     @Override
     public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
         Iterator<OMAttribute> it = element.getAllAttributes();
-        Assert.assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMAttribute attr = it.next();
-        Assert.assertEquals("p", attr.getPrefix());
-        Assert.assertEquals("urn:test", attr.getNamespaceURI());
-        Assert.assertEquals("attr", attr.getLocalName());
-        Assert.assertEquals("value", attr.getAttributeValue());
+        assertThat(attr.getPrefix()).isEqualTo("p");
+        assertThat(attr.getNamespaceURI()).isEqualTo("urn:test");
+        assertThat(attr.getLocalName()).isEqualTo("attr");
+        assertThat(attr.getAttributeValue()).isEqualTo("value");
     }
 }

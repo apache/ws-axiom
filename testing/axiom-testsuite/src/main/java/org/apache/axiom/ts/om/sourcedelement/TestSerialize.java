@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMContainer;
@@ -129,19 +130,18 @@ public class TestSerialize extends AxiomTestCase {
             // then the sourced element should be expanded.
             if (expansionStrategy.isExpandedAfterSerialization(
                     push, destructive, serializationStrategy)) {
-                assertTrue(element.isExpanded());
-                assertEquals(
-                        "OMSourcedElement completion status", !consuming, element.isComplete());
+                assertThat(element.isExpanded()).isTrue();
+                assertThat(element.isComplete()).isEqualTo(!consuming);
             } else {
-                assertFalse(element.isExpanded());
+                assertThat(element.isExpanded()).isFalse();
             }
             if (parent != null && !serializeParent) {
                 // Operations on the OMSourcedElement should have no impact on the parent
-                assertEquals("Parent completion status", parentComplete, parent.isComplete());
+                assertThat(parent.isComplete()).isEqualTo(parentComplete);
             }
         }
         if (ds instanceof PullOMDataSource pullOmDataSource) {
-            assertFalse(pullOmDataSource.hasUnclosedReaders());
+            assertThat(pullOmDataSource.hasUnclosedReaders()).isFalse();
         }
     }
 }

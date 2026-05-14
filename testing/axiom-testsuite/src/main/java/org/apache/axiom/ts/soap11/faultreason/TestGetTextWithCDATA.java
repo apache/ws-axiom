@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap11.faultreason;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamReader;
@@ -62,14 +64,13 @@ public class TestGetTextWithCDATA extends TestCase {
                 OMXMLBuilderFactory.createStAXSOAPModelBuilder(metaFactory, soap11Parser);
         OMElement element = soap11Builder.getDocumentElement();
         element.build();
-        assertTrue(element instanceof SOAPEnvelope);
+        assertThat(element).isInstanceOf(SOAPEnvelope.class);
         SOAPEnvelope se = (SOAPEnvelope) element;
         SOAPFault fault = se.getBody().getFault();
         SOAPFaultReason reason = fault.getReason();
-        assertTrue(
-                reason.getText()
-                        .equals(
-                                "handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest"));
+        assertThat(reason.getText())
+                .isEqualTo(
+                        "handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest");
         soap11Parser.close();
     }
 }

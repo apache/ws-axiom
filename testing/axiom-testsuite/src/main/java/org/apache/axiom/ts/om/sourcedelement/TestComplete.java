@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -56,8 +58,8 @@ public class TestComplete extends AxiomTestCase {
         // cause the parent to be marked as incomplete.
         // But OMSE's are self-contained...therefore the root
         // should still be complete
-        assertTrue(!child.isComplete());
-        assertTrue(root.isComplete());
+        assertThat(!child.isComplete()).isTrue();
+        assertThat(root.isComplete()).isTrue();
 
         // Now repeat the test, but this time trigger the
         // partial parsing of the child after adding it to the root.
@@ -69,7 +71,7 @@ public class TestComplete extends AxiomTestCase {
         root.addChild(child);
         child.getFirstOMChild(); // causes partial parsing...i.e. incomplete child
 
-        assertTrue(!child.isComplete());
-        assertTrue(root.isComplete());
+        assertThat(!child.isComplete()).isTrue();
+        assertThat(root.isComplete()).isTrue();
     }
 }

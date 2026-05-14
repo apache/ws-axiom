@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.soap.SOAPBody;
@@ -42,7 +44,7 @@ public class TestHasFaultWithOMSEUnknownName extends TestCase {
         OMSourcedElement element =
                 soapFactory.createOMElement(new StringOMDataSource("<ns:root xmlns:ns='urn:ns'/>"));
         body.addChild(element);
-        assertFalse(body.hasFault());
-        assertFalse(element.isExpanded());
+        assertThat(body.hasFault()).isFalse();
+        assertThat(element.isExpanded()).isFalse();
     }
 }

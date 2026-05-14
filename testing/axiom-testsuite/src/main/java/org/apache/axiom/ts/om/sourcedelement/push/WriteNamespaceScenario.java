@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -28,7 +31,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.junit.Assert;
 
 /**
  * Tests that {@link XMLStreamWriter#writeNamespace(String, String)} creates the expected namespace
@@ -71,14 +73,14 @@ public class WriteNamespaceScenario implements PushOMDataSourceScenario {
             OMNamespace ns = it.next();
             if (!ns.getPrefix().equals("_p_")) {
                 if (decl != null) {
-                    Assert.fail("Found unexpected namespace declaration");
+                    fail("Found unexpected namespace declaration");
                 } else {
                     decl = ns;
                 }
             }
         }
-        Assert.assertNotNull(decl);
-        Assert.assertEquals(prefix, decl.getPrefix());
-        Assert.assertEquals(namespaceURI, decl.getNamespaceURI());
+        assertThat(decl).isNotNull();
+        assertThat(decl.getPrefix()).isEqualTo(prefix);
+        assertThat(decl.getNamespaceURI()).isEqualTo(namespaceURI);
     }
 }

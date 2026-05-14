@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Element;
@@ -37,9 +39,9 @@ public class TestRemoveChildIncomplete extends OMDOMTestCase {
         Node b = element.getFirstChild().getNextSibling();
         element.removeChild(b);
         Node child = element.getFirstChild();
-        assertEquals("a", child.getLocalName());
+        assertThat(child.getLocalName()).isEqualTo("a");
         child = child.getNextSibling();
-        assertEquals("c", child.getLocalName());
-        assertNull(child.getNextSibling());
+        assertThat(child.getLocalName()).isEqualTo("c");
+        assertThat(child.getNextSibling()).isNull();
     }
 }

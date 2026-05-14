@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringWriter;
 import java.io.Writer;
 
@@ -51,7 +53,7 @@ public class TestWriteTextTo extends AxiomTestCase {
         StringWriter sw = new StringWriter();
         InstrumentedWriter out = new InstrumentedWriter(sw);
         element.writeTextTo(out, true);
-        assertEquals(element.getText(), sw.toString());
-        assertFalse(out.isClosed());
+        assertThat(sw.toString()).isEqualTo(element.getText());
+        assertThat(out.isClosed()).isFalse();
     }
 }

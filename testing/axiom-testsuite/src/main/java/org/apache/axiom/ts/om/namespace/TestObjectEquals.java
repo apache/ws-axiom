@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.namespace;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -42,6 +44,6 @@ public class TestObjectEquals extends AxiomTestCase {
         // Therefore we use new String(String).
         OMNamespace ns1 = factory.createOMNamespace(new String("urn:ns"), new String("ns"));
         OMNamespace ns2 = factory.createOMNamespace(new String("urn:ns"), new String("ns"));
-        assertTrue(ns1.equals(ns2));
+        assertThat(ns1.equals(ns2)).isTrue();
     }
 }

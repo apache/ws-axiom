@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.omdom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMFactory;
@@ -48,9 +50,9 @@ public class TestInsertBeforeIncomplete extends OMDOMTestCase {
         Element parent = document.getDocumentElement();
         parent.insertBefore(document.createElementNS(null, "c"), null);
         NodeList children = parent.getChildNodes();
-        assertEquals(3, children.getLength());
-        assertEquals("a", children.item(0).getLocalName());
-        assertEquals("b", children.item(1).getLocalName());
-        assertEquals("c", children.item(2).getLocalName());
+        assertThat(children.getLength()).isEqualTo(3);
+        assertThat(children.item(0).getLocalName()).isEqualTo("a");
+        assertThat(children.item(1).getLocalName()).isEqualTo("b");
+        assertThat(children.item(2).getLocalName()).isEqualTo("c");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMNode;
@@ -46,14 +48,16 @@ public class TestCreateSOAPFaultSubCode extends TestCase {
         SOAPFault fault = envelope.getBody().getFault();
         SOAPFaultCode code = fault.getCode();
         SOAPFaultSubCode subCode = soapFactory.createSOAPFaultSubCode(code);
-        assertEquals(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, subCode.getNamespaceURI());
-        assertEquals(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, subCode.getLocalName());
-        assertSame(code, subCode.getParent());
+        assertThat(subCode.getNamespaceURI())
+                .isEqualTo(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        assertThat(subCode.getLocalName())
+                .isEqualTo(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
+        assertThat(subCode.getParent()).isSameAs(code);
         Iterator<OMNode> it = code.getChildren();
-        assertTrue(it.hasNext());
-        assertTrue(it.next() instanceof SOAPFaultValue);
-        assertTrue(it.hasNext());
-        assertSame(subCode, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isInstanceOf(SOAPFaultValue.class);
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(subCode);
+        assertThat(it.hasNext()).isFalse();
     }
 }

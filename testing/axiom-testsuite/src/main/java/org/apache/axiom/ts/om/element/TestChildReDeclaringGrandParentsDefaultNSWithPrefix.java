@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -56,8 +58,6 @@ public class TestChildReDeclaringGrandParentsDefaultNSWithPrefix extends AxiomTe
                         entElem);
         binSecElem.setText("secret value");
         String xml = elem.toString();
-        assertTrue(
-                "Binarysecret element should have \'wst\' ns prefix",
-                xml.indexOf("<wst:Binarysecret") != -1);
+        assertThat(xml).contains("<wst:Binarysecret");
     }
 }

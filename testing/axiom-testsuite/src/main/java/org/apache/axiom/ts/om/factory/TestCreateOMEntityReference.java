@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
@@ -37,8 +39,8 @@ public class TestCreateOMEntityReference extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("test", null);
         OMEntityReference entref = factory.createOMEntityReference(parent, "testref");
-        assertSame(parent, entref.getParent());
-        assertEquals("testref", entref.getName());
-        assertNull(entref.getReplacementText());
+        assertThat(entref.getParent()).isSameAs(parent);
+        assertThat(entref.getName()).isEqualTo("testref");
+        assertThat(entref.getReplacementText()).isNull();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.namespace;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -39,13 +41,13 @@ public class TestEquals extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("http://www.w3.org/XML/1998/namespace", "xml");
-        assertTrue(ns.equals("http://www.w3.org/XML/1998/namespace", "xml"));
+        assertThat(ns.equals("http://www.w3.org/XML/1998/namespace", "xml")).isTrue();
         // The implementation must not assume that namespace URI or prefixes are interned
-        assertTrue(
-                ns.equals(new String("http://www.w3.org/XML/1998/namespace"), new String("xml")));
-        assertFalse(ns.equals("http://www.w3.org/XML/1998/namespace", "xml2"));
-        assertFalse(ns.equals("http://www.w3.org/XML/1998/namespace", null));
-        assertFalse(ns.equals("http://www.w3.org/XML/2001/namespace", "xml"));
-        assertFalse(ns.equals(null, "xml"));
+        assertThat(ns.equals(new String("http://www.w3.org/XML/1998/namespace"), new String("xml")))
+                .isTrue();
+        assertThat(ns.equals("http://www.w3.org/XML/1998/namespace", "xml2")).isFalse();
+        assertThat(ns.equals("http://www.w3.org/XML/1998/namespace", null)).isFalse();
+        assertThat(ns.equals("http://www.w3.org/XML/2001/namespace", "xml")).isFalse();
+        assertThat(ns.equals(null, "xml")).isFalse();
     }
 }

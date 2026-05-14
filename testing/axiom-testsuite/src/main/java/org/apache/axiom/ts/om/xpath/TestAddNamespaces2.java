@@ -19,6 +19,8 @@
 
 package org.apache.axiom.ts.om.xpath;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -47,6 +49,6 @@ public class TestAddNamespaces2 extends AxiomTestCase {
                         "<root xmlns='urn:ns1'><child xmlns='urn:ns2'>text</child></root>");
         AXIOMXPath xpath = new AXIOMXPath("//ns:child");
         xpath.addNamespaces(root1.getFirstElement());
-        assertEquals("text", xpath.stringValueOf(root2.getParent()));
+        assertThat(xpath.stringValueOf(root2.getParent())).isEqualTo("text");
     }
 }

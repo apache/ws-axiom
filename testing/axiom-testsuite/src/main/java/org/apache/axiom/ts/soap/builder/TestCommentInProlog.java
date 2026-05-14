@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -43,6 +45,6 @@ public class TestCommentInProlog extends TestCase {
                         .getAdapter(SOAPSampleAdapter.class)
                         .getSOAPMessage(metaFactory);
         OMNode firstChild = message.getFirstOMChild();
-        assertTrue(firstChild instanceof OMComment);
+        assertThat(firstChild).isInstanceOf(OMComment.class);
     }
 }

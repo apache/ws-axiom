@@ -21,6 +21,7 @@ package org.apache.axiom.ts.om.document;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMContainer;
@@ -64,25 +65,25 @@ public class TestRemoveChildren extends AxiomTestCase {
         OMElement documentElement;
         if (accessDocumentElement) {
             documentElement = document.getOMDocumentElement();
-            assertEquals(complete, documentElement.isComplete());
+            assertThat(documentElement.isComplete()).isEqualTo(complete);
         } else {
             documentElement = null;
         }
         document.removeChildren();
         // Test that the child has been detached correctly.
-        assertNull(firstChild.getParent());
-        assertNull(firstChild.getPreviousOMSibling());
-        assertNull(firstChild.getNextOMSibling());
+        assertThat(firstChild.getParent()).isNull();
+        assertThat(firstChild.getPreviousOMSibling()).isNull();
+        assertThat(firstChild.getNextOMSibling()).isNull();
         if (documentElement != null) {
             // Test that the child has been detached correctly.
-            assertNull(documentElement.getParent());
-            assertNull(documentElement.getPreviousOMSibling());
-            assertNull(documentElement.getNextOMSibling());
+            assertThat(documentElement.getParent()).isNull();
+            assertThat(documentElement.getPreviousOMSibling()).isNull();
+            assertThat(documentElement.getNextOMSibling()).isNull();
             // Test that we can still get the content of the document element.
-            assertEquals("text", documentElement.getText());
+            assertThat(documentElement.getText()).isEqualTo("text");
         }
         // Test that the document is now empty.
-        assertNull(document.getFirstOMChild());
+        assertThat(document.getFirstOMChild()).isNull();
         // Check that the document is in a clean state and that we are able to add
         // new children.
         document.addChild(factory.createOMElement("newroot", null));

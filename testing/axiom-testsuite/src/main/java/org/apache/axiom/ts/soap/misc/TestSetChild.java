@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.misc;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPElementType;
@@ -42,7 +44,7 @@ public class TestSetChild extends GetSetChildTestCase {
     protected void runTest(OMElement parent, SOAPElementTypeAdapter adapter) {
         OMElement child = adapter.create(soapFactory);
         adapter.getSetter().invoke(parent, child);
-        assertSame(child, adapter.getGetter().invoke(parent));
-        assertSame(child, parent.getFirstOMChild());
+        assertThat(adapter.getGetter().invoke(parent)).isSameAs(child);
+        assertThat(parent.getFirstOMChild()).isSameAs(child);
     }
 }

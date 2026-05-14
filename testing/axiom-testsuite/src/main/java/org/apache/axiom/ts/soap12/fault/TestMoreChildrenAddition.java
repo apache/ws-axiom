@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.fault;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -40,18 +42,10 @@ public class TestMoreChildrenAddition extends TestCase {
         SOAPFaultCode code = soapEnvelope.getBody().getFault().getCode();
         envelope.getBody().getFault().setCode(code);
 
-        assertTrue(
-                "Parent Value of Code has not been set to new fault",
-                code.getParent() == envelope.getBody().getFault());
-        assertTrue(
-                "Parent Value of Code is still pointing to old fault",
-                code.getParent() != soapEnvelope.getBody().getFault());
-        assertNull(
-                "Old fault must not have a fault code",
-                soapEnvelope.getBody().getFault().getCode());
-        assertEquals(
-                "The SOAP Code value must be " + errorCodeString,
-                errorCodeString,
-                envelope.getBody().getFault().getCode().getValue().getText());
+        assertThat(code.getParent()).isSameAs(envelope.getBody().getFault());
+        assertThat(code.getParent()).isNotSameAs(soapEnvelope.getBody().getFault());
+        assertThat(soapEnvelope.getBody().getFault().getCode()).isNull();
+        assertThat(envelope.getBody().getFault().getCode().getValue().getText())
+                .isEqualTo(errorCodeString);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -39,7 +41,7 @@ public class TestFindNamespaceURIWithPrefixUndeclaring extends AxiomTestCase {
         OMElement child = factory.createOMElement("child", null, parent);
         OMNamespace ns = parent.declareNamespace("urn:test", "p");
         child.undeclarePrefix("p");
-        assertEquals(ns, parent.findNamespaceURI("p"));
-        assertNull(child.findNamespaceURI("p"));
+        assertThat(parent.findNamespaceURI("p")).isEqualTo(ns);
+        assertThat(child.findNamespaceURI("p")).isNull();
     }
 }

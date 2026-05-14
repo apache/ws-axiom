@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
@@ -50,6 +52,6 @@ public class TestCloneWithSourcedElement1 extends CloneTestCase {
         OMSourcedElement omse = body.getOMFactory().createOMElement(bads, "payload", ns);
         body.addChild(omse);
         copyAndCheck(sourceEnv);
-        assertFalse(omse.isExpanded());
+        assertThat(omse.isExpanded()).isFalse();
     }
 }

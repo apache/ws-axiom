@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.nio.charset.StandardCharsets;
 
 import javax.xml.namespace.QName;
@@ -49,12 +51,12 @@ public class TestGetObject extends AxiomTestCase {
                         new WrappedTextNodeOMDataSourceFromBlob(
                                 new QName("wrapper"), blob, StandardCharsets.UTF_8));
         // getObject returns null if the data source is not of the expected type
-        assertNull(element.getObject(StringOMDataSource.class));
+        assertThat(element.getObject(StringOMDataSource.class)).isNull();
         // Test with the right data source type
-        assertSame(blob, element.getObject(WrappedTextNodeOMDataSourceFromBlob.class));
-        assertSame(blob, element.getObject(WrappedTextNodeOMDataSource.class));
+        assertThat(element.getObject(WrappedTextNodeOMDataSourceFromBlob.class)).isSameAs(blob);
+        assertThat(element.getObject(WrappedTextNodeOMDataSource.class)).isSameAs(blob);
         // Now modify the content of the element
         factory.createOMComment(element, "comment");
-        assertNull(element.getObject(WrappedTextNodeOMDataSourceFromBlob.class));
+        assertThat(element.getObject(WrappedTextNodeOMDataSourceFromBlob.class)).isNull();
     }
 }

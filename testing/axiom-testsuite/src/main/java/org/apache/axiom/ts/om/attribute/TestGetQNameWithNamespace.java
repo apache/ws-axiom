@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.attribute;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMAttribute;
@@ -46,8 +48,8 @@ public class TestGetQNameWithNamespace extends AxiomTestCase {
         OMNamespace ns = fac.createOMNamespace(uri, "p");
         OMAttribute attr = fac.createOMAttribute(localName, ns, "value");
         QName qname = attr.getQName();
-        assertEquals("Wrong namespace", uri, qname.getNamespaceURI());
-        assertEquals("Wrong localPart", localName, qname.getLocalPart());
-        assertEquals("Wrong prefix", "p", qname.getPrefix());
+        assertThat(qname.getNamespaceURI()).isEqualTo(uri);
+        assertThat(qname.getLocalPart()).isEqualTo(localName);
+        assertThat(qname.getPrefix()).isEqualTo("p");
     }
 }

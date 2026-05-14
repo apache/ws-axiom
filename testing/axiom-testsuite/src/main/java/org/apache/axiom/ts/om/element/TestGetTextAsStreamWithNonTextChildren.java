@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.Reader;
 
 import org.apache.axiom.om.OMElement;
@@ -38,6 +40,6 @@ public class TestGetTextAsStreamWithNonTextChildren extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<a>A<b>B</b>C</a>");
         Reader in = element.getTextAsStream(true);
-        assertEquals(element.getText(), IOUtils.toString(in));
+        assertThat(IOUtils.toString(in)).isEqualTo(element.getText());
     }
 }

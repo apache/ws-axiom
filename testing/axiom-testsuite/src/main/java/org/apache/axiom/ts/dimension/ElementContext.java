@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dimension;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -33,7 +35,6 @@ import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.LabelTarget;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
-import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -111,7 +112,7 @@ public abstract class ElementContext extends Multiton implements Dimension {
                                             new StringReader("<parent><sibling/></parent>"))
                                     .getDocumentElement();
                     parent.getFirstOMChild().insertSiblingBefore(element);
-                    Assert.assertFalse(parent.isComplete());
+                    assertThat(parent.isComplete()).isFalse();
                     return parent;
                 }
 

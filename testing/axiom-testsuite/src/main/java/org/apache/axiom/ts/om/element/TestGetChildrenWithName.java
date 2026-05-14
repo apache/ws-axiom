@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -51,12 +53,10 @@ public class TestGetChildrenWithName extends AxiomTestCase {
         while (iter.hasNext()) {
             counter++;
             Object o = iter.next();
-            assertNotNull("Must return not null objects!", o);
-            assertTrue(
-                    "All these should be elements!", ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
+            assertThat(o).isNotNull();
+            assertThat(((OMNode) o).getType()).isEqualTo(OMNode.ELEMENT_NODE);
         }
-        assertEquals(
-                "This element should contain only one element with the given QName ", 1, counter);
+        assertThat(counter).isEqualTo(1);
         elt.close(false);
     }
 }

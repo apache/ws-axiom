@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
@@ -66,6 +68,6 @@ public class TestCloseWithoutCaching extends AxiomTestCase {
         reader.next();
         long count = in.getCount();
         reader.close();
-        assertEquals(count, in.getCount());
+        assertThat(in.getCount()).isEqualTo(count);
     }
 }

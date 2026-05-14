@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
@@ -52,12 +54,12 @@ public class TestCloneUnknownName extends AxiomTestCase {
         OMCloneOptions options = new OMCloneOptions();
         options.setCopyOMDataSources(true);
         OMElement clone = (OMElement) element.clone(options);
-        assertTrue(clone instanceof OMSourcedElement);
-        assertFalse(element.isExpanded());
+        assertThat(clone).isInstanceOf(OMSourcedElement.class);
+        assertThat(element.isExpanded()).isFalse();
         OMNamespace expectedNS = factory.createOMNamespace("urn:ns", "p");
-        assertEquals("element", element.getLocalName());
-        assertEquals("element", clone.getLocalName());
-        assertEquals(expectedNS, element.getNamespace());
-        assertEquals(expectedNS, clone.getNamespace());
+        assertThat(element.getLocalName()).isEqualTo("element");
+        assertThat(clone.getLocalName()).isEqualTo("element");
+        assertThat(element.getNamespace()).isEqualTo(expectedNS);
+        assertThat(clone.getNamespace()).isEqualTo(expectedNS);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -42,9 +44,9 @@ public class TestDetach extends SampleBasedSOAPTestCase {
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         OMDocument document = (OMDocument) envelope.getParent();
         envelope.detach();
-        assertNull(envelope.getParent());
-        assertNull(envelope.getPreviousOMSibling());
-        assertNull(envelope.getNextOMSibling());
-        assertNull(document.getOMDocumentElement());
+        assertThat(envelope.getParent()).isNull();
+        assertThat(envelope.getPreviousOMSibling()).isNull();
+        assertThat(envelope.getNextOMSibling()).isNull();
+        assertThat(document.getOMDocumentElement()).isNull();
     }
 }

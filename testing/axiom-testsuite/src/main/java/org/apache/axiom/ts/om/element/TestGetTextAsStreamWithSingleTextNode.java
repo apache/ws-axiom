@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.Reader;
 import java.io.StringReader;
 
@@ -43,7 +45,7 @@ public class TestGetTextAsStreamWithSingleTextNode extends AxiomTestCase {
         OMElement element = factory.createOMElement(new QName("a"));
         factory.createOMText(element, "test");
         Reader in = element.getTextAsStream(true);
-        assertTrue(in instanceof StringReader);
-        assertEquals(element.getText(), IOUtils.toString(in));
+        assertThat(in).isInstanceOf(StringReader.class);
+        assertThat(IOUtils.toString(in)).isEqualTo(element.getText());
     }
 }

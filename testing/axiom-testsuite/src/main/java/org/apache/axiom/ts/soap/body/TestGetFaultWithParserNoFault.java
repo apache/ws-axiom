@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 
@@ -33,6 +35,6 @@ public class TestGetFaultWithParserNoFault extends FirstElementNameWithParserTes
 
     @Override
     protected void runTest(SOAPBody body) throws Throwable {
-        assertNull(body.getFault());
+        assertThat(body.getFault()).isNull();
     }
 }

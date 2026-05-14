@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMComment;
@@ -47,13 +49,13 @@ public class TestSetOMDocumentElementNew extends AxiomTestCase {
         OMComment comment = factory.createOMComment(document, "some comment");
         OMElement documentElement = factory.createOMElement("root", null);
         document.setOMDocumentElement(documentElement);
-        assertSame(documentElement, document.getOMDocumentElement());
-        assertSame(document, documentElement.getParent());
+        assertThat(document.getOMDocumentElement()).isSameAs(documentElement);
+        assertThat(documentElement.getParent()).isSameAs(document);
         Iterator<OMNode> it = document.getChildren();
-        assertTrue(it.hasNext());
-        assertSame(comment, it.next());
-        assertTrue(it.hasNext());
-        assertSame(documentElement, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(comment);
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(documentElement);
+        assertThat(it.hasNext()).isFalse();
     }
 }

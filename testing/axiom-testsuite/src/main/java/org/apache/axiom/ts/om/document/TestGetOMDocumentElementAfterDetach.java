@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -43,8 +45,8 @@ public class TestGetOMDocumentElementAfterDetach extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMDocument document = factory.createOMDocument();
         OMElement documentElement = factory.createOMElement("root", null, document);
-        assertSame(documentElement, document.getOMDocumentElement());
+        assertThat(document.getOMDocumentElement()).isSameAs(documentElement);
         documentElement.detach();
-        assertNull(document.getOMDocumentElement());
+        assertThat(document.getOMDocumentElement()).isNull();
     }
 }

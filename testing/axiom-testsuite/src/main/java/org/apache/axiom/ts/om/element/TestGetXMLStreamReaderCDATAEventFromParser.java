@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Arrays;
-
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMElement;
@@ -61,7 +61,7 @@ public class TestGetXMLStreamReaderCDATAEventFromParser extends AxiomTestCase {
         XMLStreamReader reader2 = element.getXMLStreamReader();
         // Check the sequence of events
         int event = reader2.next();
-        assertEquals(XMLStreamReader.START_ELEMENT, event);
+        assertThat(event).isEqualTo(XMLStreamReader.START_ELEMENT);
 
         while (reader2.hasNext() && event != XMLStreamReader.CDATA) {
             event = reader2.next();
@@ -70,12 +70,11 @@ public class TestGetXMLStreamReaderCDATAEventFromParser extends AxiomTestCase {
         // Only woodstox is guaranteed to generate CDATA events if
         // javax.xml.stream.isCoalescing=false
         if (reader.toString().indexOf("wstx") != -1) {
-            assertEquals(XMLStreamReader.CDATA, event);
-            assertEquals("hello world", reader2.getText()); // AXIOM-146
-            assertTrue(
-                    Arrays.equals(
-                            "hello world".toCharArray(), reader2.getTextCharacters())); // AXIOM-144
-            assertEquals(XMLStreamReader.END_ELEMENT, reader2.next());
+            assertThat(event).isEqualTo(XMLStreamReader.CDATA);
+            assertThat(reader2.getText()).isEqualTo("hello world"); // AXIOM-146
+            assertThat(reader2.getTextCharacters())
+                    .isEqualTo("hello world".toCharArray()); // AXIOM-144
+            assertThat(reader2.next()).isEqualTo(XMLStreamReader.END_ELEMENT);
         }
     }
 }

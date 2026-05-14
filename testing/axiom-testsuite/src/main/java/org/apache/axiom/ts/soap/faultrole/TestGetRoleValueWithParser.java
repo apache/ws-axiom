@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.faultrole;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -33,8 +35,7 @@ public class TestGetRoleValueWithParser extends SampleBasedSOAPTestCase {
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        assertEquals(
-                "http://www.example.org/gateway/cache",
-                envelope.getBody().getFault().getRole().getRoleValue());
+        assertThat(envelope.getBody().getFault().getRole().getRoleValue())
+                .isEqualTo("http://www.example.org/gateway/cache");
     }
 }

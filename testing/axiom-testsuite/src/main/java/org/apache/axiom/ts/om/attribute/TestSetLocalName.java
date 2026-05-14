@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.attribute;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMAttribute;
@@ -40,10 +42,10 @@ public class TestSetLocalName extends AxiomTestCase {
                 factory.createOMAttribute(
                         "test", factory.createOMNamespace("urn:test", "p"), "value");
         attr.setLocalName("test2");
-        assertEquals("test2", attr.getLocalName());
+        assertThat(attr.getLocalName()).isEqualTo("test2");
         QName qname = attr.getQName();
-        assertEquals("test2", qname.getLocalPart());
-        assertEquals("p", qname.getPrefix());
-        assertEquals("urn:test", qname.getNamespaceURI());
+        assertThat(qname.getLocalPart()).isEqualTo("test2");
+        assertThat(qname.getPrefix()).isEqualTo("p");
+        assertThat(qname.getNamespaceURI()).isEqualTo("urn:test");
     }
 }

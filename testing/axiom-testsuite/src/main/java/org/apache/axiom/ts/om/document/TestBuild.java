@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -39,16 +41,16 @@ public class TestBuild extends AxiomTestCase {
         InstrumentedInputStream in = new InstrumentedInputStream(XMLSample.LARGE.getInputStream());
         OMDocument doc =
                 OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocument();
-        assertFalse(doc.isComplete());
+        assertThat(doc.isComplete()).isFalse();
         long countBeforeBuild = in.getCount();
         doc.build();
-        assertTrue(doc.isComplete());
+        assertThat(doc.isComplete()).isTrue();
         long countAfterBuild = in.getCount();
-        assertTrue(countAfterBuild > countBeforeBuild);
+        assertThat(countAfterBuild).isGreaterThan(countBeforeBuild);
         OMNode node = doc.getFirstOMChild();
         while (node != null) {
             node = node.getNextOMSibling();
         }
-        assertEquals(countAfterBuild, in.getCount());
+        assertThat(in.getCount()).isEqualTo(countAfterBuild);
     }
 }

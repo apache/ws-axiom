@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
@@ -53,8 +55,8 @@ public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends AxiomTest
                 factory.createOMElement(
                         new WrappedTextNodeOMDataSourceFromBlob(qname, blob, cs), qname);
         Reader in = element.getTextAsStream(true);
-        assertFalse(in instanceof StringReader);
+        assertThat(in).isNotInstanceOf(StringReader.class);
         IOTestUtils.compareStreams(new InputStreamReader(blob.getInputStream(), cs), in);
-        assertFalse(element.isExpanded());
+        assertThat(element.isExpanded()).isFalse();
     }
 }

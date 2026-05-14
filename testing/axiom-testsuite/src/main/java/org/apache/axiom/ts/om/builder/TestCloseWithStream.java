@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.io.InstrumentedStream;
@@ -48,7 +50,7 @@ public class TestCloseWithStream extends AxiomTestCase {
             builder.getDocument().build();
             builder.close();
             // OMXMLParserWrapper#close() does _not_ close the underlying input stream
-            assertFalse(in.isClosed());
+            assertThat(in.isClosed()).isFalse();
         } finally {
             in.close();
         }

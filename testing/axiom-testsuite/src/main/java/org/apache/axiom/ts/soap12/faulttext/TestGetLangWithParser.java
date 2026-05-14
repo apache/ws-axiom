@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.faulttext;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -37,26 +39,13 @@ public class TestGetLangWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultText faultText = envelope.getBody().getFault().getReason().getFirstSOAPText();
-        assertTrue(
-                "SOAP 1.2 Fault Text Test With Parser : - getLang method returns incorrect string",
-                faultText.getLang().equals("en"));
+        assertThat(faultText.getLang()).isEqualTo("en");
         OMAttribute langAttribute = faultText.getAllAttributes().next();
-        assertTrue(
-                "SOAP 1.2 Fault Text Test With Parser : - Lang attribute local name mismaatch",
-                langAttribute
-                        .getLocalName()
-                        .equals(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME));
-        assertTrue(
-                "SOAP 1.2 Fault Text Test With Parser : - Lang attribute namespace prefix mismatch",
-                langAttribute
-                        .getNamespace()
-                        .getPrefix()
-                        .equals(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
-        assertTrue(
-                "SOAP 1.2 Fault Text Test With Parser : - Lang attribute namespace uri mismatch",
-                langAttribute
-                        .getNamespace()
-                        .getNamespaceURI()
-                        .equals(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI));
+        assertThat(langAttribute.getLocalName())
+                .isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME);
+        assertThat(langAttribute.getNamespace().getPrefix())
+                .isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+        assertThat(langAttribute.getNamespace().getNamespaceURI())
+                .isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI);
     }
 }

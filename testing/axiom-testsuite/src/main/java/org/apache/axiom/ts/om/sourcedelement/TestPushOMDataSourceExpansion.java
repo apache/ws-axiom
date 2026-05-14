@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 import java.util.Map;
 
@@ -87,8 +89,6 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
             parent.addChild(element);
         }
         scenario.validate(element, true);
-        assertTrue(
-                "Invalid test case: validation didn't expand the OMSourcedElement",
-                ds.isExpanded());
+        assertThat(ds.isExpanded()).isTrue();
     }
 }

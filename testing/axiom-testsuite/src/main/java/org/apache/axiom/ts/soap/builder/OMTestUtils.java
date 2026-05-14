@@ -19,19 +19,19 @@
 
 package org.apache.axiom.ts.soap.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
-import org.junit.Assert;
 
 public class OMTestUtils {
     public static void walkThrough(OMElement element) {
-        Assert.assertFalse(
-                "Expected " + element.getQName() + " to be incomplete", element.isComplete());
+        assertThat(element.isComplete()).isFalse();
         for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
-            Assert.assertNotNull(it.next());
+            assertThat(it.next()).isNotNull();
         }
         OMNode child = element.getFirstOMChild();
         while (child != null) {
@@ -40,6 +40,6 @@ public class OMTestUtils {
             }
             child = child.getNextOMSibling();
         }
-        Assert.assertTrue(element.isComplete());
+        assertThat(element.isComplete()).isTrue();
     }
 }

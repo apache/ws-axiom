@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.transform.stream.StreamSource;
@@ -61,8 +63,8 @@ public class TestCloneBinary extends AxiomTestCase {
         OMCloneOptions options = new OMCloneOptions();
         options.setFetchBlobs(fetch);
         OMText clone = (OMText) text.clone(options);
-        assertTrue(clone.isBinary());
-        assertEquals(fetch, attachmentAccessor.isLoaded());
-        assertSame(blob, clone.getBlob());
+        assertThat(clone.isBinary()).isTrue();
+        assertThat(attachmentAccessor.isLoaded()).isEqualTo(fetch);
+        assertThat(clone.getBlob()).isSameAs(blob);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -27,7 +29,6 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.junit.Assert;
 
 /**
  * Tests that {@link XMLStreamWriter#writeAttribute(String, String)} creates the expected attribute.
@@ -52,6 +53,6 @@ public class WriteAttributeNamespaceUnawareScenario implements PushOMDataSourceS
 
     @Override
     public void validate(OMElement element, boolean blobsPreserved) throws Throwable {
-        Assert.assertEquals("value", element.getAttributeValue(new QName("attr")));
+        assertThat(element.getAttributeValue(new QName("attr"))).isEqualTo("value");
     }
 }

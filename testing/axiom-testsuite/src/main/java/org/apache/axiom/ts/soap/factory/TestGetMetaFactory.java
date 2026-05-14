@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
@@ -36,6 +38,6 @@ public class TestGetMetaFactory extends TestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        assertSame(metaFactory, soapFactory.getMetaFactory());
+        assertThat(soapFactory.getMetaFactory()).isSameAs(metaFactory);
     }
 }

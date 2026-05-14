@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
@@ -56,6 +58,6 @@ public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase
         Writer out = new CharacterStreamComparator(in);
         element.writeTextTo(out, true); // cache doesn't matter here
         out.close();
-        assertFalse(element.isExpanded());
+        assertThat(element.isExpanded()).isFalse();
     }
 }

@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -56,7 +57,7 @@ public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCa
         child.addChild(incompleteElement);
         StringWriter out = new StringWriter();
         root.serializeAndConsume(out);
-        assertEquals("<root><child><elem>text</elem></child></root>", out.toString());
+        assertThat(out.toString()).isEqualTo("<root><child><elem>text</elem></child></root>");
         assertThatThrownBy(incompleteElement::getFirstOMChild)
                 .isInstanceOf(NodeUnavailableException.class);
     }

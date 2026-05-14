@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMAttribute;
@@ -40,12 +42,12 @@ public class TestGetAllAttributes1 extends AxiomTestCase {
         element.addAttribute("attr1", "value1", null);
         element.addAttribute("attr2", "value2", null);
         Iterator<OMAttribute> it = element.getAllAttributes();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMAttribute attr = it.next();
-        assertEquals("attr1", attr.getLocalName());
-        assertTrue(it.hasNext());
+        assertThat(attr.getLocalName()).isEqualTo("attr1");
+        assertThat(it.hasNext()).isTrue();
         attr = it.next();
-        assertEquals("attr2", attr.getLocalName());
-        assertFalse(it.hasNext());
+        assertThat(attr.getLocalName()).isEqualTo("attr2");
+        assertThat(it.hasNext()).isFalse();
     }
 }

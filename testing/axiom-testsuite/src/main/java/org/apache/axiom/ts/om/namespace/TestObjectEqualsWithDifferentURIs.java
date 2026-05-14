@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.namespace;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -40,6 +42,6 @@ public class TestObjectEqualsWithDifferentURIs extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns1 = factory.createOMNamespace("urn:ns1", "ns");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns2", "ns");
-        assertFalse(ns1.equals(ns2));
+        assertThat(ns1.equals(ns2)).isFalse();
     }
 }

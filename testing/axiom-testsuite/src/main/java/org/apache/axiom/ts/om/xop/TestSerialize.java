@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.xop;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
@@ -81,10 +83,10 @@ public class TestSerialize extends AxiomTestCase {
         if (base64) {
             // Do a quick check to see if the data is base64 and is
             // writing base64 compliant code.
-            assertTrue(out.indexOf("base64") != -1);
-            assertTrue(out.indexOf("GBgcGBQgHBwcJCQgKDBQNDAsL") != -1);
+            assertThat(out).contains("base64");
+            assertThat(out).contains("GBgcGBQgHBwcJCQgKDBQNDAsL");
         } else {
-            assertTrue(out.indexOf("base64") == -1);
+            assertThat(out).doesNotContain("base64");
         }
     }
 }

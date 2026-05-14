@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.faultsubcode;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -41,8 +43,7 @@ public class TestGetValueAsQNameWithParser extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultSubCode subCode = envelope.getBody().getFault().getCode().getSubCode();
-        assertEquals(
-                new QName("http:www.sample.org", "MessageTimeout_In_First_Subcode"),
-                subCode.getValueAsQName());
+        assertThat(subCode.getValueAsQName())
+                .isEqualTo(new QName("http:www.sample.org", "MessageTimeout_In_First_Subcode"));
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -40,10 +42,10 @@ public class TestUndeclarePrefix extends AxiomTestCase {
         OMElement element = metaFactory.getOMFactory().createOMElement(new QName("test"));
         element.undeclarePrefix("p");
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
         OMNamespace ns = it.next();
-        assertEquals("", ns.getNamespaceURI());
-        assertEquals("p", ns.getPrefix());
-        assertFalse(it.hasNext());
+        assertThat(ns.getNamespaceURI()).isEqualTo("");
+        assertThat(ns.getPrefix()).isEqualTo("p");
+        assertThat(it.hasNext()).isFalse();
     }
 }

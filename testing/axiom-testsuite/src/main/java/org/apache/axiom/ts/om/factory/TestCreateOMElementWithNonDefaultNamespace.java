@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -42,13 +44,13 @@ public class TestCreateOMElementWithNonDefaultNamespace extends CreateOMElementT
         OMElement element =
                 variant.createOMElement(
                         factory, parentSupplier.createParent(factory), "test", "urn:ns", "ns");
-        assertTrue(element.isComplete());
-        assertEquals("test", element.getLocalName());
+        assertThat(element.isComplete()).isTrue();
+        assertThat(element.getLocalName()).isEqualTo("test");
         OMNamespace ns = factory.createOMNamespace("urn:ns", "ns");
-        assertEquals(ns, element.getNamespace());
+        assertThat(element.getNamespace()).isEqualTo(ns);
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
-        assertEquals(ns, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(ns);
+        assertThat(it.hasNext()).isFalse();
     }
 }

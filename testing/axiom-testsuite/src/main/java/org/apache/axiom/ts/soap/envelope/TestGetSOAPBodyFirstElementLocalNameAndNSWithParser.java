@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.namespace.QName;
@@ -60,35 +62,35 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends TestCas
         SOAPEnvelope envelope =
                 OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new StringReader(message))
                         .getSOAPEnvelope();
-        assertEquals(qname.getLocalPart(), envelope.getSOAPBodyFirstElementLocalName());
+        assertThat(envelope.getSOAPBodyFirstElementLocalName()).isEqualTo(qname.getLocalPart());
         OMNamespace ns = envelope.getSOAPBodyFirstElementNS();
         if (qname.getNamespaceURI().length() == 0) {
-            assertNull(ns);
+            assertThat(ns).isNull();
         } else {
-            assertEquals(qname.getNamespaceURI(), ns.getNamespaceURI());
-            assertEquals(qname.getPrefix(), ns.getPrefix());
+            assertThat(ns.getNamespaceURI()).isEqualTo(qname.getNamespaceURI());
+            assertThat(ns.getPrefix()).isEqualTo(qname.getPrefix());
         }
 
         // Also request an XMLStreamReader. The LLOM implementation triggers some special processing
         // in this case (because the getSOAPBodyFirstElementXXX calls put the builder in lookahead
         // mode). This is a regression test for r631687 (AXIOM-282).
         XMLStreamReader reader = envelope.getXMLStreamReader(false);
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals("Envelope", reader.getLocalName());
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals("Body", reader.getLocalName());
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals(qname.getLocalPart(), reader.getLocalName());
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(reader.getLocalName()).isEqualTo("Envelope");
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(reader.getLocalName()).isEqualTo("Body");
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(reader.getLocalName()).isEqualTo(qname.getLocalPart());
         if (qname.getNamespaceURI().length() == 0) {
-            assertNull(reader.getNamespaceURI());
+            assertThat(reader.getNamespaceURI()).isNull();
         } else {
-            assertEquals(qname.getNamespaceURI(), reader.getNamespaceURI());
+            assertThat(reader.getNamespaceURI()).isEqualTo(qname.getNamespaceURI());
         }
         String readerPrefix = reader.getPrefix();
         if (qname.getPrefix().length() == 0) {
-            assertTrue(readerPrefix == null || readerPrefix.isEmpty());
+            assertThat(readerPrefix).isNullOrEmpty();
         } else {
-            assertEquals(qname.getPrefix(), readerPrefix);
+            assertThat(readerPrefix).isEqualTo(qname.getPrefix());
         }
     }
 }

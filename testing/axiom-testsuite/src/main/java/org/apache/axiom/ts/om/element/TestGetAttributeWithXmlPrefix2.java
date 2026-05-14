@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -46,9 +48,6 @@ public class TestGetAttributeWithXmlPrefix2 extends AxiomTestCase {
                 AXIOMUtil.stringToOM(
                         metaFactory.getOMFactory(), "<Policy xml:base=\"uri:thisBase\"></Policy>");
         OMAttribute attr = elem.getAttribute(new QName(XMLConstants.XML_NS_URI, "base"));
-        assertEquals(
-                "Attribute namespace mismatch",
-                XMLConstants.XML_NS_URI,
-                attr.getNamespace().getNamespaceURI());
+        assertThat(attr.getNamespace().getNamespaceURI()).isEqualTo(XMLConstants.XML_NS_URI);
     }
 }

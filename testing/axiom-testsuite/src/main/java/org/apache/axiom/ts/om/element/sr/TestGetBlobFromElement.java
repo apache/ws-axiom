@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element.sr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.namespace.QName;
@@ -60,8 +62,8 @@ public class TestGetBlobFromElement extends AxiomTestCase {
                 OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(orgRoot.toString()))
                         .getDocumentElement();
         XMLStreamReader reader = root.getXMLStreamReader(cache);
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         Blob blob = XMLStreamReaderUtils.getBlobFromElement(reader);
         IOTestUtils.compareStreams(orgBlob.getInputStream(), blob.getInputStream());
     }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMAttribute;
@@ -42,10 +44,10 @@ public class TestRemoveAttribute extends AxiomTestCase {
         OMAttribute attr1 = element.addAttribute("attr1", "value1", null);
         OMAttribute attr2 = element.addAttribute("attr2", "value2", null);
         element.removeAttribute(attr1);
-        assertNull(attr1.getOwner());
+        assertThat(attr1.getOwner()).isNull();
         Iterator<OMAttribute> it = element.getAllAttributes();
-        assertTrue(it.hasNext());
-        assertSame(attr2, it.next());
-        assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(attr2);
+        assertThat(it.hasNext()).isFalse();
     }
 }

@@ -20,6 +20,7 @@ package org.apache.axiom.ts.soap.factory;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -53,21 +54,21 @@ public abstract class CreateSOAPElementWithoutParentTestCase extends TestCase {
                             ? ""
                             : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX;
             OMElement element = createSOAPElement();
-            assertTrue(element.isComplete());
+            assertThat(element.isComplete()).isTrue();
             QName actualName = element.getQName();
-            assertEquals(expectedName, actualName);
-            assertEquals(expectedPrefix, actualName.getPrefix());
-            assertNull(element.getParent());
+            assertThat(actualName).isEqualTo(expectedName);
+            assertThat(actualName.getPrefix()).isEqualTo(expectedPrefix);
+            assertThat(element.getParent()).isNull();
             Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
             if (expectedPrefix.length() != 0) {
-                assertTrue(it.hasNext());
+                assertThat(it.hasNext()).isTrue();
                 OMNamespace ns = it.next();
-                assertEquals(expectedName.getNamespaceURI(), ns.getNamespaceURI());
-                assertEquals(expectedPrefix, ns.getPrefix());
+                assertThat(ns.getNamespaceURI()).isEqualTo(expectedName.getNamespaceURI());
+                assertThat(ns.getPrefix()).isEqualTo(expectedPrefix);
             }
-            assertFalse(it.hasNext());
-            assertFalse(element.getAllAttributes().hasNext());
-            assertNull(element.getFirstOMChild());
+            assertThat(it.hasNext()).isFalse();
+            assertThat(element.getAllAttributes().hasNext()).isFalse();
+            assertThat(element.getFirstOMChild()).isNull();
         }
     }
 
