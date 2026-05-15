@@ -20,8 +20,9 @@ package org.apache.axiom.ts.om.document.sr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
@@ -29,9 +30,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that the {@link XMLStreamReader} returned by {@link OMContainer#getXMLStreamReader()} for
@@ -43,9 +41,7 @@ public class TestDTDReaderFromParser extends AxiomTestCase {
 
     @Inject
     public TestDTDReaderFromParser(
-            OMMetaFactory metaFactory,
-            @Named("build") boolean build,
-            @Named("cache") boolean cache) {
+            OMMetaFactory metaFactory, @Named("build") boolean build, @Named("cache") boolean cache) {
         super(metaFactory);
         this.build = build;
         this.cache = cache;
@@ -53,12 +49,11 @@ public class TestDTDReaderFromParser extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMDocument doc =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(),
-                                StAXParserConfiguration.STANDALONE,
-                                TestDTDReaderFromParser.class.getResourceAsStream("/web_w_dtd.xml"))
-                        .getDocument();
+        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(),
+                        StAXParserConfiguration.STANDALONE,
+                        TestDTDReaderFromParser.class.getResourceAsStream("/web_w_dtd.xml"))
+                .getDocument();
         if (build) {
             doc.build();
         }
@@ -71,8 +66,7 @@ public class TestDTDReaderFromParser extends AxiomTestCase {
             // Just loop
         }
         assertThat(dtdReader.getRootName()).isEqualTo("web-app");
-        assertThat(dtdReader.getPublicId())
-                .isEqualTo("-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN");
+        assertThat(dtdReader.getPublicId()).isEqualTo("-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN");
         assertThat(dtdReader.getSystemId()).isEqualTo("http://java.sun.com/dtd/web-app_2_3.dtd");
     }
 }

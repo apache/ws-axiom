@@ -17,7 +17,6 @@
  * under the License.
  */
 import java.util.stream.Stream;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.ts.om.cross.CrossOMTestSuite;
 import org.junit.jupiter.api.DynamicNode;

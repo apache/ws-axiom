@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.core.stream.serializer;
 
+import com.google.inject.Key;
 import java.util.stream.Stream;
-
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
@@ -28,8 +28,6 @@ import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
-
-import com.google.inject.Key;
 
 public class SerializerConformanceTest {
     @TestFactory

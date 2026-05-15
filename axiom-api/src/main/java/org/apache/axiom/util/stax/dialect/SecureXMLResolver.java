@@ -20,7 +20,6 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -37,16 +36,15 @@ final class SecureXMLResolver implements XMLResolver {
         // Do not expose the name of the entity that was attempted to be
         // read as this will reveal secure information to the client.
         if (log.isDebugEnabled()) {
-            log.debug(
-                    "resolveEntity is disabled because this is a secure XMLStreamReader("
-                            + publicID
-                            + ") ("
-                            + systemID
-                            + ") ("
-                            + baseURI
-                            + ") ("
-                            + namespace
-                            + ")");
+            log.debug("resolveEntity is disabled because this is a secure XMLStreamReader("
+                    + publicID
+                    + ") ("
+                    + systemID
+                    + ") ("
+                    + baseURI
+                    + ") ("
+                    + namespace
+                    + ")");
         }
         throw new XMLStreamException("Reading external entities is disabled");
     }

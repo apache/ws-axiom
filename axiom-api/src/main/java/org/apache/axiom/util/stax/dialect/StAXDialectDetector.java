@@ -29,10 +29,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -45,17 +43,13 @@ import org.apache.commons.logging.LogFactory;
 public class StAXDialectDetector {
     private static final Log log = LogFactory.getLog(StAXDialectDetector.class);
 
-    private static final Attributes.Name IMPLEMENTATION_TITLE =
-            new Attributes.Name("Implementation-Title");
+    private static final Attributes.Name IMPLEMENTATION_TITLE = new Attributes.Name("Implementation-Title");
 
-    private static final Attributes.Name IMPLEMENTATION_VENDOR =
-            new Attributes.Name("Implementation-Vendor");
+    private static final Attributes.Name IMPLEMENTATION_VENDOR = new Attributes.Name("Implementation-Vendor");
 
-    private static final Attributes.Name IMPLEMENTATION_VERSION =
-            new Attributes.Name("Implementation-Version");
+    private static final Attributes.Name IMPLEMENTATION_VERSION = new Attributes.Name("Implementation-Version");
 
-    private static final Attributes.Name BUNDLE_SYMBOLIC_NAME =
-            new Attributes.Name("Bundle-SymbolicName");
+    private static final Attributes.Name BUNDLE_SYMBOLIC_NAME = new Attributes.Name("Bundle-SymbolicName");
 
     private static final Attributes.Name BUNDLE_VENDOR = new Attributes.Name("Bundle-Vendor");
 
@@ -113,8 +107,7 @@ public class StAXDialectDetector {
     }
 
     private static URL getRootUrlForClass(Class<?> cls) {
-        return getRootUrlForResource(
-                cls.getClassLoader(), cls.getName().replace('.', '/') + ".class");
+        return getRootUrlForResource(cls.getClassLoader(), cls.getName().replace('.', '/') + ".class");
     }
 
     /**
@@ -157,10 +150,9 @@ public class StAXDialectDetector {
     public static StAXDialect getDialect(Class<?> implementationClass) {
         URL rootUrl = getRootUrlForClass(implementationClass);
         if (rootUrl == null) {
-            log.warn(
-                    "Unable to determine location of StAX implementation containing class "
-                            + implementationClass.getName()
-                            + "; using default dialect");
+            log.warn("Unable to determine location of StAX implementation containing class "
+                    + implementationClass.getName()
+                    + "; using default dialect");
             return UnknownStAXDialect.INSTANCE;
         }
         return getDialect(implementationClass.getClassLoader(), rootUrl);
@@ -259,21 +251,20 @@ public class StAXDialectDetector {
             versionString = attrs.getValue(BUNDLE_VERSION);
         }
         if (log.isDebugEnabled()) {
-            log.debug(
-                    "StAX implementation at "
-                            + rootUrl
-                            + " is:\n"
-                            + "  Title:         "
-                            + title
-                            + "\n"
-                            + "  Symbolic name: "
-                            + symbolicName
-                            + "\n"
-                            + "  Vendor:        "
-                            + vendor
-                            + "\n"
-                            + "  Version:       "
-                            + versionString);
+            log.debug("StAX implementation at "
+                    + rootUrl
+                    + " is:\n"
+                    + "  Title:         "
+                    + title
+                    + "\n"
+                    + "  Symbolic name: "
+                    + symbolicName
+                    + "\n"
+                    + "  Vendor:        "
+                    + vendor
+                    + "\n"
+                    + "  Version:       "
+                    + versionString);
         }
 
         if (title != null && title.toLowerCase(Locale.ENGLISH).contains("woodstox")) {
@@ -285,9 +276,8 @@ public class StAXDialectDetector {
             // Weblogic's StAX implementation doesn't support CDATA section reporting and there are
             // a couple of additional test cases (with respect to BEA's reference implementation)
             // that fail.
-            log.warn(
-                    "Weblogic's StAX implementation is unsupported and some Axiom features will not work "
-                            + "as expected! Please use Woodstox instead.");
+            log.warn("Weblogic's StAX implementation is unsupported and some Axiom features will not work "
+                    + "as expected! Please use Woodstox instead.");
             // This is the best match we can return in this case.
             return BEADialect.INSTANCE;
         } else if ("BEA".equals(vendor)) {
@@ -324,8 +314,7 @@ public class StAXDialectDetector {
             // extends the XMLOutputFactory implementation from another StAX implementation, e.g.
             // XLXP). Detect this situation by checking the superclass.
             Class<?> superClass = cls.getSuperclass();
-            if (superClass == XMLOutputFactory.class
-                    || superClass.getName().startsWith("com.sun.")) {
+            if (superClass == XMLOutputFactory.class || superClass.getName().startsWith("com.sun.")) {
                 // Check if the implementation has the bug fixed here:
                 // https://sjsxp.dev.java.net/source/browse/sjsxp/zephyr/src/com/sun/xml/stream/ZephyrWriterFactory.java?rev=1.8&r1=1.4&r2=1.5
                 boolean isUnsafeStreamResult;

@@ -23,6 +23,8 @@ import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
+import jakarta.activation.DataHandler;
+import jakarta.mail.util.ByteArrayDataSource;
 import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,9 +33,6 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
-
-import jakarta.activation.DataHandler;
-import jakarta.mail.util.ByteArrayDataSource;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
@@ -54,12 +53,9 @@ public class DataHandlerUtilsTest {
 
     @Test
     public void testByteArrayDataSourceToBlobGetSize() {
-        assertThat(
-                        DataHandlerUtils.toBlob(
-                                        new DataHandler(
-                                                new ByteArrayDataSource(
-                                                        new byte[123], "application/octet-stream")))
-                                .getSize())
+        assertThat(DataHandlerUtils.toBlob(
+                                new DataHandler(new ByteArrayDataSource(new byte[123], "application/octet-stream")))
+                        .getSize())
                 .isEqualTo(123);
     }
 }

@@ -21,7 +21,6 @@ package org.apache.axiom.core.stream.sax.output;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Stack;
-
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.CharacterDataSink;
 import org.apache.axiom.core.stream.StreamException;
@@ -73,8 +72,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
             throws StreamException {
         try {
             contentHandler.startDocument();
@@ -93,8 +91,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void processDocumentTypeDeclaration(
-            String rootName, String publicId, String systemId, String internalSubset)
+    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset)
             throws StreamException {
         if (lexicalHandler != null) {
             try {
@@ -107,8 +104,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         elementURI = namespaceURI;
         elementLocalName = localName;
         elementQName = getQName(prefix, localName);
@@ -121,8 +117,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         if (bindings == prefixStack.length) {
             String[] newPrefixStack = new String[prefixStack.length * 2];
             System.arraycopy(prefixStack, 0, newPrefixStack, 0, prefixStack.length);
@@ -140,19 +135,13 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
 
     @Override
     public void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException {
         attributes.addAttribute(namespaceURI, localName, getQName(prefix, localName), type, value);
     }
 
     @Override
-    public void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException {
+    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -275,8 +264,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
 
     @Override
     public void startComment() throws StreamException {
-        characterDataMode =
-                lexicalHandler == null ? CharacterDataMode.SKIP : CharacterDataMode.BUFFER;
+        characterDataMode = lexicalHandler == null ? CharacterDataMode.SKIP : CharacterDataMode.BUFFER;
     }
 
     @Override

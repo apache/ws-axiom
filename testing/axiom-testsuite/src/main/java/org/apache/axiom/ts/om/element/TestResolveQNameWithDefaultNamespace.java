@@ -20,14 +20,12 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestResolveQNameWithDefaultNamespace extends AxiomTestCase {
     @Inject
@@ -38,8 +36,7 @@ public class TestResolveQNameWithDefaultNamespace extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMElement element =
-                AXIOMUtil.stringToOM(
-                        metaFactory.getOMFactory(), "<p:root xmlns:p='urn:ns1' xmlns='urn:ns2'/>");
+                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<p:root xmlns:p='urn:ns1' xmlns='urn:ns2'/>");
         QName qname = element.resolveQName("test");
         assertThat(qname.getPrefix()).isEqualTo("");
         assertThat(qname.getNamespaceURI()).isEqualTo("urn:ns2");

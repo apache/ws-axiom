@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.ContentTransferEncoding;
 import org.apache.axiom.mime.ContentType;
@@ -54,20 +53,14 @@ public class OMMultipartWriter {
 
         writer = new MultipartBodyWriter(out, format.getMimeBoundary());
 
-        ContentTransferEncodingPolicy contentTransferEncodingPolicy =
-                format.getContentTransferEncodingPolicy();
+        ContentTransferEncodingPolicy contentTransferEncodingPolicy = format.getContentTransferEncodingPolicy();
         if (format != null
-                && Boolean.TRUE.equals(
-                        format.getProperty(
-                                OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS))) {
+                && Boolean.TRUE.equals(format.getProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS))) {
             if (contentTransferEncodingPolicy == null) {
-                contentTransferEncodingPolicy =
-                        ContentTransferEncodingPolicy.USE_BASE64_FOR_NON_TEXTUAL_PARTS;
+                contentTransferEncodingPolicy = ContentTransferEncodingPolicy.USE_BASE64_FOR_NON_TEXTUAL_PARTS;
             } else {
-                contentTransferEncodingPolicy =
-                        new CombinedContentTransferEncodingPolicy(
-                                contentTransferEncodingPolicy,
-                                ContentTransferEncodingPolicy.USE_BASE64_FOR_NON_TEXTUAL_PARTS);
+                contentTransferEncodingPolicy = new CombinedContentTransferEncodingPolicy(
+                        contentTransferEncodingPolicy, ContentTransferEncodingPolicy.USE_BASE64_FOR_NON_TEXTUAL_PARTS);
             }
         }
         this.contentTransferEncodingPolicy = contentTransferEncodingPolicy;
@@ -79,18 +72,16 @@ public class OMMultipartWriter {
             soapContentType = SOAPVersion.SOAP12.getMediaType();
         }
         if (format.isOptimized()) {
-            rootPartContentType =
-                    ContentType.builder()
-                            .setMediaType(MediaType.APPLICATION_XOP_XML)
-                            .setParameter("charset", format.getCharSetEncoding())
-                            .setParameter("type", soapContentType.toString())
-                            .build();
+            rootPartContentType = ContentType.builder()
+                    .setMediaType(MediaType.APPLICATION_XOP_XML)
+                    .setParameter("charset", format.getCharSetEncoding())
+                    .setParameter("type", soapContentType.toString())
+                    .build();
         } else {
-            rootPartContentType =
-                    ContentType.builder()
-                            .setMediaType(soapContentType)
-                            .setParameter("charset", format.getCharSetEncoding())
-                            .build();
+            rootPartContentType = ContentType.builder()
+                    .setMediaType(soapContentType)
+                    .setParameter("charset", format.getCharSetEncoding())
+                    .build();
         }
     }
 
@@ -127,11 +118,7 @@ public class OMMultipartWriter {
      * @throws IOException if an I/O error occurs when writing to the underlying stream
      */
     public OutputStream writeRootPart() throws IOException {
-        return writer.writePart(
-                rootPartContentType,
-                ContentTransferEncoding.BINARY,
-                format.getRootContentId(),
-                null);
+        return writer.writePart(rootPartContentType, ContentTransferEncoding.BINARY, format.getRootContentId(), null);
     }
 
     /**
@@ -146,8 +133,7 @@ public class OMMultipartWriter {
      * @throws IOException if an I/O error occurs when writing to the underlying stream
      */
     public OutputStream writePart(ContentType contentType, String contentID) throws IOException {
-        return writer.writePart(
-                contentType, getContentTransferEncoding(null, contentType), contentID, null);
+        return writer.writePart(contentType, getContentTransferEncoding(null, contentType), contentID, null);
     }
 
     /**
@@ -163,14 +149,9 @@ public class OMMultipartWriter {
      * @return an output stream to write the content of the MIME part
      * @throws IOException if an I/O error occurs when writing to the underlying stream
      */
-    public OutputStream writePart(
-            ContentType contentType, String contentID, List<Header> extraHeaders)
+    public OutputStream writePart(ContentType contentType, String contentID, List<Header> extraHeaders)
             throws IOException {
-        return writer.writePart(
-                contentType,
-                getContentTransferEncoding(null, contentType),
-                contentID,
-                extraHeaders);
+        return writer.writePart(contentType, getContentTransferEncoding(null, contentType), contentID, extraHeaders);
     }
 
     /**
@@ -184,15 +165,9 @@ public class OMMultipartWriter {
      *     MIME part
      * @throws IOException if an I/O error occurs when writing the part to the underlying stream
      */
-    public void writePart(Blob blob, String contentID, List<Header> extraHeaders)
-            throws IOException {
+    public void writePart(Blob blob, String contentID, List<Header> extraHeaders) throws IOException {
         ContentType contentType = getContentType(blob);
-        writer.writePart(
-                blob,
-                contentType,
-                getContentTransferEncoding(blob, contentType),
-                contentID,
-                extraHeaders);
+        writer.writePart(blob, contentType, getContentTransferEncoding(blob, contentType), contentID, extraHeaders);
     }
 
     /**
@@ -220,11 +195,7 @@ public class OMMultipartWriter {
     public void writePart(PartBlob blob, String contentID, boolean preserve) throws IOException {
         ContentType contentType = getContentType(blob);
         OutputStream part =
-                writer.writePart(
-                        contentType,
-                        getContentTransferEncoding(blob, contentType),
-                        contentID,
-                        null);
+                writer.writePart(contentType, getContentTransferEncoding(blob, contentType), contentID, null);
         IOUtils.copy(blob.getPart().getInputStream(preserve), part, -1);
         part.close();
     }

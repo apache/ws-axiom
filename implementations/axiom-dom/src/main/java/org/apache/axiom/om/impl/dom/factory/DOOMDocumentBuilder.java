@@ -19,6 +19,12 @@
 
 package org.apache.axiom.om.impl.dom.factory;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.validation.Schema;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.dom.intf.factory.DOOMNodeFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
@@ -29,21 +35,12 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.validation.Schema;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 final class DOOMDocumentBuilder extends DocumentBuilder {
     private final DOOMNodeFactory factory;
     private final StAXParserConfiguration parserConfiguration;
     private final Schema schema;
 
-    DOOMDocumentBuilder(
-            DOOMNodeFactory factory, StAXParserConfiguration parserConfiguration, Schema schema) {
+    DOOMDocumentBuilder(DOOMNodeFactory factory, StAXParserConfiguration parserConfiguration, Schema schema) {
         this.factory = factory;
         this.parserConfiguration = parserConfiguration;
         this.schema = schema;

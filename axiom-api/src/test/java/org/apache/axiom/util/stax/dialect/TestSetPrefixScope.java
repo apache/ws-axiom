@@ -19,7 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.ByteArrayOutputStream;
-
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
 

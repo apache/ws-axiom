@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.stream.xop;
 
 import java.io.IOException;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.ext.stax.BlobProvider;

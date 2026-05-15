@@ -19,9 +19,7 @@
 package org.apache.axiom.ts.dimension.serialization;
 
 import java.io.ByteArrayOutputStream;
-
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.core.stream.stax.StAX;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;

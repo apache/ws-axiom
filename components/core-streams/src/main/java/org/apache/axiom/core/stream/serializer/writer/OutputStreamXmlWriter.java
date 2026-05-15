@@ -26,7 +26,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CoderResult;
-
 import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 
 final class OutputStreamXmlWriter extends XmlWriter {
@@ -34,8 +33,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
     private final CharBuffer encoderIn;
     private final ByteBuffer encoderOut;
     private final CharsetEncoder encoder;
-    private UnmappableCharacterHandler unmappableCharacterHandler =
-            UnmappableCharacterHandler.THROW_EXCEPTION;
+    private UnmappableCharacterHandler unmappableCharacterHandler = UnmappableCharacterHandler.THROW_EXCEPTION;
     private boolean processingUnmappableCharacter;
     private CharBuffer encoderInAlt;
 
@@ -80,9 +78,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
                 processingUnmappableCharacter = true;
                 try {
                     switch (coderResult.length()) {
-                        case 1 ->
-                                unmappableCharacterHandler.processUnmappableCharacter(
-                                        encoderIn.get(), this);
+                        case 1 -> unmappableCharacterHandler.processUnmappableCharacter(encoderIn.get(), this);
                         case 2 -> throw new UnsupportedOperationException("TODO");
                         default -> throw new IllegalStateException();
                     }

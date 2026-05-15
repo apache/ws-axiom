@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.ts.om.container;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.InputStream;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -31,9 +31,6 @@ import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Test comparing the output of {@link OMContainer#getXMLStreamReader(boolean)} with that of a
@@ -61,20 +58,16 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
     protected final void runTest() throws Throwable {
         InputStream in = file.getInputStream();
         try {
-            XMLStreamReader expected =
-                    StAXUtils.createXMLStreamReader(
-                            TEST_PARSER_CONFIGURATION, file.getUrl().toString(), in);
+            XMLStreamReader expected = StAXUtils.createXMLStreamReader(
+                    TEST_PARSER_CONFIGURATION, file.getUrl().toString(), in);
             try {
-                OMXMLParserWrapper builder =
-                        builderFactory.getBuilder(
-                                metaFactory, new InputSource(file.getUrl().toString()));
+                OMXMLParserWrapper builder = builderFactory.getBuilder(
+                        metaFactory, new InputSource(file.getUrl().toString()));
                 try {
                     XMLStreamReader actual =
                             containerExtractor.getContainer(builder).getXMLStreamReader(cache);
-                    XMLStreamReaderComparator comparator =
-                            new XMLStreamReaderComparator(
-                                    containerExtractor.filter(expected),
-                                    containerExtractor.filter(actual));
+                    XMLStreamReaderComparator comparator = new XMLStreamReaderComparator(
+                            containerExtractor.filter(expected), containerExtractor.filter(actual));
                     builderFactory.configureXMLStreamReaderComparator(comparator);
                     comparator.compare();
                 } finally {

@@ -21,7 +21,6 @@ package org.apache.axiom.locator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMMetaFactoryLocator;
 import org.apache.commons.logging.Log;

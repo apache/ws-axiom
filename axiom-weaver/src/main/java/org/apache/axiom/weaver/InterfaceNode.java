@@ -18,16 +18,14 @@
  */
 package org.apache.axiom.weaver;
 
-import java.util.Set;
-
 import com.github.veithen.jrel.association.ManyToManyAssociation;
 import com.github.veithen.jrel.association.MutableReferences;
 import com.github.veithen.jrel.association.Navigability;
+import java.util.Set;
 
 final class InterfaceNode {
     private static final ManyToManyAssociation<InterfaceNode, InterfaceNode> EXTENDS =
-            new ManyToManyAssociation<>(
-                    InterfaceNode.class, InterfaceNode.class, Navigability.UNIDIRECTIONAL);
+            new ManyToManyAssociation<>(InterfaceNode.class, InterfaceNode.class, Navigability.UNIDIRECTIONAL);
 
     private final Class<?> iface;
     private final MutableReferences<InterfaceNode> parents = EXTENDS.newReferenceHolder(this);

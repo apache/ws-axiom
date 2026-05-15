@@ -21,27 +21,24 @@ package org.apache.axiom.ts.soap.envelope;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import java.io.OutputStream;
-
+import junit.framework.TestCase;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-474">AXIOM-474</a>. */
 public class TestSerializeAsChild extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createDefaultSOAPMessage().getSOAPEnvelope();
-        soapFactory.createOMElement(
-                "echo", soapFactory.createOMNamespace("urn:test", "p"), envelope.getBody());
+        soapFactory.createOMElement("echo", soapFactory.createOMNamespace("urn:test", "p"), envelope.getBody());
         OMElement log = soapFactory.createOMElement("log", null);
         OMElement entry = soapFactory.createOMElement("entry", null, log);
         entry.addChild(envelope);
@@ -49,8 +46,6 @@ public class TestSerializeAsChild extends TestCase {
         OutputStream out = blob.getOutputStream();
         envelope.serialize(out);
         out.close();
-        assertAbout(xml())
-                .that(blob.getInputStream())
-                .hasSameContentAs(xml(OMElement.class, envelope));
+        assertAbout(xml()).that(blob.getInputStream()).hasSameContentAs(xml(OMElement.class, envelope));
     }
 }

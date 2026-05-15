@@ -18,11 +18,10 @@
  */
 package org.apache.axiom.ts.springws;
 
+import com.google.auto.service.AutoService;
 import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 import org.apache.axiom.ts.soap.SOAPSpec;
-
-import com.google.auto.service.AutoService;
 
 @AutoService(AdapterFactory.class)
 public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {

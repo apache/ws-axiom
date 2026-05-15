@@ -29,9 +29,7 @@ public class DOMTraverserTest {
     @Test
     public void testEntityReferenceExpansion() throws Exception {
         Traverser t =
-                new CoalescingFilter(
-                        new DOMXML(XMLSample.ENTITY_REFERENCE_NESTED.getDocument())
-                                .createTraverser(true));
+                new CoalescingFilter(new DOMXML(XMLSample.ENTITY_REFERENCE_NESTED.getDocument()).createTraverser(true));
         assertThat(t.next()).isEqualTo(Event.DOCUMENT_TYPE);
         assertThat(t.next()).isEqualTo(Event.START_ELEMENT);
         assertThat(t.next()).isEqualTo(Event.TEXT);

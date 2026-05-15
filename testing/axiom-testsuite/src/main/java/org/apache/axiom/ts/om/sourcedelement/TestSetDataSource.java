@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringWriter;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -30,8 +30,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 /** Verifies that a OMDataSource can be replaced with another one */
 @SuppressWarnings("deprecation")
@@ -52,11 +50,8 @@ public class TestSetDataSource extends AxiomTestCase {
 
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", null);
-        OMSourcedElement omse =
-                factory.createOMElement(
-                        nonDestructiveOMDataSource1,
-                        "myPayload",
-                        factory.createOMNamespace("urn://test", "tns"));
+        OMSourcedElement omse = factory.createOMElement(
+                nonDestructiveOMDataSource1, "myPayload", factory.createOMNamespace("urn://test", "tns"));
         parent.addChild(omse);
         OMNode firstChild = parent.getFirstOMChild();
         assertThat(firstChild).isInstanceOf(OMSourcedElement.class);

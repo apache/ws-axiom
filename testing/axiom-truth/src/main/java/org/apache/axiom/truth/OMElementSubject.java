@@ -20,12 +20,10 @@ package org.apache.axiom.truth;
 
 import static com.google.common.truth.Fact.simpleFact;
 
+import com.google.common.truth.FailureMetadata;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
-
-import com.google.common.truth.FailureMetadata;
 
 public final class OMElementSubject extends AbstractOMContainerSubject {
     private final OMElement subject;
@@ -47,13 +45,11 @@ public final class OMElementSubject extends AbstractOMContainerSubject {
                 return;
             }
         }
-        failWithActual(
-                simpleFact(
-                        "expected to have namespace declaration for namespace URI \""
-                                + ns.getNamespaceURI()
-                                + "\" and prefix \""
-                                + ns.getPrefix()
-                                + "\""));
+        failWithActual(simpleFact("expected to have namespace declaration for namespace URI \""
+                + ns.getNamespaceURI()
+                + "\" and prefix \""
+                + ns.getPrefix()
+                + "\""));
     }
 
     public void hasNamespaceDeclaration(String prefix, String namespaceURI) {
@@ -63,12 +59,10 @@ public final class OMElementSubject extends AbstractOMContainerSubject {
                 return;
             }
         }
-        failWithActual(
-                simpleFact(
-                        "expected to have namespace declaration for namespace URI \""
-                                + namespaceURI
-                                + "\" and prefix \""
-                                + prefix
-                                + "\""));
+        failWithActual(simpleFact("expected to have namespace declaration for namespace URI \""
+                + namespaceURI
+                + "\" and prefix \""
+                + prefix
+                + "\""));
     }
 }

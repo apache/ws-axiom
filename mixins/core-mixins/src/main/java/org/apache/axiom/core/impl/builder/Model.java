@@ -39,6 +39,5 @@ public interface Model {
      * @return the element node, or {@code null} if a plain {@link CoreNSAwareElement} should be
      *     used
      */
-    CoreNSAwareElement createElement(
-            CoreParentNode parent, int elementLevel, String namespaceURI, String localName);
+    CoreNSAwareElement createElement(CoreParentNode parent, int elementLevel, String namespaceURI, String localName);
 }

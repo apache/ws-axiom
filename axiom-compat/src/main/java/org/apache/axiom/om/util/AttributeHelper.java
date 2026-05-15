@@ -45,9 +45,7 @@ public class AttributeHelper {
             omElement.addAttribute(
                     omAttribute.getLocalName(),
                     omAttribute.getAttributeValue(),
-                    omElement
-                            .getOMFactory()
-                            .createOMNamespace(ns.getNamespaceURI(), ns.getPrefix()));
+                    omElement.getOMFactory().createOMNamespace(ns.getNamespaceURI(), ns.getPrefix()));
         }
     }
 }

@@ -19,7 +19,6 @@
 package org.apache.axiom.weaver.mixin.factory;
 
 import java.util.List;
-
 import org.apache.axiom.weaver.classio.ClassFetcher;
 import org.apache.axiom.weaver.mixin.MixinMethod;
 import org.objectweb.asm.ClassVisitor;

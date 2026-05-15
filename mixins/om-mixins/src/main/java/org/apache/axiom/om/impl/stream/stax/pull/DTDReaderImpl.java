@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.stream.stax.pull;
 
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.core.stream.stax.pull.output.InternalXMLStreamReader;
 import org.apache.axiom.ext.stax.DTDReader;
 

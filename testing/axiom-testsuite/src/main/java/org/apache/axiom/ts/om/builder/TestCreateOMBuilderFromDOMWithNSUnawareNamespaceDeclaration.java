@@ -20,15 +20,14 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.w3c.dom.Element;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration extends AxiomTestCase {
     private final String prefix;
@@ -44,9 +43,8 @@ public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration extends
     protected void runTest() throws Throwable {
         Element domElement = DOMImplementation.XERCES.newDocument().createElementNS(null, "test");
         domElement.setAttribute(prefix.isEmpty() ? "xmlns" : "xmlns:" + prefix, "urn:ns1");
-        OMElement element =
-                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domElement, false)
-                        .getDocumentElement();
+        OMElement element = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domElement, false)
+                .getDocumentElement();
         assertThat(element).hasNamespaceDeclaration(prefix, "urn:ns1");
     }
 }

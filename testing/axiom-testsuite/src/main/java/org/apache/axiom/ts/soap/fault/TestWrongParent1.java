@@ -20,6 +20,8 @@ package org.apache.axiom.ts.soap.fault;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPBody;
@@ -28,22 +30,18 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPProcessingException;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /**
  * Tests that {@link OMContainer#addChild(OMNode)} throws an exception if an attempt is made to add
  * a {@link SOAPFault} to a SOAP element other than {@link SOAPBody}.
  */
 public class TestWrongParent1 extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPFaultCode parent = soapFactory.createSOAPFaultCode();
         SOAPFault fault = soapFactory.createSOAPFault();
-        assertThatThrownBy(() -> parent.addChild(fault))
-                .isInstanceOf(SOAPProcessingException.class);
+        assertThatThrownBy(() -> parent.addChild(fault)).isInstanceOf(SOAPProcessingException.class);
     }
 }

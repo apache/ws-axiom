@@ -20,6 +20,8 @@ package org.apache.axiom.ts.soap.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -28,22 +30,20 @@ import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /** Tests that the SOAP builder creates {@link OMComment} nodes for comments in the XML prolog. */
 public class TestCommentInProlog extends TestCase {
-    @Inject private OMMetaFactory metaFactory;
-    @Inject private SOAPSpec spec;
+    @Inject
+    private OMMetaFactory metaFactory;
+
+    @Inject
+    private SOAPSpec spec;
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPMessage message =
-                SOAPSampleSet.COMMENT_IN_PROLOG
-                        .getMessage(spec)
-                        .getAdapter(SOAPSampleAdapter.class)
-                        .getSOAPMessage(metaFactory);
+        SOAPMessage message = SOAPSampleSet.COMMENT_IN_PROLOG
+                .getMessage(spec)
+                .getAdapter(SOAPSampleAdapter.class)
+                .getSOAPMessage(metaFactory);
         OMNode firstChild = message.getFirstOMChild();
         assertThat(firstChild).isInstanceOf(OMComment.class);
     }

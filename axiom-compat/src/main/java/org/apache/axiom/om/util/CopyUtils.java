@@ -18,6 +18,10 @@
  */
 package org.apache.axiom.om.util;
 
+import java.util.Iterator;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
@@ -27,12 +31,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPEnvelope;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
-import java.util.Iterator;
 
 /**
  * CopyUtils provides static utility methods that are useful for creating a copy of an
@@ -76,8 +74,7 @@ public class CopyUtils {
      *     OMContainer#serializeAndConsume(XMLStreamWriter)} to write to the {@link
      *     XMLStreamWriter}.
      */
-    public static void reader2writer(XMLStreamReader reader, XMLStreamWriter writer)
-            throws XMLStreamException {
+    public static void reader2writer(XMLStreamReader reader, XMLStreamWriter writer) throws XMLStreamException {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(reader);
         try {
             OMDocument omDocument = builder.getDocument();

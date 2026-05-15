@@ -19,7 +19,6 @@
 package org.apache.axiom.util.activation;
 
 import jakarta.activation.DataHandler;
-
 import junit.framework.TestCase;
 
 public class DataHandlerWrapperTest extends TestCase {

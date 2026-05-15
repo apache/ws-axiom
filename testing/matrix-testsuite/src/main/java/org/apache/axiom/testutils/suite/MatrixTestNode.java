@@ -18,15 +18,13 @@
  */
 package org.apache.axiom.testutils.suite;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.DynamicNode;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 /**
  * Represents a node in the test tree that can be filtered before conversion to JUnit 5's dynamic
@@ -48,8 +46,7 @@ public abstract class MatrixTestNode {
      * <p>This allows using a {@code MatrixTestNode} directly without wrapping it in a {@link
      * InjectorNode}.
      */
-    public final Stream<DynamicNode> toDynamicNodes(
-            BiPredicate<Class<?>, Map<String, String>> excludes) {
+    public final Stream<DynamicNode> toDynamicNodes(BiPredicate<Class<?>, Map<String, String>> excludes) {
         return toDynamicNodes(Guice.createInjector(), new HashMap<>(), excludes);
     }
 

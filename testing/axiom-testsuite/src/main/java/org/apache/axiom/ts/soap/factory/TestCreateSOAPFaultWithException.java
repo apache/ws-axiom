@@ -20,10 +20,11 @@ package org.apache.axiom.ts.soap.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -31,13 +32,9 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
-import junit.framework.TestCase;
-
 public class TestCreateSOAPFaultWithException extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Inject
     @Named("withParent")
@@ -57,8 +54,7 @@ public class TestCreateSOAPFaultWithException extends TestCase {
         Iterator<OMElement> it = detail.getAllDetailEntries();
         assertThat(it.hasNext()).isTrue();
         OMElement entry = it.next();
-        assertThat(entry.getQName())
-                .isEqualTo(new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
+        assertThat(entry.getQName()).isEqualTo(new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
         assertThat(entry.getText()).contains("Testing soap fault");
     }
 }

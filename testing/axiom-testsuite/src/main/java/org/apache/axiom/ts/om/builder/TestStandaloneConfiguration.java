@@ -20,9 +20,9 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.InputStream;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -32,8 +32,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link OMXMLBuilderFactory#createOMBuilder(StAXParserConfiguration,
@@ -49,8 +47,7 @@ public class TestStandaloneConfiguration extends AxiomTestCase {
     protected void runTest() throws Throwable {
         InputStream is = TestStandaloneConfiguration.class.getResourceAsStream("web_w_dtd2.xml");
         OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(), StAXParserConfiguration.STANDALONE, is);
+                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.STANDALONE, is);
         OMElement root = builder.getDocumentElement();
         assertThat(root.getLocalName().equals("web-app")).isTrue();
         OMDocument document = builder.getDocument();

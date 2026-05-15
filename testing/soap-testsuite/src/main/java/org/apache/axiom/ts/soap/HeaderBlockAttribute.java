@@ -19,64 +19,60 @@
 package org.apache.axiom.ts.soap;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.testing.multiton.Multiton;
 
 /** Describes an attribute that can appear on a SOAP header block. */
 public abstract class HeaderBlockAttribute extends Multiton {
-    public static final HeaderBlockAttribute MUST_UNDERSTAND =
-            new HeaderBlockAttribute() {
-                @Override
-                public String getName(SOAPSpec spec) {
-                    return "mustUnderstand";
-                }
+    public static final HeaderBlockAttribute MUST_UNDERSTAND = new HeaderBlockAttribute() {
+        @Override
+        public String getName(SOAPSpec spec) {
+            return "mustUnderstand";
+        }
 
-                @Override
-                public boolean isBoolean() {
-                    return true;
-                }
+        @Override
+        public boolean isBoolean() {
+            return true;
+        }
 
-                @Override
-                public boolean isSupported(SOAPSpec spec) {
-                    return true;
-                }
-            };
+        @Override
+        public boolean isSupported(SOAPSpec spec) {
+            return true;
+        }
+    };
 
-    public static final HeaderBlockAttribute ROLE =
-            new HeaderBlockAttribute() {
-                @Override
-                public String getName(SOAPSpec spec) {
-                    return spec == SOAPSpec.SOAP11 ? "actor" : "role";
-                }
+    public static final HeaderBlockAttribute ROLE = new HeaderBlockAttribute() {
+        @Override
+        public String getName(SOAPSpec spec) {
+            return spec == SOAPSpec.SOAP11 ? "actor" : "role";
+        }
 
-                @Override
-                public boolean isBoolean() {
-                    return false;
-                }
+        @Override
+        public boolean isBoolean() {
+            return false;
+        }
 
-                @Override
-                public boolean isSupported(SOAPSpec spec) {
-                    return true;
-                }
-            };
+        @Override
+        public boolean isSupported(SOAPSpec spec) {
+            return true;
+        }
+    };
 
-    public static final HeaderBlockAttribute RELAY =
-            new HeaderBlockAttribute() {
-                @Override
-                public String getName(SOAPSpec spec) {
-                    return "relay";
-                }
+    public static final HeaderBlockAttribute RELAY = new HeaderBlockAttribute() {
+        @Override
+        public String getName(SOAPSpec spec) {
+            return "relay";
+        }
 
-                @Override
-                public boolean isBoolean() {
-                    return true;
-                }
+        @Override
+        public boolean isBoolean() {
+            return true;
+        }
 
-                @Override
-                public boolean isSupported(SOAPSpec spec) {
-                    return spec == SOAPSpec.SOAP12;
-                }
-            };
+        @Override
+        public boolean isSupported(SOAPSpec spec) {
+            return spec == SOAPSpec.SOAP12;
+        }
+    };
 
     /**
      * Get the name of the attribute.

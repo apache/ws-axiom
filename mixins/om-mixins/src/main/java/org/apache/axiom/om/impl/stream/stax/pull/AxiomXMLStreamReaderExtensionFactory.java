@@ -25,8 +25,7 @@ import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 
 public final class AxiomXMLStreamReaderExtensionFactory implements XMLStreamReaderExtensionFactory {
-    public static final AxiomXMLStreamReaderExtensionFactory INSTANCE =
-            new AxiomXMLStreamReaderExtensionFactory();
+    public static final AxiomXMLStreamReaderExtensionFactory INSTANCE = new AxiomXMLStreamReaderExtensionFactory();
 
     private AxiomXMLStreamReaderExtensionFactory() {}
 

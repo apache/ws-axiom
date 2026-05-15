@@ -50,8 +50,7 @@ public final class Blobs {
      * @param overflowBlobFactory the factory that will be used to create the overflow blob
      * @return the blob
      */
-    public static OverflowableBlob createOverflowableBlob(
-            int threshold, WritableBlobFactory<?> overflowBlobFactory) {
+    public static OverflowableBlob createOverflowableBlob(int threshold, WritableBlobFactory<?> overflowBlobFactory) {
         int numberOfChunks = Math.max(16, Math.min(1, threshold / 4096));
         int chunkSize = threshold / numberOfChunks;
         return new OverflowableBlobImpl(numberOfChunks, chunkSize, overflowBlobFactory);
@@ -70,7 +69,6 @@ public final class Blobs {
      */
     public static OverflowableBlob createOverflowableBlob(
             int threshold, String tempPrefix, String tempSuffix, File tempDirectory) {
-        return createOverflowableBlob(
-                threshold, new TempFileBlobFactory(tempPrefix, tempSuffix, tempDirectory));
+        return createOverflowableBlob(threshold, new TempFileBlobFactory(tempPrefix, tempSuffix, tempDirectory));
     }
 }

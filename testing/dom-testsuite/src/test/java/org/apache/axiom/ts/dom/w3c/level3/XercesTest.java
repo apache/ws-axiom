@@ -19,9 +19,7 @@
 package org.apache.axiom.ts.dom.w3c.level3;
 
 import java.util.stream.Stream;
-
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.testutils.suite.MatrixTestFilters;
 import org.apache.axiom.ts.dom.DocumentBuilderFactoryFactory;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
@@ -31,87 +29,49 @@ import org.junit.jupiter.api.TestFactory;
 public class XercesTest {
     @TestFactory
     Stream<DynamicNode> tests() {
-        return W3CDOMLevel3TestSuite.create(
-                        new DocumentBuilderFactoryFactory() {
-                            @Override
-                            public DocumentBuilderFactory newInstance() {
-                                return new DocumentBuilderFactoryImpl();
-                            }
-                        })
-                .toDynamicNodes(
-                        MatrixTestFilters.builder()
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/documentgetinputencoding03)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/documentnormalizedocument07)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/documentnormalizedocument10)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/documentnormalizedocument11)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/domconfigurationcansetparameter06)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/elementgetschematypeinfo02)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/elementgetschematypeinfo07)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/entities02)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/entities03)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/infoset01)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/infoset02)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/infoset03)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/infoset07)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/nodegetbaseuri16)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/nodegettextcontent18)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/nodeisequalnode03)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/noderemovechild13)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/noderemovechild24)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/nodereplacechild38)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/textiselementcontentwhitespace05)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfogettypename04)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom15)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom16)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom17)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom18)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom19)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom21)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom40)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom41)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom58)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom59)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom66)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom67)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom68)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom73)")
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/wellformed03)")
-                                .build());
+        return W3CDOMLevel3TestSuite.create(new DocumentBuilderFactoryFactory() {
+                    @Override
+                    public DocumentBuilderFactory newInstance() {
+                        return new DocumentBuilderFactoryImpl();
+                    }
+                })
+                .toDynamicNodes(MatrixTestFilters.builder()
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/documentgetinputencoding03)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/documentnormalizedocument07)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/documentnormalizedocument10)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/documentnormalizedocument11)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/domconfigurationcansetparameter06)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/elementgetschematypeinfo02)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/elementgetschematypeinfo07)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/entities02)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/entities03)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/infoset01)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/infoset02)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/infoset03)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/infoset07)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/nodegetbaseuri16)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/nodegettextcontent18)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/nodeisequalnode03)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/noderemovechild13)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/noderemovechild24)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/nodereplacechild38)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/textiselementcontentwhitespace05)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfogettypename04)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom15)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom16)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom17)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom18)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom19)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom21)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom40)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom41)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom58)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom59)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom66)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom67)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom68)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/typeinfoisderivedfrom73)")
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level3/core/wellformed03)")
+                        .build());
     }
 }

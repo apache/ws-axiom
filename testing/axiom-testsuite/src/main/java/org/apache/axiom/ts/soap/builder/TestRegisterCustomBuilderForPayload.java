@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -38,8 +39,6 @@ import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.xml.sax.InputSource;
 
-import com.google.inject.Inject;
-
 public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
     private final SOAPSample message;
 
@@ -51,12 +50,10 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPModelBuilder builder =
-                message.getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
+        SOAPModelBuilder builder = message.getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
         ((CustomBuilderSupport) builder)
                 .registerCustomBuilder(
-                        CustomBuilder.Selector.PAYLOAD,
-                        new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
+                        CustomBuilder.Selector.PAYLOAD, new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
         SOAPEnvelope envelope = builder.getSOAPEnvelope();
         OMElement payload = envelope.getBody().getFirstElement();
         if (message.getPayload() == null) {
@@ -66,8 +63,7 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
         } else {
             assertThat(payload).isInstanceOf(OMSourcedElement.class);
             BlobOMDataSource.Data data =
-                    (BlobOMDataSource.Data)
-                            ((OMSourcedElement) payload).getObject(BlobOMDataSource.class);
+                    (BlobOMDataSource.Data) ((OMSourcedElement) payload).getObject(BlobOMDataSource.class);
             assertThat(data).isNotNull();
             InputSource is = new InputSource(data.getBlob().getInputStream());
             is.setEncoding(data.getEncoding());

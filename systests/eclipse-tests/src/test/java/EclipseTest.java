@@ -23,9 +23,7 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
 import java.io.StringReader;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -52,7 +50,8 @@ public class EclipseTest {
                 // Don't start bundles. We expect Equinox to start them lazily.
                 url("link:classpath:org.apache.commons.commons-io.link").start(false),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link").start(false),
-                url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link").start(false),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link")
+                        .start(false),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-dom.link").start(false),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link").start(false),
                 junitBundles());
@@ -60,17 +59,15 @@ public class EclipseTest {
 
     @Test
     public void testLLOM() {
-        OMElement element =
-                OMXMLBuilderFactory.createOMBuilder(
-                                new StringReader("<ns:test xmlns:ns='urn:ns'>test</ns:test>"))
-                        .getDocumentElement();
+        OMElement element = OMXMLBuilderFactory.createOMBuilder(
+                        new StringReader("<ns:test xmlns:ns='urn:ns'>test</ns:test>"))
+                .getDocumentElement();
         assertEquals(new QName("urn:ns", "test"), element.getQName());
     }
 
     @Test
     public void testDOOM() throws Exception {
-        DOMMetaFactory metaFactory =
-                (DOMMetaFactory) OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
+        DOMMetaFactory metaFactory = (DOMMetaFactory) OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
         Document document =
                 metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:test", "p:root");

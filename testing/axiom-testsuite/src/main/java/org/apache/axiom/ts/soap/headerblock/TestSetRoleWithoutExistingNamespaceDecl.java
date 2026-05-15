@@ -20,26 +20,26 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /** Tests that {@link SOAPHeaderBlock#setRole(String)} adds a namespace declaration if necessary. */
 public class TestSetRoleWithoutExistingNamespaceDecl extends TestCase {
-    @Inject private SOAPSpec spec;
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPSpec spec;
+
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPHeaderBlock headerBlock =
-                soapFactory.createSOAPHeaderBlock(
-                        "block", soapFactory.createOMNamespace("urn:test", "p"));
+                soapFactory.createSOAPHeaderBlock("block", soapFactory.createOMNamespace("urn:test", "p"));
         headerBlock.setRole("urn:testrole");
         OMAttribute roleAttr = headerBlock.getAttribute(HeaderBlockAttribute.ROLE.getQName(spec));
         assertThat(roleAttr).isNotNull();

@@ -18,10 +18,9 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
+import junit.framework.TestCase;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
-
-import junit.framework.TestCase;
 
 public abstract class BooleanAttributeTestCase extends TestCase {
     protected final SOAPSpec spec;

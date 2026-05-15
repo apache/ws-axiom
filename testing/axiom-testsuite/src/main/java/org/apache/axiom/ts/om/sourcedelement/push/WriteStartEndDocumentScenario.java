@@ -22,10 +22,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Collections;
 import java.util.Map;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.testutils.suite.LabelTarget;
@@ -49,15 +47,12 @@ public class WriteStartEndDocumentScenario implements PushOMDataSourceScenario {
 
     @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-        assertThatThrownBy(writer::writeStartDocument)
-                .isInstanceOf(UnsupportedOperationException.class);
-        assertThatThrownBy(() -> writer.writeStartDocument("1.0"))
-                .isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(writer::writeStartDocument).isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(() -> writer.writeStartDocument("1.0")).isInstanceOf(UnsupportedOperationException.class);
         assertThatThrownBy(() -> writer.writeStartDocument("UTF-8", "1.0"))
                 .isInstanceOf(UnsupportedOperationException.class);
         writer.writeEmptyElement(null, "root", null);
-        assertThatThrownBy(writer::writeEndDocument)
-                .isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(writer::writeEndDocument).isInstanceOf(UnsupportedOperationException.class);
     }
 
     @Override

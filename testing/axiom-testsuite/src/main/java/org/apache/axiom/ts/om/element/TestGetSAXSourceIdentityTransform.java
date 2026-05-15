@@ -21,10 +21,10 @@ package org.apache.axiom.ts.om.element;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.InputStream;
-
 import javax.xml.transform.Transformer;
-
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -33,18 +33,13 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
     private final XSLTImplementation xsltImplementation;
     private final boolean cache;
 
     @Inject
     public TestGetSAXSourceIdentityTransform(
-            OMMetaFactory metaFactory,
-            XSLTImplementation xsltImplementation,
-            @Named("cache") boolean cache) {
+            OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, @Named("cache") boolean cache) {
         super(metaFactory);
         this.xsltImplementation = xsltImplementation;
         this.cache = cache;

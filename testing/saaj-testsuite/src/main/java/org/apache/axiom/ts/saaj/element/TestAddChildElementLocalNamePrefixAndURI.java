@@ -20,9 +20,8 @@ package org.apache.axiom.ts.saaj.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.xml.XMLConstants;
 import jakarta.xml.soap.SOAPElement;
-
+import javax.xml.XMLConstants;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.NamedNodeMap;

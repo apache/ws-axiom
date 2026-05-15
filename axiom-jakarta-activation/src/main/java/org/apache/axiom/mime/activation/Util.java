@@ -19,7 +19,6 @@
 package org.apache.axiom.mime.activation;
 
 import jakarta.activation.DataSource;
-
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.Part;
 

@@ -19,10 +19,9 @@
 
 package org.apache.axiom.attachments.lifecycle;
 
+import jakarta.activation.DataHandler;
 import java.io.IOException;
 import java.io.InputStream;
-
-import jakarta.activation.DataHandler;
 
 public interface DataHandlerExt {
     /**

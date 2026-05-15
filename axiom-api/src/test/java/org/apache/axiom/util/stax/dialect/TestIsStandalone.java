@@ -21,7 +21,6 @@ package org.apache.axiom.util.stax.dialect;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
@@ -30,8 +29,7 @@ public class TestIsStandalone extends DialectTestCase {
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader =
-                factory.createXMLStreamReader(
-                        new StringReader("<?xml version='1.0' standalone='no'?><root/>"));
+                factory.createXMLStreamReader(new StringReader("<?xml version='1.0' standalone='no'?><root/>"));
         assertEquals(false, reader.isStandalone());
         reader.next();
         assertThatThrownBy(reader::isStandalone).isInstanceOf(IllegalStateException.class);

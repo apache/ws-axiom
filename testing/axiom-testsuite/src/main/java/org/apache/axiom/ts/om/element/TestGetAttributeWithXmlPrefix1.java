@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Test that {@link OMElement#getAttribute(QName)} works properly for an attribute with the {@code
@@ -44,12 +42,11 @@ public class TestGetAttributeWithXmlPrefix1 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elem =
-                AXIOMUtil.stringToOM(
-                        metaFactory.getOMFactory(),
-                        "<wsp:Policy xml:base=\"uri:thisBase\" "
-                                + "xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\">"
-                                + "</wsp:Policy>");
+        OMElement elem = AXIOMUtil.stringToOM(
+                metaFactory.getOMFactory(),
+                "<wsp:Policy xml:base=\"uri:thisBase\" "
+                        + "xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\">"
+                        + "</wsp:Policy>");
         OMAttribute attr = elem.getAttribute(new QName(XMLConstants.XML_NS_URI, "base"));
         assertThat(attr.getNamespace().getNamespaceURI()).isEqualTo(XMLConstants.XML_NS_URI);
     }

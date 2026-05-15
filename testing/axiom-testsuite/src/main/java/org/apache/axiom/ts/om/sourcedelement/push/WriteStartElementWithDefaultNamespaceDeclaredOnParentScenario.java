@@ -22,10 +22,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
 import java.util.Map;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.testutils.suite.LabelTarget;
 
@@ -33,8 +31,7 @@ import org.apache.axiom.testutils.suite.LabelTarget;
  * Tests that {@link XMLStreamWriter#writeStartElement(String, String, String)} creates the correct
  * {@link OMElement} if the element uses a default namespace declared on the parent.
  */
-public class WriteStartElementWithDefaultNamespaceDeclaredOnParentScenario
-        implements PushOMDataSourceScenario {
+public class WriteStartElementWithDefaultNamespaceDeclaredOnParentScenario implements PushOMDataSourceScenario {
     @Override
     public void addLabels(LabelTarget testCase) {
         testCase.addLabel("scenario", "writeStartElementWithDefaultNamespaceDeclaredOnParent");

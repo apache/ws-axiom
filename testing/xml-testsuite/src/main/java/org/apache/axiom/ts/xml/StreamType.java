@@ -23,66 +23,61 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
-
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.testutils.io.InstrumentedReader;
 import org.apache.axiom.testutils.io.InstrumentedStream;
 
 public abstract class StreamType extends Multiton {
-    public static final StreamType BYTE_STREAM =
-            new StreamType(InputStream.class) {
-                @Override
-                public Closeable getStream(XMLSample sample) {
-                    return sample.getInputStream();
-                }
+    public static final StreamType BYTE_STREAM = new StreamType(InputStream.class) {
+        @Override
+        public Closeable getStream(XMLSample sample) {
+            return sample.getInputStream();
+        }
 
-                @Override
-                public InstrumentedStream instrumentStream(Closeable stream) {
-                    return new InstrumentedInputStream((InputStream) stream);
-                }
+        @Override
+        public InstrumentedStream instrumentStream(Closeable stream) {
+            return new InstrumentedInputStream((InputStream) stream);
+        }
 
-                @Override
-                public XMLStreamReader createXMLStreamReader(
-                        XMLInputFactory factory, Closeable stream) throws XMLStreamException {
-                    return factory.createXMLStreamReader((InputStream) stream);
-                }
+        @Override
+        public XMLStreamReader createXMLStreamReader(XMLInputFactory factory, Closeable stream)
+                throws XMLStreamException {
+            return factory.createXMLStreamReader((InputStream) stream);
+        }
 
-                @Override
-                public StreamSource createStreamSource(Closeable stream) {
-                    return new StreamSource((InputStream) stream);
-                }
-            };
+        @Override
+        public StreamSource createStreamSource(Closeable stream) {
+            return new StreamSource((InputStream) stream);
+        }
+    };
 
-    public static final StreamType CHARACTER_STREAM =
-            new StreamType(Reader.class) {
-                @Override
-                public Closeable getStream(XMLSample sample) {
-                    return new InputStreamReader(
-                            sample.getInputStream(), Charset.forName(sample.getEncoding()));
-                }
+    public static final StreamType CHARACTER_STREAM = new StreamType(Reader.class) {
+        @Override
+        public Closeable getStream(XMLSample sample) {
+            return new InputStreamReader(sample.getInputStream(), Charset.forName(sample.getEncoding()));
+        }
 
-                @Override
-                public InstrumentedStream instrumentStream(Closeable stream) {
-                    return new InstrumentedReader((Reader) stream);
-                }
+        @Override
+        public InstrumentedStream instrumentStream(Closeable stream) {
+            return new InstrumentedReader((Reader) stream);
+        }
 
-                @Override
-                public XMLStreamReader createXMLStreamReader(
-                        XMLInputFactory factory, Closeable stream) throws XMLStreamException {
-                    return factory.createXMLStreamReader((Reader) stream);
-                }
+        @Override
+        public XMLStreamReader createXMLStreamReader(XMLInputFactory factory, Closeable stream)
+                throws XMLStreamException {
+            return factory.createXMLStreamReader((Reader) stream);
+        }
 
-                @Override
-                public StreamSource createStreamSource(Closeable stream) {
-                    return new StreamSource((Reader) stream);
-                }
-            };
+        @Override
+        public StreamSource createStreamSource(Closeable stream) {
+            return new StreamSource((Reader) stream);
+        }
+    };
 
     private final Class<? extends Closeable> type;
 

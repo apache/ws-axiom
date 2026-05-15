@@ -40,8 +40,7 @@ public abstract class AxiomAttributeMixin implements AxiomAttribute {
 
     @Override
     public final void setNamespace(OMNamespace namespace, boolean decl) {
-        internalSetNamespace(
-                NSUtil.handleNamespace((AxiomElement) getOwner(), namespace, true, decl));
+        internalSetNamespace(NSUtil.handleNamespace((AxiomElement) getOwner(), namespace, true, decl));
     }
 
     @Override

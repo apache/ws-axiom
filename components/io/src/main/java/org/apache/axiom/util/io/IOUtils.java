@@ -22,7 +22,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.ext.io.StreamCopyException;
 
@@ -40,8 +39,7 @@ public final class IOUtils {
      * @throws StreamCopyException if a read/write operation on one of the streams triggered an
      *     {@link IOException}
      */
-    public static long copy(InputStream in, OutputStream out, long length)
-            throws StreamCopyException {
+    public static long copy(InputStream in, OutputStream out, long length) throws StreamCopyException {
         if (out instanceof ReadFromSupport readFromSupport) {
             return readFromSupport.readFrom(in, length);
         } else {

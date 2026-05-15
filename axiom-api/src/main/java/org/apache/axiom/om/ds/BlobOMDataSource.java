@@ -19,10 +19,8 @@
 package org.apache.axiom.om.ds;
 
 import java.io.IOException;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMDataSource;
@@ -79,8 +77,7 @@ public final class BlobOMDataSource extends AbstractPullOMDataSource {
     @Override
     public XMLStreamReader getReader() throws XMLStreamException {
         try {
-            return StAXUtils.createXMLStreamReader(
-                    data.getBlob().getInputStream(), data.getEncoding());
+            return StAXUtils.createXMLStreamReader(data.getBlob().getInputStream(), data.getEncoding());
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }

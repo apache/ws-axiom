@@ -21,7 +21,6 @@ package org.apache.axiom.ts.omdom.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
@@ -41,10 +40,8 @@ public class TestAppendChildIncomplete extends OMDOMTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         Document document =
-                (Document)
-                        OMXMLBuilderFactory.createOMBuilder(
-                                        factory, new StringReader("<root><a/><b/></root>"))
-                                .getDocument();
+                (Document) OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/></root>"))
+                        .getDocument();
         Element parent = document.getDocumentElement();
         parent.appendChild(document.createElementNS(null, "c"));
         NodeList children = parent.getChildNodes();

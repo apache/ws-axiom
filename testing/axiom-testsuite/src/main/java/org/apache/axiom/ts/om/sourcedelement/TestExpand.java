@@ -20,17 +20,14 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /** Make sure the expanded OMSourcedElement behaves like a normal OMElement. */
 public class TestExpand extends AxiomTestCase {
@@ -42,24 +39,21 @@ public class TestExpand extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMSourcedElement element =
-                TestDocument.DOCUMENT1.createOMSourcedElement(
-                        metaFactory.getOMFactory(), false, true);
+                TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory(), false, true);
         element.getAllDeclaredNamespaces();
         assertThat(countItems(element.getAllDeclaredNamespaces())).isEqualTo(1);
         assertThat(countItems(element.getAllAttributes())).isEqualTo(1);
         assertThat(element.getAttributeValue(new QName("books"))).isEqualTo("1");
         OMElement child = element.getFirstElement();
         assertThat(child.getLocalName()).isEqualTo("type");
-        assertThat(child.getNamespace().getNamespaceURI())
-                .isEqualTo("http://www.sosnoski.com/uwjws/library");
+        assertThat(child.getNamespace().getNamespaceURI()).isEqualTo("http://www.sosnoski.com/uwjws/library");
         OMNode next = child.getNextOMSibling();
         assertThat(next).isInstanceOf(OMElement.class);
         next = next.getNextOMSibling();
         assertThat(next).isInstanceOf(OMElement.class);
         child = (OMElement) next;
         assertThat(child.getLocalName()).isEqualTo("book");
-        assertThat(child.getNamespace().getNamespaceURI())
-                .isEqualTo("http://www.sosnoski.com/uwjws/library");
+        assertThat(child.getNamespace().getNamespaceURI()).isEqualTo("http://www.sosnoski.com/uwjws/library");
         assertThat(child.getAttributeValue(new QName("type"))).isEqualTo("xml");
     }
 

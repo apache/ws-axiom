@@ -38,7 +38,6 @@ public class TestSetPrefixNotNullWithoutNamespace extends DOMTestCase {
         Attr attr = document.createAttributeNS(null, "test");
         assertThatThrownBy(() -> attr.setPrefix("p"))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.NAMESPACE_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.NAMESPACE_ERR));
     }
 }

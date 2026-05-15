@@ -20,7 +20,6 @@
 package org.apache.axiom.ext.stax;
 
 import java.io.IOException;
-
 import org.apache.axiom.blob.Blob;
 
 /**

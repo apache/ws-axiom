@@ -20,10 +20,10 @@ package org.apache.axiom.ts.om.xop;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stax.StAXSource;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -33,8 +33,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.testutils.blob.TestBlob;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class XOPRoundtripTest extends AxiomTestCase {
     @Inject
@@ -49,12 +47,11 @@ public class XOPRoundtripTest extends AxiomTestCase {
         OMElement element1 = factory.createOMElement(new QName("test"));
         element1.addChild(factory.createOMText(blob, true));
         XOPEncoded<XMLStreamReader> xopEncodedStream = element1.getXOPEncodedStreamReader(true);
-        OMElement element2 =
-                OMXMLBuilderFactory.createOMBuilder(
-                                factory,
-                                new StAXSource(xopEncodedStream.getRootPart()),
-                                xopEncodedStream.getAttachmentAccessor())
-                        .getDocumentElement();
+        OMElement element2 = OMXMLBuilderFactory.createOMBuilder(
+                        factory,
+                        new StAXSource(xopEncodedStream.getRootPart()),
+                        xopEncodedStream.getAttachmentAccessor())
+                .getDocumentElement();
         OMText child = (OMText) element2.getFirstOMChild();
         assertThat(child).isNotNull();
         assertThat(child.isBinary()).isTrue();

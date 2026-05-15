@@ -21,7 +21,6 @@ package org.apache.axiom.ts.om.container;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
 /**

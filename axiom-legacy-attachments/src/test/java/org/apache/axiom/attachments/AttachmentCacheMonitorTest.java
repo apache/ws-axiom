@@ -19,7 +19,6 @@
 package org.apache.axiom.attachments;
 
 import java.io.File;
-
 import org.apache.axiom.om.AbstractTestCase;
 
 public class AttachmentCacheMonitorTest extends AbstractTestCase {

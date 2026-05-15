@@ -18,13 +18,15 @@
  */
 package org.apache.axiom.ts.springws;
 
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Key;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
-import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.testutils.suite.SelectorNode;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -41,9 +43,6 @@ import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMess
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStreamMTOM;
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStreamVersionMismatch;
 
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Key;
-
 public class SpringWSTestSuite {
     public static MatrixTestNode create(
             MessageFactoryConfigurator messageFactoryConfigurator,
@@ -51,8 +50,7 @@ public class SpringWSTestSuite {
         ImmutableList.Builder<ScenarioConfig> configs = ImmutableList.builder();
         configs.add(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator));
         if (altMessageFactoryConfigurator != messageFactoryConfigurator) {
-            configs.add(
-                    new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator));
+            configs.add(new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator));
         }
 
         return new FanOutNode<>(
@@ -62,22 +60,16 @@ public class SpringWSTestSuite {
                         "soapVersion", v -> v.getAdapter(SOAPSpecAdapter.class).getSoapVersion()),
                 new ParentNode(
                         new InjectorNode(
-                                binder ->
-                                        binder.bind(MessageFactoryConfigurator.class)
-                                                .toInstance(messageFactoryConfigurator),
+                                binder -> binder.bind(MessageFactoryConfigurator.class)
+                                        .toInstance(messageFactoryConfigurator),
                                 new ParentNode(
                                         new MatrixTest(TestCreateWebServiceMessage.class),
-                                        new MatrixTest(
-                                                TestCreateWebServiceMessageFromInputStream.class),
-                                        new MatrixTest(
-                                                TestCreateWebServiceMessageFromInputStreamVersionMismatch
-                                                        .class),
+                                        new MatrixTest(TestCreateWebServiceMessageFromInputStream.class),
+                                        new MatrixTest(TestCreateWebServiceMessageFromInputStreamVersionMismatch.class),
                                         new SelectorNode(
                                                 "soapVersion",
                                                 "SOAP_12",
-                                                new MatrixTest(
-                                                        TestCreateWebServiceMessageFromInputStreamMTOM
-                                                                .class)))),
+                                                new MatrixTest(TestCreateWebServiceMessageFromInputStreamMTOM.class)))),
                         new FanOutNode<>(
                                 configs.build(),
                                 Binding.singleton(Key.get(ScenarioConfig.class)),

@@ -20,11 +20,11 @@ package org.apache.axiom.ts.om.document.sr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.StringReader;
 import java.io.StringWriter;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.OMContainer;
@@ -32,9 +32,6 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that the {@link CharacterDataReader} returned by {@link OMContainer#getXMLStreamReader()}
@@ -44,8 +41,7 @@ public class TestCharacterDataReaderFromParser extends AxiomTestCase {
     private final boolean cache;
 
     @Inject
-    public TestCharacterDataReaderFromParser(
-            OMMetaFactory metaFactory, @Named("cache") boolean cache) {
+    public TestCharacterDataReaderFromParser(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.cache = cache;
     }
@@ -53,14 +49,11 @@ public class TestCharacterDataReaderFromParser extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         String text = "This is a test for the CharacterDataReader extension";
-        OMDocument doc =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(),
-                                new StringReader("<root>" + text + "</root>"))
-                        .getDocument();
+        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), new StringReader("<root>" + text + "</root>"))
+                .getDocument();
         XMLStreamReader reader = doc.getXMLStreamReader(cache);
-        CharacterDataReader cdataReader =
-                (CharacterDataReader) reader.getProperty(CharacterDataReader.PROPERTY);
+        CharacterDataReader cdataReader = (CharacterDataReader) reader.getProperty(CharacterDataReader.PROPERTY);
         assertThat(cdataReader).isNotNull();
         assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         StringWriter sw = new StringWriter();

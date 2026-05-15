@@ -19,14 +19,13 @@
 
 package org.apache.axiom.om.ds.custombuilder;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.jaxb.JAXBOMDataSource;
 import org.apache.axiom.om.util.jaxb.JAXBUtils;
-
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
 
 public class JAXBCustomBuilder implements CustomBuilder {
     private final JAXBContext jaxbContext;

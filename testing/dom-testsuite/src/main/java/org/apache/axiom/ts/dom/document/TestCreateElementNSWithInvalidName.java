@@ -31,7 +31,6 @@ public class TestCreateElementNSWithInvalidName extends DOMTestCase {
         Document doc = dbf.newDocumentBuilder().newDocument();
         assertThatThrownBy(() -> doc.createElementNS("urn:ns", "IN|/ALID"))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.INVALID_CHARACTER_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.INVALID_CHARACTER_ERR));
     }
 }

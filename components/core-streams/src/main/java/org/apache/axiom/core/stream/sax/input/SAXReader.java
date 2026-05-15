@@ -19,15 +19,13 @@
 
 package org.apache.axiom.core.stream.sax.input;
 
+import java.io.IOException;
+import javax.xml.transform.sax.SAXSource;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-
-import java.io.IOException;
-
-import javax.xml.transform.sax.SAXSource;
 
 public final class SAXReader implements XmlReader {
     private final XmlHandler handler;
@@ -43,8 +41,7 @@ public final class SAXReader implements XmlReader {
     @Override
     public boolean proceed() throws StreamException {
         XMLReader reader = source.getXMLReader();
-        XmlHandlerContentHandler contentHandler =
-                new XmlHandlerContentHandler(handler, expandEntityReferences);
+        XmlHandlerContentHandler contentHandler = new XmlHandlerContentHandler(handler, expandEntityReferences);
         reader.setContentHandler(contentHandler);
         reader.setDTDHandler(contentHandler);
         try {

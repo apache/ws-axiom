@@ -20,7 +20,6 @@ package org.apache.axiom.ts.xml;
 
 import java.io.InputStream;
 import java.net.URL;
-
 import org.apache.axiom.testing.multiton.Multiton;
 
 public abstract class MessageSample extends Multiton {

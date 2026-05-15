@@ -20,9 +20,7 @@
 package org.apache.axiom.ts.om.xpath;
 
 import java.io.InputStream;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;

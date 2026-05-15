@@ -22,9 +22,7 @@ import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.crypto.SecretKey;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -53,8 +51,7 @@ public class WSS4JTest {
 
     private static SOAPMessage load(String file) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
-        return OMXMLBuilderFactory.createSOAPModelBuilder(
-                        metaFactory, WSS4JTest.class.getResourceAsStream(file), null)
+        return OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, WSS4JTest.class.getResourceAsStream(file), null)
                 .getSOAPMessage();
     }
 

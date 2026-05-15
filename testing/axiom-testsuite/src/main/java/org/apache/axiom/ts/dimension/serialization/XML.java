@@ -20,9 +20,7 @@ package org.apache.axiom.ts.dimension.serialization;
 
 import java.io.IOException;
 import java.io.PrintStream;
-
 import javax.xml.transform.stream.StreamSource;
-
 import org.xml.sax.InputSource;
 
 /**

@@ -19,10 +19,9 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMElement;
-
 import java.util.List;
 import java.util.Locale;
+import org.apache.axiom.om.OMElement;
 
 public interface SOAPFaultReason extends OMElement {
     void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException;

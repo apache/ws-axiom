@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.traverse;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 

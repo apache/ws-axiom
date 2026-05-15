@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /** test the remove exception behavior, consecutive remove calls */
 public class TestGetChildrenRemove2 extends AxiomTestCase {
@@ -40,11 +38,9 @@ public class TestGetChildrenRemove2 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elt =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(),
-                                new StringReader("<root><child1/><child2/></root>"))
-                        .getDocumentElement();
+        OMElement elt = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), new StringReader("<root><child1/><child2/></root>"))
+                .getDocumentElement();
         Iterator<OMNode> iter = elt.getChildren();
         if (iter.hasNext()) {
             iter.next();

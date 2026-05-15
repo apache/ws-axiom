@@ -22,8 +22,9 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -32,13 +33,12 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestExamineMustUnderstandHeaderBlocks extends TestCase {
-    @Inject private SOAPSpec spec;
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPSpec spec;
+
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

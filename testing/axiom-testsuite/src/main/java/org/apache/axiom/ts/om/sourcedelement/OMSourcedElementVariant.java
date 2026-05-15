@@ -19,9 +19,7 @@
 package org.apache.axiom.ts.om.sourcedelement;
 
 import java.io.StringReader;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
@@ -33,33 +31,28 @@ public abstract class OMSourcedElementVariant {
     public static final OMSourcedElementVariant[] INSTANCES = {
         new OMSourcedElementVariant("qname-aware-source", false, false, false) {
             @Override
-            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname)
-                    throws Exception {
+            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
                 return factory.createOMElement(
                         new WrappedTextNodeOMDataSourceFromReader(qname, new StringReader("test")));
             }
         },
         new OMSourcedElementVariant("unknown-name", true, true, true) {
             @Override
-            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname)
-                    throws Exception {
+            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
                 // TODO: can't use createOMElement(QName) here because it would generate a prefix if
                 // the prefix in the QName is empty
                 OMElement orgElement =
-                        factory.createOMElement(
-                                qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
+                        factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
                 return factory.createOMElement(new PullOMDataSource(orgElement.toString()));
             }
         },
         new OMSourcedElementVariant("unknown-prefix", false, false, true) {
             @Override
-            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname)
-                    throws Exception {
+            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
                 // TODO: can't use createOMElement(QName) here because it would generate a prefix if
                 // the prefix in the QName is empty
                 OMElement orgElement =
-                        factory.createOMElement(
-                                qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
+                        factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
                 return factory.createOMElement(
                         new PullOMDataSource(orgElement.toString()),
                         qname.getLocalPart(),
@@ -107,6 +100,5 @@ public abstract class OMSourcedElementVariant {
         // Empty. May be overridden in subclasses.
     }
 
-    public abstract OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname)
-            throws Exception;
+    public abstract OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception;
 }

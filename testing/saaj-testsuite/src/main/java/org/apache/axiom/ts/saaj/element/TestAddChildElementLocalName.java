@@ -21,7 +21,6 @@ package org.apache.axiom.ts.saaj.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.xml.soap.SOAPElement;
-
 import org.apache.axiom.ts.saaj.SAAJTestCase;
 
 /** Tests the behavior of {@link SOAPElement#addChildElement(String)}. */

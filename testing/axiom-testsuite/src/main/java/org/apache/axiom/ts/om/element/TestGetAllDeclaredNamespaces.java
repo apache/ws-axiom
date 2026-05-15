@@ -20,15 +20,13 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetAllDeclaredNamespaces extends AxiomTestCase {
     @Inject
@@ -38,9 +36,7 @@ public class TestGetAllDeclaredNamespaces extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element =
-                AXIOMUtil.stringToOM(
-                        metaFactory.getOMFactory(), "<e xmlns:p='urn:test' p:attr='test'/>");
+        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<e xmlns:p='urn:test' p:attr='test'/>");
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertThat(it.hasNext()).isTrue();
         OMNamespace ns = it.next();

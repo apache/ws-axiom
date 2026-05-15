@@ -21,9 +21,7 @@ package org.apache.axiom.soap.impl.mixin;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.om.OMElement;
@@ -54,8 +52,7 @@ public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
     }
 
     @Override
-    public final SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)
-            throws OMException {
+    public final SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns) throws OMException {
 
         if (ns == null || ns.getNamespaceURI().length() == 0) {
             throw new OMException("All the SOAP Header blocks should be namespace qualified");
@@ -68,8 +65,7 @@ public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
 
         SOAPHeaderBlock soapHeaderBlock;
         try {
-            soapHeaderBlock =
-                    ((SOAPFactory) getOMFactory()).createSOAPHeaderBlock(localName, ns, this);
+            soapHeaderBlock = ((SOAPFactory) getOMFactory()).createSOAPHeaderBlock(localName, ns, this);
         } catch (SOAPProcessingException e) {
             throw new OMException(e);
         }
@@ -79,8 +75,7 @@ public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
     @Override
     public final SOAPHeaderBlock addHeaderBlock(QName qname) throws OMException {
         return addHeaderBlock(
-                qname.getLocalPart(),
-                getOMFactory().createOMNamespace(qname.getNamespaceURI(), qname.getPrefix()));
+                qname.getLocalPart(), getOMFactory().createOMNamespace(qname.getNamespaceURI(), qname.getPrefix()));
     }
 
     @Override
@@ -125,8 +120,7 @@ public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
     }
 
     @Override
-    public final Iterator<SOAPHeaderBlock> getHeadersToProcess(
-            RolePlayer rolePlayer, String namespace) {
+    public final Iterator<SOAPHeaderBlock> getHeadersToProcess(RolePlayer rolePlayer, String namespace) {
         return coreGetElements(
                 Axis.CHILDREN,
                 AxiomElement.class,
@@ -164,8 +158,7 @@ public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
     @Override
     public final ArrayList<SOAPHeaderBlock> getHeaderBlocksWithNSURI(String nsURI) {
         ArrayList<SOAPHeaderBlock> result = new ArrayList<SOAPHeaderBlock>();
-        for (Iterator<SOAPHeaderBlock> it = getHeaderBlocksWithNamespaceURI(nsURI);
-                it.hasNext(); ) {
+        for (Iterator<SOAPHeaderBlock> it = getHeaderBlocksWithNamespaceURI(nsURI); it.hasNext(); ) {
             result.add(it.next());
         }
         return result;

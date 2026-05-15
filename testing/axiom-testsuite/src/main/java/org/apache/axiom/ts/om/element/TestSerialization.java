@@ -20,14 +20,13 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Inject;
 
 /**
  * Tests proper serialization for different combinations of namespaces on the element and its
@@ -54,44 +53,37 @@ public class TestSerialization extends AxiomTestCase {
 
     public record Params(String parent, String children, String expected) {}
 
-    public static final ImmutableList<Params> PARAMS =
-            ImmutableList.of(
-                    new Params(
-                            "D",
-                            "D",
-                            "<person xmlns=\"urn:ns\"><name>John</name><age>34</age><weight>50</weight></person>"),
-                    new Params(
-                            "D",
-                            "U",
-                            "<person xmlns=\"urn:ns\"><name xmlns=\"\">John</name><age xmlns=\"\">34</age><weight xmlns=\"\">50</weight></person>"),
-                    new Params(
-                            "D",
-                            "Q",
-                            "<person xmlns=\"urn:ns\"><p:name xmlns:p=\"urn:ns\">John</p:name><p:age xmlns:p=\"urn:ns\">34</p:age><p:weight xmlns:p=\"urn:ns\">50</p:weight></person>"),
-                    new Params(
-                            "Q",
-                            "Q",
-                            "<p:person xmlns:p=\"urn:ns\"><p:name>John</p:name><p:age>34</p:age><p:weight>50</p:weight></p:person>"),
-                    new Params(
-                            "Q",
-                            "U",
-                            "<p:person xmlns:p=\"urn:ns\"><name>John</name><age>34</age><weight>50</weight></p:person>"),
-                    new Params(
-                            "Q",
-                            "D",
-                            "<p:person xmlns:p=\"urn:ns\"><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></p:person>"),
-                    new Params(
-                            "U",
-                            "U",
-                            "<person><name>John</name><age>34</age><weight>50</weight></person>"),
-                    new Params(
-                            "U",
-                            "Q",
-                            "<person><p:name xmlns:p=\"urn:ns\">John</p:name><p:age xmlns:p=\"urn:ns\">34</p:age><p:weight xmlns:p=\"urn:ns\">50</p:weight></person>"),
-                    new Params(
-                            "U",
-                            "D",
-                            "<person><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></person>"));
+    public static final ImmutableList<Params> PARAMS = ImmutableList.of(
+            new Params("D", "D", "<person xmlns=\"urn:ns\"><name>John</name><age>34</age><weight>50</weight></person>"),
+            new Params(
+                    "D",
+                    "U",
+                    "<person xmlns=\"urn:ns\"><name xmlns=\"\">John</name><age xmlns=\"\">34</age><weight xmlns=\"\">50</weight></person>"),
+            new Params(
+                    "D",
+                    "Q",
+                    "<person xmlns=\"urn:ns\"><p:name xmlns:p=\"urn:ns\">John</p:name><p:age xmlns:p=\"urn:ns\">34</p:age><p:weight xmlns:p=\"urn:ns\">50</p:weight></person>"),
+            new Params(
+                    "Q",
+                    "Q",
+                    "<p:person xmlns:p=\"urn:ns\"><p:name>John</p:name><p:age>34</p:age><p:weight>50</p:weight></p:person>"),
+            new Params(
+                    "Q",
+                    "U",
+                    "<p:person xmlns:p=\"urn:ns\"><name>John</name><age>34</age><weight>50</weight></p:person>"),
+            new Params(
+                    "Q",
+                    "D",
+                    "<p:person xmlns:p=\"urn:ns\"><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></p:person>"),
+            new Params("U", "U", "<person><name>John</name><age>34</age><weight>50</weight></person>"),
+            new Params(
+                    "U",
+                    "Q",
+                    "<person><p:name xmlns:p=\"urn:ns\">John</p:name><p:age xmlns:p=\"urn:ns\">34</p:age><p:weight xmlns:p=\"urn:ns\">50</p:weight></person>"),
+            new Params(
+                    "U",
+                    "D",
+                    "<person><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></person>"));
 
     private final Params params;
 

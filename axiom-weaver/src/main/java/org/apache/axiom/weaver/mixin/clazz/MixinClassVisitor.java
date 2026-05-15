@@ -21,7 +21,6 @@ package org.apache.axiom.weaver.mixin.clazz;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-
 import org.apache.axiom.weaver.classio.ClassFetcher;
 import org.apache.axiom.weaver.mixin.ClassDefinition;
 import org.apache.axiom.weaver.mixin.InitializerMethod;
@@ -66,37 +65,28 @@ final class MixinClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public void visit(
-            int version,
-            int access,
-            String name,
-            String signature,
-            String superName,
-            String[] interfaces) {
+    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         if (log.isDebugEnabled()) {
             log.debug(String.format("Processing mixin class %s", name));
         }
         bytecodeVersion = version;
         className = name;
-        remapperFactory =
-                (targetClassName) ->
-                        new Remapper() {
-                            @Override
-                            public String map(String internalName) {
-                                if (internalName.equals(name)) {
-                                    return targetClassName;
-                                }
-                                if (internalName.length() > name.length()
-                                        && internalName.startsWith(name)
-                                        && internalName.charAt(name.length()) == '$') {
-                                    return targetClassName + internalName.substring(name.length());
-                                }
-                                return internalName;
-                            }
-                        };
+        remapperFactory = (targetClassName) -> new Remapper() {
+            @Override
+            public String map(String internalName) {
+                if (internalName.equals(name)) {
+                    return targetClassName;
+                }
+                if (internalName.length() > name.length()
+                        && internalName.startsWith(name)
+                        && internalName.charAt(name.length()) == '$') {
+                    return targetClassName + internalName.substring(name.length());
+                }
+                return internalName;
+            }
+        };
         if (interfaces.length != 1) {
-            throw new MixinFactoryException(
-                    "Mixins are expected to implement one and only one interface");
+            throw new MixinFactoryException("Mixins are expected to implement one and only one interface");
         }
         targetInterface = classFetcher.loadClass(interfaces[0].replace('/', '.'));
     }
@@ -121,8 +111,7 @@ final class MixinClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public FieldVisitor visitField(
-            int access, String name, String descriptor, String signature, Object value) {
+    public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
         FieldNode field = new FieldNode(Opcodes.ASM9, access, name, descriptor, signature, value);
         fields.add(field);
         return field;
@@ -131,8 +120,7 @@ final class MixinClassVisitor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(
             int access, String name, String descriptor, String signature, String[] exceptions) {
-        MethodNode method =
-                new MethodNode(Opcodes.ASM9, access, name, descriptor, signature, exceptions);
+        MethodNode method = new MethodNode(Opcodes.ASM9, access, name, descriptor, signature, exceptions);
         Function<String, Remapper> remapperFactory = this.remapperFactory;
         if ((access & Opcodes.ACC_ABSTRACT) != 0) {
             // An abstract method defined by a mixin could only be implemented by another mixin.
@@ -145,15 +133,12 @@ final class MixinClassVisitor extends ClassVisitor {
             // by an interface.
             throw new MixinFactoryException("Found an abstract method in mixin " + className);
         }
-        MethodBody body =
-                new MethodBody() {
-                    @Override
-                    public void apply(TargetContext context, MethodVisitor mv) {
-                        method.accept(
-                                new MethodRemapper(
-                                        mv, remapperFactory.apply(context.getTargetClassName())));
-                    }
-                };
+        MethodBody body = new MethodBody() {
+            @Override
+            public void apply(TargetContext context, MethodVisitor mv) {
+                method.accept(new MethodRemapper(mv, remapperFactory.apply(context.getTargetClassName())));
+            }
+        };
         if (name.equals("<init>")) {
             if (!descriptor.equals("()V")) {
                 throw new MixinFactoryException("Expected only a default constructor");
@@ -178,20 +163,18 @@ final class MixinClassVisitor extends ClassVisitor {
         for (String innerClassName : innerClassNames) {
             ClassNode innerClass = new ClassNode();
             classFetcher.fetch(innerClassName, innerClass);
-            innerClasses.add(
-                    new MixinInnerClass() {
+            innerClasses.add(new MixinInnerClass() {
+                @Override
+                public ClassDefinition createClassDefinition(TargetContext targetContext) {
+                    Remapper remapper = remapperFactory.apply(targetContext.getTargetClassName());
+                    return new ClassDefinition(remapper.map(innerClass.name)) {
                         @Override
-                        public ClassDefinition createClassDefinition(TargetContext targetContext) {
-                            Remapper remapper =
-                                    remapperFactory.apply(targetContext.getTargetClassName());
-                            return new ClassDefinition(remapper.map(innerClass.name)) {
-                                @Override
-                                public void accept(ClassVisitor cv) {
-                                    innerClass.accept(new ClassRemapper(cv, remapper));
-                                }
-                            };
+                        public void accept(ClassVisitor cv) {
+                            innerClass.accept(new ClassRemapper(cv, remapper));
                         }
-                    });
+                    };
+                }
+            });
         }
         return new Mixin(
                 bytecodeVersion,

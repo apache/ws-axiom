@@ -22,13 +22,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.xml.namespace.QName;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-
 import org.apache.axiom.testing.multiton.Multiton;
 
 /** Describes the characteristics of a given SOAP version. */
@@ -69,10 +67,7 @@ public abstract class SOAPSpec extends Multiton {
                     "application/soap+xml",
                     "http://www.w3.org/2003/05/soap-envelope",
                     new BooleanLiteral[] {
-                        BooleanLiteral.TRUE,
-                        BooleanLiteral.FALSE,
-                        BooleanLiteral.ONE,
-                        BooleanLiteral.ZERO
+                        BooleanLiteral.TRUE, BooleanLiteral.FALSE, BooleanLiteral.ONE, BooleanLiteral.ZERO
                     },
                     new QName("http://www.w3.org/2003/05/soap-envelope", "Code"),
                     new QName("http://www.w3.org/2003/05/soap-envelope", "Value"),
@@ -300,14 +295,12 @@ public abstract class SOAPSpec extends Multiton {
         if (schema == null) {
             Source[] sources = new Source[schemaResources.length];
             for (int i = 0; i < schemaResources.length; i++) {
-                sources[i] =
-                        new StreamSource(
-                                SOAPSpec.class.getResource("xsd/" + schemaResources[i]).toString());
+                sources[i] = new StreamSource(
+                        SOAPSpec.class.getResource("xsd/" + schemaResources[i]).toString());
             }
             try {
-                schema =
-                        SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema")
-                                .newSchema(sources);
+                schema = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema")
+                        .newSchema(sources);
             } catch (Exception ex) {
                 throw new Error(ex);
             }

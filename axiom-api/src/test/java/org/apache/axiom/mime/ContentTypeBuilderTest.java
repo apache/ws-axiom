@@ -25,11 +25,10 @@ import junit.framework.TestCase;
 
 public class ContentTypeBuilderTest extends TestCase {
     public void testBasic() {
-        ContentType contentType =
-                ContentType.builder()
-                        .setMediaType(MediaType.TEXT_XML)
-                        .setParameter("charset", "utf-8")
-                        .build();
+        ContentType contentType = ContentType.builder()
+                .setMediaType(MediaType.TEXT_XML)
+                .setParameter("charset", "utf-8")
+                .build();
         assertEquals(MediaType.TEXT_XML, contentType.getMediaType());
         assertEquals("utf-8", contentType.getParameter("charset"));
     }
@@ -68,16 +67,14 @@ public class ContentTypeBuilderTest extends TestCase {
     }
 
     public void testRemoveParameter() throws Exception {
-        ContentType.Builder builder =
-                new ContentType("text/xml; charset=utf-8; x-param=value").toBuilder();
+        ContentType.Builder builder = new ContentType("text/xml; charset=utf-8; x-param=value").toBuilder();
         builder.removeParameter("charset");
         assertEquals("text/xml; x-param=\"value\"", builder.build().toString());
     }
 
     public void testNullParameterName() {
         ContentType.Builder builder = ContentType.builder();
-        assertThatThrownBy(() -> builder.setParameter(null, "value"))
-                .isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> builder.setParameter(null, "value")).isInstanceOf(NullPointerException.class);
     }
 
     public void testNullParameterValue() {

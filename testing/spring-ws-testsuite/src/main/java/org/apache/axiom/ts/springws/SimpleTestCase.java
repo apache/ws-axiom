@@ -18,13 +18,13 @@
  */
 package org.apache.axiom.ts.springws;
 
+import com.google.inject.Inject;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.ws.soap.SoapMessageFactory;
 
-import com.google.inject.Inject;
-
 public abstract class SimpleTestCase extends SpringWSTestCase {
-    @Inject private MessageFactoryConfigurator mfc;
+    @Inject
+    private MessageFactoryConfigurator mfc;
 
     @Override
     protected final void runTest() throws Throwable {

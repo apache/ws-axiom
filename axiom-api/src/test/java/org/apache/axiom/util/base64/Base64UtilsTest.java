@@ -24,9 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
-
 import junit.framework.TestCase;
-
 import org.apache.commons.codec.binary.Base64;
 
 public class Base64UtilsTest extends TestCase {
@@ -40,35 +38,28 @@ public class Base64UtilsTest extends TestCase {
     }
 
     public void testMissingPadding() {
-        assertThatThrownBy(() -> Base64Utils.decode("cw"))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> Base64Utils.decode("cw")).isInstanceOf(IllegalArgumentException.class);
     }
 
     public void testTooMuchPadding() {
-        assertThatThrownBy(() -> Base64Utils.decode("cw==="))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> Base64Utils.decode("cw===")).isInstanceOf(IllegalArgumentException.class);
     }
 
     public void testNonZeroRemainder() {
-        assertThatThrownBy(() -> Base64Utils.decode("//=="))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> Base64Utils.decode("//==")).isInstanceOf(IllegalArgumentException.class);
     }
 
     public void testSpace() throws Exception {
         assertEquals(
                 "any carnal pleasure.",
-                new String(
-                        Base64Utils.decode(" YW55IG\tNhcm5hbC\r\nBwb  GVhc3VyZS4 = "),
-                        StandardCharsets.UTF_8));
+                new String(Base64Utils.decode(" YW55IG\tNhcm5hbC\r\nBwb  GVhc3VyZS4 = "), StandardCharsets.UTF_8));
     }
 
     public void testInvalidCharacter() {
-        assertThatThrownBy(() -> Base64Utils.decode("//-/"))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> Base64Utils.decode("//-/")).isInstanceOf(IllegalArgumentException.class);
     }
 
     public void testInvalidPadding() {
-        assertThatThrownBy(() -> Base64Utils.decode("//=/"))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> Base64Utils.decode("//=/")).isInstanceOf(IllegalArgumentException.class);
     }
 }

@@ -19,13 +19,11 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.MTOMConstants;
-import org.apache.axiom.soap.SOAPVersion;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
 import junit.framework.TestCase;
+import org.apache.axiom.om.impl.MTOMConstants;
+import org.apache.axiom.soap.SOAPVersion;
 
 public class OMOutputFormatTest extends TestCase {
 
@@ -38,9 +36,7 @@ public class OMOutputFormatTest extends TestCase {
     }
 
     public void testAPI_setProperty() throws Exception {
-        Method m =
-                OMOutputFormat.class.getMethod(
-                        "setProperty", new Class[] {String.class, Object.class});
+        Method m = OMOutputFormat.class.getMethod("setProperty", new Class[] {String.class, Object.class});
         assertTrue(m != null);
 
         Class<?> returnType = m.getReturnType();

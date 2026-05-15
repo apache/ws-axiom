@@ -20,7 +20,6 @@ package org.apache.axiom.blob;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import org.apache.axiom.ext.io.ReadFromSupport;
 
 /**

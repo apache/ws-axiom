@@ -19,10 +19,9 @@
 
 package org.apache.axiom.om.impl.traverse;
 
+import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
-
-import javax.xml.namespace.QName;
 
 /**
  * @deprecated This type of iterator should always be created using {@link

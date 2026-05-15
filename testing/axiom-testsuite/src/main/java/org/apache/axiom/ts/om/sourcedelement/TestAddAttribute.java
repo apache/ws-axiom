@@ -20,10 +20,9 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -31,8 +30,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that adding an attribute to an {@link OMSourcedElement} overrides a corresponding attribute
@@ -51,10 +48,7 @@ public class TestAddAttribute extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element =
-                factory.createOMElement(
-                        new PullOMDataSource("<root attr='orgvalue'><child/></root>"),
-                        "root",
-                        null);
+                factory.createOMElement(new PullOMDataSource("<root attr='orgvalue'><child/></root>"), "root", null);
         // Add an attribute before expansion
         OMAttribute attr = strategy.addAttribute(element, "attr", null, "newvalue");
         // Force expansion; this should not overwrite the attribute we just added

@@ -20,16 +20,14 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
-
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
 
 /**
  * Tests that setting a SOAP header block attribute uses the correct namespace prefix from the
@@ -42,15 +40,19 @@ import junit.framework.TestCase;
  * instead of reusing the SOAP envelope prefix).
  */
 public class TestSetAttributeNamespacePrefix extends TestCase {
-    @Inject private SOAPSpec spec;
-    @Inject private SOAPFactory soapFactory;
-    @Inject private HeaderBlockAttribute attribute;
+    @Inject
+    private SOAPSpec spec;
+
+    @Inject
+    private SOAPFactory soapFactory;
+
+    @Inject
+    private HeaderBlockAttribute attribute;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPHeaderBlock headerBlock =
-                soapFactory.createSOAPHeaderBlock(
-                        "block", soapFactory.createOMNamespace("urn:test", "p"));
+                soapFactory.createSOAPHeaderBlock("block", soapFactory.createOMNamespace("urn:test", "p"));
 
         // Set the attribute using the appropriate setter
         if (attribute == HeaderBlockAttribute.MUST_UNDERSTAND) {

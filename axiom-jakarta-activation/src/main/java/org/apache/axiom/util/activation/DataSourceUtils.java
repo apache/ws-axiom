@@ -19,12 +19,10 @@
 
 package org.apache.axiom.util.activation;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
 import jakarta.activation.DataSource;
 import jakarta.activation.FileDataSource;
-
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
 /** Contains utility methods to work with {@link DataSource} objects. */

@@ -18,15 +18,13 @@
  */
 package org.apache.axiom.om.util.jaxb;
 
+import jakarta.activation.DataHandler;
+import jakarta.xml.bind.attachment.AttachmentUnmarshaller;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.util.activation.DataHandlerUtils;
-
-import jakarta.activation.DataHandler;
-import jakarta.xml.bind.attachment.AttachmentUnmarshaller;
 
 final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
     private final OMAttachmentAccessor attachmentAccessor;

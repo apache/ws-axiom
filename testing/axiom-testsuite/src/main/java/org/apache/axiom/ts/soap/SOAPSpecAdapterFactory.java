@@ -18,35 +18,32 @@
  */
 package org.apache.axiom.ts.soap;
 
+import com.google.auto.service.AutoService;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 
-import com.google.auto.service.AutoService;
-
 @AutoService(AdapterFactory.class)
 public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
     @Override
     public void createAdapters(SOAPSpec spec, Adapters adapters) {
         if (spec == SOAPSpec.SOAP11) {
-            adapters.add(
-                    new FactorySelector() {
-                        @Override
-                        public SOAPFactory getFactory(OMMetaFactory metaFactory) {
-                            return metaFactory.getSOAP11Factory();
-                        }
-                    });
+            adapters.add(new FactorySelector() {
+                @Override
+                public SOAPFactory getFactory(OMMetaFactory metaFactory) {
+                    return metaFactory.getSOAP11Factory();
+                }
+            });
             adapters.add(SOAPVersion.class, SOAPVersion.SOAP11);
         } else if (spec == SOAPSpec.SOAP12) {
-            adapters.add(
-                    new FactorySelector() {
-                        @Override
-                        public SOAPFactory getFactory(OMMetaFactory metaFactory) {
-                            return metaFactory.getSOAP12Factory();
-                        }
-                    });
+            adapters.add(new FactorySelector() {
+                @Override
+                public SOAPFactory getFactory(OMMetaFactory metaFactory) {
+                    return metaFactory.getSOAP12Factory();
+                }
+            });
             adapters.add(SOAPVersion.class, SOAPVersion.SOAP12);
         }
     }

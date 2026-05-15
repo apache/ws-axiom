@@ -18,19 +18,18 @@
  */
 package org.apache.axiom.ts.om.cross;
 
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testing.multiton.Multiton;
-import org.apache.axiom.testutils.suite.Binding;
-import org.apache.axiom.testutils.suite.InjectorNode;
-import org.apache.axiom.testutils.suite.MatrixTestNode;
-import org.apache.axiom.testutils.suite.MatrixTest;
-import org.apache.axiom.testutils.suite.ParentNode;
-import org.apache.axiom.testutils.suite.FanOutNode;
-import org.apache.axiom.ts.xml.XMLSample;
-
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.Binding;
+import org.apache.axiom.testutils.suite.FanOutNode;
+import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.MatrixTestNode;
+import org.apache.axiom.testutils.suite.ParentNode;
+import org.apache.axiom.ts.xml.XMLSample;
 
 public class CrossOMTestSuite {
     public static MatrixTestNode create(OMMetaFactory metaFactory, OMMetaFactory altMetaFactory) {
@@ -48,14 +47,12 @@ public class CrossOMTestSuite {
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 Binding.singleton(Key.get(XMLSample.class)),
-                                (injector, value, labels) ->
-                                        labels.addLabel("file", value.getName()),
+                                (injector, value, labels) -> labels.addLabel("file", value.getName()),
                                 new MatrixTest(TestImportInformationItem.class)),
                         new FanOutNode<>(
                                 ImmutableList.of(false, true),
                                 Binding.singleton(Key.get(Boolean.class, Names.named("before"))),
-                                (injector, value, labels) ->
-                                        labels.addLabel("before", String.valueOf(value)),
+                                (injector, value, labels) -> labels.addLabel("before", String.valueOf(value)),
                                 new MatrixTest(TestInsertSibling.class))));
     }
 }

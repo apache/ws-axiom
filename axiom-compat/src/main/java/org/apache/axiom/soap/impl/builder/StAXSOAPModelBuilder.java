@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.builder;
 
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -46,9 +45,7 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
     }
 
     public StAXSOAPModelBuilder(XMLStreamReader parser) {
-        this(
-                OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                        OMAbstractFactory.getMetaFactory(), parser));
+        this(OMXMLBuilderFactory.createStAXSOAPModelBuilder(OMAbstractFactory.getMetaFactory(), parser));
     }
 
     public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {

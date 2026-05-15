@@ -22,24 +22,26 @@ package org.apache.axiom.ts.omdom.document;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
+import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-import com.google.inject.Inject;
-
 public class TestImportNode extends OMDOMTestCase {
-    @Inject private XMLSample file;
+    @Inject
+    private XMLSample file;
 
     @Override
     protected void runTest() throws Throwable {
-        Document doc = DOMImplementation.XERCES.parse(new InputSource(file.getUrl().toString()));
-        Document doc2 = metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Document doc =
+                DOMImplementation.XERCES.parse(new InputSource(file.getUrl().toString()));
+        Document doc2 =
+                metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Node n = doc2.importNode(doc.getDocumentElement(), true);
         assertAbout(xml())
                 .that(xml(OMElement.class, (OMElement) n))

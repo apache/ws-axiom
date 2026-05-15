@@ -21,13 +21,13 @@ package org.apache.axiom.ts.om.builder;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -37,9 +37,6 @@ import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.jspecify.annotations.Nullable;
 import org.xml.sax.InputSource;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
     private final SAXImplementation implementation;
@@ -62,17 +59,14 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
         factory.setNamespaceAware(true);
         factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
         SAXParser parser = factory.newSAXParser();
-        SAXSource source =
-                new SAXSource(parser.getXMLReader(), new InputSource(file.getUrl().toString()));
+        SAXSource source = new SAXSource(
+                parser.getXMLReader(), new InputSource(file.getUrl().toString()));
         OMXMLParserWrapper builder;
         if (expandEntityReferences == null) {
             builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
         } else {
-            builder =
-                    OMXMLBuilderFactory.createOMBuilder(
-                            metaFactory.getOMFactory(),
-                            source,
-                            expandEntityReferences.booleanValue());
+            builder = OMXMLBuilderFactory.createOMBuilder(
+                    metaFactory.getOMFactory(), source, expandEntityReferences.booleanValue());
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         builder.getDocument().serialize(baos);
@@ -83,12 +77,9 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
                 .that(actual)
                 .ignoringWhitespaceInPrologAndEpilog()
                 .expandingEntityReferences(
-                        expandEntityReferences == null
-                                ? false
-                                : expandEntityReferences.booleanValue())
-                .hasSameContentAs(
-                        DOMImplementation.XERCES.parse(
-                                new InputSource(file.getUrl().toString()),
-                                expandEntityReferences == null || expandEntityReferences));
+                        expandEntityReferences == null ? false : expandEntityReferences.booleanValue())
+                .hasSameContentAs(DOMImplementation.XERCES.parse(
+                        new InputSource(file.getUrl().toString()),
+                        expandEntityReferences == null || expandEntityReferences));
     }
 }

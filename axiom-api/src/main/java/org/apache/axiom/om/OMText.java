@@ -20,7 +20,6 @@
 package org.apache.axiom.om;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.blob.Blob;
 
 /**

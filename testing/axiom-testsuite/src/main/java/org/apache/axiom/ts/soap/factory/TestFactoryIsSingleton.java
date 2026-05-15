@@ -20,13 +20,11 @@ package org.apache.axiom.ts.soap.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.soap.FactorySelector;
 import org.apache.axiom.ts.soap.SOAPSpec;
-
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
 
 /**
  * Tests that the SOAP factories returned by {@link OMMetaFactory} are singletons. More precisely
@@ -34,13 +32,15 @@ import junit.framework.TestCase;
  * {@link OMMetaFactory#getSOAP12Factory()} return the same instances.
  */
 public class TestFactoryIsSingleton extends TestCase {
-    @Inject private SOAPSpec spec;
-    @Inject private OMMetaFactory metaFactory;
+    @Inject
+    private SOAPSpec spec;
+
+    @Inject
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {
         FactorySelector factorySelector = spec.getAdapter(FactorySelector.class);
-        assertThat(factorySelector.getFactory(metaFactory))
-                .isSameAs(factorySelector.getFactory(metaFactory));
+        assertThat(factorySelector.getFactory(metaFactory)).isSameAs(factorySelector.getFactory(metaFactory));
     }
 }

@@ -68,8 +68,7 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
                 || eventType == XMLStreamConstants.COMMENT) {
             eventType = next();
         }
-        if (eventType != XMLStreamConstants.START_ELEMENT
-                && eventType != XMLStreamConstants.END_ELEMENT) {
+        if (eventType != XMLStreamConstants.START_ELEMENT && eventType != XMLStreamConstants.END_ELEMENT) {
             throw new XMLStreamException("expected start or end tag", getLocation());
         }
         return eventType;
@@ -125,52 +124,41 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
         int actualType = getEventType();
 
         if (type != actualType) {
-            throw new XMLStreamException(
-                    "Required type "
-                            + XMLEventUtils.getEventTypeString(type)
-                            + ", actual type "
-                            + XMLEventUtils.getEventTypeString(actualType));
+            throw new XMLStreamException("Required type "
+                    + XMLEventUtils.getEventTypeString(type)
+                    + ", actual type "
+                    + XMLEventUtils.getEventTypeString(actualType));
         }
 
         if (localName != null) {
-            if (actualType != START_ELEMENT
-                    && actualType != END_ELEMENT
-                    && actualType != ENTITY_REFERENCE) {
-                throw new XMLStreamException(
-                        "Required a non-null local name, but current token "
-                                + "not a START_ELEMENT, END_ELEMENT or ENTITY_REFERENCE (was "
-                                + XMLEventUtils.getEventTypeString(actualType)
-                                + ")");
+            if (actualType != START_ELEMENT && actualType != END_ELEMENT && actualType != ENTITY_REFERENCE) {
+                throw new XMLStreamException("Required a non-null local name, but current token "
+                        + "not a START_ELEMENT, END_ELEMENT or ENTITY_REFERENCE (was "
+                        + XMLEventUtils.getEventTypeString(actualType)
+                        + ")");
             }
             String actualLocalName = getLocalName();
             if (actualLocalName != localName && !actualLocalName.equals(localName)) {
                 throw new XMLStreamException(
-                        "Required local name '"
-                                + localName
-                                + "'; current local name '"
-                                + actualLocalName
-                                + "'.");
+                        "Required local name '" + localName + "'; current local name '" + actualLocalName + "'.");
             }
         }
 
         if (uri != null) {
             if (actualType != START_ELEMENT && actualType != END_ELEMENT) {
-                throw new XMLStreamException(
-                        "Required non-null namespace URI, but current token "
-                                + "not a START_ELEMENT or END_ELEMENT (was "
-                                + XMLEventUtils.getEventTypeString(actualType)
-                                + ")");
+                throw new XMLStreamException("Required non-null namespace URI, but current token "
+                        + "not a START_ELEMENT or END_ELEMENT (was "
+                        + XMLEventUtils.getEventTypeString(actualType)
+                        + ")");
             }
             String actualUri = getNamespaceURI();
             if (uri.length() == 0) {
                 if (actualUri != null && actualUri.length() > 0) {
-                    throw new XMLStreamException(
-                            "Required empty namespace, instead have '" + actualUri + "'.");
+                    throw new XMLStreamException("Required empty namespace, instead have '" + actualUri + "'.");
                 }
             } else {
                 if (!uri.equals(actualUri)) {
-                    throw new XMLStreamException(
-                            "Required namespace '" + uri + "'; have '" + actualUri + "'.");
+                    throw new XMLStreamException("Required namespace '" + uri + "'; have '" + actualUri + "'.");
                 }
             }
         }
@@ -181,8 +169,7 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
         ///////////////////////////////////////////////////////
         //// Code block directly from the API documentation ///
         if (getEventType() != XMLStreamConstants.START_ELEMENT) {
-            throw new XMLStreamException(
-                    "parser must be on START_ELEMENT to read next text", getLocation());
+            throw new XMLStreamException("parser must be on START_ELEMENT to read next text", getLocation());
         }
         int eventType = next();
         StringBuffer content = new StringBuffer();
@@ -196,8 +183,7 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
                     || eventType == XMLStreamConstants.COMMENT) {
                 // skipping
             } else if (eventType == XMLStreamConstants.END_DOCUMENT) {
-                throw new XMLStreamException(
-                        "unexpected end of document when reading element text content");
+                throw new XMLStreamException("unexpected end of document when reading element text content");
             } else if (eventType == XMLStreamConstants.START_ELEMENT) {
                 throw new XMLStreamException("element text content may not contain START_ELEMENT");
             } else {

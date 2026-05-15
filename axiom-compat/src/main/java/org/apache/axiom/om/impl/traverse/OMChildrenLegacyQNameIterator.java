@@ -19,9 +19,8 @@
 
 package org.apache.axiom.om.impl.traverse;
 
-import org.apache.axiom.om.OMNode;
-
 import javax.xml.namespace.QName;
+import org.apache.axiom.om.OMNode;
 
 /**
  * Iterate over elements with the QName that uses the legacy algorithm. This iterator is only
@@ -47,17 +46,13 @@ public class OMChildrenLegacyQNameIterator extends OMChildrenQNameIterator {
         // if the given localname is null, whatever value this.qname has, its a match.
         // But can one give a QName without a localName ??
         String localPart = searchQName.getLocalPart();
-        boolean localNameMatch =
-                (localPart == null)
-                        || (localPart.equals(""))
-                        || ((currentQName != null)
-                                && currentQName.getLocalPart().equals(localPart));
+        boolean localNameMatch = (localPart == null)
+                || (localPart.equals(""))
+                || ((currentQName != null) && currentQName.getLocalPart().equals(localPart));
 
         String namespaceURI = searchQName.getNamespaceURI();
-        boolean namespaceURIMatch =
-                (namespaceURI.equals(""))
-                        || ((currentQName != null)
-                                && currentQName.getNamespaceURI().equals(namespaceURI));
+        boolean namespaceURIMatch = (namespaceURI.equals(""))
+                || ((currentQName != null) && currentQName.getNamespaceURI().equals(namespaceURI));
         return localNameMatch && namespaceURIMatch;
     }
 }

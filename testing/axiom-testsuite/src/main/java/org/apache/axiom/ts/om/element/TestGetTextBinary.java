@@ -18,8 +18,9 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.ByteArrayInputStream;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -30,9 +31,6 @@ import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.codec.binary.Base64;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that {@link OMElement#getText()} returns the expected value (i.e. base64 encoded data) for
@@ -55,13 +53,11 @@ public class TestGetTextBinary extends AxiomTestCase {
         element.addChild(factory.createOMText(blob, false));
         if (compact) {
             // Only the builder can create a compact element containing a DataHandler
-            element =
-                    OMXMLBuilderFactory.createStAXOMBuilder(factory, element.getXMLStreamReader())
-                            .getDocumentElement();
+            element = OMXMLBuilderFactory.createStAXOMBuilder(factory, element.getXMLStreamReader())
+                    .getDocumentElement();
             element.build();
         }
         IOTestUtils.compareStreams(
-                blob.getInputStream(),
-                new ByteArrayInputStream(Base64.decodeBase64(element.getText())));
+                blob.getInputStream(), new ByteArrayInputStream(Base64.decodeBase64(element.getText())));
     }
 }

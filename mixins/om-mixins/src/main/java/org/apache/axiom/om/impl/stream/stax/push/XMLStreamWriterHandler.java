@@ -20,7 +20,8 @@ package org.apache.axiom.om.impl.stream.stax.push;
 
 import java.io.IOException;
 import java.io.StringWriter;
-
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
@@ -29,9 +30,6 @@ import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.ext.stax.BlobWriter;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 public class XMLStreamWriterHandler implements XmlHandler {
     private final XMLStreamWriter writer;
@@ -56,8 +54,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
     }
 
     @Override
-    public void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
             throws StreamException {
         try {
             if (xmlEncoding == null) {
@@ -74,8 +71,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
     public void startFragment() throws StreamException {}
 
     @Override
-    public void processDocumentTypeDeclaration(
-            String rootName, String publicId, String systemId, String internalSubset)
+    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset)
             throws StreamException {
         StringWriter sw = new StringWriter();
         Serializer serializer = new Serializer(sw);
@@ -90,8 +86,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         try {
             writer.writeStartElement(prefix, localName, namespaceURI);
         } catch (XMLStreamException ex) {
@@ -100,8 +95,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         try {
             if (prefix.length() != 0) {
                 writer.writeNamespace(prefix, namespaceURI);
@@ -115,12 +109,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
 
     @Override
     public void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException {
         try {
             writer.writeAttribute(prefix, namespaceURI, localName, value);
@@ -130,8 +119,7 @@ public class XMLStreamWriterHandler implements XmlHandler {
     }
 
     @Override
-    public void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException {
+    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
         try {
             writer.writeAttribute(name, value);
         } catch (XMLStreamException ex) {
@@ -164,17 +152,10 @@ public class XMLStreamWriterHandler implements XmlHandler {
                 if (textContent.isBinary()) {
                     Object blobObject = textContent.getBlobObject();
                     if (blobObject instanceof BlobProvider blobProvider) {
-                        getBlobWriter()
-                                .writeBlob(
-                                        blobProvider,
-                                        textContent.getContentID(),
-                                        textContent.isOptimize());
+                        getBlobWriter().writeBlob(blobProvider, textContent.getContentID(), textContent.isOptimize());
                     } else {
                         getBlobWriter()
-                                .writeBlob(
-                                        textContent.getBlob(),
-                                        textContent.getContentID(),
-                                        textContent.isOptimize());
+                                .writeBlob(textContent.getBlob(), textContent.getContentID(), textContent.isOptimize());
                     }
                     return;
                 }

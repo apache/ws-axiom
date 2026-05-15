@@ -20,10 +20,10 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.nio.charset.StandardCharsets;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
@@ -34,15 +34,11 @@ import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 public class TestCloneNonDestructive extends AxiomTestCase {
     private final boolean copyOMDataSources;
 
     @Inject
-    public TestCloneNonDestructive(
-            OMMetaFactory metaFactory, @Named("copyOMDataSources") boolean copyOMDataSources) {
+    public TestCloneNonDestructive(OMMetaFactory metaFactory, @Named("copyOMDataSources") boolean copyOMDataSources) {
         super(metaFactory);
         this.copyOMDataSources = copyOMDataSources;
     }
@@ -50,11 +46,8 @@ public class TestCloneNonDestructive extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDataSource ds =
-                new WrappedTextNodeOMDataSourceFromBlob(
-                        new QName("wrapper"),
-                        new TextBlob("test", StandardCharsets.UTF_8),
-                        StandardCharsets.UTF_8);
+        OMDataSource ds = new WrappedTextNodeOMDataSourceFromBlob(
+                new QName("wrapper"), new TextBlob("test", StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         OMSourcedElement element = factory.createOMElement(ds);
         OMCloneOptions options = new OMCloneOptions();
         options.setCopyOMDataSources(copyOMDataSources);

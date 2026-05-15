@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
 import javax.xml.XMLConstants;
 
 /** Namespace context implementation that stores namespace bindings in a {@link Map}. */

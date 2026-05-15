@@ -121,8 +121,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     public final Content internalGetContent(boolean create) {
         if (getState() == COMPACT) {
             Content content = new Content();
-            CoreCharacterDataNode cdata =
-                    coreGetNodeFactory().getFactory2().createCharacterDataNode();
+            CoreCharacterDataNode cdata = coreGetNodeFactory().getFactory2().createCharacterDataNode();
             cdata.internalSetParent(this);
             cdata.coreSetCharacterData(this.content);
             content.firstChild = cdata;
@@ -175,8 +174,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                 case INCOMPLETE -> {
                     do {
                         internalBuildNext();
-                    } while ((firstChild = coreGetFirstChildIfAvailable()) == null
-                            && getState() == INCOMPLETE);
+                    } while ((firstChild = coreGetFirstChildIfAvailable()) == null && getState() == INCOMPLETE);
                 }
             }
         }
@@ -228,8 +226,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         internalCheckNewChild0(newChild, replacedChild);
     }
 
-    void internalCheckNewChild0(CoreChildNode newChild, CoreChildNode replacedChild)
-            throws CoreModelException {}
+    void internalCheckNewChild0(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException {}
 
     @Override
     public final void coreAppendChild(CoreChildNode child) throws CoreModelException {
@@ -328,8 +325,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                 updateState = false;
             }
             if (child != null) {
-                CoreDocument newOwnerDocument =
-                        semantics.getDetachPolicy().getNewOwnerDocument(this);
+                CoreDocument newOwnerDocument = semantics.getDetachPolicy().getNewOwnerDocument(this);
                 do {
                     CoreChildNode nextSibling = child.coreGetNextSiblingIfAvailable();
                     child.internalSetPreviousSibling(null);
@@ -346,8 +342,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     }
 
     @Override
-    public final Object internalGetCharacterData(ElementAction elementAction)
-            throws CoreModelException {
+    public final Object internalGetCharacterData(ElementAction elementAction) throws CoreModelException {
         if (getState() == COMPACT) {
             return content;
         } else {
@@ -372,15 +367,12 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                             }
                         // Fall through
                         case SKIP:
-                            // Just continue
+                        // Just continue
                     }
                 } else {
-                    if (child instanceof CoreCharacterDataNode
-                            || child instanceof CoreCDATASection) {
-                        Object textValue =
-                                ((CoreCharacterDataContainer) child).coreGetCharacterData();
-                        if (textValue instanceof CharacterData
-                                || ((String) textValue).length() != 0) {
+                    if (child instanceof CoreCharacterDataNode || child instanceof CoreCDATASection) {
+                        Object textValue = ((CoreCharacterDataContainer) child).coreGetCharacterData();
+                        if (textValue instanceof CharacterData || ((String) textValue).length() != 0) {
                             if (textContent == null) {
                                 // This is the first non empty text node. Just save the string.
                                 textContent = textValue;
@@ -419,8 +411,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     }
 
     @Override
-    public final void coreSetCharacterData(Object data, Semantics semantics)
-            throws CoreModelException {
+    public final void coreSetCharacterData(Object data, Semantics semantics) throws CoreModelException {
         coreRemoveChildren(semantics);
         if (data != null && (data instanceof CharacterData || ((String) data).length() > 0)) {
             coreSetState(COMPACT);
@@ -443,8 +434,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             String name,
             Mapper<S, ? super T> mapper,
             Semantics semantics) {
-        return new ElementsIterator<T, S>(
-                this, axis, type, matcher, namespaceURI, name, mapper, semantics);
+        return new ElementsIterator<T, S>(this, axis, type, matcher, namespaceURI, name, mapper, semantics);
     }
 
     @Override
@@ -484,8 +474,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     }
 
     @Override
-    public void internalSerialize(XmlHandler handler, boolean cache)
-            throws CoreModelException, StreamException {
+    public void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         try {
             XmlReader reader = coreGetReader(handler, cache, false);
             while (!reader.proceed()) {
@@ -512,8 +501,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     }
 
     @Override
-    public final void coreMoveChildrenFrom(CoreParentNode other, Semantics semantics)
-            throws CoreModelException {
+    public final void coreMoveChildrenFrom(CoreParentNode other, Semantics semantics) throws CoreModelException {
         coreRemoveChildren(semantics);
         context = other.coreGetInputContext();
         content = other.internalGetContent();

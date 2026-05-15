@@ -22,7 +22,6 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import java.util.Hashtable;
 import java.util.Objects;
-
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMDocument;
@@ -102,11 +101,7 @@ public abstract class DOMNodeMixin implements DOMNode {
     @Override
     public final Node cloneNode(boolean deep) {
         try {
-            DOMNode clone =
-                    (DOMNode)
-                            coreClone(
-                                    deep ? DOMSemantics.DEEP_CLONE : DOMSemantics.SHALLOW_CLONE,
-                                    null);
+            DOMNode clone = (DOMNode) coreClone(deep ? DOMSemantics.DEEP_CLONE : DOMSemantics.SHALLOW_CLONE, null);
             if (!(clone instanceof DOMDocument)) {
                 clone.coreSetOwnerDocument(coreGetOwnerDocument(true));
             }

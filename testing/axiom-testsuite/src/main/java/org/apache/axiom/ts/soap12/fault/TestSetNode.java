@@ -18,29 +18,30 @@
  */
 package org.apache.axiom.ts.soap12.fault;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.AltSOAPFactory;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestSetNode extends TestCase {
-    @Inject private SOAPFactory soapFactory;
-    @Inject @AltSOAPFactory private SOAPFactory altSoapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
+
+    @Inject
+    @AltSOAPFactory
+    private SOAPFactory altSoapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
         soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault));
         assertThat(soapFault.getNode()).isNotNull();
-        assertThat(soapFault.getNode().getLocalName())
-                .isEqualTo(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME);
+        assertThat(soapFault.getNode().getLocalName()).isEqualTo(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME);
         assertThatThrownBy(() -> soapFault.setNode(altSoapFactory.createSOAPFaultNode()))
                 .isInstanceOf(UnsupportedOperationException.class);
     }

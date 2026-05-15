@@ -20,7 +20,6 @@ package org.apache.axiom.om.ds.jaxb;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
 
 public class ExceptionXMLStreamWriterWrapper extends XMLStreamWriterWrapper {

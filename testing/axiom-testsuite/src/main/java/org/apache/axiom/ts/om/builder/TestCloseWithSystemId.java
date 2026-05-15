@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.transform.stream.StreamSource;
-
 import org.apache.axiom.net.protocol.registry.InstrumentedDataProvider;
 import org.apache.axiom.net.protocol.registry.URLRegistration;
 import org.apache.axiom.net.protocol.registry.URLRegistry;
@@ -31,8 +31,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
-import com.google.inject.Inject;
-
 public class TestCloseWithSystemId extends AxiomTestCase {
     @Inject
     public TestCloseWithSystemId(OMMetaFactory metaFactory) {
@@ -41,14 +39,12 @@ public class TestCloseWithSystemId extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        InstrumentedDataProvider dataProvider =
-                new InstrumentedDataProvider(XMLSample.SIMPLE.getUrl()::openStream);
+        InstrumentedDataProvider dataProvider = new InstrumentedDataProvider(XMLSample.SIMPLE.getUrl()::openStream);
         URLRegistration registration = URLRegistry.register(dataProvider);
         try {
-            OMXMLParserWrapper builder =
-                    OMXMLBuilderFactory.createOMBuilder(
-                            metaFactory.getOMFactory(),
-                            new StreamSource(registration.getURL().toExternalForm()));
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
+                    metaFactory.getOMFactory(),
+                    new StreamSource(registration.getURL().toExternalForm()));
             builder.getDocumentElement();
             builder.close();
             // Since the caller doesn't have control over the stream, the builder is responsible

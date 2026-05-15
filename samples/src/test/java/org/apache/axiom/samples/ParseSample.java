@@ -22,11 +22,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.xml.namespace.QName;
-
 import junit.framework.TestCase;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -39,8 +36,7 @@ public class ParseSample extends TestCase {
         OMElement root = OMXMLBuilderFactory.createOMBuilder(in).getDocumentElement();
 
         // Process the content of the file
-        OMElement urlElement =
-                root.getFirstChildWithName(new QName("http://maven.apache.org/POM/4.0.0", "url"));
+        OMElement urlElement = root.getFirstChildWithName(new QName("http://maven.apache.org/POM/4.0.0", "url"));
         if (urlElement == null) {
             System.out.println("No <url> element found");
         } else {

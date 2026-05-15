@@ -23,13 +23,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestSerialize extends AxiomTestCase {
     @Inject
@@ -39,8 +37,7 @@ public class TestSerialize extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMProcessingInstruction pi =
-                metaFactory.getOMFactory().createOMProcessingInstruction(null, "target", "data");
+        OMProcessingInstruction pi = metaFactory.getOMFactory().createOMProcessingInstruction(null, "target", "data");
         XMLStreamWriter writer = mock(XMLStreamWriter.class);
         pi.serialize(writer);
         verify(writer).writeProcessingInstruction(pi.getTarget() + " ", pi.getValue());

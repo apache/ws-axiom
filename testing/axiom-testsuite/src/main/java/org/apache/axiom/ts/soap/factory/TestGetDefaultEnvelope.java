@@ -20,8 +20,9 @@ package org.apache.axiom.ts.soap.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -29,14 +30,13 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /** Checks the content of the SOAP envelope returned by {@link SOAPFactory#getDefaultEnvelope()}. */
 public class TestGetDefaultEnvelope extends TestCase {
-    @Inject private SOAPSpec spec;
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPSpec spec;
+
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

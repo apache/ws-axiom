@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -29,9 +31,6 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests {@link SOAPFactory#createSOAPHeader(SOAPEnvelope)}, {@link
@@ -47,15 +46,14 @@ import com.google.inject.name.Named;
  * and {@link SOAPFactory#createSOAPFaultDetail(SOAPFault)} with a null parent.
  */
 public class TestCreateSOAPElementWithNullParent extends CreateSOAPElementWithoutParentTestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     private final SOAPElementType parentType;
 
     @Inject
     public TestCreateSOAPElementWithNullParent(
-            SOAPSpec spec,
-            @Named("childType") SOAPElementType type,
-            @Named("type") SOAPElementType parentType) {
+            SOAPSpec spec, @Named("childType") SOAPElementType type, @Named("type") SOAPElementType parentType) {
         super(spec, type);
         this.parentType = parentType;
     }

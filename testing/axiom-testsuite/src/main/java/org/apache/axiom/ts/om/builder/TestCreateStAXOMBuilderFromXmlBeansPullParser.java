@@ -21,15 +21,12 @@ package org.apache.axiom.ts.om.builder;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import java.net.URL;
-
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-
 import za.co.eskom.nrs.xmlvend.base.x20.schema.AdviceReqDocument;
 
 public class TestCreateStAXOMBuilderFromXmlBeansPullParser extends AxiomTestCase {
@@ -40,13 +37,11 @@ public class TestCreateStAXOMBuilderFromXmlBeansPullParser extends AxiomTestCase
 
     @Override
     protected void runTest() throws Throwable {
-        URL inputUrl =
-                TestCreateStAXOMBuilderFromXmlBeansPullParser.class.getResource("xmlvend.xml");
+        URL inputUrl = TestCreateStAXOMBuilderFromXmlBeansPullParser.class.getResource("xmlvend.xml");
         AdviceReqDocument adviceReq = AdviceReqDocument.Factory.parse(inputUrl);
-        OMDocument doc =
-                OMXMLBuilderFactory.createStAXOMBuilder(
-                                metaFactory.getOMFactory(), adviceReq.newXMLStreamReader())
-                        .getDocument();
+        OMDocument doc = OMXMLBuilderFactory.createStAXOMBuilder(
+                        metaFactory.getOMFactory(), adviceReq.newXMLStreamReader())
+                .getDocument();
         assertAbout(xml())
                 .that(xml(OMDocument.class, doc))
                 .ignoringElementContentWhitespace()

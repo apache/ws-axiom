@@ -21,7 +21,6 @@ package org.apache.axiom.util.stax.dialect;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
-
 import javax.xml.stream.XMLStreamException;
 
 /**
@@ -67,21 +66,13 @@ class EncodingDetectionHelper {
         } catch (IOException ex) {
             throw new XMLStreamException("Unable to read start bytes", ex);
         }
-        int marker =
-                ((startBytes[0] & 0xFF) << 24)
-                        + ((startBytes[1] & 0xFF) << 16)
-                        + ((startBytes[2] & 0xFF) << 8)
-                        + (startBytes[3] & 0xFF);
+        int marker = ((startBytes[0] & 0xFF) << 24)
+                + ((startBytes[1] & 0xFF) << 16)
+                + ((startBytes[2] & 0xFF) << 8)
+                + (startBytes[3] & 0xFF);
         return switch (marker) {
-            case 0x0000FEFF,
-                    0xFFFE0000,
-                    0x0000FFFE,
-                    0xFEFF0000,
-                    0x0000003C,
-                    0x3C000000,
-                    0x00003C00,
-                    0x003C0000 ->
-                    "UCS-4";
+            case 0x0000FEFF, 0xFFFE0000, 0x0000FFFE, 0xFEFF0000, 0x0000003C, 0x3C000000, 0x00003C00, 0x003C0000 ->
+                "UCS-4";
             case 0x003C003F -> "UTF-16BE";
             case 0x3C003F00 -> "UTF-16LE";
             case 0x3C3F786D -> "UTF-8";

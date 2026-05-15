@@ -38,8 +38,7 @@ public abstract class AxiomCoreParentNodeMixin implements AxiomCoreParentNode {
                     if (isExpanded()) {
                         CoreChildNode child = coreGetFirstChild();
                         while (child != null) {
-                            if (!(child instanceof AxiomSourcedElement
-                                    || ((AxiomSerializable) child).isComplete())) {
+                            if (!(child instanceof AxiomSourcedElement || ((AxiomSerializable) child).isComplete())) {
                                 yield false;
                             }
                             child = child.coreGetNextSibling();

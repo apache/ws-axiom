@@ -20,13 +20,12 @@ package org.apache.axiom.util.sax;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-
 import junit.framework.TestCase;
-
 import org.xml.sax.XMLReader;
 
 public class TestGetSetFeature extends TestCase {
-    @Inject private XMLReader xmlReader;
+    @Inject
+    private XMLReader xmlReader;
 
     @Inject
     @Named("feature")

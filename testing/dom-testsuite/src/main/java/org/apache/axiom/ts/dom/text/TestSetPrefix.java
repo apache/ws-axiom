@@ -35,7 +35,6 @@ public class TestSetPrefix extends DOMTestCase {
         Text text = document.createTextNode("test");
         assertThatThrownBy(() -> text.setPrefix("p"))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.NAMESPACE_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.NAMESPACE_ERR));
     }
 }

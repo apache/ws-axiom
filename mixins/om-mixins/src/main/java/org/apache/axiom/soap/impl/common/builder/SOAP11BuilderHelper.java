@@ -33,8 +33,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
 
     @Override
     public AxiomElementType<? extends AxiomElement> handleEvent(
-            OMElement parent, int elementLevel, String namespaceURI, String localName)
-            throws SOAPProcessingException {
+            OMElement parent, int elementLevel, String namespaceURI, String localName) throws SOAPProcessingException {
         AxiomElementType<? extends AxiomElement> elementType = null;
 
         if (elementLevel == 4) {

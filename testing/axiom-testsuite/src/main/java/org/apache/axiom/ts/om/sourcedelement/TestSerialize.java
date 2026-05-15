@@ -20,11 +20,12 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
@@ -39,9 +40,6 @@ import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.dimension.serialization.XML;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 import org.xml.sax.InputSource;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /** Tests various ways to serialize an {@link OMSourcedElement}. */
 public class TestSerialize extends AxiomTestCase {
@@ -92,35 +90,24 @@ public class TestSerialize extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element =
-                TestDocument.DOCUMENT1.createOMSourcedElement(factory, push, destructive);
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(factory, push, destructive);
         OMDataSource ds = element.getDataSource();
         OMContainer parent = elementContext.wrap(element);
         boolean parentComplete = parent != null && parent.isComplete();
         expansionStrategy.apply(element);
-        boolean consuming =
-                expansionStrategy.isConsumedAfterSerialization(
-                        push, destructive, serializationStrategy);
+        boolean consuming = expansionStrategy.isConsumedAfterSerialization(push, destructive, serializationStrategy);
         for (int iteration = 0; iteration < count; iteration++) {
-            boolean expectException =
-                    iteration != 0
-                            && (consuming
-                                    || serializeParent
-                                            && !serializationStrategy.isCaching()
-                                            && !parentComplete);
+            boolean expectException = iteration != 0
+                    && (consuming || serializeParent && !serializationStrategy.isCaching() && !parentComplete);
             XML result;
             if (expectException) {
-                assertThatThrownBy(
-                                () ->
-                                        serializationStrategy.serialize(
-                                                serializeParent ? parent : element))
+                assertThatThrownBy(() -> serializationStrategy.serialize(serializeParent ? parent : element))
                         .isInstanceOf(Exception.class);
                 continue;
             } else {
                 result = serializationStrategy.serialize(serializeParent ? parent : element);
             }
-            InputSource expectedXML =
-                    new InputSource(new StringReader(TestDocument.DOCUMENT1.getContent()));
+            InputSource expectedXML = new InputSource(new StringReader(TestDocument.DOCUMENT1.getContent()));
             if (serializeParent) {
                 expectedXML = elementContext.getControl(expectedXML);
             }
@@ -128,8 +115,7 @@ public class TestSerialize extends AxiomTestCase {
             // If the underlying OMDataSource is non destructive, the expansion status should not
             // have been changed during serialization. If it is destructive and caching is enabled,
             // then the sourced element should be expanded.
-            if (expansionStrategy.isExpandedAfterSerialization(
-                    push, destructive, serializationStrategy)) {
+            if (expansionStrategy.isExpandedAfterSerialization(push, destructive, serializationStrategy)) {
                 assertThat(element.isExpanded()).isTrue();
                 assertThat(element.isComplete()).isEqualTo(!consuming);
             } else {

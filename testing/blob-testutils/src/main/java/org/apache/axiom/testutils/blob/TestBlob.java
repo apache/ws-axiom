@@ -19,13 +19,11 @@
 
 package org.apache.axiom.testutils.blob;
 
+import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
-
-import com.google.common.base.Preconditions;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.io.StreamCopyException;
 
@@ -43,8 +41,7 @@ public class TestBlob implements Blob {
     }
 
     public TestBlob(int value, long length) {
-        Preconditions.checkArgument(
-                value >= 0 && value < 256, "value must be in the range 0-255, got: %s", value);
+        Preconditions.checkArgument(value >= 0 && value < 256, "value must be in the range 0-255, got: %s", value);
         this.value = (byte) value;
         this.length = length;
     }

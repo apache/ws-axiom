@@ -20,7 +20,6 @@
 package org.apache.axiom.util.stax;
 
 import java.io.IOException;
-
 import javax.xml.stream.XMLStreamException;
 
 /** {@link IOException} that wraps an {@link XMLStreamException}. */

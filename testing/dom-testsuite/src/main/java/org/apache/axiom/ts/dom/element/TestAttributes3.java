@@ -19,9 +19,7 @@
 package org.apache.axiom.ts.dom.element;
 
 import java.io.StringReader;
-
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -32,12 +30,8 @@ import org.xml.sax.InputSource;
 public class TestAttributes3 extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Document doc =
-                dbf.newDocumentBuilder()
-                        .parse(
-                                new InputSource(
-                                        new StringReader(
-                                                "<root><child xmlns:p=\"urn:ns1\"/></root>")));
+        Document doc = dbf.newDocumentBuilder()
+                .parse(new InputSource(new StringReader("<root><child xmlns:p=\"urn:ns1\"/></root>")));
         Element element = (Element) doc.getDocumentElement().getFirstChild();
         assertTrue(element.hasAttributes());
         NamedNodeMap attributes = element.getAttributes();

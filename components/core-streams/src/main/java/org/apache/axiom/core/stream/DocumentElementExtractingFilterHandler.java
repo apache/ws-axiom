@@ -26,8 +26,7 @@ public final class DocumentElementExtractingFilterHandler extends XmlHandlerWrap
     }
 
     @Override
-    public void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
             throws StreamException {}
 
     @Override
@@ -37,8 +36,7 @@ public final class DocumentElementExtractingFilterHandler extends XmlHandlerWrap
     public void completed() throws StreamException {}
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         super.startElement(namespaceURI, localName, prefix);
         depth++;
     }
@@ -50,8 +48,7 @@ public final class DocumentElementExtractingFilterHandler extends XmlHandlerWrap
     }
 
     @Override
-    public void processDocumentTypeDeclaration(
-            String rootName, String publicId, String systemId, String internalSubset)
+    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset)
             throws StreamException {}
 
     @Override

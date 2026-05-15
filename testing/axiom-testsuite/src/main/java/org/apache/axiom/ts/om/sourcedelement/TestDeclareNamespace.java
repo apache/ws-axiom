@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that declaring a namespace on an {@link OMSourcedElement} overrides a corresponding
@@ -45,10 +43,7 @@ public class TestDeclareNamespace extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element =
-                factory.createOMElement(
-                        new PullOMDataSource("<root xmlns:p='urn:ns1'><child/></root>"),
-                        "root",
-                        null);
+                factory.createOMElement(new PullOMDataSource("<root xmlns:p='urn:ns1'><child/></root>"), "root", null);
         // Declare a namespace before expansion
         element.declareNamespace("urn:ns2", "p");
         // Force expansion; this should not overwrite the namespace declaration we just added

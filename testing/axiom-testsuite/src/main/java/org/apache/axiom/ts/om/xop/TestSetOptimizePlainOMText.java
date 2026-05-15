@@ -20,10 +20,10 @@ package org.apache.axiom.ts.om.xop;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -32,8 +32,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.io.output.WriterOutputStream;
 import org.apache.xerces.impl.dv.util.Base64;
-
-import com.google.inject.Inject;
 
 /**
  * Tests {@link OMText#setOptimize(boolean)} on a plain {@link OMText} node with valid base64
@@ -50,9 +48,7 @@ public class TestSetOptimizePlainOMText extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("element", null);
-        OMText text =
-                factory.createOMText(
-                        element, Base64.encode("foobar".getBytes(StandardCharsets.UTF_8)));
+        OMText text = factory.createOMText(element, Base64.encode("foobar".getBytes(StandardCharsets.UTF_8)));
         text.setOptimize(true);
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);

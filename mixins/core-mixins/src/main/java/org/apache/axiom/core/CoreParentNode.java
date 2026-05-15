@@ -109,8 +109,7 @@ public interface CoreParentNode extends CoreNode {
 
     void coreMoveChildrenFrom(CoreParentNode other, Semantics semantics) throws CoreModelException;
 
-    void internalCheckNewChild(CoreChildNode newChild, CoreChildNode replacedChild)
-            throws CoreModelException;
+    void internalCheckNewChild(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException;
 
     void internalSetContent(Object content);
 

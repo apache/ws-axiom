@@ -20,6 +20,8 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -29,18 +31,13 @@ import org.apache.axiom.ts.StreamTypeAdapter;
 import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 public class TestDetachWithStream extends AxiomTestCase {
     private final StreamType streamType;
     private final boolean useStreamSource;
 
     @Inject
     public TestDetachWithStream(
-            OMMetaFactory metaFactory,
-            StreamType streamType,
-            @Named("useStreamSource") boolean useStreamSource) {
+            OMMetaFactory metaFactory, StreamType streamType, @Named("useStreamSource") boolean useStreamSource) {
         super(metaFactory);
         this.streamType = streamType;
         this.useStreamSource = useStreamSource;
@@ -48,18 +45,14 @@ public class TestDetachWithStream extends AxiomTestCase {
 
     @Override
     protected final void runTest() throws Throwable {
-        InstrumentedStream stream =
-                streamType.instrumentStream(streamType.getStream(XMLSample.LARGE));
+        InstrumentedStream stream = streamType.instrumentStream(streamType.getStream(XMLSample.LARGE));
         OMXMLParserWrapper builder;
         if (useStreamSource) {
-            builder =
-                    OMXMLBuilderFactory.createOMBuilder(
-                            metaFactory.getOMFactory(), streamType.createStreamSource(stream));
+            builder = OMXMLBuilderFactory.createOMBuilder(
+                    metaFactory.getOMFactory(), streamType.createStreamSource(stream));
         } else {
             builder =
-                    streamType
-                            .getAdapter(StreamTypeAdapter.class)
-                            .createOMBuilder(metaFactory.getOMFactory(), stream);
+                    streamType.getAdapter(StreamTypeAdapter.class).createOMBuilder(metaFactory.getOMFactory(), stream);
         }
         long countBeforeDetach = stream.getCount();
         builder.detach();

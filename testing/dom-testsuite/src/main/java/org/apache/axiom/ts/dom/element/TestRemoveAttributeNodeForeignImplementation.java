@@ -36,7 +36,6 @@ public class TestRemoveAttributeNodeForeignImplementation extends DOMTestCase {
         Attr attr = mock(Attr.class);
         assertThatThrownBy(() -> element.removeAttributeNode(attr))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.NOT_FOUND_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.NOT_FOUND_ERR));
     }
 }

@@ -48,8 +48,7 @@ public abstract class CoreNSUnawareElementMixin implements CoreNSUnawareElement 
     }
 
     @Override
-    public final void internalSerialize(XmlHandler handler, boolean cache)
-            throws CoreModelException, StreamException {
+    public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         // TODO
         throw new UnsupportedOperationException();
     }

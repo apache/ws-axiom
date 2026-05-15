@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.document;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
@@ -29,8 +29,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.io.output.NullOutputStream;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link
@@ -47,9 +45,8 @@ public class TestSerializeAndConsume extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDocument document =
-                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<elem>text</elem>"))
-                        .getDocument();
+        OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<elem>text</elem>"))
+                .getDocument();
         document.serializeAndConsume(NullOutputStream.INSTANCE);
         assertThatThrownBy(document::getFirstOMChild).isInstanceOf(NodeUnavailableException.class);
     }

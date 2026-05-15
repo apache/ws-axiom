@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -59,12 +58,11 @@ import org.osgi.framework.launch.FrameworkFactory;
  */
 public class UsesConstraintsTest {
     static class Listener implements FrameworkListener {
-        private final Pattern regex =
-                Pattern.compile(
-                        "Uses constraint violation\\. Unable to resolve .* testbundle. \\[.*\\] because it is exposed to "
-                                + "package 'javax\\.xml\\.stream' .* via two dependency chains\\."
-                                + ".*package=org\\.apache\\.axiom\\.om.*",
-                        Pattern.DOTALL);
+        private final Pattern regex = Pattern.compile(
+                "Uses constraint violation\\. Unable to resolve .* testbundle. \\[.*\\] because it is exposed to "
+                        + "package 'javax\\.xml\\.stream' .* via two dependency chains\\."
+                        + ".*package=org\\.apache\\.axiom\\.om.*",
+                Pattern.DOTALL);
         private final CountDownLatch latch = new CountDownLatch(1);
         private boolean gotExpectedError;
 
@@ -103,45 +101,26 @@ public class UsesConstraintsTest {
         Listener listener = new Listener();
         context.addFrameworkListener(listener);
         List<Bundle> bundles = new ArrayList<Bundle>();
-        bundles.add(
-                context.installBundle(
-                        "link:classpath:META-INF/links/org.ops4j.pax.logging.api.link"));
-        bundles.add(
-                context.installBundle(
-                        "link:classpath:org.apache.aries.spifly.dynamic.framework.extension.link"));
-        bundles.add(
-                context.installBundle(
-                        "link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"));
+        bundles.add(context.installBundle("link:classpath:META-INF/links/org.ops4j.pax.logging.api.link"));
+        bundles.add(context.installBundle("link:classpath:org.apache.aries.spifly.dynamic.framework.extension.link"));
+        bundles.add(context.installBundle("link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"));
         bundles.add(context.installBundle("link:classpath:stax2-api.link"));
-        bundles.add(
-                context.installBundle("link:classpath:com.fasterxml.woodstox.woodstox-core.link"));
+        bundles.add(context.installBundle("link:classpath:com.fasterxml.woodstox.woodstox-core.link"));
         bundles.add(context.installBundle("link:classpath:org.apache.commons.commons-io.link"));
-        bundles.add(
-                context.installBundle("link:classpath:org.apache.james.apache-mime4j-core.link"));
-        bundles.add(
-                context.installBundle("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"));
+        bundles.add(context.installBundle("link:classpath:org.apache.james.apache-mime4j-core.link"));
+        bundles.add(context.installBundle("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"));
         // This bundle will be wired to the javax.xml.stream package exported by the ServiceMix
         // stax-api bundle.
-        bundles.add(
-                context.installBundle(
-                        streamBundle(
-                                        bundle().setHeader(BUNDLE_SYMBOLICNAME, "testbundle1")
-                                                .setHeader(
-                                                        IMPORT_PACKAGE,
-                                                        "org.apache.axiom.om, javax.xml.stream; version=1.0")
-                                                .build())
-                                .getURL()));
+        bundles.add(context.installBundle(streamBundle(bundle().setHeader(BUNDLE_SYMBOLICNAME, "testbundle1")
+                        .setHeader(IMPORT_PACKAGE, "org.apache.axiom.om, javax.xml.stream; version=1.0")
+                        .build())
+                .getURL()));
         // This bundle will be wired to the javax.xml.stream package exported by the framework
         // bundle
-        bundles.add(
-                context.installBundle(
-                        streamBundle(
-                                        bundle().setHeader(BUNDLE_SYMBOLICNAME, "testbundle2")
-                                                .setHeader(
-                                                        IMPORT_PACKAGE,
-                                                        "org.apache.axiom.om, javax.xml.stream; version=\"[0.0.0,1.0)\"")
-                                                .build())
-                                .getURL()));
+        bundles.add(context.installBundle(streamBundle(bundle().setHeader(BUNDLE_SYMBOLICNAME, "testbundle2")
+                        .setHeader(IMPORT_PACKAGE, "org.apache.axiom.om, javax.xml.stream; version=\"[0.0.0,1.0)\"")
+                        .build())
+                .getURL()));
         for (Bundle bundle : bundles) {
             bundle.start();
         }

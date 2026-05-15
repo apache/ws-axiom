@@ -20,14 +20,12 @@ package org.apache.axiom.blob.suite;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.OutputStream;
-import java.util.Random;
-
-import org.apache.axiom.blob.WritableBlob;
-import org.apache.axiom.blob.WritableBlobFactory;
-
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import java.io.OutputStream;
+import java.util.Random;
+import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
 
 public class TestWriteToWithReadFromSupport extends SizeSensitiveWritableBlobTestCase {
     @Inject
@@ -43,8 +41,7 @@ public class TestWriteToWithReadFromSupport extends SizeSensitiveWritableBlobTes
         OutputStream out = blob.getOutputStream();
         out.write(data);
         out.close();
-        ByteArrayOutputStreamWithReadFromSupport baos =
-                new ByteArrayOutputStreamWithReadFromSupport();
+        ByteArrayOutputStreamWithReadFromSupport baos = new ByteArrayOutputStreamWithReadFromSupport();
         blob.writeTo(baos);
         assertThat(baos.toByteArray()).isEqualTo(data);
         assertThat(baos.isReadFromCalled()).isTrue();

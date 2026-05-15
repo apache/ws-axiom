@@ -18,6 +18,15 @@
  */
 package org.apache.axiom.om.ds;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
@@ -26,17 +35,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 /**
  * @deprecated This class has been deprecated without replacement. Generally there is no need for
@@ -180,8 +178,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
      * @param os
      * @throws IOException
      */
-    private static void inputStream2OutputStream(InputStream is, OutputStream os)
-            throws IOException {
+    private static void inputStream2OutputStream(InputStream is, OutputStream os) throws IOException {
         byte[] buffer = new byte[BUFFER_LEN];
         int bytesRead = is.read(buffer);
         while (bytesRead > 0) {

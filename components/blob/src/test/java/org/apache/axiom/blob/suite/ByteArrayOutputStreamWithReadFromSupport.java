@@ -21,12 +21,10 @@ package org.apache.axiom.blob.suite;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.ext.io.StreamCopyException;
 
-public class ByteArrayOutputStreamWithReadFromSupport extends OutputStream
-        implements ReadFromSupport {
+public class ByteArrayOutputStreamWithReadFromSupport extends OutputStream implements ReadFromSupport {
     private byte[] buffer = new byte[4096];
     private int size;
     private boolean readFromCalled;

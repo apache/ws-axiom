@@ -21,7 +21,6 @@ package org.apache.axiom.attachments.lifecycle;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 
 /**

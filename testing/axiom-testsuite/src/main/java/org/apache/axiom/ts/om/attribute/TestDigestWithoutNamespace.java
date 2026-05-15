@@ -18,11 +18,10 @@
  */
 package org.apache.axiom.ts.om.attribute;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
-
-import com.google.inject.Inject;
 
 // Regression test for AXIOM-203
 public class TestDigestWithoutNamespace extends DigestTestCase {

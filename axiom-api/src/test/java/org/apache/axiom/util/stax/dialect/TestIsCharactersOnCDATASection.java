@@ -19,7 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
@@ -34,8 +33,7 @@ public class TestIsCharactersOnCDATASection extends DialectTestCase {
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-        XMLStreamReader reader =
-                factory.createXMLStreamReader(new StringReader("<root><![CDATA[X]]></root>"));
+        XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root><![CDATA[X]]></root>"));
         reader.nextTag();
         reader.next();
         assertTrue(reader.isCharacters());

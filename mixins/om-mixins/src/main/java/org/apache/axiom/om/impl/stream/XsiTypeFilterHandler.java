@@ -39,8 +39,7 @@ public class XsiTypeFilterHandler extends XmlHandlerWrapper {
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         super.startElement(namespaceURI, localName, prefix);
         if (scopes == scopeStack.length) {
             int[] newScopeStack = new int[scopeStack.length * 2];
@@ -57,8 +56,7 @@ public class XsiTypeFilterHandler extends XmlHandlerWrapper {
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         super.processNamespaceDeclaration(prefix, namespaceURI);
         if (prefixes.length == prefixCount) {
             String[] newPrefixes = new String[prefixes.length * 2];
@@ -70,16 +68,10 @@ public class XsiTypeFilterHandler extends XmlHandlerWrapper {
 
     @Override
     public void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException {
         super.processAttribute(namespaceURI, localName, prefix, value, type, specified);
-        if (namespaceURI.equals("http://www.w3.org/2001/XMLSchema-instance")
-                && localName.equals("type")) {
+        if (namespaceURI.equals("http://www.w3.org/2001/XMLSchema-instance") && localName.equals("type")) {
             xsiType = value.trim();
         }
     }
@@ -98,8 +90,7 @@ public class XsiTypeFilterHandler extends XmlHandlerWrapper {
                     }
                 }
                 if (!bound) {
-                    String namespaceURI =
-                            contextElement.coreLookupNamespaceURI(prefix, AxiomSemantics.INSTANCE);
+                    String namespaceURI = contextElement.coreLookupNamespaceURI(prefix, AxiomSemantics.INSTANCE);
                     if (namespaceURI != null && !namespaceURI.isEmpty()) {
                         processNamespaceDeclaration(prefix, namespaceURI);
                     }

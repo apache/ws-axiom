@@ -18,12 +18,13 @@
  */
 package org.apache.axiom.weaver;
 
+import com.github.veithen.jrel.association.MutableReferences;
+import com.github.veithen.jrel.collection.LinkedIdentityHashSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.axiom.weaver.classio.ClassFetcher;
 import org.apache.axiom.weaver.mixin.ClassDefinition;
 import org.apache.axiom.weaver.mixin.Mixin;
@@ -32,9 +33,6 @@ import org.apache.axiom.weaver.mixin.clazz.MixinFactory;
 import org.apache.axiom.weaver.mixin.factory.FactoryMixinFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.github.veithen.jrel.association.MutableReferences;
-import com.github.veithen.jrel.collection.LinkedIdentityHashSet;
 
 public final class Weaver {
     private static final Log log = LogFactory.getLog(Weaver.class);
@@ -48,8 +46,7 @@ public final class Weaver {
             Relations.WEAVER.getConverse().newReferenceHolder(this);
     private int nextId = 1;
 
-    public Weaver(
-            ClassLoader classLoader, ImplementationClassNameMapper implementationClassNameMapper) {
+    public Weaver(ClassLoader classLoader, ImplementationClassNameMapper implementationClassNameMapper) {
         classFetcher = new ClassFetcherImpl(classLoader);
         this.implementationClassNameMapper = implementationClassNameMapper;
     }
@@ -88,18 +85,16 @@ public final class Weaver {
                     mixinNodes.add(new MixinNode(mixin, interfaceNode));
                 }
             }
-            ImplementationNode implementationNode =
-                    new ImplementationNode(
-                            nextId++,
-                            parentImplementations,
-                            interfaceNode,
-                            mixinNodes,
-                            // The class name is evaluated lazily so that mapper only needs to
-                            // produce values for classes that are actually generated.
-                            () ->
-                                    implementationClassNameMapper
-                                            .getImplementationClassName(iface)
-                                            .replace('.', '/'));
+            ImplementationNode implementationNode = new ImplementationNode(
+                    nextId++,
+                    parentImplementations,
+                    interfaceNode,
+                    mixinNodes,
+                    // The class name is evaluated lazily so that mapper only needs to
+                    // produce values for classes that are actually generated.
+                    () -> implementationClassNameMapper
+                            .getImplementationClassName(iface)
+                            .replace('.', '/'));
             implementationNodes.put(iface, implementationNode);
             nodes.add(implementationNode);
         }
@@ -155,8 +150,7 @@ public final class Weaver {
         Map<Set<ImplementationNode>, Set<ImplementationNode>> mergableNodes = new HashMap<>();
         for (ImplementationNode node : nodes) {
             mergableNodes
-                    .computeIfAbsent(
-                            node.getRequiredDescendantsOrSelf(), k -> new LinkedIdentityHashSet<>())
+                    .computeIfAbsent(node.getRequiredDescendantsOrSelf(), k -> new LinkedIdentityHashSet<>())
                     .add(node);
         }
         for (Set<ImplementationNode> nodes : mergableNodes.values()) {
@@ -182,18 +176,14 @@ public final class Weaver {
         dump("Final graph:\n", true);
 
         Map<Class<?>, String> implementationClassNames = new HashMap<>();
-        interfaceNodes
-                .values()
-                .forEach(
-                        interfaceNode -> {
-                            Set<ImplementationNode> implementationNodes =
-                                    interfaceNode.getImplementations();
-                            if (implementationNodes.size() == 1) {
-                                implementationClassNames.put(
-                                        interfaceNode.getInterface(),
-                                        implementationNodes.iterator().next().getClassName());
-                            }
-                        });
+        interfaceNodes.values().forEach(interfaceNode -> {
+            Set<ImplementationNode> implementationNodes = interfaceNode.getImplementations();
+            if (implementationNodes.size() == 1) {
+                implementationClassNames.put(
+                        interfaceNode.getInterface(),
+                        implementationNodes.iterator().next().getClassName());
+            }
+        });
         WeavingContext context = new WeavingContextImpl(implementationClassNames);
 
         List<ClassDefinition> result = new ArrayList<>();

@@ -19,10 +19,8 @@
 package org.apache.axiom.ts.dimension.serialization;
 
 import java.io.ByteArrayOutputStream;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.testutils.suite.LabelTarget;
 import org.xml.sax.XMLReader;

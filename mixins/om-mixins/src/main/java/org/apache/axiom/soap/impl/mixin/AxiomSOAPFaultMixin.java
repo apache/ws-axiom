@@ -20,9 +20,7 @@ package org.apache.axiom.soap.impl.mixin;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.intf.Sequence;
 import org.apache.axiom.soap.SOAPConstants;
@@ -80,8 +78,7 @@ public abstract class AxiomSOAPFaultMixin implements AxiomSOAPFault {
             setDetail(detail);
         }
         OMElement faultDetailEnty =
-                factory.createOMElement(
-                        SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, null, detail);
+                factory.createOMElement(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, null, detail);
         faultDetailEnty.setText(sw.getBuffer().toString());
     }
 
@@ -92,9 +89,7 @@ public abstract class AxiomSOAPFaultMixin implements AxiomSOAPFault {
             return null;
         } else {
             OMElement exceptionElement =
-                    getDetail()
-                            .getFirstChildWithName(
-                                    new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
+                    getDetail().getFirstChildWithName(new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
             if (exceptionElement != null) {
                 return new Exception(exceptionElement.getText());
             } else {

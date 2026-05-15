@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.common;
 
 import java.util.List;
-
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.intf.AxiomElement;
@@ -68,8 +67,7 @@ public class RolePlayerChecker implements ElementMatcher<AxiomElement> {
         // 1. If role is ultimatedest, go by what the rolePlayer says
         if (role == null
                 || role.equals("")
-                || (version instanceof SOAP12Version
-                        && role.equals(SOAP12Constants.SOAP_ROLE_ULTIMATE_RECEIVER))) {
+                || (version instanceof SOAP12Version && role.equals(SOAP12Constants.SOAP_ROLE_ULTIMATE_RECEIVER))) {
             return (rolePlayer == null || rolePlayer.isUltimateDestination());
         }
 

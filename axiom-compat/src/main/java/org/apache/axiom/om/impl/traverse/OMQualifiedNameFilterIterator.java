@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.traverse;
 
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;

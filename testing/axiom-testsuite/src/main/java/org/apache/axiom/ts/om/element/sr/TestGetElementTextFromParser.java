@@ -20,11 +20,11 @@ package org.apache.axiom.ts.om.element.sr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.StringReader;
 import java.util.Iterator;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -33,9 +33,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.xml.sax.InputSource;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestGetElementTextFromParser extends AxiomTestCase {
     private final BuilderFactory builderFactory;
@@ -69,10 +66,8 @@ public class TestGetElementTextFromParser extends AxiomTestCase {
         // request the XMLStreamReader ("a"). This is to make sure that the XMLStreamReader
         // implementation actually delegates to the underlying parser (which is not necessarily the
         // case on "a").
-        OMXMLParserWrapper builder =
-                builderFactory.getBuilder(
-                        metaFactory,
-                        new InputSource(new StringReader("<a><b>AB<!--comment text-->CD</b></a>")));
+        OMXMLParserWrapper builder = builderFactory.getBuilder(
+                metaFactory, new InputSource(new StringReader("<a><b>AB<!--comment text-->CD</b></a>")));
         OMElement element = builder.getDocumentElement();
 
         // Build a certain number of descendants. This is used to test scenarios where the

@@ -23,7 +23,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-
 import org.apache.axiom.net.protocol.registry.URLRegistry;
 
 public abstract class ComputedMessageContent extends MessageContent {

@@ -22,11 +22,10 @@ package org.apache.axiom.ts.om.document;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
 import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -37,15 +36,12 @@ import org.xml.sax.DTDHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-import com.google.inject.Inject;
-
 public class TestGetSAXResultSAXParser extends AxiomTestCase {
     private final SAXImplementation saxImplementation;
     private final XMLSample file;
 
     @Inject
-    public TestGetSAXResultSAXParser(
-            OMMetaFactory metaFactory, SAXImplementation saxImplementation, XMLSample file) {
+    public TestGetSAXResultSAXParser(OMMetaFactory metaFactory, SAXImplementation saxImplementation, XMLSample file) {
         super(metaFactory);
         this.saxImplementation = saxImplementation;
         this.file = file;

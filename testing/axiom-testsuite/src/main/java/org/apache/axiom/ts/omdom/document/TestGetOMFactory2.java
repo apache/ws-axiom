@@ -35,8 +35,7 @@ import org.w3c.dom.DocumentType;
 public class TestGetOMFactory2 extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Document document =
-                metaFactory.getDOMImplementation().createDocument("urn:test", "root", null);
+        Document document = metaFactory.getDOMImplementation().createDocument("urn:test", "root", null);
         assertThat(((OMDocument) document).getOMFactory()).isSameAs(metaFactory.getOMFactory());
     }
 }

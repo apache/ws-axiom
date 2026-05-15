@@ -19,10 +19,8 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.testutils.namespace.NamespaceContextTestUtils;
 
 public class TestGetNamespaceContextImplicitNamespaces extends DialectTestCase {

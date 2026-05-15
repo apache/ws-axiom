@@ -20,16 +20,15 @@ package org.apache.axiom.ts.soap12.fault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestMoreChildrenAddition extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -45,7 +44,6 @@ public class TestMoreChildrenAddition extends TestCase {
         assertThat(code.getParent()).isSameAs(envelope.getBody().getFault());
         assertThat(code.getParent()).isNotSameAs(soapEnvelope.getBody().getFault());
         assertThat(soapEnvelope.getBody().getFault().getCode()).isNull();
-        assertThat(envelope.getBody().getFault().getCode().getValue().getText())
-                .isEqualTo(errorCodeString);
+        assertThat(envelope.getBody().getFault().getCode().getValue().getText()).isEqualTo(errorCodeString);
     }
 }

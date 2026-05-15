@@ -20,15 +20,12 @@ package org.apache.axiom.samples;
 
 import java.io.InputStream;
 import java.net.URL;
-
 import javax.xml.XMLConstants;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-
 import junit.framework.TestCase;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -52,9 +49,7 @@ public class ValidateSample extends TestCase {
     // END SNIPPET: sax
 
     public void testSAX() throws Exception {
-        validate(
-                getClass().getResourceAsStream("soap-request.xml"),
-                getClass().getResource("schema.xsd"));
+        validate(getClass().getResourceAsStream("soap-request.xml"), getClass().getResource("schema.xsd"));
     }
 
     // START SNIPPET: dom
@@ -72,8 +67,6 @@ public class ValidateSample extends TestCase {
     // END SNIPPET: dom
 
     public void testDOM() throws Exception {
-        validate(
-                getClass().getResourceAsStream("soap-request.xml"),
-                getClass().getResource("schema.xsd"));
+        validate(getClass().getResourceAsStream("soap-request.xml"), getClass().getResource("schema.xsd"));
     }
 }

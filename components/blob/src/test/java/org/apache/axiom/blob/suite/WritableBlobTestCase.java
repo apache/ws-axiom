@@ -18,10 +18,9 @@
  */
 package org.apache.axiom.blob.suite;
 
+import junit.framework.TestCase;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-
-import junit.framework.TestCase;
 
 public abstract class WritableBlobTestCase extends TestCase {
     private final WritableBlobFactory<?> factory;

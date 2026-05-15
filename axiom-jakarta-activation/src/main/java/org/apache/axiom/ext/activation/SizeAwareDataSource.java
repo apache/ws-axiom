@@ -21,7 +21,6 @@ package org.apache.axiom.ext.activation;
 
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.util.activation.DataHandlerUtils;
 

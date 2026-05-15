@@ -20,19 +20,16 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.fail;
 
+import com.google.inject.Inject;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
-
-import com.google.inject.Inject;
 
 public class TestCloseWithXMLStreamReader extends AxiomTestCase {
     @Inject
@@ -45,10 +42,8 @@ public class TestCloseWithXMLStreamReader extends AxiomTestCase {
         InputStream in = XMLSample.SIMPLE.getInputStream();
         try {
             XMLStreamReader reader = StAXUtils.createXMLStreamReader(in);
-            OMXMLParserWrapper builder =
-                    OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader);
-            WeakReference<XMLStreamReader> readerWeakRef =
-                    new WeakReference<XMLStreamReader>(reader);
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader);
+            WeakReference<XMLStreamReader> readerWeakRef = new WeakReference<XMLStreamReader>(reader);
             reader = null;
             builder.getDocument().build();
             builder.close();

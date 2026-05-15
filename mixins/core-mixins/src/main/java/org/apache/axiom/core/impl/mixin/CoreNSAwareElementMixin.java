@@ -49,8 +49,7 @@ public abstract class CoreNSAwareElementMixin implements CoreNSAwareElement {
     }
 
     @Override
-    public final void serializeStartEvent(XmlHandler handler)
-            throws CoreModelException, StreamException {
+    public final void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
         handler.startElement(coreGetNamespaceURI(), coreGetLocalName(), coreGetPrefix());
     }
 

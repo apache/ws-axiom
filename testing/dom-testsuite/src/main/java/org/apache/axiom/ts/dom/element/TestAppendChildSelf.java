@@ -38,7 +38,6 @@ public class TestAppendChildSelf extends DOMTestCase {
         Element element = document.createElementNS("urn:test", "test");
         assertThatThrownBy(() -> element.appendChild(element))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
     }
 }

@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.namespace.QName;
-
 import org.junit.jupiter.api.Test;
 
 public class QNameMapTest {

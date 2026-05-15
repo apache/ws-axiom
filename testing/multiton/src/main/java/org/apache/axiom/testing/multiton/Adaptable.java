@@ -36,20 +36,16 @@ public abstract class Adaptable {
     private final Adapters adapters = new Adapters();
 
     static {
-        for (Iterator<AdapterFactory> it =
-                        ServiceLoader.load(AdapterFactory.class, Adaptable.class.getClassLoader())
-                                .iterator();
+        for (Iterator<AdapterFactory> it = ServiceLoader.load(AdapterFactory.class, Adaptable.class.getClassLoader())
+                        .iterator();
                 it.hasNext(); ) {
             AdapterFactory adapterFactory = it.next();
             // TODO: only works in the basic case where the factory directly implements
             // AdapterFactory as the first interface
-            Class clazz =
-                    ((Class<?>)
-                                    ((ParameterizedType)
-                                                    adapterFactory.getClass()
-                                                            .getGenericInterfaces()[0])
-                                            .getActualTypeArguments()[0])
-                            .asSubclass(Adaptable.class);
+            Class clazz = ((Class<?>)
+                            ((ParameterizedType) adapterFactory.getClass().getGenericInterfaces()[0])
+                                    .getActualTypeArguments()[0])
+                    .asSubclass(Adaptable.class);
             List<AdapterFactory> adapterFactories = adapterFactoryMap.get(clazz);
             if (adapterFactories == null) {
                 adapterFactories = new ArrayList<>();

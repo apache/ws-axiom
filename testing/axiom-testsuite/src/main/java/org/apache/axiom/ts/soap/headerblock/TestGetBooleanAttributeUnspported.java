@@ -20,8 +20,8 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -29,14 +29,13 @@ import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
 /**
  * Tests that {@link SOAPHeaderBlock#getRelay()} throws {@link UnsupportedOperationException} for
  * SOAP 1.1 messages.
  */
 public class TestGetBooleanAttributeUnspported extends BooleanAttributeTestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Inject
     public TestGetBooleanAttributeUnspported(SOAPSpec spec, HeaderBlockAttribute attribute) {
@@ -47,11 +46,8 @@ public class TestGetBooleanAttributeUnspported extends BooleanAttributeTestCase 
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));
-        assertThatThrownBy(
-                        () ->
-                                attribute
-                                        .getAdapter(BooleanAttributeAccessor.class)
-                                        .getValue(headerBlock))
+        assertThatThrownBy(() ->
+                        attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock))
                 .isInstanceOf(UnsupportedOperationException.class);
     }
 }

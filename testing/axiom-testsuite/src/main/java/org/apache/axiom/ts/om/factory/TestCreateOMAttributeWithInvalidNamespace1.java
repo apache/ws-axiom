@@ -20,12 +20,11 @@ package org.apache.axiom.ts.om.factory;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMFactory#createOMAttribute(String, OMNamespace, String)} throws an exception

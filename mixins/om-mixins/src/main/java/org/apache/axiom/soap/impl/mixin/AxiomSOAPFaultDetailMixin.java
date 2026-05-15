@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultDetail;

@@ -20,7 +20,6 @@ package org.apache.axiom.weaver.mixin;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;

@@ -20,15 +20,13 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the result of {@link OMSerializable#isComplete()} on an {@link OMElement} when deferred
@@ -42,10 +40,9 @@ public class TestIsCompleteWithParser extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(), new StringReader("<a><b/></a>"))
-                        .getDocumentElement();
+        OMElement element = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), new StringReader("<a><b/></a>"))
+                .getDocumentElement();
         assertThat(element.isComplete()).isFalse();
         element.getFirstElement().getNextOMSibling();
         assertThat(element.isComplete()).isTrue();

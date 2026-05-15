@@ -20,10 +20,10 @@ package org.apache.axiom.ts.om.element;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import java.io.StringReader;
 
+import com.google.inject.Inject;
+import java.io.StringReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -31,8 +31,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link OMNode#discard()} on an element that is partially built, more
@@ -48,12 +46,9 @@ public class TestDiscardPartiallyBuilt extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement root =
-                OMXMLBuilderFactory.createOMBuilder(
-                                factory,
-                                new StringReader(
-                                        "<root><element><a><b>text</b></a><c/></element><sibling/></root>"))
-                        .getDocumentElement();
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(
+                        factory, new StringReader("<root><element><a><b>text</b></a><c/></element><sibling/></root>"))
+                .getDocumentElement();
         OMElement element = root.getFirstElement();
 
         // Navigate to the text node so that the element is partially built
@@ -62,9 +57,7 @@ public class TestDiscardPartiallyBuilt extends AxiomTestCase {
         assertThat(text.getText()).isEqualTo("text");
 
         element.discard();
-        assertAbout(xml())
-                .that(xml(OMElement.class, root))
-                .hasSameContentAs("<root><sibling/></root>");
+        assertAbout(xml()).that(xml(OMElement.class, root)).hasSameContentAs("<root><sibling/></root>");
 
         // Force the builder to complete the document. If the discard method didn't adjust the
         // element depth correctly, then an exception will occur here

@@ -19,6 +19,11 @@
 
 package org.apache.axiom.mime;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.util.Collections;
+import java.util.List;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.OverflowableBlob;
 import org.apache.axiom.blob.WritableBlob;
@@ -29,12 +34,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.stream.EntityState;
 import org.apache.james.mime4j.stream.MimeTokenStream;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.util.Collections;
-import java.util.List;
 
 /** Actual implementation of the {@link Part} interface. */
 final class PartImpl implements Part {
@@ -152,8 +151,7 @@ final class PartImpl implements Part {
             case STATE_BUFFERED:
                 return content;
             default:
-                throw new IllegalStateException(
-                        "The content of the MIME part has already been consumed");
+                throw new IllegalStateException("The content of the MIME part has already been consumed");
         }
     }
 
@@ -169,14 +167,10 @@ final class PartImpl implements Part {
         return blob;
     }
 
-    private static void checkParserState(EntityState state, EntityState expected)
-            throws IllegalStateException {
+    private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
         if (expected != state) {
             throw new IllegalStateException(
-                    "Internal error: expected parser to be in state "
-                            + expected
-                            + ", but got "
-                            + state);
+                    "Internal error: expected parser to be in state " + expected + ", but got " + state);
         }
     }
 
@@ -202,12 +196,10 @@ final class PartImpl implements Part {
                     content.readFrom(getDecodedInputStream());
                 } catch (StreamCopyException ex) {
                     if (ex.getOperation() == StreamCopyException.READ) {
-                        throw new MIMEException(
-                                "Failed to fetch the MIME part content", ex.getCause());
+                        throw new MIMEException("Failed to fetch the MIME part content", ex.getCause());
                     } else {
                         throw new MIMEException(
-                                "Failed to write the MIME part content to temporary storage",
-                                ex.getCause());
+                                "Failed to write the MIME part content to temporary storage", ex.getCause());
                     }
                 }
                 moveToNextPart();
@@ -235,8 +227,7 @@ final class PartImpl implements Part {
                 while (parser.next() != EntityState.T_END_MULTIPART) {
                     // Just loop
                 }
-            } else if (state != EntityState.T_START_BODYPART
-                    && state != EntityState.T_END_MULTIPART) {
+            } else if (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART) {
                 throw new IllegalStateException("Internal error: unexpected parser state " + state);
             }
         } catch (IOException ex) {
@@ -276,8 +267,7 @@ final class PartImpl implements Part {
                     EntityState parserState;
                     do {
                         parserState = parser.next();
-                    } while (parserState != EntityState.T_START_BODYPART
-                            && parserState != EntityState.T_END_MULTIPART);
+                    } while (parserState != EntityState.T_START_BODYPART && parserState != EntityState.T_END_MULTIPART);
                     state = STATE_DISCARDED;
                 }
                 case STATE_BUFFERED -> content.release();

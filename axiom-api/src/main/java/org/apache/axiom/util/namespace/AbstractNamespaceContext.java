@@ -21,7 +21,6 @@ package org.apache.axiom.util.namespace;
 
 import java.util.Collections;
 import java.util.Iterator;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 

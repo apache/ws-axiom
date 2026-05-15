@@ -31,9 +31,7 @@ public abstract class CreateOMElementTestCase extends AxiomTestCase {
     protected final CreateOMElementParentSupplier parentSupplier;
 
     public CreateOMElementTestCase(
-            OMMetaFactory metaFactory,
-            CreateOMElementVariant variant,
-            CreateOMElementParentSupplier parentSupplier) {
+            OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
         super(metaFactory);
         this.variant = variant;
         this.parentSupplier = parentSupplier;

@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFaultSubCode;

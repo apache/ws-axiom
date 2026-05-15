@@ -20,14 +20,12 @@ package org.apache.axiom.ts.soap12.faultreason;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Locale;
-
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetFaultReasonText extends SampleBasedSOAPTestCase {
     @Inject
@@ -38,10 +36,8 @@ public class TestGetFaultReasonText extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultReason reason = envelope.getBody().getFault().getReason();
-        assertThat(reason.getFaultReasonText(Locale.GERMAN))
-                .isEqualTo("Senderseitige Zeitüberschreitung");
-        assertThat(reason.getFaultReasonText(Locale.GERMANY))
-                .isEqualTo("Senderseitige Zeitüberschreitung");
+        assertThat(reason.getFaultReasonText(Locale.GERMAN)).isEqualTo("Senderseitige Zeitüberschreitung");
+        assertThat(reason.getFaultReasonText(Locale.GERMANY)).isEqualTo("Senderseitige Zeitüberschreitung");
         assertThat(reason.getFaultReasonText(Locale.ENGLISH)).isEqualTo("Sender Timeout");
         assertThat(reason.getFaultReasonText(Locale.FRENCH)).isEqualTo("Sender Timeout");
     }

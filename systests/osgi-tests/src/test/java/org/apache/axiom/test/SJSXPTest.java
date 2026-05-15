@@ -26,7 +26,6 @@ import static org.ops4j.pax.exam.CoreOptions.systemPackages;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.junit.Test;
@@ -66,11 +65,9 @@ public class SJSXPTest {
 
     @Test
     public void testCreateOMBuilder() throws Exception {
-        OMElement oe =
-                OMXMLBuilderFactory.createOMBuilder(
-                                new StringReader(
-                                        "<a:testElement xmlns:a=\"http://test/namespace\"/>"))
-                        .getDocumentElement();
+        OMElement oe = OMXMLBuilderFactory.createOMBuilder(
+                        new StringReader("<a:testElement xmlns:a=\"http://test/namespace\"/>"))
+                .getDocumentElement();
         assertThat(oe.getLocalName()).isEqualTo("testElement");
         assertThat(oe.getNamespace().getNamespaceURI()).isEqualTo("http://test/namespace");
     }

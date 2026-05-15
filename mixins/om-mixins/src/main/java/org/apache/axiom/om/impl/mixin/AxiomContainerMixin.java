@@ -22,14 +22,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.Builder;
@@ -114,8 +112,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     @Override
-    public XMLStreamReader getXMLStreamReader(
-            boolean cache, OMXMLStreamReaderConfiguration configuration) {
+    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
         return defaultGetXMLStreamReader(cache, configuration);
     }
 
@@ -132,8 +129,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
             if (configuration.isPreserveNamespaceContext()) {
                 handler = new NamespaceContextPreservationFilterHandler(handler, contextElement);
             } else {
-                for (Iterator<OMNamespace> it = ((OMElement) contextElement).getNamespacesInScope();
-                        it.hasNext(); ) {
+                for (Iterator<OMNamespace> it = ((OMElement) contextElement).getNamespacesInScope(); it.hasNext(); ) {
                     OMNamespace ns = it.next();
                     pivot.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
                 }
@@ -152,8 +148,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     public final XOPEncoded<XMLStreamReader> getXOPEncodedStreamReader(boolean cache) {
         StAXPivot pivot = new StAXPivot(AxiomXMLStreamReaderExtensionFactory.INSTANCE);
         XOPEncodingFilterHandler encoder =
-                new XOPEncodingFilterHandler(
-                        pivot, ContentIDGenerator.DEFAULT, OptimizationPolicy.ALL);
+                new XOPEncodingFilterHandler(pivot, ContentIDGenerator.DEFAULT, OptimizationPolicy.ALL);
         try {
             pivot.setReader(coreGetReader(encoder, cache, true));
         } catch (StreamException ex) {
@@ -205,11 +200,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
 
     @Override
     public Iterator<OMNode> getChildren() {
-        return coreGetNodes(
-                Axis.CHILDREN,
-                AxiomChildNode.class,
-                Mappers.<OMNode>identity(),
-                AxiomSemantics.INSTANCE);
+        return coreGetNodes(Axis.CHILDREN, AxiomChildNode.class, Mappers.<OMNode>identity(), AxiomSemantics.INSTANCE);
     }
 
     @Override
@@ -275,8 +266,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
 
     @Override
     public final SAXResult getSAXResult() {
-        XmlHandlerContentHandler handler =
-                new XmlHandlerContentHandler(new SAXResultContentHandler(this), true);
+        XmlHandlerContentHandler handler = new XmlHandlerContentHandler(new SAXResultContentHandler(this), true);
         SAXResult result = new SAXResult();
         result.setHandler(handler);
         result.setLexicalHandler(handler);
@@ -284,10 +274,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     private void serialize(
-            XmlHandler handler,
-            NamespaceContextProvider namespaceContextProvider,
-            OMOutputFormat format,
-            boolean cache)
+            XmlHandler handler, NamespaceContextProvider namespaceContextProvider, OMOutputFormat format, boolean cache)
             throws StreamException {
         handler = new XmlDeclarationRewriterHandler(handler, format);
         CoreElement contextElement = getContextElement();
@@ -303,10 +290,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     private void serializeAndSurfaceIOException(
-            XmlHandler handler,
-            NamespaceContextProvider namespaceContextProvider,
-            OMOutputFormat format,
-            boolean cache)
+            XmlHandler handler, NamespaceContextProvider namespaceContextProvider, OMOutputFormat format, boolean cache)
             throws IOException {
         try {
             serialize(handler, namespaceContextProvider, format, cache);
@@ -344,8 +328,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     @Override
-    public final void serialize(OutputStream out, OMOutputFormat format, boolean cache)
-            throws IOException {
+    public final void serialize(OutputStream out, OMOutputFormat format, boolean cache) throws IOException {
         String encoding = format.getCharSetEncoding();
         if (encoding == null) { // Default encoding is UTF-8
             format.setCharSetEncoding(encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
@@ -366,12 +349,8 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
         XmlHandler handler;
         XOPEncodingFilterHandler encoder;
         if (format.isOptimized()) {
-            handler =
-                    encoder =
-                            new XOPEncodingFilterHandler(
-                                    serializer,
-                                    new ContentIDGeneratorImpl(format),
-                                    new OptimizationPolicyImpl(format));
+            handler = encoder = new XOPEncodingFilterHandler(
+                    serializer, new ContentIDGeneratorImpl(format), new OptimizationPolicyImpl(format));
         } else {
             handler = serializer;
             encoder = null;
@@ -394,8 +373,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     @Override
-    public final void serialize(Writer writer, OMOutputFormat format, boolean cache)
-            throws IOException {
+    public final void serialize(Writer writer, OMOutputFormat format, boolean cache) throws IOException {
         serializeAndSurfaceIOException(new Serializer(writer), null, format, cache);
     }
 
@@ -410,8 +388,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     @Override
-    public final void serialize(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
+    public final void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         try {
             serialize(output, format, true);
         } catch (IOException ex) {
@@ -420,8 +397,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     @Override
-    public final void serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
+    public final void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         try {
             serialize(output, format, false);
         } catch (IOException ex) {
@@ -457,8 +433,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
     }
 
     @Override
-    public final void serializeAndConsume(Writer writer, OMOutputFormat format)
-            throws XMLStreamException {
+    public final void serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
         try {
             serialize(writer, format, false);
         } catch (IOException ex) {

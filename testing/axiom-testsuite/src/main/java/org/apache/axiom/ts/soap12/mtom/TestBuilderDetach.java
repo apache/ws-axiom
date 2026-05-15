@@ -20,8 +20,8 @@ package org.apache.axiom.ts.soap12.mtom;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -34,8 +34,6 @@ import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
 
-import com.google.inject.Inject;
-
 public class TestBuilderDetach extends AxiomTestCase {
     @Inject
     public TestBuilderDetach(OMMetaFactory metaFactory) {
@@ -46,11 +44,10 @@ public class TestBuilderDetach extends AxiomTestCase {
     protected void runTest() throws Throwable {
         MTOMSample sample = MTOMSample.SAMPLE1;
         InstrumentedInputStream in = new InstrumentedInputStream(sample.getInputStream());
-        MultipartBody mb =
-                MultipartBody.builder()
-                        .setInputStream(in)
-                        .setContentType(sample.getContentType())
-                        .build();
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(in)
+                .setContentType(sample.getContentType())
+                .build();
         SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb);
         SOAPEnvelope envelope = builder.getSOAPEnvelope();
         long countBeforeDetach = in.getCount();

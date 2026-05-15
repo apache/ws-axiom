@@ -18,6 +18,10 @@
  */
 package org.apache.axiom.truth.xml;
 
+import com.google.common.truth.FailureMetadata;
+import com.google.common.truth.SimpleSubjectBuilder;
+import com.google.common.truth.Subject;
+import com.google.common.truth.Truth;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -27,23 +31,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamSource;
-
 import org.apache.axiom.truth.xml.spi.XML;
 import org.apache.axiom.truth.xml.spi.XMLFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
-
-import com.google.common.truth.FailureMetadata;
-import com.google.common.truth.SimpleSubjectBuilder;
-import com.google.common.truth.Subject;
-import com.google.common.truth.Truth;
 
 /** Google Truth extension for XML. */
 public final class XMLTruth {
@@ -59,202 +56,179 @@ public final class XMLTruth {
 
     static {
         factories = new ArrayList<>();
-        factories.add(
-                new XMLFactory<XML>() {
-                    @Override
-                    public Class<XML> getExpectedType() {
-                        return XML.class;
-                    }
+        factories.add(new XMLFactory<XML>() {
+            @Override
+            public Class<XML> getExpectedType() {
+                return XML.class;
+            }
 
+            @Override
+            public XML createXML(XML xml) {
+                return xml;
+            }
+        });
+        factories.add(new XMLFactory<InputStream>() {
+            @Override
+            public Class<InputStream> getExpectedType() {
+                return InputStream.class;
+            }
+
+            @Override
+            public XML createXML(final InputStream in) {
+                return new StAXXML(new Parsable() {
                     @Override
-                    public XML createXML(XML xml) {
-                        return xml;
+                    XMLStreamReader createXMLStreamReader(XMLInputFactory factory) throws XMLStreamException {
+                        return factory.createXMLStreamReader(in);
                     }
                 });
-        factories.add(
-                new XMLFactory<InputStream>() {
-                    @Override
-                    public Class<InputStream> getExpectedType() {
-                        return InputStream.class;
-                    }
+            }
+        });
+        factories.add(new XMLFactory<Reader>() {
+            @Override
+            public Class<Reader> getExpectedType() {
+                return Reader.class;
+            }
 
+            @Override
+            public XML createXML(final Reader reader) {
+                return new StAXXML(new Parsable() {
                     @Override
-                    public XML createXML(final InputStream in) {
-                        return new StAXXML(
-                                new Parsable() {
-                                    @Override
-                                    XMLStreamReader createXMLStreamReader(XMLInputFactory factory)
-                                            throws XMLStreamException {
-                                        return factory.createXMLStreamReader(in);
-                                    }
-                                });
+                    XMLStreamReader createXMLStreamReader(XMLInputFactory factory) throws XMLStreamException {
+                        return factory.createXMLStreamReader(reader);
                     }
                 });
-        factories.add(
-                new XMLFactory<Reader>() {
-                    @Override
-                    public Class<Reader> getExpectedType() {
-                        return Reader.class;
-                    }
+            }
+        });
+        factories.add(new XMLFactory<StreamSource>() {
+            @Override
+            public Class<StreamSource> getExpectedType() {
+                return StreamSource.class;
+            }
 
+            @Override
+            public XML createXML(final StreamSource source) {
+                return new StAXXML(new Parsable() {
                     @Override
-                    public XML createXML(final Reader reader) {
-                        return new StAXXML(
-                                new Parsable() {
-                                    @Override
-                                    XMLStreamReader createXMLStreamReader(XMLInputFactory factory)
-                                            throws XMLStreamException {
-                                        return factory.createXMLStreamReader(reader);
-                                    }
-                                });
+                    XMLStreamReader createXMLStreamReader(XMLInputFactory factory) throws XMLStreamException {
+                        return factory.createXMLStreamReader(source);
                     }
                 });
-        factories.add(
-                new XMLFactory<StreamSource>() {
-                    @Override
-                    public Class<StreamSource> getExpectedType() {
-                        return StreamSource.class;
-                    }
+            }
+        });
+        factories.add(new XMLFactory<InputSource>() {
+            @Override
+            public Class<InputSource> getExpectedType() {
+                return InputSource.class;
+            }
 
+            @Override
+            public XML createXML(InputSource is) {
+                StreamSource source = new StreamSource();
+                source.setInputStream(is.getByteStream());
+                source.setReader(is.getCharacterStream());
+                source.setPublicId(is.getPublicId());
+                source.setSystemId(is.getSystemId());
+                return xml(source);
+            }
+        });
+        factories.add(new XMLFactory<URL>() {
+            @Override
+            public Class<URL> getExpectedType() {
+                return URL.class;
+            }
+
+            @Override
+            public XML createXML(URL url) {
+                return xml(new StreamSource(url.toString()));
+            }
+        });
+        factories.add(new XMLFactory<File>() {
+            @Override
+            public Class<File> getExpectedType() {
+                return File.class;
+            }
+
+            @Override
+            public XML createXML(File file) {
+                return xml(new StreamSource(file.toURI().toString()));
+            }
+        });
+        factories.add(new XMLFactory<String>() {
+            @Override
+            public Class<String> getExpectedType() {
+                return String.class;
+            }
+
+            @Override
+            public XML createXML(String xml) {
+                return xml(new StringReader(xml));
+            }
+        });
+        factories.add(new XMLFactory<byte[]>() {
+            @Override
+            public Class<byte[]> getExpectedType() {
+                return byte[].class;
+            }
+
+            @Override
+            public XML createXML(byte[] bytes) {
+                return xml(new ByteArrayInputStream(bytes));
+            }
+        });
+        factories.add(new XMLFactory<Document>() {
+            @Override
+            public Class<Document> getExpectedType() {
+                return Document.class;
+            }
+
+            @Override
+            public XML createXML(Document document) {
+                return new DOMXML(document);
+            }
+        });
+        factories.add(new XMLFactory<Element>() {
+            @Override
+            public Class<Element> getExpectedType() {
+                return Element.class;
+            }
+
+            @Override
+            public XML createXML(Element element) {
+                return new DOMXML(element);
+            }
+        });
+        factories.add(new XMLFactory<XMLStreamReader>() {
+            @Override
+            public Class<XMLStreamReader> getExpectedType() {
+                return XMLStreamReader.class;
+            }
+
+            @Override
+            public XML createXML(final XMLStreamReader source) {
+                return new StAXXML(new XMLStreamReaderProvider() {
                     @Override
-                    public XML createXML(final StreamSource source) {
-                        return new StAXXML(
-                                new Parsable() {
-                                    @Override
-                                    XMLStreamReader createXMLStreamReader(XMLInputFactory factory)
-                                            throws XMLStreamException {
-                                        return factory.createXMLStreamReader(source);
-                                    }
-                                });
+                    XMLStreamReader getXMLStreamReader(boolean expandEntityReferences) throws XMLStreamException {
+                        if (expandEntityReferences) {
+                            throw new UnsupportedOperationException(
+                                    "Can't expand entity references on a user supplied XMLStreamReader");
+                        }
+                        return source;
                     }
                 });
-        factories.add(
-                new XMLFactory<InputSource>() {
-                    @Override
-                    public Class<InputSource> getExpectedType() {
-                        return InputSource.class;
-                    }
+            }
+        });
+        factories.add(new XMLFactory<StAXSource>() {
+            @Override
+            public Class<StAXSource> getExpectedType() {
+                return StAXSource.class;
+            }
 
-                    @Override
-                    public XML createXML(InputSource is) {
-                        StreamSource source = new StreamSource();
-                        source.setInputStream(is.getByteStream());
-                        source.setReader(is.getCharacterStream());
-                        source.setPublicId(is.getPublicId());
-                        source.setSystemId(is.getSystemId());
-                        return xml(source);
-                    }
-                });
-        factories.add(
-                new XMLFactory<URL>() {
-                    @Override
-                    public Class<URL> getExpectedType() {
-                        return URL.class;
-                    }
-
-                    @Override
-                    public XML createXML(URL url) {
-                        return xml(new StreamSource(url.toString()));
-                    }
-                });
-        factories.add(
-                new XMLFactory<File>() {
-                    @Override
-                    public Class<File> getExpectedType() {
-                        return File.class;
-                    }
-
-                    @Override
-                    public XML createXML(File file) {
-                        return xml(new StreamSource(file.toURI().toString()));
-                    }
-                });
-        factories.add(
-                new XMLFactory<String>() {
-                    @Override
-                    public Class<String> getExpectedType() {
-                        return String.class;
-                    }
-
-                    @Override
-                    public XML createXML(String xml) {
-                        return xml(new StringReader(xml));
-                    }
-                });
-        factories.add(
-                new XMLFactory<byte[]>() {
-                    @Override
-                    public Class<byte[]> getExpectedType() {
-                        return byte[].class;
-                    }
-
-                    @Override
-                    public XML createXML(byte[] bytes) {
-                        return xml(new ByteArrayInputStream(bytes));
-                    }
-                });
-        factories.add(
-                new XMLFactory<Document>() {
-                    @Override
-                    public Class<Document> getExpectedType() {
-                        return Document.class;
-                    }
-
-                    @Override
-                    public XML createXML(Document document) {
-                        return new DOMXML(document);
-                    }
-                });
-        factories.add(
-                new XMLFactory<Element>() {
-                    @Override
-                    public Class<Element> getExpectedType() {
-                        return Element.class;
-                    }
-
-                    @Override
-                    public XML createXML(Element element) {
-                        return new DOMXML(element);
-                    }
-                });
-        factories.add(
-                new XMLFactory<XMLStreamReader>() {
-                    @Override
-                    public Class<XMLStreamReader> getExpectedType() {
-                        return XMLStreamReader.class;
-                    }
-
-                    @Override
-                    public XML createXML(final XMLStreamReader source) {
-                        return new StAXXML(
-                                new XMLStreamReaderProvider() {
-                                    @Override
-                                    XMLStreamReader getXMLStreamReader(
-                                            boolean expandEntityReferences)
-                                            throws XMLStreamException {
-                                        if (expandEntityReferences) {
-                                            throw new UnsupportedOperationException(
-                                                    "Can't expand entity references on a user supplied XMLStreamReader");
-                                        }
-                                        return source;
-                                    }
-                                });
-                    }
-                });
-        factories.add(
-                new XMLFactory<StAXSource>() {
-                    @Override
-                    public Class<StAXSource> getExpectedType() {
-                        return StAXSource.class;
-                    }
-
-                    @Override
-                    public XML createXML(StAXSource source) {
-                        return xml(source.getXMLStreamReader());
-                    }
-                });
-        for (XMLFactory<?> factory :
-                ServiceLoader.load(XMLFactory.class, XMLTruth.class.getClassLoader())) {
+            @Override
+            public XML createXML(StAXSource source) {
+                return xml(source.getXMLStreamReader());
+            }
+        });
+        for (XMLFactory<?> factory : ServiceLoader.load(XMLFactory.class, XMLTruth.class.getClassLoader())) {
             factories.add(factory);
         }
     }
@@ -288,11 +262,9 @@ public final class XMLTruth {
         XMLFactory<?> factory = null;
         for (XMLFactory<?> candidate : factories) {
             Class<?> expectedType = candidate.getExpectedType();
-            if ((type == null || expectedType.isAssignableFrom(type))
-                    && expectedType.isInstance(object)) {
+            if ((type == null || expectedType.isAssignableFrom(type)) && expectedType.isInstance(object)) {
                 if (factory != null) {
-                    throw new IllegalArgumentException(
-                            "Multiple matching XMLFactory instances found");
+                    throw new IllegalArgumentException("Multiple matching XMLFactory instances found");
                 } else {
                     factory = candidate;
                 }

@@ -18,12 +18,11 @@
  */
 package org.apache.axiom.ts.dom;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import com.google.inject.Inject;
-
+import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.TestCase;
 
 public abstract class DOMTestCase extends TestCase {
-    @Inject protected DocumentBuilderFactory dbf;
+    @Inject
+    protected DocumentBuilderFactory dbf;
 }

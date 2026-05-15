@@ -19,7 +19,6 @@
 package org.apache.axiom.core.stream.dom.input;
 
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
@@ -164,18 +163,12 @@ final class DOMReader implements XmlReader {
                             Attr attr = (Attr) attributes.item(i);
                             String attrLocalName = attr.getLocalName();
                             if (attrLocalName == null) {
-                                handler.processAttribute(
-                                        attr.getName(),
-                                        attr.getValue(),
-                                        "CDATA",
-                                        attr.getSpecified());
+                                handler.processAttribute(attr.getName(), attr.getValue(), "CDATA", attr.getSpecified());
                             } else {
                                 String namespaceURI = attr.getNamespaceURI();
                                 if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
                                     handler.processNamespaceDeclaration(
-                                            attrLocalName.equals(XMLConstants.XMLNS_ATTRIBUTE)
-                                                    ? ""
-                                                    : attrLocalName,
+                                            attrLocalName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : attrLocalName,
                                             attr.getValue());
                                 } else {
                                     handler.processAttribute(
@@ -193,8 +186,7 @@ final class DOMReader implements XmlReader {
                     }
                     case Node.TEXT_NODE -> {
                         handler.processCharacterData(
-                                currentNode.getNodeValue(),
-                                dom3 && ((Text) currentNode).isElementContentWhitespace());
+                                currentNode.getNodeValue(), dom3 && ((Text) currentNode).isElementContentWhitespace());
                         break loop;
                     }
                     case Node.CDATA_SECTION_NODE -> {
@@ -228,8 +220,7 @@ final class DOMReader implements XmlReader {
                     }
                     default -> {
                         // TODO
-                        throw new UnsupportedOperationException(
-                                "Unsupported node type " + nodeType);
+                        throw new UnsupportedOperationException("Unsupported node type " + nodeType);
                     }
                 }
             }

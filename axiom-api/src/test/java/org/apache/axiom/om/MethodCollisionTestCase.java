@@ -22,7 +22,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
 import junit.framework.TestCase;
 
 public class MethodCollisionTestCase extends TestCase {
@@ -30,8 +29,7 @@ public class MethodCollisionTestCase extends TestCase {
     private final Class<?> domInterface;
     private final MethodSignature[] exceptions;
 
-    public MethodCollisionTestCase(
-            Class<?> omInterface, Class<?> domInterface, MethodSignature[] exceptions) {
+    public MethodCollisionTestCase(Class<?> omInterface, Class<?> domInterface, MethodSignature[] exceptions) {
         this.omInterface = omInterface;
         this.domInterface = domInterface;
         this.exceptions = exceptions;

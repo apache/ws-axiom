@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.common.util.LocaleUtil;
@@ -79,9 +78,7 @@ public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultRea
         for (Iterator<OMElement> it = getChildElements(); it.hasNext(); ) {
             SOAPFaultText textNode = (SOAPFaultText) it.next();
             String lang = textNode.getLang();
-            int score =
-                    LocaleUtil.getMatchScore(
-                            locale, lang == null ? null : Locale.forLanguageTag(lang));
+            int score = LocaleUtil.getMatchScore(locale, lang == null ? null : Locale.forLanguageTag(lang));
             if (score > maxScore) {
                 text = textNode.getText();
                 maxScore = score;

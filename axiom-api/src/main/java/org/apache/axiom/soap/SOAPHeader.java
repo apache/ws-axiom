@@ -19,14 +19,12 @@
 
 package org.apache.axiom.soap;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
 
 /** Interface SOAPHeader */
 public interface SOAPHeader extends OMElement {

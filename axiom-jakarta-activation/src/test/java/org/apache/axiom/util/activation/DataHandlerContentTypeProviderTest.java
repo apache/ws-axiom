@@ -20,13 +20,11 @@ package org.apache.axiom.util.activation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import jakarta.activation.DataHandler;
-import jakarta.activation.DataSource;
-
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.MediaType;
@@ -35,48 +33,41 @@ import org.junit.jupiter.api.Test;
 public class DataHandlerContentTypeProviderTest {
     @Test
     public void testNotDataHandler() {
-        assertThat(
-                        DataHandlerContentTypeProvider.INSTANCE.getContentType(
-                                Blobs.createBlob(new byte[10])))
+        assertThat(DataHandlerContentTypeProvider.INSTANCE.getContentType(Blobs.createBlob(new byte[10])))
                 .isNull();
     }
 
     @Test
     public void testDataHandlerWithoutContentType() {
-        DataHandler dh =
-                new DataHandler(
-                        new DataSource() {
-                            @Override
-                            public InputStream getInputStream() throws IOException {
-                                throw new UnsupportedOperationException();
-                            }
+        DataHandler dh = new DataHandler(new DataSource() {
+            @Override
+            public InputStream getInputStream() throws IOException {
+                throw new UnsupportedOperationException();
+            }
 
-                            @Override
-                            public OutputStream getOutputStream() throws IOException {
-                                throw new UnsupportedOperationException();
-                            }
+            @Override
+            public OutputStream getOutputStream() throws IOException {
+                throw new UnsupportedOperationException();
+            }
 
-                            @Override
-                            public String getContentType() {
-                                return null;
-                            }
+            @Override
+            public String getContentType() {
+                return null;
+            }
 
-                            @Override
-                            public String getName() {
-                                throw new UnsupportedOperationException();
-                            }
-                        });
-        assertThat(
-                        DataHandlerContentTypeProvider.INSTANCE.getContentType(
-                                DataHandlerUtils.toBlob(dh)))
+            @Override
+            public String getName() {
+                throw new UnsupportedOperationException();
+            }
+        });
+        assertThat(DataHandlerContentTypeProvider.INSTANCE.getContentType(DataHandlerUtils.toBlob(dh)))
                 .isNull();
     }
 
     @Test
     public void testDataHandlerWithContentType() {
         DataHandler dh = new DataHandler("test", "text/plain");
-        ContentType contentType =
-                DataHandlerContentTypeProvider.INSTANCE.getContentType(DataHandlerUtils.toBlob(dh));
+        ContentType contentType = DataHandlerContentTypeProvider.INSTANCE.getContentType(DataHandlerUtils.toBlob(dh));
         assertThat(contentType).isNotNull();
         assertThat(contentType.getMediaType()).isEqualTo(MediaType.TEXT_PLAIN);
     }

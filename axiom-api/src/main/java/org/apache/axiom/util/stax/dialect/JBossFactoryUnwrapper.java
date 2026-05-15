@@ -19,10 +19,8 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.lang.reflect.Field;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

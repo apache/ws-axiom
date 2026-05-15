@@ -21,10 +21,14 @@ package org.apache.axiom.ts.om.xop;
 import static org.apache.axiom.ts.xml.XOPSample.XOP_SPEC_SAMPLE;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import jakarta.mail.Multipart;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.util.ByteArrayDataSource;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Iterator;
-
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
@@ -34,13 +38,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
-import jakarta.mail.Multipart;
-import jakarta.mail.internet.MimeMultipart;
-import jakarta.mail.util.ByteArrayDataSource;
 
 public class TestSetOptimize extends AxiomTestCase {
     private final boolean optimize;
@@ -55,15 +52,14 @@ public class TestSetOptimize extends AxiomTestCase {
     protected void runTest() throws Throwable {
         InputStream in = XOP_SPEC_SAMPLE.getInputStream();
         try {
-            OMDocument document =
-                    OMXMLBuilderFactory.createOMBuilder(
-                                    metaFactory.getOMFactory(),
-                                    StAXParserConfiguration.DEFAULT,
-                                    MultipartBody.builder()
-                                            .setInputStream(in)
-                                            .setContentType(XOP_SPEC_SAMPLE.getContentType())
-                                            .build())
-                            .getDocument();
+            OMDocument document = OMXMLBuilderFactory.createOMBuilder(
+                            metaFactory.getOMFactory(),
+                            StAXParserConfiguration.DEFAULT,
+                            MultipartBody.builder()
+                                    .setInputStream(in)
+                                    .setContentType(XOP_SPEC_SAMPLE.getContentType())
+                                    .build())
+                    .getDocument();
             for (Iterator<OMSerializable> it = document.getDescendants(false); it.hasNext(); ) {
                 OMSerializable node = it.next();
                 if (node instanceof OMText text) {
@@ -77,9 +73,7 @@ public class TestSetOptimize extends AxiomTestCase {
             format.setDoOptimize(true);
             document.serialize(out, format);
 
-            Multipart mp =
-                    new MimeMultipart(
-                            new ByteArrayDataSource(out.toByteArray(), format.getContentType()));
+            Multipart mp = new MimeMultipart(new ByteArrayDataSource(out.toByteArray(), format.getContentType()));
             assertThat(mp.getCount()).isEqualTo(optimize ? 3 : 1);
         } finally {
             in.close();

@@ -20,17 +20,14 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMContainer#getXMLStreamReaderWithoutCaching()} correctly generated events for
@@ -46,12 +43,10 @@ public class TestGetXMLStreamReaderWithoutCachingPartiallyBuilt extends AxiomTes
     protected void runTest() throws Throwable {
         // Note: the problem described in AXIOM-393 specifically occurred with descendants
         //       having the same name as the root element
-        OMElement root =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(),
-                                new StringReader(
-                                        "<element><element><element/><element/></element></element>"))
-                        .getDocumentElement();
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(),
+                        new StringReader("<element><element><element/><element/></element></element>"))
+                .getDocumentElement();
 
         // Partially build the tree
         root.getFirstElement().getFirstElement();

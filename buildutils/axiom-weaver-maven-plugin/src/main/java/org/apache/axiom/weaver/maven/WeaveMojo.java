@@ -27,7 +27,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
-
 import org.apache.axiom.weaver.Weaver;
 import org.apache.axiom.weaver.WeaverException;
 import org.apache.axiom.weaver.mixin.ClassDefinition;
@@ -64,22 +63,15 @@ public final class WeaveMojo extends AbstractMojo {
         Log log = getLog();
         URLClassLoader classLoader = createClassLoader();
         try {
-            Weaver weaver =
-                    new Weaver(
-                            classLoader,
-                            (iface) -> {
-                                String packageName = iface.getPackage().getName();
-                                for (PackageMapping packageMapping : packageMappings) {
-                                    if (packageName.equals(packageMapping.getInterfacePackage())) {
-                                        return packageMapping.getOutputPackage()
-                                                + "."
-                                                + iface.getSimpleName()
-                                                + "Impl";
-                                    }
-                                }
-                                throw new WeaverException(
-                                        "No package mapping defined for package " + packageName);
-                            });
+            Weaver weaver = new Weaver(classLoader, (iface) -> {
+                String packageName = iface.getPackage().getName();
+                for (PackageMapping packageMapping : packageMappings) {
+                    if (packageName.equals(packageMapping.getInterfacePackage())) {
+                        return packageMapping.getOutputPackage() + "." + iface.getSimpleName() + "Impl";
+                    }
+                }
+                throw new WeaverException("No package mapping defined for package " + packageName);
+            });
             for (String packageName : weavablePackages) {
                 weaver.loadWeavablePackage(packageName);
             }
@@ -92,9 +84,7 @@ public final class WeaveMojo extends AbstractMojo {
             }
             for (ClassDefinition classDefinition : weaver.generate()) {
                 File outputFile =
-                        new File(
-                                project.getBuild().getOutputDirectory(),
-                                classDefinition.getClassName() + ".class");
+                        new File(project.getBuild().getOutputDirectory(), classDefinition.getClassName() + ".class");
                 if (log.isDebugEnabled()) {
                     StringWriter sw = new StringWriter();
                     classDefinition.dump(new PrintWriter(sw));

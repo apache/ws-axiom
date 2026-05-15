@@ -55,8 +55,7 @@ public class OMNamespaceImpl implements OMNamespace {
      */
     @Override
     public boolean equals(String uri, String prefix) {
-        return (this.uri.equals(uri)
-                && (this.prefix == null ? prefix == null : this.prefix.equals(prefix)));
+        return (this.uri.equals(uri) && (this.prefix == null ? prefix == null : this.prefix.equals(prefix)));
     }
 
     @Override

@@ -22,7 +22,6 @@ package org.apache.axiom.om;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
@@ -111,8 +110,7 @@ public interface OMMetaFactorySPI extends OMMetaFactory {
      * @param message the MIME message
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(
-            StAXParserConfiguration configuration, MultipartBody message);
+    OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, MultipartBody message);
 
     OMXMLParserWrapper createOMBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor);
 
@@ -154,6 +152,5 @@ public interface OMMetaFactorySPI extends OMMetaFactory {
      */
     SOAPModelBuilder createSOAPModelBuilder(MultipartBody message);
 
-    SOAPModelBuilder createSOAPModelBuilder(
-            Source rootPart, OMAttachmentAccessor attachmentAccessor);
+    SOAPModelBuilder createSOAPModelBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor);
 }

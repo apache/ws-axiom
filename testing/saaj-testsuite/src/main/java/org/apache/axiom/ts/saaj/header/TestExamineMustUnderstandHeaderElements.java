@@ -20,14 +20,12 @@ package org.apache.axiom.ts.saaj.header;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.InputStream;
-import java.util.Iterator;
-
 import jakarta.xml.soap.MimeHeaders;
 import jakarta.xml.soap.SOAPHeader;
 import jakarta.xml.soap.SOAPHeaderElement;
 import jakarta.xml.soap.SOAPMessage;
-
+import java.io.InputStream;
+import java.util.Iterator;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 

@@ -20,16 +20,14 @@ package org.apache.axiom.blob.suite;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.Random;
-
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.testutils.io.InstrumentedOutputStream;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestWriteTo extends SizeSensitiveWritableBlobTestCase {
     @Inject

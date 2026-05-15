@@ -21,15 +21,13 @@ package org.apache.axiom.blob.suite;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.OutputStream;
-
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.commons.io.input.NullInputStream;
-
-import com.google.inject.Inject;
 
 public class TestWriteAfterCommit extends WritableBlobTestCase {
     @Inject
@@ -42,22 +40,18 @@ public class TestWriteAfterCommit extends WritableBlobTestCase {
         OutputStream out = blob.getOutputStream();
         out.close();
         assertThatThrownBy(() -> out.write(new byte[10]))
-                .satisfiesAnyOf(
-                        e -> assertThat(e).isInstanceOf(IllegalStateException.class),
-                        e -> assertThat(e).isInstanceOf(IOException.class));
+                .satisfiesAnyOf(e -> assertThat(e).isInstanceOf(IllegalStateException.class), e -> assertThat(e)
+                        .isInstanceOf(IOException.class));
         assertThatThrownBy(() -> out.write(new byte[10], 3, 5))
-                .satisfiesAnyOf(
-                        e -> assertThat(e).isInstanceOf(IllegalStateException.class),
-                        e -> assertThat(e).isInstanceOf(IOException.class));
+                .satisfiesAnyOf(e -> assertThat(e).isInstanceOf(IllegalStateException.class), e -> assertThat(e)
+                        .isInstanceOf(IOException.class));
         assertThatThrownBy(() -> out.write(0))
-                .satisfiesAnyOf(
-                        e -> assertThat(e).isInstanceOf(IllegalStateException.class),
-                        e -> assertThat(e).isInstanceOf(IOException.class));
+                .satisfiesAnyOf(e -> assertThat(e).isInstanceOf(IllegalStateException.class), e -> assertThat(e)
+                        .isInstanceOf(IOException.class));
         if (out instanceof ReadFromSupport readFromSupport) {
             assertThatThrownBy(() -> readFromSupport.readFrom(new NullInputStream(10), -1))
-                    .satisfiesAnyOf(
-                            e -> assertThat(e).isInstanceOf(IllegalStateException.class),
-                            e -> assertThat(e).isInstanceOf(IOException.class));
+                    .satisfiesAnyOf(e -> assertThat(e).isInstanceOf(IllegalStateException.class), e -> assertThat(e)
+                            .isInstanceOf(IOException.class));
         }
     }
 }

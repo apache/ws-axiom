@@ -18,13 +18,11 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
-
-import com.google.inject.Inject;
 
 public class TestDigestWithNamespace extends DigestTestCase {
     @Inject

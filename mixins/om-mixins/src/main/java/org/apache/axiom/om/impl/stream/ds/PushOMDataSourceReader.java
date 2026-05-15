@@ -19,10 +19,8 @@
 package org.apache.axiom.om.impl.stream.ds;
 
 import java.util.Iterator;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
@@ -69,8 +67,7 @@ final class PushOMDataSourceReader implements XmlReader {
         }
         try {
             XMLStreamWriter writer =
-                    new XmlHandlerStreamWriter(
-                            handler, null, AxiomXMLStreamWriterExtensionFactory.INSTANCE);
+                    new XmlHandlerStreamWriter(handler, null, AxiomXMLStreamWriterExtensionFactory.INSTANCE);
             // Seed the namespace context with the namespace context from the parent
             OMContainer parent = root.getParent();
             if (parent instanceof OMElement element) {
@@ -80,8 +77,7 @@ final class PushOMDataSourceReader implements XmlReader {
                 }
             }
             handler.startFragment();
-            dataSource.serialize(
-                    new MTOMXMLStreamWriterImpl(new PushOMDataSourceStreamWriter(writer), format));
+            dataSource.serialize(new MTOMXMLStreamWriterImpl(new PushOMDataSourceStreamWriter(writer), format));
             handler.completed();
         } catch (XMLStreamException ex) {
             Throwable cause = ex.getCause();

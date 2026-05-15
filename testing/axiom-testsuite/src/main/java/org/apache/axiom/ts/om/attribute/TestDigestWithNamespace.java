@@ -18,12 +18,11 @@
  */
 package org.apache.axiom.ts.om.attribute;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
-
-import com.google.inject.Inject;
 
 public class TestDigestWithNamespace extends DigestTestCase {
     @Inject
@@ -34,7 +33,6 @@ public class TestDigestWithNamespace extends DigestTestCase {
     @Override
     protected OMInformationItem createInformationItem() {
         OMFactory factory = metaFactory.getOMFactory();
-        return factory.createOMAttribute(
-                "attr", factory.createOMNamespace("urn:ns1", "ns1"), "value");
+        return factory.createOMAttribute("attr", factory.createOMNamespace("urn:ns1", "ns1"), "value");
     }
 }

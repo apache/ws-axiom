@@ -20,11 +20,10 @@ package org.apache.axiom.blob.suite;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.io.input.NullInputStream;
-
-import com.google.inject.Inject;
 
 public class TestReadFromIllegalState extends WritableBlobTestCase {
     @Inject
@@ -34,7 +33,6 @@ public class TestReadFromIllegalState extends WritableBlobTestCase {
 
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
-        assertThatThrownBy(() -> blob.readFrom(new NullInputStream(0)))
-                .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> blob.readFrom(new NullInputStream(0))).isInstanceOf(IllegalStateException.class);
     }
 }

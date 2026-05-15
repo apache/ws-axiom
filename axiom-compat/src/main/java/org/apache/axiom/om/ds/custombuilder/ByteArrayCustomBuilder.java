@@ -19,14 +19,12 @@
 
 package org.apache.axiom.om.ds.custombuilder;
 
+import java.io.ByteArrayOutputStream;
+import javax.xml.stream.XMLStreamException;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
-
-import javax.xml.stream.XMLStreamException;
-
-import java.io.ByteArrayOutputStream;
 
 /**
  * @deprecated Use {@link BlobOMDataSourceCustomBuilder} instead.

@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.stream.sax;
 
 import java.io.IOException;
-
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.stream.StreamException;

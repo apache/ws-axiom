@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -27,8 +28,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMXMLParserWrapper#getDocument()} and {@link
@@ -50,7 +49,6 @@ public class TestGetDocumentFromBuilder extends AxiomTestCase {
         element.getFirstOMChild();
         OMXMLParserWrapper builder = element.getBuilder();
         assertThatThrownBy(builder::getDocument).isInstanceOf(UnsupportedOperationException.class);
-        assertThatThrownBy(builder::getDocumentElement)
-                .isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(builder::getDocumentElement).isInstanceOf(UnsupportedOperationException.class);
     }
 }

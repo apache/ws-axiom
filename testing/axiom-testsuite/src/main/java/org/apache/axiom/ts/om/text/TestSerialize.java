@@ -23,15 +23,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestSerialize extends AxiomTestCase {
     private final int type;

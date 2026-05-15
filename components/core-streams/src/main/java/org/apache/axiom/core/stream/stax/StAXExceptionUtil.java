@@ -19,7 +19,6 @@
 package org.apache.axiom.core.stream.stax;
 
 import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.core.stream.StreamException;
 
 public final class StAXExceptionUtil {

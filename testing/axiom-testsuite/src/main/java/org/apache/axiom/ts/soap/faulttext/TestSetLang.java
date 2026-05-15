@@ -20,17 +20,16 @@ package org.apache.axiom.ts.soap.faulttext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultText;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestSetLang extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -38,8 +37,7 @@ public class TestSetLang extends TestCase {
         faultText.setLang("en");
         assertThat(faultText.getLang()).isEqualTo("en");
         OMAttribute langAttribute = faultText.getAllAttributes().next();
-        assertThat(langAttribute.getLocalName())
-                .isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME);
+        assertThat(langAttribute.getLocalName()).isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME);
         assertThat(langAttribute.getNamespace().getPrefix())
                 .isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
         assertThat(langAttribute.getNamespace().getNamespaceURI())

@@ -21,7 +21,6 @@ package org.apache.axiom.util.stax.wrapper;
 
 import java.io.OutputStream;
 import java.io.Writer;
-
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -45,8 +44,7 @@ public class XMLOutputFactoryWrapper extends XMLOutputFactory {
     }
 
     @Override
-    public XMLEventWriter createXMLEventWriter(OutputStream stream, String encoding)
-            throws XMLStreamException {
+    public XMLEventWriter createXMLEventWriter(OutputStream stream, String encoding) throws XMLStreamException {
         return parent.createXMLEventWriter(stream, encoding);
     }
 
@@ -66,8 +64,7 @@ public class XMLOutputFactoryWrapper extends XMLOutputFactory {
     }
 
     @Override
-    public XMLStreamWriter createXMLStreamWriter(OutputStream stream, String encoding)
-            throws XMLStreamException {
+    public XMLStreamWriter createXMLStreamWriter(OutputStream stream, String encoding) throws XMLStreamException {
         return parent.createXMLStreamWriter(stream, encoding);
     }
 

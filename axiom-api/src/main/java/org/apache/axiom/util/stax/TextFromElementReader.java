@@ -21,7 +21,6 @@ package org.apache.axiom.util.stax;
 
 import java.io.IOException;
 import java.io.Reader;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 

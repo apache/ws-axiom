@@ -20,13 +20,12 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMNamedInformationItem#getPrefix()} returns <code>null</code> when invoked on
@@ -41,8 +40,7 @@ public class TestGetPrefixWithDefaultNamespace extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element =
-                factory.createOMElement("test", factory.createOMNamespace("urn:ns", ""));
+        OMElement element = factory.createOMElement("test", factory.createOMNamespace("urn:ns", ""));
         assertThat(element.getPrefix()).isNull();
     }
 }

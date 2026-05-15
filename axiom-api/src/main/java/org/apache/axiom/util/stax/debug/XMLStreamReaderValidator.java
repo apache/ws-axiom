@@ -18,16 +18,14 @@
  */
 package org.apache.axiom.util.stax.debug;
 
-import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import java.util.Stack;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
-import java.util.Stack;
+import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * {@link XMLStreamReader} wrapper that performs some simple consistency checks on the events
@@ -41,10 +39,8 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
     private static final Log log = LogFactory.getLog(XMLStreamReaderValidator.class);
     private static boolean IS_ADV_DEBUG_ENABLED = false; // Turn this on to trace every event
 
-    private boolean throwExceptions =
-            false; // Indicates whether OMException should be thrown if errors are disovered
-    private Stack<QName> stack =
-            new Stack<QName>(); // Stack keeps track of the nested element QName
+    private boolean throwExceptions = false; // Indicates whether OMException should be thrown if errors are disovered
+    private Stack<QName> stack = new Stack<QName>(); // Stack keeps track of the nested element QName
 
     /**
      * @param delegate XMLStreamReader to validate
@@ -87,28 +83,24 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
             case XMLStreamConstants.END_ELEMENT -> {
                 QName delegateQName = super.getName();
                 if (stack.isEmpty()) {
-                    reportError(
-                            "An END_ELEMENT event for "
-                                    + delegateQName
-                                    + " was encountered, but the START_ELEMENT stack is empty.");
+                    reportError("An END_ELEMENT event for "
+                            + delegateQName
+                            + " was encountered, but the START_ELEMENT stack is empty.");
                 } else {
                     QName expectedQName = stack.pop();
 
                     if (!expectedQName.equals(delegateQName)) {
-                        reportError(
-                                "An END_ELEMENT event for "
-                                        + delegateQName
-                                        + " was encountered, but this doesn't match the corresponding START_ELEMENT "
-                                        + expectedQName
-                                        + " event.");
+                        reportError("An END_ELEMENT event for "
+                                + delegateQName
+                                + " was encountered, but this doesn't match the corresponding START_ELEMENT "
+                                + expectedQName
+                                + " event.");
                     }
                 }
             }
             case XMLStreamConstants.END_DOCUMENT -> {
                 if (!stack.isEmpty()) {
-                    reportError(
-                            "An unexpected END_DOCUMENT event was encountered; element stack: "
-                                    + stack);
+                    reportError("An unexpected END_DOCUMENT event was encountered; element stack: " + stack);
                 }
             }
         }

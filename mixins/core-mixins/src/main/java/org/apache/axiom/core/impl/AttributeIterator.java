@@ -21,7 +21,6 @@ package org.apache.axiom.core.impl;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.Mapper;
@@ -36,10 +35,7 @@ public final class AttributeIterator<T extends CoreAttribute, S> implements Iter
     private boolean nextAttributeSet;
 
     private AttributeIterator(
-            CoreAttribute firstAttribute,
-            Class<T> type,
-            Mapper<S, ? super T> mapper,
-            Semantics semantics) {
+            CoreAttribute firstAttribute, Class<T> type, Mapper<S, ? super T> mapper, Semantics semantics) {
         this.type = type;
         this.mapper = mapper;
         this.semantics = semantics;

@@ -36,7 +36,6 @@ public class TestSetAttributeNodeNSForeignImplementation extends DOMTestCase {
         Attr attr = mock(Attr.class);
         assertThatThrownBy(() -> element.setAttributeNodeNS(attr))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.WRONG_DOCUMENT_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.WRONG_DOCUMENT_ERR));
     }
 }

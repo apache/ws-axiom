@@ -21,7 +21,6 @@ package org.apache.axiom.mime;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.axiom.ext.io.StreamCopyException;
 
 /**
@@ -34,33 +33,32 @@ public interface PartBlobFactory {
      * Default factory that creates {@link PartBlob} instances that lazily access the underlying
      * content.
      */
-    PartBlobFactory DEFAULT =
-            new PartBlobFactory() {
+    PartBlobFactory DEFAULT = new PartBlobFactory() {
+        @Override
+        public PartBlob createBlob(Part part) {
+            return new PartBlob() {
                 @Override
-                public PartBlob createBlob(Part part) {
-                    return new PartBlob() {
-                        @Override
-                        public Part getPart() {
-                            return part;
-                        }
+                public Part getPart() {
+                    return part;
+                }
 
-                        @Override
-                        public InputStream getInputStream() throws IOException {
-                            return part.getBlob().getInputStream();
-                        }
+                @Override
+                public InputStream getInputStream() throws IOException {
+                    return part.getBlob().getInputStream();
+                }
 
-                        @Override
-                        public void writeTo(OutputStream out) throws StreamCopyException {
-                            part.getBlob().writeTo(out);
-                        }
+                @Override
+                public void writeTo(OutputStream out) throws StreamCopyException {
+                    part.getBlob().writeTo(out);
+                }
 
-                        @Override
-                        public long getSize() {
-                            return part.getBlob().getSize();
-                        }
-                    };
+                @Override
+                public long getSize() {
+                    return part.getBlob().getSize();
                 }
             };
+        }
+    };
 
     /**
      * Create a {@link PartBlob} for the given MIME part.

@@ -56,8 +56,7 @@ public class ParentLastURLClassLoader extends URLClassLoader {
     }
 
     @Override
-    protected synchronized Class<?> loadClass(String name, boolean resolve)
-            throws ClassNotFoundException {
+    protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
         if (name.startsWith("javax.")) {
             return super.loadClass(name, resolve);
         } else {

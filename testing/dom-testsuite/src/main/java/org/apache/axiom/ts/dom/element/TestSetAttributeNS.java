@@ -18,11 +18,9 @@
  */
 package org.apache.axiom.ts.dom.element;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.ts.dom.DOMTestCase;
-
 import com.google.inject.Inject;
+import javax.xml.namespace.QName;
+import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.dom.DOMUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -30,14 +28,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 public class TestSetAttributeNS extends DOMTestCase {
-    @Inject private QName qname;
+    @Inject
+    private QName qname;
 
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:ns1", "p:element");
-        element.setAttributeNS(
-                DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname), "value");
+        element.setAttributeNS(DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname), "value");
         assertTrue(element.hasAttributes());
         NamedNodeMap attributes = element.getAttributes();
         assertEquals(1, attributes.getLength());
@@ -49,8 +47,6 @@ public class TestSetAttributeNS extends DOMTestCase {
         assertEquals(qname.getLocalPart(), attr.getLocalName());
         assertEquals(DOMUtils.getQualifiedName(qname), attr.getName());
         assertEquals("value", attr.getValue());
-        assertSame(
-                attr,
-                element.getAttributeNodeNS(DOMUtils.getNamespaceURI(qname), qname.getLocalPart()));
+        assertSame(attr, element.getAttributeNodeNS(DOMUtils.getNamespaceURI(qname), qname.getLocalPart()));
     }
 }

@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.attachments;
 
+import jakarta.activation.DataHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -25,17 +26,14 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-
-import jakarta.activation.DataHandler;
-
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
-import org.apache.axiom.mime.activation.PartDataHandler;
-import org.apache.axiom.mime.activation.PartDataHandlerBlobFactory;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.mime.MultipartBody.PartCreationListener;
 import org.apache.axiom.mime.Part;
+import org.apache.axiom.mime.activation.PartDataHandler;
+import org.apache.axiom.mime.activation.PartDataHandlerBlobFactory;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.activation.DataHandlerUtils;
@@ -64,11 +62,7 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
             int contentLength) {
         this.contentLength = contentLength;
         if (log.isDebugEnabled()) {
-            log.debug(
-                    "Attachments contentLength="
-                            + contentLength
-                            + ", contentTypeString="
-                            + contentTypeString);
+            log.debug("Attachments contentLength=" + contentLength + ", contentTypeString=" + contentTypeString);
         }
 
         // If the length is not known, install a filter so that we can retrieve it later.
@@ -79,20 +73,18 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
             filterIS = null;
         }
 
-        this.message =
-                MultipartBody.builder()
-                        .setInputStream(inStream)
-                        .setContentType(contentTypeString)
-                        .setAttachmentBlobFactory(attachmentBlobFactory)
-                        .setPartBlobFactory(
-                                new PartDataHandlerBlobFactory() {
-                                    @Override
-                                    protected PartDataHandler createDataHandler(Part part) {
-                                        return new LegacyPartDataHandler(part);
-                                    }
-                                })
-                        .setPartCreationListener(this)
-                        .build();
+        this.message = MultipartBody.builder()
+                .setInputStream(inStream)
+                .setContentType(contentTypeString)
+                .setAttachmentBlobFactory(attachmentBlobFactory)
+                .setPartBlobFactory(new PartDataHandlerBlobFactory() {
+                    @Override
+                    protected PartDataHandler createDataHandler(Part part) {
+                        return new LegacyPartDataHandler(part);
+                    }
+                })
+                .setPartCreationListener(this)
+                .build();
 
         rootPart = message.getRootPart();
         String rootPartContentID = rootPart.getContentID();
@@ -125,8 +117,7 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
             if (part != rootPart) {
                 String contentID = part.getContentID();
                 if (contentID == null) {
-                    throw new OMException(
-                            "Part content ID cannot be blank for non root MIME parts");
+                    throw new OMException("Part content ID cannot be blank for non root MIME parts");
                 }
             }
             return true;

@@ -19,7 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.commons.io.output.NullOutputStream;
 
 /**
@@ -30,8 +29,7 @@ public class TestGetPrefixAfterWriteNamespace extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
         XMLStreamWriter writer =
-                staxImpl.newNormalizedXMLOutputFactory()
-                        .createXMLStreamWriter(NullOutputStream.INSTANCE);
+                staxImpl.newNormalizedXMLOutputFactory().createXMLStreamWriter(NullOutputStream.INSTANCE);
         writer.writeStartElement("", "root", "");
         writer.writeNamespace("p", "urn:test");
         assertEquals("p", writer.getPrefix("urn:test"));

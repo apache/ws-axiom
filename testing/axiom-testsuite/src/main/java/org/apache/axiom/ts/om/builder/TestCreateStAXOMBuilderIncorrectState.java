@@ -20,19 +20,16 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMXMLBuilderFactory#createStAXOMBuilder(OMFactory, XMLStreamReader)} throws an
@@ -47,16 +44,12 @@ public class TestCreateStAXOMBuilderIncorrectState extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        XMLStreamReader reader =
-                StAXUtils.createXMLStreamReader(new StringReader("<root>text</root>"));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<root>text</root>"));
         // Position the reader on a CHARACTERS event
         while (reader.getEventType() != XMLStreamReader.CHARACTERS) {
             reader.next();
         }
-        assertThatThrownBy(
-                        () ->
-                                OMXMLBuilderFactory.createStAXOMBuilder(
-                                        metaFactory.getOMFactory(), reader))
+        assertThatThrownBy(() -> OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader))
                 .isInstanceOf(OMException.class);
     }
 }

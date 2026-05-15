@@ -20,9 +20,7 @@ package org.apache.axiom.om.ds.custombuilder;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.om.OMDataSource;

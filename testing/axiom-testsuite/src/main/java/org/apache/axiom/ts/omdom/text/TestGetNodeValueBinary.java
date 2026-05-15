@@ -21,7 +21,6 @@ package org.apache.axiom.ts.omdom.text;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayInputStream;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
@@ -38,7 +37,6 @@ public class TestGetNodeValueBinary extends OMDOMTestCase {
         Text text = (Text) factory.createOMText(blob, false);
         String nodeValue = text.getNodeValue();
         assertThat(nodeValue).isNotNull();
-        IOTestUtils.compareStreams(
-                blob.getInputStream(), new ByteArrayInputStream(Base64.decodeBase64(nodeValue)));
+        IOTestUtils.compareStreams(blob.getInputStream(), new ByteArrayInputStream(Base64.decodeBase64(nodeValue)));
     }
 }

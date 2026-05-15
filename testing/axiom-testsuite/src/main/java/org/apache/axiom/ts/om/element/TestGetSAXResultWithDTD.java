@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.transform.sax.SAXResult;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -30,8 +30,6 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that for an {@link OMElement}, a {@link LexicalHandler#startDTD(String, String, String)}

@@ -21,9 +21,7 @@ package org.apache.axiom.dom.impl.mixin;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import java.util.Iterator;
-
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreChildNode;
@@ -381,8 +379,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
                     // TODO: we should have a generic method to move the content over to the new
                     // node
                     decl.coreSetDeclaredNamespace(
-                            NSUtil.getDeclaredPrefix(localName, prefix),
-                            ((DOMNSAwareAttribute) node).getValue());
+                            NSUtil.getDeclaredPrefix(localName, prefix), ((DOMNSAwareAttribute) node).getValue());
                     // TODO: what about replacing the node in the tree??
                     return decl;
                 } else {
@@ -444,12 +441,8 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     @Override
     public final Element getElementById(String elementId) {
         try {
-            for (Iterator<DOMElement> it =
-                            coreGetNodes(
-                                    Axis.DESCENDANTS,
-                                    DOMElement.class,
-                                    Mappers.<DOMElement>identity(),
-                                    DOMSemantics.INSTANCE);
+            for (Iterator<DOMElement> it = coreGetNodes(
+                            Axis.DESCENDANTS, DOMElement.class, Mappers.<DOMElement>identity(), DOMSemantics.INSTANCE);
                     it.hasNext(); ) {
                 DOMElement element = it.next();
                 for (CoreAttribute attr = element.coreGetFirstAttribute();
@@ -496,75 +489,67 @@ public abstract class DOMDocumentMixin implements DOMDocument {
         short type = importedNode.getNodeType();
         Node newNode = null;
         switch (type) {
-            case Node.ELEMENT_NODE:
-                {
-                    Element newElement;
-                    if (importedNode.getLocalName() == null) {
-                        newElement = this.createElement(importedNode.getNodeName());
-                    } else {
+            case Node.ELEMENT_NODE: {
+                Element newElement;
+                if (importedNode.getLocalName() == null) {
+                    newElement = this.createElement(importedNode.getNodeName());
+                } else {
 
-                        String ns = importedNode.getNamespaceURI();
-                        ns = (ns != null) ? ns.intern() : null;
-                        newElement = createElementNS(ns, importedNode.getNodeName());
+                    String ns = importedNode.getNamespaceURI();
+                    ns = (ns != null) ? ns.intern() : null;
+                    newElement = createElementNS(ns, importedNode.getNodeName());
+                }
+
+                // Copy element's attributes, if any.
+                NamedNodeMap sourceAttrs = importedNode.getAttributes();
+                if (sourceAttrs != null) {
+                    int length = sourceAttrs.getLength();
+                    for (int index = 0; index < length; index++) {
+                        ((DOMElement) newElement)
+                                .coreAppendAttribute((DOMAttribute) importNode(sourceAttrs.item(index), true));
                     }
-
-                    // Copy element's attributes, if any.
-                    NamedNodeMap sourceAttrs = importedNode.getAttributes();
-                    if (sourceAttrs != null) {
-                        int length = sourceAttrs.getLength();
-                        for (int index = 0; index < length; index++) {
-                            ((DOMElement) newElement)
-                                    .coreAppendAttribute(
-                                            (DOMAttribute)
-                                                    importNode(sourceAttrs.item(index), true));
-                        }
-                    }
-                    newNode = newElement;
-                    break;
                 }
+                newNode = newElement;
+                break;
+            }
 
-            case Node.ATTRIBUTE_NODE:
-                {
-                    if (importedNode.getLocalName() == null) {
-                        newNode = createAttribute(importedNode.getNodeName());
-                    } else {
-                        String ns = importedNode.getNamespaceURI();
-                        ns = (ns != null) ? ns.intern() : null;
-                        newNode = createAttributeNS(ns, importedNode.getNodeName());
-                    }
-                    ((Attr) newNode).setValue(importedNode.getNodeValue());
-                    break;
+            case Node.ATTRIBUTE_NODE: {
+                if (importedNode.getLocalName() == null) {
+                    newNode = createAttribute(importedNode.getNodeName());
+                } else {
+                    String ns = importedNode.getNamespaceURI();
+                    ns = (ns != null) ? ns.intern() : null;
+                    newNode = createAttributeNS(ns, importedNode.getNodeName());
                 }
+                ((Attr) newNode).setValue(importedNode.getNodeValue());
+                break;
+            }
 
-            case Node.TEXT_NODE:
-                {
-                    newNode = createTextNode(importedNode.getNodeValue());
-                    break;
-                }
+            case Node.TEXT_NODE: {
+                newNode = createTextNode(importedNode.getNodeValue());
+                break;
+            }
 
-            case Node.COMMENT_NODE:
-                {
-                    newNode = createComment(importedNode.getNodeValue());
-                    break;
-                }
+            case Node.COMMENT_NODE: {
+                newNode = createComment(importedNode.getNodeValue());
+                break;
+            }
 
-            case Node.DOCUMENT_FRAGMENT_NODE:
-                {
-                    newNode = createDocumentFragment();
-                    // No name, kids carry value
-                    break;
-                }
+            case Node.DOCUMENT_FRAGMENT_NODE: {
+                newNode = createDocumentFragment();
+                // No name, kids carry value
+                break;
+            }
 
             case Node.CDATA_SECTION_NODE:
                 newNode = createCDATASection(importedNode.getNodeValue());
                 break;
 
-            case Node.PROCESSING_INSTRUCTION_NODE:
-                {
-                    ProcessingInstruction pi = (ProcessingInstruction) importedNode;
-                    newNode = createProcessingInstruction(pi.getTarget(), pi.getData());
-                    break;
-                }
+            case Node.PROCESSING_INSTRUCTION_NODE: {
+                ProcessingInstruction pi = (ProcessingInstruction) importedNode;
+                newNode = createProcessingInstruction(pi.getTarget(), pi.getData());
+                break;
+            }
             case Node.ENTITY_REFERENCE_NODE:
             case Node.ENTITY_NODE:
             case Node.NOTATION_NODE:
@@ -579,9 +564,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
 
         // If deep, replicate and attach the kids.
         if (deep && !(importedNode instanceof Attr)) {
-            for (Node srckid = importedNode.getFirstChild();
-                    srckid != null;
-                    srckid = srckid.getNextSibling()) {
+            for (Node srckid = importedNode.getFirstChild(); srckid != null; srckid = srckid.getNextSibling()) {
                 newNode.appendChild(importNode(srckid, true));
             }
         }

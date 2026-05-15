@@ -21,7 +21,6 @@ package org.apache.axiom.attachments;
 
 import jakarta.activation.FileDataSource;
 import java.io.File;
-
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,8 +51,7 @@ public class CachedFileDataSource extends FileDataSource implements SizeAwareDat
         if (cachedFileName != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Cached file: " + cachedFileName);
-                log.debug(
-                        "Registering the file with AttachmentCacheMonitor and also marked it as being accessed");
+                log.debug("Registering the file with AttachmentCacheMonitor and also marked it as being accessed");
             }
             // Tell the monitor that the file is being accessed.
             acm.access(cachedFileName);

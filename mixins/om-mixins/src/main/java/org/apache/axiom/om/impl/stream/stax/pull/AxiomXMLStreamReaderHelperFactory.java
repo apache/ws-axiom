@@ -19,13 +19,11 @@
 package org.apache.axiom.om.impl.stream.stax.pull;
 
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.core.stream.stax.pull.input.XMLStreamReaderHelper;
 import org.apache.axiom.core.stream.stax.pull.input.XMLStreamReaderHelperFactory;
 
 public final class AxiomXMLStreamReaderHelperFactory implements XMLStreamReaderHelperFactory {
-    public static final AxiomXMLStreamReaderHelperFactory INSTANCE =
-            new AxiomXMLStreamReaderHelperFactory();
+    public static final AxiomXMLStreamReaderHelperFactory INSTANCE = new AxiomXMLStreamReaderHelperFactory();
 
     private AxiomXMLStreamReaderHelperFactory() {}
 

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import org.apache.axiom.weaver.classio.ClassFetcher;
 import org.apache.axiom.weaver.mixin.Mixin;
 import org.apache.axiom.weaver.mixin.MixinMethod;
@@ -37,15 +36,14 @@ public final class FactoryMixinFactory {
         if (mixinMethods.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(
-                new Mixin(
-                        Opcodes.V17,
-                        iface.getSimpleName() + "FactoryMixin",
-                        iface,
-                        Collections.emptyList(),
-                        null,
-                        null,
-                        mixinMethods,
-                        Collections.emptyList()));
+        return Optional.of(new Mixin(
+                Opcodes.V17,
+                iface.getSimpleName() + "FactoryMixin",
+                iface,
+                Collections.emptyList(),
+                null,
+                null,
+                mixinMethods,
+                Collections.emptyList()));
     }
 }

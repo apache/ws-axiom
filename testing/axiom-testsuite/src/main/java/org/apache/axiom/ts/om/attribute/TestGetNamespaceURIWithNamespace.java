@@ -20,13 +20,12 @@ package org.apache.axiom.ts.om.attribute;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMNamedInformationItem#getNamespaceURI()} returns the namespace URI when
@@ -41,9 +40,7 @@ public class TestGetNamespaceURIWithNamespace extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMAttribute attr =
-                factory.createOMAttribute(
-                        "name", factory.createOMNamespace("urn:ns", "p"), "value");
+        OMAttribute attr = factory.createOMAttribute("name", factory.createOMNamespace("urn:ns", "p"), "value");
         assertThat(attr.getNamespaceURI()).isEqualTo("urn:ns");
     }
 }

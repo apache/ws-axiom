@@ -21,7 +21,6 @@ package org.apache.axiom.util.stax.dialect;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.ByteArrayInputStream;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
@@ -29,15 +28,11 @@ public class TestGetCharacterEncodingScheme extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
-        XMLStreamReader reader =
-                factory.createXMLStreamReader(
-                        new ByteArrayInputStream(
-                                "<?xml version='1.0' encoding='iso-8859-15'?><root/>"
-                                        .getBytes("iso-8859-15")));
+        XMLStreamReader reader = factory.createXMLStreamReader(new ByteArrayInputStream(
+                "<?xml version='1.0' encoding='iso-8859-15'?><root/>".getBytes("iso-8859-15")));
         assertEquals("iso-8859-15", reader.getCharacterEncodingScheme());
         reader.next();
-        assertThatThrownBy(reader::getCharacterEncodingScheme)
-                .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(reader::getCharacterEncodingScheme).isInstanceOf(IllegalStateException.class);
         reader.close();
     }
 }

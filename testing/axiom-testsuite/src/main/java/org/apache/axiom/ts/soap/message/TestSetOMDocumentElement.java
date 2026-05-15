@@ -20,22 +20,21 @@ package org.apache.axiom.ts.soap.message;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} when used to set a
  * {@link SOAPEnvelope} as the root element of a {@link SOAPMessage}.
  */
 public class TestSetOMDocumentElement extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

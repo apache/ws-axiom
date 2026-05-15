@@ -19,7 +19,6 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreElement;
@@ -103,17 +102,13 @@ public abstract class DOMElementMixin implements DOMElement {
     @Override
     public final Attr getAttributeNodeNS(String namespaceURI, String localName) {
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            return (DOMAttribute)
-                    coreGetAttribute(
-                            DOMSemantics.NAMESPACE_DECLARATION_MATCHER,
-                            null,
-                            localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName);
+            return (DOMAttribute) coreGetAttribute(
+                    DOMSemantics.NAMESPACE_DECLARATION_MATCHER,
+                    null,
+                    localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName);
         } else {
-            return (DOMAttribute)
-                    coreGetAttribute(
-                            DOMSemantics.DOM2_ATTRIBUTE_MATCHER,
-                            namespaceURI == null ? "" : namespaceURI,
-                            localName);
+            return (DOMAttribute) coreGetAttribute(
+                    DOMSemantics.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName);
         }
     }
 
@@ -150,8 +145,7 @@ public abstract class DOMElementMixin implements DOMElement {
     }
 
     @Override
-    public final void setAttributeNS(String namespaceURI, String qualifiedName, String value)
-            throws DOMException {
+    public final void setAttributeNS(String namespaceURI, String qualifiedName, String value) throws DOMException {
         try {
             int i = NSUtil.validateQualifiedName(qualifiedName);
             String prefix;
@@ -173,12 +167,7 @@ public abstract class DOMElementMixin implements DOMElement {
             } else {
                 namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
                 NSUtil.validateAttributeName(namespaceURI, localName, prefix);
-                coreSetAttribute(
-                        DOMSemantics.DOM2_ATTRIBUTE_MATCHER,
-                        namespaceURI,
-                        localName,
-                        prefix,
-                        value);
+                coreSetAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, namespaceURI, localName, prefix, value);
             }
         } catch (CoreModelException ex) {
             throw DOMExceptionUtil.toUncheckedException(ex);
@@ -297,14 +286,10 @@ public abstract class DOMElementMixin implements DOMElement {
     }
 
     @Override
-    public final void setIdAttributeNS(String namespaceURI, String localName, boolean isId)
-            throws DOMException {
+    public final void setIdAttributeNS(String namespaceURI, String localName, boolean isId) throws DOMException {
         // Here, we assume that a namespace declaration can never be an ID attribute
-        CoreAttribute attr =
-                coreGetAttribute(
-                        DOMSemantics.DOM2_ATTRIBUTE_MATCHER,
-                        NSUtil.normalizeNamespaceURI(namespaceURI),
-                        localName);
+        CoreAttribute attr = coreGetAttribute(
+                DOMSemantics.DOM2_ATTRIBUTE_MATCHER, NSUtil.normalizeNamespaceURI(namespaceURI), localName);
         if (attr == null) {
             throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         } else {

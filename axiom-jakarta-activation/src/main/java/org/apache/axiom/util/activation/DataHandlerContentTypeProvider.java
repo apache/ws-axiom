@@ -18,10 +18,8 @@
  */
 package org.apache.axiom.util.activation;
 
-import java.text.ParseException;
-
 import jakarta.activation.DataHandler;
-
+import java.text.ParseException;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.format.xop.ContentTypeProvider;
@@ -35,8 +33,7 @@ import org.apache.commons.logging.LogFactory;
 public final class DataHandlerContentTypeProvider implements ContentTypeProvider {
     private static final Log log = LogFactory.getLog(DataHandlerContentTypeProvider.class);
 
-    public static final DataHandlerContentTypeProvider INSTANCE =
-            new DataHandlerContentTypeProvider();
+    public static final DataHandlerContentTypeProvider INSTANCE = new DataHandlerContentTypeProvider();
 
     private DataHandlerContentTypeProvider() {}
 

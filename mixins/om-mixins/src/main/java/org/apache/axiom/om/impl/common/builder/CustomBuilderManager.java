@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import java.util.ArrayList;
-
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.impl.builder.BuilderListener;
@@ -59,8 +58,7 @@ final class CustomBuilderManager implements BuilderListener {
         // executed before the custom builder registration may have checked if the payload is a
         // SOAP fault).
         if (lastCandidateElement != null) {
-            DeferredAction action =
-                    getAction(lastCandidateElement, lastCandidateDepth, registrations.size() - 1);
+            DeferredAction action = getAction(lastCandidateElement, lastCandidateDepth, registrations.size() - 1);
             if (action != null) {
                 try {
                     action.run();
@@ -80,27 +78,23 @@ final class CustomBuilderManager implements BuilderListener {
         lastCandidateElement = null;
         lastCandidateDepth = -1;
         if (node instanceof AxiomElement element
-                && (element instanceof AxiomSOAPHeaderBlock
-                        || !(element instanceof AxiomSOAPElement))) {
+                && (element instanceof AxiomSOAPHeaderBlock || !(element instanceof AxiomSOAPElement))) {
             if (registrations != null) {
                 for (int i = firstCustomBuilder; i < registrations.size(); i++) {
                     CustomBuilderRegistration registration = registrations.get(i);
                     String namespaceURI = element.coreGetNamespaceURI();
                     String localName = element.coreGetLocalName();
-                    if (registration
-                            .getSelector()
-                            .accepts(element.getParent(), depth, namespaceURI, localName)) {
+                    if (registration.getSelector().accepts(element.getParent(), depth, namespaceURI, localName)) {
                         CustomBuilder customBuilder = registration.getCustomBuilder();
                         if (log.isDebugEnabled()) {
-                            log.debug(
-                                    "Custom builder "
-                                            + customBuilder
-                                            + " accepted element {"
-                                            + namespaceURI
-                                            + "}"
-                                            + localName
-                                            + " at depth "
-                                            + depth);
+                            log.debug("Custom builder "
+                                    + customBuilder
+                                    + " accepted element {"
+                                    + namespaceURI
+                                    + "}"
+                                    + localName
+                                    + " at depth "
+                                    + depth);
                         }
                         return () -> {
                             if (log.isDebugEnabled()) {
@@ -115,17 +109,13 @@ final class CustomBuilderManager implements BuilderListener {
                             } else {
                                 type = AxiomNodeFactory::createSourcedElement;
                             }
-                            AxiomSourcedElement newElement =
-                                    type.create(
-                                            (AxiomNodeFactory)
-                                                    element.coreGetNodeFactory().getFactory2());
+                            AxiomSourcedElement newElement = type.create((AxiomNodeFactory)
+                                    element.coreGetNodeFactory().getFactory2());
                             if (log.isDebugEnabled()) {
-                                log.debug(
-                                        "Replacing element with new sourced element of type "
-                                                + newElement.getClass().getName());
+                                log.debug("Replacing element with new sourced element of type "
+                                        + newElement.getClass().getName());
                             }
-                            newElement.init(
-                                    localName, new OMNamespaceImpl(namespaceURI, null), dataSource);
+                            newElement.init(localName, new OMNamespaceImpl(namespaceURI, null), dataSource);
                             try {
                                 element.coreReplaceWith(newElement, AxiomSemantics.INSTANCE);
                             } catch (CoreModelException ex) {

@@ -53,64 +53,54 @@ public final class AxiomSemantics implements Semantics {
         return nodeType == NodeType.DOCUMENT || nodeType == NodeType.NS_AWARE_ELEMENT;
     }
 
-    public static final AttributeMatcher ATTRIBUTE_MATCHER =
-            new NSAwareAttributeMatcher(
-                    INSTANCE, false, // Axiom doesn't support namespace unaware attributes
-                    false);
+    public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(
+            INSTANCE, false, // Axiom doesn't support namespace unaware attributes
+            false);
 
-    public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER =
-            new NamespaceDeclarationMatcher(INSTANCE);
+    public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(INSTANCE);
 
-    public static final ClonePolicy<OMCloneOptions> CLONE_POLICY =
-            new ClonePolicy<OMCloneOptions>() {
-                @Override
-                public Class<? extends CoreNode> getTargetNodeClass(
-                        OMCloneOptions options, CoreNode node) {
-                    if (options != null && options.isPreserveModel()) {
-                        return node.coreGetNodeClass();
-                    } else if (options != null
-                            && options.isCopyOMDataSources()
-                            && node instanceof AxiomSourcedElement) {
-                        return AxiomSourcedElement.class;
-                    } else {
-                        return node.coreGetNodeType().getInterface();
+    public static final ClonePolicy<OMCloneOptions> CLONE_POLICY = new ClonePolicy<OMCloneOptions>() {
+        @Override
+        public Class<? extends CoreNode> getTargetNodeClass(OMCloneOptions options, CoreNode node) {
+            if (options != null && options.isPreserveModel()) {
+                return node.coreGetNodeClass();
+            } else if (options != null && options.isCopyOMDataSources() && node instanceof AxiomSourcedElement) {
+                return AxiomSourcedElement.class;
+            } else {
+                return node.coreGetNodeType().getInterface();
+            }
+        }
+
+        @Override
+        public boolean repairNamespaces(OMCloneOptions options) {
+            return true;
+        }
+
+        @Override
+        public boolean cloneAttributes(OMCloneOptions options) {
+            return true;
+        }
+
+        @Override
+        public boolean cloneChildren(OMCloneOptions options, NodeType nodeType) {
+            return true;
+        }
+
+        @Override
+        public void postProcess(OMCloneOptions options, CoreNode clone) {
+            if (clone instanceof AxiomElement element && element.isExpanded()) {
+                // Repair namespaces
+                NSUtil.handleNamespace(element, element.getNamespace(), false, true);
+                CoreAttribute attr = element.coreGetFirstAttribute();
+                while (attr != null) {
+                    if (attr instanceof AxiomAttribute) {
+                        NSUtil.handleNamespace(element, ((AxiomAttribute) attr).getNamespace(), true, true);
                     }
+                    attr = attr.coreGetNextAttribute();
                 }
-
-                @Override
-                public boolean repairNamespaces(OMCloneOptions options) {
-                    return true;
-                }
-
-                @Override
-                public boolean cloneAttributes(OMCloneOptions options) {
-                    return true;
-                }
-
-                @Override
-                public boolean cloneChildren(OMCloneOptions options, NodeType nodeType) {
-                    return true;
-                }
-
-                @Override
-                public void postProcess(OMCloneOptions options, CoreNode clone) {
-                    if (clone instanceof AxiomElement element && element.isExpanded()) {
-                        // Repair namespaces
-                        NSUtil.handleNamespace(element, element.getNamespace(), false, true);
-                        CoreAttribute attr = element.coreGetFirstAttribute();
-                        while (attr != null) {
-                            if (attr instanceof AxiomAttribute) {
-                                NSUtil.handleNamespace(
-                                        element,
-                                        ((AxiomAttribute) attr).getNamespace(),
-                                        true,
-                                        true);
-                            }
-                            attr = attr.coreGetNextAttribute();
-                        }
-                    }
-                }
-            };
+            }
+        }
+    };
 
     @Override
     public RuntimeException toUncheckedException(CoreModelException ex) {

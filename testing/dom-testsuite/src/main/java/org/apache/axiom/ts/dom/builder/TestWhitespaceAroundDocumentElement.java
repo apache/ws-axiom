@@ -21,7 +21,6 @@ package org.apache.axiom.ts.dom.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringReader;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -36,9 +35,7 @@ import org.xml.sax.InputSource;
 public class TestWhitespaceAroundDocumentElement extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Document doc =
-                dbf.newDocumentBuilder()
-                        .parse(new InputSource(new StringReader(" <!-- --> <root/> ")));
+        Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(" <!-- --> <root/> ")));
         Node child = doc.getFirstChild();
         do {
             assertThat(child).isNotInstanceOf(Text.class);

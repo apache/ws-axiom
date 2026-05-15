@@ -18,13 +18,11 @@
  */
 package org.apache.axiom.attachments;
 
+import jakarta.activation.DataHandler;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import jakarta.activation.DataHandler;
-
 import org.apache.axiom.om.AbstractTestCase;
 
 public class PdfAttachmentStreamingTest extends AbstractTestCase {

@@ -19,18 +19,16 @@
 package org.apache.axiom.ts.jaxp.sax;
 
 import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.axiom.testing.multiton.Multiton;
 import org.xml.sax.ext.LexicalHandler;
 
 public abstract class SAXImplementation extends Multiton {
-    public static final SAXImplementation XERCES =
-            new SAXImplementation("xerces", true) {
-                @Override
-                public SAXParserFactory newSAXParserFactory() {
-                    return new org.apache.xerces.jaxp.SAXParserFactoryImpl();
-                }
-            };
+    public static final SAXImplementation XERCES = new SAXImplementation("xerces", true) {
+        @Override
+        public SAXParserFactory newSAXParserFactory() {
+            return new org.apache.xerces.jaxp.SAXParserFactoryImpl();
+        }
+    };
 
     private final String name;
     private final boolean reportsExternalSubsetEntity;

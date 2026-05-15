@@ -78,8 +78,7 @@ public abstract class AbstractXOPEncodingFilterHandler extends XmlHandlerWrapper
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         flushIfNecessary();
         super.startElement(namespaceURI, localName, prefix);
     }
@@ -95,14 +94,9 @@ public abstract class AbstractXOPEncodingFilterHandler extends XmlHandlerWrapper
         if (!ignorable) {
             String contentID = processCharacterData(data);
             if (contentID != null) {
-                super.startElement(
-                        XOPConstants.NAMESPACE_URI,
-                        XOPConstants.INCLUDE,
-                        XOPConstants.DEFAULT_PREFIX);
-                super.processNamespaceDeclaration(
-                        XOPConstants.DEFAULT_PREFIX, XOPConstants.NAMESPACE_URI);
-                super.processAttribute(
-                        "", XOPConstants.HREF, "", getURLForContentID(contentID), "CDATA", true);
+                super.startElement(XOPConstants.NAMESPACE_URI, XOPConstants.INCLUDE, XOPConstants.DEFAULT_PREFIX);
+                super.processNamespaceDeclaration(XOPConstants.DEFAULT_PREFIX, XOPConstants.NAMESPACE_URI);
+                super.processAttribute("", XOPConstants.HREF, "", getURLForContentID(contentID), "CDATA", true);
                 super.attributesCompleted();
                 inXOPInclude = true;
                 return;

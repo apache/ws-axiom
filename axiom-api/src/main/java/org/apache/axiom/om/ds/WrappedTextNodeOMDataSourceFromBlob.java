@@ -22,11 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
@@ -39,8 +37,7 @@ public class WrappedTextNodeOMDataSourceFromBlob extends WrappedTextNodeOMDataSo
     private final Blob binaryData;
     private final Charset charset;
 
-    public WrappedTextNodeOMDataSourceFromBlob(
-            QName wrapperElementName, Blob binaryData, Charset charset) {
+    public WrappedTextNodeOMDataSourceFromBlob(QName wrapperElementName, Blob binaryData, Charset charset) {
         super(wrapperElementName);
         this.binaryData = binaryData;
         this.charset = charset;
@@ -54,8 +51,7 @@ public class WrappedTextNodeOMDataSourceFromBlob extends WrappedTextNodeOMDataSo
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }
-        return new WrappedTextNodeStreamReader(
-                wrapperElementName, new InputStreamReader(is, charset));
+        return new WrappedTextNodeStreamReader(wrapperElementName, new InputStreamReader(is, charset));
     }
 
     @Override

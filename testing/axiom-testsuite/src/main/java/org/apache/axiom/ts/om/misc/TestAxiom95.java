@@ -20,12 +20,11 @@ package org.apache.axiom.ts.om.misc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-95">AXIOM-95</a>. */
 public class TestAxiom95 extends AxiomTestCase {
@@ -36,10 +35,8 @@ public class TestAxiom95 extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(),
-                        TestAxiom95.class.getResourceAsStream("defaultNamespace2.xml"));
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
+                metaFactory.getOMFactory(), TestAxiom95.class.getResourceAsStream("defaultNamespace2.xml"));
 
         String serializedXML = builder.getDocumentElement().toString();
 

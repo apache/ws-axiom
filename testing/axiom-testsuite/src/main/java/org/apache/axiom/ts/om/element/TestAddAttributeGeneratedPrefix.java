@@ -20,17 +20,15 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that when {@link OMElement#addAttribute(String, String, OMNamespace)} is called with an
@@ -42,8 +40,7 @@ public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
 
     @Inject
     public TestAddAttributeGeneratedPrefix(
-            OMMetaFactory metaFactory,
-            @Named("defaultNamespaceInScope") boolean defaultNamespaceInScope) {
+            OMMetaFactory metaFactory, @Named("defaultNamespaceInScope") boolean defaultNamespaceInScope) {
         super(metaFactory);
         this.defaultNamespaceInScope = defaultNamespaceInScope;
     }
@@ -57,8 +54,7 @@ public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
             parent.declareDefaultNamespace("urn:test");
         }
         OMElement element = factory.createOMElement("test", otherNS, parent);
-        OMAttribute attr =
-                element.addAttribute("attr", "value", factory.createOMNamespace("urn:test", null));
+        OMAttribute attr = element.addAttribute("attr", "value", factory.createOMNamespace("urn:test", null));
         OMNamespace ns = attr.getNamespace();
         assertThat(ns.getPrefix()).isNotEmpty();
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();

@@ -18,15 +18,14 @@
  */
 package org.apache.axiom.util.activation;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import jakarta.activation.ActivationDataFlavor;
 import jakarta.activation.CommandInfo;
 import jakarta.activation.CommandMap;
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Base class for {@link DataHandler} wrappers.

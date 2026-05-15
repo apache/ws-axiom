@@ -20,7 +20,6 @@ package org.apache.axiom.soap.impl.builder;
 
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stax.StAXSource;
-
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -29,11 +28,9 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
  * @deprecated Please use the {@link OMXMLBuilderFactory} API to create builders.
  */
 public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder {
-    public MTOMStAXSOAPModelBuilder(
-            XMLStreamReader reader, Attachments attachments, String soapVersion) {
-        super(
-                OMXMLBuilderFactory.createSOAPModelBuilder(
-                        OMAbstractFactory.getMetaFactory(), new StAXSource(reader), attachments));
+    public MTOMStAXSOAPModelBuilder(XMLStreamReader reader, Attachments attachments, String soapVersion) {
+        super(OMXMLBuilderFactory.createSOAPModelBuilder(
+                OMAbstractFactory.getMetaFactory(), new StAXSource(reader), attachments));
         validateSOAPVersion(null, soapVersion);
     }
 }

@@ -20,12 +20,10 @@ package org.apache.axiom.testutils.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import org.apache.commons.io.output.ProxyOutputStream;
 
 /** {@link OutputStream} wrapper that implements {@link InstrumentedStream}. */
-public final class InstrumentedOutputStream extends ProxyOutputStream
-        implements InstrumentedStream {
+public final class InstrumentedOutputStream extends ProxyOutputStream implements InstrumentedStream {
     private long count;
     private boolean closed;
 

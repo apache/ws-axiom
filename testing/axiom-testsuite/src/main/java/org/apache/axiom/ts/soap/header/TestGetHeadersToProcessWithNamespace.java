@@ -20,8 +20,9 @@ package org.apache.axiom.ts.soap.header;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -29,13 +30,10 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /** Tests the behavior of {@link SOAPHeader#getHeadersToProcess(RolePlayer, String)} */
 public class TestGetHeadersToProcessWithNamespace extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -54,8 +52,7 @@ public class TestGetHeadersToProcessWithNamespace extends TestCase {
         SOAPHeaderBlock headerBlock4 = header.addHeaderBlock("header4", ns1);
         headerBlock4.setRole(otherRole);
         Iterator<SOAPHeaderBlock> it =
-                header.getHeadersToProcess(
-                        new MyRolePlayer(false, new String[] {myRole}), ns1.getNamespaceURI());
+                header.getHeadersToProcess(new MyRolePlayer(false, new String[] {myRole}), ns1.getNamespaceURI());
         assertThat(it.hasNext()).isTrue();
         assertThat(it.next()).isSameAs(headerBlock1);
         assertThat(it.hasNext()).isTrue();

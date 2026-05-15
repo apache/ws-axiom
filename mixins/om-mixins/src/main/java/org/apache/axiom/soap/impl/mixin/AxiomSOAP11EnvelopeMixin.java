@@ -35,8 +35,6 @@ public abstract class AxiomSOAP11EnvelopeMixin implements AxiomSOAP11Envelope {
 
     @Override
     public final boolean isChildElementAllowed(OMElement child) {
-        return !(child instanceof AxiomSOAPElement)
-                || child instanceof SOAPHeader
-                || child instanceof SOAPBody;
+        return !(child instanceof AxiomSOAPElement) || child instanceof SOAPHeader || child instanceof SOAPBody;
     }
 }

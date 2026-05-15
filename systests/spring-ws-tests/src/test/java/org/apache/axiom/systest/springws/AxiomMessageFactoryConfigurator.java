@@ -32,8 +32,6 @@ public final class AxiomMessageFactoryConfigurator extends MessageFactoryConfigu
     public void configure(GenericApplicationContext context) {
         new XmlBeanDefinitionReader(context)
                 .loadBeanDefinitions(
-                        new ClassPathResource(
-                                "axiom-message-factory.xml",
-                                AxiomMessageFactoryConfigurator.class));
+                        new ClassPathResource("axiom-message-factory.xml", AxiomMessageFactoryConfigurator.class));
     }
 }

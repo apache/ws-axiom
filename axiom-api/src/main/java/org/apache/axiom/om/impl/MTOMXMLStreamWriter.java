@@ -20,10 +20,8 @@
 package org.apache.axiom.om.impl;
 
 import java.io.OutputStream;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.ext.stax.BlobWriter;

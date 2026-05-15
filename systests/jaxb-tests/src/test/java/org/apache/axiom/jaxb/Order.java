@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.jaxb;
 
-import java.util.List;
-
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @XmlRootElement
 public class Order {

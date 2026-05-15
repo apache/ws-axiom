@@ -20,10 +20,8 @@ package org.apache.axiom.om.impl.stream.stax.pull;
 
 import java.io.IOException;
 import java.io.Writer;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.CharacterDataSink;
 import org.apache.axiom.core.stream.stax.pull.output.InternalXMLStreamReader;
@@ -44,19 +42,17 @@ final class CharacterDataReaderImpl implements CharacterDataReader {
             case XMLStreamReader.CHARACTERS -> {
                 Object data = reader.getCharacterData();
                 if (data instanceof CharacterData characterData) {
-                    characterData.writeTo(
-                            new CharacterDataSink() {
-                                @Override
-                                public Writer getWriter() {
-                                    return writer;
-                                }
+                    characterData.writeTo(new CharacterDataSink() {
+                        @Override
+                        public Writer getWriter() {
+                            return writer;
+                        }
 
-                                @Override
-                                public AbstractBase64EncodingOutputStream
-                                        getBase64EncodingOutputStream() {
-                                    return new Base64EncodingWriterOutputStream(writer);
-                                }
-                            });
+                        @Override
+                        public AbstractBase64EncodingOutputStream getBase64EncodingOutputStream() {
+                            return new Base64EncodingWriterOutputStream(writer);
+                        }
+                    });
                 } else {
                     writer.write(data.toString());
                 }

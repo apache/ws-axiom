@@ -29,9 +29,7 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
     private int scopes;
 
     public NamespaceRepairingFilterHandler(
-            XmlHandler parent,
-            NamespaceContextProvider parentNamespaceContext,
-            boolean removeRedundantDeclarations) {
+            XmlHandler parent, NamespaceContextProvider parentNamespaceContext, boolean removeRedundantDeclarations) {
         super(parent);
         this.parentNamespaceContext = parentNamespaceContext;
         this.removeRedundantDeclarations = removeRedundantDeclarations;
@@ -49,10 +47,8 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
         bindings++;
     }
 
-    private void ensureNamespaceDeclared(String prefix, String namespaceURI)
-            throws StreamException {
-        if (prefix.equals(XMLConstants.XML_NS_PREFIX)
-                && namespaceURI.equals(XMLConstants.XML_NS_URI)) {
+    private void ensureNamespaceDeclared(String prefix, String namespaceURI) throws StreamException {
+        if (prefix.equals(XMLConstants.XML_NS_PREFIX) && namespaceURI.equals(XMLConstants.XML_NS_URI)) {
             return;
         }
         boolean prefixFound = false;
@@ -79,8 +75,7 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         super.startElement(namespaceURI, localName, prefix);
         if (scopes == scopeStack.length) {
             int[] newScopeStack = new int[scopeStack.length * 2];
@@ -99,12 +94,7 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
 
     @Override
     public void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException {
         super.processAttribute(namespaceURI, localName, prefix, value, type, specified);
         if (!namespaceURI.isEmpty()) {
@@ -113,8 +103,7 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         if (removeRedundantDeclarations) {
             ensureNamespaceDeclared(prefix, namespaceURI);
         } else {

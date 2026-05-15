@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.StringReader;
 import java.util.NoSuchElementException;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
@@ -40,8 +39,7 @@ public class TestNextAfterEndDocument extends DialectTestCase {
             // Just loop
         }
         assertThatThrownBy(() -> reader.next())
-                .satisfiesAnyOf(
-                        e -> assertThat(e).isInstanceOf(IllegalStateException.class),
-                        e -> assertThat(e).isInstanceOf(NoSuchElementException.class));
+                .satisfiesAnyOf(e -> assertThat(e).isInstanceOf(IllegalStateException.class), e -> assertThat(e)
+                        .isInstanceOf(NoSuchElementException.class));
     }
 }

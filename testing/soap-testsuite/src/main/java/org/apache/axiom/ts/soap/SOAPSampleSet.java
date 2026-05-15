@@ -38,8 +38,7 @@ public final class SOAPSampleSet extends Multiton {
     public static final SOAPSampleSet SIMPLE_FAULT = new SOAPSampleSet("simple-fault");
 
     /** A SOAP request having a header block with a custom role. */
-    public static final SOAPSampleSet CUSTOM_ROLE_REQUEST =
-            new SOAPSampleSet("custom-role-request");
+    public static final SOAPSampleSet CUSTOM_ROLE_REQUEST = new SOAPSampleSet("custom-role-request");
 
     /** A SOAP fault response with a custom role (corresponding to {@link #CUSTOM_ROLE_REQUEST}). */
     public static final SOAPSampleSet CUSTOM_ROLE_FAULT = new SOAPSampleSet("custom-role-fault");
@@ -64,14 +63,9 @@ public final class SOAPSampleSet extends Multiton {
     private final SOAPSample soap12Message;
 
     private SOAPSampleSet(String name) {
-        soap12Message =
-                new SOAPSample(
-                        SOAPSpec.SOAP12, "test-message/set/" + name + ".xml", "soap12/" + name);
+        soap12Message = new SOAPSample(SOAPSpec.SOAP12, "test-message/set/" + name + ".xml", "soap12/" + name);
         soap11Message =
-                new SOAPSample(
-                        SOAPSpec.SOAP11,
-                        new ConvertedSOAPSampleContent(soap12Message),
-                        "soap11/" + name);
+                new SOAPSample(SOAPSpec.SOAP11, new ConvertedSOAPSampleContent(soap12Message), "soap11/" + name);
     }
 
     /**

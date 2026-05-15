@@ -18,11 +18,10 @@
  */
 package org.apache.axiom.truth;
 
+import com.google.auto.service.AutoService;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.truth.xml.spi.XML;
 import org.apache.axiom.truth.xml.spi.XMLFactory;
-
-import com.google.auto.service.AutoService;
 
 @AutoService(XMLFactory.class)
 public class AxiomXMLFactory implements XMLFactory<OMContainer> {

@@ -126,10 +126,7 @@ public abstract class CoreAttributeMixin implements CoreAttribute {
         if (owner instanceof CoreElement) {
             CoreElement ownerElement = (CoreElement) owner;
             CoreAttribute previousAttr = coreGetPreviousAttribute();
-            owner =
-                    newOwner != null
-                            ? newOwner
-                            : semantics.getDetachPolicy().getNewOwnerDocument(ownerElement);
+            owner = newOwner != null ? newOwner : semantics.getDetachPolicy().getNewOwnerDocument(ownerElement);
             if (previousAttr == null) {
                 ownerElement.internalSetFirstAttribute(nextAttribute);
             } else {

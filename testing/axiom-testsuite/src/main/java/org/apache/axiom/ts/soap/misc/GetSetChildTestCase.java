@@ -18,18 +18,17 @@
  */
 package org.apache.axiom.ts.soap.misc;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public abstract class GetSetChildTestCase extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     protected final SOAPSpec spec;
     protected final SOAPElementType type;

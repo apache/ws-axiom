@@ -20,7 +20,6 @@
 package org.apache.axiom.om.util;
 
 import java.text.ParseException;
-
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;

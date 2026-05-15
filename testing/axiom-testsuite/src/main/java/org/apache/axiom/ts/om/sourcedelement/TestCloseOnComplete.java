@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMSourcedElement} calls {@link XMLStreamReader#close()} on the {@link

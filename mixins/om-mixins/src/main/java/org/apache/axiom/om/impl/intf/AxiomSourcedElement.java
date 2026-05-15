@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.intf;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;

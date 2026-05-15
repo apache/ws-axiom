@@ -42,8 +42,7 @@ public class IncomingAttachmentInputStream extends InputStream {
     /**
      * @param in
      */
-    public IncomingAttachmentInputStream(
-            InputStream in, IncomingAttachmentStreams parentContainer) {
+    public IncomingAttachmentInputStream(InputStream in, IncomingAttachmentStreams parentContainer) {
         _stream = in;
         this.parentContainer = parentContainer;
     }
@@ -78,8 +77,7 @@ public class IncomingAttachmentInputStream extends InputStream {
      */
     public String getHeader(String name) {
         Object header = null;
-        if (_headersLowerCase == null
-                || (header = _headersLowerCase.get(name.toLowerCase())) == null) {
+        if (_headersLowerCase == null || (header = _headersLowerCase.get(name.toLowerCase())) == null) {
             return null;
         }
         return header.toString();

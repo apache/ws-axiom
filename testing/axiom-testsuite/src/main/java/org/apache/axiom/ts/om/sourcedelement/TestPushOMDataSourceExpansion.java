@@ -20,12 +20,11 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -33,8 +32,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the expansion of an {@link OMSourcedElement} backed by an {@link AbstractPushOMDataSource}.
@@ -62,8 +59,7 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
     private final PushOMDataSourceScenario scenario;
 
     @Inject
-    public TestPushOMDataSourceExpansion(
-            OMMetaFactory metaFactory, PushOMDataSourceScenario scenario) {
+    public TestPushOMDataSourceExpansion(OMMetaFactory metaFactory, PushOMDataSourceScenario scenario) {
         super(metaFactory);
         this.scenario = scenario;
     }
@@ -78,13 +74,10 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
         if (it.hasNext()) {
             Map.Entry<String, String> binding = it.next();
             OMElement parent =
-                    factory.createOMElement(
-                            "parent",
-                            factory.createOMNamespace(binding.getValue(), binding.getKey()));
+                    factory.createOMElement("parent", factory.createOMNamespace(binding.getValue(), binding.getKey()));
             while (it.hasNext()) {
                 binding = it.next();
-                parent.declareNamespace(
-                        factory.createOMNamespace(binding.getValue(), binding.getKey()));
+                parent.declareNamespace(factory.createOMNamespace(binding.getValue(), binding.getKey()));
             }
             parent.addChild(element);
         }

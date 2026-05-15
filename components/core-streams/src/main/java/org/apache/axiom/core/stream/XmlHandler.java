@@ -19,8 +19,7 @@
 package org.apache.axiom.core.stream;
 
 public interface XmlHandler {
-    void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+    void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
             throws StreamException;
 
     /**
@@ -30,8 +29,7 @@ public interface XmlHandler {
      */
     void startFragment() throws StreamException;
 
-    void processDocumentTypeDeclaration(
-            String rootName, String publicId, String systemId, String internalSubset)
+    void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset)
             throws StreamException;
 
     /**
@@ -60,12 +58,7 @@ public interface XmlHandler {
      * @throws StreamException
      */
     void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException;
 
     /**
@@ -76,8 +69,7 @@ public interface XmlHandler {
      * @param type the attribute type (e.g. {@code CDATA}); never <code>null</code>
      * @throws StreamException
      */
-    void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException;
+    void processAttribute(String name, String value, String type, boolean specified) throws StreamException;
 
     /**
      * Add the given namespace declaration to the element.

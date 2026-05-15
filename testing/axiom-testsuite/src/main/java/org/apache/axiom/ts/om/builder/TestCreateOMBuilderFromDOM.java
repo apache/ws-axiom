@@ -21,11 +21,11 @@ package org.apache.axiom.ts.om.builder;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
 import javax.xml.transform.dom.DOMSource;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -35,9 +35,6 @@ import org.apache.axiom.ts.xml.XMLSample;
 import org.jspecify.annotations.Nullable;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
     private final DOMImplementation implementation;
@@ -55,8 +52,7 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
     }
 
     private Document loadDocument(boolean expandEntityReferences) throws Exception {
-        return implementation.parse(
-                new InputSource(file.getUrl().toString()), expandEntityReferences);
+        return implementation.parse(new InputSource(file.getUrl().toString()), expandEntityReferences);
     }
 
     @Override
@@ -66,15 +62,10 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
         Document document = loadDocument(false);
         OMXMLParserWrapper builder;
         if (expandEntityReferences == null) {
-            builder =
-                    OMXMLBuilderFactory.createOMBuilder(
-                            metaFactory.getOMFactory(), new DOMSource(document));
+            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new DOMSource(document));
         } else {
-            builder =
-                    OMXMLBuilderFactory.createOMBuilder(
-                            metaFactory.getOMFactory(),
-                            document,
-                            expandEntityReferences.booleanValue());
+            builder = OMXMLBuilderFactory.createOMBuilder(
+                    metaFactory.getOMFactory(), document, expandEntityReferences.booleanValue());
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         builder.getDocument().serialize(baos);
@@ -84,7 +75,6 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
         assertAbout(xml())
                 .that(actual)
                 .ignoringWhitespaceInPrologAndEpilog()
-                .hasSameContentAs(
-                        loadDocument(expandEntityReferences == null || expandEntityReferences));
+                .hasSameContentAs(loadDocument(expandEntityReferences == null || expandEntityReferences));
     }
 }

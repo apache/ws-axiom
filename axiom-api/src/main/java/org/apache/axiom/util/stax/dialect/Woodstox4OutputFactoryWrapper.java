@@ -20,7 +20,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.OutputStream;
-
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -32,8 +31,7 @@ class Woodstox4OutputFactoryWrapper extends NormalizingXMLOutputFactoryWrapper {
     }
 
     @Override
-    public XMLEventWriter createXMLEventWriter(OutputStream stream, String encoding)
-            throws XMLStreamException {
+    public XMLEventWriter createXMLEventWriter(OutputStream stream, String encoding) throws XMLStreamException {
         if (encoding == null) {
             throw new IllegalArgumentException();
         } else {
@@ -42,8 +40,7 @@ class Woodstox4OutputFactoryWrapper extends NormalizingXMLOutputFactoryWrapper {
     }
 
     @Override
-    public XMLStreamWriter createXMLStreamWriter(OutputStream stream, String encoding)
-            throws XMLStreamException {
+    public XMLStreamWriter createXMLStreamWriter(OutputStream stream, String encoding) throws XMLStreamException {
         if (encoding == null) {
             throw new IllegalArgumentException();
         } else {

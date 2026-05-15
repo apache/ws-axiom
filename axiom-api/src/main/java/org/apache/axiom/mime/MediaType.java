@@ -48,8 +48,7 @@ public final class MediaType {
     public static final MediaType MULTIPART_RELATED = new MediaType("multipart", "related");
 
     /** The media type for {@code application/octet-stream}. */
-    public static final MediaType APPLICATION_OCTET_STREAM =
-            new MediaType("application", "octet-stream");
+    public static final MediaType APPLICATION_OCTET_STREAM = new MediaType("application", "octet-stream");
 
     /** The media type for {@code text/plain}. */
     public static final MediaType TEXT_PLAIN = new MediaType("text", "plain");
@@ -151,8 +150,7 @@ public final class MediaType {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof MediaType other) {
-            return primaryType.equalsIgnoreCase(other.primaryType)
-                    && subType.equalsIgnoreCase(other.subType);
+            return primaryType.equalsIgnoreCase(other.primaryType) && subType.equalsIgnoreCase(other.subType);
         } else {
             return false;
         }

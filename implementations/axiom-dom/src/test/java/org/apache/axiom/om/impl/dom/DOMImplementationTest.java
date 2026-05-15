@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.dom;
 
 import java.util.stream.Stream;
-
 import org.apache.axiom.ts.dom.DOMTestSuite;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;

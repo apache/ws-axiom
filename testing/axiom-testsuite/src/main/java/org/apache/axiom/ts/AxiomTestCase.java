@@ -19,30 +19,26 @@
 package org.apache.axiom.ts;
 
 import javax.xml.stream.XMLInputFactory;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 
-import junit.framework.TestCase;
-
 public abstract class AxiomTestCase extends TestCase {
-    public static final StAXParserConfiguration TEST_PARSER_CONFIGURATION =
-            new StAXParserConfiguration() {
-                @Override
-                public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
-                    // For the tests, preserve as much of the syntactic structure of the test
-                    // documents
-                    factory.setProperty(
-                            XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
-                    return dialect.enableCDataReporting(factory);
-                }
+    public static final StAXParserConfiguration TEST_PARSER_CONFIGURATION = new StAXParserConfiguration() {
+        @Override
+        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+            // For the tests, preserve as much of the syntactic structure of the test
+            // documents
+            factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
+            return dialect.enableCDataReporting(factory);
+        }
 
-                @Override
-                public String toString() {
-                    return "TEST";
-                }
-            };
+        @Override
+        public String toString() {
+            return "TEST";
+        }
+    };
 
     protected final OMMetaFactory metaFactory;
 

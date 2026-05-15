@@ -20,10 +20,8 @@ package org.apache.axiom.mime.activation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.ByteArrayOutputStream;
-
 import jakarta.activation.DataSource;
-
+import java.io.ByteArrayOutputStream;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.mime.PartBlob;
 import org.apache.axiom.om.OMText;
@@ -36,22 +34,18 @@ public class PartDataHandlerBlobFactoryTest {
     @Test
     public void testDefaultImplementation() throws Exception {
         MTOMSample testMessage = MTOMSample.SAMPLE1;
-        MultipartBody mb =
-                MultipartBody.builder()
-                        .setInputStream(testMessage.getInputStream())
-                        .setContentType(testMessage.getContentType())
-                        .setPartBlobFactory(PartDataHandlerBlobFactory.DEFAULT)
-                        .build();
-        PartBlob blob =
-                (PartBlob)
-                        ((OMText)
-                                        OMXMLBuilderFactory.createSOAPModelBuilder(mb)
-                                                .getSOAPEnvelope()
-                                                .getBody()
-                                                .getFirstElement()
-                                                .getFirstElement()
-                                                .getFirstOMChild())
-                                .getBlob();
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(testMessage.getInputStream())
+                .setContentType(testMessage.getContentType())
+                .setPartBlobFactory(PartDataHandlerBlobFactory.DEFAULT)
+                .build();
+        PartBlob blob = (PartBlob) ((OMText) OMXMLBuilderFactory.createSOAPModelBuilder(mb)
+                        .getSOAPEnvelope()
+                        .getBody()
+                        .getFirstElement()
+                        .getFirstElement()
+                        .getFirstOMChild())
+                .getBlob();
         assertThat(blob).isInstanceOf(PartDataHandlerBlob.class);
         PartDataHandler dh = ((PartDataHandlerBlob) blob).getDataHandler();
         assertThat(dh.getPart()).isSameAs(blob.getPart());

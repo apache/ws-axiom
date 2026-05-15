@@ -19,10 +19,9 @@
 
 package org.apache.axiom.dom;
 
+import java.util.Iterator;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import java.util.Iterator;
 
 /** Implementation of org.w3c.dom.NodeList */
 public abstract class NodeListImpl implements NodeList {

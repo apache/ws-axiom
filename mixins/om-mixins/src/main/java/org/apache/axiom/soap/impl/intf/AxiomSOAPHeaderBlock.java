@@ -21,5 +21,4 @@ package org.apache.axiom.soap.impl.intf;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
-public interface AxiomSOAPHeaderBlock
-        extends AxiomSOAPElement, AxiomSourcedElement, SOAPHeaderBlock {}
+public interface AxiomSOAPHeaderBlock extends AxiomSOAPElement, AxiomSourcedElement, SOAPHeaderBlock {}

@@ -51,8 +51,7 @@ public final class SAXResultContentHandler implements XmlHandler {
     }
 
     @Override
-    public void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
         target = root;
     }
 
@@ -76,9 +75,7 @@ public final class SAXResultContentHandler implements XmlHandler {
     @Override
     public void startElement(String namespaceURI, String localName, String prefix) {
         // TODO: inefficient: we should not create a new OMNamespace instance every time
-        target =
-                factory.createOMElement(
-                        localName, factory.createOMNamespace(namespaceURI, prefix), target);
+        target = factory.createOMElement(localName, factory.createOMNamespace(namespaceURI, prefix), target);
     }
 
     @Override
@@ -88,12 +85,7 @@ public final class SAXResultContentHandler implements XmlHandler {
 
     @Override
     public void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified) {
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified) {
         OMElement element = (OMElement) target;
         OMNamespace ns;
         if (namespaceURI.length() > 0) {
@@ -109,8 +101,7 @@ public final class SAXResultContentHandler implements XmlHandler {
     }
 
     @Override
-    public void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException {
+    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -132,8 +123,7 @@ public final class SAXResultContentHandler implements XmlHandler {
         if (buffering) {
             buffer.append(data);
         } else {
-            factory.createOMText(
-                    target, data.toString(), ignorable ? OMNode.SPACE_NODE : OMNode.TEXT_NODE);
+            factory.createOMText(target, data.toString(), ignorable ? OMNode.SPACE_NODE : OMNode.TEXT_NODE);
         }
     }
 

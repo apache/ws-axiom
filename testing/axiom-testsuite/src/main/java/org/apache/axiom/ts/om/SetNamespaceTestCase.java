@@ -18,13 +18,11 @@
  */
 package org.apache.axiom.ts.om;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -112,13 +110,11 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
             element = null;
         }
         node = node(factory, element);
-        OMNamespace ns =
-                params.namespaceURI() == null
-                        ? null
-                        : factory.createOMNamespace(params.namespaceURI(), params.prefix());
+        OMNamespace ns = params.namespaceURI() == null
+                ? null
+                : factory.createOMNamespace(params.namespaceURI(), params.prefix());
         if (params.invalid()) {
-            assertThatThrownBy(() -> setNamespace(node, ns))
-                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> setNamespace(node, ns)).isInstanceOf(IllegalArgumentException.class);
             return;
         } else {
             setNamespace(node, ns);
@@ -150,8 +146,7 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
         }
         QName qname = node.getQName();
         assertThat(qname.getPrefix()).isEqualTo(expectedPrefix);
-        assertThat(qname.getNamespaceURI())
-                .isEqualTo(params.namespaceURI() == null ? "" : params.namespaceURI());
+        assertThat(qname.getNamespaceURI()).isEqualTo(params.namespaceURI() == null ? "" : params.namespaceURI());
         if (element != null) {
             Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
             if (params.expectNSDecl()) {

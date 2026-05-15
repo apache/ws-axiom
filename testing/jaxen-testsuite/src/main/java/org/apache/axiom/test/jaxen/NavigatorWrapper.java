@@ -20,7 +20,6 @@
 package org.apache.axiom.test.jaxen;
 
 import java.util.Iterator;
-
 import org.jaxen.FunctionCallException;
 import org.jaxen.Navigator;
 import org.jaxen.UnsupportedAxisException;

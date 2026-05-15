@@ -22,12 +22,12 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -38,9 +38,6 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializeToOutputStream;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests serialization with an {@link OMDataSource} that uses {@link
@@ -114,10 +111,7 @@ public class TestSerializeOMDataSourceWritingToOutputStream extends AxiomTestCas
         assertAbout(xml())
                 .that(serializationStrategy.serialize(elementToSerialize).getInputSource())
                 .hasSameContentAs(
-                        serializeParent
-                                ? "<root><test xmlns='urn:test'/></root>"
-                                : "<test xmlns='urn:test'/>");
-        assertThat(ds.isOutputStreamUsed())
-                .isEqualTo(serializationStrategy instanceof SerializeToOutputStream);
+                        serializeParent ? "<root><test xmlns='urn:test'/></root>" : "<test xmlns='urn:test'/>");
+        assertThat(ds.isOutputStreamUsed()).isEqualTo(serializationStrategy instanceof SerializeToOutputStream);
     }
 }

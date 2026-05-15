@@ -21,7 +21,6 @@ package org.apache.axiom.core.stream.serializer.writer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-
 import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 
 public abstract class XmlWriter {
@@ -39,8 +38,8 @@ public abstract class XmlWriter {
         }
     }
 
-    public abstract void setUnmappableCharacterHandler(
-            UnmappableCharacterHandler unmappableCharacterHandler) throws IOException;
+    public abstract void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler)
+            throws IOException;
 
     public abstract void write(char c) throws IOException;
 
@@ -59,8 +58,7 @@ public abstract class XmlWriter {
 
     public final void writeCharacterReference(int codePoint) throws IOException {
         write("&#x");
-        int digits =
-                Math.max(((Integer.SIZE - Integer.numberOfLeadingZeros(codePoint)) + 3) / 4, 1);
+        int digits = Math.max(((Integer.SIZE - Integer.numberOfLeadingZeros(codePoint)) + 3) / 4, 1);
         for (int i = digits - 1; i >= 0; i--) {
             int digit = (codePoint >> (4 * i)) & 0xf;
             write((char) (digit + (digit < 10 ? '0' : 'a' - 10)));

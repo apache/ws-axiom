@@ -25,14 +25,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
-
 import junit.framework.TestCase;
 
 public class UIDGeneratorTest extends TestCase {
     public void testGenerateContentIdFormat() {
         // This is actually a bit more restrictive than necessary
-        assertTrue(
-                Pattern.matches("\\w+(\\.\\w+)*@\\w+(\\.\\w+)", UIDGenerator.generateContentId()));
+        assertTrue(Pattern.matches("\\w+(\\.\\w+)*@\\w+(\\.\\w+)", UIDGenerator.generateContentId()));
     }
 
     public void testGenerateContentIdUniqueness() {
@@ -52,19 +50,15 @@ public class UIDGeneratorTest extends TestCase {
         AtomicInteger errorCount = new AtomicInteger(0);
         Thread[] threads = new Thread[100];
         for (int i = 0; i < threads.length; i++) {
-            threads[i] =
-                    new Thread(
-                            () -> {
-                                for (int j = 0; j < 1000; j++) {
-                                    String id = UIDGenerator.generateUID();
-                                    if (!generatedIds.add(id)) {
-                                        System.out.println(
-                                                "ERROR - Same UID has been generated before. UID: "
-                                                        + id);
-                                        errorCount.incrementAndGet();
-                                    }
-                                }
-                            });
+            threads[i] = new Thread(() -> {
+                for (int j = 0; j < 1000; j++) {
+                    String id = UIDGenerator.generateUID();
+                    if (!generatedIds.add(id)) {
+                        System.out.println("ERROR - Same UID has been generated before. UID: " + id);
+                        errorCount.incrementAndGet();
+                    }
+                }
+            });
             threads[i].start();
         }
 
@@ -84,13 +78,11 @@ public class UIDGeneratorTest extends TestCase {
         String[][] urns = new String[threads.length][1000];
         for (int i = 0; i < threads.length; i++) {
             String[] threadURNs = urns[i];
-            threads[i] =
-                    new Thread(
-                            () -> {
-                                for (int j = 0; j < threadURNs.length; j++) {
-                                    threadURNs[j] = UIDGenerator.generateURNString();
-                                }
-                            });
+            threads[i] = new Thread(() -> {
+                for (int j = 0; j < threadURNs.length; j++) {
+                    threadURNs[j] = UIDGenerator.generateURNString();
+                }
+            });
             threads[i].start();
         }
 

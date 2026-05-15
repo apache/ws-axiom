@@ -20,11 +20,9 @@
 package org.apache.axiom.om.impl.stream.ds;
 
 import java.io.OutputStream;
-
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.DocumentElementExtractingFilterHandler;
 import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
@@ -86,8 +84,7 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     }
 
     @Override
-    public void writeStartElement(String string, String string1, String string2)
-            throws XMLStreamException {
+    public void writeStartElement(String string, String string1, String string2) throws XMLStreamException {
         xmlWriter.writeStartElement(string, string1, string2);
     }
 
@@ -97,8 +94,7 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     }
 
     @Override
-    public void writeEmptyElement(String string, String string1, String string2)
-            throws XMLStreamException {
+    public void writeEmptyElement(String string, String string1, String string2) throws XMLStreamException {
         xmlWriter.writeEmptyElement(string, string1, string2);
     }
 
@@ -142,8 +138,7 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     }
 
     @Override
-    public void writeAttribute(String string, String string1, String string2)
-            throws XMLStreamException {
+    public void writeAttribute(String string, String string1, String string2) throws XMLStreamException {
         xmlWriter.writeAttribute(string, string1, string2);
     }
 
@@ -168,8 +163,7 @@ final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     }
 
     @Override
-    public void writeProcessingInstruction(String string, String string1)
-            throws XMLStreamException {
+    public void writeProcessingInstruction(String string, String string1) throws XMLStreamException {
         xmlWriter.writeProcessingInstruction(string, string1);
     }
 

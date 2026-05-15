@@ -21,14 +21,13 @@ package org.apache.axiom.ts.om.xpath;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestAddNamespaces2 extends AxiomTestCase {
     @Inject
@@ -40,13 +39,9 @@ public class TestAddNamespaces2 extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement root1 =
-                AXIOMUtil.stringToOM(
-                        factory,
-                        "<ns:root xmlns:ns='urn:ns1'><ns:child xmlns:ns='urn:ns2'/></root>");
+                AXIOMUtil.stringToOM(factory, "<ns:root xmlns:ns='urn:ns1'><ns:child xmlns:ns='urn:ns2'/></root>");
         OMElement root2 =
-                AXIOMUtil.stringToOM(
-                        factory,
-                        "<root xmlns='urn:ns1'><child xmlns='urn:ns2'>text</child></root>");
+                AXIOMUtil.stringToOM(factory, "<root xmlns='urn:ns1'><child xmlns='urn:ns2'>text</child></root>");
         AXIOMXPath xpath = new AXIOMXPath("//ns:child");
         xpath.addNamespaces(root1.getFirstElement());
         assertThat(xpath.stringValueOf(root2.getParent())).isEqualTo("text");

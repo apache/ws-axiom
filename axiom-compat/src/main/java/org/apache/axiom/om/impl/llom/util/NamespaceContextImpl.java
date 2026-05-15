@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.llom.util;
 
 import java.util.Map;
-
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 
 /**

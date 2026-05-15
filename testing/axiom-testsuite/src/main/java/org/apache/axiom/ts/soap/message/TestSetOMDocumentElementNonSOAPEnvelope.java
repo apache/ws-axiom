@@ -20,8 +20,9 @@ package org.apache.axiom.ts.soap.message;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -29,23 +30,19 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} when an attempt is made
  * to set an {@link OMElement} that is not a {@link SOAPEnvelope} as the root element of a {@link
  * SOAPMessage}. In this case, an exception should be thrown.
  */
 public class TestSetOMDocumentElementNonSOAPEnvelope extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPMessage message = soapFactory.createSOAPMessage();
         OMElement element = soapFactory.createOMElement(new QName("test"));
-        assertThatThrownBy(() -> message.setOMDocumentElement(element))
-                .isInstanceOf(OMException.class);
+        assertThatThrownBy(() -> message.setOMDocumentElement(element)).isInstanceOf(OMException.class);
     }
 }

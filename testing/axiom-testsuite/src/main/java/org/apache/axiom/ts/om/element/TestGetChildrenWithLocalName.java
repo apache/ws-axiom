@@ -20,17 +20,14 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
-
-import com.google.inject.Inject;
 
 public class TestGetChildrenWithLocalName extends AxiomTestCase {
     @Inject
@@ -40,11 +37,10 @@ public class TestGetChildrenWithLocalName extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elt =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(), XMLSample.SIMPLE.getInputStream())
-                        .getDocumentElement()
-                        .getFirstElement();
+        OMElement elt = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), XMLSample.SIMPLE.getInputStream())
+                .getDocumentElement()
+                .getFirstElement();
         Iterator<OMElement> it = elt.getChildrenWithLocalName("subelement");
         assertThat(it.hasNext()).isTrue();
         OMElement child = it.next();

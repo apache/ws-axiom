@@ -20,15 +20,13 @@ package org.apache.axiom.blob.suite;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
-
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestRandomReadWrite extends SizeSensitiveWritableBlobTestCase {
     @Inject

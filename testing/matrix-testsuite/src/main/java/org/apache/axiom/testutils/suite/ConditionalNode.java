@@ -18,14 +18,12 @@
  */
 package org.apache.axiom.testutils.suite;
 
+import com.google.inject.Injector;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.DynamicNode;
-
-import com.google.inject.Injector;
 
 /**
  * A node that conditionally delegates to its single child based on a predicate evaluated against

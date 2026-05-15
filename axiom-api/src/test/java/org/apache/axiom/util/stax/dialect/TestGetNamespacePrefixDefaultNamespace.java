@@ -19,7 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
@@ -27,8 +26,7 @@ public class TestGetNamespacePrefixDefaultNamespace extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
-        XMLStreamReader reader =
-                factory.createXMLStreamReader(new StringReader("<root xmlns=\"urn:ns\"/>"));
+        XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root xmlns=\"urn:ns\"/>"));
         reader.next();
         assertNull(reader.getNamespacePrefix(0));
     }

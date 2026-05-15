@@ -93,8 +93,7 @@ public class XMLStreamWriterWrapper implements XMLStreamWriter {
     }
 
     @Override
-    public void writeAttribute(String namespaceURI, String localName, String value)
-            throws XMLStreamException {
+    public void writeAttribute(String namespaceURI, String localName, String value) throws XMLStreamException {
         parent.writeAttribute(namespaceURI, localName, value);
     }
 
@@ -134,8 +133,7 @@ public class XMLStreamWriterWrapper implements XMLStreamWriter {
     }
 
     @Override
-    public void writeEmptyElement(String prefix, String localName, String namespaceURI)
-            throws XMLStreamException {
+    public void writeEmptyElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
         parent.writeEmptyElement(prefix, localName, namespaceURI);
     }
 
@@ -195,8 +193,7 @@ public class XMLStreamWriterWrapper implements XMLStreamWriter {
     }
 
     @Override
-    public void writeStartElement(String prefix, String localName, String namespaceURI)
-            throws XMLStreamException {
+    public void writeStartElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
         parent.writeStartElement(prefix, localName, namespaceURI);
     }
 

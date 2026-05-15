@@ -20,15 +20,13 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 import java.io.StringWriter;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMElement#serializeAndConsume(java.io.Writer)} correctly serializes an object
@@ -45,10 +43,8 @@ public class TestSerializeAndConsumePartiallyBuilt extends AxiomTestCase {
         String xml =
                 "<root><child><grandchild1>text</grandchild1></child><child><grandchild2>text</grandchild2></child></root>";
 
-        OMElement root =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(), new StringReader(xml))
-                        .getDocumentElement();
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new StringReader(xml))
+                .getDocumentElement();
 
         // Partially build the tree
         root.getFirstElement().getFirstElement();

@@ -25,9 +25,7 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
 import java.io.StringReader;
-
 import javax.inject.Inject;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -62,7 +60,8 @@ public class FactoryTest {
                 url("link:classpath:assertj-core.link"));
     }
 
-    @Inject private BundleContext context;
+    @Inject
+    private BundleContext context;
 
     @Test
     public void testGetOMFactory() throws Exception {
@@ -82,8 +81,7 @@ public class FactoryTest {
     @Test
     public void testLLOMMetaFactoryServicePresent() throws Exception {
         ServiceReference<?>[] omfactRefs =
-                context.getServiceReferences(
-                        "org.apache.axiom.om.OMMetaFactory", "(implementationName=llom)");
+                context.getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=llom)");
         assertThat(omfactRefs).isNotNull();
         assertThat(omfactRefs).hasSize(1);
     }
@@ -91,8 +89,7 @@ public class FactoryTest {
     @Test
     public void testDOOMMetaFactoryServicePresent() throws Exception {
         ServiceReference<?>[] omfactRefs =
-                context.getServiceReferences(
-                        "org.apache.axiom.om.OMMetaFactory", "(implementationName=doom)");
+                context.getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=doom)");
         assertThat(omfactRefs).isNotNull();
         assertThat(omfactRefs).hasSize(2);
     }
@@ -107,19 +104,16 @@ public class FactoryTest {
 
     @Test
     public void testLookupDOMMetaFactory() throws Exception {
-        ServiceReference<?>[] omfactRefs =
-                context.getServiceReferences("org.apache.axiom.om.dom.DOMMetaFactory", null);
+        ServiceReference<?>[] omfactRefs = context.getServiceReferences("org.apache.axiom.om.dom.DOMMetaFactory", null);
         assertThat(omfactRefs).isNotNull();
         assertThat(omfactRefs).hasSize(1);
     }
 
     @Test
     public void testCreateOMBuilder() throws Exception {
-        OMElement oe =
-                OMXMLBuilderFactory.createOMBuilder(
-                                new StringReader(
-                                        "<a:testElement xmlns:a=\"http://test/namespace\"/>"))
-                        .getDocumentElement();
+        OMElement oe = OMXMLBuilderFactory.createOMBuilder(
+                        new StringReader("<a:testElement xmlns:a=\"http://test/namespace\"/>"))
+                .getDocumentElement();
         assertThat(oe.getLocalName()).isEqualTo("testElement");
         assertThat(oe.getNamespace().getNamespaceURI()).isEqualTo("http://test/namespace");
     }

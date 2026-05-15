@@ -19,18 +19,16 @@
 
 package org.apache.axiom.om.util;
 
+import java.util.List;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.jaxen.SimpleNamespaceContext;
-
-import java.util.List;
 
 /**
  * @deprecated
  */
 public class XPathEvaluator {
 
-    public List evaluateXpath(String xpathExpression, Object element, String nsURI)
-            throws Exception {
+    public List evaluateXpath(String xpathExpression, Object element, String nsURI) throws Exception {
         AXIOMXPath xpath = new AXIOMXPath(xpathExpression);
         if (nsURI != null) {
             SimpleNamespaceContext nsContext = new SimpleNamespaceContext();

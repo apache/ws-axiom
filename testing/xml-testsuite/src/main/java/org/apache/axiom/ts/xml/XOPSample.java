@@ -21,12 +21,10 @@ package org.apache.axiom.ts.xml;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
@@ -35,13 +33,12 @@ import org.w3c.dom.Node;
 
 public class XOPSample extends MIMESample {
     /** Slightly modified version of the non-SOAP sample given in the XOP spec. */
-    public static final XOPSample XOP_SPEC_SAMPLE =
-            new XOPSample(
-                    "spec-sample.msg",
-                    "Multipart/Related;boundary=MIME_boundary; "
-                            + "type=\"application/xop+xml\"; "
-                            + "start=\"<mymessage.xml@example.org>\"; "
-                            + "start-info=\"text/xml\"");
+    public static final XOPSample XOP_SPEC_SAMPLE = new XOPSample(
+            "spec-sample.msg",
+            "Multipart/Related;boundary=MIME_boundary; "
+                    + "type=\"application/xop+xml\"; "
+                    + "start=\"<mymessage.xml@example.org>\"; "
+                    + "start-info=\"text/xml\"");
 
     protected XOPSample(MessageContent content, String name, String contentType) {
         super(content, name, contentType);
@@ -72,12 +69,9 @@ public class XOPSample extends MIMESample {
                 && element.getLocalName().equals("Include")) {
             String cid = element.getAttribute("href").substring(4);
             String base64 = Base64.encodeBase64String(IOUtils.toByteArray(getPart(cid)));
-            element.getParentNode()
-                    .replaceChild(element.getOwnerDocument().createTextNode(base64), element);
+            element.getParentNode().replaceChild(element.getOwnerDocument().createTextNode(base64), element);
         } else {
-            for (Node child = element.getFirstChild();
-                    child != null;
-                    child = child.getNextSibling()) {
+            for (Node child = element.getFirstChild(); child != null; child = child.getNextSibling()) {
                 if (child instanceof Element) {
                     process((Element) child);
                 }

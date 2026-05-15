@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.springws.scenario;
 
+import com.google.inject.Inject;
 import org.apache.axiom.ts.springws.SpringWSTestCase;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
@@ -34,10 +35,10 @@ import org.springframework.mock.env.MockPropertySource;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 
-import com.google.inject.Inject;
-
 public abstract class ScenarioTestCase extends SpringWSTestCase {
-    @Inject private ScenarioConfig config;
+    @Inject
+    private ScenarioConfig config;
+
     private Server server;
     protected GenericXmlApplicationContext context;
 
@@ -54,17 +55,15 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
         ServletContextHandler handler = new ServletContextHandler("/");
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setContextClass(GenericWebApplicationContext.class);
-        servlet.setContextInitializers(
-                new ApplicationContextInitializer<ConfigurableApplicationContext>() {
-                    @Override
-                    public void initialize(ConfigurableApplicationContext applicationContext) {
-                        configureContext(
-                                (GenericWebApplicationContext) applicationContext,
-                                config.getServerMessageFactoryConfigurator(),
-                                new ClassPathResource(
-                                        "server.xml", ScenarioTestCase.this.getClass()));
-                    }
-                });
+        servlet.setContextInitializers(new ApplicationContextInitializer<ConfigurableApplicationContext>() {
+            @Override
+            public void initialize(ConfigurableApplicationContext applicationContext) {
+                configureContext(
+                        (GenericWebApplicationContext) applicationContext,
+                        config.getServerMessageFactoryConfigurator(),
+                        new ClassPathResource("server.xml", ScenarioTestCase.this.getClass()));
+            }
+        });
         ServletHolder servletHolder = new ServletHolder(servlet);
         servletHolder.setName("spring-ws");
         servletHolder.setInitOrder(1);
@@ -77,13 +76,9 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
         propertySource.setProperty("port", connector.getLocalPort());
         context.getEnvironment()
                 .getPropertySources()
-                .replace(
-                        StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,
-                        propertySource);
+                .replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
         configureContext(
-                context,
-                config.getClientMessageFactoryConfigurator(),
-                new ClassPathResource("client.xml", getClass()));
+                context, config.getClientMessageFactoryConfigurator(), new ClassPathResource("client.xml", getClass()));
 
         context.refresh();
     }

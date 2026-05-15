@@ -21,7 +21,6 @@ package org.apache.axiom.ts.dimension;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -59,14 +58,12 @@ final class SAXBuilderFactory extends BuilderFactory {
     }
 
     @Override
-    public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource)
-            throws Exception {
+    public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
         SAXParserFactory factory = implementation.newSAXParserFactory();
         factory.setNamespaceAware(true);
         factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
         SAXParser parser = factory.newSAXParser();
-        SAXSource source =
-                new SAXSource(new CoalescingXMLFilter(parser.getXMLReader()), inputSource);
+        SAXSource source = new SAXSource(new CoalescingXMLFilter(parser.getXMLReader()), inputSource);
         return OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source, false);
     }
 }

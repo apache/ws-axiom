@@ -20,14 +20,13 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.w3c.dom.Element;
-
-import com.google.inject.Inject;
 
 public class TestCreateOMBuilderFromDOMWithNSUnawarePrefixedAttribute extends AxiomTestCase {
     @Inject
@@ -39,12 +38,9 @@ public class TestCreateOMBuilderFromDOMWithNSUnawarePrefixedAttribute extends Ax
     protected void runTest() throws Throwable {
         Element domElement = DOMImplementation.XERCES.newDocument().createElementNS(null, "test");
         domElement.setAttribute("p:attr", "value");
-        assertThatThrownBy(
-                        () ->
-                                OMXMLBuilderFactory.createOMBuilder(
-                                                metaFactory.getOMFactory(), domElement, false)
-                                        .getDocument()
-                                        .build())
+        assertThatThrownBy(() -> OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domElement, false)
+                        .getDocument()
+                        .build())
                 .isInstanceOf(OMException.class);
     }
 }

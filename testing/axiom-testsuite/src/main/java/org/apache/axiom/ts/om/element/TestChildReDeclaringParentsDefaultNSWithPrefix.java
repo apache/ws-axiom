@@ -20,18 +20,15 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.ByteArrayInputStream;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestChildReDeclaringParentsDefaultNSWithPrefix extends AxiomTestCase {
     @Inject
@@ -42,30 +39,23 @@ public class TestChildReDeclaringParentsDefaultNSWithPrefix extends AxiomTestCas
     @Override
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
-        OMElement elem =
-                fac.createOMElement(
-                        "RequestSecurityToken",
-                        fac.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
+        OMElement elem = fac.createOMElement(
+                "RequestSecurityToken", fac.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
         fac.createOMElement(new QName("TokenType"), elem).setText("test");
         fac.createOMElement(new QName("RequestType"), elem).setText("test1");
 
-        fac.createOMElement(
-                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"), elem);
+        fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"), elem);
         String xml = elem.toString();
 
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(), new ByteArrayInputStream(xml.getBytes()));
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
+                metaFactory.getOMFactory(), new ByteArrayInputStream(xml.getBytes()));
 
         builder.getDocumentElement().build();
 
         // The StAX implementation may or may not have a trailing blank in the tag
-        String assertText1 =
-                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />";
-        String assertText2 =
-                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"/>";
-        String assertText3 =
-                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"></wst:Entropy>";
+        String assertText1 = "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />";
+        String assertText2 = "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"/>";
+        String assertText3 = "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"></wst:Entropy>";
 
         assertThat(xml)
                 .satisfiesAnyOf(

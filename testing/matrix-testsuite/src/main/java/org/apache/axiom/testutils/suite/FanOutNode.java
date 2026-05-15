@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.testutils.suite;
 
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Injector;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
@@ -25,12 +27,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
 import org.junit.jupiter.api.DynamicContainer;
 import org.junit.jupiter.api.DynamicNode;
-
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Injector;
 
 /**
  * Fan-out node that iterates over a list of values, creating one {@link DynamicContainer} per
@@ -57,10 +55,7 @@ public final class FanOutNode<T> extends MatrixTestNode {
     }
 
     public FanOutNode(
-            ImmutableList<T> values,
-            Binding<T> binding,
-            LabelBinding<? super T> labelBinding,
-            MatrixTestNode child) {
+            ImmutableList<T> values, Binding<T> binding, LabelBinding<? super T> labelBinding, MatrixTestNode child) {
         this(injector -> values, binding, labelBinding, child);
     }
 
@@ -70,38 +65,31 @@ public final class FanOutNode<T> extends MatrixTestNode {
             Map<String, String> inheritedLabels,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
         return StreamSupport.stream(valuesFunction.apply(parentInjector).spliterator(), false)
-                .map(
-                        value -> {
-                            Injector childInjector =
-                                    parentInjector.createChildInjector(
-                                            binder -> binding.configure(binder, value));
-                            Map<String, String> labels = new HashMap<>(inheritedLabels);
-                            labelBinding.addLabels(
-                                    parentInjector,
-                                    value,
-                                    new LabelTarget() {
-                                        @Override
-                                        public void addLabel(String name, String value) {
-                                            labels.put(name, value);
-                                        }
+                .map(value -> {
+                    Injector childInjector =
+                            parentInjector.createChildInjector(binder -> binding.configure(binder, value));
+                    Map<String, String> labels = new HashMap<>(inheritedLabels);
+                    labelBinding.addLabels(parentInjector, value, new LabelTarget() {
+                        @Override
+                        public void addLabel(String name, String value) {
+                            labels.put(name, value);
+                        }
 
-                                        @Override
-                                        public void addLabel(String name, boolean value) {
-                                            addLabel(name, String.valueOf(value));
-                                        }
+                        @Override
+                        public void addLabel(String name, boolean value) {
+                            addLabel(name, String.valueOf(value));
+                        }
 
-                                        @Override
-                                        public void addLabel(String name, int value) {
-                                            addLabel(name, String.valueOf(value));
-                                        }
-                                    });
-                            String displayName =
-                                    labels.entrySet().stream()
-                                            .map(e -> e.getKey() + "=" + e.getValue())
-                                            .collect(Collectors.joining(", "));
-                            return DynamicContainer.dynamicContainer(
-                                    displayName,
-                                    child.toDynamicNodes(childInjector, labels, excludes));
-                        });
+                        @Override
+                        public void addLabel(String name, int value) {
+                            addLabel(name, String.valueOf(value));
+                        }
+                    });
+                    String displayName = labels.entrySet().stream()
+                            .map(e -> e.getKey() + "=" + e.getValue())
+                            .collect(Collectors.joining(", "));
+                    return DynamicContainer.dynamicContainer(
+                            displayName, child.toDynamicNodes(childInjector, labels, excludes));
+                });
     }
 }

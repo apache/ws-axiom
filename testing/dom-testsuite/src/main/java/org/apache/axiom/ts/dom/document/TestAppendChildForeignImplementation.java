@@ -34,7 +34,6 @@ public class TestAppendChildForeignImplementation extends DOMTestCase {
         Element element = mock(Element.class);
         assertThatThrownBy(() -> document.appendChild(element))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.WRONG_DOCUMENT_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.WRONG_DOCUMENT_ERR));
     }
 }

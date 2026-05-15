@@ -20,14 +20,13 @@ package org.apache.axiom.ts.soap12.faultcode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetValueWithParser extends SampleBasedSOAPTestCase {
     @Inject
@@ -39,7 +38,6 @@ public class TestGetValueWithParser extends SampleBasedSOAPTestCase {
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFaultCode faultCode = envelope.getBody().getFault().getCode();
         assertThat(faultCode.getValue()).isNotNull();
-        assertThat(faultCode.getValue().getLocalName())
-                .isEqualTo(SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME);
+        assertThat(faultCode.getValue().getLocalName()).isEqualTo(SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME);
     }
 }

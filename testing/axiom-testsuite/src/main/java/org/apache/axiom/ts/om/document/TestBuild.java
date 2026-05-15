@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -27,8 +28,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
-
-import com.google.inject.Inject;
 
 public class TestBuild extends AxiomTestCase {
     @Inject
@@ -39,8 +38,8 @@ public class TestBuild extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         InstrumentedInputStream in = new InstrumentedInputStream(XMLSample.LARGE.getInputStream());
-        OMDocument doc =
-                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocument();
+        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
+                .getDocument();
         assertThat(doc.isComplete()).isFalse();
         long countBeforeBuild = in.getCount();
         doc.build();

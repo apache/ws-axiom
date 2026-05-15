@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -44,8 +43,7 @@ public class TestInsertSibling extends CrossOMTestCase {
         } else {
             child.insertSiblingAfter(orgSibling);
         }
-        OMComment sibling =
-                (OMComment) (before ? child.getPreviousOMSibling() : child.getNextOMSibling());
+        OMComment sibling = (OMComment) (before ? child.getPreviousOMSibling() : child.getNextOMSibling());
         assertThat(sibling).isNotSameAs(orgSibling);
         assertThat(sibling.getValue()).isEqualTo("test");
     }

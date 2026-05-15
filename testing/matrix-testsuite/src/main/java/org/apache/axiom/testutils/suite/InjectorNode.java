@@ -18,15 +18,13 @@
  */
 package org.apache.axiom.testutils.suite;
 
-import java.util.Map;
-import java.util.function.BiPredicate;
-import java.util.stream.Stream;
-
-import org.junit.jupiter.api.DynamicNode;
-
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import java.util.Map;
+import java.util.function.BiPredicate;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.DynamicNode;
 
 /**
  * A node that creates a child Guice injector from the supplied modules and threads it through its
@@ -66,7 +64,6 @@ public class InjectorNode extends MatrixTestNode {
             Injector parentInjector,
             Map<String, String> inheritedLabels,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
-        return child.toDynamicNodes(
-                parentInjector.createChildInjector(modules), inheritedLabels, excludes);
+        return child.toDynamicNodes(parentInjector.createChildInjector(modules), inheritedLabels, excludes);
     }
 }

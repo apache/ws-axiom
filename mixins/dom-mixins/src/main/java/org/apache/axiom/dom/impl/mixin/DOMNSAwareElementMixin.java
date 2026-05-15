@@ -37,9 +37,7 @@ public abstract class DOMNSAwareElementMixin implements DOMNSAwareElement {
             } else {
                 OMNamespace namespaceForPrefix = findNamespaceURI(namespace.getPrefix());
                 if (namespaceForPrefix == null
-                        || !namespaceForPrefix
-                                .getNamespaceURI()
-                                .equals(namespace.getNamespaceURI())) {
+                        || !namespaceForPrefix.getNamespaceURI().equals(namespace.getNamespaceURI())) {
                     declareNamespace(namespace);
                 }
             }

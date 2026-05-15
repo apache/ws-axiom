@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.text;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.nio.charset.StandardCharsets;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.codec.binary.Base64;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMText#getTextCharacters()} returns the expected result for an {@link OMText}

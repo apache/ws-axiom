@@ -43,7 +43,6 @@ public class TestRemoveAttributeNodeNotOwner extends DOMTestCase {
         element2.setAttributeNodeNS(attr2);
         assertThatThrownBy(() -> element1.removeAttributeNode(attr2))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.NOT_FOUND_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.NOT_FOUND_ERR));
     }
 }

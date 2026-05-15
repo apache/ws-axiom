@@ -24,8 +24,8 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import static org.apache.axiom.ts.dimension.ExpansionStrategy.DONT_EXPAND;
 import static org.apache.axiom.ts.dimension.ExpansionStrategy.PARTIAL;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -34,8 +34,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 public class TestDetach extends AxiomTestCase {
     private final ExpansionStrategy expansionStrategy;
@@ -51,9 +49,8 @@ public class TestDetach extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         String xml1 = "<root><a/><b/></root>";
         String xml2 = "<child><c/><d/></child>";
-        OMElement parent =
-                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml1))
-                        .getDocumentElement();
+        OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml1))
+                .getDocumentElement();
         PullOMDataSource ds = new PullOMDataSource(xml2);
         OMSourcedElement omse = factory.createOMElement(ds, "child", null);
         parent.getFirstOMChild().insertSiblingBefore(omse);

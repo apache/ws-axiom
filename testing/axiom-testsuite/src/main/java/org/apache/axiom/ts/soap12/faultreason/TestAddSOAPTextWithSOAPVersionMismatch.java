@@ -20,18 +20,20 @@ package org.apache.axiom.ts.soap12.faultreason;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.ts.soap.AltSOAPFactory;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestAddSOAPTextWithSOAPVersionMismatch extends TestCase {
-    @Inject private SOAPFactory soapFactory;
-    @Inject @AltSOAPFactory private SOAPFactory altSoapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
+
+    @Inject
+    @AltSOAPFactory
+    private SOAPFactory altSoapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -39,10 +41,7 @@ public class TestAddSOAPTextWithSOAPVersionMismatch extends TestCase {
         SOAPFaultReason soap12FaultReason = soapFactory.createSOAPFaultReason(soap12Fault);
         SOAPFault soap11Fault = altSoapFactory.createSOAPFault();
         SOAPFaultReason soap11FaultReason = altSoapFactory.createSOAPFaultReason(soap11Fault);
-        assertThatThrownBy(
-                        () ->
-                                soap12FaultReason.addSOAPText(
-                                        altSoapFactory.createSOAPFaultText(soap11FaultReason)))
+        assertThatThrownBy(() -> soap12FaultReason.addSOAPText(altSoapFactory.createSOAPFaultText(soap11FaultReason)))
                 .isInstanceOf(UnsupportedOperationException.class);
     }
 }

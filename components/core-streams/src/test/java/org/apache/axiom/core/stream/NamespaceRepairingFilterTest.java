@@ -25,9 +25,7 @@ import org.junit.jupiter.api.Test;
 public class NamespaceRepairingFilterTest {
     @Test
     public void testNamespaceDeclarationConflictingWithElementName() throws StreamException {
-        XmlHandler handler =
-                new NamespaceRepairingFilter(null, false)
-                        .createFilterHandler(NullXmlHandler.INSTANCE);
+        XmlHandler handler = new NamespaceRepairingFilter(null, false).createFilterHandler(NullXmlHandler.INSTANCE);
         handler.startFragment();
         handler.startElement("urn:ns1", "test", "p");
         assertThatThrownBy(() -> handler.processNamespaceDeclaration("p", "urn:ns2"))

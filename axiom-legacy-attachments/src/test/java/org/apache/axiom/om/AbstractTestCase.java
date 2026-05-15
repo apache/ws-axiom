@@ -19,12 +19,10 @@
 
 package org.apache.axiom.om;
 
-import java.io.InputStream;
-import java.net.URL;
-
 import jakarta.activation.DataSource;
 import jakarta.activation.URLDataSource;
-
+import java.io.InputStream;
+import java.net.URL;
 import junit.framework.TestCase;
 
 /** Abstract base class for test cases. */
@@ -56,10 +54,8 @@ public abstract class AbstractTestCase extends TestCase {
         return in;
     }
 
-    public static OMElement getTestResourceAsElement(
-            OMMetaFactory omMetaFactory, String relativePath) {
-        return OMXMLBuilderFactory.createOMBuilder(
-                        omMetaFactory.getOMFactory(), getTestResource(relativePath))
+    public static OMElement getTestResourceAsElement(OMMetaFactory omMetaFactory, String relativePath) {
+        return OMXMLBuilderFactory.createOMBuilder(omMetaFactory.getOMFactory(), getTestResource(relativePath))
                 .getDocumentElement();
     }
 }

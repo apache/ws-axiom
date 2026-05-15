@@ -18,17 +18,16 @@
  */
 package org.apache.axiom.util.sax;
 
-import org.apache.axiom.testutils.suite.Binding;
-import org.apache.axiom.testutils.suite.InjectorNode;
-import org.apache.axiom.testutils.suite.LabelBinding;
-import org.apache.axiom.testutils.suite.MatrixTestNode;
-import org.apache.axiom.testutils.suite.MatrixTest;
-import org.apache.axiom.testutils.suite.FanOutNode;
-import org.xml.sax.XMLReader;
-
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+import org.apache.axiom.testutils.suite.Binding;
+import org.apache.axiom.testutils.suite.FanOutNode;
+import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.LabelBinding;
+import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.MatrixTestNode;
+import org.xml.sax.XMLReader;
 
 public class XMLReaderTestSuite {
     public static MatrixTestNode create(XMLReader xmlReader) {

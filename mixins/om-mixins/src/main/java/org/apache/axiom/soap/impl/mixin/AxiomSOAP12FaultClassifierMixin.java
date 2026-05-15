@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.intf.Sequence;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -31,8 +30,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomSOAP12FaultClassifierMixin implements AxiomSOAP12FaultClassifier {
-    private static final Sequence sequence =
-            new Sequence(SOAPFaultValue.class, SOAPFaultSubCode.class);
+    private static final Sequence sequence = new Sequence(SOAPFaultValue.class, SOAPFaultSubCode.class);
 
     @Override
     public final boolean isChildElementAllowed(OMElement child) {

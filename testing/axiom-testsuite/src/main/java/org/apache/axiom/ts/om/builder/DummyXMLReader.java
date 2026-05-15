@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.om.builder;
 
 import java.io.IOException;
-
 import org.apache.axiom.util.sax.AbstractXMLReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

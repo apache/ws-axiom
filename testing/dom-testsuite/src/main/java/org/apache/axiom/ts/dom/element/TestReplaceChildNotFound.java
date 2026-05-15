@@ -42,7 +42,6 @@ public class TestReplaceChildNotFound extends DOMTestCase {
         Text node2 = document.createTextNode("test2");
         assertThatThrownBy(() -> root.replaceChild(node2, node1))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.NOT_FOUND_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.NOT_FOUND_ERR));
     }
 }

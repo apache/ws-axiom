@@ -21,13 +21,11 @@ package org.apache.axiom.ts.omdom.document;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.io.StringReader;
-
-import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-
+import java.io.StringReader;
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -39,19 +37,15 @@ public class TestAppendChildForbidden extends OMDOMTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMDocument omDocument =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(), new StringReader("<test/>"))
-                        .getDocument();
+        OMDocument omDocument = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), new StringReader("<test/>"))
+                .getDocument();
         if (build) {
             omDocument.build();
         }
         Document document = (Document) omDocument;
         assertThatThrownBy(() -> document.appendChild(document.createElementNS(null, "test")))
                 .isInstanceOf(DOMException.class)
-                .satisfies(
-                        e ->
-                                assertThat(((DOMException) e).code)
-                                        .isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
+                .satisfies(e -> assertThat(((DOMException) e).code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
     }
 }

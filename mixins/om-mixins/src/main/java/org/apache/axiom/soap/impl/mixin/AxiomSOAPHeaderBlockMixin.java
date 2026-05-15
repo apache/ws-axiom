@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
@@ -64,8 +63,7 @@ public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock 
     @Override
     public final void setMustUnderstand(boolean mustUnderstand) {
         SOAPHelper helper = getSOAPHelper();
-        _setAttributeValue(
-                helper.getMustUnderstandAttributeQName(), helper.formatBoolean(mustUnderstand));
+        _setAttributeValue(helper.getMustUnderstandAttributeQName(), helper.formatBoolean(mustUnderstand));
     }
 
     @Override
@@ -85,8 +83,7 @@ public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock 
         if (attributeQName == null) {
             throw new UnsupportedOperationException("Not supported for " + helper.getSpecName());
         } else {
-            return SOAPHeaderBlockHelper.getBooleanAttributeValue(
-                    this, helper, RELAY_PROPERTY, attributeQName);
+            return SOAPHeaderBlockHelper.getBooleanAttributeValue(this, helper, RELAY_PROPERTY, attributeQName);
         }
     }
 
@@ -106,9 +103,7 @@ public abstract class AxiomSOAPHeaderBlockMixin implements AxiomSOAPHeaderBlock 
         // Copy the processed flag.  The other SOAPHeaderBlock information
         // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
         Boolean processedFlag =
-                options instanceof SOAPCloneOptions soapCloneOptions
-                        ? soapCloneOptions.getProcessedFlag()
-                        : null;
+                options instanceof SOAPCloneOptions soapCloneOptions ? soapCloneOptions.getProcessedFlag() : null;
         if ((processedFlag == null && ((SOAPHeaderBlock) other).isProcessed())
                 || (processedFlag != null && processedFlag.booleanValue())) {
             setProcessed();

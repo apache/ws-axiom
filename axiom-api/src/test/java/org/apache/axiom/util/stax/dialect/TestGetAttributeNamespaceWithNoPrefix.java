@@ -19,7 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
@@ -27,10 +26,8 @@ public class TestGetAttributeNamespaceWithNoPrefix extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
-        XMLStreamReader reader =
-                factory.createXMLStreamReader(
-                        new StringReader(
-                                "<root attr=\"test\"><child xmlns=\"urn:ns\" attr=\"test\"/></root>"));
+        XMLStreamReader reader = factory.createXMLStreamReader(
+                new StringReader("<root attr=\"test\"><child xmlns=\"urn:ns\" attr=\"test\"/></root>"));
         int eventType;
         while ((eventType = reader.next()) != XMLStreamReader.END_DOCUMENT) {
             if (eventType == XMLStreamReader.START_ELEMENT) {

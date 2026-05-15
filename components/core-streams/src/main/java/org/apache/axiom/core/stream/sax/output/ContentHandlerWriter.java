@@ -20,7 +20,6 @@ package org.apache.axiom.core.stream.sax.output;
 
 import java.io.IOException;
 import java.io.Writer;
-
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 

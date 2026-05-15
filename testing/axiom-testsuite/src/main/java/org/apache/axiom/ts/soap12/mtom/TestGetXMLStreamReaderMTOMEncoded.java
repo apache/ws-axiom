@@ -20,11 +20,11 @@ package org.apache.axiom.ts.soap12.mtom;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.InputStream;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
@@ -34,18 +34,13 @@ import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
-    private static final QName XOP_INCLUDE =
-            new QName("http://www.w3.org/2004/08/xop/include", "Include");
+    private static final QName XOP_INCLUDE = new QName("http://www.w3.org/2004/08/xop/include", "Include");
 
     private final boolean cache;
 
     @Inject
-    public TestGetXMLStreamReaderMTOMEncoded(
-            OMMetaFactory metaFactory, @Named("cache") boolean cache) {
+    public TestGetXMLStreamReaderMTOMEncoded(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.cache = cache;
     }
@@ -53,11 +48,10 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         InputStream inStream = MTOMSample.SAMPLE2.getInputStream();
-        MultipartBody mb =
-                MultipartBody.builder()
-                        .setInputStream(inStream)
-                        .setContentType(MTOMSample.SAMPLE2.getContentType())
-                        .build();
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(inStream)
+                .setContentType(MTOMSample.SAMPLE2.getContentType())
+                .build();
         OMElement root =
                 OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getDocumentElement();
 
@@ -75,10 +69,7 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
                     String hrefValue = xmlStreamReader.getAttributeValue("", "href");
                     assertThat(hrefValue).startsWith("cid:");
                     if (hrefValue != null) {
-                        blob =
-                                xopEncodedStream
-                                        .getAttachmentAccessor()
-                                        .getBlob(hrefValue.substring(4));
+                        blob = xopEncodedStream.getAttachmentAccessor().getBlob(hrefValue.substring(4));
                     }
                 }
             }

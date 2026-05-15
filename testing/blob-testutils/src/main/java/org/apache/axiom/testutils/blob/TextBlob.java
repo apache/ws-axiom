@@ -25,7 +25,6 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.Writer;
 import java.nio.charset.Charset;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.commons.io.input.ReaderInputStream;

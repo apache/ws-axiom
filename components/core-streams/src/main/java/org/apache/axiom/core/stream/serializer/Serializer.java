@@ -23,7 +23,6 @@ package org.apache.axiom.core.stream.serializer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.CharacterDataSink;
 import org.apache.axiom.core.stream.StreamException;
@@ -191,8 +190,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
             throws StreamException {
         switchContext(TAG);
         try {
@@ -235,8 +233,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
      * @param value A string representing the attribute's default value, or null if there is none.
      * @exception StreamException The application may raise an exception.
      */
-    public void attributeDecl(
-            String eName, String aName, String type, String valueDefault, String value)
+    public void attributeDecl(String eName, String aName, String type, String valueDefault, String value)
             throws StreamException {
         try {
             DTDprolog();
@@ -271,8 +268,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
      * @see #internalEntityDecl
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
-    public void externalEntityDecl(String name, String publicId, String systemId)
-            throws StreamException {
+    public void externalEntityDecl(String name, String publicId, String systemId) throws StreamException {
         try {
             DTDprolog();
             writer.write("<!ENTITY ");
@@ -338,9 +334,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
                         if (ch == illegalCharacterSequence.charAt(matchedIllegalCharacters)) {
                             if (++matchedIllegalCharacters == illegalCharacterSequence.length()) {
                                 throw new IllegalCharacterSequenceException(
-                                        "Illegal character sequence \""
-                                                + illegalCharacterSequence
-                                                + "\"");
+                                        "Illegal character sequence \"" + illegalCharacterSequence + "\"");
                             }
                             break;
                         } else if (matchedIllegalCharacters > 0) {
@@ -433,9 +427,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
 
                 int startClean = lastDirtyCharProcessed + 1;
                 int lengthClean = i - startClean;
-                if (replacement != null
-                        || generateCharacterReference
-                        || lengthClean == CHUNK_SIZE) {
+                if (replacement != null || generateCharacterReference || lengthClean == CHUNK_SIZE) {
                     if (startClean < i) {
                         writer.write(chars, startClean, lengthClean);
                     }
@@ -506,8 +498,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         closeStartTag();
         try {
             switchContext(TAG);
@@ -532,8 +523,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void processDocumentTypeDeclaration(
-            String rootName, String publicId, String systemId, String internalSubset)
+    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset)
             throws StreamException {
         startDTD(rootName, publicId, systemId);
         if (internalSubset != null) {
@@ -566,8 +556,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
         }
     }
 
-    private void writeAttribute(String prefix, String localName, String value)
-            throws StreamException {
+    private void writeAttribute(String prefix, String localName, String value) throws StreamException {
         try {
             writer.write(' ');
             if (!prefix.isEmpty()) {
@@ -588,8 +577,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         if (prefix.isEmpty()) {
             writeAttribute("", "xmlns", namespaceURI);
         } else {
@@ -599,19 +587,13 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
 
     @Override
     public void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException {
         writeAttribute(prefix, localName, value);
     }
 
     @Override
-    public void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException {
+    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
         writeAttribute("", name, value);
     }
 
@@ -816,8 +798,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
         }
     }
 
-    public void writeRaw(String s, UnmappableCharacterHandler unmappableCharacterHandler)
-            throws StreamException {
+    public void writeRaw(String s, UnmappableCharacterHandler unmappableCharacterHandler) throws StreamException {
         try {
             writer.setUnmappableCharacterHandler(unmappableCharacterHandler);
             writer.write(s);

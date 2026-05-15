@@ -21,13 +21,12 @@ package org.apache.axiom.ts.om.element;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.om.XMLSampleAdapter;
 import org.apache.axiom.ts.xml.XMLSample;
-
-import com.google.inject.Inject;
 
 public class TestCloneOMElement2 extends ConformanceTestCase {
     @Inject
@@ -37,11 +36,8 @@ public class TestCloneOMElement2 extends ConformanceTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement original =
-                file.getAdapter(XMLSampleAdapter.class).getDocumentElement(metaFactory);
+        OMElement original = file.getAdapter(XMLSampleAdapter.class).getDocumentElement(metaFactory);
         OMElement clone = original.cloneOMElement();
-        assertAbout(xml())
-                .that(xml(OMElement.class, clone))
-                .hasSameContentAs(xml(OMElement.class, original));
+        assertAbout(xml()).that(xml(OMElement.class, clone)).hasSameContentAs(xml(OMElement.class, original));
     }
 }

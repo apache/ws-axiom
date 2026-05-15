@@ -18,42 +18,39 @@
  */
 package org.apache.axiom.ts.soap;
 
+import com.google.auto.service.AutoService;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
-
-import com.google.auto.service.AutoService;
 
 @AutoService(AdapterFactory.class)
 public class HeaderBlockAttributeAdapterFactory implements AdapterFactory<HeaderBlockAttribute> {
     @Override
     public void createAdapters(HeaderBlockAttribute attribute, Adapters adapters) {
         if (attribute == HeaderBlockAttribute.MUST_UNDERSTAND) {
-            adapters.add(
-                    new BooleanAttributeAccessor() {
-                        @Override
-                        public boolean getValue(SOAPHeaderBlock headerBlock) {
-                            return headerBlock.getMustUnderstand();
-                        }
+            adapters.add(new BooleanAttributeAccessor() {
+                @Override
+                public boolean getValue(SOAPHeaderBlock headerBlock) {
+                    return headerBlock.getMustUnderstand();
+                }
 
-                        @Override
-                        public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
-                            headerBlock.setMustUnderstand(value);
-                        }
-                    });
+                @Override
+                public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
+                    headerBlock.setMustUnderstand(value);
+                }
+            });
         } else if (attribute == HeaderBlockAttribute.RELAY) {
-            adapters.add(
-                    new BooleanAttributeAccessor() {
-                        @Override
-                        public boolean getValue(SOAPHeaderBlock headerBlock) {
-                            return headerBlock.getRelay();
-                        }
+            adapters.add(new BooleanAttributeAccessor() {
+                @Override
+                public boolean getValue(SOAPHeaderBlock headerBlock) {
+                    return headerBlock.getRelay();
+                }
 
-                        @Override
-                        public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
-                            headerBlock.setRelay(value);
-                        }
-                    });
+                @Override
+                public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
+                    headerBlock.setRelay(value);
+                }
+            });
         }
     }
 }

@@ -20,7 +20,6 @@ package org.apache.axiom.dom;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMStringList;
@@ -61,27 +60,24 @@ public final class DOMConfigurationImpl implements DOMConfiguration {
     public static final int VALIDATE_IF_SCHEMA = 1 << 12;
     public static final int WELLFORMED = 1 << 13;
 
-    private static final int INFOSET_TRUE_PARAMS =
-            NAMESPACES | COMMENTS | WELLFORMED | NAMESPACE_DECLARATIONS;
-    private static final int INFOSET_FALSE_PARAMS =
-            ENTITIES | DATATYPE_NORMALIZATION | CDATA_SECTIONS;
+    private static final int INFOSET_TRUE_PARAMS = NAMESPACES | COMMENTS | WELLFORMED | NAMESPACE_DECLARATIONS;
+    private static final int INFOSET_FALSE_PARAMS = ENTITIES | DATATYPE_NORMALIZATION | CDATA_SECTIONS;
     private static final int INFOSET_MASK = INFOSET_TRUE_PARAMS | INFOSET_FALSE_PARAMS;
 
     /**
      * Defines parameters that can't be changed (because the non default values are not supported).
      */
-    private static final int FIXED_MASK =
-            CANONICAL_FORM
-                    | CDATA_SECTIONS
-                    | CHECK_CHAR_NORMALIZATION
-                    | COMMENTS
-                    | DATATYPE_NORMALIZATION
-                    | ELEMENT_CONTENT_WHITESPACE
-                    | ENTITIES
-                    | NAMESPACE_DECLARATIONS
-                    | NORMALIZE_CHARACTERS
-                    | VALIDATE
-                    | VALIDATE_IF_SCHEMA;
+    private static final int FIXED_MASK = CANONICAL_FORM
+            | CDATA_SECTIONS
+            | CHECK_CHAR_NORMALIZATION
+            | COMMENTS
+            | DATATYPE_NORMALIZATION
+            | ELEMENT_CONTENT_WHITESPACE
+            | ENTITIES
+            | NAMESPACE_DECLARATIONS
+            | NORMALIZE_CHARACTERS
+            | VALIDATE
+            | VALIDATE_IF_SCHEMA;
 
     private static final Map<String, Integer> paramMap = new HashMap<String, Integer>();
 
@@ -102,15 +98,14 @@ public final class DOMConfigurationImpl implements DOMConfiguration {
         paramMap.put(WELLFORMED_PARAM, Integer.valueOf(WELLFORMED));
     }
 
-    private int params =
-            CDATA_SECTIONS
-                    | COMMENTS
-                    | ELEMENT_CONTENT_WHITESPACE
-                    | ENTITIES
-                    | NAMESPACES
-                    | NAMESPACE_DECLARATIONS
-                    | SPLIT_CDATA_SECTIONS
-                    | WELLFORMED;
+    private int params = CDATA_SECTIONS
+            | COMMENTS
+            | ELEMENT_CONTENT_WHITESPACE
+            | ENTITIES
+            | NAMESPACES
+            | NAMESPACE_DECLARATIONS
+            | SPLIT_CDATA_SECTIONS
+            | WELLFORMED;
 
     @Override
     public void setParameter(String name, Object value) throws DOMException {

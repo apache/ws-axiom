@@ -20,15 +20,13 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.InputSource;
-
-import com.google.inject.Inject;
 
 public class TestDetachWithSAXSource extends AxiomTestCase {
     @Inject
@@ -39,11 +37,8 @@ public class TestDetachWithSAXSource extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         DummyXMLReader xmlReader = new DummyXMLReader();
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(),
-                        new SAXSource(xmlReader, new InputSource()),
-                        false);
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
+                metaFactory.getOMFactory(), new SAXSource(xmlReader, new InputSource()), false);
         assertThat(xmlReader.isParsed()).isFalse();
         builder.detach();
         assertThat(xmlReader.isParsed()).isTrue();

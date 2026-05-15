@@ -36,53 +36,43 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 
 public abstract class BuilderFactory<T extends OMXMLParserWrapper> {
-    public static final BuilderFactory<OMXMLParserWrapper> OM =
-            new BuilderFactory<OMXMLParserWrapper>() {
-                @Override
-                public OMXMLParserWrapper createBuilder(
-                        AxiomNodeFactory nodeFactory, BuilderSpec spec) {
-                    return new OMXMLParserWrapperImpl(
-                            new BuilderImpl(
-                                    spec.getInput(), nodeFactory, PlainXMLModel.INSTANCE, null),
-                            spec.getDetachable());
-                }
-            };
+    public static final BuilderFactory<OMXMLParserWrapper> OM = new BuilderFactory<OMXMLParserWrapper>() {
+        @Override
+        public OMXMLParserWrapper createBuilder(AxiomNodeFactory nodeFactory, BuilderSpec spec) {
+            return new OMXMLParserWrapperImpl(
+                    new BuilderImpl(spec.getInput(), nodeFactory, PlainXMLModel.INSTANCE, null), spec.getDetachable());
+        }
+    };
 
-    public static final BuilderFactory<SOAPModelBuilder> SOAP =
-            new BuilderFactory<SOAPModelBuilder>() {
-                @Override
-                public SOAPModelBuilder createBuilder(
-                        AxiomNodeFactory nodeFactory, BuilderSpec spec) {
-                    BuilderImpl builder =
-                            new BuilderImpl(
-                                    new FilteredXmlInput(spec.getInput(), SOAPFilter.INSTANCE),
-                                    nodeFactory,
-                                    new SOAPModel(nodeFactory),
-                                    null);
-                    // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach
-                    // the
-                    // SOAPEnvelope. Register a post-processor that does the necessary updates on
-                    // the
-                    // SOAPMessage.
-                    builder.addListener(
-                            new BuilderListener() {
-                                private AxiomSOAPMessage message;
+    public static final BuilderFactory<SOAPModelBuilder> SOAP = new BuilderFactory<SOAPModelBuilder>() {
+        @Override
+        public SOAPModelBuilder createBuilder(AxiomNodeFactory nodeFactory, BuilderSpec spec) {
+            BuilderImpl builder = new BuilderImpl(
+                    new FilteredXmlInput(spec.getInput(), SOAPFilter.INSTANCE),
+                    nodeFactory,
+                    new SOAPModel(nodeFactory),
+                    null);
+            // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach
+            // the
+            // SOAPEnvelope. Register a post-processor that does the necessary updates on
+            // the
+            // SOAPMessage.
+            builder.addListener(new BuilderListener() {
+                private AxiomSOAPMessage message;
 
-                                @Override
-                                public DeferredAction nodeAdded(CoreNode node, int depth) {
-                                    if (node instanceof AxiomSOAPMessage m) {
-                                        message = m;
-                                    } else if (message != null
-                                            && node instanceof AxiomSOAPEnvelope envelope) {
-                                        message.initSOAPFactory(
-                                                (SOAPFactory) envelope.getOMFactory());
-                                    }
-                                    return null;
-                                }
-                            });
-                    return new SOAPModelBuilderImpl(builder, spec.getDetachable());
+                @Override
+                public DeferredAction nodeAdded(CoreNode node, int depth) {
+                    if (node instanceof AxiomSOAPMessage m) {
+                        message = m;
+                    } else if (message != null && node instanceof AxiomSOAPEnvelope envelope) {
+                        message.initSOAPFactory((SOAPFactory) envelope.getOMFactory());
+                    }
+                    return null;
                 }
-            };
+            });
+            return new SOAPModelBuilderImpl(builder, spec.getDetachable());
+        }
+    };
 
     public abstract T createBuilder(AxiomNodeFactory nodeFactory, BuilderSpec spec);
 }

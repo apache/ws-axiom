@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.Set;
-
 import org.ops4j.pax.exam.CoreOptions;
 import org.ops4j.pax.exam.nat.internal.NativeTestContainer;
 import org.ops4j.pax.exam.options.FrameworkPropertyOption;
@@ -39,18 +38,16 @@ public class Utils {
     private static synchronized String[] getDefaultSystemPackages() {
         if (defaultSystemPackages == null) {
             try {
-                NativeTestContainer testContainer =
-                        new NativeTestContainer(
-                                DefaultExamSystem.create(null),
-                                ServiceLoader.load(FrameworkFactory.class).iterator().next());
+                NativeTestContainer testContainer = new NativeTestContainer(
+                        DefaultExamSystem.create(null),
+                        ServiceLoader.load(FrameworkFactory.class).iterator().next());
                 testContainer.start();
                 try {
-                    defaultSystemPackages =
-                            testContainer
-                                    .getSystemBundle()
-                                    .getBundleContext()
-                                    .getProperty(Constants.FRAMEWORK_SYSTEMPACKAGES)
-                                    .split("\\s*,\\s*");
+                    defaultSystemPackages = testContainer
+                            .getSystemBundle()
+                            .getBundleContext()
+                            .getProperty(Constants.FRAMEWORK_SYSTEMPACKAGES)
+                            .split("\\s*,\\s*");
                 } finally {
                     testContainer.stop();
                 }

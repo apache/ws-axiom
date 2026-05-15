@@ -22,7 +22,6 @@ package org.apache.axiom.util.stax.dialect;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
 class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {

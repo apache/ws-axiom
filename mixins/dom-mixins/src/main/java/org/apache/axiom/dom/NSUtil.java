@@ -22,7 +22,6 @@ import static org.apache.axiom.util.xml.XMLChar.isNameChar;
 import static org.apache.axiom.util.xml.XMLChar.isNameStartChar;
 
 import javax.xml.XMLConstants;
-
 import org.w3c.dom.DOMException;
 
 public final class NSUtil {
@@ -72,9 +71,7 @@ public final class NSUtil {
             } else if (checkNameStart) {
                 if (!isNameStartChar(c)) {
                     throw DOMExceptionUtil.newDOMException(
-                            isNameChar(c)
-                                    ? DOMException.NAMESPACE_ERR
-                                    : DOMException.INVALID_CHARACTER_ERR);
+                            isNameChar(c) ? DOMException.NAMESPACE_ERR : DOMException.INVALID_CHARACTER_ERR);
                 }
                 checkNameStart = false;
             } else if (!isNameChar(c)) {
@@ -97,8 +94,7 @@ public final class NSUtil {
         if (prefix.length() != 0 && namespaceURI.length() == 0) {
             throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
         }
-        if (XMLConstants.XML_NS_PREFIX.equals(prefix)
-                && !XMLConstants.XML_NS_URI.equals(namespaceURI)) {
+        if (XMLConstants.XML_NS_PREFIX.equals(prefix) && !XMLConstants.XML_NS_URI.equals(namespaceURI)) {
             throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
         }
     }

@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -29,8 +29,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMElement#getNamespace()} returns <code>null</code> for an {@link
@@ -50,8 +48,7 @@ public class TestGetNamespaceNormalized2 extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element =
-                factory.createOMElement(
-                        new StringOMDataSource("<element>content</element>"), new QName("element"));
+                factory.createOMElement(new StringOMDataSource("<element>content</element>"), new QName("element"));
         assertThat(element.getNamespace()).isNull();
         // Expand the element
         element.getFirstOMChild();

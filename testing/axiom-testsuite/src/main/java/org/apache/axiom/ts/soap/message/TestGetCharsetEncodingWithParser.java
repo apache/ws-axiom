@@ -20,9 +20,10 @@ package org.apache.axiom.ts.soap.message;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
@@ -31,14 +32,13 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /** Tests {@link OMDocument#getCharsetEncoding()} on a {@link SOAPMessage} created by a builder. */
 public class TestGetCharsetEncodingWithParser extends TestCase {
-    @Inject private OMMetaFactory metaFactory;
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private OMMetaFactory metaFactory;
+
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -51,10 +51,9 @@ public class TestGetCharsetEncodingWithParser extends TestCase {
         OMOutputFormat format = new OMOutputFormat();
         format.setCharSetEncoding(encoding);
         orgEnvelope.serialize(baos, format);
-        SOAPMessage message =
-                OMXMLBuilderFactory.createSOAPModelBuilder(
-                                metaFactory, new ByteArrayInputStream(baos.toByteArray()), encoding)
-                        .getSOAPMessage();
+        SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(
+                        metaFactory, new ByteArrayInputStream(baos.toByteArray()), encoding)
+                .getSOAPMessage();
         assertThat(message.getCharsetEncoding()).isEqualTo(encoding);
     }
 }

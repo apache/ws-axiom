@@ -22,25 +22,21 @@ package org.apache.axiom.om;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.stream.XMLStreamException;
-
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPSampleSet;
-
 import junit.framework.TestCase;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class OMCachingTest extends TestCase {
     /** This will first serialize the element without caching. Then it tries to serialize again . */
     public void testCachingOne() throws Exception {
 
         // first build the OM tree without caching and see whether up can cosume it again
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(
-                        SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
+                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
         OMElement documentElement = builder.getDocumentElement();
         String envelopeString = documentElement.toStringWithConsume();
 
-        assertThatThrownBy(() -> documentElement.toStringWithConsume())
-                .isInstanceOf(NodeUnavailableException.class);
+        assertThatThrownBy(() -> documentElement.toStringWithConsume()).isInstanceOf(NodeUnavailableException.class);
 
         documentElement.close(false);
     }
@@ -51,9 +47,8 @@ public class OMCachingTest extends TestCase {
         OMElement documentElement = null;
         try {
             // first build the OM tree without caching and see whether up can cosume it again
-            OMXMLParserWrapper builder =
-                    OMXMLBuilderFactory.createOMBuilder(
-                            SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
+                    SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
             documentElement = builder.getDocumentElement();
             String envelopeString = documentElement.toString();
             envelopeString = documentElement.toStringWithConsume();

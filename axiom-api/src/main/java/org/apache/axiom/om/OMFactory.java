@@ -20,7 +20,6 @@
 package org.apache.axiom.om;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.stax.BlobProvider;
 
@@ -77,8 +76,7 @@ public interface OMFactory {
      * @throws IllegalArgumentException if an attempt is made to create a prefixed element with an
      *     empty namespace name
      */
-    OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent)
-            throws OMException;
+    OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent) throws OMException;
 
     /**
      * Create a sourced element. If the data source implements {@link QNameAwareOMDataSource} then
@@ -309,11 +307,7 @@ public interface OMFactory {
      * @return the newly created {@link OMDocType} node
      */
     OMDocType createOMDocType(
-            OMContainer parent,
-            String rootName,
-            String publicId,
-            String systemId,
-            String internalSubset);
+            OMContainer parent, String rootName, String publicId, String systemId, String internalSubset);
 
     /**
      * Creates a PI.
@@ -323,8 +317,7 @@ public interface OMFactory {
      * @param piData
      * @return Returns OMProcessingInstruction.
      */
-    OMProcessingInstruction createOMProcessingInstruction(
-            OMContainer parent, String piTarget, String piData);
+    OMProcessingInstruction createOMProcessingInstruction(OMContainer parent, String piTarget, String piData);
 
     /**
      * Creates a comment.

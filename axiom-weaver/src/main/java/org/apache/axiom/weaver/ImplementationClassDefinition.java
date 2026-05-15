@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.axiom.weaver.mixin.ClassDefinition;
 import org.apache.axiom.weaver.mixin.InitializerMethod;
 import org.apache.axiom.weaver.mixin.Mixin;
@@ -72,8 +71,7 @@ final class ImplementationClassDefinition extends ClassDefinition {
                 String signature = method.getSignature();
                 // TODO: check that the method being replaced is not final
                 MixinMethod existingMethod = methodMap.get(signature);
-                if (existingMethod != null
-                        && !method.getMixin().appliesAfter(existingMethod.getMixin())) {
+                if (existingMethod != null && !method.getMixin().appliesAfter(existingMethod.getMixin())) {
                     if (existingMethod.getMixin().appliesAfter(method.getMixin())) {
                         // Keep the existing method.
                         continue;
@@ -83,26 +81,24 @@ final class ImplementationClassDefinition extends ClassDefinition {
                         // Allow two mixins to define identical methods. This is useful for DOOM
                         // because some methods are defined in the same way by DOM and Axiom.
                         if (body1.equals(body2)) {
-                            log.info(
-                                    "Ignoring identical mixin method for "
-                                            + signature
-                                            + " in "
-                                            + targetContext.getTargetClassName());
+                            log.info("Ignoring identical mixin method for "
+                                    + signature
+                                    + " in "
+                                    + targetContext.getTargetClassName());
                             continue;
                         }
-                        throw new WeaverException(
-                                "Method collision for "
-                                        + signature
-                                        + " in "
-                                        + targetContext.getTargetClassName()
-                                        + "\n--- Method defined by "
-                                        + existingMethod.getMixin().getName()
-                                        + ":\n"
-                                        + body1
-                                        + "\n--- Method defined by "
-                                        + method.getMixin().getName()
-                                        + ":\n"
-                                        + body2);
+                        throw new WeaverException("Method collision for "
+                                + signature
+                                + " in "
+                                + targetContext.getTargetClassName()
+                                + "\n--- Method defined by "
+                                + existingMethod.getMixin().getName()
+                                + ":\n"
+                                + body1
+                                + "\n--- Method defined by "
+                                + method.getMixin().getName()
+                                + ":\n"
+                                + body2);
                     }
                 }
                 methodMap.put(signature, method);
@@ -121,17 +117,11 @@ final class ImplementationClassDefinition extends ClassDefinition {
 
     private void generateConstructor(ClassVisitor cv) {
         MethodVisitor mv =
-                cv.visitMethod(
-                        singleton ? Opcodes.ACC_PRIVATE : Opcodes.ACC_PUBLIC,
-                        "<init>",
-                        "()V",
-                        null,
-                        null);
+                cv.visitMethod(singleton ? Opcodes.ACC_PRIVATE : Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
         mv.visitCode();
         mv.visitIntInsn(Opcodes.ALOAD, 0);
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superName, "<init>", "()V", false);
-        MethodInliner inliner =
-                new MethodInliner(mv, 1, 1, new Object[] {targetContext.getTargetClassName()});
+        MethodInliner inliner = new MethodInliner(mv, 1, 1, new Object[] {targetContext.getTargetClassName()});
         for (InitializerMethod method : initializerMethods) {
             method.getBody().apply(targetContext, inliner);
         }
@@ -144,9 +134,7 @@ final class ImplementationClassDefinition extends ClassDefinition {
         if (staticInitializerMethods.isEmpty() && !singleton) {
             return;
         }
-        MethodVisitor mv =
-                cv.visitMethod(
-                        Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "<clinit>", "()V", null, null);
+        MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "<clinit>", "()V", null, null);
         mv.visitCode();
         MethodInliner inliner = new MethodInliner(mv, singleton ? 2 : 0, 0, new Object[0]);
         for (StaticInitializerMethod method : staticInitializerMethods) {
@@ -155,12 +143,7 @@ final class ImplementationClassDefinition extends ClassDefinition {
         if (singleton) {
             mv.visitTypeInsn(Opcodes.NEW, targetContext.getTargetClassName());
             mv.visitInsn(Opcodes.DUP);
-            mv.visitMethodInsn(
-                    Opcodes.INVOKESPECIAL,
-                    targetContext.getTargetClassName(),
-                    "<init>",
-                    "()V",
-                    false);
+            mv.visitMethodInsn(Opcodes.INVOKESPECIAL, targetContext.getTargetClassName(), "<init>", "()V", false);
             mv.visitFieldInsn(
                     Opcodes.PUTSTATIC,
                     targetContext.getTargetClassName(),

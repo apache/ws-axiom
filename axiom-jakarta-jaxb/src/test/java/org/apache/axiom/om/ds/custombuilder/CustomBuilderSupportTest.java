@@ -20,10 +20,9 @@ package org.apache.axiom.om.ds.custombuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import jakarta.xml.bind.JAXBContext;
 import java.io.OutputStream;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
@@ -41,8 +40,6 @@ import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.junit.jupiter.api.Test;
 
-import jakarta.xml.bind.JAXBContext;
-
 public class CustomBuilderSupportTest {
     private OMElement createTestDocument(Blob blob) {
         OMFactory factory = OMAbstractFactory.getOMFactory();
@@ -57,10 +54,8 @@ public class CustomBuilderSupportTest {
     }
 
     private void test(Blob blob, OMXMLParserWrapper builder, boolean same) throws Exception {
-        JAXBCustomBuilder customBuilder =
-                new JAXBCustomBuilder(JAXBContext.newInstance(MyDocument.class));
-        ((CustomBuilderSupport) builder)
-                .registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, customBuilder);
+        JAXBCustomBuilder customBuilder = new JAXBCustomBuilder(JAXBContext.newInstance(MyDocument.class));
+        ((CustomBuilderSupport) builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, customBuilder);
         builder.getDocumentElement().build();
         MyDocument myDocument = (MyDocument) customBuilder.getJaxbObject();
         Blob actualBlob = DataHandlerUtils.toBlob(myDocument.getContent());
@@ -69,10 +64,7 @@ public class CustomBuilderSupportTest {
         } else {
             assertThat(actualBlob).isNotSameAs(blob);
             IOTestUtils.compareStreams(
-                    blob.getInputStream(),
-                    "expected",
-                    myDocument.getContent().getInputStream(),
-                    "actual");
+                    blob.getInputStream(), "expected", myDocument.getContent().getInputStream(), "actual");
         }
     }
 
@@ -87,14 +79,10 @@ public class CustomBuilderSupportTest {
     }
 
     @Test
-    public void testRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtension()
-            throws Exception {
+    public void testRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtension() throws Exception {
         Blob contentBlob = new TestBlob('X', Integer.MAX_VALUE);
         OMElement document = createTestDocument(contentBlob);
-        test(
-                contentBlob,
-                OMXMLBuilderFactory.createStAXOMBuilder(document.getXMLStreamReader()),
-                true);
+        test(contentBlob, OMXMLBuilderFactory.createStAXOMBuilder(document.getXMLStreamReader()), true);
     }
 
     @Test
@@ -106,14 +94,10 @@ public class CustomBuilderSupportTest {
         format.setDoOptimize(true);
         createTestDocument(contentBlob).serialize(out, format);
         out.close();
-        MultipartBody mb =
-                MultipartBody.builder()
-                        .setInputStream(blob.getInputStream())
-                        .setContentType(format.getContentType())
-                        .build();
-        test(
-                contentBlob,
-                OMXMLBuilderFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, mb),
-                false);
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(blob.getInputStream())
+                .setContentType(format.getContentType())
+                .build();
+        test(contentBlob, OMXMLBuilderFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, mb), false);
     }
 }

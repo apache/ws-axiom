@@ -19,9 +19,7 @@
 package org.apache.axiom.truth.xml;
 
 import java.util.Map;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.truth.xml.spi.Event;
 import org.apache.axiom.truth.xml.spi.Traverser;
 import org.apache.axiom.truth.xml.spi.TraverserException;

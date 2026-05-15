@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.dimension.serialization;
 
 import java.io.StringWriter;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -46,8 +45,7 @@ public class SerializeFromXMLStreamReader extends SerializationStrategy {
     public XML serialize(OMContainer container) throws Exception {
         StringWriter sw = new StringWriter();
         OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createStAXOMBuilder(
-                        container.getOMFactory(), container.getXMLStreamReader(cache));
+                OMXMLBuilderFactory.createStAXOMBuilder(container.getOMFactory(), container.getXMLStreamReader(cache));
         builder.getDocument().serialize(sw);
         builder.close();
         return new XMLAsString(sw.toString());

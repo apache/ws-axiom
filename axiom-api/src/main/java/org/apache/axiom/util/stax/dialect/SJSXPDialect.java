@@ -41,8 +41,7 @@ class SJSXPDialect extends AbstractStAXDialect {
     @Override
     public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
-        factory.setProperty(
-                "http://java.sun.com/xml/stream/properties/report-cdata-event", Boolean.TRUE);
+        factory.setProperty("http://java.sun.com/xml/stream/properties/report-cdata-event", Boolean.TRUE);
         return factory;
     }
 
@@ -55,15 +54,13 @@ class SJSXPDialect extends AbstractStAXDialect {
         factory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
         factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
         factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-        factory.setXMLResolver(
-                new XMLResolver() {
-                    @Override
-                    public Object resolveEntity(
-                            String publicID, String systemID, String baseURI, String namespace)
-                            throws XMLStreamException {
-                        throw new XMLStreamException("DOCTYPE is not allowed");
-                    }
-                });
+        factory.setXMLResolver(new XMLResolver() {
+            @Override
+            public Object resolveEntity(String publicID, String systemID, String baseURI, String namespace)
+                    throws XMLStreamException {
+                throw new XMLStreamException("DOCTYPE is not allowed");
+            }
+        });
         return new DisallowDoctypeDeclInputFactoryWrapper(factory);
     }
 

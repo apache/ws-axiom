@@ -20,7 +20,6 @@
 package org.apache.axiom.om;
 
 import java.lang.reflect.InvocationTargetException;
-
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 
@@ -82,8 +81,7 @@ public class OMAbstractFactory {
      */
     public static final String FEATURE_DOM = "dom";
 
-    private static final String DEFAULT_LOCATOR_CLASS_NAME =
-            "org.apache.axiom.locator.DefaultOMMetaFactoryLocator";
+    private static final String DEFAULT_LOCATOR_CLASS_NAME = "org.apache.axiom.locator.DefaultOMMetaFactoryLocator";
 
     /**
      * The default {@link OMMetaFactoryLocator} that will be used if no locator has been set
@@ -103,11 +101,9 @@ public class OMAbstractFactory {
         // reflection avoids introducing a circular dependency between the org.apache.axiom.om
         // and org.apache.axiom.locator packages.
         try {
-            defaultMetaFactoryLocator =
-                    (OMMetaFactoryLocator)
-                            Class.forName(DEFAULT_LOCATOR_CLASS_NAME)
-                                    .getDeclaredConstructor()
-                                    .newInstance();
+            defaultMetaFactoryLocator = (OMMetaFactoryLocator) Class.forName(DEFAULT_LOCATOR_CLASS_NAME)
+                    .getDeclaredConstructor()
+                    .newInstance();
         } catch (InstantiationException ex) {
             throw new InstantiationError(ex.getMessage());
         } catch (IllegalAccessException ex) {
@@ -182,8 +178,7 @@ public class OMAbstractFactory {
             if (jarHint != null) {
                 buffer.append("; this usually means that ")
                         .append(jarHint)
-                        .append(
-                                " is not in the classpath or that the META-INF/axiom.xml resource can't be read");
+                        .append(" is not in the classpath or that the META-INF/axiom.xml resource can't be read");
             }
             throw new OMException(buffer.toString());
         } else {

@@ -19,10 +19,8 @@
 package org.apache.axiom.om.ds;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.util.StAXUtils;
 

@@ -20,8 +20,9 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -30,22 +31,19 @@ import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 /**
  * Tests that {@link SOAPHeaderBlock#getMustUnderstand()} (resp. {@link SOAPHeaderBlock#getRelay()})
  * throws {@link SOAPProcessingException} if a {@code mustUnderstand} (resp. {@code relay})
  * attribute is present but has an invalid value.
  */
 public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     private final String value;
 
     @Inject
-    public TestGetBooleanAttributeInvalid(
-            SOAPSpec spec, HeaderBlockAttribute attribute, @Named("value") String value) {
+    public TestGetBooleanAttributeInvalid(SOAPSpec spec, HeaderBlockAttribute attribute, @Named("value") String value) {
         super(spec, attribute);
         this.value = value;
     }
@@ -55,11 +53,8 @@ public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));
         headerBlock.addAttribute(attribute.getName(spec), value, header.getNamespace());
-        assertThatThrownBy(
-                        () ->
-                                attribute
-                                        .getAdapter(BooleanAttributeAccessor.class)
-                                        .getValue(headerBlock))
+        assertThatThrownBy(() ->
+                        attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock))
                 .isInstanceOf(SOAPProcessingException.class);
     }
 }

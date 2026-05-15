@@ -18,11 +18,10 @@
  */
 package org.apache.axiom.testutils.suite;
 
+import com.google.inject.Injector;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
-
-import com.google.inject.Injector;
 
 public interface LabelBinding<T> {
     LabelBinding<Dimension> DIMENSION = (injector, value, labels) -> value.addLabels(labels);

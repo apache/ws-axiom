@@ -20,19 +20,16 @@ package org.apache.axiom.jaxb;
 
 import static org.xmlunit.assertj3.XmlAssert.assertThat;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.transform.stax.StAXSource;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDocument;
 import org.junit.jupiter.api.Test;
 import org.xmlunit.diff.DifferenceEvaluators;
-
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Marshaller;
 
 public class JAXBTest {
     @Test

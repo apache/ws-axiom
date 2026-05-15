@@ -20,18 +20,16 @@ package org.apache.axiom.ts.soap.envelope;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import java.util.Iterator;
 
+import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
-
-import junit.framework.TestCase;
 
 public abstract class CloneTestCase extends TestCase {
     protected final SOAPSpec spec;
@@ -74,8 +72,7 @@ public abstract class CloneTestCase extends TestCase {
 
             if (element instanceof OMSourcedElement sourcedElement) {
                 assertThat(target).isInstanceOf(OMSourcedElement.class);
-                assertThat(((OMSourcedElement) target).isExpanded())
-                        .isEqualTo(sourcedElement.isExpanded());
+                assertThat(((OMSourcedElement) target).isExpanded()).isEqualTo(sourcedElement.isExpanded());
                 if (sourcedElement.isExpanded()) {
                     Iterator<OMNode> i = element.getChildren();
                     Iterator<OMNode> j = ((OMElement) target).getChildren();

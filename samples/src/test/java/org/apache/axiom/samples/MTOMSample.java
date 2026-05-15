@@ -18,15 +18,13 @@
  */
 package org.apache.axiom.samples;
 
+import jakarta.xml.ws.Endpoint;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-
 import javax.xml.namespace.QName;
-
 import junit.framework.TestCase;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.mime.PartBlob;
@@ -40,8 +38,6 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.testutils.PortAllocator;
 import org.apache.commons.io.IOUtils;
 
-import jakarta.xml.ws.Endpoint;
-
 public class MTOMSample extends TestCase {
     // START SNIPPET: retrieveContent
     public void retrieveContent(URL serviceURL, String id, OutputStream result) throws Exception {
@@ -49,8 +45,7 @@ public class MTOMSample extends TestCase {
         SOAPFactory soapFactory = OMAbstractFactory.getSOAP11Factory();
         SOAPEnvelope request = soapFactory.getDefaultEnvelope();
         OMElement retrieveContent =
-                soapFactory.createOMElement(
-                        new QName("urn:test", "retrieveContent"), request.getBody());
+                soapFactory.createOMElement(new QName("urn:test", "retrieveContent"), request.getBody());
         OMElement fileId = soapFactory.createOMElement(new QName("fileId"), retrieveContent);
         fileId.setText(id);
 
@@ -67,11 +62,10 @@ public class MTOMSample extends TestCase {
 
         // Get the SOAP response
         InputStream in = connection.getInputStream();
-        MultipartBody multipartBody =
-                MultipartBody.builder()
-                        .setInputStream(in)
-                        .setContentType(connection.getContentType())
-                        .build();
+        MultipartBody multipartBody = MultipartBody.builder()
+                .setInputStream(in)
+                .setContentType(connection.getContentType())
+                .build();
         SOAPEnvelope response =
                 OMXMLBuilderFactory.createSOAPModelBuilder(multipartBody).getSOAPEnvelope();
         OMElement retrieveContentResponse = response.getBody().getFirstElement();
@@ -91,8 +85,7 @@ public class MTOMSample extends TestCase {
 
     public void test() throws Exception {
         int port = PortAllocator.allocatePort();
-        Endpoint endpoint =
-                Endpoint.publish("http://localhost:" + port + "/mtom", new MTOMService());
+        Endpoint endpoint = Endpoint.publish("http://localhost:" + port + "/mtom", new MTOMService());
         retrieveContent(new URL("http://localhost:" + port + "/mtom"), "G87ZX20047", System.out);
         endpoint.stop();
     }

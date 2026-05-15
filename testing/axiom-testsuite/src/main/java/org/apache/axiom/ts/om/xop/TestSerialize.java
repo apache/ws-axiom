@@ -20,9 +20,10 @@ package org.apache.axiom.ts.om.xop;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.MediaType;
 import org.apache.axiom.mime.MultipartBody;
@@ -34,9 +35,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestSerialize extends AxiomTestCase {
     private final boolean base64;
@@ -53,11 +51,10 @@ public class TestSerialize extends AxiomTestCase {
 
         // Read in message: SOAPPart and 2 image attachments
         InputStream inStream = testMessage.getInputStream();
-        MultipartBody mb =
-                MultipartBody.builder()
-                        .setInputStream(inStream)
-                        .setContentType(testMessage.getContentType())
-                        .build();
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(inStream)
+                .setContentType(testMessage.getContentType())
+                .build();
 
         OMOutputFormat oof = new OMOutputFormat();
         oof.setDoOptimize(true);
@@ -65,16 +62,14 @@ public class TestSerialize extends AxiomTestCase {
         oof.setRootContentId(testMessage.getStart());
         if (base64) {
             oof.setContentTypeProvider(blob -> new ContentType(new MediaType("image", "jpeg")));
-            oof.setProperty(
-                    OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, Boolean.TRUE);
+            oof.setProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, Boolean.TRUE);
         }
 
         // Write out the message
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb);
+                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb);
         OMElement om = builder.getDocumentElement();
         om.serialize(baos, oof);
         om.close(false);

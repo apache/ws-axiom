@@ -20,20 +20,18 @@ package org.apache.axiom.ts.soap.header;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-import com.google.inject.Inject;
-
 public class TestExamineMustUnderstandHeaderBlocksWithParser extends SampleBasedSOAPTestCase {
-    @Inject private SOAPSpec spec;
+    @Inject
+    private SOAPSpec spec;
 
     @Inject
     public TestExamineMustUnderstandHeaderBlocksWithParser(SOAPSpec spec) {
@@ -43,12 +41,10 @@ public class TestExamineMustUnderstandHeaderBlocksWithParser extends SampleBased
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         String roleNextURI = spec.getNextRoleURI();
-        Iterator<SOAPHeaderBlock> it =
-                envelope.getHeader().examineMustUnderstandHeaderBlocks(roleNextURI);
+        Iterator<SOAPHeaderBlock> it = envelope.getHeader().examineMustUnderstandHeaderBlocks(roleNextURI);
         assertThat(it.hasNext()).isTrue();
         SOAPHeaderBlock headerBlock = it.next();
-        assertThat(headerBlock.getQName())
-                .isEqualTo(new QName("http://example.org/RoleTest", "h7"));
+        assertThat(headerBlock.getQName()).isEqualTo(new QName("http://example.org/RoleTest", "h7"));
         assertThat(headerBlock.getRole()).isEqualTo(roleNextURI);
         assertThat(it.hasNext()).isFalse();
     }

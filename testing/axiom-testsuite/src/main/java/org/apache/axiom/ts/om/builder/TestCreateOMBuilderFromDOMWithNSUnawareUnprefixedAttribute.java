@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.w3c.dom.Element;
-
-import com.google.inject.Inject;
 
 public class TestCreateOMBuilderFromDOMWithNSUnawareUnprefixedAttribute extends AxiomTestCase {
     @Inject
@@ -41,9 +39,8 @@ public class TestCreateOMBuilderFromDOMWithNSUnawareUnprefixedAttribute extends 
     protected void runTest() throws Throwable {
         Element domElement = DOMImplementation.XERCES.newDocument().createElementNS(null, "test");
         domElement.setAttribute("attr", "value");
-        OMElement element =
-                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domElement, false)
-                        .getDocumentElement();
+        OMElement element = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domElement, false)
+                .getDocumentElement();
         assertThat(element.getAttributeValue(new QName("attr"))).isEqualTo("value");
     }
 }

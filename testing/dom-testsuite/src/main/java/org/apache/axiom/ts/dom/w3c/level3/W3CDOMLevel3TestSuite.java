@@ -25,8 +25,7 @@ import org.apache.axiom.ts.dom.w3c.W3CDOMTestSuite;
 import org.w3c.domts.level3.core.alltests;
 
 public final class W3CDOMLevel3TestSuite {
-    public static MatrixTestNode create(
-            DocumentBuilderFactoryFactory dbff, DOMFeature... unsupportedFeatures) {
+    public static MatrixTestNode create(DocumentBuilderFactoryFactory dbff, DOMFeature... unsupportedFeatures) {
         return W3CDOMTestSuite.create(alltests::new, dbff, unsupportedFeatures);
     }
 }

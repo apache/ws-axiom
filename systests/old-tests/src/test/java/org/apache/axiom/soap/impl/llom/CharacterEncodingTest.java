@@ -19,6 +19,11 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
 import junit.framework.TestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
@@ -28,12 +33,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 /** Test for serialization and deserialization using UTF-16 character encoding */
 public class CharacterEncodingTest extends TestCase {
@@ -113,8 +112,7 @@ public class CharacterEncodingTest extends TestCase {
     }
 
     public void testFrenchAccents() throws Exception {
-        runtest(
-                "\u00e0\u00e2\u00e4\u00e7\u00e8\u00e9\u00ea\u00eb\u00ee\u00ef\u00f4\u00f6\u00f9\u00fb\u00fc");
+        runtest("\u00e0\u00e2\u00e4\u00e7\u00e8\u00e9\u00ea\u00eb\u00ee\u00ef\u00f4\u00f6\u00f9\u00fb\u00fc");
     }
 
     public void testGermanUmlauts() throws Exception {
@@ -128,8 +126,7 @@ public class CharacterEncodingTest extends TestCase {
 
     public void testWelcomeUnicode2() throws Exception {
         // welcome in several languages
-        runtest(
-                "Greek : \u03ba\u03b1\u03bb\u03ce\u03c2 \u03bf\u03c1\u03af\u03c3\u03b1\u03c4\u03b5");
+        runtest("Greek : \u03ba\u03b1\u03bb\u03ce\u03c2 \u03bf\u03c1\u03af\u03c3\u03b1\u03c4\u03b5");
     }
 
     public void testWelcomeUnicode3() throws Exception {

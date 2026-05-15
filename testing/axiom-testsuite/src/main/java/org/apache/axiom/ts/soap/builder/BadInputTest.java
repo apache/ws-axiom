@@ -40,18 +40,14 @@ public class BadInputTest extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        assertThatThrownBy(
-                        () -> {
-                            SOAPEnvelope soapEnvelope =
-                                    OMXMLBuilderFactory.createSOAPModelBuilder(
-                                                    metaFactory,
-                                                    BadInputTest.class
-                                                            .getClassLoader()
-                                                            .getResourceAsStream("badsoap/" + file),
-                                                    null)
-                                            .getSOAPEnvelope();
-                            OMTestUtils.walkThrough(soapEnvelope);
-                        })
+        assertThatThrownBy(() -> {
+                    SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(
+                                    metaFactory,
+                                    BadInputTest.class.getClassLoader().getResourceAsStream("badsoap/" + file),
+                                    null)
+                            .getSOAPEnvelope();
+                    OMTestUtils.walkThrough(soapEnvelope);
+                })
                 .isInstanceOf(SOAPProcessingException.class);
     }
 }

@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.stream.xop;
 
 import java.io.IOException;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.stax.BlobProvider;
 
@@ -36,35 +35,33 @@ public interface OptimizationPolicy {
     /**
      * Policy implementation that optimizes all binary content marked as eligible for optimization.
      */
-    OptimizationPolicy DEFAULT =
-            new OptimizationPolicy() {
-                @Override
-                public boolean isOptimized(Blob blob, boolean optimize) {
-                    return optimize;
-                }
+    OptimizationPolicy DEFAULT = new OptimizationPolicy() {
+        @Override
+        public boolean isOptimized(Blob blob, boolean optimize) {
+            return optimize;
+        }
 
-                @Override
-                public boolean isOptimized(BlobProvider blobProvider, boolean optimize) {
-                    return optimize;
-                }
-            };
+        @Override
+        public boolean isOptimized(BlobProvider blobProvider, boolean optimize) {
+            return optimize;
+        }
+    };
 
     /**
      * Policy implementation that optimizes all binary content, regardless of whether is has been
      * marked as eligible for optimization.
      */
-    OptimizationPolicy ALL =
-            new OptimizationPolicy() {
-                @Override
-                public boolean isOptimized(Blob blob, boolean optimize) {
-                    return true;
-                }
+    OptimizationPolicy ALL = new OptimizationPolicy() {
+        @Override
+        public boolean isOptimized(Blob blob, boolean optimize) {
+            return true;
+        }
 
-                @Override
-                public boolean isOptimized(BlobProvider blobProvider, boolean optimize) {
-                    return true;
-                }
-            };
+        @Override
+        public boolean isOptimized(BlobProvider blobProvider, boolean optimize) {
+            return true;
+        }
+    };
 
     /**
      * Determine whether the binary content supplied by a given {@link Blob} should be optimized.

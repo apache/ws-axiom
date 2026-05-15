@@ -18,16 +18,14 @@
  */
 package org.apache.axiom.om.util.jaxb;
 
-import javax.xml.stream.XMLStreamReader;
-
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.XOPEncoded;
-
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+import javax.xml.stream.XMLStreamReader;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.XOPEncoded;
 
 /** Contains utility methods that integrate JAXB with Axiom. */
 public final class JAXBUtils {
@@ -37,8 +35,7 @@ public final class JAXBUtils {
      * @deprecated Use {@link #unmarshal(OMContainer, JAXBContext, UnmarshallerConfigurator,
      *     boolean)} instead.
      */
-    public static Object unmarshal(JAXBContext context, OMElement element, boolean cache)
-            throws JAXBException {
+    public static Object unmarshal(JAXBContext context, OMElement element, boolean cache) throws JAXBException {
         return unmarshal(element, context, null, cache);
     }
 
@@ -53,17 +50,13 @@ public final class JAXBUtils {
      * @throws JAXBException if an error occurred while unmarshalling
      */
     public static Object unmarshal(
-            OMContainer container,
-            JAXBContext context,
-            UnmarshallerConfigurator configurator,
-            boolean preserve)
+            OMContainer container, JAXBContext context, UnmarshallerConfigurator configurator, boolean preserve)
             throws JAXBException {
         Unmarshaller unmarshaller = context.createUnmarshaller();
         if (configurator != null) {
             configurator.configure(unmarshaller);
         }
-        XOPEncoded<XMLStreamReader> xopEncodedStream =
-                container.getXOPEncodedStreamReader(preserve);
+        XOPEncoded<XMLStreamReader> xopEncodedStream = container.getXOPEncodedStreamReader(preserve);
         unmarshaller.setAttachmentUnmarshaller(
                 new AttachmentUnmarshallerImpl(xopEncodedStream.getAttachmentAccessor()));
         return unmarshaller.unmarshal(xopEncodedStream.getRootPart());
@@ -91,8 +84,7 @@ public final class JAXBUtils {
         if (configurator != null) {
             configurator.configure(unmarshaller);
         }
-        XOPEncoded<XMLStreamReader> xopEncodedStream =
-                container.getXOPEncodedStreamReader(preserve);
+        XOPEncoded<XMLStreamReader> xopEncodedStream = container.getXOPEncodedStreamReader(preserve);
         unmarshaller.setAttachmentUnmarshaller(
                 new AttachmentUnmarshallerImpl(xopEncodedStream.getAttachmentAccessor()));
         return unmarshaller.unmarshal(xopEncodedStream.getRootPart(), declaredType);

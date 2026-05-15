@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.axiom.core.util.EdgeRelation;
 import org.apache.axiom.core.util.TopologicalSort;
 
@@ -40,21 +39,16 @@ public abstract class NodeFactoryImpl implements NodeFactory {
 
     public NodeFactoryImpl(ClassLoader cl, String factory2ClassName, String... packages) {
         try {
-            factory2 =
-                    (NodeFactory2)
-                            cl.loadClass(factory2ClassName).getDeclaredField("INSTANCE").get(null);
+            factory2 = (NodeFactory2)
+                    cl.loadClass(factory2ClassName).getDeclaredField("INSTANCE").get(null);
         } catch (ReflectiveOperationException ex) {
             throw new NodeFactoryException("Failed to instantiate NodeFactory2 implementation", ex);
         }
         List<Class<?>> implementations = new ArrayList<Class<?>>();
         for (String pkg : packages) {
             try {
-                BufferedReader in =
-                        new BufferedReader(
-                                new InputStreamReader(
-                                        cl.getResourceAsStream(
-                                                pkg.replace('.', '/') + "/nodetypes.index"),
-                                        StandardCharsets.UTF_8));
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        cl.getResourceAsStream(pkg.replace('.', '/') + "/nodetypes.index"), StandardCharsets.UTF_8));
                 try {
                     String line;
                     while ((line = in.readLine()) != null) {
@@ -72,22 +66,17 @@ public abstract class NodeFactoryImpl implements NodeFactory {
                     in.close();
                 }
             } catch (IOException ex) {
-                throw new NodeFactoryException(
-                        "Failed to load node type index for package " + pkg, ex);
+                throw new NodeFactoryException("Failed to load node type index for package " + pkg, ex);
             }
         }
-        implementations =
-                TopologicalSort.sort(
-                        implementations,
-                        new EdgeRelation<Class<?>>() {
-                            @Override
-                            public boolean isEdge(Class<?> from, Class<?> to) {
-                                return to.isAssignableFrom(from);
-                            }
-                        });
+        implementations = TopologicalSort.sort(implementations, new EdgeRelation<Class<?>>() {
+            @Override
+            public boolean isEdge(Class<?> from, Class<?> to) {
+                return to.isAssignableFrom(from);
+            }
+        });
         Map<Class<?>, Class<?>> interfaceToImplementationMap = new HashMap<Class<?>, Class<?>>();
-        Map<Class<?>, Constructor<?>> implementationToConstructorMap =
-                new HashMap<Class<?>, Constructor<?>>();
+        Map<Class<?>, Constructor<?>> implementationToConstructorMap = new HashMap<Class<?>, Constructor<?>>();
         Set<Class<?>> ambiguousInterfaces = new HashSet<Class<?>>();
         for (Class<?> implementation : implementations) {
             Set<Class<?>> interfaces = new HashSet<Class<?>>();
@@ -106,14 +95,12 @@ public abstract class NodeFactoryImpl implements NodeFactory {
             try {
                 implementationToConstructorMap.put(implementation, implementation.getConstructor());
             } catch (NoSuchMethodException ex) {
-                throw new NodeFactoryException(
-                        "Failed to get constructor for " + implementation.getName(), ex);
+                throw new NodeFactoryException("Failed to get constructor for " + implementation.getName(), ex);
             }
         }
         constructorMap = new HashMap<Class<?>, Constructor<?>>();
         for (Map.Entry<Class<?>, Class<?>> entry : interfaceToImplementationMap.entrySet()) {
-            constructorMap.put(
-                    entry.getKey(), implementationToConstructorMap.get(entry.getValue()));
+            constructorMap.put(entry.getKey(), implementationToConstructorMap.get(entry.getValue()));
         }
         // TODO: this should eventually go away
         constructorMap.putAll(implementationToConstructorMap);
@@ -145,8 +132,7 @@ public abstract class NodeFactoryImpl implements NodeFactory {
             try {
                 return type.cast(constructor.newInstance());
             } catch (InvocationTargetException ex) {
-                throw new NodeFactoryException(
-                        "Caught exception thrown by constructor", ex.getCause());
+                throw new NodeFactoryException("Caught exception thrown by constructor", ex.getCause());
             } catch (InstantiationException ex) {
                 throw new NodeFactoryException("Failed to invoke constructor", ex);
             } catch (IllegalAccessException ex) {

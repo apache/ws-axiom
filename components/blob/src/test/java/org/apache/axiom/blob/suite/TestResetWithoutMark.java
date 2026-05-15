@@ -20,15 +20,13 @@ package org.apache.axiom.blob.suite;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
-
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.io.IOUtils;
-
-import com.google.inject.Inject;
 
 public class TestResetWithoutMark extends WritableBlobTestCase {
     @Inject

@@ -23,9 +23,7 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-
 import junit.framework.TestCase;
-
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class CompareTestCase extends TestCase {

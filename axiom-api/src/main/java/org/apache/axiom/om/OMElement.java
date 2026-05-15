@@ -19,18 +19,16 @@
 
 package org.apache.axiom.om;
 
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.om.xpath.AXIOMXPath;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.om.xpath.AXIOMXPath;
 
 /**
  * A particular kind of node that represents an element infoset information item.

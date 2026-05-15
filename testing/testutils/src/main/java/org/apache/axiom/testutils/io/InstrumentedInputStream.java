@@ -20,7 +20,6 @@ package org.apache.axiom.testutils.io;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.apache.commons.io.input.ProxyInputStream;
 
 /** {@link InputStream} wrapper that implements {@link InstrumentedStream}. */

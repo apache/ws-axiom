@@ -19,10 +19,8 @@
 package org.apache.axiom.samples;
 
 import java.io.IOException;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.ext.stax.BlobWriter;
@@ -44,8 +42,7 @@ public class LogWriter extends XMLStreamWriterWrapper implements BlobWriter {
     }
 
     @Override
-    public void writeBlob(Blob blob, String contentID, boolean optimize)
-            throws IOException, XMLStreamException {
+    public void writeBlob(Blob blob, String contentID, boolean optimize) throws IOException, XMLStreamException {
         super.writeCharacters("[base64 encoded data]");
     }
 

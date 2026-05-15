@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.soapdom;
 
+import com.google.inject.Key;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
@@ -25,13 +26,11 @@ import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.LabelBinding;
-import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.ts.soap.SOAPFactoryModule;
 import org.apache.axiom.ts.soap.SOAPSpec;
-
-import com.google.inject.Key;
 
 public class SOAPDOMTestSuite {
     public static MatrixTestNode create(DOMMetaFactory metaFactory) {
@@ -45,14 +44,12 @@ public class SOAPDOMTestSuite {
                                 new SOAPFactoryModule(),
                                 new ParentNode(
                                         new MatrixTest(
-                                                org.apache.axiom.ts.soapdom.header
-                                                        .TestExamineAllHeaderBlocks.class),
+                                                org.apache.axiom.ts.soapdom.header.TestExamineAllHeaderBlocks.class),
                                         new MatrixTest(
-                                                org.apache.axiom.ts.soapdom.header
-                                                        .TestExamineMustUnderstandHeaderBlocks
+                                                org.apache.axiom.ts.soapdom.header.TestExamineMustUnderstandHeaderBlocks
                                                         .class),
                                         new MatrixTest(
-                                                org.apache.axiom.ts.soapdom.message
-                                                        .TestLazySOAPFactorySelection.class)))));
+                                                org.apache.axiom.ts.soapdom.message.TestLazySOAPFactorySelection
+                                                        .class)))));
     }
 }

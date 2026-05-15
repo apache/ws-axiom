@@ -19,7 +19,6 @@
 package org.apache.axiom.weaver.mixin.factory;
 
 import java.util.List;
-
 import org.apache.axiom.weaver.classio.ClassFetcher;
 import org.apache.axiom.weaver.mixin.MethodBody;
 import org.apache.axiom.weaver.mixin.MixinMethod;
@@ -35,10 +34,7 @@ final class MethodVisitorImpl extends MethodVisitor {
     private final List<MixinMethod> mixinMethods;
 
     MethodVisitorImpl(
-            String methodName,
-            String methodDescriptor,
-            ClassFetcher classFetcher,
-            List<MixinMethod> mixinMethods) {
+            String methodName, String methodDescriptor, ClassFetcher classFetcher, List<MixinMethod> mixinMethods) {
         super(Opcodes.ASM9);
         this.methodName = methodName;
         this.methodDescriptor = methodDescriptor;
@@ -51,26 +47,16 @@ final class MethodVisitorImpl extends MethodVisitor {
         MethodBody methodBody;
         // TODO: check that the method has the expected signature
         if (descriptor.equals("Lorg/apache/axiom/weaver/annotation/FactoryMethod;")) {
-            methodBody =
-                    new FactoryMethodBody(
-                            classFetcher.loadClass(
-                                    Type.getReturnType(methodDescriptor).getClassName()));
+            methodBody = new FactoryMethodBody(
+                    classFetcher.loadClass(Type.getReturnType(methodDescriptor).getClassName()));
         } else if (descriptor.equals("Lorg/apache/axiom/weaver/annotation/Inject;")) {
-            methodBody =
-                    new InjectMethodBody(
-                            classFetcher.loadClass(
-                                    Type.getReturnType(methodDescriptor).getClassName()));
+            methodBody = new InjectMethodBody(
+                    classFetcher.loadClass(Type.getReturnType(methodDescriptor).getClassName()));
         } else {
             return null;
         }
-        mixinMethods.add(
-                new MixinMethod(
-                        Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL,
-                        methodName,
-                        methodDescriptor,
-                        null,
-                        null,
-                        methodBody));
+        mixinMethods.add(new MixinMethod(
+                Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, methodName, methodDescriptor, null, null, methodBody));
         return null;
     }
 }

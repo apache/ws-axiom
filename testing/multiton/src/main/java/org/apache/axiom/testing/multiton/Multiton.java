@@ -18,14 +18,13 @@
  */
 package org.apache.axiom.testing.multiton;
 
+import com.google.common.collect.ImmutableList;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * Base class for multitons. A multiton is a class that has a fixed set of instances.
@@ -52,8 +51,7 @@ public abstract class Multiton extends Adaptable {
      * @return the list of instances
      * @throws MultitonInstantiationException if an error occurred
      */
-    public static synchronized <T extends Multiton> ImmutableList<T> getInstances(
-            Class<T> multitonClass) {
+    public static synchronized <T extends Multiton> ImmutableList<T> getInstances(Class<T> multitonClass) {
         ImmutableList<T> instances = (ImmutableList<T>) instancesMap.get(multitonClass);
         if (instances == null) {
             ImmutableList.Builder<T> builder = ImmutableList.builder();
@@ -82,8 +80,7 @@ public abstract class Multiton extends Adaptable {
                                 "Methods annotated with @Instances must not take any parameters");
                     }
                     Class<?> returnType = method.getReturnType();
-                    if (!returnType.isArray()
-                            || !multitonClass.isAssignableFrom(returnType.getComponentType())) {
+                    if (!returnType.isArray() || !multitonClass.isAssignableFrom(returnType.getComponentType())) {
                         throw new MultitonInstantiationException(
                                 "Invalid return type for method annotated with @Instances");
                     }

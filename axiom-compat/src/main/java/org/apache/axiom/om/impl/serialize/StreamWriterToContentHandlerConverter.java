@@ -19,15 +19,14 @@
 
 package org.apache.axiom.om.impl.serialize;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 /**
  * @deprecated This is an internal implementation class that is no longer used.
@@ -175,8 +174,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @throws SAXException
      */
     @Override
-    public void endElement(String namespaceURI, String localName, String qName)
-            throws SAXException {
+    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         try {
             writer.writeEndElement();
         } catch (XMLStreamException e) {
@@ -207,8 +205,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
      * @throws SAXException
      */
     @Override
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         try {
             log.info("writing element {" + namespaceURI + '}' + localName + " directly to stream ");
             String prefix = getPrefix(qName);

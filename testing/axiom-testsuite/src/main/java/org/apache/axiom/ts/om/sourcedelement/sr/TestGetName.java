@@ -20,18 +20,16 @@ package org.apache.axiom.ts.om.sourcedelement.sr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link XMLStreamReader#getName()} returns a {@link QName} with the correct prefix for
@@ -48,11 +46,10 @@ public class TestGetName extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement root = factory.createOMElement("root", null);
-        OMSourcedElement el =
-                factory.createOMElement(
-                        new PullOMDataSource("<p:el xmlns:p='urn:ns'>content</p:el>"),
-                        "el",
-                        factory.createOMNamespace("urn:ns", null));
+        OMSourcedElement el = factory.createOMElement(
+                new PullOMDataSource("<p:el xmlns:p='urn:ns'>content</p:el>"),
+                "el",
+                factory.createOMNamespace("urn:ns", null));
         root.addChild(el);
         XMLStreamReader reader = root.getXMLStreamReader();
         assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);

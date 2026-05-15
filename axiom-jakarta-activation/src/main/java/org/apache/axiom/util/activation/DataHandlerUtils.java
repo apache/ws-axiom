@@ -19,7 +19,6 @@
 package org.apache.axiom.util.activation;
 
 import jakarta.activation.DataHandler;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.activation.PartDataHandler;
 import org.apache.axiom.mime.activation.PartDataHandlerBlob;

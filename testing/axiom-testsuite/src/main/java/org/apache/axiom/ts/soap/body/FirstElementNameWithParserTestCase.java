@@ -18,16 +18,14 @@
  */
 package org.apache.axiom.ts.soap.body;
 
-import junit.framework.TestCase;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -43,18 +41,18 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
 public abstract class FirstElementNameWithParserTestCase extends TestCase {
-    @Inject private OMMetaFactory metaFactory;
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private OMMetaFactory metaFactory;
+
+    @Inject
+    private SOAPFactory soapFactory;
 
     protected final SOAPSpec spec;
     protected final QName qname;
     private final boolean supportsOptimization;
 
-    public FirstElementNameWithParserTestCase(
-            SOAPSpec spec, QName qname, boolean supportsOptimization) {
+    public FirstElementNameWithParserTestCase(SOAPSpec spec, QName qname, boolean supportsOptimization) {
         this.spec = spec;
         this.qname = qname;
         this.supportsOptimization = supportsOptimization;
@@ -66,44 +64,36 @@ public abstract class FirstElementNameWithParserTestCase extends TestCase {
         orgEnvelope
                 .getBody()
                 .addChild(
-                        soapFactory.createOMElement(
-                                qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
+                        soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
         SOAPModelBuilder builder =
-                OMXMLBuilderFactory.createSOAPModelBuilder(
-                        metaFactory, new StringReader(orgEnvelope.toString()));
+                OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new StringReader(orgEnvelope.toString()));
         SOAPBody body = builder.getSOAPEnvelope().getBody();
         runTest(body);
         if (supportsOptimization) {
             // The expectation is that even after looking at the payload element name, registering
             // a custom builder still transforms the element.
-            ((CustomBuilderSupport) builder)
-                    .registerCustomBuilder(
-                            CustomBuilder.Selector.PAYLOAD,
-                            new CustomBuilder() {
-                                @Override
-                                public OMDataSource create(OMElement element) throws OMException {
-                                    try {
-                                        element.getXMLStreamReaderWithoutCaching().close();
-                                    } catch (XMLStreamException ex) {
-                                        throw new OMException(ex);
-                                    }
-                                    return new AbstractPushOMDataSource() {
-                                        @Override
-                                        public void serialize(XMLStreamWriter xmlWriter)
-                                                throws XMLStreamException {
-                                            xmlWriter.writeEmptyElement(
-                                                    qname.getPrefix(),
-                                                    qname.getLocalPart(),
-                                                    qname.getNamespaceURI());
-                                        }
+            ((CustomBuilderSupport) builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, new CustomBuilder() {
+                @Override
+                public OMDataSource create(OMElement element) throws OMException {
+                    try {
+                        element.getXMLStreamReaderWithoutCaching().close();
+                    } catch (XMLStreamException ex) {
+                        throw new OMException(ex);
+                    }
+                    return new AbstractPushOMDataSource() {
+                        @Override
+                        public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
+                            xmlWriter.writeEmptyElement(
+                                    qname.getPrefix(), qname.getLocalPart(), qname.getNamespaceURI());
+                        }
 
-                                        @Override
-                                        public boolean isDestructiveWrite() {
-                                            return false;
-                                        }
-                                    };
-                                }
-                            });
+                        @Override
+                        public boolean isDestructiveWrite() {
+                            return false;
+                        }
+                    };
+                }
+            });
             assertThat(body.getFirstElement()).isInstanceOf(OMSourcedElement.class);
         }
     }

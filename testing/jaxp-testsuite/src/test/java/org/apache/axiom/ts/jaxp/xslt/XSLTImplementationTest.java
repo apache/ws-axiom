@@ -26,14 +26,15 @@ import org.junit.Test;
 public class XSLTImplementationTest {
     @Test
     public void testSupportsLexicalHandlerWithStreamSource() {
-        assertThat(XSLTImplementation.SAXON.supportsLexicalHandlerWithStreamSource()).isFalse();
-        assertThat(XSLTImplementation.XALAN.supportsLexicalHandlerWithStreamSource()).isTrue();
+        assertThat(XSLTImplementation.SAXON.supportsLexicalHandlerWithStreamSource())
+                .isFalse();
+        assertThat(XSLTImplementation.XALAN.supportsLexicalHandlerWithStreamSource())
+                .isTrue();
     }
 
     @Test
     public void testSupportsStAXSource() {
-        for (XSLTImplementation xsltImplementation :
-                Multiton.getInstances(XSLTImplementation.class)) {
+        for (XSLTImplementation xsltImplementation : Multiton.getInstances(XSLTImplementation.class)) {
             assertThat(xsltImplementation.supportsStAXSource())
                     .isEqualTo(xsltImplementation != XSLTImplementation.XALAN);
         }

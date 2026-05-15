@@ -20,7 +20,6 @@ package org.apache.axiom.ts.dimension.serialization;
 
 import java.io.PrintStream;
 import java.io.StringReader;
-
 import org.xml.sax.InputSource;
 
 class XMLAsString implements XML {

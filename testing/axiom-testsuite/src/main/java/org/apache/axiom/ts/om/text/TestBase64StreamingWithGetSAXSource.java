@@ -18,12 +18,11 @@
  */
 package org.apache.axiom.ts.om.text;
 
+import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
-
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -37,8 +36,6 @@ import org.apache.axiom.util.base64.Base64DecodingOutputStreamWriter;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that when an {@link OMText} node is serialized by the {@link SAXSource} returned by {@link

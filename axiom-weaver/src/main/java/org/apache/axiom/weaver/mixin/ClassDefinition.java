@@ -19,7 +19,6 @@
 package org.apache.axiom.weaver.mixin;
 
 import java.io.PrintWriter;
-
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.TraceClassVisitor;
@@ -42,8 +41,7 @@ public abstract class ClassDefinition {
     }
 
     public final byte[] toByteArray() {
-        ClassWriter cw =
-                new ClassWriter(/* ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES */ 0);
+        ClassWriter cw = new ClassWriter(/* ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES */ 0);
         accept(cw);
         return cw.toByteArray();
     }

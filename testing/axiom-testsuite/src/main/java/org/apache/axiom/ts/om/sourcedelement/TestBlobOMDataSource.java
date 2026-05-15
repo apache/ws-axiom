@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -31,8 +31,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.BlobOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /** Tests functionality of BlobOMDataSource */
 public class TestBlobOMDataSource extends AxiomTestCase {
@@ -49,8 +47,7 @@ public class TestBlobOMDataSource extends AxiomTestCase {
         String encoding = "utf-8";
         String payload = "<tns:myPayload xmlns:tns=\"urn://test\">Payload One</tns:myPayload>";
         OMNamespace ns = factory.createOMNamespace("urn://test", "tns");
-        BlobOMDataSource ds =
-                new BlobOMDataSource(Blobs.createBlob(payload.getBytes(encoding)), encoding);
+        BlobOMDataSource ds = new BlobOMDataSource(Blobs.createBlob(payload.getBytes(encoding)), encoding);
 
         OMElement parent = factory.createOMElement("root", null);
         OMSourcedElement omse = factory.createOMElement(ds, localName, ns);

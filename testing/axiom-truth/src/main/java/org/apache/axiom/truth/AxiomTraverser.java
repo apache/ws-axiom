@@ -21,9 +21,7 @@ package org.apache.axiom.truth;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -137,8 +135,7 @@ final class AxiomTraverser implements Traverser {
     @Override
     public Map<String, String> getNamespaces() {
         Map<String, String> namespaces = null;
-        for (Iterator<OMNamespace> it = ((OMElement) node).getAllDeclaredNamespaces();
-                it.hasNext(); ) {
+        for (Iterator<OMNamespace> it = ((OMElement) node).getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = it.next();
             if (namespaces == null) {
                 namespaces = new HashMap<String, String>();
@@ -151,8 +148,7 @@ final class AxiomTraverser implements Traverser {
     @Override
     public String getText() {
         return switch (node.getType()) {
-            case OMNode.TEXT_NODE, OMNode.SPACE_NODE, OMNode.CDATA_SECTION_NODE ->
-                    ((OMText) node).getText();
+            case OMNode.TEXT_NODE, OMNode.SPACE_NODE, OMNode.CDATA_SECTION_NODE -> ((OMText) node).getText();
             case OMNode.COMMENT_NODE -> ((OMComment) node).getValue();
             default -> throw new IllegalStateException();
         };

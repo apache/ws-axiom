@@ -35,8 +35,7 @@ public class TestGetDomConfigDefaults extends DOMTestCase {
         DOMConfiguration domConfig = document.getDomConfig();
         assertThat(domConfig.getParameter("canonical-form")).isEqualTo(Boolean.FALSE);
         assertThat(domConfig.getParameter("cdata-sections")).isEqualTo(Boolean.TRUE);
-        assertThat(domConfig.getParameter("check-character-normalization"))
-                .isEqualTo(Boolean.FALSE);
+        assertThat(domConfig.getParameter("check-character-normalization")).isEqualTo(Boolean.FALSE);
         assertThat(domConfig.getParameter("comments")).isEqualTo(Boolean.TRUE);
         assertThat(domConfig.getParameter("datatype-normalization")).isEqualTo(Boolean.FALSE);
         assertThat(domConfig.getParameter("element-content-whitespace")).isEqualTo(Boolean.TRUE);

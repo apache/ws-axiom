@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.intf;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.apache.axiom.om.OMElement;
 
 public final class Sequence {

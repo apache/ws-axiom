@@ -18,13 +18,12 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public abstract class ReplaceChildTestCase extends DOMTestCase {
     @Inject

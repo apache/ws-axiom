@@ -41,34 +41,24 @@ abstract class Context {
         return nestedContext;
     }
 
-    abstract void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone);
+    abstract void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone);
 
     abstract void startFragment();
 
     abstract void processDocumentTypeDeclaration(
-            String rootName, String publicId, String systemId, String internalSubset)
-            throws StreamException;
+            String rootName, String publicId, String systemId, String internalSubset) throws StreamException;
 
-    abstract Context startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException;
+    abstract Context startElement(String namespaceURI, String localName, String prefix) throws StreamException;
 
     abstract Context endElement() throws StreamException;
 
     abstract void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException;
 
-    abstract void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException;
+    abstract void processAttribute(String name, String value, String type, boolean specified) throws StreamException;
 
-    abstract void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException;
+    abstract void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException;
 
     abstract void attributesCompleted() throws StreamException;
 
@@ -86,8 +76,7 @@ abstract class Context {
 
     abstract Context endCDATASection() throws StreamException;
 
-    abstract void processEntityReference(String name, String replacementText)
-            throws StreamException;
+    abstract void processEntityReference(String name, String replacementText) throws StreamException;
 
     abstract void completed() throws StreamException;
 }

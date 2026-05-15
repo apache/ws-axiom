@@ -19,7 +19,6 @@
 package org.apache.axiom.locator;
 
 import java.util.List;
-
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 

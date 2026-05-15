@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.dom.element;
 
 import java.io.StringReader;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,9 +29,7 @@ import org.xml.sax.InputSource;
 public class TestSetTextContent extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Document doc =
-                dbf.newDocumentBuilder()
-                        .parse(new InputSource(new StringReader("<a>1<!--c--><b>2</b>3</a>")));
+        Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader("<a>1<!--c--><b>2</b>3</a>")));
         Element element = doc.getDocumentElement();
         Node oldFirstChild = element.getFirstChild();
         element.setTextContent("test");

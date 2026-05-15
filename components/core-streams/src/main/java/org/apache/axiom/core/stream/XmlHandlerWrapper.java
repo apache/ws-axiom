@@ -30,8 +30,7 @@ public class XmlHandlerWrapper implements XmlHandler {
     }
 
     @Override
-    public void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
             throws StreamException {
         parent.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
     }
@@ -42,15 +41,13 @@ public class XmlHandlerWrapper implements XmlHandler {
     }
 
     @Override
-    public void processDocumentTypeDeclaration(
-            String rootName, String publicId, String systemId, String internalSubset)
+    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset)
             throws StreamException {
         parent.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         parent.startElement(namespaceURI, localName, prefix);
     }
 
@@ -61,25 +58,18 @@ public class XmlHandlerWrapper implements XmlHandler {
 
     @Override
     public void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException {
         parent.processAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
 
     @Override
-    public void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException {
+    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
         parent.processAttribute(name, value, type, specified);
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         parent.processNamespaceDeclaration(prefix, namespaceURI);
     }
 

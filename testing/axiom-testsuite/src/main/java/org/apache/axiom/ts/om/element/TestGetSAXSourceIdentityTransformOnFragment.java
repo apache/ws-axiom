@@ -20,11 +20,11 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.InputStream;
-
 import javax.xml.transform.Transformer;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -35,9 +35,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.xml.sax.ContentHandler;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that the {@link SAXSource} returned by {@link OMContainer#getSAXSource(boolean)} generates
@@ -68,9 +65,7 @@ public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
 
     @Inject
     public TestGetSAXSourceIdentityTransformOnFragment(
-            OMMetaFactory metaFactory,
-            XSLTImplementation xsltImplementation,
-            @Named("cache") boolean cache) {
+            OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, @Named("cache") boolean cache) {
         super(metaFactory);
         this.xsltImplementation = xsltImplementation;
         this.cache = cache;
@@ -85,10 +80,9 @@ public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
         Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer();
 
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element =
-                OMXMLBuilderFactory.createOMBuilder(factory, getInput())
-                        .getDocumentElement()
-                        .getFirstElement();
+        OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, getInput())
+                .getDocumentElement()
+                .getFirstElement();
         OMDocument outputDocument = factory.createOMDocument();
         transformer.transform(element.getSAXSource(cache), outputDocument.getSAXResult());
 

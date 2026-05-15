@@ -20,14 +20,12 @@ package org.apache.axiom.ts.soap12.faultreason;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.List;
-
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetAllSoapTextsWithParser extends SampleBasedSOAPTestCase {
     @Inject

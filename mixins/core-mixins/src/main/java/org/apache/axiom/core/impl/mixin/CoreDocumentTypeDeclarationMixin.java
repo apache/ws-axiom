@@ -89,8 +89,7 @@ public abstract class CoreDocumentTypeDeclarationMixin implements CoreDocumentTy
     }
 
     @Override
-    public final void internalSerialize(XmlHandler handler, boolean cache)
-            throws CoreModelException, StreamException {
+    public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         handler.processDocumentTypeDeclaration(
                 coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
     }

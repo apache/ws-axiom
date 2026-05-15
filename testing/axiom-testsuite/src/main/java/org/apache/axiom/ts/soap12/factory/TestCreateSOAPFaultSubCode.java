@@ -20,8 +20,9 @@ package org.apache.axiom.ts.soap12.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -31,16 +32,13 @@ import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /**
  * Tests {@link SOAPFactory#createSOAPFaultSubCode(SOAPFaultCode)} when used with a {@link
  * SOAPFaultCode} that has already a {@link SOAPFaultValue} child.
  */
 public class TestCreateSOAPFaultSubCode extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -48,10 +46,8 @@ public class TestCreateSOAPFaultSubCode extends TestCase {
         SOAPFault fault = envelope.getBody().getFault();
         SOAPFaultCode code = fault.getCode();
         SOAPFaultSubCode subCode = soapFactory.createSOAPFaultSubCode(code);
-        assertThat(subCode.getNamespaceURI())
-                .isEqualTo(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        assertThat(subCode.getLocalName())
-                .isEqualTo(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
+        assertThat(subCode.getNamespaceURI()).isEqualTo(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        assertThat(subCode.getLocalName()).isEqualTo(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
         assertThat(subCode.getParent()).isSameAs(code);
         Iterator<OMNode> it = code.getChildren();
         assertThat(it.hasNext()).isTrue();

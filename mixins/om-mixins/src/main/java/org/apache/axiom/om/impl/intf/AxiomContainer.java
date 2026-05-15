@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.intf;
 
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
@@ -37,8 +36,7 @@ public interface AxiomContainer extends OMContainer, AxiomCoreParentNode {
 
     AxiomChildNode prepareNewChild(OMNode omNode);
 
-    XMLStreamReader defaultGetXMLStreamReader(
-            boolean cache, OMXMLStreamReaderConfiguration configuration);
+    XMLStreamReader defaultGetXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration);
 
     CoreElement getContextElement();
 }

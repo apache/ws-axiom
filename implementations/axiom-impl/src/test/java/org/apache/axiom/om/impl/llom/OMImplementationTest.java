@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.llom;
 
 import java.util.stream.Stream;
-
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactoryLoader;
 import org.apache.axiom.testutils.suite.MatrixTestFilters;
 import org.apache.axiom.ts.om.OMTestSuite;
@@ -32,15 +31,14 @@ public class OMImplementationTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
         return OMTestSuite.create(new OMLinkedListMetaFactoryLoader().load(null))
-                .toDynamicNodes(
-                        MatrixTestFilters.builder()
-                                // TODO: if there is a comment node surrounded by text, then these
-                                // text nodes need to be merged
-                                .add(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))")
-                                // TODO: need to evaluate if the test case is correct
-                                .add(
-                                        TestGetSAXSourceWithPushOMDataSource.class,
-                                        "(&(scenario=getNamespaceContext)(serializeParent=false))")
-                                .build());
+                .toDynamicNodes(MatrixTestFilters.builder()
+                        // TODO: if there is a comment node surrounded by text, then these
+                        // text nodes need to be merged
+                        .add(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))")
+                        // TODO: need to evaluate if the test case is correct
+                        .add(
+                                TestGetSAXSourceWithPushOMDataSource.class,
+                                "(&(scenario=getNamespaceContext)(serializeParent=false))")
+                        .build());
     }
 }

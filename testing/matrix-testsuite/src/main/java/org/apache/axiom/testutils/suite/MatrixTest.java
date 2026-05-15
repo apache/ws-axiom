@@ -18,16 +18,13 @@
  */
 package org.apache.axiom.testutils.suite;
 
+import com.google.inject.Injector;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
-
+import junit.framework.TestCase;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.DynamicTest;
-
-import com.google.inject.Injector;
-
-import junit.framework.TestCase;
 
 /**
  * A leaf node that instantiates a {@link TestCase} subclass via Guice and executes it.
@@ -55,13 +52,10 @@ public class MatrixTest extends MatrixTestNode {
         if (excludes.test(testClass, inheritedLabels)) {
             return Stream.empty();
         }
-        return Stream.of(
-                DynamicTest.dynamicTest(
-                        testClass.getSimpleName(),
-                        () -> {
-                            TestCase testInstance = injector.getInstance(testClass);
-                            testInstance.setName(testClass.getSimpleName());
-                            testInstance.runBare();
-                        }));
+        return Stream.of(DynamicTest.dynamicTest(testClass.getSimpleName(), () -> {
+            TestCase testInstance = injector.getInstance(testClass);
+            testInstance.setName(testClass.getSimpleName());
+            testInstance.runBare();
+        }));
     }
 }

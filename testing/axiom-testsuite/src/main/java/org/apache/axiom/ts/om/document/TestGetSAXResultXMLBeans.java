@@ -22,8 +22,8 @@ package org.apache.axiom.ts.om.document;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import java.io.StringWriter;
-
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -32,8 +32,6 @@ import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order;
 import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order.Item;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
-
-import com.google.inject.Inject;
 
 public class TestGetSAXResultXMLBeans extends AxiomTestCase {
     @Inject

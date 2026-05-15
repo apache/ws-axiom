@@ -20,10 +20,11 @@ package org.apache.axiom.ts.om.builder;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import java.io.StringReader;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import java.io.StringReader;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -32,9 +33,6 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.jspecify.annotations.Nullable;
 import org.xml.sax.InputSource;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement()} and {@link
@@ -56,10 +54,8 @@ public class TestGetDocumentElement extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder =
-                builderFactory.getBuilder(
-                        metaFactory,
-                        new InputSource(new StringReader("<!--comment1--><root/><!--comment2-->")));
+        OMXMLParserWrapper builder = builderFactory.getBuilder(
+                metaFactory, new InputSource(new StringReader("<!--comment1--><root/><!--comment2-->")));
         OMElement element;
         if (discardDocument == null) {
             element = builder.getDocumentElement();
@@ -81,9 +77,7 @@ public class TestGetDocumentElement extends AxiomTestCase {
                 assertThat(element.isComplete()).isFalse();
                 assertThat(builder.isCompleted()).isFalse();
             }
-            assertAbout(xml())
-                    .that(xml(OMElement.class, newParent))
-                    .hasSameContentAs("<newParent><root/></newParent>");
+            assertAbout(xml()).that(xml(OMElement.class, newParent)).hasSameContentAs("<newParent><root/></newParent>");
             assertThat(element.isComplete()).isTrue();
             // Since we discarded the document, the nodes in the epilog will not be accessible.
             // Therefore we expect that when the document element changes its completion status,

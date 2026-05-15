@@ -20,10 +20,9 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.nio.charset.StandardCharsets;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMFactory;
@@ -33,8 +32,6 @@ import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetObject extends AxiomTestCase {
     @Inject
@@ -46,10 +43,8 @@ public class TestGetObject extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         Blob blob = Blobs.createBlob("test".getBytes(StandardCharsets.UTF_8));
-        OMSourcedElement element =
-                factory.createOMElement(
-                        new WrappedTextNodeOMDataSourceFromBlob(
-                                new QName("wrapper"), blob, StandardCharsets.UTF_8));
+        OMSourcedElement element = factory.createOMElement(
+                new WrappedTextNodeOMDataSourceFromBlob(new QName("wrapper"), blob, StandardCharsets.UTF_8));
         // getObject returns null if the data source is not of the expected type
         assertThat(element.getObject(StringOMDataSource.class)).isNull();
         // Test with the right data source type

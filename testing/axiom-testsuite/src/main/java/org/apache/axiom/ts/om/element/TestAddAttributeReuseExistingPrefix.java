@@ -20,14 +20,13 @@ package org.apache.axiom.ts.om.element;
 
 import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that when {@link OMElement#addAttribute(String, String, OMNamespace)} is called with an
@@ -46,8 +45,7 @@ public class TestAddAttributeReuseExistingPrefix extends AxiomTestCase {
         OMElement parent = factory.createOMElement("parent", null);
         OMElement element = factory.createOMElement("element", null, parent);
         parent.declareNamespace("urn:test", "p");
-        OMAttribute attr =
-                element.addAttribute("attr", "test", factory.createOMNamespace("urn:test", null));
+        OMAttribute attr = element.addAttribute("attr", "test", factory.createOMNamespace("urn:test", null));
         assertThat(attr).hasPrefix("p");
         assertThat(element).hasNoNamespaceDeclarations();
     }

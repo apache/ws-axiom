@@ -20,8 +20,8 @@ package org.apache.axiom.ts.soap.body;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMMetaFactorySPI;
@@ -33,17 +33,15 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-import com.google.inject.Inject;
-
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-107">AXIOM-107</a>. */
 public class TestSerializeWithXSITypeAttribute extends SampleBasedSOAPTestCase {
-    @Inject private OMMetaFactory metaFactory;
+    @Inject
+    private OMMetaFactory metaFactory;
 
     private final SerializationStrategy serializationStrategy;
 
     @Inject
-    public TestSerializeWithXSITypeAttribute(
-            SOAPSpec spec, SerializationStrategy serializationStrategy) {
+    public TestSerializeWithXSITypeAttribute(SOAPSpec spec, SerializationStrategy serializationStrategy) {
         super(spec, SOAPSampleSet.XSI_TYPE);
         this.serializationStrategy = serializationStrategy;
     }
@@ -54,18 +52,13 @@ public class TestSerializeWithXSITypeAttribute extends SampleBasedSOAPTestCase {
         // to for the namespace used in the value of the xsi:type attribute.
         XML xml = serializationStrategy.serialize(envelope.getBody());
         // No deserialize the result and test that the attribute value can be resolved.
-        OMElement element =
-                ((OMMetaFactorySPI) metaFactory)
-                        .createOMBuilder(StAXParserConfiguration.DEFAULT, xml.getInputSource())
-                        .getDocumentElement()
-                        .getFirstElement()
-                        .getFirstElement();
-        assertThat(
-                        element.resolveQName(
-                                element.getAttributeValue(
-                                        new QName(
-                                                "http://www.w3.org/2001/XMLSchema-instance",
-                                                "type"))))
+        OMElement element = ((OMMetaFactorySPI) metaFactory)
+                .createOMBuilder(StAXParserConfiguration.DEFAULT, xml.getInputSource())
+                .getDocumentElement()
+                .getFirstElement()
+                .getFirstElement();
+        assertThat(element.resolveQName(
+                        element.getAttributeValue(new QName("http://www.w3.org/2001/XMLSchema-instance", "type"))))
                 .isEqualTo(new QName("http://ws.apache.org/axis2/user", "myData"));
     }
 }

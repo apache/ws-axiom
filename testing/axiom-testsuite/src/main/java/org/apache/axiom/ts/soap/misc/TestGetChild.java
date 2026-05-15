@@ -20,23 +20,21 @@ package org.apache.axiom.ts.soap.misc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 public class TestGetChild extends GetSetChildTestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Inject
     public TestGetChild(
-            SOAPSpec spec,
-            @Named("type") SOAPElementType type,
-            @Named("childType") SOAPElementType childType) {
+            SOAPSpec spec, @Named("type") SOAPElementType type, @Named("childType") SOAPElementType childType) {
         super(spec, type, childType);
     }
 

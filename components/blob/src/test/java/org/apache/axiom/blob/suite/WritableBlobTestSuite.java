@@ -18,20 +18,19 @@
  */
 package org.apache.axiom.blob.suite;
 
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Key;
+import com.google.inject.TypeLiteral;
+import com.google.inject.name.Names;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.ConditionalNode;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
-import org.apache.axiom.testutils.suite.MatrixTestNode;
-import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.LabelBinding;
+import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.ParentNode;
-
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Key;
-import com.google.inject.TypeLiteral;
-import com.google.inject.name.Names;
 
 public class WritableBlobTestSuite {
     public static MatrixTestNode create(
@@ -41,9 +40,8 @@ public class WritableBlobTestSuite {
             boolean writeToUsesReadFromSupport) {
 
         return new InjectorNode(
-                binder ->
-                        binder.bind(new TypeLiteral<WritableBlobFactory<?>>() {})
-                                .toInstance(factory),
+                binder -> binder.bind(new TypeLiteral<WritableBlobFactory<?>>() {})
+                        .toInstance(factory),
                 new ParentNode(
                         new MatrixTest(TestAvailable.class),
                         new MatrixTest(TestReadEOF.class),
@@ -62,8 +60,7 @@ public class WritableBlobTestSuite {
                                         new MatrixTest(TestGetSizeIllegalState.class),
                                         new MatrixTest(TestWriteToIllegalState.class))),
                         new FanOutNode<>(
-                                ImmutableList.of(
-                                        State.UNCOMMITTED, State.COMMITTED, State.RELEASED),
+                                ImmutableList.of(State.UNCOMMITTED, State.COMMITTED, State.RELEASED),
                                 Binding.singleton(Key.get(State.class)),
                                 LabelBinding.DIMENSION,
                                 new ParentNode(
@@ -84,7 +81,6 @@ public class WritableBlobTestSuite {
                                                 new MatrixTest(TestReadFromSupport.class)),
                                         new ConditionalNode(
                                                 injector -> writeToUsesReadFromSupport,
-                                                new MatrixTest(
-                                                        TestWriteToWithReadFromSupport.class))))));
+                                                new MatrixTest(TestWriteToWithReadFromSupport.class))))));
     }
 }

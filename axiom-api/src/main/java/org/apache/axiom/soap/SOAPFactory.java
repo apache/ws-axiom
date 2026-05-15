@@ -77,8 +77,7 @@ public interface SOAPFactory extends OMFactory {
     SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, SOAPHeader parent)
             throws SOAPProcessingException;
 
-    SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns)
-            throws SOAPProcessingException;
+    SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns) throws SOAPProcessingException;
 
     /**
      * Create a {@link SOAPHeaderBlock} from an {@link OMDataSource}. The semantics of the method

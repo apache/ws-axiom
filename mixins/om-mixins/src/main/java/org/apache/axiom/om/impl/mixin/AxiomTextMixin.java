@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.mixin;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.mime.PartBlob;
@@ -121,9 +120,7 @@ public abstract class AxiomTextMixin implements AxiomText {
             return null;
         } else {
             String namespaceURI = qname.getNamespaceURI();
-            return namespaceURI.length() == 0
-                    ? null
-                    : new OMNamespaceImpl(namespaceURI, qname.getPrefix());
+            return namespaceURI.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, qname.getPrefix());
         }
     }
 

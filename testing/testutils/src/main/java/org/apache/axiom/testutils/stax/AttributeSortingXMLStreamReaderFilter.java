@@ -20,7 +20,6 @@ package org.apache.axiom.testutils.stax;
 
 import java.util.SortedMap;
 import java.util.TreeMap;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;

@@ -25,8 +25,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
-import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 

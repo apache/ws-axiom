@@ -21,25 +21,23 @@ package org.apache.axiom.core.stream.stax.pull.output;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import java.io.StringWriter;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamResult;
-
+import junit.framework.TestCase;
 import org.apache.axiom.core.stream.dom.input.DOMInput;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class StAXPivotTransformerTestCase extends TestCase {
-    @Inject private XSLTImplementation xsltImplementation;
+    @Inject
+    private XSLTImplementation xsltImplementation;
 
-    @Inject private XMLSample sample;
+    @Inject
+    private XMLSample sample;
 
     @Override
     protected void runTest() throws Throwable {

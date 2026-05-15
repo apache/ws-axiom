@@ -20,16 +20,15 @@ package org.apache.axiom.ts.soap12.fault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestGetNode extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -37,7 +36,6 @@ public class TestGetNode extends TestCase {
         assertThat(soapFault.getNode()).isNull();
         soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault));
         assertThat(soapFault.getNode()).isNotNull();
-        assertThat(soapFault.getNode().getLocalName())
-                .isEqualTo(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME);
+        assertThat(soapFault.getNode().getLocalName()).isEqualTo(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME);
     }
 }

@@ -18,20 +18,19 @@
  */
 package org.apache.axiom.ts.omdom;
 
-import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.testing.multiton.Multiton;
-import org.apache.axiom.testutils.suite.Binding;
-import org.apache.axiom.testutils.suite.InjectorNode;
-import org.apache.axiom.testutils.suite.LabelBinding;
-import org.apache.axiom.testutils.suite.MatrixTestNode;
-import org.apache.axiom.testutils.suite.MatrixTest;
-import org.apache.axiom.testutils.suite.ParentNode;
-import org.apache.axiom.testutils.suite.FanOutNode;
-import org.apache.axiom.ts.xml.XMLSample;
-
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+import org.apache.axiom.om.dom.DOMMetaFactory;
+import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.Binding;
+import org.apache.axiom.testutils.suite.FanOutNode;
+import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.LabelBinding;
+import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.MatrixTestNode;
+import org.apache.axiom.testutils.suite.ParentNode;
+import org.apache.axiom.ts.xml.XMLSample;
 
 /**
  * Builds a test suite for Axiom implementations that also implement DOM. Note that this test suite
@@ -43,78 +42,46 @@ public class OMDOMTestSuite {
         return new InjectorNode(
                 binder -> binder.bind(DOMMetaFactory.class).toInstance(metaFactory),
                 new ParentNode(
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.attr.TestGetNamespaceNormalized.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.attr.TestSetValueOnNamespaceDeclaration
-                                        .class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.attr.TestGetNamespaceNormalized.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.attr.TestSetValueOnNamespaceDeclaration.class),
                         new FanOutNode<>(
                                 ImmutableList.of(true, false),
                                 Binding.singleton(Key.get(Boolean.class, Names.named("build"))),
                                 LabelBinding.simpleBoolean("build"),
                                 new ParentNode(
                                         new MatrixTest(
-                                                org.apache.axiom.ts.omdom.document
-                                                        .TestAppendChildForbidden.class),
+                                                org.apache.axiom.ts.omdom.document.TestAppendChildForbidden.class),
                                         new MatrixTest(
-                                                org.apache.axiom.ts.omdom.document
-                                                        .TestInsertBeforeForbidden.class))),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.document
-                                        .TestCreateDocumentFragmentInterfaces.class),
+                                                org.apache.axiom.ts.omdom.document.TestInsertBeforeForbidden.class))),
+                        new MatrixTest(org.apache.axiom.ts.omdom.document.TestCreateDocumentFragmentInterfaces.class),
                         new MatrixTest(org.apache.axiom.ts.omdom.document.TestGetOMFactory1.class),
                         new MatrixTest(org.apache.axiom.ts.omdom.document.TestGetOMFactory2.class),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),
                                 Binding.singleton(Key.get(XMLSample.class)),
                                 LabelBinding.simpleString("file", XMLSample::getName),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.omdom.document.TestImportNode.class)),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.element.TestAddAttributeReplace.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.element.TestAddChildFromForeignDocument
-                                        .class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.element.TestAppendChildIncomplete.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.element.TestCloneNodeIncomplete.class),
+                                new MatrixTest(org.apache.axiom.ts.omdom.document.TestImportNode.class)),
+                        new MatrixTest(org.apache.axiom.ts.omdom.element.TestAddAttributeReplace.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.element.TestAddChildFromForeignDocument.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.element.TestAppendChildIncomplete.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.element.TestCloneNodeIncomplete.class),
                         new MatrixTest(org.apache.axiom.ts.omdom.element.TestCloneOMElement.class),
                         new MatrixTest(org.apache.axiom.ts.omdom.element.TestDetach.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.element.TestGetNamespaceNormalized.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.element.TestInsertBeforeIncomplete.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.element.TestGetNamespaceNormalized.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.element.TestInsertBeforeIncomplete.class),
                         new MatrixTest(org.apache.axiom.ts.omdom.element.TestRemoveAttribute.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.element.TestRemoveAttributeNode.class),
                         new MatrixTest(
-                                org.apache.axiom.ts.omdom.element.TestRemoveAttributeNode.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.element
-                                        .TestRemoveAttributeNSNamespaceDeclaration.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.element.TestRemoveChildIncomplete.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.element.TestReplaceChildFirstIncomplete
-                                        .class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.element.TestReplaceChildMiddleIncomplete
-                                        .class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.factory.TestCreateOMAttribute.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.factory.TestCreateOMTextCDATASection
-                                        .class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.factory
-                                        .TestCreateOMTextCDATASectionWithParent.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.node
-                                        .TestInsertSiblingAfterFromForeignDocument.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.node
-                                        .TestInsertSiblingBeforeFromForeignDocument.class),
+                                org.apache.axiom.ts.omdom.element.TestRemoveAttributeNSNamespaceDeclaration.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.element.TestRemoveChildIncomplete.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.element.TestReplaceChildFirstIncomplete.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.element.TestReplaceChildMiddleIncomplete.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.factory.TestCreateOMAttribute.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.factory.TestCreateOMTextCDATASection.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.factory.TestCreateOMTextCDATASectionWithParent.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.node.TestInsertSiblingAfterFromForeignDocument.class),
+                        new MatrixTest(org.apache.axiom.ts.omdom.node.TestInsertSiblingBeforeFromForeignDocument.class),
                         new MatrixTest(org.apache.axiom.ts.omdom.text.TestCloneNodeBinary.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.omdom.text.TestGetNodeValueBinary.class)));
+                        new MatrixTest(org.apache.axiom.ts.omdom.text.TestGetNodeValueBinary.class)));
     }
 }

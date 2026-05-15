@@ -21,9 +21,7 @@ package org.apache.axiom.util.stax.dialect;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.io.InputStream;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ts.xml.XMLSample;
 
@@ -32,9 +30,8 @@ public class TestDTDReader extends DialectTestCase {
     protected void runTest() throws Throwable {
         InputStream in = XMLSample.DTD_FULL.getInputStream();
         try {
-            XMLStreamReader reader =
-                    staxImpl.newNormalizedXMLInputFactory()
-                            .createXMLStreamReader(XMLSample.DTD_FULL.getUrl().toString(), in);
+            XMLStreamReader reader = staxImpl.newNormalizedXMLInputFactory()
+                    .createXMLStreamReader(XMLSample.DTD_FULL.getUrl().toString(), in);
             while (reader.next() != XMLStreamReader.DTD) {
                 // Just loop
             }

@@ -20,20 +20,18 @@ package org.apache.axiom.ts.soap.header;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.ArrayList;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestGetHeaderBlocksWithNSURI extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -41,12 +39,9 @@ public class TestGetHeaderBlocksWithNSURI extends TestCase {
         SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
         OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
         soapHeader.addHeaderBlock("echoOk1", namespace);
-        soapHeader.addHeaderBlock(
-                "echoOk2", soapFactory.createOMNamespace("http://www.test1.org", "test1"));
-        ArrayList<SOAPHeaderBlock> arrayList =
-                soapHeader.getHeaderBlocksWithNSURI("http://www.test1.org");
+        soapHeader.addHeaderBlock("echoOk2", soapFactory.createOMNamespace("http://www.test1.org", "test1"));
+        ArrayList<SOAPHeaderBlock> arrayList = soapHeader.getHeaderBlocksWithNSURI("http://www.test1.org");
         assertThat(arrayList).hasSize(1);
-        assertThat(arrayList.get(0).getNamespace().getNamespaceURI())
-                .isEqualTo("http://www.test1.org");
+        assertThat(arrayList.get(0).getNamespace().getNamespaceURI()).isEqualTo("http://www.test1.org");
     }
 }

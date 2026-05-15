@@ -24,7 +24,6 @@ import static org.apache.axiom.om.impl.common.factory.meta.BuilderFactory.SOAP;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMFactory;
@@ -74,8 +73,7 @@ public abstract class AxiomNodeFactoryMixin implements AxiomNodeFactory {
     }
 
     @Override
-    public final OMXMLParserWrapper createOMBuilder(
-            StAXParserConfiguration configuration, InputSource is) {
+    public final OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputSource is) {
         return OM.createBuilder(this, BuilderSpec.from(configuration, is));
     }
 
@@ -90,23 +88,18 @@ public abstract class AxiomNodeFactoryMixin implements AxiomNodeFactory {
     }
 
     @Override
-    public final OMXMLParserWrapper createOMBuilder(
-            SAXSource source, boolean expandEntityReferences) {
+    public final OMXMLParserWrapper createOMBuilder(SAXSource source, boolean expandEntityReferences) {
         return OM.createBuilder(this, BuilderSpec.from(source, expandEntityReferences));
     }
 
     @Override
-    public final OMXMLParserWrapper createOMBuilder(
-            StAXParserConfiguration configuration, MultipartBody message) {
+    public final OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, MultipartBody message) {
         return OM.createBuilder(this, BuilderSpec.from(configuration, message));
     }
 
     @Override
-    public final OMXMLParserWrapper createOMBuilder(
-            Source rootPart, OMAttachmentAccessor attachmentAccessor) {
-        return OM.createBuilder(
-                this,
-                BuilderSpec.from(StAXParserConfiguration.DEFAULT, rootPart, attachmentAccessor));
+    public final OMXMLParserWrapper createOMBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor) {
+        return OM.createBuilder(this, BuilderSpec.from(StAXParserConfiguration.DEFAULT, rootPart, attachmentAccessor));
     }
 
     @Override
@@ -130,9 +123,7 @@ public abstract class AxiomNodeFactoryMixin implements AxiomNodeFactory {
     }
 
     @Override
-    public final SOAPModelBuilder createSOAPModelBuilder(
-            Source rootPart, OMAttachmentAccessor attachmentAccessor) {
-        return SOAP.createBuilder(
-                this, BuilderSpec.from(StAXParserConfiguration.SOAP, rootPart, attachmentAccessor));
+    public final SOAPModelBuilder createSOAPModelBuilder(Source rootPart, OMAttachmentAccessor attachmentAccessor) {
+        return SOAP.createBuilder(this, BuilderSpec.from(StAXParserConfiguration.SOAP, rootPart, attachmentAccessor));
     }
 }

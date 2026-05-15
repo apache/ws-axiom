@@ -19,9 +19,7 @@
 package org.apache.axiom.ts.dom.element;
 
 import java.io.StringReader;
-
 import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

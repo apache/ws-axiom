@@ -20,10 +20,10 @@ package org.apache.axiom.ts.om.text;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.StringReader;
-
 import javax.xml.transform.stream.StreamSource;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
@@ -32,9 +32,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestCloneBinary extends AxiomTestCase {
     private boolean fetch;
@@ -48,17 +45,12 @@ public class TestCloneBinary extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         Blob blob = new RandomBlob(600613L, 4096);
-        StringReader rootPart =
-                new StringReader(
-                        "<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>");
-        DummyAttachmentAccessor attachmentAccessor =
-                new DummyAttachmentAccessor("123456@example.org", blob);
-        OMElement root =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(),
-                                new StreamSource(rootPart),
-                                attachmentAccessor)
-                        .getDocumentElement();
+        StringReader rootPart = new StringReader(
+                "<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>");
+        DummyAttachmentAccessor attachmentAccessor = new DummyAttachmentAccessor("123456@example.org", blob);
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), new StreamSource(rootPart), attachmentAccessor)
+                .getDocumentElement();
         OMText text = (OMText) root.getFirstOMChild();
         OMCloneOptions options = new OMCloneOptions();
         options.setFetchBlobs(fetch);

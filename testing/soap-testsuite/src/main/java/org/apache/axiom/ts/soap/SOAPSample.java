@@ -22,12 +22,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.ts.xml.MessageContent;
 import org.apache.axiom.ts.xml.XMLSample;
@@ -54,10 +52,7 @@ public class SOAPSample extends XMLSample {
     }
 
     SOAPSample(SOAPSpec spec, String resourceName, String name) {
-        this(
-                spec,
-                MessageContent.fromClasspath(SOAPSample.class.getClassLoader(), resourceName),
-                name);
+        this(spec, MessageContent.fromClasspath(SOAPSample.class.getClassLoader(), resourceName), name);
     }
 
     SOAPSample(SOAPSpec spec, String resourceName) {

@@ -21,14 +21,13 @@ package org.apache.axiom.blob.suite;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.testutils.io.ExceptionOutputStream;
 import org.apache.commons.io.input.NullInputStream;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestWriteToWithError extends SizeSensitiveWritableBlobTestCase {
     @Inject
@@ -40,12 +39,9 @@ public class TestWriteToWithError extends SizeSensitiveWritableBlobTestCase {
     protected void runTest(WritableBlob blob) throws Throwable {
         blob.readFrom(new NullInputStream(size));
         ExceptionOutputStream out = new ExceptionOutputStream(size / 2);
-        assertThatThrownBy(() -> blob.writeTo(out))
-                .isInstanceOfSatisfying(
-                        StreamCopyException.class,
-                        ex -> {
-                            assertThat(ex.getOperation()).isEqualTo(StreamCopyException.WRITE);
-                            assertThat(ex.getCause()).isSameAs(out.getException());
-                        });
+        assertThatThrownBy(() -> blob.writeTo(out)).isInstanceOfSatisfying(StreamCopyException.class, ex -> {
+            assertThat(ex.getOperation()).isEqualTo(StreamCopyException.WRITE);
+            assertThat(ex.getCause()).isSameAs(out.getException());
+        });
     }
 }

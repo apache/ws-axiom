@@ -18,10 +18,9 @@
  */
 package org.apache.axiom.weaver.mixin;
 
+import com.github.veithen.jrel.association.MutableReference;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-
-import com.github.veithen.jrel.association.MutableReference;
 
 public final class MixinMethod {
     private final MutableReference<Mixin> mixin =
@@ -34,12 +33,7 @@ public final class MixinMethod {
     private final MethodBody body;
 
     public MixinMethod(
-            int access,
-            String name,
-            String descriptor,
-            String signature,
-            String[] exceptions,
-            MethodBody body) {
+            int access, String name, String descriptor, String signature, String[] exceptions, MethodBody body) {
         this.access = access;
         this.name = name;
         this.descriptor = descriptor;

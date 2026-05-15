@@ -18,20 +18,18 @@
  */
 package org.apache.axiom.truth.xml;
 
-import java.util.stream.Stream;
-
-import org.apache.axiom.testing.multiton.Multiton;
-import org.apache.axiom.testutils.suite.Binding;
-import org.apache.axiom.testutils.suite.MatrixTest;
-import org.apache.axiom.testutils.suite.FanOutNode;
-import org.apache.axiom.testutils.suite.LabelBinding;
-import org.apache.axiom.ts.xml.XMLSample;
-import org.junit.jupiter.api.DynamicNode;
-import org.junit.jupiter.api.TestFactory;
-
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+import java.util.stream.Stream;
+import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testutils.suite.Binding;
+import org.apache.axiom.testutils.suite.FanOutNode;
+import org.apache.axiom.testutils.suite.LabelBinding;
+import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
 public class CompareTest {
     @TestFactory
@@ -42,26 +40,17 @@ public class CompareTest {
                         LabelBinding.simpleString("sample", XMLSample::getName),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLObjectFactory.class),
-                                Binding.singleton(
-                                        Key.get(XMLObjectFactory.class, Names.named("left"))),
+                                Binding.singleton(Key.get(XMLObjectFactory.class, Names.named("left"))),
                                 LabelBinding.simpleString("left", XMLObjectFactory::getName),
                                 new FanOutNode<>(
                                         Multiton.getInstances(XMLObjectFactory.class),
-                                        Binding.singleton(
-                                                Key.get(
-                                                        XMLObjectFactory.class,
-                                                        Names.named("right"))),
-                                        LabelBinding.simpleString(
-                                                "right", XMLObjectFactory::getName),
+                                        Binding.singleton(Key.get(XMLObjectFactory.class, Names.named("right"))),
+                                        LabelBinding.simpleString("right", XMLObjectFactory::getName),
                                         new FanOutNode<>(
                                                 ImmutableList.of(true, false),
                                                 Binding.singleton(
-                                                        Key.get(
-                                                                Boolean.class,
-                                                                Names.named(
-                                                                        "expandEntityReferences"))),
-                                                LabelBinding.simpleBoolean(
-                                                        "expandEntityReferences"),
+                                                        Key.get(Boolean.class, Names.named("expandEntityReferences"))),
+                                                LabelBinding.simpleBoolean("expandEntityReferences"),
                                                 new MatrixTest(CompareTestCase.class)))))
                 .toDynamicNodes();
     }

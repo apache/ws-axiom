@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.io.output.NullWriter;
@@ -76,8 +75,7 @@ public class SerializerTest {
         handler.processCharacterData("a\u03A3\u20AC", false); // 20AC = Euro sign
         handler.endElement();
         handler.completed();
-        assertThat(new String(baos.toByteArray(), "iso-8859-15"))
-                .isEqualTo("<test>a&#x3a3;\u20AC</test>");
+        assertThat(new String(baos.toByteArray(), "iso-8859-15")).isEqualTo("<test>a&#x3a3;\u20AC</test>");
     }
 
     @Test
@@ -90,8 +88,7 @@ public class SerializerTest {
         handler.attributesCompleted();
         handler.endElement();
         handler.completed();
-        assertThat(new String(baos.toByteArray(), StandardCharsets.US_ASCII))
-                .isEqualTo("<test attr=\"n&#xe9;ant\"/>");
+        assertThat(new String(baos.toByteArray(), StandardCharsets.US_ASCII)).isEqualTo("<test attr=\"n&#xe9;ant\"/>");
     }
 
     /**
@@ -118,8 +115,7 @@ public class SerializerTest {
         Serializer handler = new Serializer(NullOutputStream.INSTANCE, "iso-8859-1");
         handler.startFragment();
         handler.startComment();
-        assertThatThrownBy(() -> handler.processCharacterData("\u20AC", false))
-                .isInstanceOf(StreamException.class);
+        assertThatThrownBy(() -> handler.processCharacterData("\u20AC", false)).isInstanceOf(StreamException.class);
     }
 
     @Test
@@ -144,15 +140,14 @@ public class SerializerTest {
     public void testUnmappableCharacterInName() throws Exception {
         Serializer handler = new Serializer(NullOutputStream.INSTANCE, "iso-8859-15");
         handler.startFragment();
-        assertThatThrownBy(
-                        () -> {
-                            // Even though the unmappable character is passed to startElement, the
-                            // exception will be thrown later because the data to be encoded is
-                            // buffered.
-                            handler.startElement("", "\u0370", "");
-                            handler.attributesCompleted();
-                            handler.endElement();
-                        })
+        assertThatThrownBy(() -> {
+                    // Even though the unmappable character is passed to startElement, the
+                    // exception will be thrown later because the data to be encoded is
+                    // buffered.
+                    handler.startElement("", "\u0370", "");
+                    handler.attributesCompleted();
+                    handler.endElement();
+                })
                 .isInstanceOf(StreamException.class);
     }
 

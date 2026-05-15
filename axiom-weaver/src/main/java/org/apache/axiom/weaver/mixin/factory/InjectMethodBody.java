@@ -32,25 +32,17 @@ final class InjectMethodBody extends MethodBody {
 
     @Override
     public void apply(TargetContext context, MethodVisitor mv) {
-        String implementationClassName =
-                context.getWeavingContext().getImplementationClassName(iface);
+        String implementationClassName = context.getWeavingContext().getImplementationClassName(iface);
         if (implementationClassName != null) {
             mv.visitFieldInsn(
-                    Opcodes.GETSTATIC,
-                    implementationClassName,
-                    "INSTANCE",
-                    "L" + implementationClassName + ";");
+                    Opcodes.GETSTATIC, implementationClassName, "INSTANCE", "L" + implementationClassName + ";");
             mv.visitInsn(Opcodes.ARETURN);
             mv.visitMaxs(1, 1);
         } else {
             mv.visitTypeInsn(Opcodes.NEW, "java/lang/UnsupportedOperationException");
             mv.visitInsn(Opcodes.DUP);
             mv.visitMethodInsn(
-                    Opcodes.INVOKESPECIAL,
-                    "java/lang/UnsupportedOperationException",
-                    "<init>",
-                    "()V",
-                    false);
+                    Opcodes.INVOKESPECIAL, "java/lang/UnsupportedOperationException", "<init>", "()V", false);
             mv.visitInsn(Opcodes.ATHROW);
             mv.visitMaxs(2, 1);
         }

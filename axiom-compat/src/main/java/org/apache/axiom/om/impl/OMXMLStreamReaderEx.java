@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl;
 
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMDataSource;
 
 /**

@@ -21,5 +21,4 @@ package org.apache.axiom.om.impl.dom.intf;
 import org.apache.axiom.dom.DOMNamespaceDeclaration;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 
-public interface DOOMNamespaceDeclaration
-        extends DOOMAttribute, DOMNamespaceDeclaration, AxiomNamespaceDeclaration {}
+public interface DOOMNamespaceDeclaration extends DOOMAttribute, DOMNamespaceDeclaration, AxiomNamespaceDeclaration {}

@@ -21,14 +21,12 @@ package org.apache.axiom.buildutils.shade.axiomxml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -49,9 +47,7 @@ public final class DOMUtils {
 
     public static void serialize(Document document, OutputStream os) throws IOException {
         try {
-            TransformerFactory.newInstance()
-                    .newTransformer()
-                    .transform(new DOMSource(document), new StreamResult(os));
+            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(os));
         } catch (TransformerException ex) {
             throw toIOException(ex);
         }

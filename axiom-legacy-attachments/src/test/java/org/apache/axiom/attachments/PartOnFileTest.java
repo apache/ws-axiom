@@ -21,15 +21,12 @@ package org.apache.axiom.attachments;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.apache.axiom.ts.soap.MTOMSample;
-
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
-
 import java.io.File;
 import java.io.InputStream;
-
 import junit.framework.TestCase;
+import org.apache.axiom.ts.soap.MTOMSample;
 
 /** Test the PartOnFile class */
 public class PartOnFileTest extends TestCase {
@@ -54,12 +51,9 @@ public class PartOnFileTest extends TestCase {
 
         InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
         Attachments attachments =
-                new Attachments(
-                        inStream, MTOMSample.SAMPLE1.getContentType(), true, temp.getPath(), "1");
+                new Attachments(inStream, MTOMSample.SAMPLE1.getContentType(), true, temp.getPath(), "1");
 
-        DataHandler dh =
-                attachments.getDataHandler(
-                        "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
+        DataHandler dh = attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
 
         assertNotNull(dh);
 

@@ -35,12 +35,10 @@ public class XMLSubjectTest {
 
     @Test
     public void testIgnoringRedundantNamespaceDeclarations2() {
-        assertThatThrownBy(
-                        () ->
-                                assertAbout(xml())
-                                        .that("<a xmlns:p='#1'><b xmlns:p='#2'/></a>")
-                                        .ignoringRedundantNamespaceDeclarations()
-                                        .hasSameContentAs("<a xmlns:p='#1'><b/></a>"))
+        assertThatThrownBy(() -> assertAbout(xml())
+                        .that("<a xmlns:p='#1'><b xmlns:p='#2'/></a>")
+                        .ignoringRedundantNamespaceDeclarations()
+                        .hasSameContentAs("<a xmlns:p='#1'><b/></a>"))
                 .isInstanceOf(AssertionError.class);
     }
 
@@ -57,9 +55,6 @@ public class XMLSubjectTest {
 
     @Test
     public void testIgnoringComments() {
-        assertAbout(xml())
-                .that("<a><!-- comment --></a>")
-                .ignoringComments()
-                .hasSameContentAs("<a/>");
+        assertAbout(xml()).that("<a><!-- comment --></a>").ignoringComments().hasSameContentAs("<a/>");
     }
 }

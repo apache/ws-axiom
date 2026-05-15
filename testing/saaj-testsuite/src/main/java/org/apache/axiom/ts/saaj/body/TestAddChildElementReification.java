@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import jakarta.xml.soap.SOAPBody;
 import jakarta.xml.soap.SOAPBodyElement;
 import jakarta.xml.soap.SOAPElement;
-
 import org.apache.axiom.ts.saaj.SAAJTestCase;
 
 public class TestAddChildElementReification extends SAAJTestCase {
@@ -31,9 +30,7 @@ public class TestAddChildElementReification extends SAAJTestCase {
     protected void runTest() throws Throwable {
         SOAPBody body = newMessageFactory().createMessage().getSOAPBody();
         SOAPElement child =
-                body.addChildElement(
-                        (SOAPElement)
-                                body.getOwnerDocument().createElementNS("urn:test", "p:test"));
+                body.addChildElement((SOAPElement) body.getOwnerDocument().createElementNS("urn:test", "p:test"));
         assertThat(child).isInstanceOf(SOAPBodyElement.class);
     }
 }

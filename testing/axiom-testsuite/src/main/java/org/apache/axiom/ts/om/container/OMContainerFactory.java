@@ -25,31 +25,29 @@ import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.LabelTarget;
 
 public abstract class OMContainerFactory extends Multiton implements Dimension {
-    public static final OMContainerFactory DOCUMENT =
-            new OMContainerFactory() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("container", "document");
-                }
+    public static final OMContainerFactory DOCUMENT = new OMContainerFactory() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("container", "document");
+        }
 
-                @Override
-                public OMContainer create(OMFactory factory) {
-                    return factory.createOMDocument();
-                }
-            };
+        @Override
+        public OMContainer create(OMFactory factory) {
+            return factory.createOMDocument();
+        }
+    };
 
-    public static final OMContainerFactory ELEMENT =
-            new OMContainerFactory() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("container", "element");
-                }
+    public static final OMContainerFactory ELEMENT = new OMContainerFactory() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("container", "element");
+        }
 
-                @Override
-                public OMContainer create(OMFactory factory) {
-                    return factory.createOMElement("test", null);
-                }
-            };
+        @Override
+        public OMContainer create(OMFactory factory) {
+            return factory.createOMElement("test", null);
+        }
+    };
 
     private OMContainerFactory() {}
 

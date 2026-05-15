@@ -20,8 +20,9 @@ package org.apache.axiom.ts.soap.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.ArrayList;
-
+import junit.framework.TestCase;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
@@ -35,33 +36,27 @@ import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestRegisterCustomBuilder extends TestCase {
-    @Inject private OMMetaFactory metaFactory;
-    @Inject private SOAPSpec spec;
+    @Inject
+    private OMMetaFactory metaFactory;
+
+    @Inject
+    private SOAPSpec spec;
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPModelBuilder builder =
-                SOAPSampleSet.WSA
-                        .getMessage(spec)
-                        .getAdapter(SOAPSampleAdapter.class)
-                        .getBuilder(metaFactory);
+        SOAPModelBuilder builder = SOAPSampleSet.WSA
+                .getMessage(spec)
+                .getAdapter(SOAPSampleAdapter.class)
+                .getBuilder(metaFactory);
         ((CustomBuilderSupport) builder)
                 .registerCustomBuilder(
                         new CustomBuilder.Selector() {
                             @Override
                             public boolean accepts(
-                                    OMContainer parent,
-                                    int depth,
-                                    String namespaceURI,
-                                    String localName) {
+                                    OMContainer parent, int depth, String namespaceURI, String localName) {
                                 return depth == 3
-                                        && namespaceURI.equals(
-                                                "http://www.w3.org/2005/08/addressing")
+                                        && namespaceURI.equals("http://www.w3.org/2005/08/addressing")
                                         && localName.equals("To");
                             }
                         },

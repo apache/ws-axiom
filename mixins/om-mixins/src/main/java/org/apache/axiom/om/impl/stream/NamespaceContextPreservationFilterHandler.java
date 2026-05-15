@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.stream;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
@@ -38,15 +37,13 @@ public final class NamespaceContextPreservationFilterHandler extends XmlHandlerW
     private Set<String> prefixesAlreadyBound;
     private boolean done = false;
 
-    public NamespaceContextPreservationFilterHandler(
-            XmlHandler parent, CoreElement contextElement) {
+    public NamespaceContextPreservationFilterHandler(XmlHandler parent, CoreElement contextElement) {
         super(parent);
         this.contextElement = contextElement;
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         super.startElement(namespaceURI, localName, prefix);
         if (!done) {
             prefixesAlreadyBound = new HashSet<String>();
@@ -54,8 +51,7 @@ public final class NamespaceContextPreservationFilterHandler extends XmlHandlerW
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         super.processNamespaceDeclaration(prefix, namespaceURI);
         if (!done) {
             prefixesAlreadyBound.add(prefix);

@@ -21,7 +21,6 @@ package org.apache.axiom.net.protocol.registry;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.commons.io.input.ProxyInputStream;
 
 public final class InstrumentedDataProvider implements DataProvider {
@@ -34,14 +33,13 @@ public final class InstrumentedDataProvider implements DataProvider {
 
     @Override
     public InputStream getInputStream() throws IOException {
-        InputStream in =
-                new ProxyInputStream(parent.getInputStream()) {
-                    @Override
-                    public void close() throws IOException {
-                        super.close();
-                        openStreamCount.decrementAndGet();
-                    }
-                };
+        InputStream in = new ProxyInputStream(parent.getInputStream()) {
+            @Override
+            public void close() throws IOException {
+                super.close();
+                openStreamCount.decrementAndGet();
+            }
+        };
         openStreamCount.incrementAndGet();
         return in;
     }

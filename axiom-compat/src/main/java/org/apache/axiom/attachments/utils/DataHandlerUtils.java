@@ -20,7 +20,6 @@
 package org.apache.axiom.attachments.utils;
 
 import jakarta.activation.DataHandler;
-
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.util.base64.Base64Utils;
 

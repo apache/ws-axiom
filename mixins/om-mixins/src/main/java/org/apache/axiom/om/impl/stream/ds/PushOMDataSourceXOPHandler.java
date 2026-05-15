@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.stream.ds;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
@@ -29,8 +28,7 @@ import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.stream.xop.XOPHandler;
 import org.apache.axiom.util.UIDGenerator;
 
-final class PushOMDataSourceXOPHandler extends AbstractXOPDecodingFilterHandler
-        implements XOPHandler {
+final class PushOMDataSourceXOPHandler extends AbstractXOPDecodingFilterHandler implements XOPHandler {
     private final Map<String, Blob> blobs = new HashMap<>();
 
     PushOMDataSourceXOPHandler(XmlHandler parent) {

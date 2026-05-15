@@ -19,8 +19,8 @@
 package org.apache.axiom.ts.dimension.serialization;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testing.multiton.Instances;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
 
 /** Defines a strategy to serialize an {@link OMContainer} instance to XML. */

@@ -20,17 +20,14 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 
-import com.google.inject.Inject;
-
 public class TestGetLocalName extends LazyNameTestCase {
     @Inject
-    public TestGetLocalName(
-            OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
+    public TestGetLocalName(OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
         super(metaFactory, variant, qname);
     }
 

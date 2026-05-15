@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import junit.framework.TestCase;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
@@ -28,8 +29,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.commons.io.output.NullOutputStream;
-
-import junit.framework.TestCase;
 
 public class OMOutputTest extends TestCase {
     private OMElement envelope;
@@ -43,8 +42,7 @@ public class OMOutputTest extends TestCase {
 
         OMFactory fac = OMAbstractFactory.getOMFactory();
 
-        OMNamespace soap =
-                fac.createOMNamespace("http://schemas.xmlsoap.org/soap/envelope/", "soap");
+        OMNamespace soap = fac.createOMNamespace("http://schemas.xmlsoap.org/soap/envelope/", "soap");
         envelope = fac.createOMElement("Envelope", soap);
         OMElement body = fac.createOMElement("Body", soap);
 

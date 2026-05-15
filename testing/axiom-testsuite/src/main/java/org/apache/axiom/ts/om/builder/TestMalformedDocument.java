@@ -20,15 +20,13 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /** Test that a document that is not well formed triggers an appropriate error. */
 public class TestMalformedDocument extends AxiomTestCase {
@@ -39,11 +37,9 @@ public class TestMalformedDocument extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMDocument document =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(),
-                                new StringReader("<Root><Child attr='a' attr='a'/></Root>"))
-                        .getDocument();
+        OMDocument document = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), new StringReader("<Root><Child attr='a' attr='a'/></Root>"))
+                .getDocument();
         assertThatThrownBy(() -> document.serialize(new ByteArrayOutputStream()));
         document.close(false);
     }

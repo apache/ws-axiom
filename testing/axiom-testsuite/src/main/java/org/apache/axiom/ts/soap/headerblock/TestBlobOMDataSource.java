@@ -20,8 +20,9 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
-
+import junit.framework.TestCase;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -32,13 +33,10 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /** Tests functionality of BlobOMDataSource */
 public class TestBlobOMDataSource extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -48,8 +46,7 @@ public class TestBlobOMDataSource extends TestCase {
         String encoding = "utf-8";
         String payload = "<tns:myPayload xmlns:tns=\"urn://test\">Payload One</tns:myPayload>";
         OMNamespace ns = soapFactory.createOMNamespace("urn://test", "tns");
-        BlobOMDataSource ds =
-                new BlobOMDataSource(Blobs.createBlob(payload.getBytes(encoding)), encoding);
+        BlobOMDataSource ds = new BlobOMDataSource(Blobs.createBlob(payload.getBytes(encoding)), encoding);
 
         // Set an empty MustUnderstand property on the data source
         ds.setProperty(SOAPHeaderBlock.MUST_UNDERSTAND_PROPERTY, null);

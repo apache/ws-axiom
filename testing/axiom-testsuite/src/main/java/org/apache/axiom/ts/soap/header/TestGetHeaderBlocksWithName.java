@@ -20,17 +20,14 @@ package org.apache.axiom.ts.soap.header;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetHeaderBlocksWithName extends SampleBasedSOAPTestCase {
     @Inject
@@ -41,8 +38,7 @@ public class TestGetHeaderBlocksWithName extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         Iterator<SOAPHeaderBlock> it =
-                envelope.getHeader()
-                        .getHeaderBlocksWithName(new QName("http://example.org/RoleTest", "h2"));
+                envelope.getHeader().getHeaderBlocksWithName(new QName("http://example.org/RoleTest", "h2"));
         assertThat(it.hasNext()).isTrue();
         SOAPHeaderBlock headerBlock = it.next();
         assertThat(headerBlock.getLocalName()).isEqualTo("h2");

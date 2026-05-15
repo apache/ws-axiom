@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import java.io.StringReader;
 import junit.framework.TestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
@@ -27,8 +28,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-
-import java.io.StringReader;
 
 public class OMAttributeTest extends TestCase {
 
@@ -40,8 +39,7 @@ public class OMAttributeTest extends TestCase {
     }
 
     private String addAttributeMethod1(String xmlString) throws Exception {
-        OMXMLParserWrapper builder2 =
-                OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
+        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
         OMElement doc = builder2.getDocumentElement();
 
         OMFactory factory = OMAbstractFactory.getOMFactory();
@@ -55,8 +53,7 @@ public class OMAttributeTest extends TestCase {
     }
 
     private String addAttributeMethod2(String xmlString) throws Exception {
-        OMXMLParserWrapper builder2 =
-                OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
+        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
         OMElement doc = builder2.getDocumentElement();
 
         OMFactory factory = OMAbstractFactory.getOMFactory();

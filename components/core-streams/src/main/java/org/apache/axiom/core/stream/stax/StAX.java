@@ -19,9 +19,7 @@
 package org.apache.axiom.core.stream.stax;
 
 import java.io.OutputStream;
-
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.core.stream.NullXmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.stax.push.input.XmlHandlerStreamWriter;

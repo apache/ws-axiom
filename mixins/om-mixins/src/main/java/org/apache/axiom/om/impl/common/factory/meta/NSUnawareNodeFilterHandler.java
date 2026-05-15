@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.common.factory.meta;
 
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
@@ -31,8 +30,7 @@ final class NSUnawareNodeFilterHandler extends XmlHandlerWrapper {
     }
 
     @Override
-    public void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException {
+    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
         int idx = name.indexOf(':');
         if (idx == -1) {
             if (name.equals(XMLConstants.XMLNS_ATTRIBUTE)) {

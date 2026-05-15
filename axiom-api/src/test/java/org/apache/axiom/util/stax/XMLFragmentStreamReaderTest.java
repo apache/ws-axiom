@@ -21,11 +21,8 @@ package org.apache.axiom.util.stax;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLStreamReader;
-
 import junit.framework.TestCase;
-
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 
@@ -49,8 +46,7 @@ public class XMLFragmentStreamReaderTest extends TestCase {
     }
 
     public void testWithoutProceedToNext() throws Exception {
-        XMLStreamReader reader =
-                StAXUtils.createXMLStreamReader(new StringReader("<a><b/><c/></a>"));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a><b/><c/></a>"));
         reader.nextTag();
         reader.nextTag();
         XMLStreamReader fragmentReader = new XMLFragmentStreamReader(reader, false);

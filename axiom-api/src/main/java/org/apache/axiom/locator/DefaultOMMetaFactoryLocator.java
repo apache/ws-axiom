@@ -23,7 +23,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactoryLocator;
 import org.apache.commons.logging.Log;
@@ -63,10 +62,9 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
         }
         if (metaFactoryClassName != null) {
             if (log.isDebugEnabled()) {
-                log.debug(
-                        OMAbstractFactory.META_FACTORY_NAME_PROPERTY
-                                + " system property is set; value="
-                                + metaFactoryClassName);
+                log.debug(OMAbstractFactory.META_FACTORY_NAME_PROPERTY
+                        + " system property is set; value="
+                        + metaFactoryClassName);
             }
             Implementation implementation =
                     ImplementationFactory.createDefaultImplementation(loader, metaFactoryClassName);
@@ -81,17 +79,12 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
         try {
             e = classLoader.getResources(ImplementationFactory.DESCRIPTOR_RESOURCE);
         } catch (IOException ex) {
-            log.error(
-                    "Failed to look up "
-                            + ImplementationFactory.DESCRIPTOR_RESOURCE
-                            + " from class loader",
-                    ex);
+            log.error("Failed to look up " + ImplementationFactory.DESCRIPTOR_RESOURCE + " from class loader", ex);
             e = null;
         }
         if (e != null) {
             while (e.hasMoreElements()) {
-                implementations.addAll(
-                        ImplementationFactory.parseDescriptor(loader, e.nextElement()));
+                implementations.addAll(ImplementationFactory.parseDescriptor(loader, e.nextElement()));
             }
         }
 

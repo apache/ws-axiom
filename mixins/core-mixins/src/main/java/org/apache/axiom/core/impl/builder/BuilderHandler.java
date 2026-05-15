@@ -21,7 +21,6 @@ package org.apache.axiom.core.impl.builder;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareElement;
@@ -53,16 +52,12 @@ final class BuilderHandler implements XmlHandler {
     private ArrayList<BuilderListener> listeners;
     private Queue<DeferredAction> deferredActions;
 
-    BuilderHandler(
-            NodeFactory2 nodeFactory, Model model, CoreNSAwareElement root, Builder builder) {
+    BuilderHandler(NodeFactory2 nodeFactory, Model model, CoreNSAwareElement root, Builder builder) {
         this.nodeFactory = nodeFactory;
         this.model = model;
         this.builder = builder;
         namespaceHelper = nodeFactory.createNamespaceHelper();
-        rootContext =
-                root == null
-                        ? new BuildableContext(this, null, 0)
-                        : new UnwrappingContext(this, root);
+        rootContext = root == null ? new BuildableContext(this, null, 0) : new UnwrappingContext(this, root);
         context = rootContext;
         activeContextCount = 1;
     }
@@ -110,12 +105,11 @@ final class BuilderHandler implements XmlHandler {
 
     void decrementActiveContextCount() {
         if (--activeContextCount == 0) {
-            scheduleDeferredAction(
-                    () -> {
-                        while (!done) {
-                            builder.next();
-                        }
-                    });
+            scheduleDeferredAction(() -> {
+                while (!done) {
+                    builder.next();
+                }
+            });
         }
     }
 
@@ -132,8 +126,7 @@ final class BuilderHandler implements XmlHandler {
     }
 
     @Override
-    public void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
         context.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
     }
 
@@ -143,15 +136,13 @@ final class BuilderHandler implements XmlHandler {
     }
 
     @Override
-    public void processDocumentTypeDeclaration(
-            String rootName, String publicId, String systemId, String internalSubset)
+    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset)
             throws StreamException {
         context.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         depth++;
         context = context.startElement(namespaceURI, localName, prefix);
     }
@@ -164,25 +155,18 @@ final class BuilderHandler implements XmlHandler {
 
     @Override
     public void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException {
         context.processAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
 
     @Override
-    public void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException {
+    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
         context.processAttribute(name, value, type, specified);
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         context.processNamespaceDeclaration(prefix, namespaceURI);
     }
 

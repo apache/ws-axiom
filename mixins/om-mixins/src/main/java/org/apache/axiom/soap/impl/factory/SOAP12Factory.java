@@ -43,10 +43,7 @@ public class SOAP12Factory extends SOAPFactoryImpl {
     }
 
     public final SOAPFaultValue internalCreateSOAPFaultValue(SOAPFaultClassifier parent) {
-        return createSOAPElement(
-                AxiomNodeFactory::createSOAP12FaultValue,
-                parent,
-                SOAP12Constants.QNAME_FAULT_VALUE);
+        return createSOAPElement(AxiomNodeFactory::createSOAP12FaultValue, parent, SOAP12Constants.QNAME_FAULT_VALUE);
     }
 
     @Override
@@ -66,9 +63,7 @@ public class SOAP12Factory extends SOAPFactoryImpl {
 
     private SOAPFaultSubCode internalCreateSOAPFaultSubCode(SOAPFaultClassifier parent) {
         return createSOAPElement(
-                AxiomNodeFactory::createSOAP12FaultSubCode,
-                parent,
-                SOAP12Constants.QNAME_FAULT_SUBCODE);
+                AxiomNodeFactory::createSOAP12FaultSubCode, parent, SOAP12Constants.QNAME_FAULT_SUBCODE);
     }
 
     @Override
@@ -88,8 +83,7 @@ public class SOAP12Factory extends SOAPFactoryImpl {
 
     @Override
     public final SOAPFaultText createSOAPFaultText(SOAPFaultReason parent) {
-        return createSOAPElement(
-                AxiomNodeFactory::createSOAP12FaultText, parent, SOAP12Constants.QNAME_FAULT_TEXT);
+        return createSOAPElement(AxiomNodeFactory::createSOAP12FaultText, parent, SOAP12Constants.QNAME_FAULT_TEXT);
     }
 
     @Override
@@ -99,8 +93,7 @@ public class SOAP12Factory extends SOAPFactoryImpl {
 
     @Override
     public final SOAPFaultNode createSOAPFaultNode(SOAPFault parent) {
-        return createSOAPElement(
-                AxiomNodeFactory::createSOAP12FaultNode, parent, SOAP12Constants.QNAME_FAULT_NODE);
+        return createSOAPElement(AxiomNodeFactory::createSOAP12FaultNode, parent, SOAP12Constants.QNAME_FAULT_NODE);
     }
 
     @Override

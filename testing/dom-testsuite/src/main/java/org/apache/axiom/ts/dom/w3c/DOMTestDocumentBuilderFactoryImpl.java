@@ -19,11 +19,9 @@
 package org.apache.axiom.ts.dom.w3c;
 
 import java.net.URL;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.axiom.ts.dom.DocumentBuilderFactoryFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -37,8 +35,7 @@ final class DOMTestDocumentBuilderFactoryImpl extends DOMTestDocumentBuilderFact
     private final DocumentBuilderFactory dbf;
     private final DocumentBuilder builder;
 
-    public DOMTestDocumentBuilderFactoryImpl(
-            DocumentBuilderFactoryFactory dbff, DocumentBuilderSetting[] settings)
+    public DOMTestDocumentBuilderFactoryImpl(DocumentBuilderFactoryFactory dbff, DocumentBuilderSetting[] settings)
             throws DOMTestIncompatibleException {
         super(settings);
         this.dbff = dbff;

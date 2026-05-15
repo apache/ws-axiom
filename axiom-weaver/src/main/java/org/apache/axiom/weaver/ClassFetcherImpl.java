@@ -20,7 +20,6 @@ package org.apache.axiom.weaver;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.apache.axiom.weaver.classio.ClassFetcher;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -43,8 +42,7 @@ final class ClassFetcherImpl implements ClassFetcher {
 
     @Override
     public void fetch(String className, ClassVisitor classVisitor) {
-        try (InputStream in =
-                classLoader.getResourceAsStream(className.replace('.', '/') + ".class")) {
+        try (InputStream in = classLoader.getResourceAsStream(className.replace('.', '/') + ".class")) {
             if (in == null) {
                 throw new WeaverException("Class " + className + " not found");
             }

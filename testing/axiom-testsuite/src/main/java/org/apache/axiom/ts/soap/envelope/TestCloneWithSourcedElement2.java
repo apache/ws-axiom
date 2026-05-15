@@ -20,6 +20,7 @@ package org.apache.axiom.ts.soap.envelope;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
@@ -31,10 +32,9 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
 public class TestCloneWithSourcedElement2 extends CloneTestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Inject
     public TestCloneWithSourcedElement2(SOAPSpec spec) {
@@ -49,8 +49,7 @@ public class TestCloneWithSourcedElement2 extends CloneTestCase {
 
         // Create a header OMSE
         OMDataSource dsHdr =
-                new StringOMDataSource(
-                        "<hdr:myheader xmlns:hdr=\"urn://test\">Hello World</hdr:myheader>");
+                new StringOMDataSource("<hdr:myheader xmlns:hdr=\"urn://test\">Hello World</hdr:myheader>");
         OMNamespace hdrNS = header.getOMFactory().createOMNamespace("urn://test", "hdr");
         SOAPFactory sf = (SOAPFactory) header.getOMFactory();
         SOAPHeaderBlock shb = sf.createSOAPHeaderBlock("myheader", hdrNS, dsHdr);
@@ -58,9 +57,7 @@ public class TestCloneWithSourcedElement2 extends CloneTestCase {
         header.addChild(shb);
 
         // Create a payload
-        OMDataSource ds =
-                new StringOMDataSource(
-                        "<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>");
+        OMDataSource ds = new StringOMDataSource("<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>");
         OMNamespace ns = body.getOMFactory().createOMNamespace("urn://test", "tns");
         OMSourcedElement omse = body.getOMFactory().createOMElement(ds, "payload", ns);
         body.addChild(omse);

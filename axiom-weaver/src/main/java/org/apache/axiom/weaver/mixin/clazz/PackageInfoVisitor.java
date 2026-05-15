@@ -19,7 +19,6 @@
 package org.apache.axiom.weaver.mixin.clazz;
 
 import java.util.List;
-
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;

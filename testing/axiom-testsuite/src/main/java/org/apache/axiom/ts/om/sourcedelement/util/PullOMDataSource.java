@@ -21,18 +21,15 @@ package org.apache.axiom.ts.om.sourcedelement.util;
 import java.io.StringReader;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.util.StAXUtils;
 
 public final class PullOMDataSource extends AbstractPullOMDataSource {
     private final String data;
     private final boolean destructive;
-    private final Set<CloseTestXMLStreamReaderWrapper> unclosedReaders =
-            new HashSet<CloseTestXMLStreamReaderWrapper>();
+    private final Set<CloseTestXMLStreamReaderWrapper> unclosedReaders = new HashSet<CloseTestXMLStreamReaderWrapper>();
     private int readerRequestCount;
     private boolean destroyed;
 
@@ -55,8 +52,7 @@ public final class PullOMDataSource extends AbstractPullOMDataSource {
         }
         readerRequestCount++;
         CloseTestXMLStreamReaderWrapper reader =
-                new CloseTestXMLStreamReaderWrapper(
-                        this, StAXUtils.createXMLStreamReader(new StringReader(data)));
+                new CloseTestXMLStreamReaderWrapper(this, StAXUtils.createXMLStreamReader(new StringReader(data)));
         unclosedReaders.add(reader);
         return reader;
     }

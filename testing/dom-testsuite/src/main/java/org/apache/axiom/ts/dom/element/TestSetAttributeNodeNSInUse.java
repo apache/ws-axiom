@@ -37,7 +37,6 @@ public class TestSetAttributeNodeNSInUse extends DOMTestCase {
         element1.setAttributeNodeNS(attr);
         assertThatThrownBy(() -> element2.setAttributeNodeNS(attr))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.INUSE_ATTRIBUTE_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.INUSE_ATTRIBUTE_ERR));
     }
 }

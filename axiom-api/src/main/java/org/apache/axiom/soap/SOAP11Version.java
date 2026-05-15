@@ -20,7 +20,6 @@
 package org.apache.axiom.soap;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.mime.MediaType;
 
 /** Version-specific stuff for SOAP 1.1 */

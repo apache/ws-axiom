@@ -20,29 +20,27 @@ package org.apache.axiom.ts.soap.body;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /**
  * Tests that a call to {@link SOAPBody#hasFault()} doesn't cause expansion of an {@link
  * OMSourcedElement} with an unknown name that is the first child of the SOAP body.
  */
 public class TestHasFaultWithOMSEUnknownName extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         SOAPBody body = envelope.getBody();
-        OMSourcedElement element =
-                soapFactory.createOMElement(new StringOMDataSource("<ns:root xmlns:ns='urn:ns'/>"));
+        OMSourcedElement element = soapFactory.createOMElement(new StringOMDataSource("<ns:root xmlns:ns='urn:ns'/>"));
         body.addChild(element);
         assertThat(body.hasFault()).isFalse();
         assertThat(element.isExpanded()).isFalse();

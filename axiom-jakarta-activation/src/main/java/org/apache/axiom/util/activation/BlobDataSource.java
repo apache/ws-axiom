@@ -22,7 +22,6 @@ package org.apache.axiom.util.activation;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 

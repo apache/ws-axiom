@@ -20,15 +20,13 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.Reader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.io.IOUtils;
-
-import com.google.inject.Inject;
 
 public class TestGetTextAsStreamWithNonTextChildren extends AxiomTestCase {
     @Inject

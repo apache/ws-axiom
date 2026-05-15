@@ -20,9 +20,7 @@ package org.apache.axiom.core.stream.xop;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
@@ -51,18 +49,15 @@ public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper
     private void inContent() throws StreamException {
         switch (state) {
             case IN_XOP_INCLUDE ->
-                    throw new StreamException(
-                            "Expected xop:Include element information item to be empty");
+                throw new StreamException("Expected xop:Include element information item to be empty");
             case AFTER_XOP_INCLUDE -> throw new StreamException(SOLE_CHILD_MSG);
             default -> state = State.CONTENT_SEEN;
         }
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
-        if (localName.equals(XOPConstants.INCLUDE)
-                && namespaceURI.equals(XOPConstants.NAMESPACE_URI)) {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+        if (localName.equals(XOPConstants.INCLUDE) && namespaceURI.equals(XOPConstants.NAMESPACE_URI)) {
             if (state == State.AFTER_START_ELEMENT) {
                 state = State.IN_XOP_INCLUDE;
             } else {
@@ -91,18 +86,12 @@ public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper
 
     @Override
     public void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException {
         if (state == State.IN_XOP_INCLUDE) {
             if (namespaceURI.isEmpty() && localName.equals(XOPConstants.HREF)) {
                 if (!value.startsWith("cid:")) {
-                    throw new StreamException(
-                            "Expected href attribute containing a URL in the cid scheme");
+                    throw new StreamException("Expected href attribute containing a URL in the cid scheme");
                 }
                 try {
                     // URIs should always be decoded using UTF-8. On the other hand, since non ASCII
@@ -114,10 +103,9 @@ public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper
                     throw new StreamException(ex);
                 }
             } else {
-                throw new StreamException(
-                        "Encountered unexpected attribute "
-                                + new QName(namespaceURI, localName)
-                                + " on xop:Include element");
+                throw new StreamException("Encountered unexpected attribute "
+                        + new QName(namespaceURI, localName)
+                        + " on xop:Include element");
             }
         } else {
             super.processAttribute(namespaceURI, localName, prefix, value, type, specified);
@@ -125,8 +113,7 @@ public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper
     }
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         if (state != State.IN_XOP_INCLUDE) {
             super.processNamespaceDeclaration(prefix, namespaceURI);
         }

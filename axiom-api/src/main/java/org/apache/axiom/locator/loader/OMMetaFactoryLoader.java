@@ -19,7 +19,6 @@
 package org.apache.axiom.locator.loader;
 
 import java.util.Map;
-
 import org.apache.axiom.om.OMMetaFactory;
 
 /**

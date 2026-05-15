@@ -49,8 +49,7 @@ public abstract class AxiomNamespaceDeclarationMixin implements AxiomNamespaceDe
         try {
             String namespaceURI = coreGetCharacterData().toString();
             if (!namespaceURI.equals(declaredNamespace.getNamespaceURI())) {
-                declaredNamespace =
-                        new OMNamespaceImpl(namespaceURI, declaredNamespace.getPrefix());
+                declaredNamespace = new OMNamespaceImpl(namespaceURI, declaredNamespace.getPrefix());
             }
             return declaredNamespace;
         } catch (CoreModelException ex) {

@@ -20,18 +20,15 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
-
-import com.google.inject.Inject;
 
 /** Test the element iterator */
 public class TestGetChildrenWithName extends AxiomTestCase {
@@ -42,11 +39,10 @@ public class TestGetChildrenWithName extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elt =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(), XMLSample.SIMPLE.getInputStream())
-                        .getDocumentElement()
-                        .getFirstElement();
+        OMElement elt = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), XMLSample.SIMPLE.getInputStream())
+                .getDocumentElement()
+                .getFirstElement();
         QName qname = new QName("urn:ns2", "subelement");
         Iterator<OMElement> iter = elt.getChildrenWithName(qname);
         int counter = 0;

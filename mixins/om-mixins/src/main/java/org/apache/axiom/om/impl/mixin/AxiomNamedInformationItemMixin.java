@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.mixin;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.core.CoreNamedNode;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -53,8 +52,7 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
     private String localName;
 
     @Override
-    public final void initName(
-            String namespaceURI, String localName, String prefix, Object namespaceHelper) {
+    public final void initName(String namespaceURI, String localName, String prefix, Object namespaceHelper) {
         this.localName = localName;
         namespace = ((OMNamespaceCache) namespaceHelper).getOMNamespace(namespaceURI, prefix);
     }
@@ -152,9 +150,7 @@ public abstract class AxiomNamedInformationItemMixin implements AxiomNamedInform
     public final void coreSetName(String namespaceURI, String localName, String prefix) {
         this.localName = localName;
         namespace =
-                namespaceURI.length() == 0 && prefix.length() == 0
-                        ? null
-                        : new OMNamespaceImpl(namespaceURI, prefix);
+                namespaceURI.length() == 0 && prefix.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, prefix);
     }
 
     @Override

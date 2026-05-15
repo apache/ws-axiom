@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.dom.element;
 
 import java.io.StringReader;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,9 +27,7 @@ import org.xml.sax.InputSource;
 public class TestAttributes4 extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Document doc =
-                dbf.newDocumentBuilder()
-                        .parse(new InputSource(new StringReader("<root><child/></root>")));
+        Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader("<root><child/></root>")));
         Element element = (Element) doc.getDocumentElement().getFirstChild();
         assertFalse(element.hasAttributes());
     }

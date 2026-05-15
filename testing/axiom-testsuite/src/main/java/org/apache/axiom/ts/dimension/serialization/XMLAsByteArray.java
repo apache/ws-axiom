@@ -21,7 +21,6 @@ package org.apache.axiom.ts.dimension.serialization;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-
 import org.xml.sax.InputSource;
 
 class XMLAsByteArray implements XML {

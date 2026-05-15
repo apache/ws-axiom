@@ -20,10 +20,10 @@ package org.apache.axiom.ts.om.element.sr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.StringReader;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -31,18 +31,12 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.xml.sax.InputSource;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 public class TestCommentEvent extends AxiomTestCase {
     private final BuilderFactory builderFactory;
     private final boolean cache;
 
     @Inject
-    public TestCommentEvent(
-            OMMetaFactory metaFactory,
-            BuilderFactory builderFactory,
-            @Named("cache") boolean cache) {
+    public TestCommentEvent(OMMetaFactory metaFactory, BuilderFactory builderFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.cache = cache;
@@ -51,19 +45,13 @@ public class TestCommentEvent extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMXMLParserWrapper builder =
-                builderFactory.getBuilder(
-                        metaFactory,
-                        new InputSource(new StringReader("<a><!--comment text--></a>")));
+                builderFactory.getBuilder(metaFactory, new InputSource(new StringReader("<a><!--comment text--></a>")));
         OMElement element = builder.getDocumentElement();
         XMLStreamReader reader = element.getXMLStreamReader(cache);
         assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         assertThat(reader.next()).isEqualTo(XMLStreamReader.COMMENT);
         assertThat(reader.getText()).isEqualTo("comment text");
-        assertThat(
-                        new String(
-                                reader.getTextCharacters(),
-                                reader.getTextStart(),
-                                reader.getTextLength()))
+        assertThat(new String(reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength()))
                 .isEqualTo("comment text");
         StringBuffer text = new StringBuffer();
         char[] buf = new char[5];

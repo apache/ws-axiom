@@ -30,9 +30,7 @@ public abstract class MessageContent {
         URL url = clazz.getResource(relativeResourceName);
         if (url == null) {
             throw new IllegalArgumentException(
-                    String.format(
-                            "No such resource: %s (relative to %s)",
-                            relativeResourceName, clazz.getName()));
+                    String.format("No such resource: %s (relative to %s)", relativeResourceName, clazz.getName()));
         }
         return fromURL(url);
     }

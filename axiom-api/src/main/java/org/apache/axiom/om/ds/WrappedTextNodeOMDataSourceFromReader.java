@@ -20,11 +20,9 @@ package org.apache.axiom.om.ds;
 
 import java.io.IOException;
 import java.io.Reader;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 /**

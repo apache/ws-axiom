@@ -19,34 +19,29 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.testutils.concurrent.Action;
 import org.apache.axiom.testutils.concurrent.ConcurrentTestUtils;
 
 public class TestCreateXMLStreamReaderThreadSafety extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
-        final XMLInputFactory factory =
-                staxImpl.getDialect().makeThreadSafe(staxImpl.newNormalizedXMLInputFactory());
-        ConcurrentTestUtils.testThreadSafety(
-                new Action() {
-                    @Override
-                    public void execute() throws Exception {
-                        String text = String.valueOf((int) (Math.random() * 10000));
-                        String xml = "<root>" + text + "</root>";
-                        XMLStreamReader reader =
-                                factory.createXMLStreamReader(new StringReader(xml));
-                        assertEquals(XMLStreamReader.START_DOCUMENT, reader.getEventType());
-                        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-                        assertEquals(XMLStreamReader.CHARACTERS, reader.next());
-                        assertEquals(text, reader.getText());
-                        assertEquals(XMLStreamReader.END_ELEMENT, reader.next());
-                        assertEquals(XMLStreamReader.END_DOCUMENT, reader.next());
-                        reader.close();
-                    }
-                });
+        final XMLInputFactory factory = staxImpl.getDialect().makeThreadSafe(staxImpl.newNormalizedXMLInputFactory());
+        ConcurrentTestUtils.testThreadSafety(new Action() {
+            @Override
+            public void execute() throws Exception {
+                String text = String.valueOf((int) (Math.random() * 10000));
+                String xml = "<root>" + text + "</root>";
+                XMLStreamReader reader = factory.createXMLStreamReader(new StringReader(xml));
+                assertEquals(XMLStreamReader.START_DOCUMENT, reader.getEventType());
+                assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
+                assertEquals(XMLStreamReader.CHARACTERS, reader.next());
+                assertEquals(text, reader.getText());
+                assertEquals(XMLStreamReader.END_ELEMENT, reader.next());
+                assertEquals(XMLStreamReader.END_DOCUMENT, reader.next());
+                reader.close();
+            }
+        });
     }
 }

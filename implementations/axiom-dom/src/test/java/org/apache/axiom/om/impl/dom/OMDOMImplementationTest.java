@@ -19,11 +19,10 @@
 package org.apache.axiom.om.impl.dom;
 
 import java.util.stream.Stream;
-
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactoryLoader;
 import org.apache.axiom.ts.omdom.OMDOMTestSuite;
-import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.TestFactory;
 
 public class OMDOMImplementationTest {
     @TestFactory

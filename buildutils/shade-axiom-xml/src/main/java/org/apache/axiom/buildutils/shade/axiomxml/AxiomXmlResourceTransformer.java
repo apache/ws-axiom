@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
-
 import org.apache.maven.plugins.shade.relocation.Relocator;
 import org.apache.maven.plugins.shade.resource.ResourceTransformer;
 import org.w3c.dom.Document;
@@ -48,12 +47,10 @@ public class AxiomXmlResourceTransformer implements ResourceTransformer {
     }
 
     @Override
-    public void processResource(String resource, InputStream is, List<Relocator> relocators)
-            throws IOException {
+    public void processResource(String resource, InputStream is, List<Relocator> relocators) throws IOException {
         Document axiomXml = DOMUtils.parse(is);
         is.close();
-        NodeList implementations =
-                axiomXml.getElementsByTagNameNS("http://ws.apache.org/axiom/", "implementation");
+        NodeList implementations = axiomXml.getElementsByTagNameNS("http://ws.apache.org/axiom/", "implementation");
         for (int i = 0; i < implementations.getLength(); i++) {
             Element implementation = (Element) implementations.item(i);
             String loader = implementation.getAttributeNS(null, "loader");
@@ -70,9 +67,7 @@ public class AxiomXmlResourceTransformer implements ResourceTransformer {
             for (Node node = axiomXml.getDocumentElement().getFirstChild();
                     node != null;
                     node = node.getNextSibling()) {
-                mergedAxiomXml
-                        .getDocumentElement()
-                        .appendChild(mergedAxiomXml.importNode(node, true));
+                mergedAxiomXml.getDocumentElement().appendChild(mergedAxiomXml.importNode(node, true));
             }
         }
     }

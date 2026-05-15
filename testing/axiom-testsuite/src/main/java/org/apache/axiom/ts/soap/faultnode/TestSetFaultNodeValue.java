@@ -20,15 +20,14 @@ package org.apache.axiom.ts.soap.faultnode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultNode;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestSetFaultNodeValue extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

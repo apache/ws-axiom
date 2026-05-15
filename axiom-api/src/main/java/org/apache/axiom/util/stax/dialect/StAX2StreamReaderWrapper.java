@@ -19,7 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 import org.codehaus.stax2.DTDInfo;

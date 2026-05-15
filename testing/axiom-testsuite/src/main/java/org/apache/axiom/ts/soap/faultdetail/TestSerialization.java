@@ -20,8 +20,9 @@ package org.apache.axiom.ts.soap.faultdetail;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringWriter;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -29,13 +30,10 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 // Regression test for AXIOM-196
 public class TestSerialization extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

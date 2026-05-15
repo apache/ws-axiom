@@ -18,12 +18,10 @@
  */
 package org.apache.axiom.util.activation;
 
+import jakarta.activation.DataHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import jakarta.activation.DataHandler;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.io.StreamCopyException;
 

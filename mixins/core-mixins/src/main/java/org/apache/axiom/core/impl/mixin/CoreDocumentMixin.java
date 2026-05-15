@@ -116,13 +116,8 @@ public abstract class CoreDocumentMixin implements CoreDocument {
     }
 
     @Override
-    public final void serializeStartEvent(XmlHandler handler)
-            throws CoreModelException, StreamException {
-        handler.startDocument(
-                coreGetInputEncoding(),
-                coreGetXmlVersion(),
-                coreGetXmlEncoding(),
-                coreGetStandalone());
+    public final void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
+        handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreGetStandalone());
     }
 
     @Override
@@ -130,8 +125,7 @@ public abstract class CoreDocumentMixin implements CoreDocument {
         handler.completed();
     }
 
-    final void internalCheckNewChild0(CoreChildNode newChild, CoreChildNode replacedChild)
-            throws CoreModelException {
+    final void internalCheckNewChild0(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException {
         if (newChild instanceof CoreElement
                 && !(replacedChild instanceof CoreElement)
                 && coreGetDocumentElement() != null) {

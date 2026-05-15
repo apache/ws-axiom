@@ -20,11 +20,10 @@ package org.apache.axiom.ts.soap11.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -44,8 +43,6 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.AxiomTestCase;
 
-import com.google.inject.Inject;
-
 public class TestBuilder extends AxiomTestCase {
     @Inject
     public TestBuilder(OMMetaFactory metaFactory) {
@@ -54,51 +51,49 @@ public class TestBuilder extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        String soap11Message =
-                "<?xml version='1.0' ?>"
-                        + "<env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n"
-                        + "   <env:Header>\n"
-                        + "       <test:echoOk xmlns:test=\"http://example.org/ts-tests\"\n"
-                        + "                    env:actor=\"http://schemas.xmlsoap.org/soap/actor/next\"\n"
-                        + "                    env:mustUnderstand=\"1\""
-                        + "       >\n"
-                        + "                       foo\n"
-                        + "       </test:echoOk>\n"
-                        + "   </env:Header>\n"
-                        + "   <env:Body>\n"
-                        + "       <env:Fault>\n"
-                        + "           <faultcode>\n"
-                        + "               env:Sender\n"
-                        + "           </faultcode>\n"
-                        + "           <faultstring>\n"
-                        + "               Sender Timeout\n"
-                        + "           </faultstring>\n"
-                        + "           <faultactor>\n"
-                        + "               http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver\n"
-                        + "           </faultactor>\n"
-                        + "           <detail xmlns:m=\"http:www.sample.org\">\n"
-                        + "               Details of error\n"
-                        + "               <m:MaxTime m:detail=\"This is only a test\">\n"
-                        + "                   P5M\n"
-                        + "               </m:MaxTime>\n"
-                        + "               <m:AveTime>\n"
-                        + "                   <m:Time>\n"
-                        + "                       P3M\n"
-                        + "                   </m:Time>\n"
-                        + "               </m:AveTime>\n"
-                        + "           </detail>\n"
-                        + "           <n:Test xmlns:n=\"http:www.Test.org\">\n"
-                        + "               <n:TestElement>\n"
-                        + "                   This is only a test\n"
-                        + "               </n:TestElement>\n"
-                        + "           </n:Test>\n"
-                        + "       </env:Fault>\n"
-                        + "   </env:Body>\n"
-                        + "</env:Envelope>";
+        String soap11Message = "<?xml version='1.0' ?>"
+                + "<env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n"
+                + "   <env:Header>\n"
+                + "       <test:echoOk xmlns:test=\"http://example.org/ts-tests\"\n"
+                + "                    env:actor=\"http://schemas.xmlsoap.org/soap/actor/next\"\n"
+                + "                    env:mustUnderstand=\"1\""
+                + "       >\n"
+                + "                       foo\n"
+                + "       </test:echoOk>\n"
+                + "   </env:Header>\n"
+                + "   <env:Body>\n"
+                + "       <env:Fault>\n"
+                + "           <faultcode>\n"
+                + "               env:Sender\n"
+                + "           </faultcode>\n"
+                + "           <faultstring>\n"
+                + "               Sender Timeout\n"
+                + "           </faultstring>\n"
+                + "           <faultactor>\n"
+                + "               http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver\n"
+                + "           </faultactor>\n"
+                + "           <detail xmlns:m=\"http:www.sample.org\">\n"
+                + "               Details of error\n"
+                + "               <m:MaxTime m:detail=\"This is only a test\">\n"
+                + "                   P5M\n"
+                + "               </m:MaxTime>\n"
+                + "               <m:AveTime>\n"
+                + "                   <m:Time>\n"
+                + "                       P3M\n"
+                + "                   </m:Time>\n"
+                + "               </m:AveTime>\n"
+                + "           </detail>\n"
+                + "           <n:Test xmlns:n=\"http:www.Test.org\">\n"
+                + "               <n:TestElement>\n"
+                + "                   This is only a test\n"
+                + "               </n:TestElement>\n"
+                + "           </n:Test>\n"
+                + "       </env:Fault>\n"
+                + "   </env:Body>\n"
+                + "</env:Envelope>";
 
         OMXMLParserWrapper soap11Builder =
-                OMXMLBuilderFactory.createSOAPModelBuilder(
-                        metaFactory, new StringReader(soap11Message));
+                OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new StringReader(soap11Message));
         SOAPEnvelope soap11Envelope = (SOAPEnvelope) soap11Builder.getDocumentElement();
         //            soap11Envelope.build();
         //            writer = XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
@@ -111,51 +106,39 @@ public class TestBuilder extends AxiomTestCase {
 
         SOAPHeader header = soap11Envelope.getHeader();
         assertThat(header.getLocalName()).isEqualTo(SOAPConstants.HEADER_LOCAL_NAME);
-        assertThat(header.getNamespace().getNamespaceURI())
-                .isEqualTo(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        assertThat(header.getNamespace().getNamespaceURI()).isEqualTo(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 
         SOAPHeaderBlock headerBlock = (SOAPHeaderBlock) header.getFirstElement();
         assertThat(headerBlock.getLocalName()).isEqualTo("echoOk");
-        assertThat(headerBlock.getNamespace().getNamespaceURI())
-                .isEqualTo("http://example.org/ts-tests");
+        assertThat(headerBlock.getNamespace().getNamespaceURI()).isEqualTo("http://example.org/ts-tests");
         assertThat(headerBlock.getText().trim()).isEqualTo("foo");
 
         // Attribute iteration is not in any guaranteed order.
         // Use QNames to get the OMAttributes.
-        QName actorQName =
-                new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP11Constants.ATTR_ACTOR);
+        QName actorQName = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP11Constants.ATTR_ACTOR);
         QName mustUnderstandQName =
-                new QName(
-                        SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP11Constants.ATTR_MUSTUNDERSTAND);
+                new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP11Constants.ATTR_MUSTUNDERSTAND);
 
         OMAttribute actorAttribute = headerBlock.getAttribute(actorQName);
         OMAttribute mustUnderstandAttribute = headerBlock.getAttribute(mustUnderstandQName);
 
         assertThat(mustUnderstandAttribute).isNotNull();
-        assertThat(mustUnderstandAttribute.getAttributeValue())
-                .isEqualTo(SOAPConstants.ATTR_MUSTUNDERSTAND_1);
+        assertThat(mustUnderstandAttribute.getAttributeValue()).isEqualTo(SOAPConstants.ATTR_MUSTUNDERSTAND_1);
         assertThat(mustUnderstandAttribute.getNamespace().getNamespaceURI())
                 .isEqualTo(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 
         assertThat(actorAttribute).isNotNull();
         assertThat(actorAttribute.getAttributeValue().trim())
-                .isEqualTo(
-                        "http://schemas.xmlsoap.org/soap/"
-                                + SOAP11Constants.ATTR_ACTOR
-                                + "/"
-                                + "next");
+                .isEqualTo("http://schemas.xmlsoap.org/soap/" + SOAP11Constants.ATTR_ACTOR + "/" + "next");
         assertThat(actorAttribute.getNamespace().getNamespaceURI())
                 .isEqualTo(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 
         SOAPBody body = soap11Envelope.getBody();
         assertThat(body.getLocalName()).isEqualTo(SOAPConstants.BODY_LOCAL_NAME);
-        assertThat(body.getNamespace().getNamespaceURI())
-                .isEqualTo(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        assertThat(body.getNamespace().getNamespaceURI()).isEqualTo(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 
         SOAPFault fault = body.getFault();
-        assertThat(fault.getNamespace().getNamespaceURI())
-                .isEqualTo(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        assertThat(fault.getNamespace().getNamespaceURI()).isEqualTo(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 
         Iterator<OMNode> iteratorInFault = fault.getChildren();
 
@@ -173,8 +156,7 @@ public class TestBuilder extends AxiomTestCase {
         iteratorInFault.next();
         SOAPFaultRole role = (SOAPFaultRole) iteratorInFault.next();
         assertThat(role.getLocalName()).isEqualTo(SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME);
-        assertThat(role.getText().trim())
-                .isEqualTo("http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver");
+        assertThat(role.getText().trim()).isEqualTo("http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver");
 
         iteratorInFault.next();
         SOAPFaultDetail detail = (SOAPFaultDetail) iteratorInFault.next();
@@ -192,8 +174,7 @@ public class TestBuilder extends AxiomTestCase {
         Iterator<OMAttribute> attributeIterator = element1.getAllAttributes();
         OMAttribute attributeInMaxTime = attributeIterator.next();
         assertThat(attributeInMaxTime.getLocalName()).isEqualTo("detail");
-        assertThat(attributeInMaxTime.getNamespace().getNamespaceURI())
-                .isEqualTo("http:www.sample.org");
+        assertThat(attributeInMaxTime.getNamespace().getNamespaceURI()).isEqualTo("http:www.sample.org");
         assertThat(attributeInMaxTime.getAttributeValue()).isEqualTo("This is only a test");
 
         iteratorInDetail.next();
@@ -216,8 +197,7 @@ public class TestBuilder extends AxiomTestCase {
 
         OMElement childOfTestElement = testElement.getFirstElement();
         assertThat(childOfTestElement.getLocalName()).isEqualTo("TestElement");
-        assertThat(childOfTestElement.getNamespace().getNamespaceURI())
-                .isEqualTo("http:www.Test.org");
+        assertThat(childOfTestElement.getNamespace().getNamespaceURI()).isEqualTo("http:www.Test.org");
         assertThat(childOfTestElement.getText().trim()).isEqualTo("This is only a test");
 
         soap11Builder.close();

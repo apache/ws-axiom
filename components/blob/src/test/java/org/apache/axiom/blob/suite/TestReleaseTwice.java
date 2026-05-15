@@ -18,10 +18,9 @@
  */
 package org.apache.axiom.blob.suite;
 
+import com.google.inject.Inject;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-
-import com.google.inject.Inject;
 
 public class TestReleaseTwice extends WritableBlobTestCase {
     @Inject

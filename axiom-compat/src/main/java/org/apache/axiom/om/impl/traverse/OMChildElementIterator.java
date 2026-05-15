@@ -19,11 +19,10 @@
 
 package org.apache.axiom.om.impl.traverse;
 
+import java.util.Iterator;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
-
-import java.util.Iterator;
 
 /**
  * @deprecated This type of iterator should always be created using {@link

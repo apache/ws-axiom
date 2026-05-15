@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.stream.ds;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.OMDataSource;

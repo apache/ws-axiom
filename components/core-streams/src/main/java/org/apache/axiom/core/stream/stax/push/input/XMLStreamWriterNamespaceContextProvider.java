@@ -18,14 +18,13 @@
  */
 package org.apache.axiom.core.stream.stax.push.input;
 
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.core.stream.NamespaceContextProvider;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 public class XMLStreamWriterNamespaceContextProvider implements NamespaceContextProvider {
     private static final Log log = LogFactory.getLog(XMLStreamWriterNamespaceContextProvider.class);
@@ -102,9 +101,7 @@ public class XMLStreamWriterNamespaceContextProvider implements NamespaceContext
                     }
                 } catch (Throwable t) {
                     if (log.isDebugEnabled()) {
-                        log.debug(
-                                "Caught exception from getPrefix(\"\"). Processing continues: "
-                                        + t);
+                        log.debug("Caught exception from getPrefix(\"\"). Processing continues: " + t);
                     }
                 }
 

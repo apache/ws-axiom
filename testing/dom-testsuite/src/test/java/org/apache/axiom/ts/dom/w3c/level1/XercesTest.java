@@ -19,9 +19,7 @@
 package org.apache.axiom.ts.dom.w3c.level1;
 
 import java.util.stream.Stream;
-
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.testutils.suite.MatrixTestFilters;
 import org.apache.axiom.ts.dom.DocumentBuilderFactoryFactory;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
@@ -31,17 +29,14 @@ import org.junit.jupiter.api.TestFactory;
 public class XercesTest {
     @TestFactory
     Stream<DynamicNode> tests() {
-        return W3CDOMLevel1TestSuite.create(
-                        new DocumentBuilderFactoryFactory() {
-                            @Override
-                            public DocumentBuilderFactory newInstance() {
-                                return new DocumentBuilderFactoryImpl();
-                            }
-                        })
-                .toDynamicNodes(
-                        MatrixTestFilters.builder()
-                                .add(
-                                        "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)")
-                                .build());
+        return W3CDOMLevel1TestSuite.create(new DocumentBuilderFactoryFactory() {
+                    @Override
+                    public DocumentBuilderFactory newInstance() {
+                        return new DocumentBuilderFactoryImpl();
+                    }
+                })
+                .toDynamicNodes(MatrixTestFilters.builder()
+                        .add("(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)")
+                        .build());
     }
 }

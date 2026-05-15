@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.stream.xop;
 
 import java.io.IOException;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.xop.AbstractXOPDecodingFilterHandler;
@@ -58,7 +57,6 @@ final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
 
     @Override
     protected Object buildCharacterData(String contentID) {
-        return new TextContent(
-                contentID, new BlobProviderImpl(attachmentAccessor, contentID), true);
+        return new TextContent(contentID, new BlobProviderImpl(attachmentAccessor, contentID), true);
     }
 }

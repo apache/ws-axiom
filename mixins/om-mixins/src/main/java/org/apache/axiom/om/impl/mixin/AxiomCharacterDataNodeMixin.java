@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.mixin;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
 import org.apache.axiom.weaver.annotation.Mixin;

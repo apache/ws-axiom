@@ -20,8 +20,9 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javax.xml.transform.dom.DOMSource;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -31,15 +32,11 @@ import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 public class TestDetachWithDOM extends AxiomTestCase {
     private final boolean useDOMSource;
 
     @Inject
-    public TestDetachWithDOM(
-            OMMetaFactory metaFactory, @Named("useDOMSource") boolean useDOMSource) {
+    public TestDetachWithDOM(OMMetaFactory metaFactory, @Named("useDOMSource") boolean useDOMSource) {
         super(metaFactory);
         this.useDOMSource = useDOMSource;
     }
@@ -51,9 +48,7 @@ public class TestDetachWithDOM extends AxiomTestCase {
         root.appendChild(document.createElementNS("", "a"));
         OMXMLParserWrapper builder;
         if (useDOMSource) {
-            builder =
-                    OMXMLBuilderFactory.createOMBuilder(
-                            metaFactory.getOMFactory(), new DOMSource(root));
+            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new DOMSource(root));
         } else {
             builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), root, false);
         }

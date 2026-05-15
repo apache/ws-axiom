@@ -21,14 +21,12 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestHasNameWithNamespace extends AxiomTestCase {
     @Inject
@@ -44,7 +42,8 @@ public class TestHasNameWithNamespace extends AxiomTestCase {
         String prefix = "axis2";
         OMElement element = factory.createOMElement(localName, namespace, prefix);
         assertThat(element.hasName(new QName(namespace, localName, prefix))).isTrue();
-        assertThat(element.hasName(new QName(namespace, localName, "otherPrefix"))).isTrue();
+        assertThat(element.hasName(new QName(namespace, localName, "otherPrefix")))
+                .isTrue();
         assertThat(element.hasName(new QName("http://some.other.org/", localName, prefix)))
                 .isFalse();
         assertThat(element.hasName(new QName(namespace, "otherName", prefix))).isFalse();

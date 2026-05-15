@@ -23,12 +23,10 @@ import java.io.StringWriter;
 import java.util.Date;
 import java.util.Deque;
 import java.util.LinkedList;
-
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.Namespace;
 import org.springframework.ws.server.endpoint.annotation.Namespaces;
@@ -51,9 +49,7 @@ public class BrokerEndpoint {
     @PayloadRoot(namespace = "urn:broker", localPart = "Order")
     @ResponsePayload
     @Namespaces(@Namespace(prefix = "p", uri = "urn:broker"))
-    public OrderStatus order(
-            @XPathParam("/p:Order/p:Customer") Integer customer,
-            @RequestPayload Source payloadSource)
+    public OrderStatus order(@XPathParam("/p:Order/p:Customer") Integer customer, @RequestPayload Source payloadSource)
             throws UnknownCustomerException, TransformerException {
         customerService.validateCustomer(customer);
         StringWriter sw = new StringWriter();

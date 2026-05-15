@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that the iterator returned by {@link OMElement#getAllDeclaredNamespaces()} respects the
@@ -43,9 +41,7 @@ public class TestGetAllDeclaredNamespacesNoSuchElementException extends AxiomTes
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element =
-                AXIOMUtil.stringToOM(
-                        metaFactory.getOMFactory(), "<e xmlns:p='urn:test' p:attr='test'/>");
+        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<e xmlns:p='urn:test' p:attr='test'/>");
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         it.next();
         assertThatThrownBy(it::next).isInstanceOf(NoSuchElementException.class);

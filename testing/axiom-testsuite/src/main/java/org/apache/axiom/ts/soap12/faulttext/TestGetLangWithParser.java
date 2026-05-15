@@ -20,6 +20,7 @@ package org.apache.axiom.ts.soap12.faulttext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -27,8 +28,6 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetLangWithParser extends SampleBasedSOAPTestCase {
     @Inject
@@ -41,8 +40,7 @@ public class TestGetLangWithParser extends SampleBasedSOAPTestCase {
         SOAPFaultText faultText = envelope.getBody().getFault().getReason().getFirstSOAPText();
         assertThat(faultText.getLang()).isEqualTo("en");
         OMAttribute langAttribute = faultText.getAllAttributes().next();
-        assertThat(langAttribute.getLocalName())
-                .isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME);
+        assertThat(langAttribute.getLocalName()).isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME);
         assertThat(langAttribute.getNamespace().getPrefix())
                 .isEqualTo(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
         assertThat(langAttribute.getNamespace().getNamespaceURI())

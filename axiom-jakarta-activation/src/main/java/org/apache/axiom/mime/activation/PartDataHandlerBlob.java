@@ -21,7 +21,6 @@ package org.apache.axiom.mime.activation;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.mime.PartBlob;

@@ -21,6 +21,13 @@ package org.apache.axiom.attachments;
 import static com.google.common.truth.Truth.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.mail.Session;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.util.ByteArrayDataSource;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -37,15 +44,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
-
-import jakarta.activation.DataHandler;
-import jakarta.activation.DataSource;
-import jakarta.mail.Session;
-import jakarta.mail.internet.MimeBodyPart;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMultipart;
-import jakarta.mail.util.ByteArrayDataSource;
-
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
@@ -78,9 +76,7 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
         Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
 
-        DataHandler dh =
-                attachments.getDataHandler(
-                        "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+        DataHandler dh = attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
         InputStream dataIs = dh.getDataSource().getInputStream();
 
         InputStream expectedDataIs = MTOMSample.SAMPLE1.getPart(2);
@@ -119,10 +115,8 @@ public class AttachmentsTest extends AbstractTestCase {
         // The choice of content IDs here makes sure that we test that the attachments are returned
         // in the order in which they have been added (instead of sorted by content ID as in
         // earlier Axiom versions)
-        attachments.addDataHandler(
-                "contentB@apache.org", new DataHandler("content1", "text/plain"));
-        attachments.addDataHandler(
-                "contentA@apache.org", new DataHandler("content2", "text/plain"));
+        attachments.addDataHandler("contentB@apache.org", new DataHandler("content1", "text/plain"));
+        attachments.addDataHandler("contentA@apache.org", new DataHandler("content2", "text/plain"));
 
         String[] contentIDs = attachments.getAllContentIDs();
         assertEquals(2, contentIDs.length);
@@ -170,13 +164,11 @@ public class AttachmentsTest extends AbstractTestCase {
      */
     public void testGetContentLengthWithoutStream() throws IOException {
         Attachments attachments = new Attachments();
-        attachments.addDataHandler(
-                UIDGenerator.generateContentId(), new DataHandler("test", "text/plain"));
+        attachments.addDataHandler(UIDGenerator.generateContentId(), new DataHandler("test", "text/plain"));
         assertEquals(-1, attachments.getContentLength());
     }
 
-    private void testGetRootPartContentID(String contentTypeStartParam, String contentId)
-            throws Exception {
+    private void testGetRootPartContentID(String contentTypeStartParam, String contentId) throws Exception {
         MimeMessage message = new MimeMessage((Session) null);
         MimeMultipart mp = new MimeMultipart("related");
         MimeBodyPart rootPart = new MimeBodyPart();
@@ -191,16 +183,14 @@ public class AttachmentsTest extends AbstractTestCase {
         mp.writeTo(out);
         out.close();
 
-        Attachments attachments =
-                new Attachments(
-                        blob.getInputStream(),
-                        new ContentType(message.getContentType())
-                                .toBuilder()
-                                        .setParameter("start", contentTypeStartParam)
-                                        .build()
-                                        .toString());
-        assertEquals(
-                "Did not obtain correct content ID", contentId, attachments.getRootPartContentID());
+        Attachments attachments = new Attachments(
+                blob.getInputStream(),
+                new ContentType(message.getContentType())
+                        .toBuilder()
+                                .setParameter("start", contentTypeStartParam)
+                                .build()
+                                .toString());
+        assertEquals("Did not obtain correct content ID", contentId, attachments.getRootPartContentID());
     }
 
     public void testGetRootPartContentIDWithoutBrackets() throws Exception {
@@ -239,17 +229,13 @@ public class AttachmentsTest extends AbstractTestCase {
      * is unable to determine the content type.
      */
     public void testGetRootPartContentTypeWithContentIDMismatch() {
-        String contentType =
-                "multipart/related; boundary=\""
-                        + MTOMSample.SAMPLE1.getBoundary()
-                        + "\"; type=\"text/xml\"; start=\"<wrong-content-id@example.org>\"";
-        assertThatThrownBy(
-                        () -> {
-                            Attachments attachments =
-                                    new Attachments(
-                                            MTOMSample.SAMPLE1.getInputStream(), contentType);
-                            attachments.getRootPartContentType();
-                        })
+        String contentType = "multipart/related; boundary=\""
+                + MTOMSample.SAMPLE1.getBoundary()
+                + "\"; type=\"text/xml\"; start=\"<wrong-content-id@example.org>\"";
+        assertThatThrownBy(() -> {
+                    Attachments attachments = new Attachments(MTOMSample.SAMPLE1.getInputStream(), contentType);
+                    attachments.getRootPartContentType();
+                })
                 .isInstanceOf(MIMEException.class);
     }
 
@@ -266,8 +252,7 @@ public class AttachmentsTest extends AbstractTestCase {
         dataIs = ias.getNextStream();
 
         // Make sure it was the first attachment
-        assertEquals(
-                "<1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org>", dataIs.getContentId());
+        assertEquals("<1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org>", dataIs.getContentId());
 
         // Consume the stream
         while (dataIs.read() != -1)
@@ -275,8 +260,7 @@ public class AttachmentsTest extends AbstractTestCase {
 
         // Img2 stream
         dataIs = ias.getNextStream();
-        assertEquals(
-                "<2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org>", dataIs.getContentId());
+        assertEquals("<2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org>", dataIs.getContentId());
 
         // Test if getContentType() works..
         assertEquals("image/jpeg", dataIs.getContentType());
@@ -330,8 +314,7 @@ public class AttachmentsTest extends AbstractTestCase {
         attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
 
         // This should throw an error
-        assertThatThrownBy(attachments::getIncomingAttachmentStreams)
-                .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(attachments::getIncomingAttachmentStreams).isInstanceOf(IllegalStateException.class);
 
         inStream.close();
     }
@@ -352,10 +335,7 @@ public class AttachmentsTest extends AbstractTestCase {
         attachments.getRootPartInputStream();
 
         // These should throw an error
-        assertThatThrownBy(
-                        () ->
-                                attachments.getDataHandler(
-                                        "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"))
+        assertThatThrownBy(() -> attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"))
                 .isInstanceOf(IllegalStateException.class);
 
         // Additionally, we also need to ensure mutual exclusion if someone
@@ -363,10 +343,7 @@ public class AttachmentsTest extends AbstractTestCase {
 
         assertThatThrownBy(attachments::getAllContentIDs).isInstanceOf(IllegalStateException.class);
 
-        assertThatThrownBy(
-                        () ->
-                                attachments.getDataHandler(
-                                        "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"))
+        assertThatThrownBy(() -> attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"))
                 .isInstanceOf(IllegalStateException.class);
     }
 
@@ -445,8 +422,7 @@ public class AttachmentsTest extends AbstractTestCase {
         MimeBodyPart bp2 = new MimeBodyPart();
         byte[] content = new byte[8192];
         new Random().nextBytes(content);
-        bp2.setDataHandler(
-                new DataHandler(new ByteArrayDataSource(content, "application/octet-stream")));
+        bp2.setDataHandler(new DataHandler(new ByteArrayDataSource(content, "application/octet-stream")));
         bp2.addHeader("Content-Transfer-Encoding", "base64");
         bp2.addHeader("Content-ID", "part2@apache.org");
         mp.addBodyPart(bp2);
@@ -488,17 +464,14 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testZeroLengthAttachment() throws Exception {
         InputStream in = getTestResource("mtom/zero-length-attachment.bin");
         try {
-            Attachments attachments =
-                    new Attachments(
-                            in,
-                            "multipart/related; "
-                                    + "boundary=MIMEBoundaryurn_uuid_0549F3F826EC3041861188639371825; "
-                                    + "type=\"application/xop+xml\"; "
-                                    + "start=\"0.urn:uuid:0549F3F826EC3041861188639371826@apache.org\"; "
-                                    + "start-info=\"application/soap+xml\"; action=\"urn:test\"");
-            DataHandler dh =
-                    attachments.getDataHandler(
-                            "1.urn:uuid:0549F3F826EC3041861188639371827@apache.org");
+            Attachments attachments = new Attachments(
+                    in,
+                    "multipart/related; "
+                            + "boundary=MIMEBoundaryurn_uuid_0549F3F826EC3041861188639371825; "
+                            + "type=\"application/xop+xml\"; "
+                            + "start=\"0.urn:uuid:0549F3F826EC3041861188639371826@apache.org\"; "
+                            + "start-info=\"application/soap+xml\"; action=\"urn:test\"");
+            DataHandler dh = attachments.getDataHandler("1.urn:uuid:0549F3F826EC3041861188639371827@apache.org");
             InputStream content = dh.getInputStream();
             assertEquals(-1, content.read());
         } finally {
@@ -509,14 +482,13 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testPurgeDataSource() throws Exception {
         InputStream in = getTestResource("mtom/msg-soap-wls81.txt");
         MyLifecycleManager manager = new MyLifecycleManager();
-        Attachments attachments =
-                new Attachments(
-                        manager,
-                        in,
-                        "multipart/related;type=\"text/xml\";boundary=\"----=_Part_0_3437046.1188904239130\";start=__WLS__1188904239161__SOAP__",
-                        true,
-                        getAttachmentsDir(),
-                        "1024");
+        Attachments attachments = new Attachments(
+                manager,
+                in,
+                "multipart/related;type=\"text/xml\";boundary=\"----=_Part_0_3437046.1188904239130\";start=__WLS__1188904239161__SOAP__",
+                true,
+                getAttachmentsDir(),
+                "1024");
 
         // Read the attachment once to make sure it is buffered
         DataHandler dh = attachments.getDataHandler("__WLS__1188904239162__SOAP__");
@@ -542,14 +514,13 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testReadOnceOnBufferedPart() throws Exception {
         InputStream in = getTestResource("mtom/msg-soap-wls81.txt");
         MyLifecycleManager manager = new MyLifecycleManager();
-        Attachments attachments =
-                new Attachments(
-                        manager,
-                        in,
-                        "multipart/related;type=\"text/xml\";boundary=\"----=_Part_0_3437046.1188904239130\";start=__WLS__1188904239161__SOAP__",
-                        true,
-                        getAttachmentsDir(),
-                        "1024");
+        Attachments attachments = new Attachments(
+                manager,
+                in,
+                "multipart/related;type=\"text/xml\";boundary=\"----=_Part_0_3437046.1188904239130\";start=__WLS__1188904239161__SOAP__",
+                true,
+                getAttachmentsDir(),
+                "1024");
 
         // Read the attachment once to make sure it is buffered
         DataHandler dh = attachments.getDataHandler("__WLS__1188904239162__SOAP__");
@@ -578,18 +549,15 @@ public class AttachmentsTest extends AbstractTestCase {
      */
     public void testFileBufferingWithLowThreshold() throws Exception {
         InputStream in = getTestResource("mtom/msg-soap-wls81.txt");
-        Attachments attachments =
-                new Attachments(
-                        in,
-                        "multipart/related;type=\"text/xml\";boundary=\"----=_Part_0_3437046.1188904239130\";start=__WLS__1188904239161__SOAP__",
-                        true,
-                        getAttachmentsDir(),
-                        "1");
+        Attachments attachments = new Attachments(
+                in,
+                "multipart/related;type=\"text/xml\";boundary=\"----=_Part_0_3437046.1188904239130\";start=__WLS__1188904239161__SOAP__",
+                true,
+                getAttachmentsDir(),
+                "1");
 
         DataHandler dh = attachments.getDataHandler("__WLS__1188904239162__SOAP__");
-        BufferedReader reader =
-                new BufferedReader(
-                        new InputStreamReader(dh.getInputStream(), StandardCharsets.UTF_8));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(dh.getInputStream(), StandardCharsets.UTF_8));
         assertEquals("%PDF-1.3", reader.readLine());
         reader.close();
 
@@ -617,8 +585,7 @@ public class AttachmentsTest extends AbstractTestCase {
         mp.addBodyPart(bp1);
 
         // Create an attachment that is larger than the maximum heap
-        Blob blob =
-                new RandomBlob((int) Math.min(Runtime.getRuntime().maxMemory(), Integer.MAX_VALUE));
+        Blob blob = new RandomBlob((int) Math.min(Runtime.getRuntime().maxMemory(), Integer.MAX_VALUE));
         MimeBodyPart bp2 = new MimeBodyPart();
         bp2.setDataHandler(DataHandlerUtils.toDataHandler(blob));
         bp2.addHeader("Content-Transfer-Encoding", "binary");
@@ -634,19 +601,17 @@ public class AttachmentsTest extends AbstractTestCase {
         PipedOutputStream pipeOut = new PipedOutputStream();
         PipedInputStream pipeIn = new PipedInputStream(pipeOut);
 
-        Thread producerThread =
-                new Thread(
-                        () -> {
-                            try {
-                                try {
-                                    mp.writeTo(pipeOut);
-                                } finally {
-                                    pipeOut.close();
-                                }
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
-                        });
+        Thread producerThread = new Thread(() -> {
+            try {
+                try {
+                    mp.writeTo(pipeOut);
+                } finally {
+                    pipeOut.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
         producerThread.start();
 
         try {
@@ -703,8 +668,7 @@ public class AttachmentsTest extends AbstractTestCase {
         testTurkishLocale("content-id");
     }
 
-    private void testGetAttachmentSpecType(MIMESample resource, String expectedResult)
-            throws Exception {
+    private void testGetAttachmentSpecType(MIMESample resource, String expectedResult) throws Exception {
         InputStream in = resource.getInputStream();
         try {
             Attachments attachments = new Attachments(in, resource.getContentType());
@@ -723,8 +687,7 @@ public class AttachmentsTest extends AbstractTestCase {
     }
 
     public void testGetAttachmentSpecTypeWithoutStream() {
-        assertThatThrownBy(() -> new Attachments().getAttachmentSpecType())
-                .isInstanceOf(OMException.class);
+        assertThatThrownBy(() -> new Attachments().getAttachmentSpecType()).isInstanceOf(OMException.class);
     }
 
     private void testGetSizeOnDataSource(boolean useFiles) throws Exception {
@@ -733,18 +696,11 @@ public class AttachmentsTest extends AbstractTestCase {
             Attachments attachments;
             if (useFiles) {
                 attachments =
-                        new Attachments(
-                                in,
-                                MTOMSample.SAMPLE1.getContentType(),
-                                true,
-                                getAttachmentsDir(),
-                                "4096");
+                        new Attachments(in, MTOMSample.SAMPLE1.getContentType(), true, getAttachmentsDir(), "4096");
             } else {
                 attachments = new Attachments(in, MTOMSample.SAMPLE1.getContentType());
             }
-            DataHandler dh =
-                    attachments.getDataHandler(
-                            "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+            DataHandler dh = attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
             DataSource ds = dh.getDataSource();
             assertTrue(ds instanceof SizeAwareDataSource);
             assertEquals(13887, ((SizeAwareDataSource) ds).getSize());
@@ -765,14 +721,10 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream in = MTOMSample.SAMPLE1.getInputStream();
         try {
             Attachments attachments =
-                    new Attachments(
-                            new ExceptionInputStream(in, 1050),
-                            MTOMSample.SAMPLE1.getContentType());
+                    new Attachments(new ExceptionInputStream(in, 1050), MTOMSample.SAMPLE1.getContentType());
             // TODO: decide what exception should be thrown exactly here
             assertThatThrownBy(
-                            () ->
-                                    attachments.getDataHandler(
-                                            "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"))
+                            () -> attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"))
                     .isInstanceOf(MIMEException.class);
         } finally {
             in.close();
@@ -783,12 +735,8 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream in = MTOMSample.SAMPLE1.getInputStream();
         try {
             Attachments attachments =
-                    new Attachments(
-                            new ExceptionInputStream(in, 1500),
-                            MTOMSample.SAMPLE1.getContentType());
-            DataHandler dh =
-                    attachments.getDataHandler(
-                            "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
+                    new Attachments(new ExceptionInputStream(in, 1500), MTOMSample.SAMPLE1.getContentType());
+            DataHandler dh = attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
             // TODO: decide what exception should be thrown exactly here
             assertThatThrownBy(dh::getInputStream).isInstanceOf(MIMEException.class);
         } finally {
@@ -800,10 +748,8 @@ public class AttachmentsTest extends AbstractTestCase {
      * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-467">AXIOM-467</a>.
      */
     public void testQuotedPrintable() throws Exception {
-        Attachments attachments =
-                new Attachments(
-                        MTOMSample.QUOTED_PRINTABLE.getInputStream(),
-                        MTOMSample.QUOTED_PRINTABLE.getContentType());
+        Attachments attachments = new Attachments(
+                MTOMSample.QUOTED_PRINTABLE.getInputStream(), MTOMSample.QUOTED_PRINTABLE.getContentType());
         DataHandler dh = attachments.getDataHandler("SDESS_COREP_00000_KO_SNG.xml");
         IOTestUtils.compareStreams(MTOMSample.QUOTED_PRINTABLE.getPart(1), dh.getInputStream());
     }
@@ -818,8 +764,7 @@ public class AttachmentsTest extends AbstractTestCase {
         MimeMessage message = new MimeMessage((Session) null);
         MimeMultipart mp = new MimeMultipart("related");
 
-        DataHandler expectedRootPart =
-                new DataHandler(new TextDataSource("<root/>", "utf-8", "xml"));
+        DataHandler expectedRootPart = new DataHandler(new TextDataSource("<root/>", "utf-8", "xml"));
         MimeBodyPart bp1 = new MimeBodyPart();
         bp1.setDataHandler(expectedRootPart);
         bp1.addHeader("Content-Transfer-Encoding", "binary");

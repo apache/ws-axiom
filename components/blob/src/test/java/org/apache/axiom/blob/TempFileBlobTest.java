@@ -18,22 +18,17 @@
  */
 package org.apache.axiom.blob;
 
+import com.google.common.collect.ImmutableList;
 import java.util.stream.Stream;
-
 import org.apache.axiom.blob.suite.WritableBlobTestSuite;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
-
-import com.google.common.collect.ImmutableList;
 
 public class TempFileBlobTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
         return WritableBlobTestSuite.create(
-                        new TempFileBlobFactory("test", ".dat", null),
-                        ImmutableList.of(10000),
-                        false,
-                        true)
+                        new TempFileBlobFactory("test", ".dat", null), ImmutableList.of(10000), false, true)
                 .toDynamicNodes();
     }
 }

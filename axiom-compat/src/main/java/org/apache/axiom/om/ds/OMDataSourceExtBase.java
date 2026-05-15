@@ -27,11 +27,9 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMDocument;
@@ -155,8 +153,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
      * @param writer
      * @throws XMLStreamException
      */
-    private static void reader2writer(XMLStreamReader reader, XMLStreamWriter writer)
-            throws XMLStreamException {
+    private static void reader2writer(XMLStreamReader reader, XMLStreamWriter writer) throws XMLStreamException {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(reader);
         try {
             OMDocument omDocument = builder.getDocument();

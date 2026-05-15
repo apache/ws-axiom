@@ -33,9 +33,7 @@ public final class QNameCache {
     private QNameCache() {}
 
     public static QName getQName(String namespaceURI, String localPart, String prefix) {
-        int index =
-                (namespaceURI.hashCode() ^ localPart.hashCode() ^ prefix.hashCode())
-                        & (cache.length - 1);
+        int index = (namespaceURI.hashCode() ^ localPart.hashCode() ^ prefix.hashCode()) & (cache.length - 1);
         QNameCacheEntry entry = cache[index];
         QName qname = entry.get();
         if (qname == null

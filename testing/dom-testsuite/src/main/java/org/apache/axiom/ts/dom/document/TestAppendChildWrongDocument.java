@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -42,7 +41,6 @@ public class TestAppendChildWrongDocument extends DOMTestCase {
         Element element = document2.createElementNS(null, "element");
         assertThatThrownBy(() -> document1.appendChild(element))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.WRONG_DOCUMENT_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.WRONG_DOCUMENT_ERR));
     }
 }

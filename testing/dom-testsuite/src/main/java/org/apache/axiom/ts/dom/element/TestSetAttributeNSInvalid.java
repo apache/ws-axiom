@@ -21,31 +21,25 @@ package org.apache.axiom.ts.dom.element;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.ts.dom.DOMTestCase;
-
 import com.google.inject.Inject;
+import javax.xml.namespace.QName;
+import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.dom.DOMUtils;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class TestSetAttributeNSInvalid extends DOMTestCase {
-    @Inject private QName qname;
+    @Inject
+    private QName qname;
 
     @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
-        assertThatThrownBy(
-                        () ->
-                                element.setAttributeNS(
-                                        DOMUtils.getNamespaceURI(qname),
-                                        DOMUtils.getQualifiedName(qname),
-                                        "value"))
+        assertThatThrownBy(() -> element.setAttributeNS(
+                        DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname), "value"))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.NAMESPACE_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.NAMESPACE_ERR));
     }
 }

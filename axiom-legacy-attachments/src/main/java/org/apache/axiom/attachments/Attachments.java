@@ -19,6 +19,14 @@
 
 package org.apache.axiom.attachments;
 
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
@@ -33,16 +41,6 @@ import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.util.activation.DataHandlerUtils;
-
-import jakarta.activation.DataHandler;
-import jakarta.activation.DataSource;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.Map;
 
 public class Attachments implements OMAttachmentAccessor {
     private final AttachmentsDelegate delegate;
@@ -84,14 +82,7 @@ public class Attachments implements OMAttachmentAccessor {
             String attachmentRepoDir,
             String fileThreshold)
             throws OMException {
-        this(
-                manager,
-                inStream,
-                contentTypeString,
-                fileCacheEnable,
-                attachmentRepoDir,
-                fileThreshold,
-                0);
+        this(manager, inStream, contentTypeString, fileCacheEnable, attachmentRepoDir, fileThreshold, 0);
     }
 
     /**
@@ -124,13 +115,9 @@ public class Attachments implements OMAttachmentAccessor {
         }
         WritableBlobFactory<?> attachmentBlobFactory;
         if (fileCacheEnable) {
-            WritableBlobFactory<?> tempFileBlobFactory =
-                    new LegacyTempFileBlobFactory(this, attachmentRepoDir);
+            WritableBlobFactory<?> tempFileBlobFactory = new LegacyTempFileBlobFactory(this, attachmentRepoDir);
             if (fileStorageThreshold > 0) {
-                attachmentBlobFactory =
-                        () ->
-                                Blobs.createOverflowableBlob(
-                                        fileStorageThreshold, tempFileBlobFactory);
+                attachmentBlobFactory = () -> Blobs.createOverflowableBlob(fileStorageThreshold, tempFileBlobFactory);
             } else {
                 attachmentBlobFactory = tempFileBlobFactory;
             }
@@ -138,9 +125,7 @@ public class Attachments implements OMAttachmentAccessor {
             attachmentBlobFactory = MemoryBlob.FACTORY;
         }
 
-        delegate =
-                new MultipartBodyAdapter(
-                        inStream, contentTypeString, attachmentBlobFactory, contentLength);
+        delegate = new MultipartBodyAdapter(inStream, contentTypeString, attachmentBlobFactory, contentLength);
     }
 
     /**
@@ -160,14 +145,7 @@ public class Attachments implements OMAttachmentAccessor {
             String attachmentRepoDir,
             String fileThreshold)
             throws OMException {
-        this(
-                null,
-                inStream,
-                contentTypeString,
-                fileCacheEnable,
-                attachmentRepoDir,
-                fileThreshold,
-                0);
+        this(null, inStream, contentTypeString, fileCacheEnable, attachmentRepoDir, fileThreshold, 0);
     }
 
     /**
@@ -190,14 +168,7 @@ public class Attachments implements OMAttachmentAccessor {
             String fileThreshold,
             int contentLength)
             throws OMException {
-        this(
-                null,
-                inStream,
-                contentTypeString,
-                fileCacheEnable,
-                attachmentRepoDir,
-                fileThreshold,
-                contentLength);
+        this(null, inStream, contentTypeString, fileCacheEnable, attachmentRepoDir, fileThreshold, contentLength);
     }
 
     /**
@@ -232,9 +203,8 @@ public class Attachments implements OMAttachmentAccessor {
         if (this.applicationType == null) {
             ContentType contentType = delegate.getContentType();
             if (contentType == null) {
-                throw new OMException(
-                        "Unable to determine the attachment spec type because the "
-                                + "Attachments object doesn't have a known content type");
+                throw new OMException("Unable to determine the attachment spec type because the "
+                        + "Attachments object doesn't have a known content type");
             }
             applicationType = contentType.getParameter("type");
             if ((MTOMConstants.MTOM_TYPE).equalsIgnoreCase(applicationType)) {
@@ -244,8 +214,7 @@ public class Attachments implements OMAttachmentAccessor {
             } else if ((MTOMConstants.SWA_TYPE_12).equalsIgnoreCase(applicationType)) {
                 this.applicationType = MTOMConstants.SWA_TYPE_12;
             } else {
-                throw new OMException(
-                        "Invalid Application type. Support available for MTOM & SwA only.");
+                throw new OMException("Invalid Application type. Support available for MTOM & SwA only.");
             }
         }
         return this.applicationType;

@@ -20,6 +20,8 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPBody;
@@ -28,23 +30,19 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /**
  * Tests that {@link OMContainer#addChild(OMNode)} throws an exception if an attempt is made to add
  * a {@link SOAPHeaderBlock} to a SOAP element other than {@link SOAPHeader}.
  */
 public class TestWrongParent1 extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPBody parent = soapFactory.createSOAPBody();
         SOAPHeaderBlock hb =
-                soapFactory.createSOAPHeaderBlock(
-                        "MyHeader", soapFactory.createOMNamespace("urn:test", "p"));
+                soapFactory.createSOAPHeaderBlock("MyHeader", soapFactory.createOMNamespace("urn:test", "p"));
         assertThatThrownBy(() -> parent.addChild(hb)).isInstanceOf(SOAPProcessingException.class);
     }
 }

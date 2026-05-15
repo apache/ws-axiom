@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.dimension;
 
 import java.io.IOException;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
@@ -35,8 +34,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
 
 final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHandler {
-    private static final String URI_LEXICAL_HANDLER =
-            "http://xml.org/sax/properties/lexical-handler";
+    private static final String URI_LEXICAL_HANDLER = "http://xml.org/sax/properties/lexical-handler";
 
     private XMLReader parent;
     private ContentHandler contentHandler;
@@ -99,8 +97,7 @@ final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHan
     }
 
     @Override
-    public Object getProperty(String name)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
         if (URI_LEXICAL_HANDLER.equals(name)) {
             return lexicalHandler;
         } else {
@@ -109,8 +106,7 @@ final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHan
     }
 
     @Override
-    public void setProperty(String name, Object value)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
         if (URI_LEXICAL_HANDLER.equals(name)) {
             lexicalHandler = (LexicalHandler) value;
         } else {
@@ -119,14 +115,12 @@ final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHan
     }
 
     @Override
-    public boolean getFeature(String name)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
         return parent.getFeature(name);
     }
 
     @Override
-    public void setFeature(String name, boolean value)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
         parent.setFeature(name, value);
     }
 
@@ -183,8 +177,7 @@ final class CoalescingXMLFilter implements XMLFilter, ContentHandler, LexicalHan
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes atts)
-            throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
         flushBuffer();
         contentHandler.startElement(uri, localName, qName, atts);
     }

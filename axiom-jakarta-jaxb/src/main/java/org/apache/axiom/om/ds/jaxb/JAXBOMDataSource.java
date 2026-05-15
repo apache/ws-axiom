@@ -18,10 +18,14 @@
  */
 package org.apache.axiom.om.ds.jaxb;
 
+import jakarta.activation.DataHandler;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMException;
@@ -30,12 +34,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-
-import jakarta.activation.DataHandler;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBElement;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
 
 /**
  * {@link OMDataSource} backed by a JAXB object. This class can be used both for plain JAXB objects

@@ -20,7 +20,6 @@ package org.apache.axiom.soap;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.apache.axiom.om.MethodCollisionTestCase;
 import org.apache.axiom.om.MethodSignature;
 import org.w3c.dom.Document;
@@ -36,46 +35,26 @@ public class DOMCompatibilityTest extends TestCase {
         TestSuite suite = new TestSuite();
 
         // These methods are known to have the same behavior in Axiom and DOM:
-        MethodSignature[] elementExceptions =
-                new MethodSignature[] {
-                    new MethodSignature("getPrefix", new Class[0]),
-                    new MethodSignature("getNamespaceURI", new Class[0]),
-                    new MethodSignature("getLocalName", new Class[0])
-                };
+        MethodSignature[] elementExceptions = new MethodSignature[] {
+            new MethodSignature("getPrefix", new Class[0]),
+            new MethodSignature("getNamespaceURI", new Class[0]),
+            new MethodSignature("getLocalName", new Class[0])
+        };
 
-        suite.addTest(
-                new MethodCollisionTestCase(SOAPBody.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(SOAPEnvelope.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(SOAPFault.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(SOAPFaultCode.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(
-                        SOAPFaultDetail.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(SOAPFaultNode.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(
-                        SOAPFaultReason.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(SOAPFaultRole.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(
-                        SOAPFaultSubCode.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(SOAPFaultText.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(
-                        SOAPFaultValue.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(SOAPHeader.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(
-                        SOAPHeaderBlock.class, Element.class, elementExceptions));
-        suite.addTest(
-                new MethodCollisionTestCase(SOAPMessage.class, Document.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPBody.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPEnvelope.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPFault.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPFaultCode.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPFaultDetail.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPFaultNode.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPFaultReason.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPFaultRole.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPFaultSubCode.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPFaultText.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPFaultValue.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPHeader.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPHeaderBlock.class, Element.class, elementExceptions));
+        suite.addTest(new MethodCollisionTestCase(SOAPMessage.class, Document.class, elementExceptions));
         return suite;
     }
 }

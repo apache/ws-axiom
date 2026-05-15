@@ -20,6 +20,8 @@ package org.apache.axiom.ts.soap.misc;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -28,24 +30,20 @@ import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 public class TestSetChildVersionMismatch extends GetSetChildTestCase {
-    @Inject @AltSOAPFactory private SOAPFactory altSoapFactory;
+    @Inject
+    @AltSOAPFactory
+    private SOAPFactory altSoapFactory;
 
     @Inject
     public TestSetChildVersionMismatch(
-            SOAPSpec spec,
-            @Named("type") SOAPElementType type,
-            @Named("childType") SOAPElementType childType) {
+            SOAPSpec spec, @Named("type") SOAPElementType type, @Named("childType") SOAPElementType childType) {
         super(spec, type, childType);
     }
 
     @Override
     protected void runTest(OMElement parent, SOAPElementTypeAdapter adapter) {
         OMElement child = adapter.create(altSoapFactory);
-        assertThatThrownBy(() -> adapter.getSetter().invoke(parent, child))
-                .isInstanceOf(SOAPProcessingException.class);
+        assertThatThrownBy(() -> adapter.getSetter().invoke(parent, child)).isInstanceOf(SOAPProcessingException.class);
     }
 }

@@ -19,11 +19,10 @@
 
 package org.apache.axiom.om;
 
+import javax.xml.namespace.QName;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import javax.xml.namespace.QName;
 
 public class OMBodyTest extends OMTestCase {
     SOAPBody soapBody;

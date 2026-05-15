@@ -20,11 +20,10 @@ package org.apache.axiom.ts.om.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestCreateOMCommentWithoutParent extends AxiomTestCase {
     @Inject

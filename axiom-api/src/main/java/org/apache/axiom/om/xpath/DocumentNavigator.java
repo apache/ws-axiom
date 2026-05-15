@@ -19,6 +19,15 @@
 
 package org.apache.axiom.om.xpath;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -37,16 +46,6 @@ import org.jaxen.UnsupportedAxisException;
 import org.jaxen.XPath;
 import org.jaxen.saxpath.SAXPathException;
 import org.jaxen.util.SingleObjectIterator;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 public class DocumentNavigator extends DefaultNavigator {
 
@@ -346,8 +345,7 @@ public class DocumentNavigator extends DefaultNavigator {
      *     this object model
      */
     @Override
-    public Iterator<?> getAttributeAxisIterator(Object contextNode)
-            throws UnsupportedAxisException {
+    public Iterator<?> getAttributeAxisIterator(Object contextNode) throws UnsupportedAxisException {
         if (isElement(contextNode)) {
             return ((OMElement) contextNode).getAllAttributes();
         } else {
@@ -364,8 +362,7 @@ public class DocumentNavigator extends DefaultNavigator {
      *     this object model
      */
     @Override
-    public Iterator<?> getNamespaceAxisIterator(Object contextNode)
-            throws UnsupportedAxisException {
+    public Iterator<?> getNamespaceAxisIterator(Object contextNode) throws UnsupportedAxisException {
         if (!(contextNode instanceof OMElement omContextNode)) {
             return JaxenConstants.EMPTY_ITERATOR;
         }
@@ -381,8 +378,7 @@ public class DocumentNavigator extends DefaultNavigator {
                 declaredNS.add(i.next());
             }
             declaredNS.add(element.getNamespace());
-            for (Iterator<OMAttribute> iter = element.getAllAttributes();
-                    iter != null && iter.hasNext(); ) {
+            for (Iterator<OMAttribute> iter = element.getAllAttributes(); iter != null && iter.hasNext(); ) {
                 OMAttribute attr = iter.next();
                 OMNamespace namespace = attr.getNamespace();
                 if (namespace != null) {
@@ -399,12 +395,9 @@ public class DocumentNavigator extends DefaultNavigator {
                 }
             }
         }
-        nsList.add(
-                new OMNamespaceEx(
-                        omContextNode
-                                .getOMFactory()
-                                .createOMNamespace("http://www.w3.org/XML/1998/namespace", "xml"),
-                        omContextNode));
+        nsList.add(new OMNamespaceEx(
+                omContextNode.getOMFactory().createOMNamespace("http://www.w3.org/XML/1998/namespace", "xml"),
+                omContextNode));
         return nsList.iterator();
     }
 
@@ -431,8 +424,7 @@ public class DocumentNavigator extends DefaultNavigator {
      *     supported by this object model
      */
     @Override
-    public Iterator<?> getDescendantOrSelfAxisIterator(Object contextNode)
-            throws UnsupportedAxisException {
+    public Iterator<?> getDescendantOrSelfAxisIterator(Object contextNode) throws UnsupportedAxisException {
         // TODO: Fix this better?
         return super.getDescendantOrSelfAxisIterator(contextNode);
     }
@@ -446,8 +438,7 @@ public class DocumentNavigator extends DefaultNavigator {
      *     supported by this object model
      */
     @Override
-    public Iterator<?> getAncestorOrSelfAxisIterator(Object contextNode)
-            throws UnsupportedAxisException {
+    public Iterator<?> getAncestorOrSelfAxisIterator(Object contextNode) throws UnsupportedAxisException {
         // TODO: Fix this better?
         return super.getAncestorOrSelfAxisIterator(contextNode);
     }
@@ -495,8 +486,7 @@ public class DocumentNavigator extends DefaultNavigator {
      *     supported by this object model
      */
     @Override
-    public Iterator<?> getFollowingSiblingAxisIterator(Object contextNode)
-            throws UnsupportedAxisException {
+    public Iterator<?> getFollowingSiblingAxisIterator(Object contextNode) throws UnsupportedAxisException {
         List<OMNode> list = new ArrayList<OMNode>();
         if (contextNode != null && contextNode instanceof OMNode node) {
             while (true) {
@@ -520,8 +510,7 @@ public class DocumentNavigator extends DefaultNavigator {
      *     supported by this object model
      */
     @Override
-    public Iterator<?> getPrecedingSiblingAxisIterator(Object contextNode)
-            throws UnsupportedAxisException {
+    public Iterator<?> getPrecedingSiblingAxisIterator(Object contextNode) throws UnsupportedAxisException {
         List<OMNode> list = new ArrayList<OMNode>();
         if (contextNode != null && contextNode instanceof OMNode node) {
             while (true) {
@@ -545,8 +534,7 @@ public class DocumentNavigator extends DefaultNavigator {
      *     this object model
      */
     @Override
-    public Iterator<?> getFollowingAxisIterator(Object contextNode)
-            throws UnsupportedAxisException {
+    public Iterator<?> getFollowingAxisIterator(Object contextNode) throws UnsupportedAxisException {
         // TODO: Fix this better?
         return super.getFollowingAxisIterator(contextNode);
     }
@@ -560,8 +548,7 @@ public class DocumentNavigator extends DefaultNavigator {
      *     this object model
      */
     @Override
-    public Iterator<?> getPrecedingAxisIterator(Object contextNode)
-            throws UnsupportedAxisException {
+    public Iterator<?> getPrecedingAxisIterator(Object contextNode) throws UnsupportedAxisException {
         // TODO: Fix this better?
         return super.getPrecedingAxisIterator(contextNode);
     }

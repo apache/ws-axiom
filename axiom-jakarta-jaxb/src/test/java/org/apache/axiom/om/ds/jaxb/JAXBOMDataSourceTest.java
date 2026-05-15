@@ -19,17 +19,17 @@
 package org.apache.axiom.om.ds.jaxb;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import jakarta.activation.DataHandler;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
@@ -48,13 +48,9 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Test;
 import org.example.identity.LinkIdentitiesType;
 import org.example.identity.ObjectFactory;
-
-import jakarta.activation.DataHandler;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBElement;
+import org.junit.jupiter.api.Test;
 
 public class JAXBOMDataSourceTest {
     /**
@@ -94,9 +90,7 @@ public class JAXBOMDataSourceTest {
         // Construct the original message
         DocumentBean object = new DocumentBean();
         object.setId("123456");
-        object.setContent(
-                DataHandlerUtils.toDataHandler(
-                        new TextBlob("some content", StandardCharsets.UTF_8)));
+        object.setContent(DataHandlerUtils.toDataHandler(new TextBlob("some content", StandardCharsets.UTF_8)));
         SOAPEnvelope orgEnvelope = factory.getDefaultEnvelope();
         OMSourcedElement element = factory.createOMElement(new JAXBOMDataSource(context, object));
         orgEnvelope.getBody().addChild(element);
@@ -111,18 +105,15 @@ public class JAXBOMDataSourceTest {
         assertThat(element.isExpanded()).isFalse();
 
         // Parse the serialized message
-        MultipartBody mb =
-                MultipartBody.builder()
-                        .setInputStream(mtom.getInputStream())
-                        .setContentType(format.getContentType())
-                        .build();
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(mtom.getInputStream())
+                .setContentType(format.getContentType())
+                .build();
         assertThat(mb.getPartCount()).isEqualTo(2);
         SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(mb).getSOAPEnvelope();
-        OMElement contentElement =
-                envelope.getBody()
-                        .getFirstElement()
-                        .getFirstChildWithName(
-                                new QName("http://ws.apache.org/axiom/test/jaxb", "content"));
+        OMElement contentElement = envelope.getBody()
+                .getFirstElement()
+                .getFirstChildWithName(new QName("http://ws.apache.org/axiom/test/jaxb", "content"));
         OMText content = (OMText) contentElement.getFirstOMChild();
         assertThat(content.isBinary()).isTrue();
         assertThat(content.isOptimized()).isTrue();
@@ -143,12 +134,9 @@ public class JAXBOMDataSourceTest {
         // Construct the original message
         DocumentBean orgObject = new DocumentBean();
         orgObject.setId("123456");
-        orgObject.setContent(
-                DataHandlerUtils.toDataHandler(
-                        new TextBlob("some content", StandardCharsets.UTF_8)));
+        orgObject.setContent(DataHandlerUtils.toDataHandler(new TextBlob("some content", StandardCharsets.UTF_8)));
         SOAPEnvelope orgEnvelope = factory.getDefaultEnvelope();
-        OMSourcedElement element =
-                factory.createOMElement(new JAXBOMDataSource(context, orgObject));
+        OMSourcedElement element = factory.createOMElement(new JAXBOMDataSource(context, orgObject));
         orgEnvelope.getBody().addChild(element);
 
         // Serialize the message
@@ -156,17 +144,11 @@ public class JAXBOMDataSourceTest {
         orgEnvelope.serialize(out);
         assertThat(element.isExpanded()).isFalse();
 
-        SOAPEnvelope envelope =
-                OMXMLBuilderFactory.createSOAPModelBuilder(
-                                new ByteArrayInputStream(out.toByteArray()), null)
-                        .getSOAPEnvelope();
-        DocumentBean object =
-                (DocumentBean)
-                        context.createUnmarshaller()
-                                .unmarshal(
-                                        envelope.getBody()
-                                                .getFirstElement()
-                                                .getXMLStreamReader(false));
+        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(
+                        new ByteArrayInputStream(out.toByteArray()), null)
+                .getSOAPEnvelope();
+        DocumentBean object = (DocumentBean) context.createUnmarshaller()
+                .unmarshal(envelope.getBody().getFirstElement().getXMLStreamReader(false));
         assertThat(IOUtils.toString(object.getContent().getInputStream(), StandardCharsets.UTF_8))
                 .isEqualTo("some content");
     }
@@ -184,11 +166,8 @@ public class JAXBOMDataSourceTest {
         object.setId("test");
         OMSourcedElement element = omFactory.createOMElement(new JAXBOMDataSource(context, object));
         XMLStreamException exception = new XMLStreamException("TEST");
-        assertThatThrownBy(
-                        () ->
-                                element.serialize(
-                                        new ExceptionXMLStreamWriterWrapper(
-                                                StAX.createNullXMLStreamWriter(), exception)))
+        assertThatThrownBy(() -> element.serialize(
+                        new ExceptionXMLStreamWriterWrapper(StAX.createNullXMLStreamWriter(), exception)))
                 .isSameAs(exception);
     }
 
@@ -201,10 +180,8 @@ public class JAXBOMDataSourceTest {
         OMFactory omFactory = OMAbstractFactory.getOMFactory();
         ObjectFactory objectFactory = new ObjectFactory();
         JAXBContext context = JAXBContext.newInstance(ObjectFactory.class);
-        JAXBElement<LinkIdentitiesType> jaxbElement =
-                objectFactory.createLinkIdentities(new LinkIdentitiesType());
-        OMSourcedElement element =
-                omFactory.createOMElement(new JAXBOMDataSource(context, jaxbElement));
+        JAXBElement<LinkIdentitiesType> jaxbElement = objectFactory.createLinkIdentities(new LinkIdentitiesType());
+        OMSourcedElement element = omFactory.createOMElement(new JAXBOMDataSource(context, jaxbElement));
         assertThat(element.getNamespaceURI()).isEqualTo("http://www.example.org/identity");
         assertThat(element.getLocalName()).isEqualTo("LinkIdentities");
         assertThat(element.isExpanded()).isFalse();
@@ -221,8 +198,7 @@ public class JAXBOMDataSourceTest {
     public void TestGetNameFromPlainObject() throws Exception {
         OMFactory omFactory = OMAbstractFactory.getOMFactory();
         JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
-        OMSourcedElement element =
-                omFactory.createOMElement(new JAXBOMDataSource(context, new DocumentBean()));
+        OMSourcedElement element = omFactory.createOMElement(new JAXBOMDataSource(context, new DocumentBean()));
         assertThat(element.getNamespaceURI()).isEqualTo("http://ws.apache.org/axiom/test/jaxb");
         assertThat(element.getLocalName()).isEqualTo("document");
         assertThat(element.isExpanded()).isFalse();

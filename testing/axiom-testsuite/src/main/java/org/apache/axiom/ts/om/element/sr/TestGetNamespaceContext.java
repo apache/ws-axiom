@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.element.sr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestGetNamespaceContext extends AxiomTestCase {
     private final boolean cache;
@@ -42,12 +40,9 @@ public class TestGetNamespaceContext extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element =
-                AXIOMUtil.stringToOM(
-                        metaFactory.getOMFactory(),
-                        "<a xmlns='urn:ns1' xmlns:ns2='urn:ns2'><b xmlns:ns3='urn:ns3'/></a>");
-        XMLStreamReader stream =
-                cache ? element.getXMLStreamReader() : element.getXMLStreamReaderWithoutCaching();
+        OMElement element = AXIOMUtil.stringToOM(
+                metaFactory.getOMFactory(), "<a xmlns='urn:ns1' xmlns:ns2='urn:ns2'><b xmlns:ns3='urn:ns3'/></a>");
+        XMLStreamReader stream = cache ? element.getXMLStreamReader() : element.getXMLStreamReaderWithoutCaching();
         stream.next();
         assertThat(stream.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         assertThat(stream.getLocalName()).isEqualTo("b");

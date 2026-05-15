@@ -20,11 +20,10 @@ package org.apache.axiom.ts.om.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-
-import com.google.inject.Inject;
 
 /**
  * Tests a scenario that gave incorrect results in previous Axiom versions because {@link
@@ -33,8 +32,7 @@ import com.google.inject.Inject;
  */
 public class TestCreateOMElementWithNamespaceInScope4 extends CreateOMElementTestCase {
     @Inject
-    public TestCreateOMElementWithNamespaceInScope4(
-            OMMetaFactory metaFactory, CreateOMElementVariant variant) {
+    public TestCreateOMElementWithNamespaceInScope4(OMMetaFactory metaFactory, CreateOMElementVariant variant) {
         super(metaFactory, variant, null);
     }
 

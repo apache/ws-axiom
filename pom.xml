@@ -1205,30 +1205,25 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.spotify.fmt</groupId>
-                <artifactId>fmt-maven-plugin</artifactId>
-                <version>2.29</version>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>3.5.0</version>
                 <executions>
                     <execution>
+                        <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- AOSP changes the indentation (from 2 to 4) and the import order. Since we
-                         don't want Android conventions for import ordering, we skip sorting
-                         imports. -->
-                    <style>aosp</style>
-                    <skipSortingImports>true</skipSortingImports>
+                    <java>
+                        <palantirJavaFormat>
+                            <!-- Defer Javadoc comment reformatting to a later step -->
+                            <formatJavadoc>false</formatJavadoc>
+                        </palantirJavaFormat>
+                    </java>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.google.googlejavaformat</groupId>
-                        <artifactId>google-java-format</artifactId>
-                        <version>1.35.0</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -1261,11 +1256,11 @@
                             <properties>
                                 <property>
                                     <name>org.eclipse.jdt.core.formatter.comment.line_length</name>
-                                    <value>100</value>
+                                    <value>120</value>
                                 </property>
                                 <property>
                                     <name>org.eclipse.jdt.core.formatter.lineSplit</name>
-                                    <value>100</value>
+                                    <value>120</value>
                                 </property>
                                 <property>
                                     <name>org.eclipse.jdt.core.formatter.tabulation.char</name>

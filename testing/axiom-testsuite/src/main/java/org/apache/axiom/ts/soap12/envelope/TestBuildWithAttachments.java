@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.ts.soap12.envelope;
 
+import com.google.inject.Inject;
 import java.io.InputStream;
 import java.util.Iterator;
-
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -30,8 +30,6 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
-
-import com.google.inject.Inject;
 
 public class TestBuildWithAttachments extends AxiomTestCase {
     @Inject
@@ -43,11 +41,10 @@ public class TestBuildWithAttachments extends AxiomTestCase {
     protected void runTest() throws Throwable {
         MTOMSample sample = MTOMSample.SAMPLE1;
         InputStream in = sample.getInputStream();
-        MultipartBody mb =
-                MultipartBody.builder()
-                        .setInputStream(in)
-                        .setContentType(sample.getContentType())
-                        .build();
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(in)
+                .setContentType(sample.getContentType())
+                .build();
         SOAPEnvelope envelope =
                 OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, mb).getSOAPEnvelope();
         envelope.buildWithAttachments();
@@ -56,10 +53,8 @@ public class TestBuildWithAttachments extends AxiomTestCase {
         OMElement image1 = it.next();
         OMElement image2 = it.next();
 
-        IOTestUtils.compareStreams(
-                ((OMText) image1.getFirstOMChild()).getBlob().getInputStream(), sample.getPart(1));
+        IOTestUtils.compareStreams(((OMText) image1.getFirstOMChild()).getBlob().getInputStream(), sample.getPart(1));
 
-        IOTestUtils.compareStreams(
-                ((OMText) image2.getFirstOMChild()).getBlob().getInputStream(), sample.getPart(2));
+        IOTestUtils.compareStreams(((OMText) image2.getFirstOMChild()).getBlob().getInputStream(), sample.getPart(2));
     }
 }

@@ -20,7 +20,6 @@ package org.apache.axiom.core.impl;
 
 import java.util.ConcurrentModificationException;
 import java.util.NoSuchElementException;
-
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreModelException;
@@ -46,11 +45,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode, S> implements Nod
     private int depth;
 
     public AbstractNodeIterator(
-            CoreParentNode startNode,
-            Axis axis,
-            Class<T> type,
-            Mapper<S, ? super T> mapper,
-            Semantics semantics) {
+            CoreParentNode startNode, Axis axis, Class<T> type, Mapper<S, ? super T> mapper, Semantics semantics) {
         this.startNode = startNode;
         this.axis = axis;
         this.type = type;
@@ -62,8 +57,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode, S> implements Nod
 
     private void computeNext(Axis axis) {
         CoreNode node = currentNode;
-        if (node instanceof CoreChildNode
-                && ((CoreChildNode) node).coreGetParent() != currentParent) {
+        if (node instanceof CoreChildNode && ((CoreChildNode) node).coreGetParent() != currentParent) {
             throw new ConcurrentModificationException(
                     "The current node has been removed using a method other than Iterator#remove()");
         }
@@ -92,8 +86,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode, S> implements Nod
                                 if (visitChildren
                                         && node instanceof CoreParentNode
                                         && semantics.isParentNode(node.coreGetNodeType())) {
-                                    CoreChildNode firstChild =
-                                            ((CoreParentNode) node).coreGetFirstChild();
+                                    CoreChildNode firstChild = ((CoreParentNode) node).coreGetFirstChild();
                                     if (firstChild != null) {
                                         depth++;
                                         node = firstChild;
@@ -104,8 +97,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode, S> implements Nod
                                     node = null;
                                     break;
                                 }
-                                CoreChildNode nextSibling =
-                                        ((CoreChildNode) node).coreGetNextSibling();
+                                CoreChildNode nextSibling = ((CoreChildNode) node).coreGetNextSibling();
                                 if (nextSibling != null) {
                                     node = nextSibling;
                                     break;
@@ -147,10 +139,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode, S> implements Nod
     public final S next() {
         if (hasNext()) {
             currentNode = nextNode;
-            currentParent =
-                    currentNode instanceof CoreChildNode
-                            ? ((CoreChildNode) currentNode).coreGetParent()
-                            : null;
+            currentParent = currentNode instanceof CoreChildNode ? ((CoreChildNode) currentNode).coreGetParent() : null;
             hasNext = false;
             S mapped = mapper.map(currentNode);
             if (mapped != currentNode && mapped instanceof CoreNode) {

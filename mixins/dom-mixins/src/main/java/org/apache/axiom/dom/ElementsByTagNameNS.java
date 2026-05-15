@@ -19,7 +19,6 @@
 package org.apache.axiom.dom;
 
 import java.util.Iterator;
-
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mappers;

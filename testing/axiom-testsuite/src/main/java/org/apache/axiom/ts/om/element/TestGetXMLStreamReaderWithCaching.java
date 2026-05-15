@@ -20,18 +20,15 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that the object model can still be accessed after using {@link
@@ -45,11 +42,9 @@ public class TestGetXMLStreamReaderWithCaching extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(),
-                        TestGetChildElementsConsumed.class.getResourceAsStream(
-                                "purchase-order.xml"));
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
+                metaFactory.getOMFactory(),
+                TestGetChildElementsConsumed.class.getResourceAsStream("purchase-order.xml"));
 
         OMElement documentElement = builder.getDocumentElement();
         XMLStreamReader reader = documentElement.getXMLStreamReader();

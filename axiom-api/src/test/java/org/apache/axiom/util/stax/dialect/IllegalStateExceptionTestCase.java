@@ -20,11 +20,10 @@ package org.apache.axiom.util.stax.dialect;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 public abstract class IllegalStateExceptionTestCase extends EventSpecificTestCase {
     @Inject

@@ -20,7 +20,6 @@ package org.apache.axiom.ts.dimension.serialization;
 
 import java.io.StringWriter;
 import java.io.Writer;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.testutils.suite.LabelTarget;
 

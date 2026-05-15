@@ -20,7 +20,6 @@
 package org.apache.axiom.util.stax;
 
 import java.util.NoSuchElementException;
-
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
@@ -472,30 +471,22 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
 
     @Override
     public boolean isCharacters() {
-        return state != STATE_START_DOCUMENT
-                && state != STATE_END_DOCUMENT
-                && parent.isCharacters();
+        return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isCharacters();
     }
 
     @Override
     public boolean isStartElement() {
-        return state != STATE_START_DOCUMENT
-                && state != STATE_END_DOCUMENT
-                && parent.isStartElement();
+        return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isStartElement();
     }
 
     @Override
     public boolean isEndElement() {
-        return state != STATE_START_DOCUMENT
-                && state != STATE_END_DOCUMENT
-                && parent.isEndElement();
+        return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isEndElement();
     }
 
     @Override
     public boolean isWhiteSpace() {
-        return state != STATE_START_DOCUMENT
-                && state != STATE_END_DOCUMENT
-                && parent.isWhiteSpace();
+        return state != STATE_START_DOCUMENT && state != STATE_END_DOCUMENT && parent.isWhiteSpace();
     }
 
     @Override

@@ -22,9 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Locale;
-
 import javax.xml.transform.Source;
-
 import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
 import org.springframework.ws.server.endpoint.annotation.XPathParam;
 import org.springframework.ws.soap.client.SoapFaultClientException;
@@ -70,13 +68,10 @@ public class BrokerScenarioTest extends ScenarioTestCase {
         Locale oldLocale = Locale.getDefault();
         Locale.setDefault(Locale.ENGLISH);
         try {
-            assertThatThrownBy(() -> client.order(order))
-                    .isInstanceOfSatisfying(
-                            SoapFaultClientException.class,
-                            ex -> {
-                                assertThat(ex.getFaultCode()).isEqualTo(spec.getSenderFaultCode());
-                                assertThat(ex.getMessage()).isEqualTo("Customer 23629 unknown");
-                            });
+            assertThatThrownBy(() -> client.order(order)).isInstanceOfSatisfying(SoapFaultClientException.class, ex -> {
+                assertThat(ex.getFaultCode()).isEqualTo(spec.getSenderFaultCode());
+                assertThat(ex.getMessage()).isEqualTo("Customer 23629 unknown");
+            });
         } finally {
             Locale.setDefault(oldLocale);
         }

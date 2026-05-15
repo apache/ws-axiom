@@ -19,9 +19,7 @@
 package org.apache.axiom.util.sax;
 
 import java.util.stream.Stream;
-
 import javax.xml.parsers.SAXParserFactory;
-
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 

@@ -21,7 +21,6 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.util.stax.wrapper.WrappingXMLOutputFactory;
 
 class NormalizingXMLOutputFactoryWrapper extends WrappingXMLOutputFactory {

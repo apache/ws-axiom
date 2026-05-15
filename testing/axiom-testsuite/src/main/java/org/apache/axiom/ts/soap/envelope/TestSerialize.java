@@ -21,6 +21,7 @@ package org.apache.axiom.ts.soap.envelope;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -28,8 +29,6 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.soap.SOAPSample;
-
-import com.google.inject.Inject;
 
 public class TestSerialize extends AxiomTestCase {
     private final SOAPSample message;
@@ -50,10 +49,9 @@ public class TestSerialize extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPEnvelope soapEnvelope =
-                OMXMLBuilderFactory.createSOAPModelBuilder(
-                                metaFactory, message.getInputStream(), null)
-                        .getSOAPEnvelope();
+        SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(
+                        metaFactory, message.getInputStream(), null)
+                .getSOAPEnvelope();
         expansionStrategy.apply(soapEnvelope);
         assertAbout(xml())
                 .that(serializationStrategy.serialize(soapEnvelope).getInputSource())

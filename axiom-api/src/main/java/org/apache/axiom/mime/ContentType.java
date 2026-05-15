@@ -65,8 +65,7 @@ import java.util.Objects;
 public final class ContentType {
     public static final class Builder {
         private MediaType mediaType;
-        private final LinkedHashMap<String, String> parameters =
-                new LinkedHashMap<String, String>();
+        private final LinkedHashMap<String, String> parameters = new LinkedHashMap<String, String>();
 
         Builder() {}
 
@@ -261,9 +260,7 @@ public final class ContentType {
      * @return whether the content type is textual
      */
     public boolean isTextual() {
-        return mediaType.hasPrimaryType("text")
-                || mediaType.isXML()
-                || getParameter("charset") != null;
+        return mediaType.hasPrimaryType("text") || mediaType.isXML() || getParameter("charset") != null;
     }
 
     /**

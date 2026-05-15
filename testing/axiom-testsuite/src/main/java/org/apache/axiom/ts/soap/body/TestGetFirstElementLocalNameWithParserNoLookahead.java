@@ -20,8 +20,9 @@ package org.apache.axiom.ts.soap.body;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -30,32 +31,27 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /**
  * Tests that {@link SOAPBody#getFirstElementLocalName()} returns the expected result if the parser
  * has already progressed past the start of the payload and the optimization described in <a
  * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a> is no longer applicable.
  */
 public class TestGetFirstElementLocalNameWithParserNoLookahead extends TestCase {
-    @Inject private OMMetaFactory metaFactory;
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private OMMetaFactory metaFactory;
+
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope orgEnvelope = soapFactory.getDefaultEnvelope();
-        OMElement payload =
-                soapFactory.createOMElement(
-                        "payload",
-                        soapFactory.createOMNamespace("urn:test", "p"),
-                        orgEnvelope.getBody());
+        OMElement payload = soapFactory.createOMElement(
+                "payload", soapFactory.createOMNamespace("urn:test", "p"), orgEnvelope.getBody());
         OMElement child = soapFactory.createOMElement("child", null, payload);
         soapFactory.createOMElement("grandchild", null, child);
         SOAPModelBuilder builder =
-                OMXMLBuilderFactory.createSOAPModelBuilder(
-                        metaFactory, new StringReader(orgEnvelope.toString()));
+                OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new StringReader(orgEnvelope.toString()));
         SOAPBody body = builder.getSOAPEnvelope().getBody();
         body.getFirstElement().getFirstElement();
         assertThat(body.getFirstElementLocalName()).isEqualTo("payload");

@@ -18,13 +18,11 @@
  */
 package org.apache.axiom.weaver.mixin;
 
+import com.github.veithen.jrel.association.MutableReferences;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.tree.FieldNode;
-
-import com.github.veithen.jrel.association.MutableReferences;
 
 public final class Mixin {
     private final int bytecodeVersion;
@@ -33,8 +31,7 @@ public final class Mixin {
     private final List<FieldNode> fields;
     private final InitializerMethod initializerMethod;
     private final StaticInitializerMethod staticInitializerMethod;
-    private final MutableReferences<MixinMethod> methods =
-            Relations.MIXIN_METHODS.newReferenceHolder(this);
+    private final MutableReferences<MixinMethod> methods = Relations.MIXIN_METHODS.newReferenceHolder(this);
     private final int weight;
     private final List<MixinInnerClass> innerClasses;
 
@@ -67,9 +64,7 @@ public final class Mixin {
         }
         for (MixinInnerClass innerClass : innerClasses) {
             Counter counter = new Counter();
-            innerClass
-                    .createClassDefinition(DummyTargetContext.INSTANCE)
-                    .accept(new WeighingClassVisitor(counter));
+            innerClass.createClassDefinition(DummyTargetContext.INSTANCE).accept(new WeighingClassVisitor(counter));
             weight += counter.get();
         }
         this.weight = weight;

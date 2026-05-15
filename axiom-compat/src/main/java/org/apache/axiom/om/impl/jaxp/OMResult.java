@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.jaxp;
 
 import javax.xml.transform.sax.SAXResult;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;

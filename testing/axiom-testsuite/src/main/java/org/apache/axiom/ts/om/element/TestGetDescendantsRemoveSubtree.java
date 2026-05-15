@@ -20,17 +20,15 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Test that {@link Iterator#remove()} behaves correctly on the iterator returned by {@link
@@ -44,11 +42,9 @@ public class TestGetDescendantsRemoveSubtree extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(),
-                                new StringReader("<root><a><b/></a><c/></root>"))
-                        .getDocumentElement();
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), new StringReader("<root><a><b/></a><c/></root>"))
+                .getDocumentElement();
         Iterator<OMNode> it = root.getDescendants(false);
         assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("a");
         it.remove();

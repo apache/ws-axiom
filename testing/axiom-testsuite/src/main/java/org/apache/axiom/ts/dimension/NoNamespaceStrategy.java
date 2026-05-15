@@ -25,44 +25,41 @@ import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.LabelTarget;
 
 public abstract class NoNamespaceStrategy extends Multiton implements Dimension {
-    public static final NoNamespaceStrategy NULL =
-            new NoNamespaceStrategy() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("ns", "null");
-                }
+    public static final NoNamespaceStrategy NULL = new NoNamespaceStrategy() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("ns", "null");
+        }
 
-                @Override
-                public OMNamespace createOMNamespace(OMFactory factory) {
-                    return null;
-                }
-            };
+        @Override
+        public OMNamespace createOMNamespace(OMFactory factory) {
+            return null;
+        }
+    };
 
-    public static final NoNamespaceStrategy NULL_PREFIX =
-            new NoNamespaceStrategy() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("ns", "nullPrefix");
-                }
+    public static final NoNamespaceStrategy NULL_PREFIX = new NoNamespaceStrategy() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("ns", "nullPrefix");
+        }
 
-                @Override
-                public OMNamespace createOMNamespace(OMFactory factory) {
-                    return factory.createOMNamespace("", null);
-                }
-            };
+        @Override
+        public OMNamespace createOMNamespace(OMFactory factory) {
+            return factory.createOMNamespace("", null);
+        }
+    };
 
-    public static final NoNamespaceStrategy EMPTY =
-            new NoNamespaceStrategy() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("ns", "empty");
-                }
+    public static final NoNamespaceStrategy EMPTY = new NoNamespaceStrategy() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("ns", "empty");
+        }
 
-                @Override
-                public OMNamespace createOMNamespace(OMFactory factory) {
-                    return factory.createOMNamespace("", "");
-                }
-            };
+        @Override
+        public OMNamespace createOMNamespace(OMFactory factory) {
+            return factory.createOMNamespace("", "");
+        }
+    };
 
     private NoNamespaceStrategy() {}
 

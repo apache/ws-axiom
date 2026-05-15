@@ -19,7 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.InputStream;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -30,9 +29,7 @@ public class TestDisallowDoctypeDeclWithDenialOfService extends DialectTestCase 
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         factory = staxImpl.getDialect().disallowDoctypeDecl(factory);
-        InputStream in =
-                TestDisallowDoctypeDeclWithDenialOfService.class.getResourceAsStream(
-                        "doctype_dos.xml");
+        InputStream in = TestDisallowDoctypeDeclWithDenialOfService.class.getResourceAsStream("doctype_dos.xml");
         try {
             boolean gotException = false;
             boolean reachedDocumentElement = false;

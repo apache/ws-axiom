@@ -20,17 +20,14 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-166">AXIOM-166</a>. */
 public class TestGetChildrenWithName3 extends AxiomTestCase {
@@ -50,8 +47,7 @@ public class TestGetChildrenWithName3 extends AxiomTestCase {
         e.setText("Apache Developer");
 
         Iterator<OMElement> childrenIter =
-                documentElement.getChildrenWithName(
-                        new QName("http://test.ws.org", "Employee", "test"));
+                documentElement.getChildrenWithName(new QName("http://test.ws.org", "Employee", "test"));
         OMElement employee = childrenIter.next(); // should walk past OMText
         assertThat(employee.getText()).isEqualTo("Apache Developer");
     }

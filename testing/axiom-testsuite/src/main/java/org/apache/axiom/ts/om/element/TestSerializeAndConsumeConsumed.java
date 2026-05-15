@@ -20,9 +20,9 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.core.stream.stax.StAX;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
@@ -31,8 +31,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMContainer#serializeAndConsume(XMLStreamWriter)} throws an appropriate
@@ -49,11 +47,9 @@ public class TestSerializeAndConsumeConsumed extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(),
-                        TestGetChildElementsConsumed.class.getResourceAsStream(
-                                "purchase-order.xml"));
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
+                metaFactory.getOMFactory(),
+                TestGetChildElementsConsumed.class.getResourceAsStream("purchase-order.xml"));
 
         OMElement documentElement = builder.getDocumentElement();
 
@@ -67,8 +63,7 @@ public class TestSerializeAndConsumeConsumed extends AxiomTestCase {
 
         // try to find the children of the document element. This should produce an
         // error since the underlying stream is fully consumed without building the object tree
-        assertThatThrownBy(
-                        () -> documentElement.serializeAndConsume(StAX.createNullXMLStreamWriter()))
+        assertThatThrownBy(() -> documentElement.serializeAndConsume(StAX.createNullXMLStreamWriter()))
                 .isInstanceOf(NodeUnavailableException.class);
 
         documentElement.close(false);

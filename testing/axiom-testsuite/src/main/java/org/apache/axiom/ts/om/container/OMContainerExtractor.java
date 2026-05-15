@@ -19,9 +19,7 @@
 package org.apache.axiom.ts.om.container;
 
 import java.io.InputStream;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testing.multiton.Multiton;
@@ -31,28 +29,27 @@ import org.xml.sax.InputSource;
 
 /** Extracts an {@link OMContainer} instance from a test file. */
 public abstract class OMContainerExtractor extends Multiton implements Dimension {
-    public static final OMContainerExtractor DOCUMENT =
-            new OMContainerExtractor() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("container", "document");
-                }
+    public static final OMContainerExtractor DOCUMENT = new OMContainerExtractor() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("container", "document");
+        }
 
-                @Override
-                public InputSource getControl(InputStream testFileContent) {
-                    return new InputSource(testFileContent);
-                }
+        @Override
+        public InputSource getControl(InputStream testFileContent) {
+            return new InputSource(testFileContent);
+        }
 
-                @Override
-                public OMContainer getContainer(OMXMLParserWrapper builder) {
-                    return builder.getDocument();
-                }
+        @Override
+        public OMContainer getContainer(OMXMLParserWrapper builder) {
+            return builder.getDocument();
+        }
 
-                @Override
-                public XMLStreamReader filter(XMLStreamReader reader) {
-                    return new RootWhitespaceFilter(reader);
-                }
-            };
+        @Override
+        public XMLStreamReader filter(XMLStreamReader reader) {
+            return new RootWhitespaceFilter(reader);
+        }
+    };
 
     public static final OMElementExtractor ELEMENT = new OMElementExtractor(false);
     public static final OMElementExtractor ELEMENT_DETACHED = new OMElementExtractor(true);

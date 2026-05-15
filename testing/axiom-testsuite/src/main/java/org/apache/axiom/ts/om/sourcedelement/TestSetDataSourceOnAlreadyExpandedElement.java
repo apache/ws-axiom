@@ -20,12 +20,11 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 @SuppressWarnings("deprecation")
 public class TestSetDataSourceOnAlreadyExpandedElement extends AxiomTestCase {
@@ -37,8 +36,7 @@ public class TestSetDataSourceOnAlreadyExpandedElement extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMSourcedElement element =
-                TestDocument.DOCUMENT1.createOMSourcedElement(
-                        metaFactory.getOMFactory(), false, true);
+                TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory(), false, true);
         // Make sure the OMSourcedElement is expanded
         element.getFirstOMChild();
         assertThat(element.isExpanded()).isTrue();

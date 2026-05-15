@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om;
 
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
@@ -27,9 +29,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Checks that there are no collisions between the Axiom object model interfaces and DOM.
@@ -45,49 +44,32 @@ public class DOMCompatibilityTest extends TestCase {
         TestSuite suite = new TestSuite();
         // Note: All exceptions are methods that are known to have the same behavior in Axiom
         //       and DOM. In these cases, method collisions are allowed.
-        suite.addTest(
-                new MethodCollisionTestCase(
-                        OMAttribute.class,
-                        Attr.class,
-                        new MethodSignature[] {
-                            new MethodSignature("getPrefix", new Class[0]),
-                            new MethodSignature("getNamespaceURI", new Class[0]),
-                            new MethodSignature("getLocalName", new Class[0])
-                        }));
+        suite.addTest(new MethodCollisionTestCase(OMAttribute.class, Attr.class, new MethodSignature[] {
+            new MethodSignature("getPrefix", new Class[0]),
+            new MethodSignature("getNamespaceURI", new Class[0]),
+            new MethodSignature("getLocalName", new Class[0])
+        }));
         suite.addTest(new MethodCollisionTestCase(OMComment.class, Comment.class));
-        suite.addTest(
-                new MethodCollisionTestCase(
-                        OMDocType.class,
-                        DocumentType.class,
-                        new MethodSignature[] {
-                            new MethodSignature("getPublicId", new Class[0]),
-                            new MethodSignature("getSystemId", new Class[0]),
-                            new MethodSignature("getInternalSubset", new Class[0])
-                        }));
+        suite.addTest(new MethodCollisionTestCase(OMDocType.class, DocumentType.class, new MethodSignature[] {
+            new MethodSignature("getPublicId", new Class[0]),
+            new MethodSignature("getSystemId", new Class[0]),
+            new MethodSignature("getInternalSubset", new Class[0])
+        }));
         suite.addTest(new MethodCollisionTestCase(OMDocument.class, Document.class));
-        suite.addTest(
-                new MethodCollisionTestCase(
-                        OMProcessingInstruction.class,
-                        ProcessingInstruction.class,
-                        new MethodSignature[] {new MethodSignature("getTarget", new Class[0])}));
-        suite.addTest(
-                new MethodCollisionTestCase(
-                        OMElement.class,
-                        Element.class,
-                        new MethodSignature[] {
-                            new MethodSignature("getPrefix", new Class[0]),
-                            new MethodSignature("getNamespaceURI", new Class[0]),
-                            new MethodSignature("getLocalName", new Class[0])
-                        }));
-        suite.addTest(
-                new MethodCollisionTestCase(
-                        OMSourcedElement.class,
-                        Element.class,
-                        new MethodSignature[] {
-                            new MethodSignature("getPrefix", new Class[0]),
-                            new MethodSignature("getNamespaceURI", new Class[0]),
-                            new MethodSignature("getLocalName", new Class[0])
-                        }));
+        suite.addTest(new MethodCollisionTestCase(
+                OMProcessingInstruction.class,
+                ProcessingInstruction.class,
+                new MethodSignature[] {new MethodSignature("getTarget", new Class[0])}));
+        suite.addTest(new MethodCollisionTestCase(OMElement.class, Element.class, new MethodSignature[] {
+            new MethodSignature("getPrefix", new Class[0]),
+            new MethodSignature("getNamespaceURI", new Class[0]),
+            new MethodSignature("getLocalName", new Class[0])
+        }));
+        suite.addTest(new MethodCollisionTestCase(OMSourcedElement.class, Element.class, new MethodSignature[] {
+            new MethodSignature("getPrefix", new Class[0]),
+            new MethodSignature("getNamespaceURI", new Class[0]),
+            new MethodSignature("getLocalName", new Class[0])
+        }));
         suite.addTest(new MethodCollisionTestCase(OMText.class, Text.class));
         suite.addTest(new MethodCollisionTestCase(OMText.class, CDATASection.class));
         suite.addTest(new MethodCollisionTestCase(OMEntityReference.class, EntityReference.class));

@@ -20,20 +20,18 @@ package org.apache.axiom.ts.soap12.header;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestExamineMustUnderstandHeaderBlocks extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -50,15 +48,13 @@ public class TestExamineMustUnderstandHeaderBlocks extends TestCase {
 
         soapHeader.addHeaderBlock("echoOk3", namespace).setMustUnderstand(true);
 
-        Iterator iterator =
-                soapHeader.examineMustUnderstandHeaderBlocks(
-                        "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
+        Iterator iterator = soapHeader.examineMustUnderstandHeaderBlocks(
+                "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
         assertThat(iterator.hasNext()).isTrue();
         SOAPHeaderBlock headerBlock = (SOAPHeaderBlock) iterator.next();
         assertThat(headerBlock).isNotNull();
         assertThat(headerBlock.getLocalName()).isEqualTo("echoOk2");
-        assertThat(headerBlock.getRole())
-                .isEqualTo("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
+        assertThat(headerBlock.getRole()).isEqualTo("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
         assertThat(iterator.hasNext()).isFalse();
     }
 }

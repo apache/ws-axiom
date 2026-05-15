@@ -20,9 +20,9 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -30,8 +30,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link OMSourcedElement} if {@link OMDataSource#getReader()} throws an
@@ -47,19 +45,17 @@ public class TestGetReaderException extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element =
-                factory.createOMElement(
-                        new AbstractPullOMDataSource() {
-                            @Override
-                            public XMLStreamReader getReader() throws XMLStreamException {
-                                throw new XMLStreamException("Test exception");
-                            }
+        OMSourcedElement element = factory.createOMElement(new AbstractPullOMDataSource() {
+            @Override
+            public XMLStreamReader getReader() throws XMLStreamException {
+                throw new XMLStreamException("Test exception");
+            }
 
-                            @Override
-                            public boolean isDestructiveRead() {
-                                return true;
-                            }
-                        });
+            @Override
+            public boolean isDestructiveRead() {
+                return true;
+            }
+        });
         assertThatThrownBy(element::getLocalName)
                 .isInstanceOf(OMException.class)
                 .cause()

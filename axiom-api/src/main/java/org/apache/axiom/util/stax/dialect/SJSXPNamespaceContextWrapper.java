@@ -22,7 +22,6 @@ package org.apache.axiom.util.stax.dialect;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 
@@ -51,8 +50,7 @@ class SJSXPNamespaceContextWrapper implements NamespaceContext {
         for (Iterator<?> it = parent.getPrefixes(namespaceURI); it.hasNext(); ) {
             String prefix = (String) it.next();
             String actualNamespaceURI = parent.getNamespaceURI(prefix);
-            if (namespaceURI == actualNamespaceURI
-                    || namespaceURI != null && namespaceURI.equals(actualNamespaceURI)) {
+            if (namespaceURI == actualNamespaceURI || namespaceURI != null && namespaceURI.equals(actualNamespaceURI)) {
                 prefixes.add(prefix);
             }
         }

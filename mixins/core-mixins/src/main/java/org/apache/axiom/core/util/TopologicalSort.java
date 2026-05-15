@@ -29,11 +29,7 @@ public final class TopologicalSort {
     private TopologicalSort() {}
 
     private static <T> void visit(
-            Collection<T> vertices,
-            EdgeRelation<? super T> edgeRelation,
-            List<T> result,
-            Set<T> visited,
-            T vertex) {
+            Collection<T> vertices, EdgeRelation<? super T> edgeRelation, List<T> result, Set<T> visited, T vertex) {
         if (visited.add(vertex)) {
             for (T vertex2 : vertices) {
                 if (vertex2 != vertex && edgeRelation.isEdge(vertex, vertex2)) {

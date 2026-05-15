@@ -26,9 +26,7 @@ final class Relations {
     private Relations() {}
 
     static final ManyToManyAssociation<ImplementationNode, InterfaceNode> IMPLEMENTS =
-            new ManyToManyAssociation<>(
-                    ImplementationNode.class, InterfaceNode.class, Navigability.BIDIRECTIONAL);
+            new ManyToManyAssociation<>(ImplementationNode.class, InterfaceNode.class, Navigability.BIDIRECTIONAL);
     static final ManyToOneAssociation<ImplementationNode, Weaver> WEAVER =
-            new ManyToOneAssociation<>(
-                    ImplementationNode.class, Weaver.class, Navigability.BIDIRECTIONAL);
+            new ManyToOneAssociation<>(ImplementationNode.class, Weaver.class, Navigability.BIDIRECTIONAL);
 }

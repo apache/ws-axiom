@@ -20,11 +20,13 @@ package org.apache.axiom.ts.soap.fault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
+import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -38,11 +40,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
-import junit.framework.TestCase;
-
 /**
  * Tests that the children added using methods such as {@link SOAPFault#setCode(SOAPFaultCode)} and
  * {@link SOAPFault#setReason(SOAPFaultReason)} appear in the order required by the SOAP specs when
@@ -51,13 +48,17 @@ import junit.framework.TestCase;
  * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-392">AXIOM-392</a>.
  */
 public class TestChildOrder extends TestCase {
-    @Inject private SOAPSpec spec;
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPSpec spec;
+
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Inject
     private @Named("inputOrder") SOAPFaultChild[] inputOrder;
 
-    @Inject private SerializationStrategy serializationStrategy;
+    @Inject
+    private SerializationStrategy serializationStrategy;
 
     @Override
     protected void runTest() throws Throwable {
@@ -69,13 +70,11 @@ public class TestChildOrder extends TestCase {
         }
         // Calculate the order in which we expect to see the children. Note that a given type
         // may be added multiple times. Therefore we need to use a Set.
-        SortedSet<SOAPFaultChild> outputOrder =
-                new TreeSet<>(Comparator.comparingInt(SOAPFaultChild::getOrder));
+        SortedSet<SOAPFaultChild> outputOrder = new TreeSet<>(Comparator.comparingInt(SOAPFaultChild::getOrder));
         outputOrder.addAll(Arrays.asList(inputOrder));
         // Check the result using the given serialization strategy
-        Document document =
-                DOMImplementation.XERCES.parse(
-                        serializationStrategy.serialize(fault).getInputSource());
+        Document document = DOMImplementation.XERCES.parse(
+                serializationStrategy.serialize(fault).getInputSource());
         Element domFault = document.getDocumentElement();
         Node child = domFault.getFirstChild();
         for (SOAPFaultChild type : outputOrder) {

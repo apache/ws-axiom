@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.truth;
 
-import org.apache.axiom.om.OMContainer;
-
 import com.google.common.truth.FailureMetadata;
+import org.apache.axiom.om.OMContainer;
 
 public final class OMContainerSubject extends AbstractOMContainerSubject {
     OMContainerSubject(FailureMetadata failureMetadata, OMContainer subject) {

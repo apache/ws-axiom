@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -29,8 +29,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement(boolean)} with <code>
@@ -47,8 +45,7 @@ public class TestGetDocumentElementWithDiscardDocumentIllFormedEpilog extends Ax
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(
-                        factory, new StringReader("<root/> there shouldn't be text here!"));
+                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root/> there shouldn't be text here!"));
         OMElement element = builder.getDocumentElement(true);
         assertThatThrownBy(element::build).isInstanceOf(OMException.class);
     }

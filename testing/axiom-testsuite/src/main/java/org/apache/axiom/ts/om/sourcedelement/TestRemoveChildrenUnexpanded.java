@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
@@ -29,8 +29,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests {@link OMContainer#removeChildren()} on an {@link OMSourcedElement} that is not expanded.
@@ -47,8 +45,7 @@ public class TestRemoveChildrenUnexpanded extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element =
-                factory.createOMElement(
-                        new StringOMDataSource("<element attr='value'><a/></element>"));
+                factory.createOMElement(new StringOMDataSource("<element attr='value'><a/></element>"));
         element.removeChildren();
         // Check that the attribute has been added
         Iterator<OMAttribute> it = element.getAllAttributes();

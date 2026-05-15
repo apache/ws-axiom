@@ -19,10 +19,8 @@
 package org.apache.axiom.ts.om.sourcedelement.push;
 
 import java.util.Map;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;

@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -30,15 +29,12 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomSOAP12FaultTextMixin implements AxiomSOAP12FaultText {
-    private static final OMNamespace LANG_NAMESPACE =
-            new OMNamespaceImpl(
-                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
-                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
-    private static final QName LANG_QNAME =
-            new QName(
-                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
-                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
-                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+    private static final OMNamespace LANG_NAMESPACE = new OMNamespaceImpl(
+            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI, SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+    private static final QName LANG_QNAME = new QName(
+            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
+            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
 
     @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {

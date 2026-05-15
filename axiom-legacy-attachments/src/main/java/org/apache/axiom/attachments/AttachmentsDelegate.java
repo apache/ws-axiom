@@ -18,13 +18,11 @@
  */
 package org.apache.axiom.attachments;
 
+import jakarta.activation.DataHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
-
-import jakarta.activation.DataHandler;
-
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMException;

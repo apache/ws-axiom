@@ -22,11 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -45,90 +43,81 @@ import org.xml.sax.InputSource;
  * or {@link OMElement}) in a specific state.
  */
 public abstract class ElementContext extends Multiton implements Dimension {
-    public static final ElementContext ORPHAN =
-            new ElementContext() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("container", "none");
-                }
+    public static final ElementContext ORPHAN = new ElementContext() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("container", "none");
+        }
 
-                @Override
-                public OMContainer wrap(OMElement element) {
-                    return null;
-                }
+        @Override
+        public OMContainer wrap(OMElement element) {
+            return null;
+        }
 
-                @Override
-                public InputSource getControl(InputSource xml) {
-                    throw new UnsupportedOperationException();
-                }
-            };
+        @Override
+        public InputSource getControl(InputSource xml) {
+            throw new UnsupportedOperationException();
+        }
+    };
 
     /** The {@link OMElement} is a child of another (programmatically created) {@link OMElement}. */
-    public static final ElementContext ELEMENT =
-            new ElementContext() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("container", "element");
-                    testCase.addLabel("complete", true);
-                }
+    public static final ElementContext ELEMENT = new ElementContext() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("container", "element");
+            testCase.addLabel("complete", true);
+        }
 
-                @Override
-                public OMContainer wrap(OMElement element) {
-                    OMElement parent = element.getOMFactory().createOMElement("parent", null);
-                    parent.addChild(element);
-                    return parent;
-                }
+        @Override
+        public OMContainer wrap(OMElement element) {
+            OMElement parent = element.getOMFactory().createOMElement("parent", null);
+            parent.addChild(element);
+            return parent;
+        }
 
-                @Override
-                public InputSource getControl(InputSource xml) throws Exception {
-                    Document document = DOMImplementation.XERCES.parse(xml);
-                    Element parent = document.createElementNS(null, "parent");
-                    parent.appendChild(document.getDocumentElement());
-                    StringWriter sw = new StringWriter();
-                    TransformerFactory.newInstance()
-                            .newTransformer()
-                            .transform(new DOMSource(parent), new StreamResult(sw));
-                    return new InputSource(new StringReader(sw.toString()));
-                }
-            };
+        @Override
+        public InputSource getControl(InputSource xml) throws Exception {
+            Document document = DOMImplementation.XERCES.parse(xml);
+            Element parent = document.createElementNS(null, "parent");
+            parent.appendChild(document.getDocumentElement());
+            StringWriter sw = new StringWriter();
+            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(parent), new StreamResult(sw));
+            return new InputSource(new StringReader(sw.toString()));
+        }
+    };
 
     /**
      * The {@link OMElement} is a child of another {@link OMElement} created from a parser and that
      * is incomplete.
      */
-    public static final ElementContext INCOMPLETE_ELEMENT =
-            new ElementContext() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("container", "element");
-                    testCase.addLabel("complete", "false");
-                }
+    public static final ElementContext INCOMPLETE_ELEMENT = new ElementContext() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("container", "element");
+            testCase.addLabel("complete", "false");
+        }
 
-                @Override
-                public OMContainer wrap(OMElement element) {
-                    OMElement parent =
-                            OMXMLBuilderFactory.createOMBuilder(
-                                            element.getOMFactory(),
-                                            new StringReader("<parent><sibling/></parent>"))
-                                    .getDocumentElement();
-                    parent.getFirstOMChild().insertSiblingBefore(element);
-                    assertThat(parent.isComplete()).isFalse();
-                    return parent;
-                }
+        @Override
+        public OMContainer wrap(OMElement element) {
+            OMElement parent = OMXMLBuilderFactory.createOMBuilder(
+                            element.getOMFactory(), new StringReader("<parent><sibling/></parent>"))
+                    .getDocumentElement();
+            parent.getFirstOMChild().insertSiblingBefore(element);
+            assertThat(parent.isComplete()).isFalse();
+            return parent;
+        }
 
-                @Override
-                public InputSource getControl(InputSource xml) throws Exception {
-                    Document document = DOMImplementation.XERCES.parse(xml);
-                    Element parent = document.createElementNS(null, "parent");
-                    parent.appendChild(document.getDocumentElement());
-                    parent.appendChild(document.createElementNS(null, "sibling"));
-                    StringWriter sw = new StringWriter();
-                    TransformerFactory.newInstance()
-                            .newTransformer()
-                            .transform(new DOMSource(parent), new StreamResult(sw));
-                    return new InputSource(new StringReader(sw.toString()));
-                }
-            };
+        @Override
+        public InputSource getControl(InputSource xml) throws Exception {
+            Document document = DOMImplementation.XERCES.parse(xml);
+            Element parent = document.createElementNS(null, "parent");
+            parent.appendChild(document.getDocumentElement());
+            parent.appendChild(document.createElementNS(null, "sibling"));
+            StringWriter sw = new StringWriter();
+            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(parent), new StreamResult(sw));
+            return new InputSource(new StringReader(sw.toString()));
+        }
+    };
 
     private ElementContext() {}
 

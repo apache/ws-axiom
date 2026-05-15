@@ -20,14 +20,13 @@ package org.apache.axiom.ts.om.xpath;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.apache.axiom.om.xpath.DocumentNavigator;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link DocumentNavigator#getAttributeQName(Object)} returns the correct result for an

@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.dom.element;
 
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -36,15 +35,12 @@ public class TestSetAttributeNSExistingDefaultNamespaceDeclaration extends DOMTe
         Element element = document.createElementNS(null, "test");
 
         // Add the original default namespace declaration
-        Attr attr =
-                document.createAttributeNS(
-                        XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE);
+        Attr attr = document.createAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE);
         attr.setValue("urn:ns1");
         element.setAttributeNodeNS(attr);
 
         // Now change the attribute using setAttributeNS
-        element.setAttributeNS(
-                XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, "urn:ns2");
+        element.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, "urn:ns2");
 
         // DOM is expected to change the original attribute, not to create a new one
         assertEquals("urn:ns2", attr.getValue());

@@ -22,29 +22,24 @@ package org.apache.axiom.om;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
-import org.apache.axiom.om.util.AXIOMUtil;
-import org.xml.sax.SAXException;
-
-import javax.xml.namespace.QName;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Iterator;
-
+import javax.xml.namespace.QName;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
 import junit.framework.TestCase;
+import org.apache.axiom.om.util.AXIOMUtil;
+import org.xml.sax.SAXException;
 
 public class NamespaceTest extends TestCase {
 
-    public void testNoPrefixNamespaces()
-            throws IOException, ParserConfigurationException, SAXException {
+    public void testNoPrefixNamespaces() throws IOException, ParserConfigurationException, SAXException {
 
-        String expectedXML =
-                "<axis2:DocumentElement xmlns:axis2=\"http://ws.apache.org/axis2\" "
-                        + "xmlns:axis2ns1=\"http://undefined-ns-1.org\" xmlns:axis2ns2=\"http://undefined-ns-2.org\">"
-                        + "<axis2:FirstChild /><axis2ns2:SecondChild xmlns:axis2ns2=\"http://undefined-ns-2.org\" "
-                        + "axis2ns1:testAttr=\"testValue\" /></axis2:DocumentElement>";
+        String expectedXML = "<axis2:DocumentElement xmlns:axis2=\"http://ws.apache.org/axis2\" "
+                + "xmlns:axis2ns1=\"http://undefined-ns-1.org\" xmlns:axis2ns2=\"http://undefined-ns-2.org\">"
+                + "<axis2:FirstChild /><axis2ns2:SecondChild xmlns:axis2ns2=\"http://undefined-ns-2.org\" "
+                + "axis2ns1:testAttr=\"testValue\" /></axis2:DocumentElement>";
 
         OMFactory omFactory = OMAbstractFactory.getOMFactory();
         OMNamespace axis2NS = omFactory.createOMNamespace("http://ws.apache.org/axis2", "axis2");
@@ -56,8 +51,7 @@ public class NamespaceTest extends TestCase {
         omFactory.createOMElement("FirstChild", axis2NS, docElement);
 
         OMElement secondChild =
-                omFactory.createOMElement(
-                        new QName("http://undefined-ns-2.org", "SecondChild"), docElement);
+                omFactory.createOMElement(new QName("http://undefined-ns-2.org", "SecondChild"), docElement);
         secondChild.addAttribute("testAttr", "testValue", firstOrphanNS);
 
         Iterator allDeclaredNamespaces = docElement.getAllDeclaredNamespaces();
@@ -68,14 +62,12 @@ public class NamespaceTest extends TestCase {
         }
         assertTrue(namespaceCount == 3);
 
-        assertTrue(
-                secondChild
-                        .getNamespace()
-                        .getPrefix()
-                        .equals(
-                                docElement
-                                        .findNamespace("http://undefined-ns-2.org", null)
-                                        .getPrefix()));
+        assertTrue(secondChild
+                .getNamespace()
+                .getPrefix()
+                .equals(docElement
+                        .findNamespace("http://undefined-ns-2.org", null)
+                        .getPrefix()));
     }
 
     public void attributeNSTest() {
@@ -87,16 +79,10 @@ public class NamespaceTest extends TestCase {
         elem.addAttribute(fac.createOMAttribute("testAttr", ns2, "attrValue"));
 
         OMNamespace namespace = elem.findNamespace("http://test.org", null);
-        assertTrue(
-                namespace != null
-                        && namespace.getPrefix() != null
-                        && "".equals(namespace.getPrefix()));
+        assertTrue(namespace != null && namespace.getPrefix() != null && "".equals(namespace.getPrefix()));
 
         OMNamespace namespace2 = elem.findNamespace("http://test2.org", null);
-        assertTrue(
-                namespace2 != null
-                        && namespace2.getPrefix() != null
-                        && "".equals(namespace2.getPrefix()));
+        assertTrue(namespace2 != null && namespace2.getPrefix() != null && "".equals(namespace2.getPrefix()));
     }
 
     /**
@@ -146,12 +132,11 @@ public class NamespaceTest extends TestCase {
      */
     public void testNamespaceProblem7() throws Exception {
 
-        String expectedString =
-                "<person xmlns=\"http://ws.apache.org/axis2/apacheconasia/06\">"
-                        + "<name>John</name>"
-                        + "<age>34</age>"
-                        + "<weight>50</weight>"
-                        + "</person>";
+        String expectedString = "<person xmlns=\"http://ws.apache.org/axis2/apacheconasia/06\">"
+                + "<name>John</name>"
+                + "<age>34</age>"
+                + "<weight>50</weight>"
+                + "</person>";
 
         OMFactory fac = OMAbstractFactory.getOMFactory();
 
@@ -207,25 +192,23 @@ public class NamespaceTest extends TestCase {
 
     public void testAxis2_3155() {
         try {
-            String xmlString =
-                    "<outerTag xmlns=\"http://someNamespace\">"
-                            + "<innerTag>"
-                            + "<node1>Hello</node1>"
-                            + "<node2>Hello</node2>"
-                            + "</innerTag>"
-                            + "</outerTag>";
+            String xmlString = "<outerTag xmlns=\"http://someNamespace\">"
+                    + "<innerTag>"
+                    + "<node1>Hello</node1>"
+                    + "<node2>Hello</node2>"
+                    + "</innerTag>"
+                    + "</outerTag>";
 
             OMElement elem = AXIOMUtil.stringToOM(xmlString);
             //            System.out.println("--- Calling toStringWithConsume() ---\n");
             //            System.out.println(elem.toStringWithConsume());
 
-            xmlString =
-                    "<outerTag xmlns=\"http://someNamespace\">"
-                            + "<innerTag>"
-                            + "<node1>Hello</node1>"
-                            + "<node2>Hello</node2>"
-                            + "</innerTag>"
-                            + "</outerTag>";
+            xmlString = "<outerTag xmlns=\"http://someNamespace\">"
+                    + "<innerTag>"
+                    + "<node1>Hello</node1>"
+                    + "<node2>Hello</node2>"
+                    + "</innerTag>"
+                    + "</outerTag>";
 
             elem.close(false);
 

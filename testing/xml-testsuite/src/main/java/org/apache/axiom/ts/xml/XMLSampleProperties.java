@@ -18,14 +18,12 @@
  */
 package org.apache.axiom.ts.xml;
 
+import com.ctc.wstx.stax.WstxInputFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
-
 import org.codehaus.stax2.DTDInfo;
-
-import com.ctc.wstx.stax.WstxInputFactory;
 
 final class XMLSampleProperties {
     private static final XMLInputFactory inputFactory;
@@ -51,9 +49,8 @@ final class XMLSampleProperties {
         boolean hasInternalSubset = false;
         boolean hasEntityReferences = false;
         try {
-            XMLStreamReader reader =
-                    inputFactory.createXMLStreamReader(
-                            new StreamSource(sample.getUrl().toString()));
+            XMLStreamReader reader = inputFactory.createXMLStreamReader(
+                    new StreamSource(sample.getUrl().toString()));
             encoding = reader.getEncoding();
             while (reader.hasNext()) {
                 switch (reader.next()) {

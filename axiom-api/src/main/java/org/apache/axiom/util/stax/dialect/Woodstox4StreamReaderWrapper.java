@@ -20,11 +20,9 @@ package org.apache.axiom.util.stax.dialect;
 
 import java.io.IOException;
 import java.io.Writer;
-
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.codehaus.stax2.XMLStreamReader2;
 

@@ -18,43 +18,36 @@
  */
 package org.apache.axiom.mime;
 
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.util.ByteArrayDataSource;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Random;
-
-import org.apache.axiom.util.UIDGenerator;
-
-import jakarta.mail.internet.MimeBodyPart;
-import jakarta.mail.internet.MimeMultipart;
-import jakarta.mail.util.ByteArrayDataSource;
 import junit.framework.TestCase;
+import org.apache.axiom.util.UIDGenerator;
 
 public class MultipartBodyWriterTest extends TestCase {
     private void test(ContentTransferEncoding contentTransferEncoding) throws Exception {
         Random random = new Random();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        MultipartBodyWriter mpw =
-                new MultipartBodyWriter(baos, UIDGenerator.generateMimeBoundary());
+        MultipartBodyWriter mpw = new MultipartBodyWriter(baos, UIDGenerator.generateMimeBoundary());
         byte[] content = new byte[8192];
         random.nextBytes(content);
-        OutputStream partOutputStream =
-                mpw.writePart(
-                        new ContentType(MediaType.APPLICATION_OCTET_STREAM),
-                        contentTransferEncoding,
-                        UIDGenerator.generateContentId(),
-                        null);
+        OutputStream partOutputStream = mpw.writePart(
+                new ContentType(MediaType.APPLICATION_OCTET_STREAM),
+                contentTransferEncoding,
+                UIDGenerator.generateContentId(),
+                null);
         partOutputStream.write(content);
         partOutputStream.close();
         mpw.complete();
 
-        MimeMultipart mp =
-                new MimeMultipart(
-                        new ByteArrayDataSource(baos.toByteArray(), "application/octet-stream"));
+        MimeMultipart mp = new MimeMultipart(new ByteArrayDataSource(baos.toByteArray(), "application/octet-stream"));
         assertEquals(1, mp.getCount());
         MimeBodyPart bp = (MimeBodyPart) mp.getBodyPart(0);
-        assertEquals(
-                contentTransferEncoding.toString(), bp.getHeader("Content-Transfer-Encoding")[0]);
+        assertEquals(contentTransferEncoding.toString(), bp.getHeader("Content-Transfer-Encoding")[0]);
         baos.reset();
         bp.getDataHandler().writeTo(baos);
         assertTrue(Arrays.equals(content, baos.toByteArray()));

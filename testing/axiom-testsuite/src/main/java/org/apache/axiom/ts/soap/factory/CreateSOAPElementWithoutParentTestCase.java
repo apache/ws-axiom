@@ -18,20 +18,17 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPSpec;
-
-import junit.framework.TestCase;
 
 public abstract class CreateSOAPElementWithoutParentTestCase extends TestCase {
     protected final SOAPSpec spec;
@@ -46,13 +43,10 @@ public abstract class CreateSOAPElementWithoutParentTestCase extends TestCase {
     protected final void runTest() throws Throwable {
         QName expectedName = type.getQName(spec);
         if (expectedName == null) {
-            assertThatThrownBy(() -> createSOAPElement())
-                    .isInstanceOf(UnsupportedOperationException.class);
+            assertThatThrownBy(() -> createSOAPElement()).isInstanceOf(UnsupportedOperationException.class);
         } else {
             String expectedPrefix =
-                    expectedName.getNamespaceURI().length() == 0
-                            ? ""
-                            : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX;
+                    expectedName.getNamespaceURI().length() == 0 ? "" : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX;
             OMElement element = createSOAPElement();
             assertThat(element.isComplete()).isTrue();
             QName actualName = element.getQName();

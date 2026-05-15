@@ -20,13 +20,12 @@ package org.apache.axiom.ts.soap.fault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetReasonWithParser extends SampleBasedSOAPTestCase {
     @Inject
@@ -38,7 +37,6 @@ public class TestGetReasonWithParser extends SampleBasedSOAPTestCase {
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPFault soapFaultWithParser = envelope.getBody().getFault();
         assertThat(soapFaultWithParser.getReason()).isNotNull();
-        assertThat(soapFaultWithParser.getReason().getQName())
-                .isEqualTo(spec.getFaultReasonQName());
+        assertThat(soapFaultWithParser.getReason().getQName()).isEqualTo(spec.getFaultReasonQName());
     }
 }

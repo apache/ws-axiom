@@ -36,13 +36,10 @@ import org.xml.sax.ext.LexicalHandler;
  */
 public abstract class AbstractXMLReader implements XMLReader {
     private static final String URI_NAMESPACES = "http://xml.org/sax/features/namespaces";
-    private static final String URI_NAMESPACE_PREFIXES =
-            "http://xml.org/sax/features/namespace-prefixes";
-    private static final String URI_EXTERNAL_GENERAL_ENTITIES =
-            "http://xml.org/sax/features/external-general-entities";
+    private static final String URI_NAMESPACE_PREFIXES = "http://xml.org/sax/features/namespace-prefixes";
+    private static final String URI_EXTERNAL_GENERAL_ENTITIES = "http://xml.org/sax/features/external-general-entities";
 
-    private static final String URI_LEXICAL_HANDLER =
-            "http://xml.org/sax/properties/lexical-handler";
+    private static final String URI_LEXICAL_HANDLER = "http://xml.org/sax/properties/lexical-handler";
 
     protected boolean namespaces = true;
     protected boolean namespacePrefixes = false;
@@ -95,8 +92,7 @@ public abstract class AbstractXMLReader implements XMLReader {
     }
 
     @Override
-    public boolean getFeature(String name)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
         if (URI_NAMESPACES.equals(name)) {
             return namespaces;
         } else if (URI_NAMESPACE_PREFIXES.equals(name)) {
@@ -109,8 +105,7 @@ public abstract class AbstractXMLReader implements XMLReader {
     }
 
     @Override
-    public void setFeature(String name, boolean value)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
 
         if (URI_NAMESPACES.equals(name)) {
             namespaces = value;
@@ -124,8 +119,7 @@ public abstract class AbstractXMLReader implements XMLReader {
     }
 
     @Override
-    public Object getProperty(String name)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
 
         if (URI_LEXICAL_HANDLER.equals(name)) {
             return lexicalHandler;
@@ -135,8 +129,7 @@ public abstract class AbstractXMLReader implements XMLReader {
     }
 
     @Override
-    public void setProperty(String name, Object value)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
         if (URI_LEXICAL_HANDLER.equals(name)) {
             lexicalHandler = (LexicalHandler) value;
         } else {

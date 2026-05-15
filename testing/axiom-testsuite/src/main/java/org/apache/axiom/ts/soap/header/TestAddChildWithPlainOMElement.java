@@ -20,19 +20,17 @@ package org.apache.axiom.ts.soap.header;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
+import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /** Regression test for AXIOM-512. */
 public class TestAddChildWithPlainOMElement extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

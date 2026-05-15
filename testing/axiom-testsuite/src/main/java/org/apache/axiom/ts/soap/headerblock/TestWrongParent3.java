@@ -20,6 +20,8 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPFactory;
@@ -28,25 +30,20 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /**
  * Tests that {@link OMNode#insertSiblingBefore(OMNode)} throws an exception if an attempt is made
  * to add a {@link SOAPHeaderBlock} as a child of a SOAP element other than {@link SOAPHeader}.
  */
 public class TestWrongParent3 extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPFaultDetail parent = soapFactory.createSOAPFaultDetail();
         OMElement child1 = soapFactory.createOMElement("child1", null, parent);
         SOAPHeaderBlock hb =
-                soapFactory.createSOAPHeaderBlock(
-                        "MyHeader", soapFactory.createOMNamespace("urn:test", "p"));
-        assertThatThrownBy(() -> child1.insertSiblingBefore(hb))
-                .isInstanceOf(SOAPProcessingException.class);
+                soapFactory.createSOAPHeaderBlock("MyHeader", soapFactory.createOMNamespace("urn:test", "p"));
+        assertThatThrownBy(() -> child1.insertSiblingBefore(hb)).isInstanceOf(SOAPProcessingException.class);
     }
 }

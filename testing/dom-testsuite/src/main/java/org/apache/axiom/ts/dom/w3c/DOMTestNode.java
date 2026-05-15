@@ -18,17 +18,15 @@
  */
 package org.apache.axiom.ts.dom.w3c;
 
+import com.google.inject.Injector;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
-
 import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.DynamicTest;
 import org.w3c.domts.DOMTestCase;
-
-import com.google.inject.Injector;
 
 public final class DOMTestNode extends MatrixTestNode {
     private final DOMTestCase test;

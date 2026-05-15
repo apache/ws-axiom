@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -39,7 +38,6 @@ public class TestSetNamedItemWrongDocument extends DOMTestCase {
         Attr attr = document2.createAttributeNS(null, "test");
         assertThatThrownBy(() -> element.getAttributes().setNamedItem(attr))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.WRONG_DOCUMENT_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.WRONG_DOCUMENT_ERR));
     }
 }

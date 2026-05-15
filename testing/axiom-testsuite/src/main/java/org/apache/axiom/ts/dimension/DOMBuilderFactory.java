@@ -58,8 +58,7 @@ final class DOMBuilderFactory extends BuilderFactory {
     }
 
     @Override
-    public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource)
-            throws Exception {
+    public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
         return OMXMLBuilderFactory.createOMBuilder(
                 metaFactory.getOMFactory(), implementation.parse(inputSource, false), false);
     }

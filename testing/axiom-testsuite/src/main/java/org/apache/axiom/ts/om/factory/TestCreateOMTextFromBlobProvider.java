@@ -20,8 +20,9 @@ package org.apache.axiom.ts.om.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.nio.charset.StandardCharsets;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMFactory;
@@ -30,9 +31,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.util.UIDGenerator;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestCreateOMTextFromBlobProvider extends AxiomTestCase {
     static class TestBlobProvider implements BlobProvider {
@@ -54,8 +52,7 @@ public class TestCreateOMTextFromBlobProvider extends AxiomTestCase {
     private final boolean nullContentID;
 
     @Inject
-    public TestCreateOMTextFromBlobProvider(
-            OMMetaFactory metaFactory, @Named("nullContentId") boolean nullContentID) {
+    public TestCreateOMTextFromBlobProvider(OMMetaFactory metaFactory, @Named("nullContentId") boolean nullContentID) {
         super(metaFactory);
         this.nullContentID = nullContentID;
     }

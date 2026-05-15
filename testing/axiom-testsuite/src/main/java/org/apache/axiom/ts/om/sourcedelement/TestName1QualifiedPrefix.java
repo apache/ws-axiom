@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringWriter;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the OMSourcedElement localName, namespace and prefix settings before and after
@@ -49,16 +47,13 @@ public class TestName1QualifiedPrefix extends AxiomTestCase {
         // Create OMSE with an unknown prefix
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", null);
-        OMElement element =
-                f.createOMElement(
-                        new PullOMDataSource(TestDocument.DOCUMENT2.getContent()), "library", ns);
+        OMElement element = f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT2.getContent()), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
         // Test getting the local name and namespace URI. This should used not result in expansion
         assertThat(element.getLocalName()).isEqualTo("library");
-        assertThat(element.getNamespace().getNamespaceURI())
-                .isEqualTo("http://www.sosnoski.com/uwjws/library");
+        assertThat(element.getNamespace().getNamespaceURI()).isEqualTo("http://www.sosnoski.com/uwjws/library");
 
         // Serialize and cache.  This should cause expansion and update the name to match the
         // testDocument string
@@ -67,8 +62,7 @@ public class TestName1QualifiedPrefix extends AxiomTestCase {
         String result = writer.toString();
 
         assertThat(element.getLocalName()).isEqualTo("library");
-        assertThat(element.getNamespace().getNamespaceURI())
-                .isEqualTo("http://www.sosnoski.com/uwjws/library");
+        assertThat(element.getNamespace().getNamespaceURI()).isEqualTo("http://www.sosnoski.com/uwjws/library");
         assertThat(element.getNamespace().getPrefix()).isEqualTo("pre");
         assertThat(element.getDefaultNamespace()).isNull();
         // Make sure that the serialized string does not contain default prefix declaration
@@ -81,8 +75,7 @@ public class TestName1QualifiedPrefix extends AxiomTestCase {
         result = writer.toString();
 
         assertThat(element.getLocalName()).isEqualTo("library");
-        assertThat(element.getNamespace().getNamespaceURI())
-                .isEqualTo("http://www.sosnoski.com/uwjws/library");
+        assertThat(element.getNamespace().getNamespaceURI()).isEqualTo("http://www.sosnoski.com/uwjws/library");
         assertThat(element.getNamespace().getPrefix()).isEqualTo("pre");
         // Make sure that the serialized string does not contain default prefix declaration
         assertThat(result).doesNotContain("xmlns=");

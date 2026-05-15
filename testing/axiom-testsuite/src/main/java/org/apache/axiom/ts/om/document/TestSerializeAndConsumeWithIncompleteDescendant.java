@@ -22,9 +22,9 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 import java.io.StringWriter;
-
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -32,8 +32,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMDocument#serializeAndConsume(java.io.Writer)} consumes incomplete
@@ -51,16 +49,15 @@ public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCa
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement incompleteElement =
-                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<elem>text</elem>"))
-                        .getDocumentElement(true);
+        OMElement incompleteElement = OMXMLBuilderFactory.createOMBuilder(
+                        factory, new StringReader("<elem>text</elem>"))
+                .getDocumentElement(true);
         OMDocument document = factory.createOMDocument();
         OMElement root = factory.createOMElement("root", null, document);
         root.addChild(incompleteElement);
         StringWriter out = new StringWriter();
         document.serializeAndConsume(out);
         assertAbout(xml()).that(out.toString()).hasSameContentAs("<root><elem>text</elem></root>");
-        assertThatThrownBy(incompleteElement::getFirstOMChild)
-                .isInstanceOf(NodeUnavailableException.class);
+        assertThatThrownBy(incompleteElement::getFirstOMChild).isInstanceOf(NodeUnavailableException.class);
     }
 }

@@ -20,7 +20,6 @@ package org.apache.axiom.mime;
 
 import java.io.InputStream;
 import java.util.List;
-
 import org.apache.axiom.blob.Blob;
 
 /** A MIME part. */

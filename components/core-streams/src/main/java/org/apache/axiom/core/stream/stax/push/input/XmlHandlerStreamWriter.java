@@ -23,11 +23,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
@@ -68,9 +66,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     private int scopes;
 
     public XmlHandlerStreamWriter(
-            XmlHandler handler,
-            Serializer serializer,
-            XMLStreamWriterExtensionFactory extensionFactory) {
+            XmlHandler handler, Serializer serializer, XMLStreamWriterExtensionFactory extensionFactory) {
         this.handler = handler;
         this.serializer = serializer;
         this.extensionFactory = extensionFactory;
@@ -159,10 +155,9 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     @Override
     public void setPrefix(String prefix, String uri) throws XMLStreamException {
         if (inEmptyElement) {
-            log.warn(
-                    "The behavior of XMLStreamWriter#setPrefix and "
-                            + "XMLStreamWriter#setDefaultNamespace is undefined when invoked in the "
-                            + "context of an empty element");
+            log.warn("The behavior of XMLStreamWriter#setPrefix and "
+                    + "XMLStreamWriter#setDefaultNamespace is undefined when invoked in the "
+                    + "context of an empty element");
         }
         internalSetPrefix(normalize(prefix), normalize(uri));
     }
@@ -232,8 +227,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
         }
     }
 
-    private void doWriteStartElement(String prefix, String localName, String namespaceURI)
-            throws XMLStreamException {
+    private void doWriteStartElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
         finishStartElement();
         try {
             handler.startElement(normalize(namespaceURI), localName, normalize(prefix));
@@ -244,8 +238,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     }
 
     @Override
-    public void writeStartElement(String prefix, String localName, String namespaceURI)
-            throws XMLStreamException {
+    public void writeStartElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
         doWriteStartElement(prefix, localName, namespaceURI);
         if (scopes == scopeIndexes.length) {
             int[] newScopeIndexes = new int[scopeIndexes.length * 2];
@@ -289,8 +282,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     }
 
     @Override
-    public void writeEmptyElement(String prefix, String localName, String namespaceURI)
-            throws XMLStreamException {
+    public void writeEmptyElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
         doWriteStartElement(prefix, localName, namespaceURI);
         finishStartElement();
         doWriteEndElement();
@@ -306,8 +298,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     public void writeAttribute(String prefix, String namespaceURI, String localName, String value)
             throws XMLStreamException {
         try {
-            handler.processAttribute(
-                    normalize(namespaceURI), localName, normalize(prefix), value, "CDATA", true);
+            handler.processAttribute(normalize(namespaceURI), localName, normalize(prefix), value, "CDATA", true);
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }
@@ -355,8 +346,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     }
 
     @Override
-    public void writeAttribute(String namespaceURI, String localName, String value)
-            throws XMLStreamException {
+    public void writeAttribute(String namespaceURI, String localName, String value) throws XMLStreamException {
         writeAttribute(internalGetPrefix(namespaceURI), namespaceURI, localName, value);
     }
 

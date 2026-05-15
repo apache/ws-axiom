@@ -21,7 +21,6 @@ package org.apache.axiom.dom;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
-
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.HierarchyException;
 import org.w3c.dom.DOMException;

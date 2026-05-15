@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.common.util;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Locale;
-
 import org.junit.Test;
 
 public class LocaleUtilTest {

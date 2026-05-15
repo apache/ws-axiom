@@ -52,8 +52,7 @@ public abstract class CoreProcessingInstructionMixin implements CoreProcessingIn
     }
 
     @Override
-    public final void serializeStartEvent(XmlHandler handler)
-            throws CoreModelException, StreamException {
+    public final void serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
         handler.startProcessingInstruction(coreGetTarget());
     }
 

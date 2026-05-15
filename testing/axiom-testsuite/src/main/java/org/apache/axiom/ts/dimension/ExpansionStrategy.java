@@ -36,111 +36,93 @@ import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
  */
 public abstract class ExpansionStrategy extends Multiton implements Dimension {
     /** Don't build the {@link OMContainer}. */
-    public static final ExpansionStrategy DONT_EXPAND =
-            new ExpansionStrategy() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("expand", "no");
-                }
+    public static final ExpansionStrategy DONT_EXPAND = new ExpansionStrategy() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("expand", "no");
+        }
 
-                @Override
-                public void apply(OMContainer container) {
-                    if (container instanceof OMSourcedElement sourcedElement) {
-                        // Do nothing, but check that the element isn't expanded already
-                        assertThat(sourcedElement.isExpanded()).isFalse();
-                    } else {
-                        assertThat(container.isComplete()).isFalse();
-                    }
-                }
+        @Override
+        public void apply(OMContainer container) {
+            if (container instanceof OMSourcedElement sourcedElement) {
+                // Do nothing, but check that the element isn't expanded already
+                assertThat(sourcedElement.isExpanded()).isFalse();
+            } else {
+                assertThat(container.isComplete()).isFalse();
+            }
+        }
 
-                @Override
-                public boolean isConsumedAfterSerialization(
-                        boolean pushDS,
-                        boolean destructiveDS,
-                        SerializationStrategy serializationStrategy) {
-                    return !(pushDS && !serializationStrategy.isPush())
-                            && destructiveDS
-                            && !serializationStrategy.isCaching();
-                }
+        @Override
+        public boolean isConsumedAfterSerialization(
+                boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
+            return !(pushDS && !serializationStrategy.isPush()) && destructiveDS && !serializationStrategy.isCaching();
+        }
 
-                @Override
-                public boolean isExpandedAfterSerialization(
-                        boolean pushDS,
-                        boolean destructiveDS,
-                        SerializationStrategy serializationStrategy) {
-                    return pushDS && !serializationStrategy.isPush()
-                            || destructiveDS && serializationStrategy.isCaching();
-                }
-            };
+        @Override
+        public boolean isExpandedAfterSerialization(
+                boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
+            return pushDS && !serializationStrategy.isPush() || destructiveDS && serializationStrategy.isCaching();
+        }
+    };
 
     /** Partially build the {@link OMContainer}. */
-    public static final ExpansionStrategy PARTIAL =
-            new ExpansionStrategy() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("expand", "partially");
-                }
+    public static final ExpansionStrategy PARTIAL = new ExpansionStrategy() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("expand", "partially");
+        }
 
-                @Override
-                public void apply(OMContainer container) {
-                    container.getFirstOMChild();
-                    if (container instanceof OMSourcedElement sourcedElement) {
-                        assertThat(sourcedElement.isExpanded()).isTrue();
-                    }
-                    assertThat(container.isComplete()).isFalse();
-                }
+        @Override
+        public void apply(OMContainer container) {
+            container.getFirstOMChild();
+            if (container instanceof OMSourcedElement sourcedElement) {
+                assertThat(sourcedElement.isExpanded()).isTrue();
+            }
+            assertThat(container.isComplete()).isFalse();
+        }
 
-                @Override
-                public boolean isConsumedAfterSerialization(
-                        boolean pushDS,
-                        boolean destructiveDS,
-                        SerializationStrategy serializationStrategy) {
-                    return !serializationStrategy.isCaching();
-                }
+        @Override
+        public boolean isConsumedAfterSerialization(
+                boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
+            return !serializationStrategy.isCaching();
+        }
 
-                @Override
-                public boolean isExpandedAfterSerialization(
-                        boolean pushDS,
-                        boolean destructiveDS,
-                        SerializationStrategy serializationStrategy) {
-                    return true;
-                }
-            };
+        @Override
+        public boolean isExpandedAfterSerialization(
+                boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
+            return true;
+        }
+    };
 
     /** Fully build the {@link OMContainer}. */
-    public static final ExpansionStrategy FULL =
-            new ExpansionStrategy() {
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("expand", "fully");
-                }
+    public static final ExpansionStrategy FULL = new ExpansionStrategy() {
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("expand", "fully");
+        }
 
-                @Override
-                public void apply(OMContainer container) {
-                    container.getFirstOMChild();
-                    container.build();
-                    if (container instanceof OMSourcedElement sourcedElement) {
-                        assertThat(sourcedElement.isExpanded()).isTrue();
-                    }
-                    assertThat(container.isComplete()).isTrue();
-                }
+        @Override
+        public void apply(OMContainer container) {
+            container.getFirstOMChild();
+            container.build();
+            if (container instanceof OMSourcedElement sourcedElement) {
+                assertThat(sourcedElement.isExpanded()).isTrue();
+            }
+            assertThat(container.isComplete()).isTrue();
+        }
 
-                @Override
-                public boolean isConsumedAfterSerialization(
-                        boolean pushDS,
-                        boolean destructiveDS,
-                        SerializationStrategy serializationStrategy) {
-                    return false;
-                }
+        @Override
+        public boolean isConsumedAfterSerialization(
+                boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
+            return false;
+        }
 
-                @Override
-                public boolean isExpandedAfterSerialization(
-                        boolean pushDS,
-                        boolean destructiveDS,
-                        SerializationStrategy serializationStrategy) {
-                    return true;
-                }
-            };
+        @Override
+        public boolean isExpandedAfterSerialization(
+                boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
+            return true;
+        }
+    };
 
     private ExpansionStrategy() {}
 

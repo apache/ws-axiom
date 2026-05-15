@@ -21,13 +21,11 @@ package org.apache.axiom.om;
 import java.io.InputStream;
 import java.io.Reader;
 import java.text.ParseException;
-
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.ext.stax.BlobReader;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.MediaType;
@@ -94,8 +92,7 @@ public class OMXMLBuilderFactory {
      * @param parser the stream reader to read the XML data from
      * @return the builder
      */
-    public static OMXMLParserWrapper createStAXOMBuilder(
-            OMFactory omFactory, XMLStreamReader parser) {
+    public static OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
         return ((OMMetaFactorySPI) omFactory.getMetaFactory()).createStAXOMBuilder(parser);
     }
 
@@ -131,8 +128,7 @@ public class OMXMLBuilderFactory {
      * @param in the input stream representing the XML document
      * @return the builder
      */
-    public static OMXMLParserWrapper createOMBuilder(
-            StAXParserConfiguration configuration, InputStream in) {
+    public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputStream in) {
         return createOMBuilder(configuration, in, null);
     }
 
@@ -178,8 +174,7 @@ public class OMXMLBuilderFactory {
      *     should determine the charset encoding
      * @return the builder
      */
-    public static OMXMLParserWrapper createOMBuilder(
-            OMFactory omFactory, InputStream in, String encoding) {
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, InputStream in, String encoding) {
         return createOMBuilder(omFactory, StAXParserConfiguration.DEFAULT, in, encoding);
     }
 
@@ -209,10 +204,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(
-            OMFactory omFactory,
-            StAXParserConfiguration configuration,
-            InputStream in,
-            String encoding) {
+            OMFactory omFactory, StAXParserConfiguration configuration, InputStream in, String encoding) {
         InputSource is = new InputSource(in);
         is.setEncoding(encoding);
         return ((OMMetaFactorySPI) omFactory.getMetaFactory()).createOMBuilder(configuration, is);
@@ -238,8 +230,7 @@ public class OMXMLBuilderFactory {
      * @param in the character stream representing the XML document
      * @return the builder
      */
-    public static OMXMLParserWrapper createOMBuilder(
-            StAXParserConfiguration configuration, Reader in) {
+    public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, Reader in) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
         return ((OMMetaFactorySPI) metaFactory).createOMBuilder(configuration, new InputSource(in));
     }
@@ -268,8 +259,7 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(
             OMFactory omFactory, StAXParserConfiguration configuration, Reader in) {
-        return ((OMMetaFactorySPI) omFactory.getMetaFactory())
-                .createOMBuilder(configuration, new InputSource(in));
+        return ((OMMetaFactorySPI) omFactory.getMetaFactory()).createOMBuilder(configuration, new InputSource(in));
     }
 
     /**
@@ -330,8 +320,7 @@ public class OMXMLBuilderFactory {
      *
      * @return the builder
      */
-    public static OMXMLParserWrapper createOMBuilder(
-            SAXSource source, boolean expandEntityReferences) {
+    public static OMXMLParserWrapper createOMBuilder(SAXSource source, boolean expandEntityReferences) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
         return ((OMMetaFactorySPI) metaFactory).createOMBuilder(source, expandEntityReferences);
     }
@@ -369,10 +358,8 @@ public class OMXMLBuilderFactory {
      *
      * @return the builder
      */
-    public static OMXMLParserWrapper createOMBuilder(
-            OMFactory omFactory, Node node, boolean expandEntityReferences) {
-        return ((OMMetaFactorySPI) omFactory.getMetaFactory())
-                .createOMBuilder(node, expandEntityReferences);
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Node node, boolean expandEntityReferences) {
+        return ((OMMetaFactorySPI) omFactory.getMetaFactory()).createOMBuilder(node, expandEntityReferences);
     }
 
     /**
@@ -400,8 +387,7 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(
             OMFactory omFactory, SAXSource source, boolean expandEntityReferences) {
-        return ((OMMetaFactorySPI) omFactory.getMetaFactory())
-                .createOMBuilder(source, expandEntityReferences);
+        return ((OMMetaFactorySPI) omFactory.getMetaFactory()).createOMBuilder(source, expandEntityReferences);
     }
 
     /**
@@ -414,10 +400,8 @@ public class OMXMLBuilderFactory {
      * @throws OMException if an error occurs while processing the content type information from the
      *     {@link MultipartBody} object
      */
-    public static OMXMLParserWrapper createOMBuilder(
-            StAXParserConfiguration configuration, MultipartBody message) {
-        return createOMBuilder(
-                OMAbstractFactory.getMetaFactory().getOMFactory(), configuration, message);
+    public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, MultipartBody message) {
+        return createOMBuilder(OMAbstractFactory.getMetaFactory().getOMFactory(), configuration, message);
     }
 
     /**
@@ -433,14 +417,12 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(
             OMFactory omFactory, StAXParserConfiguration configuration, MultipartBody message) {
-        return ((OMMetaFactorySPI) omFactory.getMetaFactory())
-                .createOMBuilder(configuration, message);
+        return ((OMMetaFactorySPI) omFactory.getMetaFactory()).createOMBuilder(configuration, message);
     }
 
     public static OMXMLParserWrapper createOMBuilder(
             OMFactory omFactory, Source rootPart, OMAttachmentAccessor attachmentAccessor) {
-        return ((OMMetaFactorySPI) omFactory.getMetaFactory())
-                .createOMBuilder(rootPart, attachmentAccessor);
+        return ((OMMetaFactorySPI) omFactory.getMetaFactory()).createOMBuilder(rootPart, attachmentAccessor);
     }
 
     /**
@@ -455,8 +437,7 @@ public class OMXMLBuilderFactory {
      * @param parser the stream reader to read the XML data from
      * @return the builder
      */
-    public static SOAPModelBuilder createStAXSOAPModelBuilder(
-            OMMetaFactory metaFactory, XMLStreamReader parser) {
+    public static SOAPModelBuilder createStAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser) {
         return ((OMMetaFactorySPI) metaFactory).createStAXSOAPModelBuilder(parser);
     }
 
@@ -472,8 +453,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
-        return ((OMMetaFactorySPI) OMAbstractFactory.getMetaFactory())
-                .createStAXSOAPModelBuilder(parser);
+        return ((OMMetaFactorySPI) OMAbstractFactory.getMetaFactory()).createStAXSOAPModelBuilder(parser);
     }
 
     /**
@@ -503,8 +483,7 @@ public class OMXMLBuilderFactory {
      *     should determine the charset encoding
      * @return the builder
      */
-    public static SOAPModelBuilder createSOAPModelBuilder(
-            OMMetaFactory metaFactory, InputStream in, String encoding) {
+    public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory, InputStream in, String encoding) {
         InputSource is = new InputSource(in);
         is.setEncoding(encoding);
         return ((OMMetaFactorySPI) metaFactory).createSOAPModelBuilder(is);
@@ -558,8 +537,7 @@ public class OMXMLBuilderFactory {
      * @param source the source of the SOAP message
      * @return the builder
      */
-    public static SOAPModelBuilder createSOAPModelBuilder(
-            OMMetaFactory metaFactory, Source source) {
+    public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory, Source source) {
         return ((OMMetaFactorySPI) metaFactory).createSOAPModelBuilder(source);
     }
 
@@ -590,13 +568,10 @@ public class OMXMLBuilderFactory {
      * @throws OMException if an error occurs while processing the content type information from the
      *     {@link MultipartBody} object
      */
-    public static SOAPModelBuilder createSOAPModelBuilder(
-            OMMetaFactory metaFactory, MultipartBody message) {
+    public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory, MultipartBody message) {
         MediaType type;
         try {
-            type =
-                    new ContentType(message.getRootPart().getContentType().getParameter("type"))
-                            .getMediaType();
+            type = new ContentType(message.getRootPart().getContentType().getParameter("type")).getMediaType();
         } catch (ParseException ex) {
             throw new OMException("Failed to parse root part content type", ex);
         }
@@ -619,7 +594,6 @@ public class OMXMLBuilderFactory {
 
     public static SOAPModelBuilder createSOAPModelBuilder(
             OMMetaFactory metaFactory, Source rootPart, OMAttachmentAccessor attachmentAccessor) {
-        return ((OMMetaFactorySPI) metaFactory)
-                .createSOAPModelBuilder(rootPart, attachmentAccessor);
+        return ((OMMetaFactorySPI) metaFactory).createSOAPModelBuilder(rootPart, attachmentAccessor);
     }
 }

@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.stream.stax.pull;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.stax.pull.input.DTDInfo;
@@ -56,8 +55,7 @@ final class AxiomXMLStreamReaderHelper extends XMLStreamReaderHelper {
             throw new StreamException(
                     "Cannot process DTD events because the XMLStreamReader doesn't support the DTDReader extension");
         }
-        return new DTDInfo(
-                dtdReader.getRootName(), dtdReader.getPublicId(), dtdReader.getSystemId());
+        return new DTDInfo(dtdReader.getRootName(), dtdReader.getPublicId(), dtdReader.getSystemId());
     }
 
     @Override
@@ -65,15 +63,10 @@ final class AxiomXMLStreamReaderHelper extends XMLStreamReaderHelper {
         if (blobReader != null && blobReader.isBinary()) {
             if (blobReader.isDeferred()) {
                 return new TextContent(
-                        blobReader.getContentID(),
-                        blobReader.getBlobProvider(),
-                        blobReader.isOptimized());
+                        blobReader.getContentID(), blobReader.getBlobProvider(), blobReader.isOptimized());
             } else {
                 try {
-                    return new TextContent(
-                            blobReader.getContentID(),
-                            blobReader.getBlob(),
-                            blobReader.isOptimized());
+                    return new TextContent(blobReader.getContentID(), blobReader.getBlob(), blobReader.isOptimized());
                 } catch (XMLStreamException ex) {
                     throw new StreamException(ex);
                 }

@@ -21,7 +21,6 @@ package org.apache.axiom.mime;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.util.UIDGenerator;
 
@@ -175,8 +174,7 @@ public final class MultipartBodyWriter {
             String contentID,
             List<Header> extraHeaders)
             throws IOException {
-        OutputStream partOutputStream =
-                writePart(contentType, contentTransferEncoding, contentID, extraHeaders);
+        OutputStream partOutputStream = writePart(contentType, contentTransferEncoding, contentID, extraHeaders);
         blob.writeTo(partOutputStream);
         partOutputStream.close();
     }

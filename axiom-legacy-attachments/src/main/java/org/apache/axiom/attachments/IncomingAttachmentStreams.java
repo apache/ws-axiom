@@ -20,7 +20,6 @@
 package org.apache.axiom.attachments;
 
 import java.util.Iterator;
-
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.mime.Part;
@@ -82,8 +81,7 @@ public final class IncomingAttachmentStreams {
         }
 
         if (part != null) {
-            IncomingAttachmentInputStream stream =
-                    new IncomingAttachmentInputStream(part.getInputStream(false), this);
+            IncomingAttachmentInputStream stream = new IncomingAttachmentInputStream(part.getInputStream(false), this);
 
             for (Header header : part.getHeaders()) {
                 String name = header.getName();

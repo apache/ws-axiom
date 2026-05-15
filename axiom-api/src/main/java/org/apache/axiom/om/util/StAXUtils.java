@@ -19,19 +19,6 @@
 
 package org.apache.axiom.om.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.axiom.util.stax.dialect.StAXDialect;
-import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
-import org.apache.axiom.util.stax.wrapper.ImmutableXMLInputFactory;
-import org.apache.axiom.util.stax.wrapper.ImmutableXMLOutputFactory;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -42,6 +29,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.WeakHashMap;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import org.apache.axiom.util.stax.dialect.StAXDialect;
+import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
+import org.apache.axiom.util.stax.wrapper.ImmutableXMLInputFactory;
+import org.apache.axiom.util.stax.wrapper.ImmutableXMLOutputFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Utility class containing StAX related methods.
@@ -88,13 +86,11 @@ public class StAXUtils {
     private static final Log log = LogFactory.getLog(StAXUtils.class);
 
     private static final Map<StAXParserConfiguration, XMLInputFactory> inputFactoryMap =
-            Collections.synchronizedMap(
-                    new WeakHashMap<StAXParserConfiguration, XMLInputFactory>());
+            Collections.synchronizedMap(new WeakHashMap<StAXParserConfiguration, XMLInputFactory>());
 
     @SuppressWarnings("deprecation")
     private static final Map<StAXWriterConfiguration, XMLOutputFactory> outputFactoryMap =
-            Collections.synchronizedMap(
-                    new WeakHashMap<StAXWriterConfiguration, XMLOutputFactory>());
+            Collections.synchronizedMap(new WeakHashMap<StAXWriterConfiguration, XMLOutputFactory>());
 
     /**
      * Get a cached {@link XMLInputFactory} instance using the default configuration.
@@ -140,18 +136,15 @@ public class StAXUtils {
         }
     }
 
-    public static XMLStreamReader createXMLStreamReader(InputStream in, String encoding)
-            throws XMLStreamException {
+    public static XMLStreamReader createXMLStreamReader(InputStream in, String encoding) throws XMLStreamException {
 
         return createXMLStreamReader(null, in, encoding);
     }
 
     public static XMLStreamReader createXMLStreamReader(
-            StAXParserConfiguration configuration, InputStream in, String encoding)
-            throws XMLStreamException {
+            StAXParserConfiguration configuration, InputStream in, String encoding) throws XMLStreamException {
 
-        XMLStreamReader reader =
-                getXMLInputFactory(configuration).createXMLStreamReader(in, encoding);
+        XMLStreamReader reader = getXMLInputFactory(configuration).createXMLStreamReader(in, encoding);
         if (log.isDebugEnabled()) {
             log.debug("XMLStreamReader is " + reader.getClass().getName());
         }
@@ -163,8 +156,8 @@ public class StAXUtils {
         return createXMLStreamReader(null, in);
     }
 
-    public static XMLStreamReader createXMLStreamReader(
-            StAXParserConfiguration configuration, InputStream in) throws XMLStreamException {
+    public static XMLStreamReader createXMLStreamReader(StAXParserConfiguration configuration, InputStream in)
+            throws XMLStreamException {
 
         XMLStreamReader reader = getXMLInputFactory(configuration).createXMLStreamReader(in);
         if (log.isDebugEnabled()) {
@@ -174,11 +167,9 @@ public class StAXUtils {
     }
 
     public static XMLStreamReader createXMLStreamReader(
-            StAXParserConfiguration configuration, String systemId, InputStream in)
-            throws XMLStreamException {
+            StAXParserConfiguration configuration, String systemId, InputStream in) throws XMLStreamException {
 
-        XMLStreamReader reader =
-                getXMLInputFactory(configuration).createXMLStreamReader(systemId, in);
+        XMLStreamReader reader = getXMLInputFactory(configuration).createXMLStreamReader(systemId, in);
         if (log.isDebugEnabled()) {
             log.debug("XMLStreamReader is " + reader.getClass().getName());
         }
@@ -190,8 +181,8 @@ public class StAXUtils {
         return createXMLStreamReader(null, in);
     }
 
-    public static XMLStreamReader createXMLStreamReader(
-            StAXParserConfiguration configuration, Reader in) throws XMLStreamException {
+    public static XMLStreamReader createXMLStreamReader(StAXParserConfiguration configuration, Reader in)
+            throws XMLStreamException {
 
         XMLStreamReader reader = getXMLInputFactory(configuration).createXMLStreamReader(in);
         if (log.isDebugEnabled()) {
@@ -258,8 +249,7 @@ public class StAXUtils {
     /**
      * @deprecated
      */
-    public static XMLStreamWriter createXMLStreamWriter(OutputStream out)
-            throws XMLStreamException {
+    public static XMLStreamWriter createXMLStreamWriter(OutputStream out) throws XMLStreamException {
 
         return createXMLStreamWriter(null, out);
     }
@@ -267,10 +257,9 @@ public class StAXUtils {
     /**
      * @deprecated
      */
-    public static XMLStreamWriter createXMLStreamWriter(
-            StAXWriterConfiguration configuration, OutputStream out) throws XMLStreamException {
-        XMLStreamWriter writer =
-                getXMLOutputFactory(configuration).createXMLStreamWriter(out, "utf-8");
+    public static XMLStreamWriter createXMLStreamWriter(StAXWriterConfiguration configuration, OutputStream out)
+            throws XMLStreamException {
+        XMLStreamWriter writer = getXMLOutputFactory(configuration).createXMLStreamWriter(out, "utf-8");
         if (log.isDebugEnabled()) {
             log.debug("XMLStreamWriter is " + writer.getClass().getName());
         }
@@ -280,8 +269,7 @@ public class StAXUtils {
     /**
      * @deprecated
      */
-    public static XMLStreamWriter createXMLStreamWriter(OutputStream out, String encoding)
-            throws XMLStreamException {
+    public static XMLStreamWriter createXMLStreamWriter(OutputStream out, String encoding) throws XMLStreamException {
 
         return createXMLStreamWriter(null, out, encoding);
     }
@@ -290,10 +278,8 @@ public class StAXUtils {
      * @deprecated
      */
     public static XMLStreamWriter createXMLStreamWriter(
-            StAXWriterConfiguration configuration, OutputStream out, String encoding)
-            throws XMLStreamException {
-        XMLStreamWriter writer =
-                getXMLOutputFactory(configuration).createXMLStreamWriter(out, encoding);
+            StAXWriterConfiguration configuration, OutputStream out, String encoding) throws XMLStreamException {
+        XMLStreamWriter writer = getXMLOutputFactory(configuration).createXMLStreamWriter(out, encoding);
         if (log.isDebugEnabled()) {
             log.debug("XMLStreamWriter is " + writer.getClass().getName());
         }
@@ -303,8 +289,7 @@ public class StAXUtils {
     /**
      * @deprecated
      */
-    public static XMLStreamWriter createXMLStreamWriter(final Writer out)
-            throws XMLStreamException {
+    public static XMLStreamWriter createXMLStreamWriter(final Writer out) throws XMLStreamException {
 
         return createXMLStreamWriter(null, out);
     }
@@ -312,8 +297,8 @@ public class StAXUtils {
     /**
      * @deprecated
      */
-    public static XMLStreamWriter createXMLStreamWriter(
-            StAXWriterConfiguration configuration, Writer out) throws XMLStreamException {
+    public static XMLStreamWriter createXMLStreamWriter(StAXWriterConfiguration configuration, Writer out)
+            throws XMLStreamException {
         XMLStreamWriter writer = getXMLOutputFactory(configuration).createXMLStreamWriter(out);
         if (log.isDebugEnabled()) {
             log.debug("XMLStreamWriter is " + writer.getClass().getName());
@@ -388,8 +373,7 @@ public class StAXUtils {
             // coalescing mode. Note that we need to do that before loading
             // XMLInputFactory.properties so that this setting can be overridden.
             factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-            Map<String, Object> props =
-                    loadFactoryProperties(classLoader, "XMLInputFactory.properties");
+            Map<String, Object> props = loadFactoryProperties(classLoader, "XMLInputFactory.properties");
             if (props != null) {
                 for (Map.Entry<String, Object> entry : props.entrySet()) {
                     factory.setProperty(entry.getKey(), entry.getValue());
@@ -423,11 +407,10 @@ public class StAXUtils {
             inputFactoryMap.put(configuration, f);
             if (log.isDebugEnabled()) {
                 if (f != null) {
-                    log.debug(
-                            "Created singleton XMLInputFactory "
-                                    + f.getClass()
-                                    + " with configuration "
-                                    + configuration);
+                    log.debug("Created singleton XMLInputFactory "
+                            + f.getClass()
+                            + " with configuration "
+                            + configuration);
                 }
             }
         }
@@ -450,8 +433,7 @@ public class StAXUtils {
         try {
             XMLOutputFactory factory = XMLOutputFactory.newInstance();
             factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
-            Map<String, Object> props =
-                    loadFactoryProperties(classLoader, "XMLOutputFactory.properties");
+            Map<String, Object> props = loadFactoryProperties(classLoader, "XMLOutputFactory.properties");
             if (props != null) {
                 for (Map.Entry<String, Object> entry : props.entrySet()) {
                     factory.setProperty(entry.getKey(), entry.getValue());
@@ -461,8 +443,7 @@ public class StAXUtils {
             if (configuration != null) {
                 factory = configuration.configure(factory, dialect);
             }
-            return new ImmutableXMLOutputFactory(
-                    dialect.normalize(dialect.makeThreadSafe(factory)));
+            return new ImmutableXMLOutputFactory(dialect.normalize(dialect.makeThreadSafe(factory)));
         } finally {
             if (savedClassLoader != null) {
                 Thread.currentThread().setContextClassLoader(savedClassLoader);
@@ -487,11 +468,10 @@ public class StAXUtils {
             outputFactoryMap.put(configuration, f);
             if (log.isDebugEnabled()) {
                 if (f != null) {
-                    log.debug(
-                            "Created singleton XMLOutputFactory "
-                                    + f.getClass()
-                                    + " with configuration "
-                                    + configuration);
+                    log.debug("Created singleton XMLOutputFactory "
+                            + f.getClass()
+                            + " with configuration "
+                            + configuration);
                 }
             }
         }

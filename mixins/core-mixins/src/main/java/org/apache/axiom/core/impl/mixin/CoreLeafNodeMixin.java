@@ -26,6 +26,5 @@ import org.apache.axiom.weaver.annotation.Mixin;
 @Mixin
 public abstract class CoreLeafNodeMixin implements CoreLeafNode {
     @Override
-    public final <T> void cloneChildrenIfNecessary(
-            ClonePolicy<T> policy, T options, CoreNode clone) {}
+    public final <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) {}
 }

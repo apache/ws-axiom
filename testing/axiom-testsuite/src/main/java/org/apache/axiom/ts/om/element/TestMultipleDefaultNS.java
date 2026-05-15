@@ -20,13 +20,12 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestMultipleDefaultNS extends AxiomTestCase {
     @Inject
@@ -41,9 +40,7 @@ public class TestMultipleDefaultNS extends AxiomTestCase {
         OMNamespace defaultNS2 = omFactory.createOMNamespace("http://defaultNS2.org", null);
 
         OMElement omElementOne =
-                omFactory.createOMElement(
-                        "DocumentElement",
-                        omFactory.createOMNamespace("http://defaultNS1.org", ""));
+                omFactory.createOMElement("DocumentElement", omFactory.createOMNamespace("http://defaultNS1.org", ""));
         OMElement omElementOneChild = omFactory.createOMElement("ChildOne", null, omElementOne);
 
         OMElement omElementTwo = omFactory.createOMElement("Foo", defaultNS2, omElementOne);
@@ -58,12 +55,10 @@ public class TestMultipleDefaultNS extends AxiomTestCase {
         // TODO: LLOM's and DOOM's behaviors are slightly different here; need to check if both are
         // allowed
         assertThat(omElementOneChildNS)
-                .satisfiesAnyOf(
-                        ns -> assertThat(ns).isNull(),
-                        ns -> assertThat(ns.getNamespaceURI()).isEmpty());
+                .satisfiesAnyOf(ns -> assertThat(ns).isNull(), ns -> assertThat(ns.getNamespaceURI())
+                        .isEmpty());
         assertThat(omElementTwoChildNS)
-                .satisfiesAnyOf(
-                        ns -> assertThat(ns).isNull(),
-                        ns -> assertThat(ns.getNamespaceURI()).isEmpty());
+                .satisfiesAnyOf(ns -> assertThat(ns).isNull(), ns -> assertThat(ns.getNamespaceURI())
+                        .isEmpty());
     }
 }

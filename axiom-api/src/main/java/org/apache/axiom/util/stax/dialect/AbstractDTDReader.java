@@ -20,7 +20,6 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.ext.stax.DTDReader;
 
 abstract class AbstractDTDReader implements DTDReader {

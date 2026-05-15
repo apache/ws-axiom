@@ -32,7 +32,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
@@ -86,8 +85,7 @@ public class XMLStreamReaderComparator {
     }
 
     private <T> InvocationResults<T> invoke(
-            Class<T> returnType, String methodName, Class<?>[] paramTypes, Object[] args)
-            throws Exception {
+            Class<T> returnType, String methodName, Class<?>[] paramTypes, Object[] args) throws Exception {
         Method method = XMLStreamReader.class.getMethod(methodName, paramTypes);
 
         T expectedResult;
@@ -113,27 +111,25 @@ public class XMLStreamReaderComparator {
         if (expectedException == null) {
             if (actualException != null) {
                 actualException.printStackTrace(System.out);
-                fail(
-                        "Method "
-                                + methodName
-                                + " threw unexpected exception "
-                                + actualException.getClass().getName()
-                                + " ("
-                                + getLocation()
-                                + ")");
+                fail("Method "
+                        + methodName
+                        + " threw unexpected exception "
+                        + actualException.getClass().getName()
+                        + " ("
+                        + getLocation()
+                        + ")");
             } else {
                 return new InvocationResults<>(expectedResult, actualResult);
             }
         } else {
             if (actualException == null) {
-                fail(
-                        "Expected "
-                                + methodName
-                                + " to throw "
-                                + expectedException.getClass().getName()
-                                + ", but the method returned normally ("
-                                + getLocation()
-                                + ")");
+                fail("Expected "
+                        + methodName
+                        + " to throw "
+                        + expectedException.getClass().getName()
+                        + ", but the method returned normally ("
+                        + getLocation()
+                        + ")");
             } else {
                 assertEquals(
                         "Unexpected exception thrown by " + methodName,
@@ -144,29 +140,18 @@ public class XMLStreamReaderComparator {
         return null;
     }
 
-    private <T> InvocationResults<T> invoke(Class<T> returnType, String methodName)
-            throws Exception {
+    private <T> InvocationResults<T> invoke(Class<T> returnType, String methodName) throws Exception {
         return invoke(returnType, methodName, new Class[0], new Object[0]);
     }
 
     private <T> T assertSameResult(
-            Class<T> returnType,
-            String methodName,
-            Class<?>[] paramTypes,
-            Object[] args,
-            Normalizer<T> normalizer)
+            Class<T> returnType, String methodName, Class<?>[] paramTypes, Object[] args, Normalizer<T> normalizer)
             throws Exception {
 
         InvocationResults<T> results = invoke(returnType, methodName, paramTypes, args);
         if (results != null) {
-            T expected =
-                    normalizer == null
-                            ? results.getExpected()
-                            : normalizer.normalize(results.getExpected());
-            T actual =
-                    normalizer == null
-                            ? results.getActual()
-                            : normalizer.normalize(results.getActual());
+            T expected = normalizer == null ? results.getExpected() : normalizer.normalize(results.getExpected());
+            T actual = normalizer == null ? results.getActual() : normalizer.normalize(results.getActual());
             assertEquals(
                     "Return value of "
                             + methodName
@@ -183,14 +168,12 @@ public class XMLStreamReaderComparator {
         }
     }
 
-    private <T> T assertSameResult(
-            Class<T> returnType, String methodName, Class<?>[] paramTypes, Object[] args)
+    private <T> T assertSameResult(Class<T> returnType, String methodName, Class<?>[] paramTypes, Object[] args)
             throws Exception {
         return assertSameResult(returnType, methodName, paramTypes, args, null);
     }
 
-    private <T> T assertSameResult(Class<T> returnType, String methodName, Normalizer<T> normalizer)
-            throws Exception {
+    private <T> T assertSameResult(Class<T> returnType, String methodName, Normalizer<T> normalizer) throws Exception {
         return assertSameResult(returnType, methodName, new Class[0], new Object[0], normalizer);
     }
 
@@ -228,11 +211,7 @@ public class XMLStreamReaderComparator {
                         toPrefixSet(actual.getPrefixes(namespaceURI)));
                 if (prefixes.size() <= 1) {
                     assertEquals(
-                            "Prefix for namespace URI '"
-                                    + namespaceURI
-                                    + "' ("
-                                    + getLocation()
-                                    + ")",
+                            "Prefix for namespace URI '" + namespaceURI + "' (" + getLocation() + ")",
                             expected.getPrefix(namespaceURI),
                             actual.getPrefix(namespaceURI));
                 } else {
@@ -313,15 +292,9 @@ public class XMLStreamReaderComparator {
                 Object[] args = {new Integer(i)};
                 assertSameResult(String.class, "getAttributeLocalName", paramTypes, args);
                 assertSameResult(QName.class, "getAttributeName", paramTypes, args);
-                namespaceURIs.add(
-                        assertSameResult(String.class, "getAttributeNamespace", paramTypes, args));
-                prefixes.add(
-                        assertSameResult(
-                                String.class,
-                                "getAttributePrefix",
-                                paramTypes,
-                                args,
-                                Normalizer.EMPTY_STRING_TO_NULL));
+                namespaceURIs.add(assertSameResult(String.class, "getAttributeNamespace", paramTypes, args));
+                prefixes.add(assertSameResult(
+                        String.class, "getAttributePrefix", paramTypes, args, Normalizer.EMPTY_STRING_TO_NULL));
                 assertSameResult(String.class, "getAttributeType", paramTypes, args);
                 assertSameResult(String.class, "getAttributeValue", paramTypes, args);
                 assertSameResult(Boolean.class, "isAttributeSpecified", paramTypes, args);
@@ -330,10 +303,9 @@ public class XMLStreamReaderComparator {
                 for (int i = 0; i < attributeCount.intValue(); i++) {
                     QName qname = expected.getAttributeName(i);
                     assertSameResult(
-                            String.class,
-                            "getAttributeValue",
-                            new Class[] {String.class, String.class},
-                            new Object[] {qname.getNamespaceURI(), qname.getLocalPart()});
+                            String.class, "getAttributeValue", new Class[] {String.class, String.class}, new Object[] {
+                                qname.getNamespaceURI(), qname.getLocalPart()
+                            });
                 }
             }
             assertSameResult(String.class, "getLocalName");
@@ -365,20 +337,15 @@ public class XMLStreamReaderComparator {
             assertSameResult(String.class, "getPITarget");
             prefixes.add(assertSameResult(String.class, "getPrefix"));
             if ((eventType != XMLStreamReader.DTD || compareInternalSubset)
-                    && (eventType != XMLStreamReader.ENTITY_REFERENCE
-                            || compareEntityReplacementValue)) {
-                assertSameResult(
-                        String.class,
-                        "getText",
-                        eventType == XMLStreamReader.DTD ? Normalizer.DTD : null);
+                    && (eventType != XMLStreamReader.ENTITY_REFERENCE || compareEntityReplacementValue)) {
+                assertSameResult(String.class, "getText", eventType == XMLStreamReader.DTD ? Normalizer.DTD : null);
             }
             Integer textLength = assertSameResult(Integer.class, "getTextLength");
             InvocationResults<Integer> textStart = invoke(Integer.class, "getTextStart");
             InvocationResults<char[]> textCharacters = invoke(char[].class, "getTextCharacters");
             if (textLength != null) {
                 assertEquals(
-                        new String(
-                                textCharacters.getExpected(), textStart.getExpected(), textLength),
+                        new String(textCharacters.getExpected(), textStart.getExpected(), textLength),
                         new String(textCharacters.getActual(), textStart.getActual(), textLength));
             }
             assertSameResult(Boolean.class, "hasName");
@@ -391,17 +358,13 @@ public class XMLStreamReaderComparator {
             // Only check getNamespaceURI(String) for START_ELEMENT and END_ELEMENT. The Javadoc
             // of XMLStreamReader suggests that this method is valid for all states, but Woodstox
             // only allows it for some states.
-            if (eventType == XMLStreamReader.START_ELEMENT
-                    || eventType == XMLStreamReader.END_ELEMENT) {
+            if (eventType == XMLStreamReader.START_ELEMENT || eventType == XMLStreamReader.END_ELEMENT) {
                 for (String prefix : prefixes) {
                     // The StAX specs are not clear about the expected result of getNamespaceURI
                     // when called with prefix "xml" (which doesn't require an explicit declaration)
                     if (prefix != null && !prefix.equals("xml")) {
                         assertSameResult(
-                                String.class,
-                                "getNamespaceURI",
-                                new Class[] {String.class},
-                                new Object[] {prefix});
+                                String.class, "getNamespaceURI", new Class[] {String.class}, new Object[] {prefix});
                     }
                 }
             }

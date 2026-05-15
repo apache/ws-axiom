@@ -20,13 +20,12 @@ package org.apache.axiom.ts.om.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMFactory#createOMAttribute(String, OMNamespace, String)} generates a prefix if
@@ -41,9 +40,7 @@ public class TestCreateOMAttributeGeneratedPrefix extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMAttribute attr =
-                factory.createOMAttribute(
-                        "attr", factory.createOMNamespace("urn:ns", null), "value");
+        OMAttribute attr = factory.createOMAttribute("attr", factory.createOMNamespace("urn:ns", null), "value");
         OMNamespace ns = attr.getNamespace();
         assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns");
         assertThat(ns.getPrefix()).isNotNull();

@@ -35,9 +35,7 @@ public final class URLRegistry {
         if (!handlerRegistered) {
             Properties systemProps = System.getProperties();
             synchronized (systemProps) {
-                StringBuilder pkgs =
-                        new StringBuilder(
-                                systemProps.getProperty("java.protocol.handler.pkgs", ""));
+                StringBuilder pkgs = new StringBuilder(systemProps.getProperty("java.protocol.handler.pkgs", ""));
                 if (pkgs.length() > 0) {
                     pkgs.append('|');
                 }

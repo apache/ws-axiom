@@ -19,19 +19,17 @@
 
 package org.apache.axiom.core.stream.stax.pull.input;
 
+import java.io.Closeable;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import java.io.Closeable;
 
 /* Implementation note about error handling
  * ----------------------------------------
@@ -96,8 +94,7 @@ final class StAXPullReader implements XmlReader {
             Closeable closeable,
             boolean autoClose) {
         if (reader.getEventType() != XMLStreamReader.START_DOCUMENT) {
-            throw new IllegalStateException(
-                    "The XMLStreamReader must be positioned on a START_DOCUMENT event");
+            throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
         }
         this.reader = reader;
         this.helper = helper;
@@ -152,8 +149,7 @@ final class StAXPullReader implements XmlReader {
             // Can't see a reason why we would want to surface an exception
             // while closing the parser.
             if (log.isDebugEnabled()) {
-                log.debug(
-                        "Exception occurred during parser close.  " + "Processing continues. " + e);
+                log.debug("Exception occurred during parser close.  " + "Processing continues. " + e);
             }
         } finally {
             isClosed = true;
@@ -173,18 +169,16 @@ final class StAXPullReader implements XmlReader {
 
         switch (token) {
             case XMLStreamConstants.START_DOCUMENT ->
-                    handler.startDocument(
-                            reader.getEncoding(),
-                            reader.getVersion(),
-                            reader.getCharacterEncodingScheme(),
-                            reader.standaloneSet() ? reader.isStandalone() : null);
+                handler.startDocument(
+                        reader.getEncoding(),
+                        reader.getVersion(),
+                        reader.getCharacterEncodingScheme(),
+                        reader.standaloneSet() ? reader.isStandalone() : null);
             case XMLStreamConstants.START_ELEMENT -> {
                 processElement();
             }
-            case XMLStreamConstants.CHARACTERS,
-                    XMLStreamConstants.CDATA,
-                    XMLStreamConstants.SPACE ->
-                    processText(token);
+            case XMLStreamConstants.CHARACTERS, XMLStreamConstants.CDATA, XMLStreamConstants.SPACE ->
+                processText(token);
             case XMLStreamConstants.END_ELEMENT -> handler.endElement();
             case XMLStreamConstants.END_DOCUMENT -> handler.completed();
             case XMLStreamConstants.COMMENT -> {
@@ -199,7 +193,7 @@ final class StAXPullReader implements XmlReader {
                 handler.endProcessingInstruction();
             }
             case XMLStreamConstants.ENTITY_REFERENCE ->
-                    handler.processEntityReference(reader.getLocalName(), reader.getText());
+                handler.processEntityReference(reader.getLocalName(), reader.getText());
             default -> throw new IllegalStateException();
         }
 
@@ -235,10 +229,7 @@ final class StAXPullReader implements XmlReader {
             internalSubset = null;
         }
         handler.processDocumentTypeDeclaration(
-                dtdInfo.getRootName(),
-                dtdInfo.getPublicId(),
-                dtdInfo.getSystemId(),
-                internalSubset);
+                dtdInfo.getRootName(), dtdInfo.getPublicId(), dtdInfo.getSystemId(), internalSubset);
     }
 
     /**
@@ -256,18 +247,16 @@ final class StAXPullReader implements XmlReader {
             // attempts to load the external subset even if
             // external enties is false.  So ignore this error
             // if external entity support is explicitly disabled.
-            Boolean b =
-                    (Boolean) reader.getProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES);
+            Boolean b = (Boolean) reader.getProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES);
             if (b == null || b.booleanValue()) {
                 throw e;
             }
             if (log.isDebugEnabled()) {
-                log.debug(
-                        "An exception occurred while calling getText() for a DOCTYPE.  "
-                                + "The exception is ignored because external "
-                                + "entites support is disabled.  "
-                                + "The ignored exception is "
-                                + e);
+                log.debug("An exception occurred while calling getText() for a DOCTYPE.  "
+                        + "The exception is ignored because external "
+                        + "entites support is disabled.  "
+                        + "The ignored exception is "
+                        + e);
             }
         }
         return text;
@@ -287,9 +276,8 @@ final class StAXPullReader implements XmlReader {
         } else {
             try {
                 if (parserException != null) {
-                    log.warn(
-                            "Attempt to access a parser that has thrown a parse exception before; "
-                                    + "rethrowing the original exception.");
+                    log.warn("Attempt to access a parser that has thrown a parse exception before; "
+                            + "rethrowing the original exception.");
                     if (parserException instanceof XMLStreamException xmlStreamException) {
                         throw xmlStreamException;
                     } else {

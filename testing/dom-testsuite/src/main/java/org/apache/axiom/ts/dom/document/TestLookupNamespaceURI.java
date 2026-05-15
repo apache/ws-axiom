@@ -21,7 +21,6 @@ package org.apache.axiom.ts.dom.document;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

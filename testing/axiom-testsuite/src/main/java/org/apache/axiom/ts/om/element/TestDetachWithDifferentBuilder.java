@@ -22,15 +22,13 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestDetachWithDifferentBuilder extends AxiomTestCase {
     @Inject
@@ -43,12 +41,10 @@ public class TestDetachWithDifferentBuilder extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         String xml1 = "<root><a/><b/></root>";
         String xml2 = "<child>test</child>";
-        OMElement parent =
-                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml1))
-                        .getDocumentElement();
-        OMElement child =
-                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml2))
-                        .getDocumentElement(true);
+        OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml1))
+                .getDocumentElement();
+        OMElement child = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml2))
+                .getDocumentElement(true);
         parent.getFirstOMChild().insertSiblingBefore(child);
         // Detaching the child should not build it because its parent is built by a different
         // builder.

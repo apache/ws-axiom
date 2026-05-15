@@ -18,10 +18,9 @@
  */
 package org.apache.axiom.om.util;
 
-import org.apache.commons.logging.Log;
-
 import java.io.IOException;
 import java.io.OutputStream;
+import org.apache.commons.logging.Log;
 
 /**
  * LogOutputStream Writes to log.debug() Also counts the number of bytes

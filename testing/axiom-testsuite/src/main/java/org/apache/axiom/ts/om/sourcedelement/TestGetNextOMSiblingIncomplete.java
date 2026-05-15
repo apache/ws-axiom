@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMElement#getNextOMSibling()} doesn't change the state of an {@link
@@ -44,8 +42,7 @@ public class TestGetNextOMSiblingIncomplete extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement omse =
-                factory.createOMElement(new StringOMDataSource("<sourcedelement/>"));
+        OMSourcedElement omse = factory.createOMElement(new StringOMDataSource("<sourcedelement/>"));
         OMElement parent = factory.createOMElement(new QName("parent"));
         parent.addChild(omse);
         // Cause expansion of the sourced element without building it completely

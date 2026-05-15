@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.common;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMSourcedElement;
@@ -43,8 +42,7 @@ public final class SOAPHeaderBlockHelper {
         return block.getAttributeValue(qname);
     }
 
-    public static boolean getBooleanAttributeValue(
-            AxiomElement block, SOAPHelper soapHelper, String key, QName qname) {
+    public static boolean getBooleanAttributeValue(AxiomElement block, SOAPHelper soapHelper, String key, QName qname) {
         String literal = getAttributeValue(block, key, qname);
         if (literal != null) {
             Boolean value = soapHelper.parseBoolean(literal);
@@ -52,10 +50,7 @@ public final class SOAPHeaderBlockHelper {
                 return value.booleanValue();
             } else {
                 throw new SOAPProcessingException(
-                        "Invalid value for attribute "
-                                + qname.getLocalPart()
-                                + " in header block "
-                                + block.getQName());
+                        "Invalid value for attribute " + qname.getLocalPart() + " in header block " + block.getQName());
             }
         } else {
             return false;
@@ -63,8 +58,7 @@ public final class SOAPHeaderBlockHelper {
     }
 
     public static String getRole(AxiomElement block, SOAPHelper soapHelper) {
-        return getAttributeValue(
-                block, SOAPHeaderBlock.ROLE_PROPERTY, soapHelper.getRoleAttributeQName());
+        return getAttributeValue(block, SOAPHeaderBlock.ROLE_PROPERTY, soapHelper.getRoleAttributeQName());
     }
 
     public static boolean getMustUnderstand(AxiomElement block, SOAPHelper soapHelper) {

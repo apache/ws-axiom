@@ -21,9 +21,7 @@ package org.apache.axiom.ts.omdom.attr;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Iterator;
-
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
@@ -38,7 +36,8 @@ import org.w3c.dom.Element;
 public class TestSetValueOnNamespaceDeclaration extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Document doc = metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Document doc =
+                metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Element element = doc.createElementNS("", "test");
         Attr attr = doc.createAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:attr");
         element.setAttributeNodeNS(attr);

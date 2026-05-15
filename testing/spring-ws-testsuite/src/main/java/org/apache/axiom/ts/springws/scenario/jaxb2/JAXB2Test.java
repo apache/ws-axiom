@@ -27,8 +27,7 @@ public class JAXB2Test extends ScenarioTestCase {
         GetQuoteRequest request = new GetQuoteRequest();
         request.setSymbol("GOOG");
         GetQuoteResponse response =
-                (GetQuoteResponse)
-                        context.getBean(WebServiceTemplate.class).marshalSendAndReceive(request);
+                (GetQuoteResponse) context.getBean(WebServiceTemplate.class).marshalSendAndReceive(request);
         assertNotNull(response);
         assertEquals(105.37, response.getPrice(), 0.001);
     }

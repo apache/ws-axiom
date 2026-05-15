@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.document.sr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that the {@link XMLStreamReader} returned by {@link OMContainer#getXMLStreamReader()} for a
@@ -45,8 +43,7 @@ public class TestDTDReader extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMDocument document = factory.createOMDocument();
-        factory.createOMDocType(
-                document, "root", "-//MY//DTD", "my.dtd", "<!ELEMENT root (#PCDATA)>");
+        factory.createOMDocType(document, "root", "-//MY//DTD", "my.dtd", "<!ELEMENT root (#PCDATA)>");
         factory.createOMElement("root", null, document);
         XMLStreamReader reader = document.getXMLStreamReader();
         // Note that according to the specification of the DTDReader interface, it is

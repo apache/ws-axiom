@@ -25,7 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.commons.logging.Log;
@@ -139,8 +138,7 @@ public class OverflowBlob implements WritableBlob {
             }
 
             int read = 0;
-            while (len > 0
-                    && !(currentChunkIndex == chunkIndex && currentChunkOffset == chunkOffset)) {
+            while (len > 0 && !(currentChunkIndex == chunkIndex && currentChunkOffset == chunkOffset)) {
 
                 int c;
                 if (currentChunkIndex == chunkIndex) {

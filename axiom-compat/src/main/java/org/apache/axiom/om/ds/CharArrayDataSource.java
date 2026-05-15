@@ -18,17 +18,15 @@
  */
 package org.apache.axiom.om.ds;
 
-import org.apache.axiom.om.OMDataSourceExt;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.util.StAXUtils;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import org.apache.axiom.om.OMDataSourceExt;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.util.StAXUtils;
 
 /**
  * @deprecated Use {@link StringOMDataSource} instead.

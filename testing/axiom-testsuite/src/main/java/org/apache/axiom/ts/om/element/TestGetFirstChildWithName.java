@@ -20,15 +20,13 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /** Tests the behavior of {@link OMElement#getFirstChildWithName(QName)}. */
 public class TestGetFirstChildWithName extends AxiomTestCase {
@@ -60,7 +58,8 @@ public class TestGetFirstChildWithName extends AxiomTestCase {
         assertThat(parent.getFirstChildWithName(new QName("b"))).isNull();
 
         // Check that the prefix of the given QName is not taken into account
-        assertThat(parent.getFirstChildWithName(new QName("urn:ns1", "b", "ns2"))).isSameAs(child3);
+        assertThat(parent.getFirstChildWithName(new QName("urn:ns1", "b", "ns2")))
+                .isSameAs(child3);
 
         // Test with null namespace
         assertThat(parent.getFirstChildWithName(new QName("c"))).isSameAs(child4);

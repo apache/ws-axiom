@@ -20,6 +20,7 @@ package org.apache.axiom.ts.soap.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMSourcedElement;
@@ -33,8 +34,6 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-import com.google.inject.Inject;
-
 /**
  * Tests that a custom builder registered with {@link
  * CustomBuilderSupport#registerCustomBuilderForPayload(CustomBuilder)} is still taken into account
@@ -42,8 +41,7 @@ import com.google.inject.Inject;
  * optimization described by <a
  * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a>.
  */
-public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck
-        extends SampleBasedSOAPTestCase {
+public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck extends SampleBasedSOAPTestCase {
     @Inject
     public TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(SOAPSpec spec) {
         super(spec, SOAPSampleSet.WSA);
@@ -61,8 +59,7 @@ public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck
         // (After the fault check and during phase processing...probably dispatch phase)
         ((CustomBuilderSupport) builder)
                 .registerCustomBuilder(
-                        CustomBuilder.Selector.PAYLOAD,
-                        new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
+                        CustomBuilder.Selector.PAYLOAD, new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
 
         OMElement bodyElement = envelope.getBody().getFirstElement();
         assertThat(bodyElement).isInstanceOf(OMSourcedElement.class);

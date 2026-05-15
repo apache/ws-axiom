@@ -22,7 +22,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -60,8 +59,7 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator
                 loadImplementations(implementations);
             }
             for (Implementation implementation : discoveredImplementations) {
-                List<ServiceRegistration<?>> registrations =
-                        new ArrayList<ServiceRegistration<?>>();
+                List<ServiceRegistration<?>> registrations = new ArrayList<ServiceRegistration<?>>();
                 List<ServiceReference<?>> references = new ArrayList<ServiceReference<?>>();
                 for (Feature feature : implementation.getFeatures()) {
                     List<String> clazzes = new ArrayList<String>();
@@ -73,20 +71,18 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator
                     properties.put("implementationName", implementation.getName());
                     properties.put("feature", feature.getName());
                     properties.put(Constants.SERVICE_RANKING, feature.getPriority());
-                    ServiceRegistration<?> registration =
-                            bundle.getBundleContext()
-                                    .registerService(
-                                            clazzes.toArray(new String[clazzes.size()]),
-                                            implementation.getMetaFactory(),
-                                            properties);
+                    ServiceRegistration<?> registration = bundle.getBundleContext()
+                            .registerService(
+                                    clazzes.toArray(new String[clazzes.size()]),
+                                    implementation.getMetaFactory(),
+                                    properties);
                     registrations.add(registration);
                     ServiceReference<?> reference = registration.getReference();
                     references.add(reference);
                     // Let the OSGi runtime know that the axiom-api bundle is using the service
                     apiBundleContext.getService(reference);
                 }
-                registeredImplementations.add(
-                        new RegisteredImplementation(implementation, registrations, references));
+                registeredImplementations.add(new RegisteredImplementation(implementation, registrations, references));
             }
             return registeredImplementations;
         } else {
@@ -95,18 +91,15 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator
     }
 
     @Override
-    public void modifiedBundle(
-            Bundle bundle, BundleEvent event, List<RegisteredImplementation> object) {}
+    public void modifiedBundle(Bundle bundle, BundleEvent event, List<RegisteredImplementation> object) {}
 
     @Override
-    public void removedBundle(
-            Bundle bundle, BundleEvent event, List<RegisteredImplementation> object) {
+    public void removedBundle(Bundle bundle, BundleEvent event, List<RegisteredImplementation> object) {
         for (RegisteredImplementation registeredImplementation : object) {
             for (ServiceReference<?> reference : registeredImplementation.getReferences()) {
                 apiBundleContext.ungetService(reference);
             }
-            for (ServiceRegistration<?> registration :
-                    registeredImplementation.getRegistrations()) {
+            for (ServiceRegistration<?> registration : registeredImplementation.getRegistrations()) {
                 registration.unregister();
             }
             synchronized (this) {

@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.header;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.axiom.soap.RolePlayer;
 
 public final class MyRolePlayer implements RolePlayer {

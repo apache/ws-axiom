@@ -20,5 +20,4 @@ package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreNSUnawareElement;
 
-public interface DOMNSUnawareElement
-        extends DOMElement, DOMNSUnawareNamedNode, CoreNSUnawareElement {}
+public interface DOMNSUnawareElement extends DOMElement, DOMNSUnawareNamedNode, CoreNSUnawareElement {}

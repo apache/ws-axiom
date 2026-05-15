@@ -20,29 +20,26 @@ package org.apache.axiom.ts.soap.header;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
-
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
 
 /**
  * Tests the behavior of {@link SOAPHeader#addHeaderBlock(QName)} when passing a {@link QName} with
  * no namespace.
  */
 public class TestAddHeaderBlockFromQNameWithoutNamespace extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPHeader header = soapFactory.createSOAPHeader(envelope);
-        assertThatThrownBy(() -> header.addHeaderBlock(new QName("test")))
-                .isInstanceOf(OMException.class);
+        assertThatThrownBy(() -> header.addHeaderBlock(new QName("test"))).isInstanceOf(OMException.class);
     }
 }

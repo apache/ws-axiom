@@ -20,18 +20,15 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
-
-import com.google.inject.Inject;
 
 /**
  * Test checking that adding an attribute correctly generates a new namespace declaration if an
@@ -55,8 +52,7 @@ public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCas
     private final AddAttributeStrategy strategy;
 
     @Inject
-    public TestAddAttributeWithMaskedNamespaceDeclaration(
-            OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
+    public TestAddAttributeWithMaskedNamespaceDeclaration(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
         this.strategy = strategy;
     }

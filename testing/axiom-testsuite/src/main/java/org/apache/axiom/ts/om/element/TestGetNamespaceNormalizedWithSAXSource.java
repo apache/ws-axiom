@@ -20,20 +20,17 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.InputSource;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an element
@@ -54,13 +51,9 @@ public class TestGetNamespaceNormalizedWithSAXSource extends AxiomTestCase {
         factory.setNamespaceAware(true);
         factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
         SAXParser parser = factory.newSAXParser();
-        SAXSource source =
-                new SAXSource(
-                        parser.getXMLReader(),
-                        new InputSource(new StringReader("<root xmlns=''/>")));
-        OMElement element =
-                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source)
-                        .getDocumentElement();
+        SAXSource source = new SAXSource(parser.getXMLReader(), new InputSource(new StringReader("<root xmlns=''/>")));
+        OMElement element = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source)
+                .getDocumentElement();
         assertThat(element.getNamespace()).isNull();
     }
 }

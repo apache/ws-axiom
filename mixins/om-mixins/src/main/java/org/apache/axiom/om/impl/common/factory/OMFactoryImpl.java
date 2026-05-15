@@ -21,9 +21,7 @@ package org.apache.axiom.om.impl.common.factory;
 import static org.apache.axiom.util.xml.NSUtils.generatePrefix;
 
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.ext.stax.BlobProvider;
@@ -89,11 +87,7 @@ public class OMFactoryImpl implements OMFactory {
 
     @Override
     public final OMDocType createOMDocType(
-            OMContainer parent,
-            String rootName,
-            String publicId,
-            String systemId,
-            String internalSubset) {
+            OMContainer parent, String rootName, String publicId, String systemId, String internalSubset) {
         AxiomDocType node = nodeFactory.createDocumentTypeDeclaration();
         node.coreSetRootName(rootName);
         node.coreSetPublicId(publicId);
@@ -162,12 +156,9 @@ public class OMFactoryImpl implements OMFactory {
         if (text == null) {
             throw new IllegalArgumentException("QName text arg cannot be null!");
         }
-        OMNamespace ns =
-                ((AxiomElement) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
+        OMNamespace ns = ((AxiomElement) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
         return createAxiomText(
-                parent,
-                ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart(),
-                type);
+                parent, ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart(), type);
     }
 
     @Override
@@ -176,8 +167,7 @@ public class OMFactoryImpl implements OMFactory {
     }
 
     @Override
-    public final OMText createOMText(
-            OMContainer parent, String s, String mimeType, boolean optimize) {
+    public final OMText createOMText(OMContainer parent, String s, String mimeType, boolean optimize) {
         TextContent textContent = new TextContent(s);
         textContent.setOptimize(optimize);
         return createAxiomText(parent, textContent, OMNode.TEXT_NODE);
@@ -193,8 +183,7 @@ public class OMFactoryImpl implements OMFactory {
         try {
             // TODO: this doesn't necessarily produce a node with the expected OMFactory
             return (AxiomText)
-                    ((AxiomText) source)
-                            .coreClone(AxiomSemantics.CLONE_POLICY, null, (AxiomContainer) parent);
+                    ((AxiomText) source).coreClone(AxiomSemantics.CLONE_POLICY, null, (AxiomContainer) parent);
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }
@@ -206,10 +195,8 @@ public class OMFactoryImpl implements OMFactory {
     }
 
     @Override
-    public final OMText createOMText(
-            String contentID, BlobProvider blobProvider, boolean optimize) {
-        return createAxiomText(
-                null, new TextContent(contentID, blobProvider, optimize), OMNode.TEXT_NODE);
+    public final OMText createOMText(String contentID, BlobProvider blobProvider, boolean optimize) {
+        return createAxiomText(null, new TextContent(contentID, blobProvider, optimize), OMNode.TEXT_NODE);
     }
 
     @Override
@@ -285,8 +272,7 @@ public class OMFactoryImpl implements OMFactory {
             // The goal here is twofold:
             //  * check if the namespace needs to be declared;
             //  * locate an existing OMNamespace object, so that we can avoid creating a new one.
-            OMNamespace ns =
-                    element.findNamespace(namespaceURI, prefix.length() == 0 ? null : prefix);
+            OMNamespace ns = element.findNamespace(namespaceURI, prefix.length() == 0 ? null : prefix);
             if (ns == null) {
                 if ("".equals(prefix)) {
                     prefix = generatePrefix(namespaceURI);
@@ -295,8 +281,7 @@ public class OMFactoryImpl implements OMFactory {
             }
             element.internalSetNamespace(ns);
         } else if (prefix.length() > 0) {
-            throw new IllegalArgumentException(
-                    "Cannot create a prefixed element with an empty namespace name");
+            throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
         } else {
             if (element.getDefaultNamespace() != null) {
                 element.declareDefaultNamespace("");
@@ -317,8 +302,7 @@ public class OMFactoryImpl implements OMFactory {
             throw new IllegalArgumentException("namespaceURI must not be null");
         } else if (namespaceURI.length() == 0) {
             if (prefix != null && prefix.length() > 0) {
-                throw new IllegalArgumentException(
-                        "Cannot create a prefixed element with an empty namespace name");
+                throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
             }
             return createOMElement(localName, null);
         } else {
@@ -334,8 +318,7 @@ public class OMFactoryImpl implements OMFactory {
     }
 
     @Override
-    public final OMSourcedElement createOMElement(
-            OMDataSource source, String localName, OMNamespace ns) {
+    public final OMSourcedElement createOMElement(OMDataSource source, String localName, OMNamespace ns) {
         AxiomSourcedElement element = nodeFactory.createSourcedElement();
         element.init(localName, ns, source);
         return element;
@@ -367,8 +350,7 @@ public class OMFactoryImpl implements OMFactory {
                     ns = null;
                 }
             } else if (ns.getPrefix().length() == 0) {
-                throw new IllegalArgumentException(
-                        "Cannot create an unprefixed attribute with a namespace");
+                throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
             }
         }
         AxiomAttribute attr = nodeFactory.createNSAwareAttribute();
@@ -383,8 +365,7 @@ public class OMFactoryImpl implements OMFactory {
         return attr;
     }
 
-    protected final <T extends AxiomElement> T importElement(
-            OMElement element, AxiomElementType<T> type) {
+    protected final <T extends AxiomElement> T importElement(OMElement element, AxiomElementType<T> type) {
         T importedElement = type.create(nodeFactory);
         copyName(element, importedElement);
         for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
@@ -410,9 +391,7 @@ public class OMFactoryImpl implements OMFactory {
                 OMText text = (OMText) child;
                 Object content;
                 if (text.isBinary()) {
-                    content =
-                            new TextContent(
-                                    text.getContentID(), text.getBlob(), text.isOptimized());
+                    content = new TextContent(text.getContentID(), text.getBlob(), text.isOptimized());
                 } else {
                     content = text.getText();
                 }
@@ -455,9 +434,7 @@ public class OMFactoryImpl implements OMFactory {
     }
 
     private void importChildren(OMContainer node, AxiomContainer importedNode) {
-        for (OMNode child = node.getFirstOMChild();
-                child != null;
-                child = child.getNextOMSibling()) {
+        for (OMNode child = node.getFirstOMChild(); child != null; child = child.getNextOMSibling()) {
             try {
                 importedNode.coreAppendChild(importChildNode(child));
             } catch (CoreModelException ex) {

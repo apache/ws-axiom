@@ -19,9 +19,7 @@
 package org.apache.axiom.core.stream.stax.pull.input;
 
 import java.io.Closeable;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
@@ -49,7 +47,6 @@ public final class StAXPullInput implements XmlInput {
 
     @Override
     public XmlReader createReader(XmlHandler handler) {
-        return new StAXPullReader(
-                reader, helperFactory.createHelper(reader), handler, closeable, autoClose);
+        return new StAXPullReader(reader, helperFactory.createHelper(reader), handler, closeable, autoClose);
     }
 }

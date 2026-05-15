@@ -19,7 +19,6 @@
 package org.apache.axiom.core.impl.mixin;
 
 import java.util.Iterator;
-
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
@@ -59,8 +58,7 @@ public abstract class CoreElementMixin implements CoreElement {
     }
 
     @Override
-    public final CoreAttribute coreGetAttribute(
-            AttributeMatcher matcher, String namespaceURI, String name) {
+    public final CoreAttribute coreGetAttribute(AttributeMatcher matcher, String namespaceURI, String name) {
         CoreAttribute attr = coreGetFirstAttribute();
         while (attr != null && !matcher.matches(attr, namespaceURI, name)) {
             attr = attr.coreGetNextAttribute();
@@ -92,8 +90,7 @@ public abstract class CoreElementMixin implements CoreElement {
         }
         if (attr == null) {
             CoreAttribute newAttr =
-                    matcher.createAttribute(
-                            coreGetNodeFactory().getFactory2(), namespaceURI, name, prefix, value);
+                    matcher.createAttribute(coreGetNodeFactory().getFactory2(), namespaceURI, name, prefix, value);
             if (previousAttr == null) {
                 coreAppendAttribute(newAttr);
             } else {
@@ -105,8 +102,7 @@ public abstract class CoreElementMixin implements CoreElement {
     }
 
     @Override
-    public final CoreAttribute coreSetAttribute(
-            AttributeMatcher matcher, CoreAttribute attr, Semantics semantics) {
+    public final CoreAttribute coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, Semantics semantics) {
         if (attr.coreGetOwnerElement() == this) {
             // TODO: document this and add assertion
             return attr;
@@ -132,8 +128,7 @@ public abstract class CoreElementMixin implements CoreElement {
             } else {
                 previousAttr.internalSetNextAttribute(attr);
             }
-            existingAttr.internalUnsetOwnerElement(
-                    semantics.getDetachPolicy().getNewOwnerDocument(this));
+            existingAttr.internalUnsetOwnerElement(semantics.getDetachPolicy().getNewOwnerDocument(this));
             attr.internalSetNextAttribute(existingAttr.coreGetNextAttribute());
             existingAttr.internalSetNextAttribute(null);
         }
@@ -159,17 +154,14 @@ public abstract class CoreElementMixin implements CoreElement {
     }
 
     @Override
-    public final String coreLookupNamespaceURI(String prefix, Semantics semantics)
-            throws CoreModelException {
+    public final String coreLookupNamespaceURI(String prefix, Semantics semantics) throws CoreModelException {
         if (!semantics.isUseStrictNamespaceLookup()) {
             String namespaceURI = getImplicitNamespaceURI(prefix);
             if (namespaceURI != null) {
                 return namespaceURI;
             }
         }
-        for (CoreAttribute attr = coreGetFirstAttribute();
-                attr != null;
-                attr = attr.coreGetNextAttribute()) {
+        for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
             if (attr instanceof CoreNamespaceDeclaration) {
                 CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration) attr;
                 if (prefix.equals(decl.coreGetDeclaredPrefix())) {
@@ -188,8 +180,7 @@ public abstract class CoreElementMixin implements CoreElement {
     }
 
     @Override
-    public final String coreLookupPrefix(String namespaceURI, Semantics semantics)
-            throws CoreModelException {
+    public final String coreLookupPrefix(String namespaceURI, Semantics semantics) throws CoreModelException {
         if (namespaceURI == null) {
             throw new IllegalArgumentException("namespaceURI must not be null");
         }
@@ -199,9 +190,7 @@ public abstract class CoreElementMixin implements CoreElement {
                 return prefix;
             }
         }
-        for (CoreAttribute attr = coreGetFirstAttribute();
-                attr != null;
-                attr = attr.coreGetNextAttribute()) {
+        for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
             if (attr instanceof CoreNamespaceDeclaration) {
                 CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration) attr;
                 if (decl.coreGetCharacterData().toString().equals(namespaceURI)) {
@@ -214,13 +203,10 @@ public abstract class CoreElementMixin implements CoreElement {
             String prefix = parentElement.coreLookupPrefix(namespaceURI, semantics);
             // The prefix declared on one of the ancestors may be masked by another
             // namespace declaration on this element (or one of its descendants).
-            if (!semantics.isUseStrictNamespaceLookup()
-                    && getImplicitNamespaceURI(prefix) != null) {
+            if (!semantics.isUseStrictNamespaceLookup() && getImplicitNamespaceURI(prefix) != null) {
                 return null;
             }
-            for (CoreAttribute attr = coreGetFirstAttribute();
-                    attr != null;
-                    attr = attr.coreGetNextAttribute()) {
+            for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
                 if (attr instanceof CoreNamespaceDeclaration) {
                     CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration) attr;
                     if (decl.coreGetDeclaredPrefix().equals(prefix)) {
@@ -235,8 +221,7 @@ public abstract class CoreElementMixin implements CoreElement {
     }
 
     @Override
-    public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other)
-            throws CoreModelException {
+    public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) throws CoreModelException {
         CoreElement o = (CoreElement) other;
         initSource(policy, options, o);
         initName(o);
@@ -255,8 +240,7 @@ public abstract class CoreElementMixin implements CoreElement {
     public <T> void initSource(ClonePolicy<T> policy, T options, CoreElement other) {}
 
     @Override
-    public final void corePromote(CoreElement newElement, Semantics semantics)
-            throws CoreModelException {
+    public final void corePromote(CoreElement newElement, Semantics semantics) throws CoreModelException {
         newElement.initName(this);
         newElement.internalSetFirstAttribute(firstAttribute);
         CoreAttribute attr = firstAttribute;

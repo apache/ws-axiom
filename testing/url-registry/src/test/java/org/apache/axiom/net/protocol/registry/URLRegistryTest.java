@@ -20,7 +20,6 @@ package org.apache.axiom.net.protocol.registry;
 
 import java.net.URL;
 import java.net.URLConnection;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
@@ -35,8 +34,7 @@ public class URLRegistryTest {
             // We must be able to connect to the URL after converting it to a String
             URL url = new URL(registration.getURL().toString());
             URLConnection connection = url.openConnection();
-            IOTestUtils.compareStreams(
-                    connection.getInputStream(), "actual", blob.getInputStream(), "expected");
+            IOTestUtils.compareStreams(connection.getInputStream(), "actual", blob.getInputStream(), "expected");
         } finally {
             registration.unregister();
         }

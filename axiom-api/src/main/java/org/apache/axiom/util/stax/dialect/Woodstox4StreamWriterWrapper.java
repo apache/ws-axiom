@@ -21,7 +21,6 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
 
 class Woodstox4StreamWriterWrapper extends XMLStreamWriterWrapper {

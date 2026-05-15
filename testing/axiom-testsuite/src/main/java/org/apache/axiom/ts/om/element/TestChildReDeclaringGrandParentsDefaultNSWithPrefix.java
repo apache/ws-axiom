@@ -20,14 +20,12 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestChildReDeclaringGrandParentsDefaultNSWithPrefix extends AxiomTestCase {
     @Inject
@@ -38,24 +36,15 @@ public class TestChildReDeclaringGrandParentsDefaultNSWithPrefix extends AxiomTe
     @Override
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
-        OMElement elem =
-                fac.createOMElement(
-                        "RequestSecurityToken",
-                        fac.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
+        OMElement elem = fac.createOMElement(
+                "RequestSecurityToken", fac.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
         fac.createOMElement(new QName("TokenType"), elem).setText("test");
         fac.createOMElement(new QName("RequestType"), elem).setText("test1");
 
         OMElement entElem =
-                fac.createOMElement(
-                        new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
-                        elem);
-        OMElement binSecElem =
-                fac.createOMElement(
-                        new QName(
-                                "http://schemas.xmlsoap.org/ws/2005/02/trust",
-                                "Binarysecret",
-                                "wst"),
-                        entElem);
+                fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"), elem);
+        OMElement binSecElem = fac.createOMElement(
+                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Binarysecret", "wst"), entElem);
         binSecElem.setText("secret value");
         String xml = elem.toString();
         assertThat(xml).contains("<wst:Binarysecret");

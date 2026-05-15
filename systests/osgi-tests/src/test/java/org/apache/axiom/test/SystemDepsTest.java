@@ -24,7 +24,6 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.junit.Test;
@@ -54,8 +53,7 @@ public class SystemDepsTest {
     @Test
     public void testCreateOMBuilder() throws Exception {
         OMElement element =
-                OMXMLBuilderFactory.createOMBuilder(new StringReader("<root/>"))
-                        .getDocumentElement();
+                OMXMLBuilderFactory.createOMBuilder(new StringReader("<root/>")).getDocumentElement();
         assertThat(element.getLocalName()).isEqualTo("root");
     }
 }

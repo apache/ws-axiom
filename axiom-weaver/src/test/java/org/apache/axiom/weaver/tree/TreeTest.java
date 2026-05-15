@@ -33,12 +33,10 @@ public class TreeTest {
         weaver.addInterfaceToImplement(Directory.class);
         weaver.addInterfaceToImplement(Leaf.class);
         weaver.addInterfaceToImplement(Factory.class);
-        Factory factory =
-                (Factory)
-                        weaver.toClassLoader(cl)
-                                .loadClass("impl.FactoryImpl")
-                                .getField("INSTANCE")
-                                .get(null);
+        Factory factory = (Factory) weaver.toClassLoader(cl)
+                .loadClass("impl.FactoryImpl")
+                .getField("INSTANCE")
+                .get(null);
         Root root = factory.createRoot();
         assertThat(root.getFactory()).isSameInstanceAs(factory);
     }

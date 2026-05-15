@@ -20,13 +20,12 @@ package org.apache.axiom.ts.dom.attr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestCloneNode extends DOMTestCase {
     @Inject

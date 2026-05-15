@@ -20,13 +20,11 @@ package org.apache.axiom.ts.soap.body;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
-
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
 
 /**
  * Tests the behavior of {@link SOAPBody#hasFault()} if the {@link SOAPBody} contains a plain {@link
@@ -34,7 +32,8 @@ import junit.framework.TestCase;
  * return <code>false</code>.
  */
 public class TestHasFaultFakeFault extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {

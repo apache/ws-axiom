@@ -18,8 +18,10 @@
  */
 package org.apache.axiom.om.impl.jaxp;
 
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
 import java.util.stream.Stream;
-
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
@@ -30,21 +32,15 @@ import org.apache.axiom.ts.xml.XMLSample;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Key;
-import com.google.inject.name.Names;
-
 public class StreamSourceToOMResultTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
-        MatrixTestFilters excludes =
-                MatrixTestFilters.builder()
-                        .add("(|(file=sax-attribute-namespace-bug.xml)(file=large.xml))")
-                        .build();
+        MatrixTestFilters excludes = MatrixTestFilters.builder()
+                .add("(|(file=sax-attribute-namespace-bug.xml)(file=large.xml))")
+                .build();
         return new FanOutNode<>(
                         ImmutableList.of("default", "dom"),
-                        Binding.singleton(
-                                Key.get(String.class, Names.named("axiomImplementation"))),
+                        Binding.singleton(Key.get(String.class, Names.named("axiomImplementation"))),
                         LabelBinding.simpleString("axiomImplementation"),
                         new FanOutNode<>(
                                 Multiton.getInstances(XMLSample.class),

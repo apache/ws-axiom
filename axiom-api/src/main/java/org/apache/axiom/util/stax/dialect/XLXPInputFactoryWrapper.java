@@ -20,7 +20,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.InputStream;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -36,8 +35,7 @@ class XLXPInputFactoryWrapper extends NormalizingXMLInputFactoryWrapper {
     }
 
     @Override
-    public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream)
-            throws XMLStreamException {
+    public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream) throws XMLStreamException {
         // Both versions of XLXP have issues with documents using UTF-16 without byte
         // order markers, although this type of document is explicitly supported by the XML
         // specification:

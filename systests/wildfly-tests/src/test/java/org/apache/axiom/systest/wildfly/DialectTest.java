@@ -23,10 +23,8 @@ import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.StringReader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
-
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -53,14 +51,12 @@ public class DialectTest {
      */
     @Test
     public void testStAXDialectDetector() throws Exception {
-        assertFalse(
-                StAXDialectDetector.getDialect(XMLInputFactory.newInstance())
-                        .getName()
-                        .equals("Unknown"));
-        assertFalse(
-                StAXDialectDetector.getDialect(XMLOutputFactory.newInstance())
-                        .getName()
-                        .equals("Unknown"));
+        assertFalse(StAXDialectDetector.getDialect(XMLInputFactory.newInstance())
+                .getName()
+                .equals("Unknown"));
+        assertFalse(StAXDialectDetector.getDialect(XMLOutputFactory.newInstance())
+                .getName()
+                .equals("Unknown"));
     }
 
     /**
@@ -72,9 +68,8 @@ public class DialectTest {
      */
     @Test
     public void testDTD() throws Exception {
-        OMDocument document =
-                OMXMLBuilderFactory.createOMBuilder(new StringReader("<!DOCTYPE root><root/>"))
-                        .getDocument();
+        OMDocument document = OMXMLBuilderFactory.createOMBuilder(new StringReader("<!DOCTYPE root><root/>"))
+                .getDocument();
         OMDocType dtd = (OMDocType) document.getFirstOMChild();
         assertEquals("root", dtd.getRootName());
     }

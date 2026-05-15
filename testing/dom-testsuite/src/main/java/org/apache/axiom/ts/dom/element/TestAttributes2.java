@@ -21,9 +21,7 @@ package org.apache.axiom.ts.dom.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringReader;
-
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -35,10 +33,7 @@ public class TestAttributes2 extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document doc =
-                dbf.newDocumentBuilder()
-                        .parse(
-                                new InputSource(
-                                        new StringReader("<root><child xmlns=\"\"/></root>")));
+                dbf.newDocumentBuilder().parse(new InputSource(new StringReader("<root><child xmlns=\"\"/></root>")));
         Element element = (Element) doc.getDocumentElement().getFirstChild();
         assertThat(element.hasAttributes()).isTrue();
         NamedNodeMap attributes = element.getAttributes();

@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.springws.soap.messagefactory;
 
 import java.io.InputStream;
-
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.springws.SimpleTestCase;
 import org.springframework.ws.soap.SoapEnvelope;
@@ -33,9 +32,8 @@ import org.springframework.ws.soap.SoapMessageFactory;
 public class TestCreateWebServiceMessageFromInputStream extends SimpleTestCase {
     @Override
     protected void runTest(SoapMessageFactory messageFactory) throws Throwable {
-        SoapMessage message =
-                messageFactory.createWebServiceMessage(
-                        new TransportInputStreamImpl(SOAPSampleSet.NO_HEADER.getMessage(spec)));
+        SoapMessage message = messageFactory.createWebServiceMessage(
+                new TransportInputStreamImpl(SOAPSampleSet.NO_HEADER.getMessage(spec)));
         SoapEnvelope env = message.getEnvelope();
         assertNull(env.getHeader());
         assertNotNull(env.getBody());

@@ -20,13 +20,12 @@ package org.apache.axiom.ts.soap12.faultsubcode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetSubCodeNestedWithParser extends SampleBasedSOAPTestCase {
     @Inject
@@ -39,7 +38,6 @@ public class TestGetSubCodeNestedWithParser extends SampleBasedSOAPTestCase {
         SOAPFaultSubCode subCode =
                 envelope.getBody().getFault().getCode().getSubCode().getSubCode();
         assertThat(subCode.getSubCode()).isNotNull();
-        assertThat(subCode.getSubCode().getLocalName())
-                .isEqualTo(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
+        assertThat(subCode.getSubCode().getLocalName()).isEqualTo(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
     }
 }

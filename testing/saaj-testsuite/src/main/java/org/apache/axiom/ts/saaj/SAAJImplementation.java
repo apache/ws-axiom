@@ -18,12 +18,11 @@
  */
 package org.apache.axiom.ts.saaj;
 
-import java.lang.reflect.Method;
-
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SAAJMetaFactory;
 import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPFactory;
+import java.lang.reflect.Method;
 
 public final class SAAJImplementation {
     private static final Method newMessageFactoryMethod;
@@ -31,11 +30,9 @@ public final class SAAJImplementation {
 
     static {
         try {
-            newMessageFactoryMethod =
-                    SAAJMetaFactory.class.getDeclaredMethod("newMessageFactory", String.class);
+            newMessageFactoryMethod = SAAJMetaFactory.class.getDeclaredMethod("newMessageFactory", String.class);
             newMessageFactoryMethod.setAccessible(true);
-            newSOAPFactoryMethod =
-                    SAAJMetaFactory.class.getDeclaredMethod("newSOAPFactory", String.class);
+            newSOAPFactoryMethod = SAAJMetaFactory.class.getDeclaredMethod("newSOAPFactory", String.class);
             newSOAPFactoryMethod.setAccessible(true);
         } catch (Exception ex) {
             throw new Error(ex);

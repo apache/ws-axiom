@@ -19,7 +19,6 @@
 package org.apache.axiom.util.xml;
 
 import java.util.concurrent.atomic.AtomicReference;
-
 import javax.xml.namespace.QName;
 
 @SuppressWarnings("serial")

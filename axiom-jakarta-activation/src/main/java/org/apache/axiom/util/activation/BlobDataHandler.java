@@ -18,11 +18,9 @@
  */
 package org.apache.axiom.util.activation;
 
+import jakarta.activation.DataHandler;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import jakarta.activation.DataHandler;
-
 import org.apache.axiom.blob.Blob;
 
 final class BlobDataHandler extends DataHandler {

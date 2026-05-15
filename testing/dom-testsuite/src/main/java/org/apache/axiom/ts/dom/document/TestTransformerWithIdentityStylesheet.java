@@ -25,7 +25,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -45,14 +44,9 @@ public class TestTransformerWithIdentityStylesheet extends TransformerTestCase {
         document.appendChild(root);
 
         Document stylesheet =
-                builder.parse(
-                        TestTransformerWithIdentityStylesheet.class.getResourceAsStream(
-                                "identity.xslt"));
+                builder.parse(TestTransformerWithIdentityStylesheet.class.getResourceAsStream("identity.xslt"));
         Document output = builder.newDocument();
-        Transformer transformer =
-                xsltImplementation
-                        .newTransformerFactory()
-                        .newTransformer(new DOMSource(stylesheet));
+        Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(document), new DOMResult(output));
         assertAbout(xml())
                 .that(xml(Document.class, output))

@@ -21,7 +21,6 @@ package org.apache.axiom.core.stream.stax.pull.output;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
-
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;

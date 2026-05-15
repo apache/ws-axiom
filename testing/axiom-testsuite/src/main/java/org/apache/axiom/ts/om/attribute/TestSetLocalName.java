@@ -20,14 +20,12 @@ package org.apache.axiom.ts.om.attribute;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestSetLocalName extends AxiomTestCase {
     @Inject
@@ -38,9 +36,7 @@ public class TestSetLocalName extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMAttribute attr =
-                factory.createOMAttribute(
-                        "test", factory.createOMNamespace("urn:test", "p"), "value");
+        OMAttribute attr = factory.createOMAttribute("test", factory.createOMNamespace("urn:test", "p"), "value");
         attr.setLocalName("test2");
         assertThat(attr.getLocalName()).isEqualTo("test2");
         QName qname = attr.getQName();

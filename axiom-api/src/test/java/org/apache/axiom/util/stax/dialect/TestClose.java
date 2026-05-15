@@ -18,23 +18,21 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.testutils.io.InstrumentedStream;
 import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
-import com.google.inject.Inject;
-
 /** Tests that {@link XMLStreamReader#close()} doesn't close the underlying stream. */
 public class TestClose extends DialectTestCase {
-    @Inject private StreamType streamType;
+    @Inject
+    private StreamType streamType;
 
     @Override
     protected void runTest() throws Throwable {
         InstrumentedStream in = streamType.instrumentStream(streamType.getStream(XMLSample.SIMPLE));
-        XMLStreamReader reader =
-                streamType.createXMLStreamReader(staxImpl.newNormalizedXMLInputFactory(), in);
+        XMLStreamReader reader = streamType.createXMLStreamReader(staxImpl.newNormalizedXMLInputFactory(), in);
         reader.close();
         assertFalse(in.isClosed());
     }

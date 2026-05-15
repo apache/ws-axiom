@@ -60,30 +60,28 @@ public class ByteStreamComparator extends OutputStream {
         while (len > 0) {
             int c = in.read(compareBuffer, 0, Math.min(compareBuffer.length, len));
             if (c == -1) {
-                fail(
-                        "The two streams have different lengths: len("
-                                + name1
-                                + ") = "
-                                + position
-                                + " < len("
-                                + name2
-                                + ")");
+                fail("The two streams have different lengths: len("
+                        + name1
+                        + ") = "
+                        + position
+                        + " < len("
+                        + name2
+                        + ")");
             }
             for (int i = 0; i < c; i++) {
                 if (buffer[off] != compareBuffer[i]) {
-                    fail(
-                            "Byte mismatch: "
-                                    + name1
-                                    + "["
-                                    + position
-                                    + "] = "
-                                    + compareBuffer[i]
-                                    + " != "
-                                    + name2
-                                    + "["
-                                    + position
-                                    + "] = "
-                                    + buffer[off]);
+                    fail("Byte mismatch: "
+                            + name1
+                            + "["
+                            + position
+                            + "] = "
+                            + compareBuffer[i]
+                            + " != "
+                            + name2
+                            + "["
+                            + position
+                            + "] = "
+                            + buffer[off]);
                 }
                 off++;
                 len--;
@@ -98,13 +96,7 @@ public class ByteStreamComparator extends OutputStream {
     @Override
     public void close() throws IOException {
         if (in.read() != -1) {
-            fail(
-                    "The two streams have different lengths: len("
-                            + name1
-                            + ") > len("
-                            + name2
-                            + ") = "
-                            + position);
+            fail("The two streams have different lengths: len(" + name1 + ") > len(" + name2 + ") = " + position);
         }
     }
 

@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that the completeness status (as returned by {@link OMDocument#isComplete()}) is updated
@@ -45,9 +43,9 @@ public class TestIsCompleteAfterAddingIncompleteChild extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement incompleteElement =
-                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<elem>text</elem>"))
-                        .getDocumentElement(true);
+        OMElement incompleteElement = OMXMLBuilderFactory.createOMBuilder(
+                        factory, new StringReader("<elem>text</elem>"))
+                .getDocumentElement(true);
         OMDocument document = factory.createOMDocument();
         assertThat(document.isComplete()).isTrue();
         document.addChild(incompleteElement);

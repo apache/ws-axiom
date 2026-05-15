@@ -18,12 +18,10 @@
  */
 package org.apache.axiom.attachments;
 
+import jakarta.activation.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import jakarta.activation.DataSource;
-
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 import org.apache.axiom.blob.AbstractWritableBlob;

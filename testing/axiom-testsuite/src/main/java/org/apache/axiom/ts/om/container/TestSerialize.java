@@ -20,14 +20,14 @@ package org.apache.axiom.ts.om.container;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.google.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
-
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
@@ -39,8 +39,6 @@ import org.apache.axiom.ts.om.XMLSampleAdapter;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.InputSource;
-
-import com.google.inject.Inject;
 
 public class TestSerialize extends ConformanceTestCase {
     private final OMContainerExtractor containerExtractor;
@@ -59,14 +57,12 @@ public class TestSerialize extends ConformanceTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder =
-                file.getAdapter(XMLSampleAdapter.class).getBuilder(metaFactory);
+        OMXMLParserWrapper builder = file.getAdapter(XMLSampleAdapter.class).getBuilder(metaFactory);
         try {
             OMContainer container = containerExtractor.getContainer(builder);
             // We need to clone the InputSource objects so that we can dump their contents
             // if the test fails
-            InputSource control[] =
-                    duplicateInputSource(containerExtractor.getControl(file.getInputStream()));
+            InputSource control[] = duplicateInputSource(containerExtractor.getControl(file.getInputStream()));
             XML actual = serializationStrategy.serialize(container);
             try {
                 // Configure the InputSources such that external entities can be resolved
@@ -89,8 +85,7 @@ public class TestSerialize extends ConformanceTestCase {
                 assertThat(container.isComplete()).isTrue();
             } else {
                 assertThat(container.isComplete()).isFalse();
-                assertThatThrownBy(container::getFirstOMChild)
-                        .isInstanceOf(NodeUnavailableException.class);
+                assertThatThrownBy(container::getFirstOMChild).isInstanceOf(NodeUnavailableException.class);
             }
         } finally {
             builder.close();
@@ -103,8 +98,7 @@ public class TestSerialize extends ConformanceTestCase {
         IOUtils.copy(is.getByteStream(), baos);
         byte[] content = baos.toByteArray();
         return new InputSource[] {
-            new InputSource(new ByteArrayInputStream(content)),
-            new InputSource(new ByteArrayInputStream(content))
+            new InputSource(new ByteArrayInputStream(content)), new InputSource(new ByteArrayInputStream(content))
         };
     }
 

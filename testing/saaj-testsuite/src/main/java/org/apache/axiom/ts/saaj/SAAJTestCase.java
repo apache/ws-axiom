@@ -18,20 +18,19 @@
  */
 package org.apache.axiom.ts.saaj;
 
+import com.google.inject.Inject;
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPFactory;
-
+import junit.framework.TestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public abstract class SAAJTestCase extends TestCase {
-    @Inject protected SAAJImplementation saajImplementation;
+    @Inject
+    protected SAAJImplementation saajImplementation;
 
-    @Inject protected SOAPSpec spec;
+    @Inject
+    protected SOAPSpec spec;
 
     protected final MessageFactory newMessageFactory() throws SOAPException {
         return spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation);

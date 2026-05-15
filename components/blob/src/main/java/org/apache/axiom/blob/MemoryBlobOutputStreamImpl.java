@@ -20,7 +20,6 @@ package org.apache.axiom.blob;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.apache.axiom.ext.io.StreamCopyException;
 
 final class MemoryBlobOutputStreamImpl extends MemoryBlobOutputStream {
@@ -79,11 +78,7 @@ final class MemoryBlobOutputStreamImpl extends MemoryBlobOutputStream {
             updateChunk();
             int c;
             try {
-                c =
-                        in.read(
-                                chunk.buffer,
-                                chunk.size,
-                                (int) Math.min(toRead, chunk.buffer.length - chunk.size));
+                c = in.read(chunk.buffer, chunk.size, (int) Math.min(toRead, chunk.buffer.length - chunk.size));
             } catch (IOException ex) {
                 throw new StreamCopyException(StreamCopyException.READ, ex);
             }

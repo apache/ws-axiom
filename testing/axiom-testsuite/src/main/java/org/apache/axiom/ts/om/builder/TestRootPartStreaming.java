@@ -20,11 +20,10 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -35,8 +34,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that the content of the root part of an XOP/MTOM message is not buffered (i.e. read
@@ -66,16 +63,14 @@ public class TestRootPartStreaming extends AxiomTestCase {
         orgRoot.serialize(baos, format);
 
         // Parse the message and monitor the number of bytes read
-        InstrumentedInputStream in =
-                new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(
-                        factory,
-                        StAXParserConfiguration.DEFAULT,
-                        MultipartBody.builder()
-                                .setInputStream(in)
-                                .setContentType(format.getContentType())
-                                .build());
+        InstrumentedInputStream in = new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
+                factory,
+                StAXParserConfiguration.DEFAULT,
+                MultipartBody.builder()
+                        .setInputStream(in)
+                        .setContentType(format.getContentType())
+                        .build());
         OMElement root = builder.getDocumentElement();
         long count1 = in.getCount();
         XMLStreamReader reader = root.getXMLStreamReader(false);

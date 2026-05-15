@@ -20,20 +20,17 @@ package org.apache.axiom.truth.xml;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.truth.FailureMetadata;
+import com.google.common.truth.Subject;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.truth.xml.spi.Event;
 import org.apache.axiom.truth.xml.spi.Traverser;
 import org.apache.axiom.truth.xml.spi.TraverserException;
 import org.apache.axiom.truth.xml.spi.XML;
-
-import com.google.common.truth.FailureMetadata;
-import com.google.common.truth.Subject;
 
 /** Propositions for objects representing XML data. */
 public final class XMLSubject extends Subject {
@@ -274,36 +271,35 @@ public final class XMLSubject extends Subject {
         Traverser traverser = xml.createTraverser(expandEntityReferences);
         if (ignoreWhitespaceInPrologAndEpilog || ignorePrologAndEpilog) {
             final boolean onlyWhitespace = !ignorePrologAndEpilog;
-            traverser =
-                    new Filter(traverser) {
-                        private int depth;
+            traverser = new Filter(traverser) {
+                private int depth;
 
-                        @Override
-                        public Event next() throws TraverserException {
-                            Event event;
-                            while ((event = super.next()) != null) {
-                                switch (event) {
-                                    case START_ELEMENT:
-                                        depth++;
-                                        break;
-                                    case END_ELEMENT:
-                                        depth--;
-                                        break;
-                                    default:
-                                        if (onlyWhitespace) {
-                                            break;
-                                        }
-                                    // Fall through
-                                    case WHITESPACE:
-                                        if (depth == 0) {
-                                            continue;
-                                        }
-                                }
+                @Override
+                public Event next() throws TraverserException {
+                    Event event;
+                    while ((event = super.next()) != null) {
+                        switch (event) {
+                            case START_ELEMENT:
+                                depth++;
                                 break;
-                            }
-                            return event;
+                            case END_ELEMENT:
+                                depth--;
+                                break;
+                            default:
+                                if (onlyWhitespace) {
+                                    break;
+                                }
+                            // Fall through
+                            case WHITESPACE:
+                                if (depth == 0) {
+                                    continue;
+                                }
                         }
-                    };
+                        break;
+                    }
+                    return event;
+                }
+            };
         }
         final Set<Event> ignoredEvents = new HashSet<>();
         if (ignoreComments) {
@@ -313,38 +309,36 @@ public final class XMLSubject extends Subject {
             ignoredEvents.add(Event.WHITESPACE);
         }
         if (!ignoredEvents.isEmpty()) {
-            traverser =
-                    new Filter(traverser) {
-                        @Override
-                        public Event next() throws TraverserException {
-                            Event event;
-                            while (ignoredEvents.contains(event = super.next())) {
-                                // loop
-                            }
-                            return event;
-                        }
-                    };
+            traverser = new Filter(traverser) {
+                @Override
+                public Event next() throws TraverserException {
+                    Event event;
+                    while (ignoredEvents.contains(event = super.next())) {
+                        // loop
+                    }
+                    return event;
+                }
+            };
         }
         traverser = new CoalescingFilter(traverser);
         if (ignoreWhitespace) {
-            traverser =
-                    new Filter(traverser) {
-                        @Override
-                        public Event next() throws TraverserException {
-                            Event event = super.next();
-                            if (event == Event.TEXT) {
-                                String text = getText();
-                                for (int i = 0; i < text.length(); i++) {
-                                    if (" \r\n\t".indexOf(text.charAt(i)) == -1) {
-                                        return Event.TEXT;
-                                    }
-                                }
-                                return super.next();
-                            } else {
-                                return event;
+            traverser = new Filter(traverser) {
+                @Override
+                public Event next() throws TraverserException {
+                    Event event = super.next();
+                    if (event == Event.TEXT) {
+                        String text = getText();
+                        for (int i = 0; i < text.length(); i++) {
+                            if (" \r\n\t".indexOf(text.charAt(i)) == -1) {
+                                return Event.TEXT;
                             }
                         }
-                    };
+                        return super.next();
+                    } else {
+                        return event;
+                    }
+                }
+            };
         }
         if (ignoreRedundantNamespaceDeclarations && !ignoreNamespaceDeclarations) {
             traverser = new RedundantNamespaceDeclarationFilter(traverser);
@@ -376,8 +370,7 @@ public final class XMLSubject extends Subject {
                 if (expectedEvent == Event.WHITESPACE || expectedEvent == Event.TEXT) {
                     if (!xml.isReportingElementContentWhitespace()) {
                         assertThat(actualEvent).isEqualTo(Event.TEXT);
-                    } else if (treatWhitespaceAsText
-                            || !expectedXML.isReportingElementContentWhitespace()) {
+                    } else if (treatWhitespaceAsText || !expectedXML.isReportingElementContentWhitespace()) {
                         assertThat(actualEvent).isAnyOf(Event.WHITESPACE, Event.TEXT);
                     } else {
                         assertThat(actualEvent).isEqualTo(expectedEvent);
@@ -402,8 +395,7 @@ public final class XMLSubject extends Subject {
                         assertThat(actualQName).isEqualTo(expectedQName);
                         assertThat(actualAttributes).isEqualTo(expectedAttributes);
                         if (!ignoreNamespacePrefixes) {
-                            assertThat(actualQName.getPrefix())
-                                    .isEqualTo(expectedQName.getPrefix());
+                            assertThat(actualQName.getPrefix()).isEqualTo(expectedQName.getPrefix());
                             if (expectedAttributes != null) {
                                 assertThat(extractPrefixes(actualAttributes.keySet()))
                                         .isEqualTo(extractPrefixes(expectedAttributes.keySet()));
@@ -415,7 +407,7 @@ public final class XMLSubject extends Subject {
                     }
                     case END_ELEMENT -> {}
                     case TEXT, WHITESPACE, COMMENT, CDATA_SECTION ->
-                            assertThat(actual.getText()).isEqualTo(expected.getText());
+                        assertThat(actual.getText()).isEqualTo(expected.getText());
                     case ENTITY_REFERENCE -> {
                         if (expandEntityReferences) {
                             throw new IllegalStateException();

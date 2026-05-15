@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,7 +29,6 @@ import java.io.SequenceInputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Vector;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -38,8 +38,6 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
     @Inject
@@ -56,17 +54,12 @@ public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
         v.add(new ByteArrayInputStream("<root><a>".getBytes(charset)));
         v.add(blob.getInputStream());
         v.add(new ByteArrayInputStream("</a><b/></root>".getBytes(charset)));
-        OMElement root =
-                OMXMLBuilderFactory.createOMBuilder(
-                                factory,
-                                StAXParserConfiguration.NON_COALESCING,
-                                new SequenceInputStream(v.elements()),
-                                "ascii")
-                        .getDocumentElement();
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(
+                        factory, StAXParserConfiguration.NON_COALESCING, new SequenceInputStream(v.elements()), "ascii")
+                .getDocumentElement();
         OMElement child = (OMElement) root.getFirstOMChild();
         Reader in = child.getTextAsStream(false);
-        IOTestUtils.compareStreams(
-                new InputStreamReader(blob.getInputStream(), charset), "expected", in, "actual");
+        IOTestUtils.compareStreams(new InputStreamReader(blob.getInputStream(), charset), "expected", in, "actual");
         in.close();
         // No try to access subsequent nodes
         child = (OMElement) child.getNextOMSibling();

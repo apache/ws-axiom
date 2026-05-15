@@ -18,16 +18,14 @@
  */
 package org.apache.axiom.om.ds.activation;
 
+import jakarta.activation.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-
-import jakarta.activation.DataSource;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
@@ -43,8 +41,7 @@ public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOM
     private final DataSource binaryData;
     private final Charset charset;
 
-    public WrappedTextNodeOMDataSourceFromDataSource(
-            QName wrapperElementName, DataSource binaryData, Charset charset) {
+    public WrappedTextNodeOMDataSourceFromDataSource(QName wrapperElementName, DataSource binaryData, Charset charset) {
         super(wrapperElementName);
         this.binaryData = binaryData;
         this.charset = charset;
@@ -58,8 +55,7 @@ public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOM
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }
-        return new WrappedTextNodeStreamReader(
-                wrapperElementName, new InputStreamReader(is, charset));
+        return new WrappedTextNodeStreamReader(wrapperElementName, new InputStreamReader(is, charset));
     }
 
     @Override
@@ -74,7 +70,6 @@ public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOM
 
     @Override
     public OMDataSourceExt copy() {
-        return new WrappedTextNodeOMDataSourceFromDataSource(
-                wrapperElementName, binaryData, charset);
+        return new WrappedTextNodeOMDataSourceFromDataSource(wrapperElementName, binaryData, charset);
     }
 }

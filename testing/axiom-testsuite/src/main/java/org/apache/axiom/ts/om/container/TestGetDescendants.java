@@ -20,8 +20,9 @@ package org.apache.axiom.ts.om.container;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -32,18 +33,13 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 public class TestGetDescendants extends AxiomTestCase {
     private final OMContainerFactory containerFactory;
     private final boolean includeSelf;
 
     @Inject
     public TestGetDescendants(
-            OMMetaFactory metaFactory,
-            OMContainerFactory containerFactory,
-            @Named("includeSelf") boolean includeSelf) {
+            OMMetaFactory metaFactory, OMContainerFactory containerFactory, @Named("includeSelf") boolean includeSelf) {
         super(metaFactory);
         this.containerFactory = containerFactory;
         this.includeSelf = includeSelf;
@@ -54,8 +50,7 @@ public class TestGetDescendants extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMContainer root = containerFactory.create(factory);
         OMElement child1 = factory.createOMElement("child", null, root);
-        OMProcessingInstruction child2 =
-                factory.createOMProcessingInstruction(root, "test", "data");
+        OMProcessingInstruction child2 = factory.createOMProcessingInstruction(root, "test", "data");
         OMText grandchild1 = factory.createOMText(child1, "text");
         OMComment grandchild2 = factory.createOMComment(child1, "text");
         Iterator<? extends OMSerializable> it = root.getDescendants(includeSelf);

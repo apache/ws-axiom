@@ -22,14 +22,12 @@ package org.apache.axiom.util.stax;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Collections;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 
 /**
@@ -275,11 +273,8 @@ public class WrappedTextNodeStreamReader implements XMLStreamReader {
     @Override
     public NamespaceContext getNamespaceContext() {
         if (namespaceContext == null) {
-            namespaceContext =
-                    new MapBasedNamespaceContext(
-                            Collections.singletonMap(
-                                    wrapperElementName.getPrefix(),
-                                    wrapperElementName.getNamespaceURI()));
+            namespaceContext = new MapBasedNamespaceContext(
+                    Collections.singletonMap(wrapperElementName.getPrefix(), wrapperElementName.getNamespaceURI()));
         }
         return namespaceContext;
     }

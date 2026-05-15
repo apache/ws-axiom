@@ -23,9 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.truth.xml.spi.Event;
 import org.apache.axiom.truth.xml.spi.Traverser;
 import org.apache.axiom.truth.xml.spi.TraverserException;
@@ -67,7 +65,8 @@ final class RedundantNamespaceDeclarationFilter extends Filter {
         if (event == Event.START_ELEMENT) {
             Map<String, String> namespaces = super.getNamespaces();
             if (namespaces != null) {
-                for (Iterator<Map.Entry<String, String>> it = namespaces.entrySet().iterator();
+                for (Iterator<Map.Entry<String, String>> it =
+                                namespaces.entrySet().iterator();
                         it.hasNext(); ) {
                     Map.Entry<String, String> namespace = it.next();
                     if (namespace.getValue().equals(lookupNamespaceURI(namespace.getKey()))) {

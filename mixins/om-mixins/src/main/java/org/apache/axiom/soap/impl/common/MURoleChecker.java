@@ -35,7 +35,6 @@ public class MURoleChecker implements ElementMatcher<AxiomElement> {
     @Override
     public boolean matches(AxiomElement element, String namespaceURI, String name) {
         return SOAPHeaderBlockHelper.getMustUnderstand(element, soapHelper)
-                && (role == null
-                        || role.equals(SOAPHeaderBlockHelper.getRole(element, soapHelper)));
+                && (role == null || role.equals(SOAPHeaderBlockHelper.getRole(element, soapHelper)));
     }
 }

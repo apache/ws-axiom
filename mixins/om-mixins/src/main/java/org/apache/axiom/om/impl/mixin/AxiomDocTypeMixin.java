@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.mixin;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;

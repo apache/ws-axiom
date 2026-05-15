@@ -19,7 +19,6 @@
 import static org.junit.Assert.assertEquals;
 
 import java.io.InputStream;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -39,8 +38,8 @@ public class PsychoPathTest {
     private static ResultSequence evaluate(String xpath) throws Exception {
         InputStream is = PsychoPathTest.class.getResourceAsStream("test.xml");
         try {
-            OMFactory factory =
-                    OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
+            OMFactory factory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM)
+                    .getOMFactory();
             Document doc =
                     (Document) OMXMLBuilderFactory.createOMBuilder(factory, is).getDocument();
             StaticContextBuilder scb = new StaticContextBuilder();

@@ -20,13 +20,12 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -35,8 +34,6 @@ import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.CharacterStreamComparator;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase {
     @Inject
@@ -49,11 +46,8 @@ public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase
         OMFactory factory = metaFactory.getOMFactory();
         Blob blob = new RandomBlob(665544, 32, 128, 20000000);
         QName qname = new QName("a");
-        OMSourcedElement element =
-                factory.createOMElement(
-                        new WrappedTextNodeOMDataSourceFromBlob(
-                                qname, blob, StandardCharsets.US_ASCII),
-                        qname);
+        OMSourcedElement element = factory.createOMElement(
+                new WrappedTextNodeOMDataSourceFromBlob(qname, blob, StandardCharsets.US_ASCII), qname);
         Reader in = new InputStreamReader(blob.getInputStream(), StandardCharsets.US_ASCII);
         Writer out = new CharacterStreamComparator(in);
         element.writeTextTo(out, true); // cache doesn't matter here

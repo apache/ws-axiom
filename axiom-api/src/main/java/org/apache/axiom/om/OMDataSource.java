@@ -18,10 +18,11 @@
  */
 package org.apache.axiom.om;
 
+import java.io.OutputStream;
+import java.io.Writer;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.ext.stax.BlobWriter;
@@ -30,9 +31,6 @@ import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
-
-import java.io.OutputStream;
-import java.io.Writer;
 
 /**
  * Interface to arbitrary source of XML element data. This provides the hook for using a general

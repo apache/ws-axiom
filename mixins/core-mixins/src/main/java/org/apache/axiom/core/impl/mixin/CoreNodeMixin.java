@@ -80,8 +80,7 @@ public abstract class CoreNodeMixin implements CoreNode {
     }
 
     // TODO: merge this into internalClone once it is no longer referenced elsewhere
-    public final <T> CoreNode shallowClone(ClonePolicy<T> policy, T options)
-            throws CoreModelException {
+    public final <T> CoreNode shallowClone(ClonePolicy<T> policy, T options) throws CoreModelException {
         CoreNode clone = coreGetNodeFactory().createNode(policy.getTargetNodeClass(options, this));
         clone.init(policy, options, this);
         clone.initAncillaryData(policy, options, this);
@@ -89,8 +88,7 @@ public abstract class CoreNodeMixin implements CoreNode {
     }
 
     @Override
-    public final <T> CoreNode internalClone(
-            ClonePolicy<T> policy, T options, CoreParentNode targetParent)
+    public final <T> CoreNode internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent)
             throws CoreModelException {
         CoreNode clone = shallowClone(policy, options);
         if (targetParent != null) {
@@ -102,8 +100,7 @@ public abstract class CoreNodeMixin implements CoreNode {
     }
 
     @Override
-    public final <T> CoreNode coreClone(ClonePolicy<T> policy, T options)
-            throws CoreModelException {
+    public final <T> CoreNode coreClone(ClonePolicy<T> policy, T options) throws CoreModelException {
         return internalClone(policy, options, null);
     }
 

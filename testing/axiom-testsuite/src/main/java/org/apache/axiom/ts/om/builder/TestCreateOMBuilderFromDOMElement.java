@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -31,8 +31,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMXMLBuilderFactory#createOMBuilder(Node, boolean)} can be used to create a
@@ -48,12 +46,10 @@ public class TestCreateOMBuilderFromDOMElement extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document =
-                DOMImplementation.XERCES.parse(
-                        new InputSource(new StringReader("<a><b><c/></b><b2/></a>")));
+                DOMImplementation.XERCES.parse(new InputSource(new StringReader("<a><b><c/></b><b2/></a>")));
         Element domB = (Element) document.getElementsByTagNameNS(null, "b").item(0);
-        OMElement omB =
-                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domB, true)
-                        .getDocumentElement();
+        OMElement omB = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domB, true)
+                .getDocumentElement();
         assertThat(omB.getLocalName()).isEqualTo("b");
         assertThat(omB.getNextOMSibling()).isNull();
     }

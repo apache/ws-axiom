@@ -19,11 +19,10 @@
 
 package org.apache.axiom.om.impl.traverse;
 
+import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
-
-import javax.xml.namespace.QName;
 
 /**
  * @deprecated

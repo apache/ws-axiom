@@ -19,23 +19,21 @@
 
 package org.apache.axiom.om;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.util.Iterator;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.ext.stax.BlobReader;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
 import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.util.Iterator;
 
 /**
  * Captures the operations related to containment shared by both a document and an element.

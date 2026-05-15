@@ -18,12 +18,10 @@
  */
 package org.apache.axiom.mime.activation;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
-
+import java.io.IOException;
+import java.io.OutputStream;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.mime.PartBlob;

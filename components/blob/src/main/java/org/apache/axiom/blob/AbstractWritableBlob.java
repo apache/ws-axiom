@@ -21,7 +21,6 @@ package org.apache.axiom.blob;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.util.io.IOUtils;
 

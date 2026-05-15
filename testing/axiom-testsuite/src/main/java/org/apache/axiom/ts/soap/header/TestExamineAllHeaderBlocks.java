@@ -20,20 +20,18 @@ package org.apache.axiom.ts.soap.header;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestExamineAllHeaderBlocks extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -47,15 +45,13 @@ public class TestExamineAllHeaderBlocks extends TestCase {
         SOAPHeaderBlock headerBlock1 = iterator.next();
         assertThat(headerBlock1).isNotNull();
         assertThat(headerBlock1.getLocalName()).isEqualTo("echoOk1");
-        assertThat(headerBlock1.getNamespace().getNamespaceURI())
-                .isEqualTo("http://www.example.org");
+        assertThat(headerBlock1.getNamespace().getNamespaceURI()).isEqualTo("http://www.example.org");
 
         assertThat(iterator.hasNext()).isTrue();
         SOAPHeaderBlock headerBlock2 = iterator.next();
         assertThat(headerBlock2).isNotNull();
         assertThat(headerBlock2.getLocalName()).isEqualTo("echoOk2");
-        assertThat(headerBlock2.getNamespace().getNamespaceURI())
-                .isEqualTo("http://www.example.org");
+        assertThat(headerBlock2.getNamespace().getNamespaceURI()).isEqualTo("http://www.example.org");
 
         assertThat(iterator.hasNext()).isFalse();
     }

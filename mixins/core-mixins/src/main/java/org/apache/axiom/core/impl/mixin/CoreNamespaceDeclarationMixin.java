@@ -41,8 +41,7 @@ public abstract class CoreNamespaceDeclarationMixin implements CoreNamespaceDecl
     }
 
     @Override
-    public final void internalSerialize(XmlHandler handler, boolean cache)
-            throws CoreModelException, StreamException {
+    public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         handler.processNamespaceDeclaration(
                 coreGetDeclaredPrefix(), coreGetCharacterData().toString());
     }

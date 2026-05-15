@@ -18,15 +18,14 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.google.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -34,8 +33,6 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.InvocationCounter;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Test the behavior of the builder when an exception is thrown by {@link
@@ -61,17 +58,14 @@ public class TestIOExceptionInGetText extends AxiomTestCase {
             xml.append('x');
         }
         InputStream in =
-                new ExceptionInputStream(
-                        new ByteArrayInputStream(
-                                xml.toString().getBytes(StandardCharsets.US_ASCII)));
+                new ExceptionInputStream(new ByteArrayInputStream(xml.toString().getBytes(StandardCharsets.US_ASCII)));
 
         XMLStreamReader originalReader = StAXUtils.createXMLStreamReader(in);
         InvocationCounter invocationCounter = new InvocationCounter();
         XMLStreamReader reader = (XMLStreamReader) invocationCounter.createProxy(originalReader);
 
-        OMElement element =
-                OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
-                        .getDocumentElement();
+        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
+                .getDocumentElement();
 
         assertThatThrownBy(element::getNextOMSibling);
 

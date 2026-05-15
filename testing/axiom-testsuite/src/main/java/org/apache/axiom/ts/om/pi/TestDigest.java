@@ -18,11 +18,10 @@
  */
 package org.apache.axiom.ts.om.pi;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
-
-import com.google.inject.Inject;
 
 public class TestDigest extends DigestTestCase {
     @Inject
@@ -32,8 +31,6 @@ public class TestDigest extends DigestTestCase {
 
     @Override
     protected OMInformationItem createInformationItem() {
-        return metaFactory
-                .getOMFactory()
-                .createOMProcessingInstruction(null, "dbfo", "bgcolor=\"#EEEEEE\"");
+        return metaFactory.getOMFactory().createOMProcessingInstruction(null, "dbfo", "bgcolor=\"#EEEEEE\"");
     }
 }

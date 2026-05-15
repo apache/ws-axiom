@@ -21,6 +21,8 @@ package org.apache.axiom.ts.om.builder;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -29,16 +31,12 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XOPSample;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 public class TestCreateOMBuilderXOP extends AxiomTestCase {
     private final XOPSample sample;
     private final boolean build;
 
     @Inject
-    public TestCreateOMBuilderXOP(
-            OMMetaFactory metaFactory, XOPSample sample, @Named("build") boolean build) {
+    public TestCreateOMBuilderXOP(OMMetaFactory metaFactory, XOPSample sample, @Named("build") boolean build) {
         super(metaFactory);
         this.sample = sample;
         this.build = build;
@@ -46,20 +44,16 @@ public class TestCreateOMBuilderXOP extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        MultipartBody mb =
-                MultipartBody.builder()
-                        .setInputStream(sample.getInputStream())
-                        .setContentType(sample.getContentType())
-                        .build();
-        OMElement content =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb)
-                        .getDocumentElement();
+        MultipartBody mb = MultipartBody.builder()
+                .setInputStream(sample.getInputStream())
+                .setContentType(sample.getContentType())
+                .build();
+        OMElement content = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb)
+                .getDocumentElement();
         if (build) {
             content.build();
         }
-        assertAbout(xml())
-                .that(xml(OMElement.class, content))
-                .hasSameContentAs(sample.getInlinedMessage());
+        assertAbout(xml()).that(xml(OMElement.class, content)).hasSameContentAs(sample.getInlinedMessage());
     }
 }

@@ -19,7 +19,6 @@
 package org.apache.axiom.buildutils.sources;
 
 import java.util.Set;
-
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
 

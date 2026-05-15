@@ -19,9 +19,8 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMElement;
-
 import java.util.Iterator;
+import org.apache.axiom.om.OMElement;
 
 /**
  * The Detail element information item is intended for carrying application specific error

@@ -27,8 +27,7 @@ final class UTF8XmlWriter extends ASCIICompatibleXmlWriter {
     }
 
     @Override
-    public void setUnmappableCharacterHandler(
-            UnmappableCharacterHandler unmappableCharacterHandler) {
+    public void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) {
         // There are no unmappable characters in UTF-8
     }
 

@@ -21,5 +21,4 @@ package org.apache.axiom.dom;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 
-public interface DOMNSAwareElement
-        extends DOMElement, DOMNSAwareNamedNode, CoreNSAwareElement, AxiomElement {}
+public interface DOMNSAwareElement extends DOMElement, DOMNSAwareNamedNode, CoreNSAwareElement, AxiomElement {}

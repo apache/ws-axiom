@@ -59,11 +59,9 @@ public interface CoreNode {
 
     <T> void init(ClonePolicy<T> policy, T options, CoreNode other) throws CoreModelException;
 
-    <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone)
-            throws CoreModelException;
+    <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) throws CoreModelException;
 
-    void internalSerialize(XmlHandler handler, boolean cache)
-            throws CoreModelException, StreamException;
+    void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException;
 
     boolean internalGetFlag(int flag);
 
@@ -75,6 +73,5 @@ public interface CoreNode {
 
     <T> void initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other);
 
-    <T> CoreNode internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent)
-            throws CoreModelException;
+    <T> CoreNode internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException;
 }

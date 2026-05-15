@@ -117,10 +117,7 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
             out[2] = Base64Constants.S_BASE64CHAR[(i << 2) & 0x3f];
             out[3] = Base64Constants.S_BASE64PAD;
         } else {
-            int i =
-                    ((data[off] & 0xff) << 16)
-                            + ((data[off + 1] & 0xff) << 8)
-                            + (data[off + 2] & 0xff);
+            int i = ((data[off] & 0xff) << 16) + ((data[off + 1] & 0xff) << 8) + (data[off + 2] & 0xff);
             out[0] = Base64Constants.S_BASE64CHAR[i >> 18];
             out[1] = Base64Constants.S_BASE64CHAR[(i >> 12) & 0x3f];
             out[2] = Base64Constants.S_BASE64CHAR[(i >> 6) & 0x3f];

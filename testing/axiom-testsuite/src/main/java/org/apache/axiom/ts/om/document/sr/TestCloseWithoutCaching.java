@@ -20,22 +20,19 @@ package org.apache.axiom.ts.om.document.sr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link XMLStreamReader#close()} on the {@link XMLStreamReader} returned by
@@ -59,10 +56,9 @@ public class TestCloseWithoutCaching extends AxiomTestCase {
         }
         writer.write("</a></root>");
         writer.close();
-        InstrumentedInputStream in =
-                new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
-        OMDocument doc =
-                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocument();
+        InstrumentedInputStream in = new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
+        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
+                .getDocument();
         XMLStreamReader reader = doc.getXMLStreamReaderWithoutCaching();
         reader.next();
         reader.next();

@@ -21,7 +21,6 @@ package org.apache.axiom.util.stax.wrapper;
 
 import java.io.InputStream;
 import java.io.Reader;
-
 import javax.xml.stream.EventFilter;
 import javax.xml.stream.StreamFilter;
 import javax.xml.stream.XMLEventReader;
@@ -69,20 +68,17 @@ public class WrappingXMLInputFactory extends XMLInputFactoryWrapper {
     }
 
     @Override
-    public XMLEventReader createFilteredReader(XMLEventReader reader, EventFilter filter)
-            throws XMLStreamException {
+    public XMLEventReader createFilteredReader(XMLEventReader reader, EventFilter filter) throws XMLStreamException {
         return wrap(super.createFilteredReader(reader, filter));
     }
 
     @Override
-    public XMLStreamReader createFilteredReader(XMLStreamReader reader, StreamFilter filter)
-            throws XMLStreamException {
+    public XMLStreamReader createFilteredReader(XMLStreamReader reader, StreamFilter filter) throws XMLStreamException {
         return wrap(super.createFilteredReader(reader, filter));
     }
 
     @Override
-    public XMLEventReader createXMLEventReader(InputStream stream, String encoding)
-            throws XMLStreamException {
+    public XMLEventReader createXMLEventReader(InputStream stream, String encoding) throws XMLStreamException {
         return wrap(super.createXMLEventReader(stream, encoding));
     }
 
@@ -102,14 +98,12 @@ public class WrappingXMLInputFactory extends XMLInputFactoryWrapper {
     }
 
     @Override
-    public XMLEventReader createXMLEventReader(String systemId, InputStream stream)
-            throws XMLStreamException {
+    public XMLEventReader createXMLEventReader(String systemId, InputStream stream) throws XMLStreamException {
         return wrap(super.createXMLEventReader(systemId, stream));
     }
 
     @Override
-    public XMLEventReader createXMLEventReader(String systemId, Reader reader)
-            throws XMLStreamException {
+    public XMLEventReader createXMLEventReader(String systemId, Reader reader) throws XMLStreamException {
         return wrap(super.createXMLEventReader(systemId, reader));
     }
 
@@ -119,8 +113,7 @@ public class WrappingXMLInputFactory extends XMLInputFactoryWrapper {
     }
 
     @Override
-    public XMLStreamReader createXMLStreamReader(InputStream stream, String encoding)
-            throws XMLStreamException {
+    public XMLStreamReader createXMLStreamReader(InputStream stream, String encoding) throws XMLStreamException {
         return wrap(super.createXMLStreamReader(stream, encoding));
     }
 
@@ -140,14 +133,12 @@ public class WrappingXMLInputFactory extends XMLInputFactoryWrapper {
     }
 
     @Override
-    public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream)
-            throws XMLStreamException {
+    public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream) throws XMLStreamException {
         return wrap(super.createXMLStreamReader(systemId, stream));
     }
 
     @Override
-    public XMLStreamReader createXMLStreamReader(String systemId, Reader reader)
-            throws XMLStreamException {
+    public XMLStreamReader createXMLStreamReader(String systemId, Reader reader) throws XMLStreamException {
         return wrap(super.createXMLStreamReader(systemId, reader));
     }
 }

@@ -19,7 +19,6 @@
 package org.apache.axiom.core.stream;
 
 import java.io.Writer;
-
 import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 
 public interface CharacterDataSink {

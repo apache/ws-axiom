@@ -22,7 +22,6 @@ package org.apache.axiom.attachments.lifecycle.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
-
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;

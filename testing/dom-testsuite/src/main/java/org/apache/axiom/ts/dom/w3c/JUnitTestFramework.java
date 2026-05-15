@@ -22,9 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-
 import javax.xml.parsers.DocumentBuilder;
-
 import org.junit.Assert;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
@@ -36,8 +34,7 @@ final class JUnitTestFramework implements DOMTestFramework {
 
     private JUnitTestFramework() {}
 
-    private static String[] toArray(
-            Collection<String> collection, boolean normalizeCase, boolean sort) {
+    private static String[] toArray(Collection<String> collection, boolean normalizeCase, boolean sort) {
         String[] array = new String[collection.size()];
         int i = 0;
         for (String item : collection) {
@@ -96,39 +93,32 @@ final class JUnitTestFramework implements DOMTestFramework {
     }
 
     @Override
-    public void assertSize(
-            DOMTestCase test, String assertID, int expectedSize, NodeList collection) {
+    public void assertSize(DOMTestCase test, String assertID, int expectedSize, NodeList collection) {
         Assert.assertEquals(assertID, expectedSize, collection.getLength());
     }
 
     @Override
-    public void assertSize(
-            DOMTestCase test, String assertID, int expectedSize, NamedNodeMap collection) {
+    public void assertSize(DOMTestCase test, String assertID, int expectedSize, NamedNodeMap collection) {
         Assert.assertEquals(assertID, expectedSize, collection.getLength());
     }
 
     @Override
-    public void assertSize(
-            DOMTestCase test, String assertID, int expectedSize, Collection collection) {
+    public void assertSize(DOMTestCase test, String assertID, int expectedSize, Collection collection) {
         Assert.assertEquals(assertID, expectedSize, collection.size());
     }
 
     @Override
-    public void assertEqualsIgnoreCase(
-            DOMTestCase test, String assertID, String expected, String actual) {
+    public void assertEqualsIgnoreCase(DOMTestCase test, String assertID, String expected, String actual) {
         Assert.assertEquals(assertID, expected, actual);
     }
 
     @Override
-    public void assertEqualsIgnoreCase(
-            DOMTestCase test, String assertID, Collection expected, Collection actual) {
-        Assert.assertArrayEquals(
-                assertID, toArray(expected, true, true), toArray(actual, true, true));
+    public void assertEqualsIgnoreCase(DOMTestCase test, String assertID, Collection expected, Collection actual) {
+        Assert.assertArrayEquals(assertID, toArray(expected, true, true), toArray(actual, true, true));
     }
 
     @Override
-    public void assertEqualsIgnoreCase(
-            DOMTestCase test, String assertID, List expected, List actual) {
+    public void assertEqualsIgnoreCase(DOMTestCase test, String assertID, List expected, List actual) {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -155,15 +145,12 @@ final class JUnitTestFramework implements DOMTestFramework {
     }
 
     @Override
-    public void assertEquals(
-            DOMTestCase test, String assertID, Collection expected, Collection actual) {
-        Assert.assertArrayEquals(
-                assertID, toArray(expected, false, true), toArray(actual, false, true));
+    public void assertEquals(DOMTestCase test, String assertID, Collection expected, Collection actual) {
+        Assert.assertArrayEquals(assertID, toArray(expected, false, true), toArray(actual, false, true));
     }
 
     @Override
-    public void assertNotEqualsIgnoreCase(
-            DOMTestCase test, String assertID, String expected, String actual) {
+    public void assertNotEqualsIgnoreCase(DOMTestCase test, String assertID, String expected, String actual) {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -179,8 +166,7 @@ final class JUnitTestFramework implements DOMTestFramework {
     }
 
     @Override
-    public void assertNotEquals(
-            DOMTestCase test, String assertID, boolean expected, boolean actual) {
+    public void assertNotEquals(DOMTestCase test, String assertID, boolean expected, boolean actual) {
         // TODO
         throw new UnsupportedOperationException();
     }

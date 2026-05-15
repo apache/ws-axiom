@@ -21,11 +21,9 @@ package org.apache.axiom.om;
 
 import java.io.InputStream;
 import java.io.Reader;
-
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
-
 import org.apache.axiom.mime.MultipartBody;
 import org.w3c.dom.Node;
 

@@ -21,9 +21,7 @@ package org.apache.axiom.om.impl.common;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.util.namespace.AbstractNamespaceContext;

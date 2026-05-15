@@ -20,10 +20,9 @@ package org.apache.axiom.ts.saaj.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.xml.namespace.QName;
 import jakarta.xml.soap.SOAPElement;
 import jakarta.xml.soap.SOAPPart;
-
+import javax.xml.namespace.QName;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

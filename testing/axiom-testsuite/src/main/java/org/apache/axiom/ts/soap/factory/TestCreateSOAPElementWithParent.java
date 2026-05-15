@@ -18,11 +18,13 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javax.xml.namespace.QName;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -35,11 +37,6 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
-import junit.framework.TestCase;
 
 /**
  * Tests {@link SOAPFactory#createSOAPHeader(SOAPEnvelope)}, {@link
@@ -55,8 +52,11 @@ import junit.framework.TestCase;
  * and {@link SOAPFactory#createSOAPFaultDetail(SOAPFault)} with a non null parent.
  */
 public class TestCreateSOAPElementWithParent extends TestCase {
-    @Inject private SOAPSpec spec;
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPSpec spec;
+
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Inject
     @Named("childType")
@@ -72,18 +72,12 @@ public class TestCreateSOAPElementWithParent extends TestCase {
         QName expectedName = type.getQName(spec);
         if (expectedName == null) {
             assertThatThrownBy(
-                            () ->
-                                    type.getAdapter(SOAPElementTypeAdapter.class)
-                                            .create(soapFactory, parentType, parent))
+                            () -> type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory, parentType, parent))
                     .isInstanceOf(UnsupportedOperationException.class);
         } else {
             String expectedPrefix =
-                    expectedName.getNamespaceURI().length() == 0
-                            ? ""
-                            : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX;
-            OMElement child =
-                    type.getAdapter(SOAPElementTypeAdapter.class)
-                            .create(soapFactory, parentType, parent);
+                    expectedName.getNamespaceURI().length() == 0 ? "" : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX;
+            OMElement child = type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory, parentType, parent);
             assertThat(child.isComplete()).isTrue();
             QName actualName = child.getQName();
             assertThat(actualName).isEqualTo(expectedName);

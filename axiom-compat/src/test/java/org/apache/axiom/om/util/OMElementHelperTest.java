@@ -20,38 +20,31 @@
 package org.apache.axiom.om.util;
 
 import junit.framework.TestCase;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class OMElementHelperTest extends TestCase {
     public void testImportOMElement() throws Exception {
-        OMElement documentElement =
-                OMXMLBuilderFactory.createOMBuilder(
-                                OMAbstractFactory.getOMFactory(),
-                                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream())
-                        .getDocumentElement();
+        OMElement documentElement = OMXMLBuilderFactory.createOMBuilder(
+                        OMAbstractFactory.getOMFactory(),
+                        SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream())
+                .getDocumentElement();
 
         // first lets try to import an element created from llom in to llom factory. This should
         // return the same element
-        assertTrue(
-                ElementHelper.importOMElement(documentElement, OMAbstractFactory.getOMFactory())
-                        == documentElement);
+        assertTrue(ElementHelper.importOMElement(documentElement, OMAbstractFactory.getOMFactory()) == documentElement);
 
         // then lets pass in an OMElement created using llom and pass DOOMFactory
-        OMElement importedElement =
-                ElementHelper.importOMElement(
-                        documentElement,
-                        OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM)
-                                .getOMFactory());
+        OMElement importedElement = ElementHelper.importOMElement(
+                documentElement,
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory());
         assertTrue(importedElement != documentElement);
-        assertTrue(
-                importedElement.getOMFactory()
-                        == OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM)
-                                .getOMFactory());
+        assertTrue(importedElement.getOMFactory()
+                == OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM)
+                        .getOMFactory());
 
         documentElement.close(false);
     }

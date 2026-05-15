@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -29,8 +29,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMElement#getAllDeclaredNamespaces()} causes expansion of {@link
@@ -46,8 +44,7 @@ public class TestGetAllDeclaredNamespaces extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element =
-                factory.createOMElement(
-                        new PullOMDataSource("<root xmlns:p='urn:ns1'/>"), "root", null);
+                factory.createOMElement(new PullOMDataSource("<root xmlns:p='urn:ns1'/>"), "root", null);
         Iterator<OMNamespace> attributes = element.getAllDeclaredNamespaces();
         assertThat(attributes.hasNext()).isTrue();
         OMNamespace ns = attributes.next();

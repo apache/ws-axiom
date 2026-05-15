@@ -20,14 +20,13 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMElement#declareDefaultNamespace(String)} throws an exception if an attempt is
@@ -47,7 +46,6 @@ public class TestDeclareDefaultNamespaceConflict2 extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("urn:ns1", "");
         OMElement element = factory.createOMElement("test", ns);
-        assertThatThrownBy(() -> element.declareDefaultNamespace("urn:ns2"))
-                .isInstanceOf(OMException.class);
+        assertThatThrownBy(() -> element.declareDefaultNamespace("urn:ns2")).isInstanceOf(OMException.class);
     }
 }

@@ -37,8 +37,7 @@ class Woodstox4Dialect extends AbstractStAXDialect {
     @Override
     public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
-        factory.setProperty(
-                "http://java.sun.com/xml/stream/properties/report-cdata-event", Boolean.TRUE);
+        factory.setProperty("http://java.sun.com/xml/stream/properties/report-cdata-event", Boolean.TRUE);
         factory.setProperty("com.ctc.wstx.minTextSegment", Integer.MAX_VALUE);
         return factory;
     }

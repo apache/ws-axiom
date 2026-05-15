@@ -20,8 +20,8 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -29,15 +29,14 @@ import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
 /**
  * Tests that {@link SOAPHeaderBlock#getMustUnderstand()} (resp. {@link SOAPHeaderBlock#getRelay()})
  * returns <code>false</code> if the {@code mustUnderstand} (resp. {@code relay}) attribute is
  * absent.
  */
 public class TestGetBooleanAttributeDefault extends BooleanAttributeTestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Inject
     public TestGetBooleanAttributeDefault(SOAPSpec spec, HeaderBlockAttribute attribute) {
@@ -47,8 +46,7 @@ public class TestGetBooleanAttributeDefault extends BooleanAttributeTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
-        SOAPHeaderBlock headerBlock =
-                header.addHeaderBlock(new QName("http://example.org", "test", "h"));
+        SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("http://example.org", "test", "h"));
         assertThat(attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock))
                 .isFalse();
     }

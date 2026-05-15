@@ -21,7 +21,6 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
 
 class SJSXPStreamWriterWrapper extends XMLStreamWriterWrapper {
@@ -50,8 +49,7 @@ class SJSXPStreamWriterWrapper extends XMLStreamWriterWrapper {
     }
 
     @Override
-    public void writeStartElement(String prefix, String localName, String namespaceURI)
-            throws XMLStreamException {
+    public void writeStartElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
         // In SJSXP, writeStartElement(String,String,String) will update the namespace context,
         // but according to our interpretation of the StAX specs, this should only occur
         // when writeNamespace is called. We use the namespace unaware method to prevent

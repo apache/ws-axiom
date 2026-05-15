@@ -43,7 +43,6 @@ public class TestAppendChildCyclic extends DOMTestCase {
         parent.appendChild(element);
         assertThatThrownBy(() -> element.appendChild(grandparent))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
     }
 }

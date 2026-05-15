@@ -19,10 +19,8 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.StringWriter;
-
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.testutils.concurrent.Action;
 import org.apache.axiom.testutils.concurrent.ConcurrentTestUtils;
 
@@ -30,23 +28,21 @@ public class TestCreateXMLStreamWriterThreadSafety extends DialectTestCase {
     @Override
     @SuppressWarnings("deprecation")
     protected void runTest() throws Throwable {
-        final XMLOutputFactory factory =
-                staxImpl.getDialect().makeThreadSafe(staxImpl.newNormalizedXMLOutputFactory());
-        ConcurrentTestUtils.testThreadSafety(
-                new Action() {
-                    @Override
-                    public void execute() throws Exception {
-                        String text = String.valueOf((int) (Math.random() * 10000));
-                        StringWriter out = new StringWriter();
-                        XMLStreamWriter writer = factory.createXMLStreamWriter(out);
-                        writer.writeStartElement("root");
-                        writer.writeCharacters(text);
-                        writer.writeEndElement();
-                        writer.writeEndDocument();
-                        writer.flush();
-                        writer.close();
-                        assertEquals("<root>" + text + "</root>", out.toString());
-                    }
-                });
+        final XMLOutputFactory factory = staxImpl.getDialect().makeThreadSafe(staxImpl.newNormalizedXMLOutputFactory());
+        ConcurrentTestUtils.testThreadSafety(new Action() {
+            @Override
+            public void execute() throws Exception {
+                String text = String.valueOf((int) (Math.random() * 10000));
+                StringWriter out = new StringWriter();
+                XMLStreamWriter writer = factory.createXMLStreamWriter(out);
+                writer.writeStartElement("root");
+                writer.writeCharacters(text);
+                writer.writeEndElement();
+                writer.writeEndDocument();
+                writer.flush();
+                writer.close();
+                assertEquals("<root>" + text + "</root>", out.toString());
+            }
+        });
     }
 }

@@ -65,8 +65,7 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      *     AttributeMatcher#createAttribute(CoreElement, String, String, String, String)} and {@link
      *     AttributeMatcher#update(CoreAttribute, String, String)}
      */
-    void coreSetAttribute(
-            AttributeMatcher matcher, String namespaceURI, String name, String prefix, String value)
+    void coreSetAttribute(AttributeMatcher matcher, String namespaceURI, String name, String prefix, String value)
             throws CoreModelException;
 
     /**
@@ -82,8 +81,7 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      * @return the attribute that was replaced by the new attribute, or <code>null</code> if no
      *     matching attribute existed.
      */
-    CoreAttribute coreSetAttribute(
-            AttributeMatcher matcher, CoreAttribute attr, Semantics semantics);
+    CoreAttribute coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, Semantics semantics);
 
     /**
      * Append an attribute to this element. The attribute is simply added at the end of the list of
@@ -105,8 +103,7 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      * @return <code>true</code> if a matching attribute was found (and has been removed), <code>
      *     false</code> if no matching attribute was found
      */
-    boolean coreRemoveAttribute(
-            AttributeMatcher matcher, String namespaceURI, String name, Semantics semantics);
+    boolean coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name, Semantics semantics);
 
     <T extends CoreAttribute, S> Iterator<S> coreGetAttributesByType(
             Class<T> type, Mapper<S, ? super T> mapper, Semantics semantics);

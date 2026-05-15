@@ -21,24 +21,21 @@ package org.apache.axiom.ts.om.document;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
-
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 
-import com.google.inject.Inject;
-
 public class TestGetSAXResult extends ConformanceTestCase {
     private final XSLTImplementation xsltImplementation;
 
     @Inject
-    public TestGetSAXResult(
-            OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, XMLSample file) {
+    public TestGetSAXResult(OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, XMLSample file) {
         super(metaFactory, file);
         this.xsltImplementation = xsltImplementation;
     }

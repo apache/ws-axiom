@@ -25,7 +25,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Random;
-
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.UIDGenerator;
 

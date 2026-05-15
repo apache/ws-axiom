@@ -22,23 +22,20 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
-
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.ts.om.XMLSampleAdapter;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestImportInformationItem extends CrossOMTestCase {
-    @Inject private XMLSample file;
+    @Inject
+    private XMLSample file;
 
     @Override
     protected void runTest() throws Throwable {
         OMDocument original = file.getAdapter(XMLSampleAdapter.class).getDocument(metaFactory);
         assertAbout(xml())
-                .that(
-                        xml(
-                                OMDocument.class,
-                                (OMDocument)
-                                        metaFactory.getOMFactory().importInformationItem(original)))
+                .that(xml(OMDocument.class, (OMDocument)
+                        metaFactory.getOMFactory().importInformationItem(original)))
                 .hasSameContentAs(xml(OMDocument.class, original));
     }
 }

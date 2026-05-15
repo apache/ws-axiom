@@ -19,7 +19,6 @@
 package org.apache.axiom.om.util;
 
 import javax.xml.stream.XMLOutputFactory;
-
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 
@@ -40,18 +39,17 @@ import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
  */
 public interface StAXWriterConfiguration {
     /** The default configuration. */
-    StAXWriterConfiguration DEFAULT =
-            new StAXWriterConfiguration() {
-                @Override
-                public XMLOutputFactory configure(XMLOutputFactory factory, StAXDialect dialect) {
-                    return factory;
-                }
+    StAXWriterConfiguration DEFAULT = new StAXWriterConfiguration() {
+        @Override
+        public XMLOutputFactory configure(XMLOutputFactory factory, StAXDialect dialect) {
+            return factory;
+        }
 
-                @Override
-                public String toString() {
-                    return "DEFAULT";
-                }
-            };
+        @Override
+        public String toString() {
+            return "DEFAULT";
+        }
+    };
 
     /**
      * Apply the configuration to the given factory. The method MAY optionally wrap the factory.

@@ -20,8 +20,9 @@ package org.apache.axiom.ts.om.node;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -31,19 +32,13 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 /** Tests the behavior of {@link OMNode#detach()}. */
 public class TestDetach extends AxiomTestCase {
     private final boolean document;
     private final boolean build;
 
     @Inject
-    public TestDetach(
-            OMMetaFactory metaFactory,
-            @Named("document") boolean document,
-            @Named("build") boolean build) {
+    public TestDetach(OMMetaFactory metaFactory, @Named("document") boolean document, @Named("build") boolean build) {
         super(metaFactory);
         this.document = document;
         this.build = build;
@@ -54,15 +49,11 @@ public class TestDetach extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMContainer root;
         if (document) {
-            root =
-                    OMXMLBuilderFactory.createOMBuilder(
-                                    factory, new StringReader("<!--a--><b/><!--c-->"))
-                            .getDocument();
+            root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<!--a--><b/><!--c-->"))
+                    .getDocument();
         } else {
-            root =
-                    OMXMLBuilderFactory.createOMBuilder(
-                                    factory, new StringReader("<root><!--a--><b/><!--c--></root>"))
-                            .getDocumentElement();
+            root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><!--a--><b/><!--c--></root>"))
+                    .getDocumentElement();
         }
         if (build) {
             root.build();

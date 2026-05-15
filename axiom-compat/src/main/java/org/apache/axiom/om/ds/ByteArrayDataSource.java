@@ -18,17 +18,15 @@
  */
 package org.apache.axiom.om.ds;
 
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
 
 /**
  * @deprecated Use {@link BlobOMDataSource} instead.
@@ -56,8 +54,7 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
         if (log.isDebugEnabled()) {
             log.debug("getReader");
         }
-        return StAXUtils.createXMLStreamReader(
-                new ByteArrayInputStream(byteArray.bytes), byteArray.encoding);
+        return StAXUtils.createXMLStreamReader(new ByteArrayInputStream(byteArray.bytes), byteArray.encoding);
     }
 
     @Override

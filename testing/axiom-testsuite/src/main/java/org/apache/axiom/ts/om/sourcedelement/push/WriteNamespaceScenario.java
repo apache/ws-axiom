@@ -24,10 +24,8 @@ import static org.assertj.core.api.Assertions.fail;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.testutils.suite.LabelTarget;

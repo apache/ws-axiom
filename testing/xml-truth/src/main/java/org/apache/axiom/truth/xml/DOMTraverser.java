@@ -18,12 +18,11 @@
  */
 package org.apache.axiom.truth.xml;
 
+import com.google.common.base.Strings;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.truth.xml.spi.Event;
 import org.apache.axiom.truth.xml.spi.Traverser;
 import org.w3c.dom.Attr;
@@ -32,8 +31,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
-
-import com.google.common.base.Strings;
 
 final class DOMTraverser implements Traverser {
     private final Node root;
@@ -99,9 +96,7 @@ final class DOMTraverser implements Traverser {
                 }
                 case Node.TEXT_NODE -> {
                     descend = false;
-                    return dom3 && ((Text) node).isElementContentWhitespace()
-                            ? Event.WHITESPACE
-                            : Event.TEXT;
+                    return dom3 && ((Text) node).isElementContentWhitespace() ? Event.WHITESPACE : Event.TEXT;
                 }
                 case Node.ENTITY_REFERENCE_NODE -> {
                     if (expandEntityReferences) {
@@ -149,10 +144,7 @@ final class DOMTraverser implements Traverser {
         if (localName == null) {
             return new QName(node.getNodeName());
         } else {
-            return new QName(
-                    node.getNamespaceURI(),
-                    node.getLocalName(),
-                    Strings.nullToEmpty(node.getPrefix()));
+            return new QName(node.getNamespaceURI(), node.getLocalName(), Strings.nullToEmpty(node.getPrefix()));
         }
     }
 
@@ -188,9 +180,7 @@ final class DOMTraverser implements Traverser {
                     result = new HashMap<>();
                 }
                 String prefix = attr.getPrefix();
-                result.put(
-                        XMLConstants.XMLNS_ATTRIBUTE.equals(prefix) ? attr.getLocalName() : "",
-                        attr.getValue());
+                result.put(XMLConstants.XMLNS_ATTRIBUTE.equals(prefix) ? attr.getLocalName() : "", attr.getValue());
             }
         }
         return result;

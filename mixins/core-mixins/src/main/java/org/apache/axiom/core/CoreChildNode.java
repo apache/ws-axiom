@@ -78,8 +78,7 @@ public interface CoreChildNode extends CoreNode {
      * @param targetParent the node to which the clone should be added; may be <code>null</code>
      * @return the clone of this node
      */
-    <T> CoreNode coreClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent)
-            throws CoreModelException;
+    <T> CoreNode coreClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException;
 
     void internalSetParent(CoreParentNode parent);
 

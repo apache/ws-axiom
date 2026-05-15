@@ -19,9 +19,7 @@
 package org.apache.axiom.om.impl.stream.stax.push;
 
 import java.io.IOException;
-
 import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.stax.push.input.InternalXMLStreamWriter;
 import org.apache.axiom.ext.stax.BlobProvider;
@@ -36,8 +34,7 @@ public final class BlobWriterImpl implements BlobWriter {
     }
 
     @Override
-    public void writeBlob(Blob blob, String contentID, boolean optimize)
-            throws IOException, XMLStreamException {
+    public void writeBlob(Blob blob, String contentID, boolean optimize) throws IOException, XMLStreamException {
         writer.writeCharacterData(new TextContent(contentID, blob, optimize));
     }
 

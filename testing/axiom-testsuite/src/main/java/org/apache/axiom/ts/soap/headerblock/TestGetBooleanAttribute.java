@@ -20,8 +20,8 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -30,16 +30,14 @@ import org.apache.axiom.ts.soap.BooleanLiteral;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
 public class TestGetBooleanAttribute extends BooleanAttributeTestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     private final BooleanLiteral literal;
 
     @Inject
-    public TestGetBooleanAttribute(
-            SOAPSpec spec, HeaderBlockAttribute attribute, BooleanLiteral literal) {
+    public TestGetBooleanAttribute(SOAPSpec spec, HeaderBlockAttribute attribute, BooleanLiteral literal) {
         super(spec, attribute);
         this.literal = literal;
     }
@@ -47,10 +45,8 @@ public class TestGetBooleanAttribute extends BooleanAttributeTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
-        SOAPHeaderBlock headerBlock =
-                header.addHeaderBlock(new QName("http://example.org", "test", "h"));
-        headerBlock.addAttribute(
-                attribute.getName(spec), literal.getLexicalRepresentation(), header.getNamespace());
+        SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("http://example.org", "test", "h"));
+        headerBlock.addAttribute(attribute.getName(spec), literal.getLexicalRepresentation(), header.getNamespace());
         assertThat(attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock))
                 .isEqualTo(literal.getValue());
     }

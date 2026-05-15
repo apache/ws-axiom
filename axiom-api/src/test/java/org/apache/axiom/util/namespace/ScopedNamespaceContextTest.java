@@ -24,13 +24,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
-
-import org.apache.axiom.testutils.namespace.NamespaceContextTestUtils;
-
 import junit.framework.TestCase;
+import org.apache.axiom.testutils.namespace.NamespaceContextTestUtils;
 
 public class ScopedNamespaceContextTest extends TestCase {
     private static Set<String> getPrefixes(NamespaceContext nc, String namespaceURI) {

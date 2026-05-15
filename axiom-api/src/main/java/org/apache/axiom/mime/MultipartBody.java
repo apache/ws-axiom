@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.logging.Log;
@@ -115,7 +114,8 @@ public final class MultipartBody implements Iterable<Part> {
 
     private static final Log log = LogFactory.getLog(MultipartBody.class);
 
-    private static final MimeConfig config = MimeConfig.custom().setStrictParsing(true).build();
+    private static final MimeConfig config =
+            MimeConfig.custom().setStrictParsing(true).build();
 
     /** <code>ContentType</code> of the MIME message */
     private final ContentType contentType;
@@ -174,9 +174,7 @@ public final class MultipartBody implements Iterable<Part> {
 
     private static String normalizeContentID(String contentID) {
         contentID = contentID.trim();
-        if (contentID.length() >= 2
-                && contentID.charAt(0) == '<'
-                && contentID.charAt(contentID.length() - 1) == '>') {
+        if (contentID.length() >= 2 && contentID.charAt(0) == '<' && contentID.charAt(contentID.length() - 1) == '>') {
             contentID = contentID.substring(1, contentID.length() - 1);
         }
         // There is some evidence that some broken MIME implementations add
@@ -274,13 +272,8 @@ public final class MultipartBody implements Iterable<Part> {
                     isRootPart = rootPartContentID.equals(partContentID);
                 }
 
-                PartImpl part =
-                        new PartImpl(
-                                this,
-                                isRootPart ? MemoryBlob.FACTORY : attachmentBlobFactory,
-                                partContentID,
-                                headers,
-                                parser);
+                PartImpl part = new PartImpl(
+                        this, isRootPart ? MemoryBlob.FACTORY : attachmentBlobFactory, partContentID, headers, parser);
                 if (currentPart == null) {
                     firstPart = part;
                 } else {
@@ -310,14 +303,10 @@ public final class MultipartBody implements Iterable<Part> {
         return currentPart;
     }
 
-    private static void checkParserState(EntityState state, EntityState expected)
-            throws IllegalStateException {
+    private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
         if (expected != state) {
             throw new IllegalStateException(
-                    "Internal error: expected parser to be in state "
-                            + expected
-                            + ", but got "
-                            + state);
+                    "Internal error: expected parser to be in state " + expected + ", but got " + state);
         }
     }
 

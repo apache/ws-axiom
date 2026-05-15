@@ -19,7 +19,6 @@
 package org.apache.axiom.ts;
 
 import java.io.Closeable;
-
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testing.multiton.AdapterType;

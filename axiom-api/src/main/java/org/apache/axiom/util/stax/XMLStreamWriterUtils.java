@@ -20,10 +20,8 @@
 package org.apache.axiom.util.stax;
 
 import java.io.IOException;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.ext.stax.BlobWriter;
@@ -49,8 +47,7 @@ public class XMLStreamWriterUtils {
      * @throws XMLStreamException if an error occurs when writing the base64 encoded data to the
      *     stream
      */
-    public static void writeBase64(XMLStreamWriter writer, Blob blob)
-            throws IOException, XMLStreamException {
+    public static void writeBase64(XMLStreamWriter writer, Blob blob) throws IOException, XMLStreamException {
 
         Base64EncodingWriterOutputStream out =
                 new Base64EncodingWriterOutputStream(new XMLStreamWriterWriter(writer), 4096, true);
@@ -119,8 +116,7 @@ public class XMLStreamWriterUtils {
      * @throws IOException if an error occurs while reading from the data handler
      * @throws XMLStreamException if an error occurs while writing to the underlying stream
      */
-    public static void writeBlob(
-            XMLStreamWriter writer, Blob blob, String contentID, boolean optimize)
+    public static void writeBlob(XMLStreamWriter writer, Blob blob, String contentID, boolean optimize)
             throws IOException, XMLStreamException {
         BlobWriter blobWriter = internalGetBlobWriter(writer);
         if (blobWriter != null) {
@@ -142,8 +138,7 @@ public class XMLStreamWriterUtils {
      * @throws IOException if an error occurs while reading from the data handler
      * @throws XMLStreamException if an error occurs while writing to the underlying stream
      */
-    public static void writeBlob(
-            XMLStreamWriter writer, BlobProvider blobProvider, String contentID, boolean optimize)
+    public static void writeBlob(XMLStreamWriter writer, BlobProvider blobProvider, String contentID, boolean optimize)
             throws IOException, XMLStreamException {
         BlobWriter blobWriter = internalGetBlobWriter(writer);
         if (blobWriter != null) {
@@ -168,11 +163,7 @@ public class XMLStreamWriterUtils {
      * @throws XMLStreamException if an error occurs while writing to the stream
      */
     public static void writeDTD(
-            XMLStreamWriter writer,
-            String rootName,
-            String publicId,
-            String systemId,
-            String internalSubset)
+            XMLStreamWriter writer, String rootName, String publicId, String systemId, String internalSubset)
             throws XMLStreamException {
         StringBuilder buffer = new StringBuilder("<!DOCTYPE ");
         buffer.append(rootName);

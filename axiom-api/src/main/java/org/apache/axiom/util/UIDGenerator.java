@@ -91,16 +91,15 @@ public final class UIDGenerator {
      * Thread local that holds the triplet described in the Javadoc of this class. Note that we use
      * a simple array here (instead of our own class) to avoid class loader leaks (see AXIOM-354).
      */
-    private static final ThreadLocal<long[]> triplet =
-            new ThreadLocal<long[]>() {
-                @Override
-                protected long[] initialValue() {
-                    long[] values = new long[3];
-                    values[0] = Thread.currentThread().getId() ^ threadIdXorOperand;
-                    values[1] = System.currentTimeMillis() ^ startTimeXorOperand;
-                    return values;
-                }
-            };
+    private static final ThreadLocal<long[]> triplet = new ThreadLocal<long[]>() {
+        @Override
+        protected long[] initialValue() {
+            long[] values = new long[3];
+            values[0] = Thread.currentThread().getId() ^ threadIdXorOperand;
+            values[1] = System.currentTimeMillis() ^ startTimeXorOperand;
+            return values;
+        }
+    };
 
     private UIDGenerator() {}
 

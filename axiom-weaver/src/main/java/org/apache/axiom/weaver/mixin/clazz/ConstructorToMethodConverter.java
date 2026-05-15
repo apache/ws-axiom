@@ -106,8 +106,7 @@ final class ConstructorToMethodConverter extends MethodVisitor {
     }
 
     @Override
-    public void visitLocalVariable(
-            String name, String desc, String signature, Label start, Label end, int index) {
+    public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
         reset();
         super.visitLocalVariable(name, desc, signature, start, end, index);
     }
@@ -119,8 +118,7 @@ final class ConstructorToMethodConverter extends MethodVisitor {
     }
 
     @Override
-    public void visitMethodInsn(
-            int opcode, String owner, String name, String descriptor, boolean isInterface) {
+    public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
         if (lastWasALoad0 && opcode == Opcodes.INVOKESPECIAL) {
             lastWasALoad0 = false;
             callRemoved = true;
@@ -166,12 +164,8 @@ final class ConstructorToMethodConverter extends MethodVisitor {
 
     @Override
     public void visitInvokeDynamicInsn(
-            String name,
-            String descriptor,
-            Handle bootstrapMethodHandle,
-            Object... bootstrapMethodArguments) {
+            String name, String descriptor, Handle bootstrapMethodHandle, Object... bootstrapMethodArguments) {
         reset();
-        super.visitInvokeDynamicInsn(
-                name, descriptor, bootstrapMethodHandle, bootstrapMethodArguments);
+        super.visitInvokeDynamicInsn(name, descriptor, bootstrapMethodHandle, bootstrapMethodArguments);
     }
 }

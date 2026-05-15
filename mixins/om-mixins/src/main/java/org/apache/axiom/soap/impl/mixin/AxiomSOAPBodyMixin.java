@@ -65,8 +65,7 @@ public abstract class AxiomSOAPBodyMixin implements AxiomSOAPBody {
     @Override
     public final void addFault(SOAPFault soapFault) {
         if (hasFault()) {
-            throw new OMException(
-                    "SOAP Body already has a SOAP Fault and there can not be more than one SOAP fault");
+            throw new OMException("SOAP Body already has a SOAP Fault and there can not be more than one SOAP fault");
         }
         addChild(soapFault);
     }

@@ -32,11 +32,7 @@ import org.apache.axiom.weaver.annotation.Mixin;
 @Mixin
 public abstract class AxiomSOAP11FaultMixin implements AxiomSOAP11Fault {
     private static final Sequence sequence =
-            new Sequence(
-                    SOAPFaultCode.class,
-                    SOAPFaultReason.class,
-                    SOAPFaultRole.class,
-                    SOAPFaultDetail.class);
+            new Sequence(SOAPFaultCode.class, SOAPFaultReason.class, SOAPFaultRole.class, SOAPFaultDetail.class);
 
     @Override
     public final Class<? extends CoreNode> coreGetNodeClass() {

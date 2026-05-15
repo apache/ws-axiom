@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.util.Iterator;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -29,9 +29,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that {@link OMContainer#getXMLStreamReader(boolean)} produces the correct sequence of
@@ -52,10 +49,8 @@ public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends AxiomT
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root =
-                AXIOMUtil.stringToOM(
-                        metaFactory.getOMFactory(),
-                        "<root><child><emptyElement/><element>content</element></child></root>");
+        OMElement root = AXIOMUtil.stringToOM(
+                metaFactory.getOMFactory(), "<root><child><emptyElement/><element>content</element></child></root>");
         OMElement child = (OMElement) root.getFirstOMChild();
 
         // Partially build the tree
@@ -66,8 +61,7 @@ public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends AxiomT
             }
         }
 
-        XMLStreamReader reader =
-                new XMLStreamReaderValidator(child.getXMLStreamReader(cache), true);
+        XMLStreamReader reader = new XMLStreamReaderValidator(child.getXMLStreamReader(cache), true);
         while (reader.hasNext()) {
             reader.next();
         }

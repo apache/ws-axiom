@@ -24,7 +24,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.xerces.jaxp.validation.XMLSchemaFactory;
 
@@ -34,11 +33,8 @@ public class TestValidator extends DOMTestCase {
         SchemaFactory factory = new XMLSchemaFactory();
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Schema schema =
-                factory.newSchema(
-                        new DOMSource(
-                                builder.parse(TestValidator.class.getResourceAsStream("ipo.xsd"))));
+                factory.newSchema(new DOMSource(builder.parse(TestValidator.class.getResourceAsStream("ipo.xsd"))));
         Validator validator = schema.newValidator();
-        validator.validate(
-                new DOMSource(builder.parse(TestValidator.class.getResourceAsStream("ipo_1.xml"))));
+        validator.validate(new DOMSource(builder.parse(TestValidator.class.getResourceAsStream("ipo_1.xml"))));
     }
 }

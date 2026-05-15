@@ -21,14 +21,14 @@ package org.apache.axiom.ts.dom.document;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
-import org.apache.axiom.ts.dom.DOMTestCase;
-
 import com.google.inject.Inject;
+import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 
 public class TestCloneNode extends DOMTestCase {
-    @Inject private XMLSample file;
+    @Inject
+    private XMLSample file;
 
     @Override
     protected void runTest() throws Throwable {

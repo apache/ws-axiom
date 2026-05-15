@@ -21,7 +21,6 @@ package org.apache.axiom.om;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.axiom.om.format.xop.ContentTransferEncodingPolicy;
 import org.apache.axiom.om.format.xop.ContentTypeProvider;
 import org.apache.axiom.om.impl.MTOMConstants;
@@ -87,8 +86,7 @@ public class OMOutputFormat {
     /**
      * @deprecated As of version 1.2.13, Axiom always respects the order of attachments.
      */
-    public static final String RESPECT_SWA_ATTACHMENT_ORDER =
-            "org.apache.axiom.om.OMFormat.respectSWAAttachmentOrder";
+    public static final String RESPECT_SWA_ATTACHMENT_ORDER = "org.apache.axiom.om.OMFormat.respectSWAAttachmentOrder";
 
     /**
      * @deprecated As of version 1.2.13, Axiom always respects the order of attachments.
@@ -480,8 +478,7 @@ public class OMOutputFormat {
         return contentTransferEncodingPolicy;
     }
 
-    public void setContentTransferEncodingPolicy(
-            ContentTransferEncodingPolicy contentTransferEncodingPolicy) {
+    public void setContentTransferEncodingPolicy(ContentTransferEncodingPolicy contentTransferEncodingPolicy) {
         this.contentTransferEncodingPolicy = contentTransferEncodingPolicy;
     }
 }

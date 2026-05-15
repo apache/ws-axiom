@@ -19,7 +19,6 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import javax.xml.XMLConstants;
-
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMNamespaceDeclaration;
 import org.apache.axiom.weaver.annotation.Mixin;

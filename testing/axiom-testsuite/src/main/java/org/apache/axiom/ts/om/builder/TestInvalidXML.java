@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -29,8 +29,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.InvocationCounter;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestInvalidXML extends AxiomTestCase {
     @Inject
@@ -41,14 +39,12 @@ public class TestInvalidXML extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         XMLStreamReader originalReader =
-                StAXUtils.createXMLStreamReader(
-                        TestInvalidXML.class.getResourceAsStream("invalid_xml.xml"));
+                StAXUtils.createXMLStreamReader(TestInvalidXML.class.getResourceAsStream("invalid_xml.xml"));
         InvocationCounter invocationCounter = new InvocationCounter();
         XMLStreamReader reader = (XMLStreamReader) invocationCounter.createProxy(originalReader);
 
-        OMElement element =
-                OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
-                        .getDocumentElement();
+        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
+                .getDocumentElement();
 
         DeferredParsingException exception;
         try {

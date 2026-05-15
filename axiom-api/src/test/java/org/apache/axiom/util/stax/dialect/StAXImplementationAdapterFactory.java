@@ -18,11 +18,10 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import com.google.auto.service.AutoService;
 import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 import org.apache.axiom.ts.jaxp.stax.StAXImplementation;
-
-import com.google.auto.service.AutoService;
 
 @AutoService(AdapterFactory.class)
 public final class StAXImplementationAdapterFactory implements AdapterFactory<StAXImplementation> {

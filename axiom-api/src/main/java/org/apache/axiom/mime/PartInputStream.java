@@ -20,7 +20,6 @@ package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;

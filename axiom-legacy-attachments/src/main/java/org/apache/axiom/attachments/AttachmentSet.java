@@ -18,15 +18,13 @@
  */
 package org.apache.axiom.attachments;
 
+import jakarta.activation.DataHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-
-import jakarta.activation.DataHandler;
-
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMException;
@@ -36,8 +34,7 @@ import org.apache.axiom.om.OMException;
  * attachment parts.
  */
 class AttachmentSet extends AttachmentsDelegate {
-    private final Map<String, DataHandler> attachmentsMap =
-            new LinkedHashMap<String, DataHandler>();
+    private final Map<String, DataHandler> attachmentsMap = new LinkedHashMap<String, DataHandler>();
 
     @Override
     ContentType getContentType() {
@@ -71,14 +68,12 @@ class AttachmentSet extends AttachmentsDelegate {
 
     @Override
     String getRootPartContentType() {
-        throw new OMException(
-                "The attachments map was created programatically. Unsupported operation.");
+        throw new OMException("The attachments map was created programatically. Unsupported operation.");
     }
 
     @Override
     IncomingAttachmentStreams getIncomingAttachmentStreams() {
-        throw new IllegalStateException(
-                "The attachments map was created programatically. No streams are available.");
+        throw new IllegalStateException("The attachments map was created programatically. No streams are available.");
     }
 
     @Override

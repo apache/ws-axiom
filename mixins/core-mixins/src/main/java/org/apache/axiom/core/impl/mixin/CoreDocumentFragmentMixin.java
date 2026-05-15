@@ -55,8 +55,7 @@ public abstract class CoreDocumentFragmentMixin implements CoreDocumentFragment 
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {}
 
     @Override
-    public final void internalSerialize(XmlHandler handler, boolean cache)
-            throws CoreModelException, StreamException {
+    public final void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         // TODO
         throw new UnsupportedOperationException();
     }

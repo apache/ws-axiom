@@ -20,17 +20,13 @@ package org.apache.axiom.util.activation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Test;
-
 import jakarta.mail.util.ByteArrayDataSource;
+import org.junit.jupiter.api.Test;
 
 public class DataSourceUtilsTest {
     @Test
     public void testByteArrayDataSource() {
-        assertThat(
-                        DataSourceUtils.getSize(
-                                new ByteArrayDataSource(
-                                        new byte[1234], "application/octet-stream")))
+        assertThat(DataSourceUtils.getSize(new ByteArrayDataSource(new byte[1234], "application/octet-stream")))
                 .isEqualTo(1234);
     }
 }

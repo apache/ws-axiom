@@ -20,8 +20,9 @@ package org.apache.axiom.ts.om.sourcedelement.sr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -29,9 +30,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that calling {@link XMLStreamReader#close()} on an {@link XMLStreamReader} returned by

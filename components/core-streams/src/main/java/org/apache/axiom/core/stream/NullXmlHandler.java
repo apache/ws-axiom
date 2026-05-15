@@ -24,42 +24,32 @@ public final class NullXmlHandler implements XmlHandler {
     private NullXmlHandler() {}
 
     @Override
-    public void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
             throws StreamException {}
 
     @Override
     public void startFragment() throws StreamException {}
 
     @Override
-    public void processDocumentTypeDeclaration(
-            String rootName, String publicId, String systemId, String internalSubset)
+    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset)
             throws StreamException {}
 
     @Override
-    public void startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {}
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {}
 
     @Override
     public void endElement() throws StreamException {}
 
     @Override
     public void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException {}
 
     @Override
-    public void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException {}
+    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {}
 
     @Override
-    public void processNamespaceDeclaration(String prefix, String namespaceURI)
-            throws StreamException {}
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {}
 
     @Override
     public void attributesCompleted() throws StreamException {}
@@ -86,8 +76,7 @@ public final class NullXmlHandler implements XmlHandler {
     public void endCDATASection() throws StreamException {}
 
     @Override
-    public void processEntityReference(String name, String replacementText)
-            throws StreamException {}
+    public void processEntityReference(String name, String replacementText) throws StreamException {}
 
     @Override
     public void completed() throws StreamException {}

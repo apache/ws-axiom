@@ -22,13 +22,11 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.text.ParseException;
-
 import junit.framework.TestCase;
 
 public class ContentTypeTest extends TestCase {
     public void testNullMediaType() {
-        assertThatThrownBy(() -> new ContentType((MediaType) null))
-                .isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> new ContentType((MediaType) null)).isInstanceOf(NullPointerException.class);
     }
 
     public void testNullParameter() {
@@ -49,15 +47,13 @@ public class ContentTypeTest extends TestCase {
     }
 
     public void testParse() throws Exception {
-        ContentType ct =
-                new ContentType(
-                        "multipart/related; "
-                                + "boundary=\"boundaryA3ADBAEE51A1A87B2A11443668160701\"; "
-                                + "type=\"application/xop+xml\"; "
-                                + "start=\"<A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; "
-                                + "start-info=\"application/soap+xml\"; "
-                                + "charset=UTF-8;"
-                                + "action=\"urn:myAction\"");
+        ContentType ct = new ContentType("multipart/related; "
+                + "boundary=\"boundaryA3ADBAEE51A1A87B2A11443668160701\"; "
+                + "type=\"application/xop+xml\"; "
+                + "start=\"<A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; "
+                + "start-info=\"application/soap+xml\"; "
+                + "charset=UTF-8;"
+                + "action=\"urn:myAction\"");
         assertEquals(MediaType.MULTIPART_RELATED, ct.getMediaType());
         assertEquals("boundaryA3ADBAEE51A1A87B2A11443668160701", ct.getParameter("boundary"));
         assertEquals("application/xop+xml", ct.getParameter("type"));
@@ -80,9 +76,7 @@ public class ContentTypeTest extends TestCase {
     }
 
     public void testParseWithQuotedPair() throws Exception {
-        ContentType ct =
-                new ContentType(
-                        "application/x-some-format; comment=\"this is not a \\\"quote\\\"\"");
+        ContentType ct = new ContentType("application/x-some-format; comment=\"this is not a \\\"quote\\\"\"");
         assertEquals("this is not a \"quote\"", ct.getParameter("comment"));
     }
 
@@ -95,28 +89,23 @@ public class ContentTypeTest extends TestCase {
     }
 
     public void testParseInvalid3() {
-        assertThatThrownBy(() -> new ContentType("text/xml; charset="))
-                .isInstanceOf(ParseException.class);
+        assertThatThrownBy(() -> new ContentType("text/xml; charset=")).isInstanceOf(ParseException.class);
     }
 
     public void testParseInvalid4() {
-        assertThatThrownBy(() -> new ContentType("text/xml; charset=\"asc"))
-                .isInstanceOf(ParseException.class);
+        assertThatThrownBy(() -> new ContentType("text/xml; charset=\"asc")).isInstanceOf(ParseException.class);
     }
 
     public void testParseInvalid5() {
-        assertThatThrownBy(() -> new ContentType("text/xml; param=\"test\\"))
-                .isInstanceOf(ParseException.class);
+        assertThatThrownBy(() -> new ContentType("text/xml; param=\"test\\")).isInstanceOf(ParseException.class);
     }
 
     public void testParseInvalid6() {
-        assertThatThrownBy(() -> new ContentType("text/xml; param;"))
-                .isInstanceOf(ParseException.class);
+        assertThatThrownBy(() -> new ContentType("text/xml; param;")).isInstanceOf(ParseException.class);
     }
 
     public void testParseInvalid7() {
-        assertThatThrownBy(() -> new ContentType("text/xml; param"))
-                .isInstanceOf(ParseException.class);
+        assertThatThrownBy(() -> new ContentType("text/xml; param")).isInstanceOf(ParseException.class);
     }
 
     public void testToString() {
@@ -126,23 +115,14 @@ public class ContentTypeTest extends TestCase {
 
     public void testToStringWithQuote() {
         ContentType ct =
-                new ContentType(
-                        new MediaType("application", "x-some-format"),
-                        "comment",
-                        "this is not a \"quote\"");
-        assertEquals(
-                "application/x-some-format; comment=\"this is not a \\\"quote\\\"\"",
-                ct.toString());
+                new ContentType(new MediaType("application", "x-some-format"), "comment", "this is not a \"quote\"");
+        assertEquals("application/x-some-format; comment=\"this is not a \\\"quote\\\"\"", ct.toString());
     }
 
     public void testToStringWithBackslash() {
         ContentType ct =
-                new ContentType(
-                        new MediaType("application", "x-some-format"),
-                        "filename",
-                        "c:\\temp\\test.dat");
-        assertEquals(
-                "application/x-some-format; filename=\"c:\\\\temp\\\\test.dat\"", ct.toString());
+                new ContentType(new MediaType("application", "x-some-format"), "filename", "c:\\temp\\test.dat");
+        assertEquals("application/x-some-format; filename=\"c:\\\\temp\\\\test.dat\"", ct.toString());
     }
 
     private static boolean isTextual(String contentType) throws Exception {

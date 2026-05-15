@@ -32,10 +32,7 @@ import org.w3c.dom.Node;
 public class TestRemoveChildIncomplete extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Element element =
-                (Element)
-                        AXIOMUtil.stringToOM(
-                                metaFactory.getOMFactory(), "<parent><a/><b/><c/></parent>");
+        Element element = (Element) AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<parent><a/><b/><c/></parent>");
         Node b = element.getFirstChild().getNextSibling();
         element.removeChild(b);
         Node child = element.getFirstChild();

@@ -27,17 +27,16 @@ import org.apache.axiom.util.UIDGenerator;
  */
 public interface ContentIDGenerator {
     /** Default content ID generator that preserves any existing content ID. */
-    ContentIDGenerator DEFAULT =
-            new ContentIDGenerator() {
-                @Override
-                public String generateContentID(String existingContentID) {
-                    if (existingContentID == null) {
-                        return UIDGenerator.generateContentId();
-                    } else {
-                        return existingContentID;
-                    }
-                }
-            };
+    ContentIDGenerator DEFAULT = new ContentIDGenerator() {
+        @Override
+        public String generateContentID(String existingContentID) {
+            if (existingContentID == null) {
+                return UIDGenerator.generateContentId();
+            } else {
+                return existingContentID;
+            }
+        }
+    };
 
     /**
      * Generate a content ID.

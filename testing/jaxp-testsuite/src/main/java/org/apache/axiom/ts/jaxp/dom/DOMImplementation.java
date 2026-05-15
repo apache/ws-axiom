@@ -20,23 +20,20 @@ package org.apache.axiom.ts.jaxp.dom;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.axiom.testing.multiton.Multiton;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public abstract class DOMImplementation extends Multiton {
-    public static final DOMImplementation XERCES =
-            new DOMImplementation("xerces") {
-                @Override
-                protected DocumentBuilderFactory newDocumentBuilderFactory() {
-                    return new org.apache.xerces.jaxp.DocumentBuilderFactoryImpl();
-                }
-            };
+    public static final DOMImplementation XERCES = new DOMImplementation("xerces") {
+        @Override
+        protected DocumentBuilderFactory newDocumentBuilderFactory() {
+            return new org.apache.xerces.jaxp.DocumentBuilderFactoryImpl();
+        }
+    };
 
     private final String name;
 
@@ -62,8 +59,7 @@ public abstract class DOMImplementation extends Multiton {
         return parse(is, true);
     }
 
-    public final Document parse(InputSource is, boolean expandEntityReferences)
-            throws SAXException, IOException {
+    public final Document parse(InputSource is, boolean expandEntityReferences) throws SAXException, IOException {
         DocumentBuilderFactory factory = newDocumentBuilderFactory();
         factory.setNamespaceAware(true);
         factory.setExpandEntityReferences(expandEntityReferences);

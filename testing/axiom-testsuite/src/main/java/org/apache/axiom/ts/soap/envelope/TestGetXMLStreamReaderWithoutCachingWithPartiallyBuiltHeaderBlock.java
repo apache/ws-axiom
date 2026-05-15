@@ -20,9 +20,9 @@ package org.apache.axiom.ts.soap.envelope;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
@@ -33,8 +33,6 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-import com.google.inject.Inject;
-
 /**
  * Tests the behavior of {@link OMContainer#getXMLStreamReaderWithoutCaching()} on a {@link
  * SOAPEnvelope} with a partially built {@link SOAPHeaderBlock}. A {@link SOAPHeaderBlock} is an
@@ -42,8 +40,7 @@ import com.google.inject.Inject;
  * like a plain {@link OMElement}. For {@link OMContainer#getXMLStreamReaderWithoutCaching()} this
  * means that consuming the reader should not build the {@link SOAPHeaderBlock}.
  */
-public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock
-        extends SampleBasedSOAPTestCase {
+public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock extends SampleBasedSOAPTestCase {
     @Inject
     public TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock(SOAPSpec spec) {
         super(spec, SOAPSampleSet.WSA);
@@ -51,12 +48,8 @@ public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        SOAPHeaderBlock headerBlock =
-                (SOAPHeaderBlock)
-                        envelope.getHeader()
-                                .getFirstChildWithName(
-                                        new QName(
-                                                "http://www.w3.org/2005/08/addressing", "ReplyTo"));
+        SOAPHeaderBlock headerBlock = (SOAPHeaderBlock) envelope.getHeader()
+                .getFirstChildWithName(new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));
         headerBlock.getFirstElement().getFirstOMChild();
         assertThat(headerBlock.isComplete()).isFalse();
         XMLStreamReader reader = envelope.getXMLStreamReaderWithoutCaching();

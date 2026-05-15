@@ -18,22 +18,18 @@
  */
 package org.apache.axiom.truth.xml;
 
+import com.ctc.wstx.api.WstxInputProperties;
+import com.ctc.wstx.stax.WstxInputFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.ctc.wstx.api.WstxInputProperties;
-import com.ctc.wstx.stax.WstxInputFactory;
-
 abstract class Parsable extends XMLStreamReaderProvider {
 
     @Override
-    final XMLStreamReader getXMLStreamReader(boolean expandEntityReferences)
-            throws XMLStreamException {
+    final XMLStreamReader getXMLStreamReader(boolean expandEntityReferences) throws XMLStreamException {
         WstxInputFactory factory = new WstxInputFactory();
-        factory.setProperty(
-                XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES,
-                Boolean.valueOf(expandEntityReferences));
+        factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.valueOf(expandEntityReferences));
         factory.setProperty(WstxInputFactory.P_AUTO_CLOSE_INPUT, Boolean.TRUE);
         factory.setProperty(WstxInputFactory.P_REPORT_PROLOG_WHITESPACE, Boolean.TRUE);
         factory.setProperty(WstxInputFactory.P_REPORT_CDATA, Boolean.TRUE);
@@ -41,6 +37,5 @@ abstract class Parsable extends XMLStreamReaderProvider {
         return createXMLStreamReader(factory);
     }
 
-    abstract XMLStreamReader createXMLStreamReader(XMLInputFactory factory)
-            throws XMLStreamException;
+    abstract XMLStreamReader createXMLStreamReader(XMLInputFactory factory) throws XMLStreamException;
 }

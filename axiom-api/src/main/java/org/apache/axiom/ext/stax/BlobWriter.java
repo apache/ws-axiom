@@ -20,9 +20,7 @@
 package org.apache.axiom.ext.stax;
 
 import java.io.IOException;
-
 import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.blob.Blob;
 
 /**
@@ -85,8 +83,7 @@ public interface BlobWriter {
      * @throws IOException if an error occurs while reading from the data handler
      * @throws XMLStreamException if an error occurs while writing to the underlying stream
      */
-    void writeBlob(Blob blob, String contentID, boolean optimize)
-            throws IOException, XMLStreamException;
+    void writeBlob(Blob blob, String contentID, boolean optimize) throws IOException, XMLStreamException;
 
     /**
      * Write binary content to the stream. This method allows the implementation to defer loading of

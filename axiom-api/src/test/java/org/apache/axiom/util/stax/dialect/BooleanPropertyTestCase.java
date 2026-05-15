@@ -18,10 +18,9 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import javax.xml.stream.XMLStreamReader;
-
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import javax.xml.stream.XMLStreamReader;
 
 public abstract class BooleanPropertyTestCase extends EventSpecificTestCase {
     @Inject

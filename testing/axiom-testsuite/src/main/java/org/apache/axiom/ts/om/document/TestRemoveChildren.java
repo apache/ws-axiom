@@ -20,10 +20,11 @@ package org.apache.axiom.ts.om.document;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import java.io.StringReader;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import java.io.StringReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -32,9 +33,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /** Tests {@link OMContainer#removeChildren()} on an {@link OMContainer}. */
 public class TestRemoveChildren extends AxiomTestCase {
@@ -54,10 +52,9 @@ public class TestRemoveChildren extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDocument document =
-                OMXMLBuilderFactory.createOMBuilder(
-                                factory, new StringReader("<?pi data?><root>text</root>"))
-                        .getDocument();
+        OMDocument document = OMXMLBuilderFactory.createOMBuilder(
+                        factory, new StringReader("<?pi data?><root>text</root>"))
+                .getDocument();
         if (complete) {
             document.build();
         }

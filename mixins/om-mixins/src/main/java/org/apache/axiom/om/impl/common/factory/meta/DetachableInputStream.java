@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.common.factory.meta;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.ext.io.StreamCopyException;

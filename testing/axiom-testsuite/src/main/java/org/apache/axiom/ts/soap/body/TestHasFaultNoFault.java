@@ -20,25 +20,23 @@ package org.apache.axiom.ts.soap.body;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
+import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestHasFaultNoFault extends TestCase {
-    @Inject private SOAPFactory soapFactory;
-    @Inject private QName qname;
+    @Inject
+    private SOAPFactory soapFactory;
+
+    @Inject
+    private QName qname;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPBody body = soapFactory.getDefaultEnvelope().getBody();
-        body.addChild(
-                soapFactory.createOMElement(
-                        qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
+        body.addChild(soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
         assertThat(body.hasFault()).isFalse();
     }
 }

@@ -19,9 +19,8 @@
 
 package org.apache.axiom.om.impl.common;
 
-import junit.framework.TestCase;
-
 import java.lang.reflect.Field;
+import junit.framework.TestCase;
 
 /** This class will test the methods and fields of the OMNamespaceImpl class. */
 public class OMNamespaceImplTest extends TestCase {
@@ -37,10 +36,7 @@ public class OMNamespaceImplTest extends TestCase {
             String fieldData = clsField[i].toString();
             if ((fieldData.indexOf("prefix") != -1) || (fieldData.indexOf("uri") != -1)) {
                 assertTrue(
-                        "The field should have been private, "
-                                + " but instead contained: "
-                                + fieldData
-                                + ".",
+                        "The field should have been private, " + " but instead contained: " + fieldData + ".",
                         fieldData.indexOf("private") != -1);
             }
         }
@@ -49,11 +45,10 @@ public class OMNamespaceImplTest extends TestCase {
         for (int i = 0; i < method.length; i++) {
             try {
                 OMNamespaceImpl.class.getMethod(method[i], new Class[] {String.class});
-                fail(
-                        "A NoSuchMethodException should have been thrown"
-                                + " when trying to get method \""
-                                + method[i]
-                                + "\".");
+                fail("A NoSuchMethodException should have been thrown"
+                        + " when trying to get method \""
+                        + method[i]
+                        + "\".");
             } catch (NoSuchMethodException e) {
                 // These methods should not exist, so this is
                 // expected.

@@ -21,8 +21,8 @@ package org.apache.axiom.ts.om.container;
 import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
@@ -30,8 +30,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMContainer#addChild(OMNode)} works properly on a container that has been
@@ -44,8 +42,7 @@ public class TestAddChildWithIncompleteSibling extends AxiomTestCase {
     private final OMContainerFactory containerFactory;
 
     @Inject
-    public TestAddChildWithIncompleteSibling(
-            OMMetaFactory metaFactory, OMContainerFactory containerFactory) {
+    public TestAddChildWithIncompleteSibling(OMMetaFactory metaFactory, OMContainerFactory containerFactory) {
         super(metaFactory);
         this.containerFactory = containerFactory;
     }
@@ -54,9 +51,8 @@ public class TestAddChildWithIncompleteSibling extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMContainer container = containerFactory.create(factory);
-        container.addChild(
-                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>"))
-                        .getDocumentElement(true));
+        container.addChild(OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>"))
+                .getDocumentElement(true));
         assertThat(container.isComplete()).isFalse();
         container.addChild(factory.createOMText("test"));
         assertThat(container).hasNumberOfChildren(2);

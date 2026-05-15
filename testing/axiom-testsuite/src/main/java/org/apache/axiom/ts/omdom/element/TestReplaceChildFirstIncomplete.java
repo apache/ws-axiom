@@ -21,7 +21,6 @@ package org.apache.axiom.ts.omdom.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
@@ -38,10 +37,8 @@ public class TestReplaceChildFirstIncomplete extends OMDOMTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         Element element =
-                (Element)
-                        OMXMLBuilderFactory.createOMBuilder(
-                                        factory, new StringReader("<root><a/><b/><c/></root>"))
-                                .getDocumentElement();
+                (Element) OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/><c/></root>"))
+                        .getDocumentElement();
         Element a = (Element) element.getFirstChild();
         Element a2 = element.getOwnerDocument().createElementNS(null, "a2");
         element.replaceChild(a2, a);

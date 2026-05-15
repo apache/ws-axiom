@@ -22,7 +22,6 @@ package org.apache.axiom.ts.soap.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;

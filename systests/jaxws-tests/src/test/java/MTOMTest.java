@@ -18,14 +18,14 @@
  */
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.ws.BindingProvider;
+import jakarta.xml.ws.soap.MTOMFeature;
+import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
@@ -41,9 +41,6 @@ import org.example.ImageService;
 import org.example.ImageServicePort;
 import org.junit.jupiter.api.Test;
 
-import jakarta.xml.ws.BindingProvider;
-import jakarta.xml.ws.soap.MTOMFeature;
-
 public class MTOMTest {
     /**
      * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-492">AXIOM-492</a>.
@@ -57,33 +54,30 @@ public class MTOMTest {
         connector.setPort(0);
         server.setConnectors(new Connector[] {connector});
         ServletContextHandler handler = new ServletContextHandler("/");
-        HttpServlet servlet =
-                new HttpServlet() {
-                    @Override
-                    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-                            throws ServletException, IOException {
-                        MultipartBody mp =
-                                MultipartBody.builder()
-                                        .setInputStream(request.getInputStream())
-                                        .setContentType(request.getContentType())
-                                        .build();
-                        OMXMLBuilderFactory.createSOAPModelBuilder(mp);
-                        SOAPFactory factory = OMAbstractFactory.getSOAP12Factory();
-                        SOAPMessage message = factory.createDefaultSOAPMessage();
-                        OMElement responseElement =
-                                factory.createOMElement(
-                                        "uploadImageResponse",
-                                        factory.createOMNamespace("http://example.org/", "ns"),
-                                        message.getSOAPEnvelope().getBody());
-                        factory.createOMElement("return", null, responseElement).setText("OK");
-                        response.setContentType(factory.getSOAPVersion().getMediaType().toString());
-                        try {
-                            message.serialize(response.getOutputStream());
-                        } catch (XMLStreamException ex) {
-                            throw new ServletException(ex);
-                        }
-                    }
-                };
+        HttpServlet servlet = new HttpServlet() {
+            @Override
+            protected void doPost(HttpServletRequest request, HttpServletResponse response)
+                    throws ServletException, IOException {
+                MultipartBody mp = MultipartBody.builder()
+                        .setInputStream(request.getInputStream())
+                        .setContentType(request.getContentType())
+                        .build();
+                OMXMLBuilderFactory.createSOAPModelBuilder(mp);
+                SOAPFactory factory = OMAbstractFactory.getSOAP12Factory();
+                SOAPMessage message = factory.createDefaultSOAPMessage();
+                OMElement responseElement = factory.createOMElement(
+                        "uploadImageResponse",
+                        factory.createOMNamespace("http://example.org/", "ns"),
+                        message.getSOAPEnvelope().getBody());
+                factory.createOMElement("return", null, responseElement).setText("OK");
+                response.setContentType(factory.getSOAPVersion().getMediaType().toString());
+                try {
+                    message.serialize(response.getOutputStream());
+                } catch (XMLStreamException ex) {
+                    throw new ServletException(ex);
+                }
+            }
+        };
         ServletHolder servletHolder = new ServletHolder(servlet);
         servletHolder.setName("test");
         servletHolder.setInitOrder(1);
@@ -91,8 +85,7 @@ public class MTOMTest {
         server.setHandler(handler);
         server.start();
         try {
-            ImageServicePort imageService =
-                    new ImageService().getImageServicePort(new MTOMFeature());
+            ImageServicePort imageService = new ImageService().getImageServicePort(new MTOMFeature());
             ((BindingProvider) imageService)
                     .getRequestContext()
                     .put(

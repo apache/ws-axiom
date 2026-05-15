@@ -20,17 +20,16 @@ package org.apache.axiom.ts.dom.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.ts.dom.DOMTestCase;
-
 import com.google.inject.Inject;
+import javax.xml.namespace.QName;
+import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.dom.DOMUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
 public class TestCreateAttributeNS extends DOMTestCase {
-    @Inject private QName qname;
+    @Inject
+    private QName qname;
 
     @Override
     protected void runTest() throws Throwable {

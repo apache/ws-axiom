@@ -18,11 +18,10 @@
  */
 package org.apache.axiom.ts.springws.scenario.broker;
 
-import java.util.Date;
-
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
+import java.util.Date;
 
 @XmlRootElement(namespace = "urn:broker", name = "OrderStatus")
 @XmlType

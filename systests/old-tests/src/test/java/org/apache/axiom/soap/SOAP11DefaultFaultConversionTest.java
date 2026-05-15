@@ -19,11 +19,10 @@
 
 package org.apache.axiom.soap;
 
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-
-import junit.framework.TestCase;
 
 /**
  * Test case to check conversion of the default fault envelope generated
@@ -53,10 +52,8 @@ public class SOAP11DefaultFaultConversionTest extends TestCase {
 
         envelope.build();
 
-        SOAPModelBuilder stAXSOAPModelBuilder =
-                OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                        OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM),
-                        envelope.getXMLStreamReader());
+        SOAPModelBuilder stAXSOAPModelBuilder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM), envelope.getXMLStreamReader());
         SOAPEnvelope env = stAXSOAPModelBuilder.getSOAPEnvelope();
         env.getParent().build();
 

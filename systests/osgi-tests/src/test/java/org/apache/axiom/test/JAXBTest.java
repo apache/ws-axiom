@@ -23,8 +23,8 @@ import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
+import jakarta.xml.bind.JAXBContext;
 import java.io.ByteArrayOutputStream;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
@@ -36,8 +36,6 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
-
-import jakarta.xml.bind.JAXBContext;
 
 /** Tests that the axiom-jaxb bundle can be loaded successfully and is operational. */
 @RunWith(PaxExam.class)
@@ -68,8 +66,7 @@ public class JAXBTest {
     public void test() throws Exception {
         OMFactory factory = OMAbstractFactory.getOMFactory();
         JAXBContext context = JAXBContext.newInstance(DummyBean.class);
-        OMSourcedElement element =
-                factory.createOMElement(new JAXBOMDataSource(context, new DummyBean()));
+        OMSourcedElement element = factory.createOMElement(new JAXBOMDataSource(context, new DummyBean()));
         element.serialize(new ByteArrayOutputStream());
     }
 }

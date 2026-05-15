@@ -19,7 +19,6 @@
 package org.apache.axiom.truth.xml.spi;
 
 import java.util.Map;
-
 import javax.xml.namespace.QName;
 
 // TODO: add a close method

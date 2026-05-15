@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.mixin;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFaultText;

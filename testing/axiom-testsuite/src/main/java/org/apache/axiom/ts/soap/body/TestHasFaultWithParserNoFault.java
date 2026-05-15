@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.ts.soap.SOAPSpec;
 

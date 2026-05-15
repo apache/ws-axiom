@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.om.builder;
 
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
 /** {@link XMLStreamReader} wrapper that filters out all namespace declarations. */

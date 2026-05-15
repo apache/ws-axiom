@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soapdom.message;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPMessage;
@@ -25,23 +27,19 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.Document;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestLazySOAPFactorySelection extends TestCase {
-    @Inject private SOAPSpec spec;
-    @Inject private OMMetaFactory metaFactory;
+    @Inject
+    private SOAPSpec spec;
+
+    @Inject
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {
         // Create a SOAP model builder without specifying the SOAP version.
-        SOAPMessage message =
-                OMXMLBuilderFactory.createSOAPModelBuilder(
-                                metaFactory,
-                                SOAPSampleSet.NO_HEADER.getMessage(spec).getInputStream(),
-                                null)
-                        .getSOAPMessage();
+        SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(
+                        metaFactory, SOAPSampleSet.NO_HEADER.getMessage(spec).getInputStream(), null)
+                .getSOAPMessage();
 
         // In some Axiom versions, this failed because at this stage, the SOAPFactory instance
         // has not yet been determined.

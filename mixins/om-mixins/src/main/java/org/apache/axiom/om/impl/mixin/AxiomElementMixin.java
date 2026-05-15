@@ -29,13 +29,11 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreElement;
@@ -157,9 +155,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         } else {
             String prefix = qname.substring(0, idx);
             OMNamespace ns = findNamespace(null, prefix);
-            return ns == null
-                    ? null
-                    : QNameCache.getQName(ns.getNamespaceURI(), qname.substring(idx + 1), prefix);
+            return ns == null ? null : QNameCache.getQName(ns.getNamespaceURI(), qname.substring(idx + 1), prefix);
         }
     }
 
@@ -199,17 +195,16 @@ public abstract class AxiomElementMixin implements AxiomElement {
             Reader stream = XMLStreamReaderUtils.getElementTextAsStream(reader, true);
             if (!cache) {
                 // If caching is disabled, we need to close the XMLStreamReader to reenable it
-                stream =
-                        new FilterReader(stream) {
-                            @Override
-                            public void close() throws IOException {
-                                try {
-                                    reader.close();
-                                } catch (XMLStreamException ex) {
-                                    throw new XMLStreamIOException(ex);
-                                }
-                            }
-                        };
+                stream = new FilterReader(stream) {
+                    @Override
+                    public void close() throws IOException {
+                        try {
+                            reader.close();
+                        } catch (XMLStreamException ex) {
+                            throw new XMLStreamIOException(ex);
+                        }
+                    }
+                };
             }
             return stream;
         } catch (XMLStreamException ex) {
@@ -259,10 +254,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
             OMNamespace ns = handleNamespace(qname.getNamespaceURI(), qname.getPrefix());
             getOMFactory()
                     .createOMText(
-                            this,
-                            ns == null
-                                    ? qname.getLocalPart()
-                                    : ns.getPrefix() + ":" + qname.getLocalPart());
+                            this, ns == null ? qname.getLocalPart() : ns.getPrefix() + ":" + qname.getLocalPart());
         }
     }
 
@@ -277,8 +269,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
     }
 
     @Override
-    public <T extends OMElement> void insertChild(
-            Sequence sequence, int pos, T newChild, boolean allowReplace) {
+    public <T extends OMElement> void insertChild(Sequence sequence, int pos, T newChild, boolean allowReplace) {
         if (!sequence.item(pos).isInstance(newChild)) {
             throw new IllegalArgumentException();
         }
@@ -297,8 +288,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
                         child.insertSiblingAfter(newChild);
                         child.detach();
                     } else {
-                        throw new OMException(
-                                "The element already has a child of type " + type.getName());
+                        throw new OMException("The element already has a child of type " + type.getName());
                     }
                     return;
                 }
@@ -340,8 +330,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
     }
 
     public final void internalAppendAttribute(OMAttribute attr) {
-        coreSetAttribute(
-                AxiomSemantics.ATTRIBUTE_MATCHER, (AxiomAttribute) attr, AxiomSemantics.INSTANCE);
+        coreSetAttribute(AxiomSemantics.ATTRIBUTE_MATCHER, (AxiomAttribute) attr, AxiomSemantics.INSTANCE);
     }
 
     @Override
@@ -354,12 +343,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
             if (owner == this) {
                 return attr;
             }
-            attr =
-                    getOMFactory()
-                            .createOMAttribute(
-                                    attr.getLocalName(),
-                                    attr.getNamespace(),
-                                    attr.getAttributeValue());
+            attr = getOMFactory().createOMAttribute(attr.getLocalName(), attr.getNamespace(), attr.getAttributeValue());
         }
         NSUtil.handleNamespace(this, attr.getNamespace(), true, true);
         internalAppendAttribute(attr);
@@ -376,9 +360,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
                 namespace = findNamespace(namespaceURI, prefix);
                 if (namespace == null || prefix == null && namespace.getPrefix().length() == 0) {
                     namespace =
-                            new OMNamespaceImpl(
-                                    namespaceURI,
-                                    prefix != null ? prefix : generatePrefix(namespaceURI));
+                            new OMNamespaceImpl(namespaceURI, prefix != null ? prefix : generatePrefix(namespaceURI));
                 }
             }
         }
@@ -387,17 +369,13 @@ public abstract class AxiomElementMixin implements AxiomElement {
 
     @Override
     public final Iterator<OMAttribute> getAllAttributes() {
-        return coreGetAttributesByType(
-                AxiomAttribute.class, Mappers.<OMAttribute>identity(), AxiomSemantics.INSTANCE);
+        return coreGetAttributesByType(AxiomAttribute.class, Mappers.<OMAttribute>identity(), AxiomSemantics.INSTANCE);
     }
 
     @Override
     public final OMAttribute getAttribute(QName qname) {
         return (AxiomAttribute)
-                coreGetAttribute(
-                        AxiomSemantics.ATTRIBUTE_MATCHER,
-                        qname.getNamespaceURI(),
-                        qname.getLocalPart());
+                coreGetAttribute(AxiomSemantics.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart());
     }
 
     @Override
@@ -414,10 +392,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         if (attr != null) {
             attr.setAttributeValue(value);
         } else {
-            addAttribute(
-                    qname.getLocalPart(),
-                    value,
-                    new OMNamespaceImpl(qname.getNamespaceURI(), qname.getPrefix()));
+            addAttribute(qname.getLocalPart(), value, new OMNamespaceImpl(qname.getNamespaceURI(), qname.getPrefix()));
         }
     }
 
@@ -433,16 +408,13 @@ public abstract class AxiomElementMixin implements AxiomElement {
     public final void addNamespaceDeclaration(OMNamespace ns) {
         AxiomNamespaceDeclaration decl = getNodeFactory().createNamespaceDeclaration();
         decl.setDeclaredNamespace(ns);
-        coreSetAttribute(
-                AxiomSemantics.NAMESPACE_DECLARATION_MATCHER, decl, AxiomSemantics.INSTANCE);
+        coreSetAttribute(AxiomSemantics.NAMESPACE_DECLARATION_MATCHER, decl, AxiomSemantics.INSTANCE);
     }
 
     @Override
     public final Iterator<OMNamespace> getAllDeclaredNamespaces() {
         return coreGetAttributesByType(
-                AxiomNamespaceDeclaration.class,
-                NamespaceDeclarationMapper.INSTANCE,
-                AxiomSemantics.INSTANCE);
+                AxiomNamespaceDeclaration.class, NamespaceDeclarationMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
     @Override
@@ -503,8 +475,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
             if (parent instanceof OMElement element) {
                 namespace = element.findNamespace(uri, prefix);
                 // If the prefix has been redeclared, then ignore the binding found on the ancestors
-                if (namespace != null
-                        && findDeclaredNamespace(null, namespace.getPrefix()) != null) {
+                if (namespace != null && findDeclaredNamespace(null, namespace.getPrefix()) != null) {
                     namespace = null;
                 }
             }
@@ -513,8 +484,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
         return namespace;
     }
 
-    private static final OMNamespace XMLNS =
-            new OMNamespaceImpl(XMLConstants.XML_NS_URI, XMLConstants.XML_NS_PREFIX);
+    private static final OMNamespace XMLNS = new OMNamespaceImpl(XMLConstants.XML_NS_URI, XMLConstants.XML_NS_PREFIX);
 
     /**
      * Checks for the namespace <B>only</B> in the current Element. This is also used to retrieve

@@ -20,9 +20,9 @@ package org.apache.axiom.ts.om.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -31,8 +31,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} if the document already
@@ -47,10 +45,9 @@ public class TestSetOMDocumentElementReplace extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDocument document =
-                OMXMLBuilderFactory.createOMBuilder(
-                                factory, new StringReader("<!--comment1--><root/><!--comment2-->"))
-                        .getDocument();
+        OMDocument document = OMXMLBuilderFactory.createOMBuilder(
+                        factory, new StringReader("<!--comment1--><root/><!--comment2-->"))
+                .getDocument();
         OMElement documentElement = factory.createOMElement("new", null);
         document.setOMDocumentElement(documentElement);
         assertThat(document.getOMDocumentElement()).isSameAs(documentElement);

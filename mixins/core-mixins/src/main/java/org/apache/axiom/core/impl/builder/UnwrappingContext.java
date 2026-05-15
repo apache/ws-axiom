@@ -31,23 +31,20 @@ final class UnwrappingContext extends Context {
     }
 
     @Override
-    void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {}
+    void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {}
 
     @Override
     void startFragment() {}
 
     @Override
-    void processDocumentTypeDeclaration(
-            String rootName, String publicId, String systemId, String internalSubset)
+    void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset)
             throws StreamException {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    Context startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    Context startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         root.validateName(prefix, localName, namespaceURI);
         root.initName(namespaceURI, localName, prefix, builderHandler.namespaceHelper);
         root.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
@@ -65,20 +62,14 @@ final class UnwrappingContext extends Context {
 
     @Override
     void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException {
+    void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
         // TODO Auto-generated method stub
 
     }

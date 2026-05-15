@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
@@ -40,9 +39,7 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
     private final OptimizationPolicy optimizationPolicy;
 
     public XOPEncodingFilterHandler(
-            XmlHandler parent,
-            ContentIDGenerator contentIDGenerator,
-            OptimizationPolicy optimizationPolicy) {
+            XmlHandler parent, ContentIDGenerator contentIDGenerator, OptimizationPolicy optimizationPolicy) {
         super(parent);
         this.contentIDGenerator = contentIDGenerator;
         this.optimizationPolicy = optimizationPolicy;
@@ -101,9 +98,7 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
                 boolean optimize;
                 try {
                     if (blobObject instanceof BlobProvider blobProvider) {
-                        optimize =
-                                optimizationPolicy.isOptimized(
-                                        blobProvider, textContent.isOptimize());
+                        optimize = optimizationPolicy.isOptimized(blobProvider, textContent.isOptimize());
                     } else if (blobObject instanceof Blob blob) {
                         optimize = optimizationPolicy.isOptimized(blob, textContent.isOptimize());
                     } else {
@@ -113,8 +108,7 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
                     throw new StreamException(ex);
                 }
                 if (optimize) {
-                    String contentID =
-                            contentIDGenerator.generateContentID(textContent.getContentID());
+                    String contentID = contentIDGenerator.generateContentID(textContent.getContentID());
                     blobObjects.put(contentID, blobObject);
                     return contentID;
                 }

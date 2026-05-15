@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.factory;
 
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -109,15 +108,13 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     @Override
     public final SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
-        return createAxiomElement(
-                getSOAPHelper().getEnvelopeType(), null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns);
+        return createAxiomElement(getSOAPHelper().getEnvelopeType(), null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns);
     }
 
     @Override
     public final SOAPHeader createSOAPHeader(SOAPEnvelope parent) {
         SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(
-                helper.getHeaderType(), parent, helper.getHeaderQName(), envelopeSequence, 0);
+        return createSOAPElement(helper.getHeaderType(), parent, helper.getHeaderQName(), envelopeSequence, 0);
     }
 
     @Override
@@ -126,8 +123,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     }
 
     @Override
-    public final SOAPHeaderBlock createSOAPHeaderBlock(
-            String localName, OMNamespace ns, SOAPHeader parent) {
+    public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, SOAPHeader parent) {
         return createAxiomElement(getSOAPHelper().getHeaderBlockType(), parent, localName, ns);
     }
 
@@ -144,8 +140,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     }
 
     @Override
-    public final SOAPHeaderBlock createSOAPHeaderBlock(
-            String localName, OMNamespace ns, OMDataSource ds) {
+    public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, OMDataSource ds) {
         AxiomSOAPHeaderBlock element = getSOAPHelper().getHeaderBlockType().create(nodeFactory);
         element.init(localName, ns, ds);
         return element;
@@ -159,8 +154,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     @Override
     public final SOAPBody createSOAPBody(SOAPEnvelope parent) {
         SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(
-                helper.getBodyType(), parent, helper.getBodyQName(), envelopeSequence, 1);
+        return createSOAPElement(helper.getBodyType(), parent, helper.getBodyQName(), envelopeSequence, 1);
     }
 
     @Override

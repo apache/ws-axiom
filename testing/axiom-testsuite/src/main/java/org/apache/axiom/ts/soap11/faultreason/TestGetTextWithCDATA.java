@@ -20,10 +20,10 @@ package org.apache.axiom.ts.soap11.faultreason;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import javax.xml.stream.XMLStreamReader;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -34,34 +34,28 @@ import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestGetTextWithCDATA extends TestCase {
-    @Inject private OMMetaFactory metaFactory;
+    @Inject
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {
-        String soap11Fault =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                        + "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">"
-                        + "<SOAP-ENV:Body>"
-                        + "<SOAP-ENV:Fault>"
-                        + "<faultcode>SOAP-ENV:Server</faultcode>"
-                        + "<faultstring xml:lang=\"en\"><![CDATA[handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest]]></faultstring>"
-                        + "<detail>"
-                        + "<somefaultentry/>"
-                        + "</detail>"
-                        + "<faultactor>faultActor</faultactor>"
-                        + "</SOAP-ENV:Fault>"
-                        + "</SOAP-ENV:Body>"
-                        + "</SOAP-ENV:Envelope>";
+        String soap11Fault = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+                + "<SOAP-ENV:Body>"
+                + "<SOAP-ENV:Fault>"
+                + "<faultcode>SOAP-ENV:Server</faultcode>"
+                + "<faultstring xml:lang=\"en\"><![CDATA[handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest]]></faultstring>"
+                + "<detail>"
+                + "<somefaultentry/>"
+                + "</detail>"
+                + "<faultactor>faultActor</faultactor>"
+                + "</SOAP-ENV:Fault>"
+                + "</SOAP-ENV:Body>"
+                + "</SOAP-ENV:Envelope>";
         XMLStreamReader soap11Parser =
-                StAXUtils.createXMLStreamReader(
-                        AxiomTestCase.TEST_PARSER_CONFIGURATION, new StringReader(soap11Fault));
-        SOAPModelBuilder soap11Builder =
-                OMXMLBuilderFactory.createStAXSOAPModelBuilder(metaFactory, soap11Parser);
+                StAXUtils.createXMLStreamReader(AxiomTestCase.TEST_PARSER_CONFIGURATION, new StringReader(soap11Fault));
+        SOAPModelBuilder soap11Builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(metaFactory, soap11Parser);
         OMElement element = soap11Builder.getDocumentElement();
         element.build();
         assertThat(element).isInstanceOf(SOAPEnvelope.class);
@@ -69,8 +63,7 @@ public class TestGetTextWithCDATA extends TestCase {
         SOAPFault fault = se.getBody().getFault();
         SOAPFaultReason reason = fault.getReason();
         assertThat(reason.getText())
-                .isEqualTo(
-                        "handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest");
+                .isEqualTo("handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest");
         soap11Parser.close();
     }
 }

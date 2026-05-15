@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.junit.jupiter.api.Test;
@@ -38,14 +37,13 @@ public class StAXPivotTest {
 
     @Test
     public void testSuccess() throws Exception {
-        StAXPivot pivot =
-                createStAXPivot(
-                        Action.DEFAULT_START_DOCUMENT,
-                        h -> h.startElement("urn:test", "test", "p"),
-                        XmlHandler::attributesCompleted,
-                        h -> h.processEntityReference("ent", "foobar"),
-                        XmlHandler::endElement,
-                        XmlHandler::completed);
+        StAXPivot pivot = createStAXPivot(
+                Action.DEFAULT_START_DOCUMENT,
+                h -> h.startElement("urn:test", "test", "p"),
+                XmlHandler::attributesCompleted,
+                h -> h.processEntityReference("ent", "foobar"),
+                XmlHandler::endElement,
+                XmlHandler::completed);
         pivot.require(XMLStreamConstants.START_DOCUMENT, null, null);
         pivot.next();
         pivot.require(XMLStreamConstants.START_ELEMENT, "urn:test", "test");
@@ -73,62 +71,48 @@ public class StAXPivotTest {
 
     @Test
     public void testLocalNameMismatchOnStartElement() throws Exception {
-        StAXPivot pivot =
-                createStAXPivot(
-                        Action.DEFAULT_START_DOCUMENT,
-                        h -> h.startElement("urn:test", "test", "p"),
-                        XmlHandler::attributesCompleted);
+        StAXPivot pivot = createStAXPivot(
+                Action.DEFAULT_START_DOCUMENT,
+                h -> h.startElement("urn:test", "test", "p"),
+                XmlHandler::attributesCompleted);
         pivot.next();
-        assertThatThrownBy(
-                        () ->
-                                pivot.require(
-                                        XMLStreamConstants.START_ELEMENT, "urn:test", "wrong_name"))
+        assertThatThrownBy(() -> pivot.require(XMLStreamConstants.START_ELEMENT, "urn:test", "wrong_name"))
                 .isInstanceOf(XMLStreamException.class);
     }
 
     @Test
     public void testNamespaceURIOnStartDocument() throws Exception {
         StAXPivot pivot = createStAXPivot(Action.DEFAULT_START_DOCUMENT);
-        assertThatThrownBy(
-                        () ->
-                                pivot.require(
-                                        XMLStreamConstants.START_DOCUMENT,
-                                        "http://example.org",
-                                        null))
+        assertThatThrownBy(() -> pivot.require(XMLStreamConstants.START_DOCUMENT, "http://example.org", null))
                 .isInstanceOf(XMLStreamException.class);
     }
 
     @Test
     public void testNamespaceURIMismatchOnStartElement() throws Exception {
-        StAXPivot pivot =
-                createStAXPivot(
-                        Action.DEFAULT_START_DOCUMENT,
-                        h -> h.startElement("urn:test", "test", "p"),
-                        XmlHandler::attributesCompleted);
+        StAXPivot pivot = createStAXPivot(
+                Action.DEFAULT_START_DOCUMENT,
+                h -> h.startElement("urn:test", "test", "p"),
+                XmlHandler::attributesCompleted);
         pivot.next();
-        assertThatThrownBy(
-                        () ->
-                                pivot.require(
-                                        XMLStreamConstants.START_ELEMENT, "urn:wrong_uri", "test"))
+        assertThatThrownBy(() -> pivot.require(XMLStreamConstants.START_ELEMENT, "urn:wrong_uri", "test"))
                 .isInstanceOf(XMLStreamException.class);
     }
 
     @Test
     public void testCDATASection() throws Exception {
-        StAXPivot pivot =
-                createStAXPivot(
-                        Action.DEFAULT_START_DOCUMENT,
-                        h -> {
-                            h.startElement("", "root", "");
-                            h.attributesCompleted();
-                        },
-                        h -> {
-                            h.startCDATASection();
-                            h.processCharacterData("test", false);
-                            h.endCDATASection();
-                        },
-                        XmlHandler::endElement,
-                        XmlHandler::completed);
+        StAXPivot pivot = createStAXPivot(
+                Action.DEFAULT_START_DOCUMENT,
+                h -> {
+                    h.startElement("", "root", "");
+                    h.attributesCompleted();
+                },
+                h -> {
+                    h.startCDATASection();
+                    h.processCharacterData("test", false);
+                    h.endCDATASection();
+                },
+                XmlHandler::endElement,
+                XmlHandler::completed);
         assertThat(pivot.getEventType()).isEqualTo(XMLStreamReader.START_DOCUMENT);
         assertThat(pivot.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         assertThat(pivot.next()).isEqualTo(XMLStreamReader.CDATA);
@@ -139,28 +123,27 @@ public class StAXPivotTest {
 
     @Test
     public void testGetElementText() throws Exception {
-        StAXPivot pivot =
-                createStAXPivot(
-                        Action.DEFAULT_START_DOCUMENT,
-                        h -> h.startElement("", "root", ""),
-                        XmlHandler::attributesCompleted,
-                        h -> h.processCharacterData("abc", false),
-                        XmlHandler::startCDATASection,
-                        h -> h.processCharacterData("def", false),
-                        XmlHandler::endCDATASection,
-                        h -> h.processCharacterData("ghi", false),
-                        XmlHandler::startComment,
-                        h -> h.processCharacterData("jkl", false),
-                        XmlHandler::endComment,
-                        h -> h.processCharacterData("mno", false),
-                        h -> h.startProcessingInstruction("pi"),
-                        h -> h.processCharacterData("pqr", false),
-                        XmlHandler::endProcessingInstruction,
-                        h -> h.processCharacterData("stu", false),
-                        h -> h.processEntityReference("ent", "vwx"),
-                        h -> h.processCharacterData("yz", false),
-                        XmlHandler::endElement,
-                        XmlHandler::completed);
+        StAXPivot pivot = createStAXPivot(
+                Action.DEFAULT_START_DOCUMENT,
+                h -> h.startElement("", "root", ""),
+                XmlHandler::attributesCompleted,
+                h -> h.processCharacterData("abc", false),
+                XmlHandler::startCDATASection,
+                h -> h.processCharacterData("def", false),
+                XmlHandler::endCDATASection,
+                h -> h.processCharacterData("ghi", false),
+                XmlHandler::startComment,
+                h -> h.processCharacterData("jkl", false),
+                XmlHandler::endComment,
+                h -> h.processCharacterData("mno", false),
+                h -> h.startProcessingInstruction("pi"),
+                h -> h.processCharacterData("pqr", false),
+                XmlHandler::endProcessingInstruction,
+                h -> h.processCharacterData("stu", false),
+                h -> h.processEntityReference("ent", "vwx"),
+                h -> h.processCharacterData("yz", false),
+                XmlHandler::endElement,
+                XmlHandler::completed);
         assertThat(pivot.getEventType()).isEqualTo(XMLStreamReader.START_DOCUMENT);
         assertThat(pivot.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         assertThat(pivot.getElementText()).isEqualTo("abcdefghimnostuvwxyz");
@@ -170,14 +153,13 @@ public class StAXPivotTest {
 
     @Test
     public void testGetElementTextUnexpectedChildElement() throws Exception {
-        StAXPivot pivot =
-                createStAXPivot(
-                        Action.DEFAULT_START_DOCUMENT,
-                        h -> h.startElement("", "root", ""),
-                        XmlHandler::attributesCompleted,
-                        h -> h.processCharacterData("abc", false),
-                        h -> h.startElement("", "child", ""),
-                        XmlHandler::attributesCompleted);
+        StAXPivot pivot = createStAXPivot(
+                Action.DEFAULT_START_DOCUMENT,
+                h -> h.startElement("", "root", ""),
+                XmlHandler::attributesCompleted,
+                h -> h.processCharacterData("abc", false),
+                h -> h.startElement("", "child", ""),
+                XmlHandler::attributesCompleted);
         assertThat(pivot.getEventType()).isEqualTo(XMLStreamReader.START_DOCUMENT);
         assertThat(pivot.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         assertThatThrownBy(() -> pivot.getElementText()).isInstanceOf(XMLStreamException.class);

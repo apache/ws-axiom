@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.OutputStream;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
@@ -38,8 +38,6 @@ import org.apache.axiom.testutils.RandomUtils;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that the content of the root part of an XOP message is buffered, i.e. that an attachment
@@ -86,14 +84,13 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
         out.close();
 
         // Parse the message
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(
-                        factory,
-                        StAXParserConfiguration.NON_COALESCING,
-                        MultipartBody.builder()
-                                .setInputStream(xop.getInputStream())
-                                .setContentType(format.getContentType())
-                                .build());
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
+                factory,
+                StAXParserConfiguration.NON_COALESCING,
+                MultipartBody.builder()
+                        .setInputStream(xop.getInputStream())
+                        .setContentType(format.getContentType())
+                        .build());
         OMElement root = builder.getDocumentElement();
         OMElement child1 = (OMElement) root.getFirstOMChild();
         OMText text = (OMText) child1.getFirstOMChild();

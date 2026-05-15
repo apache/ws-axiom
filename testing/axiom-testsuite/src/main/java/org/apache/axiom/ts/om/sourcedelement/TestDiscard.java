@@ -21,6 +21,7 @@ package org.apache.axiom.ts.om.sourcedelement;
 import static org.apache.axiom.ts.dimension.ExpansionStrategy.DONT_EXPAND;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -28,8 +29,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 public class TestDiscard extends AxiomTestCase {
     private final ExpansionStrategy expansionStrategy;

@@ -19,15 +19,14 @@
 
 package org.apache.axiom.om.xpath;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.jaxen.BaseXPath;
 import org.jaxen.JaxenException;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class AXIOMXPath extends BaseXPath {
 

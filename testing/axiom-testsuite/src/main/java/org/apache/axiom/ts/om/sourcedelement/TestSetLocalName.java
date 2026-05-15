@@ -21,6 +21,8 @@ package org.apache.axiom.ts.om.sourcedelement;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -28,9 +30,6 @@ import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that the effect of {@link OMNamedInformationItem#setLocalName(String)} on a {@link
@@ -50,11 +49,10 @@ public class TestSetLocalName extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element =
-                factory.createOMElement(
-                        new PullOMDataSource("<p:root xmlns:p='urn:test'><child/></p:root>"),
-                        "root",
-                        factory.createOMNamespace("urn:test", "p"));
+        OMSourcedElement element = factory.createOMElement(
+                new PullOMDataSource("<p:root xmlns:p='urn:test'><child/></p:root>"),
+                "root",
+                factory.createOMNamespace("urn:test", "p"));
         if (expand) {
             element.getFirstOMChild();
         }

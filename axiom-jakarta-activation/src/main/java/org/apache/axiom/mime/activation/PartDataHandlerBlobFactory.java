@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.mime.activation;
 
-import org.apache.axiom.mime.PartBlobFactory;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.mime.PartBlob;
+import org.apache.axiom.mime.PartBlobFactory;
 
 /**
  * {@link PartBlobFactory} implementation that creates {@link PartBlob} instances that wrap {@link
@@ -31,13 +31,12 @@ public abstract class PartDataHandlerBlobFactory implements PartBlobFactory {
      * {@link PartDataHandlerBlobFactory} instance that creates plain {@link PartDataHandler}
      * instances.
      */
-    public static final PartDataHandlerBlobFactory DEFAULT =
-            new PartDataHandlerBlobFactory() {
-                @Override
-                protected PartDataHandler createDataHandler(Part part) {
-                    return new PartDataHandler(part);
-                }
-            };
+    public static final PartDataHandlerBlobFactory DEFAULT = new PartDataHandlerBlobFactory() {
+        @Override
+        protected PartDataHandler createDataHandler(Part part) {
+            return new PartDataHandler(part);
+        }
+    };
 
     protected PartDataHandlerBlobFactory() {}
 

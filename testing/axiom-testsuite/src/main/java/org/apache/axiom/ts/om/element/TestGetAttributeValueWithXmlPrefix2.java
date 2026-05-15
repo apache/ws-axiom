@@ -20,15 +20,13 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Test that {@link OMElement#getAttributeValue(QName)} works properly for an attribute with the
@@ -44,8 +42,7 @@ public class TestGetAttributeValueWithXmlPrefix2 extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMElement elem =
-                AXIOMUtil.stringToOM(
-                        metaFactory.getOMFactory(), "<Policy xml:base=\"uri:thisBase\"></Policy>");
+                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<Policy xml:base=\"uri:thisBase\"></Policy>");
         assertThat(elem.getAttributeValue(new QName(XMLConstants.XML_NS_URI, "base")))
                 .isEqualTo("uri:thisBase");
     }

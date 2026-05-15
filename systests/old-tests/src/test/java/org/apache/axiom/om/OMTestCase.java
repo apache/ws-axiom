@@ -19,14 +19,12 @@
 
 package org.apache.axiom.om;
 
+import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.ts.soap.SOAPSpec;
-
-import junit.framework.TestCase;
-
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
 
 public abstract class OMTestCase extends TestCase {
     protected SOAPModelBuilder builder;
@@ -43,9 +41,8 @@ public abstract class OMTestCase extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        builder =
-                OMXMLBuilderFactory.createSOAPModelBuilder(
-                        SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
+        builder = OMXMLBuilderFactory.createSOAPModelBuilder(
+                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
         soapEnvelope = (SOAPEnvelope) builder.getDocumentElement();
     }
 

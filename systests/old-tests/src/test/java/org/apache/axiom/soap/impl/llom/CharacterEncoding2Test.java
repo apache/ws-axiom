@@ -22,48 +22,42 @@ package org.apache.axiom.soap.impl.llom;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLBuilderFactory;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-
 import junit.framework.TestCase;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPModelBuilder;
 
 public class CharacterEncoding2Test extends TestCase {
-    String xml =
-            "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>"
-                    + "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
-                    + "<soap:Body>"
-                    + "<AgendaPesquisa>"
-                    + "<status>0</status>"
-                    + "<ListaContatosPesquisa>"
-                    + "<tipo>C</tipo>"
-                    + "<dono>lucia</dono>"
-                    + "<posicao>177</posicao>"
-                    + "<nome>Abric� Gimar�es</nome>"
-                    + "<email></email>"
-                    + "</ListaContatosPesquisa>"
-                    + "</AgendaPesquisa>"
-                    + "</soap:Body>"
-                    + "</soap:Envelope>";
+    String xml = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>"
+            + "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+            + "<soap:Body>"
+            + "<AgendaPesquisa>"
+            + "<status>0</status>"
+            + "<ListaContatosPesquisa>"
+            + "<tipo>C</tipo>"
+            + "<dono>lucia</dono>"
+            + "<posicao>177</posicao>"
+            + "<nome>Abric� Gimar�es</nome>"
+            + "<email></email>"
+            + "</ListaContatosPesquisa>"
+            + "</AgendaPesquisa>"
+            + "</soap:Body>"
+            + "</soap:Envelope>";
 
     public void testISO99591() throws Exception {
-        ByteArrayInputStream byteInStr =
-                new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
+        ByteArrayInputStream byteInStr = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
 
         SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(byteInStr, null);
 
         SOAPEnvelope envelope = builder.getSOAPEnvelope();
         envelope.build();
 
-        assertEquals(
-                "iso-8859-1",
-                builder.getDocument().getXMLStreamReader().getCharacterEncodingScheme());
+        assertEquals("iso-8859-1", builder.getDocument().getXMLStreamReader().getCharacterEncodingScheme());
 
         ByteArrayOutputStream byteOutStr = new ByteArrayOutputStream();
         OMOutputFormat outputFormat = new OMOutputFormat();
@@ -71,14 +65,11 @@ public class CharacterEncoding2Test extends TestCase {
         envelope.serialize(byteOutStr, outputFormat);
 
         assertAbout(xml())
-                .that(
-                        new InputStreamReader(
-                                new ByteArrayInputStream(byteOutStr.toByteArray()),
-                                StandardCharsets.ISO_8859_1))
-                .hasSameContentAs(
-                        new InputStreamReader(
-                                new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1)),
-                                StandardCharsets.ISO_8859_1));
+                .that(new InputStreamReader(
+                        new ByteArrayInputStream(byteOutStr.toByteArray()), StandardCharsets.ISO_8859_1))
+                .hasSameContentAs(new InputStreamReader(
+                        new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1)),
+                        StandardCharsets.ISO_8859_1));
 
         builder.close();
     }

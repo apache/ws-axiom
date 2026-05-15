@@ -19,10 +19,8 @@
 package org.apache.axiom.ts.om.sourcedelement.util;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -48,8 +46,7 @@ public final class PushOMDataSource extends AbstractPushOMDataSource {
         if (destructive) {
             destroyed = true;
         }
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(data));
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(data));
         builder.getDocumentElement().serializeAndConsume(writer);
         builder.close();
     }

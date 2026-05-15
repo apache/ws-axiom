@@ -18,11 +18,10 @@
  */
 package org.apache.axiom.om.impl.dom.factory;
 
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.dom.DOMMetaFactory;
-
-import junit.framework.TestCase;
 
 public class DOMFeatureTest extends TestCase {
     public void test() {

@@ -19,14 +19,12 @@
 
 package org.apache.axiom.attachments;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import java.io.File;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -47,8 +45,7 @@ public final class AttachmentCacheMonitor {
     // The suggested value is 300 seconds
     private int attachmentTimeoutSeconds = 0; // Default is 0 (forever)
     private int refreshSeconds = 0;
-    public static final String ATTACHMENT_TIMEOUT_PROPERTY =
-            "org.apache.axiom.attachments.tempfile.expiration";
+    public static final String ATTACHMENT_TIMEOUT_PROPERTY = "org.apache.axiom.attachments.tempfile.expiration";
 
     // HashMap
     // Key String = Absolute file name
@@ -87,12 +84,11 @@ public final class AttachmentCacheMonitor {
         } catch (Throwable t) {
             // Swallow exception and use default, but log a warning message
             if (log.isDebugEnabled()) {
-                log.debug(
-                        "The value of "
-                                + value
-                                + " was not valid. The default "
-                                + attachmentTimeoutSeconds
-                                + " will be used instead.");
+                log.debug("The value of "
+                        + value
+                        + " was not valid. The default "
+                        + attachmentTimeoutSeconds
+                        + " will be used instead.");
             }
         }
         refreshSeconds = attachmentTimeoutSeconds / 2;
@@ -202,14 +198,8 @@ public final class AttachmentCacheMonitor {
             }
         } else {
             if (log.isDebugEnabled()) {
-                log.debug(
-                        "The following file was already deleted and is no longer available: "
-                                + fileName);
-                log.debug(
-                        "The value of "
-                                + ATTACHMENT_TIMEOUT_PROPERTY
-                                + " is "
-                                + attachmentTimeoutSeconds);
+                log.debug("The following file was already deleted and is no longer available: " + fileName);
+                log.debug("The value of " + ATTACHMENT_TIMEOUT_PROPERTY + " is " + attachmentTimeoutSeconds);
             }
         }
     }
@@ -231,9 +221,7 @@ public final class AttachmentCacheMonitor {
                         log.debug("Expired file " + fileName);
                         log.debug("Old Time = " + lastAccess);
                         log.debug("New Time = " + currentTime);
-                        log.debug(
-                                "Elapsed Time (ms) = "
-                                        + (currentTime.longValue() - lastAccess.longValue()));
+                        log.debug("Elapsed Time (ms) = " + (currentTime.longValue() - lastAccess.longValue()));
                     }
 
                     deleteFile(fileName);

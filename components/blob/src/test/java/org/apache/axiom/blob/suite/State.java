@@ -20,52 +20,47 @@ package org.apache.axiom.blob.suite;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.LabelTarget;
 
 public abstract class State implements Dimension {
-    public static final State NEW =
-            new State("NEW") {
-                @Override
-                public CleanupCallback transition(WritableBlob blob) throws IOException {
-                    return null;
-                }
-            };
+    public static final State NEW = new State("NEW") {
+        @Override
+        public CleanupCallback transition(WritableBlob blob) throws IOException {
+            return null;
+        }
+    };
 
-    public static final State UNCOMMITTED =
-            new State("UNCOMMITTED") {
+    public static final State UNCOMMITTED = new State("UNCOMMITTED") {
+        @Override
+        public CleanupCallback transition(final WritableBlob blob) throws IOException {
+            final OutputStream out = blob.getOutputStream();
+            return new CleanupCallback() {
                 @Override
-                public CleanupCallback transition(final WritableBlob blob) throws IOException {
-                    final OutputStream out = blob.getOutputStream();
-                    return new CleanupCallback() {
-                        @Override
-                        public void cleanup() throws IOException {
-                            out.close();
-                        }
-                    };
+                public void cleanup() throws IOException {
+                    out.close();
                 }
             };
+        }
+    };
 
-    public static final State COMMITTED =
-            new State("COMMITTED") {
-                @Override
-                public CleanupCallback transition(final WritableBlob blob) throws IOException {
-                    blob.getOutputStream().close();
-                    return null;
-                }
-            };
+    public static final State COMMITTED = new State("COMMITTED") {
+        @Override
+        public CleanupCallback transition(final WritableBlob blob) throws IOException {
+            blob.getOutputStream().close();
+            return null;
+        }
+    };
 
-    public static final State RELEASED =
-            new State("RELEASED") {
-                @Override
-                public CleanupCallback transition(WritableBlob blob) throws IOException {
-                    blob.getOutputStream().close();
-                    blob.release();
-                    return null;
-                }
-            };
+    public static final State RELEASED = new State("RELEASED") {
+        @Override
+        public CleanupCallback transition(WritableBlob blob) throws IOException {
+            blob.getOutputStream().close();
+            blob.release();
+            return null;
+        }
+    };
 
     private final String name;
 

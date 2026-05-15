@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.mixin;
 
 import java.util.Iterator;
-
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
@@ -56,8 +55,7 @@ public abstract class AxiomDocumentMixin implements AxiomDocument {
             if (existingDocumentElement == null) {
                 addChild(documentElement);
             } else {
-                existingDocumentElement.coreReplaceWith(
-                        (AxiomElement) documentElement, AxiomSemantics.INSTANCE);
+                existingDocumentElement.coreReplaceWith((AxiomElement) documentElement, AxiomSemantics.INSTANCE);
             }
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);

@@ -20,27 +20,26 @@ package org.apache.axiom.ts.soap.envelope;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestGetSOAPBodyFirstElementLocalNameAndNS extends TestCase {
-    @Inject private SOAPFactory soapFactory;
-    @Inject private QName qname;
+    @Inject
+    private SOAPFactory soapFactory;
+
+    @Inject
+    private QName qname;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         OMElement bodyElement =
-                soapFactory.createOMElement(
-                        qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
+                soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
         envelope.getBody().addChild(bodyElement);
         assertThat(envelope.getSOAPBodyFirstElementLocalName()).isEqualTo(qname.getLocalPart());
         OMNamespace ns = envelope.getSOAPBodyFirstElementNS();

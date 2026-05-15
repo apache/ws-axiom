@@ -19,19 +19,14 @@
 package org.apache.axiom.util.stax.debug;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import junit.framework.TestCase;
-
 import org.apache.axiom.om.util.StAXUtils;
 
 public class XMLStreamReaderValidatorTest extends TestCase {
-    private static XMLStreamReaderValidator createValidatorForParser(String xml)
-            throws XMLStreamException {
-        return new XMLStreamReaderValidator(
-                StAXUtils.createXMLStreamReader(new StringReader(xml)), true);
+    private static XMLStreamReaderValidator createValidatorForParser(String xml) throws XMLStreamException {
+        return new XMLStreamReaderValidator(StAXUtils.createXMLStreamReader(new StringReader(xml)), true);
     }
 
     /**

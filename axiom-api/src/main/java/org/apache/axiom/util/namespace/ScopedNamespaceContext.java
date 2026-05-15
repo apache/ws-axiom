@@ -21,7 +21,6 @@ package org.apache.axiom.util.namespace;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 

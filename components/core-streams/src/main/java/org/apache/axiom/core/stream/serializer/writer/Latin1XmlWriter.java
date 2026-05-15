@@ -23,8 +23,7 @@ import java.io.OutputStream;
 
 final class Latin1XmlWriter extends ASCIICompatibleXmlWriter {
     private final int maxChar;
-    private UnmappableCharacterHandler unmappableCharacterHandler =
-            UnmappableCharacterHandler.THROW_EXCEPTION;
+    private UnmappableCharacterHandler unmappableCharacterHandler = UnmappableCharacterHandler.THROW_EXCEPTION;
 
     Latin1XmlWriter(OutputStream out, int maxChar) {
         super(out);

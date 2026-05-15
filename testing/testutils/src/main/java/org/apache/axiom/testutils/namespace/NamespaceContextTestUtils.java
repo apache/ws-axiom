@@ -20,25 +20,19 @@
 package org.apache.axiom.testutils.namespace;
 
 import java.util.Iterator;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
-
 import org.junit.Assert;
 
 public final class NamespaceContextTestUtils {
     private NamespaceContextTestUtils() {}
 
     public static void checkImplicitNamespaces(NamespaceContext nc) {
-        Assert.assertEquals(
-                XMLConstants.XML_NS_URI, nc.getNamespaceURI(XMLConstants.XML_NS_PREFIX));
-        Assert.assertEquals(
-                XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
-                nc.getNamespaceURI(XMLConstants.XMLNS_ATTRIBUTE));
+        Assert.assertEquals(XMLConstants.XML_NS_URI, nc.getNamespaceURI(XMLConstants.XML_NS_PREFIX));
+        Assert.assertEquals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, nc.getNamespaceURI(XMLConstants.XMLNS_ATTRIBUTE));
 
         Assert.assertEquals(XMLConstants.XML_NS_PREFIX, nc.getPrefix(XMLConstants.XML_NS_URI));
-        Assert.assertEquals(
-                XMLConstants.XMLNS_ATTRIBUTE, nc.getPrefix(XMLConstants.XMLNS_ATTRIBUTE_NS_URI));
+        Assert.assertEquals(XMLConstants.XMLNS_ATTRIBUTE, nc.getPrefix(XMLConstants.XMLNS_ATTRIBUTE_NS_URI));
 
         Iterator<?> it = nc.getPrefixes(XMLConstants.XML_NS_URI);
         Assert.assertTrue(it.hasNext());

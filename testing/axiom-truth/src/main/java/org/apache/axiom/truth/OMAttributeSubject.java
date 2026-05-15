@@ -18,10 +18,9 @@
  */
 package org.apache.axiom.truth;
 
-import org.apache.axiom.om.OMAttribute;
-
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
+import org.apache.axiom.om.OMAttribute;
 
 public final class OMAttributeSubject extends Subject {
     private final OMAttribute subject;

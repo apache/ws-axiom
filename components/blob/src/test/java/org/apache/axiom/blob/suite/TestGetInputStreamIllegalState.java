@@ -20,10 +20,9 @@ package org.apache.axiom.blob.suite;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-
-import com.google.inject.Inject;
 
 public class TestGetInputStreamIllegalState extends WritableBlobTestCase {
     @Inject

@@ -29,27 +29,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.ServiceLoader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
-
 import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.commons.io.IOUtils;
 
 public abstract class StAXImplementation extends Multiton {
-    public static final StAXImplementation JRE =
-            new StAXImplementation("JRE") {
-                @Override
-                public XMLInputFactory newXMLInputFactory() {
-                    return XMLInputFactory.newDefaultFactory();
-                }
+    public static final StAXImplementation JRE = new StAXImplementation("JRE") {
+        @Override
+        public XMLInputFactory newXMLInputFactory() {
+            return XMLInputFactory.newDefaultFactory();
+        }
 
-                @Override
-                public XMLOutputFactory newXMLOutputFactory() {
-                    return XMLOutputFactory.newDefaultFactory();
-                }
-            };
+        @Override
+        public XMLOutputFactory newXMLOutputFactory() {
+            return XMLOutputFactory.newDefaultFactory();
+        }
+    };
 
     private final String name;
 
@@ -79,8 +76,7 @@ public abstract class StAXImplementation extends Multiton {
                 }
             }
             InputStream in =
-                    StAXImplementation.class.getResourceAsStream(
-                            jarName.substring(0, delimiterIndex) + ".properties");
+                    StAXImplementation.class.getResourceAsStream(jarName.substring(0, delimiterIndex) + ".properties");
             if (in != null) {
                 try {
                     Properties props = new Properties();
@@ -97,54 +93,46 @@ public abstract class StAXImplementation extends Multiton {
     private static StAXImplementation[] instances() throws Exception {
         List<StAXImplementation> instances = new ArrayList<>();
         try (BufferedReader in =
-                new BufferedReader(
-                        new InputStreamReader(
-                                StAXImplementation.class.getResourceAsStream("filelist")))) {
+                new BufferedReader(new InputStreamReader(StAXImplementation.class.getResourceAsStream("filelist")))) {
             String jarName;
             while ((jarName = in.readLine()) != null) {
                 final File jar = extractJar(jarName);
-                final ParentLastURLClassLoader classLoader =
-                        new ParentLastURLClassLoader(
-                                new URL[] {jar.toURI().toURL()},
-                                StAXImplementation.class.getClassLoader());
-                Runtime.getRuntime()
-                        .addShutdownHook(
-                                new Thread(
-                                        () -> {
-                                            IOUtils.closeQuietly(classLoader);
-                                            jar.delete();
-                                        }));
+                final ParentLastURLClassLoader classLoader = new ParentLastURLClassLoader(
+                        new URL[] {jar.toURI().toURL()}, StAXImplementation.class.getClassLoader());
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    IOUtils.closeQuietly(classLoader);
+                    jar.delete();
+                }));
                 final Properties props = loadProperties(jarName);
-                instances.add(
-                        new StAXImplementation(jarName) {
-                            private <T> T newFactory(Class<T> type) {
-                                if (props != null) {
-                                    String className = props.getProperty(type.getName());
-                                    if (className != null) {
-                                        try {
-                                            return classLoader
-                                                    .loadClass(className)
-                                                    .asSubclass(type)
-                                                    .getDeclaredConstructor()
-                                                    .newInstance();
-                                        } catch (ReflectiveOperationException ex) {
-                                            throw new RuntimeException(ex);
-                                        }
-                                    }
+                instances.add(new StAXImplementation(jarName) {
+                    private <T> T newFactory(Class<T> type) {
+                        if (props != null) {
+                            String className = props.getProperty(type.getName());
+                            if (className != null) {
+                                try {
+                                    return classLoader
+                                            .loadClass(className)
+                                            .asSubclass(type)
+                                            .getDeclaredConstructor()
+                                            .newInstance();
+                                } catch (ReflectiveOperationException ex) {
+                                    throw new RuntimeException(ex);
                                 }
-                                return ServiceLoader.load(type, classLoader).findFirst().get();
                             }
+                        }
+                        return ServiceLoader.load(type, classLoader).findFirst().get();
+                    }
 
-                            @Override
-                            public XMLInputFactory newXMLInputFactory() {
-                                return newFactory(XMLInputFactory.class);
-                            }
+                    @Override
+                    public XMLInputFactory newXMLInputFactory() {
+                        return newFactory(XMLInputFactory.class);
+                    }
 
-                            @Override
-                            public XMLOutputFactory newXMLOutputFactory() {
-                                return newFactory(XMLOutputFactory.class);
-                            }
-                        });
+                    @Override
+                    public XMLOutputFactory newXMLOutputFactory() {
+                        return newFactory(XMLOutputFactory.class);
+                    }
+                });
             }
         }
         return instances.toArray(new StAXImplementation[instances.size()]);

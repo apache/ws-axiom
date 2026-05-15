@@ -21,22 +21,20 @@ package org.apache.axiom.core.stream.serializer;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 import java.io.StringWriter;
-
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.core.stream.dom.input.DOMInput;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import junit.framework.TestCase;
-
 public class SerializerConformanceTestCase extends TestCase {
-    @Inject private XMLSample sample;
+    @Inject
+    private XMLSample sample;
 
     @Override
     protected void runTest() throws Throwable {

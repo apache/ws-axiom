@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.dom.mixin;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.om.impl.dom.factory.DOOMDocumentBuilderFactory;
 import org.apache.axiom.om.impl.dom.intf.factory.DOOMNodeFactory;
 import org.apache.axiom.weaver.annotation.Mixin;

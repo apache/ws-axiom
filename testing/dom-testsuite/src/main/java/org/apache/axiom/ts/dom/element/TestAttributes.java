@@ -29,16 +29,14 @@ import org.w3c.dom.NamedNodeMap;
 public class TestAttributes extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Document doc =
-                dbf.newDocumentBuilder()
-                        .parse(TestAttributes.class.getResourceAsStream("attributetest.xml"));
+        Document doc = dbf.newDocumentBuilder().parse(TestAttributes.class.getResourceAsStream("attributetest.xml"));
 
         // Check whether body has attributes
         Element bodyElement = doc.getDocumentElement();
         assertThat(bodyElement.hasAttributes()).isTrue();
 
-        Element directionResponse =
-                (Element) bodyElement.getElementsByTagName("GetDirectionsResponse").item(0);
+        Element directionResponse = (Element)
+                bodyElement.getElementsByTagName("GetDirectionsResponse").item(0);
         assertThat(directionResponse.hasAttributes()).isTrue();
 
         NamedNodeMap attributes = directionResponse.getAttributes();
@@ -46,12 +44,12 @@ public class TestAttributes extends DOMTestCase {
         assertThat(attr.getName()).isEqualTo("xmlns");
         assertThat(attr.getValue()).isEqualTo("http://www.example.org/webservices/");
 
-        Element directionResult =
-                (Element) bodyElement.getElementsByTagName("GetDirectionsResult").item(0);
+        Element directionResult = (Element)
+                bodyElement.getElementsByTagName("GetDirectionsResult").item(0);
         assertThat(directionResult.hasAttributes()).isFalse();
 
-        Element drivingDirection =
-                (Element) directionResult.getElementsByTagName("drivingdirections").item(0);
+        Element drivingDirection = (Element)
+                directionResult.getElementsByTagName("drivingdirections").item(0);
         assertThat(drivingDirection.hasAttributes()).isTrue();
 
         attributes = drivingDirection.getAttributes();

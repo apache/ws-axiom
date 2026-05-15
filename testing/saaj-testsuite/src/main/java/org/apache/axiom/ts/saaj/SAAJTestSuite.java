@@ -18,16 +18,16 @@
  */
 package org.apache.axiom.ts.saaj;
 
+import com.google.inject.Key;
 import jakarta.xml.soap.SAAJMetaFactory;
-
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
-import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.LabelBinding;
+import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.ParentNode;
-import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.ts.saaj.body.TestAddChildElementReification;
 import org.apache.axiom.ts.saaj.element.TestAddChildElementLocalName;
 import org.apache.axiom.ts.saaj.element.TestAddChildElementLocalNamePrefixAndURI;
@@ -36,14 +36,10 @@ import org.apache.axiom.ts.saaj.element.TestSetParentElement;
 import org.apache.axiom.ts.saaj.header.TestExamineMustUnderstandHeaderElements;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Key;
-
 public class SAAJTestSuite {
     public static MatrixTestNode create(SAAJMetaFactory metaFactory) {
         return new InjectorNode(
-                binder ->
-                        binder.bind(SAAJImplementation.class)
-                                .toInstance(new SAAJImplementation(metaFactory)),
+                binder -> binder.bind(SAAJImplementation.class).toInstance(new SAAJImplementation(metaFactory)),
                 new FanOutNode<>(
                         Multiton.getInstances(SOAPSpec.class),
                         Binding.singleton(Key.get(SOAPSpec.class)),

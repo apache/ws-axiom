@@ -20,7 +20,6 @@ package org.apache.axiom.ts.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.apache.james.mime4j.codec.DecodeMonitor;
 import org.apache.james.mime4j.dom.Entity;
 import org.apache.james.mime4j.dom.Multipart;
@@ -72,8 +71,8 @@ public abstract class MIMESample extends MessageSample {
                 defaultMessageBuilder.setMimeEntityConfig(
                         MimeConfig.custom().setHeadlessParsing(contentType).build());
                 defaultMessageBuilder.setDecodeMonitor(DecodeMonitor.SILENT);
-                multipart =
-                        (Multipart) defaultMessageBuilder.parseMessage(getInputStream()).getBody();
+                multipart = (Multipart)
+                        defaultMessageBuilder.parseMessage(getInputStream()).getBody();
             } catch (IOException ex) {
                 throw new Error(ex);
             }
@@ -83,8 +82,7 @@ public abstract class MIMESample extends MessageSample {
 
     public final InputStream getPart(int part) {
         try {
-            return ((SingleBody) getMultipart().getBodyParts().get(part).getBody())
-                    .getInputStream();
+            return ((SingleBody) getMultipart().getBodyParts().get(part).getBody()).getInputStream();
         } catch (IOException ex) {
             throw new Error(ex);
         }

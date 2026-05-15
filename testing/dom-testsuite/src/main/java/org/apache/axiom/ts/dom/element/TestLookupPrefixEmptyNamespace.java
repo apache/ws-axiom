@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.dom.element;
 
 import java.io.StringReader;
-
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -32,11 +31,8 @@ import org.xml.sax.InputSource;
 public class TestLookupPrefixEmptyNamespace extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Document document =
-                dbf.newDocumentBuilder()
-                        .parse(
-                                new InputSource(
-                                        new StringReader("<a xmlns='urn:test'><b xmlns=''/></a>")));
+        Document document = dbf.newDocumentBuilder()
+                .parse(new InputSource(new StringReader("<a xmlns='urn:test'><b xmlns=''/></a>")));
         assertNull(document.getDocumentElement().getFirstChild().lookupPrefix(""));
     }
 }

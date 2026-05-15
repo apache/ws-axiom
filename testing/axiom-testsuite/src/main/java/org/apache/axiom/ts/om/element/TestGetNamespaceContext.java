@@ -20,20 +20,17 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
 import javax.xml.namespace.NamespaceContext;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /** Tests {@link OMElement#getNamespaceContext(boolean)}. */
 public class TestGetNamespaceContext extends AxiomTestCase {
@@ -48,9 +45,8 @@ public class TestGetNamespaceContext extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         InputStream in = TestGetNamespaceContext.class.getResourceAsStream("namespacecontext.xml");
-        OMElement root =
-                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
-                        .getDocumentElement();
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
+                .getDocumentElement();
         OMElement inner = root.getFirstElement().getFirstElement();
         NamespaceContext context = inner.getNamespaceContext(detached);
         assertThat(context.getNamespaceURI("p")).isEqualTo("urn:test2");

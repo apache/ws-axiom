@@ -18,13 +18,11 @@
  */
 package org.apache.axiom.testutils.suite;
 
+import com.google.common.collect.ImmutableList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.function.BiPredicate;
-
-import com.google.common.collect.ImmutableList;
-
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
@@ -45,8 +43,7 @@ public final class MatrixTestFilters implements BiPredicate<Class<?>, Map<String
         }
 
         boolean matches(Class<?> clazz, Dictionary<String, String> labels) {
-            return (testClass == null || clazz.equals(testClass))
-                    && (filter == null || filter.match(labels));
+            return (testClass == null || clazz.equals(testClass)) && (filter == null || filter.match(labels));
         }
     }
 
@@ -57,10 +54,7 @@ public final class MatrixTestFilters implements BiPredicate<Class<?>, Map<String
 
         public Builder add(Class<?> testClass, String filter) {
             try {
-                entries.add(
-                        new Entry(
-                                testClass,
-                                filter == null ? null : FrameworkUtil.createFilter(filter)));
+                entries.add(new Entry(testClass, filter == null ? null : FrameworkUtil.createFilter(filter)));
             } catch (InvalidSyntaxException ex) {
                 throw new IllegalArgumentException("Invalid filter expression", ex);
             }

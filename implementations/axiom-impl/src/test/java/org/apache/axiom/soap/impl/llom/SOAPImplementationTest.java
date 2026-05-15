@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.llom;
 
 import java.util.stream.Stream;
-
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactoryLoader;
 import org.apache.axiom.ts.soap.SOAPTestSuite;
 import org.junit.jupiter.api.DynamicNode;

@@ -20,12 +20,11 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMElement#findNamespace(String, String)} returns <code>null</code> if the
@@ -40,10 +39,8 @@ public class TestFindNamespaceByNamespaceURIMasked extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root =
-                AXIOMUtil.stringToOM(
-                        metaFactory.getOMFactory(),
-                        "<root xmlns:p='urn:ns1'><child xmlns:p='urn:ns2'/></a>");
+        OMElement root = AXIOMUtil.stringToOM(
+                metaFactory.getOMFactory(), "<root xmlns:p='urn:ns1'><child xmlns:p='urn:ns2'/></a>");
         assertThat(root.getFirstElement().findNamespace("urn:ns1", null)).isNull();
         root.close(false);
     }

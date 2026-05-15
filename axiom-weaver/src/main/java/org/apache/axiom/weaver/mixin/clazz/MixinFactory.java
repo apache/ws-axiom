@@ -20,7 +20,6 @@ package org.apache.axiom.weaver.mixin.clazz;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.axiom.weaver.classio.ClassFetcher;
 import org.apache.axiom.weaver.mixin.Mixin;
 

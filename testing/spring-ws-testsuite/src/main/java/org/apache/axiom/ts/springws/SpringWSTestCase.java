@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.springws;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
@@ -25,12 +27,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.env.MockPropertySource;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public abstract class SpringWSTestCase extends TestCase {
-    @Inject protected SOAPSpec spec;
+    @Inject
+    protected SOAPSpec spec;
 
     protected void configureContext(
             GenericApplicationContext context,

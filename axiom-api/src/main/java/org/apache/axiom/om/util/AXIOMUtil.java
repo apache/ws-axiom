@@ -19,13 +19,12 @@
 
 package org.apache.axiom.om.util;
 
+import java.io.StringReader;
+import javax.xml.stream.XMLStreamException;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-
-import javax.xml.stream.XMLStreamException;
-import java.io.StringReader;
 
 public class AXIOMUtil {
     /**
@@ -47,8 +46,7 @@ public class AXIOMUtil {
      * @return The OMElement created out of the string XML fragment.
      * @throws XMLStreamException
      */
-    public static OMElement stringToOM(OMFactory omFactory, String xmlFragment)
-            throws XMLStreamException {
+    public static OMElement stringToOM(OMFactory omFactory, String xmlFragment) throws XMLStreamException {
 
         if (xmlFragment != null) {
             return OMXMLBuilderFactory.createOMBuilder(omFactory, new StringReader(xmlFragment))

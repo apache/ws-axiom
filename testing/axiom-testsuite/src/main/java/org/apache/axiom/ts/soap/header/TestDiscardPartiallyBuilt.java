@@ -20,8 +20,8 @@ package org.apache.axiom.ts.soap.header;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPBody;
@@ -30,8 +30,6 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link OMNode#discard()} on a {@link SOAPHeader} that is partially built,
@@ -47,9 +45,7 @@ public class TestDiscardPartiallyBuilt extends SampleBasedSOAPTestCase {
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPHeader header = envelope.getHeader();
-        OMElement from =
-                header.getFirstChildWithName(
-                        new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));
+        OMElement from = header.getFirstChildWithName(new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));
         from.getFirstElement().getFirstOMChild();
         // Just in case getFirstChildWithName or getFirstElement did stupid things
         assertThat(from.isComplete()).isFalse();

@@ -20,14 +20,12 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
 
 /**
  * Test cloning a {@link SOAPHeaderBlock} flagged as processed, but without preserving the model. In
@@ -36,13 +34,13 @@ import junit.framework.TestCase;
  * <p>This is a regression test for an issue in older Axiom versions.
  */
 public class TestCloneProcessedWithoutPreservingModel extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         SOAPHeaderBlock headerBlock =
-                soapFactory.createSOAPHeaderBlock(
-                        "test", soapFactory.createOMNamespace("urn:test", "p"));
+                soapFactory.createSOAPHeaderBlock("test", soapFactory.createOMNamespace("urn:test", "p"));
         headerBlock.setProcessed();
         OMElement clone = (OMElement) headerBlock.clone(new SOAPCloneOptions());
         assertThat(clone).isNotInstanceOf(SOAPHeaderBlock.class);

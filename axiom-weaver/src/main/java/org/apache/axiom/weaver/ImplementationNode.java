@@ -18,20 +18,6 @@
  */
 package org.apache.axiom.weaver;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Supplier;
-
-import org.apache.axiom.weaver.mixin.ClassDefinition;
-import org.apache.axiom.weaver.mixin.Mixin;
-import org.apache.axiom.weaver.mixin.TargetContext;
-import org.apache.axiom.weaver.mixin.WeavingContext;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-
 import com.github.veithen.jrel.References;
 import com.github.veithen.jrel.association.ManyToManyAssociation;
 import com.github.veithen.jrel.association.MutableReference;
@@ -40,20 +26,28 @@ import com.github.veithen.jrel.association.Navigability;
 import com.github.veithen.jrel.collection.LinkedIdentityHashSet;
 import com.github.veithen.jrel.composition.CompositionRelation;
 import com.github.veithen.jrel.transitive.TransitiveClosure;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
+import org.apache.axiom.weaver.mixin.ClassDefinition;
+import org.apache.axiom.weaver.mixin.Mixin;
+import org.apache.axiom.weaver.mixin.TargetContext;
+import org.apache.axiom.weaver.mixin.WeavingContext;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 final class ImplementationNode {
     private static final ManyToManyAssociation<ImplementationNode, ImplementationNode> PARENT =
-            new ManyToManyAssociation<>(
-                    ImplementationNode.class, ImplementationNode.class, Navigability.BIDIRECTIONAL);
+            new ManyToManyAssociation<>(ImplementationNode.class, ImplementationNode.class, Navigability.BIDIRECTIONAL);
     private static final ManyToManyAssociation<ImplementationNode, MixinNode> MIXIN =
-            new ManyToManyAssociation<>(
-                    ImplementationNode.class, MixinNode.class, Navigability.UNIDIRECTIONAL);
-    private static final TransitiveClosure<ImplementationNode> ANCESTOR =
-            new TransitiveClosure<>(PARENT, false);
-    private static final TransitiveClosure<ImplementationNode> ANCESTOR_OR_SELF =
-            new TransitiveClosure<>(PARENT, true);
-    private static final CompositionRelation<ImplementationNode, ImplementationNode, MixinNode>
-            TRANSITIVE_MIXIN = new CompositionRelation<>(ANCESTOR_OR_SELF, MIXIN);
+            new ManyToManyAssociation<>(ImplementationNode.class, MixinNode.class, Navigability.UNIDIRECTIONAL);
+    private static final TransitiveClosure<ImplementationNode> ANCESTOR = new TransitiveClosure<>(PARENT, false);
+    private static final TransitiveClosure<ImplementationNode> ANCESTOR_OR_SELF = new TransitiveClosure<>(PARENT, true);
+    private static final CompositionRelation<ImplementationNode, ImplementationNode, MixinNode> TRANSITIVE_MIXIN =
+            new CompositionRelation<>(ANCESTOR_OR_SELF, MIXIN);
 
     private final MutableReference<Weaver> weaver = Relations.WEAVER.newReferenceHolder(this);
     private final int id;
@@ -61,16 +55,13 @@ final class ImplementationNode {
     private final MutableReferences<ImplementationNode> parents = PARENT.newReferenceHolder(this);
     private final MutableReferences<ImplementationNode> children =
             PARENT.getConverse().newReferenceHolder(this);
-    private final MutableReferences<InterfaceNode> ifaces =
-            Relations.IMPLEMENTS.newReferenceHolder(this);
+    private final MutableReferences<InterfaceNode> ifaces = Relations.IMPLEMENTS.newReferenceHolder(this);
     private final MutableReferences<MixinNode> mixins = MIXIN.newReferenceHolder(this);
     private final References<ImplementationNode> ancestors = ANCESTOR.newReferenceHolder(this);
-    private final References<ImplementationNode> ancestorsOrSelf =
-            ANCESTOR_OR_SELF.newReferenceHolder(this);
+    private final References<ImplementationNode> ancestorsOrSelf = ANCESTOR_OR_SELF.newReferenceHolder(this);
     private final References<ImplementationNode> descendantsOrSelf =
             ANCESTOR_OR_SELF.getConverse().newReferenceHolder(this);
-    private final References<MixinNode> transitiveMixins =
-            TRANSITIVE_MIXIN.newReferenceHolder(this);
+    private final References<MixinNode> transitiveMixins = TRANSITIVE_MIXIN.newReferenceHolder(this);
     private final Supplier<String> className;
     private boolean requireImplementation;
 
@@ -148,9 +139,7 @@ final class ImplementationNode {
         if (showImplName) {
             String implementationClassName = getClassName();
             builder.append("<b>");
-            builder.append(
-                    implementationClassName.substring(
-                            implementationClassName.lastIndexOf('/') + 1));
+            builder.append(implementationClassName.substring(implementationClassName.lastIndexOf('/') + 1));
             builder.append("</b><br/>");
         }
         for (Class<?> iface : getInterfaces()) {
@@ -353,15 +342,14 @@ final class ImplementationNode {
         for (Class<?> iface : getInterfaces()) {
             ifaceNames.add(Type.getInternalName(iface));
         }
-        classDefinitions.add(
-                new ImplementationClassDefinition(
-                        targetContext,
-                        version,
-                        access,
-                        parents.isEmpty() ? null : parents.iterator().next().getClassName(),
-                        ifaceNames.toArray(new String[ifaceNames.size()]),
-                        primaryInterface.isSingleton(),
-                        mixins.toArray(new Mixin[mixins.size()])));
+        classDefinitions.add(new ImplementationClassDefinition(
+                targetContext,
+                version,
+                access,
+                parents.isEmpty() ? null : parents.iterator().next().getClassName(),
+                ifaceNames.toArray(new String[ifaceNames.size()]),
+                primaryInterface.isSingleton(),
+                mixins.toArray(new Mixin[mixins.size()])));
         return classDefinitions;
     }
 }

@@ -25,11 +25,8 @@ import org.springframework.ws.soap.SoapVersion;
 
 /** Defines a particular {@link SoapMessageFactory} configuration. */
 public abstract class MessageFactoryConfigurator {
-    public static final MessageFactoryConfigurator SAAJ =
-            new SimpleMessageFactoryConfigurator(
-                    "saaj",
-                    new ClassPathResource(
-                            "saaj-message-factory.xml", MessageFactoryConfigurator.class));
+    public static final MessageFactoryConfigurator SAAJ = new SimpleMessageFactoryConfigurator(
+            "saaj", new ClassPathResource("saaj-message-factory.xml", MessageFactoryConfigurator.class));
 
     private final String name;
 

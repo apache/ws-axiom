@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.intf;
 
 import java.io.IOException;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.core.ClonePolicy;
@@ -161,9 +160,7 @@ public final class TextContent implements CloneableCharacterData {
 
     @Override
     public <T> CharacterData clone(ClonePolicy<T> policy, T options) {
-        if (binary
-                && options instanceof OMCloneOptions omCloneOptions
-                && omCloneOptions.isFetchBlobs()) {
+        if (binary && options instanceof OMCloneOptions omCloneOptions && omCloneOptions.isFetchBlobs()) {
             // This will fetch the Blob from the BlobProvider if applicable.
             Blob blob = getBlob();
             // If the blob refers to a MIME part of an XOP encoded message, ensure that the part is
@@ -190,8 +187,7 @@ public final class TextContent implements CloneableCharacterData {
     @Override
     public void appendTo(StringBuilder buffer) {
         if (binary) {
-            Base64EncodingStringBufferOutputStream out =
-                    new Base64EncodingStringBufferOutputStream(buffer);
+            Base64EncodingStringBufferOutputStream out = new Base64EncodingStringBufferOutputStream(buffer);
             try {
                 getBlob().writeTo(out);
                 out.complete();

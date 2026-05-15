@@ -18,14 +18,12 @@
  */
 package org.apache.axiom.testutils.suite;
 
+import com.google.inject.Injector;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.DynamicNode;
-
-import com.google.inject.Injector;
 
 /**
  * A node that only delegates to its child if a given label has a given value. The label is removed

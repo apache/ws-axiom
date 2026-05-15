@@ -18,12 +18,10 @@
  */
 package org.apache.axiom.ts.saaj;
 
+import com.sun.xml.messaging.saaj.soap.SAAJMetaFactoryImpl;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
-
-import com.sun.xml.messaging.saaj.soap.SAAJMetaFactoryImpl;
 
 public class SAAJRITest {
     @TestFactory

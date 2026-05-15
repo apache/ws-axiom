@@ -18,19 +18,16 @@
  */
 package org.apache.axiom.truth.xml;
 
+import com.google.common.base.Strings;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.truth.xml.spi.Event;
 import org.apache.axiom.truth.xml.spi.Traverser;
 import org.apache.axiom.truth.xml.spi.TraverserException;
 import org.codehaus.stax2.DTDInfo;
-
-import com.google.common.base.Strings;
 
 final class StAXTraverser implements Traverser {
     private final XMLStreamReader reader;
@@ -46,8 +43,8 @@ final class StAXTraverser implements Traverser {
                 atStart = true;
             }
             default ->
-                    throw new IllegalStateException(
-                            "The reader must be positioned at a START_DOCUMENT or START_ELEMENT event");
+                throw new IllegalStateException(
+                        "The reader must be positioned at a START_DOCUMENT or START_ELEMENT event");
         }
     }
 

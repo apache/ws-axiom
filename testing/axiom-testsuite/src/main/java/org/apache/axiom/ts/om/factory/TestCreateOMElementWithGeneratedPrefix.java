@@ -20,14 +20,12 @@ package org.apache.axiom.ts.om.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
@@ -38,9 +36,7 @@ import com.google.inject.Inject;
 public class TestCreateOMElementWithGeneratedPrefix extends CreateOMElementTestCase {
     @Inject
     public TestCreateOMElementWithGeneratedPrefix(
-            OMMetaFactory metaFactory,
-            CreateOMElementVariant variant,
-            CreateOMElementParentSupplier parentSupplier) {
+            OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
         super(metaFactory, variant, parentSupplier);
     }
 
@@ -48,8 +44,7 @@ public class TestCreateOMElementWithGeneratedPrefix extends CreateOMElementTestC
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element =
-                variant.createOMElement(
-                        factory, parentSupplier.createParent(factory), "test", "urn:test", null);
+                variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "urn:test", null);
         assertThat(element.getLocalName()).isEqualTo("test");
         OMNamespace ns = element.getNamespace();
         assertThat(ns).isNotNull();

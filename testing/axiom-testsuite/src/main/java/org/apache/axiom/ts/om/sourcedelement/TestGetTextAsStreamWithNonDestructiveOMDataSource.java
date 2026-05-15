@@ -20,14 +20,13 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -36,8 +35,6 @@ import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends AxiomTestCase {
     @Inject
@@ -52,8 +49,7 @@ public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends AxiomTest
         QName qname = new QName("a");
         Charset cs = StandardCharsets.US_ASCII;
         OMSourcedElement element =
-                factory.createOMElement(
-                        new WrappedTextNodeOMDataSourceFromBlob(qname, blob, cs), qname);
+                factory.createOMElement(new WrappedTextNodeOMDataSourceFromBlob(qname, blob, cs), qname);
         Reader in = element.getTextAsStream(true);
         assertThat(in).isNotInstanceOf(StringReader.class);
         IOTestUtils.compareStreams(new InputStreamReader(blob.getInputStream(), cs), in);

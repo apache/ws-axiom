@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringWriter;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the OMSourcedElement localName, namespace and prefix settings before and after
@@ -49,19 +47,15 @@ public class TestName2DefaultPrefix extends AxiomTestCase {
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default
         // prefix
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
-        OMNamespace ns =
-                f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "DUMMYPREFIX");
-        OMElement element =
-                f.createOMElement(
-                        new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
+        OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "DUMMYPREFIX");
+        OMElement element = f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
         // Test getting the namespace, localpart and prefix.  This should used not result in
         // expansion
         assertThat(element.getLocalName()).isEqualTo("library");
-        assertThat(element.getNamespace().getNamespaceURI())
-                .isEqualTo("http://www.sosnoski.com/uwjws/library");
+        assertThat(element.getNamespace().getNamespaceURI()).isEqualTo("http://www.sosnoski.com/uwjws/library");
         assertThat(element.getNamespace().getPrefix()).isEqualTo("DUMMYPREFIX");
 
         // Serialize and consume.  This should not cause expansion and currently won't update
@@ -71,8 +65,7 @@ public class TestName2DefaultPrefix extends AxiomTestCase {
         String result = writer.toString();
 
         assertThat(element.getLocalName()).isEqualTo("library");
-        assertThat(element.getNamespace().getNamespaceURI())
-                .isEqualTo("http://www.sosnoski.com/uwjws/library");
+        assertThat(element.getNamespace().getNamespaceURI()).isEqualTo("http://www.sosnoski.com/uwjws/library");
         assertThat(element.getNamespace().getPrefix()).isEqualTo("DUMMYPREFIX");
         // Make sure that the serialized string does not contain DUMMYPREFIX
         assertThat(result).doesNotContain("DUMMYPREFIX");

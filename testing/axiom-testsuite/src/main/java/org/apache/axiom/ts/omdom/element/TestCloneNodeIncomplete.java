@@ -22,7 +22,6 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;
 import org.w3c.dom.Element;
@@ -32,15 +31,10 @@ import org.w3c.dom.Node;
 public class TestCloneNodeIncomplete extends OMDOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Element element =
-                (Element)
-                        OMXMLBuilderFactory.createOMBuilder(
-                                        metaFactory.getOMFactory(),
-                                        new StringReader("<root><child1/><child2/></root>"))
-                                .getDocumentElement();
+        Element element = (Element) OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(), new StringReader("<root><child1/><child2/></root>"))
+                .getDocumentElement();
         Element clone = (Element) element.cloneNode(true);
-        assertAbout(xml())
-                .that(xml(Element.class, clone))
-                .hasSameContentAs(xml(Element.class, element));
+        assertAbout(xml()).that(xml(Element.class, clone)).hasSameContentAs(xml(Element.class, element));
     }
 }

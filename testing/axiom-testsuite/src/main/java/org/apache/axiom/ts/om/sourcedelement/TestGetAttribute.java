@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -29,8 +29,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMElement#getAttribute(QName)} causes expansion of {@link OMSourcedElement}
@@ -45,8 +43,7 @@ public class TestGetAttribute extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element =
-                factory.createOMElement(new PullOMDataSource("<root attr='value'/>"), "root", null);
+        OMSourcedElement element = factory.createOMElement(new PullOMDataSource("<root attr='value'/>"), "root", null);
         OMAttribute attr = element.getAttribute(new QName("attr"));
         assertThat(attr).isNotNull();
         assertThat(attr.getLocalName()).isEqualTo("attr");

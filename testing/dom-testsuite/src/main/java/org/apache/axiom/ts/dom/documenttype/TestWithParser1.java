@@ -27,9 +27,8 @@ import org.w3c.dom.DocumentType;
 public class TestWithParser1 extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        Document document =
-                dbf.newDocumentBuilder()
-                        .parse(TestWithParser1.class.getResource("test1.xml").toString());
+        Document document = dbf.newDocumentBuilder()
+                .parse(TestWithParser1.class.getResource("test1.xml").toString());
         DocumentType doctype = document.getDoctype();
         assertThat(doctype.getName()).isEqualTo("root");
         assertThat(doctype.getPublicId()).isNull();

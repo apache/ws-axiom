@@ -35,9 +35,7 @@ final class ContentTypeTokenizer {
     }
 
     private void skipWhiteSpace() {
-        for (int len = s.length();
-                index < len && whitespace.indexOf(s.charAt(index)) != -1;
-                index++) {
+        for (int len = s.length(); index < len && whitespace.indexOf(s.charAt(index)) != -1; index++) {
             // Just loop
         }
     }
@@ -45,9 +43,7 @@ final class ContentTypeTokenizer {
     String expectToken() throws ParseException {
         skipWhiteSpace();
         int begin = index;
-        for (int len = s.length();
-                index < len && tspecials.indexOf(s.charAt(index)) == -1;
-                index++) {
+        for (int len = s.length(); index < len && tspecials.indexOf(s.charAt(index)) == -1; index++) {
             // Just loop
         }
         int end = index;
@@ -58,8 +54,7 @@ final class ContentTypeTokenizer {
             if (index == s.length()) {
                 return null;
             } else {
-                throw new ParseException(
-                        "Expected token, but found '" + s.charAt(index) + "'", index);
+                throw new ParseException("Expected token, but found '" + s.charAt(index) + "'", index);
             }
         } else {
             return s.substring(begin, end);
@@ -86,8 +81,7 @@ final class ContentTypeTokenizer {
                     if (c == '\\') {
                         index++;
                         if (index == len) {
-                            throw new ParseException(
-                                    "Expected more input after escape character", index);
+                            throw new ParseException("Expected more input after escape character", index);
                         }
                         sb.append(s.charAt(index));
                     } else if (c == '\"') {
@@ -107,8 +101,7 @@ final class ContentTypeTokenizer {
                 return requireToken();
             }
         } else {
-            throw new ParseException(
-                    "Unexpected end of string; expected token or quoted string", index);
+            throw new ParseException("Unexpected end of string; expected token or quoted string", index);
         }
     }
 
@@ -134,9 +127,7 @@ final class ContentTypeTokenizer {
 
     void requireEndOfString() throws ParseException {
         if (index != s.length()) {
-            throw new ParseException(
-                    "Unexpected character '" + s.charAt(index) + "'; expected end of string",
-                    index);
+            throw new ParseException("Unexpected character '" + s.charAt(index) + "'; expected end of string", index);
         }
     }
 }

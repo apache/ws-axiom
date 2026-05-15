@@ -20,7 +20,6 @@ package org.apache.axiom.ts.dimension.serialization;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.testutils.suite.LabelTarget;
 

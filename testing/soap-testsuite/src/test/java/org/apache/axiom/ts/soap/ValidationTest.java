@@ -21,7 +21,6 @@ package org.apache.axiom.ts.soap;
 import static org.apache.axiom.testing.multiton.Multiton.getInstances;
 
 import javax.xml.transform.stream.StreamSource;
-
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -35,10 +34,7 @@ public class ValidationTest extends TestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        message.getSOAPSpec()
-                .getSchema()
-                .newValidator()
-                .validate(new StreamSource(message.getInputStream()));
+        message.getSOAPSpec().getSchema().newValidator().validate(new StreamSource(message.getInputStream()));
     }
 
     public static TestSuite suite() {

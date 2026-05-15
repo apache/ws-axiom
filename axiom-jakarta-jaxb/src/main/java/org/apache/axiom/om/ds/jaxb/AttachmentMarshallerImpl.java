@@ -18,13 +18,12 @@
  */
 package org.apache.axiom.om.ds.jaxb;
 
+import jakarta.activation.DataHandler;
+import jakarta.xml.bind.attachment.AttachmentMarshaller;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.util.activation.DataHandlerUtils;
-
-import jakarta.activation.DataHandler;
-import jakarta.xml.bind.attachment.AttachmentMarshaller;
 
 final class AttachmentMarshallerImpl extends AttachmentMarshaller {
     private final MTOMXMLStreamWriter out;
@@ -43,19 +42,13 @@ final class AttachmentMarshallerImpl extends AttachmentMarshaller {
     }
 
     @Override
-    public String addMtomAttachment(
-            DataHandler data, String elementNamespace, String elementLocalName) {
+    public String addMtomAttachment(DataHandler data, String elementNamespace, String elementLocalName) {
         return addMtomAttachment(DataHandlerUtils.toBlob(data));
     }
 
     @Override
     public String addMtomAttachment(
-            byte[] data,
-            int offset,
-            int length,
-            String mimeType,
-            String elementNamespace,
-            String elementLocalName) {
+            byte[] data, int offset, int length, String mimeType, String elementNamespace, String elementLocalName) {
         // TODO: instead of copying the array, we could use a specialized DataHandler/DataSource
         if (offset != 0 || length != data.length) {
             int len = length - offset;

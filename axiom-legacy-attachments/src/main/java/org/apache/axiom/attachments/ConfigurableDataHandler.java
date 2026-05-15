@@ -21,7 +21,7 @@ package org.apache.axiom.attachments;
 
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
-
+import java.net.URL;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.ContentTransferEncoding;
 import org.apache.axiom.mime.ContentType;
@@ -29,8 +29,6 @@ import org.apache.axiom.om.format.xop.ContentTransferEncodingPolicy;
 import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.net.URL;
 
 /**
  * This Axiom DataHandler inplementation allows the user to set custom values for the following MIME
@@ -67,8 +65,7 @@ public class ConfigurableDataHandler extends DataHandler {
     public static final ContentTransferEncodingPolicy CONTENT_TRANSFER_ENCODING_POLICY =
             new ContentTransferEncodingPolicy() {
                 @Override
-                public ContentTransferEncoding getContentTransferEncoding(
-                        Blob blob, ContentType contentType) {
+                public ContentTransferEncoding getContentTransferEncoding(Blob blob, ContentType contentType) {
                     DataHandler dataHandler = DataHandlerUtils.toDataHandler(blob);
                     if (!(dataHandler instanceof ConfigurableDataHandler configurableDataHandler)) {
                         return null;
@@ -82,9 +79,7 @@ public class ConfigurableDataHandler extends DataHandler {
                         case "binary" -> ContentTransferEncoding.BINARY;
                         case "base64" -> ContentTransferEncoding.BASE64;
                         default -> {
-                            log.warn(
-                                    String.format(
-                                            "Unrecognized content transfer encoding: %s", cte));
+                            log.warn(String.format("Unrecognized content transfer encoding: %s", cte));
                             yield null;
                         }
                     };

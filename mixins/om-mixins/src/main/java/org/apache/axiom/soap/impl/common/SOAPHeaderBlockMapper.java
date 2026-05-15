@@ -37,11 +37,10 @@ public final class SOAPHeaderBlockMapper implements Mapper<SOAPHeaderBlock, Axio
             return soapHeaderBlock;
         } else {
             try {
-                AxiomSOAPHeaderBlock newElement =
-                        ((AxiomSOAPHeader) element.coreGetParent())
-                                .getSOAPHelper()
-                                .getHeaderBlockType()
-                                .create(element.getNodeFactory());
+                AxiomSOAPHeaderBlock newElement = ((AxiomSOAPHeader) element.coreGetParent())
+                        .getSOAPHelper()
+                        .getHeaderBlockType()
+                        .create(element.getNodeFactory());
                 element.corePromote(newElement, AxiomSemantics.INSTANCE);
                 return newElement;
             } catch (CoreModelException ex) {

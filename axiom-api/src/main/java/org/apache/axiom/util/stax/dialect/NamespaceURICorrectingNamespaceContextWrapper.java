@@ -19,7 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.util.Iterator;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 

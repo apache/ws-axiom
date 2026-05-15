@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.io.InstrumentedStream;
@@ -27,8 +28,6 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.StreamTypeAdapter;
 import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
-
-import com.google.inject.Inject;
 
 public class TestCloseWithStream extends AxiomTestCase {
     private final StreamType streamType;
@@ -44,9 +43,7 @@ public class TestCloseWithStream extends AxiomTestCase {
         InstrumentedStream in = streamType.instrumentStream(streamType.getStream(XMLSample.SIMPLE));
         try {
             OMXMLParserWrapper builder =
-                    streamType
-                            .getAdapter(StreamTypeAdapter.class)
-                            .createOMBuilder(metaFactory.getOMFactory(), in);
+                    streamType.getAdapter(StreamTypeAdapter.class).createOMBuilder(metaFactory.getOMFactory(), in);
             builder.getDocument().build();
             builder.close();
             // OMXMLParserWrapper#close() does _not_ close the underlying input stream

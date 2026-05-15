@@ -18,12 +18,12 @@
  */
 package org.apache.axiom.systest.springws;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.soap.SOAPMessage;
 import org.junit.jupiter.api.Test;
 import org.springframework.ws.soap.axiom.AxiomSoapMessage;
 import org.springframework.ws.soap.axiom.AxiomSoapMessageFactory;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class AxiomSoapMessageFactoryTest {
     /**

@@ -20,7 +20,6 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
-
 import org.apache.axiom.testing.multiton.AdapterType;
 import org.apache.axiom.ts.jaxp.stax.StAXImplementation;
 

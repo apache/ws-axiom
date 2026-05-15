@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.dom.factory;
 
 import javax.xml.stream.XMLInputFactory;
-
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 
@@ -37,9 +36,7 @@ final class DOMStAXParserConfiguration implements StAXParserConfiguration {
         if (!coalescing) {
             factory = StAXParserConfiguration.PRESERVE_CDATA_SECTIONS.configure(factory, dialect);
         }
-        factory.setProperty(
-                XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES,
-                Boolean.valueOf(expandEntityReferences));
+        factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.valueOf(expandEntityReferences));
         return factory;
     }
 
@@ -53,8 +50,7 @@ final class DOMStAXParserConfiguration implements StAXParserConfiguration {
         if (obj == this) {
             return true;
         } else if (obj instanceof DOMStAXParserConfiguration other) {
-            return other.coalescing == coalescing
-                    && other.expandEntityReferences == expandEntityReferences;
+            return other.coalescing == coalescing && other.expandEntityReferences == expandEntityReferences;
         } else {
             return false;
         }
@@ -62,10 +58,6 @@ final class DOMStAXParserConfiguration implements StAXParserConfiguration {
 
     @Override
     public String toString() {
-        return "DOM(coalescing="
-                + coalescing
-                + ",expandEntityReferences="
-                + expandEntityReferences
-                + ")";
+        return "DOM(coalescing=" + coalescing + ",expandEntityReferences=" + expandEntityReferences + ")";
     }
 }

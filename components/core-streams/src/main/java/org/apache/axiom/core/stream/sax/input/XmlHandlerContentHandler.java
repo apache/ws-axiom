@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.core.stream.sax.input;
 
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
@@ -29,12 +32,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
 
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-
-public final class XmlHandlerContentHandler
-        implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
+public final class XmlHandlerContentHandler implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
     private final XmlHandler handler;
     private final boolean expandEntityReferences;
 
@@ -128,8 +126,7 @@ public final class XmlHandlerContentHandler
     }
 
     @Override
-    public void attributeDecl(String eName, String aName, String type, String mode, String value)
-            throws SAXException {
+    public void attributeDecl(String eName, String aName, String type, String mode, String value) throws SAXException {
         if (!inExternalSubset) {
             try {
                 internalSubsetSerializer.attributeDecl(eName, aName, type, mode, value);
@@ -140,8 +137,7 @@ public final class XmlHandlerContentHandler
     }
 
     @Override
-    public void externalEntityDecl(String name, String publicId, String systemId)
-            throws SAXException {
+    public void externalEntityDecl(String name, String publicId, String systemId) throws SAXException {
         if (!inExternalSubset) {
             try {
                 internalSubsetSerializer.externalEntityDecl(name, publicId, systemId);
@@ -178,8 +174,7 @@ public final class XmlHandlerContentHandler
     }
 
     @Override
-    public void unparsedEntityDecl(
-            String name, String publicId, String systemId, String notationName)
+    public void unparsedEntityDecl(String name, String publicId, String systemId, String notationName)
             throws SAXException {
         if (!inExternalSubset) {
             try {
@@ -198,10 +193,7 @@ public final class XmlHandlerContentHandler
         try {
             String internalSubset = this.internalSubset.toString();
             handler.processDocumentTypeDeclaration(
-                    dtdName,
-                    dtdPublicId,
-                    dtdSystemId,
-                    internalSubset.length() == 0 ? null : internalSubset);
+                    dtdName, dtdPublicId, dtdSystemId, internalSubset.length() == 0 ? null : internalSubset);
         } catch (StreamException ex) {
             throw toSAXException(ex);
         }
@@ -240,14 +232,12 @@ public final class XmlHandlerContentHandler
      *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         if (inEntityReference) {
             return;
         }
         try {
-            if (localName == null || localName.trim().equals(""))
-                localName = qName.substring(qName.indexOf(':') + 1);
+            if (localName == null || localName.trim().equals("")) localName = qName.substring(qName.indexOf(':') + 1);
             int idx = qName.indexOf(':');
             String prefix = idx == -1 ? "" : qName.substring(0, idx);
             handler.startElement(namespaceURI, localName, prefix);
@@ -270,12 +260,7 @@ public final class XmlHandlerContentHandler
                     idx = attrQName.indexOf(':');
                     String attrPrefix = idx == -1 ? "" : attrQName.substring(0, idx);
                     handler.processAttribute(
-                            atts.getURI(i),
-                            atts.getLocalName(i),
-                            attrPrefix,
-                            atts.getValue(i),
-                            atts.getType(i),
-                            true);
+                            atts.getURI(i), atts.getLocalName(i), attrPrefix, atts.getValue(i), atts.getType(i), true);
                 }
             }
             handler.attributesCompleted();

@@ -20,10 +20,10 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.core.stream.sax.SAX;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -31,8 +31,6 @@ import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-
-import com.google.inject.Inject;
 
 public class TestGetSAXSourceWithPushOMDataSourceThrowingException extends AxiomTestCase {
     @Inject
@@ -42,23 +40,18 @@ public class TestGetSAXSourceWithPushOMDataSourceThrowingException extends Axiom
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element =
-                metaFactory
-                        .getOMFactory()
-                        .createOMElement(
-                                new AbstractPushOMDataSource() {
+        OMElement element = metaFactory.getOMFactory().createOMElement(new AbstractPushOMDataSource() {
 
-                                    @Override
-                                    public void serialize(XMLStreamWriter xmlWriter)
-                                            throws XMLStreamException {
-                                        throw new XMLStreamException("TEST");
-                                    }
+            @Override
+            public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
+                throw new XMLStreamException("TEST");
+            }
 
-                                    @Override
-                                    public boolean isDestructiveWrite() {
-                                        return false;
-                                    }
-                                });
+            @Override
+            public boolean isDestructiveWrite() {
+                return false;
+            }
+        });
         SAXSource saxSource = element.getSAXSource(true);
         XMLReader reader = saxSource.getXMLReader();
         reader.setContentHandler(SAX.createNullContentHandler());

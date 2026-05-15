@@ -20,7 +20,6 @@ package org.apache.axiom.testutils.io;
 
 import java.io.IOException;
 import java.io.Writer;
-
 import org.apache.commons.io.output.ProxyWriter;
 
 /** {@link Writer} wrapper that implements {@link InstrumentedStream}. */

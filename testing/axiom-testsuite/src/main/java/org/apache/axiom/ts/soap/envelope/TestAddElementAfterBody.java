@@ -20,26 +20,26 @@ package org.apache.axiom.ts.soap.envelope;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javax.xml.namespace.QName;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
-import junit.framework.TestCase;
-
 /**
  * Test that attempts to add an arbitrary element to the SOAP envelope (after the body). This is
  * allowed in SOAP 1.1, but not in SOAP 1.2.
  */
 public class TestAddElementAfterBody extends TestCase {
-    @Inject private SOAPSpec spec;
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPSpec spec;
+
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Inject
     @Named("header")
@@ -56,8 +56,7 @@ public class TestAddElementAfterBody extends TestCase {
         if (spec.isAllowsElementsAfterBody()) {
             env.addChild(elem);
         } else {
-            assertThatThrownBy(() -> env.addChild(elem))
-                    .isInstanceOf(SOAPProcessingException.class);
+            assertThatThrownBy(() -> env.addChild(elem)).isInstanceOf(SOAPProcessingException.class);
         }
     }
 }

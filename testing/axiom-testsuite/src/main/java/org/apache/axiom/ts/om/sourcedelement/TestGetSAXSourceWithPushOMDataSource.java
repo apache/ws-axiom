@@ -18,13 +18,13 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -34,9 +34,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that the {@link SAXSource} returned by {@link OMContainer#getSAXSource(boolean)} correctly
@@ -59,33 +56,26 @@ public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement sourcedElement =
-                factory.createOMElement(
-                        new AbstractPushOMDataSource() {
-                            @Override
-                            public void serialize(XMLStreamWriter writer)
-                                    throws XMLStreamException {
-                                scenario.serialize(writer);
-                            }
+        OMSourcedElement sourcedElement = factory.createOMElement(new AbstractPushOMDataSource() {
+            @Override
+            public void serialize(XMLStreamWriter writer) throws XMLStreamException {
+                scenario.serialize(writer);
+            }
 
-                            @Override
-                            public boolean isDestructiveWrite() {
-                                return false;
-                            }
-                        });
+            @Override
+            public boolean isDestructiveWrite() {
+                return false;
+            }
+        });
         Iterator<Map.Entry<String, String>> it =
                 scenario.getNamespaceContext().entrySet().iterator();
         OMElement parent;
         if (it.hasNext()) {
             Map.Entry<String, String> binding = it.next();
-            parent =
-                    factory.createOMElement(
-                            "parent",
-                            factory.createOMNamespace(binding.getValue(), binding.getKey()));
+            parent = factory.createOMElement("parent", factory.createOMNamespace(binding.getValue(), binding.getKey()));
             while (it.hasNext()) {
                 binding = it.next();
-                parent.declareNamespace(
-                        factory.createOMNamespace(binding.getValue(), binding.getKey()));
+                parent.declareNamespace(factory.createOMNamespace(binding.getValue(), binding.getKey()));
             }
         } else {
             parent = factory.createOMElement("parent", null);

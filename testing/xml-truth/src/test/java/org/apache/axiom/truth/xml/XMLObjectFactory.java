@@ -20,7 +20,6 @@ package org.apache.axiom.truth.xml;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
@@ -28,13 +27,12 @@ import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
 
 public abstract class XMLObjectFactory extends Multiton {
-    public static final XMLObjectFactory DEFAULT =
-            new XMLObjectFactory("url") {
-                @Override
-                public Object toXMLObject(XMLSample sample) {
-                    return sample.getUrl();
-                }
-            };
+    public static final XMLObjectFactory DEFAULT = new XMLObjectFactory("url") {
+        @Override
+        public Object toXMLObject(XMLSample sample) {
+            return sample.getUrl();
+        }
+    };
 
     private final String name;
 
@@ -52,13 +50,12 @@ public abstract class XMLObjectFactory extends Multiton {
     private static XMLObjectFactory[] instances() {
         List<XMLObjectFactory> instances = new ArrayList<>();
         for (final DOMImplementation impl : getInstances(DOMImplementation.class)) {
-            instances.add(
-                    new XMLObjectFactory(impl.getName() + "-dom") {
-                        @Override
-                        public Object toXMLObject(XMLSample sample) throws Exception {
-                            return impl.parse(new InputSource(sample.getUrl().toString()), false);
-                        }
-                    });
+            instances.add(new XMLObjectFactory(impl.getName() + "-dom") {
+                @Override
+                public Object toXMLObject(XMLSample sample) throws Exception {
+                    return impl.parse(new InputSource(sample.getUrl().toString()), false);
+                }
+            });
         }
         return instances.toArray(new XMLObjectFactory[instances.size()]);
     }

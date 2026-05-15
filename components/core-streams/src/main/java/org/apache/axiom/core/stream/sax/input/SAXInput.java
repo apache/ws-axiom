@@ -20,7 +20,6 @@
 package org.apache.axiom.core.stream.sax.input;
 
 import javax.xml.transform.sax.SAXSource;
-
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;

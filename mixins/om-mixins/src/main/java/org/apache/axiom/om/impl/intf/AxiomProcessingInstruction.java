@@ -22,7 +22,4 @@ import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.om.OMProcessingInstruction;
 
 public interface AxiomProcessingInstruction
-        extends OMProcessingInstruction,
-                AxiomLeafNode,
-                CoreProcessingInstruction,
-                AxiomCoreParentNode {}
+        extends OMProcessingInstruction, AxiomLeafNode, CoreProcessingInstruction, AxiomCoreParentNode {}

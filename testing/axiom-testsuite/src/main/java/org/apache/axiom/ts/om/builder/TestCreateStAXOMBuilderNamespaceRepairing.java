@@ -20,19 +20,16 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
-
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} performs namespace
@@ -46,14 +43,11 @@ public class TestCreateStAXOMBuilderNamespaceRepairing extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        XMLStreamReader reader =
-                StAXUtils.createXMLStreamReader(
-                        new StringReader(
-                                "<p:root xmlns:p='urn:ns1' xmlns:q='urn:ns2'><child q:attr='value'/></p:root>"));
-        OMElement element =
-                OMXMLBuilderFactory.createStAXOMBuilder(
-                                metaFactory.getOMFactory(), new NamespaceDeclarationFilter(reader))
-                        .getDocumentElement();
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(
+                new StringReader("<p:root xmlns:p='urn:ns1' xmlns:q='urn:ns2'><child q:attr='value'/></p:root>"));
+        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(
+                        metaFactory.getOMFactory(), new NamespaceDeclarationFilter(reader))
+                .getDocumentElement();
 
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertThat(it.hasNext()).isTrue();

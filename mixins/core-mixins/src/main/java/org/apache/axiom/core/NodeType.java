@@ -63,28 +63,26 @@ public enum NodeType {
     static {
         // TODO: add missing node types here (once we have tests that exercise the code)
         COMMENT.allowedChildTypes = EnumSet.of(CHARACTER_DATA);
-        DOCUMENT.allowedChildTypes =
-                EnumSet.of(
-                        CHARACTER_DATA,
-                        COMMENT,
-                        DOCUMENT_TYPE_DECLARATION,
-                        NS_AWARE_ELEMENT,
-                        NS_UNAWARE_ELEMENT,
-                        PROCESSING_INSTRUCTION);
+        DOCUMENT.allowedChildTypes = EnumSet.of(
+                CHARACTER_DATA,
+                COMMENT,
+                DOCUMENT_TYPE_DECLARATION,
+                NS_AWARE_ELEMENT,
+                NS_UNAWARE_ELEMENT,
+                PROCESSING_INSTRUCTION);
         DOCUMENT_FRAGMENT.allowedChildTypes = EnumSet.allOf(NodeType.class);
         EnumSet<NodeType> s = EnumSet.of(CHARACTER_DATA, ENTITY_REFERENCE);
         NS_AWARE_ATTRIBUTE.allowedChildTypes = s;
         NS_UNAWARE_ATTRIBUTE.allowedChildTypes = s;
         NAMESPACE_DECLARATION.allowedChildTypes = s;
-        s =
-                EnumSet.of(
-                        CDATA_SECTION,
-                        CHARACTER_DATA,
-                        COMMENT,
-                        ENTITY_REFERENCE,
-                        NS_AWARE_ELEMENT,
-                        NS_UNAWARE_ELEMENT,
-                        PROCESSING_INSTRUCTION);
+        s = EnumSet.of(
+                CDATA_SECTION,
+                CHARACTER_DATA,
+                COMMENT,
+                ENTITY_REFERENCE,
+                NS_AWARE_ELEMENT,
+                NS_UNAWARE_ELEMENT,
+                PROCESSING_INSTRUCTION);
         NS_AWARE_ELEMENT.allowedChildTypes = s;
         NS_UNAWARE_ELEMENT.allowedChildTypes = s;
     }

@@ -19,7 +19,6 @@
 package org.apache.axiom.locator;
 
 import java.util.Arrays;
-
 import org.apache.axiom.om.OMMetaFactory;
 
 final class Implementation {

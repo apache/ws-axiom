@@ -20,11 +20,11 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.StringReader;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -32,9 +32,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that the sequence of events produced by the {@link XMLStreamReader} returned by {@link
@@ -49,8 +46,7 @@ public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCas
     private final boolean cache;
 
     @Inject
-    public TestGetXMLStreamReaderWithIncompleteDescendant(
-            OMMetaFactory metaFactory, @Named("cache") boolean cache) {
+    public TestGetXMLStreamReaderWithIncompleteDescendant(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.cache = cache;
     }
@@ -59,9 +55,8 @@ public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCas
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement root = factory.createOMElement(new QName("root"));
-        OMElement child =
-                OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>"))
-                        .getDocumentElement(true);
+        OMElement child = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>"))
+                .getDocumentElement(true);
         root.addChild(child);
         assertThat(child.isComplete()).isFalse();
         XMLStreamReader stream = root.getXMLStreamReader(cache);

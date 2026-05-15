@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreElement;
@@ -49,10 +52,6 @@ import org.apache.axiom.om.impl.stream.stax.pull.AxiomXMLStreamReaderHelperFacto
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 /**
  * Element backed by an arbitrary data source. When necessary, this element will be expanded by
@@ -218,12 +217,11 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
                 // Disable namespace repairing because the OMDataSource is required to produce well
                 // formed
                 // XML with respect to namespaces.
-                builder =
-                        new BuilderImpl(
-                                new PushOMDataSourceInput(this, dataSource),
-                                coreGetNodeFactory().getFactory2(),
-                                PlainXMLModel.INSTANCE,
-                                this);
+                builder = new BuilderImpl(
+                        new PushOMDataSourceInput(this, dataSource),
+                        coreGetNodeFactory().getFactory2(),
+                        PlainXMLModel.INSTANCE,
+                        this);
             } else {
                 // Get the XMLStreamReader
                 XMLStreamReader readerFromDS;
@@ -231,20 +229,15 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
                     readerFromDS = dataSource.getReader();
                 } catch (XMLStreamException ex) {
                     throw new OMException(
-                            "Error obtaining parser from data source for element "
-                                    + getPrintableName(),
-                            ex);
+                            "Error obtaining parser from data source for element " + getPrintableName(), ex);
                 }
-                builder =
-                        new BuilderImpl(
-                                new FilteredXmlInput(
-                                        new StAXPullInput(
-                                                readerFromDS,
-                                                AxiomXMLStreamReaderHelperFactory.INSTANCE),
-                                        NamespaceRepairingFilter.DEFAULT),
-                                coreGetNodeFactory().getFactory2(),
-                                PlainXMLModel.INSTANCE,
-                                this);
+                builder = new BuilderImpl(
+                        new FilteredXmlInput(
+                                new StAXPullInput(readerFromDS, AxiomXMLStreamReaderHelperFactory.INSTANCE),
+                                NamespaceRepairingFilter.DEFAULT),
+                        coreGetNodeFactory().getFactory2(),
+                        PlainXMLModel.INSTANCE,
+                        this);
             }
             isExpanded = true;
             coreSetState(ATTRIBUTES_PENDING);
@@ -277,25 +270,22 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         } else {
             // Make sure element local name and namespace matches what was expected
             if (!staxLocalName.equals(internalGetLocalName())) {
-                throw new OMException(
-                        "Element name from data source is "
-                                + staxLocalName
-                                + ", not the expected "
-                                + internalGetLocalName());
+                throw new OMException("Element name from data source is "
+                        + staxLocalName
+                        + ", not the expected "
+                        + internalGetLocalName());
             }
         }
         if (definedNamespaceSet) {
             if (staxNamespaceURI == null) {
                 staxNamespaceURI = "";
             }
-            String namespaceURI =
-                    definedNamespace == null ? "" : definedNamespace.getNamespaceURI();
+            String namespaceURI = definedNamespace == null ? "" : definedNamespace.getNamespaceURI();
             if (!staxNamespaceURI.equals(namespaceURI)) {
-                throw new OMException(
-                        "Element namespace from data source is "
-                                + staxNamespaceURI
-                                + ", not the expected "
-                                + namespaceURI);
+                throw new OMException("Element namespace from data source is "
+                        + staxNamespaceURI
+                        + ", not the expected "
+                        + namespaceURI);
             }
             if (!(definedNamespace instanceof DeferredNamespace)) {
                 if (staxPrefix == null) {
@@ -303,12 +293,11 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
                 }
                 String prefix = definedNamespace == null ? "" : definedNamespace.getPrefix();
                 if (!staxPrefix.equals(prefix)) {
-                    throw new OMException(
-                            "Element prefix from data source is '"
-                                    + staxPrefix
-                                    + "', not the expected '"
-                                    + prefix
-                                    + "'");
+                    throw new OMException("Element prefix from data source is '"
+                            + staxPrefix
+                            + "', not the expected '"
+                            + prefix
+                            + "'");
                 }
             }
         }
@@ -325,8 +314,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
     }
 
     @Override
-    public XMLStreamReader getXMLStreamReader(
-            boolean cache, OMXMLStreamReaderConfiguration configuration) {
+    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
         if (log.isDebugEnabled()) {
             log.debug("getting XMLStreamReader for " + getPrintableName() + " with cache=" + cache);
         }
@@ -342,9 +330,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
                     return dataSource.getReader();
                 } catch (XMLStreamException ex) {
                     throw new OMException(
-                            "Error obtaining parser from data source for element "
-                                    + getPrintableName(),
-                            ex);
+                            "Error obtaining parser from data source for element " + getPrintableName(), ex);
                 }
             }
         }
@@ -433,8 +419,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
             definedNamespaceSet = o.internalIsDefinedNamespaceSet();
             OMNamespace otherDefinedNamespace = o.internalGetDefinedNamespace();
             if (otherDefinedNamespace instanceof DeferredNamespace) {
-                definedNamespace =
-                        new DeferredNamespace(this, otherDefinedNamespace.getNamespaceURI());
+                definedNamespace = new DeferredNamespace(this, otherDefinedNamespace.getNamespaceURI());
             } else {
                 definedNamespace = otherDefinedNamespace;
             }
@@ -466,8 +451,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         }
         if (pull) {
             try {
-                return new StAXPullInput(
-                        dataSource.getReader(), AxiomXMLStreamReaderHelperFactory.INSTANCE);
+                return new StAXPullInput(dataSource.getReader(), AxiomXMLStreamReaderHelperFactory.INSTANCE);
             } catch (XMLStreamException ex) {
                 throw new StreamException(ex);
             }

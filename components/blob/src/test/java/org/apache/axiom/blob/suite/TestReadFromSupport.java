@@ -20,19 +20,17 @@ package org.apache.axiom.blob.suite;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Random;
-
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.commons.io.IOUtils;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class TestReadFromSupport extends SizeSensitiveWritableBlobTestCase {
     @Inject
@@ -49,14 +47,10 @@ public class TestReadFromSupport extends SizeSensitiveWritableBlobTestCase {
         try {
             out.write(Arrays.copyOfRange(content, 0, chunkSize));
             ((ReadFromSupport) out)
-                    .readFrom(
-                            new ByteArrayInputStream(
-                                    Arrays.copyOfRange(content, chunkSize, chunkSize * 2)),
-                            -1);
+                    .readFrom(new ByteArrayInputStream(Arrays.copyOfRange(content, chunkSize, chunkSize * 2)), -1);
             ((ReadFromSupport) out)
                     .readFrom(
-                            new ByteArrayInputStream(
-                                    Arrays.copyOfRange(content, chunkSize * 2, chunkSize * 4)),
+                            new ByteArrayInputStream(Arrays.copyOfRange(content, chunkSize * 2, chunkSize * 4)),
                             chunkSize);
             out.write(content, chunkSize * 3, chunkSize);
         } finally {

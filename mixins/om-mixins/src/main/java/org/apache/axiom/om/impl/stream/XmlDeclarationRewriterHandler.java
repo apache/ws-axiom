@@ -36,8 +36,7 @@ public final class XmlDeclarationRewriterHandler extends XmlHandlerWrapper {
     }
 
     @Override
-    public void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
             throws StreamException {
         if (format.isIgnoreXMLDeclaration()) {
             super.startFragment();

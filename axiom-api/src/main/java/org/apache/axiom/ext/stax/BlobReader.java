@@ -20,7 +20,6 @@
 package org.apache.axiom.ext.stax;
 
 import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.blob.Blob;
 
 /**

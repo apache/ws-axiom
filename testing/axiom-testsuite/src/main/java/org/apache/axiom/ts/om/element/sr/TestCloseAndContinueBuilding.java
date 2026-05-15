@@ -20,19 +20,16 @@ package org.apache.axiom.ts.om.element.sr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.StringReader;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that the rest of a document can still be built after calling {@link
@@ -53,12 +50,10 @@ public class TestCloseAndContinueBuilding extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(),
-                                new StringReader(
-                                        "<root><a><b>some text</b></a><c>content</c></root>"))
-                        .getDocumentElement();
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(),
+                        new StringReader("<root><a><b>some text</b></a><c>content</c></root>"))
+                .getDocumentElement();
         OMElement a = (OMElement) root.getFirstOMChild();
         XMLStreamReader reader = a.getXMLStreamReader(cache);
         assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);

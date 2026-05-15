@@ -22,7 +22,6 @@ package org.apache.axiom.blob;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.util.io.IOUtils;
@@ -112,8 +111,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
             }
 
             int read = 0;
-            while (len > 0
-                    && !(currentChunkIndex == chunkIndex && currentChunkOffset == chunkOffset)) {
+            while (len > 0 && !(currentChunkIndex == chunkIndex && currentChunkOffset == chunkOffset)) {
 
                 int c;
                 if (currentChunkIndex == chunkIndex) {
@@ -219,8 +217,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
 
     OutputStream overflowOutputStream;
 
-    OverflowableBlobImpl(
-            int numberOfChunks, int chunkSize, WritableBlobFactory<?> overflowBlobFactory) {
+    OverflowableBlobImpl(int numberOfChunks, int chunkSize, WritableBlobFactory<?> overflowBlobFactory) {
         this.chunkSize = chunkSize;
         this.overflowBlobFactory = overflowBlobFactory;
         chunks = new byte[numberOfChunks][];

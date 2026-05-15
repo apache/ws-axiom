@@ -20,7 +20,6 @@ package org.apache.axiom.util.sax;
 
 import java.io.IOException;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 import org.xml.sax.InputSource;
@@ -29,14 +28,13 @@ import org.xml.sax.SAXException;
 public class AbstractXMLReaderTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
-        return XMLReaderTestSuite.create(
-                        new AbstractXMLReader() {
-                            @Override
-                            public void parse(String systemId) throws IOException, SAXException {}
+        return XMLReaderTestSuite.create(new AbstractXMLReader() {
+                    @Override
+                    public void parse(String systemId) throws IOException, SAXException {}
 
-                            @Override
-                            public void parse(InputSource input) throws IOException, SAXException {}
-                        })
+                    @Override
+                    public void parse(InputSource input) throws IOException, SAXException {}
+                })
                 .toDynamicNodes();
     }
 }

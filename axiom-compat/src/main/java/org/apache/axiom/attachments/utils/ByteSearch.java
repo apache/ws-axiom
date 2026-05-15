@@ -44,8 +44,7 @@ public class ByteSearch {
      * @param skip short[256] A skipArray generated from a call to generateSkipArray.
      * @return index or -1 if not found
      */
-    public static int skipSearch(
-            byte[] pattern, boolean direction, byte[] buffer, int start, int end, short[] skip) {
+    public static int skipSearch(byte[] pattern, boolean direction, byte[] buffer, int start, int end, short[] skip) {
 
         int patternLength = pattern.length;
 
@@ -165,12 +164,7 @@ public class ByteSearch {
     public static int search(byte[] search, byte[] bytes, int start, int end, boolean direction) {
 
         int idx = -1;
-        if (search == null
-                || search.length == 0
-                || bytes == null
-                || bytes.length == 0
-                || start < 0
-                || end <= 0) {
+        if (search == null || search.length == 0 || bytes == null || bytes.length == 0 || start < 0 || end <= 0) {
             return idx;
         }
 

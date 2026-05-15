@@ -18,13 +18,11 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import java.io.InputStream;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
-
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import java.io.InputStream;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
 
 /**
  * Base class for test cases that test the behavior of a {@link XMLStreamReader} method for specific
@@ -38,11 +36,9 @@ public abstract class EventSpecificTestCase extends DialectTestCase {
 
     @Override
     protected final void runTest() throws Throwable {
-        XMLInputFactory factory =
-                staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
+        XMLInputFactory factory = staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
         factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
-        InputStream in =
-                IllegalStateExceptionTestCase.class.getResourceAsStream("alleventtypes.xml");
+        InputStream in = IllegalStateExceptionTestCase.class.getResourceAsStream("alleventtypes.xml");
         try {
             XMLStreamReader reader = factory.createXMLStreamReader(in);
             while (true) {

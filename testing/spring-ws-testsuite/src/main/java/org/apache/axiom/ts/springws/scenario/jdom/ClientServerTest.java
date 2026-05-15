@@ -27,11 +27,9 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 public class ClientServerTest extends ScenarioTestCase {
     @Override
     protected void runTest() throws Throwable {
-        JDOMSource source =
-                new JDOMSource(
-                        new SAXBuilder()
-                                .build(ClientServerTest.class.getResourceAsStream("request.xml"))
-                                .getRootElement());
+        JDOMSource source = new JDOMSource(new SAXBuilder()
+                .build(ClientServerTest.class.getResourceAsStream("request.xml"))
+                .getRootElement());
         JDOMResult result = new JDOMResult();
         context.getBean(WebServiceTemplate.class).sendSourceAndReceiveToResult(source, result);
         assertEquals(

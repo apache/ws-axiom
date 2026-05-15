@@ -22,10 +22,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Collections;
 import java.util.Map;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.testutils.suite.LabelTarget;
@@ -48,8 +46,7 @@ public class WriteStartElementNamespaceUnawareScenario implements PushOMDataSour
     @Override
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
-        assertThatThrownBy(() -> writer.writeStartElement("child"))
-                .isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(() -> writer.writeStartElement("child")).isInstanceOf(UnsupportedOperationException.class);
         writer.writeEndElement();
     }
 

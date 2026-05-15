@@ -19,7 +19,6 @@
 package org.apache.axiom.locator;
 
 import java.util.List;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactoryLocator;
 import org.apache.commons.logging.Log;
@@ -45,9 +44,7 @@ public class Activator implements BundleActivator {
         OMAbstractFactory.setMetaFactoryLocator(locator);
         // Bundle.STARTING covers the case where the implementation bundle has
         // "Bundle-ActivationPolicy: lazy".
-        tracker =
-                new BundleTracker<List<RegisteredImplementation>>(
-                        context, Bundle.STARTING | Bundle.ACTIVE, locator);
+        tracker = new BundleTracker<List<RegisteredImplementation>>(context, Bundle.STARTING | Bundle.ACTIVE, locator);
         tracker.open();
         log.debug("OSGi support enabled");
     }

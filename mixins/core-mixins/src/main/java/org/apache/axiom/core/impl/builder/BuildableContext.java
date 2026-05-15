@@ -73,8 +73,7 @@ final class BuildableContext extends Context implements InputContext {
     @Override
     public void setPassThroughHandler(XmlHandler passThroughHandler) {
         if (this.passThroughHandler != null) {
-            throw new IllegalStateException(
-                    "A pass-through handler has already been set for this context");
+            throw new IllegalStateException("A pass-through handler has already been set for this context");
         }
         target.coreSetState(CoreParentNode.DISCARDING);
         this.passThroughHandler = passThroughHandler;
@@ -139,8 +138,7 @@ final class BuildableContext extends Context implements InputContext {
     }
 
     @Override
-    void startDocument(
-            String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
+    void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
         CoreDocument document = builderHandler.model.createDocument();
         if (document == null) {
             document = builderHandler.nodeFactory.createDocument();
@@ -160,15 +158,12 @@ final class BuildableContext extends Context implements InputContext {
     }
 
     @Override
-    void processDocumentTypeDeclaration(
-            String rootName, String publicId, String systemId, String internalSubset)
+    void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset)
             throws StreamException {
         if (passThroughHandler != null) {
-            passThroughHandler.processDocumentTypeDeclaration(
-                    rootName, publicId, systemId, internalSubset);
+            passThroughHandler.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
         } else {
-            CoreDocumentTypeDeclaration node =
-                    builderHandler.nodeFactory.createDocumentTypeDeclaration();
+            CoreDocumentTypeDeclaration node = builderHandler.nodeFactory.createDocumentTypeDeclaration();
             node.coreSetRootName(rootName);
             node.coreSetPublicId(publicId);
             node.coreSetSystemId(systemId);
@@ -178,15 +173,13 @@ final class BuildableContext extends Context implements InputContext {
     }
 
     @Override
-    Context startElement(String namespaceURI, String localName, String prefix)
-            throws StreamException {
+    Context startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         if (passThroughHandler != null) {
             passThroughDepth++;
             passThroughHandler.startElement(namespaceURI, localName, prefix);
             return this;
         } else {
-            CoreNSAwareElement element =
-                    builderHandler.model.createElement(target, depth + 1, namespaceURI, localName);
+            CoreNSAwareElement element = builderHandler.model.createElement(target, depth + 1, namespaceURI, localName);
             if (element == null) {
                 element = builderHandler.nodeFactory.createNSAwareElement();
             }
@@ -209,16 +202,10 @@ final class BuildableContext extends Context implements InputContext {
 
     @Override
     void processAttribute(
-            String namespaceURI,
-            String localName,
-            String prefix,
-            String value,
-            String type,
-            boolean specified)
+            String namespaceURI, String localName, String prefix, String value, String type, boolean specified)
             throws StreamException {
         if (passThroughHandler != null) {
-            passThroughHandler.processAttribute(
-                    namespaceURI, localName, prefix, value, type, specified);
+            passThroughHandler.processAttribute(namespaceURI, localName, prefix, value, type, specified);
         } else {
             CoreNSAwareAttribute attr = builderHandler.nodeFactory.createNSAwareAttribute();
             attr.initName(namespaceURI, localName, prefix, builderHandler.namespaceHelper);
@@ -234,8 +221,7 @@ final class BuildableContext extends Context implements InputContext {
     }
 
     @Override
-    void processAttribute(String name, String value, String type, boolean specified)
-            throws StreamException {
+    void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.processAttribute(name, value, type, specified);
         } else {
@@ -276,9 +262,7 @@ final class BuildableContext extends Context implements InputContext {
     void processCharacterData(Object data, boolean ignorable) throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.processCharacterData(data, ignorable);
-        } else if (!ignorable
-                && pendingCharacterData == null
-                && target.coreGetFirstChildIfAvailable() == null) {
+        } else if (!ignorable && pendingCharacterData == null && target.coreGetFirstChildIfAvailable() == null) {
             pendingCharacterData = data;
         } else {
             CoreCharacterDataNode node = builderHandler.nodeFactory.createCharacterDataNode();
@@ -295,8 +279,7 @@ final class BuildableContext extends Context implements InputContext {
             passThroughHandler.startProcessingInstruction(piTarget);
             return this;
         } else {
-            CoreProcessingInstruction node =
-                    builderHandler.nodeFactory.createProcessingInstruction();
+            CoreProcessingInstruction node = builderHandler.nodeFactory.createProcessingInstruction();
             node.coreSetTarget(piTarget);
             addChild(node);
             return newContext(node);

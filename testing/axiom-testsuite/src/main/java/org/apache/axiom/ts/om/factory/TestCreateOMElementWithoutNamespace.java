@@ -20,11 +20,10 @@ package org.apache.axiom.ts.om.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
@@ -34,18 +33,14 @@ import com.google.inject.Inject;
 public class TestCreateOMElementWithoutNamespace extends CreateOMElementTestCase {
     @Inject
     public TestCreateOMElementWithoutNamespace(
-            OMMetaFactory metaFactory,
-            CreateOMElementVariant variant,
-            CreateOMElementParentSupplier parentSupplier) {
+            OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
         super(metaFactory, variant, parentSupplier);
     }
 
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element =
-                variant.createOMElement(
-                        factory, parentSupplier.createParent(factory), "test", "", "");
+        OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", "");
         assertThat(element.getLocalName()).isEqualTo("test");
         assertThat(element.getNamespace()).isNull();
         assertThat(element.getAllDeclaredNamespaces().hasNext()).isFalse();

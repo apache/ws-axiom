@@ -23,7 +23,6 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 

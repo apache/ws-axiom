@@ -24,14 +24,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.ts.xml.ComputedMessageContent;
 import org.w3c.dom.Attr;
@@ -71,9 +69,7 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
             in.close();
         }
         processSOAPElement(document.getDocumentElement(), SOAPElementType.ENVELOPE);
-        TransformerFactory.newInstance()
-                .newTransformer()
-                .transform(new DOMSource(document), new StreamResult(out));
+        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(out));
     }
 
     private static void processSOAPElement(Element element, SOAPElementType type) {
@@ -86,15 +82,11 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
         if (newName.getNamespaceURI().isEmpty()) {
             prefix = null;
         }
-        element =
-                (Element)
-                        element.getOwnerDocument()
-                                .renameNode(
-                                        element,
-                                        newName.getNamespaceURI(),
-                                        prefix == null
-                                                ? newName.getLocalPart()
-                                                : prefix + ":" + newName.getLocalPart());
+        element = (Element) element.getOwnerDocument()
+                .renameNode(
+                        element,
+                        newName.getNamespaceURI(),
+                        prefix == null ? newName.getLocalPart() : prefix + ":" + newName.getLocalPart());
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Attr attr = (Attr) attributes.item(i);
@@ -109,17 +101,14 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
                 Node nextChild = child.getNextSibling();
                 if (child.getNodeType() == Node.ELEMENT_NODE) {
                     Element headerBlock = (Element) child;
-                    Attr roleAttr =
-                            headerBlock.getAttributeNodeNS(
-                                    SOAPSpec.SOAP12.getEnvelopeNamespaceURI(),
-                                    HeaderBlockAttribute.ROLE.getName(SOAPSpec.SOAP12));
+                    Attr roleAttr = headerBlock.getAttributeNodeNS(
+                            SOAPSpec.SOAP12.getEnvelopeNamespaceURI(),
+                            HeaderBlockAttribute.ROLE.getName(SOAPSpec.SOAP12));
                     if (roleAttr != null
-                            && roleAttr.getValue()
-                                    .equals("http://www.w3.org/2003/05/soap-envelope/role/none")) {
+                            && roleAttr.getValue().equals("http://www.w3.org/2003/05/soap-envelope/role/none")) {
                         element.removeChild(headerBlock);
                     } else {
-                        for (HeaderBlockAttribute attribute :
-                                Multiton.getInstances(HeaderBlockAttribute.class)) {
+                        for (HeaderBlockAttribute attribute : Multiton.getInstances(HeaderBlockAttribute.class)) {
                             processAttribute(headerBlock, attribute);
                         }
                     }
@@ -128,29 +117,24 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
             }
         } else if (type == SOAPFaultChild.CODE) {
             final Element value = getChild(element, SOAPFaultChild.VALUE);
-            element.setTextContent(
-                    transform(
-                            value.getTextContent(),
-                            new TextTransformer() {
-                                @Override
-                                public String transform(String in) {
-                                    int idx = in.indexOf(':');
-                                    if (idx == -1) {
-                                        return in;
-                                    }
-                                    String prefix = in.substring(0, idx);
-                                    if (!SOAPSpec.SOAP12
-                                            .getEnvelopeNamespaceURI()
-                                            .equals(value.lookupNamespaceURI(prefix))) {
-                                        return in;
-                                    }
-                                    String newCode = faultCodeMap.get(in.substring(idx + 1));
-                                    if (newCode == null) {
-                                        return in;
-                                    }
-                                    return prefix + ":" + newCode;
-                                }
-                            }));
+            element.setTextContent(transform(value.getTextContent(), new TextTransformer() {
+                @Override
+                public String transform(String in) {
+                    int idx = in.indexOf(':');
+                    if (idx == -1) {
+                        return in;
+                    }
+                    String prefix = in.substring(0, idx);
+                    if (!SOAPSpec.SOAP12.getEnvelopeNamespaceURI().equals(value.lookupNamespaceURI(prefix))) {
+                        return in;
+                    }
+                    String newCode = faultCodeMap.get(in.substring(idx + 1));
+                    if (newCode == null) {
+                        return in;
+                    }
+                    return prefix + ":" + newCode;
+                }
+            }));
         } else if (type == SOAPFaultChild.REASON) {
             Element text = getChild(element, SOAPFaultChild.TEXT);
             element.setTextContent(text.getTextContent());
@@ -175,20 +159,16 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
     }
 
     private static void processAttribute(Element headerBlock, HeaderBlockAttribute attribute) {
-        Attr attr =
-                headerBlock.getAttributeNodeNS(
-                        SOAPSpec.SOAP12.getEnvelopeNamespaceURI(),
-                        attribute.getName(SOAPSpec.SOAP12));
+        Attr attr = headerBlock.getAttributeNodeNS(
+                SOAPSpec.SOAP12.getEnvelopeNamespaceURI(), attribute.getName(SOAPSpec.SOAP12));
         if (attr != null) {
             if (attribute.isSupported(SOAPSpec.SOAP11)) {
                 String prefix = attr.getPrefix();
-                attr =
-                        (Attr)
-                                attr.getOwnerDocument()
-                                        .renameNode(
-                                                attr,
-                                                SOAPSpec.SOAP11.getEnvelopeNamespaceURI(),
-                                                prefix + ":" + attribute.getName(SOAPSpec.SOAP11));
+                attr = (Attr) attr.getOwnerDocument()
+                        .renameNode(
+                                attr,
+                                SOAPSpec.SOAP11.getEnvelopeNamespaceURI(),
+                                prefix + ":" + attribute.getName(SOAPSpec.SOAP11));
                 if (attribute.isBoolean()) {
                     String stringValue = attr.getValue();
                     boolean value = false;
@@ -203,8 +183,7 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
                     String value = attr.getValue();
                     if (value.equals(SOAPSpec.SOAP12.getNextRoleURI())) {
                         attr.setValue(SOAPSpec.SOAP11.getNextRoleURI());
-                    } else if (value.equals(
-                            "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver")) {
+                    } else if (value.equals("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver")) {
                         headerBlock.removeAttributeNode(attr);
                     }
                 }
@@ -248,8 +227,6 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
         while (isWhitespace(text.charAt(end - 1))) {
             end--;
         }
-        return text.substring(0, start)
-                + transformer.transform(text.substring(start, end))
-                + text.substring(end);
+        return text.substring(0, start) + transformer.transform(text.substring(start, end)) + text.substring(end);
     }
 }

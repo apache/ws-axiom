@@ -35,20 +35,18 @@ public interface ContentTransferEncodingPolicy {
      * Selects the {@code base64} content transfer encoding for parts that are not textual (as
      * determined by {@link ContentType#isTextual()}.
      */
-    ContentTransferEncodingPolicy USE_BASE64_FOR_NON_TEXTUAL_PARTS =
-            new ContentTransferEncodingPolicy() {
-                @Override
-                public ContentTransferEncoding getContentTransferEncoding(
-                        Blob blob, ContentType contentType) {
-                    if (contentType == null) {
-                        return null;
-                    }
-                    if (!contentType.isTextual()) {
-                        return ContentTransferEncoding.BASE64;
-                    }
-                    return null;
-                }
-            };
+    ContentTransferEncodingPolicy USE_BASE64_FOR_NON_TEXTUAL_PARTS = new ContentTransferEncodingPolicy() {
+        @Override
+        public ContentTransferEncoding getContentTransferEncoding(Blob blob, ContentType contentType) {
+            if (contentType == null) {
+                return null;
+            }
+            if (!contentType.isTextual()) {
+                return ContentTransferEncoding.BASE64;
+            }
+            return null;
+        }
+    };
 
     /**
      * Determine the content transfer encoding to use for a MIME part.

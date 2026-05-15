@@ -20,26 +20,24 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestSetRole extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
         OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
         SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
-        SOAPHeaderBlock soapHeaderBlock =
-                soapFactory.createSOAPHeaderBlock("testHeaderBlock", namespace, soapHeader);
+        SOAPHeaderBlock soapHeaderBlock = soapFactory.createSOAPHeaderBlock("testHeaderBlock", namespace, soapHeader);
         soapHeaderBlock.setRole("http://example.org/my-role");
         assertThat(soapHeaderBlock.getRole()).isEqualTo("http://example.org/my-role");
         soapHeaderBlock.setRole("Any Value");

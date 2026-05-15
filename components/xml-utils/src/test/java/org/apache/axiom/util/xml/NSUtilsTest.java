@@ -25,7 +25,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 
 public class NSUtilsTest {
@@ -38,11 +37,8 @@ public class NSUtilsTest {
     @Test
     public void testUniqueness() throws Exception {
         Set<String> prefixes = new HashSet<String>();
-        BufferedReader in =
-                new BufferedReader(
-                        new InputStreamReader(
-                                NSUtilsTest.class.getResourceAsStream("namespaces.txt"),
-                                StandardCharsets.UTF_8));
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(NSUtilsTest.class.getResourceAsStream("namespaces.txt"), StandardCharsets.UTF_8));
         try {
             String uri;
             while ((uri = in.readLine()) != null) {

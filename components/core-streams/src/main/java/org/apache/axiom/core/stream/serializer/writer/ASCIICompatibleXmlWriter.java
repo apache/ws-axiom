@@ -20,7 +20,6 @@ package org.apache.axiom.core.stream.serializer.writer;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 
 abstract class ASCIICompatibleXmlWriter extends XmlWriter {

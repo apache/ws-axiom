@@ -21,13 +21,12 @@ package org.apache.axiom.blob.suite;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.commons.io.input.NullInputStream;
-
-import com.google.inject.Inject;
 
 public class TestReadFromWithError extends WritableBlobTestCase {
     @Inject
@@ -38,12 +37,9 @@ public class TestReadFromWithError extends WritableBlobTestCase {
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
         ExceptionInputStream in = new ExceptionInputStream(new NullInputStream(1000), 500);
-        assertThatThrownBy(() -> blob.readFrom(in))
-                .isInstanceOfSatisfying(
-                        StreamCopyException.class,
-                        ex -> {
-                            assertThat(ex.getOperation()).isEqualTo(StreamCopyException.READ);
-                            assertThat(ex.getCause()).isSameAs(in.getException());
-                        });
+        assertThatThrownBy(() -> blob.readFrom(in)).isInstanceOfSatisfying(StreamCopyException.class, ex -> {
+            assertThat(ex.getOperation()).isEqualTo(StreamCopyException.READ);
+            assertThat(ex.getCause()).isSameAs(in.getException());
+        });
     }
 }

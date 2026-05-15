@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.attribute;
 
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -25,9 +27,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.om.SetNamespaceTestCase;
-
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Inject;
 
 /**
  * Test the behavior of {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)} on an
@@ -59,12 +58,8 @@ public class TestSetNamespace extends SetNamespaceTestCase {
             boolean declare = (i & 1) != 0;
             boolean owner = (i & 2) != 0;
             // Valid
-            builder.add(
-                    new Params(
-                            "urn:test", "p", declare, owner, null, false, "p", declare && owner));
-            builder.add(
-                    new Params(
-                            "urn:test", null, declare, owner, null, false, null, declare && owner));
+            builder.add(new Params("urn:test", "p", declare, owner, null, false, "p", declare && owner));
+            builder.add(new Params("urn:test", null, declare, owner, null, false, null, declare && owner));
             if (owner) {
                 builder.add(new Params("urn:test", "p", declare, true, "p", false, "p", false));
                 builder.add(new Params("urn:test", "p", declare, true, "q", false, "p", declare));

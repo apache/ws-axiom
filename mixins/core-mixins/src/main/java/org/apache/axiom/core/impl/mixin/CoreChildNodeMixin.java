@@ -125,8 +125,7 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
             CoreParentNode parent = coreGetParent();
             if (parent != null) {
                 switch (parent.getState()) {
-                    case CoreParentNode.DISCARDING, CoreParentNode.DISCARDED ->
-                            throw new NodeConsumedException();
+                    case CoreParentNode.DISCARDING, CoreParentNode.DISCARDED -> throw new NodeConsumedException();
                     case CoreParentNode.INCOMPLETE -> {
                         if (parent.coreGetBuilder() != null) {
                             do {
@@ -254,8 +253,7 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
     }
 
     @Override
-    public final void coreReplaceWith(CoreChildNode newNode, Semantics semantics)
-            throws CoreModelException {
+    public final void coreReplaceWith(CoreChildNode newNode, Semantics semantics) throws CoreModelException {
         if (newNode == this) {
             return;
         }
@@ -282,8 +280,7 @@ public abstract class CoreChildNodeMixin implements CoreChildNode {
     }
 
     @Override
-    public final <T> CoreNode coreClone(
-            ClonePolicy<T> policy, T options, CoreParentNode targetParent)
+    public final <T> CoreNode coreClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent)
             throws CoreModelException {
         return internalClone(policy, options, targetParent);
     }

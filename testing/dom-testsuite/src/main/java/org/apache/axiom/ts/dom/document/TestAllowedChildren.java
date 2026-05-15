@@ -37,16 +37,14 @@ public class TestAllowedChildren extends DOMTestCase {
         // says that text nodes are not allowed as children of a document.
         assertThatThrownBy(() -> doc.appendChild(doc.createTextNode("    ")))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
 
         doc.appendChild(doc.createElement("root1"));
 
         // Multiple document elements are not allowed
         assertThatThrownBy(() -> doc.appendChild(doc.createElement("root2")))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
 
         // PIs and comments after the document element are allowed
         doc.appendChild(doc.createProcessingInstruction("pi", "data"));
@@ -55,7 +53,6 @@ public class TestAllowedChildren extends DOMTestCase {
         // Again, text nodes are not allowed
         assertThatThrownBy(() -> doc.appendChild(doc.createTextNode("    ")))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
     }
 }

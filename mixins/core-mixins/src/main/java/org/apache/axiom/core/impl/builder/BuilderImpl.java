@@ -32,8 +32,7 @@ public final class BuilderImpl implements Builder {
     private final BuilderHandler builderHandler;
     private Object facade;
 
-    public BuilderImpl(
-            XmlInput input, NodeFactory2 nodeFactory, Model model, CoreNSAwareElement root) {
+    public BuilderImpl(XmlInput input, NodeFactory2 nodeFactory, Model model, CoreNSAwareElement root) {
         builderHandler = new BuilderHandler(nodeFactory, model, root, this);
         reader = input.createReader(builderHandler);
     }

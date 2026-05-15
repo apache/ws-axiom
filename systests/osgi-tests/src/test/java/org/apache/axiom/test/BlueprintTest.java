@@ -24,7 +24,6 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
 import javax.inject.Inject;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -52,7 +51,8 @@ public class BlueprintTest {
                 url("link:classpath:assertj-core.link"));
     }
 
-    @Inject private TestService testService;
+    @Inject
+    private TestService testService;
 
     @Test
     public void test() throws Exception {

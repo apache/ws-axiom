@@ -20,10 +20,17 @@ package org.apache.axiom.ts.soap.builder;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.mail.Session;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
+import junit.framework.TestCase;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.mime.ContentType;
@@ -36,24 +43,17 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.util.UIDGenerator;
 
-import com.google.inject.Inject;
-
-import jakarta.activation.DataHandler;
-import jakarta.activation.DataSource;
-import jakarta.mail.Session;
-import jakarta.mail.internet.MimeBodyPart;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMultipart;
-import junit.framework.TestCase;
-
 /**
  * Tests that {@link OMXMLBuilderFactory#createSOAPModelBuilder(OMMetaFactory, MultipartBody)}
  * produces an error if the SOAP version used in the root part doesn't match the Content-Type of the
  * message.
  */
 public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends TestCase {
-    @Inject private OMMetaFactory metaFactory;
-    @Inject private SOAPSpec spec;
+    @Inject
+    private OMMetaFactory metaFactory;
+
+    @Inject
+    private SOAPSpec spec;
 
     @Override
     protected void runTest() throws Throwable {
@@ -63,58 +63,53 @@ public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends TestCase 
         MimeMultipart mp = new MimeMultipart("related");
         MimeBodyPart bp = new MimeBodyPart();
         String contentID = "<" + UIDGenerator.generateContentId() + ">";
-        bp.setDataHandler(
-                new DataHandler(
-                        new DataSource() {
-                            @Override
-                            public String getContentType() {
-                                return "application/xop+xml; charset=\""
-                                        + sample.getEncoding()
-                                        + "\"; type=\""
-                                        + spec.getAltSpec().getContentType()
-                                        + "\"";
-                            }
+        bp.setDataHandler(new DataHandler(new DataSource() {
+            @Override
+            public String getContentType() {
+                return "application/xop+xml; charset=\""
+                        + sample.getEncoding()
+                        + "\"; type=\""
+                        + spec.getAltSpec().getContentType()
+                        + "\"";
+            }
 
-                            @Override
-                            public InputStream getInputStream() throws IOException {
-                                return sample.getInputStream();
-                            }
+            @Override
+            public InputStream getInputStream() throws IOException {
+                return sample.getInputStream();
+            }
 
-                            @Override
-                            public String getName() {
-                                return null;
-                            }
+            @Override
+            public String getName() {
+                return null;
+            }
 
-                            @Override
-                            public OutputStream getOutputStream() {
-                                throw new UnsupportedOperationException();
-                            }
-                        }));
+            @Override
+            public OutputStream getOutputStream() {
+                throw new UnsupportedOperationException();
+            }
+        }));
         bp.addHeader("Content-Transfer-Encoding", "binary");
         bp.addHeader("Content-ID", contentID);
         mp.addBodyPart(bp);
         message.setContent(mp);
         message.saveChanges();
-        ContentType contentType =
-                new ContentType(message.getContentType())
-                        .toBuilder()
-                                .setParameter("type", "application/xop+xml")
-                                .setParameter("start", contentID)
-                                .setParameter("start-info", spec.getAltSpec().getContentType())
-                                .build();
+        ContentType contentType = new ContentType(message.getContentType())
+                .toBuilder()
+                        .setParameter("type", "application/xop+xml")
+                        .setParameter("start", contentID)
+                        .setParameter("start-info", spec.getAltSpec().getContentType())
+                        .build();
         MemoryBlob blob = Blobs.createMemoryBlob();
         OutputStream out = blob.getOutputStream();
         mp.writeTo(out);
         out.close();
         // Now attempt to create an Axiom builder
-        assertThatThrownBy(
-                        () ->
-                                OMXMLBuilderFactory.createSOAPModelBuilder(
-                                        metaFactory,
-                                        MultipartBody.builder()
-                                                .setInputStream(blob.getInputStream())
-                                                .setContentType(contentType)
-                                                .build()))
+        assertThatThrownBy(() -> OMXMLBuilderFactory.createSOAPModelBuilder(
+                        metaFactory,
+                        MultipartBody.builder()
+                                .setInputStream(blob.getInputStream())
+                                .setContentType(contentType)
+                                .build()))
                 .isInstanceOf(SOAPProcessingException.class);
     }
 }

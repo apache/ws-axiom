@@ -151,8 +151,7 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
             if (refChild == null) {
                 return appendChild(newChild);
             } else {
-                if (!(refChild instanceof CoreChildNode childNode
-                        && childNode.coreGetParent() == this)) {
+                if (!(refChild instanceof CoreChildNode childNode && childNode.coreGetParent() == this)) {
                     throw newDOMException(DOMException.NOT_FOUND_ERR);
                 }
                 checkNewChild(newChild);

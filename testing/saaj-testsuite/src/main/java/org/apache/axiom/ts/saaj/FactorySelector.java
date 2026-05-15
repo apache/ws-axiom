@@ -21,7 +21,6 @@ package org.apache.axiom.ts.saaj;
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPFactory;
-
 import org.apache.axiom.testing.multiton.AdapterType;
 import org.apache.axiom.ts.soap.SOAPSpec;
 

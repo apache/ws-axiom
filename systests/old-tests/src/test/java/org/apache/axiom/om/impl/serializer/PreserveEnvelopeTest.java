@@ -19,13 +19,11 @@
 
 package org.apache.axiom.om.impl.serializer;
 
+import java.io.StringReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-
-import java.io.StringReader;
-
-import junit.framework.TestCase;
 
 public class PreserveEnvelopeTest extends TestCase {
 
@@ -89,8 +87,7 @@ public class PreserveEnvelopeTest extends TestCase {
                     + "</ds:KeyInfo></ds:Signature></Assertion>";
 
     public void testOMNS() {
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(new StringReader(originalXML));
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(new StringReader(originalXML));
         OMElement documentElement = builder.getDocumentElement();
         // assertXMLEqual(originalXML, documentElement.toString());
         documentElement.build();

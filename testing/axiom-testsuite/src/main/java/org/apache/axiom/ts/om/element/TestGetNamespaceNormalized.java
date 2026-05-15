@@ -20,15 +20,14 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an element
@@ -48,8 +47,7 @@ public class TestGetNamespaceNormalized extends AxiomTestCase {
     private final boolean useNull;
 
     @Inject
-    public TestGetNamespaceNormalized(
-            OMMetaFactory metaFactory, @Named("useNull") boolean useNull) {
+    public TestGetNamespaceNormalized(OMMetaFactory metaFactory, @Named("useNull") boolean useNull) {
         super(metaFactory);
         this.useNull = useNull;
     }

@@ -19,15 +19,13 @@
 package org.apache.axiom.ts.springws;
 
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 
 public class SpringWSTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
-        return SpringWSTestSuite.create(
-                        MessageFactoryConfigurator.SAAJ, MessageFactoryConfigurator.SAAJ)
+        return SpringWSTestSuite.create(MessageFactoryConfigurator.SAAJ, MessageFactoryConfigurator.SAAJ)
                 .toDynamicNodes();
     }
 }

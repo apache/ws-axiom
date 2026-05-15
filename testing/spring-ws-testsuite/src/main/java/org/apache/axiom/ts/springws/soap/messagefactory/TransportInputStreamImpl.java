@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Iterator;
-
 import org.apache.axiom.ts.xml.MessageSample;
 import org.springframework.ws.transport.TransportInputStream;
 

@@ -20,24 +20,22 @@ package org.apache.axiom.ts.om;
 
 import static org.apache.axiom.testing.multiton.Multiton.getInstances;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import javax.xml.namespace.QName;
-
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
-
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.ConditionalNode;
 import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
+import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.MatrixTest;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
-import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 import org.apache.axiom.ts.dimension.BuilderFactory;
@@ -62,79 +60,53 @@ import org.apache.axiom.util.xml.stream.XMLEventUtils;
 
 public class OMTestSuite {
     private static final ImmutableList<QName> QNAMES =
-            ImmutableList.of(
-                    new QName("root"),
-                    new QName("urn:test", "root", "p"),
-                    new QName("urn:test", "root"));
+            ImmutableList.of(new QName("root"), new QName("urn:test", "root", "p"), new QName("urn:test", "root"));
 
-    private static final LabelBinding<QName> QNAME_LABELS =
-            (injector, qname, labels) -> {
-                labels.addLabel("prefix", qname.getPrefix());
-                labels.addLabel("uri", qname.getNamespaceURI());
-            };
+    private static final LabelBinding<QName> QNAME_LABELS = (injector, qname, labels) -> {
+        labels.addLabel("prefix", qname.getPrefix());
+        labels.addLabel("uri", qname.getNamespaceURI());
+    };
 
     public static MatrixTestNode create(OMMetaFactory metaFactory) {
         return new InjectorNode(
                 binder -> binder.bind(OMMetaFactory.class).toInstance(metaFactory),
                 new ParentNode(
                         // ── attribute package ──
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestDigestWithNamespace.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestDigestWithoutNamespace.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestGetAttributeTypeDefault.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestGetNamespaceNormalized.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithNamespace
-                                        .class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithoutNamespace
-                                        .class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestGetPrefixWithNamespace.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestGetPrefixWithoutNamespace
-                                        .class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestGetQNameWithNamespace.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestGetQNameWithoutNamespace
-                                        .class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestHasNameWithNamespace.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.attribute.TestHasNameWithoutNamespace.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestDigestWithNamespace.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestDigestWithoutNamespace.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestGetAttributeTypeDefault.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestGetNamespaceNormalized.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithNamespace.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithoutNamespace.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestGetPrefixWithNamespace.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestGetPrefixWithoutNamespace.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestGetQNameWithNamespace.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestGetQNameWithoutNamespace.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestHasNameWithNamespace.class),
+                        new MatrixTest(org.apache.axiom.ts.om.attribute.TestHasNameWithoutNamespace.class),
                         new MatrixTest(org.apache.axiom.ts.om.attribute.TestSetLocalName.class),
                         new FanOutNode<>(
                                 org.apache.axiom.ts.om.attribute.TestSetNamespace.PARAMS,
                                 Binding.singleton(
-                                        Key.get(
-                                                org.apache.axiom.ts.om.attribute.TestSetNamespace
-                                                        .Params.class)),
+                                        Key.get(org.apache.axiom.ts.om.attribute.TestSetNamespace.Params.class)),
                                 (inj, v, l) -> {
-                                    if (v.namespaceURI() != null)
-                                        l.addLabel("uri", v.namespaceURI());
+                                    if (v.namespaceURI() != null) l.addLabel("uri", v.namespaceURI());
                                     if (v.prefix() != null) l.addLabel("prefix", v.prefix());
-                                    if (v.prefixInScope() != null)
-                                        l.addLabel("prefixInScope", v.prefixInScope());
+                                    if (v.prefixInScope() != null) l.addLabel("prefixInScope", v.prefixInScope());
                                     l.addLabel("invalid", v.invalid());
                                     l.addLabel("declare", v.declare());
                                     l.addLabel("owner", v.owner());
                                 },
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.attribute.TestSetNamespace.class)),
+                                new MatrixTest(org.apache.axiom.ts.om.attribute.TestSetNamespace.class)),
                         // ── builder package ──
                         new FanOutNode<>(
                                 getInstances(StreamType.class),
                                 Binding.singleton(Key.get(StreamType.class)),
-                                LabelBinding.simpleString("type", v -> v.getType().getSimpleName()),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.builder.TestCloseWithStream.class)),
+                                LabelBinding.simpleString(
+                                        "type", v -> v.getType().getSimpleName()),
+                                new MatrixTest(org.apache.axiom.ts.om.builder.TestCloseWithStream.class)),
                         new MatrixTest(org.apache.axiom.ts.om.builder.TestCloseWithSystemId.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.builder.TestCloseWithXMLStreamReader.class),
+                        new MatrixTest(org.apache.axiom.ts.om.builder.TestCloseWithXMLStreamReader.class),
                         new FanOutNode<>(
                                 getInstances(XMLSample.class),
                                 Binding.singleton(Key.get(XMLSample.class)),
@@ -143,125 +115,76 @@ public class OMTestSuite {
                                         new FanOutNode<>(
                                                 getInstances(DOMImplementation.class),
                                                 Binding.singleton(Key.get(DOMImplementation.class)),
-                                                LabelBinding.simpleString(
-                                                        "implementation",
-                                                        DOMImplementation::getName),
+                                                LabelBinding.simpleString("implementation", DOMImplementation::getName),
                                                 new FanOutNode<>(
-                                                        injector ->
-                                                                Arrays.asList(
-                                                                        Boolean.TRUE,
-                                                                        Boolean.FALSE,
-                                                                        null),
-                                                        (binder, value) ->
-                                                                binder.bind(Boolean.class)
-                                                                        .annotatedWith(
-                                                                                Names.named(
-                                                                                        "expandEntityReferences"))
-                                                                        .toProvider(
-                                                                                Providers.of(
-                                                                                        value)),
+                                                        injector -> Arrays.asList(Boolean.TRUE, Boolean.FALSE, null),
+                                                        (binder, value) -> binder.bind(Boolean.class)
+                                                                .annotatedWith(Names.named("expandEntityReferences"))
+                                                                .toProvider(Providers.of(value)),
                                                         LabelBinding.simpleString(
-                                                                "expandEntityReferences",
-                                                                String::valueOf),
+                                                                "expandEntityReferences", String::valueOf),
                                                         new MatrixTest(
                                                                 org.apache.axiom.ts.om.builder
-                                                                        .TestCreateOMBuilderFromDOM
-                                                                        .class))),
+                                                                        .TestCreateOMBuilderFromDOM.class))),
                                         new FanOutNode<>(
                                                 getInstances(SAXImplementation.class),
                                                 Binding.singleton(Key.get(SAXImplementation.class)),
-                                                LabelBinding.simpleString(
-                                                        "implementation",
-                                                        SAXImplementation::getName),
+                                                LabelBinding.simpleString("implementation", SAXImplementation::getName),
                                                 new ConditionalNode(
                                                         injector -> {
-                                                            XMLSample file =
-                                                                    injector.getInstance(
-                                                                            XMLSample.class);
+                                                            XMLSample file = injector.getInstance(XMLSample.class);
                                                             SAXImplementation impl =
-                                                                    injector.getInstance(
-                                                                            SAXImplementation
-                                                                                    .class);
+                                                                    injector.getInstance(SAXImplementation.class);
                                                             return !file.hasExternalSubset()
-                                                                    || impl
-                                                                            .reportsExternalSubsetEntity();
+                                                                    || impl.reportsExternalSubsetEntity();
                                                         },
                                                         new FanOutNode<>(
-                                                                injector ->
-                                                                        Arrays.asList(
-                                                                                Boolean.TRUE,
-                                                                                Boolean.FALSE,
-                                                                                null),
-                                                                (binder, value) ->
-                                                                        binder.bind(Boolean.class)
-                                                                                .annotatedWith(
-                                                                                        Names.named(
-                                                                                                "expandEntityReferences"))
-                                                                                .toProvider(
-                                                                                        Providers
-                                                                                                .of(
-                                                                                                        value)),
+                                                                injector -> Arrays.asList(
+                                                                        Boolean.TRUE, Boolean.FALSE, null),
+                                                                (binder, value) -> binder.bind(Boolean.class)
+                                                                        .annotatedWith(
+                                                                                Names.named("expandEntityReferences"))
+                                                                        .toProvider(Providers.of(value)),
                                                                 LabelBinding.simpleString(
-                                                                        "expandEntityReferences",
-                                                                        String::valueOf),
+                                                                        "expandEntityReferences", String::valueOf),
                                                                 new MatrixTest(
-                                                                        org.apache.axiom.ts.om
-                                                                                .builder
+                                                                        org.apache.axiom.ts.om.builder
                                                                                 .TestCreateOMBuilderFromSAXSource
                                                                                 .class)))))),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMElement
-                                        .class),
+                        new MatrixTest(org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMElement.class),
                         new FanOutNode<>(
                                 ImmutableList.of("", "p"),
                                 Binding.singleton(Key.get(String.class, Names.named("prefix"))),
                                 LabelBinding.simpleString("prefix"),
                                 new MatrixTest(
                                         org.apache.axiom.ts.om.builder
-                                                .TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration
-                                                .class)),
+                                                .TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration.class)),
                         new MatrixTest(
-                                org.apache.axiom.ts.om.builder
-                                        .TestCreateOMBuilderFromDOMWithNSUnawarePrefixedAttribute
+                                org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMWithNSUnawarePrefixedAttribute
                                         .class),
                         new MatrixTest(
                                 org.apache.axiom.ts.om.builder
-                                        .TestCreateOMBuilderFromDOMWithNSUnawareUnprefixedAttribute
-                                        .class),
+                                        .TestCreateOMBuilderFromDOMWithNSUnawareUnprefixedAttribute.class),
                         new FanOutNode<>(
                                 getInstances(XOPSample.class),
                                 Binding.singleton(Key.get(XOPSample.class)),
                                 LabelBinding.simpleString("file", XOPSample::getName),
                                 new FanOutNode<>(
                                         ImmutableList.of(false, true),
-                                        Binding.singleton(
-                                                Key.get(Boolean.class, Names.named("build"))),
+                                        Binding.singleton(Key.get(Boolean.class, Names.named("build"))),
                                         LabelBinding.simpleBoolean("build"),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.om.builder
-                                                        .TestCreateOMBuilderXOP.class))),
+                                        new MatrixTest(org.apache.axiom.ts.om.builder.TestCreateOMBuilderXOP.class))),
+                        new MatrixTest(org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderFromFragment.class),
                         new MatrixTest(
-                                org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderFromFragment
-                                        .class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.builder
-                                        .TestCreateStAXOMBuilderFromXmlBeansPullParser.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderIncorrectState
-                                        .class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.builder
-                                        .TestCreateStAXOMBuilderNamespaceRepairing.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.builder
-                                        .TestCreateStAXOMBuilderNamespaceRepairing2.class),
+                                org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderFromXmlBeansPullParser.class),
+                        new MatrixTest(org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderIncorrectState.class),
+                        new MatrixTest(org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderNamespaceRepairing.class),
+                        new MatrixTest(org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderNamespaceRepairing2.class),
                         new FanOutNode<>(
                                 ImmutableList.of(false, true),
-                                Binding.singleton(
-                                        Key.get(Boolean.class, Names.named("useDOMSource"))),
+                                Binding.singleton(Key.get(Boolean.class, Names.named("useDOMSource"))),
                                 LabelBinding.simpleBoolean("useDOMSource"),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.builder.TestDetachWithDOM.class)),
+                                new MatrixTest(org.apache.axiom.ts.om.builder.TestDetachWithDOM.class)),
                         new FanOutNode<>(
                                 getInstances(StreamType.class),
                                 Binding.singleton(Key.get(StreamType.class)),
@@ -269,50 +192,32 @@ public class OMTestSuite {
                                         "streamType", v -> v.getType().getSimpleName()),
                                 new FanOutNode<>(
                                         ImmutableList.of(false, true),
-                                        Binding.singleton(
-                                                Key.get(
-                                                        Boolean.class,
-                                                        Names.named("useStreamSource"))),
+                                        Binding.singleton(Key.get(Boolean.class, Names.named("useStreamSource"))),
                                         LabelBinding.simpleBoolean("useStreamSource"),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.om.builder.TestDetachWithStream
-                                                        .class))),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.builder.TestDetachWithSAXSource.class),
+                                        new MatrixTest(org.apache.axiom.ts.om.builder.TestDetachWithStream.class))),
+                        new MatrixTest(org.apache.axiom.ts.om.builder.TestDetachWithSAXSource.class),
                         new FanOutNode<>(
                                 getInstances(BuilderFactory.class),
                                 Binding.singleton(Key.get(BuilderFactory.class)),
                                 LabelBinding.DIMENSION,
                                 new FanOutNode<>(
-                                        injector ->
-                                                Arrays.asList(null, Boolean.FALSE, Boolean.TRUE),
-                                        (binder, value) ->
-                                                binder.bind(Boolean.class)
-                                                        .annotatedWith(
-                                                                Names.named("discardDocument"))
-                                                        .toProvider(Providers.of(value)),
-                                        LabelBinding.simpleString(
-                                                "discardDocument", String::valueOf),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.om.builder
-                                                        .TestGetDocumentElement.class))),
+                                        injector -> Arrays.asList(null, Boolean.FALSE, Boolean.TRUE),
+                                        (binder, value) -> binder.bind(Boolean.class)
+                                                .annotatedWith(Names.named("discardDocument"))
+                                                .toProvider(Providers.of(value)),
+                                        LabelBinding.simpleString("discardDocument", String::valueOf),
+                                        new MatrixTest(org.apache.axiom.ts.om.builder.TestGetDocumentElement.class))),
                         new MatrixTest(
-                                org.apache.axiom.ts.om.builder
-                                        .TestGetDocumentElementWithDiscardDocumentIllFormedEpilog
+                                org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocumentIllFormedEpilog
                                         .class),
                         new MatrixTest(
-                                org.apache.axiom.ts.om.builder
-                                        .TestGetDocumentElementWithIllFormedDocument.class),
+                                org.apache.axiom.ts.om.builder.TestGetDocumentElementWithIllFormedDocument.class),
                         new MatrixTest(org.apache.axiom.ts.om.builder.TestInvalidXML.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.builder.TestIOExceptionInGetText.class),
+                        new MatrixTest(org.apache.axiom.ts.om.builder.TestIOExceptionInGetText.class),
                         new MatrixTest(org.apache.axiom.ts.om.builder.TestMalformedDocument.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.builder
-                                        .TestReadAttachmentBeforeRootPartComplete.class),
+                        new MatrixTest(org.apache.axiom.ts.om.builder.TestReadAttachmentBeforeRootPartComplete.class),
                         new MatrixTest(org.apache.axiom.ts.om.builder.TestRootPartStreaming.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.builder.TestStandaloneConfiguration.class),
+                        new MatrixTest(org.apache.axiom.ts.om.builder.TestStandaloneConfiguration.class),
                         // ── comment package ──
                         new MatrixTest(org.apache.axiom.ts.om.comment.TestSerialize.class),
                         // ── container package ──
@@ -331,18 +236,13 @@ public class OMTestSuite {
                         new MatrixTest(org.apache.axiom.ts.om.misc.TestAxiom95.class),
                         // ── namespace package ──
                         new MatrixTest(org.apache.axiom.ts.om.namespace.TestEquals.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.namespace.TestEqualsWithNullPrefix.class),
+                        new MatrixTest(org.apache.axiom.ts.om.namespace.TestEqualsWithNullPrefix.class),
                         new MatrixTest(org.apache.axiom.ts.om.namespace.TestGetNamespaceURI.class),
                         new MatrixTest(org.apache.axiom.ts.om.namespace.TestGetPrefix.class),
                         new MatrixTest(org.apache.axiom.ts.om.namespace.TestHashCode.class),
                         new MatrixTest(org.apache.axiom.ts.om.namespace.TestObjectEquals.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.namespace
-                                        .TestObjectEqualsWithDifferentPrefixes.class),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.namespace.TestObjectEqualsWithDifferentURIs
-                                        .class),
+                        new MatrixTest(org.apache.axiom.ts.om.namespace.TestObjectEqualsWithDifferentPrefixes.class),
+                        new MatrixTest(org.apache.axiom.ts.om.namespace.TestObjectEqualsWithDifferentURIs.class),
                         // ── node package ──
                         nodeTests(),
                         // ── sourcedelement package ──
@@ -371,94 +271,63 @@ public class OMTestSuite {
                                 new ParentNode(
                                         new ConditionalNode(
                                                 injector -> {
-                                                    XMLSample file =
-                                                            injector.getInstance(XMLSample.class);
-                                                    return !file.getName()
-                                                                    .equals(
-                                                                            "character-references.xml")
+                                                    XMLSample file = injector.getInstance(XMLSample.class);
+                                                    return !file.getName().equals("character-references.xml")
                                                             && !file.getName().equals("large.xml");
                                                 },
                                                 new FanOutNode<>(
                                                         getInstances(BuilderFactory.class),
-                                                        Binding.singleton(
-                                                                Key.get(BuilderFactory.class)),
+                                                        Binding.singleton(Key.get(BuilderFactory.class)),
                                                         LabelBinding.DIMENSION,
                                                         new FanOutNode<>(
                                                                 ImmutableList.of(false, true),
                                                                 Binding.singleton(
-                                                                        Key.get(
-                                                                                Boolean.class,
-                                                                                Names.named(
-                                                                                        "cache"))),
+                                                                        Key.get(Boolean.class, Names.named("cache"))),
                                                                 LabelBinding.simpleBoolean("cache"),
                                                                 new MatrixTest(
-                                                                        org.apache.axiom.ts.om
-                                                                                .container
-                                                                                .TestGetXMLStreamReader
-                                                                                .class)))),
+                                                                        org.apache.axiom.ts.om.container
+                                                                                .TestGetXMLStreamReader.class)))),
                                         new ConditionalNode(
                                                 injector -> {
-                                                    XMLSample file =
-                                                            injector.getInstance(XMLSample.class);
+                                                    XMLSample file = injector.getInstance(XMLSample.class);
                                                     OMContainerExtractor ce =
-                                                            injector.getInstance(
-                                                                    OMContainerExtractor.class);
+                                                            injector.getInstance(OMContainerExtractor.class);
                                                     return !file.hasEntityReferences()
                                                             || ce == OMContainerExtractor.DOCUMENT;
                                                 },
                                                 new FanOutNode<>(
                                                         injector -> {
-                                                            XMLSample file =
-                                                                    injector.getInstance(
-                                                                            XMLSample.class);
-                                                            return getInstances(
-                                                                            SerializationStrategy
-                                                                                    .class)
-                                                                    .stream()
+                                                            XMLSample file = injector.getInstance(XMLSample.class);
+                                                            return getInstances(SerializationStrategy.class).stream()
                                                                     .filter(
-                                                                            ss ->
-                                                                                    ss
-                                                                                                    .supportsInternalSubset()
-                                                                                            || !file
-                                                                                                    .hasInternalSubset())
-                                                                    .collect(
-                                                                            ImmutableList
-                                                                                    .toImmutableList());
+                                                                            ss -> ss.supportsInternalSubset()
+                                                                                    || !file.hasInternalSubset())
+                                                                    .collect(ImmutableList.toImmutableList());
                                                         },
-                                                        Binding.singleton(
-                                                                Key.get(
-                                                                        SerializationStrategy
-                                                                                .class)),
+                                                        Binding.singleton(Key.get(SerializationStrategy.class)),
                                                         LabelBinding.DIMENSION,
                                                         new MatrixTest(
-                                                                org.apache.axiom.ts.om.container
-                                                                        .TestSerialize.class)))))),
+                                                                org.apache.axiom.ts.om.container.TestSerialize
+                                                                        .class)))))),
                 new FanOutNode<>(
                         getInstances(OMContainerFactory.class),
                         Binding.singleton(Key.get(OMContainerFactory.class)),
                         LabelBinding.DIMENSION,
                         new ParentNode(
                                 new MatrixTest(
-                                        org.apache.axiom.ts.om.container
-                                                .TestAddChildWithIncompleteSibling.class),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.container.TestGetBuilderNull.class),
+                                        org.apache.axiom.ts.om.container.TestAddChildWithIncompleteSibling.class),
+                                new MatrixTest(org.apache.axiom.ts.om.container.TestGetBuilderNull.class),
                                 new FanOutNode<>(
                                         ImmutableList.of(false, true),
-                                        Binding.singleton(
-                                                Key.get(Boolean.class, Names.named("includeSelf"))),
+                                        Binding.singleton(Key.get(Boolean.class, Names.named("includeSelf"))),
                                         LabelBinding.simpleBoolean("includeSelf"),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.om.container.TestGetDescendants
-                                                        .class)))));
+                                        new MatrixTest(org.apache.axiom.ts.om.container.TestGetDescendants.class)))));
     }
 
     private static MatrixTestNode documentTests() {
         return new ParentNode(
                 new MatrixTest(org.apache.axiom.ts.om.document.TestAddChildIncomplete.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.document.TestAddChildWithExistingDocumentElement
-                                .class),
+                new MatrixTest(org.apache.axiom.ts.om.document.TestAddChildWithExistingDocumentElement.class),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestBuild.class),
                 new FanOutNode<>(
                         getInstances(XMLSample.class),
@@ -467,31 +336,24 @@ public class OMTestSuite {
                         new MatrixTest(org.apache.axiom.ts.om.document.TestClone.class)),
                 new FanOutNode<>(
                         org.apache.axiom.ts.om.document.TestDigest.PARAMS,
-                        Binding.singleton(
-                                Key.get(org.apache.axiom.ts.om.document.TestDigest.Params.class)),
-                        LabelBinding.simpleString(
-                                "file", org.apache.axiom.ts.om.document.TestDigest.Params::file),
+                        Binding.singleton(Key.get(org.apache.axiom.ts.om.document.TestDigest.Params.class)),
+                        LabelBinding.simpleString("file", org.apache.axiom.ts.om.document.TestDigest.Params::file),
                         new MatrixTest(org.apache.axiom.ts.om.document.TestDigest.class)),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestGetOMDocumentElement.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.document.TestGetOMDocumentElementAfterDetach.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.document.TestGetOMDocumentElementWithParser.class),
+                new MatrixTest(org.apache.axiom.ts.om.document.TestGetOMDocumentElementAfterDetach.class),
+                new MatrixTest(org.apache.axiom.ts.om.document.TestGetOMDocumentElementWithParser.class),
                 new FanOutNode<>(
                         getInstances(XSLTImplementation.class),
                         Binding.singleton(Key.get(XSLTImplementation.class)),
                         LabelBinding.simpleString("xslt", XSLTImplementation::getName),
                         new ConditionalNode(
-                                injector ->
-                                        injector.getInstance(XSLTImplementation.class)
-                                                .supportsLexicalHandlerWithStreamSource(),
+                                injector -> injector.getInstance(XSLTImplementation.class)
+                                        .supportsLexicalHandlerWithStreamSource(),
                                 new FanOutNode<>(
                                         getInstances(XMLSample.class),
                                         Binding.singleton(Key.get(XMLSample.class)),
                                         LabelBinding.simpleString("file", XMLSample::getName),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.om.document.TestGetSAXResult
-                                                        .class)))),
+                                        new MatrixTest(org.apache.axiom.ts.om.document.TestGetSAXResult.class)))),
                 new FanOutNode<>(
                         getInstances(SAXImplementation.class),
                         Binding.singleton(Key.get(SAXImplementation.class)),
@@ -503,54 +365,37 @@ public class OMTestSuite {
                                 new ConditionalNode(
                                         injector -> {
                                             XMLSample file = injector.getInstance(XMLSample.class);
-                                            SAXImplementation impl =
-                                                    injector.getInstance(SAXImplementation.class);
-                                            return !file.hasExternalSubset()
-                                                    || impl.reportsExternalSubsetEntity();
+                                            SAXImplementation impl = injector.getInstance(SAXImplementation.class);
+                                            return !file.hasExternalSubset() || impl.reportsExternalSubsetEntity();
                                         },
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.document
-                                                        .TestGetSAXResultSAXParser.class)))),
+                                                org.apache.axiom.ts.om.document.TestGetSAXResultSAXParser.class)))),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestGetSAXResultXMLBeans.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild
-                                .class),
+                new MatrixTest(org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("complete"))),
                         LabelBinding.simpleBoolean("complete"),
                         new FanOutNode<>(
                                 ImmutableList.of(false, true),
-                                Binding.singleton(
-                                        Key.get(
-                                                Boolean.class,
-                                                Names.named("accessDocumentElement"))),
+                                Binding.singleton(Key.get(Boolean.class, Names.named("accessDocumentElement"))),
                                 LabelBinding.simpleBoolean("accessDocumentElement"),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.document.TestRemoveChildren.class))),
+                                new MatrixTest(org.apache.axiom.ts.om.document.TestRemoveChildren.class))),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeAndConsume.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.document
-                                .TestSerializeAndConsumeWithIncompleteDescendant.class),
+                new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant.class),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeUTF16.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.document.TestSerializeWithIgnoreXMLDeclaration
-                                .class),
+                new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeWithIgnoreXMLDeclaration.class),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeXML11.class),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeXMLDeclaration.class),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestSetOMDocumentElementNew.class),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestSetOMDocumentElementNull.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.document.TestSetOMDocumentElementReplace.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.document.TestSetOMDocumentElementReplaceSame.class),
+                new MatrixTest(org.apache.axiom.ts.om.document.TestSetOMDocumentElementReplace.class),
+                new MatrixTest(org.apache.axiom.ts.om.document.TestSetOMDocumentElementReplaceSame.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
                         LabelBinding.simpleBoolean("cache"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.document.sr.TestCharacterDataReaderFromParser
-                                        .class)),
+                        new MatrixTest(org.apache.axiom.ts.om.document.sr.TestCharacterDataReaderFromParser.class)),
                 new MatrixTest(org.apache.axiom.ts.om.document.sr.TestCloseWithoutCaching.class),
                 new MatrixTest(org.apache.axiom.ts.om.document.sr.TestDTDReader.class),
                 new FanOutNode<>(
@@ -558,75 +403,52 @@ public class OMTestSuite {
                         Binding.singleton(Key.get(Boolean.class, Names.named("build"))),
                         LabelBinding.simpleBoolean("build"),
                         new FanOutNode<>(
-                                injector ->
-                                        injector.getInstance(
-                                                        Key.get(
-                                                                Boolean.class,
-                                                                Names.named("build")))
-                                                ? ImmutableList.of(true)
-                                                : ImmutableList.of(true, false),
+                                injector -> injector.getInstance(Key.get(Boolean.class, Names.named("build")))
+                                        ? ImmutableList.of(true)
+                                        : ImmutableList.of(true, false),
                                 Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
                                 LabelBinding.simpleBoolean("cache"),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.document.sr.TestDTDReaderFromParser
-                                                .class))));
+                                new MatrixTest(org.apache.axiom.ts.om.document.sr.TestDTDReaderFromParser.class))));
     }
 
     private static MatrixTestNode elementTests() {
         return new ParentNode(
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByElement.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByOtherElement
-                                .class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByElement.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByOtherElement.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
-                        Binding.singleton(
-                                Key.get(Boolean.class, Names.named("defaultNamespaceInScope"))),
+                        Binding.singleton(Key.get(Boolean.class, Names.named("defaultNamespaceInScope"))),
                         LabelBinding.simpleBoolean("defaultNamespaceInScope"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.element.TestAddAttributeGeneratedPrefix
-                                        .class)),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestAddAttributeReuseExistingPrefix.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestAddAttributeWithInvalidNamespace1.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestAddAttributeWithInvalidNamespace2.class),
+                        new MatrixTest(org.apache.axiom.ts.om.element.TestAddAttributeGeneratedPrefix.class)),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestAddAttributeReuseExistingPrefix.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestAddAttributeWithInvalidNamespace1.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestAddAttributeWithInvalidNamespace2.class),
                 new FanOutNode<>(
                         getInstances(AddAttributeStrategy.class),
                         Binding.singleton(Key.get(AddAttributeStrategy.class)),
                         LabelBinding.DIMENSION,
                         new ParentNode(
+                                new MatrixTest(org.apache.axiom.ts.om.element.TestAddAttributeMultiple.class),
+                                new MatrixTest(org.apache.axiom.ts.om.element.TestAddAttributeReplace.class),
                                 new MatrixTest(
-                                        org.apache.axiom.ts.om.element.TestAddAttributeMultiple
-                                                .class),
+                                        org.apache.axiom.ts.om.element
+                                                .TestAddAttributeWithExistingNamespaceDeclarationInScope.class),
                                 new MatrixTest(
-                                        org.apache.axiom.ts.om.element.TestAddAttributeReplace
+                                        org.apache.axiom.ts.om.element
+                                                .TestAddAttributeWithExistingNamespaceDeclarationOnSameElement.class),
+                                new MatrixTest(
+                                        org.apache.axiom.ts.om.element.TestAddAttributeWithMaskedNamespaceDeclaration
                                                 .class),
                                 new MatrixTest(
                                         org.apache.axiom.ts.om.element
-                                                .TestAddAttributeWithExistingNamespaceDeclarationInScope
-                                                .class),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.element
-                                                .TestAddAttributeWithExistingNamespaceDeclarationOnSameElement
-                                                .class),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.element
-                                                .TestAddAttributeWithMaskedNamespaceDeclaration
-                                                .class),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.element
-                                                .TestAddAttributeWithoutExistingNamespaceDeclaration
-                                                .class),
+                                                .TestAddAttributeWithoutExistingNamespaceDeclaration.class),
                                 new FanOutNode<>(
                                         getInstances(NoNamespaceStrategy.class),
                                         Binding.singleton(Key.get(NoNamespaceStrategy.class)),
                                         LabelBinding.DIMENSION,
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.element
-                                                        .TestAddAttributeWithoutNamespace.class)))),
+                                                org.apache.axiom.ts.om.element.TestAddAttributeWithoutNamespace
+                                                        .class)))),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestAddChild.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestAddChild2.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestAddChildDiscarded.class),
@@ -636,81 +458,55 @@ public class OMTestSuite {
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("build"))),
                         LabelBinding.simpleBoolean("build"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.element.TestAddChildWithSameParent.class)),
+                        new MatrixTest(org.apache.axiom.ts.om.element.TestAddChildWithSameParent.class)),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestBuildDiscarded.class),
                 new MatrixTest(
-                        org.apache.axiom.ts.om.element
-                                .TestChildReDeclaringGrandParentsDefaultNSWithPrefix.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element
-                                .TestChildReDeclaringParentsDefaultNSWithPrefix.class),
+                        org.apache.axiom.ts.om.element.TestChildReDeclaringGrandParentsDefaultNSWithPrefix.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestChildReDeclaringParentsDefaultNSWithPrefix.class),
                 new FanOutNode<>(
-                        injector ->
-                                getInstances(XMLSample.class).stream()
-                                        .filter(f -> !f.hasEntityReferences())
-                                        .collect(ImmutableList.toImmutableList()),
+                        injector -> getInstances(XMLSample.class).stream()
+                                .filter(f -> !f.hasEntityReferences())
+                                .collect(ImmutableList.toImmutableList()),
                         Binding.singleton(Key.get(XMLSample.class)),
                         LabelBinding.simpleString("file", XMLSample::getName),
                         new MatrixTest(org.apache.axiom.ts.om.element.TestCloneOMElement2.class)),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestCloneOMElementNamespaceRepairing.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestCloneOMElementNamespaceRepairing.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestClose.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestDeclareDefaultNamespace1.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestDeclareDefaultNamespace2.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestDeclareDefaultNamespaceConflict1.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestDeclareDefaultNamespaceConflict2.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestDeclareDefaultNamespaceConflict1.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestDeclareDefaultNamespaceConflict2.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestDeclareNamespace1.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestDeclareNamespaceInvalid1.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestDeclareNamespaceInvalid2.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestDeclareNamespaceWithEmptyPrefix.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestDeclareNamespaceWithGeneratedPrefix1
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestDeclareNamespaceWithGeneratedPrefix3
-                                .class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestDeclareNamespaceWithEmptyPrefix.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestDeclareNamespaceWithGeneratedPrefix1.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestDeclareNamespaceWithGeneratedPrefix3.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestDetachWithDifferentBuilder.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestDigestWithNamespace.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestDigestWithoutNamespace.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestDiscardDocumentElement.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestDiscardIncomplete.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestDiscardPartiallyBuilt.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestFindNamespaceByNamespaceURIMasked.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestFindNamespaceByNamespaceURIMasked.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestFindNamespaceByPrefix.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestFindNamespaceCaseSensitivity.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestFindNamespaceURIWithPrefixUndeclaring
-                                .class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestFindNamespaceCaseSensitivity.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestFindNamespaceURIWithPrefixUndeclaring.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetAllAttributes1.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetAllAttributes2.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetAllDeclaredNamespaces.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element
-                                .TestGetAllDeclaredNamespacesNoSuchElementException.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetAllDeclaredNamespacesRemove.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetAttributeValueNonExisting.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetAttributeValueWithXmlPrefix1.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetAttributeValueWithXmlPrefix2.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetAllDeclaredNamespacesNoSuchElementException.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetAllDeclaredNamespacesRemove.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetAttributeValueNonExisting.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetAttributeValueWithXmlPrefix1.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetAttributeValueWithXmlPrefix2.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix1.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix2.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildElements.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetChildElementsConcurrentModification
-                                .class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildElementsConcurrentModification.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildElementsConsumed.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildren.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetChildrenConcurrentModification.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildrenConcurrentModification.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildrenRemove1.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildrenRemove2.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildrenRemove3.class),
@@ -720,11 +516,8 @@ public class OMTestSuite {
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildrenWithName2.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildrenWithName3.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildrenWithName4.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetChildrenWithNameNextWithoutHasNext
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetChildrenWithNamespaceURI.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildrenWithNameNextWithoutHasNext.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetChildrenWithNamespaceURI.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetDefaultNamespace.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetDefaultNamespace2.class),
                 new FanOutNode<>(
@@ -732,49 +525,30 @@ public class OMTestSuite {
                         Binding.singleton(Key.get(Boolean.class, Names.named("includeSelf"))),
                         LabelBinding.simpleBoolean("includeSelf"),
                         new MatrixTest(org.apache.axiom.ts.om.element.TestGetDescendants.class)),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetDescendantsRemoveSubtree.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetDescendantsRemoveSubtree.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetFirstChildWithName.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetFirstChildWithNameOnIncompleteElement
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetFirstOMChildAfterConsume.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetFirstOMChildAfterDiscard.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetFirstChildWithNameOnIncompleteElement.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetFirstOMChildAfterConsume.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetFirstOMChildAfterDiscard.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("detached"))),
                         LabelBinding.simpleBoolean("detached"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.element.TestGetNamespaceContext.class)),
+                        new MatrixTest(org.apache.axiom.ts.om.element.TestGetNamespaceContext.class)),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("useNull"))),
                         LabelBinding.simpleBoolean("useNull"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.element.TestGetNamespaceNormalized.class)),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetNamespaceNormalizedWithParser.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetNamespaceNormalizedWithSAXSource
-                                .class),
+                        new MatrixTest(org.apache.axiom.ts.om.element.TestGetNamespaceNormalized.class)),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetNamespaceNormalizedWithParser.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetNamespaceNormalizedWithSAXSource.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetNamespacesInScope.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetNamespacesInScopeWithDefaultNamespace
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element
-                                .TestGetNamespacesInScopeWithMaskedDefaultNamespace.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetNamespacesInScopeWithMaskedNamespace
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetNamespaceURIWithNamespace.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetNamespaceURIWithoutNamespace.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetPrefixWithDefaultNamespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetNamespacesInScopeWithDefaultNamespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetNamespacesInScopeWithMaskedDefaultNamespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetNamespacesInScopeWithMaskedNamespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetNamespaceURIWithNamespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetNamespaceURIWithoutNamespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetPrefixWithDefaultNamespace.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetPrefixWithNamespace.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetPrefixWithoutNamespace.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetQNameWithNamespace.class),
@@ -790,47 +564,32 @@ public class OMTestSuite {
                                 LabelBinding.simpleBoolean("cache"),
                                 new ParentNode(
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.element
-                                                        .TestGetSAXSourceIdentityTransform.class),
+                                                org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransform.class),
                                         new MatrixTest(
                                                 org.apache.axiom.ts.om.element
-                                                        .TestGetSAXSourceIdentityTransformOnFragment
-                                                        .class)))),
+                                                        .TestGetSAXSourceIdentityTransformOnFragment.class)))),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetText.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetTextAsQName.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetTextAsQNameEmpty.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestGetTextAsQNameNoNamespace.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetTextAsQNameWithExtraWhitespace.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetTextAsStreamWithNonTextChildren
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetTextAsStreamWithoutCaching.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetTextAsStreamWithSingleTextNode.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetTextAsQNameWithExtraWhitespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetTextAsStreamWithNonTextChildren.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetTextAsStreamWithoutCaching.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetTextAsStreamWithSingleTextNode.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("compact"))),
                         LabelBinding.simpleBoolean("compact"),
                         new MatrixTest(org.apache.axiom.ts.om.element.TestGetTextBinary.class)),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetTextWithCDATASectionChild.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetTextWithMixedOMTextChildren.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromParser
-                                .class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetTextWithCDATASectionChild.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetTextWithMixedOMTextChildren.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromParser.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
                         LabelBinding.simpleBoolean("cache"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.element
-                                        .TestGetXMLStreamReaderOnNonRootElement.class)),
+                        new MatrixTest(org.apache.axiom.ts.om.element.TestGetXMLStreamReaderOnNonRootElement.class)),
                 new FanOutNode<>(
                         ImmutableList.of(0, 1, 2, 3, 4),
                         Binding.singleton(Key.get(Integer.class, Names.named("build"))),
@@ -841,30 +600,22 @@ public class OMTestSuite {
                                 LabelBinding.simpleBoolean("cache"),
                                 new MatrixTest(
                                         org.apache.axiom.ts.om.element
-                                                .TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt
-                                                .class))),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithCaching.class),
+                                                .TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt.class))),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithCaching.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
                         LabelBinding.simpleBoolean("cache"),
                         new MatrixTest(
-                                org.apache.axiom.ts.om.element
-                                        .TestGetXMLStreamReaderWithIncompleteDescendant.class)),
+                                org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithIncompleteDescendant.class)),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithNamespaceURIInterning.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithoutCachingPartiallyBuilt.class),
                 new MatrixTest(
-                        org.apache.axiom.ts.om.element
-                                .TestGetXMLStreamReaderWithNamespaceURIInterning.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element
-                                .TestGetXMLStreamReaderWithoutCachingPartiallyBuilt.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element
-                                .TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified.class),
+                        org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified
+                                .class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
-                        Binding.singleton(
-                                Key.get(Boolean.class, Names.named("preserveNamespaceContext"))),
+                        Binding.singleton(Key.get(Boolean.class, Names.named("preserveNamespaceContext"))),
                         LabelBinding.simpleBoolean("preserveNamespaceContext"),
                         new FanOutNode<>(
                                 ImmutableList.of(false, true),
@@ -872,16 +623,12 @@ public class OMTestSuite {
                                 LabelBinding.simpleBoolean("cache"),
                                 new MatrixTest(
                                         org.apache.axiom.ts.om.element
-                                                .TestGetXMLStreamReaderWithPreserveNamespaceContext
-                                                .class))),
+                                                .TestGetXMLStreamReaderWithPreserveNamespaceContext.class))),
                 new MatrixTest(
-                        org.apache.axiom.ts.om.element
-                                .TestGetXMLStreamReaderWithPreserveNamespaceContext2.class),
+                        org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithPreserveNamespaceContext2.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestHasNameWithNamespace.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestHasNameWithoutNamespace.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild
-                                .class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestIsCompleteWithParser.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestMultipleDefaultNS.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestRemoveAttribute.class),
@@ -891,47 +638,29 @@ public class OMTestSuite {
                         Binding.singleton(Key.get(Boolean.class, Names.named("complete"))),
                         LabelBinding.simpleBoolean("complete"),
                         new MatrixTest(org.apache.axiom.ts.om.element.TestRemoveChildren.class)),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestResolveQNameWithNonDefaultNamespace
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestResolveQNameWithUnboundPrefix.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestResolveQNameWithNonDefaultNamespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestResolveQNameWithUnboundPrefix.class),
                 new FanOutNode<>(
                         org.apache.axiom.ts.om.element.TestSerialization.PARAMS,
-                        Binding.singleton(
-                                Key.get(
-                                        org.apache.axiom.ts.om.element.TestSerialization.Params
-                                                .class)),
+                        Binding.singleton(Key.get(org.apache.axiom.ts.om.element.TestSerialization.Params.class)),
                         (inj, v, l) -> {
                             l.addLabel("parent", v.parent());
                             l.addLabel("children", v.children());
                         },
                         new MatrixTest(org.apache.axiom.ts.om.element.TestSerialization.class)),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestSerializeAndConsumeConsumed.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestSerializeAndConsumePartiallyBuilt.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element
-                                .TestSerializeAndConsumeWithIncompleteDescendant.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestSerializeAndConsumeConsumed.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestSerializeAndConsumePartiallyBuilt.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant.class),
                 new FanOutNode<>(
                         org.apache.axiom.ts.om.element.TestSetNamespace.PARAMS,
-                        Binding.singleton(
-                                Key.get(
-                                        org.apache.axiom.ts.om.element.TestSetNamespace.Params
-                                                .class)),
+                        Binding.singleton(Key.get(org.apache.axiom.ts.om.element.TestSetNamespace.Params.class)),
                         (inj, v, l) -> {
                             if (v.namespaceURI() != null) l.addLabel("uri", v.namespaceURI());
                             if (v.prefix() != null) l.addLabel("prefix", v.prefix());
-                            if (v.prefixInScope() != null)
-                                l.addLabel("prefixInScope", v.prefixInScope());
+                            if (v.prefixInScope() != null) l.addLabel("prefixInScope", v.prefixInScope());
                             l.addLabel("invalid", v.invalid());
                             if (v.declare() != null)
                                 l.addLabel("declare", v.declare().booleanValue());
@@ -940,28 +669,21 @@ public class OMTestSuite {
                 new MatrixTest(org.apache.axiom.ts.om.element.TestSetText.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestSetTextEmptyString.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestSetTextNull.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestSetTextWithExistingChildren.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestSetTextWithExistingChildren.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestSetTextQName.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestSetTextQNameNull.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestSetTextQNameWithEmptyPrefix.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestSetTextQNameWithExistingChildren.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestSetTextQNameWithEmptyPrefix.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestSetTextQNameWithExistingChildren.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestUndeclarePrefix.class),
                 new MatrixTest(org.apache.axiom.ts.om.element.TestWriteTextTo.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.element.TestWriteTextToWithNonTextNodes.class),
+                new MatrixTest(org.apache.axiom.ts.om.element.TestWriteTextToWithNonTextNodes.class),
                 // ── element/sr package ──
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
                         LabelBinding.simpleBoolean("cache"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.element.sr.TestCloseAndContinueBuilding
-                                        .class)),
+                        new MatrixTest(org.apache.axiom.ts.om.element.sr.TestCloseAndContinueBuilding.class)),
                 new FanOutNode<>(
                         getInstances(BuilderFactory.class),
                         Binding.singleton(Key.get(BuilderFactory.class)),
@@ -970,14 +692,12 @@ public class OMTestSuite {
                                 ImmutableList.of(false, true),
                                 Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
                                 LabelBinding.simpleBoolean("cache"),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.element.sr.TestCommentEvent.class))),
+                                new MatrixTest(org.apache.axiom.ts.om.element.sr.TestCommentEvent.class))),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
                         LabelBinding.simpleBoolean("cache"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.element.sr.TestGetBlobFromElement.class)),
+                        new MatrixTest(org.apache.axiom.ts.om.element.sr.TestGetBlobFromElement.class)),
                 new MatrixTest(org.apache.axiom.ts.om.element.sr.TestGetElementText.class),
                 new FanOutNode<>(
                         getInstances(BuilderFactory.class),
@@ -988,76 +708,47 @@ public class OMTestSuite {
                                 Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
                                 LabelBinding.simpleBoolean("cache"),
                                 new FanOutNode<>(
-                                        injector ->
-                                                injector.getInstance(
-                                                                Key.get(
-                                                                        Boolean.class,
-                                                                        Names.named("cache")))
-                                                        ? ImmutableList.of(0)
-                                                        : ImmutableList.of(0, 1, 2, 3, 4, 5),
-                                        Binding.singleton(
-                                                Key.get(Integer.class, Names.named("build"))),
+                                        injector -> injector.getInstance(Key.get(Boolean.class, Names.named("cache")))
+                                                ? ImmutableList.of(0)
+                                                : ImmutableList.of(0, 1, 2, 3, 4, 5),
+                                        Binding.singleton(Key.get(Integer.class, Names.named("build"))),
                                         LabelBinding.simpleInt("build"),
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.element.sr
-                                                        .TestGetElementTextFromParser.class)))),
+                                                org.apache.axiom.ts.om.element.sr.TestGetElementTextFromParser
+                                                        .class)))),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("cache"))),
                         LabelBinding.simpleBoolean("cache"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.element.sr.TestGetNamespaceContext.class)),
+                        new MatrixTest(org.apache.axiom.ts.om.element.sr.TestGetNamespaceContext.class)),
                 new MatrixTest(org.apache.axiom.ts.om.element.sr.TestNextTag.class));
     }
 
     private static MatrixTestNode factoryTests() {
         return new ParentNode(
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMAttributeGeneratedPrefix.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMAttributeInterfaces.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMAttributeNullPrefixNoNamespace
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace1
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace2
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMCommentWithoutParent.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMDocTypeWithoutParent.class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMAttributeGeneratedPrefix.class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMAttributeInterfaces.class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMAttributeNullPrefixNoNamespace.class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace1.class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace2.class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMCommentWithoutParent.class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMDocTypeWithoutParent.class),
                 new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMDocument.class),
                 createOMElementTests(),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource1
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource2
-                                .class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullURIAndPrefix
-                                .class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource1.class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource2.class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullURIAndPrefix.class),
                 new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMEntityReference.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMEntityReferenceWithNullParent
-                                .class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMEntityReferenceWithNullParent.class),
                 new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMNamespace.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory.TestCreateOMNamespaceWithNullURI.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.factory
-                                .TestCreateOMProcessingInstructionWithoutParent.class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMNamespaceWithNullURI.class),
+                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMProcessingInstructionWithoutParent.class),
                 new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMText.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("nullContentId"))),
                         LabelBinding.simpleBoolean("nullContentId"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.factory.TestCreateOMTextFromBlobProvider
-                                        .class)),
+                        new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMTextFromBlobProvider.class)),
                 new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMTextFromOMText.class),
                 new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMTextWithNullParent.class),
                 new MatrixTest(org.apache.axiom.ts.om.factory.TestFactoryIsSingleton.class),
@@ -1072,82 +763,62 @@ public class OMTestSuite {
                 new ParentNode(
                         new FanOutNode<>(
                                 injector -> {
-                                    CreateOMElementVariant v =
-                                            injector.getInstance(CreateOMElementVariant.class);
+                                    CreateOMElementVariant v = injector.getInstance(CreateOMElementVariant.class);
                                     return Arrays.stream(CreateOMElementParentSupplier.INSTANCES)
                                             .filter(ps -> ps.isSupported(v))
                                             .collect(ImmutableList.toImmutableList());
                                 },
                                 Binding.singleton(Key.get(CreateOMElementParentSupplier.class)),
-                                LabelBinding.simpleString(
-                                        "parent", CreateOMElementParentSupplier::getName),
+                                LabelBinding.simpleString("parent", CreateOMElementParentSupplier::getName),
                                 new ParentNode(
                                         new ConditionalNode(
-                                                injector ->
-                                                        injector.getInstance(
-                                                                        CreateOMElementVariant
-                                                                                .class)
-                                                                .isSupportsDefaultNamespace(),
+                                                injector -> injector.getInstance(CreateOMElementVariant.class)
+                                                        .isSupportsDefaultNamespace(),
                                                 new MatrixTest(
                                                         org.apache.axiom.ts.om.factory
-                                                                .TestCreateOMElementWithDefaultNamespace
-                                                                .class)),
+                                                                .TestCreateOMElementWithDefaultNamespace.class)),
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.factory
-                                                        .TestCreateOMElementWithGeneratedPrefix
+                                                org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix
                                                         .class),
                                         new MatrixTest(
                                                 org.apache.axiom.ts.om.factory
-                                                        .TestCreateOMElementWithoutNamespaceNullPrefix
+                                                        .TestCreateOMElementWithoutNamespaceNullPrefix.class),
+                                        new MatrixTest(
+                                                org.apache.axiom.ts.om.factory.TestCreateOMElementWithInvalidNamespace
                                                         .class),
                                         new MatrixTest(
                                                 org.apache.axiom.ts.om.factory
-                                                        .TestCreateOMElementWithInvalidNamespace
-                                                        .class),
+                                                        .TestCreateOMElementWithNonDefaultNamespace.class),
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.factory
-                                                        .TestCreateOMElementWithNonDefaultNamespace
-                                                        .class),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.om.factory
-                                                        .TestCreateOMElementWithoutNamespace
+                                                org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace
                                                         .class))),
                         new ConditionalNode(
-                                injector ->
-                                        injector.getInstance(CreateOMElementVariant.class)
-                                                .isSupportsContainer(),
+                                injector -> injector.getInstance(CreateOMElementVariant.class)
+                                        .isSupportsContainer(),
                                 new ParentNode(
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.factory
-                                                        .TestCreateOMElementWithNamespaceInScope1
+                                                org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope1
                                                         .class),
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.factory
-                                                        .TestCreateOMElementWithNamespaceInScope2
+                                                org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope2
                                                         .class),
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.factory
-                                                        .TestCreateOMElementWithoutNamespace2
+                                                org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace2
                                                         .class),
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.factory
-                                                        .TestCreateOMElementWithoutNamespace3
+                                                org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace3
                                                         .class))),
                         new ConditionalNode(
                                 injector -> {
-                                    CreateOMElementVariant v =
-                                            injector.getInstance(CreateOMElementVariant.class);
-                                    return v.isSupportsContainer()
-                                            && v.isSupportsDefaultNamespace();
+                                    CreateOMElementVariant v = injector.getInstance(CreateOMElementVariant.class);
+                                    return v.isSupportsContainer() && v.isSupportsDefaultNamespace();
                                 },
                                 new ParentNode(
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.factory
-                                                        .TestCreateOMElementWithNamespaceInScope3
+                                                org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope3
                                                         .class),
                                         new MatrixTest(
-                                                org.apache.axiom.ts.om.factory
-                                                        .TestCreateOMElementWithNamespaceInScope4
+                                                org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope4
                                                         .class)))));
     }
 
@@ -1179,8 +850,7 @@ public class OMTestSuite {
                 new MatrixTest(org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild.class),
                 new MatrixTest(org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnOrphan.class),
                 new MatrixTest(org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnSelf.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.node.TestInsertSiblingBeforeSameParent.class));
+                new MatrixTest(org.apache.axiom.ts.om.node.TestInsertSiblingBeforeSameParent.class));
     }
 
     private static MatrixTestNode sourcedElementTests() {
@@ -1197,36 +867,23 @@ public class OMTestSuite {
                                 Binding.singleton(Key.get(QName.class)),
                                 QNAME_LABELS,
                                 new ParentNode(
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.om.sourcedelement
-                                                        .TestGetLocalName.class),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.om.sourcedelement
-                                                        .TestGetNamespace.class),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.om.sourcedelement.TestGetPrefix
-                                                        .class),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.om.sourcedelement
-                                                        .TestGetNamespaceURI.class),
-                                        new MatrixTest(
-                                                org.apache.axiom.ts.om.sourcedelement.TestHasName
-                                                        .class)))),
+                                        new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetLocalName.class),
+                                        new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetNamespace.class),
+                                        new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetPrefix.class),
+                                        new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceURI.class),
+                                        new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestHasName.class)))),
                 new FanOutNode<>(
                         getInstances(AddAttributeStrategy.class),
                         Binding.singleton(Key.get(AddAttributeStrategy.class)),
                         LabelBinding.DIMENSION,
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.sourcedelement.TestAddAttribute.class)),
+                        new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestAddAttribute.class)),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestBlobOMDataSource.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestStringOMDataSource.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("copyOMDataSources"))),
                         LabelBinding.simpleBoolean("copyOMDataSources"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive
-                                        .class)),
+                        new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive.class)),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestCloneUnknownName.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestCloseOnComplete.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestComplete.class),
@@ -1236,24 +893,17 @@ public class OMTestSuite {
                         Binding.singleton(Key.get(ExpansionStrategy.class)),
                         LabelBinding.DIMENSION,
                         new ParentNode(
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.sourcedelement.TestDetach.class),
-                                new MatrixTest(
-                                        org.apache.axiom.ts.om.sourcedelement.TestDiscard.class))),
+                                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestDetach.class),
+                                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestDiscard.class))),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestExpand.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetAllAttributes.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement.TestGetAllDeclaredNamespaces.class),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetAllDeclaredNamespaces.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetAttribute.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetAttributeValue.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement.TestGetDocumentFromBuilder.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized2.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement.TestGetNextOMSiblingIncomplete.class),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetDocumentFromBuilder.class),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized.class),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized2.class),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetNextOMSiblingIncomplete.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetObject.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestGetReaderException.class),
                 new FanOutNode<>(
@@ -1262,85 +912,66 @@ public class OMTestSuite {
                         LabelBinding.DIMENSION,
                         new FanOutNode<>(
                                 ImmutableList.of(false, true),
-                                Binding.singleton(
-                                        Key.get(Boolean.class, Names.named("serializeParent"))),
+                                Binding.singleton(Key.get(Boolean.class, Names.named("serializeParent"))),
                                 LabelBinding.simpleBoolean("serializeParent"),
                                 new MatrixTest(
-                                        org.apache.axiom.ts.om.sourcedelement
-                                                .TestGetSAXSourceWithPushOMDataSource.class))),
+                                        org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource
+                                                .class))),
                 new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement
-                                .TestGetSAXSourceWithPushOMDataSourceThrowingException.class),
+                        org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSourceThrowingException
+                                .class),
                 new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement
-                                .TestGetTextAsStreamWithNonDestructiveOMDataSource.class),
+                        org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName1DefaultPrefix.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement.TestName1QualifiedPrefix.class),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName1QualifiedPrefix.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName1Unqualified.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName2DefaultPrefix.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement.TestName2QualifiedPrefix.class),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName2QualifiedPrefix.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName2Unqualified.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName3DefaultPrefix.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement.TestName3QualifiedPrefix.class),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName3QualifiedPrefix.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName3Unqualified.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName4DefaultPrefix.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement.TestName4QualifiedPrefix.class),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName4QualifiedPrefix.class),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestName4Unqualified.class),
                 new FanOutNode<>(
                         ImmutableList.copyOf(PushOMDataSourceScenario.INSTANCES),
                         Binding.singleton(Key.get(PushOMDataSourceScenario.class)),
                         LabelBinding.DIMENSION,
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.sourcedelement.TestPushOMDataSourceExpansion
-                                        .class)),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement.TestRemoveChildrenUnexpanded.class),
+                        new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestPushOMDataSourceExpansion.class)),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestRemoveChildrenUnexpanded.class),
                 sourcedElementSerializeTests(),
                 new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement
-                                .TestSerializeModifiedOMSEWithNonDestructiveDataSource.class),
+                        org.apache.axiom.ts.om.sourcedelement.TestSerializeModifiedOMSEWithNonDestructiveDataSource
+                                .class),
                 new FanOutNode<>(
                         getInstances(SerializationStrategy.class),
                         Binding.singleton(Key.get(SerializationStrategy.class)),
                         LabelBinding.DIMENSION,
                         new FanOutNode<>(
                                 ImmutableList.of(false, true),
-                                Binding.singleton(
-                                        Key.get(Boolean.class, Names.named("serializeParent"))),
+                                Binding.singleton(Key.get(Boolean.class, Names.named("serializeParent"))),
                                 LabelBinding.simpleBoolean("serializeParent"),
                                 new MatrixTest(
                                         org.apache.axiom.ts.om.sourcedelement
-                                                .TestSerializeOMDataSourceWritingToOutputStream
-                                                .class))),
+                                                .TestSerializeOMDataSourceWritingToOutputStream.class))),
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestSetDataSource.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement
-                                .TestSetDataSourceOnAlreadyExpandedElement.class),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestSetDataSourceOnAlreadyExpandedElement.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("expand"))),
                         LabelBinding.simpleBoolean("expand"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.sourcedelement.TestSetLocalName.class)),
+                        new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestSetLocalName.class)),
+                new MatrixTest(org.apache.axiom.ts.om.sourcedelement.TestWrappedTextNodeOMDataSourceFromReader.class),
                 new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement
-                                .TestWrappedTextNodeOMDataSourceFromReader.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.sourcedelement
-                                .TestWriteTextToWithNonDestructiveOMDataSource.class),
+                        org.apache.axiom.ts.om.sourcedelement.TestWriteTextToWithNonDestructiveOMDataSource.class),
                 // ── sourcedelement/sr package ──
                 new MatrixTest(org.apache.axiom.ts.om.sourcedelement.sr.TestGetName.class),
                 new FanOutNode<>(
                         ImmutableList.of(0, 1, 2, 3, 4, 5, 6),
                         Binding.singleton(Key.get(Integer.class, Names.named("events"))),
                         LabelBinding.simpleInt("events"),
-                        new MatrixTest(
-                                org.apache.axiom.ts.om.sourcedelement.sr.TestCloseWithoutCaching
-                                        .class)));
+                        new MatrixTest(org.apache.axiom.ts.om.sourcedelement.sr.TestCloseWithoutCaching.class)));
     }
 
     private static MatrixTestNode sourcedElementSerializeTests() {
@@ -1358,59 +989,38 @@ public class OMTestSuite {
                                 LabelBinding.DIMENSION,
                                 new FanOutNode<>(
                                         ImmutableList.of(1, 2),
-                                        Binding.singleton(
-                                                Key.get(Integer.class, Names.named("count"))),
+                                        Binding.singleton(Key.get(Integer.class, Names.named("count"))),
                                         LabelBinding.simpleInt("count"),
                                         new FanOutNode<>(
-                                                injector ->
-                                                        injector.getInstance(
-                                                                                ExpansionStrategy
-                                                                                        .class)
-                                                                        != ExpansionStrategy.PARTIAL
-                                                                ? ImmutableList.of(false, true)
-                                                                : ImmutableList.of(false),
-                                                Binding.singleton(
-                                                        Key.get(
-                                                                Boolean.class,
-                                                                Names.named("push"))),
+                                                injector -> injector.getInstance(ExpansionStrategy.class)
+                                                                != ExpansionStrategy.PARTIAL
+                                                        ? ImmutableList.of(false, true)
+                                                        : ImmutableList.of(false),
+                                                Binding.singleton(Key.get(Boolean.class, Names.named("push"))),
                                                 LabelBinding.simpleBoolean("push"),
                                                 new FanOutNode<>(
                                                         ImmutableList.of(false, true),
                                                         Binding.singleton(
-                                                                Key.get(
-                                                                        Boolean.class,
-                                                                        Names.named(
-                                                                                "destructive"))),
+                                                                Key.get(Boolean.class, Names.named("destructive"))),
                                                         LabelBinding.simpleBoolean("destructive"),
                                                         new FanOutNode<>(
-                                                                injector ->
-                                                                        injector.getInstance(
-                                                                                                ElementContext
-                                                                                                        .class)
-                                                                                        != ElementContext
-                                                                                                .ORPHAN
-                                                                                ? ImmutableList.of(
-                                                                                        false, true)
-                                                                                : ImmutableList.of(
-                                                                                        false),
+                                                                injector -> injector.getInstance(ElementContext.class)
+                                                                                != ElementContext.ORPHAN
+                                                                        ? ImmutableList.of(false, true)
+                                                                        : ImmutableList.of(false),
                                                                 Binding.singleton(
                                                                         Key.get(
                                                                                 Boolean.class,
-                                                                                Names.named(
-                                                                                        "serializeParent"))),
-                                                                LabelBinding.simpleBoolean(
-                                                                        "serializeParent"),
+                                                                                Names.named("serializeParent"))),
+                                                                LabelBinding.simpleBoolean("serializeParent"),
                                                                 new MatrixTest(
-                                                                        org.apache.axiom.ts.om
-                                                                                .sourcedelement
-                                                                                .TestSerialize
-                                                                                .class))))))));
+                                                                        org.apache.axiom.ts.om.sourcedelement
+                                                                                .TestSerialize.class))))))));
     }
 
     private static MatrixTestNode textTests() {
         return new ParentNode(
-                new MatrixTest(
-                        org.apache.axiom.ts.om.text.TestBase64StreamingWithGetSAXSource.class),
+                new MatrixTest(org.apache.axiom.ts.om.text.TestBase64StreamingWithGetSAXSource.class),
                 new MatrixTest(org.apache.axiom.ts.om.text.TestBase64StreamingWithSerialize.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
@@ -1420,13 +1030,10 @@ public class OMTestSuite {
                 new MatrixTest(org.apache.axiom.ts.om.text.TestDigest.class),
                 new MatrixTest(org.apache.axiom.ts.om.text.TestGetNamespace.class),
                 new MatrixTest(org.apache.axiom.ts.om.text.TestGetNamespaceNoNamespace.class),
-                new MatrixTest(
-                        org.apache.axiom.ts.om.text.TestGetTextCharactersFromDataHandler.class),
+                new MatrixTest(org.apache.axiom.ts.om.text.TestGetTextCharactersFromDataHandler.class),
                 new FanOutNode<Integer>(
                         ImmutableList.of(
-                                (int) OMNode.TEXT_NODE,
-                                (int) OMNode.SPACE_NODE,
-                                (int) OMNode.CDATA_SECTION_NODE),
+                                (int) OMNode.TEXT_NODE, (int) OMNode.SPACE_NODE, (int) OMNode.CDATA_SECTION_NODE),
                         Binding.singleton(Key.get(Integer.class, Names.named("type"))),
                         LabelBinding.simpleString("type", XMLEventUtils::getEventTypeString),
                         new MatrixTest(org.apache.axiom.ts.om.text.TestSerialize.class)));
@@ -1449,11 +1056,10 @@ public class OMTestSuite {
     }
 
     private static MatrixTestNode xpathTests() {
-        ImmutableList<String> xpathMethods =
-                Arrays.stream(AXIOMXPathTestCase.class.getMethods())
-                        .map(Method::getName)
-                        .filter(n -> n.startsWith("test"))
-                        .collect(ImmutableList.toImmutableList());
+        ImmutableList<String> xpathMethods = Arrays.stream(AXIOMXPathTestCase.class.getMethods())
+                .map(Method::getName)
+                .filter(n -> n.startsWith("test"))
+                .collect(ImmutableList.toImmutableList());
         return new ParentNode(
                 new FanOutNode<>(
                         xpathMethods,

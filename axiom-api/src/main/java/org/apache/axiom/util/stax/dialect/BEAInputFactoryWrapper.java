@@ -21,12 +21,10 @@ package org.apache.axiom.util.stax.dialect;
 
 import java.io.InputStream;
 import java.io.Reader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
-
 import org.apache.axiom.util.stax.wrapper.XMLInputFactoryWrapper;
 
 class BEAInputFactoryWrapper extends XMLInputFactoryWrapper {
@@ -40,8 +38,7 @@ class BEAInputFactoryWrapper extends XMLInputFactoryWrapper {
     }
 
     @Override
-    public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream)
-            throws XMLStreamException {
+    public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream) throws XMLStreamException {
         // The getEncoding() method of the stream reader produced by the reference implementation
         // doesn't return complete information about the effective encoding. To work around this,
         // we need to implement the detection algorithm described in Appendix F.1 of the
@@ -63,8 +60,7 @@ class BEAInputFactoryWrapper extends XMLInputFactoryWrapper {
     }
 
     @Override
-    public XMLStreamReader createXMLStreamReader(InputStream stream, String encoding)
-            throws XMLStreamException {
+    public XMLStreamReader createXMLStreamReader(InputStream stream, String encoding) throws XMLStreamException {
         return new BEAStreamReaderWrapper(super.createXMLStreamReader(stream, encoding), null);
     }
 
@@ -79,8 +75,7 @@ class BEAInputFactoryWrapper extends XMLInputFactoryWrapper {
     }
 
     @Override
-    public XMLStreamReader createXMLStreamReader(String systemId, Reader reader)
-            throws XMLStreamException {
+    public XMLStreamReader createXMLStreamReader(String systemId, Reader reader) throws XMLStreamException {
         return new BEAStreamReaderWrapper(super.createXMLStreamReader(systemId, reader), null);
     }
 }

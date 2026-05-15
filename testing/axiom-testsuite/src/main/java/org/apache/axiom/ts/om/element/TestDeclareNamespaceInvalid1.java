@@ -20,13 +20,11 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests Axiom's behavior when {@link OMElement#declareNamespace(String, String)} is used to add a
@@ -42,7 +40,6 @@ public class TestDeclareNamespaceInvalid1 extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMElement element = metaFactory.getOMFactory().createOMElement(new QName("test"));
-        assertThatThrownBy(() -> element.declareNamespace("", "ns"))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> element.declareNamespace("", "ns")).isInstanceOf(IllegalArgumentException.class);
     }
 }

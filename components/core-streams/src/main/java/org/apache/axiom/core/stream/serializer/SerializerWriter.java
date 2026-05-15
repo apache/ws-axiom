@@ -20,7 +20,6 @@ package org.apache.axiom.core.stream.serializer;
 
 import java.io.IOException;
 import java.io.Writer;
-
 import org.apache.axiom.core.stream.StreamException;
 
 /**

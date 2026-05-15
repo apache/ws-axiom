@@ -23,11 +23,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.axiom.testing.multiton.Instances;
 import org.w3c.dom.Document;
 
@@ -38,8 +36,7 @@ public class XMLSample extends MessageSample {
     /** An XML document that is larger than the input buffer of typical XML parsers. */
     public static final XMLSample LARGE = new XMLSample("large.xml");
 
-    public static final XMLSample ENTITY_REFERENCE_NESTED =
-            new XMLSample("entity-reference-nested.xml");
+    public static final XMLSample ENTITY_REFERENCE_NESTED = new XMLSample("entity-reference-nested.xml");
 
     /**
      * An XML document that has a document type declaration with a system ID, public ID and internal
@@ -110,9 +107,7 @@ public class XMLSample extends MessageSample {
     @Instances
     private static XMLSample[] instances() throws IOException {
         BufferedReader in =
-                new BufferedReader(
-                        new InputStreamReader(
-                                XMLSample.class.getResourceAsStream("bulk/filelist")));
+                new BufferedReader(new InputStreamReader(XMLSample.class.getResourceAsStream("bulk/filelist")));
         List<XMLSample> result = new ArrayList<>(10);
         String name;
         while ((name = in.readLine()) != null) {

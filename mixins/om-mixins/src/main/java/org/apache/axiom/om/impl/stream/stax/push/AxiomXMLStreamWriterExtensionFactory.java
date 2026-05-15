@@ -23,8 +23,7 @@ import org.apache.axiom.core.stream.stax.push.input.XMLStreamWriterExtensionFact
 import org.apache.axiom.ext.stax.BlobWriter;
 
 public final class AxiomXMLStreamWriterExtensionFactory implements XMLStreamWriterExtensionFactory {
-    public static final AxiomXMLStreamWriterExtensionFactory INSTANCE =
-            new AxiomXMLStreamWriterExtensionFactory();
+    public static final AxiomXMLStreamWriterExtensionFactory INSTANCE = new AxiomXMLStreamWriterExtensionFactory();
 
     private AxiomXMLStreamWriterExtensionFactory() {}
 

@@ -18,13 +18,11 @@
  */
 package org.apache.axiom.attachments;
 
+import jakarta.activation.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
-
-import jakarta.activation.DataSource;
-
 import org.apache.commons.io.input.ReaderInputStream;
 
 public class TextDataSource implements DataSource {

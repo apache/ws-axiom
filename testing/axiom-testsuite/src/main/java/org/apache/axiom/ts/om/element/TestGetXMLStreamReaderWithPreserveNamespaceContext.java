@@ -20,21 +20,18 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean,
@@ -57,17 +54,13 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTes
 
     @Override
     protected void runTest() throws Throwable {
-        InputStream in =
-                TestGetXMLStreamReaderWithPreserveNamespaceContext.class.getResourceAsStream(
-                        "AXIOM-114.xml");
-        OMElement root =
-                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
-                        .getDocumentElement();
+        InputStream in = TestGetXMLStreamReaderWithPreserveNamespaceContext.class.getResourceAsStream("AXIOM-114.xml");
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
+                .getDocumentElement();
         root.declareNamespace("http://example.org", "p");
         OMXMLStreamReaderConfiguration configuration = new OMXMLStreamReaderConfiguration();
         configuration.setPreserveNamespaceContext(preserveNamespaceContext);
-        XMLStreamReader reader =
-                root.getFirstElement().getFirstElement().getXMLStreamReader(cache, configuration);
+        XMLStreamReader reader = root.getFirstElement().getFirstElement().getXMLStreamReader(cache, configuration);
         assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         Set<String> prefixes = new HashSet<>();
         for (int i = 0; i < reader.getNamespaceCount(); i++) {

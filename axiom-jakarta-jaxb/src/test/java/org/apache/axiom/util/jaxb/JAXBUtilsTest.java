@@ -20,10 +20,11 @@ package org.apache.axiom.util.jaxb;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import jakarta.activation.DataHandler;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
 import java.nio.charset.StandardCharsets;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.jaxb.DocumentBean;
 import org.apache.axiom.jaxb.DocumentBean2;
 import org.apache.axiom.om.OMAbstractFactory;
@@ -34,10 +35,6 @@ import org.apache.axiom.om.ds.jaxb.JAXBOMDataSource;
 import org.apache.axiom.om.util.jaxb.JAXBUtils;
 import org.apache.axiom.testutils.blob.TextBlob;
 import org.junit.jupiter.api.Test;
-
-import jakarta.activation.DataHandler;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBElement;
 
 public class JAXBUtilsTest {
     @Test
@@ -60,8 +57,7 @@ public class JAXBUtilsTest {
         OMElement element = factory.createOMElement("document2", ns);
         factory.createOMElement("id", ns, element).setText("12345");
         OMElement content = factory.createOMElement("content", ns, element);
-        content.addChild(
-                factory.createOMText(new TextBlob("test content", StandardCharsets.UTF_8), true));
+        content.addChild(factory.createOMText(new TextBlob("test content", StandardCharsets.UTF_8), true));
         JAXBContext context = JAXBContext.newInstance(DocumentBean2.class);
         DocumentBean2 bean = (DocumentBean2) JAXBUtils.unmarshal(element, context, null, true);
         assertThat(bean.getId()).isEqualTo("12345");
@@ -72,8 +68,7 @@ public class JAXBUtilsTest {
     public void testUnmarshalWithDeclaredType() throws Exception {
         OMElement element = OMAbstractFactory.getOMFactory().createOMElement("foo", null);
         element.setText("bar");
-        JAXBElement<String> result =
-                JAXBUtils.unmarshal(element, JAXBContext.newInstance(), null, String.class, true);
+        JAXBElement<String> result = JAXBUtils.unmarshal(element, JAXBContext.newInstance(), null, String.class, true);
         assertThat(result.getName()).isEqualTo(new QName("foo"));
         assertThat(result.getValue()).isEqualTo("bar");
     }

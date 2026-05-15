@@ -55,8 +55,7 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
      *     <code>prefix</code> is only used when creating new attributes and prefixes of existing
      *     attributes are preserved (i.e. only their value is updated).
      */
-    public NSAwareAttributeMatcher(
-            Semantics semantics, boolean matchNSUnawareAttributes, boolean updatePrefix) {
+    public NSAwareAttributeMatcher(Semantics semantics, boolean matchNSUnawareAttributes, boolean updatePrefix) {
         this.semantics = semantics;
         this.matchNSUnawareAttributes = matchNSUnawareAttributes;
         this.updatePrefix = updatePrefix;

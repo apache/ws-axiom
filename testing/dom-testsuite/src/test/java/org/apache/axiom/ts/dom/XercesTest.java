@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.dom;
 
 import java.util.stream.Stream;
-
 import org.apache.axiom.testutils.suite.MatrixTestFilters;
 import org.apache.axiom.ts.dom.document.TestCreateElementNSWithSupplementaryCharacter;
 import org.apache.axiom.ts.dom.document.TestCreateElementWithSupplementaryCharacter;
@@ -33,13 +32,12 @@ public class XercesTest {
     @TestFactory
     public Stream<DynamicNode> tests() {
         return DOMTestSuite.create(DocumentBuilderFactoryImpl::new)
-                .toDynamicNodes(
-                        MatrixTestFilters.builder()
-                                .add(TestCreateElementWithSupplementaryCharacter.class)
-                                .add(TestCreateElementNSWithSupplementaryCharacter.class)
-                                .add(TestSetPrefixWithSupplementaryCharacter.class)
-                                // XERCESJ-1586
-                                .add(TestLookupNamespaceURIXercesJ1586.class)
-                                .build());
+                .toDynamicNodes(MatrixTestFilters.builder()
+                        .add(TestCreateElementWithSupplementaryCharacter.class)
+                        .add(TestCreateElementNSWithSupplementaryCharacter.class)
+                        .add(TestSetPrefixWithSupplementaryCharacter.class)
+                        // XERCESJ-1586
+                        .add(TestLookupNamespaceURIXercesJ1586.class)
+                        .build());
     }
 }

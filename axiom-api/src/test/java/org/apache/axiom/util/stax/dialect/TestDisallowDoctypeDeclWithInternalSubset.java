@@ -19,7 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -34,8 +33,7 @@ public class TestDisallowDoctypeDeclWithInternalSubset extends DialectTestCase {
         boolean reachedDocumentElement = false;
         try {
             XMLStreamReader reader =
-                    factory.createXMLStreamReader(
-                            new StringReader("<?xml version='1.0'?><!DOCTYPE root []><root/>"));
+                    factory.createXMLStreamReader(new StringReader("<?xml version='1.0'?><!DOCTYPE root []><root/>"));
             try {
                 while (reader.hasNext()) {
                     if (reader.next() == XMLStreamConstants.START_ELEMENT) {
@@ -52,7 +50,6 @@ public class TestDisallowDoctypeDeclWithInternalSubset extends DialectTestCase {
         }
         assertTrue("Expected exception", gotException);
         assertFalse(
-                "The parser failed to throw an exception before reaching the document element",
-                reachedDocumentElement);
+                "The parser failed to throw an exception before reaching the document element", reachedDocumentElement);
     }
 }

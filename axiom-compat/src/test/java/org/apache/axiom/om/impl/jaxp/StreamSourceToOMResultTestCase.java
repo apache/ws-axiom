@@ -21,28 +21,25 @@ package org.apache.axiom.om.impl.jaxp;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
 import javax.xml.transform.stream.StreamSource;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
-import junit.framework.TestCase;
-
 public class StreamSourceToOMResultTestCase extends TestCase {
     @Inject
     @Named("axiomImplementation")
     private String axiomImplementation;
 
-    @Inject private XMLSample file;
+    @Inject
+    private XMLSample file;
 
     @Override
     @SuppressWarnings({"deprecation"})

@@ -19,7 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.StringReader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -36,12 +35,8 @@ public class TestDisallowDoctypeDeclWithExternalSubset extends DialectTestCase {
             boolean gotException = false;
             boolean reachedDocumentElement = false;
             try {
-                XMLStreamReader reader =
-                        factory.createXMLStreamReader(
-                                new StringReader(
-                                        "<?xml version='1.0'?><!DOCTYPE root SYSTEM '"
-                                                + server.getBaseURL()
-                                                + "dummy.dtd'><root/>"));
+                XMLStreamReader reader = factory.createXMLStreamReader(new StringReader(
+                        "<?xml version='1.0'?><!DOCTYPE root SYSTEM '" + server.getBaseURL() + "dummy.dtd'><root/>"));
                 try {
                     while (reader.hasNext()) {
                         if (reader.next() == XMLStreamConstants.START_ELEMENT) {

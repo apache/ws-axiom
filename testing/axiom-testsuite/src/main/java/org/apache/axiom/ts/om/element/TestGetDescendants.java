@@ -20,23 +20,20 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 public class TestGetDescendants extends AxiomTestCase {
     private final boolean includeSelf;
 
     @Inject
-    public TestGetDescendants(
-            OMMetaFactory metaFactory, @Named("includeSelf") boolean includeSelf) {
+    public TestGetDescendants(OMMetaFactory metaFactory, @Named("includeSelf") boolean includeSelf) {
         super(metaFactory);
         this.includeSelf = includeSelf;
     }
@@ -44,9 +41,7 @@ public class TestGetDescendants extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMElement element =
-                AXIOMUtil.stringToOM(
-                        metaFactory.getOMFactory(),
-                        "<root><a><b><c><d/><e/></c></b><f/></a><g/></root>");
+                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<root><a><b><c><d/><e/></c></b><f/></a><g/></root>");
         // We intentionally get the descendants of <a> so that we can test containment
         // (the iterator must never return <g>, which is a sibling of <a>).
         Iterator<OMNode> it = element.getFirstElement().getDescendants(includeSelf);

@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /** Tests the behavior of {@link OMContainer#getChildrenWithNamespaceURI(String)}. */
 public class TestGetChildrenWithNamespaceURI extends AxiomTestCase {
@@ -40,12 +38,10 @@ public class TestGetChildrenWithNamespaceURI extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(),
-                                new StringReader(
-                                        "<root><a xmlns='urn:ns1'/><b xmlns='urn:ns2'/><c xmlns='urn:ns1'/></root>"))
-                        .getDocumentElement();
+        OMElement element = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(),
+                        new StringReader("<root><a xmlns='urn:ns1'/><b xmlns='urn:ns2'/><c xmlns='urn:ns1'/></root>"))
+                .getDocumentElement();
         Iterator<OMElement> it = element.getChildrenWithNamespaceURI("urn:ns1");
         assertThat(it.hasNext()).isTrue();
         assertThat(it.next().getLocalName()).isEqualTo("a");

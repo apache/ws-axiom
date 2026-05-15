@@ -21,7 +21,6 @@ package org.apache.axiom.ts.omdom.node;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.omdom.OMDOMTestCase;

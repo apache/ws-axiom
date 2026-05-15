@@ -20,6 +20,9 @@ package org.apache.axiom.ts.soap.message;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
@@ -30,20 +33,20 @@ import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
-import junit.framework.TestCase;
-
 /**
  * Tests that {@link OMInformationItem#clone(OMCloneOptions)} correctly clones a {@link SOAPMessage}
  * that is incomplete. In particular, the test checks that {@link OMInformationItem#getOMFactory()}
  * returns the correct factory (which is determined lazily) on the clone.
  */
 public class TestCloneIncomplete extends TestCase {
-    @Inject private SOAPSpec spec;
-    @Inject private OMMetaFactory metaFactory;
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPSpec spec;
+
+    @Inject
+    private OMMetaFactory metaFactory;
+
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Inject
     @Named("preserveModel")
@@ -51,11 +54,10 @@ public class TestCloneIncomplete extends TestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPMessage message =
-                SOAPSampleSet.WSA
-                        .getMessage(spec)
-                        .getAdapter(SOAPSampleAdapter.class)
-                        .getSOAPMessage(metaFactory);
+        SOAPMessage message = SOAPSampleSet.WSA
+                .getMessage(spec)
+                .getAdapter(SOAPSampleAdapter.class)
+                .getSOAPMessage(metaFactory);
         OMCloneOptions options = new OMCloneOptions();
         options.setPreserveModel(preserveModel);
         OMInformationItem clone = message.clone(options);

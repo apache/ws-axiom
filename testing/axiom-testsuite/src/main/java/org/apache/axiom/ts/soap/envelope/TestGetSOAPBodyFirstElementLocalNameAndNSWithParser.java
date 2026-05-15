@@ -20,21 +20,17 @@ package org.apache.axiom.ts.soap.envelope;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
 
 /**
  * Tests the behavior of {@link SOAPEnvelope#getSOAPBodyFirstElementLocalName()} and {@link
@@ -43,9 +39,14 @@ import junit.framework.TestCase;
  * of the element without actually instantiating the corresponding {@link OMElement}.
  */
 public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends TestCase {
-    @Inject private OMMetaFactory metaFactory;
-    @Inject private SOAPFactory soapFactory;
-    @Inject private QName qname;
+    @Inject
+    private OMMetaFactory metaFactory;
+
+    @Inject
+    private SOAPFactory soapFactory;
+
+    @Inject
+    private QName qname;
 
     @Override
     protected void runTest() throws Throwable {
@@ -55,13 +56,11 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends TestCas
         orgEnvelope
                 .getBody()
                 .addChild(
-                        soapFactory.createOMElement(
-                                qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
+                        soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
         String message = orgEnvelope.toString();
 
-        SOAPEnvelope envelope =
-                OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new StringReader(message))
-                        .getSOAPEnvelope();
+        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new StringReader(message))
+                .getSOAPEnvelope();
         assertThat(envelope.getSOAPBodyFirstElementLocalName()).isEqualTo(qname.getLocalPart());
         OMNamespace ns = envelope.getSOAPBodyFirstElementNS();
         if (qname.getNamespaceURI().length() == 0) {

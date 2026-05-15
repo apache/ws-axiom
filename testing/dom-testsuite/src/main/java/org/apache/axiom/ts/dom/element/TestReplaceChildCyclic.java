@@ -42,7 +42,6 @@ public class TestReplaceChildCyclic extends DOMTestCase {
         element.appendChild(child);
         assertThatThrownBy(() -> element.replaceChild(ancestor, child))
                 .isInstanceOfSatisfying(
-                        DOMException.class,
-                        ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
+                        DOMException.class, ex -> assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR));
     }
 }

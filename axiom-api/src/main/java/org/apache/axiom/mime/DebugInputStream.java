@@ -20,7 +20,6 @@ package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.apache.commons.logging.Log;
 
 final class DebugInputStream extends InputStream {
@@ -37,13 +36,7 @@ final class DebugInputStream extends InputStream {
 
     private void log(IOException ex) {
         if (!logged) {
-            log.debug(
-                    "IOException occurred after reading "
-                            + read
-                            + " bytes in "
-                            + chunks
-                            + " chunks",
-                    ex);
+            log.debug("IOException occurred after reading " + read + " bytes in " + chunks + " chunks", ex);
             logged = true;
         }
     }

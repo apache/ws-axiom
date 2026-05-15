@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -45,7 +44,8 @@ public class CreateDependencyReducedPomMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
 
-    @Parameter private Set<String> excludedArtifacts;
+    @Parameter
+    private Set<String> excludedArtifacts;
 
     @Parameter(defaultValue = "${project.build.directory}/dependency-reduced-pom.xml")
     private File dependencyReducedPomLocation;

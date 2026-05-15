@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.stream.ds;
 
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.core.stream.XmlInput;

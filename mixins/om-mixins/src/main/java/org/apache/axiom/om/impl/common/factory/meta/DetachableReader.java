@@ -25,7 +25,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
-
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMException;

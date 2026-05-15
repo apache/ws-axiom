@@ -21,7 +21,6 @@ package org.apache.axiom.util.stax;
 
 import java.io.IOException;
 import java.io.Writer;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 

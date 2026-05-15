@@ -18,14 +18,12 @@
  */
 package org.apache.axiom.testutils.suite;
 
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Injector;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.DynamicNode;
-
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Injector;
 
 /**
  * A {@link MatrixTestNode} that groups an immutable, ordered list of child nodes without injecting
@@ -49,7 +47,6 @@ public final class ParentNode extends MatrixTestNode {
             Injector parentInjector,
             Map<String, String> inheritedLabels,
             BiPredicate<Class<?>, Map<String, String>> excludes) {
-        return children.stream()
-                .flatMap(child -> child.toDynamicNodes(parentInjector, inheritedLabels, excludes));
+        return children.stream().flatMap(child -> child.toDynamicNodes(parentInjector, inheritedLabels, excludes));
     }
 }

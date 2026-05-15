@@ -20,17 +20,14 @@ package org.apache.axiom.ts.soap.header;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.ArrayList;
-
 import javax.xml.namespace.QName;
-
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
-
-import com.google.inject.Inject;
 
 public class TestGetHeaderBlocksWithNSURIWithParser extends SampleBasedSOAPTestCase {
     @Inject
@@ -40,8 +37,7 @@ public class TestGetHeaderBlocksWithNSURIWithParser extends SampleBasedSOAPTestC
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        ArrayList<SOAPHeaderBlock> headerBlocks =
-                envelope.getHeader().getHeaderBlocksWithNSURI("urn:ns2");
+        ArrayList<SOAPHeaderBlock> headerBlocks = envelope.getHeader().getHeaderBlocksWithNSURI("urn:ns2");
         assertThat(headerBlocks).hasSize(2);
         assertThat(headerBlocks.get(0).getQName()).isEqualTo(new QName("urn:ns2", "h4"));
         assertThat(headerBlocks.get(1).getQName()).isEqualTo(new QName("urn:ns2", "h6"));

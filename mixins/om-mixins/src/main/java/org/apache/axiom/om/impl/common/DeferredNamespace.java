@@ -34,8 +34,7 @@ public final class DeferredNamespace implements OMNamespace {
     @Override
     public boolean equals(String uri, String prefix) {
         String thisPrefix = getPrefix();
-        return (this.uri.equals(uri)
-                && (thisPrefix == null ? prefix == null : thisPrefix.equals(prefix)));
+        return (this.uri.equals(uri) && (thisPrefix == null ? prefix == null : thisPrefix.equals(prefix)));
     }
 
     @Override

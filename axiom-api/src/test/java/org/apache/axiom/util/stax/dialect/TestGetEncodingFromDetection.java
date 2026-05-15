@@ -18,14 +18,12 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import java.io.ByteArrayInputStream;
-import java.util.Set;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
-
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import java.io.ByteArrayInputStream;
+import java.util.Set;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
 
 /**
  * Checks that {@link XMLStreamReader#getEncoding()} returns accurate information for XML documents
@@ -45,10 +43,8 @@ public class TestGetEncodingFromDetection extends DialectTestCase {
     @Override
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
-        XMLStreamReader reader =
-                factory.createXMLStreamReader(
-                        new ByteArrayInputStream(
-                                "<?xml version=\"1.0\"?><root/>".getBytes(javaEncoding)));
+        XMLStreamReader reader = factory.createXMLStreamReader(
+                new ByteArrayInputStream("<?xml version=\"1.0\"?><root/>".getBytes(javaEncoding)));
         String actualEncoding = reader.getEncoding();
         assertTrue(
                 "Expected one of " + xmlEncodings + ", but got " + actualEncoding,

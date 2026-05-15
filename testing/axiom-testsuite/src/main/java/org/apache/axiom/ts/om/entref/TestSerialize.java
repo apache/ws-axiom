@@ -23,13 +23,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 public class TestSerialize extends AxiomTestCase {
     @Inject
@@ -39,8 +37,7 @@ public class TestSerialize extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMEntityReference entref =
-                metaFactory.getOMFactory().createOMEntityReference(null, "testref");
+        OMEntityReference entref = metaFactory.getOMFactory().createOMEntityReference(null, "testref");
         XMLStreamWriter writer = mock(XMLStreamWriter.class);
         entref.serialize(writer);
         verify(writer).writeEntityRef(entref.getName());

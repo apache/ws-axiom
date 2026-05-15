@@ -20,16 +20,14 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Tests that {@link OMContainer#getXMLStreamReader(boolean)} produces the correct sequence of
@@ -43,17 +41,14 @@ public class TestGetXMLStreamReaderOnNonRootElement extends AxiomTestCase {
     private final boolean cache;
 
     @Inject
-    public TestGetXMLStreamReaderOnNonRootElement(
-            OMMetaFactory metaFactory, @Named("cache") boolean cache) {
+    public TestGetXMLStreamReaderOnNonRootElement(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
         super(metaFactory);
         this.cache = cache;
     }
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root =
-                AXIOMUtil.stringToOM(
-                        metaFactory.getOMFactory(), "<a><b><c/></b><d>content</d></a>");
+        OMElement root = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<a><b><c/></b><d>content</d></a>");
         OMElement b = (OMElement) root.getFirstOMChild();
         XMLStreamReader stream = b.getXMLStreamReader(cache);
         assertThat(stream.getEventType()).isEqualTo(XMLStreamReader.START_DOCUMENT);

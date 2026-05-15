@@ -20,9 +20,9 @@ package org.apache.axiom.ts.om.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
@@ -32,8 +32,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link OMContainer#addChild(OMNode)} if the parent has not been built
@@ -51,10 +49,8 @@ public class TestAddChildIncomplete extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDocument parent =
-                OMXMLBuilderFactory.createOMBuilder(
-                                factory, new StringReader("<!--a--><b/><!--c-->"))
-                        .getDocument();
+        OMDocument parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<!--a--><b/><!--c-->"))
+                .getDocument();
         parent.addChild(factory.createOMComment(null, "d"));
         Iterator<OMNode> it = parent.getChildren();
         assertThat(((OMComment) it.next()).getValue()).isEqualTo("a");

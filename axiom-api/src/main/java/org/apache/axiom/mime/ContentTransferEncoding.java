@@ -19,7 +19,6 @@
 package org.apache.axiom.mime;
 
 import java.io.OutputStream;
-
 import org.apache.axiom.util.base64.Base64EncodingOutputStream;
 
 /** Represents a MIME content transfer encoding. */
@@ -42,13 +41,12 @@ public abstract class ContentTransferEncoding {
     public static final ContentTransferEncoding BINARY = new Identity("binary");
 
     /** The {@code base64} content transfer encoding. */
-    public static final ContentTransferEncoding BASE64 =
-            new ContentTransferEncoding("base64") {
-                @Override
-                public OutputStream encode(OutputStream out) {
-                    return new Base64EncodingOutputStream(out);
-                }
-            };
+    public static final ContentTransferEncoding BASE64 = new ContentTransferEncoding("base64") {
+        @Override
+        public OutputStream encode(OutputStream out) {
+            return new Base64EncodingOutputStream(out);
+        }
+    };
 
     private final String name;
 

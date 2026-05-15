@@ -19,15 +19,15 @@
 
 package org.apache.axiom.ts.soap.envelope;
 
+import com.google.inject.Inject;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -37,13 +37,10 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 /** Regression test for WSCOMMONS-226. */
 public class TestSerializeAndConsumeWithOMSEInBody extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -62,8 +59,7 @@ public class TestSerializeAndConsumeWithOMSEInBody extends TestCase {
     private static class DummySource implements OMDataSource {
         private XMLStreamReader reader;
         // private String xml = "<?xml version='1.0'?><d:dummy name='1' xmlns:d='http://ns1'/>";
-        private String xml =
-                "<?xml version='1.0'?><d:dummy name='1' xmlns:d='http://ns1'>hello<mixed/>world</d:dummy>";
+        private String xml = "<?xml version='1.0'?><d:dummy name='1' xmlns:d='http://ns1'>hello<mixed/>world</d:dummy>";
 
         /**
          * @see org.apache.axiom.om.OMDataSource#getReader()
@@ -79,8 +75,7 @@ public class TestSerializeAndConsumeWithOMSEInBody extends TestCase {
          *     org.apache.axiom.om.OMOutputFormat)
          */
         @Override
-        public void serialize(OutputStream output, OMOutputFormat format)
-                throws XMLStreamException {
+        public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
             // TODO Auto-generated method stub
 
         }

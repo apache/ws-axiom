@@ -23,7 +23,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
-
 import org.apache.axiom.om.impl.dom.intf.factory.DOOMNodeFactory;
 
 /** Document builder factory that conforms to JAXP. */
@@ -38,9 +37,7 @@ public final class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
     @Override
     public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
         return new DOOMDocumentBuilder(
-                factory,
-                new DOMStAXParserConfiguration(isCoalescing(), isExpandEntityReferences()),
-                schema);
+                factory, new DOMStAXParserConfiguration(isCoalescing(), isExpandEntityReferences()), schema);
     }
 
     @Override

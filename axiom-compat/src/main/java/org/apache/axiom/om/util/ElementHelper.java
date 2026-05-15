@@ -19,6 +19,16 @@
 
 package org.apache.axiom.om.util;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.net.URLDecoder;
+import java.util.Iterator;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMAttribute;
@@ -31,18 +41,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.ds.BlobOMDataSource;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.net.URLDecoder;
-import java.util.Iterator;
 
 /**
  * Helper class to provide extra utility stuff against elements. The code is designed to work with
@@ -73,10 +71,8 @@ public class ElementHelper {
                 OMNamespace namespace = element.getNamespace();
                 if (namespace != null) {
                     // Guard against QName implementation sillyness.
-                    if (namespace.getPrefix() == null)
-                        return new QName(namespace.getNamespaceURI(), qname);
-                    else
-                        return new QName(namespace.getNamespaceURI(), qname, namespace.getPrefix());
+                    if (namespace.getPrefix() == null) return new QName(namespace.getNamespaceURI(), qname);
+                    else return new QName(namespace.getNamespaceURI(), qname, namespace.getPrefix());
                 }
             }
             // else things without no prefix are local.
@@ -121,8 +117,7 @@ public class ElementHelper {
         Iterator childrenIter = parent.getChildren();
         while (childrenIter.hasNext()) {
             OMNode node = (OMNode) childrenIter.next();
-            if (node.getType() == OMNode.ELEMENT_NODE
-                    && childName.equals(((OMElement) node).getLocalName())) {
+            if (node.getType() == OMNode.ELEMENT_NODE && childName.equals(((OMElement) node).getLocalName())) {
                 return (OMElement) node;
             }
         }
@@ -197,8 +192,7 @@ public class ElementHelper {
      * @throws Exception
      * @deprecated Use {@link SOAPFactory#createSOAPHeaderBlock(OMElement)} instead.
      */
-    public static SOAPHeaderBlock toSOAPHeaderBlock(OMElement omElement, SOAPFactory factory)
-            throws Exception {
+    public static SOAPHeaderBlock toSOAPHeaderBlock(OMElement omElement, SOAPFactory factory) throws Exception {
         if (omElement instanceof SOAPHeaderBlock soapHeaderBlock) return soapHeaderBlock;
 
         QName name = omElement.getQName();

@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.dom.w3c;
 
 import java.util.Set;
-
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -33,8 +32,7 @@ final class DOMTSClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public MethodVisitor visitMethod(
-            int access, String name, String desc, String signature, String[] exceptions) {
+    public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         return name.equals("runTest") ? new DOMTSMethodVisitor(usedFeatures) : null;
     }
 }

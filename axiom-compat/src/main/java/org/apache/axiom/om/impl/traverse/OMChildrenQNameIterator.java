@@ -19,11 +19,10 @@
 
 package org.apache.axiom.om.impl.traverse;
 
+import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
-
-import javax.xml.namespace.QName;
 
 /**
  * @deprecated This type of iterator should always be created using {@link
@@ -84,16 +83,12 @@ public class OMChildrenQNameIterator extends OMFilterIterator {
         // if the given localname is null, whatever value this.qname has, its a match. But can one
         // give a QName without a localName ??
         String localPart = searchQName.getLocalPart();
-        boolean localNameMatch =
-                (localPart == null)
-                        || (localPart.equals(""))
-                        || ((currentQName != null)
-                                && currentQName.getLocalPart().equals(localPart));
+        boolean localNameMatch = (localPart == null)
+                || (localPart.equals(""))
+                || ((currentQName != null) && currentQName.getLocalPart().equals(localPart));
         String namespaceURI = searchQName.getNamespaceURI();
-        boolean namespaceURIMatch =
-                (namespaceURI.equals(""))
-                        || ((currentQName != null)
-                                && currentQName.getNamespaceURI().equals(namespaceURI));
+        boolean namespaceURIMatch = (namespaceURI.equals(""))
+                || ((currentQName != null) && currentQName.getNamespaceURI().equals(namespaceURI));
         return localNameMatch && namespaceURIMatch;
     }
 }

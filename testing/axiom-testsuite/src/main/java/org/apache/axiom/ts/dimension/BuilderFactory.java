@@ -20,7 +20,6 @@ package org.apache.axiom.ts.dimension;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -40,29 +39,26 @@ public abstract class BuilderFactory extends Multiton implements Dimension {
      * Creates an {@link OMXMLParserWrapper} directly from the given {@link InputSource}, i.e. let
      * instantiate an appropriate parser.
      */
-    public static final BuilderFactory PARSER =
-            new BuilderFactory() {
-                @Override
-                public boolean isDeferredParsing() {
-                    return true;
-                }
+    public static final BuilderFactory PARSER = new BuilderFactory() {
+        @Override
+        public boolean isDeferredParsing() {
+            return true;
+        }
 
-                @Override
-                public void configureXMLStreamReaderComparator(
-                        XMLStreamReaderComparator comparator) {}
+        @Override
+        public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {}
 
-                @Override
-                public void addLabels(LabelTarget testCase) {
-                    testCase.addLabel("source", "parser");
-                }
+        @Override
+        public void addLabels(LabelTarget testCase) {
+            testCase.addLabel("source", "parser");
+        }
 
-                @Override
-                public OMXMLParserWrapper getBuilder(
-                        OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
-                    return ((OMMetaFactorySPI) metaFactory)
-                            .createOMBuilder(AxiomTestCase.TEST_PARSER_CONFIGURATION, inputSource);
-                }
-            };
+        @Override
+        public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
+            return ((OMMetaFactorySPI) metaFactory)
+                    .createOMBuilder(AxiomTestCase.TEST_PARSER_CONFIGURATION, inputSource);
+        }
+    };
 
     BuilderFactory() {}
 
@@ -89,6 +85,5 @@ public abstract class BuilderFactory extends Multiton implements Dimension {
 
     public abstract void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator);
 
-    public abstract OMXMLParserWrapper getBuilder(
-            OMMetaFactory metaFactory, InputSource inputSource) throws Exception;
+    public abstract OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception;
 }

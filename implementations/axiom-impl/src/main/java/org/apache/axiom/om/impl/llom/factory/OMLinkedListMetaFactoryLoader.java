@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.llom.factory;
 
 import java.util.Map;
-
 import org.apache.axiom.locator.loader.OMMetaFactoryLoader;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
@@ -28,12 +27,11 @@ public class OMLinkedListMetaFactoryLoader implements OMMetaFactoryLoader {
     @Override
     public OMMetaFactory load(Map<String, Object> properties) {
         try {
-            return (AxiomNodeFactory)
-                    OMLinkedListMetaFactoryLoader.class
-                            .getClassLoader()
-                            .loadClass("org.apache.axiom.om.impl.llom.factory.AxiomNodeFactoryImpl")
-                            .getField("INSTANCE")
-                            .get(null);
+            return (AxiomNodeFactory) OMLinkedListMetaFactoryLoader.class
+                    .getClassLoader()
+                    .loadClass("org.apache.axiom.om.impl.llom.factory.AxiomNodeFactoryImpl")
+                    .getField("INSTANCE")
+                    .get(null);
         } catch (ReflectiveOperationException ex) {
             throw new Error(ex);
         }

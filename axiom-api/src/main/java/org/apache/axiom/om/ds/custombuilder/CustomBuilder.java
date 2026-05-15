@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.ds.custombuilder;
 
+import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocument;
@@ -27,8 +28,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPBody;
-
-import javax.xml.stream.XMLStreamWriter;
 
 /**
  * A Custom Builder is registered on the {@link OMXMLParserWrapper} for a particular set of
@@ -47,17 +46,15 @@ public interface CustomBuilder {
          * Selects the message payload element. For plain XML documents, that is the document
          * element. For SOAP messages, that is the child element of the SOAP body.
          */
-        Selector PAYLOAD =
-                new Selector() {
-                    @Override
-                    public boolean accepts(
-                            OMContainer parent, int depth, String namespaceURI, String localName) {
-                        // Note: usage of SOAPBody here may create a package cycle, but that cycle
-                        // could easily be broken by introducing a marker interface to be extended
-                        // by SOAPBody.
-                        return parent instanceof OMDocument || parent instanceof SOAPBody;
-                    }
-                };
+        Selector PAYLOAD = new Selector() {
+            @Override
+            public boolean accepts(OMContainer parent, int depth, String namespaceURI, String localName) {
+                // Note: usage of SOAPBody here may create a package cycle, but that cycle
+                // could easily be broken by introducing a marker interface to be extended
+                // by SOAPBody.
+                return parent instanceof OMDocument || parent instanceof SOAPBody;
+            }
+        };
 
         /**
          * Check if the custom builder registered with this selector should be applied to the given

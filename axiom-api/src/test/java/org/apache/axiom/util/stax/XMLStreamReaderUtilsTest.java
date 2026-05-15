@@ -25,12 +25,9 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Random;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import junit.framework.TestCase;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
@@ -103,21 +100,16 @@ public class XMLStreamReaderUtilsTest extends TestCase {
         testGetBlobFromElementWithUnexpectedContent(true);
     }
 
-    private void testGetBlobFromElementWithUnexpectedContent(boolean useBlobReader)
-            throws Exception {
-        XMLStreamReader parentReader =
-                StAXUtils.createXMLStreamReader(new StringReader("<test>\n<child/>\n</test>"));
-        XMLStreamReader reader =
-                useBlobReader ? new XMLStreamReaderWithBlobReader(parentReader) : parentReader;
+    private void testGetBlobFromElementWithUnexpectedContent(boolean useBlobReader) throws Exception {
+        XMLStreamReader parentReader = StAXUtils.createXMLStreamReader(new StringReader("<test>\n<child/>\n</test>"));
+        XMLStreamReader reader = useBlobReader ? new XMLStreamReaderWithBlobReader(parentReader) : parentReader;
         try {
             reader.next();
 
             // Check precondition
             assertTrue(reader.isStartElement());
 
-            assertThrows(
-                    XMLStreamException.class,
-                    () -> XMLStreamReaderUtils.getBlobFromElement(reader));
+            assertThrows(XMLStreamException.class, () -> XMLStreamReaderUtils.getBlobFromElement(reader));
         } finally {
             reader.close();
         }
@@ -151,17 +143,14 @@ public class XMLStreamReaderUtilsTest extends TestCase {
         // We generate base64 that is sufficiently large to force the parser to generate
         // multiple CHARACTER events
         StringBuffer buffer = new StringBuffer("<test>");
-        Base64EncodingStringBufferOutputStream out =
-                new Base64EncodingStringBufferOutputStream(buffer);
+        Base64EncodingStringBufferOutputStream out = new Base64EncodingStringBufferOutputStream(buffer);
         byte[] data = new byte[65536];
         new Random().nextBytes(data);
         out.write(data);
         out.complete();
         buffer.append("</test>");
-        XMLStreamReader reader =
-                StAXUtils.createXMLStreamReader(
-                        StAXParserConfiguration.NON_COALESCING,
-                        new StringReader(buffer.toString()));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(
+                StAXParserConfiguration.NON_COALESCING, new StringReader(buffer.toString()));
         if (useBlobReader) {
             reader = new XMLStreamReaderWithBlobReader(reader);
         }
@@ -189,12 +178,10 @@ public class XMLStreamReaderUtilsTest extends TestCase {
      * @throws Exception
      */
     public void testgetBlobFromElementWithWhitespace() throws Exception {
-        XMLStreamReader reader =
-                StAXUtils.createXMLStreamReader(
-                        new StringReader(
-                                "<data>MS4wMToxNDIdMS4wMjowMzAwHTEuMDM6MR8wMx4yHzAwHjQfMDEeNB8wMh0xLjA0OlBOUx0xLjA1\r\n"
-                                        + "OjIwMTEwODAyHTEuMDY6Mh0xLjA3OkZMRkRMRUNWWh0xLjA4OkZMMDM3ODhXMB0xLjA5OjExMDgw\r\n"
-                                        + "MjAwMDcdMS4xMToxOS42OR0xLjEyOjE5LjY5HDIuMDAxOjE4HTIuMDAyOjAwHAAA</data>"));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader(
+                "<data>MS4wMToxNDIdMS4wMjowMzAwHTEuMDM6MR8wMx4yHzAwHjQfMDEeNB8wMh0xLjA0OlBOUx0xLjA1\r\n"
+                        + "OjIwMTEwODAyHTEuMDY6Mh0xLjA3OkZMRkRMRUNWWh0xLjA4OkZMMDM3ODhXMB0xLjA5OjExMDgw\r\n"
+                        + "MjAwMDcdMS4xMToxOS42OR0xLjEyOjE5LjY5HDIuMDAxOjE4HTIuMDAyOjAwHAAA</data>"));
         try {
             reader.next();
             Blob blob = XMLStreamReaderUtils.getBlobFromElement(reader);
@@ -215,16 +202,14 @@ public class XMLStreamReaderUtilsTest extends TestCase {
     }
 
     public void testGetElementTextAsStreamWithAllowedNonTextChildren() throws Exception {
-        XMLStreamReader reader =
-                StAXUtils.createXMLStreamReader(new StringReader("<a>xxx<b>yyy</b>zzz</a>"));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a>xxx<b>yyy</b>zzz</a>"));
         reader.next();
         Reader in = XMLStreamReaderUtils.getElementTextAsStream(reader, true);
         assertEquals("xxxzzz", IOUtils.toString(in));
     }
 
     public void testGetElementTextAsStreamWithForbiddenNonTextChildren() throws Exception {
-        XMLStreamReader reader =
-                StAXUtils.createXMLStreamReader(new StringReader("<a>xxx<b>yyy</b>zzz</a>"));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a>xxx<b>yyy</b>zzz</a>"));
         reader.next();
         Reader in = XMLStreamReaderUtils.getElementTextAsStream(reader, false);
         assertThrows(IOException.class, () -> IOUtils.toString(in));

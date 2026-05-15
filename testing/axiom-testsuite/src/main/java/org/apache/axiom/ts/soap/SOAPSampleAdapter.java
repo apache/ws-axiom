@@ -42,8 +42,7 @@ public final class SOAPSampleAdapter {
     }
 
     public SOAPModelBuilder getBuilder(OMMetaFactory metaFactory) {
-        return ((OMMetaFactorySPI) metaFactory)
-                .createSOAPModelBuilder(new InputSource(sample.getInputStream()));
+        return ((OMMetaFactorySPI) metaFactory).createSOAPModelBuilder(new InputSource(sample.getInputStream()));
     }
 
     public SOAPMessage getSOAPMessage(OMMetaFactory metaFactory) {

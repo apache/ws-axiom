@@ -19,7 +19,6 @@
 package org.apache.axiom.weaver;
 
 import java.util.Map;
-
 import org.apache.axiom.weaver.mixin.WeavingContext;
 
 final class WeavingContextImpl implements WeavingContext {

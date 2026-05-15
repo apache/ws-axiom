@@ -23,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -50,14 +49,13 @@ final class TempFileBlobImpl extends AbstractWritableBlob {
             log.debug("Using temporary file " + file);
         }
         file.deleteOnExit();
-        OutputStream out =
-                new FileOutputStream(file) {
-                    @Override
-                    public void close() throws IOException {
-                        super.close();
-                        state = State.COMMITTED;
-                    }
-                };
+        OutputStream out = new FileOutputStream(file) {
+            @Override
+            public void close() throws IOException {
+                super.close();
+                state = State.COMMITTED;
+            }
+        };
         state = State.UNCOMMITTED;
         return out;
     }

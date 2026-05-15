@@ -18,11 +18,11 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import com.google.inject.Inject;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 
-import com.google.inject.Inject;
-
 public abstract class TransformerTestCase extends DOMTestCase {
-    @Inject protected XSLTImplementation xsltImplementation;
+    @Inject
+    protected XSLTImplementation xsltImplementation;
 }

@@ -26,11 +26,9 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
@@ -90,8 +88,7 @@ public abstract class AbstractOMDataSource implements OMDataSourceExt {
     }
 
     @Override
-    public final InputStream getXMLInputStream(String encoding)
-            throws UnsupportedEncodingException {
+    public final InputStream getXMLInputStream(String encoding) throws UnsupportedEncodingException {
         return new ByteArrayInputStream(getXMLBytes(encoding));
     }
 

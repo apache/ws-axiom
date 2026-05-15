@@ -18,55 +18,43 @@
  */
 package org.apache.axiom.ts.saaj;
 
+import com.google.auto.service.AutoService;
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPConstants;
 import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPFactory;
-
 import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 import org.apache.axiom.ts.soap.SOAPSpec;
-
-import com.google.auto.service.AutoService;
 
 @AutoService(AdapterFactory.class)
 public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
     @Override
     public void createAdapters(SOAPSpec spec, Adapters adapters) {
         if (spec == SOAPSpec.SOAP11) {
-            adapters.add(
-                    new FactorySelector() {
-                        @Override
-                        public MessageFactory newMessageFactory(
-                                SAAJImplementation saajImplementation) throws SOAPException {
-                            return saajImplementation.newMessageFactory(
-                                    SOAPConstants.SOAP_1_1_PROTOCOL);
-                        }
+            adapters.add(new FactorySelector() {
+                @Override
+                public MessageFactory newMessageFactory(SAAJImplementation saajImplementation) throws SOAPException {
+                    return saajImplementation.newMessageFactory(SOAPConstants.SOAP_1_1_PROTOCOL);
+                }
 
-                        @Override
-                        public SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation)
-                                throws SOAPException {
-                            return saajImplementation.newSOAPFactory(
-                                    SOAPConstants.SOAP_1_1_PROTOCOL);
-                        }
-                    });
+                @Override
+                public SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation) throws SOAPException {
+                    return saajImplementation.newSOAPFactory(SOAPConstants.SOAP_1_1_PROTOCOL);
+                }
+            });
         } else if (spec == SOAPSpec.SOAP12) {
-            adapters.add(
-                    new FactorySelector() {
-                        @Override
-                        public MessageFactory newMessageFactory(
-                                SAAJImplementation saajImplementation) throws SOAPException {
-                            return saajImplementation.newMessageFactory(
-                                    SOAPConstants.SOAP_1_2_PROTOCOL);
-                        }
+            adapters.add(new FactorySelector() {
+                @Override
+                public MessageFactory newMessageFactory(SAAJImplementation saajImplementation) throws SOAPException {
+                    return saajImplementation.newMessageFactory(SOAPConstants.SOAP_1_2_PROTOCOL);
+                }
 
-                        @Override
-                        public SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation)
-                                throws SOAPException {
-                            return saajImplementation.newSOAPFactory(
-                                    SOAPConstants.SOAP_1_2_PROTOCOL);
-                        }
-                    });
+                @Override
+                public SOAPFactory newSOAPFactory(SAAJImplementation saajImplementation) throws SOAPException {
+                    return saajImplementation.newSOAPFactory(SOAPConstants.SOAP_1_2_PROTOCOL);
+                }
+            });
         }
     }
 }

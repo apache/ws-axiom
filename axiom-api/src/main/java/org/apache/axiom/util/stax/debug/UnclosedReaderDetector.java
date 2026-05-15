@@ -22,7 +22,6 @@ package org.apache.axiom.util.stax.debug;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.util.stax.wrapper.WrappingXMLInputFactory;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 import org.apache.commons.logging.Log;

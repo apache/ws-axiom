@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -29,8 +29,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of {@link OMNode#discard()} on an incomplete {@link OMElement} that is a
@@ -45,10 +43,8 @@ public class TestDiscardDocumentElement extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDocument document =
-                OMXMLBuilderFactory.createOMBuilder(
-                                factory, new StringReader("<root><a>text</a></root>"))
-                        .getDocument();
+        OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a>text</a></root>"))
+                .getDocument();
         OMElement element = document.getOMDocumentElement();
         element.discard();
         assertThat(document.getFirstOMChild()).isNull();

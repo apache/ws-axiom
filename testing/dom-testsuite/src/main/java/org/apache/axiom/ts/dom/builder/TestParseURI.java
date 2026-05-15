@@ -21,7 +21,6 @@ package org.apache.axiom.ts.dom.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.axiom.net.protocol.registry.InstrumentedDataProvider;
 import org.apache.axiom.net.protocol.registry.URLRegistration;
 import org.apache.axiom.net.protocol.registry.URLRegistry;
@@ -33,8 +32,7 @@ import org.w3c.dom.Document;
 public class TestParseURI extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
-        InstrumentedDataProvider dataProvider =
-                new InstrumentedDataProvider(XMLSample.SIMPLE.getUrl()::openStream);
+        InstrumentedDataProvider dataProvider = new InstrumentedDataProvider(XMLSample.SIMPLE.getUrl()::openStream);
         URLRegistration registration = URLRegistry.register(dataProvider);
         try {
             DocumentBuilder builder = dbf.newDocumentBuilder();

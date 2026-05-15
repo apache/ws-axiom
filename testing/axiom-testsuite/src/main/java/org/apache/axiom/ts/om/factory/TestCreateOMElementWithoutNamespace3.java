@@ -20,14 +20,12 @@ package org.apache.axiom.ts.om.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-
-import com.google.inject.Inject;
 
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
@@ -36,19 +34,15 @@ import com.google.inject.Inject;
  */
 public class TestCreateOMElementWithoutNamespace3 extends CreateOMElementTestCase {
     @Inject
-    public TestCreateOMElementWithoutNamespace3(
-            OMMetaFactory metaFactory, CreateOMElementVariant variant) {
+    public TestCreateOMElementWithoutNamespace3(OMMetaFactory metaFactory, CreateOMElementVariant variant) {
         super(metaFactory, variant, null);
     }
 
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement grandparent =
-                factory.createOMElement("grandparent", factory.createOMNamespace("urn:ns1", ""));
-        OMElement parent =
-                factory.createOMElement(
-                        "parent", factory.createOMNamespace("urn:ns2", "p"), grandparent);
+        OMElement grandparent = factory.createOMElement("grandparent", factory.createOMNamespace("urn:ns1", ""));
+        OMElement parent = factory.createOMElement("parent", factory.createOMNamespace("urn:ns2", "p"), grandparent);
         parent.declareDefaultNamespace("");
         OMElement child = variant.createOMElement(factory, parent, "test", "", "");
         assertThat(child.getLocalName()).isEqualTo("test");

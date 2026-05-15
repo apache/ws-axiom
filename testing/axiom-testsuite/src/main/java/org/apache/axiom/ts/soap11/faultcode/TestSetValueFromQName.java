@@ -20,29 +20,27 @@ package org.apache.axiom.ts.soap11.faultcode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
-
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
 
 /**
  * Tests the behavior of {@link SOAPFaultClassifier#setValue(QName)} when invoked on a SOAP 1.1
  * {@link SOAPFaultCode}.
  */
 public class TestSetValueFromQName extends TestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPFaultCode code = soapFactory.getDefaultFaultEnvelope().getBody().getFault().getCode();
+        SOAPFaultCode code =
+                soapFactory.getDefaultFaultEnvelope().getBody().getFault().getCode();
         code.setValue(new QName("urn:test", "MyFaultCode", "p"));
         assertThat(code.getText()).isEqualTo("p:MyFaultCode");
         Iterator<OMNamespace> it = code.getAllDeclaredNamespaces();

@@ -29,8 +29,7 @@ import org.apache.axiom.soap.SOAPFactory;
  *     OMAbstractFactory#FEATURE_DOM} to get a meta factory for DOOM.
  */
 public class DOOMAbstractFactory {
-    private static final OMMetaFactory metaFactory =
-            OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
+    private static final OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
 
     public static OMFactory getOMFactory() {
         return metaFactory.getOMFactory();

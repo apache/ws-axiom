@@ -20,7 +20,6 @@ package org.apache.axiom.testutils.io;
 
 import java.io.IOException;
 import java.io.Reader;
-
 import org.apache.commons.io.input.ProxyReader;
 
 /** {@link Reader} wrapper that implements {@link InstrumentedStream}. */

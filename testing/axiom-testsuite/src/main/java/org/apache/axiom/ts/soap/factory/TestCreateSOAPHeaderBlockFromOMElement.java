@@ -21,34 +21,30 @@ package org.apache.axiom.ts.soap.factory;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestCreateSOAPHeaderBlockFromOMElement extends TestCase {
-    @Inject private OMMetaFactory metaFactory;
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private OMMetaFactory metaFactory;
+
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement original =
-                OMXMLBuilderFactory.createOMBuilder(
-                                metaFactory.getOMFactory(),
-                                new StringReader(
-                                        "<wsa:To xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2004/08/addressing\">"
-                                                + "http://fabrikam123.example/Purchasing</wsa:To>"))
-                        .getDocumentElement();
+        OMElement original = OMXMLBuilderFactory.createOMBuilder(
+                        metaFactory.getOMFactory(),
+                        new StringReader("<wsa:To xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2004/08/addressing\">"
+                                + "http://fabrikam123.example/Purchasing</wsa:To>"))
+                .getDocumentElement();
         SOAPHeaderBlock headerBlock = soapFactory.createSOAPHeaderBlock(original);
-        assertAbout(xml())
-                .that(xml(OMElement.class, headerBlock))
-                .hasSameContentAs(xml(OMElement.class, original));
+        assertAbout(xml()).that(xml(OMElement.class, headerBlock)).hasSameContentAs(xml(OMElement.class, original));
     }
 }

@@ -22,11 +22,9 @@ package org.apache.axiom.util.stax;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
@@ -146,8 +144,7 @@ public class XMLStreamReaderUtils {
      * @throws IllegalStateException if this state is not a valid text state.
      * @see CharacterDataReader
      */
-    public static void writeTextTo(XMLStreamReader reader, Writer writer)
-            throws XMLStreamException, IOException {
+    public static void writeTextTo(XMLStreamReader reader, Writer writer) throws XMLStreamException, IOException {
         CharacterDataReader cdataReader;
         try {
             cdataReader = (CharacterDataReader) reader.getProperty(CharacterDataReader.PROPERTY);
@@ -178,8 +175,7 @@ public class XMLStreamReaderUtils {
      * @throws IllegalStateException if the XML stream reader is not positioned on a {@link
      *     XMLStreamConstants#START_ELEMENT} event
      */
-    public static Reader getElementTextAsStream(
-            XMLStreamReader reader, boolean allowNonTextChildren) {
+    public static Reader getElementTextAsStream(XMLStreamReader reader, boolean allowNonTextChildren) {
         if (reader.getEventType() != XMLStreamReader.START_ELEMENT) {
             throw new IllegalStateException("Reader must be on a START_ELEMENT event");
         }

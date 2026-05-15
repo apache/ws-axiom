@@ -19,6 +19,9 @@
 
 package org.apache.axiom.om.impl.serializer;
 
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import junit.framework.TestCase;
 import org.apache.axiom.core.stream.stax.StAX;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
@@ -31,13 +34,8 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
-
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
-import junit.framework.TestCase;
+import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class ElementSerializerTest extends TestCase {
     private XMLStreamReader reader;
@@ -46,9 +44,8 @@ public class ElementSerializerTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        reader =
-                StAXUtils.createXMLStreamReader(
-                        SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
+        reader = StAXUtils.createXMLStreamReader(
+                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
         writer = StAX.createNullXMLStreamWriter();
         builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(reader);
     }

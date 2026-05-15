@@ -22,11 +22,11 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import java.io.InputStream;
-
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
-
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -38,13 +38,12 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-import com.google.inject.Inject;
-
-import junit.framework.TestCase;
-
 public class TestCreateSOAPModelBuilderFromSAXSource extends TestCase {
-    @Inject private OMMetaFactory metaFactory;
-    @Inject private SOAPSpec spec;
+    @Inject
+    private OMMetaFactory metaFactory;
+
+    @Inject
+    private SOAPSpec spec;
 
     @Override
     protected void runTest() throws Throwable {
@@ -55,9 +54,8 @@ public class TestCreateSOAPModelBuilderFromSAXSource extends TestCase {
         InputStream in = sample.getInputStream();
         InputSource is = new InputSource(in);
         is.setEncoding(sample.getEncoding());
-        SOAPMessage message =
-                OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new SAXSource(reader, is))
-                        .getSOAPMessage();
+        SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new SAXSource(reader, is))
+                .getSOAPMessage();
         assertAbout(xml())
                 .that(xml(OMDocument.class, message))
                 .ignoringWhitespaceInPrologAndEpilog()

@@ -20,6 +20,7 @@ package org.apache.axiom.ts.soap.envelope;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
@@ -29,10 +30,9 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-import com.google.inject.Inject;
-
 public class TestCloneWithSourcedElement1 extends CloneTestCase {
-    @Inject private SOAPFactory soapFactory;
+    @Inject
+    private SOAPFactory soapFactory;
 
     @Inject
     public TestCloneWithSourcedElement1(SOAPSpec spec) {
@@ -45,9 +45,7 @@ public class TestCloneWithSourcedElement1 extends CloneTestCase {
         SOAPBody body = sourceEnv.getBody();
 
         // Create a payload
-        OMDataSource bads =
-                new StringOMDataSource(
-                        "<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>");
+        OMDataSource bads = new StringOMDataSource("<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>");
         OMNamespace ns = body.getOMFactory().createOMNamespace("urn://test", "tns");
         OMSourcedElement omse = body.getOMFactory().createOMElement(bads, "payload", ns);
         body.addChild(omse);
