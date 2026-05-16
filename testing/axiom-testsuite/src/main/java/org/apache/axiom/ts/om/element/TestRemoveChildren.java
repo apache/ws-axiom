@@ -36,12 +36,9 @@ public class TestRemoveChildren extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean complete;
-
     @Inject
-    public TestRemoveChildren(@Named("complete") boolean complete) {
-        this.complete = complete;
-    }
+    @Named("complete")
+    private boolean complete;
 
     @Override
     protected void runTest() throws Throwable {

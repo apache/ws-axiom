@@ -27,12 +27,9 @@ public class TestAXIOMXPath extends AxiomTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
-    private final String methodName;
-
     @Inject
-    public TestAXIOMXPath(@Named("methodName") String methodName) {
-        this.methodName = methodName;
-    }
+    @Named("methodName")
+    private String methodName;
 
     @Override
     protected void runTest() throws Throwable {

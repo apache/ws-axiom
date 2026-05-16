@@ -35,12 +35,9 @@ public class TestSerialize extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final int type;
-
     @Inject
-    public TestSerialize(@Named("type") int type) {
-        this.type = type;
-    }
+    @Named("type")
+    private int type;
 
     @Override
     protected void runTest() throws Throwable {

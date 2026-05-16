@@ -33,12 +33,8 @@ public class TestCloseWithStream extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final StreamType streamType;
-
     @Inject
-    public TestCloseWithStream(StreamType streamType) {
-        this.streamType = streamType;
-    }
+    private StreamType streamType;
 
     @Override
     protected void runTest() throws Throwable {

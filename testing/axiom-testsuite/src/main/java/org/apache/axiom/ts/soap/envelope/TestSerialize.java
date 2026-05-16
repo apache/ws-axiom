@@ -34,17 +34,14 @@ public class TestSerialize extends AxiomTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
-    private final SOAPSample message;
-    private final ExpansionStrategy expansionStrategy;
-    private final SerializationStrategy serializationStrategy;
+    @Inject
+    private SOAPSample message;
 
     @Inject
-    public TestSerialize(
-            SOAPSample message, ExpansionStrategy expansionStrategy, SerializationStrategy serializationStrategy) {
-        this.message = message;
-        this.expansionStrategy = expansionStrategy;
-        this.serializationStrategy = serializationStrategy;
-    }
+    private ExpansionStrategy expansionStrategy;
+
+    @Inject
+    private SerializationStrategy serializationStrategy;
 
     @Override
     protected void runTest() throws Throwable {

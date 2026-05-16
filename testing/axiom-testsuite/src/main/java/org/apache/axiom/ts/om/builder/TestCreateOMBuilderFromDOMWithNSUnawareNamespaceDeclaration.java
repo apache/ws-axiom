@@ -33,12 +33,9 @@ public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration extends
     @Inject
     private OMFactory factory;
 
-    private final String prefix;
-
     @Inject
-    public TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration(@Named("prefix") String prefix) {
-        this.prefix = prefix;
-    }
+    @Named("prefix")
+    private String prefix;
 
     @Override
     protected void runTest() throws Throwable {

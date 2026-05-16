@@ -36,14 +36,13 @@ public class TestDetach extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean document;
-    private final boolean build;
+    @Inject
+    @Named("document")
+    private boolean document;
 
     @Inject
-    public TestDetach(@Named("document") boolean document, @Named("build") boolean build) {
-        this.document = document;
-        this.build = build;
-    }
+    @Named("build")
+    private boolean build;
 
     @Override
     protected void runTest() throws Throwable {

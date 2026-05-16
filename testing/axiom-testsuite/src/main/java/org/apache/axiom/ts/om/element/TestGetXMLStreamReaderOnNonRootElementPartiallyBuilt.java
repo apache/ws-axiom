@@ -39,15 +39,13 @@ public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends AxiomT
     @Inject
     private OMFactory factory;
 
-    private final boolean cache;
-    private final int build;
+    @Inject
+    @Named("cache")
+    private boolean cache;
 
     @Inject
-    public TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt(
-            @Named("cache") boolean cache, @Named("build") int build) {
-        this.cache = cache;
-        this.build = build;
-    }
+    @Named("build")
+    private int build;
 
     @Override
     protected void runTest() throws Throwable {

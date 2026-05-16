@@ -35,14 +35,12 @@ public class TestCreateOMBuilderXOP extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final XOPSample sample;
-    private final boolean build;
+    @Inject
+    private XOPSample sample;
 
     @Inject
-    public TestCreateOMBuilderXOP(XOPSample sample, @Named("build") boolean build) {
-        this.sample = sample;
-        this.build = build;
-    }
+    @Named("build")
+    private boolean build;
 
     @Override
     protected void runTest() throws Throwable {

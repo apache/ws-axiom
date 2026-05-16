@@ -39,12 +39,9 @@ public class TestCloseWithoutCaching extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final int events;
-
     @Inject
-    public TestCloseWithoutCaching(@Named("events") int events) {
-        this.events = events;
-    }
+    @Named("events")
+    private int events;
 
     @Override
     protected void runTest() throws Throwable {

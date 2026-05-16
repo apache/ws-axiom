@@ -35,14 +35,12 @@ public class TestDetachWithStream extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final StreamType streamType;
-    private final boolean useStreamSource;
+    @Inject
+    private StreamType streamType;
 
     @Inject
-    public TestDetachWithStream(StreamType streamType, @Named("useStreamSource") boolean useStreamSource) {
-        this.streamType = streamType;
-        this.useStreamSource = useStreamSource;
-    }
+    @Named("useStreamSource")
+    private boolean useStreamSource;
 
     @Override
     protected final void runTest() throws Throwable {

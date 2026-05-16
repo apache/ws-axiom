@@ -33,12 +33,9 @@ public class BadInputTest extends AxiomTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
-    private final String file;
-
     @Inject
-    public BadInputTest(@Named("file") String file) {
-        this.file = file;
-    }
+    @Named("file")
+    private String file;
 
     @Override
     protected void runTest() throws Throwable {

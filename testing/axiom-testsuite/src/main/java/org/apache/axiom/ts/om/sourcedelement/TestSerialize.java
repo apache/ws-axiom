@@ -30,8 +30,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.AbstractPullOMDataSource;
-import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.ElementContext;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
@@ -45,47 +43,39 @@ public class TestSerialize extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean push;
-    private final boolean destructive;
-    private final ElementContext elementContext;
-    private final ExpansionStrategy expansionStrategy;
-    private final SerializationStrategy serializationStrategy;
-    private final boolean serializeParent;
-    private final int count;
-
     /**
-     * Constructor.
-     *
-     * @param metaFactory the meta factory for the implementation to be tested
-     * @param push specifies whether the data source to be used extends {@link
-     *     AbstractPullOMDataSource} (<code>false</code>) or {@link AbstractPushOMDataSource} (
-     *     <code>true</code>)
-     * @param destructive specifies if the {@link OMDataSource} is destructive or not
-     * @param elementContext specifies if an how the {@link OMSourcedElement} is to be placed inside
-     *     an {@link OMContainer}
-     * @param serializationStrategy the serialization strategy to test
-     * @param serializeParent specifies if the parent of the {@link OMSourcedElement} should be
-     *     serialized instead of the {@link OMSourcedElement} itself
-     * @param count the number of times the {@link OMSourcedElement} will be serialized; the only
-     *     meaningful values are 1 and 2
+     * Specifies whether the data source to be used extends {@link AbstractPullOMDataSource} (<code>
+     * false</code>) or {@link AbstractPushOMDataSource} (<code>true</code>).
      */
     @Inject
-    public TestSerialize(
-            @Named("push") boolean push,
-            @Named("destructive") boolean destructive,
-            ElementContext elementContext,
-            ExpansionStrategy expansionStrategy,
-            SerializationStrategy serializationStrategy,
-            @Named("serializeParent") boolean serializeParent,
-            @Named("count") int count) {
-        this.push = push;
-        this.destructive = destructive;
-        this.elementContext = elementContext;
-        this.expansionStrategy = expansionStrategy;
-        this.serializationStrategy = serializationStrategy;
-        this.serializeParent = serializeParent;
-        this.count = count;
-    }
+    @Named("push")
+    private boolean push;
+
+    /** Specifies if the {@link OMDataSource} is destructive or not. */
+    @Inject
+    @Named("destructive")
+    private boolean destructive;
+
+    /** Specifies if and how the {@link OMSourcedElement} is to be placed inside an {@link OMContainer}. */
+    @Inject
+    private ElementContext elementContext;
+
+    @Inject
+    private ExpansionStrategy expansionStrategy;
+
+    /** The serialization strategy to test. */
+    @Inject
+    private SerializationStrategy serializationStrategy;
+
+    /** Specifies if the parent of the {@link OMSourcedElement} should be serialized instead of the {@link OMSourcedElement} itself. */
+    @Inject
+    @Named("serializeParent")
+    private boolean serializeParent;
+
+    /** The number of times the {@link OMSourcedElement} will be serialized; the only meaningful values are 1 and 2. */
+    @Inject
+    @Named("count")
+    private int count;
 
     @Override
     protected void runTest() throws Throwable {

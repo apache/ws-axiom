@@ -38,12 +38,9 @@ public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean defaultNamespaceInScope;
-
     @Inject
-    public TestAddAttributeGeneratedPrefix(@Named("defaultNamespaceInScope") boolean defaultNamespaceInScope) {
-        this.defaultNamespaceInScope = defaultNamespaceInScope;
-    }
+    @Named("defaultNamespaceInScope")
+    private boolean defaultNamespaceInScope;
 
     @Override
     protected void runTest() throws Throwable {

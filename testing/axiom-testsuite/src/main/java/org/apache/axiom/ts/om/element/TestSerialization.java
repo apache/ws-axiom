@@ -87,12 +87,8 @@ public class TestSerialization extends AxiomTestCase {
                     "D",
                     "<person><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></person>"));
 
-    private final Params params;
-
     @Inject
-    public TestSerialization(Params params) {
-        this.params = params;
-    }
+    private Params params;
 
     private static OMNamespace createNamespace(OMFactory factory, String type) {
         if (type.equals("Q")) {

@@ -38,12 +38,9 @@ public class TestAddChildWithSameParent extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean build;
-
     @Inject
-    public TestAddChildWithSameParent(@Named("build") boolean build) {
-        this.build = build;
-    }
+    @Named("build")
+    private boolean build;
 
     @Override
     protected void runTest() throws Throwable {

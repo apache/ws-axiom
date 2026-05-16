@@ -35,14 +35,12 @@ public class TestCommentEvent extends AxiomTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
-    private final BuilderFactory builderFactory;
-    private final boolean cache;
+    @Inject
+    private BuilderFactory builderFactory;
 
     @Inject
-    public TestCommentEvent(BuilderFactory builderFactory, @Named("cache") boolean cache) {
-        this.builderFactory = builderFactory;
-        this.cache = cache;
-    }
+    @Named("cache")
+    private boolean cache;
 
     @Override
     protected void runTest() throws Throwable {

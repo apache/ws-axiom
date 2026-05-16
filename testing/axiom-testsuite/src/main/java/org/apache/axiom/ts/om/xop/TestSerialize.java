@@ -40,12 +40,9 @@ public class TestSerialize extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean base64;
-
     @Inject
-    public TestSerialize(@Named("base64") boolean base64) {
-        this.base64 = base64;
-    }
+    @Named("base64")
+    private boolean base64;
 
     @Override
     protected void runTest() throws Throwable {

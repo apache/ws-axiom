@@ -51,12 +51,8 @@ public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCas
     @Inject
     private OMFactory factory;
 
-    private final AddAttributeStrategy strategy;
-
     @Inject
-    public TestAddAttributeWithMaskedNamespaceDeclaration(AddAttributeStrategy strategy) {
-        this.strategy = strategy;
-    }
+    private AddAttributeStrategy strategy;
 
     @Override
     protected void runTest() throws Throwable {

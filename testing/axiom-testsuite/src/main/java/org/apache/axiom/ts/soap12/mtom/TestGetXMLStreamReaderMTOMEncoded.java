@@ -40,12 +40,9 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
 
     private static final QName XOP_INCLUDE = new QName("http://www.w3.org/2004/08/xop/include", "Include");
 
-    private final boolean cache;
-
     @Inject
-    public TestGetXMLStreamReaderMTOMEncoded(@Named("cache") boolean cache) {
-        this.cache = cache;
-    }
+    @Named("cache")
+    private boolean cache;
 
     @Override
     protected void runTest() throws Throwable {

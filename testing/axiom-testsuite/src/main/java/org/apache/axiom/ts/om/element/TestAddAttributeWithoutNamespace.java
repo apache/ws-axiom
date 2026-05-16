@@ -38,15 +38,11 @@ public class TestAddAttributeWithoutNamespace extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final AddAttributeStrategy addAttributeStrategy;
-    private final NoNamespaceStrategy noNamespaceStrategy;
+    @Inject
+    private AddAttributeStrategy addAttributeStrategy;
 
     @Inject
-    public TestAddAttributeWithoutNamespace(
-            AddAttributeStrategy addAttributeStrategy, NoNamespaceStrategy noNamespaceStrategy) {
-        this.addAttributeStrategy = addAttributeStrategy;
-        this.noNamespaceStrategy = noNamespaceStrategy;
-    }
+    private NoNamespaceStrategy noNamespaceStrategy;
 
     @Override
     protected void runTest() throws Throwable {
