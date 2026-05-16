@@ -43,12 +43,9 @@ public class TestSetOptimize extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean optimize;
-
     @Inject
-    public TestSetOptimize(@Named("optimize") boolean optimize) {
-        this.optimize = optimize;
-    }
+    @Named("optimize")
+    private boolean optimize;
 
     @Override
     protected void runTest() throws Throwable {

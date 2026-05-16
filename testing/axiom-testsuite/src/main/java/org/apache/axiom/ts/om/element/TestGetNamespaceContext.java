@@ -37,12 +37,9 @@ public class TestGetNamespaceContext extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean detached;
-
     @Inject
-    public TestGetNamespaceContext(@Named("detached") boolean detached) {
-        this.detached = detached;
-    }
+    @Named("detached")
+    private boolean detached;
 
     @Override
     protected void runTest() throws Throwable {

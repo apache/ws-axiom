@@ -43,12 +43,8 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
-    private final SOAPSample message;
-
     @Inject
-    public TestRegisterCustomBuilderForPayload(SOAPSample message) {
-        this.message = message;
-    }
+    private SOAPSample message;
 
     @Override
     protected void runTest() throws Throwable {

@@ -42,15 +42,13 @@ public class TestGetDocumentElement extends AxiomTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
-    private final BuilderFactory builderFactory;
-    private final Boolean discardDocument;
+    @Inject
+    private BuilderFactory builderFactory;
 
     @Inject
-    public TestGetDocumentElement(
-            BuilderFactory builderFactory, @Named("discardDocument") @Nullable Boolean discardDocument) {
-        this.builderFactory = builderFactory;
-        this.discardDocument = discardDocument;
-    }
+    @Named("discardDocument")
+    @Nullable
+    private Boolean discardDocument;
 
     @Override
     protected void runTest() throws Throwable {

@@ -48,12 +48,9 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
-    private final boolean buildSOAPPart;
-
     @Inject
-    public TestMTOMForwardStreaming(@Named("buildSOAPPart") boolean buildSOAPPart) {
-        this.buildSOAPPart = buildSOAPPart;
-    }
+    @Named("buildSOAPPart")
+    private boolean buildSOAPPart;
 
     @Override
     protected void runTest() throws Throwable {

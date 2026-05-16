@@ -37,12 +37,8 @@ public class TestAddAttributeWithExistingNamespaceDeclarationOnSameElement exten
     @Inject
     private OMFactory factory;
 
-    private final AddAttributeStrategy strategy;
-
     @Inject
-    public TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(AddAttributeStrategy strategy) {
-        this.strategy = strategy;
-    }
+    private AddAttributeStrategy strategy;
 
     @Override
     protected void runTest() throws Throwable {

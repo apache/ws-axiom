@@ -84,15 +84,12 @@ public class TestSerializeOMDataSourceWritingToOutputStream extends AxiomTestCas
         }
     }
 
-    private final SerializationStrategy serializationStrategy;
-    private final boolean serializeParent;
+    @Inject
+    private SerializationStrategy serializationStrategy;
 
     @Inject
-    public TestSerializeOMDataSourceWritingToOutputStream(
-            SerializationStrategy serializationStrategy, @Named("serializeParent") boolean serializeParent) {
-        this.serializationStrategy = serializationStrategy;
-        this.serializeParent = serializeParent;
-    }
+    @Named("serializeParent")
+    private boolean serializeParent;
 
     @Override
     protected void runTest() throws Throwable {

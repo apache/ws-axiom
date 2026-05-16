@@ -29,12 +29,8 @@ public class MessageTest extends AxiomTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
-    private final SOAPSample message;
-
     @Inject
-    public MessageTest(SOAPSample message) {
-        this.message = message;
-    }
+    private SOAPSample message;
 
     @Override
     protected void runTest() throws Throwable {

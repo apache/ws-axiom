@@ -33,12 +33,9 @@ public class TestGetDescendants extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean includeSelf;
-
     @Inject
-    public TestGetDescendants(@Named("includeSelf") boolean includeSelf) {
-        this.includeSelf = includeSelf;
-    }
+    @Named("includeSelf")
+    private boolean includeSelf;
 
     @Override
     protected void runTest() throws Throwable {

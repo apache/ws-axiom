@@ -46,12 +46,9 @@ public class TestGetNamespaceNormalized extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean useNull;
-
     @Inject
-    public TestGetNamespaceNormalized(@Named("useNull") boolean useNull) {
-        this.useNull = useNull;
-    }
+    @Named("useNull")
+    private boolean useNull;
 
     @Override
     protected void runTest() throws Throwable {

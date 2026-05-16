@@ -36,12 +36,9 @@ public class TestDetachWithDOM extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean useDOMSource;
-
     @Inject
-    public TestDetachWithDOM(@Named("useDOMSource") boolean useDOMSource) {
-        this.useDOMSource = useDOMSource;
-    }
+    @Named("useDOMSource")
+    private boolean useDOMSource;
 
     @Override
     protected void runTest() throws Throwable {

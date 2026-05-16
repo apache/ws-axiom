@@ -41,12 +41,8 @@ public class TestAddChildWithIncompleteSibling extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final OMContainerFactory containerFactory;
-
     @Inject
-    public TestAddChildWithIncompleteSibling(OMContainerFactory containerFactory) {
-        this.containerFactory = containerFactory;
-    }
+    private OMContainerFactory containerFactory;
 
     @Override
     protected void runTest() throws Throwable {

@@ -41,12 +41,9 @@ public class TestCharacterDataReaderFromParser extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean cache;
-
     @Inject
-    public TestCharacterDataReaderFromParser(@Named("cache") boolean cache) {
-        this.cache = cache;
-    }
+    @Named("cache")
+    private boolean cache;
 
     @Override
     protected void runTest() throws Throwable {

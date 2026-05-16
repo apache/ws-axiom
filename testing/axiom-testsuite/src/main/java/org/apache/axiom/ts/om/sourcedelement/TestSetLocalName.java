@@ -40,12 +40,9 @@ public class TestSetLocalName extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private boolean expand;
-
     @Inject
-    public TestSetLocalName(@Named("expand") boolean expand) {
-        this.expand = expand;
-    }
+    @Named("expand")
+    private boolean expand;
 
     @Override
     protected void runTest() throws Throwable {

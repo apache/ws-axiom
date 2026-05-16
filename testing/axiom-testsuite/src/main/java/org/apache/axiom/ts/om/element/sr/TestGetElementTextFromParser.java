@@ -38,26 +38,20 @@ public class TestGetElementTextFromParser extends AxiomTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
-    private final BuilderFactory builderFactory;
-    private final boolean cache;
-    private final int build;
+    @Inject
+    private BuilderFactory builderFactory;
+
+    @Inject
+    @Named("cache")
+    private boolean cache;
 
     /**
-     * Constructor.
-     *
-     * @param metaFactory
-     * @param builderFactory
-     * @param cache
-     * @param build the number of descendants that should be built before calling {@link
-     *     OMContainer#getXMLStreamReader(boolean)}
+     * The number of descendants that should be built before calling {@link
+     * OMContainer#getXMLStreamReader(boolean)}.
      */
     @Inject
-    public TestGetElementTextFromParser(
-            BuilderFactory builderFactory, @Named("cache") boolean cache, @Named("build") int build) {
-        this.builderFactory = builderFactory;
-        this.cache = cache;
-        this.build = build;
-    }
+    @Named("build")
+    private int build;
 
     @Override
     protected void runTest() throws Throwable {

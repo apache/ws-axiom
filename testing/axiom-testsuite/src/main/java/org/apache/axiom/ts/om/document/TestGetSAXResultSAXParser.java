@@ -40,14 +40,11 @@ public class TestGetSAXResultSAXParser extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final SAXImplementation saxImplementation;
-    private final XMLSample file;
+    @Inject
+    private SAXImplementation saxImplementation;
 
     @Inject
-    public TestGetSAXResultSAXParser(SAXImplementation saxImplementation, XMLSample file) {
-        this.saxImplementation = saxImplementation;
-        this.file = file;
-    }
+    private XMLSample file;
 
     @Override
     protected void runTest() throws Throwable {

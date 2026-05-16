@@ -39,14 +39,13 @@ public class TestDTDReaderFromParser extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean build;
-    private final boolean cache;
+    @Inject
+    @Named("build")
+    private boolean build;
 
     @Inject
-    public TestDTDReaderFromParser(@Named("build") boolean build, @Named("cache") boolean cache) {
-        this.build = build;
-        this.cache = cache;
-    }
+    @Named("cache")
+    private boolean cache;
 
     @Override
     protected void runTest() throws Throwable {

@@ -37,12 +37,9 @@ public class TestCloneBinary extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private boolean fetch;
-
     @Inject
-    public TestCloneBinary(@Named("fetch") boolean fetch) {
-        this.fetch = fetch;
-    }
+    @Named("fetch")
+    private boolean fetch;
 
     @Override
     protected void runTest() throws Throwable {

@@ -39,12 +39,8 @@ public class TestAddAttributeReplace extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final AddAttributeStrategy strategy;
-
     @Inject
-    public TestAddAttributeReplace(AddAttributeStrategy strategy) {
-        this.strategy = strategy;
-    }
+    private AddAttributeStrategy strategy;
 
     @Override
     protected void runTest() throws Throwable {

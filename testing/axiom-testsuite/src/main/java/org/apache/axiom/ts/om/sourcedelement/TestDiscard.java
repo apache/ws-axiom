@@ -33,12 +33,8 @@ public class TestDiscard extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final ExpansionStrategy expansionStrategy;
-
     @Inject
-    public TestDiscard(ExpansionStrategy expansionStrategy) {
-        this.expansionStrategy = expansionStrategy;
-    }
+    private ExpansionStrategy expansionStrategy;
 
     @Override
     protected void runTest() throws Throwable {

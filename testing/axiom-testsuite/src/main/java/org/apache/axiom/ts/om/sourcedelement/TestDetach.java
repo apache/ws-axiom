@@ -38,12 +38,8 @@ public class TestDetach extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final ExpansionStrategy expansionStrategy;
-
     @Inject
-    public TestDetach(ExpansionStrategy expansionStrategy) {
-        this.expansionStrategy = expansionStrategy;
-    }
+    private ExpansionStrategy expansionStrategy;
 
     @Override
     protected void runTest() throws Throwable {

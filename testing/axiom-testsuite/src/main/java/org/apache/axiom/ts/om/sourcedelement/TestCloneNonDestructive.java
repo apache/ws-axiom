@@ -37,12 +37,9 @@ public class TestCloneNonDestructive extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean copyOMDataSources;
-
     @Inject
-    public TestCloneNonDestructive(@Named("copyOMDataSources") boolean copyOMDataSources) {
-        this.copyOMDataSources = copyOMDataSources;
-    }
+    @Named("copyOMDataSources")
+    private boolean copyOMDataSources;
 
     @Override
     protected void runTest() throws Throwable {

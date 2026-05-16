@@ -37,12 +37,8 @@ public class TestAddAttributeWithExistingNamespaceDeclarationInScope extends Axi
     @Inject
     private OMFactory factory;
 
-    private final AddAttributeStrategy strategy;
-
     @Inject
-    public TestAddAttributeWithExistingNamespaceDeclarationInScope(AddAttributeStrategy strategy) {
-        this.strategy = strategy;
-    }
+    private AddAttributeStrategy strategy;
 
     @Override
     protected void runTest() throws Throwable {

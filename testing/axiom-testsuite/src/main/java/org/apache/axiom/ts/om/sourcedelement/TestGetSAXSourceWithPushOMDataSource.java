@@ -42,15 +42,12 @@ public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final PushOMDataSourceScenario scenario;
-    private boolean serializeParent;
+    @Inject
+    private PushOMDataSourceScenario scenario;
 
     @Inject
-    public TestGetSAXSourceWithPushOMDataSource(
-            PushOMDataSourceScenario scenario, @Named("serializeParent") boolean serializeParent) {
-        this.scenario = scenario;
-        this.serializeParent = serializeParent;
-    }
+    @Named("serializeParent")
+    private boolean serializeParent;
 
     @Override
     protected void runTest() throws Throwable {

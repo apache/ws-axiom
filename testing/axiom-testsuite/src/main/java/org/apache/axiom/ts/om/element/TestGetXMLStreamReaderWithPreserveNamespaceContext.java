@@ -42,15 +42,13 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTes
     @Inject
     private OMFactory factory;
 
-    private final boolean preserveNamespaceContext;
-    private final boolean cache;
+    @Inject
+    @Named("preserveNamespaceContext")
+    private boolean preserveNamespaceContext;
 
     @Inject
-    public TestGetXMLStreamReaderWithPreserveNamespaceContext(
-            @Named("preserveNamespaceContext") boolean preserveNamespaceContext, @Named("cache") boolean cache) {
-        this.preserveNamespaceContext = preserveNamespaceContext;
-        this.cache = cache;
-    }
+    @Named("cache")
+    private boolean cache;
 
     @Override
     protected void runTest() throws Throwable {

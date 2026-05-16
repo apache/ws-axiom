@@ -45,12 +45,9 @@ public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCas
     @Inject
     private OMFactory factory;
 
-    private final boolean cache;
-
     @Inject
-    public TestGetXMLStreamReaderWithIncompleteDescendant(@Named("cache") boolean cache) {
-        this.cache = cache;
-    }
+    @Named("cache")
+    private boolean cache;
 
     @Override
     protected void runTest() throws Throwable {

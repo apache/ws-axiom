@@ -51,12 +51,9 @@ public class TestCreateOMTextFromBlobProvider extends AxiomTestCase {
         }
     }
 
-    private final boolean nullContentID;
-
     @Inject
-    public TestCreateOMTextFromBlobProvider(@Named("nullContentId") boolean nullContentID) {
-        this.nullContentID = nullContentID;
-    }
+    @Named("nullContentId")
+    private boolean nullContentID;
 
     @Override
     protected void runTest() throws Throwable {

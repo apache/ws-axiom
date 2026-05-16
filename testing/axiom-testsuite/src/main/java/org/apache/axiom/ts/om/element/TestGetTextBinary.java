@@ -39,12 +39,9 @@ public class TestGetTextBinary extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean compact;
-
     @Inject
-    public TestGetTextBinary(@Named("compact") boolean compact) {
-        this.compact = compact;
-    }
+    @Named("compact")
+    private boolean compact;
 
     @Override
     protected void runTest() throws Throwable {

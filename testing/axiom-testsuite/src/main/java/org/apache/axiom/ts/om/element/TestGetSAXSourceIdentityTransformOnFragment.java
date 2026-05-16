@@ -62,15 +62,12 @@ public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final XSLTImplementation xsltImplementation;
-    private final boolean cache;
+    @Inject
+    private XSLTImplementation xsltImplementation;
 
     @Inject
-    public TestGetSAXSourceIdentityTransformOnFragment(
-            XSLTImplementation xsltImplementation, @Named("cache") boolean cache) {
-        this.xsltImplementation = xsltImplementation;
-        this.cache = cache;
-    }
+    @Named("cache")
+    private boolean cache;
 
     private InputStream getInput() {
         return TestGetSAXSourceIdentityTransformOnFragment.class.getResourceAsStream("test.xml");

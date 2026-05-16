@@ -33,12 +33,9 @@ public class TestDetachFirstChild extends AxiomTestCase {
     @Inject
     private OMFactory factory;
 
-    private final boolean build;
-
     @Inject
-    public TestDetachFirstChild(@Named("build") boolean build) {
-        this.build = build;
-    }
+    @Named("build")
+    private boolean build;
 
     @Override
     protected void runTest() throws Throwable {
