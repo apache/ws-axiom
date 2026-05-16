@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -33,11 +32,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCreateOMElementWithNullOMDataSource2 extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         assertThatThrownBy(() -> factory.createOMElement(null, new QName("urn:test", "test", "p")))
                 .isInstanceOf(IllegalArgumentException.class);
     }

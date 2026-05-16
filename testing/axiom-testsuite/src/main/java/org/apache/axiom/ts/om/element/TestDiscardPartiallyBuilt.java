@@ -26,7 +26,6 @@ import com.google.inject.Inject;
 import java.io.StringReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -39,11 +38,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestDiscardPartiallyBuilt extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement root = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<root><element><a><b>text</b></a><c/></element><sibling/></root>"))
                 .getDocumentElement();

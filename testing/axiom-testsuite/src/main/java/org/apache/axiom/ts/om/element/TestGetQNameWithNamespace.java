@@ -25,16 +25,14 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetQNameWithNamespace extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         String localName = "TestLocalName";
         String namespace = "http://ws.apache.org/axis2/ns";
         String prefix = "axis2";

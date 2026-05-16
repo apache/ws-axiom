@@ -19,14 +19,14 @@
 package org.apache.axiom.ts.om.element;
 
 import com.google.inject.Inject;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
 
 // Regression test for AXIOM-203
 public class TestDigestWithoutNamespace extends DigestTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     public TestDigestWithoutNamespace() {
         super("MD5", "0730b7dda59f628a10b53b5502682ceb");
@@ -34,6 +34,6 @@ public class TestDigestWithoutNamespace extends DigestTestCase {
 
     @Override
     protected OMInformationItem createInformationItem() {
-        return metaFactory.getOMFactory().createOMElement("elementName", null);
+        return factory.createOMElement("elementName", null);
     }
 }

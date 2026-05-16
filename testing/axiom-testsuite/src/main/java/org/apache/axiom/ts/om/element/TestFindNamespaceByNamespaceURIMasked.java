@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -33,12 +33,11 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestFindNamespaceByNamespaceURIMasked extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root = AXIOMUtil.stringToOM(
-                metaFactory.getOMFactory(), "<root xmlns:p='urn:ns1'><child xmlns:p='urn:ns2'/></a>");
+        OMElement root = AXIOMUtil.stringToOM(factory, "<root xmlns:p='urn:ns1'><child xmlns:p='urn:ns2'/></a>");
         assertThat(root.getFirstElement().findNamespace("urn:ns1", null)).isNull();
         root.close(false);
     }

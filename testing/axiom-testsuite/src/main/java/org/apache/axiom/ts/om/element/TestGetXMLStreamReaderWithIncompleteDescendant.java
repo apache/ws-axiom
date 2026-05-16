@@ -28,7 +28,6 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -44,7 +43,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean cache;
 
@@ -55,7 +54,6 @@ public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCas
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement root = factory.createOMElement(new QName("root"));
         OMElement child = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>"))
                 .getDocumentElement(true);

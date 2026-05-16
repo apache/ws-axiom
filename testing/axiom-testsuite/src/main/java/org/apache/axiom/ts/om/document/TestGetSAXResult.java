@@ -26,14 +26,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestGetSAXResult extends ConformanceTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final XSLTImplementation xsltImplementation;
 
@@ -47,7 +47,7 @@ public class TestGetSAXResult extends ConformanceTestCase {
     protected void runTest() throws Throwable {
         TransformerFactory transformerFactory = xsltImplementation.newTransformerFactory();
         StreamSource source = new StreamSource(file.getUrl().toString());
-        OMDocument document = metaFactory.getOMFactory().createOMDocument();
+        OMDocument document = factory.createOMDocument();
         SAXResult result = document.getSAXResult();
         transformerFactory.newTransformer().transform(source, result);
         assertAbout(xml())

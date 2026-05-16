@@ -31,7 +31,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
@@ -45,7 +44,7 @@ import org.apache.axiom.ts.dimension.serialization.SerializeToOutputStream;
  */
 public class TestSerializeOMDataSourceWritingToOutputStream extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private static final class OMDataSourceImpl extends AbstractPushOMDataSource {
         private boolean outputStreamUsed;
@@ -98,7 +97,6 @@ public class TestSerializeOMDataSourceWritingToOutputStream extends AxiomTestCas
     @Override
     protected void runTest() throws Throwable {
         OMDataSourceImpl ds = new OMDataSourceImpl();
-        OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(ds);
         OMElement elementToSerialize;
         if (serializeParent) {

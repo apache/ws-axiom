@@ -26,7 +26,6 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -40,11 +39,10 @@ import org.apache.xerces.impl.dv.util.Base64;
  */
 public class TestSetOptimizePlainOMText extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("element", null);
         OMText text = factory.createOMText(element, Base64.encode("foobar".getBytes(StandardCharsets.UTF_8)));
         text.setOptimize(true);

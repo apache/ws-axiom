@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 import java.util.Iterator;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -36,11 +35,10 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  */
 public class TestGetAllDeclaredNamespaces extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element =
                 factory.createOMElement(new PullOMDataSource("<root xmlns:p='urn:ns1'/>"), "root", null);
         Iterator<OMNamespace> attributes = element.getAllDeclaredNamespaces();

@@ -25,7 +25,7 @@ import java.io.StringReader;
 import java.util.Iterator;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
@@ -39,14 +39,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCreateStAXOMBuilderNamespaceRepairing2 extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(
                 new StringReader("<test xmlns='urn:test'><arg0 xmlns=''>dGVzdA==</arg0></test>"));
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(
-                        metaFactory.getOMFactory(), new NamespaceDeclarationFilter(reader))
+        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(factory, new NamespaceDeclarationFilter(reader))
                 .getDocumentElement();
 
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();

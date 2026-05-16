@@ -26,7 +26,6 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -72,7 +71,7 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
     }
 
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final Params params;
 
@@ -88,7 +87,6 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
 
     @Override
     protected final void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element;
         OMNamedInformationItem node;
         if (context()) {

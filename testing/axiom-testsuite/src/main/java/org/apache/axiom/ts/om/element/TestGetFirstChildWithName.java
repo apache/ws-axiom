@@ -24,18 +24,16 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests the behavior of {@link OMElement#getFirstChildWithName(QName)}. */
 public class TestGetFirstChildWithName extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns1 = factory.createOMNamespace("urn:ns1", "ns1");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns2", "ns2");
         OMElement parent = factory.createOMElement("root", null);

@@ -24,16 +24,14 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCreateOMEntityReference extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("test", null);
         OMEntityReference entref = factory.createOMEntityReference(parent, "testref");
         assertThat(entref.getParent()).isSameAs(parent);

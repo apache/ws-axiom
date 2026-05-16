@@ -25,17 +25,15 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests the behavior of {@link OMElement#removeAttribute(OMAttribute)}. */
 public class TestRemoveAttribute extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         OMAttribute attr1 = element.addAttribute("attr1", "value1", null);
         OMAttribute attr2 = element.addAttribute("attr2", "value2", null);

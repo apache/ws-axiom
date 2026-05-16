@@ -26,16 +26,16 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMEntityReference;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestSerialize extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMEntityReference entref = metaFactory.getOMFactory().createOMEntityReference(null, "testref");
+        OMEntityReference entref = factory.createOMEntityReference(null, "testref");
         XMLStreamWriter writer = mock(XMLStreamWriter.class);
         entref.serialize(writer);
         verify(writer).writeEntityRef(entref.getName());

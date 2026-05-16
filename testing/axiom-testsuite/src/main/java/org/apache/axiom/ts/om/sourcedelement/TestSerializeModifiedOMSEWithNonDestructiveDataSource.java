@@ -27,21 +27,19 @@ import java.nio.charset.StandardCharsets;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestSerializeModifiedOMSEWithNonDestructiveDataSource extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         OMDataSourceExt ds = new StringOMDataSource("<element><child/></element>");
         assertThat(ds.isDestructiveWrite()).isFalse();
 
-        OMFactory f = metaFactory.getOMFactory();
-        OMElement element = f.createOMElement(ds, "element", null);
+        OMElement element = factory.createOMElement(ds, "element", null);
 
         element.getFirstElement().setText("TEST");
 

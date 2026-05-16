@@ -23,17 +23,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.io.StringWriter;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestWriteTextToWithNonTextNodes extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<a>A<b>B</b>C</a>");
+        OMElement element = AXIOMUtil.stringToOM(factory, "<a>A<b>B</b>C</a>");
         StringWriter out = new StringWriter();
         element.writeTextTo(out, true);
         assertThat(out.toString()).isEqualTo(element.getText());

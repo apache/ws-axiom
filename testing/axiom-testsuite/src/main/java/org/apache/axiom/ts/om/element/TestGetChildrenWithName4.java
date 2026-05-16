@@ -24,13 +24,12 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetChildrenWithName4 extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private static final String NS_A = "urn://a";
     private static final String NS_B = "urn://b";
@@ -40,7 +39,6 @@ public class TestGetChildrenWithName4 extends AxiomTestCase {
     protected void runTest() throws Throwable {
         // Create a document with 2 children, each named "sample" but
         // have different namespaces.
-        OMFactory factory = metaFactory.getOMFactory();
         OMNamespace a = factory.createOMNamespace(NS_A, "a");
         OMNamespace b = factory.createOMNamespace(NS_B, "b");
 

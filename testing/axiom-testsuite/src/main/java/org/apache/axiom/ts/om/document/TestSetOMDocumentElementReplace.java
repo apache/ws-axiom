@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -38,11 +37,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestSetOMDocumentElementReplace extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<!--comment1--><root/><!--comment2-->"))
                 .getDocument();

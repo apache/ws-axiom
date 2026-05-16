@@ -25,7 +25,7 @@ import com.google.inject.name.Named;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -39,7 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetXMLStreamReaderOnNonRootElement extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean cache;
 
@@ -50,7 +50,7 @@ public class TestGetXMLStreamReaderOnNonRootElement extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<a><b><c/></b><d>content</d></a>");
+        OMElement root = AXIOMUtil.stringToOM(factory, "<a><b><c/></b><d>content</d></a>");
         OMElement b = (OMElement) root.getFirstOMChild();
         XMLStreamReader stream = b.getXMLStreamReader(cache);
         assertThat(stream.getEventType()).isEqualTo(XMLStreamReader.START_DOCUMENT);

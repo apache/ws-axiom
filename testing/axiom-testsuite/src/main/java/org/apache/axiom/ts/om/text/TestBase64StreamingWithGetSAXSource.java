@@ -27,7 +27,6 @@ import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.ByteStreamComparator;
@@ -46,7 +45,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private static class Base64Comparator extends DefaultHandler {
         private final Writer out;
@@ -76,7 +75,6 @@ public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement elem = factory.createOMElement("test", null);
         // Create a blob that would eat up all memory when loaded. If the test
         // doesn't fail with an OutOfMemoryError, we know that the OMText implementation

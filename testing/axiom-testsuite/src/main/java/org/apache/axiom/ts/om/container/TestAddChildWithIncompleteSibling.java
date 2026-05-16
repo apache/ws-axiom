@@ -26,7 +26,6 @@ import java.io.StringReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -40,7 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestAddChildWithIncompleteSibling extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final OMContainerFactory containerFactory;
 
@@ -51,7 +50,6 @@ public class TestAddChildWithIncompleteSibling extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMContainer container = containerFactory.create(factory);
         container.addChild(OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>"))
                 .getDocumentElement(true));

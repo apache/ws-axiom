@@ -27,7 +27,6 @@ import javax.xml.transform.stax.StAXSource;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.XOPEncoded;
@@ -36,11 +35,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class XOPRoundtripTest extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         Blob blob = new TestBlob('x', Runtime.getRuntime().maxMemory());
         OMElement element1 = factory.createOMElement(new QName("test"));
         element1.addChild(factory.createOMText(blob, true));

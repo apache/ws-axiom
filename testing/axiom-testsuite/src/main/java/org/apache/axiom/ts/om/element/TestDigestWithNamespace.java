@@ -20,13 +20,13 @@ package org.apache.axiom.ts.om.element;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
 
 public class TestDigestWithNamespace extends DigestTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     public TestDigestWithNamespace() {
         super("MD5", "76e696f6b648837de0fa32e2ad8f1250");
@@ -34,6 +34,6 @@ public class TestDigestWithNamespace extends DigestTestCase {
 
     @Override
     protected OMInformationItem createInformationItem() {
-        return metaFactory.getOMFactory().createOMElement(new QName("urn:ns", "element", "p"));
+        return factory.createOMElement(new QName("urn:ns", "element", "p"));
     }
 }

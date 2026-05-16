@@ -25,7 +25,6 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
@@ -36,11 +35,10 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  */
 public class TestGetAllAttributes extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(new PullOMDataSource("<root attr='value'/>"), "root", null);
         Iterator<OMAttribute> attributes = element.getAllAttributes();
         assertThat(attributes.hasNext()).isTrue();

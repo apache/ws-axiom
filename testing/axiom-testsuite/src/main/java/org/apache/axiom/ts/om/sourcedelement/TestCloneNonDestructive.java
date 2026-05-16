@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.testutils.blob.TextBlob;
@@ -36,7 +35,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCloneNonDestructive extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean copyOMDataSources;
 
@@ -47,7 +46,6 @@ public class TestCloneNonDestructive extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMDataSource ds = new WrappedTextNodeOMDataSourceFromBlob(
                 new QName("wrapper"), new TextBlob("test", StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         OMSourcedElement element = factory.createOMElement(ds);

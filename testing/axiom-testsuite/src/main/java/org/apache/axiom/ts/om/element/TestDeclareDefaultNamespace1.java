@@ -23,14 +23,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.lang3.StringUtils;
 
 public class TestDeclareDefaultNamespace1 extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -39,16 +38,15 @@ public class TestDeclareDefaultNamespace1 extends AxiomTestCase {
          * xmlns:ns2="http://ws.apache.org/axis2" xmlns="http://two.org"> <ChildElementTwo
          * xmlns="http://one.org" /> </ns2:ChildElementOne> </RootElement>
          */
-        OMFactory omFac = metaFactory.getOMFactory();
+        OMElement documentElement =
+                factory.createOMElement("RootElement", factory.createOMNamespace("http://one.org", ""));
 
-        OMElement documentElement = omFac.createOMElement("RootElement", omFac.createOMNamespace("http://one.org", ""));
-
-        OMNamespace ns = omFac.createOMNamespace("http://ws.apache.org/axis2", "ns2");
-        OMElement childOne = omFac.createOMElement("ChildElementOne", ns, documentElement);
+        OMNamespace ns = factory.createOMNamespace("http://ws.apache.org/axis2", "ns2");
+        OMElement childOne = factory.createOMElement("ChildElementOne", ns, documentElement);
         childOne.declareDefaultNamespace("http://two.org");
 
         OMElement childTwo =
-                omFac.createOMElement("ChildElementTwo", omFac.createOMNamespace("http://one.org", ""), childOne);
+                factory.createOMElement("ChildElementTwo", factory.createOMNamespace("http://one.org", ""), childOne);
 
         assertThat(documentElement.toStringWithConsume())
                 .satisfies(s -> assertThat(StringUtils.countMatches(s, "xmlns=\"http://one.org\""))

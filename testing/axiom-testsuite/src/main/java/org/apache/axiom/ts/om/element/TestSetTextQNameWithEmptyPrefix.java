@@ -25,7 +25,6 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -35,11 +34,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestSetTextQNameWithEmptyPrefix extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         QName qname = new QName("urn:test", "test");
         element.setText(qname);

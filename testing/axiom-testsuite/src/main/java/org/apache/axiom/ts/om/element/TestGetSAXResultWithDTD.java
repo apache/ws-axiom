@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 import javax.xml.transform.sax.SAXResult;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.ContentHandler;
@@ -38,11 +38,11 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class TestGetSAXResultWithDTD extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root = metaFactory.getOMFactory().createOMElement("root", null);
+        OMElement root = factory.createOMElement("root", null);
         SAXResult result = root.getSAXResult();
         LexicalHandler lexicalHandler = result.getLexicalHandler();
         ContentHandler contentHandler = result.getHandler();

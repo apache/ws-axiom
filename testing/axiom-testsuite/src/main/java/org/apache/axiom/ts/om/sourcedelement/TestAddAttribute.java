@@ -25,7 +25,6 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
@@ -37,7 +36,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  */
 public class TestAddAttribute extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final AddAttributeStrategy strategy;
 
@@ -48,7 +47,6 @@ public class TestAddAttribute extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element =
                 factory.createOMElement(new PullOMDataSource("<root attr='orgvalue'><child/></root>"), "root", null);
         // Add an attribute before expansion

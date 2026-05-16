@@ -26,7 +26,6 @@ import java.nio.charset.StandardCharsets;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -34,7 +33,7 @@ import org.apache.axiom.util.UIDGenerator;
 
 public class TestCreateOMTextFromBlobProvider extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     static class TestBlobProvider implements BlobProvider {
         private Blob blob;
@@ -62,7 +61,6 @@ public class TestCreateOMTextFromBlobProvider extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         TestBlobProvider prov = new TestBlobProvider();
-        OMFactory factory = metaFactory.getOMFactory();
         String contentID = nullContentID ? null : UIDGenerator.generateContentId();
         OMText text = factory.createOMText(contentID, prov, true);
         assertThat(prov.isBlobCreated()).isFalse();

@@ -25,7 +25,6 @@ import java.io.StringReader;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -36,11 +35,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestBuildDiscarded extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/></root>"))
                 .getDocumentElement();
         // Partially build the parent

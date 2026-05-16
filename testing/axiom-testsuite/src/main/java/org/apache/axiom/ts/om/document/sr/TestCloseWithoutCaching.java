@@ -29,7 +29,7 @@ import java.nio.charset.StandardCharsets;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -42,7 +42,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCloseWithoutCaching extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -55,8 +55,7 @@ public class TestCloseWithoutCaching extends AxiomTestCase {
         writer.write("</a></root>");
         writer.close();
         InstrumentedInputStream in = new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
-        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
-                .getDocument();
+        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(factory, in).getDocument();
         XMLStreamReader reader = doc.getXMLStreamReaderWithoutCaching();
         reader.next();
         reader.next();

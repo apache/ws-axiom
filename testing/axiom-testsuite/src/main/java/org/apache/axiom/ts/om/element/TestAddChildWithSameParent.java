@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -36,7 +36,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestAddChildWithSameParent extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean build;
 
@@ -47,7 +47,7 @@ public class TestAddChildWithSameParent extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement parent = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<parent><a/><b/><c/></parent>");
+        OMElement parent = AXIOMUtil.stringToOM(factory, "<parent><a/><b/><c/></parent>");
         if (build) {
             parent.build();
         }

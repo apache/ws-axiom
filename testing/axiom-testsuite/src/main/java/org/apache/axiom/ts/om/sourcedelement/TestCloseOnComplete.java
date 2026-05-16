@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -36,12 +36,12 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  */
 public class TestCloseOnComplete extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         PullOMDataSource ds = new PullOMDataSource("<root><a/></root>");
-        OMSourcedElement element = metaFactory.getOMFactory().createOMElement(ds);
+        OMSourcedElement element = factory.createOMElement(ds);
         OMNode child = element.getFirstOMChild();
         assertThat(element.isComplete()).isFalse();
         assertThat(ds.hasUnclosedReaders()).isTrue();

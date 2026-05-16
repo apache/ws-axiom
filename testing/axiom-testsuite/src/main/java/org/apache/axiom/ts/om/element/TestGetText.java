@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -33,11 +32,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetText extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         String text = "The quick brown fox jumps over the lazy dog";
         factory.createOMText(element, text);

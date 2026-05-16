@@ -24,18 +24,16 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests {@link OMFactory#createOMText(OMContainer, OMText)}. */
 public class TestCreateOMTextFromOMText extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMText orgText = factory.createOMText("text");
         OMElement parent = factory.createOMElement("test", null);
         OMText text = factory.createOMText(parent, orgText);

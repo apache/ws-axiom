@@ -26,16 +26,16 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestSerialize extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMComment comment = metaFactory.getOMFactory().createOMComment(null, "test");
+        OMComment comment = factory.createOMComment(null, "test");
         XMLStreamWriter writer = mock(XMLStreamWriter.class);
         comment.serialize(writer);
         verify(writer).writeComment(comment.getValue());

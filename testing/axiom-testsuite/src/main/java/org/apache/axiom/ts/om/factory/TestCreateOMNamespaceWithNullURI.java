@@ -21,16 +21,15 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCreateOMNamespaceWithNullURI extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        assertThatThrownBy(() -> metaFactory.getOMFactory().createOMNamespace(null, "t"))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> factory.createOMNamespace(null, "t")).isInstanceOf(IllegalArgumentException.class);
     }
 }

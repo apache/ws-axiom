@@ -24,7 +24,6 @@ import java.io.ByteArrayInputStream;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
@@ -38,7 +37,7 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class TestGetTextBinary extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean compact;
 
@@ -49,7 +48,6 @@ public class TestGetTextBinary extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         Blob blob = new RandomBlob(99999, 1000);
         OMElement element = factory.createOMElement("elem", null);
         element.addChild(factory.createOMText(blob, false));

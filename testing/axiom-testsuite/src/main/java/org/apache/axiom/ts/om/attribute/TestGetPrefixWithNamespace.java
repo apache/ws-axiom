@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -33,11 +32,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetPrefixWithNamespace extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMAttribute attr = factory.createOMAttribute("name", factory.createOMNamespace("urn:ns", "p"), "value");
         assertThat(attr.getPrefix()).isEqualTo("p");
     }

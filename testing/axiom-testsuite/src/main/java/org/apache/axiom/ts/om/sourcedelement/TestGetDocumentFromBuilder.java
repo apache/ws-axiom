@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.StringOMDataSource;
@@ -36,11 +35,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetDocumentFromBuilder extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMDataSource ds = new StringOMDataSource("<root><a/></root>");
         OMSourcedElement element = factory.createOMElement(ds);
         // Force expansion

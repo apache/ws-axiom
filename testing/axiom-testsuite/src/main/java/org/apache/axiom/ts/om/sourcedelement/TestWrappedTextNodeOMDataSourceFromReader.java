@@ -27,14 +27,13 @@ import java.util.Random;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestWrappedTextNodeOMDataSourceFromReader extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -46,7 +45,6 @@ public class TestWrappedTextNodeOMDataSourceFromReader extends AxiomTestCase {
         String testData = buffer.toString();
         QName qname = new QName("data");
         OMDataSource ds = new WrappedTextNodeOMDataSourceFromReader(qname, new StringReader(testData));
-        OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(ds, qname);
         assertThat(element.getText()).isEqualTo(testData);
     }

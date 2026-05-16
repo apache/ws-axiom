@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
@@ -35,7 +34,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetDescendants extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final OMContainerFactory containerFactory;
     private final boolean includeSelf;
@@ -48,7 +47,6 @@ public class TestGetDescendants extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMContainer root = containerFactory.create(factory);
         OMElement child1 = factory.createOMElement("child", null, root);
         OMProcessingInstruction child2 = factory.createOMProcessingInstruction(root, "test", "data");

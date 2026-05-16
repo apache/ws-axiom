@@ -24,7 +24,7 @@ import java.util.Iterator;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -37,7 +37,7 @@ import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
  */
 public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean cache;
     private final int build;
@@ -51,8 +51,8 @@ public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends AxiomT
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root = AXIOMUtil.stringToOM(
-                metaFactory.getOMFactory(), "<root><child><emptyElement/><element>content</element></child></root>");
+        OMElement root =
+                AXIOMUtil.stringToOM(factory, "<root><child><emptyElement/><element>content</element></child></root>");
         OMElement child = (OMElement) root.getFirstOMChild();
 
         // Partially build the tree

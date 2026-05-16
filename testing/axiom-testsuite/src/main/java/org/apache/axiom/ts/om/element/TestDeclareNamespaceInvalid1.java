@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -33,11 +33,11 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestDeclareNamespaceInvalid1 extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = metaFactory.getOMFactory().createOMElement(new QName("test"));
+        OMElement element = factory.createOMElement(new QName("test"));
         assertThatThrownBy(() -> element.declareNamespace("", "ns")).isInstanceOf(IllegalArgumentException.class);
     }
 }

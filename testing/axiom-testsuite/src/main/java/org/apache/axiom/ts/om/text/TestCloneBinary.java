@@ -27,7 +27,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
@@ -35,7 +35,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCloneBinary extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private boolean fetch;
 
@@ -50,8 +50,7 @@ public class TestCloneBinary extends AxiomTestCase {
         StringReader rootPart = new StringReader(
                 "<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>");
         DummyAttachmentAccessor attachmentAccessor = new DummyAttachmentAccessor("123456@example.org", blob);
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(), new StreamSource(rootPart), attachmentAccessor)
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, new StreamSource(rootPart), attachmentAccessor)
                 .getDocumentElement();
         OMText text = (OMText) root.getFirstOMChild();
         OMCloneOptions options = new OMCloneOptions();

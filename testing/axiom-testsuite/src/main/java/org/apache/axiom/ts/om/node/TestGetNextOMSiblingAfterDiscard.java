@@ -25,18 +25,16 @@ import java.io.StringReader;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetNextOMSiblingAfterDiscard extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<element><!--comment--><a/><!--comment--></element>"))
                 .getDocumentElement();

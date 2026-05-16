@@ -24,12 +24,11 @@ import com.google.inject.Inject;
 import java.util.Iterator;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 
 public class TestCreateOMElementWithNonDefaultNamespace extends CreateOMElementTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Inject
     public TestCreateOMElementWithNonDefaultNamespace(
@@ -39,7 +38,6 @@ public class TestCreateOMElementWithNonDefaultNamespace extends CreateOMElementT
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element =
                 variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "urn:ns", "ns");
         assertThat(element.isComplete()).isTrue();

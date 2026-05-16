@@ -25,28 +25,26 @@ import java.io.ByteArrayInputStream;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestChildReDeclaringParentsDefaultNSWithPrefix extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory fac = metaFactory.getOMFactory();
-        OMElement elem = fac.createOMElement(
-                "RequestSecurityToken", fac.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
-        fac.createOMElement(new QName("TokenType"), elem).setText("test");
-        fac.createOMElement(new QName("RequestType"), elem).setText("test1");
+        OMElement elem = factory.createOMElement(
+                "RequestSecurityToken", factory.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
+        factory.createOMElement(new QName("TokenType"), elem).setText("test");
+        factory.createOMElement(new QName("RequestType"), elem).setText("test1");
 
-        fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"), elem);
+        factory.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"), elem);
         String xml = elem.toString();
 
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
-                metaFactory.getOMFactory(), new ByteArrayInputStream(xml.getBytes()));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(factory, new ByteArrayInputStream(xml.getBytes()));
 
         builder.getDocumentElement().build();
 

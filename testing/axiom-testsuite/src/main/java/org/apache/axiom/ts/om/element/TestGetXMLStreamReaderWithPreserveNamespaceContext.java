@@ -28,7 +28,7 @@ import java.util.Set;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -40,7 +40,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean preserveNamespaceContext;
     private final boolean cache;
@@ -55,8 +55,7 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTes
     @Override
     protected void runTest() throws Throwable {
         InputStream in = TestGetXMLStreamReaderWithPreserveNamespaceContext.class.getResourceAsStream("AXIOM-114.xml");
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
-                .getDocumentElement();
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, in).getDocumentElement();
         root.declareNamespace("http://example.org", "p");
         OMXMLStreamReaderConfiguration configuration = new OMXMLStreamReaderConfiguration();
         configuration.setPreserveNamespaceContext(preserveNamespaceContext);

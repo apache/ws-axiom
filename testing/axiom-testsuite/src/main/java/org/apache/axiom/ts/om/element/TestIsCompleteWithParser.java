@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.io.StringReader;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -34,12 +34,11 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestIsCompleteWithParser extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(), new StringReader("<a><b/></a>"))
+        OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a><b/></a>"))
                 .getDocumentElement();
         assertThat(element.isComplete()).isFalse();
         element.getFirstElement().getNextOMSibling();

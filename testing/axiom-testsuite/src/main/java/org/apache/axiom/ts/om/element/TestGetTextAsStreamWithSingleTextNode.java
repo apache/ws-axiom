@@ -26,17 +26,15 @@ import java.io.StringReader;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.io.IOUtils;
 
 public class TestGetTextAsStreamWithSingleTextNode extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("a"));
         factory.createOMText(element, "test");
         Reader in = element.getTextAsStream(true);

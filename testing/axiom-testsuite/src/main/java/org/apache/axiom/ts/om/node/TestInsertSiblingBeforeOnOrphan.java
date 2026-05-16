@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -31,13 +30,12 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Tests that {@link OMNode#insertSiblingAfter(OMNode)} fails if the node doesn't have a parent. */
 public class TestInsertSiblingBeforeOnOrphan extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory fac = metaFactory.getOMFactory();
-        OMText text1 = fac.createOMText("text1");
-        OMText text2 = fac.createOMText("text2");
+        OMText text1 = factory.createOMText("text1");
+        OMText text2 = factory.createOMText("text2");
         assertThatThrownBy(() -> text1.insertSiblingAfter(text2)).isInstanceOf(OMException.class);
     }
 }

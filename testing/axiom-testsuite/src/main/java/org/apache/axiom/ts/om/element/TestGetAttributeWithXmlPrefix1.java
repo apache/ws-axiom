@@ -25,7 +25,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -36,12 +36,12 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetAttributeWithXmlPrefix1 extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         OMElement elem = AXIOMUtil.stringToOM(
-                metaFactory.getOMFactory(),
+                factory,
                 "<wsp:Policy xml:base=\"uri:thisBase\" "
                         + "xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\">"
                         + "</wsp:Policy>");

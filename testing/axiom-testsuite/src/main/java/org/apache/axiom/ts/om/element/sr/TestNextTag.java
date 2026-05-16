@@ -23,18 +23,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestNextTag extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element =
-                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<a> <b> </b> <?pi?> <!--comment--> <c/> </a>");
+        OMElement element = AXIOMUtil.stringToOM(factory, "<a> <b> </b> <?pi?> <!--comment--> <c/> </a>");
         XMLStreamReader stream = element.getXMLStreamReaderWithoutCaching();
         assertThat(stream.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         stream.nextTag();

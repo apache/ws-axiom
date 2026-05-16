@@ -25,7 +25,6 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -37,11 +36,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestRemoveChildrenUnexpanded extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element =
                 factory.createOMElement(new StringOMDataSource("<element attr='value'><a/></element>"));
         element.removeChildren();

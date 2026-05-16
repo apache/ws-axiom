@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -34,15 +33,14 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestHasNameWithNamespace extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         String localName = "attr";
         String uri = "urn:test";
-        OMFactory fac = metaFactory.getOMFactory();
-        OMNamespace ns = fac.createOMNamespace(uri, "p");
-        OMAttribute attr = fac.createOMAttribute(localName, ns, "value");
+        OMNamespace ns = factory.createOMNamespace(uri, "p");
+        OMAttribute attr = factory.createOMAttribute(localName, ns, "value");
         assertThat(attr.hasName(new QName(uri, localName, "p"))).isTrue();
         assertThat(attr.hasName(new QName(uri, localName, "q"))).isTrue();
         assertThat(attr.hasName(new QName("http://example.org", localName, "p")))

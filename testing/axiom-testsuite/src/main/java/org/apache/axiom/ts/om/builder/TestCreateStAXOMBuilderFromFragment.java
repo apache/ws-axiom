@@ -26,7 +26,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -40,7 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCreateStAXOMBuilderFromFragment extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -51,8 +50,8 @@ public class TestCreateStAXOMBuilderFromFragment extends AxiomTestCase {
             reader.next();
         }
         // Check that the builder only builds the part of the document corresponding to <b>text</b>
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
-                .getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createStAXOMBuilder(factory, reader).getDocumentElement();
         assertThat(element.getLocalName()).isEqualTo("b");
         OMNode child = element.getFirstOMChild();
         assertThat(child).isInstanceOf(OMText.class);

@@ -24,17 +24,15 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetDefaultNamespace extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", "urn:ns1", "");
         OMElement child = factory.createOMElement(new QName("urn:ns2", "child", "p"), parent);
         OMNamespace ns = child.getDefaultNamespace();

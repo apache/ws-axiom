@@ -25,14 +25,14 @@ import com.google.inject.Inject;
 import java.io.StringReader;
 import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
 public class TestCreateSOAPHeaderBlockFromOMElement extends TestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Inject
     private SOAPFactory soapFactory;
@@ -40,7 +40,7 @@ public class TestCreateSOAPHeaderBlockFromOMElement extends TestCase {
     @Override
     protected void runTest() throws Throwable {
         OMElement original = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(),
+                        factory,
                         new StringReader("<wsa:To xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2004/08/addressing\">"
                                 + "http://fabrikam123.example/Purchasing</wsa:To>"))
                 .getDocumentElement();

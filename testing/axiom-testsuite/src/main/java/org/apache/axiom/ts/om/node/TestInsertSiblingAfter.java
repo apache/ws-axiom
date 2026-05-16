@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -31,14 +30,13 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Tests the behavior of {@link OMNode#insertSiblingAfter(OMNode)}. */
 public class TestInsertSiblingAfter extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory fac = metaFactory.getOMFactory();
-        OMElement parent = fac.createOMElement("test", null);
-        OMText text1 = fac.createOMText("text1");
-        OMText text2 = fac.createOMText("text2");
+        OMElement parent = factory.createOMElement("test", null);
+        OMText text1 = factory.createOMText("text1");
+        OMText text2 = factory.createOMText("text2");
         parent.addChild(text1);
         text1.insertSiblingAfter(text2);
         assertThat(text2.getParent()).isSameAs(parent);

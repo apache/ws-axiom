@@ -27,7 +27,7 @@ import org.apache.axiom.core.stream.stax.StAX;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -41,13 +41,12 @@ import org.apache.axiom.ts.AxiomTestCase;
 // AXIOM-288
 public class TestSerializeAndConsumeConsumed extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
-                metaFactory.getOMFactory(),
-                TestGetChildElementsConsumed.class.getResourceAsStream("purchase-order.xml"));
+                factory, TestGetChildElementsConsumed.class.getResourceAsStream("purchase-order.xml"));
 
         OMElement documentElement = builder.getDocumentElement();
 

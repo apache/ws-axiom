@@ -31,7 +31,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
@@ -41,7 +41,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestSetOptimize extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean optimize;
 
@@ -55,7 +55,7 @@ public class TestSetOptimize extends AxiomTestCase {
         InputStream in = XOP_SPEC_SAMPLE.getInputStream();
         try {
             OMDocument document = OMXMLBuilderFactory.createOMBuilder(
-                            metaFactory.getOMFactory(),
+                            factory,
                             StAXParserConfiguration.DEFAULT,
                             MultipartBody.builder()
                                     .setInputStream(in)

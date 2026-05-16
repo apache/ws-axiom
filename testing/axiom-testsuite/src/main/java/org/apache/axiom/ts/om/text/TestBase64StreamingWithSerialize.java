@@ -21,7 +21,6 @@ package org.apache.axiom.ts.om.text;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.TestBlob;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -36,11 +35,10 @@ import org.apache.commons.io.output.NullOutputStream;
  */
 public class TestBase64StreamingWithSerialize extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement elem = factory.createOMElement("test", null);
         // Create a blob that would eat up all memory when loaded. If the test doesn't fail with an
         // OutOfMemoryError, we know that the OMText implementation supports streaming.

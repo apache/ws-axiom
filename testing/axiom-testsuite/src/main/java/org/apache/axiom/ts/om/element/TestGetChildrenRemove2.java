@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -32,12 +32,12 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** test the remove exception behavior, consecutive remove calls */
 public class TestGetChildrenRemove2 extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         OMElement elt = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(), new StringReader("<root><child1/><child2/></root>"))
+                        factory, new StringReader("<root><child1/><child2/></root>"))
                 .getDocumentElement();
         Iterator<OMNode> iter = elt.getChildren();
         if (iter.hasNext()) {

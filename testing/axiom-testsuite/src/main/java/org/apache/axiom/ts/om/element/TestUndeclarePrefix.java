@@ -24,17 +24,17 @@ import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestUndeclarePrefix extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = metaFactory.getOMFactory().createOMElement(new QName("test"));
+        OMElement element = factory.createOMElement(new QName("test"));
         element.undeclarePrefix("p");
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertThat(it.hasNext()).isTrue();

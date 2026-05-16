@@ -27,7 +27,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import javax.xml.parsers.SAXParserFactory;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
@@ -38,7 +38,7 @@ import org.xml.sax.XMLReader;
 
 public class TestGetSAXResultSAXParser extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final SAXImplementation saxImplementation;
     private final XMLSample file;
@@ -51,10 +51,10 @@ public class TestGetSAXResultSAXParser extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SAXParserFactory factory = saxImplementation.newSAXParserFactory();
-        factory.setNamespaceAware(true);
-        XMLReader reader = factory.newSAXParser().getXMLReader();
-        OMDocument document = metaFactory.getOMFactory().createOMDocument();
+        SAXParserFactory saxFactory = saxImplementation.newSAXParserFactory();
+        saxFactory.setNamespaceAware(true);
+        XMLReader reader = saxFactory.newSAXParser().getXMLReader();
+        OMDocument document = factory.createOMDocument();
         ContentHandler handler = document.getSAXResult().getHandler();
         reader.setContentHandler(handler);
         reader.setDTDHandler((DTDHandler) handler);

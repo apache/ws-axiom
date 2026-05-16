@@ -24,20 +24,18 @@ import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetXMLStreamReaderCDATAEventFromElement extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory omfactory = metaFactory.getOMFactory();
-        OMElement element = omfactory.createOMElement("test", null);
-        OMText cdata = omfactory.createOMText("hello world", OMNode.CDATA_SECTION_NODE);
+        OMElement element = factory.createOMElement("test", null);
+        OMText cdata = factory.createOMText("hello world", OMNode.CDATA_SECTION_NODE);
         element.addChild(cdata);
 
         // Get the XMLStreamReader for the element. This will return an OMStAXWrapper.

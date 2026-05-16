@@ -22,16 +22,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCreateOMCommentWithoutParent extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMComment comment = metaFactory.getOMFactory().createOMComment(null, "my comment");
+        OMComment comment = factory.createOMComment(null, "my comment");
         assertThat(comment.getParent()).isNull();
         assertThat(comment.getValue()).isEqualTo("my comment");
     }

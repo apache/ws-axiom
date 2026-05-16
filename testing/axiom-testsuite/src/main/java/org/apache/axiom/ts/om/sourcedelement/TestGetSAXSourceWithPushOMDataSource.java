@@ -28,7 +28,6 @@ import javax.xml.transform.sax.SAXSource;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
@@ -41,7 +40,7 @@ import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
  */
 public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final PushOMDataSourceScenario scenario;
     private boolean serializeParent;
@@ -55,7 +54,6 @@ public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement sourcedElement = factory.createOMElement(new AbstractPushOMDataSource() {
             @Override
             public void serialize(XMLStreamWriter writer) throws XMLStreamException {

@@ -27,7 +27,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -38,7 +37,7 @@ import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
  */
 public class TestPushOMDataSourceExpansion extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     class PushOMDataSource extends AbstractPushOMDataSource {
         private boolean expanded;
@@ -68,7 +67,6 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         PushOMDataSource ds = new PushOMDataSource();
         OMElement element = factory.createOMElement(ds);
         Iterator<Map.Entry<String, String>> it =

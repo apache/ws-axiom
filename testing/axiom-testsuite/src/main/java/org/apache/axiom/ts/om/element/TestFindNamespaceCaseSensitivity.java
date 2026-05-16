@@ -24,20 +24,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestFindNamespaceCaseSensitivity extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         String NSURI = "http://testns";
         String NSURI_UPPER = "HTTP://TESTNS";
 
-        OMFactory fac = metaFactory.getOMFactory();
-        OMElement el = fac.createOMElement("foo", null);
+        OMElement el = factory.createOMElement("foo", null);
         el.declareNamespace(NSURI, "p");
         assertThat(el.findNamespace(NSURI_UPPER, "p")).isNull();
     }

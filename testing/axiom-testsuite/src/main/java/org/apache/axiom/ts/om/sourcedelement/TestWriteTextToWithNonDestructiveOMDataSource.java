@@ -28,7 +28,6 @@ import java.nio.charset.StandardCharsets;
 import javax.xml.namespace.QName;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.testutils.blob.RandomBlob;
@@ -37,11 +36,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestWriteTextToWithNonDestructiveOMDataSource extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         Blob blob = new RandomBlob(665544, 32, 128, 20000000);
         QName qname = new QName("a");
         OMSourcedElement element = factory.createOMElement(

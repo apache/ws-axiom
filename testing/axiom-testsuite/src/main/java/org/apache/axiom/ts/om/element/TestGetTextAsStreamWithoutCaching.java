@@ -32,7 +32,6 @@ import java.util.Vector;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.blob.RandomBlob;
@@ -41,12 +40,11 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         Charset charset = StandardCharsets.US_ASCII;
-        OMFactory factory = metaFactory.getOMFactory();
         Blob blob = new RandomBlob(654321, 64, 128, 20000000);
         Vector<InputStream> v = new Vector<InputStream>();
         v.add(new ByteArrayInputStream("<root><a>".getBytes(charset)));

@@ -27,7 +27,6 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
@@ -38,7 +37,7 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  */
 public class TestAddAttributeReplace extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final AddAttributeStrategy strategy;
 
@@ -49,7 +48,6 @@ public class TestAddAttributeReplace extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         // Use same namespace URI but different prefixes
         OMNamespace ns1 = factory.createOMNamespace("urn:ns", "p1");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns", "p2");

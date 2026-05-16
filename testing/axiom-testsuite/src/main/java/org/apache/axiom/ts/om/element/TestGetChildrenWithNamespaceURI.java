@@ -25,19 +25,19 @@ import java.io.StringReader;
 import java.util.Iterator;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests the behavior of {@link OMContainer#getChildrenWithNamespaceURI(String)}. */
 public class TestGetChildrenWithNamespaceURI extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         OMElement element = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(),
+                        factory,
                         new StringReader("<root><a xmlns='urn:ns1'/><b xmlns='urn:ns2'/><c xmlns='urn:ns1'/></root>"))
                 .getDocumentElement();
         Iterator<OMElement> it = element.getChildrenWithNamespaceURI("urn:ns1");

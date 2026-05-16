@@ -23,16 +23,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestHasNameWithoutNamespace extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = metaFactory.getOMFactory().createOMElement("name", null);
+        OMElement element = factory.createOMElement("name", null);
         assertThat(element.hasName(new QName("name"))).isTrue();
         assertThat(element.hasName(new QName("urn:test", "name"))).isFalse();
     }

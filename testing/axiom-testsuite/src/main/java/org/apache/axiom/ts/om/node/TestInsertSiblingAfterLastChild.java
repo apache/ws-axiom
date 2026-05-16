@@ -24,25 +24,23 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-153">AXIOM-153</a>. */
 public class TestInsertSiblingAfterLastChild extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory fac = metaFactory.getOMFactory();
-        OMNamespace ns = fac.createOMNamespace("http://www.testuri.com", "ns");
-        OMElement parent = fac.createOMElement("parent", ns);
+        OMNamespace ns = factory.createOMNamespace("http://www.testuri.com", "ns");
+        OMElement parent = factory.createOMElement("parent", ns);
 
         // Create three OMElements
-        OMElement c1 = fac.createOMElement("c1", ns);
-        OMElement c2 = fac.createOMElement("c2", ns);
-        OMElement c3 = fac.createOMElement("c3", ns);
+        OMElement c1 = factory.createOMElement("c1", ns);
+        OMElement c2 = factory.createOMElement("c2", ns);
+        OMElement c3 = factory.createOMElement("c3", ns);
 
         // Add c1 to parent using parent.addChild()
         parent.addChild(c1);

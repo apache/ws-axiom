@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 
 /**
  * Tests a scenario that gave incorrect results in previous Axiom versions because {@link
@@ -32,7 +31,7 @@ import org.apache.axiom.om.OMMetaFactory;
  */
 public class TestCreateOMElementWithNamespaceInScope4 extends CreateOMElementTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Inject
     public TestCreateOMElementWithNamespaceInScope4(CreateOMElementVariant variant) {
@@ -41,7 +40,6 @@ public class TestCreateOMElementWithNamespaceInScope4 extends CreateOMElementTes
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", "urn:test", "a");
         parent.declareDefaultNamespace("urn:test");
         OMElement child = variant.createOMElement(factory, parent, "child", "urn:test", "");

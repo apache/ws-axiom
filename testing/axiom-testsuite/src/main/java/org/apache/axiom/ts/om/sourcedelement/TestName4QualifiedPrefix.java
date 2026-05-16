@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 import java.io.StringWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
@@ -36,19 +35,18 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  */
 public class TestName4QualifiedPrefix extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory f = metaFactory.getOMFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default
         // prefix
-        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
-        OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "");
+        OMNamespace rootNS = factory.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = factory.createOMNamespace("http://DUMMYNS", "");
         OMElement element =
-                f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT2.getContent()), "DUMMYNAME", ns);
-        OMElement root = f.createOMElement("root", rootNS);
+                factory.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT2.getContent()), "DUMMYNAME", ns);
+        OMElement root = factory.createOMElement("root", rootNS);
         root.addChild(element);
 
         // Test getting the namespace, localpart and prefix.  This should used not result in

@@ -28,7 +28,7 @@ import java.io.ByteArrayOutputStream;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.ConformanceTestCase;
@@ -40,7 +40,7 @@ import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final SAXImplementation implementation;
     private final Boolean expandEntityReferences;
@@ -57,18 +57,17 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SAXParserFactory factory = implementation.newSAXParserFactory();
-        factory.setNamespaceAware(true);
-        factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
-        SAXParser parser = factory.newSAXParser();
+        SAXParserFactory saxFactory = implementation.newSAXParserFactory();
+        saxFactory.setNamespaceAware(true);
+        saxFactory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
+        SAXParser parser = saxFactory.newSAXParser();
         SAXSource source = new SAXSource(
                 parser.getXMLReader(), new InputSource(file.getUrl().toString()));
         OMXMLParserWrapper builder;
         if (expandEntityReferences == null) {
-            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
+            builder = OMXMLBuilderFactory.createOMBuilder(factory, source);
         } else {
-            builder = OMXMLBuilderFactory.createOMBuilder(
-                    metaFactory.getOMFactory(), source, expandEntityReferences.booleanValue());
+            builder = OMXMLBuilderFactory.createOMBuilder(factory, source, expandEntityReferences.booleanValue());
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         builder.getDocument().serialize(baos);

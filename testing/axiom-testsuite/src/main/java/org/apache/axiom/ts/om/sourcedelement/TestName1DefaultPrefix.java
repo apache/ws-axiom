@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 import java.io.StringWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
@@ -36,17 +35,17 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  */
 public class TestName1DefaultPrefix extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory f = metaFactory.getOMFactory();
 
         // Create OMSE with an unknown prefix
-        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
-        OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", null);
-        OMElement element = f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
-        OMElement root = f.createOMElement("root", rootNS);
+        OMNamespace rootNS = factory.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = factory.createOMNamespace("http://www.sosnoski.com/uwjws/library", null);
+        OMElement element =
+                factory.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
+        OMElement root = factory.createOMElement("root", rootNS);
         root.addChild(element);
 
         // Test getting the local name and namespace URI. This should used not result in expansion

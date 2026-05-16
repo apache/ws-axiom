@@ -23,17 +23,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestFindNamespaceURIWithPrefixUndeclaring extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", null);
         OMElement child = factory.createOMElement("child", null, parent);
         OMNamespace ns = parent.declareNamespace("urn:test", "p");

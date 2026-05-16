@@ -28,6 +28,7 @@ import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
 import java.util.Arrays;
 import javax.xml.namespace.QName;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -108,7 +109,10 @@ public class SOAPTestSuite {
 
     public static MatrixTestNode create(OMMetaFactory metaFactory) {
         return new InjectorNode(
-                binder -> binder.bind(OMMetaFactory.class).toInstance(metaFactory),
+                binder -> {
+                    binder.bind(OMMetaFactory.class).toInstance(metaFactory);
+                    binder.bind(OMFactory.class).toInstance(metaFactory.getOMFactory());
+                },
                 new ParentNode(
                         // Per-spec tests (SOAP11 + SOAP12)
                         new FanOutNode<>(

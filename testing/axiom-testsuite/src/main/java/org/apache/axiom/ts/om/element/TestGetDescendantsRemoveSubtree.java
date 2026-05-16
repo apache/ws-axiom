@@ -25,7 +25,7 @@ import java.io.StringReader;
 import java.util.Iterator;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -36,12 +36,11 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetDescendantsRemoveSubtree extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(), new StringReader("<root><a><b/></a><c/></root>"))
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a><b/></a><c/></root>"))
                 .getDocumentElement();
         Iterator<OMNode> it = root.getDescendants(false);
         assertThat(((OMElement) it.next()).getLocalName()).isEqualTo("a");
