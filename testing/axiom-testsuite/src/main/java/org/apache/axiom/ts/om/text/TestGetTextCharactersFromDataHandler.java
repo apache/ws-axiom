@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import org.apache.axiom.blob.Blob;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -36,12 +36,12 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class TestGetTextCharactersFromDataHandler extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         Blob blob = new TextBlob("test content", StandardCharsets.UTF_8);
-        OMText text = metaFactory.getOMFactory().createOMText(blob, true);
+        OMText text = factory.createOMText(blob, true);
         char[] chars = text.getTextCharacters();
         byte[] decoded = Base64.decodeBase64(new String(chars));
         assertThat(new String(decoded, StandardCharsets.UTF_8)).isEqualTo("test content");

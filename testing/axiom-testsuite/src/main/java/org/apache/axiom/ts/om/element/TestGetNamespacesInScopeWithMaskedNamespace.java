@@ -23,19 +23,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetNamespacesInScopeWithMaskedNamespace extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element =
-                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<a xmlns:p='urn:ns1'><b xmlns:p='urn:ns2'/></a>");
+        OMElement element = AXIOMUtil.stringToOM(factory, "<a xmlns:p='urn:ns1'><b xmlns:p='urn:ns2'/></a>");
         Iterator<OMNamespace> it = element.getFirstElement().getNamespacesInScope();
         assertThat(it.hasNext()).isTrue();
         OMNamespace ns = it.next();

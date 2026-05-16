@@ -26,7 +26,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -38,7 +37,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCreateStAXOMBuilderIncorrectState extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -47,7 +46,7 @@ public class TestCreateStAXOMBuilderIncorrectState extends AxiomTestCase {
         while (reader.getEventType() != XMLStreamReader.CHARACTERS) {
             reader.next();
         }
-        assertThatThrownBy(() -> OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader))
+        assertThatThrownBy(() -> OMXMLBuilderFactory.createStAXOMBuilder(factory, reader))
                 .isInstanceOf(OMException.class);
     }
 }

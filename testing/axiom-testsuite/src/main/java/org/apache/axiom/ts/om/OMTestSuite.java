@@ -27,6 +27,7 @@ import com.google.inject.util.Providers;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import javax.xml.namespace.QName;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.testutils.suite.Binding;
@@ -69,7 +70,10 @@ public class OMTestSuite {
 
     public static MatrixTestNode create(OMMetaFactory metaFactory) {
         return new InjectorNode(
-                binder -> binder.bind(OMMetaFactory.class).toInstance(metaFactory),
+                binder -> {
+                    binder.bind(OMMetaFactory.class).toInstance(metaFactory);
+                    binder.bind(OMFactory.class).toInstance(metaFactory.getOMFactory());
+                },
                 new ParentNode(
                         // ── attribute package ──
                         new MatrixTest(org.apache.axiom.ts.om.attribute.TestDigestWithNamespace.class),

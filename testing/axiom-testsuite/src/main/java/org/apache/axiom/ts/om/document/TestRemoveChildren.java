@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -37,7 +36,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Tests {@link OMContainer#removeChildren()} on an {@link OMContainer}. */
 public class TestRemoveChildren extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean complete;
     private final boolean accessDocumentElement;
@@ -51,7 +50,6 @@ public class TestRemoveChildren extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<?pi data?><root>text</root>"))
                 .getDocument();

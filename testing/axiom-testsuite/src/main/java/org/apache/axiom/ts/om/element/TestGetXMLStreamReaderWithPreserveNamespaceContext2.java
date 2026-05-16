@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -37,12 +37,12 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetXMLStreamReaderWithPreserveNamespaceContext2 extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         OMElement root = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(),
+                        factory,
                         TestGetXMLStreamReaderWithPreserveNamespaceContext2.class.getResourceAsStream("AXIOM-485.xml"))
                 .getDocumentElement();
         OMElement child = root.getFirstElement();

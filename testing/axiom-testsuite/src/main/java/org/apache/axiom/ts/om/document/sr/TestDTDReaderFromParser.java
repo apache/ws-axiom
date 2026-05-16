@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -37,7 +37,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestDTDReaderFromParser extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean build;
     private final boolean cache;
@@ -51,7 +51,7 @@ public class TestDTDReaderFromParser extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMDocument doc = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(),
+                        factory,
                         StAXParserConfiguration.STANDALONE,
                         TestDTDReaderFromParser.class.getResourceAsStream("/web_w_dtd.xml"))
                 .getDocument();

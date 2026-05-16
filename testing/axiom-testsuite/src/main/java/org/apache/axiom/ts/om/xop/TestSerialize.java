@@ -28,7 +28,7 @@ import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.MediaType;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -38,7 +38,7 @@ import org.apache.axiom.ts.soap.MTOMSample;
 
 public class TestSerialize extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean base64;
 
@@ -70,8 +70,7 @@ public class TestSerialize extends AxiomTestCase {
         // Write out the message
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb);
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory, StAXParserConfiguration.DEFAULT, mb);
         OMElement om = builder.getDocumentElement();
         om.serialize(baos, oof);
         om.close(false);

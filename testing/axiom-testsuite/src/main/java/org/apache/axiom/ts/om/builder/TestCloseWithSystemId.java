@@ -25,7 +25,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.axiom.net.protocol.registry.InstrumentedDataProvider;
 import org.apache.axiom.net.protocol.registry.URLRegistration;
 import org.apache.axiom.net.protocol.registry.URLRegistry;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -33,7 +33,7 @@ import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestCloseWithSystemId extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -41,8 +41,7 @@ public class TestCloseWithSystemId extends AxiomTestCase {
         URLRegistration registration = URLRegistry.register(dataProvider);
         try {
             OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
-                    metaFactory.getOMFactory(),
-                    new StreamSource(registration.getURL().toExternalForm()));
+                    factory, new StreamSource(registration.getURL().toExternalForm()));
             builder.getDocumentElement();
             builder.close();
             // Since the caller doesn't have control over the stream, the builder is responsible

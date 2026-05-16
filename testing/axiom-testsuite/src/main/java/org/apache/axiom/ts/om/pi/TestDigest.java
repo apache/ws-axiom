@@ -19,13 +19,13 @@
 package org.apache.axiom.ts.om.pi;
 
 import com.google.inject.Inject;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
 
 public class TestDigest extends DigestTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     public TestDigest() {
         super("MD5", "a7066a04f134fc8b62c1745da10dcd26");
@@ -33,6 +33,6 @@ public class TestDigest extends DigestTestCase {
 
     @Override
     protected OMInformationItem createInformationItem() {
-        return metaFactory.getOMFactory().createOMProcessingInstruction(null, "dbfo", "bgcolor=\"#EEEEEE\"");
+        return factory.createOMProcessingInstruction(null, "dbfo", "bgcolor=\"#EEEEEE\"");
     }
 }

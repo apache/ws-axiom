@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.apache.axiom.om.xpath.DocumentNavigator;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -34,11 +33,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetAttributeQName extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         element.addAttribute("att", "value", factory.createOMNamespace("urn:test", "p"));
         assertThat(new AXIOMXPath("name(@*)").stringValueOf(element)).isEqualTo("p:att");

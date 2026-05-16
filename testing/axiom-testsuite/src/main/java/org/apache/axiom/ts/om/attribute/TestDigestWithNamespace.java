@@ -21,12 +21,11 @@ package org.apache.axiom.ts.om.attribute;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
 
 public class TestDigestWithNamespace extends DigestTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     public TestDigestWithNamespace() {
         super("MD5", "0403b2798bee0397c2755c01d560092e");
@@ -34,7 +33,6 @@ public class TestDigestWithNamespace extends DigestTestCase {
 
     @Override
     protected OMInformationItem createInformationItem() {
-        OMFactory factory = metaFactory.getOMFactory();
         return factory.createOMAttribute("attr", factory.createOMNamespace("urn:ns1", "ns1"), "value");
     }
 }

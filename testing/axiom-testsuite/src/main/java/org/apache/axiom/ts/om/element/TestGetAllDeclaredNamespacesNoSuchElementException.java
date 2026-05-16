@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -35,11 +35,11 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetAllDeclaredNamespacesNoSuchElementException extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<e xmlns:p='urn:test' p:attr='test'/>");
+        OMElement element = AXIOMUtil.stringToOM(factory, "<e xmlns:p='urn:test' p:attr='test'/>");
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         it.next();
         assertThatThrownBy(it::next).isInstanceOf(NoSuchElementException.class);

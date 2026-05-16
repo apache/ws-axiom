@@ -25,7 +25,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -33,7 +33,7 @@ import org.apache.axiom.ts.xml.XOPSample;
 
 public class TestCreateOMBuilderXOP extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final XOPSample sample;
     private final boolean build;
@@ -50,8 +50,7 @@ public class TestCreateOMBuilderXOP extends AxiomTestCase {
                 .setInputStream(sample.getInputStream())
                 .setContentType(sample.getContentType())
                 .build();
-        OMElement content = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, mb)
+        OMElement content = OMXMLBuilderFactory.createOMBuilder(factory, StAXParserConfiguration.DEFAULT, mb)
                 .getDocumentElement();
         if (build) {
             content.build();

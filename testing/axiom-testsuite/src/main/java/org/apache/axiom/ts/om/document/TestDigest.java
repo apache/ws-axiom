@@ -22,14 +22,14 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import java.io.InputStream;
 import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
 
 public class TestDigest extends DigestTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     public record Params(String file, String algorithm, String expectedDigest) {}
 
@@ -51,8 +51,8 @@ public class TestDigest extends DigestTestCase {
     protected OMInformationItem createInformationItem() throws Exception {
         InputStream in = TestDigest.class.getResourceAsStream(params.file());
         try {
-            OMDocument document = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
-                    .getDocument();
+            OMDocument document =
+                    OMXMLBuilderFactory.createOMBuilder(factory, in).getDocument();
             document.build();
             return document;
         } finally {

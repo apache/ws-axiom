@@ -24,7 +24,6 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
@@ -35,7 +34,7 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  */
 public class TestAddAttributeMultiple extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final AddAttributeStrategy strategy;
 
@@ -49,11 +48,9 @@ public class TestAddAttributeMultiple extends AxiomTestCase {
         String expectedXML = "<AttributeTester xmlns:myAttr2NS=\"http://test-attributes-2.org\" "
                 + "xmlns:myAttr1NS=\"http://test-attributes-1.org\" myAttr2NS:attrNumber=\"2\" myAttr1NS:attrNumber=\"1\" />";
 
-        OMFactory omFactory = metaFactory.getOMFactory();
-
-        OMNamespace attrNS1 = omFactory.createOMNamespace("http://test-attributes-1.org", "myAttr1NS");
-        OMNamespace attrNS2 = omFactory.createOMNamespace("http://test-attributes-2.org", "myAttr2NS");
-        OMElement omElement = omFactory.createOMElement("AttributeTester", null);
+        OMNamespace attrNS1 = factory.createOMNamespace("http://test-attributes-1.org", "myAttr1NS");
+        OMNamespace attrNS2 = factory.createOMNamespace("http://test-attributes-2.org", "myAttr2NS");
+        OMElement omElement = factory.createOMElement("AttributeTester", null);
         strategy.addAttribute(omElement, "attrNumber", attrNS1, "1");
         strategy.addAttribute(omElement, "attrNumber", attrNS2, "2");
 

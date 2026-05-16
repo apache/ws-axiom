@@ -21,16 +21,16 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCreateOMElementWithNullURIAndPrefix extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() {
-        assertThatThrownBy(() -> metaFactory.getOMFactory().createOMElement("test", (String) null, (String) null))
+        assertThatThrownBy(() -> factory.createOMElement("test", (String) null, (String) null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

@@ -24,19 +24,19 @@ import com.google.inject.Inject;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Test that a document that is not well formed triggers an appropriate error. */
 public class TestMalformedDocument extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(), new StringReader("<Root><Child attr='a' attr='a'/></Root>"))
+                        factory, new StringReader("<Root><Child attr='a' attr='a'/></Root>"))
                 .getDocument();
         assertThatThrownBy(() -> document.serialize(new ByteArrayOutputStream()));
         document.close(false);

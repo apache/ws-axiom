@@ -27,7 +27,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -41,7 +41,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCloseAndContinueBuilding extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean cache;
 
@@ -53,8 +53,7 @@ public class TestCloseAndContinueBuilding extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         OMElement root = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(),
-                        new StringReader("<root><a><b>some text</b></a><c>content</c></root>"))
+                        factory, new StringReader("<root><a><b>some text</b></a><c>content</c></root>"))
                 .getDocumentElement();
         OMElement a = (OMElement) root.getFirstOMChild();
         XMLStreamReader reader = a.getXMLStreamReader(cache);

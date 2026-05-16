@@ -19,13 +19,13 @@
 package org.apache.axiom.ts.om.text;
 
 import com.google.inject.Inject;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.DigestTestCase;
 
 public class TestDigest extends DigestTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     public TestDigest() {
         super("SHA1", "91b802187b7ae7c2c858f4aa5ae5470fc50d0306");
@@ -33,6 +33,6 @@ public class TestDigest extends DigestTestCase {
 
     @Override
     protected OMInformationItem createInformationItem() {
-        return metaFactory.getOMFactory().createOMText("some test data");
+        return factory.createOMText("some test data");
     }
 }

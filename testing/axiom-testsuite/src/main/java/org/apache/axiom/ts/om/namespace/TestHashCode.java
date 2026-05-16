@@ -22,18 +22,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests that the {@link OMNamespace} overrides {@link Object#hashCode()}. */
 public class TestHashCode extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns1 = factory.createOMNamespace("urn:ns", "ns");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns", "ns");
         assertThat(ns2.hashCode()).isEqualTo(ns1.hashCode());

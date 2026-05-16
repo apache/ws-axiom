@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -31,7 +31,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetBuilderNull extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final OMContainerFactory containerFactory;
 
@@ -42,7 +42,7 @@ public class TestGetBuilderNull extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMContainer container = containerFactory.create(metaFactory.getOMFactory());
+        OMContainer container = containerFactory.create(factory);
         assertThat(container.getBuilder()).isNull();
     }
 }

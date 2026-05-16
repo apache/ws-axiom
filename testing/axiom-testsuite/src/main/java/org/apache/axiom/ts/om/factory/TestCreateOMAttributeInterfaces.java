@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
@@ -42,11 +41,10 @@ import org.w3c.dom.Text;
  */
 public class TestCreateOMAttributeInterfaces extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("urn:test", "p");
         OMAttribute attr = factory.createOMAttribute("attr", ns, "value");
         assertThat(attr).isNotInstanceOf(OMSerializable.class);

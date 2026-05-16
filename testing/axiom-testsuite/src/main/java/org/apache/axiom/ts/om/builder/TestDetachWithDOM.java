@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.transform.dom.DOMSource;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -34,7 +34,7 @@ import org.w3c.dom.Element;
 
 public class TestDetachWithDOM extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean useDOMSource;
 
@@ -50,9 +50,9 @@ public class TestDetachWithDOM extends AxiomTestCase {
         root.appendChild(document.createElementNS("", "a"));
         OMXMLParserWrapper builder;
         if (useDOMSource) {
-            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new DOMSource(root));
+            builder = OMXMLBuilderFactory.createOMBuilder(factory, new DOMSource(root));
         } else {
-            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), root, false);
+            builder = OMXMLBuilderFactory.createOMBuilder(factory, root, false);
         }
         OMElement omRoot = builder.getDocumentElement();
         builder.detach();

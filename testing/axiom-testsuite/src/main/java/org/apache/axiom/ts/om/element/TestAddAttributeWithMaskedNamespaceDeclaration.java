@@ -25,7 +25,6 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
@@ -50,7 +49,7 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  */
 public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final AddAttributeStrategy strategy;
 
@@ -61,7 +60,6 @@ public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCas
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns1 = factory.createOMNamespace("urn:ns1", "p");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns2", "p");
         OMElement element1 = factory.createOMElement(new QName("a"));

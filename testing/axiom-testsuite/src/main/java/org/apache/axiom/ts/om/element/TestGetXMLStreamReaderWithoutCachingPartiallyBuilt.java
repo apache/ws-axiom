@@ -25,7 +25,7 @@ import java.io.StringReader;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -35,15 +35,14 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetXMLStreamReaderWithoutCachingPartiallyBuilt extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         // Note: the problem described in AXIOM-393 specifically occurred with descendants
         //       having the same name as the root element
         OMElement root = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(),
-                        new StringReader("<element><element><element/><element/></element></element>"))
+                        factory, new StringReader("<element><element><element/><element/></element></element>"))
                 .getDocumentElement();
 
         // Partially build the tree

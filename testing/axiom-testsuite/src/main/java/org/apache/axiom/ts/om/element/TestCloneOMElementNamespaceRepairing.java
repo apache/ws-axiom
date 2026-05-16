@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.Set;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -34,11 +33,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 // TODO: this is actually undocumented; in addition, it should probably made configurable
 public class TestCloneOMElementNamespaceRepairing extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
 
         // Create a root element on which we declare the namespaces
         OMElement root = factory.createOMElement("root", null);

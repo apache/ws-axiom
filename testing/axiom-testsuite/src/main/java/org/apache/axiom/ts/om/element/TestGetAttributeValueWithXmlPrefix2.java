@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -35,12 +35,11 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetAttributeValueWithXmlPrefix2 extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement elem =
-                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<Policy xml:base=\"uri:thisBase\"></Policy>");
+        OMElement elem = AXIOMUtil.stringToOM(factory, "<Policy xml:base=\"uri:thisBase\"></Policy>");
         assertThat(elem.getAttributeValue(new QName(XMLConstants.XML_NS_URI, "base")))
                 .isEqualTo("uri:thisBase");
     }

@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -32,11 +31,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestEqualsWithNullPrefix extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("http://www.w3.org/XML/1998/namespace", null);
         assertThat(ns.equals("http://www.w3.org/XML/1998/namespace", null)).isTrue();
     }

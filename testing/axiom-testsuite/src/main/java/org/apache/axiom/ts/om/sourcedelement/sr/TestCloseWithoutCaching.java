@@ -26,7 +26,6 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
@@ -38,7 +37,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  */
 public class TestCloseWithoutCaching extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final int events;
 
@@ -49,7 +48,6 @@ public class TestCloseWithoutCaching extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement root = factory.createOMElement("root", null);
         PullOMDataSource ds = new PullOMDataSource("<child>content</child>");
         root.addChild(factory.createOMElement(ds));

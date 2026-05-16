@@ -21,17 +21,17 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCreateOMProcessingInstructionWithoutParent extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMProcessingInstruction pi = metaFactory.getOMFactory().createOMProcessingInstruction(null, "mypi", "data");
+        OMProcessingInstruction pi = factory.createOMProcessingInstruction(null, "mypi", "data");
         assertThat(pi.getParent()).isNull();
         assertThat(pi.getTarget()).isEqualTo("mypi");
         assertThat(pi.getValue()).isEqualTo("data");

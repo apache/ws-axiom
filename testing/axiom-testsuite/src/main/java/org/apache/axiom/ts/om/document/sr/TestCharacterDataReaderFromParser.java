@@ -29,7 +29,7 @@ import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -39,7 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCharacterDataReaderFromParser extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean cache;
 
@@ -51,8 +51,7 @@ public class TestCharacterDataReaderFromParser extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         String text = "This is a test for the CharacterDataReader extension";
-        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(
-                        metaFactory.getOMFactory(), new StringReader("<root>" + text + "</root>"))
+        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root>" + text + "</root>"))
                 .getDocument();
         XMLStreamReader reader = doc.getXMLStreamReader(cache);
         CharacterDataReader cdataReader = (CharacterDataReader) reader.getProperty(CharacterDataReader.PROPERTY);

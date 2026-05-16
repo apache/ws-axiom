@@ -28,14 +28,13 @@ import javax.xml.transform.Transformer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 
 public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final XSLTImplementation xsltImplementation;
     private final boolean cache;
@@ -54,7 +53,6 @@ public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
     protected void runTest() throws Throwable {
         Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer();
 
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element =
                 OMXMLBuilderFactory.createOMBuilder(factory, getInput()).getDocumentElement();
         OMDocument outputDocument = factory.createOMDocument();

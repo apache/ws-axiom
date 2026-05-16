@@ -26,14 +26,14 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.stream.XMLStreamWriter;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestSerialize extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final int type;
 
@@ -44,7 +44,7 @@ public class TestSerialize extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMText text = metaFactory.getOMFactory().createOMText("test", type);
+        OMText text = factory.createOMText("test", type);
         XMLStreamWriter writer = mock(XMLStreamWriter.class);
         text.serialize(writer);
         if (type == OMNode.CDATA_SECTION_NODE) {

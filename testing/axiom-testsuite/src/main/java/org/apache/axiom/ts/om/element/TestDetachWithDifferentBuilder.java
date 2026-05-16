@@ -26,17 +26,15 @@ import com.google.inject.Inject;
 import java.io.StringReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestDetachWithDifferentBuilder extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         String xml1 = "<root><a/><b/></root>";
         String xml2 = "<child>test</child>";
         OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml1))

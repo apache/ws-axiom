@@ -28,7 +28,6 @@ import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -55,11 +54,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
 
         // Programmatically create the message
         OMElement orgRoot = factory.createOMElement("root", null);

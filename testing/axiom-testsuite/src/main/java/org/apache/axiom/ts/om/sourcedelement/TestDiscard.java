@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
@@ -32,7 +31,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 public class TestDiscard extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final ExpansionStrategy expansionStrategy;
 
@@ -43,7 +42,6 @@ public class TestDiscard extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", null);
         OMElement child1 = factory.createOMElement("child1", null, parent);
         PullOMDataSource ds = new PullOMDataSource("<root><a/><b/></root>");

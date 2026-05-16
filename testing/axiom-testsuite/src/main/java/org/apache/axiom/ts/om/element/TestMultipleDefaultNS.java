@@ -23,29 +23,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestMultipleDefaultNS extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory omFactory = metaFactory.getOMFactory();
-        OMNamespace defaultNS1 = omFactory.createOMNamespace("http://defaultNS1.org", null);
-        OMNamespace defaultNS2 = omFactory.createOMNamespace("http://defaultNS2.org", null);
+        OMNamespace defaultNS1 = factory.createOMNamespace("http://defaultNS1.org", null);
+        OMNamespace defaultNS2 = factory.createOMNamespace("http://defaultNS2.org", null);
 
         OMElement omElementOne =
-                omFactory.createOMElement("DocumentElement", omFactory.createOMNamespace("http://defaultNS1.org", ""));
-        OMElement omElementOneChild = omFactory.createOMElement("ChildOne", null, omElementOne);
+                factory.createOMElement("DocumentElement", factory.createOMNamespace("http://defaultNS1.org", ""));
+        OMElement omElementOneChild = factory.createOMElement("ChildOne", null, omElementOne);
 
-        OMElement omElementTwo = omFactory.createOMElement("Foo", defaultNS2, omElementOne);
+        OMElement omElementTwo = factory.createOMElement("Foo", defaultNS2, omElementOne);
         omElementTwo.declareDefaultNamespace("http://defaultNS2.org");
-        OMElement omElementTwoChild = omFactory.createOMElement("ChildOne", null, omElementTwo);
+        OMElement omElementTwoChild = factory.createOMElement("ChildOne", null, omElementTwo);
 
-        OMElement omElementThree = omFactory.createOMElement("Bar", defaultNS1, omElementTwo);
+        OMElement omElementThree = factory.createOMElement("Bar", defaultNS1, omElementTwo);
         omElementThree.declareDefaultNamespace("http://defaultNS1.org");
 
         OMNamespace omElementOneChildNS = omElementOneChild.getNamespace();

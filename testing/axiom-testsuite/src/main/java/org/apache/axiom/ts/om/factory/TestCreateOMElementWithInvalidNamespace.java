@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 
 /**
  * Tests that {@link OMFactory} forbids creating prefixed elements with an empty namespace name.
@@ -30,7 +29,7 @@ import org.apache.axiom.om.OMMetaFactory;
  */
 public class TestCreateOMElementWithInvalidNamespace extends CreateOMElementTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Inject
     public TestCreateOMElementWithInvalidNamespace(
@@ -40,7 +39,6 @@ public class TestCreateOMElementWithInvalidNamespace extends CreateOMElementTest
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         assertThatThrownBy(
                         () -> variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", "p"))
                 .isInstanceOf(IllegalArgumentException.class);

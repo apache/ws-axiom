@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.io.InstrumentedStream;
@@ -33,7 +33,7 @@ import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestDetachWithStream extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final StreamType streamType;
     private final boolean useStreamSource;
@@ -49,11 +49,9 @@ public class TestDetachWithStream extends AxiomTestCase {
         InstrumentedStream stream = streamType.instrumentStream(streamType.getStream(XMLSample.LARGE));
         OMXMLParserWrapper builder;
         if (useStreamSource) {
-            builder = OMXMLBuilderFactory.createOMBuilder(
-                    metaFactory.getOMFactory(), streamType.createStreamSource(stream));
+            builder = OMXMLBuilderFactory.createOMBuilder(factory, streamType.createStreamSource(stream));
         } else {
-            builder =
-                    streamType.getAdapter(StreamTypeAdapter.class).createOMBuilder(metaFactory.getOMFactory(), stream);
+            builder = streamType.getAdapter(StreamTypeAdapter.class).createOMBuilder(factory, stream);
         }
         long countBeforeDetach = stream.getCount();
         builder.detach();

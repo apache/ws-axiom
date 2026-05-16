@@ -26,7 +26,7 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -39,13 +39,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestStandaloneConfiguration extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         InputStream is = TestStandaloneConfiguration.class.getResourceAsStream("web_w_dtd2.xml");
         OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.STANDALONE, is);
+                OMXMLBuilderFactory.createOMBuilder(factory, StAXParserConfiguration.STANDALONE, is);
         OMElement root = builder.getDocumentElement();
         assertThat(root.getLocalName().equals("web-app")).isTrue();
         OMDocument document = builder.getDocument();

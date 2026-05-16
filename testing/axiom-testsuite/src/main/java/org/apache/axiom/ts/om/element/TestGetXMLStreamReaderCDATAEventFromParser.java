@@ -25,7 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
@@ -34,7 +34,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 // Regression test for AXIOM-144 and AXIOM-146
 public class TestGetXMLStreamReaderCDATAEventFromParser extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -44,8 +44,8 @@ public class TestGetXMLStreamReaderCDATAEventFromParser extends AxiomTestCase {
         // reported). This is not the default for Woodstox (see WSTX-140).
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(StAXParserConfiguration.NON_COALESCING, is);
 
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
-                .getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createStAXOMBuilder(factory, reader).getDocumentElement();
 
         // Build the element so we have a full StAX tree
         element.build();

@@ -26,7 +26,7 @@ import com.google.inject.name.Named;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import javax.xml.transform.dom.DOMSource;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.ConformanceTestCase;
@@ -38,7 +38,7 @@ import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final DOMImplementation implementation;
     private final Boolean expandEntityReferences;
@@ -64,10 +64,9 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
         Document document = loadDocument(false);
         OMXMLParserWrapper builder;
         if (expandEntityReferences == null) {
-            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new DOMSource(document));
+            builder = OMXMLBuilderFactory.createOMBuilder(factory, new DOMSource(document));
         } else {
-            builder = OMXMLBuilderFactory.createOMBuilder(
-                    metaFactory.getOMFactory(), document, expandEntityReferences.booleanValue());
+            builder = OMXMLBuilderFactory.createOMBuilder(factory, document, expandEntityReferences.booleanValue());
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         builder.getDocument().serialize(baos);

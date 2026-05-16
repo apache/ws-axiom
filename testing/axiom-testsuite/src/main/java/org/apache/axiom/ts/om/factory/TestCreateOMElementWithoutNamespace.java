@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
@@ -32,7 +31,7 @@ import org.apache.axiom.om.OMMetaFactory;
  */
 public class TestCreateOMElementWithoutNamespace extends CreateOMElementTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Inject
     public TestCreateOMElementWithoutNamespace(
@@ -42,7 +41,6 @@ public class TestCreateOMElementWithoutNamespace extends CreateOMElementTestCase
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", "");
         assertThat(element.getLocalName()).isEqualTo("test");
         assertThat(element.getNamespace()).isNull();

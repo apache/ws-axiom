@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 import java.util.Iterator;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 
 /**
@@ -38,7 +37,7 @@ import org.apache.axiom.om.OMNamespace;
  */
 public class TestCreateOMElementWithoutNamespace2 extends CreateOMElementTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Inject
     public TestCreateOMElementWithoutNamespace2(CreateOMElementVariant variant) {
@@ -47,7 +46,6 @@ public class TestCreateOMElementWithoutNamespace2 extends CreateOMElementTestCas
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", factory.createOMNamespace("urn:test", ""));
         OMElement child = variant.createOMElement(factory, parent, "test", "", "");
         assertThat(child.getLocalName()).isEqualTo("test");

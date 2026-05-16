@@ -28,14 +28,13 @@ import java.io.StringReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests {@link OMContainer#removeChildren()} on an {@link OMElement}. */
 public class TestRemoveChildren extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean complete;
 
@@ -46,7 +45,6 @@ public class TestRemoveChildren extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<root><a>A</a><b>B</b></root>"))
                 .getDocumentElement();

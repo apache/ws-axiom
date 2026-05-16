@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 import java.util.Iterator;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -35,15 +34,14 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestInsertSiblingBeforeSameParent extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory fac = metaFactory.getOMFactory();
-        OMElement parent = fac.createOMElement("test", null);
-        OMText text1 = fac.createOMText("text1");
-        OMText text2 = fac.createOMText("text2");
-        OMText text3 = fac.createOMText("text3");
+        OMElement parent = factory.createOMElement("test", null);
+        OMText text1 = factory.createOMText("text1");
+        OMText text2 = factory.createOMText("text2");
+        OMText text3 = factory.createOMText("text3");
         parent.addChild(text1);
         parent.addChild(text2);
         parent.addChild(text3);

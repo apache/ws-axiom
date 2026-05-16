@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Set;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -38,11 +37,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetAllDeclaredNamespacesRemove extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         List<String> prefixes = Arrays.asList("a", "b", "c");
         for (String prefixToRemove : prefixes) {
             OMElement element = factory.createOMElement("test", null);

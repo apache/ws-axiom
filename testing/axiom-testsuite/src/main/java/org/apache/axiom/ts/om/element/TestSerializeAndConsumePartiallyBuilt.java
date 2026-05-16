@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 import java.io.StringReader;
 import java.io.StringWriter;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -34,14 +34,14 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestSerializeAndConsumePartiallyBuilt extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         String xml =
                 "<root><child><grandchild1>text</grandchild1></child><child><grandchild2>text</grandchild2></child></root>";
 
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new StringReader(xml))
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml))
                 .getDocumentElement();
 
         // Partially build the tree

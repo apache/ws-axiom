@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -32,12 +32,11 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestResolveQNameWithUnboundPrefix extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element =
-                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<p:root xmlns:p='urn:ns1' xmlns='urn:ns2'/>");
+        OMElement element = AXIOMUtil.stringToOM(factory, "<p:root xmlns:p='urn:ns1' xmlns='urn:ns2'/>");
         assertThat(element.resolveQName("ns:test")).isNull();
     }
 }

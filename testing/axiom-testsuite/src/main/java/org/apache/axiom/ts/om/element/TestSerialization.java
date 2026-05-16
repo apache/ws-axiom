@@ -24,7 +24,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -49,7 +48,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestSerialization extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private static final String NS = "urn:ns";
     private static final String PREFIX = "p";
@@ -109,19 +108,18 @@ public class TestSerialization extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory fac = metaFactory.getOMFactory();
 
-        OMNamespace nsParent = createNamespace(fac, params.parent());
-        OMNamespace nsChildren = createNamespace(fac, params.children());
+        OMNamespace nsParent = createNamespace(factory, params.parent());
+        OMNamespace nsChildren = createNamespace(factory, params.children());
 
-        OMElement personElem = fac.createOMElement("person", nsParent);
-        OMElement nameElem = fac.createOMElement("name", nsChildren);
+        OMElement personElem = factory.createOMElement("person", nsParent);
+        OMElement nameElem = factory.createOMElement("name", nsChildren);
         nameElem.setText("John");
 
-        OMElement ageElem = fac.createOMElement("age", nsChildren);
+        OMElement ageElem = factory.createOMElement("age", nsChildren);
         ageElem.setText("34");
 
-        OMElement weightElem = fac.createOMElement("weight", nsChildren);
+        OMElement weightElem = factory.createOMElement("weight", nsChildren);
         weightElem.setText("50");
 
         // Add children to the person element

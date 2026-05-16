@@ -26,7 +26,6 @@ import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -35,11 +34,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestDTDReader extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMDocument document = factory.createOMDocument();
         factory.createOMDocType(document, "root", "-//MY//DTD", "my.dtd", "<!ELEMENT root (#PCDATA)>");
         factory.createOMElement("root", null, document);

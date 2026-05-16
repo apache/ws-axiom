@@ -22,17 +22,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCreateOMDocTypeWithoutParent extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMDocType dtd =
-                metaFactory.getOMFactory().createOMDocType(null, "root", "publicId", "systemId", "internalSubset");
+        OMDocType dtd = factory.createOMDocType(null, "root", "publicId", "systemId", "internalSubset");
         assertThat(dtd.getParent()).isNull();
         assertThat(dtd.getRootName()).isEqualTo("root");
         assertThat(dtd.getPublicId()).isEqualTo("publicId");

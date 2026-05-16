@@ -25,7 +25,6 @@ import java.io.StringWriter;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -35,7 +34,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 @SuppressWarnings("deprecation")
 public class TestSetDataSource extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -46,7 +45,6 @@ public class TestSetDataSource extends AxiomTestCase {
         OMDataSource destructiveOMDataSource1 = new PullOMDataSource(payload1, true);
         OMDataSource destructiveOMDataSource2 = new PullOMDataSource(payload2, true);
 
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", null);
         OMSourcedElement omse = factory.createOMElement(
                 nonDestructiveOMDataSource1, "myPayload", factory.createOMNamespace("urn://test", "tns"));

@@ -20,13 +20,13 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public abstract class LazyNameTestCase extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     protected final OMSourcedElementVariant variant;
     protected final QName qname;
@@ -38,7 +38,7 @@ public abstract class LazyNameTestCase extends AxiomTestCase {
 
     @Override
     protected final void runTest() throws Throwable {
-        runTest(variant.createOMSourcedElement(metaFactory.getOMFactory(), qname));
+        runTest(variant.createOMSourcedElement(factory, qname));
     }
 
     protected abstract void runTest(OMSourcedElement element) throws Throwable;

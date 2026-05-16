@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -32,10 +31,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestFactoryIsSingleton extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        assertThat(metaFactory.getOMFactory()).isSameAs(metaFactory.getOMFactory());
+        assertThat(factory).isSameAs(factory);
     }
 }

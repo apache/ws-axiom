@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -34,11 +33,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestRemoveAttributeNotOwner extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMElement element1 = factory.createOMElement("test", null);
         element1.addAttribute("attr", "value", null);
         OMElement element2 = factory.createOMElement("test", null);

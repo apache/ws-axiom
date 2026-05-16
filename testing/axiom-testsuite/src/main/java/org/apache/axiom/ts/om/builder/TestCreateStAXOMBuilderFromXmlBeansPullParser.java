@@ -24,21 +24,20 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import com.google.inject.Inject;
 import java.net.URL;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import za.co.eskom.nrs.xmlvend.base.x20.schema.AdviceReqDocument;
 
 public class TestCreateStAXOMBuilderFromXmlBeansPullParser extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         URL inputUrl = TestCreateStAXOMBuilderFromXmlBeansPullParser.class.getResource("xmlvend.xml");
         AdviceReqDocument adviceReq = AdviceReqDocument.Factory.parse(inputUrl);
-        OMDocument doc = OMXMLBuilderFactory.createStAXOMBuilder(
-                        metaFactory.getOMFactory(), adviceReq.newXMLStreamReader())
+        OMDocument doc = OMXMLBuilderFactory.createStAXOMBuilder(factory, adviceReq.newXMLStreamReader())
                 .getDocument();
         assertAbout(xml())
                 .that(xml(OMDocument.class, doc))

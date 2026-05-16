@@ -24,17 +24,17 @@ import com.google.inject.Inject;
 import java.util.Iterator;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Test {@link OMElement#getAllAttributes()} on a programmatically created document. */
 public class TestGetAllAttributes1 extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMElement element = metaFactory.getOMFactory().createOMElement("test", null);
+        OMElement element = factory.createOMElement("test", null);
         element.addAttribute("attr1", "value1", null);
         element.addAttribute("attr2", "value2", null);
         Iterator<OMAttribute> it = element.getAllAttributes();

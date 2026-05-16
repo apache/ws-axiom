@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -35,11 +34,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetNextOMSiblingIncomplete extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement omse = factory.createOMElement(new StringOMDataSource("<sourcedelement/>"));
         OMElement parent = factory.createOMElement(new QName("parent"));
         parent.addChild(omse);

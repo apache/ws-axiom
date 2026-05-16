@@ -29,7 +29,6 @@ import java.io.StringReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
@@ -44,7 +43,7 @@ import org.xml.sax.InputSource;
 /** Tests various ways to serialize an {@link OMSourcedElement}. */
 public class TestSerialize extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean push;
     private final boolean destructive;
@@ -90,7 +89,6 @@ public class TestSerialize extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(factory, push, destructive);
         OMDataSource ds = element.getDataSource();
         OMContainer parent = elementContext.wrap(element);

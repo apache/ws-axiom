@@ -22,18 +22,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests the behavior of {@link OMNamespace#getNamespaceURI()}. */
 public class TestGetNamespaceURI extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("http://www.w3.org/XML/1998/namespace", "xml");
         assertThat(ns.getNamespaceURI()).isEqualTo("http://www.w3.org/XML/1998/namespace");
     }

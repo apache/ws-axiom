@@ -28,14 +28,14 @@ import java.util.Iterator;
 import java.util.Set;
 import javax.xml.namespace.NamespaceContext;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests {@link OMElement#getNamespaceContext(boolean)}. */
 public class TestGetNamespaceContext extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean detached;
 
@@ -47,8 +47,7 @@ public class TestGetNamespaceContext extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         InputStream in = TestGetNamespaceContext.class.getResourceAsStream("namespacecontext.xml");
-        OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in)
-                .getDocumentElement();
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, in).getDocumentElement();
         OMElement inner = root.getFirstElement().getFirstElement();
         NamespaceContext context = inner.getNamespaceContext(detached);
         assertThat(context.getNamespaceURI("p")).isEqualTo("urn:test2");

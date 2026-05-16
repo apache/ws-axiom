@@ -25,7 +25,7 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import com.google.inject.Inject;
 import java.io.StringWriter;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument;
 import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order;
@@ -35,7 +35,7 @@ import org.xml.sax.ext.LexicalHandler;
 
 public class TestGetSAXResultXMLBeans extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -51,7 +51,7 @@ public class TestGetSAXResultXMLBeans extends AxiomTestCase {
 
         StringWriter out = new StringWriter();
         document.save(out);
-        OMDocument omDocument = metaFactory.getOMFactory().createOMDocument();
+        OMDocument omDocument = factory.createOMDocument();
         ContentHandler handler = omDocument.getSAXResult().getHandler();
         document.save(handler, (LexicalHandler) handler);
 

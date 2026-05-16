@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
@@ -41,11 +40,10 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCloneUnknownName extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMDataSource ds = new StringOMDataSource("<p:element xmlns:p='urn:ns'>test</p:element>");
         OMSourcedElement element = factory.createOMElement(ds);
         OMCloneOptions options = new OMCloneOptions();

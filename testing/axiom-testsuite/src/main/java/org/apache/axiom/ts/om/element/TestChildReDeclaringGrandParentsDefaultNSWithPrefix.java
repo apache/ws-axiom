@@ -24,24 +24,22 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestChildReDeclaringGrandParentsDefaultNSWithPrefix extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory fac = metaFactory.getOMFactory();
-        OMElement elem = fac.createOMElement(
-                "RequestSecurityToken", fac.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
-        fac.createOMElement(new QName("TokenType"), elem).setText("test");
-        fac.createOMElement(new QName("RequestType"), elem).setText("test1");
+        OMElement elem = factory.createOMElement(
+                "RequestSecurityToken", factory.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
+        factory.createOMElement(new QName("TokenType"), elem).setText("test");
+        factory.createOMElement(new QName("RequestType"), elem).setText("test1");
 
-        OMElement entElem =
-                fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"), elem);
-        OMElement binSecElem = fac.createOMElement(
+        OMElement entElem = factory.createOMElement(
+                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"), elem);
+        OMElement binSecElem = factory.createOMElement(
                 new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Binarysecret", "wst"), entElem);
         binSecElem.setText("secret value");
         String xml = elem.toString();

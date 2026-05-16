@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.InvocationCounter;
@@ -43,7 +43,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestIOExceptionInGetText extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
@@ -62,8 +62,8 @@ public class TestIOExceptionInGetText extends AxiomTestCase {
         InvocationCounter invocationCounter = new InvocationCounter();
         XMLStreamReader reader = (XMLStreamReader) invocationCounter.createProxy(originalReader);
 
-        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader)
-                .getDocumentElement();
+        OMElement element =
+                OMXMLBuilderFactory.createStAXOMBuilder(factory, reader).getDocumentElement();
 
         assertThatThrownBy(element::getNextOMSibling);
 

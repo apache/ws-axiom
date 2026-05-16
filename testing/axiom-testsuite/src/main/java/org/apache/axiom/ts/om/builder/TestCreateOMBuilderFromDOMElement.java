@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.io.StringReader;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
@@ -39,15 +39,14 @@ import org.xml.sax.InputSource;
  */
 public class TestCreateOMBuilderFromDOMElement extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
         Document document =
                 DOMImplementation.XERCES.parse(new InputSource(new StringReader("<a><b><c/></b><b2/></a>")));
         Element domB = (Element) document.getElementsByTagNameNS(null, "b").item(0);
-        OMElement omB = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domB, true)
-                .getDocumentElement();
+        OMElement omB = OMXMLBuilderFactory.createOMBuilder(factory, domB, true).getDocumentElement();
         assertThat(omB.getLocalName()).isEqualTo("b");
         assertThat(omB.getNextOMSibling()).isNull();
     }

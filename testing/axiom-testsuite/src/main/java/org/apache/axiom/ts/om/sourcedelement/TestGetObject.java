@@ -26,7 +26,6 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSource;
@@ -35,11 +34,10 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetObject extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         Blob blob = Blobs.createBlob("test".getBytes(StandardCharsets.UTF_8));
         OMSourcedElement element = factory.createOMElement(
                 new WrappedTextNodeOMDataSourceFromBlob(new QName("wrapper"), blob, StandardCharsets.UTF_8));

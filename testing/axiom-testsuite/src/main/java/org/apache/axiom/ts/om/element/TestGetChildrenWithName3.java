@@ -25,18 +25,16 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-166">AXIOM-166</a>. */
 public class TestGetChildrenWithName3 extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         OMNamespace testNamespace = factory.createOMNamespace("http://test.ws.org", "test");
         OMElement documentElement = factory.createOMElement("Employees", testNamespace);
         documentElement.declareNamespace(testNamespace);

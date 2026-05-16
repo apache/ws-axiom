@@ -28,7 +28,6 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
@@ -41,7 +40,7 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  */
 public class TestGetBlobFromElement extends AxiomTestCase {
     @Inject
-    private OMMetaFactory metaFactory;
+    private OMFactory factory;
 
     private final boolean cache;
 
@@ -52,7 +51,6 @@ public class TestGetBlobFromElement extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
         Blob orgBlob = new RandomBlob(64 * 1024);
         OMElement orgRoot = factory.createOMElement(new QName("root"));
         OMElement orgChild = factory.createOMElement(new QName("child"), orgRoot);
