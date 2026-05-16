@@ -26,8 +26,10 @@ import org.apache.axiom.ts.om.DigestTestCase;
 // Regression test for AXIOM-203
 public class TestDigestWithoutNamespace extends DigestTestCase {
     @Inject
-    public TestDigestWithoutNamespace(OMMetaFactory metaFactory) {
-        super(metaFactory, "MD5", "0730b7dda59f628a10b53b5502682ceb");
+    private OMMetaFactory metaFactory;
+
+    public TestDigestWithoutNamespace() {
+        super("MD5", "0730b7dda59f628a10b53b5502682ceb");
     }
 
     @Override

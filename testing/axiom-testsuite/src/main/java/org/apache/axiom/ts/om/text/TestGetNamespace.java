@@ -31,9 +31,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Tests the behavior of {@link OMText#getNamespace()} for a prefixed QName. */
 public class TestGetNamespace extends AxiomTestCase {
     @Inject
-    public TestGetNamespace(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

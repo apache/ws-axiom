@@ -32,9 +32,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Make sure the expanded OMSourcedElement behaves like a normal OMElement. */
 public class TestExpand extends AxiomTestCase {
     @Inject
-    public TestExpand(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

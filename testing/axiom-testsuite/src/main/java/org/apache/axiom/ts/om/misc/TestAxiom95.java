@@ -29,9 +29,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-95">AXIOM-95</a>. */
 public class TestAxiom95 extends AxiomTestCase {
     @Inject
-    public TestAxiom95(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

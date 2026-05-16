@@ -31,9 +31,7 @@ import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestGetChildrenWithLocalName extends AxiomTestCase {
     @Inject
-    public TestGetChildrenWithLocalName(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

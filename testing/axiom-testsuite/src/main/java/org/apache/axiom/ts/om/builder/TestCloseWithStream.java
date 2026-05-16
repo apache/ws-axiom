@@ -30,11 +30,13 @@ import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestCloseWithStream extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final StreamType streamType;
 
     @Inject
-    public TestCloseWithStream(OMMetaFactory metaFactory, StreamType streamType) {
-        super(metaFactory);
+    public TestCloseWithStream(StreamType streamType) {
         this.streamType = streamType;
     }
 

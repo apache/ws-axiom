@@ -36,12 +36,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  * namespace URI is in scope, the method generates a prefix.
  */
 public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean defaultNamespaceInScope;
 
     @Inject
-    public TestAddAttributeGeneratedPrefix(
-            OMMetaFactory metaFactory, @Named("defaultNamespaceInScope") boolean defaultNamespaceInScope) {
-        super(metaFactory);
+    public TestAddAttributeGeneratedPrefix(@Named("defaultNamespaceInScope") boolean defaultNamespaceInScope) {
         this.defaultNamespaceInScope = defaultNamespaceInScope;
     }
 

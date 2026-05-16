@@ -38,11 +38,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  * for an OM tree created by a builder correctly implements the {@link DTDReader} extension.
  */
 public class TestCharacterDataReaderFromParser extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean cache;
 
     @Inject
-    public TestCharacterDataReaderFromParser(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
-        super(metaFactory);
+    public TestCharacterDataReaderFromParser(@Named("cache") boolean cache) {
         this.cache = cache;
     }
 

@@ -33,9 +33,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetAttributeValueNonExisting extends AxiomTestCase {
     @Inject
-    public TestGetAttributeValueNonExisting(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

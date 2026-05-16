@@ -35,11 +35,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  * of the list of children.
  */
 public class TestAddChildWithSameParent extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean build;
 
     @Inject
-    public TestAddChildWithSameParent(OMMetaFactory metaFactory, @Named("build") boolean build) {
-        super(metaFactory);
+    public TestAddChildWithSameParent(@Named("build") boolean build) {
         this.build = build;
     }
 

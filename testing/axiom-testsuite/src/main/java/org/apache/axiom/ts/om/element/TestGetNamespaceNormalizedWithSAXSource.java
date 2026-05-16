@@ -41,9 +41,7 @@ import org.xml.sax.InputSource;
  */
 public class TestGetNamespaceNormalizedWithSAXSource extends AxiomTestCase {
     @Inject
-    public TestGetNamespaceNormalizedWithSAXSource(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

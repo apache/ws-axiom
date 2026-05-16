@@ -37,9 +37,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestRemoveChildrenUnexpanded extends AxiomTestCase {
     @Inject
-    public TestRemoveChildrenUnexpanded(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

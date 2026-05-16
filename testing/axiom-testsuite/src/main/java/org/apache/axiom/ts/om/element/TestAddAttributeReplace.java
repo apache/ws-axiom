@@ -37,11 +37,13 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  * namespace URI already exists.
  */
 public class TestAddAttributeReplace extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final AddAttributeStrategy strategy;
 
     @Inject
-    public TestAddAttributeReplace(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
-        super(metaFactory);
+    public TestAddAttributeReplace(AddAttributeStrategy strategy) {
         this.strategy = strategy;
     }
 

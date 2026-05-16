@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.DigestGenerator;
 import org.apache.axiom.testutils.DigestUtils;
@@ -40,8 +39,7 @@ public abstract class DigestTestCase extends AxiomTestCase {
     private final String algorithm;
     private final String expectedDigest;
 
-    public DigestTestCase(OMMetaFactory metaFactory, String algorithm, String expectedDigest) {
-        super(metaFactory);
+    public DigestTestCase(String algorithm, String expectedDigest) {
         this.algorithm = algorithm;
         this.expectedDigest = expectedDigest;
     }

@@ -33,9 +33,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCreateOMTextWithNullParent extends AxiomTestCase {
     @Inject
-    public TestCreateOMTextWithNullParent(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

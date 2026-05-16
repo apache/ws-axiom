@@ -33,9 +33,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCreateOMAttributeGeneratedPrefix extends AxiomTestCase {
     @Inject
-    public TestCreateOMAttributeGeneratedPrefix(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

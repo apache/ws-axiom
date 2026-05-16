@@ -39,9 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestDiscardPartiallyBuilt extends AxiomTestCase {
     @Inject
-    public TestDiscardPartiallyBuilt(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

@@ -38,11 +38,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-288">AXIOM-288</a>.
  */
 public class TestGetXMLStreamReaderOnNonRootElement extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean cache;
 
     @Inject
-    public TestGetXMLStreamReaderOnNonRootElement(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
-        super(metaFactory);
+    public TestGetXMLStreamReaderOnNonRootElement(@Named("cache") boolean cache) {
         this.cache = cache;
     }
 

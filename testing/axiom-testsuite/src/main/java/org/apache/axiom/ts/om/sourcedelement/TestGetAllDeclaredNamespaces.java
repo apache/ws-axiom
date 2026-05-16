@@ -36,9 +36,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  */
 public class TestGetAllDeclaredNamespaces extends AxiomTestCase {
     @Inject
-    public TestGetAllDeclaredNamespaces(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

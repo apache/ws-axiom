@@ -30,9 +30,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestUndeclarePrefix extends AxiomTestCase {
     @Inject
-    public TestUndeclarePrefix(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

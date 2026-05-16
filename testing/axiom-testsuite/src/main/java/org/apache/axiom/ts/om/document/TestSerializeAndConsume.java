@@ -38,9 +38,7 @@ import org.apache.commons.io.output.NullOutputStream;
  */
 public class TestSerializeAndConsume extends AxiomTestCase {
     @Inject
-    public TestSerializeAndConsume(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

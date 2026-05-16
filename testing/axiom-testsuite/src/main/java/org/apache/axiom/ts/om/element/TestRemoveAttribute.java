@@ -31,9 +31,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Tests the behavior of {@link OMElement#removeAttribute(OMAttribute)}. */
 public class TestRemoveAttribute extends AxiomTestCase {
     @Inject
-    public TestRemoveAttribute(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

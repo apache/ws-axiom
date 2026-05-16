@@ -30,9 +30,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 /** Test the discard method */
 public class TestDiscardIncomplete extends AxiomTestCase {
     @Inject
-    public TestDiscardIncomplete(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

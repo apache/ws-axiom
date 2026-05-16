@@ -37,18 +37,20 @@ import org.xml.sax.InputSource;
  * native StAX parser.
  */
 public class TestGetXMLStreamReader extends ConformanceTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final BuilderFactory builderFactory;
     private final OMContainerExtractor containerExtractor;
     private final boolean cache;
 
     @Inject
     public TestGetXMLStreamReader(
-            OMMetaFactory metaFactory,
             XMLSample file,
             BuilderFactory builderFactory,
             OMContainerExtractor containerExtractor,
             @Named("cache") boolean cache) {
-        super(metaFactory, file);
+        super(file);
         this.builderFactory = builderFactory;
         this.containerExtractor = containerExtractor;
         this.cache = cache;

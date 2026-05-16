@@ -31,9 +31,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Tests the behavior of {@link OMElement#getFirstChildWithName(QName)}. */
 public class TestGetFirstChildWithName extends AxiomTestCase {
     @Inject
-    public TestGetFirstChildWithName(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

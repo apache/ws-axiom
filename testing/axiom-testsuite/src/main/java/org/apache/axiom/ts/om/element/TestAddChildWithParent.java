@@ -34,9 +34,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 // TODO: update Javadoc of OMContainer
 public class TestAddChildWithParent extends AxiomTestCase {
     @Inject
-    public TestAddChildWithParent(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

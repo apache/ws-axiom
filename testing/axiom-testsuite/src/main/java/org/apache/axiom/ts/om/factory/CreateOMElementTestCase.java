@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.om.factory;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -30,9 +29,7 @@ public abstract class CreateOMElementTestCase extends AxiomTestCase {
     protected final CreateOMElementVariant variant;
     protected final CreateOMElementParentSupplier parentSupplier;
 
-    public CreateOMElementTestCase(
-            OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
-        super(metaFactory);
+    public CreateOMElementTestCase(CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
         this.variant = variant;
         this.parentSupplier = parentSupplier;
     }

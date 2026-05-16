@@ -33,11 +33,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class TestDetachWithDOM extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean useDOMSource;
 
     @Inject
-    public TestDetachWithDOM(OMMetaFactory metaFactory, @Named("useDOMSource") boolean useDOMSource) {
-        super(metaFactory);
+    public TestDetachWithDOM(@Named("useDOMSource") boolean useDOMSource) {
         this.useDOMSource = useDOMSource;
     }
 

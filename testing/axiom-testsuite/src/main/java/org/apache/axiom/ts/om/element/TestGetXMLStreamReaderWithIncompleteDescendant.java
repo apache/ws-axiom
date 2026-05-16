@@ -43,11 +43,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-431">AXIOM-431</a>.
  */
 public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean cache;
 
     @Inject
-    public TestGetXMLStreamReaderWithIncompleteDescendant(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
-        super(metaFactory);
+    public TestGetXMLStreamReaderWithIncompleteDescendant(@Named("cache") boolean cache) {
         this.cache = cache;
     }
 

@@ -29,9 +29,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestMultipleDefaultNS extends AxiomTestCase {
     @Inject
-    public TestMultipleDefaultNS(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

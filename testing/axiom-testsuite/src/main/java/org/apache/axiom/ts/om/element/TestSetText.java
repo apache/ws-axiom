@@ -30,9 +30,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Tests the behavior of {@link OMElement#setText(String)} when invoked on an empty element. */
 public class TestSetText extends AxiomTestCase {
     @Inject
-    public TestSetText(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

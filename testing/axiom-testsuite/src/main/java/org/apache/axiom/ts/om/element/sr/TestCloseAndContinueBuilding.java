@@ -40,11 +40,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-288">AXIOM-288</a>.
  */
 public class TestCloseAndContinueBuilding extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean cache;
 
     @Inject
-    public TestCloseAndContinueBuilding(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
-        super(metaFactory);
+    public TestCloseAndContinueBuilding(@Named("cache") boolean cache) {
         this.cache = cache;
     }
 

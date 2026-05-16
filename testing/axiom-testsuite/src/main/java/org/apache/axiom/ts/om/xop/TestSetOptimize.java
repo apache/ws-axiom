@@ -40,11 +40,13 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestSetOptimize extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean optimize;
 
     @Inject
-    public TestSetOptimize(OMMetaFactory metaFactory, @Named("optimize") boolean optimize) {
-        super(metaFactory);
+    public TestSetOptimize(@Named("optimize") boolean optimize) {
         this.optimize = optimize;
     }
 

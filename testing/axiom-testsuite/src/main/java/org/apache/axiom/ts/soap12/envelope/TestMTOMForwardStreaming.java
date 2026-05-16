@@ -45,11 +45,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  * projects such as Synapse to forward MTOM messages very efficiently.
  */
 public class TestMTOMForwardStreaming extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean buildSOAPPart;
 
     @Inject
-    public TestMTOMForwardStreaming(OMMetaFactory metaFactory, @Named("buildSOAPPart") boolean buildSOAPPart) {
-        super(metaFactory);
+    public TestMTOMForwardStreaming(@Named("buildSOAPPart") boolean buildSOAPPart) {
         this.buildSOAPPart = buildSOAPPart;
     }
 

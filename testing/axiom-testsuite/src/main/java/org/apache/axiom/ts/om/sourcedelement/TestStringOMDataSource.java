@@ -35,9 +35,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Tests functionality of ByteArrayDataSource */
 public class TestStringOMDataSource extends AxiomTestCase {
     @Inject
-    public TestStringOMDataSource(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

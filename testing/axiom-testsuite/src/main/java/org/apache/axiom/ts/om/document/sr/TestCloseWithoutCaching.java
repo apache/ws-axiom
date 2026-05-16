@@ -42,9 +42,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCloseWithoutCaching extends AxiomTestCase {
     @Inject
-    public TestCloseWithoutCaching(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

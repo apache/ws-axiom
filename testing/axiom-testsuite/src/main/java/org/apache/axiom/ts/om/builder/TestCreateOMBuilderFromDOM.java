@@ -37,16 +37,18 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final DOMImplementation implementation;
     private final Boolean expandEntityReferences;
 
     @Inject
     public TestCreateOMBuilderFromDOM(
-            OMMetaFactory metaFactory,
             XMLSample file,
             DOMImplementation implementation,
             @Named("expandEntityReferences") @Nullable Boolean expandEntityReferences) {
-        super(metaFactory, file);
+        super(file);
         this.implementation = implementation;
         this.expandEntityReferences = expandEntityReferences;
     }

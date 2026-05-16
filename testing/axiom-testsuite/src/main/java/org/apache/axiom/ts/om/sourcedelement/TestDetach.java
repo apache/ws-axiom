@@ -36,11 +36,13 @@ import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 public class TestDetach extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final ExpansionStrategy expansionStrategy;
 
     @Inject
-    public TestDetach(OMMetaFactory metaFactory, ExpansionStrategy expansionStrategy) {
-        super(metaFactory);
+    public TestDetach(ExpansionStrategy expansionStrategy) {
         this.expansionStrategy = expansionStrategy;
     }
 

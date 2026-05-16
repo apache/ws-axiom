@@ -26,9 +26,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCreateOMNamespaceWithNullURI extends AxiomTestCase {
     @Inject
-    public TestCreateOMNamespaceWithNullURI(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

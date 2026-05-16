@@ -32,9 +32,7 @@ import org.apache.commons.io.IOUtils;
 
 public class TestGetTextAsStreamWithSingleTextNode extends AxiomTestCase {
     @Inject
-    public TestGetTextAsStreamWithSingleTextNode(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

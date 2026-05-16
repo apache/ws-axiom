@@ -18,15 +18,13 @@
  */
 package org.apache.axiom.ts;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.xml.XMLSample;
 
 /** Base class for test cases that are executed against the files from the conformance test set. */
 public abstract class ConformanceTestCase extends AxiomTestCase {
     protected final XMLSample file;
 
-    public ConformanceTestCase(OMMetaFactory metaFactory, XMLSample file) {
-        super(metaFactory);
+    public ConformanceTestCase(XMLSample file) {
         this.file = file;
     }
 }

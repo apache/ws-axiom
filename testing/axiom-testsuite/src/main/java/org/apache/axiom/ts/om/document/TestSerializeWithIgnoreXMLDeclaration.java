@@ -20,18 +20,12 @@ package org.apache.axiom.ts.om.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.google.inject.Inject;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
 
 public class TestSerializeWithIgnoreXMLDeclaration extends XMLDeclarationSerializationTestCase {
-    @Inject
-    public TestSerializeWithIgnoreXMLDeclaration(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
 
     @Override
     protected void runTest(OMDocument document) throws Throwable {

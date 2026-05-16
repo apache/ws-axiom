@@ -37,9 +37,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetFirstOMChildAfterDiscard extends AxiomTestCase {
     @Inject
-    public TestGetFirstOMChildAfterDiscard(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

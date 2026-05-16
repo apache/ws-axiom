@@ -37,11 +37,13 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
 
 public class TestSerialize extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean base64;
 
     @Inject
-    public TestSerialize(OMMetaFactory metaFactory, @Named("base64") boolean base64) {
-        super(metaFactory);
+    public TestSerialize(@Named("base64") boolean base64) {
         this.base64 = base64;
     }
 

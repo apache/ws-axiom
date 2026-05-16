@@ -35,9 +35,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestSetTextQName extends AxiomTestCase {
     @Inject
-    public TestSetTextQName(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

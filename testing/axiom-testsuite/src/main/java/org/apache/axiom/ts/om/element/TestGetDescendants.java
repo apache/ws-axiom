@@ -30,11 +30,13 @@ import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetDescendants extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean includeSelf;
 
     @Inject
-    public TestGetDescendants(OMMetaFactory metaFactory, @Named("includeSelf") boolean includeSelf) {
-        super(metaFactory);
+    public TestGetDescendants(@Named("includeSelf") boolean includeSelf) {
         this.includeSelf = includeSelf;
     }
 

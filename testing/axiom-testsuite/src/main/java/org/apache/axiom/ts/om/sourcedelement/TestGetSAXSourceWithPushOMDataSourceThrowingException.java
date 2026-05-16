@@ -34,9 +34,7 @@ import org.xml.sax.XMLReader;
 
 public class TestGetSAXSourceWithPushOMDataSourceThrowingException extends AxiomTestCase {
     @Inject
-    public TestGetSAXSourceWithPushOMDataSourceThrowingException(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

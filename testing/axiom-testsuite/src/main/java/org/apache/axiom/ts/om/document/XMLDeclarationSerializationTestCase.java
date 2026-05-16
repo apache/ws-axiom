@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.om.document;
 
+import com.google.inject.Inject;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -26,9 +27,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public abstract class XMLDeclarationSerializationTestCase extends AxiomTestCase {
-    public XMLDeclarationSerializationTestCase(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    @Inject
+    private OMMetaFactory metaFactory;
 
     @Override
     protected final void runTest() throws Throwable {

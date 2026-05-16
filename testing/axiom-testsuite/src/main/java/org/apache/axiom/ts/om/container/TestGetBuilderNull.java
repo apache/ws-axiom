@@ -30,11 +30,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  * node.
  */
 public class TestGetBuilderNull extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final OMContainerFactory containerFactory;
 
     @Inject
-    public TestGetBuilderNull(OMMetaFactory metaFactory, OMContainerFactory containerFactory) {
-        super(metaFactory);
+    public TestGetBuilderNull(OMContainerFactory containerFactory) {
         this.containerFactory = containerFactory;
     }
 

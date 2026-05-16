@@ -30,11 +30,13 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests the behavior of {@link OMNode#detach()}. */
 public class TestDetachFirstChild extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean build;
 
     @Inject
-    public TestDetachFirstChild(OMMetaFactory metaFactory, @Named("build") boolean build) {
-        super(metaFactory);
+    public TestDetachFirstChild(@Named("build") boolean build) {
         this.build = build;
     }
 

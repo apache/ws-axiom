@@ -25,8 +25,10 @@ import org.apache.axiom.ts.om.DigestTestCase;
 
 public class TestDigest extends DigestTestCase {
     @Inject
-    public TestDigest(OMMetaFactory metaFactory) {
-        super(metaFactory, "MD5", "a7066a04f134fc8b62c1745da10dcd26");
+    private OMMetaFactory metaFactory;
+
+    public TestDigest() {
+        super("MD5", "a7066a04f134fc8b62c1745da10dcd26");
     }
 
     @Override

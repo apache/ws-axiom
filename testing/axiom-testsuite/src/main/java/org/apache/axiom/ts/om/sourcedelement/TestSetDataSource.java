@@ -35,9 +35,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 @SuppressWarnings("deprecation")
 public class TestSetDataSource extends AxiomTestCase {
     @Inject
-    public TestSetDataSource(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

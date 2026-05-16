@@ -32,13 +32,14 @@ import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestDetachWithStream extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final StreamType streamType;
     private final boolean useStreamSource;
 
     @Inject
-    public TestDetachWithStream(
-            OMMetaFactory metaFactory, StreamType streamType, @Named("useStreamSource") boolean useStreamSource) {
-        super(metaFactory);
+    public TestDetachWithStream(StreamType streamType, @Named("useStreamSource") boolean useStreamSource) {
         this.streamType = streamType;
         this.useStreamSource = useStreamSource;
     }
