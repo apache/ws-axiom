@@ -29,9 +29,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Tests the behavior of {@link OMNamespace#getNamespaceURI()}. */
 public class TestGetNamespaceURI extends AxiomTestCase {
     @Inject
-    public TestGetNamespaceURI(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

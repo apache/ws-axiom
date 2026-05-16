@@ -36,9 +36,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class XOPRoundtripTest extends AxiomTestCase {
     @Inject
-    public XOPRoundtripTest(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

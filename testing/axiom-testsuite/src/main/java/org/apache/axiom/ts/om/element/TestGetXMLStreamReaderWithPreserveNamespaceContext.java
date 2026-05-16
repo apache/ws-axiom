@@ -39,15 +39,15 @@ import org.apache.axiom.ts.AxiomTestCase;
  * OMXMLStreamReaderConfiguration#isPreserveNamespaceContext()}.
  */
 public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean preserveNamespaceContext;
     private final boolean cache;
 
     @Inject
     public TestGetXMLStreamReaderWithPreserveNamespaceContext(
-            OMMetaFactory metaFactory,
-            @Named("preserveNamespaceContext") boolean preserveNamespaceContext,
-            @Named("cache") boolean cache) {
-        super(metaFactory);
+            @Named("preserveNamespaceContext") boolean preserveNamespaceContext, @Named("cache") boolean cache) {
         this.preserveNamespaceContext = preserveNamespaceContext;
         this.cache = cache;
     }

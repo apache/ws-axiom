@@ -37,9 +37,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetDocumentElementWithDiscardDocumentIllFormedEpilog extends AxiomTestCase {
     @Inject
-    public TestGetDocumentElementWithDiscardDocumentIllFormedEpilog(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

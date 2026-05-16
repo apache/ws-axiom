@@ -26,8 +26,10 @@ import org.apache.axiom.ts.om.DigestTestCase;
 
 public class TestDigestWithNamespace extends DigestTestCase {
     @Inject
-    public TestDigestWithNamespace(OMMetaFactory metaFactory) {
-        super(metaFactory, "MD5", "0403b2798bee0397c2755c01d560092e");
+    private OMMetaFactory metaFactory;
+
+    public TestDigestWithNamespace() {
+        super("MD5", "0403b2798bee0397c2755c01d560092e");
     }
 
     @Override

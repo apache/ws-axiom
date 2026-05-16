@@ -39,11 +39,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  * OMContainer#build()}) method would fail on {@link OMDocument} instances.
  */
 public class TestAddChildWithIncompleteSibling extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final OMContainerFactory containerFactory;
 
     @Inject
-    public TestAddChildWithIncompleteSibling(OMMetaFactory metaFactory, OMContainerFactory containerFactory) {
-        super(metaFactory);
+    public TestAddChildWithIncompleteSibling(OMContainerFactory containerFactory) {
         this.containerFactory = containerFactory;
     }
 

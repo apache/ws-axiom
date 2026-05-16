@@ -30,9 +30,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetElementText extends AxiomTestCase {
     @Inject
-    public TestGetElementText(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

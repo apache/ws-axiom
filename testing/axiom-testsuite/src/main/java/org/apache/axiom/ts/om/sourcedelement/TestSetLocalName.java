@@ -38,11 +38,13 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  * of the root element returned by the data source.
  */
 public class TestSetLocalName extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private boolean expand;
 
     @Inject
-    public TestSetLocalName(OMMetaFactory metaFactory, @Named("expand") boolean expand) {
-        super(metaFactory);
+    public TestSetLocalName(@Named("expand") boolean expand) {
         this.expand = expand;
     }
 

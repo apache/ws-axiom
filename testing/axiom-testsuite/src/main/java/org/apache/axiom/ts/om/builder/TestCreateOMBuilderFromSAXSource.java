@@ -39,16 +39,18 @@ import org.jspecify.annotations.Nullable;
 import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final SAXImplementation implementation;
     private final Boolean expandEntityReferences;
 
     @Inject
     public TestCreateOMBuilderFromSAXSource(
-            OMMetaFactory metaFactory,
             XMLSample file,
             SAXImplementation implementation,
             @Named("expandEntityReferences") @Nullable Boolean expandEntityReferences) {
-        super(metaFactory, file);
+        super(file);
         this.implementation = implementation;
         this.expandEntityReferences = expandEntityReferences;
     }

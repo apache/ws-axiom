@@ -34,11 +34,13 @@ import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCloneBinary extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private boolean fetch;
 
     @Inject
-    public TestCloneBinary(OMMetaFactory metaFactory, @Named("fetch") boolean fetch) {
-        super(metaFactory);
+    public TestCloneBinary(@Named("fetch") boolean fetch) {
         this.fetch = fetch;
     }
 

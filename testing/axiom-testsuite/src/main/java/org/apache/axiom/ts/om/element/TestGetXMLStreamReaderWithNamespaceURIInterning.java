@@ -37,9 +37,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetXMLStreamReaderWithNamespaceURIInterning extends AxiomTestCase {
     @Inject
-    public TestGetXMLStreamReaderWithNamespaceURIInterning(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

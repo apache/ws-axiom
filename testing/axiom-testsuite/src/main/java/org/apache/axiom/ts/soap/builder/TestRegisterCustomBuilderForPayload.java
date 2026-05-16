@@ -40,11 +40,13 @@ import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.xml.sax.InputSource;
 
 public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final SOAPSample message;
 
     @Inject
-    public TestRegisterCustomBuilderForPayload(OMMetaFactory metaFactory, SOAPSample message) {
-        super(metaFactory);
+    public TestRegisterCustomBuilderForPayload(SOAPSample message) {
         this.message = message;
     }
 

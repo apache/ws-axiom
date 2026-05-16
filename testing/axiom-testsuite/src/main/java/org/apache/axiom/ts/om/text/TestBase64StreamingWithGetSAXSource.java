@@ -45,6 +45,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-442">AXIOM-442</a>.
  */
 public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private static class Base64Comparator extends DefaultHandler {
         private final Writer out;
 
@@ -69,11 +72,6 @@ public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
                 throw new SAXException(ex);
             }
         }
-    }
-
-    @Inject
-    public TestBase64StreamingWithGetSAXSource(OMMetaFactory metaFactory) {
-        super(metaFactory);
     }
 
     @Override

@@ -34,9 +34,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 // Regression test for AXIOM-144 and AXIOM-146
 public class TestGetXMLStreamReaderCDATAEventFromParser extends AxiomTestCase {
     @Inject
-    public TestGetXMLStreamReaderCDATAEventFromParser(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

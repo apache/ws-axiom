@@ -35,11 +35,13 @@ import org.apache.axiom.testutils.blob.TextBlob;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCloneNonDestructive extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean copyOMDataSources;
 
     @Inject
-    public TestCloneNonDestructive(OMMetaFactory metaFactory, @Named("copyOMDataSources") boolean copyOMDataSources) {
-        super(metaFactory);
+    public TestCloneNonDestructive(@Named("copyOMDataSources") boolean copyOMDataSources) {
         this.copyOMDataSources = copyOMDataSources;
     }
 

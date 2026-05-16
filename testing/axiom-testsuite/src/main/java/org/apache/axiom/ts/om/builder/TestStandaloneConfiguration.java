@@ -39,9 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestStandaloneConfiguration extends AxiomTestCase {
     @Inject
-    public TestStandaloneConfiguration(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

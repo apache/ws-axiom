@@ -35,12 +35,13 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  * corresponding declaration already exists on the element.
  */
 public class TestAddAttributeWithExistingNamespaceDeclarationOnSameElement extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final AddAttributeStrategy strategy;
 
     @Inject
-    public TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(
-            OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
-        super(metaFactory);
+    public TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(AddAttributeStrategy strategy) {
         this.strategy = strategy;
     }
 

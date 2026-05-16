@@ -39,15 +39,15 @@ import org.xml.sax.InputSource;
  * OMXMLParserWrapper#getDocumentElement(boolean)}.
  */
 public class TestGetDocumentElement extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final BuilderFactory builderFactory;
     private final Boolean discardDocument;
 
     @Inject
     public TestGetDocumentElement(
-            OMMetaFactory metaFactory,
-            BuilderFactory builderFactory,
-            @Named("discardDocument") @Nullable Boolean discardDocument) {
-        super(metaFactory);
+            BuilderFactory builderFactory, @Named("discardDocument") @Nullable Boolean discardDocument) {
         this.builderFactory = builderFactory;
         this.discardDocument = discardDocument;
     }

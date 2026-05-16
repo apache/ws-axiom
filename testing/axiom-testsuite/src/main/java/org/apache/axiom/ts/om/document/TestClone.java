@@ -31,8 +31,11 @@ import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestClone extends ConformanceTestCase {
     @Inject
-    public TestClone(OMMetaFactory metaFactory, XMLSample file) {
-        super(metaFactory, file);
+    private OMMetaFactory metaFactory;
+
+    @Inject
+    public TestClone(XMLSample file) {
+        super(file);
     }
 
     @Override

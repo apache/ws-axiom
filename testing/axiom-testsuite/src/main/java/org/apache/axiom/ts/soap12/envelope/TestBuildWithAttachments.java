@@ -33,9 +33,7 @@ import org.apache.axiom.ts.soap.MTOMSample;
 
 public class TestBuildWithAttachments extends AxiomTestCase {
     @Inject
-    public TestBuildWithAttachments(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

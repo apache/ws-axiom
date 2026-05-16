@@ -30,9 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class TestDeclareDefaultNamespace2 extends AxiomTestCase {
     @Inject
-    public TestDeclareDefaultNamespace2(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

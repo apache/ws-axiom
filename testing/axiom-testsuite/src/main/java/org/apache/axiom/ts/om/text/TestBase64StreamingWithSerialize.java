@@ -36,9 +36,7 @@ import org.apache.commons.io.output.NullOutputStream;
  */
 public class TestBase64StreamingWithSerialize extends AxiomTestCase {
     @Inject
-    public TestBase64StreamingWithSerialize(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

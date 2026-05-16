@@ -55,9 +55,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
     @Inject
-    public TestReadAttachmentBeforeRootPartComplete(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

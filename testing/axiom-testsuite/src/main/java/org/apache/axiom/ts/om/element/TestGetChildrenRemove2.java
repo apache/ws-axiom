@@ -32,9 +32,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** test the remove exception behavior, consecutive remove calls */
 public class TestGetChildrenRemove2 extends AxiomTestCase {
     @Inject
-    public TestGetChildrenRemove2(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

@@ -37,11 +37,13 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  * AbstractPullOMDataSource} closes all readers requested from the data source.
  */
 public class TestCloseWithoutCaching extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final int events;
 
     @Inject
-    public TestCloseWithoutCaching(OMMetaFactory metaFactory, @Named("events") int events) {
-        super(metaFactory);
+    public TestCloseWithoutCaching(@Named("events") int events) {
         this.events = events;
     }
 

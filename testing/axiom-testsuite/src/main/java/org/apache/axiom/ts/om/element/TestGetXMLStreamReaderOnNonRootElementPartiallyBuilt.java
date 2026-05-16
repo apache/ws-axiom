@@ -36,13 +36,15 @@ import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
  * built.
  */
 public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean cache;
     private final int build;
 
     @Inject
     public TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt(
-            OMMetaFactory metaFactory, @Named("cache") boolean cache, @Named("build") int build) {
-        super(metaFactory);
+            @Named("cache") boolean cache, @Named("build") int build) {
         this.cache = cache;
         this.build = build;
     }

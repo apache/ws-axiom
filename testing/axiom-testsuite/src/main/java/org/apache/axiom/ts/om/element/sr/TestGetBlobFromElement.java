@@ -40,11 +40,13 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  * XMLStreamReader} returned by {@link OMElement#getXMLStreamReader(boolean)}.
  */
 public class TestGetBlobFromElement extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean cache;
 
     @Inject
-    public TestGetBlobFromElement(OMMetaFactory metaFactory, @Named("cache") boolean cache) {
-        super(metaFactory);
+    public TestGetBlobFromElement(@Named("cache") boolean cache) {
         this.cache = cache;
     }
 

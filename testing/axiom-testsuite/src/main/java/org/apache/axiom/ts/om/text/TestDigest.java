@@ -25,8 +25,10 @@ import org.apache.axiom.ts.om.DigestTestCase;
 
 public class TestDigest extends DigestTestCase {
     @Inject
-    public TestDigest(OMMetaFactory metaFactory) {
-        super(metaFactory, "SHA1", "91b802187b7ae7c2c858f4aa5ae5470fc50d0306");
+    private OMMetaFactory metaFactory;
+
+    public TestDigest() {
+        super("SHA1", "91b802187b7ae7c2c858f4aa5ae5470fc50d0306");
     }
 
     @Override

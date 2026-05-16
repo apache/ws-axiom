@@ -32,9 +32,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestObjectEqualsWithDifferentPrefixes extends AxiomTestCase {
     @Inject
-    public TestObjectEqualsWithDifferentPrefixes(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

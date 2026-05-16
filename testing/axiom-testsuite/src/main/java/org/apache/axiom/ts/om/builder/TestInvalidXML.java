@@ -32,9 +32,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestInvalidXML extends AxiomTestCase {
     @Inject
-    public TestInvalidXML(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

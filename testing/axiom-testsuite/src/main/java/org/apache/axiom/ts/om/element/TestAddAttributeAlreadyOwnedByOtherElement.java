@@ -34,9 +34,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestAddAttributeAlreadyOwnedByOtherElement extends AxiomTestCase {
     @Inject
-    public TestAddAttributeAlreadyOwnedByOtherElement(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

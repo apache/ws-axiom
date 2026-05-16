@@ -30,11 +30,13 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class BadInputTest extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final String file;
 
     @Inject
-    public BadInputTest(OMMetaFactory metaFactory, @Named("file") String file) {
-        super(metaFactory);
+    public BadInputTest(@Named("file") String file) {
         this.file = file;
     }
 

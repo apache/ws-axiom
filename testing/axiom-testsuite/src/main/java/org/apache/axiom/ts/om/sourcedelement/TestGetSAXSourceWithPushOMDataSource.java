@@ -40,15 +40,15 @@ import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
  * serializes an {@link OMSourcedElement} backed by an {@link AbstractPushOMDataSource}.
  */
 public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final PushOMDataSourceScenario scenario;
     private boolean serializeParent;
 
     @Inject
     public TestGetSAXSourceWithPushOMDataSource(
-            OMMetaFactory metaFactory,
-            PushOMDataSourceScenario scenario,
-            @Named("serializeParent") boolean serializeParent) {
-        super(metaFactory);
+            PushOMDataSourceScenario scenario, @Named("serializeParent") boolean serializeParent) {
         this.scenario = scenario;
         this.serializeParent = serializeParent;
     }

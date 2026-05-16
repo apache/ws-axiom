@@ -32,12 +32,14 @@ import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.xml.sax.InputSource;
 
 public class TestCommentEvent extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final BuilderFactory builderFactory;
     private final boolean cache;
 
     @Inject
-    public TestCommentEvent(OMMetaFactory metaFactory, BuilderFactory builderFactory, @Named("cache") boolean cache) {
-        super(metaFactory);
+    public TestCommentEvent(BuilderFactory builderFactory, @Named("cache") boolean cache) {
         this.builderFactory = builderFactory;
         this.cache = cache;
     }

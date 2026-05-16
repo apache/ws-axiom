@@ -20,7 +20,6 @@ package org.apache.axiom.ts;
 
 import javax.xml.stream.XMLInputFactory;
 import junit.framework.TestCase;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 
@@ -40,10 +39,7 @@ public abstract class AxiomTestCase extends TestCase {
         }
     };
 
-    protected final OMMetaFactory metaFactory;
-
-    public AxiomTestCase(OMMetaFactory metaFactory) {
-        this.metaFactory = metaFactory;
+    public AxiomTestCase() {
         setName(getClass().getName());
     }
 

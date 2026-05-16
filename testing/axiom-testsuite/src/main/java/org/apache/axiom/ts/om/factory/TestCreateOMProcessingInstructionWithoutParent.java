@@ -27,9 +27,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCreateOMProcessingInstructionWithoutParent extends AxiomTestCase {
     @Inject
-    public TestCreateOMProcessingInstructionWithoutParent(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

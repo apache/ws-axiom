@@ -38,9 +38,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestCreateStAXOMBuilderIncorrectState extends AxiomTestCase {
     @Inject
-    public TestCreateStAXOMBuilderIncorrectState(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

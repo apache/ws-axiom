@@ -34,13 +34,14 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetDescendants extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final OMContainerFactory containerFactory;
     private final boolean includeSelf;
 
     @Inject
-    public TestGetDescendants(
-            OMMetaFactory metaFactory, OMContainerFactory containerFactory, @Named("includeSelf") boolean includeSelf) {
-        super(metaFactory);
+    public TestGetDescendants(OMContainerFactory containerFactory, @Named("includeSelf") boolean includeSelf) {
         this.containerFactory = containerFactory;
         this.includeSelf = includeSelf;
     }

@@ -30,9 +30,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestInsertSiblingBeforeOnChild extends AxiomTestCase {
     @Inject
-    public TestInsertSiblingBeforeOnChild(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

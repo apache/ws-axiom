@@ -34,9 +34,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestDeclareNamespaceWithEmptyPrefix extends AxiomTestCase {
     @Inject
-    public TestDeclareNamespaceWithEmptyPrefix(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

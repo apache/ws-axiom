@@ -49,11 +49,13 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  * <p>Note that because of WSTX-202, Axiom will not be able to serialize the resulting XML.
  */
 public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final AddAttributeStrategy strategy;
 
     @Inject
-    public TestAddAttributeWithMaskedNamespaceDeclaration(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
-        super(metaFactory);
+    public TestAddAttributeWithMaskedNamespaceDeclaration(AddAttributeStrategy strategy) {
         this.strategy = strategy;
     }
 

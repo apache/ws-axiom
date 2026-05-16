@@ -42,9 +42,7 @@ import org.w3c.dom.Text;
  */
 public class TestCreateOMAttributeInterfaces extends AxiomTestCase {
     @Inject
-    public TestCreateOMAttributeInterfaces(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

@@ -35,12 +35,13 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  * and a corresponding namespace declaration doesn't exist yet.
  */
 public class TestAddAttributeWithoutExistingNamespaceDeclaration extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final AddAttributeStrategy strategy;
 
     @Inject
-    public TestAddAttributeWithoutExistingNamespaceDeclaration(
-            OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
-        super(metaFactory);
+    public TestAddAttributeWithoutExistingNamespaceDeclaration(AddAttributeStrategy strategy) {
         this.strategy = strategy;
     }
 

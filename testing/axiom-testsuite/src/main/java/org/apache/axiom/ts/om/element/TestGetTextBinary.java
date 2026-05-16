@@ -37,11 +37,13 @@ import org.apache.commons.codec.binary.Base64;
  * an element that has an {@link OMText} child constructed from a {@link Blob}.
  */
 public class TestGetTextBinary extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean compact;
 
     @Inject
-    public TestGetTextBinary(OMMetaFactory metaFactory, @Named("compact") boolean compact) {
-        super(metaFactory);
+    public TestGetTextBinary(@Named("compact") boolean compact) {
         this.compact = compact;
     }
 

@@ -37,9 +37,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestDeclareDefaultNamespaceConflict2 extends AxiomTestCase {
     @Inject
-    public TestDeclareDefaultNamespaceConflict2(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

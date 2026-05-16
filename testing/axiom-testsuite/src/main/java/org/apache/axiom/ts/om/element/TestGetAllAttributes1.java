@@ -30,9 +30,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Test {@link OMElement#getAllAttributes()} on a programmatically created document. */
 public class TestGetAllAttributes1 extends AxiomTestCase {
     @Inject
-    public TestGetAllAttributes1(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

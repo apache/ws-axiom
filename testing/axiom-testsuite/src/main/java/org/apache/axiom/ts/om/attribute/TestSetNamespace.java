@@ -23,7 +23,6 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.om.SetNamespaceTestCase;
@@ -79,8 +78,8 @@ public class TestSetNamespace extends SetNamespaceTestCase {
     private final Params params;
 
     @Inject
-    public TestSetNamespace(OMMetaFactory metaFactory, Params params) {
-        super(metaFactory, params);
+    public TestSetNamespace(Params params) {
+        super(params);
         this.params = params;
     }
 

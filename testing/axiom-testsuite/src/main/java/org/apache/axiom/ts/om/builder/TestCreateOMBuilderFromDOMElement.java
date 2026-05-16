@@ -39,9 +39,7 @@ import org.xml.sax.InputSource;
  */
 public class TestCreateOMBuilderFromDOMElement extends AxiomTestCase {
     @Inject
-    public TestCreateOMBuilderFromDOMElement(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

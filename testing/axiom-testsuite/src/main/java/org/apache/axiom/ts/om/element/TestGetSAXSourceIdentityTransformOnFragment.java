@@ -60,13 +60,15 @@ import org.xml.sax.ContentHandler;
  * href="https://issues.apache.org/jira/browse/SYNAPSE-501">SYNAPSE-501</a>).
  */
 public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final XSLTImplementation xsltImplementation;
     private final boolean cache;
 
     @Inject
     public TestGetSAXSourceIdentityTransformOnFragment(
-            OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, @Named("cache") boolean cache) {
-        super(metaFactory);
+            XSLTImplementation xsltImplementation, @Named("cache") boolean cache) {
         this.xsltImplementation = xsltImplementation;
         this.cache = cache;
     }

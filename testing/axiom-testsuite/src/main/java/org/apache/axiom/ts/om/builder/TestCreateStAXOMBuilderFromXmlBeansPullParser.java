@@ -31,9 +31,7 @@ import za.co.eskom.nrs.xmlvend.base.x20.schema.AdviceReqDocument;
 
 public class TestCreateStAXOMBuilderFromXmlBeansPullParser extends AxiomTestCase {
     @Inject
-    public TestCreateStAXOMBuilderFromXmlBeansPullParser(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

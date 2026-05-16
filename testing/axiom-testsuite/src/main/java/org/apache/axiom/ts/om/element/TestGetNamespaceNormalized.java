@@ -44,11 +44,13 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalized extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean useNull;
 
     @Inject
-    public TestGetNamespaceNormalized(OMMetaFactory metaFactory, @Named("useNull") boolean useNull) {
-        super(metaFactory);
+    public TestGetNamespaceNormalized(@Named("useNull") boolean useNull) {
         this.useNull = useNull;
     }
 

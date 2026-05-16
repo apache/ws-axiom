@@ -22,14 +22,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 
 public class TestGetNamespace extends LazyNameTestCase {
     @Inject
-    public TestGetNamespace(OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
-        super(metaFactory, variant, qname);
+    public TestGetNamespace(OMSourcedElementVariant variant, QName qname) {
+        super(variant, qname);
     }
 
     @Override

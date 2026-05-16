@@ -34,9 +34,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 // TODO: this is actually undocumented; in addition, it should probably made configurable
 public class TestCloneOMElementNamespaceRepairing extends AxiomTestCase {
     @Inject
-    public TestCloneOMElementNamespaceRepairing(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

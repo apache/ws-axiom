@@ -38,9 +38,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetReaderException extends AxiomTestCase {
     @Inject
-    public TestGetReaderException(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

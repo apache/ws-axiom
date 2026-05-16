@@ -21,6 +21,7 @@ package org.apache.axiom.ts.om;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
@@ -70,16 +71,12 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
         boolean expectNSDecl();
     }
 
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final Params params;
 
-    /**
-     * Constructor.
-     *
-     * @param metaFactory the meta factory
-     * @param params the test parameters
-     */
-    public SetNamespaceTestCase(OMMetaFactory metaFactory, Params params) {
-        super(metaFactory);
+    public SetNamespaceTestCase(Params params) {
         this.params = params;
     }
 

@@ -36,9 +36,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  */
 public class TestGetAllAttributes extends AxiomTestCase {
     @Inject
-    public TestGetAllAttributes(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

@@ -33,9 +33,7 @@ import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestCloseWithSystemId extends AxiomTestCase {
     @Inject
-    public TestCloseWithSystemId(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

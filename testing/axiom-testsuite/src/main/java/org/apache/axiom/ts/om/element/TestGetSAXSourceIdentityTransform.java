@@ -34,13 +34,14 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 
 public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final XSLTImplementation xsltImplementation;
     private final boolean cache;
 
     @Inject
-    public TestGetSAXSourceIdentityTransform(
-            OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, @Named("cache") boolean cache) {
-        super(metaFactory);
+    public TestGetSAXSourceIdentityTransform(XSLTImplementation xsltImplementation, @Named("cache") boolean cache) {
         this.xsltImplementation = xsltImplementation;
         this.cache = cache;
     }

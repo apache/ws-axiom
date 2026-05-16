@@ -34,11 +34,13 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests {@link OMContainer#removeChildren()} on an {@link OMElement}. */
 public class TestRemoveChildren extends AxiomTestCase {
+    @Inject
+    private OMMetaFactory metaFactory;
+
     private final boolean complete;
 
     @Inject
-    public TestRemoveChildren(OMMetaFactory metaFactory, @Named("complete") boolean complete) {
-        super(metaFactory);
+    public TestRemoveChildren(@Named("complete") boolean complete) {
         this.complete = complete;
     }
 

@@ -31,9 +31,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /** Test that a document that is not well formed triggers an appropriate error. */
 public class TestMalformedDocument extends AxiomTestCase {
     @Inject
-    public TestMalformedDocument(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {

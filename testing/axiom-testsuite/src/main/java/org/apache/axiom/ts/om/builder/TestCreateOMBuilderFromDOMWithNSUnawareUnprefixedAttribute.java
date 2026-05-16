@@ -31,9 +31,7 @@ import org.w3c.dom.Element;
 
 public class TestCreateOMBuilderFromDOMWithNSUnawareUnprefixedAttribute extends AxiomTestCase {
     @Inject
-    public TestCreateOMBuilderFromDOMWithNSUnawareUnprefixedAttribute(OMMetaFactory metaFactory) {
-        super(metaFactory);
-    }
+    private OMMetaFactory metaFactory;
 
     @Override
     protected void runTest() throws Throwable {
