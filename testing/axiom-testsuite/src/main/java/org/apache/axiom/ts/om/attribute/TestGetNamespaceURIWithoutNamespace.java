@@ -21,21 +21,21 @@ package org.apache.axiom.ts.om.attribute;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMNamedInformationItem#getNamespaceURI()} returns <code>null</code> when
  * invoked on an {@link OMAttribute} that has no namespace.
  */
-public class TestGetNamespaceURIWithoutNamespace extends TestCase {
+public class TestGetNamespaceURIWithoutNamespace implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMAttribute attr = factory.createOMAttribute("name", null, "value");
         assertThat(attr.getNamespaceURI()).isNull();
     }

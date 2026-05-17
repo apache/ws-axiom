@@ -41,7 +41,7 @@ import org.springframework.ws.soap.client.SoapFaultClientException;
  */
 public class BrokerScenarioTest extends ScenarioTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         BrokerClient client = context.getBean(BrokerClient.class);
 
         Order order = new Order();

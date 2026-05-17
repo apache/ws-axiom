@@ -24,17 +24,17 @@ import com.google.inject.Inject;
 import java.io.Reader;
 import java.io.StringReader;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.commons.io.IOUtils;
 
-public class TestGetTextAsStreamWithSingleTextNode extends TestCase {
+public class TestGetTextAsStreamWithSingleTextNode implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = factory.createOMElement(new QName("a"));
         factory.createOMText(element, "test");
         Reader in = element.getTextAsStream(true);

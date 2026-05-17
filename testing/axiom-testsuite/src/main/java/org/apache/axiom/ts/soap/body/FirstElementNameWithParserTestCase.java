@@ -25,7 +25,6 @@ import java.io.StringReader;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -39,9 +38,10 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-public abstract class FirstElementNameWithParserTestCase extends TestCase {
+public abstract class FirstElementNameWithParserTestCase implements MatrixTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -59,7 +59,7 @@ public abstract class FirstElementNameWithParserTestCase extends TestCase {
     }
 
     @Override
-    protected final void runTest() throws Throwable {
+    public final void runTest() throws Throwable {
         SOAPEnvelope orgEnvelope = soapFactory.getDefaultEnvelope();
         orgEnvelope
                 .getBody()

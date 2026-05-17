@@ -21,13 +21,13 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.Text;
@@ -39,12 +39,12 @@ import org.w3c.dom.Text;
  * this is in contrast to DOM where an {@link Attr} node is a parent node (containing {@link Text}
  * and {@link EntityReference} nodes).
  */
-public class TestCreateOMAttributeInterfaces extends TestCase {
+public class TestCreateOMAttributeInterfaces implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("urn:test", "p");
         OMAttribute attr = factory.createOMAttribute("attr", ns, "value");
         assertThat(attr).isNotInstanceOf(OMSerializable.class);

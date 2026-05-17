@@ -23,19 +23,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.stream.XMLStreamReader;
-import junit.framework.TestCase;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that the {@link XMLStreamReader} returned by {@link OMContainer#getXMLStreamReader()} for
  * an OM tree created by a builder correctly implements the {@link DTDReader} extension.
  */
-public class TestDTDReaderFromParser extends TestCase {
+public class TestDTDReaderFromParser implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -48,7 +48,7 @@ public class TestDTDReaderFromParser extends TestCase {
     private boolean cache;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMDocument doc = OMXMLBuilderFactory.createOMBuilder(
                         factory,
                         StAXParserConfiguration.STANDALONE,

@@ -24,16 +24,16 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class TestExamineMustUnderstandHeaderBlocks extends TestCase {
+public class TestExamineMustUnderstandHeaderBlocks implements MatrixTestCase {
     @Inject
     private SOAPSpec spec;
 
@@ -41,7 +41,7 @@ public class TestExamineMustUnderstandHeaderBlocks extends TestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPHeader header = soapFactory.createSOAPHeader();
 
         // Add header blocks using DOM

@@ -24,11 +24,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import java.io.StringReader;
 import java.io.StringWriter;
-import junit.framework.TestCase;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMElement#serializeAndConsume(java.io.Writer)} consumes incomplete descendants,
@@ -37,12 +37,12 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
  * org.apache.axiom.om.OMXMLParserWrapper#getDocumentElement(boolean)} (with <code>discardDocument
  * </code> set to true) is added to an existing tree.
  */
-public class TestSerializeAndConsumeWithIncompleteDescendant extends TestCase {
+public class TestSerializeAndConsumeWithIncompleteDescendant implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement incompleteElement = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<elem>text</elem>"))
                 .getDocumentElement(true);

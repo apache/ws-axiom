@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -30,6 +29,7 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**
@@ -37,7 +37,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  * OMInformationItem#clone(OMCloneOptions)} is a {@link SOAPMessage} if and only if {@link
  * OMCloneOptions#isPreserveModel()} is <code>true</code>.
  */
-public class TestClone extends TestCase {
+public class TestClone implements MatrixTestCase {
     @Inject
     private SOAPSpec spec;
 
@@ -49,7 +49,7 @@ public class TestClone extends TestCase {
     private boolean preserveModel;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPMessage message = soapFactory.createSOAPMessage();
         message.addChild(soapFactory.getDefaultEnvelope());
         OMCloneOptions options = new OMCloneOptions();

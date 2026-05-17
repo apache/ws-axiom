@@ -24,18 +24,18 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
 import javax.xml.transform.dom.DOMSource;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPMessage;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class TestCreateSOAPModelBuilderFromDOMSource extends TestCase {
+public class TestCreateSOAPModelBuilderFromDOMSource implements MatrixTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -43,7 +43,7 @@ public class TestCreateSOAPModelBuilderFromDOMSource extends TestCase {
     private SOAPSpec spec;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = DOMImplementation.XERCES.parse(new InputSource(
                 SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getUrl().toString()));
         SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new DOMSource(document))

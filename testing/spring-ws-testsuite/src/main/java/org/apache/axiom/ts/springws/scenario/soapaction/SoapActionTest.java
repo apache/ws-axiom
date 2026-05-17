@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
 
 public class SoapActionTest extends ScenarioTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document requestDocument = documentBuilder.newDocument();
         Element request = requestDocument.createElementNS("urn:test", "p:Echo");

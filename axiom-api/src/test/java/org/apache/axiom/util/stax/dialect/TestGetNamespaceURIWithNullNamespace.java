@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamReader;
 
 public class TestGetNamespaceURIWithNullNamespace extends DialectTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root><child xmlns=\"\"/></root>"));
         int eventType;

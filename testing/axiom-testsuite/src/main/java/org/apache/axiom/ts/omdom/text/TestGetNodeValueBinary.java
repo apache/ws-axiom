@@ -31,7 +31,7 @@ import org.w3c.dom.Text;
 
 public class TestGetNodeValueBinary extends OMDOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         Blob blob = new RandomBlob(666L, 1000);
         Text text = (Text) factory.createOMText(blob, false);

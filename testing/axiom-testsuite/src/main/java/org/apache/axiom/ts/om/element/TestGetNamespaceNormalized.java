@@ -22,11 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an element
@@ -42,7 +42,7 @@ import org.apache.axiom.om.OMNamespace;
  * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
-public class TestGetNamespaceNormalized extends TestCase {
+public class TestGetNamespaceNormalized implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -51,7 +51,7 @@ public class TestGetNamespaceNormalized extends TestCase {
     private boolean useNull;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement parent = factory.createOMElement("parent", "urn:test", "");
         OMNamespace ns = useNull ? null : factory.createOMNamespace("", "");
         OMElement child = factory.createOMElement("child", ns);

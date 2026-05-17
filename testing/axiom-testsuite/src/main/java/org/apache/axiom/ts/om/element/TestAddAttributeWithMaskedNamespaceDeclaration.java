@@ -23,10 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
 /**
@@ -47,7 +47,7 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  *
  * <p>Note that because of WSTX-202, Axiom will not be able to serialize the resulting XML.
  */
-public class TestAddAttributeWithMaskedNamespaceDeclaration extends TestCase {
+public class TestAddAttributeWithMaskedNamespaceDeclaration implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -55,7 +55,7 @@ public class TestAddAttributeWithMaskedNamespaceDeclaration extends TestCase {
     private AddAttributeStrategy strategy;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMNamespace ns1 = factory.createOMNamespace("urn:ns1", "p");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns2", "p");
         OMElement element1 = factory.createOMElement(new QName("a"));

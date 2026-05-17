@@ -21,17 +21,17 @@ package org.apache.axiom.ts.om.namespace;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /** Tests the behavior of {@link OMNamespace#getNamespaceURI()}. */
-public class TestGetNamespaceURI extends TestCase {
+public class TestGetNamespaceURI implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("http://www.w3.org/XML/1998/namespace", "xml");
         assertThat(ns.getNamespaceURI()).isEqualTo("http://www.w3.org/XML/1998/namespace");
     }

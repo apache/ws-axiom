@@ -21,17 +21,17 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestCreateOMDocument extends TestCase {
+public class TestCreateOMDocument implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMDocument document = factory.createOMDocument();
         assertThat(document).isNotNull();
         assertThat(document.getFirstOMChild()).isNull();

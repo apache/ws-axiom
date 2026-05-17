@@ -34,7 +34,7 @@ import org.w3c.dom.Node;
  */
 public class TestAppendChildCyclic extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element grandparent = document.createElementNS(null, "grandparent");
         Element parent = document.createElementNS(null, "parent");

@@ -22,15 +22,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-141">AXIOM-141</a>. */
-public class TestXPathAppliedToSOAPEnvelope extends TestCase {
+public class TestXPathAppliedToSOAPEnvelope implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -39,7 +39,7 @@ public class TestXPathAppliedToSOAPEnvelope extends TestCase {
     private boolean createDocument;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement elem1 = soapFactory.createOMElement("elem1", null);
         OMElement elem2 = soapFactory.createOMElement("elem2", null);
         OMElement elem3 = soapFactory.createOMElement("elem3", null);

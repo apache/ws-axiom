@@ -33,7 +33,7 @@ public class TestCloneNode extends DOMTestCase {
     private boolean deep;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Attr attr = document.createAttributeNS(null, "attr");
         attr.appendChild(document.createTextNode("foo"));

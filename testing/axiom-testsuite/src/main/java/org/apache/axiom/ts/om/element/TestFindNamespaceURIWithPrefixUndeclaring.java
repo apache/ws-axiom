@@ -21,17 +21,17 @@ package org.apache.axiom.ts.om.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestFindNamespaceURIWithPrefixUndeclaring extends TestCase {
+public class TestFindNamespaceURIWithPrefixUndeclaring implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement parent = factory.createOMElement("parent", null);
         OMElement child = factory.createOMElement("child", null, parent);
         OMNamespace ns = parent.declareNamespace("urn:test", "p");

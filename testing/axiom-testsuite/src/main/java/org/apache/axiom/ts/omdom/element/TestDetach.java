@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
  */
 public class TestDetach extends OMDOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document =
                 metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Element parent = document.createElementNS(null, "parent");

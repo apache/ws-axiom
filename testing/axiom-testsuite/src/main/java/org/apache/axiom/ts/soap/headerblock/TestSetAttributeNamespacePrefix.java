@@ -21,11 +21,11 @@ package org.apache.axiom.ts.soap.headerblock;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
@@ -39,7 +39,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  * used as its own namespace prefix (e.g. {@code xmlns:role="..."} and {@code role:role="..."}
  * instead of reusing the SOAP envelope prefix).
  */
-public class TestSetAttributeNamespacePrefix extends TestCase {
+public class TestSetAttributeNamespacePrefix implements MatrixTestCase {
     @Inject
     private SOAPSpec spec;
 
@@ -50,7 +50,7 @@ public class TestSetAttributeNamespacePrefix extends TestCase {
     private HeaderBlockAttribute attribute;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPHeaderBlock headerBlock =
                 soapFactory.createSOAPHeaderBlock("block", soapFactory.createOMNamespace("urn:test", "p"));
 

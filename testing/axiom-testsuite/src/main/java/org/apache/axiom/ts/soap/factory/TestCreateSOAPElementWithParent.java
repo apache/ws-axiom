@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -34,6 +33,7 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultSubCode;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -51,7 +51,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  * SOAPFactory#createSOAPFaultNode(SOAPFault)}, {@link SOAPFactory#createSOAPFaultRole(SOAPFault)}
  * and {@link SOAPFactory#createSOAPFaultDetail(SOAPFault)} with a non null parent.
  */
-public class TestCreateSOAPElementWithParent extends TestCase {
+public class TestCreateSOAPElementWithParent implements MatrixTestCase {
     @Inject
     private SOAPSpec spec;
 
@@ -67,7 +67,7 @@ public class TestCreateSOAPElementWithParent extends TestCase {
     private SOAPElementType parentType;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement parent = parentType.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory);
         QName expectedName = type.getQName(spec);
         if (expectedName == null) {

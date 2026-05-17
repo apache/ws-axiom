@@ -30,7 +30,7 @@ import org.xml.sax.InputSource;
 // Regression test for AXIOM-169
 public class TestRemoveFirstChild extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Element element = builder.parse(new InputSource(new StringReader("<root><a/><b/><c/></root>")))
                 .getDocumentElement();

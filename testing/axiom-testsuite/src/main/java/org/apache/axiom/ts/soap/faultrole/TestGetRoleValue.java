@@ -21,16 +21,16 @@ package org.apache.axiom.ts.soap.faultrole;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultRole;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestGetRoleValue extends TestCase {
+public class TestGetRoleValue implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPFaultRole role = soapFactory.createSOAPFaultRole();
         assertThat(role.getRoleValue()).isEqualTo("");
         role.setText("urn:my:custom:role");

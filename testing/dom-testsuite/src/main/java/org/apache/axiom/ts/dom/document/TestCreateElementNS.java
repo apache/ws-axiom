@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class TestCreateElementNS extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         String tagName = "LocalName";
         String namespace = "http://ws.apache.org/axis2/ns";
         Document doc = dbf.newDocumentBuilder().newDocument();

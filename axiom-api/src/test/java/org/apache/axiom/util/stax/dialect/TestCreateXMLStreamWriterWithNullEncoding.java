@@ -24,7 +24,7 @@ import javax.xml.stream.XMLOutputFactory;
 
 public class TestCreateXMLStreamWriterWithNullEncoding extends DialectTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         XMLOutputFactory factory = staxImpl.newNormalizedXMLOutputFactory();
         // This should cause an exception
         assertThatThrownBy(() -> factory.createXMLStreamWriter(System.out, null))

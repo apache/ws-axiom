@@ -31,7 +31,7 @@ import javax.xml.stream.XMLStreamReader;
  */
 public class TestGetEncodingExternal extends DialectTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(
                 new ByteArrayInputStream("<root/>".getBytes(StandardCharsets.ISO_8859_1)), "ISO-8859-1");

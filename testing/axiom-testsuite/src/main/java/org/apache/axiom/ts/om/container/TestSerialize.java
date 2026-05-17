@@ -56,7 +56,7 @@ public class TestSerialize extends ConformanceTestCase {
     }
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMXMLParserWrapper builder = file.getAdapter(XMLSampleAdapter.class).getBuilder(metaFactory);
         try {
             OMContainer container = containerExtractor.getContainer(builder);

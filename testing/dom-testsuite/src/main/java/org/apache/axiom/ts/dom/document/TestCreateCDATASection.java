@@ -26,7 +26,7 @@ import org.w3c.dom.Document;
 
 public class TestCreateCDATASection extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         CDATASection cdataSection = document.createCDATASection("content");
         assertThat(cdataSection.getData()).isEqualTo("content");

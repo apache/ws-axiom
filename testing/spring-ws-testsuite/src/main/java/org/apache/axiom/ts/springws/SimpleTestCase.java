@@ -27,7 +27,7 @@ public abstract class SimpleTestCase extends SpringWSTestCase {
     private MessageFactoryConfigurator mfc;
 
     @Override
-    protected final void runTest() throws Throwable {
+    public final void runTest() throws Throwable {
         GenericApplicationContext context = new GenericApplicationContext();
         configureContext(context, mfc, null);
         context.refresh();

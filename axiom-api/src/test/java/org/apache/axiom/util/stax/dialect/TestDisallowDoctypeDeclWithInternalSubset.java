@@ -28,7 +28,7 @@ import javax.xml.stream.XMLStreamReader;
 
 public class TestDisallowDoctypeDeclWithInternalSubset extends DialectTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         factory = staxImpl.getDialect().disallowDoctypeDecl(factory);
         boolean gotException = false;

@@ -28,7 +28,7 @@ import org.w3c.dom.Node;
 /** Tests {@link Node#cloneNode(boolean)} with <code>deep</code> set to <code>true</code>. */
 public class TestCloneNodeDeep extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         DocumentFragment fragment = document.createDocumentFragment();
         fragment.appendChild(document.createComment("comment"));

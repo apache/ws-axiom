@@ -22,11 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestGetFaultNoFault extends TestCase {
+public class TestGetFaultNoFault implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -34,7 +34,7 @@ public class TestGetFaultNoFault extends TestCase {
     private QName qname;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPBody body = soapFactory.getDefaultEnvelope().getBody();
         body.addChild(soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
         assertThat(body.getFault()).isNull();

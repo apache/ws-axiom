@@ -23,11 +23,11 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
@@ -36,7 +36,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  * in the same way as a normal {@link OMElement}, which implies that it must override the local name
  * of the root element returned by the data source.
  */
-public class TestSetLocalName extends TestCase {
+public class TestSetLocalName implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -45,7 +45,7 @@ public class TestSetLocalName extends TestCase {
     private boolean expand;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMSourcedElement element = factory.createOMElement(
                 new PullOMDataSource("<p:root xmlns:p='urn:test'><child/></p:root>"),
                 "root",

@@ -22,11 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.transform.sax.SAXResult;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
@@ -36,12 +36,12 @@ import org.xml.sax.helpers.AttributesImpl;
  * event sent to the {@link LexicalHandler} linked to the {@link SAXResult} object returned by
  * {@link OMContainer#getSAXResult()} is silently ignored.
  */
-public class TestGetSAXResultWithDTD extends TestCase {
+public class TestGetSAXResultWithDTD implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement root = factory.createOMElement("root", null);
         SAXResult result = root.getSAXResult();
         LexicalHandler lexicalHandler = result.getLexicalHandler();

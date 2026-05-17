@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.io.OutputStream;
-import junit.framework.TestCase;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
@@ -37,6 +36,7 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.RandomUtils;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that the content of the root part of an XOP message is buffered, i.e. that an attachment
@@ -52,12 +52,12 @@ import org.apache.axiom.testutils.io.IOTestUtils;
  *       checks that this feature is working as expected.
  * </ul>
  */
-public class TestReadAttachmentBeforeRootPartComplete extends TestCase {
+public class TestReadAttachmentBeforeRootPartComplete implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
 
         // Programmatically create the message
         OMElement orgRoot = factory.createOMElement("root", null);

@@ -23,21 +23,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link OMElement#setText(QName)} if the {@link QName} has a namespace URI
  * but an empty prefix. In this case, the method is expected to generate a prefix.
  */
-public class TestSetTextQNameWithEmptyPrefix extends TestCase {
+public class TestSetTextQNameWithEmptyPrefix implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = factory.createOMElement("test", null);
         QName qname = new QName("urn:test", "test");
         element.setText(qname);

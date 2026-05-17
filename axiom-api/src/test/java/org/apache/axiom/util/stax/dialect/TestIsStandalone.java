@@ -27,7 +27,7 @@ import javax.xml.stream.XMLStreamReader;
 
 public class TestIsStandalone extends DialectTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader =
                 factory.createXMLStreamReader(new StringReader("<?xml version='1.0' standalone='no'?><root/>"));

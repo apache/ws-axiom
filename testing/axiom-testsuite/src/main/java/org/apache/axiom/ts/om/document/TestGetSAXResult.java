@@ -44,7 +44,7 @@ public class TestGetSAXResult extends ConformanceTestCase {
     }
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         TransformerFactory transformerFactory = xsltImplementation.newTransformerFactory();
         StreamSource source = new StreamSource(file.getUrl().toString());
         OMDocument document = factory.createOMDocument();

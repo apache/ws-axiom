@@ -21,11 +21,11 @@ package org.apache.axiom.ts.soap.body;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link SOAPBody#hasFault()} returns the correct value after a {@link SOAPFault} child
@@ -33,12 +33,12 @@ import org.apache.axiom.soap.SOAPFault;
  * Axiom attempted to cache the result of {@link SOAPBody#hasFault()}, but this cached value was not
  * updated correctly in all situations. This is a regression test for this issue.
  */
-public class TestHasFaultAfterReplace extends TestCase {
+public class TestHasFaultAfterReplace implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPBody body = soapFactory.getDefaultFaultEnvelope().getBody();
         assertThat(body.hasFault()).isTrue();
         body.getFault().detach();

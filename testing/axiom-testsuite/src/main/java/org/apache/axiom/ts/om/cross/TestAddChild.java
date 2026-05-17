@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMElement;
 
 public class TestAddChild extends CrossOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement parent = metaFactory.getOMFactory().createOMElement("parent", null);
         OMElement orgChild = altMetaFactory.getOMFactory().createOMElement("child", null);
         parent.addChild(orgChild);

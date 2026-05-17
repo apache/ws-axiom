@@ -23,9 +23,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that the iterator returned by {@link OMElement#getChildElements()} throws a {@link
@@ -33,12 +33,12 @@ import org.apache.axiom.om.OMFactory;
  * Iterator#remove()}. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-391">AXIOM-391</a>.
  */
-public class TestGetChildElementsConcurrentModification extends TestCase {
+public class TestGetChildElementsConcurrentModification implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement parent = factory.createOMElement("parent", null);
         factory.createOMElement("child1", null, parent);
         factory.createOMElement("child2", null, parent);

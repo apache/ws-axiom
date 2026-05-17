@@ -22,18 +22,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /** Test {@link OMElement#getAllAttributes()} on a programmatically created document. */
-public class TestGetAllAttributes1 extends TestCase {
+public class TestGetAllAttributes1 implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = factory.createOMElement("test", null);
         element.addAttribute("attr1", "value1", null);
         element.addAttribute("attr2", "value2", null);

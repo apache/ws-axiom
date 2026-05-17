@@ -34,7 +34,7 @@ import org.w3c.dom.Element;
  */
 public class TestAddAttributeReplace extends OMDOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         Document ownerDocument = ((Element) element).getOwnerDocument();

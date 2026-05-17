@@ -23,17 +23,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
 /**
  * Tests that adding an attribute also adds a namespace declaration if the attribute has a namespace
  * and a corresponding namespace declaration doesn't exist yet.
  */
-public class TestAddAttributeWithoutExistingNamespaceDeclaration extends TestCase {
+public class TestAddAttributeWithoutExistingNamespaceDeclaration implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -41,7 +41,7 @@ public class TestAddAttributeWithoutExistingNamespaceDeclaration extends TestCas
     private AddAttributeStrategy strategy;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
         strategy.addAttribute(element, "test", ns, "test");

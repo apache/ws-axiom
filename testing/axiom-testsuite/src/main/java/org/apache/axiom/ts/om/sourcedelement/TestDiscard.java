@@ -22,14 +22,14 @@ import static org.apache.axiom.ts.dimension.ExpansionStrategy.DONT_EXPAND;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
-public class TestDiscard extends TestCase {
+public class TestDiscard implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -37,7 +37,7 @@ public class TestDiscard extends TestCase {
     private ExpansionStrategy expansionStrategy;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement parent = factory.createOMElement("parent", null);
         OMElement child1 = factory.createOMElement("child1", null, parent);
         PullOMDataSource ds = new PullOMDataSource("<root><a/><b/></root>");

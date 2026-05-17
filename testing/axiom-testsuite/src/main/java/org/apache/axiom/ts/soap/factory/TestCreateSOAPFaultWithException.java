@@ -24,15 +24,15 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestCreateSOAPFaultWithException extends TestCase {
+public class TestCreateSOAPFaultWithException implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -41,7 +41,7 @@ public class TestCreateSOAPFaultWithException extends TestCase {
     private boolean withParent;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPBody body = withParent ? soapFactory.getDefaultEnvelope().getBody() : null;
         SOAPFault fault = soapFactory.createSOAPFault(body, new Exception("Testing soap fault"));
         if (body != null) {

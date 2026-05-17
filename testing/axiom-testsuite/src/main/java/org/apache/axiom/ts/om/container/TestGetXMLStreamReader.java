@@ -58,7 +58,7 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
     }
 
     @Override
-    protected final void runTest() throws Throwable {
+    public final void runTest() throws Throwable {
         InputStream in = file.getInputStream();
         try {
             XMLStreamReader expected = StAXUtils.createXMLStreamReader(

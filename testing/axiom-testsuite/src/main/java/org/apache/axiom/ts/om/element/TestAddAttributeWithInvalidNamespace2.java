@@ -23,10 +23,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace2;
 
 /**
@@ -36,12 +36,12 @@ import org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace2
  *
  * @see TestCreateOMAttributeWithInvalidNamespace2
  */
-public class TestAddAttributeWithInvalidNamespace2 extends TestCase {
+public class TestAddAttributeWithInvalidNamespace2 implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = factory.createOMNamespace("urn:test", "");
         assertThatThrownBy(() -> element.addAttribute("attr", "value", ns))

@@ -22,10 +22,10 @@ import com.google.inject.Inject;
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPFactory;
-import junit.framework.TestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-public abstract class SAAJTestCase extends TestCase {
+public abstract class SAAJTestCase implements MatrixTestCase {
     @Inject
     protected SAAJImplementation saajImplementation;
 

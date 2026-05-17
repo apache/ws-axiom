@@ -37,7 +37,7 @@ public class TestImportNode extends OMDOMTestCase {
     private XMLSample file;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document doc =
                 DOMImplementation.XERCES.parse(new InputSource(file.getUrl().toString()));
         Document doc2 =

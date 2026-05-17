@@ -31,7 +31,7 @@ import org.w3c.dom.Text;
  */
 public class TestLookupNamespaceURIWithoutParent extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Text text = document.createTextNode("test");
         assertThat(text.lookupNamespaceURI("ns")).isNull();

@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class TestGetNamespaceURIWithNoNamespace extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element element = doc.createElement("test");
         assertThat(element.getNamespaceURI()).isNull();

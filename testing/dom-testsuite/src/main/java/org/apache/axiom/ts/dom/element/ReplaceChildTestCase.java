@@ -31,7 +31,7 @@ public abstract class ReplaceChildTestCase extends DOMTestCase {
     private boolean newChildHasSiblings;
 
     @Override
-    protected final void runTest() throws Throwable {
+    public final void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element newChild = doc.createElementNS(null, "newChild");
         if (newChildHasSiblings) {

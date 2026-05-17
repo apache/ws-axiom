@@ -34,7 +34,7 @@ import org.xml.sax.InputSource;
  */
 public class TestWhitespaceAroundDocumentElement extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(" <!-- --> <root/> ")));
         Node child = doc.getFirstChild();
         do {

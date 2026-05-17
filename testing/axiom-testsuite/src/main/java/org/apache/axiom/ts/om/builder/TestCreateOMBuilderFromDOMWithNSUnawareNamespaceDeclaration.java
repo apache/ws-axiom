@@ -22,14 +22,14 @@ import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.w3c.dom.Element;
 
-public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration extends TestCase {
+public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -38,7 +38,7 @@ public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration extends
     private String prefix;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Element domElement = DOMImplementation.XERCES.newDocument().createElementNS(null, "test");
         domElement.setAttribute(prefix.isEmpty() ? "xmlns" : "xmlns:" + prefix, "urn:ns1");
         OMElement element =

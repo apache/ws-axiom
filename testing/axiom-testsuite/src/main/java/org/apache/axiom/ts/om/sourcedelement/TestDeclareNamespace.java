@@ -22,22 +22,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
  * Tests that declaring a namespace on an {@link OMSourcedElement} overrides a corresponding
  * namespace declaration that may be produced during expansion.
  */
-public class TestDeclareNamespace extends TestCase {
+public class TestDeclareNamespace implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMSourcedElement element =
                 factory.createOMElement(new PullOMDataSource("<root xmlns:p='urn:ns1'><child/></root>"), "root", null);
         // Declare a namespace before expansion

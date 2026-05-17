@@ -36,7 +36,7 @@ public abstract class EventSpecificTestCase extends DialectTestCase {
     private int event;
 
     @Override
-    protected final void runTest() throws Throwable {
+    public final void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
         factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
         InputStream in = IllegalStateExceptionTestCase.class.getResourceAsStream("alleventtypes.xml");

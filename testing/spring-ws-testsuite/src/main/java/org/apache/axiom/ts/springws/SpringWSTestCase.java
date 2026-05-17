@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.springws;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
@@ -27,7 +27,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.env.MockPropertySource;
 
-public abstract class SpringWSTestCase extends TestCase {
+public abstract class SpringWSTestCase implements MatrixTestCase {
     @Inject
     protected SOAPSpec spec;
 

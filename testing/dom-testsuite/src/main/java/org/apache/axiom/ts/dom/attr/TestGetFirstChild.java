@@ -28,7 +28,7 @@ import org.w3c.dom.Text;
 
 public class TestGetFirstChild extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Attr attr = document.createAttributeNS(null, "name");
         attr.setValue("value");

@@ -30,7 +30,7 @@ import org.springframework.ws.soap.client.SoapFaultClientException;
 
 public class ValidationTest extends ScenarioTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         StockQuoteClient client = context.getBean(StockQuoteClient.class);
 
         assertThat(client.getQuote("GOOG")).isCloseTo(105.37, within(0.001));

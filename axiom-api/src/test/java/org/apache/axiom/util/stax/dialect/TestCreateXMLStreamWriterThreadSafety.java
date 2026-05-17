@@ -29,7 +29,7 @@ import org.apache.axiom.testutils.concurrent.ConcurrentTestUtils;
 public class TestCreateXMLStreamWriterThreadSafety extends DialectTestCase {
     @Override
     @SuppressWarnings("deprecation")
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         final XMLOutputFactory factory = staxImpl.getDialect().makeThreadSafe(staxImpl.newNormalizedXMLOutputFactory());
         ConcurrentTestUtils.testThreadSafety(new Action() {
             @Override

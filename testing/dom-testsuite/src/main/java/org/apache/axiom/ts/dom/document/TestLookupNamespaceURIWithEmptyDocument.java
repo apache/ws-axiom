@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
 /** Tests the behavior of {@link Node#lookupNamespaceURI(String)} on an empty {@link Document}. */
 public class TestLookupNamespaceURIWithEmptyDocument extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         assertThat(document.lookupNamespaceURI("p")).isNull();
     }

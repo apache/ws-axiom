@@ -33,7 +33,7 @@ public class TestCreateAttributeNSInvalid extends DOMTestCase {
     private QName qname;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         assertThatThrownBy(() ->
                         document.createAttributeNS(DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname)))

@@ -56,7 +56,7 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
     }
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SAXParserFactory saxFactory = implementation.newSAXParserFactory();
         saxFactory.setNamespaceAware(true);
         saxFactory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);

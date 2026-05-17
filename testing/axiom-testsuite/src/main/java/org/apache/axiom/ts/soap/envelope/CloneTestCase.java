@@ -23,15 +23,15 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-public abstract class CloneTestCase extends TestCase {
+public abstract class CloneTestCase implements MatrixTestCase {
     protected final SOAPSpec spec;
 
     public CloneTestCase(SOAPSpec spec) {

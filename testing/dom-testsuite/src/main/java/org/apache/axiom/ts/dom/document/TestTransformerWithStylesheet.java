@@ -29,7 +29,7 @@ import org.w3c.dom.Document;
 
 public class TestTransformerWithStylesheet extends TransformerTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Document input = builder.parse(TestTransformerWithStylesheet.class.getResourceAsStream("input.xml"));
         Document stylesheet = builder.parse(TestTransformerWithStylesheet.class.getResourceAsStream("stylesheet.xslt"));

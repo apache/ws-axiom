@@ -22,18 +22,18 @@ package org.apache.axiom.ts.om.xpath;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.xpath.AXIOMXPath;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestAddNamespaces extends TestCase {
+public class TestAddNamespaces implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement root1 =
                 AXIOMUtil.stringToOM(factory, "<ns1:root xmlns:ns1='urn:ns1'><ns1:child xmlns:ns2='urn:ns2'/></root>");
         OMElement root2 =

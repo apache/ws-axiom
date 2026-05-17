@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.io.StringReader;
 import javax.xml.transform.stream.StreamSource;
-import junit.framework.TestCase;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
@@ -32,8 +31,9 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestCloneBinary extends TestCase {
+public class TestCloneBinary implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -42,7 +42,7 @@ public class TestCloneBinary extends TestCase {
     private boolean fetch;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Blob blob = new RandomBlob(600613L, 4096);
         StringReader rootPart = new StringReader(
                 "<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>");

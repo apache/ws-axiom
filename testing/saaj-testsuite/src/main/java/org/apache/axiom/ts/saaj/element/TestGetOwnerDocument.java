@@ -33,7 +33,7 @@ import org.w3c.dom.Node;
  */
 public class TestGetOwnerDocument extends SAAJTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document doc = newSOAPFactory().createElement(new QName("test")).getOwnerDocument();
         assertThat(doc).isNotInstanceOf(SOAPPart.class);
         assertThat(doc.createElementNS(null, "test")).isInstanceOf(SOAPElement.class);

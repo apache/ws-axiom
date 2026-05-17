@@ -22,12 +22,12 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.util.Iterator;
 import javax.xml.stream.XMLStreamReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
 
 /**
@@ -35,7 +35,7 @@ import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
  * events when called on an {@link OMElement} that is not the root element and that may be partially
  * built.
  */
-public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends TestCase {
+public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -48,7 +48,7 @@ public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends TestCa
     private int build;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement root =
                 AXIOMUtil.stringToOM(factory, "<root><child><emptyElement/><element>content</element></child></root>");
         OMElement child = (OMElement) root.getFirstOMChild();

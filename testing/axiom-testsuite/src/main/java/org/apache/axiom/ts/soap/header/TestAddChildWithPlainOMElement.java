@@ -22,18 +22,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /** Regression test for AXIOM-512. */
-public class TestAddChildWithPlainOMElement extends TestCase {
+public class TestAddChildWithPlainOMElement implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPHeader soapHeader = soapFactory.createSOAPHeader();
         soapHeader.addChild(soapFactory.createOMElement("foobar", "http://example.org", "p"));
         Iterator<SOAPHeaderBlock> it = soapHeader.examineAllHeaderBlocks();

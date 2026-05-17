@@ -21,21 +21,21 @@ package org.apache.axiom.ts.om.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link OMElement#resolveQName(String)} if the prefix of the QName is not
  * bound in the namespace context of the element.
  */
-public class TestResolveQNameWithUnboundPrefix extends TestCase {
+public class TestResolveQNameWithUnboundPrefix implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(factory, "<p:root xmlns:p='urn:ns1' xmlns='urn:ns2'/>");
         assertThat(element.resolveQName("ns:test")).isNull();
     }

@@ -30,7 +30,7 @@ import javax.xml.stream.XMLStreamReader;
  */
 public class TestGetEncodingWithCharacterStream extends DialectTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root/>"));
         assertThat(reader.getEncoding()).isNull();

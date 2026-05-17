@@ -24,13 +24,13 @@ import com.google.inject.Inject;
 import java.io.StringReader;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link SOAPEnvelope#getSOAPBodyFirstElementLocalName()} and {@link
@@ -38,7 +38,7 @@ import org.apache.axiom.soap.SOAPFactory;
  * In this case, the Axiom implementation may choose to use a special optimization to get the name
  * of the element without actually instantiating the corresponding {@link OMElement}.
  */
-public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends TestCase {
+public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser implements MatrixTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -49,7 +49,7 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends TestCas
     private QName qname;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         // Prepare the message. Note that we do this programmatically to make sure that the message
         // doesn't contain any unwanted whitespace.
         SOAPEnvelope orgEnvelope = soapFactory.createDefaultSOAPMessage().getSOAPEnvelope();

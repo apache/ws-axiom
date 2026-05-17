@@ -21,20 +21,20 @@ package org.apache.axiom.ts.om.attribute;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that the default attribute type for programmatically created attributes is {@code CDATA}.
  */
-public class TestGetAttributeTypeDefault extends TestCase {
+public class TestGetAttributeTypeDefault implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
         OMAttribute at = factory.createOMAttribute("id", ns, "value");
         assertThat(at.getAttributeType()).isEqualTo("CDATA");

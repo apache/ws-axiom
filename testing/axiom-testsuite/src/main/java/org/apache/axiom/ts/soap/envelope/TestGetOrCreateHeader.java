@@ -21,17 +21,17 @@ package org.apache.axiom.ts.soap.envelope;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestGetOrCreateHeader extends TestCase {
+public class TestGetOrCreateHeader implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         SOAPHeader header = (SOAPHeader) envelope.getFirstOMChild();
         assertThat(envelope.getOrCreateHeader()).isSameAs(header);

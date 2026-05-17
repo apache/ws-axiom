@@ -22,18 +22,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.transform.sax.SAXSource;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.xml.sax.InputSource;
 
-public class TestDetachWithSAXSource extends TestCase {
+public class TestDetachWithSAXSource implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         DummyXMLReader xmlReader = new DummyXMLReader();
         OMXMLParserWrapper builder =
                 OMXMLBuilderFactory.createOMBuilder(factory, new SAXSource(xmlReader, new InputSource()), false);

@@ -21,10 +21,10 @@ package org.apache.axiom.ts.om.element;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMElement#declareDefaultNamespace(String)} throws an exception if an attempt is
@@ -33,12 +33,12 @@ import org.apache.axiom.om.OMFactory;
  * empty namespace URI on an element that has no namespace. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-376">AXIOM-376</a>.
  */
-public class TestDeclareDefaultNamespaceConflict1 extends TestCase {
+public class TestDeclareDefaultNamespaceConflict1 implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = factory.createOMElement("test", null);
         assertThatThrownBy(() -> element.declareDefaultNamespace("urn:test")).isInstanceOf(OMException.class);
     }

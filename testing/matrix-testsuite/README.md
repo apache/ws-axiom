@@ -34,7 +34,7 @@ A test suite is a tree of `MatrixTestNode` instances. Interior nodes are
 **fan-out nodes** that iterate over a list of dimension values, creating one
 `DynamicContainer` per value. `ParentNode` groups multiple child nodes into a
 flat sequence. Leaf nodes are **`MatrixTest`** instances that
-instantiate and run a `junit.framework.TestCase` subclass.
+instantiate and run a `MatrixTestCase` subclass.
 
 ### Guice injector hierarchy
 
@@ -47,12 +47,12 @@ Root Injector
   binds: implementation-level objects
   │
   ├─ Child Injector (DimensionA → value1)
-  │    ├─ MatrixTest → injector.getInstance(SomeTestCase.class) → runBare()
-  │    └─ MatrixTest → injector.getInstance(AnotherTestCase.class) → runBare()
+  │    ├─ MatrixTest → injector.getInstance(SomeTestCase.class) → setUp/runTest/tearDown
+  │    └─ MatrixTest → injector.getInstance(AnotherTestCase.class) → setUp/runTest/tearDown
   │
   └─ Child Injector (DimensionA → value2)
-       ├─ MatrixTest → injector.getInstance(SomeTestCase.class) → runBare()
-       └─ MatrixTest → injector.getInstance(AnotherTestCase.class) → runBare()
+       ├─ MatrixTest → injector.getInstance(SomeTestCase.class) → setUp/runTest/tearDown
+       └─ MatrixTest → injector.getInstance(AnotherTestCase.class) → setUp/runTest/tearDown
 ```
 
 ### Filtering
@@ -139,9 +139,9 @@ the predefined `LabelBinding.DIMENSION` constant.
 
 ### `MatrixTest`
 
-Leaf node. Instantiates a `junit.framework.TestCase` subclass via Guice and
-executes it through `TestCase.runBare()` (which runs the full `setUp()` →
-`runTest()` → `tearDown()` lifecycle). The test is skipped if matched by the
+Leaf node. Instantiates a `MatrixTestCase` subclass via Guice and executes it
+through the full `setUp()` → `runTest()` → `tearDown()` lifecycle (with
+`tearDown()` called in a `finally` block). The test is skipped if matched by the
 exclusion filters.
 
 ### `InjectorNode`
@@ -172,13 +172,13 @@ OSGi's `FrameworkUtil.createFilter()`). Built via `MatrixTestFilters.builder()`.
 
 ## Writing a test case
 
-Test cases extend `junit.framework.TestCase` (or a domain-specific subclass) and
-override `runTest()`. Dependencies are declared with `@Inject` — either on fields
-or via constructor. The test case does **not** receive labels through its
-constructor and does **not** call `addLabel()`.
+Test cases implement `MatrixTestCase` (directly or through a domain-specific abstract base class)
+and implement `runTest()`. Dependencies are declared with `@Inject` — either on fields or via
+constructor. The test case does **not** receive labels through its constructor and
+does **not** call `addLabel()`.
 
 ```java
-public abstract class MyTestCase extends TestCase {
+public abstract class MyTestCase implements MatrixTestCase {
     @Inject protected SomeImplementation impl;
     @Inject protected SomeDimension dimension;
 
@@ -189,7 +189,7 @@ public abstract class MyTestCase extends TestCase {
 ```java
 public class TestSomeBehavior extends MyTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         // test logic using inherited injected fields
     }
 }

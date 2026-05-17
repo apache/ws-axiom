@@ -27,7 +27,7 @@ import org.w3c.dom.Document;
 
 public class TestCreateElementNSWithInvalidName extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         assertThatThrownBy(() -> doc.createElementNS("urn:ns", "IN|/ALID"))
                 .isInstanceOfSatisfying(

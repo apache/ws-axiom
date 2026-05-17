@@ -21,24 +21,24 @@ package org.apache.axiom.ts.om.sourcedelement;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.StringOMDataSource;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMXMLParserWrapper#getDocument()} and {@link
  * OMXMLParserWrapper#getDocumentElement()} throw {@link UnsupportedOperationException} when invoked
  * on the builder associated with an {@link OMSourcedElement}.
  */
-public class TestGetDocumentFromBuilder extends TestCase {
+public class TestGetDocumentFromBuilder implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMDataSource ds = new StringOMDataSource("<root><a/></root>");
         OMSourcedElement element = factory.createOMElement(ds);
         // Force expansion

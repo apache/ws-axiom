@@ -32,7 +32,7 @@ public class TestCreateAttributeNS extends DOMTestCase {
     private QName qname;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         String localName = qname.getLocalPart();
         String uri = DOMUtils.getNamespaceURI(qname);
         String prefix = DOMUtils.getPrefix(qname);

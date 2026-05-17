@@ -37,7 +37,7 @@ public class TestImportNode extends DOMTestCase {
     private DOMImplementation from;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Element orgElement =
                 from.parse(new InputSource(file.getUrl().toString())).getDocumentElement();
         Document doc = dbf.newDocumentBuilder().newDocument();

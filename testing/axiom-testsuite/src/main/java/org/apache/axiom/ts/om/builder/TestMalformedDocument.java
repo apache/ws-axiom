@@ -23,18 +23,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /** Test that a document that is not well formed triggers an appropriate error. */
-public class TestMalformedDocument extends TestCase {
+public class TestMalformedDocument implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<Root><Child attr='a' attr='a'/></Root>"))
                 .getDocument();

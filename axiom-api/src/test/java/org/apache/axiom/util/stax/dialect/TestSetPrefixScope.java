@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class TestSetPrefixScope extends DialectTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         XMLOutputFactory factory = staxImpl.newNormalizedXMLOutputFactory();
         XMLStreamWriter writer = factory.createXMLStreamWriter(new ByteArrayOutputStream());
         writer.writeStartDocument();

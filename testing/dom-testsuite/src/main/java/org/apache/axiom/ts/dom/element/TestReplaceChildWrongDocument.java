@@ -29,7 +29,7 @@ import org.w3c.dom.Element;
 
 public class TestReplaceChildWrongDocument extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document document1 = db.newDocument();
         Document document2 = db.newDocument();

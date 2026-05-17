@@ -23,18 +23,18 @@ import static org.assertj.core.api.Assertions.fail;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestGetNamespacesInScope extends TestCase {
+public class TestGetNamespacesInScope implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(factory, "<a xmlns:ns1='urn:ns1'><b xmlns:ns2='urn:ns2'/></a>");
         boolean ns1seen = false;
         boolean ns2seen = false;

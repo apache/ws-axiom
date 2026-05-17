@@ -21,21 +21,21 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMFactory#createOMAttribute(String, OMNamespace, String)} throws an exception
  * if the specified namespace is invalid, i.e. if the {@link OMNamespace} object specifies a
  * non-empty namespace but no prefix.
  */
-public class TestCreateOMAttributeWithInvalidNamespace2 extends TestCase {
+public class TestCreateOMAttributeWithInvalidNamespace2 implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("urn:test", "");
         assertThatThrownBy(() -> factory.createOMAttribute("attr", ns, "value"))
                 .isInstanceOf(IllegalArgumentException.class)

@@ -30,7 +30,7 @@ import org.w3c.dom.Text;
 /** Tests that calling {@link Node#setPrefix(String)} on a text node results in an exception. */
 public class TestSetPrefix extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Text text = document.createTextNode("test");
         assertThatThrownBy(() -> text.setPrefix("p"))

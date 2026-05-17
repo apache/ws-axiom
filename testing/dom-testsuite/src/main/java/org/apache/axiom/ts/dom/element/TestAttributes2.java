@@ -31,7 +31,7 @@ import org.xml.sax.InputSource;
 
 public class TestAttributes2 extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document doc =
                 dbf.newDocumentBuilder().parse(new InputSource(new StringReader("<root><child xmlns=\"\"/></root>")));
         Element element = (Element) doc.getDocumentElement().getFirstChild();

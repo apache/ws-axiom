@@ -21,22 +21,22 @@ package org.apache.axiom.ts.om.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Test that {@link org.apache.axiom.om.OMContainer#addChild(org.apache.axiom.om.OMNode)} behaves
  * correctly if the child to be added already has a parent.
  */
 // TODO: update Javadoc of OMContainer
-public class TestAddChildWithParent extends TestCase {
+public class TestAddChildWithParent implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element1 = factory.createOMElement("test1", null);
         OMElement element2 = factory.createOMElement("test2", null);
         OMText text = factory.createOMText("test");

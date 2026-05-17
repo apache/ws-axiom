@@ -21,21 +21,21 @@ package org.apache.axiom.ts.om.document;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} with a <code>null</code>
  * parameter.
  */
-public class TestSetOMDocumentElementNull extends TestCase {
+public class TestSetOMDocumentElementNull implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMDocument document = factory.createOMDocument();
         assertThatThrownBy(() -> document.setOMDocumentElement(null)).isInstanceOf(IllegalArgumentException.class);
     }

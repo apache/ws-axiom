@@ -22,17 +22,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestNextTag extends TestCase {
+public class TestNextTag implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(factory, "<a> <b> </b> <?pi?> <!--comment--> <c/> </a>");
         XMLStreamReader stream = element.getXMLStreamReaderWithoutCaching();
         assertThat(stream.next()).isEqualTo(XMLStreamReader.START_ELEMENT);

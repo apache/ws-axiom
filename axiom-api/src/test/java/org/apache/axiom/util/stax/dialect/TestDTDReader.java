@@ -27,7 +27,7 @@ import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestDTDReader extends DialectTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         InputStream in = XMLSample.DTD_FULL.getInputStream();
         try {
             XMLStreamReader reader = staxImpl.newNormalizedXMLInputFactory()

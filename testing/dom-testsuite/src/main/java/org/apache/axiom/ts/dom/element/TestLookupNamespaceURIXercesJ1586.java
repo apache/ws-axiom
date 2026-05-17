@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
  */
 public class TestLookupNamespaceURIXercesJ1586 extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element root = document.createElementNS("urn:test", "root");
         document.appendChild(root);
