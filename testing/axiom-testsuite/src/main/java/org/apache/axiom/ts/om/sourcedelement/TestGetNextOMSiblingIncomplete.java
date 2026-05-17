@@ -22,17 +22,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMElement#getNextOMSibling()} doesn't change the state of an {@link
  * OMSourcedElement} that is expanded but not complete.
  */
-public class TestGetNextOMSiblingIncomplete extends AxiomTestCase {
+public class TestGetNextOMSiblingIncomplete extends TestCase {
     @Inject
     private OMFactory factory;
 

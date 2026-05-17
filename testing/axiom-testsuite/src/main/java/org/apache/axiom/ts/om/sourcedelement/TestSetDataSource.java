@@ -22,17 +22,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.io.StringWriter;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /** Verifies that a OMDataSource can be replaced with another one */
 @SuppressWarnings("deprecation")
-public class TestSetDataSource extends AxiomTestCase {
+public class TestSetDataSource extends TestCase {
     @Inject
     private OMFactory factory;
 

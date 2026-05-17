@@ -23,18 +23,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Test that {@link OMElement#getAttribute(QName)} works properly for an attribute with the {@code
  * xml} prefix, even if this prefix is not declared explicitly. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIS2-329">AXIS2-329</a>.
  */
-public class TestGetAttributeWithXmlPrefix2 extends AxiomTestCase {
+public class TestGetAttributeWithXmlPrefix2 extends TestCase {
     @Inject
     private OMFactory factory;
 

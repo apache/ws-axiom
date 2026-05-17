@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import java.io.StringWriter;
 import java.io.Writer;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.io.InstrumentedWriter;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMElement#writeTextTo(Writer, boolean)} in the simple case with a
  * single {@link OMText} child. The test case also checks that the method doesn't call {@link
  * Writer#close()}.
  */
-public class TestWriteTextTo extends AxiomTestCase {
+public class TestWriteTextTo extends TestCase {
     @Inject
     private OMFactory factory;
 

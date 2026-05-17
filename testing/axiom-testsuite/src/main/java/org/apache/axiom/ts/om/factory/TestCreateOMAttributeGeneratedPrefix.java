@@ -21,16 +21,16 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMFactory#createOMAttribute(String, OMNamespace, String)} generates a prefix if
  * an {@link OMNamespace} object with a null prefix and a non empty namespace URI is given.
  */
-public class TestCreateOMAttributeGeneratedPrefix extends AxiomTestCase {
+public class TestCreateOMAttributeGeneratedPrefix extends TestCase {
     @Inject
     private OMFactory factory;
 

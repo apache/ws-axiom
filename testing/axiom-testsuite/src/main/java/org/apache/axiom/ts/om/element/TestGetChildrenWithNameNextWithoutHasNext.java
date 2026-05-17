@@ -23,10 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that the iterator returned by {@link OMContainer#getChildrenWithName(QName)} returns the
@@ -35,7 +35,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * href="https://issues.apache.org/jira/browse/AXIOM-78">AXIOM-78</a> and <a
  * href="https://issues.apache.org/jira/browse/AXIOM-172">AXIOM-172</a>.
  */
-public class TestGetChildrenWithNameNextWithoutHasNext extends AxiomTestCase {
+public class TestGetChildrenWithNameNextWithoutHasNext extends TestCase {
     @Inject
     private OMFactory factory;
 

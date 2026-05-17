@@ -25,14 +25,14 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.io.InputStream;
 import javax.xml.transform.Transformer;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 
-public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
+public class TestGetSAXSourceIdentityTransform extends TestCase {
     @Inject
     private OMFactory factory;
 

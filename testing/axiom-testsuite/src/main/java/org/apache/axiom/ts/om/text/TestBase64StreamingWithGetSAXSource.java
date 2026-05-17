@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import javax.xml.transform.sax.SAXSource;
+import junit.framework.TestCase;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -30,7 +31,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.ByteStreamComparator;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.util.base64.Base64DecodingOutputStreamWriter;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -43,7 +43,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-442">AXIOM-442</a>.
  */
-public class TestBase64StreamingWithGetSAXSource extends AxiomTestCase {
+public class TestBase64StreamingWithGetSAXSource extends TestCase {
     @Inject
     private OMFactory factory;
 

@@ -22,13 +22,13 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-153">AXIOM-153</a>. */
-public class TestInsertSiblingAfterLastChild extends AxiomTestCase {
+public class TestInsertSiblingAfterLastChild extends TestCase {
     @Inject
     private OMFactory factory;
 

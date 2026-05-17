@@ -21,14 +21,14 @@ package org.apache.axiom.ts.om.node;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests the behavior of {@link OMNode#insertSiblingAfter(OMNode)}. */
-public class TestInsertSiblingAfter extends AxiomTestCase {
+public class TestInsertSiblingAfter extends TestCase {
     @Inject
     private OMFactory factory;
 

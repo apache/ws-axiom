@@ -21,14 +21,14 @@ package org.apache.axiom.ts.om.builder;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.w3c.dom.Element;
 
-public class TestCreateOMBuilderFromDOMWithNSUnawarePrefixedAttribute extends AxiomTestCase {
+public class TestCreateOMBuilderFromDOMWithNSUnawarePrefixedAttribute extends TestCase {
     @Inject
     private OMFactory factory;
 

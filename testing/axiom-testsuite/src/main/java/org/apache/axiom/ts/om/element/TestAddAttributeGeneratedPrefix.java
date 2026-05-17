@@ -23,18 +23,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that when {@link OMElement#addAttribute(String, String, OMNamespace)} is called with an
  * {@link OMNamespace} with a <code>null</code> prefix and no namespace declaration for the given
  * namespace URI is in scope, the method generates a prefix.
  */
-public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
+public class TestAddAttributeGeneratedPrefix extends TestCase {
     @Inject
     private OMFactory factory;
 

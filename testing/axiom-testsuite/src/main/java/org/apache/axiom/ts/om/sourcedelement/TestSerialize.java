@@ -26,11 +26,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.io.StringReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.ElementContext;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
@@ -39,7 +39,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 import org.xml.sax.InputSource;
 
 /** Tests various ways to serialize an {@link OMSourcedElement}. */
-public class TestSerialize extends AxiomTestCase {
+public class TestSerialize extends TestCase {
     @Inject
     private OMFactory factory;
 

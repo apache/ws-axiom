@@ -23,11 +23,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMContainer#getXMLStreamReader(boolean)} produces the correct sequence of
@@ -37,7 +37,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-288">AXIOM-288</a>.
  */
-public class TestGetXMLStreamReaderOnNonRootElement extends AxiomTestCase {
+public class TestGetXMLStreamReaderOnNonRootElement extends TestCase {
     @Inject
     private OMFactory factory;
 

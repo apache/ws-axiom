@@ -25,11 +25,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.io.StringReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.jspecify.annotations.Nullable;
 import org.xml.sax.InputSource;
@@ -38,7 +38,7 @@ import org.xml.sax.InputSource;
  * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement()} and {@link
  * OMXMLParserWrapper#getDocumentElement(boolean)}.
  */
-public class TestGetDocumentElement extends AxiomTestCase {
+public class TestGetDocumentElement extends TestCase {
     @Inject
     private OMMetaFactory metaFactory;
 

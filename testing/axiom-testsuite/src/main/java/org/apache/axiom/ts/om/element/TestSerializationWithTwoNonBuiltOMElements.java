@@ -22,13 +22,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-65">AXIOM-65</a>. */
-public class TestSerializationWithTwoNonBuiltOMElements extends AxiomTestCase {
+public class TestSerializationWithTwoNonBuiltOMElements extends TestCase {
     @Inject
     private OMFactory factory;
 

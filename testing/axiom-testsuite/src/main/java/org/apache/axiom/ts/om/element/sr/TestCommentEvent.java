@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.io.StringReader;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.xml.sax.InputSource;
 
-public class TestCommentEvent extends AxiomTestCase {
+public class TestCommentEvent extends TestCase {
     @Inject
     private OMMetaFactory metaFactory;
 

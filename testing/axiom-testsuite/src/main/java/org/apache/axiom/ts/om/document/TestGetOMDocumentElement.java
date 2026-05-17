@@ -21,16 +21,16 @@ package org.apache.axiom.ts.om.document;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the result of {@link OMDocument#getOMDocumentElement()} after adding a child element to an
  * empty document.
  */
-public class TestGetOMDocumentElement extends AxiomTestCase {
+public class TestGetOMDocumentElement extends TestCase {
     @Inject
     private OMFactory factory;
 

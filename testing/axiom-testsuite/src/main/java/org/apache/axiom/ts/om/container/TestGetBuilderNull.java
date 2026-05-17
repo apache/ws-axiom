@@ -21,15 +21,15 @@ package org.apache.axiom.ts.om.container;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMContainer#getBuilder()} returns {@code null} on a programmatically created
  * node.
  */
-public class TestGetBuilderNull extends AxiomTestCase {
+public class TestGetBuilderNull extends TestCase {
     @Inject
     private OMFactory factory;
 

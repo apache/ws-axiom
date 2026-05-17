@@ -24,16 +24,16 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
 import java.io.StringWriter;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument;
 import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order;
 import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order.Item;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
-public class TestGetSAXResultXMLBeans extends AxiomTestCase {
+public class TestGetSAXResultXMLBeans extends TestCase {
     @Inject
     private OMFactory factory;
 

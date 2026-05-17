@@ -21,13 +21,13 @@ package org.apache.axiom.ts.om.sourcedelement;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 @SuppressWarnings("deprecation")
-public class TestSetDataSourceOnAlreadyExpandedElement extends AxiomTestCase {
+public class TestSetDataSourceOnAlreadyExpandedElement extends TestCase {
     @Inject
     private OMFactory factory;
 

@@ -21,16 +21,16 @@ package org.apache.axiom.ts.om.document;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} with a <code>null</code>
  * parameter.
  */
-public class TestSetOMDocumentElementNull extends AxiomTestCase {
+public class TestSetOMDocumentElementNull extends TestCase {
     @Inject
     private OMFactory factory;
 

@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
@@ -30,7 +31,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMContainer#addChild(OMNode)} if the parent has not been built
@@ -39,7 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  *
  * @see org.apache.axiom.ts.om.element.TestAddChildIncomplete
  */
-public class TestAddChildIncomplete extends AxiomTestCase {
+public class TestAddChildIncomplete extends TestCase {
     @Inject
     private OMFactory factory;
 

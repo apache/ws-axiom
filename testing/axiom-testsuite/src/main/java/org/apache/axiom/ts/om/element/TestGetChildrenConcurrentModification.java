@@ -23,18 +23,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that the iterator returned by {@link OMContainer#getChildren()} throws a {@link
  * ConcurrentModificationException} if the current node is removed using a method other than {@link
  * Iterator#remove()}.
  */
-public class TestGetChildrenConcurrentModification extends AxiomTestCase {
+public class TestGetChildrenConcurrentModification extends TestCase {
     @Inject
     private OMFactory factory;
 

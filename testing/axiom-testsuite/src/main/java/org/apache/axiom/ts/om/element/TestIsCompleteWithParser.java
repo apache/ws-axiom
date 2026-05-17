@@ -22,17 +22,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the result of {@link OMSerializable#isComplete()} on an {@link OMElement} when deferred
  * parsing is in effect.
  */
-public class TestIsCompleteWithParser extends AxiomTestCase {
+public class TestIsCompleteWithParser extends TestCase {
     @Inject
     private OMFactory factory;
 

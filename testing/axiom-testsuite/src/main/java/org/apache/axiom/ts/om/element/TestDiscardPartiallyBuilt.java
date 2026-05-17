@@ -24,19 +24,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMNode#discard()} on an element that is partially built, more
  * precisely in a situation where the builder is building a descendant that is not an immediate
  * child of the element.
  */
-public class TestDiscardPartiallyBuilt extends AxiomTestCase {
+public class TestDiscardPartiallyBuilt extends TestCase {
     @Inject
     private OMFactory factory;
 

@@ -22,19 +22,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMContainer#addChild(OMNode)} when used to add a node to an element
  * it is already a child of. In this case, the expected result is that the node is moved to the end
  * of the list of children.
  */
-public class TestAddChildWithSameParent extends AxiomTestCase {
+public class TestAddChildWithSameParent extends TestCase {
     @Inject
     private OMFactory factory;
 

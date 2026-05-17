@@ -21,16 +21,16 @@ package org.apache.axiom.ts.om.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMElement#resolveQName(String)} if the prefix of the QName is not
  * bound in the namespace context of the element.
  */
-public class TestResolveQNameWithUnboundPrefix extends AxiomTestCase {
+public class TestResolveQNameWithUnboundPrefix extends TestCase {
     @Inject
     private OMFactory factory;
 

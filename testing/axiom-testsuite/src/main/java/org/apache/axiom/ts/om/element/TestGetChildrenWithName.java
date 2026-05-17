@@ -23,15 +23,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
 /** Test the element iterator */
-public class TestGetChildrenWithName extends AxiomTestCase {
+public class TestGetChildrenWithName extends TestCase {
     @Inject
     private OMFactory factory;
 

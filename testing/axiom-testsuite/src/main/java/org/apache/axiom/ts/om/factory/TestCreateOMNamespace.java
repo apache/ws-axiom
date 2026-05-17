@@ -21,11 +21,11 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestCreateOMNamespace extends AxiomTestCase {
+public class TestCreateOMNamespace extends TestCase {
     @Inject
     private OMFactory factory;
 

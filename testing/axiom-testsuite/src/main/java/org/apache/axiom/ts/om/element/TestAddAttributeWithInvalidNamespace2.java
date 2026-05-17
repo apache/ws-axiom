@@ -23,10 +23,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace2;
 
 /**
@@ -36,7 +36,7 @@ import org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace2
  *
  * @see TestCreateOMAttributeWithInvalidNamespace2
  */
-public class TestAddAttributeWithInvalidNamespace2 extends AxiomTestCase {
+public class TestAddAttributeWithInvalidNamespace2 extends TestCase {
     @Inject
     private OMFactory factory;
 

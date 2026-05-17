@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.io.StringWriter;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
@@ -33,7 +33,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  * serialization Document: testDocument2 (which uses a qualified prefix) Type of Serialization:
  * Serialize and consume Tests update of prefix
  */
-public class TestName2QualifiedPrefix extends AxiomTestCase {
+public class TestName2QualifiedPrefix extends TestCase {
     @Inject
     private OMFactory factory;
 

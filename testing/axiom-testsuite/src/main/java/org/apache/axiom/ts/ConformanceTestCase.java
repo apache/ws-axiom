@@ -18,10 +18,11 @@
  */
 package org.apache.axiom.ts;
 
+import junit.framework.TestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
 /** Base class for test cases that are executed against the files from the conformance test set. */
-public abstract class ConformanceTestCase extends AxiomTestCase {
+public abstract class ConformanceTestCase extends TestCase {
     protected final XMLSample file;
 
     public ConformanceTestCase(XMLSample file) {

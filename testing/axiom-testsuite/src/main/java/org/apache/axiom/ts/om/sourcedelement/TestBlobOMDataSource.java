@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -29,10 +30,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.BlobOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests functionality of BlobOMDataSource */
-public class TestBlobOMDataSource extends AxiomTestCase {
+public class TestBlobOMDataSource extends TestCase {
     @Inject
     private OMFactory factory;
 

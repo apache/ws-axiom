@@ -23,14 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** test whether the children count reduces. */
-public class TestGetChildrenRemove4 extends AxiomTestCase {
+public class TestGetChildrenRemove4 extends TestCase {
     @Inject
     private OMFactory factory;
 

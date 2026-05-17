@@ -22,17 +22,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that the completeness status (as returned by {@link OMElement#isComplete()}) is updated
  * correctly after an incomplete child is added to a programmatically created element. This is a
  * regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-315">AXIOM-315</a>.
  */
-public class TestIsCompleteAfterAddingIncompleteChild extends AxiomTestCase {
+public class TestIsCompleteAfterAddingIncompleteChild extends TestCase {
     @Inject
     private OMFactory factory;
 

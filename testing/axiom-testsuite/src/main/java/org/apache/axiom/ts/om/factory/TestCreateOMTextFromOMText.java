@@ -21,14 +21,14 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests {@link OMFactory#createOMText(OMContainer, OMText)}. */
-public class TestCreateOMTextFromOMText extends AxiomTestCase {
+public class TestCreateOMTextFromOMText extends TestCase {
     @Inject
     private OMFactory factory;
 

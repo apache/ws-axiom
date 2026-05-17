@@ -25,19 +25,19 @@ import com.google.inject.name.Named;
 import java.io.StringReader;
 import java.io.StringWriter;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that the {@link CharacterDataReader} returned by {@link OMContainer#getXMLStreamReader()}
  * for an OM tree created by a builder correctly implements the {@link DTDReader} extension.
  */
-public class TestCharacterDataReaderFromParser extends AxiomTestCase {
+public class TestCharacterDataReaderFromParser extends TestCase {
     @Inject
     private OMFactory factory;
 

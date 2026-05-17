@@ -21,6 +21,7 @@ package org.apache.axiom.ts.soap12.envelope;
 import com.google.inject.Inject;
 import java.io.InputStream;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -28,10 +29,9 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
 
-public class TestBuildWithAttachments extends AxiomTestCase {
+public class TestBuildWithAttachments extends TestCase {
     @Inject
     private OMMetaFactory metaFactory;
 

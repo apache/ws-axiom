@@ -23,14 +23,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** test the remove exception behavior */
-public class TestGetChildrenRemove1 extends AxiomTestCase {
+public class TestGetChildrenRemove1 extends TestCase {
     @Inject
     private OMFactory factory;
 

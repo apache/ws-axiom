@@ -21,16 +21,16 @@ package org.apache.axiom.ts.om.document;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} if the argument is
  * already the document element.
  */
-public class TestSetOMDocumentElementReplaceSame extends AxiomTestCase {
+public class TestSetOMDocumentElementReplaceSame extends TestCase {
     @Inject
     private OMFactory factory;
 

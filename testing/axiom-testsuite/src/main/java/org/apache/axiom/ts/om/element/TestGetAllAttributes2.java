@@ -22,17 +22,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Test {@link OMElement#getAllAttributes()} on a parsed document. Also check that the iterator
  * doesn't attempt to return namespace declarations.
  */
-public class TestGetAllAttributes2 extends AxiomTestCase {
+public class TestGetAllAttributes2 extends TestCase {
     @Inject
     private OMFactory factory;
 

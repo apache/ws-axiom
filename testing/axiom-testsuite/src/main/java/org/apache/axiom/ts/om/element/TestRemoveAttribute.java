@@ -22,13 +22,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests the behavior of {@link OMElement#removeAttribute(OMAttribute)}. */
-public class TestRemoveAttribute extends AxiomTestCase {
+public class TestRemoveAttribute extends TestCase {
     @Inject
     private OMFactory factory;
 

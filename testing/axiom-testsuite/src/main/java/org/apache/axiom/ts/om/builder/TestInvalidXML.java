@@ -22,15 +22,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.InvocationCounter;
-import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestInvalidXML extends AxiomTestCase {
+public class TestInvalidXML extends TestCase {
     @Inject
     private OMFactory factory;
 

@@ -26,13 +26,13 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.InvocationCounter;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Test the behavior of the builder when an exception is thrown by {@link
@@ -41,7 +41,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * the case for Woodstox. It checks that after the exception is thrown by the parser, the builder no
  * longer attempts to access the parser.
  */
-public class TestIOExceptionInGetText extends AxiomTestCase {
+public class TestIOExceptionInGetText extends TestCase {
     @Inject
     private OMFactory factory;
 

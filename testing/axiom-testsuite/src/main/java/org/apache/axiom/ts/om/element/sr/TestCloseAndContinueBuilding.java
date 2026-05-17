@@ -25,11 +25,11 @@ import com.google.inject.name.Named;
 import java.io.StringReader;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that the rest of a document can still be built after calling {@link
@@ -39,7 +39,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-288">AXIOM-288</a>.
  */
-public class TestCloseAndContinueBuilding extends AxiomTestCase {
+public class TestCloseAndContinueBuilding extends TestCase {
     @Inject
     private OMFactory factory;
 

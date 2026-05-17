@@ -20,13 +20,13 @@ package org.apache.axiom.ts.om;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.DigestGenerator;
 import org.apache.axiom.testutils.DigestUtils;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Base class for unit tests validating the DOMHASH implementation.
@@ -35,7 +35,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * Unfortunately, XSS4J is no longer available for download, but it can still be found in WebSphere
  * (see the <code>com.ibm.ws.wssecurity.xss4j.domutil.Digest</code> class).
  */
-public abstract class DigestTestCase extends AxiomTestCase {
+public abstract class DigestTestCase extends TestCase {
     private final String algorithm;
     private final String expectedDigest;
 

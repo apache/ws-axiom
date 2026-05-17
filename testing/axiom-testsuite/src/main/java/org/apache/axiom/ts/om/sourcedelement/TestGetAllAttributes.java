@@ -22,18 +22,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
  * Tests that {@link OMElement#getAllAttributes()} causes expansion of {@link OMSourcedElement}
  * instances.
  */
-public class TestGetAllAttributes extends AxiomTestCase {
+public class TestGetAllAttributes extends TestCase {
     @Inject
     private OMFactory factory;
 

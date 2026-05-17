@@ -22,17 +22,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMElement#setText(QName)} when invoked on an element that has
  * children.
  */
-public class TestSetTextQNameWithExistingChildren extends AxiomTestCase {
+public class TestSetTextQNameWithExistingChildren extends TestCase {
     @Inject
     private OMFactory factory;
 

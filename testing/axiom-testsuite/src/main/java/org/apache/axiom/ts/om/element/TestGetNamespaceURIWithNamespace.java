@@ -22,16 +22,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMNamedInformationItem#getNamespaceURI()} returns the namespace URI when
  * invoked on an {@link OMElement} that has a namespace.
  */
-public class TestGetNamespaceURIWithNamespace extends AxiomTestCase {
+public class TestGetNamespaceURIWithNamespace extends TestCase {
     @Inject
     private OMFactory factory;
 

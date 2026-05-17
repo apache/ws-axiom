@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
-public class TestCloseWithXMLStreamReader extends AxiomTestCase {
+public class TestCloseWithXMLStreamReader extends TestCase {
     @Inject
     private OMFactory factory;
 

@@ -24,11 +24,11 @@ import com.google.inject.Inject;
 import java.io.StringReader;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMContainer#getXMLStreamReaderWithoutCaching()} in the specific case
@@ -36,7 +36,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * the information returned for that node was incorrect because the builder switched too early to
  * pull through mode.
  */
-public class TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified extends AxiomTestCase {
+public class TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified extends TestCase {
     @Inject
     private OMFactory factory;
 

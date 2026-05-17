@@ -23,10 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
 /**
@@ -47,7 +47,7 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  *
  * <p>Note that because of WSTX-202, Axiom will not be able to serialize the resulting XML.
  */
-public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCase {
+public class TestAddAttributeWithMaskedNamespaceDeclaration extends TestCase {
     @Inject
     private OMFactory factory;
 

@@ -24,12 +24,12 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestGetNamespaceContext extends AxiomTestCase {
+public class TestGetNamespaceContext extends TestCase {
     @Inject
     private OMFactory factory;
 

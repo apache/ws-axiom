@@ -22,13 +22,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.transform.sax.SAXSource;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.InputSource;
 
-public class TestDetachWithSAXSource extends AxiomTestCase {
+public class TestDetachWithSAXSource extends TestCase {
     @Inject
     private OMFactory factory;
 

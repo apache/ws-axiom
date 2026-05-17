@@ -22,15 +22,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamConstants;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMElement#getText()} when invoked on an element containing both a
  * text node and a CDATA section.
  */
-public class TestGetTextWithCDATASectionChild extends AxiomTestCase {
+public class TestGetTextWithCDATASectionChild extends TestCase {
     @Inject
     private OMFactory factory;
 

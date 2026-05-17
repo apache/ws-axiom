@@ -21,16 +21,16 @@ package org.apache.axiom.ts.om.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMNamedInformationItem#getPrefix()} returns <code>null</code> when invoked on
  * an {@link OMElement} that has a namespace without a prefix.
  */
-public class TestGetPrefixWithDefaultNamespace extends AxiomTestCase {
+public class TestGetPrefixWithDefaultNamespace extends TestCase {
     @Inject
     private OMFactory factory;
 

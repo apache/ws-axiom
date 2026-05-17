@@ -21,10 +21,10 @@ package org.apache.axiom.ts.om.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMElement#getDefaultNamespace()} in the special case where the
@@ -36,7 +36,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-400">AXIOM-400</a>.
  */
-public class TestGetDefaultNamespace2 extends AxiomTestCase {
+public class TestGetDefaultNamespace2 extends TestCase {
     @Inject
     private OMFactory factory;
 

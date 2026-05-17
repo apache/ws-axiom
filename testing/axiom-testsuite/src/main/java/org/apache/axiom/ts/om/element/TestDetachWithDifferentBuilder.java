@@ -24,12 +24,12 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestDetachWithDifferentBuilder extends AxiomTestCase {
+public class TestDetachWithDifferentBuilder extends TestCase {
     @Inject
     private OMFactory factory;
 

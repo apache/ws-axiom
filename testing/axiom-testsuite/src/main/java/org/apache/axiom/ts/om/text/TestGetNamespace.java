@@ -21,14 +21,14 @@ package org.apache.axiom.ts.om.text;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests the behavior of {@link OMText#getNamespace()} for a prefixed QName. */
-public class TestGetNamespace extends AxiomTestCase {
+public class TestGetNamespace extends TestCase {
     @Inject
     private OMFactory factory;
 

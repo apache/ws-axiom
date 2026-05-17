@@ -25,11 +25,11 @@ import java.io.StringReader;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.InputSource;
 
 /**
@@ -39,7 +39,7 @@ import org.xml.sax.InputSource;
  * xmlns=""}. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
-public class TestGetNamespaceNormalizedWithSAXSource extends AxiomTestCase {
+public class TestGetNamespaceNormalizedWithSAXSource extends TestCase {
     @Inject
     private OMFactory factory;
 

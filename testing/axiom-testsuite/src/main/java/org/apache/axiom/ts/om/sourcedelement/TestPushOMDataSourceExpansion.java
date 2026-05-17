@@ -25,17 +25,17 @@ import java.util.Iterator;
 import java.util.Map;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
 
 /**
  * Tests the expansion of an {@link OMSourcedElement} backed by an {@link AbstractPushOMDataSource}.
  */
-public class TestPushOMDataSourceExpansion extends AxiomTestCase {
+public class TestPushOMDataSourceExpansion extends TestCase {
     @Inject
     private OMFactory factory;
 

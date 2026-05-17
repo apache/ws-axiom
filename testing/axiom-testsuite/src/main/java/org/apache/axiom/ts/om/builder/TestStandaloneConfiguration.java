@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.io.InputStream;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -31,13 +32,12 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMXMLBuilderFactory#createOMBuilder(StAXParserConfiguration,
  * InputStream)} with {@link StAXParserConfiguration#STANDALONE}.
  */
-public class TestStandaloneConfiguration extends AxiomTestCase {
+public class TestStandaloneConfiguration extends TestCase {
     @Inject
     private OMFactory factory;
 

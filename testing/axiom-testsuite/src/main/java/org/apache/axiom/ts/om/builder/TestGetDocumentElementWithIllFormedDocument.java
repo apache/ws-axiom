@@ -22,17 +22,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMXMLParserWrapper#getDocumentElement()} throws an exception (instead of
  * returning <code>null</code>) if the input document has no document element.
  */
-public class TestGetDocumentElementWithIllFormedDocument extends AxiomTestCase {
+public class TestGetDocumentElementWithIllFormedDocument extends TestCase {
     @Inject
     private OMFactory factory;
 

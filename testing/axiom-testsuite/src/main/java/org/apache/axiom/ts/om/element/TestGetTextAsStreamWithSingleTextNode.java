@@ -24,12 +24,12 @@ import com.google.inject.Inject;
 import java.io.Reader;
 import java.io.StringReader;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.io.IOUtils;
 
-public class TestGetTextAsStreamWithSingleTextNode extends AxiomTestCase {
+public class TestGetTextAsStreamWithSingleTextNode extends TestCase {
     @Inject
     private OMFactory factory;
 

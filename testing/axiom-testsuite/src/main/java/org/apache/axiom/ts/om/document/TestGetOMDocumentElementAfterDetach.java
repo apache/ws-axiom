@@ -21,18 +21,18 @@ package org.apache.axiom.ts.om.document;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMDocument#getOMDocumentElement()} returns <code>null</code> after the existing
  * document element has been removed using {@link OMNode#detach()}. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-361">AXIOM-361</a>.
  */
-public class TestGetOMDocumentElementAfterDetach extends AxiomTestCase {
+public class TestGetOMDocumentElementAfterDetach extends TestCase {
     @Inject
     private OMFactory factory;
 

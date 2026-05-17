@@ -23,17 +23,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.io.StringReader;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMContainer#getXMLStreamReaderWithoutCaching()} correctly generated events for
  * an element that has been partially built. This is a regression test for AXIOM-393.
  */
-public class TestGetXMLStreamReaderWithoutCachingPartiallyBuilt extends AxiomTestCase {
+public class TestGetXMLStreamReaderWithoutCachingPartiallyBuilt extends TestCase {
     @Inject
     private OMFactory factory;
 

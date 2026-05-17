@@ -24,6 +24,7 @@ import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -45,9 +46,8 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestBuilder extends AxiomTestCase {
+public class TestBuilder extends TestCase {
     @Inject
     private OMMetaFactory metaFactory;
 

@@ -21,15 +21,15 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that the {@link OMFactory} returned by {@link OMMetaFactory} is a singleton. More precisely
  * this unit test checks that subsequent calls to {@link OMMetaFactory#getOMFactory()} return the
  * same instance.
  */
-public class TestFactoryIsSingleton extends AxiomTestCase {
+public class TestFactoryIsSingleton extends TestCase {
     @Inject
     private OMFactory factory;
 

@@ -21,16 +21,16 @@ package org.apache.axiom.ts.om.attribute;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMNamedInformationItem#getPrefix()} returns the prefix when invoked on an
  * {@link OMAttribute} that has a namespace.
  */
-public class TestGetPrefixWithNamespace extends AxiomTestCase {
+public class TestGetPrefixWithNamespace extends TestCase {
     @Inject
     private OMFactory factory;
 

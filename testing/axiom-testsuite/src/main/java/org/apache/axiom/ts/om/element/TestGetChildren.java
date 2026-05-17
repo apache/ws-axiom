@@ -23,14 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** Test the plain iterator which includes all the children (including the texts) */
-public class TestGetChildren extends AxiomTestCase {
+public class TestGetChildren extends TestCase {
     @Inject
     private OMFactory factory;
 

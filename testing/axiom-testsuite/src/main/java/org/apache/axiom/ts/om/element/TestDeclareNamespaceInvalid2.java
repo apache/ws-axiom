@@ -22,17 +22,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests Axiom's behavior when {@link OMElement#declareNamespace(OMNamespace)} is used to add a
  * namespace declaration that binds a prefix to an empty namespace URI. This is forbidden by both
  * XML 1.0 and XML 1.1.
  */
-public class TestDeclareNamespaceInvalid2 extends AxiomTestCase {
+public class TestDeclareNamespaceInvalid2 extends TestCase {
     @Inject
     private OMFactory factory;
 

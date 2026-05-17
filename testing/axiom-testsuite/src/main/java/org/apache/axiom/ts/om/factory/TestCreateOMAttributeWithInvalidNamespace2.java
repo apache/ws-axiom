@@ -21,16 +21,16 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMFactory#createOMAttribute(String, OMNamespace, String)} throws an exception
  * if the specified namespace is invalid, i.e. if the {@link OMNamespace} object specifies a
  * non-empty namespace but no prefix.
  */
-public class TestCreateOMAttributeWithInvalidNamespace2 extends AxiomTestCase {
+public class TestCreateOMAttributeWithInvalidNamespace2 extends TestCase {
     @Inject
     private OMFactory factory;
 

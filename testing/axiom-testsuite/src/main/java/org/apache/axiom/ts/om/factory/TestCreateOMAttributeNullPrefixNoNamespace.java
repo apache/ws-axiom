@@ -21,10 +21,10 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMFactory#createOMAttribute(String, OMNamespace, String)} if an
@@ -32,7 +32,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * not allowed to bind a prefix to the empty namespace URI and an unprefixed attribute has no
  * namespace, this should give the same result as specifying an empty prefix.
  */
-public class TestCreateOMAttributeNullPrefixNoNamespace extends AxiomTestCase {
+public class TestCreateOMAttributeNullPrefixNoNamespace extends TestCase {
     @Inject
     private OMFactory factory;
 

@@ -21,15 +21,15 @@ package org.apache.axiom.ts.om.namespace;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link Object#equals(Object)} for {@link OMNamespace} instances with
  * different namespace URIs.
  */
-public class TestObjectEqualsWithDifferentURIs extends AxiomTestCase {
+public class TestObjectEqualsWithDifferentURIs extends TestCase {
     @Inject
     private OMFactory factory;
 

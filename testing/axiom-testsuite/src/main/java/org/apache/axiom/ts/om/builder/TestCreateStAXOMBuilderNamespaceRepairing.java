@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} performs namespace
  * repairing.
  */
-public class TestCreateStAXOMBuilderNamespaceRepairing extends AxiomTestCase {
+public class TestCreateStAXOMBuilderNamespaceRepairing extends TestCase {
     @Inject
     private OMFactory factory;
 

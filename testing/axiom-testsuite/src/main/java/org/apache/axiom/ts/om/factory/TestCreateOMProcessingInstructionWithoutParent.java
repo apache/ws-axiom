@@ -21,11 +21,11 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestCreateOMProcessingInstructionWithoutParent extends AxiomTestCase {
+public class TestCreateOMProcessingInstructionWithoutParent extends TestCase {
     @Inject
     private OMFactory factory;
 

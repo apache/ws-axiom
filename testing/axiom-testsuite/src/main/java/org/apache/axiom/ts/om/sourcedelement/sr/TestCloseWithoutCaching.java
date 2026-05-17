@@ -23,11 +23,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
@@ -35,7 +35,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  * {@link OMContainer#getXMLStreamReaderWithoutCaching()} for an OM tree containing an {@link
  * AbstractPullOMDataSource} closes all readers requested from the data source.
  */
-public class TestCloseWithoutCaching extends AxiomTestCase {
+public class TestCloseWithoutCaching extends TestCase {
     @Inject
     private OMFactory factory;
 

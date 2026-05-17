@@ -26,16 +26,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link Iterator#remove()} can be used on the iterator returned by {@link
  * OMElement#getAllDeclaredNamespaces()} to remove a namespace declaration.
  */
-public class TestGetAllDeclaredNamespacesRemove extends AxiomTestCase {
+public class TestGetAllDeclaredNamespacesRemove extends TestCase {
     @Inject
     private OMFactory factory;
 

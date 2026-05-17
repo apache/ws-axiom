@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests that {@link OMElement#cloneOMElement()} performs namespace repairing. */
 // TODO: this is actually undocumented; in addition, it should probably made configurable
-public class TestCloneOMElementNamespaceRepairing extends AxiomTestCase {
+public class TestCloneOMElementNamespaceRepairing extends TestCase {
     @Inject
     private OMFactory factory;
 

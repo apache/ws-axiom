@@ -21,12 +21,12 @@ package org.apache.axiom.ts.om.namespace;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** Tests the behavior of {@link OMNamespace#getNamespaceURI()}. */
-public class TestGetNamespaceURI extends AxiomTestCase {
+public class TestGetNamespaceURI extends TestCase {
     @Inject
     private OMFactory factory;
 

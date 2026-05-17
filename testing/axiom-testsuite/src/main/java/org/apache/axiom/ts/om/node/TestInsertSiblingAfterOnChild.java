@@ -21,13 +21,13 @@ package org.apache.axiom.ts.om.node;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestInsertSiblingAfterOnChild extends AxiomTestCase {
+public class TestInsertSiblingAfterOnChild extends TestCase {
     @Inject
     private OMFactory factory;
 

@@ -23,19 +23,19 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import java.io.StringReader;
 import javax.xml.stream.XMLStreamReader;
+import junit.framework.TestCase;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMContainer#getFirstOMChild()} throws the expected {@link
  * NodeUnavailableException} if the element has been consumed using {@link
  * OMContainer#getXMLStreamReaderWithoutCaching()}.
  */
-public class TestGetFirstOMChildAfterConsume extends AxiomTestCase {
+public class TestGetFirstOMChildAfterConsume extends TestCase {
     @Inject
     private OMFactory factory;
 

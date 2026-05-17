@@ -26,9 +26,9 @@ import com.google.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import javax.xml.parsers.SAXParserFactory;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.ContentHandler;
@@ -36,7 +36,7 @@ import org.xml.sax.DTDHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-public class TestGetSAXResultSAXParser extends AxiomTestCase {
+public class TestGetSAXResultSAXParser extends TestCase {
     @Inject
     private OMFactory factory;
 

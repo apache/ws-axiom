@@ -22,19 +22,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests {@link OMContainer#removeChildren()} on an {@link OMSourcedElement} that is not expanded.
  * In this case the sourced element needs to be expanded to build any attributes present on the
  * element and to ensure that the information about the name of the element is complete.
  */
-public class TestRemoveChildrenUnexpanded extends AxiomTestCase {
+public class TestRemoveChildrenUnexpanded extends TestCase {
     @Inject
     private OMFactory factory;
 

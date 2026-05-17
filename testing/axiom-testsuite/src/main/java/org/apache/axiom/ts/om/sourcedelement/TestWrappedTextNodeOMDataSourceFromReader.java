@@ -25,13 +25,13 @@ import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Random;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
-import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestWrappedTextNodeOMDataSourceFromReader extends AxiomTestCase {
+public class TestWrappedTextNodeOMDataSourceFromReader extends TestCase {
     @Inject
     private OMFactory factory;
 

@@ -24,18 +24,18 @@ import static org.apache.axiom.truth.AxiomTruth.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
 /**
  * Test that adding an attribute has the expected effect when an attribute with the same name and
  * namespace URI already exists.
  */
-public class TestAddAttributeReplace extends AxiomTestCase {
+public class TestAddAttributeReplace extends TestCase {
     @Inject
     private OMFactory factory;
 

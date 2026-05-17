@@ -23,16 +23,16 @@ import static org.apache.axiom.truth.AxiomTruth.assertThat;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.transform.dom.DOMSource;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class TestDetachWithDOM extends AxiomTestCase {
+public class TestDetachWithDOM extends TestCase {
     @Inject
     private OMFactory factory;
 

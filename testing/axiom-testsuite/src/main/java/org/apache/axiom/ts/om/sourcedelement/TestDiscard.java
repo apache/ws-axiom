@@ -22,14 +22,14 @@ import static org.apache.axiom.ts.dimension.ExpansionStrategy.DONT_EXPAND;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
-public class TestDiscard extends AxiomTestCase {
+public class TestDiscard extends TestCase {
     @Inject
     private OMFactory factory;
 

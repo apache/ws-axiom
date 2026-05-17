@@ -22,19 +22,19 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that an attempt to use {@link OMContainer#addChild(OMNode)} to add an {@link OMElement} to
  * an {@link OMDocument} that already has a document element results in an exception.
  */
-public class TestAddChildWithExistingDocumentElement extends AxiomTestCase {
+public class TestAddChildWithExistingDocumentElement extends TestCase {
     @Inject
     private OMFactory factory;
 

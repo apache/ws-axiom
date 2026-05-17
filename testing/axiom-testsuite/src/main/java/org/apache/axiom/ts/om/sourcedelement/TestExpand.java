@@ -23,14 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /** Make sure the expanded OMSourcedElement behaves like a normal OMElement. */
-public class TestExpand extends AxiomTestCase {
+public class TestExpand extends TestCase {
     @Inject
     private OMFactory factory;
 

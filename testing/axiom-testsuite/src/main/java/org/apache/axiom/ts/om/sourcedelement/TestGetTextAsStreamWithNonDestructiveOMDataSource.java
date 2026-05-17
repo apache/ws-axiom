@@ -27,15 +27,15 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends AxiomTestCase {
+public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends TestCase {
     @Inject
     private OMFactory factory;
 

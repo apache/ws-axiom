@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests proper serialization for different combinations of namespaces on the element and its
@@ -46,7 +46,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  *   <li>qualified using the default namespace (<code>children=D</code>)
  * </ul>
  */
-public class TestSerialization extends AxiomTestCase {
+public class TestSerialization extends TestCase {
     @Inject
     private OMFactory factory;
 
