@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.ByteArrayOutputStream;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
@@ -31,9 +33,9 @@ public class TestSetPrefixScope extends DialectTestCase {
         writer.writeStartElement("root");
         writer.setPrefix("p", "urn:ns");
         writer.writeStartElement("child");
-        assertEquals("p", writer.getPrefix("urn:ns"));
+        assertThat(writer.getPrefix("urn:ns")).isEqualTo("p");
         writer.writeEndElement();
-        assertEquals("p", writer.getPrefix("urn:ns"));
+        assertThat(writer.getPrefix("urn:ns")).isEqualTo("p");
         writer.writeEndElement();
         writer.writeEndDocument();
         writer.close();

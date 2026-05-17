@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -28,6 +30,6 @@ public class TestGetNamespacePrefixDefaultNamespace extends DialectTestCase {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root xmlns=\"urn:ns\"/>"));
         reader.next();
-        assertNull(reader.getNamespacePrefix(0));
+        assertThat(reader.getNamespacePrefix(0)).isNull();
     }
 }

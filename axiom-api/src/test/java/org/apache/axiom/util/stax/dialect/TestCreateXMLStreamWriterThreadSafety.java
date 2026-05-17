@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringWriter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
@@ -41,7 +43,7 @@ public class TestCreateXMLStreamWriterThreadSafety extends DialectTestCase {
                 writer.writeEndDocument();
                 writer.flush();
                 writer.close();
-                assertEquals("<root>" + text + "</root>", out.toString());
+                assertThat(out.toString()).isEqualTo("<root>" + text + "</root>");
             }
         });
     }

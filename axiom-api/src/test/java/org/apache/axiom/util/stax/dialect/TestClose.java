@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.testutils.io.InstrumentedStream;
@@ -34,6 +36,6 @@ public class TestClose extends DialectTestCase {
         InstrumentedStream in = streamType.instrumentStream(streamType.getStream(XMLSample.SIMPLE));
         XMLStreamReader reader = streamType.createXMLStreamReader(staxImpl.newNormalizedXMLInputFactory(), in);
         reader.close();
-        assertFalse(in.isClosed());
+        assertThat(in.isClosed()).isFalse();
     }
 }

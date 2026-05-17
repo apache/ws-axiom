@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -30,7 +32,7 @@ public class TestGetNamespaceURIWithNullNamespace extends DialectTestCase {
         int eventType;
         while ((eventType = reader.next()) != XMLStreamReader.END_DOCUMENT) {
             if (eventType == XMLStreamReader.START_ELEMENT) {
-                assertNull(reader.getNamespaceURI());
+                assertThat(reader.getNamespaceURI()).isNull();
             }
         }
     }

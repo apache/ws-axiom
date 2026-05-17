@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.sax;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import junit.framework.TestCase;
@@ -34,8 +36,8 @@ public class TestGetSetFeature extends TestCase {
     @Override
     protected void runTest() throws Throwable {
         xmlReader.setFeature(feature, true);
-        assertTrue(xmlReader.getFeature(feature));
+        assertThat(xmlReader.getFeature(feature)).isTrue();
         xmlReader.setFeature(feature, false);
-        assertFalse(xmlReader.getFeature(feature));
+        assertThat(xmlReader.getFeature(feature)).isFalse();
     }
 }

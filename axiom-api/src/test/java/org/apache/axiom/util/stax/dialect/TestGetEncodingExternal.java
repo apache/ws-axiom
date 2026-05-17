@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import javax.xml.stream.XMLInputFactory;
@@ -33,6 +35,6 @@ public class TestGetEncodingExternal extends DialectTestCase {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(
                 new ByteArrayInputStream("<root/>".getBytes(StandardCharsets.ISO_8859_1)), "ISO-8859-1");
-        assertEquals("ISO-8859-1", reader.getEncoding());
+        assertThat(reader.getEncoding()).isEqualTo("ISO-8859-1");
     }
 }

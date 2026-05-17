@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -28,7 +30,7 @@ public class TestEnableCDataReporting extends DialectTestCase {
         XMLInputFactory factory = staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<a><![CDATA[test]]></a>"));
         reader.nextTag();
-        assertEquals(XMLStreamReader.CDATA, reader.next());
-        assertEquals("test", reader.getText());
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.CDATA);
+        assertThat(reader.getText()).isEqualTo("test");
     }
 }

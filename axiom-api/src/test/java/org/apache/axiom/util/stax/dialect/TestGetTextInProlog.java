@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -27,7 +29,7 @@ public class TestGetTextInProlog extends DialectTestCase {
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<?xml version=\"1.0\"?>\r\n<root/>"));
-        assertEquals(XMLStreamReader.SPACE, reader.next());
-        assertEquals("\n", reader.getText());
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.SPACE);
+        assertThat(reader.getText()).isEqualTo("\n");
     }
 }

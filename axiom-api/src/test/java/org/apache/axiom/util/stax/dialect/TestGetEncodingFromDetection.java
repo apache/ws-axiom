@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.io.ByteArrayInputStream;
@@ -46,8 +48,6 @@ public class TestGetEncodingFromDetection extends DialectTestCase {
         XMLStreamReader reader = factory.createXMLStreamReader(
                 new ByteArrayInputStream("<?xml version=\"1.0\"?><root/>".getBytes(javaEncoding)));
         String actualEncoding = reader.getEncoding();
-        assertTrue(
-                "Expected one of " + xmlEncodings + ", but got " + actualEncoding,
-                xmlEncodings.contains(actualEncoding));
+        assertThat(actualEncoding).isIn(xmlEncodings);
     }
 }

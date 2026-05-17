@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -32,7 +34,7 @@ public class TestGetAttributeNamespaceWithNoPrefix extends DialectTestCase {
         while ((eventType = reader.next()) != XMLStreamReader.END_DOCUMENT) {
             if (eventType == XMLStreamReader.START_ELEMENT) {
                 for (int i = 0; i < reader.getAttributeCount(); i++) {
-                    assertNull(reader.getAttributeNamespace(i));
+                    assertThat(reader.getAttributeNamespace(i)).isNull();
                 }
             }
         }

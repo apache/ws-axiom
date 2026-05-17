@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.stream.XMLStreamWriter;
 import org.apache.commons.io.output.NullOutputStream;
 
@@ -32,6 +34,6 @@ public class TestGetPrefixAfterWriteDefaultNamespace extends DialectTestCase {
                 staxImpl.newNormalizedXMLOutputFactory().createXMLStreamWriter(NullOutputStream.INSTANCE);
         writer.writeStartElement("ns1", "root", "urn:ns1");
         writer.writeDefaultNamespace("urn:ns2");
-        assertEquals("", writer.getPrefix("urn:ns2"));
+        assertThat(writer.getPrefix("urn:ns2")).isEmpty();
     }
 }

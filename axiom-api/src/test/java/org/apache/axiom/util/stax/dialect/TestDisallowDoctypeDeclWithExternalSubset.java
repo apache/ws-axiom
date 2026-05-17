@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -51,11 +53,12 @@ public class TestDisallowDoctypeDeclWithExternalSubset extends DialectTestCase {
             } catch (RuntimeException ex) {
                 gotException = true;
             }
-            assertTrue("Expected exception", gotException);
-            assertFalse("The parser tried to load external DTD subset", server.isRequestReceived());
-            assertFalse(
-                    "The parser failed to throw an exception before reaching the document element",
-                    reachedDocumentElement);
+            // Assert that an exception was expected
+            assertThat(gotException).isTrue();
+            // Assert that the parser didn't try to load the external DTD subset
+            assertThat(server.isRequestReceived()).isFalse();
+            // Assert that the parser failed to throw an exception before reaching the document element
+            assertThat(reachedDocumentElement).isFalse();
         } finally {
             server.stop();
         }

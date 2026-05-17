@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -34,12 +36,12 @@ public class TestCreateXMLStreamReaderThreadSafety extends DialectTestCase {
                 String text = String.valueOf((int) (Math.random() * 10000));
                 String xml = "<root>" + text + "</root>";
                 XMLStreamReader reader = factory.createXMLStreamReader(new StringReader(xml));
-                assertEquals(XMLStreamReader.START_DOCUMENT, reader.getEventType());
-                assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-                assertEquals(XMLStreamReader.CHARACTERS, reader.next());
-                assertEquals(text, reader.getText());
-                assertEquals(XMLStreamReader.END_ELEMENT, reader.next());
-                assertEquals(XMLStreamReader.END_DOCUMENT, reader.next());
+                assertThat(reader.getEventType()).isEqualTo(XMLStreamReader.START_DOCUMENT);
+                assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+                assertThat(reader.next()).isEqualTo(XMLStreamReader.CHARACTERS);
+                assertThat(reader.getText()).isEqualTo(text);
+                assertThat(reader.next()).isEqualTo(XMLStreamReader.END_ELEMENT);
+                assertThat(reader.next()).isEqualTo(XMLStreamReader.END_DOCUMENT);
                 reader.close();
             }
         });
