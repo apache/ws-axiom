@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.stream.XMLStreamReader;
@@ -29,7 +31,7 @@ public abstract class BooleanPropertyTestCase extends EventSpecificTestCase {
 
     @Override
     protected void runTest(XMLStreamReader reader) throws Throwable {
-        assertEquals(expected, invoke(reader));
+        assertThat(invoke(reader)).isEqualTo(expected);
     }
 
     protected abstract boolean invoke(XMLStreamReader reader);
