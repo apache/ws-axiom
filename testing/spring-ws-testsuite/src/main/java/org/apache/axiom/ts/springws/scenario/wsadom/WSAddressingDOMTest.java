@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.springws.scenario.wsadom;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMResult;
@@ -42,8 +44,8 @@ public class WSAddressingDOMTest extends ScenarioTestCase {
                         new ActionCallback(EchoEndpoint.ACTION),
                         new DOMResult(responseDocument));
         Element response = responseDocument.getDocumentElement();
-        assertEquals("urn:test", response.getNamespaceURI());
-        assertEquals("testRequest", response.getLocalName());
-        assertEquals("test", response.getTextContent());
+        assertThat(response.getNamespaceURI()).isEqualTo("urn:test");
+        assertThat(response.getLocalName()).isEqualTo("testRequest");
+        assertThat(response.getTextContent()).isEqualTo("test");
     }
 }

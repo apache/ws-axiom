@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.springws.soap.messagefactory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.springws.SimpleTestCase;
 import org.springframework.ws.soap.SoapBody;
 import org.springframework.ws.soap.SoapEnvelope;
@@ -35,15 +37,15 @@ public class TestCreateWebServiceMessage extends SimpleTestCase {
         SoapMessage message = messageFactory.createWebServiceMessage();
 
         SoapEnvelope env = message.getEnvelope();
-        assertNotNull(env);
-        assertEquals(spec.getEnvelopeQName(), env.getName());
+        assertThat(env).isNotNull();
+        assertThat(env.getName()).isEqualTo(spec.getEnvelopeQName());
 
         SoapHeader header = env.getHeader();
-        assertNotNull(header);
-        assertEquals(spec.getHeaderQName(), header.getName());
+        assertThat(header).isNotNull();
+        assertThat(header.getName()).isEqualTo(spec.getHeaderQName());
 
         SoapBody body = env.getBody();
-        assertNotNull(body);
-        assertEquals(spec.getHeaderQName(), header.getName());
+        assertThat(body).isNotNull();
+        assertThat(header.getName()).isEqualTo(spec.getHeaderQName());
     }
 }

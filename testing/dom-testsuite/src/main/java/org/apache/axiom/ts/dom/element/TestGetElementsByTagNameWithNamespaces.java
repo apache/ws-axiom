@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,7 +32,7 @@ public class TestGetElementsByTagNameWithNamespaces extends DOMTestCase {
         for (int i = 0; i < 3; i++) {
             root.appendChild(doc.createElementNS("urn:ns2", "ns2:child"));
         }
-        assertEquals(3, root.getElementsByTagName("ns2:child").getLength());
-        assertEquals(0, root.getElementsByTagName("child").getLength());
+        assertThat(root.getElementsByTagName("ns2:child").getLength()).isEqualTo(3);
+        assertThat(root.getElementsByTagName("child").getLength()).isEqualTo(0);
     }
 }

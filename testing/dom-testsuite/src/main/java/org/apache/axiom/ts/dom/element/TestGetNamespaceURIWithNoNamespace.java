@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,10 +29,10 @@ public class TestGetNamespaceURIWithNoNamespace extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element element = doc.createElement("test");
-        assertNull(element.getNamespaceURI());
+        assertThat(element.getNamespaceURI()).isNull();
         element = doc.createElementNS(null, "test");
-        assertNull(element.getNamespaceURI());
+        assertThat(element.getNamespaceURI()).isNull();
         element = doc.createElementNS("", "test");
-        assertNull(element.getNamespaceURI());
+        assertThat(element.getNamespaceURI()).isNull();
     }
 }

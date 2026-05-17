@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.springws.scenario.jdom;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
+
 import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.transform.JDOMResult;
@@ -32,7 +35,7 @@ public class ClientServerTest extends ScenarioTestCase {
                 .getRootElement());
         JDOMResult result = new JDOMResult();
         context.getBean(WebServiceTemplate.class).sendSourceAndReceiveToResult(source, result);
-        assertEquals(
-                8.0d, Double.parseDouble(result.getDocument().getRootElement().getText()), 1e-6);
+        assertThat(Double.parseDouble(result.getDocument().getRootElement().getText()))
+                .isCloseTo(8.0d, within(1e-6));
     }
 }

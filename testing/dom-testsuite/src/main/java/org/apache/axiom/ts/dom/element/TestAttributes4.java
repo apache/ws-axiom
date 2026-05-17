@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
@@ -29,6 +31,6 @@ public class TestAttributes4 extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader("<root><child/></root>")));
         Element element = (Element) doc.getDocumentElement().getFirstChild();
-        assertFalse(element.hasAttributes());
+        assertThat(element.hasAttributes()).isFalse();
     }
 }

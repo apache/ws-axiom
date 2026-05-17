@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import javax.xml.XMLConstants;
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -33,14 +35,14 @@ public class TestAttributes3 extends DOMTestCase {
         Document doc = dbf.newDocumentBuilder()
                 .parse(new InputSource(new StringReader("<root><child xmlns:p=\"urn:ns1\"/></root>")));
         Element element = (Element) doc.getDocumentElement().getFirstChild();
-        assertTrue(element.hasAttributes());
+        assertThat(element.hasAttributes()).isTrue();
         NamedNodeMap attributes = element.getAttributes();
-        assertEquals(1, attributes.getLength());
+        assertThat(attributes.getLength()).isEqualTo(1);
         Attr attr = (Attr) attributes.item(0);
-        assertEquals("xmlns:p", attr.getName());
-        assertEquals("xmlns", attr.getPrefix());
-        assertEquals("p", attr.getLocalName());
-        assertEquals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, attr.getNamespaceURI());
-        assertEquals("urn:ns1", attr.getValue());
+        assertThat(attr.getName()).isEqualTo("xmlns:p");
+        assertThat(attr.getPrefix()).isEqualTo("xmlns");
+        assertThat(attr.getLocalName()).isEqualTo("p");
+        assertThat(attr.getNamespaceURI()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
+        assertThat(attr.getValue()).isEqualTo("urn:ns1");
     }
 }

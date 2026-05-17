@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -34,11 +36,11 @@ public class TestRemoveSingleChild extends DOMTestCase {
         Element element = document.getDocumentElement();
         Node child = element.getFirstChild();
         element.removeChild(child);
-        assertNull(element.getFirstChild());
-        assertNull(element.getLastChild());
-        assertNull(child.getPreviousSibling());
-        assertNull(child.getNextSibling());
-        assertNull(child.getParentNode());
-        assertSame(document, child.getOwnerDocument());
+        assertThat(element.getFirstChild()).isNull();
+        assertThat(element.getLastChild()).isNull();
+        assertThat(child.getPreviousSibling()).isNull();
+        assertThat(child.getNextSibling()).isNull();
+        assertThat(child.getParentNode()).isNull();
+        assertThat(child.getOwnerDocument()).isSameAs(document);
     }
 }

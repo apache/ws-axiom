@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -39,14 +41,14 @@ public class TestCloneNodeWithAttributes extends DOMTestCase {
         element.setAttributeNS(null, "attr1", "value1");
         element.setAttributeNS("urn:ns2", "q:attr2", "value2");
         Element clone = (Element) element.cloneNode(deep);
-        assertEquals(2, clone.getAttributes().getLength());
+        assertThat(clone.getAttributes().getLength()).isEqualTo(2);
         Attr attr1 = clone.getAttributeNodeNS(null, "attr1");
         Attr attr2 = clone.getAttributeNodeNS("urn:ns2", "attr2");
-        assertNotNull(attr1);
-        assertNotNull(attr2);
-        assertSame(clone, attr1.getOwnerElement());
-        assertSame(clone, attr2.getOwnerElement());
-        assertEquals("value1", attr1.getValue());
-        assertEquals("value2", attr2.getValue());
+        assertThat(attr1).isNotNull();
+        assertThat(attr2).isNotNull();
+        assertThat(attr1.getOwnerElement()).isSameAs(clone);
+        assertThat(attr2.getOwnerElement()).isSameAs(clone);
+        assertThat(attr1.getValue()).isEqualTo("value1");
+        assertThat(attr2.getValue()).isEqualTo("value2");
     }
 }

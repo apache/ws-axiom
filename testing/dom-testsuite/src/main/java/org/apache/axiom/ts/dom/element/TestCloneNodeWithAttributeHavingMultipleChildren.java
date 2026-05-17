@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -36,8 +38,8 @@ public class TestCloneNodeWithAttributeHavingMultipleChildren extends DOMTestCas
         Element clonedElement = (Element) element.cloneNode(false);
         Attr clonedAttr = clonedElement.getAttributeNodeNS(null, "attr");
         NodeList children = clonedAttr.getChildNodes();
-        assertEquals(2, children.getLength());
-        assertEquals("foo", children.item(0).getNodeValue());
-        assertEquals("bar", children.item(1).getNodeValue());
+        assertThat(children.getLength()).isEqualTo(2);
+        assertThat(children.item(0).getNodeValue()).isEqualTo("foo");
+        assertThat(children.item(1).getNodeValue()).isEqualTo("bar");
     }
 }

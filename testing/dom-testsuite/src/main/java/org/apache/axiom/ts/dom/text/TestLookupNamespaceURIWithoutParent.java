@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -32,6 +34,6 @@ public class TestLookupNamespaceURIWithoutParent extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Text text = document.createTextNode("test");
-        assertNull(text.lookupNamespaceURI("ns"));
+        assertThat(text.lookupNamespaceURI("ns")).isNull();
     }
 }

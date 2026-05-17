@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.XMLConstants;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
@@ -52,16 +54,16 @@ public class TestLookupNamespaceURIExplicit extends DOMTestCase {
         e3.setAttributeNS(null, "q", "value");
         e2.appendChild(e3);
 
-        assertEquals("urn:ns1", e1.lookupNamespaceURI(null));
-        assertEquals("urn:ns1", e2.lookupNamespaceURI(null));
-        assertNull(e3.lookupNamespaceURI(null));
+        assertThat(e1.lookupNamespaceURI(null)).isEqualTo("urn:ns1");
+        assertThat(e2.lookupNamespaceURI(null)).isEqualTo("urn:ns1");
+        assertThat(e3.lookupNamespaceURI(null)).isNull();
 
-        assertEquals("urn:ns2", e1.lookupNamespaceURI("p"));
-        assertEquals("urn:ns3", e2.lookupNamespaceURI("p"));
-        assertEquals("urn:ns3", e3.lookupNamespaceURI("p"));
+        assertThat(e1.lookupNamespaceURI("p")).isEqualTo("urn:ns2");
+        assertThat(e2.lookupNamespaceURI("p")).isEqualTo("urn:ns3");
+        assertThat(e3.lookupNamespaceURI("p")).isEqualTo("urn:ns3");
 
-        assertEquals("urn:ns4", e1.lookupNamespaceURI("q"));
-        assertEquals(null, e2.lookupNamespaceURI("q"));
-        assertEquals(null, e3.lookupNamespaceURI("q"));
+        assertThat(e1.lookupNamespaceURI("q")).isEqualTo("urn:ns4");
+        assertThat(e2.lookupNamespaceURI("q")).isNull();
+        assertThat(e3.lookupNamespaceURI("q")).isNull();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -44,10 +46,10 @@ public class TestSetAttributeNodeNSReplace extends DOMTestCase {
         attr2.setValue("value2");
         element.setAttributeNodeNS(attr2);
 
-        assertNull(attr1.getOwnerElement());
-        assertSame(document, attr1.getOwnerDocument());
-        assertSame(element, attr2.getOwnerElement());
-        assertSame(document, attr2.getOwnerDocument());
-        assertEquals("value2", element.getAttributeNS("urn:ns2", "attr"));
+        assertThat(attr1.getOwnerElement()).isNull();
+        assertThat(attr1.getOwnerDocument()).isSameAs(document);
+        assertThat(attr2.getOwnerElement()).isSameAs(element);
+        assertThat(attr2.getOwnerDocument()).isSameAs(document);
+        assertThat(element.getAttributeNS("urn:ns2", "attr")).isEqualTo("value2");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,6 +29,6 @@ public class TestGetPrefixWithDefaultNamespace extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element element = doc.createElementNS("urn:test", "test");
-        assertNull(element.getPrefix());
+        assertThat(element.getPrefix()).isNull();
     }
 }

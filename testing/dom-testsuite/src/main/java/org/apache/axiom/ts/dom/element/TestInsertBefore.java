@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -45,14 +47,14 @@ public class TestInsertBefore extends DOMTestCase {
         parent2.insertBefore(b, e);
 
         NodeList children = parent1.getChildNodes();
-        assertEquals(2, children.getLength());
-        assertSame(a, children.item(0));
-        assertSame(c, children.item(1));
+        assertThat(children.getLength()).isEqualTo(2);
+        assertThat(children.item(0)).isSameAs(a);
+        assertThat(children.item(1)).isSameAs(c);
 
         children = parent2.getChildNodes();
-        assertEquals(3, children.getLength());
-        assertSame(d, children.item(0));
-        assertSame(b, children.item(1));
-        assertSame(e, children.item(2));
+        assertThat(children.getLength()).isEqualTo(3);
+        assertThat(children.item(0)).isSameAs(d);
+        assertThat(children.item(1)).isSameAs(b);
+        assertThat(children.item(2)).isSameAs(e);
     }
 }

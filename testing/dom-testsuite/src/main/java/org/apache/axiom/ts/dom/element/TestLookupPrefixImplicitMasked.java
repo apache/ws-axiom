@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,6 +36,6 @@ public class TestLookupPrefixImplicitMasked extends DOMTestCase {
         Element root = document.createElementNS("urn:ns1", "p:root");
         Element child = document.createElementNS("urn:ns2", "p:child");
         root.appendChild(child);
-        assertNull(child.lookupPrefix("urn:ns1"));
+        assertThat(child.lookupPrefix("urn:ns1")).isNull();
     }
 }

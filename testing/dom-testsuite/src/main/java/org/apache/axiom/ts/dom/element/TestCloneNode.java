@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,9 +30,9 @@ public class TestCloneNode extends DOMTestCase {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:test", "p:elem");
         Element clone = (Element) element.cloneNode(true);
-        assertEquals("urn:test", clone.getNamespaceURI());
-        assertEquals("p", clone.getPrefix());
-        assertEquals("elem", clone.getLocalName());
-        assertSame(document, clone.getOwnerDocument());
+        assertThat(clone.getNamespaceURI()).isEqualTo("urn:test");
+        assertThat(clone.getPrefix()).isEqualTo("p");
+        assertThat(clone.getLocalName()).isEqualTo("elem");
+        assertThat(clone.getOwnerDocument()).isSameAs(document);
     }
 }

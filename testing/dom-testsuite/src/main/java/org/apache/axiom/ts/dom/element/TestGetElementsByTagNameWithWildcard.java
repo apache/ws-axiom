@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,6 +32,6 @@ public class TestGetElementsByTagNameWithWildcard extends DOMTestCase {
         for (int i = 0; i < 3; i++) {
             root.appendChild(doc.createElement("child" + i));
         }
-        assertEquals(3, root.getElementsByTagName("*").getLength());
+        assertThat(root.getElementsByTagName("*").getLength()).isEqualTo(3);
     }
 }

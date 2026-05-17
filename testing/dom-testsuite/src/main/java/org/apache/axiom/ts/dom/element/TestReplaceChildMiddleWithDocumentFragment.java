@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
@@ -52,20 +54,20 @@ public class TestReplaceChildMiddleWithDocumentFragment extends DOMTestCase {
         element.replaceChild(fragment, b);
 
         NodeList children = element.getChildNodes();
-        assertEquals(4, children.getLength());
-        assertSame(a, children.item(0));
-        assertSame(x, children.item(1));
-        assertSame(y, children.item(2));
-        assertSame(c, children.item(3));
+        assertThat(children.getLength()).isEqualTo(4);
+        assertThat(children.item(0)).isSameAs(a);
+        assertThat(children.item(1)).isSameAs(x);
+        assertThat(children.item(2)).isSameAs(y);
+        assertThat(children.item(3)).isSameAs(c);
 
-        assertSame(element, x.getParentNode());
-        assertSame(element, y.getParentNode());
+        assertThat(x.getParentNode()).isSameAs(element);
+        assertThat(y.getParentNode()).isSameAs(element);
 
-        assertNull(fragment.getFirstChild());
-        assertNull(fragment.getLastChild());
-        assertEquals(0, fragment.getChildNodes().getLength());
+        assertThat(fragment.getFirstChild()).isNull();
+        assertThat(fragment.getLastChild()).isNull();
+        assertThat(fragment.getChildNodes().getLength()).isEqualTo(0);
 
-        assertSame(a, element.getFirstChild());
-        assertSame(c, element.getLastChild());
+        assertThat(element.getFirstChild()).isSameAs(a);
+        assertThat(element.getLastChild()).isSameAs(c);
     }
 }

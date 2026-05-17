@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -33,9 +35,9 @@ public class TestSetPrefixNotNullWithNamespace extends DOMTestCase {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:ns", "test");
         element.setPrefix("p");
-        assertEquals("p", element.getPrefix());
-        assertEquals("p:test", element.getTagName());
+        assertThat(element.getPrefix()).isEqualTo("p");
+        assertThat(element.getTagName()).isEqualTo("p:test");
         // DOM doesn't add namespace declarations automatically
-        assertEquals(0, element.getAttributes().getLength());
+        assertThat(element.getAttributes().getLength()).isEqualTo(0);
     }
 }

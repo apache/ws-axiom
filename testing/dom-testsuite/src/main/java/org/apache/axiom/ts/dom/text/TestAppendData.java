@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -39,6 +41,6 @@ public class TestAppendData extends DOMTestCase {
 
         textNode.appendData(textToAppend);
 
-        assertEquals("Text value mismatch", tempText + textToAppend, textNode.getData());
+        assertThat(textNode.getData()).isEqualTo(tempText + textToAppend);
     }
 }

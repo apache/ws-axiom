@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,6 +32,6 @@ public class TestGetElementsByTagNameRecursive extends DOMTestCase {
                 .parse(TestGetElementsByTagNameRecursive.class.getResourceAsStream("numbers.xml"));
         Element element = doc.getDocumentElement();
         NodeList list = element.getElementsByTagName("nr");
-        assertEquals(10, list.getLength());
+        assertThat(list.getLength()).isEqualTo(10);
     }
 }

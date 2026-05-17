@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.springws.scenario.jaxb2;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
+
 import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
@@ -28,7 +31,7 @@ public class JAXB2Test extends ScenarioTestCase {
         request.setSymbol("GOOG");
         GetQuoteResponse response =
                 (GetQuoteResponse) context.getBean(WebServiceTemplate.class).marshalSendAndReceive(request);
-        assertNotNull(response);
-        assertEquals(105.37, response.getPrice(), 0.001);
+        assertThat(response).isNotNull();
+        assertThat(response.getPrice()).isCloseTo(105.37, within(0.001));
     }
 }

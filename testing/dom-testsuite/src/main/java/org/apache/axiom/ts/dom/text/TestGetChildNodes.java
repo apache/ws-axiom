@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -29,7 +31,7 @@ public class TestGetChildNodes extends DOMTestCase {
         Document document = dbf.newDocumentBuilder().newDocument();
         Text text = document.createTextNode("test");
         NodeList children = text.getChildNodes();
-        assertNotNull(children);
-        assertEquals(0, children.getLength());
+        assertThat(children).isNotNull();
+        assertThat(children.getLength()).isEqualTo(0);
     }
 }

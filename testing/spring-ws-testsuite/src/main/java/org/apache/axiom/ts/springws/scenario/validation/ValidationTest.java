@@ -20,6 +20,7 @@ package org.apache.axiom.ts.springws.scenario.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.within;
 
 import java.util.Iterator;
 import javax.xml.namespace.QName;
@@ -32,7 +33,7 @@ public class ValidationTest extends ScenarioTestCase {
     protected void runTest() throws Throwable {
         StockQuoteClient client = context.getBean(StockQuoteClient.class);
 
-        assertEquals(105.37, client.getQuote("GOOG"), 0.001);
+        assertThat(client.getQuote("GOOG")).isCloseTo(105.37, within(0.001));
 
         assertThatThrownBy(() -> client.getQuote("TOOLONG"))
                 .isInstanceOfSatisfying(SoapFaultClientException.class, ex -> {

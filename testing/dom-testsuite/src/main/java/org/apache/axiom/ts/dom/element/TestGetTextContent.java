@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
@@ -27,6 +29,6 @@ public class TestGetTextContent extends DOMTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader("<a>1<!--c--><b>2</b>3</a>")));
-        assertEquals("123", doc.getDocumentElement().getTextContent());
+        assertThat(doc.getDocumentElement().getTextContent()).isEqualTo("123");
     }
 }

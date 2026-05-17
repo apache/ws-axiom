@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -35,17 +37,12 @@ public class TestSplitText extends DOMTestCase {
         element.appendChild(txt);
         txt.splitText(3);
 
-        assertNotNull("Text value missing in the original Text node", txt.getNodeValue());
+        assertThat(txt.getNodeValue()).isNotNull();
 
-        assertNotNull("Sibling missing after split", txt.getNextSibling());
-        assertNotNull(
-                "Text value missing in the new split Text node",
-                txt.getNextSibling().getNodeValue());
+        assertThat(txt.getNextSibling()).isNotNull();
+        assertThat(txt.getNextSibling().getNodeValue()).isNotNull();
 
-        assertEquals("Incorrect split point", textValue.substring(0, 3), txt.getNodeValue());
-        assertEquals(
-                "Incorrect split point",
-                textValue.substring(3, textValue.length()),
-                txt.getNextSibling().getNodeValue());
+        assertThat(txt.getNodeValue()).isEqualTo(textValue.substring(0, 3));
+        assertThat(txt.getNextSibling().getNodeValue()).isEqualTo(textValue.substring(3, textValue.length()));
     }
 }

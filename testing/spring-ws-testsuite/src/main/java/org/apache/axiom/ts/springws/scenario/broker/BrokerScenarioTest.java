@@ -54,14 +54,14 @@ public class BrokerScenarioTest extends ScenarioTestCase {
         item2.setCount(10);
         order.setItems(new Order.Item[] {item1, item2});
         OrderStatus status = client.order(order);
-        assertNotNull(status.getReceived());
+        assertThat(status.getReceived()).isNotNull();
 
         Order receivedOrder = client.receiveNextOrder();
-        assertNotNull(receivedOrder);
-        assertEquals(order.getCustomer(), receivedOrder.getCustomer());
-        assertEquals(order.getItems().length, receivedOrder.getItems().length);
-        assertEquals(order.getItems()[0].getStock(), receivedOrder.getItems()[0].getStock());
-        assertEquals(order.getItems()[0].getCount(), receivedOrder.getItems()[0].getCount());
+        assertThat(receivedOrder).isNotNull();
+        assertThat(receivedOrder.getCustomer()).isEqualTo(order.getCustomer());
+        assertThat(receivedOrder.getItems().length).isEqualTo(order.getItems().length);
+        assertThat(receivedOrder.getItems()[0].getStock()).isEqualTo(order.getItems()[0].getStock());
+        assertThat(receivedOrder.getItems()[0].getCount()).isEqualTo(order.getItems()[0].getCount());
 
         order.setCustomer(23629);
         // SOAP 1.2 fault processing is locale dependent

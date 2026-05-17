@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
@@ -34,10 +36,10 @@ public class TestSetTextContent extends DOMTestCase {
         Node oldFirstChild = element.getFirstChild();
         element.setTextContent("test");
         Node firstChild = element.getFirstChild();
-        assertTrue(firstChild instanceof Text);
-        assertEquals("test", firstChild.getNodeValue());
-        assertNull(firstChild.getNextSibling());
-        assertNull(oldFirstChild.getParentNode());
-        assertSame(doc, oldFirstChild.getOwnerDocument());
+        assertThat(firstChild).isInstanceOf(Text.class);
+        assertThat(firstChild.getNodeValue()).isEqualTo("test");
+        assertThat(firstChild.getNextSibling()).isNull();
+        assertThat(oldFirstChild.getParentNode()).isNull();
+        assertThat(oldFirstChild.getOwnerDocument()).isSameAs(doc);
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -36,17 +38,18 @@ public class TestSetAttributeNS extends DOMTestCase {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:ns1", "p:element");
         element.setAttributeNS(DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname), "value");
-        assertTrue(element.hasAttributes());
+        assertThat(element.hasAttributes()).isTrue();
         NamedNodeMap attributes = element.getAttributes();
-        assertEquals(1, attributes.getLength());
+        assertThat(attributes.getLength()).isEqualTo(1);
         Attr attr = (Attr) attributes.item(0);
-        assertSame(document, attr.getOwnerDocument());
-        assertSame(element, attr.getOwnerElement());
-        assertEquals(DOMUtils.getNamespaceURI(qname), attr.getNamespaceURI());
-        assertEquals(DOMUtils.getPrefix(qname), attr.getPrefix());
-        assertEquals(qname.getLocalPart(), attr.getLocalName());
-        assertEquals(DOMUtils.getQualifiedName(qname), attr.getName());
-        assertEquals("value", attr.getValue());
-        assertSame(attr, element.getAttributeNodeNS(DOMUtils.getNamespaceURI(qname), qname.getLocalPart()));
+        assertThat(attr.getOwnerDocument()).isSameAs(document);
+        assertThat(attr.getOwnerElement()).isSameAs(element);
+        assertThat(attr.getNamespaceURI()).isEqualTo(DOMUtils.getNamespaceURI(qname));
+        assertThat(attr.getPrefix()).isEqualTo(DOMUtils.getPrefix(qname));
+        assertThat(attr.getLocalName()).isEqualTo(qname.getLocalPart());
+        assertThat(attr.getName()).isEqualTo(DOMUtils.getQualifiedName(qname));
+        assertThat(attr.getValue()).isEqualTo("value");
+        assertThat(element.getAttributeNodeNS(DOMUtils.getNamespaceURI(qname), qname.getLocalPart()))
+                .isSameAs(attr);
     }
 }

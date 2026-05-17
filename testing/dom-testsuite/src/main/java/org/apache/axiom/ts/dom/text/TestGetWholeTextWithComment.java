@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,6 +34,6 @@ public class TestGetWholeTextWithComment extends DOMTestCase {
         element.appendChild(a);
         element.appendChild(document.createComment("comment"));
         element.appendChild(document.createTextNode("b"));
-        assertEquals("a", a.getWholeText());
+        assertThat(a.getWholeText()).isEqualTo("a");
     }
 }

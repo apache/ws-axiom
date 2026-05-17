@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.springws.scenario.secureecho;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMResult;
@@ -42,8 +44,8 @@ public class SecureEchoTest extends ScenarioTestCase {
                         new SoapActionCallback("http://www.example.com/echo"),
                         new DOMResult(responseDocument));
         Element response = responseDocument.getDocumentElement();
-        assertEquals("urn:test", response.getNamespaceURI());
-        assertEquals("Echo", response.getLocalName());
-        assertEquals("Hello", response.getTextContent());
+        assertThat(response.getNamespaceURI()).isEqualTo("urn:test");
+        assertThat(response.getLocalName()).isEqualTo("Echo");
+        assertThat(response.getTextContent()).isEqualTo("Hello");
     }
 }

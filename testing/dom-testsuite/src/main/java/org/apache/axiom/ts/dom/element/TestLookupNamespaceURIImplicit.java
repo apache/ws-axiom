@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,17 +57,16 @@ public class TestLookupNamespaceURIImplicit extends DOMTestCase {
         element3.setAttributeNS("urn:test", "ns3:attr", "value");
         parent.appendChild(element3);
 
-        assertEquals("Incorrect default namespace returned for the element", ns1, element1.lookupNamespaceURI(null));
-        assertNull(element1.lookupNamespaceURI("ns0"));
+        assertThat(element1.lookupNamespaceURI(null)).isEqualTo(ns1);
+        assertThat(element1.lookupNamespaceURI("ns0")).isNull();
 
-        assertEquals("Incorrect namespace returned for the element", ns2, element2.lookupNamespaceURI(pref2));
-        assertNull(element2.lookupNamespaceURI("ns0"));
-        assertNull(element2.lookupNamespaceURI(null));
+        assertThat(element2.lookupNamespaceURI(pref2)).isEqualTo(ns2);
+        assertThat(element2.lookupNamespaceURI("ns0")).isNull();
+        assertThat(element2.lookupNamespaceURI(null)).isNull();
 
-        assertEquals(
-                "Incorrect namespace returned for the given prefix", nsParent, element3.lookupNamespaceURI(prefParent));
+        assertThat(element3.lookupNamespaceURI(prefParent)).isEqualTo(nsParent);
         // This asserts that namespaces can only be defined implicitly by elements, but not
         // attributes
-        assertNull(element3.lookupNamespaceURI("ns3"));
+        assertThat(element3.lookupNamespaceURI("ns3")).isNull();
     }
 }

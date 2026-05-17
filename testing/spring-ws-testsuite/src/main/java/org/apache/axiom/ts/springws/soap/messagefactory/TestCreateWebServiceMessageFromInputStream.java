@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.springws.soap.messagefactory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.InputStream;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.springws.SimpleTestCase;
@@ -35,7 +37,7 @@ public class TestCreateWebServiceMessageFromInputStream extends SimpleTestCase {
         SoapMessage message = messageFactory.createWebServiceMessage(
                 new TransportInputStreamImpl(SOAPSampleSet.NO_HEADER.getMessage(spec)));
         SoapEnvelope env = message.getEnvelope();
-        assertNull(env.getHeader());
-        assertNotNull(env.getBody());
+        assertThat(env.getHeader()).isNull();
+        assertThat(env.getBody()).isNotNull();
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,7 +34,7 @@ public class TestGetElementsByTagNameNS extends DOMTestCase {
 
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element docElem = doc.getDocumentElement();
-        assertNull("The document element shoudl be null", docElem);
+        assertThat(docElem).isNull();
 
         docElem = doc.createElementNS("http://test.org", "test:Test");
 
@@ -46,6 +48,6 @@ public class TestGetElementsByTagNameNS extends DOMTestCase {
 
         NodeList list = docElem.getElementsByTagNameNS(childElementNS, childElementLN);
 
-        assertEquals("Incorrect number of child elements", 7, list.getLength());
+        assertThat(list.getLength()).isEqualTo(7);
     }
 }

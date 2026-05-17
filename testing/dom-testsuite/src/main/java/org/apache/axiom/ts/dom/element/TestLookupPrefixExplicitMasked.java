@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
@@ -34,6 +36,7 @@ public class TestLookupPrefixExplicitMasked extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder()
                 .parse(new InputSource(new StringReader("<root xmlns:p='urn:ns1'><child xmlns:p='urn:ns2'/></root>")));
-        assertNull(document.getDocumentElement().getFirstChild().lookupPrefix("urn:ns1"));
+        assertThat(document.getDocumentElement().getFirstChild().lookupPrefix("urn:ns1"))
+                .isNull();
     }
 }

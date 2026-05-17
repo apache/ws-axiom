@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -42,7 +44,7 @@ public class TestSetAttributeNSExisting extends DOMTestCase {
         element.setAttributeNS("urn:test", "p2:attr", "value2");
 
         // DOM is expected to change the original attribute, not to create a new one
-        assertEquals("value2", attr.getValue());
-        assertEquals("p2", attr.getPrefix());
+        assertThat(attr.getValue()).isEqualTo("value2");
+        assertThat(attr.getPrefix()).isEqualTo("p2");
     }
 }

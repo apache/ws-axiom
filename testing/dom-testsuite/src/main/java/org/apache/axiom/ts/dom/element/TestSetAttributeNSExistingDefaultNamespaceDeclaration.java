@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.xml.XMLConstants;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
@@ -43,7 +45,7 @@ public class TestSetAttributeNSExistingDefaultNamespaceDeclaration extends DOMTe
         element.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, "urn:ns2");
 
         // DOM is expected to change the original attribute, not to create a new one
-        assertEquals("urn:ns2", attr.getValue());
-        assertNull(attr.getPrefix());
+        assertThat(attr.getValue()).isEqualTo("urn:ns2");
+        assertThat(attr.getPrefix()).isNull();
     }
 }

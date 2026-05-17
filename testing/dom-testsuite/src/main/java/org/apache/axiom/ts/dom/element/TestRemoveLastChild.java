@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -33,7 +35,7 @@ public class TestRemoveLastChild extends DOMTestCase {
                 .getDocumentElement();
         element.removeChild(element.getLastChild());
         Node lastChild = element.getLastChild();
-        assertNotNull(lastChild);
-        assertEquals("b", lastChild.getNodeName());
+        assertThat(lastChild).isNotNull();
+        assertThat(lastChild.getNodeName()).isEqualTo("b");
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
@@ -30,6 +32,6 @@ public class TestGetLength extends DOMTestCase {
         Document document = dbf.newDocumentBuilder().newDocument();
         String content = "This is a test string";
         Text textNode = document.createTextNode(content);
-        assertEquals(content.length(), textNode.getLength());
+        assertThat(textNode.getLength()).isEqualTo(content.length());
     }
 }

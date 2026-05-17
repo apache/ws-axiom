@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,9 +41,9 @@ public class TestReplaceChildMiddle extends ReplaceChildTestCase {
         parent.appendChild(child3);
         parent.replaceChild(newChild, child2);
         NodeList children = parent.getChildNodes();
-        assertEquals(3, children.getLength());
-        assertSame(child1, children.item(0));
-        assertSame(newChild, children.item(1));
-        assertSame(child3, children.item(2));
+        assertThat(children.getLength()).isEqualTo(3);
+        assertThat(children.item(0)).isSameAs(child1);
+        assertThat(children.item(1)).isSameAs(newChild);
+        assertThat(children.item(2)).isSameAs(child3);
     }
 }
