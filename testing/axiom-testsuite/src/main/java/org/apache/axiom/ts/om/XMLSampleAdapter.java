@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testing.multiton.AdapterType;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.TestParserConfiguration;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
 
@@ -39,7 +39,7 @@ public final class XMLSampleAdapter {
     public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory) {
         return ((OMMetaFactorySPI) metaFactory)
                 .createOMBuilder(
-                        AxiomTestCase.TEST_PARSER_CONFIGURATION,
+                        TestParserConfiguration.INSTANCE,
                         new InputSource(sample.getUrl().toString()));
     }
 

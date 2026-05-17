@@ -32,7 +32,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.TestParserConfiguration;
 
 public class TestGetTextWithCDATA extends TestCase {
     @Inject
@@ -54,7 +54,7 @@ public class TestGetTextWithCDATA extends TestCase {
                 + "</SOAP-ENV:Body>"
                 + "</SOAP-ENV:Envelope>";
         XMLStreamReader soap11Parser =
-                StAXUtils.createXMLStreamReader(AxiomTestCase.TEST_PARSER_CONFIGURATION, new StringReader(soap11Fault));
+                StAXUtils.createXMLStreamReader(TestParserConfiguration.INSTANCE, new StringReader(soap11Fault));
         SOAPModelBuilder soap11Builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(metaFactory, soap11Parser);
         OMElement element = soap11Builder.getDocumentElement();
         element.build();

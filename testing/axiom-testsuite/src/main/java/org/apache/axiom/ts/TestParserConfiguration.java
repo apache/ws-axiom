@@ -18,13 +18,25 @@
  */
 package org.apache.axiom.ts;
 
-import junit.framework.TestCase;
+import javax.xml.stream.XMLInputFactory;
+import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.util.stax.dialect.StAXDialect;
 
-public abstract class AxiomTestCase extends TestCase {
-    public AxiomTestCase() {
-        setName(getClass().getName());
+public final class TestParserConfiguration implements StAXParserConfiguration {
+    public static final TestParserConfiguration INSTANCE = new TestParserConfiguration();
+
+    private TestParserConfiguration() {}
+
+    @Override
+    public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+        // For the tests, preserve as much of the syntactic structure of the test
+        // documents
+        factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
+        return dialect.enableCDataReporting(factory);
     }
 
     @Override
-    protected abstract void runTest() throws Throwable;
+    public String toString() {
+        return "TEST";
+    }
 }

@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.TestParserConfiguration;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
@@ -61,7 +62,7 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
         InputStream in = file.getInputStream();
         try {
             XMLStreamReader expected = StAXUtils.createXMLStreamReader(
-                    TEST_PARSER_CONFIGURATION, file.getUrl().toString(), in);
+                    TestParserConfiguration.INSTANCE, file.getUrl().toString(), in);
             try {
                 OMXMLParserWrapper builder = builderFactory.getBuilder(
                         metaFactory, new InputSource(file.getUrl().toString()));
