@@ -28,7 +28,7 @@ import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.LabelTarget;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.TestParserConfiguration;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.xml.sax.InputSource;
@@ -55,8 +55,7 @@ public abstract class BuilderFactory extends Multiton implements Dimension {
 
         @Override
         public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
-            return ((OMMetaFactorySPI) metaFactory)
-                    .createOMBuilder(AxiomTestCase.TEST_PARSER_CONFIGURATION, inputSource);
+            return ((OMMetaFactorySPI) metaFactory).createOMBuilder(TestParserConfiguration.INSTANCE, inputSource);
         }
     };
 
