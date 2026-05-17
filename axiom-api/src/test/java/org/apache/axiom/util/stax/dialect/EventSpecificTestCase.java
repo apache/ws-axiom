@@ -23,6 +23,7 @@ import com.google.inject.name.Named;
 import java.io.InputStream;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+import org.assertj.core.api.Assertions;
 
 /**
  * Base class for test cases that test the behavior of a {@link XMLStreamReader} method for specific
@@ -47,7 +48,7 @@ public abstract class EventSpecificTestCase extends DialectTestCase {
                 } else if (reader.hasNext()) {
                     reader.next();
                 } else {
-                    fail("Internal error: didn't encounter event " + event);
+                    Assertions.fail("Internal error: didn't encounter event " + event);
                 }
             }
             runTest(reader);
