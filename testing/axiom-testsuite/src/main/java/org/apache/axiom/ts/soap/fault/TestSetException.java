@@ -22,19 +22,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestSetException extends TestCase {
+public class TestSetException implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
         Exception exception = new Exception("Test exception message");
         fault.setException(exception);

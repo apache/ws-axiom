@@ -37,7 +37,7 @@ public class TestCreateOMElementWithNonDefaultNamespace extends CreateOMElementT
     }
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element =
                 variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "urn:ns", "ns");
         assertThat(element.isComplete()).isTrue();

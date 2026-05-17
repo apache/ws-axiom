@@ -21,22 +21,22 @@ package org.apache.axiom.ts.om.element;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMElement#findNamespace(String, String)} returns <code>null</code> if the
  * matching namespace declaration is masked by another namespace declaration, i.e. if the
  * corresponding prefix is redeclared.
  */
-public class TestFindNamespaceByNamespaceURIMasked extends TestCase {
+public class TestFindNamespaceByNamespaceURIMasked implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement root = AXIOMUtil.stringToOM(factory, "<root xmlns:p='urn:ns1'><child xmlns:p='urn:ns2'/></a>");
         assertThat(root.getFirstElement().findNamespace("urn:ns1", null)).isNull();
         root.close(false);

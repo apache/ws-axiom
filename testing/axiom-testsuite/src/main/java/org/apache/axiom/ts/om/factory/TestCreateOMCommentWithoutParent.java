@@ -21,16 +21,16 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestCreateOMCommentWithoutParent extends TestCase {
+public class TestCreateOMCommentWithoutParent implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMComment comment = factory.createOMComment(null, "my comment");
         assertThat(comment.getParent()).isNull();
         assertThat(comment.getValue()).isEqualTo("my comment");

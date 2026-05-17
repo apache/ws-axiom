@@ -35,7 +35,7 @@ import org.w3c.dom.Element;
  */
 public class TestSetValueOnNamespaceDeclaration extends OMDOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document doc =
                 metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Element element = doc.createElementNS("", "test");

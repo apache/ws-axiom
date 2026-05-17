@@ -25,12 +25,12 @@ import com.google.inject.name.Named;
 import java.io.StringReader;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that the sequence of events produced by the {@link XMLStreamReader} returned by {@link
@@ -41,7 +41,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
  * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-431">AXIOM-431</a>.
  */
-public class TestGetXMLStreamReaderWithIncompleteDescendant extends TestCase {
+public class TestGetXMLStreamReaderWithIncompleteDescendant implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -50,7 +50,7 @@ public class TestGetXMLStreamReaderWithIncompleteDescendant extends TestCase {
     private boolean cache;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement root = factory.createOMElement(new QName("root"));
         OMElement child = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>"))
                 .getDocumentElement(true);

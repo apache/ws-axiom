@@ -30,7 +30,6 @@ import jakarta.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import junit.framework.TestCase;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.mime.ContentType;
@@ -38,6 +37,7 @@ import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -48,7 +48,7 @@ import org.apache.axiom.util.UIDGenerator;
  * produces an error if the SOAP version used in the root part doesn't match the Content-Type of the
  * message.
  */
-public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends TestCase {
+public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch implements MatrixTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -56,7 +56,7 @@ public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch extends TestCase 
     private SOAPSpec spec;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         final SOAPSample sample = SOAPSampleSet.NO_HEADER.getMessage(spec);
         // Generate an MTOM message with the wrong content type
         MimeMessage message = new MimeMessage((Session) null);

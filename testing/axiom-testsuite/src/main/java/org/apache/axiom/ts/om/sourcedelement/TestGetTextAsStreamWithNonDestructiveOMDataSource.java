@@ -27,20 +27,20 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestGetTextAsStreamWithNonDestructiveOMDataSource extends TestCase {
+public class TestGetTextAsStreamWithNonDestructiveOMDataSource implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Blob blob = new RandomBlob(445566, 32, 128, 20000000);
         QName qname = new QName("a");
         Charset cs = StandardCharsets.US_ASCII;

@@ -26,11 +26,11 @@ import com.google.inject.Inject;
 import java.io.InputStream;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPMessage;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
@@ -38,7 +38,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-public class TestCreateSOAPModelBuilderFromSAXSource extends TestCase {
+public class TestCreateSOAPModelBuilderFromSAXSource implements MatrixTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -46,7 +46,7 @@ public class TestCreateSOAPModelBuilderFromSAXSource extends TestCase {
     private SOAPSpec spec;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SAXParserFactory parserFactory = SAXImplementation.XERCES.newSAXParserFactory();
         parserFactory.setNamespaceAware(true);
         XMLReader reader = parserFactory.newSAXParser().getXMLReader();

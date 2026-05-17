@@ -21,18 +21,18 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestCreateOMText extends TestCase {
+public class TestCreateOMText implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMNamespace namespace = factory.createOMNamespace("http://www.apache.org/~chinthaka", "myhome");
         OMElement omElement = factory.createOMElement("chinthaka", namespace);
         String text = "sampleText";

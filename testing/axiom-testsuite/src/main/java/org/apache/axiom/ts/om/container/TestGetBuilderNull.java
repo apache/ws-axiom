@@ -21,15 +21,15 @@ package org.apache.axiom.ts.om.container;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMContainer#getBuilder()} returns {@code null} on a programmatically created
  * node.
  */
-public class TestGetBuilderNull extends TestCase {
+public class TestGetBuilderNull implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -37,7 +37,7 @@ public class TestGetBuilderNull extends TestCase {
     private OMContainerFactory containerFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMContainer container = containerFactory.create(factory);
         assertThat(container.getBuilder()).isNull();
     }

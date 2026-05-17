@@ -23,11 +23,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.stream.XMLStreamReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
@@ -35,7 +35,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  * {@link OMContainer#getXMLStreamReaderWithoutCaching()} for an OM tree containing an {@link
  * AbstractPullOMDataSource} closes all readers requested from the data source.
  */
-public class TestCloseWithoutCaching extends TestCase {
+public class TestCloseWithoutCaching implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -44,7 +44,7 @@ public class TestCloseWithoutCaching extends TestCase {
     private int events;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement root = factory.createOMElement("root", null);
         PullOMDataSource ds = new PullOMDataSource("<child>content</child>");
         root.addChild(factory.createOMElement(ds));

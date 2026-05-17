@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
  */
 public class TestRemoveAttributeNSNamespaceDeclaration extends OMDOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         element.declareNamespace("urn:test", "ns");

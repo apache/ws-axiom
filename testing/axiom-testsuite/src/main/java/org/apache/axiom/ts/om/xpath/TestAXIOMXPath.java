@@ -20,10 +20,10 @@ package org.apache.axiom.ts.om.xpath;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestAXIOMXPath extends TestCase {
+public class TestAXIOMXPath implements MatrixTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -32,7 +32,7 @@ public class TestAXIOMXPath extends TestCase {
     private String methodName;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         new AXIOMXPathTestCase(methodName, metaFactory).runBare();
     }
 }

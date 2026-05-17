@@ -22,16 +22,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.XMLConstants;
-import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultText;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestGetLang extends TestCase {
+public class TestGetLang implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPFaultText faultText = soapFactory.createSOAPFaultText();
         faultText.setText("test");
         assertThat(faultText.getLang()).isNull();

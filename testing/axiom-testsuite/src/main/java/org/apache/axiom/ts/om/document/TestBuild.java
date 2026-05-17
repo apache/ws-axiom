@@ -21,20 +21,20 @@ package org.apache.axiom.ts.om.document;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
-public class TestBuild extends TestCase {
+public class TestBuild implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         InstrumentedInputStream in = new InstrumentedInputStream(XMLSample.LARGE.getInputStream());
         OMDocument doc = OMXMLBuilderFactory.createOMBuilder(factory, in).getDocument();
         assertThat(doc.isComplete()).isFalse();

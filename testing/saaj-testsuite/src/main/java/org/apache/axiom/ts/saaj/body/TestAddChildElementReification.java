@@ -27,7 +27,7 @@ import org.apache.axiom.ts.saaj.SAAJTestCase;
 
 public class TestAddChildElementReification extends SAAJTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPBody body = newMessageFactory().createMessage().getSOAPBody();
         SOAPElement child =
                 body.addChildElement((SOAPElement) body.getOwnerDocument().createElementNS("urn:test", "p:test"));

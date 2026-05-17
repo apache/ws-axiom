@@ -30,7 +30,7 @@ import org.xml.sax.InputSource;
 
 public class TestRemoveSingleChild extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Document document = builder.parse(new InputSource(new StringReader("<root><a/></root>")));
         Element element = document.getDocumentElement();

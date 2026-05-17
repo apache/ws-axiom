@@ -23,21 +23,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMElement#declareNamespace(String, String)} generates a new prefix if the
  * specified prefix is <code>null</code>.
  */
-public class TestDeclareNamespaceWithGeneratedPrefix3 extends TestCase {
+public class TestDeclareNamespaceWithGeneratedPrefix3 implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = element.declareNamespace("urn:ns", null);
         assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns");

@@ -28,7 +28,7 @@ import org.w3c.dom.NodeList;
 /** Testing the NodeList returned with the elements's children */
 public class TestGetElementsByTagName extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         String childElementLN = "Child";
 
         Document doc = dbf.newDocumentBuilder().newDocument();

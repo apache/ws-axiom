@@ -21,15 +21,15 @@ package org.apache.axiom.ts.om.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.io.InstrumentedStream;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.StreamTypeAdapter;
 import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
-public class TestCloseWithStream extends TestCase {
+public class TestCloseWithStream implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -37,7 +37,7 @@ public class TestCloseWithStream extends TestCase {
     private StreamType streamType;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         InstrumentedStream in = streamType.instrumentStream(streamType.getStream(XMLSample.SIMPLE));
         try {
             OMXMLParserWrapper builder =

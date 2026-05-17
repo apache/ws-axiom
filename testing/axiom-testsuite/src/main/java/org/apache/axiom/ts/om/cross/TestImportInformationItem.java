@@ -31,7 +31,7 @@ public class TestImportInformationItem extends CrossOMTestCase {
     private XMLSample file;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMDocument original = file.getAdapter(XMLSampleAdapter.class).getDocument(metaFactory);
         assertAbout(xml())
                 .that(xml(OMDocument.class, (OMDocument)

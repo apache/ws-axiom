@@ -23,10 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
@@ -34,7 +34,7 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  * Tests that adding an attribute to an {@link OMSourcedElement} overrides a corresponding attribute
  * that may be produced during expansion.
  */
-public class TestAddAttribute extends TestCase {
+public class TestAddAttribute implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -42,7 +42,7 @@ public class TestAddAttribute extends TestCase {
     private AddAttributeStrategy strategy;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMSourcedElement element =
                 factory.createOMElement(new PullOMDataSource("<root attr='orgvalue'><child/></root>"), "root", null);
         // Add an attribute before expansion

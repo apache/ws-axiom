@@ -21,13 +21,13 @@ package org.apache.axiom.ts.om.sourcedelement;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMElement#getNamespace()} returns <code>null</code> even if an {@link
@@ -37,12 +37,12 @@ import org.apache.axiom.om.ds.StringOMDataSource;
  * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
-public class TestGetNamespaceNormalized extends TestCase {
+public class TestGetNamespaceNormalized implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("", "");
         OMSourcedElement element =
                 factory.createOMElement(new StringOMDataSource("<element>content</element>"), "element", ns);

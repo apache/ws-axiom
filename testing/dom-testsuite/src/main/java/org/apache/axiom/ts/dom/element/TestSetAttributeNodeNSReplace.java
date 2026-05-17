@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
  */
 public class TestSetAttributeNodeNSReplace extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
 
         // Initialize element with original attribute

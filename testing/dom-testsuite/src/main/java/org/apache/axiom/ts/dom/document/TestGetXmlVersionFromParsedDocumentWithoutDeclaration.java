@@ -27,7 +27,7 @@ import org.xml.sax.InputSource;
 
 public class TestGetXmlVersionFromParsedDocumentWithoutDeclaration extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader("<root/>")));
         assertThat(doc.getXmlVersion()).isEqualTo("1.0");
     }

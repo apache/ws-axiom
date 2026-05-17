@@ -21,18 +21,18 @@ package org.apache.axiom.ts.om.node;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestInsertSiblingAfterOnChild extends TestCase {
+public class TestInsertSiblingAfterOnChild implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = factory.createOMElement("test", null);
         OMText text = factory.createOMText("test");
         element.addChild(text);

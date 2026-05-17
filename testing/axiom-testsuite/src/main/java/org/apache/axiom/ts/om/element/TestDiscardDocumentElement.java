@@ -22,23 +22,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link OMNode#discard()} on an incomplete {@link OMElement} that is a
  * document element, i.e. the parent of which is an {@link OMDocument}.
  */
-public class TestDiscardDocumentElement extends TestCase {
+public class TestDiscardDocumentElement implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a>text</a></root>"))
                 .getDocument();
         OMElement element = document.getOMDocumentElement();

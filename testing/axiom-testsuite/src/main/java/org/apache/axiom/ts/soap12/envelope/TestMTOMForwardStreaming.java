@@ -23,7 +23,6 @@ import com.google.inject.name.Named;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.mime.PartBlob;
@@ -37,6 +36,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.testutils.blob.TestBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that attachments are streamed (i.e. not read entirely into memory) if the original message
@@ -44,7 +44,7 @@ import org.apache.axiom.testutils.io.IOTestUtils;
  * OMOutputFormat)} is used to serialize the message. This feature is important because it allows
  * projects such as Synapse to forward MTOM messages very efficiently.
  */
-public class TestMTOMForwardStreaming extends TestCase {
+public class TestMTOMForwardStreaming implements MatrixTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -53,7 +53,7 @@ public class TestMTOMForwardStreaming extends TestCase {
     private boolean buildSOAPPart;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Blob blob1 = new TestBlob('A', Runtime.getRuntime().maxMemory());
         Blob blob2 = new TestBlob('B', Runtime.getRuntime().maxMemory());
 

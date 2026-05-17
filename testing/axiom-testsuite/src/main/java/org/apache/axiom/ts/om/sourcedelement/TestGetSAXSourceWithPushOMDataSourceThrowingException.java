@@ -24,20 +24,20 @@ import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXSource;
-import junit.framework.TestCase;
 import org.apache.axiom.core.stream.sax.SAX;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-public class TestGetSAXSourceWithPushOMDataSourceThrowingException extends TestCase {
+public class TestGetSAXSourceWithPushOMDataSourceThrowingException implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = factory.createOMElement(new AbstractPushOMDataSource() {
 
             @Override

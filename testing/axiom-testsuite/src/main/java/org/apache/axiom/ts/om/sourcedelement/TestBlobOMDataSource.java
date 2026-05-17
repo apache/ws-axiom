@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
-import junit.framework.TestCase;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -30,14 +29,15 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.BlobOMDataSource;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /** Tests functionality of BlobOMDataSource */
-public class TestBlobOMDataSource extends TestCase {
+public class TestBlobOMDataSource implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
 
         String localName = "myPayload";
         String encoding = "utf-8";

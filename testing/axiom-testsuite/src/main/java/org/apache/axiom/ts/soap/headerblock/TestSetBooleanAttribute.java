@@ -46,7 +46,7 @@ public class TestSetBooleanAttribute extends BooleanAttributeTestCase {
     }
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
         SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);

@@ -38,7 +38,7 @@ public class TestCloneOMElement2 extends ConformanceTestCase {
     }
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement original = file.getAdapter(XMLSampleAdapter.class).getDocumentElement(metaFactory);
         OMElement clone = original.cloneOMElement();
         assertAbout(xml()).that(xml(OMElement.class, clone)).hasSameContentAs(xml(OMElement.class, original));

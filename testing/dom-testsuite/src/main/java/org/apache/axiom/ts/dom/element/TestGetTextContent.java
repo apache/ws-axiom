@@ -27,7 +27,7 @@ import org.xml.sax.InputSource;
 
 public class TestGetTextContent extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader("<a>1<!--c--><b>2</b>3</a>")));
         assertThat(doc.getDocumentElement().getTextContent()).isEqualTo("123");
     }

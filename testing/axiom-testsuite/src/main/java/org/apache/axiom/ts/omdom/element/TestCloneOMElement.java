@@ -31,7 +31,7 @@ import org.w3c.dom.Element;
  */
 public class TestCloneOMElement extends OMDOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         OMElement clone = element.cloneOMElement();

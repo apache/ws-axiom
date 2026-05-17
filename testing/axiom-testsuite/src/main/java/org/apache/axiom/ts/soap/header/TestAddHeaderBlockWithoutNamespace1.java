@@ -21,23 +21,23 @@ package org.apache.axiom.ts.soap.header;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link SOAPHeader#addHeaderBlock(String, OMNamespace)} when passing a
  * <code>null</code> value for the {@link OMNamespace} parameter.
  */
-public class TestAddHeaderBlockWithoutNamespace1 extends TestCase {
+public class TestAddHeaderBlockWithoutNamespace1 implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPHeader header = soapFactory.createSOAPHeader(envelope);
         assertThatThrownBy(() -> header.addHeaderBlock("test", null)).isInstanceOf(OMException.class);

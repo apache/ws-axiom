@@ -22,19 +22,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**
  * Checks the content of the SOAP envelope returned by {@link
  * SOAPFactory#createDefaultSOAPMessage()}.
  */
-public class TestCreateDefaultSOAPMessage extends TestCase {
+public class TestCreateDefaultSOAPMessage implements MatrixTestCase {
     @Inject
     private SOAPSpec spec;
 
@@ -42,7 +42,7 @@ public class TestCreateDefaultSOAPMessage extends TestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPMessage message = soapFactory.createDefaultSOAPMessage();
         SOAPEnvelope env = message.getSOAPEnvelope();
         assertThat(env).isNotNull();

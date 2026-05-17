@@ -31,7 +31,7 @@ import org.w3c.dom.DocumentFragment;
  */
 public class TestCreateDocumentFragmentInterfaces extends OMDOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document =
                 metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         DocumentFragment fragment = document.createDocumentFragment();

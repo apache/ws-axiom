@@ -43,7 +43,7 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
     protected GenericXmlApplicationContext context;
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         // Set up a custom thread pool to improve thread names (for logging purposes)
         QueuedThreadPool threadPool = new QueuedThreadPool();
         threadPool.setName("jetty");
@@ -84,7 +84,7 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
     }
 
     @Override
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         context.close();
         context = null;
 

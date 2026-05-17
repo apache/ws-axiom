@@ -29,7 +29,7 @@ import org.apache.xerces.jaxp.validation.XMLSchemaFactory;
 
 public class TestValidator extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SchemaFactory factory = new XMLSchemaFactory();
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Schema schema =

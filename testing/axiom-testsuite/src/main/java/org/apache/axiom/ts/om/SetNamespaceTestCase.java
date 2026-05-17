@@ -24,13 +24,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public abstract class SetNamespaceTestCase extends TestCase {
+public abstract class SetNamespaceTestCase implements MatrixTestCase {
     /**
      * Common test parameters for {@link SetNamespaceTestCase} subclasses.
      *
@@ -86,7 +86,7 @@ public abstract class SetNamespaceTestCase extends TestCase {
     protected abstract void setNamespace(OMNamedInformationItem node, OMNamespace ns);
 
     @Override
-    protected final void runTest() throws Throwable {
+    public final void runTest() throws Throwable {
         OMElement element;
         OMNamedInformationItem node;
         if (context()) {

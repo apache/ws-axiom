@@ -23,14 +23,14 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestCreateSOAPHeaderBlockFromOMElement extends TestCase {
+public class TestCreateSOAPHeaderBlockFromOMElement implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -38,7 +38,7 @@ public class TestCreateSOAPHeaderBlockFromOMElement extends TestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement original = OMXMLBuilderFactory.createOMBuilder(
                         factory,
                         new StringReader("<wsa:To xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2004/08/addressing\">"

@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class TestCreateElementWithSupplementaryCharacter extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         String tagName = new String(new int[] {0x10000}, 0, 1);
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element elem = doc.createElement(tagName);

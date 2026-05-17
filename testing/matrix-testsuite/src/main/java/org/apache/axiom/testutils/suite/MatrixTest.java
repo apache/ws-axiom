@@ -22,25 +22,24 @@ import com.google.inject.Injector;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
-import junit.framework.TestCase;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.DynamicTest;
 
 /**
- * A leaf node that instantiates a {@link TestCase} subclass via Guice and executes it.
+ * A leaf node that instantiates a {@link MatrixTestCase} subclass via Guice and executes it.
  *
  * <p>The test class must have an injectable constructor (either a no-arg constructor or one
  * annotated with {@code @Inject}). Field injection is also supported. The injector received from
  * the ancestor {@link FanOutNode} chain will have bindings for all dimension types, plus any
  * implementation-level bindings from the root injector.
  *
- * <p>Once the instance is created, it is executed via {@link TestCase#runBare()}, which invokes the
- * full {@code setUp()} → {@code runTest()} → {@code tearDown()} lifecycle.
+ * <p>Once the instance is created, it is executed through the full {@link MatrixTestCase#setUp()}
+ * → {@link MatrixTestCase#runTest()} → {@link MatrixTestCase#tearDown()} lifecycle.
  */
 public class MatrixTest extends MatrixTestNode {
-    private final Class<? extends TestCase> testClass;
+    private final Class<? extends MatrixTestCase> testClass;
 
-    public MatrixTest(Class<? extends TestCase> testClass) {
+    public MatrixTest(Class<? extends MatrixTestCase> testClass) {
         this.testClass = testClass;
     }
 
@@ -53,9 +52,13 @@ public class MatrixTest extends MatrixTestNode {
             return Stream.empty();
         }
         return Stream.of(DynamicTest.dynamicTest(testClass.getSimpleName(), () -> {
-            TestCase testInstance = injector.getInstance(testClass);
-            testInstance.setName(testClass.getSimpleName());
-            testInstance.runBare();
+            MatrixTestCase testInstance = injector.getInstance(testClass);
+            testInstance.setUp();
+            try {
+                testInstance.runTest();
+            } finally {
+                testInstance.tearDown();
+            }
         }));
     }
 }

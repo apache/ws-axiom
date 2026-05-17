@@ -21,13 +21,13 @@ package org.apache.axiom.ts.soap12.faultreason;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.AltSOAPFactory;
 
-public class TestAddSOAPTextWithSOAPVersionMismatch extends TestCase {
+public class TestAddSOAPTextWithSOAPVersionMismatch implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -36,7 +36,7 @@ public class TestAddSOAPTextWithSOAPVersionMismatch extends TestCase {
     private SOAPFactory altSoapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPFault soap12Fault = soapFactory.createSOAPFault();
         SOAPFaultReason soap12FaultReason = soapFactory.createSOAPFaultReason(soap12Fault);
         SOAPFault soap11Fault = altSoapFactory.createSOAPFault();

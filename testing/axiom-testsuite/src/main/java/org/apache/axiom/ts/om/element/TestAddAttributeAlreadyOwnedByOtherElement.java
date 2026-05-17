@@ -22,21 +22,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Test that calling {@link OMElement#addAttribute(OMAttribute)} with an attribute that is already
  * owned by another element will clone the attribute.
  */
-public class TestAddAttributeAlreadyOwnedByOtherElement extends TestCase {
+public class TestAddAttributeAlreadyOwnedByOtherElement implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element1 = factory.createOMElement(new QName("test"));
         OMElement element2 = factory.createOMElement(new QName("test"));
         OMAttribute att1 = element1.addAttribute("test", "test", null);

@@ -26,7 +26,7 @@ import org.apache.axiom.ts.saaj.SAAJTestCase;
 /** Tests the behavior of {@link SOAPElement#addChildElement(String)}. */
 public class TestAddChildElementLocalName extends SAAJTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPElement root = newSOAPFactory().createElement("root", "p", "urn:test");
         SOAPElement element = root.addChildElement("child");
         assertThat(element.getLocalName()).isEqualTo("child");

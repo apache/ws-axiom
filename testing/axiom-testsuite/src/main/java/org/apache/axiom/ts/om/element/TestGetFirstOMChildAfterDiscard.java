@@ -22,24 +22,24 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMContainer#getFirstOMChild()} throws the expected {@link
  * NodeUnavailableException} if the element has been discarded before the first child could be
  * created.
  */
-public class TestGetFirstOMChildAfterDiscard extends TestCase {
+public class TestGetFirstOMChildAfterDiscard implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<element><!--comment--><a/><!--comment--></element>"))
                 .getDocumentElement();

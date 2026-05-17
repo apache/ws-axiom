@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
 
 public class TestCreateEntityReference extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         EntityReference entref = document.createEntityReference("myentity");
         assertThat(entref.getNodeType()).isEqualTo(Node.ENTITY_REFERENCE_NODE);

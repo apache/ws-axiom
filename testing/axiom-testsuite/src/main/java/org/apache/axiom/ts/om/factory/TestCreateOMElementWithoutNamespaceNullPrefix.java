@@ -43,7 +43,7 @@ public class TestCreateOMElementWithoutNamespaceNullPrefix extends CreateOMEleme
     }
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", null);
         assertThat(element.getLocalName()).isEqualTo("test");
         assertThat(element.getNamespace()).isNull();

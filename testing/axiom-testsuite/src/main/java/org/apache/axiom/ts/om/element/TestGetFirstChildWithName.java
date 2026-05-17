@@ -22,18 +22,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /** Tests the behavior of {@link OMElement#getFirstChildWithName(QName)}. */
-public class TestGetFirstChildWithName extends TestCase {
+public class TestGetFirstChildWithName implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMNamespace ns1 = factory.createOMNamespace("urn:ns1", "ns1");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns2", "ns2");
         OMElement parent = factory.createOMElement("root", null);

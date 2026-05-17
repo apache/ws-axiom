@@ -32,7 +32,7 @@ import org.w3c.dom.Node;
  */
 public class TestLookupNamespaceURIExplicit extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
 
         Element e1 = document.createElementNS("urn:ns0", "ns0:e1");

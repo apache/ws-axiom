@@ -27,7 +27,7 @@ import org.w3c.dom.NodeList;
 
 public class TestGetElementsByTagNameRecursive extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder()
                 .parse(TestGetElementsByTagNameRecursive.class.getResourceAsStream("numbers.xml"));
         Element element = doc.getDocumentElement();

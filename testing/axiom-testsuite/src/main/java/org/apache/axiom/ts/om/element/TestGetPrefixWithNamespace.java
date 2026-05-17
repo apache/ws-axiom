@@ -22,21 +22,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMNamedInformationItem#getPrefix()} returns the prefix when invoked on an
  * {@link OMElement} that has a namespace with a prefix.
  */
-public class TestGetPrefixWithNamespace extends TestCase {
+public class TestGetPrefixWithNamespace implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = factory.createOMElement(new QName("urn:ns", "test", "p"));
         assertThat(element.getPrefix()).isEqualTo("p");
     }

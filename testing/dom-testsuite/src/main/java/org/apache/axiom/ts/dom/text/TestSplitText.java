@@ -27,7 +27,7 @@ import org.w3c.dom.Text;
 
 public class TestSplitText extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         String textValue = "temp text value";
 
         Document doc = dbf.newDocumentBuilder().newDocument();

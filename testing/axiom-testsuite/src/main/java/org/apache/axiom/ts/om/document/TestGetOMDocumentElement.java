@@ -21,21 +21,21 @@ package org.apache.axiom.ts.om.document;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the result of {@link OMDocument#getOMDocumentElement()} after adding a child element to an
  * empty document.
  */
-public class TestGetOMDocumentElement extends TestCase {
+public class TestGetOMDocumentElement implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMDocument document = factory.createOMDocument();
         OMElement documentElement = factory.createOMElement("root", null, document);
         assertThat(document.getOMDocumentElement()).isSameAs(documentElement);

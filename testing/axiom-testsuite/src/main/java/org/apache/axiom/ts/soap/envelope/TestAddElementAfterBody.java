@@ -23,18 +23,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**
  * Test that attempts to add an arbitrary element to the SOAP envelope (after the body). This is
  * allowed in SOAP 1.1, but not in SOAP 1.2.
  */
-public class TestAddElementAfterBody extends TestCase {
+public class TestAddElementAfterBody implements MatrixTestCase {
     @Inject
     private SOAPSpec spec;
 
@@ -46,7 +46,7 @@ public class TestAddElementAfterBody extends TestCase {
     private boolean header;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPEnvelope env = soapFactory.createSOAPEnvelope();
         if (header) {
             soapFactory.createSOAPHeader(env);

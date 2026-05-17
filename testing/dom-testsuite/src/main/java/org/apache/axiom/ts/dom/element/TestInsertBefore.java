@@ -27,7 +27,7 @@ import org.w3c.dom.NodeList;
 
 public class TestInsertBefore extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
 
         Element parent1 = document.createElementNS(null, "parent1");

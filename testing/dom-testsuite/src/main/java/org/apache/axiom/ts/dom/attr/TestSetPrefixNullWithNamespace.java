@@ -32,7 +32,7 @@ import org.w3c.dom.Node;
  */
 public class TestSetPrefixNullWithNamespace extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Attr attr = document.createAttributeNS("urn:test", "p:test");
         attr.setPrefix(null);

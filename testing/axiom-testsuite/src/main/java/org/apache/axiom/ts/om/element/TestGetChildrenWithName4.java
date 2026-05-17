@@ -22,12 +22,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestGetChildrenWithName4 extends TestCase {
+public class TestGetChildrenWithName4 implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -36,7 +36,7 @@ public class TestGetChildrenWithName4 extends TestCase {
     private static final String NS_C = "urn://c";
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         // Create a document with 2 children, each named "sample" but
         // have different namespaces.
         OMNamespace a = factory.createOMNamespace(NS_A, "a");

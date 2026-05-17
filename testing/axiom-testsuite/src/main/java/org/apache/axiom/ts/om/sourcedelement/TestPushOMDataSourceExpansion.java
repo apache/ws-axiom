@@ -25,17 +25,17 @@ import java.util.Iterator;
 import java.util.Map;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
 
 /**
  * Tests the expansion of an {@link OMSourcedElement} backed by an {@link AbstractPushOMDataSource}.
  */
-public class TestPushOMDataSourceExpansion extends TestCase {
+public class TestPushOMDataSourceExpansion implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -62,7 +62,7 @@ public class TestPushOMDataSourceExpansion extends TestCase {
     private PushOMDataSourceScenario scenario;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         PushOMDataSource ds = new PushOMDataSource();
         OMElement element = factory.createOMElement(ds);
         Iterator<Map.Entry<String, String>> it =

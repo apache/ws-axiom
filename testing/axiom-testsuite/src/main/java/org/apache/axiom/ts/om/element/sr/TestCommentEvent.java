@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.io.StringReader;
 import javax.xml.stream.XMLStreamReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.xml.sax.InputSource;
 
-public class TestCommentEvent extends TestCase {
+public class TestCommentEvent implements MatrixTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -43,7 +43,7 @@ public class TestCommentEvent extends TestCase {
     private boolean cache;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMXMLParserWrapper builder =
                 builderFactory.getBuilder(metaFactory, new InputSource(new StringReader("<a><!--comment text--></a>")));
         OMElement element = builder.getDocumentElement();

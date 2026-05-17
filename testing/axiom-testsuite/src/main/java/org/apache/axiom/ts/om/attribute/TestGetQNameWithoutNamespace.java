@@ -22,21 +22,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMAttribute#getQName()} returns the correct value for an attribute (without
  * namespace) created by {@link OMFactory#createOMAttribute(String, OMNamespace, String)}.
  */
-public class TestGetQNameWithoutNamespace extends TestCase {
+public class TestGetQNameWithoutNamespace implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMAttribute attr = factory.createOMAttribute("name", null, "value");
         QName qname = attr.getQName();
         assertThat(qname.getLocalPart()).isEqualTo("name");

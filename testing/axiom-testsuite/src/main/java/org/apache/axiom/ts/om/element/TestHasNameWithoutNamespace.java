@@ -22,16 +22,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestHasNameWithoutNamespace extends TestCase {
+public class TestHasNameWithoutNamespace implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = factory.createOMElement("name", null);
         assertThat(element.hasName(new QName("name"))).isTrue();
         assertThat(element.hasName(new QName("urn:test", "name"))).isFalse();

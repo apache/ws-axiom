@@ -22,24 +22,24 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement(boolean)} with <code>
  * discardDocument</code> set to <code>true</code> and a document that has an epilog that is not
  * well formed. This situation should be detected.
  */
-public class TestGetDocumentElementWithDiscardDocumentIllFormedEpilog extends TestCase {
+public class TestGetDocumentElementWithDiscardDocumentIllFormedEpilog implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMXMLParserWrapper builder =
                 OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root/> there shouldn't be text here!"));
         OMElement element = builder.getDocumentElement(true);

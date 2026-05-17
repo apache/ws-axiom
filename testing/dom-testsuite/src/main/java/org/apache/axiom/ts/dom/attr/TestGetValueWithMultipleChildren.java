@@ -26,7 +26,7 @@ import org.w3c.dom.Document;
 
 public class TestGetValueWithMultipleChildren extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Attr attr = document.createAttributeNS(null, "attr");
         attr.appendChild(document.createTextNode("A"));

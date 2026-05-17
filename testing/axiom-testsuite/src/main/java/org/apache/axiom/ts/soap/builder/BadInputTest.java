@@ -23,13 +23,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class BadInputTest extends TestCase {
+public class BadInputTest implements MatrixTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -38,7 +38,7 @@ public class BadInputTest extends TestCase {
     private String file;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         assertThatThrownBy(() -> {
                     SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(
                                     metaFactory,

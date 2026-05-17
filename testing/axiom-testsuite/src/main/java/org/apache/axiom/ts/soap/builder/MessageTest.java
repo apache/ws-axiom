@@ -19,13 +19,13 @@
 package org.apache.axiom.ts.soap.builder;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSample;
 
-public class MessageTest extends TestCase {
+public class MessageTest implements MatrixTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -33,7 +33,7 @@ public class MessageTest extends TestCase {
     private SOAPSample message;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(
                         metaFactory, message.getInputStream(), null)
                 .getSOAPEnvelope();

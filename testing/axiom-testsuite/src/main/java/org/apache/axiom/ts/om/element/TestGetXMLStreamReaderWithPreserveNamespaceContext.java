@@ -27,18 +27,18 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean,
  * OMXMLStreamReaderConfiguration)} in conjunction with {@link
  * OMXMLStreamReaderConfiguration#isPreserveNamespaceContext()}.
  */
-public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends TestCase {
+public class TestGetXMLStreamReaderWithPreserveNamespaceContext implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -51,7 +51,7 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends TestCase
     private boolean cache;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         InputStream in = TestGetXMLStreamReaderWithPreserveNamespaceContext.class.getResourceAsStream("AXIOM-114.xml");
         OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, in).getDocumentElement();
         root.declareNamespace("http://example.org", "p");

@@ -21,16 +21,16 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestCreateOMEntityReferenceWithNullParent extends TestCase {
+public class TestCreateOMEntityReferenceWithNullParent implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMEntityReference entref = factory.createOMEntityReference(null, "testref");
         assertThat(entref.getParent()).isNull();
         assertThat(entref.getName()).isEqualTo("testref");

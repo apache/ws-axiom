@@ -22,11 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean,
@@ -35,12 +35,12 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
  * or redundant namespace declarations. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-485">AXIOM-485</a>.
  */
-public class TestGetXMLStreamReaderWithPreserveNamespaceContext2 extends TestCase {
+public class TestGetXMLStreamReaderWithPreserveNamespaceContext2 implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement root = OMXMLBuilderFactory.createOMBuilder(
                         factory,
                         TestGetXMLStreamReaderWithPreserveNamespaceContext2.class.getResourceAsStream("AXIOM-485.xml"))

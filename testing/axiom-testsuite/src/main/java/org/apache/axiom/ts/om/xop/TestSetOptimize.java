@@ -29,7 +29,6 @@ import jakarta.mail.util.ByteArrayDataSource;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
@@ -38,8 +37,9 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestSetOptimize extends TestCase {
+public class TestSetOptimize implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -48,7 +48,7 @@ public class TestSetOptimize extends TestCase {
     private boolean optimize;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         InputStream in = XOP_SPEC_SAMPLE.getInputStream();
         try {
             OMDocument document = OMXMLBuilderFactory.createOMBuilder(

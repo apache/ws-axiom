@@ -25,16 +25,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.io.StringReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /** Tests {@link OMContainer#removeChildren()} on an {@link OMContainer}. */
-public class TestRemoveChildren extends TestCase {
+public class TestRemoveChildren implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -47,7 +47,7 @@ public class TestRemoveChildren extends TestCase {
     private boolean accessDocumentElement;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<?pi data?><root>text</root>"))
                 .getDocument();

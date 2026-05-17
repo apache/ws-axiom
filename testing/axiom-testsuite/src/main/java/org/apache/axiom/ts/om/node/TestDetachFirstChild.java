@@ -22,14 +22,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /** Tests the behavior of {@link OMNode#detach()}. */
-public class TestDetachFirstChild extends TestCase {
+public class TestDetachFirstChild implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -38,7 +38,7 @@ public class TestDetachFirstChild extends TestCase {
     private boolean build;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement root = AXIOMUtil.stringToOM(factory, "<root><a/><b/></root>");
         if (build) {
             root.build();

@@ -23,11 +23,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
  * fly and returned as {@link SOAPHeaderBlock} instances by {@link
  * SOAPHeader#examineAllHeaderBlocks()}.
  */
-public class TestExamineAllHeaderBlocks extends TestCase {
+public class TestExamineAllHeaderBlocks implements MatrixTestCase {
     @Inject
     private SOAPSpec spec;
 
@@ -45,7 +45,7 @@ public class TestExamineAllHeaderBlocks extends TestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPHeader header = soapFactory.createSOAPHeader();
 
         // Add header blocks using DOM

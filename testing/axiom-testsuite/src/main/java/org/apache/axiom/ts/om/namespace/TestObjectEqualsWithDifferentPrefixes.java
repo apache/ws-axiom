@@ -21,20 +21,20 @@ package org.apache.axiom.ts.om.namespace;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link Object#equals(Object)} for {@link OMNamespace} instances with
  * different prefixes.
  */
-public class TestObjectEqualsWithDifferentPrefixes extends TestCase {
+public class TestObjectEqualsWithDifferentPrefixes implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMNamespace ns1 = factory.createOMNamespace("urn:ns", "ns1");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns", "ns2");
         assertThat(ns1.equals(ns2)).isFalse();

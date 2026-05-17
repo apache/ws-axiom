@@ -33,7 +33,7 @@ import org.w3c.dom.Node;
  */
 public class TestAppendChildSelf extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:test", "test");
         assertThatThrownBy(() -> element.appendChild(element))

@@ -26,21 +26,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link Iterator#remove()} can be used on the iterator returned by {@link
  * OMElement#getAllDeclaredNamespaces()} to remove a namespace declaration.
  */
-public class TestGetAllDeclaredNamespacesRemove extends TestCase {
+public class TestGetAllDeclaredNamespacesRemove implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         List<String> prefixes = Arrays.asList("a", "b", "c");
         for (String prefixToRemove : prefixes) {
             OMElement element = factory.createOMElement("test", null);

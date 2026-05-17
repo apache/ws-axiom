@@ -21,21 +21,21 @@ package org.apache.axiom.ts.om.factory;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link OMFactory#createOMElement(OMDataSource, String, OMNamespace)} if the
  * data source is <code>null</code>.
  */
-public class TestCreateOMElementWithNullOMDataSource1 extends TestCase {
+public class TestCreateOMElementWithNullOMDataSource1 implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         assertThatThrownBy(() -> factory.createOMElement(null, "test", factory.createOMNamespace("urn:test", "p")))
                 .isInstanceOf(IllegalArgumentException.class);
     }

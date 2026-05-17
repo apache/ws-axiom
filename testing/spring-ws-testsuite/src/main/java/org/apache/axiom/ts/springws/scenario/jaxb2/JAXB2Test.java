@@ -26,7 +26,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 
 public class JAXB2Test extends ScenarioTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         GetQuoteRequest request = new GetQuoteRequest();
         request.setSymbol("GOOG");
         GetQuoteResponse response =

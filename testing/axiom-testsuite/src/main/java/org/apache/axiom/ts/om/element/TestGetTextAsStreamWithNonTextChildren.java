@@ -22,18 +22,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import java.io.Reader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.commons.io.IOUtils;
 
-public class TestGetTextAsStreamWithNonTextChildren extends TestCase {
+public class TestGetTextAsStreamWithNonTextChildren implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(factory, "<a>A<b>B</b>C</a>");
         Reader in = element.getTextAsStream(true);
         assertThat(IOUtils.toString(in)).isEqualTo(element.getText());

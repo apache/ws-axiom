@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
 
 public class TestSetAttributeNodeNSForeignImplementation extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
         Attr attr = mock(Attr.class);

@@ -21,18 +21,18 @@ package org.apache.axiom.ts.om.sourcedelement;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 @SuppressWarnings("deprecation")
-public class TestSetDataSourceOnAlreadyExpandedElement extends TestCase {
+public class TestSetDataSourceOnAlreadyExpandedElement implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(factory, false, true);
         // Make sure the OMSourcedElement is expanded
         element.getFirstOMChild();

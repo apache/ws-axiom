@@ -21,13 +21,13 @@ package org.apache.axiom.ts.soap.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-public class TestGetNamespace extends TestCase {
+public class TestGetNamespace implements MatrixTestCase {
     @Inject
     private SOAPSpec spec;
 
@@ -35,7 +35,7 @@ public class TestGetNamespace extends TestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMNamespace ns = soapFactory.getNamespace();
         assertThat(ns.getPrefix()).isEqualTo(SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         assertThat(ns.getNamespaceURI()).isEqualTo(spec.getEnvelopeNamespaceURI());

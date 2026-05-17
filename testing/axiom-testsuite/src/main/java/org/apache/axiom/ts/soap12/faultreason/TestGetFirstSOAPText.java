@@ -21,17 +21,17 @@ package org.apache.axiom.ts.soap12.faultreason;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestGetFirstSOAPText extends TestCase {
+public class TestGetFirstSOAPText implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
         SOAPFaultReason faultReason = soapFactory.createSOAPFaultReason(fault);
         assertThat(faultReason.getFirstSOAPText()).isNull();

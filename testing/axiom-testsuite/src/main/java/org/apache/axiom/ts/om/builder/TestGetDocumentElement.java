@@ -25,11 +25,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.io.StringReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.jspecify.annotations.Nullable;
 import org.xml.sax.InputSource;
@@ -38,7 +38,7 @@ import org.xml.sax.InputSource;
  * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement()} and {@link
  * OMXMLParserWrapper#getDocumentElement(boolean)}.
  */
-public class TestGetDocumentElement extends TestCase {
+public class TestGetDocumentElement implements MatrixTestCase {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -51,7 +51,7 @@ public class TestGetDocumentElement extends TestCase {
     private Boolean discardDocument;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMXMLParserWrapper builder = builderFactory.getBuilder(
                 metaFactory, new InputSource(new StringReader("<!--comment1--><root/><!--comment2-->")));
         OMElement element;

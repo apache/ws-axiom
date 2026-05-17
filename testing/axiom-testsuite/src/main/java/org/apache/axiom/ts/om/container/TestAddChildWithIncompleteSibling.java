@@ -23,12 +23,12 @@ import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests that {@link OMContainer#addChild(OMNode)} works properly on a container that has been
@@ -37,7 +37,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
  * <p>This is a regression test for an issue in older Axiom versions (where the {@link
  * OMContainer#build()}) method would fail on {@link OMDocument} instances.
  */
-public class TestAddChildWithIncompleteSibling extends TestCase {
+public class TestAddChildWithIncompleteSibling implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
@@ -45,7 +45,7 @@ public class TestAddChildWithIncompleteSibling extends TestCase {
     private OMContainerFactory containerFactory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMContainer container = containerFactory.create(factory);
         container.addChild(OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>"))
                 .getDocumentElement(true));

@@ -23,12 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import java.io.StringReader;
 import java.util.Iterator;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link OMContainer#addChild(OMNode)} if the parent has not been built
@@ -37,12 +37,12 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
  *
  * @see org.apache.axiom.ts.om.document.TestAddChildIncomplete
  */
-public class TestAddChildIncomplete extends TestCase {
+public class TestAddChildIncomplete implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/></root>"))
                 .getDocumentElement();
         parent.addChild(factory.createOMElement("c", null));

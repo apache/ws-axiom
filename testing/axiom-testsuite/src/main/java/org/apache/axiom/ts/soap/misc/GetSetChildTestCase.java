@@ -19,14 +19,14 @@
 package org.apache.axiom.ts.soap.misc;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-public abstract class GetSetChildTestCase extends TestCase {
+public abstract class GetSetChildTestCase implements MatrixTestCase {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -41,7 +41,7 @@ public abstract class GetSetChildTestCase extends TestCase {
     }
 
     @Override
-    protected final void runTest() throws Throwable {
+    public final void runTest() throws Throwable {
         runTest(
                 type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory),
                 childType.getAdapter(SOAPElementTypeAdapter.class));

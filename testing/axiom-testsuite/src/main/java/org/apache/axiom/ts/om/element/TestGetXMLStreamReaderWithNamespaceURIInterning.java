@@ -23,23 +23,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean,
  * OMXMLStreamReaderConfiguration)} with {@link
  * OMXMLStreamReaderConfiguration#isNamespaceURIInterning()} set to <code>true</code>.
  */
-public class TestGetXMLStreamReaderWithNamespaceURIInterning extends TestCase {
+public class TestGetXMLStreamReaderWithNamespaceURIInterning implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         // Use "new String" to create String objects that are not interned
         OMNamespace ns1 = factory.createOMNamespace(new String("urn:ns1"), "p");
         OMNamespace ns2 = factory.createOMNamespace(new String("urn:ns2"), "q");

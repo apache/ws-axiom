@@ -24,17 +24,17 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
 import java.io.StringReader;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestDetachWithDifferentBuilder extends TestCase {
+public class TestDetachWithDifferentBuilder implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         String xml1 = "<root><a/><b/></root>";
         String xml2 = "<child>test</child>";
         OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml1))

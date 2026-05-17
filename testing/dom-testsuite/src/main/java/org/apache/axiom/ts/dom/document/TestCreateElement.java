@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class TestCreateElement extends DOMTestCase {
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         String tagName = "LocalName";
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element elem = doc.createElement(tagName);

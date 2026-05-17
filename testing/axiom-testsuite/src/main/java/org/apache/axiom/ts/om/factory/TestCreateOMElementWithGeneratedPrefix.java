@@ -43,7 +43,7 @@ public class TestCreateOMElementWithGeneratedPrefix extends CreateOMElementTestC
     }
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMElement element =
                 variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "urn:test", null);
         assertThat(element.getLocalName()).isEqualTo("test");

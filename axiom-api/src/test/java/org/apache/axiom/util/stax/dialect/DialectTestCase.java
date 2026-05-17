@@ -19,9 +19,9 @@
 package org.apache.axiom.util.stax.dialect;
 
 import com.google.inject.Inject;
-import junit.framework.TestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public abstract class DialectTestCase extends TestCase {
+public abstract class DialectTestCase implements MatrixTestCase {
     @Inject
     protected StAXImplementationAdapter staxImpl;
 }

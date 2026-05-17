@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.ds.StringOMDataSource;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestSerializeModifiedOMSEWithNonDestructiveDataSource extends TestCase {
+public class TestSerializeModifiedOMSEWithNonDestructiveDataSource implements MatrixTestCase {
     @Inject
     private OMFactory factory;
 
     @Override
-    protected void runTest() throws Throwable {
+    public void runTest() throws Throwable {
         OMDataSourceExt ds = new StringOMDataSource("<element><child/></element>");
         assertThat(ds.isDestructiveWrite()).isFalse();
 
