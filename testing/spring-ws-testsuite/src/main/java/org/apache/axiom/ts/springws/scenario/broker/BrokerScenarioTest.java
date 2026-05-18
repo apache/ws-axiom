@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.Locale;
 import javax.xml.transform.Source;
 import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
+import org.springframework.context.ApplicationContext;
 import org.springframework.ws.server.endpoint.annotation.XPathParam;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
@@ -41,7 +42,7 @@ import org.springframework.ws.soap.client.SoapFaultClientException;
  */
 public class BrokerScenarioTest extends ScenarioTestCase {
     @Override
-    public void runTest() throws Throwable {
+    protected void runScenario(ApplicationContext context) throws Throwable {
         BrokerClient client = context.getBean(BrokerClient.class);
 
         Order order = new Order();

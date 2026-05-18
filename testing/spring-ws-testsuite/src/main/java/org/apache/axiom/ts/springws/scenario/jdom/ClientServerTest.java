@@ -25,11 +25,12 @@ import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.transform.JDOMResult;
 import org.jdom2.transform.JDOMSource;
+import org.springframework.context.ApplicationContext;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 public class ClientServerTest extends ScenarioTestCase {
     @Override
-    public void runTest() throws Throwable {
+    protected void runScenario(ApplicationContext context) throws Throwable {
         JDOMSource source = new JDOMSource(new SAXBuilder()
                 .build(ClientServerTest.class.getResourceAsStream("request.xml"))
                 .getRootElement());

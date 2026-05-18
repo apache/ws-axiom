@@ -22,11 +22,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
 import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
+import org.springframework.context.ApplicationContext;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 public class JAXB2Test extends ScenarioTestCase {
     @Override
-    public void runTest() throws Throwable {
+    protected void runScenario(ApplicationContext context) throws Throwable {
         GetQuoteRequest request = new GetQuoteRequest();
         request.setSymbol("GOOG");
         GetQuoteResponse response =
