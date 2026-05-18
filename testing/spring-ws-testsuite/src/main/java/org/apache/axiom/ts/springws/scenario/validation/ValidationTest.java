@@ -25,12 +25,13 @@ import static org.assertj.core.api.Assertions.within;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
+import org.springframework.context.ApplicationContext;
 import org.springframework.ws.soap.SoapFaultDetailElement;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
 public class ValidationTest extends ScenarioTestCase {
     @Override
-    public void runTest() throws Throwable {
+    protected void runScenario(ApplicationContext context) throws Throwable {
         StockQuoteClient client = context.getBean(StockQuoteClient.class);
 
         assertThat(client.getQuote("GOOG")).isCloseTo(105.37, within(0.001));

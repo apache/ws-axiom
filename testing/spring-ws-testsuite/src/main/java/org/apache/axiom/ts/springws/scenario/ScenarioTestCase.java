@@ -26,6 +26,7 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
@@ -39,15 +40,12 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
     @Inject
     private ScenarioConfig config;
 
-    private Server server;
-    protected GenericXmlApplicationContext context;
-
     @Override
-    public void setUp() throws Exception {
+    public final void runTest() throws Throwable {
         // Set up a custom thread pool to improve thread names (for logging purposes)
         QueuedThreadPool threadPool = new QueuedThreadPool();
         threadPool.setName("jetty");
-        server = new Server(threadPool);
+        Server server = new Server(threadPool);
 
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(0);
@@ -71,24 +69,27 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
         server.setHandler(handler);
         server.start();
 
-        context = new GenericXmlApplicationContext();
-        MockPropertySource propertySource = new MockPropertySource("client-properties");
-        propertySource.setProperty("port", connector.getLocalPort());
-        context.getEnvironment()
-                .getPropertySources()
-                .replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
-        configureContext(
-                context, config.getClientMessageFactoryConfigurator(), new ClassPathResource("client.xml", getClass()));
-
-        context.refresh();
+        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
+        try {
+            MockPropertySource propertySource = new MockPropertySource("client-properties");
+            propertySource.setProperty("port", connector.getLocalPort());
+            context.getEnvironment()
+                    .getPropertySources()
+                    .replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
+            configureContext(
+                    context,
+                    config.getClientMessageFactoryConfigurator(),
+                    new ClassPathResource("client.xml", getClass()));
+            context.refresh();
+            try {
+                runScenario(context);
+            } finally {
+                context.close();
+            }
+        } finally {
+            server.stop();
+        }
     }
 
-    @Override
-    public void tearDown() throws Exception {
-        context.close();
-        context = null;
-
-        server.stop();
-        server = null;
-    }
+    protected abstract void runScenario(ApplicationContext context) throws Throwable;
 }
