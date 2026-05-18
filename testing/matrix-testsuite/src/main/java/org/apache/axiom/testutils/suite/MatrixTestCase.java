@@ -19,8 +19,7 @@
 package org.apache.axiom.testutils.suite;
 
 /**
- * Interface for matrix test cases. Defines the three-phase lifecycle ({@link #setUp()} &rarr;
- * {@link #runTest()} &rarr; {@link #tearDown()}) used by {@link MatrixTest}.
+ * Interface for matrix test cases. Used by {@link MatrixTest}.
  *
  * <p>This replaces the use of {@code junit.framework.TestCase} as the base type required by {@link
  * MatrixTest}. Test classes should implement this interface (directly or through a domain-specific
@@ -28,17 +27,6 @@ package org.apache.axiom.testutils.suite;
  * implement {@link #runTest()}.
  */
 public interface MatrixTestCase {
-    /**
-     * Sets up the test. Called before {@link #runTest()}. The default implementation does nothing.
-     */
-    default void setUp() throws Exception {}
-
     /** Runs the test logic. Implementing classes must provide this method. */
     void runTest() throws Throwable;
-
-    /**
-     * Tears down the test. Called after {@link #runTest()}, even if it throws. The default
-     * implementation does nothing.
-     */
-    default void tearDown() throws Exception {}
 }

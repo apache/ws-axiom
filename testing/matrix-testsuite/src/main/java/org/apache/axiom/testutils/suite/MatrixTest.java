@@ -33,8 +33,7 @@ import org.junit.jupiter.api.DynamicTest;
  * the ancestor {@link FanOutNode} chain will have bindings for all dimension types, plus any
  * implementation-level bindings from the root injector.
  *
- * <p>Once the instance is created, it is executed through the full {@link MatrixTestCase#setUp()}
- * → {@link MatrixTestCase#runTest()} → {@link MatrixTestCase#tearDown()} lifecycle.
+ * <p>Once the instance is created, {@link MatrixTestCase#runTest()} is invoked.
  */
 public class MatrixTest extends MatrixTestNode {
     private final Class<? extends MatrixTestCase> testClass;
@@ -53,12 +52,7 @@ public class MatrixTest extends MatrixTestNode {
         }
         return Stream.of(DynamicTest.dynamicTest(testClass.getSimpleName(), () -> {
             MatrixTestCase testInstance = injector.getInstance(testClass);
-            testInstance.setUp();
-            try {
-                testInstance.runTest();
-            } finally {
-                testInstance.tearDown();
-            }
+            testInstance.runTest();
         }));
     }
 }
