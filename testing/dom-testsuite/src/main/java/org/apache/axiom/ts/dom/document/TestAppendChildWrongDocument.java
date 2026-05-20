@@ -21,8 +21,10 @@ package org.apache.axiom.ts.dom.document;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import javax.xml.parsers.DocumentBuilder;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,7 +34,10 @@ import org.w3c.dom.Node;
  * Tests that {@link Node#appendChild(Node)} throws an appropriate exception if an attempt is made
  * to append a child that has a different owner document.
  */
-public class TestAppendChildWrongDocument extends DOMTestCase {
+public class TestAppendChildWrongDocument implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         DocumentBuilder documentBuilder = dbf.newDocumentBuilder();

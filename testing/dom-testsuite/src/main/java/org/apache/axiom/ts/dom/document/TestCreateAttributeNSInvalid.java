@@ -23,12 +23,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.ts.dom.DOMUtils;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 
-public class TestCreateAttributeNSInvalid extends DOMTestCase {
+public class TestCreateAttributeNSInvalid implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Inject
     private QName qname;
 

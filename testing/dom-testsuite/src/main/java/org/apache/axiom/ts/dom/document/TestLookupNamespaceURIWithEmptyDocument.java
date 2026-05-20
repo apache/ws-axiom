@@ -20,12 +20,17 @@ package org.apache.axiom.ts.dom.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.axiom.ts.dom.DOMTestCase;
+import com.google.inject.Inject;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /** Tests the behavior of {@link Node#lookupNamespaceURI(String)} on an empty {@link Document}. */
-public class TestLookupNamespaceURIWithEmptyDocument extends DOMTestCase {
+public class TestLookupNamespaceURIWithEmptyDocument implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

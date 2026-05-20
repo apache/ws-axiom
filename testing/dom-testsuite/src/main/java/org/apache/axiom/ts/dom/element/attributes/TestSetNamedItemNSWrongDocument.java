@@ -21,14 +21,19 @@ package org.apache.axiom.ts.dom.element.attributes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.inject.Inject;
 import javax.xml.parsers.DocumentBuilder;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class TestSetNamedItemNSWrongDocument extends DOMTestCase {
+public class TestSetNamedItemNSWrongDocument implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         DocumentBuilder db = dbf.newDocumentBuilder();

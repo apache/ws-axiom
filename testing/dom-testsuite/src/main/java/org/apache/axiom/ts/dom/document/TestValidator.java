@@ -19,15 +19,20 @@
 
 package org.apache.axiom.ts.dom.document;
 
+import com.google.inject.Inject;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.xerces.jaxp.validation.XMLSchemaFactory;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestValidator extends DOMTestCase {
+public class TestValidator implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         SchemaFactory factory = new XMLSchemaFactory();

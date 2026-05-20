@@ -22,14 +22,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.ts.dom.DOMUtils;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
-public class TestSetAttributeNS extends DOMTestCase {
+public class TestSetAttributeNS implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Inject
     private QName qname;
 

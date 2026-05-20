@@ -20,7 +20,9 @@ package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.axiom.ts.dom.DOMTestCase;
+import com.google.inject.Inject;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -28,7 +30,10 @@ import org.w3c.dom.Element;
  * Tests that the DOM implementation is not affected by <a
  * href="https://issues.apache.org/jira/browse/XERCESJ-1586">XERCESJ-1586</a>.
  */
-public class TestLookupNamespaceURIXercesJ1586 extends DOMTestCase {
+public class TestLookupNamespaceURIXercesJ1586 implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

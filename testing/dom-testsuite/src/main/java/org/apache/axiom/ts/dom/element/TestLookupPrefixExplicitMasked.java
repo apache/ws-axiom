@@ -20,8 +20,10 @@ package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -31,7 +33,10 @@ import org.xml.sax.InputSource;
  * declaration is masked by another namespace declaration, i.e. if the corresponding prefix is
  * redeclared.
  */
-public class TestLookupPrefixExplicitMasked extends DOMTestCase {
+public class TestLookupPrefixExplicitMasked implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder()

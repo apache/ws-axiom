@@ -20,7 +20,9 @@ package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.axiom.ts.dom.DOMTestCase;
+import com.google.inject.Inject;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,7 +32,10 @@ import org.w3c.dom.Node;
  * namespaces defined implicitly by the namespace prefix/URI of the element and its ancestors, i.e.
  * for namespaces not defined explicitly by attributes representing namespace declarations.
  */
-public class TestLookupNamespaceURIImplicit extends DOMTestCase {
+public class TestLookupNamespaceURIImplicit implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
 

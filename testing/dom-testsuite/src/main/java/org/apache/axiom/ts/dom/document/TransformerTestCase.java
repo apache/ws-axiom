@@ -19,10 +19,10 @@
 package org.apache.axiom.ts.dom.document;
 
 import com.google.inject.Inject;
-import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
+import org.junit.jupiter.api.function.Executable;
 
-public abstract class TransformerTestCase extends DOMTestCase {
+public abstract class TransformerTestCase implements Executable {
     @Inject
     protected XSLTImplementation xsltImplementation;
 }

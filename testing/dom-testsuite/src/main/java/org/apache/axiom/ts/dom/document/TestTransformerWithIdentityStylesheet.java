@@ -21,7 +21,9 @@ package org.apache.axiom.ts.dom.document;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
@@ -31,6 +33,9 @@ import org.w3c.dom.Element;
 // This test failed with Saxon 8.9 because NodeImpl#compareDocumentPosition
 // threw an UnsupportedOperationException instead of a DOMException.
 public class TestTransformerWithIdentityStylesheet extends TransformerTestCase {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();

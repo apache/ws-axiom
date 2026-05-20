@@ -20,8 +20,10 @@ package org.apache.axiom.ts.dom.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -32,7 +34,10 @@ import org.xml.sax.InputSource;
  * Test that whitespace around the document element is discarded (or not visible). Indeed, DOM
  * doesn't allow text nodes as children of a document.
  */
-public class TestWhitespaceAroundDocumentElement extends DOMTestCase {
+public class TestWhitespaceAroundDocumentElement implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(" <!-- --> <root/> ")));

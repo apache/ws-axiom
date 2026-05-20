@@ -20,8 +20,10 @@ package org.apache.axiom.ts.dom.documentfragment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.XMLConstants;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
@@ -32,7 +34,10 @@ import org.w3c.dom.Node;
  * returns <code>null</code> (in contrast to {@link Document}), even if one of its children has a
  * matching namespace declaration.
  */
-public class TestLookupNamespaceURI extends DOMTestCase {
+public class TestLookupNamespaceURI implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
