@@ -26,18 +26,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} when used to set a
  * {@link SOAPEnvelope} as the root element of a {@link SOAPMessage}.
  */
-public class TestSetOMDocumentElement implements MatrixTestCase {
+public class TestSetOMDocumentElement implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPMessage message = soapFactory.createSOAPMessage();
         OMElement envelope = soapFactory.getDefaultEnvelope();
         message.setOMDocumentElement(envelope);

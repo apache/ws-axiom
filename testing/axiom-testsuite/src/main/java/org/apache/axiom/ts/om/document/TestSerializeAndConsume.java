@@ -26,8 +26,8 @@ import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.commons.io.output.NullOutputStream;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link
@@ -35,12 +35,12 @@ import org.apache.commons.io.output.NullOutputStream;
  * {@link OMDocument} instance. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-24">AXIOM-24</a>.
  */
-public class TestSerializeAndConsume implements MatrixTestCase {
+public class TestSerializeAndConsume implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<elem>text</elem>"))
                 .getDocument();
         document.serializeAndConsume(NullOutputStream.INSTANCE);

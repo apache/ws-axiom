@@ -26,14 +26,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.xpath.AXIOMXPath;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestAddNamespaces implements MatrixTestCase {
+public class TestAddNamespaces implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement root1 =
                 AXIOMUtil.stringToOM(factory, "<ns1:root xmlns:ns1='urn:ns1'><ns1:child xmlns:ns2='urn:ns2'/></root>");
         OMElement root2 =

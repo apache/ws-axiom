@@ -36,7 +36,7 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.RandomUtils;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the content of the root part of an XOP message is buffered, i.e. that an attachment
@@ -52,12 +52,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  *       checks that this feature is working as expected.
  * </ul>
  */
-public class TestReadAttachmentBeforeRootPartComplete implements MatrixTestCase {
+public class TestReadAttachmentBeforeRootPartComplete implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
 
         // Programmatically create the message
         OMElement orgRoot = factory.createOMElement("root", null);

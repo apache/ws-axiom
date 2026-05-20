@@ -26,18 +26,18 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#setText(QName)} if the {@link QName} has a namespace URI
  * but an empty prefix. In this case, the method is expected to generate a prefix.
  */
-public class TestSetTextQNameWithEmptyPrefix implements MatrixTestCase {
+public class TestSetTextQNameWithEmptyPrefix implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("test", null);
         QName qname = new QName("urn:test", "test");
         element.setText(qname);

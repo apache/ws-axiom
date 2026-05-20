@@ -29,13 +29,13 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the {@link XMLStreamReader} returned by {@link OMContainer#getXMLStreamReader()} for
  * an OM tree created by a builder correctly implements the {@link DTDReader} extension.
  */
-public class TestDTDReaderFromParser implements MatrixTestCase {
+public class TestDTDReaderFromParser implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -48,7 +48,7 @@ public class TestDTDReaderFromParser implements MatrixTestCase {
     private boolean cache;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument doc = OMXMLBuilderFactory.createOMBuilder(
                         factory,
                         StAXParserConfiguration.STANDALONE,

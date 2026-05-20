@@ -29,7 +29,7 @@ import org.w3c.dom.NamedNodeMap;
 /** Tests the behavior of {@link SOAPElement#addChildElement(String, String, String)}. */
 public class TestAddChildElementLocalNamePrefixAndURI extends SAAJTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPElement root = newSOAPFactory().createElement("root", "ns1", "urn:ns1");
         SOAPElement element = root.addChildElement("child", "ns2", "urn:ns2");
         assertThat(element.getLocalName()).isEqualTo("child");

@@ -32,7 +32,7 @@ import org.w3c.dom.CDATASection;
  */
 public class TestCreateOMTextCDATASection extends OMDOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMText text = metaFactory.getOMFactory().createOMText("cdata section content", OMNode.CDATA_SECTION_NODE);
         assertThat(text).isInstanceOf(CDATASection.class);
     }

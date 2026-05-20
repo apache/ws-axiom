@@ -41,7 +41,7 @@ public class TestCreateOMElementWithoutNamespace3 extends CreateOMElementTestCas
     }
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement grandparent = factory.createOMElement("grandparent", factory.createOMNamespace("urn:ns1", ""));
         OMElement parent = factory.createOMElement("parent", factory.createOMNamespace("urn:ns2", "p"), grandparent);
         parent.declareDefaultNamespace("");

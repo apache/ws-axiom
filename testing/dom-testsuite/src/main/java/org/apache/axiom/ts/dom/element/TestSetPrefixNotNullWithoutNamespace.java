@@ -33,7 +33,7 @@ import org.w3c.dom.Node;
  */
 public class TestSetPrefixNotNullWithoutNamespace extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
         assertThatThrownBy(() -> element.setPrefix("p"))

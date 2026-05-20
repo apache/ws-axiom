@@ -25,15 +25,15 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Test {@link OMElement#getAllAttributes()} on a programmatically created document. */
-public class TestGetAllAttributes1 implements MatrixTestCase {
+public class TestGetAllAttributes1 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("test", null);
         element.addAttribute("attr1", "value1", null);
         element.addAttribute("attr2", "value2", null);

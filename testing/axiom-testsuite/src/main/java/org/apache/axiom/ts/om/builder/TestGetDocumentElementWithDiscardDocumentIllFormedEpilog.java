@@ -27,19 +27,19 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement(boolean)} with <code>
  * discardDocument</code> set to <code>true</code> and a document that has an epilog that is not
  * well formed. This situation should be detected.
  */
-public class TestGetDocumentElementWithDiscardDocumentIllFormedEpilog implements MatrixTestCase {
+public class TestGetDocumentElementWithDiscardDocumentIllFormedEpilog implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMXMLParserWrapper builder =
                 OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root/> there shouldn't be text here!"));
         OMElement element = builder.getDocumentElement(true);

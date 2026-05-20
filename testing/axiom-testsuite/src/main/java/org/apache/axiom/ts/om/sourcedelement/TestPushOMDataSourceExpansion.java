@@ -29,13 +29,13 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the expansion of an {@link OMSourcedElement} backed by an {@link AbstractPushOMDataSource}.
  */
-public class TestPushOMDataSourceExpansion implements MatrixTestCase {
+public class TestPushOMDataSourceExpansion implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -62,7 +62,7 @@ public class TestPushOMDataSourceExpansion implements MatrixTestCase {
     private PushOMDataSourceScenario scenario;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         PushOMDataSource ds = new PushOMDataSource();
         OMElement element = factory.createOMElement(ds);
         Iterator<Map.Entry<String, String>> it =

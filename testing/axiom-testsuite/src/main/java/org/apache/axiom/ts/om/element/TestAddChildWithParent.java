@@ -24,19 +24,19 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test that {@link org.apache.axiom.om.OMContainer#addChild(org.apache.axiom.om.OMNode)} behaves
  * correctly if the child to be added already has a parent.
  */
 // TODO: update Javadoc of OMContainer
-public class TestAddChildWithParent implements MatrixTestCase {
+public class TestAddChildWithParent implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element1 = factory.createOMElement("test1", null);
         OMElement element2 = factory.createOMElement("test2", null);
         OMText text = factory.createOMText("test");

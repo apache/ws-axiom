@@ -29,10 +29,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests the behavior of {@link OMNode#detach()}. */
-public class TestDetach implements MatrixTestCase {
+public class TestDetach implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -45,7 +45,7 @@ public class TestDetach implements MatrixTestCase {
     private boolean build;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMContainer root;
         if (document) {
             root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<!--a--><b/><!--c-->"))

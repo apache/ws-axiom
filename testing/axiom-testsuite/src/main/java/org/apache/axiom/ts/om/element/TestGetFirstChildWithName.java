@@ -25,15 +25,15 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests the behavior of {@link OMElement#getFirstChildWithName(QName)}. */
-public class TestGetFirstChildWithName implements MatrixTestCase {
+public class TestGetFirstChildWithName implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace ns1 = factory.createOMNamespace("urn:ns1", "ns1");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns2", "ns2");
         OMElement parent = factory.createOMElement("root", null);

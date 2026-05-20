@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetOrCreateHeader implements MatrixTestCase {
+public class TestGetOrCreateHeader implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         SOAPHeader header = (SOAPHeader) envelope.getFirstOMChild();
         assertThat(envelope.getOrCreateHeader()).isSameAs(header);

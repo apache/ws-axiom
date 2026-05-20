@@ -25,19 +25,19 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMElement#getAttributeValue(QName)} causes expansion of {@link
  * OMSourcedElement} instances.
  */
-public class TestGetAttributeValue implements MatrixTestCase {
+public class TestGetAttributeValue implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMSourcedElement element = factory.createOMElement(new PullOMDataSource("<root attr='value'/>"), "root", null);
         assertThat(element.getAttributeValue(new QName("attr"))).isEqualTo("value");
     }

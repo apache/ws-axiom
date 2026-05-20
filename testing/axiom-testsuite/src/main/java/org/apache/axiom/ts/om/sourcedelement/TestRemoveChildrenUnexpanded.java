@@ -27,19 +27,19 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests {@link OMContainer#removeChildren()} on an {@link OMSourcedElement} that is not expanded.
  * In this case the sourced element needs to be expanded to build any attributes present on the
  * element and to ensure that the information about the name of the element is complete.
  */
-public class TestRemoveChildrenUnexpanded implements MatrixTestCase {
+public class TestRemoveChildrenUnexpanded implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMSourcedElement element =
                 factory.createOMElement(new StringOMDataSource("<element attr='value'><a/></element>"));
         element.removeChildren();

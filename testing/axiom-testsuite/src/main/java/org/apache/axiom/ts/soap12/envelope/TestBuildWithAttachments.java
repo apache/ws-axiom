@@ -28,15 +28,15 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestBuildWithAttachments implements MatrixTestCase {
+public class TestBuildWithAttachments implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         MTOMSample sample = MTOMSample.SAMPLE1;
         InputStream in = sample.getInputStream();
         MultipartBody mb = MultipartBody.builder()

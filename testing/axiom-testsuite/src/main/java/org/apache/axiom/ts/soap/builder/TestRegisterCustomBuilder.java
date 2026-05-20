@@ -31,12 +31,12 @@ import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestRegisterCustomBuilder implements MatrixTestCase {
+public class TestRegisterCustomBuilder implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -44,7 +44,7 @@ public class TestRegisterCustomBuilder implements MatrixTestCase {
     private SOAPSpec spec;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPModelBuilder builder = SOAPSampleSet.WSA
                 .getMessage(spec)
                 .getAdapter(SOAPSampleAdapter.class)

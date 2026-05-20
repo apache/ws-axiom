@@ -26,14 +26,14 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that adding an attribute doesn't create an additional namespace declaration if a
  * corresponding declaration already exists on the element.
  */
-public class TestAddAttributeWithExistingNamespaceDeclarationOnSameElement implements MatrixTestCase {
+public class TestAddAttributeWithExistingNamespaceDeclarationOnSameElement implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -41,7 +41,7 @@ public class TestAddAttributeWithExistingNamespaceDeclarationOnSameElement imple
     private AddAttributeStrategy strategy;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
         element.declareNamespace(ns);

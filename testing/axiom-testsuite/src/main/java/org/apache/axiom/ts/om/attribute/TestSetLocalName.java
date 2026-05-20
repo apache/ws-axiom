@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestSetLocalName implements MatrixTestCase {
+public class TestSetLocalName implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMAttribute attr = factory.createOMAttribute("test", factory.createOMNamespace("urn:test", "p"), "value");
         attr.setLocalName("test2");
         assertThat(attr.getLocalName()).isEqualTo("test2");

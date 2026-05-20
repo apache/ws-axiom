@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an
@@ -35,12 +35,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
-public class TestGetNamespaceNormalized implements MatrixTestCase {
+public class TestGetNamespaceNormalized implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("", "");
         OMAttribute attr = factory.createOMAttribute("parent", ns, "value");
         assertThat(attr.getNamespace()).isNull();

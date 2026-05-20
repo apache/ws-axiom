@@ -23,11 +23,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests the behavior of {@link org.apache.axiom.soap.SOAPFactory#getDefaultFaultEnvelope()}. */
-public class TestGetDefaultFaultEnvelope implements MatrixTestCase {
+public class TestGetDefaultFaultEnvelope implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -35,7 +35,7 @@ public class TestGetDefaultFaultEnvelope implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
 
         assertThat(envelope.getBody().getFault()).isNotNull();

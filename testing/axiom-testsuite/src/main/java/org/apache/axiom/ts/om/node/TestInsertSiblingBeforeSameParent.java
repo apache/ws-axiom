@@ -26,18 +26,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMNode#insertSiblingBefore(OMNode)} if the node is already a
  * sibling.
  */
-public class TestInsertSiblingBeforeSameParent implements MatrixTestCase {
+public class TestInsertSiblingBeforeSameParent implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement parent = factory.createOMElement("test", null);
         OMText text1 = factory.createOMText("text1");
         OMText text2 = factory.createOMText("text2");

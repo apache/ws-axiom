@@ -27,7 +27,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMContainer#getXMLStreamReader(boolean)} produces the correct sequence of
@@ -37,7 +37,7 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-288">AXIOM-288</a>.
  */
-public class TestGetXMLStreamReaderOnNonRootElement implements MatrixTestCase {
+public class TestGetXMLStreamReaderOnNonRootElement implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -46,7 +46,7 @@ public class TestGetXMLStreamReaderOnNonRootElement implements MatrixTestCase {
     private boolean cache;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement root = AXIOMUtil.stringToOM(factory, "<a><b><c/></b><d>content</d></a>");
         OMElement b = (OMElement) root.getFirstOMChild();
         XMLStreamReader stream = b.getXMLStreamReader(cache);

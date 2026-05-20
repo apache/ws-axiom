@@ -26,19 +26,19 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMElement#getAllAttributes()} causes expansion of {@link OMSourcedElement}
  * instances.
  */
-public class TestGetAllAttributes implements MatrixTestCase {
+public class TestGetAllAttributes implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMSourcedElement element = factory.createOMElement(new PullOMDataSource("<root attr='value'/>"), "root", null);
         Iterator<OMAttribute> attributes = element.getAllAttributes();
         assertThat(attributes.hasNext()).isTrue();

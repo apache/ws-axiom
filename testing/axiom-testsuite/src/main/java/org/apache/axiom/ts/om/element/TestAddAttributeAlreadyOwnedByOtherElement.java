@@ -25,18 +25,18 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test that calling {@link OMElement#addAttribute(OMAttribute)} with an attribute that is already
  * owned by another element will clone the attribute.
  */
-public class TestAddAttributeAlreadyOwnedByOtherElement implements MatrixTestCase {
+public class TestAddAttributeAlreadyOwnedByOtherElement implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element1 = factory.createOMElement(new QName("test"));
         OMElement element2 = factory.createOMElement(new QName("test"));
         OMAttribute att1 = element1.addAttribute("test", "test", null);

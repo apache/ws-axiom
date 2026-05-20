@@ -33,7 +33,7 @@ import org.w3c.dom.Node;
  */
 public class TestReplaceChildCyclic extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element ancestor = document.createElementNS(null, "ancestor");
         Element element = document.createElementNS(null, "element");

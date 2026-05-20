@@ -24,15 +24,15 @@ import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 // Make sure order of header/body creation doesn't matter
-public class TestBodyHeaderOrder implements MatrixTestCase {
+public class TestBodyHeaderOrder implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope env = soapFactory.createSOAPEnvelope();
         soapFactory.createSOAPBody(env);
         soapFactory.createSOAPHeader(env);

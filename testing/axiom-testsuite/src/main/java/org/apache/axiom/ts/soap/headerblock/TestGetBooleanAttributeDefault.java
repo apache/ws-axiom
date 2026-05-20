@@ -44,7 +44,7 @@ public class TestGetBooleanAttributeDefault extends BooleanAttributeTestCase {
     }
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("http://example.org", "test", "h"));
         assertThat(attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock))

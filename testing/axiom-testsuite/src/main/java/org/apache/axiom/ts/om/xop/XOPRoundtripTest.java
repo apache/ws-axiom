@@ -31,14 +31,14 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.testutils.blob.TestBlob;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class XOPRoundtripTest implements MatrixTestCase {
+public class XOPRoundtripTest implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Blob blob = new TestBlob('x', Runtime.getRuntime().maxMemory());
         OMElement element1 = factory.createOMElement(new QName("test"));
         element1.addChild(factory.createOMText(blob, true));

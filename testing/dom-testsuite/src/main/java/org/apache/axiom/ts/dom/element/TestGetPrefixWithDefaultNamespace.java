@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class TestGetPrefixWithDefaultNamespace extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element element = doc.createElementNS("urn:test", "test");
         assertThat(element.getPrefix()).isNull();

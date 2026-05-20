@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
@@ -36,12 +36,12 @@ import org.xml.sax.helpers.AttributesImpl;
  * event sent to the {@link LexicalHandler} linked to the {@link SAXResult} object returned by
  * {@link OMContainer#getSAXResult()} is silently ignored.
  */
-public class TestGetSAXResultWithDTD implements MatrixTestCase {
+public class TestGetSAXResultWithDTD implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement root = factory.createOMElement("root", null);
         SAXResult result = root.getSAXResult();
         LexicalHandler lexicalHandler = result.getLexicalHandler();

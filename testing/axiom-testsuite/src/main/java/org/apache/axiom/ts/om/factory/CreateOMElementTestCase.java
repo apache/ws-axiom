@@ -19,13 +19,13 @@
 package org.apache.axiom.ts.om.factory;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Base class for the test cases that validate the behavior of the various <code>createOMElement
  * </code> methods in {@link OMFactory}.
  */
-public abstract class CreateOMElementTestCase implements MatrixTestCase {
+public abstract class CreateOMElementTestCase implements Executable {
     protected final CreateOMElementVariant variant;
     protected final CreateOMElementParentSupplier parentSupplier;
 

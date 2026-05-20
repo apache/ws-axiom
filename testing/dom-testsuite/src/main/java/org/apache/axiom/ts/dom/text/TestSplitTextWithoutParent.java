@@ -27,7 +27,7 @@ import org.w3c.dom.Text;
 /** Tests the behavior of {@link Text#splitText(int)} when the node has no parent. */
 public class TestSplitTextWithoutParent extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Text text = document.createTextNode("ABCD");
         Text newText = text.splitText(2);

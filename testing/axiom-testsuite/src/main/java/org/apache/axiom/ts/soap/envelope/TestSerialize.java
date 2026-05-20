@@ -25,12 +25,12 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.soap.SOAPSample;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestSerialize implements MatrixTestCase {
+public class TestSerialize implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -44,7 +44,7 @@ public class TestSerialize implements MatrixTestCase {
     private SerializationStrategy serializationStrategy;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(
                         metaFactory, message.getInputStream(), null)
                 .getSOAPEnvelope();

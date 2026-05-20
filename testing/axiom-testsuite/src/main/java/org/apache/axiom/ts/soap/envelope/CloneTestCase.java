@@ -28,10 +28,10 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
-public abstract class CloneTestCase implements MatrixTestCase {
+public abstract class CloneTestCase implements Executable {
     protected final SOAPSpec spec;
 
     public CloneTestCase(SOAPSpec spec) {

@@ -24,10 +24,10 @@ import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.AltSOAPFactory;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestAddSOAPTextWithSOAPVersionMismatch implements MatrixTestCase {
+public class TestAddSOAPTextWithSOAPVersionMismatch implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -36,7 +36,7 @@ public class TestAddSOAPTextWithSOAPVersionMismatch implements MatrixTestCase {
     private SOAPFactory altSoapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPFault soap12Fault = soapFactory.createSOAPFault();
         SOAPFaultReason soap12FaultReason = soapFactory.createSOAPFaultReason(soap12Fault);
         SOAPFault soap11Fault = altSoapFactory.createSOAPFault();

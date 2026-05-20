@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamReader;
 
 public class TestGetTextInProlog extends DialectTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<?xml version=\"1.0\"?>\r\n<root/>"));
         assertThat(reader.next()).isEqualTo(XMLStreamReader.SPACE);

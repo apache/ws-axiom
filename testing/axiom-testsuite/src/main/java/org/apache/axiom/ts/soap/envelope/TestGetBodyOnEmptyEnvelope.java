@@ -22,14 +22,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetBodyOnEmptyEnvelope implements MatrixTestCase {
+public class TestGetBodyOnEmptyEnvelope implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         assertThat(soapFactory.createSOAPEnvelope().getBody()).isNull();
     }
 }

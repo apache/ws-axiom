@@ -27,11 +27,11 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.InputSource;
 
-public class TestCommentEvent implements MatrixTestCase {
+public class TestCommentEvent implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -43,7 +43,7 @@ public class TestCommentEvent implements MatrixTestCase {
     private boolean cache;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMXMLParserWrapper builder =
                 builderFactory.getBuilder(metaFactory, new InputSource(new StringReader("<a><!--comment text--></a>")));
         OMElement element = builder.getDocumentElement();

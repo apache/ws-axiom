@@ -23,14 +23,14 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public abstract class XMLDeclarationSerializationTestCase implements MatrixTestCase {
+public abstract class XMLDeclarationSerializationTestCase implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public final void runTest() throws Throwable {
+    public final void execute() throws Throwable {
 
         OMNamespace namespace = factory.createOMNamespace("http://testuri.org", "test");
         OMElement documentElement = factory.createOMElement("DocumentElement", namespace);

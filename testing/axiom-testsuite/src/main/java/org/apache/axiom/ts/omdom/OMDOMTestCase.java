@@ -20,9 +20,9 @@ package org.apache.axiom.ts.omdom;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public abstract class OMDOMTestCase implements MatrixTestCase {
+public abstract class OMDOMTestCase implements Executable {
     @Inject
     protected DOMMetaFactory metaFactory;
 }

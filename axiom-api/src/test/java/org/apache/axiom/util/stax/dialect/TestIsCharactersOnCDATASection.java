@@ -32,7 +32,7 @@ import javax.xml.stream.XMLStreamReader;
  */
 public class TestIsCharactersOnCDATASection extends DialectTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root><![CDATA[X]]></root>"));

@@ -30,8 +30,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.ByteStreamComparator;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.base64.Base64DecodingOutputStreamWriter;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
@@ -43,7 +43,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-442">AXIOM-442</a>.
  */
-public class TestBase64StreamingWithGetSAXSource implements MatrixTestCase {
+public class TestBase64StreamingWithGetSAXSource implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -74,7 +74,7 @@ public class TestBase64StreamingWithGetSAXSource implements MatrixTestCase {
     }
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement elem = factory.createOMElement("test", null);
         // Create a blob that would eat up all memory when loaded. If the test
         // doesn't fail with an OutOfMemoryError, we know that the OMText implementation

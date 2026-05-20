@@ -28,10 +28,10 @@ import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.TextBlob;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.UIDGenerator;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestCreateOMTextFromBlobProvider implements MatrixTestCase {
+public class TestCreateOMTextFromBlobProvider implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -56,7 +56,7 @@ public class TestCreateOMTextFromBlobProvider implements MatrixTestCase {
     private boolean nullContentID;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         TestBlobProvider prov = new TestBlobProvider();
         String contentID = nullContentID ? null : UIDGenerator.generateContentId();
         OMText text = factory.createOMText(contentID, prov, true);

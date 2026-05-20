@@ -28,19 +28,19 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMContainer#getFirstOMChild()} throws the expected {@link
  * NodeUnavailableException} if the element has been consumed using {@link
  * OMContainer#getXMLStreamReaderWithoutCaching()}.
  */
-public class TestGetFirstOMChildAfterConsume implements MatrixTestCase {
+public class TestGetFirstOMChildAfterConsume implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<element><!--comment--><a/><!--comment--></element>"))
                 .getDocumentElement();

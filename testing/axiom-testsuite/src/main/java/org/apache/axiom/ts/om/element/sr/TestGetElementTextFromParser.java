@@ -30,11 +30,11 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.InputSource;
 
-public class TestGetElementTextFromParser implements MatrixTestCase {
+public class TestGetElementTextFromParser implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -54,7 +54,7 @@ public class TestGetElementTextFromParser implements MatrixTestCase {
     private int build;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         // Note: We test getElementText on a child element ("b") of the element from which we
         // request the XMLStreamReader ("a"). This is to make sure that the XMLStreamReader
         // implementation actually delegates to the underlying parser (which is not necessarily the

@@ -37,7 +37,7 @@ public class TestInsertBeforeForbidden extends OMDOMTestCase {
     private boolean build;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument omDocument = OMXMLBuilderFactory.createOMBuilder(
                         metaFactory.getOMFactory(), new StringReader("<!--test--><test/>"))
                 .getDocument();

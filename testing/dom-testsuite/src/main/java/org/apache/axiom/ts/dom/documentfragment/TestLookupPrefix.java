@@ -34,7 +34,7 @@ import org.w3c.dom.Node;
  */
 public class TestLookupPrefix extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         DocumentFragment fragment = document.createDocumentFragment();
         Element element = document.createElementNS("urn:test", "ns:root");

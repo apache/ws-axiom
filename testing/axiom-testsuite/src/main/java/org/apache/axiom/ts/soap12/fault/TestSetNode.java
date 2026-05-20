@@ -25,10 +25,10 @@ import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.AltSOAPFactory;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestSetNode implements MatrixTestCase {
+public class TestSetNode implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -37,7 +37,7 @@ public class TestSetNode implements MatrixTestCase {
     private SOAPFactory altSoapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
         soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault));
         assertThat(soapFault.getNode()).isNotNull();

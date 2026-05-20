@@ -37,9 +37,9 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestSetOptimize implements MatrixTestCase {
+public class TestSetOptimize implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -48,7 +48,7 @@ public class TestSetOptimize implements MatrixTestCase {
     private boolean optimize;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         InputStream in = XOP_SPEC_SAMPLE.getInputStream();
         try {
             OMDocument document = OMXMLBuilderFactory.createOMBuilder(

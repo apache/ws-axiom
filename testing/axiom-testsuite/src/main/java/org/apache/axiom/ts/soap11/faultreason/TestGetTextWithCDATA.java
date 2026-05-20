@@ -31,15 +31,15 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.TestParserConfiguration;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetTextWithCDATA implements MatrixTestCase {
+public class TestGetTextWithCDATA implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String soap11Fault = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">"
                 + "<SOAP-ENV:Body>"

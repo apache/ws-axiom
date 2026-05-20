@@ -30,9 +30,9 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestCreateSOAPFaultWithException implements MatrixTestCase {
+public class TestCreateSOAPFaultWithException implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -41,7 +41,7 @@ public class TestCreateSOAPFaultWithException implements MatrixTestCase {
     private boolean withParent;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPBody body = withParent ? soapFactory.getDefaultEnvelope().getBody() : null;
         SOAPFault fault = soapFactory.createSOAPFault(body, new Exception("Testing soap fault"));
         if (body != null) {

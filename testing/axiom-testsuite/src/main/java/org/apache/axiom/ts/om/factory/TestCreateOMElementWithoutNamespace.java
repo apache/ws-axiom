@@ -40,7 +40,7 @@ public class TestCreateOMElementWithoutNamespace extends CreateOMElementTestCase
     }
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", "");
         assertThat(element.getLocalName()).isEqualTo("test");
         assertThat(element.getNamespace()).isNull();

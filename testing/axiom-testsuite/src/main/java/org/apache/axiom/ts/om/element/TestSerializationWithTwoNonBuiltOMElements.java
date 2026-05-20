@@ -25,15 +25,15 @@ import java.io.StringReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-65">AXIOM-65</a>. */
-public class TestSerializationWithTwoNonBuiltOMElements implements MatrixTestCase {
+public class TestSerializationWithTwoNonBuiltOMElements implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String sampleXMLOne = "<ChildOne><Name>ChildName</Name></ChildOne>";
         String sampleXMLTwo = "<ChildTwo><Name>ChildName</Name></ChildTwo>";
 

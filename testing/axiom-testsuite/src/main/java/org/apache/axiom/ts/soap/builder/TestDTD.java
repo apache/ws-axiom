@@ -29,14 +29,14 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the SOAP model builder rejects attempts to create a DTD. Note that this test is
  * implemented using {@link OMXMLBuilderFactory#createStAXSOAPModelBuilder(XMLStreamReader)} because
  * the methods taking a stream as input will generally reject DTDs at a much lower level.
  */
-public class TestDTD implements MatrixTestCase {
+public class TestDTD implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -44,7 +44,7 @@ public class TestDTD implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String message = "<!DOCTYPE test []>" + soapFactory.getDefaultEnvelope();
         XMLStreamReader parser = StAXUtils.createXMLStreamReader(new StringReader(message));
         assertThatThrownBy(() -> {

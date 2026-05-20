@@ -23,18 +23,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link Object#equals(Object)} for {@link OMNamespace} instances with same
  * namespace URI and prefix.
  */
-public class TestObjectEquals implements MatrixTestCase {
+public class TestObjectEquals implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         // The implementation must not assume that namespace URI or prefixes are interned.
         // Therefore we use new String(String).
         OMNamespace ns1 = factory.createOMNamespace(new String("urn:ns"), new String("ns"));

@@ -28,14 +28,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.InvocationCounter;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestInvalidXML implements MatrixTestCase {
+public class TestInvalidXML implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLStreamReader originalReader =
                 StAXUtils.createXMLStreamReader(TestInvalidXML.class.getResourceAsStream("invalid_xml.xml"));
         InvocationCounter invocationCounter = new InvocationCounter();

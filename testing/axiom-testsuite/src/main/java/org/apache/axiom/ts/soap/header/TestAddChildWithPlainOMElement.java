@@ -25,15 +25,15 @@ import java.util.Iterator;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Regression test for AXIOM-512. */
-public class TestAddChildWithPlainOMElement implements MatrixTestCase {
+public class TestAddChildWithPlainOMElement implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPHeader soapHeader = soapFactory.createSOAPHeader();
         soapHeader.addChild(soapFactory.createOMElement("foobar", "http://example.org", "p"));
         Iterator<SOAPHeaderBlock> it = soapHeader.examineAllHeaderBlocks();

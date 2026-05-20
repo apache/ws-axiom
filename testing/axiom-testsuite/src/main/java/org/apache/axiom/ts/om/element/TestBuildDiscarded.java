@@ -27,18 +27,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMSerializable#build()} on an {@link OMElement} that has been
  * discarded. In this case the method is expected to throw a {@link NodeUnavailableException}.
  */
-public class TestBuildDiscarded implements MatrixTestCase {
+public class TestBuildDiscarded implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/></root>"))
                 .getDocumentElement();
         // Partially build the parent

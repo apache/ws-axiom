@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class TestSetPrefixWithSupplementaryCharacter extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String prefix = new String(new int[] {0x10000}, 0, 1);
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element elem = doc.createElementNS("http://example.org", "foobar");

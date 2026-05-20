@@ -32,7 +32,7 @@ import org.w3c.dom.Document;
  */
 public class TestGetNamespaceNormalized extends OMDOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document doc =
                 metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Attr attr = doc.createAttributeNS(null, "attr");

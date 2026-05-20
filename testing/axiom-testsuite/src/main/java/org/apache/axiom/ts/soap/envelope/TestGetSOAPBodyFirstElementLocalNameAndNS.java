@@ -26,9 +26,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetSOAPBodyFirstElementLocalNameAndNS implements MatrixTestCase {
+public class TestGetSOAPBodyFirstElementLocalNameAndNS implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -36,7 +36,7 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNS implements MatrixTestCase
     private QName qname;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         OMElement bodyElement =
                 soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());

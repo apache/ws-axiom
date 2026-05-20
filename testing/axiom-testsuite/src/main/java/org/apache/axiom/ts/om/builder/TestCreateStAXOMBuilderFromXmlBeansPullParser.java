@@ -26,15 +26,15 @@ import java.net.URL;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 import za.co.eskom.nrs.xmlvend.base.x20.schema.AdviceReqDocument;
 
-public class TestCreateStAXOMBuilderFromXmlBeansPullParser implements MatrixTestCase {
+public class TestCreateStAXOMBuilderFromXmlBeansPullParser implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         URL inputUrl = TestCreateStAXOMBuilderFromXmlBeansPullParser.class.getResource("xmlvend.xml");
         AdviceReqDocument adviceReq = AdviceReqDocument.Factory.parse(inputUrl);
         OMDocument doc = OMXMLBuilderFactory.createStAXOMBuilder(factory, adviceReq.newXMLStreamReader())

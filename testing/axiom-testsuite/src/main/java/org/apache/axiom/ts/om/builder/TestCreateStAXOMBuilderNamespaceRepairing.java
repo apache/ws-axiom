@@ -29,18 +29,18 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} performs namespace
  * repairing.
  */
-public class TestCreateStAXOMBuilderNamespaceRepairing implements MatrixTestCase {
+public class TestCreateStAXOMBuilderNamespaceRepairing implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(
                 new StringReader("<p:root xmlns:p='urn:ns1' xmlns:q='urn:ns2'><child q:attr='value'/></p:root>"));
         OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(factory, new NamespaceDeclarationFilter(reader))

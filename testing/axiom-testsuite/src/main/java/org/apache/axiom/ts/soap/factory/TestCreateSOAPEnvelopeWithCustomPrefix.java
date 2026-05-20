@@ -26,11 +26,11 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests the behavior of {@link SOAPFactory#createSOAPEnvelope(OMNamespace)}. */
-public class TestCreateSOAPEnvelopeWithCustomPrefix implements MatrixTestCase {
+public class TestCreateSOAPEnvelopeWithCustomPrefix implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -38,7 +38,7 @@ public class TestCreateSOAPEnvelopeWithCustomPrefix implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String prefix = "my-soap";
         OMNamespace ns = soapFactory.createOMNamespace(spec.getEnvelopeNamespaceURI(), prefix);
         SOAPEnvelope env = soapFactory.createSOAPEnvelope(ns);

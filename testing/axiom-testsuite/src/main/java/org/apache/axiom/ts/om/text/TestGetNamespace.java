@@ -25,15 +25,15 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests the behavior of {@link OMText#getNamespace()} for a prefixed QName. */
-public class TestGetNamespace implements MatrixTestCase {
+public class TestGetNamespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("element", null);
         element.declareNamespace("urn:ns", "p");
         OMText text = factory.createOMText(element, "p:value");

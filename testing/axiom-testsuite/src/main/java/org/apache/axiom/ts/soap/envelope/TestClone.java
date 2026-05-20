@@ -36,7 +36,7 @@ public class TestClone extends CloneTestCase {
     }
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         copyAndCheck(message.getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory));
     }
 }

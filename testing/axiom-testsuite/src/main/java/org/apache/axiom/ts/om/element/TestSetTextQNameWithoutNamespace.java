@@ -24,19 +24,19 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#setText(QName)} if the {@link QName} has no namespace. In
  * this case the method must not generate a prefix (because it is not possible to bind a prefix to
  * the empty namespace name).
  */
-public class TestSetTextQNameWithoutNamespace implements MatrixTestCase {
+public class TestSetTextQNameWithoutNamespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("test", null);
         QName qname = new QName("test");
         element.setText(qname);

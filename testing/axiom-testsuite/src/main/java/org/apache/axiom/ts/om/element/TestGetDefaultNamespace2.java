@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#getDefaultNamespace()} in the special case where the
@@ -36,12 +36,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * <p>This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-400">AXIOM-400</a>.
  */
-public class TestGetDefaultNamespace2 implements MatrixTestCase {
+public class TestGetDefaultNamespace2 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement parent = factory.createOMElement("parent", "urn:test", "");
         OMElement child = factory.createOMElement("child", null, parent);
         OMNamespace ns = child.getDefaultNamespace();

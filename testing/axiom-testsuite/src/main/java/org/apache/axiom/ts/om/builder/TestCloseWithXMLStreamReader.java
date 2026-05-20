@@ -28,15 +28,15 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestCloseWithXMLStreamReader implements MatrixTestCase {
+public class TestCloseWithXMLStreamReader implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         InputStream in = XMLSample.SIMPLE.getInputStream();
         try {
             XMLStreamReader reader = StAXUtils.createXMLStreamReader(in);

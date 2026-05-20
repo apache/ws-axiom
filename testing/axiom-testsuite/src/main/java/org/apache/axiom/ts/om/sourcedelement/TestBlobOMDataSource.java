@@ -29,15 +29,15 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.BlobOMDataSource;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests functionality of BlobOMDataSource */
-public class TestBlobOMDataSource implements MatrixTestCase {
+public class TestBlobOMDataSource implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
 
         String localName = "myPayload";
         String encoding = "utf-8";

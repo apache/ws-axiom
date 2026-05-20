@@ -25,16 +25,16 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.XMLSampleAdapter;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestClose implements MatrixTestCase {
+public class TestClose implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement rootElement =
                 XMLSample.SIMPLE.getAdapter(XMLSampleAdapter.class).getDocumentElement(metaFactory);
 

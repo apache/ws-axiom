@@ -26,19 +26,19 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.StringOMDataSource;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMXMLParserWrapper#getDocument()} and {@link
  * OMXMLParserWrapper#getDocumentElement()} throw {@link UnsupportedOperationException} when invoked
  * on the builder associated with an {@link OMSourcedElement}.
  */
-public class TestGetDocumentFromBuilder implements MatrixTestCase {
+public class TestGetDocumentFromBuilder implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDataSource ds = new StringOMDataSource("<root><a/></root>");
         OMSourcedElement element = factory.createOMElement(ds);
         // Force expansion

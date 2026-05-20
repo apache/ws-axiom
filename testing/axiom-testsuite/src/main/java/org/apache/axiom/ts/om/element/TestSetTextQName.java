@@ -26,18 +26,18 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#setText(QName)}, in particular that it adds a namespace
  * declaration if necessary.
  */
-public class TestSetTextQName implements MatrixTestCase {
+public class TestSetTextQName implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("TestElement", null);
         QName qname = new QName("urn:ns1", "test", "ns");
         element.setText(qname);

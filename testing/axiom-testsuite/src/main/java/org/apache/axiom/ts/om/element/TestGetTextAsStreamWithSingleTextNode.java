@@ -26,15 +26,15 @@ import java.io.StringReader;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetTextAsStreamWithSingleTextNode implements MatrixTestCase {
+public class TestGetTextAsStreamWithSingleTextNode implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement(new QName("a"));
         factory.createOMText(element, "test");
         Reader in = element.getTextAsStream(true);

@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test cloning a {@link SOAPHeaderBlock} flagged as processed, but without preserving the model. In
@@ -33,12 +33,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  *
  * <p>This is a regression test for an issue in older Axiom versions.
  */
-public class TestCloneProcessedWithoutPreservingModel implements MatrixTestCase {
+public class TestCloneProcessedWithoutPreservingModel implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPHeaderBlock headerBlock =
                 soapFactory.createSOAPHeaderBlock("test", soapFactory.createOMNamespace("urn:test", "p"));
         headerBlock.setProcessed();

@@ -23,16 +23,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
+import org.junit.jupiter.api.function.Executable;
 
 @SuppressWarnings("deprecation")
-public class TestSetDataSourceOnAlreadyExpandedElement implements MatrixTestCase {
+public class TestSetDataSourceOnAlreadyExpandedElement implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(factory, false, true);
         // Make sure the OMSourcedElement is expanded
         element.getFirstOMChild();

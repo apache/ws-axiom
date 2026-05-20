@@ -26,18 +26,18 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMElement#declareNamespace(String, String)} generates a new prefix if the
  * specified prefix is <code>null</code>.
  */
-public class TestDeclareNamespaceWithGeneratedPrefix3 implements MatrixTestCase {
+public class TestDeclareNamespaceWithGeneratedPrefix3 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = element.declareNamespace("urn:ns", null);
         assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns");

@@ -26,18 +26,18 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the result of {@link OMDocument#getOMDocumentElement()} for an {@link OMDocument}
  * constructed from a stream.
  */
-public class TestGetOMDocumentElementWithParser implements MatrixTestCase {
+public class TestGetOMDocumentElementWithParser implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<!-- comment --><root/><!-- comment -->"))
                 .getDocument();

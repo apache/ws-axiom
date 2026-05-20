@@ -27,15 +27,15 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMContainer#getXMLStreamReader(boolean)} produces the correct sequence of
  * events when called on an {@link OMElement} that is not the root element and that may be partially
  * built.
  */
-public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt implements MatrixTestCase {
+public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -48,7 +48,7 @@ public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt implements Mat
     private int build;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement root =
                 AXIOMUtil.stringToOM(factory, "<root><child><emptyElement/><element>content</element></child></root>");
         OMElement child = (OMElement) root.getFirstOMChild();

@@ -27,7 +27,7 @@ import org.w3c.dom.Text;
 
 public class TestAppendData extends DOMTestCase {
     @Override
-    public void runTest() throws Exception {
+    public void execute() throws Exception {
         Document document = dbf.newDocumentBuilder().newDocument();
         String localName = "TestLocalName";
         String namespace = "http://ws.apache.org/axis2/ns";

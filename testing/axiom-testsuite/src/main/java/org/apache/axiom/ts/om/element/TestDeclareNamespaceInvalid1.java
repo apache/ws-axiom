@@ -24,19 +24,19 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests Axiom's behavior when {@link OMElement#declareNamespace(String, String)} is used to add a
  * namespace declaration that binds a prefix to an empty namespace URI. This is forbidden by both
  * XML 1.0 and XML 1.1.
  */
-public class TestDeclareNamespaceInvalid1 implements MatrixTestCase {
+public class TestDeclareNamespaceInvalid1 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement(new QName("test"));
         assertThatThrownBy(() -> element.declareNamespace("", "ns")).isInstanceOf(IllegalArgumentException.class);
     }

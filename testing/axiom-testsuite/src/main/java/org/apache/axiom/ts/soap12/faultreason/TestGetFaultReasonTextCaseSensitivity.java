@@ -25,14 +25,14 @@ import java.util.Locale;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetFaultReasonTextCaseSensitivity implements MatrixTestCase {
+public class TestGetFaultReasonTextCaseSensitivity implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPFaultReason reason = soapFactory.createSOAPFaultReason();
         SOAPFaultText text = soapFactory.createSOAPFaultText(reason);
         text.setLang("EN-US");

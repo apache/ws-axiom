@@ -26,11 +26,11 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
-public abstract class CreateSOAPElementWithoutParentTestCase implements MatrixTestCase {
+public abstract class CreateSOAPElementWithoutParentTestCase implements Executable {
     protected final SOAPSpec spec;
     protected final SOAPElementType type;
 
@@ -40,7 +40,7 @@ public abstract class CreateSOAPElementWithoutParentTestCase implements MatrixTe
     }
 
     @Override
-    public final void runTest() throws Throwable {
+    public final void execute() throws Throwable {
         QName expectedName = type.getQName(spec);
         if (expectedName == null) {
             assertThatThrownBy(() -> createSOAPElement()).isInstanceOf(UnsupportedOperationException.class);

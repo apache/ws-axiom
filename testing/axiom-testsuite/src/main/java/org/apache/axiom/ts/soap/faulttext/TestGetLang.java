@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import javax.xml.XMLConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetLang implements MatrixTestCase {
+public class TestGetLang implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPFaultText faultText = soapFactory.createSOAPFaultText();
         faultText.setText("test");
         assertThat(faultText.getLang()).isNull();

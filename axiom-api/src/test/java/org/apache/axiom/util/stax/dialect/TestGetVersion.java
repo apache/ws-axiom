@@ -27,7 +27,7 @@ import javax.xml.stream.XMLStreamReader;
 
 public class TestGetVersion extends DialectTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<?xml version='1.0'?><root/>"));
         assertThat(reader.getVersion()).isEqualTo("1.0");

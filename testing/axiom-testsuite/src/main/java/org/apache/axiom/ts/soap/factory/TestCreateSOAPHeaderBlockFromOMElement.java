@@ -28,9 +28,9 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestCreateSOAPHeaderBlockFromOMElement implements MatrixTestCase {
+public class TestCreateSOAPHeaderBlockFromOMElement implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -38,7 +38,7 @@ public class TestCreateSOAPHeaderBlockFromOMElement implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement original = OMXMLBuilderFactory.createOMBuilder(
                         factory,
                         new StringReader("<wsa:To xmlns:wsa=\"http://schemas.xmlsoap.org/ws/2004/08/addressing\">"

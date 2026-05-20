@@ -27,7 +27,7 @@ import org.w3c.dom.Text;
 
 public class TestGetWholeTextWithCDATASection extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
         Text a = document.createTextNode("a");

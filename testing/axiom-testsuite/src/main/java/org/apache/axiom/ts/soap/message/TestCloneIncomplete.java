@@ -28,17 +28,17 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMInformationItem#clone(OMCloneOptions)} correctly clones a {@link SOAPMessage}
  * that is incomplete. In particular, the test checks that {@link OMInformationItem#getOMFactory()}
  * returns the correct factory (which is determined lazily) on the clone.
  */
-public class TestCloneIncomplete implements MatrixTestCase {
+public class TestCloneIncomplete implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -53,7 +53,7 @@ public class TestCloneIncomplete implements MatrixTestCase {
     private boolean preserveModel;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPMessage message = SOAPSampleSet.WSA
                 .getMessage(spec)
                 .getAdapter(SOAPSampleAdapter.class)

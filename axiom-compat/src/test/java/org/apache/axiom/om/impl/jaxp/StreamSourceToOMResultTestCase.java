@@ -28,12 +28,12 @@ import java.io.ByteArrayOutputStream;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.InputSource;
 
-public class StreamSourceToOMResultTestCase implements MatrixTestCase {
+public class StreamSourceToOMResultTestCase implements Executable {
     @Inject
     @Named("axiomImplementation")
     private String axiomImplementation;
@@ -43,7 +43,7 @@ public class StreamSourceToOMResultTestCase implements MatrixTestCase {
 
     @Override
     @SuppressWarnings({"deprecation"})
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMMetaFactory omMetaFactory = OMAbstractFactory.getMetaFactory(axiomImplementation);
         StreamSource source = new StreamSource(file.getUrl().toString());
         OMResult result = new OMResult(omMetaFactory.getOMFactory());

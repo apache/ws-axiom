@@ -37,18 +37,18 @@ import org.apache.axiom.mime.MultipartBody;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.util.UIDGenerator;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMXMLBuilderFactory#createSOAPModelBuilder(OMMetaFactory, MultipartBody)}
  * produces an error if the SOAP version used in the root part doesn't match the Content-Type of the
  * message.
  */
-public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch implements MatrixTestCase {
+public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -56,7 +56,7 @@ public class TestCreateSOAPModelBuilderMTOMContentTypeMismatch implements Matrix
     private SOAPSpec spec;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         final SOAPSample sample = SOAPSampleSet.NO_HEADER.getMessage(spec);
         // Generate an MTOM message with the wrong content type
         MimeMessage message = new MimeMessage((Session) null);

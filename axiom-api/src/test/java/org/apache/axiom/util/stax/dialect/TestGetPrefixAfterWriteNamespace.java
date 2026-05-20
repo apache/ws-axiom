@@ -29,7 +29,7 @@ import org.apache.commons.io.output.NullOutputStream;
  */
 public class TestGetPrefixAfterWriteNamespace extends DialectTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLStreamWriter writer =
                 staxImpl.newNormalizedXMLOutputFactory().createXMLStreamWriter(NullOutputStream.INSTANCE);
         writer.writeStartElement("", "root", "");

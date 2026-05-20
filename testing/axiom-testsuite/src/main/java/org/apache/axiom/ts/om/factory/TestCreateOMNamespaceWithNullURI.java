@@ -22,14 +22,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestCreateOMNamespaceWithNullURI implements MatrixTestCase {
+public class TestCreateOMNamespaceWithNullURI implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         assertThatThrownBy(() -> factory.createOMNamespace(null, "t")).isInstanceOf(IllegalArgumentException.class);
     }
 }

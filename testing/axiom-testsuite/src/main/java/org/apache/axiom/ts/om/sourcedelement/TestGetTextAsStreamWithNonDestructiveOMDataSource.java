@@ -33,14 +33,14 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetTextAsStreamWithNonDestructiveOMDataSource implements MatrixTestCase {
+public class TestGetTextAsStreamWithNonDestructiveOMDataSource implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Blob blob = new RandomBlob(445566, 32, 128, 20000000);
         QName qname = new QName("a");
         Charset cs = StandardCharsets.US_ASCII;

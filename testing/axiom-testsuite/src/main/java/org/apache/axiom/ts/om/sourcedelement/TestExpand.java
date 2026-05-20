@@ -27,15 +27,15 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Make sure the expanded OMSourcedElement behaves like a normal OMElement. */
-public class TestExpand implements MatrixTestCase {
+public class TestExpand implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(factory, false, true);
         element.getAllDeclaredNamespaces();
         assertThat(countItems(element.getAllDeclaredNamespaces())).isEqualTo(1);

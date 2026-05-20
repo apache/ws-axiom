@@ -37,7 +37,7 @@ import org.w3c.dom.NodeList;
  */
 public class TestAppendChildIncomplete extends OMDOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         Document document =
                 (Document) OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/></root>"))

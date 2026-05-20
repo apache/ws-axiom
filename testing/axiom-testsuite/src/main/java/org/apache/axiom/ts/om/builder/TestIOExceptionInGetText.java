@@ -32,7 +32,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.InvocationCounter;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test the behavior of the builder when an exception is thrown by {@link
@@ -41,12 +41,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * the case for Woodstox. It checks that after the exception is thrown by the parser, the builder no
  * longer attempts to access the parser.
  */
-public class TestIOExceptionInGetText implements MatrixTestCase {
+public class TestIOExceptionInGetText implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         // Construct a stream that will throw an exception in the middle of a text node.
         // We need to create a very large document, because some parsers (such as some
         // versions of XLXP) have a large input buffer and would throw an exception already

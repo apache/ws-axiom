@@ -24,15 +24,15 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests the behavior of {@link OMElement#getTextAsQName()} for a prefixed QName. */
-public class TestGetTextAsQName implements MatrixTestCase {
+public class TestGetTextAsQName implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement parent = factory.createOMElement("parent", null);
         parent.declareNamespace("urn:ns", "p");
         OMElement child = factory.createOMElement("child", null, parent);

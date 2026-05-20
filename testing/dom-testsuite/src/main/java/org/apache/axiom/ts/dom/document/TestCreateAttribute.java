@@ -26,7 +26,7 @@ import org.w3c.dom.Document;
 
 public class TestCreateAttribute extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String attrName = "attrIdentifier";
         Document doc = dbf.newDocumentBuilder().newDocument();
         Attr attr = doc.createAttribute(attrName);

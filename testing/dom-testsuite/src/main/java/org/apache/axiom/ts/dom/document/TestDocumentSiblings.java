@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
 
 public class TestDocumentSiblings extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element elem = doc.createElement("test");
         doc.appendChild(elem);

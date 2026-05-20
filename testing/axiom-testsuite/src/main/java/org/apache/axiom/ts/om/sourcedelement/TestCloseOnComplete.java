@@ -26,20 +26,20 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMSourcedElement} calls {@link XMLStreamReader#close()} on the {@link
  * XMLStreamReader} returned by {@link OMDataSource#getReader()} when the element is completely
  * built.
  */
-public class TestCloseOnComplete implements MatrixTestCase {
+public class TestCloseOnComplete implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         PullOMDataSource ds = new PullOMDataSource("<root><a/></root>");
         OMSourcedElement element = factory.createOMElement(ds);
         OMNode child = element.getFirstOMChild();

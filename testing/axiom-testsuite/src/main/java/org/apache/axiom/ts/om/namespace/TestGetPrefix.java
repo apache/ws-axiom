@@ -23,15 +23,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests the behavior of {@link OMNamespace#getPrefix()}. */
-public class TestGetPrefix implements MatrixTestCase {
+public class TestGetPrefix implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("http://www.w3.org/XML/1998/namespace", "xml");
         assertThat(ns.getPrefix()).isEqualTo("xml");
         ns = factory.createOMNamespace("", null);

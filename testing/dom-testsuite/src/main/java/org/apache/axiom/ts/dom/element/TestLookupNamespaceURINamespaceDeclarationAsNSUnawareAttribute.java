@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
  */
 public class TestLookupNamespaceURINamespaceDeclarationAsNSUnawareAttribute extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
         element.setAttribute("xmlns:p", "urn:test");

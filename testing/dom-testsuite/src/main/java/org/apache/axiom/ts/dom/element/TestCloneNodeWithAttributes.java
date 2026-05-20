@@ -35,7 +35,7 @@ public class TestCloneNodeWithAttributes extends DOMTestCase {
     private boolean deep;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:ns1", "p:elem");
         element.setAttributeNS(null, "attr1", "value1");

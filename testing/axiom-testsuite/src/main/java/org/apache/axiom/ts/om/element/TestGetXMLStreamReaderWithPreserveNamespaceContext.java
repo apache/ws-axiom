@@ -31,14 +31,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean,
  * OMXMLStreamReaderConfiguration)} in conjunction with {@link
  * OMXMLStreamReaderConfiguration#isPreserveNamespaceContext()}.
  */
-public class TestGetXMLStreamReaderWithPreserveNamespaceContext implements MatrixTestCase {
+public class TestGetXMLStreamReaderWithPreserveNamespaceContext implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -51,7 +51,7 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext implements Matri
     private boolean cache;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         InputStream in = TestGetXMLStreamReaderWithPreserveNamespaceContext.class.getResourceAsStream("AXIOM-114.xml");
         OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, in).getDocumentElement();
         root.declareNamespace("http://example.org", "p");

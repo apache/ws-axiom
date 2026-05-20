@@ -30,7 +30,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMContainer#serializeAndConsume(XMLStreamWriter)} throws an appropriate
@@ -39,12 +39,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  */
 // TODO: in this scenario we should trigger a NodeUnavailableException as well; fix this with
 // AXIOM-288
-public class TestSerializeAndConsumeConsumed implements MatrixTestCase {
+public class TestSerializeAndConsumeConsumed implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
                 factory, TestGetChildElementsConsumed.class.getResourceAsStream("purchase-order.xml"));
 

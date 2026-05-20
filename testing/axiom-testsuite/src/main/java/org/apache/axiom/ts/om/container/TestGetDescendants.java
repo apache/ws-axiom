@@ -30,9 +30,9 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetDescendants implements MatrixTestCase {
+public class TestGetDescendants implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -44,7 +44,7 @@ public class TestGetDescendants implements MatrixTestCase {
     private boolean includeSelf;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMContainer root = containerFactory.create(factory);
         OMElement child1 = factory.createOMElement("child", null, root);
         OMProcessingInstruction child2 = factory.createOMProcessingInstruction(root, "test", "data");

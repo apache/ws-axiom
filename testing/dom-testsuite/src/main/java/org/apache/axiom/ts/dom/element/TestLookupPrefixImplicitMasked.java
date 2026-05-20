@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
  */
 public class TestLookupPrefixImplicitMasked extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element root = document.createElementNS("urn:ns1", "p:root");
         Element child = document.createElementNS("urn:ns2", "p:child");

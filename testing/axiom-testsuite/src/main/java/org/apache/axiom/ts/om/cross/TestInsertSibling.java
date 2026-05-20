@@ -33,7 +33,7 @@ public class TestInsertSibling extends CrossOMTestCase {
     private boolean before;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", null);
         OMText child = factory.createOMText(parent, "test");

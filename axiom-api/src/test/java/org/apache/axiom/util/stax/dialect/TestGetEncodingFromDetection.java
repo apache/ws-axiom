@@ -43,7 +43,7 @@ public class TestGetEncodingFromDetection extends DialectTestCase {
     private Set<String> xmlEncodings;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(
                 new ByteArrayInputStream("<?xml version=\"1.0\"?><root/>".getBytes(javaEncoding)));

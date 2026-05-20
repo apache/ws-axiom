@@ -32,7 +32,7 @@ import org.w3c.dom.Document;
  */
 public class TestGetOMFactory1 extends OMDOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document =
                 metaFactory.newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         assertThat(((OMDocument) document).getOMFactory()).isSameAs(metaFactory.getOMFactory());

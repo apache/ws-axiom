@@ -25,17 +25,17 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMInformationItem#getOMFactory()} returns the expected {@link SOAPFactory} when
  * invoked on a {@link SOAPMessage} created by a builder. Note that this is non trivial because the
  * factory is auto-detected based on the namespace URI of the SOAP envelope.
  */
-public class TestGetOMFactoryWithParser implements MatrixTestCase {
+public class TestGetOMFactoryWithParser implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -46,7 +46,7 @@ public class TestGetOMFactoryWithParser implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPMessage message = SOAPSampleSet.WSA
                 .getMessage(spec)
                 .getAdapter(SOAPSampleAdapter.class)

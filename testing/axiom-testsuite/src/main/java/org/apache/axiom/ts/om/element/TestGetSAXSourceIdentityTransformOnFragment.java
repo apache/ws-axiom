@@ -31,8 +31,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.ContentHandler;
 
 /**
@@ -58,7 +58,7 @@ import org.xml.sax.ContentHandler;
  * a document against an XML schema (see <a
  * href="https://issues.apache.org/jira/browse/SYNAPSE-501">SYNAPSE-501</a>).
  */
-public class TestGetSAXSourceIdentityTransformOnFragment implements MatrixTestCase {
+public class TestGetSAXSourceIdentityTransformOnFragment implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -74,7 +74,7 @@ public class TestGetSAXSourceIdentityTransformOnFragment implements MatrixTestCa
     }
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer();
 
         OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, getInput())

@@ -28,14 +28,14 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.commons.codec.binary.Base64;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMElement#getText()} returns the expected value (i.e. base64 encoded data) for
  * an element that has an {@link OMText} child constructed from a {@link Blob}.
  */
-public class TestGetTextBinary implements MatrixTestCase {
+public class TestGetTextBinary implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -44,7 +44,7 @@ public class TestGetTextBinary implements MatrixTestCase {
     private boolean compact;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Blob blob = new RandomBlob(99999, 1000);
         OMElement element = factory.createOMElement("elem", null);
         element.addChild(factory.createOMText(blob, false));

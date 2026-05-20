@@ -30,7 +30,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMDocument#serializeAndConsume(java.io.Writer)} consumes incomplete
@@ -39,12 +39,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * org.apache.axiom.om.OMXMLParserWrapper#getDocumentElement(boolean)} (with <code>discardDocument
  * </code> set to true) is added to an existing document.
  */
-public class TestSerializeAndConsumeWithIncompleteDescendant implements MatrixTestCase {
+public class TestSerializeAndConsumeWithIncompleteDescendant implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement incompleteElement = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<elem>text</elem>"))
                 .getDocumentElement(true);

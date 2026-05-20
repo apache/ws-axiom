@@ -29,10 +29,10 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetSAXSourceIdentityTransform implements MatrixTestCase {
+public class TestGetSAXSourceIdentityTransform implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -48,7 +48,7 @@ public class TestGetSAXSourceIdentityTransform implements MatrixTestCase {
     }
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer();
 
         OMElement element =

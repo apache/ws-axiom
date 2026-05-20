@@ -27,7 +27,7 @@ import org.w3c.dom.NodeList;
 
 public class TestGetElementsByTagNameNS extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String childElementQN = "test:Child";
         String childElementLN = "Child";
         String childElementNS = "http://ws.apache.org/ns/axis2/dom";

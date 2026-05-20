@@ -25,15 +25,15 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-153">AXIOM-153</a>. */
-public class TestInsertSiblingAfterLastChild implements MatrixTestCase {
+public class TestInsertSiblingAfterLastChild implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("http://www.testuri.com", "ns");
         OMElement parent = factory.createOMElement("parent", ns);
 

@@ -23,19 +23,19 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMFactory#createOMAttribute(String, OMNamespace, String)} throws an exception
  * if the specified namespace is invalid, i.e. if the {@link OMNamespace} object specifies a prefix
  * for an empty namespace.
  */
-public class TestCreateOMAttributeWithInvalidNamespace1 implements MatrixTestCase {
+public class TestCreateOMAttributeWithInvalidNamespace1 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("", "p");
         assertThatThrownBy(() -> factory.createOMAttribute("attr", ns, "value"))
                 .isInstanceOf(IllegalArgumentException.class)

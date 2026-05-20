@@ -25,14 +25,14 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that when adding multiple attributes with different namespaces, a corresponding namespace
  * declaration is generated for each of them.
  */
-public class TestAddAttributeMultiple implements MatrixTestCase {
+public class TestAddAttributeMultiple implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -40,7 +40,7 @@ public class TestAddAttributeMultiple implements MatrixTestCase {
     private AddAttributeStrategy strategy;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String expectedXML = "<AttributeTester xmlns:myAttr2NS=\"http://test-attributes-2.org\" "
                 + "xmlns:myAttr1NS=\"http://test-attributes-1.org\" myAttr2NS:attrNumber=\"2\" myAttr1NS:attrNumber=\"1\" />";
 

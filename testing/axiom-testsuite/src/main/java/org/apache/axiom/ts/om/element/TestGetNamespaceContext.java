@@ -30,10 +30,10 @@ import javax.xml.namespace.NamespaceContext;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests {@link OMElement#getNamespaceContext(boolean)}. */
-public class TestGetNamespaceContext implements MatrixTestCase {
+public class TestGetNamespaceContext implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -42,7 +42,7 @@ public class TestGetNamespaceContext implements MatrixTestCase {
     private boolean detached;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         InputStream in = TestGetNamespaceContext.class.getResourceAsStream("namespacecontext.xml");
         OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, in).getDocumentElement();
         OMElement inner = root.getFirstElement().getFirstElement();

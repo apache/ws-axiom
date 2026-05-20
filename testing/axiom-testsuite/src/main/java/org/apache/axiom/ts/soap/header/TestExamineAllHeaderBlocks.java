@@ -27,14 +27,14 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestExamineAllHeaderBlocks implements MatrixTestCase {
+public class TestExamineAllHeaderBlocks implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
         SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
         OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");

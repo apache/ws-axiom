@@ -26,14 +26,14 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestUndeclarePrefix implements MatrixTestCase {
+public class TestUndeclarePrefix implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement(new QName("test"));
         element.undeclarePrefix("p");
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();

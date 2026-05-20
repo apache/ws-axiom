@@ -33,7 +33,7 @@ import org.w3c.dom.Node;
  */
 public class TestLookupNamespaceURI extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element documentElement = document.createElementNS("urn:test", "ns:root");
         documentElement.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:ns", "urn:test");

@@ -34,7 +34,7 @@ public class TestSetAttributeNSInvalid extends DOMTestCase {
     private QName qname;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
         assertThatThrownBy(() -> element.setAttributeNS(

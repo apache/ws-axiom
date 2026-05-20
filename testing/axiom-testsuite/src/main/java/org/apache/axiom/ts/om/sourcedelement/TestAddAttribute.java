@@ -26,15 +26,15 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that adding an attribute to an {@link OMSourcedElement} overrides a corresponding attribute
  * that may be produced during expansion.
  */
-public class TestAddAttribute implements MatrixTestCase {
+public class TestAddAttribute implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -42,7 +42,7 @@ public class TestAddAttribute implements MatrixTestCase {
     private AddAttributeStrategy strategy;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMSourcedElement element =
                 factory.createOMElement(new PullOMDataSource("<root attr='orgvalue'><child/></root>"), "root", null);
         // Add an attribute before expansion

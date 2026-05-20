@@ -34,7 +34,7 @@ import org.w3c.dom.Text;
  */
 public class TestInsertSiblingBeforeFromForeignDocument extends OMDOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         DocumentBuilder db = metaFactory.newDocumentBuilderFactory().newDocumentBuilder();
         Document document1 = db.newDocument();
         Element element1 = document1.createElementNS(null, "element1");

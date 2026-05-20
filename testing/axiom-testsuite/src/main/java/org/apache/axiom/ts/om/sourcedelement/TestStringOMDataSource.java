@@ -29,15 +29,15 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests functionality of ByteArrayDataSource */
-public class TestStringOMDataSource implements MatrixTestCase {
+public class TestStringOMDataSource implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
 
         String localName = "myPayload";
         String payload1 = "<tns:myPayload xmlns:tns=\"urn://test\">Payload One</tns:myPayload>";

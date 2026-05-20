@@ -41,14 +41,14 @@ import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestBuilder implements MatrixTestCase {
+public class TestBuilder implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String soap11Message = "<?xml version='1.0' ?>"
                 + "<env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n"
                 + "   <env:Header>\n"

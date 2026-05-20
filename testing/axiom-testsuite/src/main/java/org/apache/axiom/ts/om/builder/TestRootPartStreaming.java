@@ -32,19 +32,19 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the content of the root part of an XOP/MTOM message is not buffered (i.e. read
  * entirely into memory) unless an attachment part is accessed. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-403">AXIOM-403</a>.
  */
-public class TestRootPartStreaming implements MatrixTestCase {
+public class TestRootPartStreaming implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
 
         // Programmatically create the message
         OMElement orgRoot = factory.createOMElement("root", null);

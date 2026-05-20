@@ -25,19 +25,19 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that when {@link OMElement#addAttribute(String, String, OMNamespace)} is called with an
  * {@link OMNamespace} with a <code>null</code> prefix and a namespace declaration for the given
  * namespace URI is in scope, the method reuses the existing prefix instead of generating one.
  */
-public class TestAddAttributeReuseExistingPrefix implements MatrixTestCase {
+public class TestAddAttributeReuseExistingPrefix implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement parent = factory.createOMElement("parent", null);
         OMElement element = factory.createOMElement("element", null, parent);
         parent.declareNamespace("urn:test", "p");

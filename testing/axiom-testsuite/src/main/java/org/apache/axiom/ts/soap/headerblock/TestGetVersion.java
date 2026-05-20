@@ -24,10 +24,10 @@ import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPVersion;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetVersion implements MatrixTestCase {
+public class TestGetVersion implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -35,7 +35,7 @@ public class TestGetVersion implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPHeaderBlock h =
                 soapFactory.createSOAPHeaderBlock("myHeader", soapFactory.createOMNamespace("urn:test", "p"));
         assertThat(h.getVersion()).isSameAs(spec.getAdapter(SOAPVersion.class));

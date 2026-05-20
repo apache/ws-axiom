@@ -36,7 +36,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.testutils.blob.TestBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that attachments are streamed (i.e. not read entirely into memory) if the original message
@@ -44,7 +44,7 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * OMOutputFormat)} is used to serialize the message. This feature is important because it allows
  * projects such as Synapse to forward MTOM messages very efficiently.
  */
-public class TestMTOMForwardStreaming implements MatrixTestCase {
+public class TestMTOMForwardStreaming implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -53,7 +53,7 @@ public class TestMTOMForwardStreaming implements MatrixTestCase {
     private boolean buildSOAPPart;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Blob blob1 = new TestBlob('A', Runtime.getRuntime().maxMemory());
         Blob blob2 = new TestBlob('B', Runtime.getRuntime().maxMemory());
 

@@ -23,18 +23,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMFactory#getMetaFactory()} returns the reference of the {@link OMMetaFactory}
  * from which the reference to the {@link OMFactory} was obtained.
  */
-public class TestGetMetaFactory implements MatrixTestCase {
+public class TestGetMetaFactory implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         assertThat(metaFactory.getOMFactory().getMetaFactory()).isSameAs(metaFactory);
     }
 }

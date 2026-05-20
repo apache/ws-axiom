@@ -25,14 +25,14 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestHasNameWithNamespace implements MatrixTestCase {
+public class TestHasNameWithNamespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String localName = "TestLocalName";
         String namespace = "http://ws.apache.org/axis2/ns";
         String prefix = "axis2";

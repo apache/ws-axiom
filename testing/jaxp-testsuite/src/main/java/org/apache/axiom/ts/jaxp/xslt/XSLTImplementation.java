@@ -30,7 +30,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.xml.sax.ext.LexicalHandler;
 
-/** Specifies an XSLT implementation for use in a {@link MatrixTestCase}. */
+/** Specifies an XSLT implementation for use in a matrix test. */
 public abstract class XSLTImplementation extends Multiton {
     public static final XSLTImplementation JRE = new XSLTImplementation("jre") {
         @Override

@@ -27,11 +27,11 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
 /** Checks the content of the SOAP envelope returned by {@link SOAPFactory#getDefaultEnvelope()}. */
-public class TestGetDefaultEnvelope implements MatrixTestCase {
+public class TestGetDefaultEnvelope implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -39,7 +39,7 @@ public class TestGetDefaultEnvelope implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope env = soapFactory.getDefaultEnvelope();
 
         // Check correct SOAP version

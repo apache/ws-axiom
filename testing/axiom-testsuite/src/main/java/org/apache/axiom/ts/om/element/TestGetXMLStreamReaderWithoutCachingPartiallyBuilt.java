@@ -27,18 +27,18 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMContainer#getXMLStreamReaderWithoutCaching()} correctly generated events for
  * an element that has been partially built. This is a regression test for AXIOM-393.
  */
-public class TestGetXMLStreamReaderWithoutCachingPartiallyBuilt implements MatrixTestCase {
+public class TestGetXMLStreamReaderWithoutCachingPartiallyBuilt implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         // Note: the problem described in AXIOM-393 specifically occurred with descendants
         //       having the same name as the root element
         OMElement root = OMXMLBuilderFactory.createOMBuilder(

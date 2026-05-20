@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
  */
 public class TestLookupNamespaceURIWithoutOwnerElement extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Attr attr = document.createAttributeNS("urn:test", "p:attr");
         assertThat(attr.lookupNamespaceURI("p")).isNull();

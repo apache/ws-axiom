@@ -31,10 +31,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.XOPEncoded;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetXMLStreamReaderMTOMEncoded implements MatrixTestCase {
+public class TestGetXMLStreamReaderMTOMEncoded implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -45,7 +45,7 @@ public class TestGetXMLStreamReaderMTOMEncoded implements MatrixTestCase {
     private boolean cache;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         InputStream inStream = MTOMSample.SAMPLE2.getInputStream();
         MultipartBody mb = MultipartBody.builder()
                 .setInputStream(inStream)

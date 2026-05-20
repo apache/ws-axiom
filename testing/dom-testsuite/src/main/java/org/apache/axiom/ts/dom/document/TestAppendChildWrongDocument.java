@@ -34,7 +34,7 @@ import org.w3c.dom.Node;
  */
 public class TestAppendChildWrongDocument extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
         Document document1 = documentBuilder.newDocument();
         Document document2 = documentBuilder.newDocument();

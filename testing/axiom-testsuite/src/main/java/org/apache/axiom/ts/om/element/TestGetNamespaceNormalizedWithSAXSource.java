@@ -29,7 +29,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.InputSource;
 
 /**
@@ -39,12 +39,12 @@ import org.xml.sax.InputSource;
  * xmlns=""}. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
-public class TestGetNamespaceNormalizedWithSAXSource implements MatrixTestCase {
+public class TestGetNamespaceNormalizedWithSAXSource implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SAXParserFactory saxFactory = SAXParserFactory.newInstance();
         saxFactory.setNamespaceAware(true);
         saxFactory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);

@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMFactory#createOMText(OMContainer, String)} can be used to create an orphaned
  * node by setting <code>parent</code> to <code>null</code>.
  */
-public class TestCreateOMTextWithNullParent implements MatrixTestCase {
+public class TestCreateOMTextWithNullParent implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMText text = factory.createOMText(null, "text");
         assertThat(text.getParent()).isNull();
     }

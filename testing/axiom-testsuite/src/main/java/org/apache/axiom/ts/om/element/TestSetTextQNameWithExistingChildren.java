@@ -26,18 +26,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#setText(QName)} when invoked on an element that has
  * children.
  */
-public class TestSetTextQNameWithExistingChildren implements MatrixTestCase {
+public class TestSetTextQNameWithExistingChildren implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("TestElement", null);
 
         // Add some children of various types

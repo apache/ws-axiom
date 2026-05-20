@@ -29,14 +29,14 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestWrappedTextNodeOMDataSourceFromReader implements MatrixTestCase {
+public class TestWrappedTextNodeOMDataSourceFromReader implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Random random = new Random();
         StringBuilder buffer = new StringBuilder(40000);
         for (int i = 0; i < 40000; i++) {

@@ -29,18 +29,18 @@ import java.util.Set;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link Iterator#remove()} can be used on the iterator returned by {@link
  * OMElement#getAllDeclaredNamespaces()} to remove a namespace declaration.
  */
-public class TestGetAllDeclaredNamespacesRemove implements MatrixTestCase {
+public class TestGetAllDeclaredNamespacesRemove implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         List<String> prefixes = Arrays.asList("a", "b", "c");
         for (String prefixToRemove : prefixes) {
             OMElement element = factory.createOMElement("test", null);

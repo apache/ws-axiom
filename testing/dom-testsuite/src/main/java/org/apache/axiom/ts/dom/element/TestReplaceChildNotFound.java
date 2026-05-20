@@ -34,7 +34,7 @@ import org.w3c.dom.Text;
  */
 public class TestReplaceChildNotFound extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element root = document.createElementNS(null, "root");
         root.appendChild(document.createElementNS(null, "child"));

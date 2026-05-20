@@ -28,14 +28,14 @@ import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.ds.StringOMDataSource;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestSerializeModifiedOMSEWithNonDestructiveDataSource implements MatrixTestCase {
+public class TestSerializeModifiedOMSEWithNonDestructiveDataSource implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDataSourceExt ds = new StringOMDataSource("<element><child/></element>");
         assertThat(ds.isDestructiveWrite()).isFalse();
 

@@ -31,14 +31,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests {@link XMLStreamReaderUtils#getBlobFromElement(XMLStreamReader)} on an {@link
  * XMLStreamReader} returned by {@link OMElement#getXMLStreamReader(boolean)}.
  */
-public class TestGetBlobFromElement implements MatrixTestCase {
+public class TestGetBlobFromElement implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -47,7 +47,7 @@ public class TestGetBlobFromElement implements MatrixTestCase {
     private boolean cache;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Blob orgBlob = new RandomBlob(64 * 1024);
         OMElement orgRoot = factory.createOMElement(new QName("root"));
         OMElement orgChild = factory.createOMElement(new QName("child"), orgRoot);

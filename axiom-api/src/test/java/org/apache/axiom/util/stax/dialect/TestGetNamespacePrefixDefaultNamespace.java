@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamReader;
 
 public class TestGetNamespacePrefixDefaultNamespace extends DialectTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root xmlns=\"urn:ns\"/>"));
         reader.next();

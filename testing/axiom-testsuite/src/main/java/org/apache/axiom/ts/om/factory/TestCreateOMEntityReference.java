@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestCreateOMEntityReference implements MatrixTestCase {
+public class TestCreateOMEntityReference implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement parent = factory.createOMElement("test", null);
         OMEntityReference entref = factory.createOMEntityReference(parent, "testref");
         assertThat(entref.getParent()).isSameAs(parent);

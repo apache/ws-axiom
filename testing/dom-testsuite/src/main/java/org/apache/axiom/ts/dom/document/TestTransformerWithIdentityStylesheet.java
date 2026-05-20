@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
 // threw an UnsupportedOperationException instead of a DOMException.
 public class TestTransformerWithIdentityStylesheet extends TransformerTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
 
         Document document = builder.newDocument();

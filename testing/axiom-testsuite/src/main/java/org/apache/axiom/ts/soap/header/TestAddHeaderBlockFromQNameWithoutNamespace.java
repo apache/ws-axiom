@@ -26,18 +26,18 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link SOAPHeader#addHeaderBlock(QName)} when passing a {@link QName} with
  * no namespace.
  */
-public class TestAddHeaderBlockFromQNameWithoutNamespace implements MatrixTestCase {
+public class TestAddHeaderBlockFromQNameWithoutNamespace implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPHeader header = soapFactory.createSOAPHeader(envelope);
         assertThatThrownBy(() -> header.addHeaderBlock(new QName("test"))).isInstanceOf(OMException.class);

@@ -24,17 +24,17 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the default attribute type for programmatically created attributes is {@code CDATA}.
  */
-public class TestGetAttributeTypeDefault implements MatrixTestCase {
+public class TestGetAttributeTypeDefault implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
         OMAttribute at = factory.createOMAttribute("id", ns, "value");
         assertThat(at.getAttributeType()).isEqualTo("CDATA");

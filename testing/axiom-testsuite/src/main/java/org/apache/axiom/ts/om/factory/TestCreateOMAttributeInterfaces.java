@@ -27,7 +27,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.Text;
@@ -39,12 +39,12 @@ import org.w3c.dom.Text;
  * this is in contrast to DOM where an {@link Attr} node is a parent node (containing {@link Text}
  * and {@link EntityReference} nodes).
  */
-public class TestCreateOMAttributeInterfaces implements MatrixTestCase {
+public class TestCreateOMAttributeInterfaces implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("urn:test", "p");
         OMAttribute attr = factory.createOMAttribute("attr", ns, "value");
         assertThat(attr).isNotInstanceOf(OMSerializable.class);

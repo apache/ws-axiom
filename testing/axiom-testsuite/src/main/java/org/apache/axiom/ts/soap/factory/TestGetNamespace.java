@@ -24,10 +24,10 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetNamespace implements MatrixTestCase {
+public class TestGetNamespace implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -35,7 +35,7 @@ public class TestGetNamespace implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace ns = soapFactory.getNamespace();
         assertThat(ns.getPrefix()).isEqualTo(SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         assertThat(ns.getNamespaceURI()).isEqualTo(spec.getEnvelopeNamespaceURI());

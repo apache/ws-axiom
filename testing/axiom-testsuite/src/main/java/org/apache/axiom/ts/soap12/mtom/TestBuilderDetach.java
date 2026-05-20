@@ -31,15 +31,15 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestBuilderDetach implements MatrixTestCase {
+public class TestBuilderDetach implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         MTOMSample sample = MTOMSample.SAMPLE1;
         InstrumentedInputStream in = new InstrumentedInputStream(sample.getInputStream());
         MultipartBody mb = MultipartBody.builder()

@@ -30,19 +30,19 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMXMLBuilderFactory#createStAXOMBuilder(OMFactory, XMLStreamReader)}
  * if the supplied {@link XMLStreamReader} is positioned on a {@link
  * XMLStreamConstants#START_ELEMENT} event.
  */
-public class TestCreateStAXOMBuilderFromFragment implements MatrixTestCase {
+public class TestCreateStAXOMBuilderFromFragment implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a><b>text</b></a>"));
         // Position the reader on the event for <b>
         while (reader.getEventType() != XMLStreamReader.START_ELEMENT

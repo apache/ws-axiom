@@ -27,14 +27,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMContainer#addChild(OMNode)} when used to add a node to an element
  * it is already a child of. In this case, the expected result is that the node is moved to the end
  * of the list of children.
  */
-public class TestAddChildWithSameParent implements MatrixTestCase {
+public class TestAddChildWithSameParent implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -43,7 +43,7 @@ public class TestAddChildWithSameParent implements MatrixTestCase {
     private boolean build;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement parent = AXIOMUtil.stringToOM(factory, "<parent><a/><b/><c/></parent>");
         if (build) {
             parent.build();

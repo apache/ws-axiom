@@ -24,15 +24,15 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-95">AXIOM-95</a>. */
-public class TestAxiom95 implements MatrixTestCase {
+public class TestAxiom95 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
                 factory, TestAxiom95.class.getResourceAsStream("defaultNamespace2.xml"));
 

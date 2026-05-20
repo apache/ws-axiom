@@ -27,18 +27,18 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} if there is no existing
  * document element.
  */
-public class TestSetOMDocumentElementNew implements MatrixTestCase {
+public class TestSetOMDocumentElementNew implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument document = factory.createOMDocument();
         OMComment comment = factory.createOMComment(document, "some comment");
         OMElement documentElement = factory.createOMElement("root", null);

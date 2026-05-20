@@ -26,7 +26,7 @@ import org.w3c.dom.Document;
 
 public class TestCreateAttributeNSWithoutNamespace extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Attr attr = doc.createAttributeNS(null, "attr");
         assertThat(attr.getPrefix()).isNull();

@@ -34,7 +34,7 @@ import org.w3c.dom.CDATASection;
  */
 public class TestCreateOMTextCDATASectionWithParent extends OMDOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("test", null);
         OMText text = factory.createOMText(parent, "cdata section content", OMNode.CDATA_SECTION_NODE);

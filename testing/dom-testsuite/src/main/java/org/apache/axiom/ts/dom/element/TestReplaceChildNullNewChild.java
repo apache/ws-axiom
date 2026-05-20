@@ -32,7 +32,7 @@ import org.w3c.dom.Node;
  */
 public class TestReplaceChildNullNewChild extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element root = document.createElementNS(null, "root");
         Element child = document.createElementNS(null, "child");

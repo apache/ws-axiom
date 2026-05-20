@@ -26,15 +26,15 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestBuild implements MatrixTestCase {
+public class TestBuild implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         InstrumentedInputStream in = new InstrumentedInputStream(XMLSample.LARGE.getInputStream());
         OMDocument doc = OMXMLBuilderFactory.createOMBuilder(factory, in).getDocument();
         assertThat(doc.isComplete()).isFalse();

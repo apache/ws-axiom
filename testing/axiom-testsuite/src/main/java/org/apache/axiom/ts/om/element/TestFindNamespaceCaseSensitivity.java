@@ -24,14 +24,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestFindNamespaceCaseSensitivity implements MatrixTestCase {
+public class TestFindNamespaceCaseSensitivity implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String NSURI = "http://testns";
         String NSURI_UPPER = "HTTP://TESTNS";
 

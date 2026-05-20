@@ -25,11 +25,11 @@ import com.google.inject.name.Named;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Element;
 
-public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration implements MatrixTestCase {
+public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -38,7 +38,7 @@ public class TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration impleme
     private String prefix;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Element domElement = DOMImplementation.XERCES.newDocument().createElementNS(null, "test");
         domElement.setAttribute(prefix.isEmpty() ? "xmlns" : "xmlns:" + prefix, "urn:ns1");
         OMElement element =

@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class TestCreateElementNSWithoutNamespace extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element element = doc.createElementNS(null, "test");
         assertThat(element.getPrefix()).isNull();

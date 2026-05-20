@@ -18,11 +18,11 @@
  */
 package org.apache.axiom.ts;
 
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 
 /** Base class for test cases that are executed against the files from the conformance test set. */
-public abstract class ConformanceTestCase implements MatrixTestCase {
+public abstract class ConformanceTestCase implements Executable {
     protected final XMLSample file;
 
     public ConformanceTestCase(XMLSample file) {

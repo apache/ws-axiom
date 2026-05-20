@@ -22,9 +22,9 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public abstract class LazyNameTestCase implements MatrixTestCase {
+public abstract class LazyNameTestCase implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -37,7 +37,7 @@ public abstract class LazyNameTestCase implements MatrixTestCase {
     }
 
     @Override
-    public final void runTest() throws Throwable {
+    public final void execute() throws Throwable {
         runTest(variant.createOMSourcedElement(factory, qname));
     }
 

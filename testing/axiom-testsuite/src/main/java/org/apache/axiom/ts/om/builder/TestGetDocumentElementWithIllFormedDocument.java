@@ -26,18 +26,18 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMXMLParserWrapper#getDocumentElement()} throws an exception (instead of
  * returning <code>null</code>) if the input document has no document element.
  */
-public class TestGetDocumentElementWithIllFormedDocument implements MatrixTestCase {
+public class TestGetDocumentElementWithIllFormedDocument implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<!--comment1-->"));
         assertThatThrownBy(builder::getDocumentElement).isInstanceOf(OMException.class);
     }

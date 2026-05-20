@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMContainer#getXMLStreamReaderWithoutCaching()} in the specific case
@@ -36,12 +36,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * the information returned for that node was incorrect because the builder switched too early to
  * pull through mode.
  */
-public class TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified implements MatrixTestCase {
+public class TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/><c/></root>"))
                 .getDocumentElement();
 

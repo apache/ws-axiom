@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
 /** Tests the behavior of {@link Node#lookupPrefix(String)} on an empty {@link Document}. */
 public class TestLookupPrefixWithEmptyDocument extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         assertThat(document.lookupPrefix("urn:test")).isNull();
     }

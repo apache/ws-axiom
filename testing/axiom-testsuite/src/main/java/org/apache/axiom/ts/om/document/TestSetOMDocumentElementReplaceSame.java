@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} if the argument is
  * already the document element.
  */
-public class TestSetOMDocumentElementReplaceSame implements MatrixTestCase {
+public class TestSetOMDocumentElementReplaceSame implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument document = factory.createOMDocument();
         OMElement root = factory.createOMElement("root", null, document);
         document.setOMDocumentElement(root);

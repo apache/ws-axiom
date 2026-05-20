@@ -26,18 +26,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMElement#getNextOMSibling()} doesn't change the state of an {@link
  * OMSourcedElement} that is expanded but not complete.
  */
-public class TestGetNextOMSiblingIncomplete implements MatrixTestCase {
+public class TestGetNextOMSiblingIncomplete implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMSourcedElement omse = factory.createOMElement(new StringOMDataSource("<sourcedelement/>"));
         OMElement parent = factory.createOMElement(new QName("parent"));
         parent.addChild(omse);

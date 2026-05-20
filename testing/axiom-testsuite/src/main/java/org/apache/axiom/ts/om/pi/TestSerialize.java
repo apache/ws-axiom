@@ -27,14 +27,14 @@ import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestSerialize implements MatrixTestCase {
+public class TestSerialize implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMProcessingInstruction pi = factory.createOMProcessingInstruction(null, "target", "data");
         XMLStreamWriter writer = mock(XMLStreamWriter.class);
         pi.serialize(writer);

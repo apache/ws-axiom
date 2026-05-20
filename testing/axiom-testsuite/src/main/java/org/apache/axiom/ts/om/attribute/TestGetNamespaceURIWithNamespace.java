@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMNamedInformationItem#getNamespaceURI()} returns the namespace URI when
  * invoked on an {@link OMAttribute} that has a namespace.
  */
-public class TestGetNamespaceURIWithNamespace implements MatrixTestCase {
+public class TestGetNamespaceURIWithNamespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMAttribute attr = factory.createOMAttribute("name", factory.createOMNamespace("urn:ns", "p"), "value");
         assertThat(attr.getNamespaceURI()).isEqualTo("urn:ns");
     }

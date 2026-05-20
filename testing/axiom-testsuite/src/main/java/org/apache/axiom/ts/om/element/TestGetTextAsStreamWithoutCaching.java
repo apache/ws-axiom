@@ -36,14 +36,14 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.blob.RandomBlob;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetTextAsStreamWithoutCaching implements MatrixTestCase {
+public class TestGetTextAsStreamWithoutCaching implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Charset charset = StandardCharsets.US_ASCII;
         Blob blob = new RandomBlob(654321, 64, 128, 20000000);
         Vector<InputStream> v = new Vector<InputStream>();
