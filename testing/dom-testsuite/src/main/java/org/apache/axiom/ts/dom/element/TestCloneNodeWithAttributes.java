@@ -22,14 +22,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /** Tests that {@link Node#cloneNode(boolean)} correctly clones the attributes of an element. */
-public class TestCloneNodeWithAttributes extends DOMTestCase {
+public class TestCloneNodeWithAttributes implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Inject
     @Named("deep")
     private boolean deep;

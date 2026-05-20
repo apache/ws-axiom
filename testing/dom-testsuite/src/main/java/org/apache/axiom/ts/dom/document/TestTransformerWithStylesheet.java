@@ -21,13 +21,18 @@ package org.apache.axiom.ts.dom.document;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
+import com.google.inject.Inject;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import org.w3c.dom.Document;
 
 public class TestTransformerWithStylesheet extends TransformerTestCase {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();

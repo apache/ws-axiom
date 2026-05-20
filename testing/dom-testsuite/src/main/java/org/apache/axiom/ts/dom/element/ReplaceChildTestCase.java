@@ -20,12 +20,16 @@ package org.apache.axiom.ts.dom.element;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public abstract class ReplaceChildTestCase extends DOMTestCase {
+public abstract class ReplaceChildTestCase implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Inject
     @Named("newChildHasSiblings")
     private boolean newChildHasSiblings;

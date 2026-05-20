@@ -20,8 +20,10 @@ package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.XMLConstants;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,7 +32,10 @@ import org.w3c.dom.Node;
  * Test that {@link Node#lookupPrefix(String)} does NOT recognize the default namespace bindings for
  * the {@code xml} and {@code xmlns} prefixes.
  */
-public class TestLookupPrefixDefaultBindings extends DOMTestCase {
+public class TestLookupPrefixDefaultBindings implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

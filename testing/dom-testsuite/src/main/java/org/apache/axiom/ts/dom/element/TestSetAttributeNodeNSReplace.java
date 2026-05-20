@@ -20,7 +20,9 @@ package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.axiom.ts.dom.DOMTestCase;
+import com.google.inject.Inject;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,7 +32,10 @@ import org.w3c.dom.Element;
  * attribute with the same local name and namespace URI, i.e. if the call will replace an existing
  * attribute.
  */
-public class TestSetAttributeNodeNSReplace extends DOMTestCase {
+public class TestSetAttributeNodeNSReplace implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

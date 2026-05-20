@@ -20,15 +20,20 @@ package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 
-public class TestSetTextContent extends DOMTestCase {
+public class TestSetTextContent implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader("<a>1<!--c--><b>2</b>3</a>")));

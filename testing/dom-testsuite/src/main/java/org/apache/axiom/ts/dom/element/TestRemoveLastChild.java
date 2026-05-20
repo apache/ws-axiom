@@ -20,14 +20,19 @@ package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-public class TestRemoveLastChild extends DOMTestCase {
+public class TestRemoveLastChild implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();

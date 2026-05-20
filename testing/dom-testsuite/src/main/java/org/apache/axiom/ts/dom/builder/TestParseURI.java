@@ -20,16 +20,21 @@ package org.apache.axiom.ts.dom.builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.net.protocol.registry.InstrumentedDataProvider;
 import org.apache.axiom.net.protocol.registry.URLRegistration;
 import org.apache.axiom.net.protocol.registry.URLRegistry;
-import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 
 /** Tests {@link DocumentBuilder#parse(String)}. */
-public class TestParseURI extends DOMTestCase {
+public class TestParseURI implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         InstrumentedDataProvider dataProvider = new InstrumentedDataProvider(XMLSample.SIMPLE.getUrl()::openStream);

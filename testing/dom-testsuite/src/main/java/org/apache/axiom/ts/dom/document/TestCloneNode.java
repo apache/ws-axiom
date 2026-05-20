@@ -22,11 +22,15 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 
-public class TestCloneNode extends DOMTestCase {
+public class TestCloneNode implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Inject
     private XMLSample file;
 

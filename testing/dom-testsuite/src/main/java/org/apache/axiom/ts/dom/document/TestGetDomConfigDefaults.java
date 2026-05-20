@@ -20,7 +20,9 @@ package org.apache.axiom.ts.dom.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.axiom.ts.dom.DOMTestCase;
+import com.google.inject.Inject;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.Document;
 
@@ -28,7 +30,10 @@ import org.w3c.dom.Document;
  * Tests that the {@link DOMConfiguration} object returned by {@link Document#getDomConfig()} is
  * initialized with the correct default values as defined by the DOM specification.
  */
-public class TestGetDomConfigDefaults extends DOMTestCase {
+public class TestGetDomConfigDefaults implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

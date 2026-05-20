@@ -21,14 +21,19 @@ package org.apache.axiom.ts.dom.text;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import org.apache.axiom.ts.dom.DOMTestCase;
+import com.google.inject.Inject;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 /** Tests that calling {@link Node#setPrefix(String)} on a text node results in an exception. */
-public class TestSetPrefix extends DOMTestCase {
+public class TestSetPrefix implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

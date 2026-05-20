@@ -20,8 +20,10 @@ package org.apache.axiom.ts.dom.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.parsers.DocumentBuilder;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -31,7 +33,10 @@ import org.w3c.dom.Text;
  * Tests the behavior of {@link Document#adoptNode(Node)} if the node to adopt has a parent. In this
  * case, the method must detach the node from its parent first.
  */
-public class TestAdoptNodeWithParent extends DOMTestCase {
+public class TestAdoptNodeWithParent implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();

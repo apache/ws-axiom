@@ -20,11 +20,16 @@ package org.apache.axiom.ts.dom.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.axiom.ts.dom.DOMTestCase;
+import com.google.inject.Inject;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class TestCreateElementNSWithSupplementaryCharacter extends DOMTestCase {
+public class TestCreateElementNSWithSupplementaryCharacter implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         String prefix = new String(new int[] {'a', 0x10001, 'b'}, 0, 3);

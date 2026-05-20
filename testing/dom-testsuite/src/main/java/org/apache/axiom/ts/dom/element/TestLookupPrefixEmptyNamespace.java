@@ -20,8 +20,10 @@ package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import java.io.StringReader;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -30,7 +32,10 @@ import org.xml.sax.InputSource;
  * Tests that {@link Node#lookupPrefix(String)} always returns <code>null</code> if the given
  * namespace URI is the empty string.
  */
-public class TestLookupPrefixEmptyNamespace extends DOMTestCase {
+public class TestLookupPrefixEmptyNamespace implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder()

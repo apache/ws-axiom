@@ -21,7 +21,9 @@ package org.apache.axiom.ts.dom.element;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import org.apache.axiom.ts.dom.DOMTestCase;
+import com.google.inject.Inject;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,7 +34,10 @@ import org.w3c.dom.Node;
  * result in a cyclic relationship. This occurs if the node to append is an ancestor of the node to
  * which is appended.
  */
-public class TestAppendChildCyclic extends DOMTestCase {
+public class TestAppendChildCyclic implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();

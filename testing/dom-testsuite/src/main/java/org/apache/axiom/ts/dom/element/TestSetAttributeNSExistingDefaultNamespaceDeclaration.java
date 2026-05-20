@@ -20,8 +20,10 @@ package org.apache.axiom.ts.dom.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import javax.xml.XMLConstants;
-import org.apache.axiom.ts.dom.DOMTestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,7 +32,10 @@ import org.w3c.dom.Element;
  * Tests the behavior of {@link Element#setAttributeNS(String, String, String)} when used to modify
  * a namespace declaration for the default namespace.
  */
-public class TestSetAttributeNSExistingDefaultNamespaceDeclaration extends DOMTestCase {
+public class TestSetAttributeNSExistingDefaultNamespaceDeclaration implements Executable {
+    @Inject
+    private DocumentBuilderFactory dbf;
+
     @Override
     public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
