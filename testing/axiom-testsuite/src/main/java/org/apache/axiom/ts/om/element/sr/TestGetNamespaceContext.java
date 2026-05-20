@@ -27,9 +27,9 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetNamespaceContext implements MatrixTestCase {
+public class TestGetNamespaceContext implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -38,7 +38,7 @@ public class TestGetNamespaceContext implements MatrixTestCase {
     private boolean cache;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element =
                 AXIOMUtil.stringToOM(factory, "<a xmlns='urn:ns1' xmlns:ns2='urn:ns2'><b xmlns:ns3='urn:ns3'/></a>");
         XMLStreamReader stream = cache ? element.getXMLStreamReader() : element.getXMLStreamReaderWithoutCaching();

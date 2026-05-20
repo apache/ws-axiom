@@ -28,18 +28,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test that {@link Iterator#remove()} behaves correctly on the iterator returned by {@link
  * OMContainer#getDescendants(boolean)} when used to remove an element with child nodes.
  */
-public class TestGetDescendantsRemoveSubtree implements MatrixTestCase {
+public class TestGetDescendantsRemoveSubtree implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a><b/></a><c/></root>"))
                 .getDocumentElement();
         Iterator<OMNode> it = root.getDescendants(false);

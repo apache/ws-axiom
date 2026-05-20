@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMElement#declareDefaultNamespace(String)} throws an exception if an attempt is
@@ -34,12 +34,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * unprefixed element that belongs to a different namespace. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-376">AXIOM-376</a>.
  */
-public class TestDeclareDefaultNamespaceConflict2 implements MatrixTestCase {
+public class TestDeclareDefaultNamespaceConflict2 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace ns = factory.createOMNamespace("urn:ns1", "");
         OMElement element = factory.createOMElement("test", ns);
         assertThatThrownBy(() -> element.declareDefaultNamespace("urn:ns2")).isInstanceOf(OMException.class);

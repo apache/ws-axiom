@@ -23,15 +23,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 // Regression test for AXIOM-218
-public class TestGetBodyOnEnvelopeWithHeaderOnly implements MatrixTestCase {
+public class TestGetBodyOnEnvelopeWithHeaderOnly implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         soapFactory.createSOAPHeader(envelope);
         assertThat(envelope.getBody()).isNull();

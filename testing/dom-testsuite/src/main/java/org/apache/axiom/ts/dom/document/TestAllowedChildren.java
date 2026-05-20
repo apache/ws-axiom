@@ -27,7 +27,7 @@ import org.w3c.dom.Document;
 
 public class TestAllowedChildren extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
 
         doc.appendChild(doc.createComment("some comment"));

@@ -27,16 +27,16 @@ import java.util.Set;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests that {@link OMElement#cloneOMElement()} performs namespace repairing. */
 // TODO: this is actually undocumented; in addition, it should probably made configurable
-public class TestCloneOMElementNamespaceRepairing implements MatrixTestCase {
+public class TestCloneOMElementNamespaceRepairing implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
 
         // Create a root element on which we declare the namespaces
         OMElement root = factory.createOMElement("root", null);

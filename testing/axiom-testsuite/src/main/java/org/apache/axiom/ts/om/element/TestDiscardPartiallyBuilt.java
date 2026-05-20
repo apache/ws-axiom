@@ -29,19 +29,19 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMNode#discard()} on an element that is partially built, more
  * precisely in a situation where the builder is building a descendant that is not an immediate
  * child of the element.
  */
-public class TestDiscardPartiallyBuilt implements MatrixTestCase {
+public class TestDiscardPartiallyBuilt implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement root = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<root><element><a><b>text</b></a><c/></element><sibling/></root>"))
                 .getDocumentElement();

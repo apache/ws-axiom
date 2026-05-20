@@ -34,7 +34,7 @@ public class TestSetAttributeNS extends DOMTestCase {
     private QName qname;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:ns1", "p:element");
         element.setAttributeNS(DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname), "value");

@@ -28,15 +28,15 @@ import org.apache.axiom.net.protocol.registry.URLRegistry;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestCloseWithSystemId implements MatrixTestCase {
+public class TestCloseWithSystemId implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         InstrumentedDataProvider dataProvider = new InstrumentedDataProvider(XMLSample.SIMPLE.getUrl()::openStream);
         URLRegistration registration = URLRegistry.register(dataProvider);
         try {

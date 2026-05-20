@@ -26,18 +26,18 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test {@link OMElement#getAllAttributes()} on a parsed document. Also check that the iterator
  * doesn't attempt to return namespace declarations.
  */
-public class TestGetAllAttributes2 implements MatrixTestCase {
+public class TestGetAllAttributes2 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(factory, "<e xmlns:p='urn:test' p:attr='test'/>");
         Iterator<OMAttribute> it = element.getAllAttributes();
         assertThat(it.hasNext()).isTrue();

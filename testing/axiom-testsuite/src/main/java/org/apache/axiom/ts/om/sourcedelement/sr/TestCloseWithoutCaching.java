@@ -27,15 +27,15 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that calling {@link XMLStreamReader#close()} on an {@link XMLStreamReader} returned by
  * {@link OMContainer#getXMLStreamReaderWithoutCaching()} for an OM tree containing an {@link
  * AbstractPullOMDataSource} closes all readers requested from the data source.
  */
-public class TestCloseWithoutCaching implements MatrixTestCase {
+public class TestCloseWithoutCaching implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -44,7 +44,7 @@ public class TestCloseWithoutCaching implements MatrixTestCase {
     private int events;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement root = factory.createOMElement("root", null);
         PullOMDataSource ds = new PullOMDataSource("<child>content</child>");
         root.addChild(factory.createOMElement(ds));

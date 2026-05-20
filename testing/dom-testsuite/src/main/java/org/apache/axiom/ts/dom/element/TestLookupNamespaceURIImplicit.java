@@ -32,7 +32,7 @@ import org.w3c.dom.Node;
  */
 public class TestLookupNamespaceURIImplicit extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
 
         String ns1 = "http://apache/axiom/dom/ns1";
         String element1Name = "ele1";

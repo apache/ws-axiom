@@ -24,12 +24,12 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests that {@link SOAPHeaderBlock#setRole(String)} adds a namespace declaration if necessary. */
-public class TestSetRoleWithoutExistingNamespaceDecl implements MatrixTestCase {
+public class TestSetRoleWithoutExistingNamespaceDecl implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -37,7 +37,7 @@ public class TestSetRoleWithoutExistingNamespaceDecl implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPHeaderBlock headerBlock =
                 soapFactory.createSOAPHeaderBlock("block", soapFactory.createOMNamespace("urn:test", "p"));
         headerBlock.setRole("urn:testrole");

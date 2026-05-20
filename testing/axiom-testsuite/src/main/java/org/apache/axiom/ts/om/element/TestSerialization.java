@@ -25,7 +25,7 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests proper serialization for different combinations of namespaces on the element and its
@@ -46,7 +46,7 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  *   <li>qualified using the default namespace (<code>children=D</code>)
  * </ul>
  */
-public class TestSerialization implements MatrixTestCase {
+public class TestSerialization implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -103,7 +103,7 @@ public class TestSerialization implements MatrixTestCase {
     }
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
 
         OMNamespace nsParent = createNamespace(factory, params.parent());
         OMNamespace nsChildren = createNamespace(factory, params.children());

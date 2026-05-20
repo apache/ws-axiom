@@ -21,9 +21,9 @@ package org.apache.axiom.ts.om.cross;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public abstract class CrossOMTestCase implements MatrixTestCase {
+public abstract class CrossOMTestCase implements Executable {
     @Inject
     @Named("metaFactory")
     protected OMMetaFactory metaFactory;

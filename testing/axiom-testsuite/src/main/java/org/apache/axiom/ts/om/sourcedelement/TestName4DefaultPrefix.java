@@ -25,8 +25,8 @@ import java.io.StringWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the OMSourcedElement localName, namespace and prefix settings before and after
@@ -34,12 +34,12 @@ import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
  * Serialize and consume Tests that the namespace and localName are not affected by the
  * serializeAndConsume
  */
-public class TestName4DefaultPrefix implements MatrixTestCase {
+public class TestName4DefaultPrefix implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default
         // prefix

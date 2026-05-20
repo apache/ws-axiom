@@ -28,7 +28,7 @@ import org.xml.sax.InputSource;
 
 public class TestAttributes4 extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader("<root><child/></root>")));
         Element element = (Element) doc.getDocumentElement().getFirstChild();
         assertThat(element.hasAttributes()).isFalse();

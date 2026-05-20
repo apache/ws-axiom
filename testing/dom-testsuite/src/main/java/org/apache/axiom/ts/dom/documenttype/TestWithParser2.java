@@ -26,7 +26,7 @@ import org.w3c.dom.DocumentType;
 
 public class TestWithParser2 extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder()
                 .parse(TestWithParser2.class.getResource("test2.xml").toString());
         DocumentType doctype = document.getDoctype();

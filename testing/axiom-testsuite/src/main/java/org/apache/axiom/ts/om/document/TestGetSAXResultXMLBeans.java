@@ -26,19 +26,19 @@ import com.google.inject.Inject;
 import java.io.StringWriter;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument;
 import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order;
 import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order.Item;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
-public class TestGetSAXResultXMLBeans implements MatrixTestCase {
+public class TestGetSAXResultXMLBeans implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OrderDocument document = OrderDocument.Factory.newInstance();
         Order order = document.addNewOrder();
         order.setCustomerId("73107481");

@@ -28,18 +28,18 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMNode#insertSiblingBefore(OMNode)} throws an exception if an attempt is made
  * to add a {@link SOAPFault} as a child of a SOAP element other than {@link SOAPBody}.
  */
-public class TestWrongParent3 implements MatrixTestCase {
+public class TestWrongParent3 implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPHeader parent = soapFactory.createSOAPHeader();
         OMElement child1 =
                 soapFactory.createSOAPHeaderBlock("child1", soapFactory.createOMNamespace("urn:test", "p"), parent);

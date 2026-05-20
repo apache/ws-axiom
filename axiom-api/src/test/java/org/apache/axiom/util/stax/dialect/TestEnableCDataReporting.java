@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamReader;
 
 public class TestEnableCDataReporting extends DialectTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLInputFactory factory = staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<a><![CDATA[test]]></a>"));
         reader.nextTag();

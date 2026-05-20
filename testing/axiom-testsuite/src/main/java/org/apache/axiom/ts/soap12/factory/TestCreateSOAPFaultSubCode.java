@@ -30,18 +30,18 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests {@link SOAPFactory#createSOAPFaultSubCode(SOAPFaultCode)} when used with a {@link
  * SOAPFaultCode} that has already a {@link SOAPFaultValue} child.
  */
-public class TestCreateSOAPFaultSubCode implements MatrixTestCase {
+public class TestCreateSOAPFaultSubCode implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
         SOAPFault fault = envelope.getBody().getFault();
         SOAPFaultCode code = fault.getCode();

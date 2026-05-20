@@ -31,7 +31,7 @@ public class TestCloneNode extends DOMTestCase {
     private XMLSample file;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().parse(file.getUrl().toString());
         Document document2 = (Document) document.cloneNode(true);
         assertAbout(xml())

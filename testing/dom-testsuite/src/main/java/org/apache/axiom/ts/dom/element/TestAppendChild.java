@@ -27,7 +27,7 @@ import org.w3c.dom.Text;
 
 public class TestAppendChild extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String elementName = "TestElem";
         String childElemName = "TestChildElem";
         String childTextValue = "text value of the child text node";

@@ -26,19 +26,19 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test that {@link OMElement#getAttributeValue(QName)} works properly for an attribute with the
  * {@code xml} prefix, even if this prefix is not declared explicitly. This is a regression test for
  * <a href="https://issues.apache.org/jira/browse/AXIS2-329">AXIS2-329</a>.
  */
-public class TestGetAttributeValueWithXmlPrefix1 implements MatrixTestCase {
+public class TestGetAttributeValueWithXmlPrefix1 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement elem = AXIOMUtil.stringToOM(
                 factory,
                 "<wsp:Policy xml:base=\"uri:thisBase\" "

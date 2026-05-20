@@ -29,10 +29,10 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests {@link OMContainer#removeChildren()} on an {@link OMElement}. */
-public class TestRemoveChildren implements MatrixTestCase {
+public class TestRemoveChildren implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -41,7 +41,7 @@ public class TestRemoveChildren implements MatrixTestCase {
     private boolean complete;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<root><a>A</a><b>B</b></root>"))
                 .getDocumentElement();

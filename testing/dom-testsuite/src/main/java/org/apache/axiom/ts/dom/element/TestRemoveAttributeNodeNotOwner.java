@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
  */
 public class TestRemoveAttributeNodeNotOwner extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element1 = document.createElementNS(null, "test");
         Attr attr1 = document.createAttributeNS(null, "attr");

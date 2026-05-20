@@ -31,14 +31,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the {@link SAXSource} returned by {@link OMContainer#getSAXSource(boolean)} correctly
  * serializes an {@link OMSourcedElement} backed by an {@link AbstractPushOMDataSource}.
  */
-public class TestGetSAXSourceWithPushOMDataSource implements MatrixTestCase {
+public class TestGetSAXSourceWithPushOMDataSource implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -50,7 +50,7 @@ public class TestGetSAXSourceWithPushOMDataSource implements MatrixTestCase {
     private boolean serializeParent;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMSourcedElement sourcedElement = factory.createOMElement(new AbstractPushOMDataSource() {
             @Override
             public void serialize(XMLStreamWriter writer) throws XMLStreamException {

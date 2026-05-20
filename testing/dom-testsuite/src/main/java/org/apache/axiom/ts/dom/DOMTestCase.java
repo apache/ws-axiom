@@ -20,9 +20,9 @@ package org.apache.axiom.ts.dom;
 
 import com.google.inject.Inject;
 import javax.xml.parsers.DocumentBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public abstract class DOMTestCase implements MatrixTestCase {
+public abstract class DOMTestCase implements Executable {
     @Inject
     protected DocumentBuilderFactory dbf;
 }

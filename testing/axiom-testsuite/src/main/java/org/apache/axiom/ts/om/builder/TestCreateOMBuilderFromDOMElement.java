@@ -25,8 +25,8 @@ import java.io.StringReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -37,12 +37,12 @@ import org.xml.sax.InputSource;
  * builder from an {@link Element} and that the resulting Axiom tree corresponds to a the subtree
  * defined by that element.
  */
-public class TestCreateOMBuilderFromDOMElement implements MatrixTestCase {
+public class TestCreateOMBuilderFromDOMElement implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document =
                 DOMImplementation.XERCES.parse(new InputSource(new StringReader("<a><b><c/></b><b2/></a>")));
         Element domB = (Element) document.getElementsByTagNameNS(null, "b").item(0);

@@ -28,14 +28,14 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test that adding an attribute has the expected effect when an attribute with the same name and
  * namespace URI already exists.
  */
-public class TestAddAttributeReplace implements MatrixTestCase {
+public class TestAddAttributeReplace implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -43,7 +43,7 @@ public class TestAddAttributeReplace implements MatrixTestCase {
     private AddAttributeStrategy strategy;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         // Use same namespace URI but different prefixes
         OMNamespace ns1 = factory.createOMNamespace("urn:ns", "p1");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns", "p2");

@@ -27,10 +27,10 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-141">AXIOM-141</a>. */
-public class TestXPathAppliedToSOAPEnvelope implements MatrixTestCase {
+public class TestXPathAppliedToSOAPEnvelope implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -39,7 +39,7 @@ public class TestXPathAppliedToSOAPEnvelope implements MatrixTestCase {
     private boolean createDocument;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement elem1 = soapFactory.createOMElement("elem1", null);
         OMElement elem2 = soapFactory.createOMElement("elem2", null);
         OMElement elem3 = soapFactory.createOMElement("elem3", null);

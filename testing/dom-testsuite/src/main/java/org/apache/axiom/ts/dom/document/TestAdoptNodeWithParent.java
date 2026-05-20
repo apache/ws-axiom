@@ -33,7 +33,7 @@ import org.w3c.dom.Text;
  */
 public class TestAdoptNodeWithParent extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Document document1 = builder.newDocument();
         Document document2 = builder.newDocument();

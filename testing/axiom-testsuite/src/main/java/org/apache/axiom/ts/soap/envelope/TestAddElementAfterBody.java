@@ -27,14 +27,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test that attempts to add an arbitrary element to the SOAP envelope (after the body). This is
  * allowed in SOAP 1.1, but not in SOAP 1.2.
  */
-public class TestAddElementAfterBody implements MatrixTestCase {
+public class TestAddElementAfterBody implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -46,7 +46,7 @@ public class TestAddElementAfterBody implements MatrixTestCase {
     private boolean header;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope env = soapFactory.createSOAPEnvelope();
         if (header) {
             soapFactory.createSOAPHeader(env);

@@ -27,18 +27,18 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link SOAPFaultClassifier#getValue()} returns <code>null</code> when invoked on a
  * SOAP 1.1 {@link SOAPFaultCode}.
  */
-public class TestGetValue implements MatrixTestCase {
+public class TestGetValue implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope env = soapFactory.getDefaultEnvelope();
         SOAPFault fault = soapFactory.createSOAPFault(env.getBody());
         SOAPFaultCode code = soapFactory.createSOAPFaultCode(fault);

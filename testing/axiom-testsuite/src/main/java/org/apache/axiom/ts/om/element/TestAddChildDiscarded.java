@@ -28,18 +28,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMContainer#addChild(OMNode)} if the parent has been discarded. In
  * this case the method is expected to throw a {@link NodeUnavailableException}.
  */
-public class TestAddChildDiscarded implements MatrixTestCase {
+public class TestAddChildDiscarded implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/></root>"))
                 .getDocumentElement();
         // Partially build the parent

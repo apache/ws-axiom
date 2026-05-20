@@ -25,18 +25,18 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMNamedInformationItem#getNamespaceURI()} returns the namespace URI when
  * invoked on an {@link OMElement} that has a namespace.
  */
-public class TestGetNamespaceURIWithNamespace implements MatrixTestCase {
+public class TestGetNamespaceURIWithNamespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement(new QName("urn:ns", "test", "p"));
         assertThat(element.getNamespaceURI()).isEqualTo("urn:ns");
     }

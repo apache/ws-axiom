@@ -23,14 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultRole;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestSetRoleValue implements MatrixTestCase {
+public class TestSetRoleValue implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPFaultRole role = soapFactory.createSOAPFaultRole();
         role.setRoleValue("urn:some:role");
         assertThat(role.getText()).isEqualTo("urn:some:role");

@@ -25,9 +25,9 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that setting a SOAP header block attribute uses the correct namespace prefix from the
@@ -39,7 +39,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  * used as its own namespace prefix (e.g. {@code xmlns:role="..."} and {@code role:role="..."}
  * instead of reusing the SOAP envelope prefix).
  */
-public class TestSetAttributeNamespacePrefix implements MatrixTestCase {
+public class TestSetAttributeNamespacePrefix implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -50,7 +50,7 @@ public class TestSetAttributeNamespacePrefix implements MatrixTestCase {
     private HeaderBlockAttribute attribute;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPHeaderBlock headerBlock =
                 soapFactory.createSOAPHeaderBlock("block", soapFactory.createOMNamespace("urn:test", "p"));
 

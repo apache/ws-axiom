@@ -30,7 +30,7 @@ import org.w3c.dom.Document;
  */
 public class TestGetDomConfigDefaults extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         DOMConfiguration domConfig = document.getDomConfig();
         assertThat(domConfig.getParameter("canonical-form")).isEqualTo(Boolean.FALSE);

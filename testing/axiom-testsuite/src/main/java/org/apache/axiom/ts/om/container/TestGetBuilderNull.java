@@ -23,13 +23,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMContainer#getBuilder()} returns {@code null} on a programmatically created
  * node.
  */
-public class TestGetBuilderNull implements MatrixTestCase {
+public class TestGetBuilderNull implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -37,7 +37,7 @@ public class TestGetBuilderNull implements MatrixTestCase {
     private OMContainerFactory containerFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMContainer container = containerFactory.create(factory);
         assertThat(container.getBuilder()).isNull();
     }

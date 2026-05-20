@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestCreateOMDocument implements MatrixTestCase {
+public class TestCreateOMDocument implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument document = factory.createOMDocument();
         assertThat(document).isNotNull();
         assertThat(document.getFirstOMChild()).isNull();

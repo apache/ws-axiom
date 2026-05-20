@@ -25,15 +25,15 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests that {@link OMNode#insertSiblingAfter(OMNode)} fails if the node doesn't have a parent. */
-public class TestInsertSiblingBeforeOnOrphan implements MatrixTestCase {
+public class TestInsertSiblingBeforeOnOrphan implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMText text1 = factory.createOMText("text1");
         OMText text2 = factory.createOMText("text2");
         assertThatThrownBy(() -> text1.insertSiblingAfter(text2)).isInstanceOf(OMException.class);

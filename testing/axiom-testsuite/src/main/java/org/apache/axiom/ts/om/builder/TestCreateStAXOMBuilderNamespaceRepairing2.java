@@ -29,7 +29,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} correctly performs
@@ -37,12 +37,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * required. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-408">AXIOM-408</a>.
  */
-public class TestCreateStAXOMBuilderNamespaceRepairing2 implements MatrixTestCase {
+public class TestCreateStAXOMBuilderNamespaceRepairing2 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(
                 new StringReader("<test xmlns='urn:test'><arg0 xmlns=''>dGVzdA==</arg0></test>"));
         OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(factory, new NamespaceDeclarationFilter(reader))

@@ -27,10 +27,10 @@ import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.jspecify.annotations.Nullable;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestClone implements MatrixTestCase {
+public class TestClone implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -47,7 +47,7 @@ public class TestClone implements MatrixTestCase {
     }
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPHeader header = soapFactory.createSOAPHeader();
         OMNamespace ns = soapFactory.createOMNamespace("urn:test", "p");
         SOAPHeaderBlock unprocessedHeaderBlock = header.addHeaderBlock("unprocessed", ns);

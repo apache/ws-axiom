@@ -27,7 +27,7 @@ import org.w3c.dom.Text;
 
 public class TestGetWholeText extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
         element.appendChild(document.createTextNode("a"));

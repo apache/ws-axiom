@@ -25,14 +25,14 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestAddSOAPTextMultiple implements MatrixTestCase {
+public class TestAddSOAPTextMultiple implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPFaultReason reason = soapFactory.createSOAPFaultReason();
         SOAPFaultText text1 = soapFactory.createSOAPFaultText();
         text1.setLang("en");

@@ -24,7 +24,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class TestWriteStartDocumentWithNullEncoding extends DialectTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLStreamWriter writer = staxImpl.newNormalizedXMLOutputFactory().createXMLStreamWriter(System.out, "UTF-8");
         assertThatThrownBy(() -> writer.writeStartDocument(null, "1.0")).isInstanceOf(Throwable.class);
     }

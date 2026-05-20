@@ -30,7 +30,7 @@ import org.w3c.dom.NamedNodeMap;
 
 public class TestNormalizeDocumentNamespace extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:ns", "root");
         document.appendChild(element);

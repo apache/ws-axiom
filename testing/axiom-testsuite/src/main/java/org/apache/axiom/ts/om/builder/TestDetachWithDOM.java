@@ -27,12 +27,12 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class TestDetachWithDOM implements MatrixTestCase {
+public class TestDetachWithDOM implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -41,7 +41,7 @@ public class TestDetachWithDOM implements MatrixTestCase {
     private boolean useDOMSource;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = DOMImplementation.XERCES.newDocument();
         Element root = document.createElementNS("", "root");
         root.appendChild(document.createElementNS("", "a"));

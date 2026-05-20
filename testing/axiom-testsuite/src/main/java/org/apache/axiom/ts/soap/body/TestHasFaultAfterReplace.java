@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link SOAPBody#hasFault()} returns the correct value after a {@link SOAPFault} child
@@ -33,12 +33,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * Axiom attempted to cache the result of {@link SOAPBody#hasFault()}, but this cached value was not
  * updated correctly in all situations. This is a regression test for this issue.
  */
-public class TestHasFaultAfterReplace implements MatrixTestCase {
+public class TestHasFaultAfterReplace implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPBody body = soapFactory.getDefaultFaultEnvelope().getBody();
         assertThat(body.hasFault()).isTrue();
         body.getFault().detach();

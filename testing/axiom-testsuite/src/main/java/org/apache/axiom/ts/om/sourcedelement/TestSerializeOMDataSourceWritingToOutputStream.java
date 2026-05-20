@@ -34,15 +34,15 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializeToOutputStream;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests serialization with an {@link OMDataSource} that uses {@link
  * MTOMXMLStreamWriter#getOutputStream()}.
  */
-public class TestSerializeOMDataSourceWritingToOutputStream implements MatrixTestCase {
+public class TestSerializeOMDataSourceWritingToOutputStream implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -92,7 +92,7 @@ public class TestSerializeOMDataSourceWritingToOutputStream implements MatrixTes
     private boolean serializeParent;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDataSourceImpl ds = new OMDataSourceImpl();
         OMSourcedElement element = factory.createOMElement(ds);
         OMElement elementToSerialize;

@@ -27,17 +27,17 @@ import java.io.StringWriter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.core.stream.dom.input.DOMInput;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class SerializerConformanceTestCase implements MatrixTestCase {
+public class SerializerConformanceTestCase implements Executable {
     @Inject
     private XMLSample sample;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         factory.setExpandEntityReferences(false);

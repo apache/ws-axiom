@@ -38,10 +38,10 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
-public abstract class FirstElementNameWithParserTestCase implements MatrixTestCase {
+public abstract class FirstElementNameWithParserTestCase implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -59,7 +59,7 @@ public abstract class FirstElementNameWithParserTestCase implements MatrixTestCa
     }
 
     @Override
-    public final void runTest() throws Throwable {
+    public final void execute() throws Throwable {
         SOAPEnvelope orgEnvelope = soapFactory.getDefaultEnvelope();
         orgEnvelope
                 .getBody()

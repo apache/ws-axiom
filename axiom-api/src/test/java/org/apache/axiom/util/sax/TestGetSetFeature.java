@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.XMLReader;
 
-public class TestGetSetFeature implements MatrixTestCase {
+public class TestGetSetFeature implements Executable {
     @Inject
     private XMLReader xmlReader;
 
@@ -34,7 +34,7 @@ public class TestGetSetFeature implements MatrixTestCase {
     private String feature;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         xmlReader.setFeature(feature, true);
         assertThat(xmlReader.getFeature(feature)).isTrue();
         xmlReader.setFeature(feature, false);

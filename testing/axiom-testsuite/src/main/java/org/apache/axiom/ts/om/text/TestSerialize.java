@@ -29,9 +29,9 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestSerialize implements MatrixTestCase {
+public class TestSerialize implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -40,7 +40,7 @@ public class TestSerialize implements MatrixTestCase {
     private int type;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMText text = factory.createOMText("test", type);
         XMLStreamWriter writer = mock(XMLStreamWriter.class);
         text.serialize(writer);

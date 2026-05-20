@@ -29,7 +29,7 @@ import org.w3c.dom.Element;
 
 public class TestSetAttributeNodeNSInUse extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element1 = document.createElementNS(null, "test");
         Element element2 = document.createElementNS(null, "test");

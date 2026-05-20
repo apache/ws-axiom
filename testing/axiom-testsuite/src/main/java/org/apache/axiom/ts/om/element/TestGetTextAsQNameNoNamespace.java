@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#getTextAsQName()} for an unprefixed QName and no default
  * namespace in scope.
  */
-public class TestGetTextAsQNameNoNamespace implements MatrixTestCase {
+public class TestGetTextAsQNameNoNamespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement omElement = factory.createOMElement("TestElement", null);
         omElement.setText("value");
         assertThat(omElement.getTextAsQName()).isEqualTo(new QName("value"));

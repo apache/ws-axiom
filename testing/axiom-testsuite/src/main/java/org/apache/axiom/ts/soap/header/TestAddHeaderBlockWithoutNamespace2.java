@@ -26,18 +26,18 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link SOAPHeader#addHeaderBlock(String, OMNamespace)} when passing an
  * {@link OMNamespace} object with an empty namespace URI.
  */
-public class TestAddHeaderBlockWithoutNamespace2 implements MatrixTestCase {
+public class TestAddHeaderBlockWithoutNamespace2 implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPHeader header = soapFactory.createSOAPHeader(envelope);
         OMNamespace ns = soapFactory.createOMNamespace("", "");

@@ -25,18 +25,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.apache.axiom.om.xpath.DocumentNavigator;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link DocumentNavigator#getAttributeQName(Object)} returns the correct result for an
  * attribute with namespace.
  */
-public class TestGetAttributeQName implements MatrixTestCase {
+public class TestGetAttributeQName implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("test", null);
         element.addAttribute("att", "value", factory.createOMNamespace("urn:test", "p"));
         assertThat(new AXIOMXPath("name(@*)").stringValueOf(element)).isEqualTo("p:att");

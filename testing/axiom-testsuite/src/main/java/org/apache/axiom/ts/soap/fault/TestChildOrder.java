@@ -30,12 +30,12 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPFaultChild;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -47,7 +47,7 @@ import org.w3c.dom.Node;
  *
  * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-392">AXIOM-392</a>.
  */
-public class TestChildOrder implements MatrixTestCase {
+public class TestChildOrder implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -61,7 +61,7 @@ public class TestChildOrder implements MatrixTestCase {
     private SerializationStrategy serializationStrategy;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
         // Add the elements in the specified order.
         for (int i = 0; i < inputOrder.length; i++) {

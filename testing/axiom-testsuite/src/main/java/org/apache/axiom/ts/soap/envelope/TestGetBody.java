@@ -25,10 +25,10 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetBody implements MatrixTestCase {
+public class TestGetBody implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -36,7 +36,7 @@ public class TestGetBody implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         SOAPBody body = envelope.getBody();
         assertThat(body.getLocalName()).isEqualTo(SOAPConstants.BODY_LOCAL_NAME);

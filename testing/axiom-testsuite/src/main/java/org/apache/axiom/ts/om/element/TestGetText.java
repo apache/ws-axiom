@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#getText()} when invoked on an element with a single child
  * of type {@link OMText}.
  */
-public class TestGetText implements MatrixTestCase {
+public class TestGetText implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("test", null);
         String text = "The quick brown fox jumps over the lazy dog";
         factory.createOMText(element, text);

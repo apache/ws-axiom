@@ -23,14 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestCreateOMEntityReferenceWithNullParent implements MatrixTestCase {
+public class TestCreateOMEntityReferenceWithNullParent implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMEntityReference entref = factory.createOMEntityReference(null, "testref");
         assertThat(entref.getParent()).isNull();
         assertThat(entref.getName()).isEqualTo("testref");

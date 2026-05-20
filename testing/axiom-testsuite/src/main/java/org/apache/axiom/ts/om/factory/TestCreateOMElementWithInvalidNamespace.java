@@ -38,7 +38,7 @@ public class TestCreateOMElementWithInvalidNamespace extends CreateOMElementTest
     }
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         assertThatThrownBy(
                         () -> variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", "p"))
                 .isInstanceOf(IllegalArgumentException.class);

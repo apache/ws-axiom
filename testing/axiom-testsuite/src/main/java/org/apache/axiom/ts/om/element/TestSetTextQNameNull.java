@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#setText(String)} when invoked with a <code>null</code>
  * parameter.
  */
-public class TestSetTextQNameNull implements MatrixTestCase {
+public class TestSetTextQNameNull implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("test", null);
         element.setText("some text");
         element.setText((QName) null);

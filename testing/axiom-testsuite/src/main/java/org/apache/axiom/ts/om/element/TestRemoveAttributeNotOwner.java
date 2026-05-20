@@ -25,18 +25,18 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#removeAttribute(OMAttribute)} if the given attribute is
  * not owned by the element.
  */
-public class TestRemoveAttributeNotOwner implements MatrixTestCase {
+public class TestRemoveAttributeNotOwner implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element1 = factory.createOMElement("test", null);
         element1.addAttribute("attr", "value", null);
         OMElement element2 = factory.createOMElement("test", null);

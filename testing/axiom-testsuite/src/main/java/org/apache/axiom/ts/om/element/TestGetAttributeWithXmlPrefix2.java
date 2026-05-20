@@ -27,19 +27,19 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test that {@link OMElement#getAttribute(QName)} works properly for an attribute with the {@code
  * xml} prefix, even if this prefix is not declared explicitly. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIS2-329">AXIS2-329</a>.
  */
-public class TestGetAttributeWithXmlPrefix2 implements MatrixTestCase {
+public class TestGetAttributeWithXmlPrefix2 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement elem = AXIOMUtil.stringToOM(factory, "<Policy xml:base=\"uri:thisBase\"></Policy>");
         OMAttribute attr = elem.getAttribute(new QName(XMLConstants.XML_NS_URI, "base"));
         assertThat(attr.getNamespace().getNamespaceURI()).isEqualTo(XMLConstants.XML_NS_URI);

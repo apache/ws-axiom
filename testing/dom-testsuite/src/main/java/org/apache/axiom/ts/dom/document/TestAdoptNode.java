@@ -30,7 +30,7 @@ import org.w3c.dom.Text;
 /** Tests the behavior of {@link Document#adoptNode(Node)}. */
 public class TestAdoptNode extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Document document1 = builder.newDocument();
         Document document2 = builder.newDocument();

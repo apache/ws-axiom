@@ -24,9 +24,9 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestHasFaultNoFault implements MatrixTestCase {
+public class TestHasFaultNoFault implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
@@ -34,7 +34,7 @@ public class TestHasFaultNoFault implements MatrixTestCase {
     private QName qname;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPBody body = soapFactory.getDefaultEnvelope().getBody();
         body.addChild(soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
         assertThat(body.hasFault()).isFalse();

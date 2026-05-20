@@ -23,14 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestCreateOMCommentWithoutParent implements MatrixTestCase {
+public class TestCreateOMCommentWithoutParent implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMComment comment = factory.createOMComment(null, "my comment");
         assertThat(comment.getParent()).isNull();
         assertThat(comment.getValue()).isEqualTo("my comment");

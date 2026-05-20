@@ -45,14 +45,14 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestBuilder implements MatrixTestCase {
+public class TestBuilder implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String soap12Message = "<env:Envelope xmlns:env=\"http://www.w3.org/2003/05/soap-envelope\">\n"
                 + "   <env:Header>\n"
                 + "       <test:echoOk xmlns:test=\"http://example.org/ts-tests\"\n"

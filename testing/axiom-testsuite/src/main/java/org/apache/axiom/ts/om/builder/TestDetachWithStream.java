@@ -26,12 +26,12 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.io.InstrumentedStream;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.StreamTypeAdapter;
 import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestDetachWithStream implements MatrixTestCase {
+public class TestDetachWithStream implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -43,7 +43,7 @@ public class TestDetachWithStream implements MatrixTestCase {
     private boolean useStreamSource;
 
     @Override
-    public final void runTest() throws Throwable {
+    public final void execute() throws Throwable {
         InstrumentedStream stream = streamType.instrumentStream(streamType.getStream(XMLSample.LARGE));
         OMXMLParserWrapper builder;
         if (useStreamSource) {

@@ -28,15 +28,15 @@ import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-474">AXIOM-474</a>. */
-public class TestSerializeAsChild implements MatrixTestCase {
+public class TestSerializeAsChild implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createDefaultSOAPMessage().getSOAPEnvelope();
         soapFactory.createOMElement("echo", soapFactory.createOMNamespace("urn:test", "p"), envelope.getBody());
         OMElement log = soapFactory.createOMElement("log", null);

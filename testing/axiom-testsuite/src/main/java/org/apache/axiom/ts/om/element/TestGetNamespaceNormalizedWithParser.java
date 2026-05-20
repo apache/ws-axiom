@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an element
@@ -34,12 +34,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * has an explicit namespace declaration for the default namespace, i.e. {@code xmlns=""}. This is a
  * regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
-public class TestGetNamespaceNormalizedWithParser implements MatrixTestCase {
+public class TestGetNamespaceNormalizedWithParser implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root xmlns=''/>"))
                 .getDocumentElement();
         assertThat(element.getNamespace()).isNull();

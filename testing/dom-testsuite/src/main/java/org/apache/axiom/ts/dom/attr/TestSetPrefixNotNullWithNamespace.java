@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
  */
 public class TestSetPrefixNotNullWithNamespace extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Attr attr = document.createAttributeNS("urn:ns", "p:test");
         attr.setPrefix("q");

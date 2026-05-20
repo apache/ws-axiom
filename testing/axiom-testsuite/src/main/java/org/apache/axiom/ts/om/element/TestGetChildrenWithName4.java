@@ -25,9 +25,9 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetChildrenWithName4 implements MatrixTestCase {
+public class TestGetChildrenWithName4 implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -36,7 +36,7 @@ public class TestGetChildrenWithName4 implements MatrixTestCase {
     private static final String NS_C = "urn://c";
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         // Create a document with 2 children, each named "sample" but
         // have different namespaces.
         OMNamespace a = factory.createOMNamespace(NS_A, "a");

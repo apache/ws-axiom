@@ -24,17 +24,17 @@ import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link SOAPBody#getFirstElementNS()} returns <code>null</code> if the body is empty.
  */
-public class TestGetFirstElementNSEmptyBody implements MatrixTestCase {
+public class TestGetFirstElementNSEmptyBody implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         assertThat(envelope.getBody().getFirstElementNS()).isNull();
     }

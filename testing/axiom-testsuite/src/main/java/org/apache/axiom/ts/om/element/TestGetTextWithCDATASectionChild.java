@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import javax.xml.stream.XMLStreamConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#getText()} when invoked on an element containing both a
  * text node and a CDATA section.
  */
-public class TestGetTextWithCDATASectionChild implements MatrixTestCase {
+public class TestGetTextWithCDATASectionChild implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement omElement = factory.createOMElement("TestElement", null);
         final String text = "this is <some> text in a CDATA";
         factory.createOMText(omElement, text, XMLStreamConstants.CDATA);

@@ -29,7 +29,7 @@ import org.xml.sax.InputSource;
 
 public class TestRemoveLastChild extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Element element = builder.parse(new InputSource(new StringReader("<root><a/><b/><c/></root>")))
                 .getDocumentElement();

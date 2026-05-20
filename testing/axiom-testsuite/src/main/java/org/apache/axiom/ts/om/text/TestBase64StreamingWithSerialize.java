@@ -23,8 +23,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.testutils.blob.TestBlob;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.commons.io.output.NullOutputStream;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test that when an {@link OMText} node is written to an XMLStreamWriter without MTOM support, the
@@ -33,12 +33,12 @@ import org.apache.commons.io.output.NullOutputStream;
  *
  * <p>Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-236">AXIOM-236</a>.
  */
-public class TestBase64StreamingWithSerialize implements MatrixTestCase {
+public class TestBase64StreamingWithSerialize implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement elem = factory.createOMElement("test", null);
         // Create a blob that would eat up all memory when loaded. If the test doesn't fail with an
         // OutOfMemoryError, we know that the OMText implementation supports streaming.

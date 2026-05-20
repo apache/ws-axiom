@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class TestGetElementsByTagNameWithNamespaces extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element root = doc.createElementNS("urn:ns1", "ns1:root");
         for (int i = 0; i < 3; i++) {

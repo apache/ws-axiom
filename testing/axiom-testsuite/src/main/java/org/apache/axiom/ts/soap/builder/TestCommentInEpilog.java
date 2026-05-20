@@ -28,13 +28,13 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the SOAP builder creates {@link OMComment} nodes for comments appearing after the
  * document element.
  */
-public class TestCommentInEpilog implements MatrixTestCase {
+public class TestCommentInEpilog implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -42,7 +42,7 @@ public class TestCommentInEpilog implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(
                         metaFactory, new StringReader(soapFactory.getDefaultEnvelope() + "<!--comment-->"))
                 .getSOAPEnvelope();

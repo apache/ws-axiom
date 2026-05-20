@@ -32,7 +32,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link XMLStreamReader#close()} on the {@link XMLStreamReader} returned by
@@ -40,12 +40,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * a builder. In that case, closing the reader is expected to close the builder without parsing the
  * rest of the document.
  */
-public class TestCloseWithoutCaching implements MatrixTestCase {
+public class TestCloseWithoutCaching implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Writer writer = new OutputStreamWriter(baos, StandardCharsets.UTF_8);
         writer.write("<root><a>");

@@ -25,18 +25,18 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMAttribute#getQName()} returns the correct value for an attribute (without
  * namespace) created by {@link OMFactory#createOMAttribute(String, OMNamespace, String)}.
  */
-public class TestGetQNameWithoutNamespace implements MatrixTestCase {
+public class TestGetQNameWithoutNamespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMAttribute attr = factory.createOMAttribute("name", null, "value");
         QName qname = attr.getQName();
         assertThat(qname.getLocalPart()).isEqualTo("name");

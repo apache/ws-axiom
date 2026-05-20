@@ -27,7 +27,7 @@ import org.w3c.dom.Attr;
 
 public class TestCreateOMAttribute extends OMDOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMAttribute attr = factory.createOMAttribute("attr", null, "value");
         assertThat(attr).isInstanceOf(Attr.class);

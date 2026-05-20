@@ -24,15 +24,15 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestDeclareDefaultNamespace1 implements MatrixTestCase {
+public class TestDeclareDefaultNamespace1 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         /**
          * <RootElement xmlns="http://one.org"> <ns2:ChildElementOne
          * xmlns:ns2="http://ws.apache.org/axis2" xmlns="http://two.org"> <ChildElementTwo

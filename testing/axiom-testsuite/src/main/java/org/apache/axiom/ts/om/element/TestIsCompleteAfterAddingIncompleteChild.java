@@ -25,19 +25,19 @@ import java.io.StringReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the completeness status (as returned by {@link OMElement#isComplete()}) is updated
  * correctly after an incomplete child is added to a programmatically created element. This is a
  * regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-315">AXIOM-315</a>.
  */
-public class TestIsCompleteAfterAddingIncompleteChild implements MatrixTestCase {
+public class TestIsCompleteAfterAddingIncompleteChild implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement incompleteElement = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<elem>text</elem>"))
                 .getDocumentElement(true);

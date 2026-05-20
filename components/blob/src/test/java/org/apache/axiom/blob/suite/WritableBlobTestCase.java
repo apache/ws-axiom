@@ -20,9 +20,9 @@ package org.apache.axiom.blob.suite;
 
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public abstract class WritableBlobTestCase implements MatrixTestCase {
+public abstract class WritableBlobTestCase implements Executable {
     private final WritableBlobFactory<?> factory;
     private final State initialState;
 
@@ -32,7 +32,7 @@ public abstract class WritableBlobTestCase implements MatrixTestCase {
     }
 
     @Override
-    public final void runTest() throws Throwable {
+    public final void execute() throws Throwable {
         WritableBlob blob = factory.createBlob();
         try {
             CleanupCallback cleanupCallback = initialState.transition(blob);

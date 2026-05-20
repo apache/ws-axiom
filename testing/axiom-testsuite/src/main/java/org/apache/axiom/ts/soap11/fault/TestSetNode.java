@@ -23,14 +23,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestSetNode implements MatrixTestCase {
+public class TestSetNode implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
         assertThatThrownBy(() -> soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault)))
                 .isInstanceOf(UnsupportedOperationException.class);

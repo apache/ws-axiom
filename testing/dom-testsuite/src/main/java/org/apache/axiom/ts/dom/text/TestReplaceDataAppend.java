@@ -26,7 +26,7 @@ import org.w3c.dom.Text;
 
 public class TestReplaceDataAppend extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Text text = doc.createTextNode("AB");
         text.replaceData(2, 0, "CD");

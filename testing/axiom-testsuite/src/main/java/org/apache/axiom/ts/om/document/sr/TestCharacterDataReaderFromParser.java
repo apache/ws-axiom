@@ -31,13 +31,13 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the {@link CharacterDataReader} returned by {@link OMContainer#getXMLStreamReader()}
  * for an OM tree created by a builder correctly implements the {@link DTDReader} extension.
  */
-public class TestCharacterDataReaderFromParser implements MatrixTestCase {
+public class TestCharacterDataReaderFromParser implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -46,7 +46,7 @@ public class TestCharacterDataReaderFromParser implements MatrixTestCase {
     private boolean cache;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String text = "This is a test for the CharacterDataReader extension";
         OMDocument doc = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root>" + text + "</root>"))
                 .getDocument();

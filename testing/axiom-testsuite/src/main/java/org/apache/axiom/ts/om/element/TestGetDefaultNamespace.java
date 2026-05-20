@@ -25,14 +25,14 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetDefaultNamespace implements MatrixTestCase {
+public class TestGetDefaultNamespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement parent = factory.createOMElement("parent", "urn:ns1", "");
         OMElement child = factory.createOMElement(new QName("urn:ns2", "child", "p"), parent);
         OMNamespace ns = child.getDefaultNamespace();

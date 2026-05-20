@@ -28,16 +28,16 @@ import org.apache.axiom.core.stream.sax.SAX;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-public class TestGetSAXSourceWithPushOMDataSourceThrowingException implements MatrixTestCase {
+public class TestGetSAXSourceWithPushOMDataSourceThrowingException implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement(new AbstractPushOMDataSource() {
 
             @Override

@@ -23,14 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultNode;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetFaultNodeValue implements MatrixTestCase {
+public class TestGetFaultNodeValue implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPFaultNode node = soapFactory.createSOAPFaultNode();
         assertThat(node.getFaultNodeValue()).isEqualTo("");
         node.setText("http://my.node");

@@ -29,15 +29,15 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the clone of a {@link SOAPMessage} created by {@link
  * OMInformationItem#clone(OMCloneOptions)} is a {@link SOAPMessage} if and only if {@link
  * OMCloneOptions#isPreserveModel()} is <code>true</code>.
  */
-public class TestClone implements MatrixTestCase {
+public class TestClone implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -49,7 +49,7 @@ public class TestClone implements MatrixTestCase {
     private boolean preserveModel;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPMessage message = soapFactory.createSOAPMessage();
         message.addChild(soapFactory.getDefaultEnvelope());
         OMCloneOptions options = new OMCloneOptions();

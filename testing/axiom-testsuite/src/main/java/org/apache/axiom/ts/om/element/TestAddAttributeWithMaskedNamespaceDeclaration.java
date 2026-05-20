@@ -26,8 +26,8 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test checking that adding an attribute correctly generates a new namespace declaration if an
@@ -47,7 +47,7 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  *
  * <p>Note that because of WSTX-202, Axiom will not be able to serialize the resulting XML.
  */
-public class TestAddAttributeWithMaskedNamespaceDeclaration implements MatrixTestCase {
+public class TestAddAttributeWithMaskedNamespaceDeclaration implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -55,7 +55,7 @@ public class TestAddAttributeWithMaskedNamespaceDeclaration implements MatrixTes
     private AddAttributeStrategy strategy;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace ns1 = factory.createOMNamespace("urn:ns1", "p");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns2", "p");
         OMElement element1 = factory.createOMElement(new QName("a"));

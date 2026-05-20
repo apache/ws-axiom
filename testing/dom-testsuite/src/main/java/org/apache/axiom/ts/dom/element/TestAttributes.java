@@ -28,7 +28,7 @@ import org.w3c.dom.NamedNodeMap;
 
 public class TestAttributes extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document doc = dbf.newDocumentBuilder().parse(TestAttributes.class.getResourceAsStream("attributetest.xml"));
 
         // Check whether body has attributes

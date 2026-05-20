@@ -28,7 +28,7 @@ import org.w3c.dom.Text;
 /** Tests that {@link CharacterData#getLength()} returns the expected result. */
 public class TestGetLength extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         String content = "This is a test string";
         Text textNode = document.createTextNode(content);

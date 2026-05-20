@@ -25,14 +25,14 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestResolveQNameWithNonDefaultNamespace implements MatrixTestCase {
+public class TestResolveQNameWithNonDefaultNamespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(factory, "<root xmlns:p='urn:ns'/>");
         QName qname = element.resolveQName("p:test");
         assertThat(qname.getPrefix()).isEqualTo("p");

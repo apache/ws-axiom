@@ -28,19 +28,19 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMXMLBuilderFactory#createStAXOMBuilder(OMFactory, XMLStreamReader)} throws an
  * exception if the supplied {@link XMLStreamReader} is not positioned on a {@link
  * XMLStreamConstants#START_DOCUMENT} or {@link XMLStreamConstants#END_DOCUMENT} event.
  */
-public class TestCreateStAXOMBuilderIncorrectState implements MatrixTestCase {
+public class TestCreateStAXOMBuilderIncorrectState implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<root>text</root>"));
         // Position the reader on a CHARACTERS event
         while (reader.getEventType() != XMLStreamReader.CHARACTERS) {

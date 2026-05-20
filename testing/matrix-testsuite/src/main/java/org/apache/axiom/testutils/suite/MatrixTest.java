@@ -24,21 +24,22 @@ import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.function.Executable;
 
 /**
- * A leaf node that instantiates a {@link MatrixTestCase} subclass via Guice and executes it.
+ * A leaf node that instantiates an {@link Executable} implementation via Guice and executes it.
  *
  * <p>The test class must have an injectable constructor (either a no-arg constructor or one
  * annotated with {@code @Inject}). Field injection is also supported. The injector received from
  * the ancestor {@link FanOutNode} chain will have bindings for all dimension types, plus any
  * implementation-level bindings from the root injector.
  *
- * <p>Once the instance is created, {@link MatrixTestCase#runTest()} is invoked.
+ * <p>Once the instance is created, {@link Executable#execute()} is invoked.
  */
 public class MatrixTest extends MatrixTestNode {
-    private final Class<? extends MatrixTestCase> testClass;
+    private final Class<? extends Executable> testClass;
 
-    public MatrixTest(Class<? extends MatrixTestCase> testClass) {
+    public MatrixTest(Class<? extends Executable> testClass) {
         this.testClass = testClass;
     }
 
@@ -51,8 +52,8 @@ public class MatrixTest extends MatrixTestNode {
             return Stream.empty();
         }
         return Stream.of(DynamicTest.dynamicTest(testClass.getSimpleName(), () -> {
-            MatrixTestCase testInstance = injector.getInstance(testClass);
-            testInstance.runTest();
+            Executable testInstance = injector.getInstance(testClass);
+            testInstance.execute();
         }));
     }
 }

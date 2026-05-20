@@ -27,18 +27,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMNode#discard()} on an incomplete {@link OMElement} that is a
  * document element, i.e. the parent of which is an {@link OMDocument}.
  */
-public class TestDiscardDocumentElement implements MatrixTestCase {
+public class TestDiscardDocumentElement implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a>text</a></root>"))
                 .getDocument();
         OMElement element = document.getOMDocumentElement();

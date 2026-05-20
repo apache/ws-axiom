@@ -27,17 +27,17 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
+import org.junit.jupiter.api.function.Executable;
 
 /** Verifies that a OMDataSource can be replaced with another one */
 @SuppressWarnings("deprecation")
-public class TestSetDataSource implements MatrixTestCase {
+public class TestSetDataSource implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String payload1 = "<tns:myPayload xmlns:tns=\"urn://test\">Payload One</tns:myPayload>";
         String payload2 = "<tns:myPayload xmlns:tns=\"urn://test\">Payload Two</tns:myPayload>";
         OMDataSource nonDestructiveOMDataSource1 = new PullOMDataSource(payload1, false);

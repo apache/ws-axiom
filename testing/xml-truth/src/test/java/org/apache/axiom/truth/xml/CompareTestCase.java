@@ -23,10 +23,10 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 
-public class CompareTestCase implements MatrixTestCase {
+public class CompareTestCase implements Executable {
     @Inject
     @Named("sample")
     private XMLSample sample;
@@ -44,7 +44,7 @@ public class CompareTestCase implements MatrixTestCase {
     private boolean expandEntityReferences;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         assertAbout(xml())
                 .that(left.toXMLObject(sample))
                 .ignoringWhitespaceInPrologAndEpilog()

@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the result of {@link OMDocument#getOMDocumentElement()} after adding a child element to an
  * empty document.
  */
-public class TestGetOMDocumentElement implements MatrixTestCase {
+public class TestGetOMDocumentElement implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument document = factory.createOMDocument();
         OMElement documentElement = factory.createOMElement("root", null, document);
         assertThat(document.getOMDocumentElement()).isSameAs(documentElement);

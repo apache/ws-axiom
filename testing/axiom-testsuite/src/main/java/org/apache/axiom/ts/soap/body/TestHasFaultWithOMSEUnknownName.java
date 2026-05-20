@@ -26,18 +26,18 @@ import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that a call to {@link SOAPBody#hasFault()} doesn't cause expansion of an {@link
  * OMSourcedElement} with an unknown name that is the first child of the SOAP body.
  */
-public class TestHasFaultWithOMSEUnknownName implements MatrixTestCase {
+public class TestHasFaultWithOMSEUnknownName implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         SOAPBody body = envelope.getBody();
         OMSourcedElement element = soapFactory.createOMElement(new StringOMDataSource("<ns:root xmlns:ns='urn:ns'/>"));

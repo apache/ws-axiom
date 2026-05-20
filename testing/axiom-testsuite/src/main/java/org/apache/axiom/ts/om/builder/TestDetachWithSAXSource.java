@@ -25,15 +25,15 @@ import javax.xml.transform.sax.SAXSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.InputSource;
 
-public class TestDetachWithSAXSource implements MatrixTestCase {
+public class TestDetachWithSAXSource implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         DummyXMLReader xmlReader = new DummyXMLReader();
         OMXMLParserWrapper builder =
                 OMXMLBuilderFactory.createOMBuilder(factory, new SAXSource(xmlReader, new InputSource()), false);

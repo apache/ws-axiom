@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetQNameWithoutNamespace implements MatrixTestCase {
+public class TestGetQNameWithoutNamespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("name", null);
         QName qname = element.getQName();
         assertThat(qname.getLocalPart()).isEqualTo("name");

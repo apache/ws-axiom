@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetFault implements MatrixTestCase {
+public class TestGetFault implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPBody body = soapFactory.createSOAPBody(envelope);
         assertThat(body.getFault()).isNull();

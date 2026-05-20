@@ -32,7 +32,7 @@ import org.w3c.dom.Node;
  */
 public class TestLookupNamespaceURIDefaultBindings extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
         assertThat(element.lookupNamespaceURI(XMLConstants.XML_NS_PREFIX)).isNull();

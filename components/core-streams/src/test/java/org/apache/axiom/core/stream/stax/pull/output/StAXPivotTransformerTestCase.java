@@ -27,12 +27,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.axiom.core.stream.dom.input.DOMInput;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.xslt.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 
-public class StAXPivotTransformerTestCase implements MatrixTestCase {
+public class StAXPivotTransformerTestCase implements Executable {
     @Inject
     private XSLTImplementation xsltImplementation;
 
@@ -40,7 +40,7 @@ public class StAXPivotTransformerTestCase implements MatrixTestCase {
     private XMLSample sample;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         factory.setExpandEntityReferences(false);

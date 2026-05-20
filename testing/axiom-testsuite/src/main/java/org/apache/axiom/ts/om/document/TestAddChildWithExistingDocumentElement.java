@@ -28,18 +28,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that an attempt to use {@link OMContainer#addChild(OMNode)} to add an {@link OMElement} to
  * an {@link OMDocument} that already has a document element results in an exception.
  */
-public class TestAddChildWithExistingDocumentElement implements MatrixTestCase {
+public class TestAddChildWithExistingDocumentElement implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument document = factory.createOMDocument();
         document.addChild(factory.createOMElement(new QName("root1")));
         assertThatThrownBy(() -> document.addChild(factory.createOMElement(new QName("root2"))))

@@ -25,11 +25,11 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestDiscard implements MatrixTestCase {
+public class TestDiscard implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -37,7 +37,7 @@ public class TestDiscard implements MatrixTestCase {
     private ExpansionStrategy expansionStrategy;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement parent = factory.createOMElement("parent", null);
         OMElement child1 = factory.createOMElement("child1", null, parent);
         PullOMDataSource ds = new PullOMDataSource("<root><a/><b/></root>");

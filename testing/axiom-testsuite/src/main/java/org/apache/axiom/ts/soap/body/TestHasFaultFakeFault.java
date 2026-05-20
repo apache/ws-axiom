@@ -24,19 +24,19 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link SOAPBody#hasFault()} if the {@link SOAPBody} contains a plain {@link
  * OMElement} with a name corresponding to a SOAP fault. In this case, the method is expected to
  * return <code>false</code>.
  */
-public class TestHasFaultFakeFault implements MatrixTestCase {
+public class TestHasFaultFakeFault implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPBody body = soapFactory.getDefaultEnvelope().getBody();
         soapFactory.createOMElement("Fault", soapFactory.getNamespace(), body);
         assertThat(body.hasFault()).isFalse();

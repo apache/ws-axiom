@@ -25,14 +25,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestCreateOMText implements MatrixTestCase {
+public class TestCreateOMText implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace namespace = factory.createOMNamespace("http://www.apache.org/~chinthaka", "myhome");
         OMElement omElement = factory.createOMElement("chinthaka", namespace);
         String text = "sampleText";

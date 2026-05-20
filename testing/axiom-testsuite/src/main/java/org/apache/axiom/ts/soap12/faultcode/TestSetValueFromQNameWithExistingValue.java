@@ -28,18 +28,18 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultValue;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link SOAPFaultClassifier#setValue(QName)} when invoked on a SOAP 1.2
  * {@link SOAPFaultCode} that already has a {@link SOAPFaultValue} child.
  */
-public class TestSetValueFromQNameWithExistingValue implements MatrixTestCase {
+public class TestSetValueFromQNameWithExistingValue implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPFaultCode code =
                 soapFactory.getDefaultFaultEnvelope().getBody().getFault().getCode();
         SOAPFaultValue value = code.getValue();

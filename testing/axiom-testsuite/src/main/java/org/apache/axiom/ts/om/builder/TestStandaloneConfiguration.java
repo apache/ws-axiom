@@ -31,18 +31,18 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMXMLBuilderFactory#createOMBuilder(StAXParserConfiguration,
  * InputStream)} with {@link StAXParserConfiguration#STANDALONE}.
  */
-public class TestStandaloneConfiguration implements MatrixTestCase {
+public class TestStandaloneConfiguration implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         InputStream is = TestStandaloneConfiguration.class.getResourceAsStream("web_w_dtd2.xml");
         OMXMLParserWrapper builder =
                 OMXMLBuilderFactory.createOMBuilder(factory, StAXParserConfiguration.STANDALONE, is);

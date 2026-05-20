@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.DigestGenerator;
 import org.apache.axiom.testutils.DigestUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Base class for unit tests validating the DOMHASH implementation.
@@ -35,7 +35,7 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * Unfortunately, XSS4J is no longer available for download, but it can still be found in WebSphere
  * (see the <code>com.ibm.ws.wssecurity.xss4j.domutil.Digest</code> class).
  */
-public abstract class DigestTestCase implements MatrixTestCase {
+public abstract class DigestTestCase implements Executable {
     private final String algorithm;
     private final String expectedDigest;
 
@@ -45,7 +45,7 @@ public abstract class DigestTestCase implements MatrixTestCase {
     }
 
     @Override
-    public final void runTest() throws Throwable {
+    public final void execute() throws Throwable {
         OMInformationItem node = createInformationItem();
         DigestGenerator digestGenerator = new DigestGenerator();
         byte[] digest;

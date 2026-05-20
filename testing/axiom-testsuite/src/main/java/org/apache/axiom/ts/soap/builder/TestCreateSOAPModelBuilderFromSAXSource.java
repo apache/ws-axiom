@@ -30,15 +30,15 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.sax.SAXImplementation;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-public class TestCreateSOAPModelBuilderFromSAXSource implements MatrixTestCase {
+public class TestCreateSOAPModelBuilderFromSAXSource implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -46,7 +46,7 @@ public class TestCreateSOAPModelBuilderFromSAXSource implements MatrixTestCase {
     private SOAPSpec spec;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SAXParserFactory parserFactory = SAXImplementation.XERCES.newSAXParserFactory();
         parserFactory.setNamespaceAware(true);
         XMLReader reader = parserFactory.newSAXParser().getXMLReader();

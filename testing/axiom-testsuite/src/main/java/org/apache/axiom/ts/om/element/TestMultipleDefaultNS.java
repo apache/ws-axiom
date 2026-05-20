@@ -24,14 +24,14 @@ import com.google.inject.Inject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestMultipleDefaultNS implements MatrixTestCase {
+public class TestMultipleDefaultNS implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace defaultNS1 = factory.createOMNamespace("http://defaultNS1.org", null);
         OMNamespace defaultNS2 = factory.createOMNamespace("http://defaultNS2.org", null);
 

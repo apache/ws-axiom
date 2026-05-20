@@ -30,7 +30,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMContainer#addChild(OMNode)} if the parent has not been built
@@ -39,12 +39,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  *
  * @see org.apache.axiom.ts.om.element.TestAddChildIncomplete
  */
-public class TestAddChildIncomplete implements MatrixTestCase {
+public class TestAddChildIncomplete implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<!--a--><b/><!--c-->"))
                 .getDocument();
         parent.addChild(factory.createOMComment(null, "d"));

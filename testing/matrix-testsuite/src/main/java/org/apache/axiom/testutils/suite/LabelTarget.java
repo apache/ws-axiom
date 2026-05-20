@@ -19,8 +19,8 @@
 package org.apache.axiom.testutils.suite;
 
 /**
- * Receives label registrations. This interface decouples {@link Dimension} from {@link
- * MatrixTestCase} so that dimensions can be reused with other test tree structures.
+ * Receives label registrations. This interface decouples {@link Dimension} from the test node
+ * infrastructure, so that dimensions can be reused with different test tree structures.
  */
 public interface LabelTarget {
     void addLabel(String name, String value);

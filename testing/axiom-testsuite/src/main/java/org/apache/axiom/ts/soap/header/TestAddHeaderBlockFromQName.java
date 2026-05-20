@@ -26,15 +26,15 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests the behavior of {@link SOAPHeader#addHeaderBlock(QName)}. */
-public class TestAddHeaderBlockFromQName implements MatrixTestCase {
+public class TestAddHeaderBlockFromQName implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPEnvelope env = soapFactory.getDefaultEnvelope();
         SOAPHeader header = env.getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));

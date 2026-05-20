@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMFactory#createOMElement(OMDataSource, QName)} if the data source
  * is <code>null</code>.
  */
-public class TestCreateOMElementWithNullOMDataSource2 implements MatrixTestCase {
+public class TestCreateOMElementWithNullOMDataSource2 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         assertThatThrownBy(() -> factory.createOMElement(null, new QName("urn:test", "test", "p")))
                 .isInstanceOf(IllegalArgumentException.class);
     }

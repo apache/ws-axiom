@@ -26,15 +26,15 @@ import java.io.StringReader;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Test that a document that is not well formed triggers an appropriate error. */
-public class TestMalformedDocument implements MatrixTestCase {
+public class TestMalformedDocument implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument document = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<Root><Child attr='a' attr='a'/></Root>"))
                 .getDocument();

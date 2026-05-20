@@ -30,14 +30,14 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromBlob;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetObject implements MatrixTestCase {
+public class TestGetObject implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Blob blob = Blobs.createBlob("test".getBytes(StandardCharsets.UTF_8));
         OMSourcedElement element = factory.createOMElement(
                 new WrappedTextNodeOMDataSourceFromBlob(new QName("wrapper"), blob, StandardCharsets.UTF_8));

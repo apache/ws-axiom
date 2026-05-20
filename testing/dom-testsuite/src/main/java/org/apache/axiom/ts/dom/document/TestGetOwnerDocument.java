@@ -30,7 +30,7 @@ import org.w3c.dom.Node;
  */
 public class TestGetOwnerDocument extends DOMTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         assertThat(document.getOwnerDocument()).isNull();
     }

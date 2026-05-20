@@ -28,18 +28,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the object model can still be accessed after using {@link
  * OMContainer#getXMLStreamReader()}.
  */
-public class TestGetXMLStreamReaderWithCaching implements MatrixTestCase {
+public class TestGetXMLStreamReaderWithCaching implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
                 factory, TestGetChildElementsConsumed.class.getResourceAsStream("purchase-order.xml"));
 

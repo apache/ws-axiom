@@ -26,18 +26,18 @@ import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the {@link XMLStreamReader} returned by {@link OMContainer#getXMLStreamReader()} for a
  * programmatically created OM tree correctly implements the {@link DTDReader} extension.
  */
-public class TestDTDReader implements MatrixTestCase {
+public class TestDTDReader implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMDocument document = factory.createOMDocument();
         factory.createOMDocType(document, "root", "-//MY//DTD", "my.dtd", "<!ELEMENT root (#PCDATA)>");
         factory.createOMElement("root", null, document);

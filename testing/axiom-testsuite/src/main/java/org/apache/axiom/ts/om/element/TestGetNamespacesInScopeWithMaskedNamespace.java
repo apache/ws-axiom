@@ -26,14 +26,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestGetNamespacesInScopeWithMaskedNamespace implements MatrixTestCase {
+public class TestGetNamespacesInScopeWithMaskedNamespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(factory, "<a xmlns:p='urn:ns1'><b xmlns:p='urn:ns2'/></a>");
         Iterator<OMNamespace> it = element.getFirstElement().getNamespacesInScope();
         assertThat(it.hasNext()).isTrue();

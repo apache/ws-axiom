@@ -26,19 +26,19 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that {@link OMElement#getAllDeclaredNamespaces()} causes expansion of {@link
  * OMSourcedElement} instances.
  */
-public class TestGetAllDeclaredNamespaces implements MatrixTestCase {
+public class TestGetAllDeclaredNamespaces implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMSourcedElement element =
                 factory.createOMElement(new PullOMDataSource("<root xmlns:p='urn:ns1'/>"), "root", null);
         Iterator<OMNamespace> attributes = element.getAllDeclaredNamespaces();

@@ -27,14 +27,14 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that when {@link OMElement#addAttribute(String, String, OMNamespace)} is called with an
  * {@link OMNamespace} with a <code>null</code> prefix and no namespace declaration for the given
  * namespace URI is in scope, the method generates a prefix.
  */
-public class TestAddAttributeGeneratedPrefix implements MatrixTestCase {
+public class TestAddAttributeGeneratedPrefix implements Executable {
     @Inject
     private OMFactory factory;
 
@@ -43,7 +43,7 @@ public class TestAddAttributeGeneratedPrefix implements MatrixTestCase {
     private boolean defaultNamespaceInScope;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace otherNS = factory.createOMNamespace("urn:ns2", "p");
         OMElement parent = factory.createOMElement("parent", otherNS);
         if (defaultNamespaceInScope) {

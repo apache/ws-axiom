@@ -31,7 +31,7 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestExamineMustUnderstandHeaderElements extends SAAJTestCase {
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         MimeHeaders mimeHeaders = new MimeHeaders();
         mimeHeaders.addHeader("Content-Type", spec.getContentType());
         InputStream in = SOAPSampleSet.MUST_UNDERSTAND.getMessage(spec).getInputStream();

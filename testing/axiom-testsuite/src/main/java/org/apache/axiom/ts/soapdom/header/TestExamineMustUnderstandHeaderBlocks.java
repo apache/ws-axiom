@@ -28,12 +28,12 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class TestExamineMustUnderstandHeaderBlocks implements MatrixTestCase {
+public class TestExamineMustUnderstandHeaderBlocks implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -41,7 +41,7 @@ public class TestExamineMustUnderstandHeaderBlocks implements MatrixTestCase {
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPHeader header = soapFactory.createSOAPHeader();
 
         // Add header blocks using DOM

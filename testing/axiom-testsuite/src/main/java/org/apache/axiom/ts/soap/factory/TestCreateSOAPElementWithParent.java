@@ -33,10 +33,10 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests {@link SOAPFactory#createSOAPHeader(SOAPEnvelope)}, {@link
@@ -51,7 +51,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  * SOAPFactory#createSOAPFaultNode(SOAPFault)}, {@link SOAPFactory#createSOAPFaultRole(SOAPFault)}
  * and {@link SOAPFactory#createSOAPFaultDetail(SOAPFault)} with a non null parent.
  */
-public class TestCreateSOAPElementWithParent implements MatrixTestCase {
+public class TestCreateSOAPElementWithParent implements Executable {
     @Inject
     private SOAPSpec spec;
 
@@ -67,7 +67,7 @@ public class TestCreateSOAPElementWithParent implements MatrixTestCase {
     private SOAPElementType parentType;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement parent = parentType.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory);
         QName expectedName = type.getQName(spec);
         if (expectedName == null) {

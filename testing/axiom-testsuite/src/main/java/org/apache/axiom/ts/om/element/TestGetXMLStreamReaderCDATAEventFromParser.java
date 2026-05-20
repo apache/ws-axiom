@@ -29,15 +29,15 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 // Regression test for AXIOM-144 and AXIOM-146
-public class TestGetXMLStreamReaderCDATAEventFromParser implements MatrixTestCase {
+public class TestGetXMLStreamReaderCDATAEventFromParser implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         // Create an element with a CDATA section.
         InputStream is = new ByteArrayInputStream("<test><![CDATA[hello world]]></test>".getBytes());
         // Make sure that the parser is non coalescing (otherwise no CDATA events will be

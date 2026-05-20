@@ -28,9 +28,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public abstract class SetNamespaceTestCase implements MatrixTestCase {
+public abstract class SetNamespaceTestCase implements Executable {
     /**
      * Common test parameters for {@link SetNamespaceTestCase} subclasses.
      *
@@ -86,7 +86,7 @@ public abstract class SetNamespaceTestCase implements MatrixTestCase {
     protected abstract void setNamespace(OMNamedInformationItem node, OMNamespace ns);
 
     @Override
-    public final void runTest() throws Throwable {
+    public final void execute() throws Throwable {
         OMElement element;
         OMNamedInformationItem node;
         if (context()) {

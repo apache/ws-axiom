@@ -25,14 +25,14 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestAddChild2 implements MatrixTestCase {
+public class TestAddChild2 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         String localName = "TestLocalName";
         String childLocalName = "TestChildLocalName";
         String namespace = "http://ws.apache.org/axis2/ns";

@@ -23,15 +23,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests that the {@link OMNamespace} overrides {@link Object#hashCode()}. */
-public class TestHashCode implements MatrixTestCase {
+public class TestHashCode implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMNamespace ns1 = factory.createOMNamespace("urn:ns", "ns");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns", "ns");
         assertThat(ns2.hashCode()).isEqualTo(ns1.hashCode());

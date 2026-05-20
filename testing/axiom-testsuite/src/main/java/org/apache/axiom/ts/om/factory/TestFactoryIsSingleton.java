@@ -22,19 +22,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.inject.Inject;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests that the {@link OMFactory} returned by {@link OMMetaFactory} is a singleton. More precisely
  * this unit test checks that subsequent calls to {@link OMMetaFactory#getOMFactory()} return the
  * same instance.
  */
-public class TestFactoryIsSingleton implements MatrixTestCase {
+public class TestFactoryIsSingleton implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         assertThat(factory).isSameAs(factory);
     }
 }

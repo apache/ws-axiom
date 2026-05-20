@@ -28,21 +28,21 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.commons.io.output.WriterOutputStream;
 import org.apache.xerces.impl.dv.util.Base64;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests {@link OMText#setOptimize(boolean)} on a plain {@link OMText} node with valid base64
  * encoded data. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-519">AXIOM-519</a>.
  */
-public class TestSetOptimizePlainOMText implements MatrixTestCase {
+public class TestSetOptimizePlainOMText implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("element", null);
         OMText text = factory.createOMText(element, Base64.encode("foobar".getBytes(StandardCharsets.UTF_8)));
         text.setOptimize(true);

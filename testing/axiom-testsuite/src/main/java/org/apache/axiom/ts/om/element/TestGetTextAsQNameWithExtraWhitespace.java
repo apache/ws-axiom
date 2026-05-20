@@ -24,18 +24,18 @@ import com.google.inject.Inject;
 import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMElement#getTextAsQName()} if the element content has extra
  * surrounding whitespace.
  */
-public class TestGetTextAsQNameWithExtraWhitespace implements MatrixTestCase {
+public class TestGetTextAsQNameWithExtraWhitespace implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement element = factory.createOMElement("test", null);
         element.declareNamespace("urn:test", "ns1");
         element.setText("  ns1:test  ");

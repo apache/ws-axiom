@@ -28,14 +28,14 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class TestCreateSOAPModelBuilderFromDOMSource implements MatrixTestCase {
+public class TestCreateSOAPModelBuilderFromDOMSource implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -43,7 +43,7 @@ public class TestCreateSOAPModelBuilderFromDOMSource implements MatrixTestCase {
     private SOAPSpec spec;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         Document document = DOMImplementation.XERCES.parse(new InputSource(
                 SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getUrl().toString()));
         SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new DOMSource(document))

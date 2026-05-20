@@ -41,7 +41,7 @@ public abstract class ScenarioTestCase extends SpringWSTestCase {
     private ScenarioConfig config;
 
     @Override
-    public final void runTest() throws Throwable {
+    public final void execute() throws Throwable {
         // Set up a custom thread pool to improve thread names (for logging purposes)
         QueuedThreadPool threadPool = new QueuedThreadPool();
         threadPool.setName("jetty");

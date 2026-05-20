@@ -29,16 +29,16 @@ import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.jspecify.annotations.Nullable;
+import org.junit.jupiter.api.function.Executable;
 import org.xml.sax.InputSource;
 
 /**
  * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement()} and {@link
  * OMXMLParserWrapper#getDocumentElement(boolean)}.
  */
-public class TestGetDocumentElement implements MatrixTestCase {
+public class TestGetDocumentElement implements Executable {
     @Inject
     private OMMetaFactory metaFactory;
 
@@ -51,7 +51,7 @@ public class TestGetDocumentElement implements MatrixTestCase {
     private Boolean discardDocument;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMXMLParserWrapper builder = builderFactory.getBuilder(
                 metaFactory, new InputSource(new StringReader("<!--comment1--><root/><!--comment2-->")));
         OMElement element;

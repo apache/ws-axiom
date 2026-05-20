@@ -27,15 +27,15 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /** Remove all! */
-public class TestGetChildrenRemove3 implements MatrixTestCase {
+public class TestGetChildrenRemove3 implements Executable {
     @Inject
     private OMFactory factory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         OMElement elt = OMXMLBuilderFactory.createOMBuilder(
                         factory, new StringReader("<root>a<b/><!--c--><d/>e</root>"))
                 .getDocumentElement();

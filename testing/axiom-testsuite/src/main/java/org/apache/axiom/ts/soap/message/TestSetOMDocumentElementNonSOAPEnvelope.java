@@ -28,19 +28,19 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Tests the behavior of {@link OMDocument#setOMDocumentElement(OMElement)} when an attempt is made
  * to set an {@link OMElement} that is not a {@link SOAPEnvelope} as the root element of a {@link
  * SOAPMessage}. In this case, an exception should be thrown.
  */
-public class TestSetOMDocumentElementNonSOAPEnvelope implements MatrixTestCase {
+public class TestSetOMDocumentElementNonSOAPEnvelope implements Executable {
     @Inject
     private SOAPFactory soapFactory;
 
     @Override
-    public void runTest() throws Throwable {
+    public void execute() throws Throwable {
         SOAPMessage message = soapFactory.createSOAPMessage();
         OMElement element = soapFactory.createOMElement(new QName("test"));
         assertThatThrownBy(() -> message.setOMDocumentElement(element)).isInstanceOf(OMException.class);
