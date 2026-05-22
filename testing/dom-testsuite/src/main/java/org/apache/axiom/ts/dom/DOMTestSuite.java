@@ -61,14 +61,7 @@ public class DOMTestSuite {
         return new InjectorNode(
                 binder -> binder.bind(DocumentBuilderFactory.class).toInstance(dbf),
                 new ParentNode(
-                        new MatrixTest(org.apache.axiom.ts.dom.attr.TestGetChildNodes.class),
-                        new MatrixTest(org.apache.axiom.ts.dom.attr.TestGetFirstChild.class),
-                        new MatrixTest(org.apache.axiom.ts.dom.attr.TestGetNamespaceURIWithNoNamespace.class),
-                        new MatrixTest(org.apache.axiom.ts.dom.attr.TestGetValueWithMultipleChildren.class),
-                        new MatrixTest(org.apache.axiom.ts.dom.attr.TestLookupNamespaceURIWithoutOwnerElement.class),
-                        new MatrixTest(org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithNamespace.class),
-                        new MatrixTest(org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithoutNamespace.class),
-                        new MatrixTest(org.apache.axiom.ts.dom.attr.TestSetPrefixNullWithNamespace.class),
+                        new MatrixTestContainer(org.apache.axiom.ts.dom.attr.AttrTests.class),
                         new MatrixTest(org.apache.axiom.ts.dom.builder.TestParseURI.class),
                         new MatrixTest(org.apache.axiom.ts.dom.builder.TestWhitespaceAroundDocumentElement.class),
                         new MatrixTest(org.apache.axiom.ts.dom.document.TestAdoptNode.class),
