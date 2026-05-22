@@ -73,13 +73,11 @@ Structure of the new class:
 ```java
 import org.apache.axiom.testutils.suite.Test;
 
-/** Tests for {@link SomeType}. */
 public class SomeTypeTests {
     // Declare only the fields that were @Inject-ed in the old classes
     @Inject
     private SomeDependency dep;
 
-    /** One-line description of what this method tests. */
     @Test
     public void descriptiveMethodName() throws Throwable {
         // body from the old execute() method
@@ -94,7 +92,12 @@ Method naming conventions:
   - `TestCloneNodeDeep` → `cloneNodeDeep()`
   - `TestLookupNamespaceURI` → `lookupNamespaceURI()`
 - Methods should be `public void` and may declare `throws Throwable`.
-- Keep the original Javadoc comment from the old class on the corresponding method.
+- If the old class had a Javadoc comment, copy it verbatim onto the corresponding method. Do
+  **not** generate new Javadoc comments where the original class had none.
+
+**Code preservation:** Copy the body of each `execute()` method exactly as-is into the
+corresponding `@Test` method. Do **not** refactor, reformat, rename variables, or make any
+other improvements unrelated to the consolidation itself.
 
 ### 4. Update the test suite registration
 
@@ -118,16 +121,16 @@ Remove all the individual `Executable` test files that were consolidated.
 
 ### 6. Build and test
 
-Run the affected module(s) to confirm no regressions:
+Run the affected module and its dependents to confirm no regressions:
 
 ```bash
-./mvnw -pl <affected-modules> -am test
+./mvnw -pl <module> -amd verify
 ```
 
-For changes to `testing/dom-testsuite` or `testing/matrix-testsuite`, run:
+For changes to `testing/dom-testsuite`, run:
 
 ```bash
-./mvnw -pl testing/matrix-testsuite,testing/dom-testsuite -am test
+./mvnw -pl testing/dom-testsuite -amd verify
 ```
 
 ## Formatting
