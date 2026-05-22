@@ -30,6 +30,7 @@ import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.MatrixTestContainer;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.ts.jaxp.dom.DOMImplementation;
@@ -100,10 +101,7 @@ public class DOMTestSuite {
                         new MatrixTest(org.apache.axiom.ts.dom.document.TestLookupPrefixWithEmptyDocument.class),
                         new MatrixTest(org.apache.axiom.ts.dom.document.TestNormalizeDocumentNamespace.class),
                         new MatrixTest(org.apache.axiom.ts.dom.document.TestValidator.class),
-                        new MatrixTest(org.apache.axiom.ts.dom.documentfragment.TestCloneNodeDeep.class),
-                        new MatrixTest(org.apache.axiom.ts.dom.documentfragment.TestCloneNodeShallow.class),
-                        new MatrixTest(org.apache.axiom.ts.dom.documentfragment.TestLookupNamespaceURI.class),
-                        new MatrixTest(org.apache.axiom.ts.dom.documentfragment.TestLookupPrefix.class),
+                        new MatrixTestContainer(org.apache.axiom.ts.dom.documentfragment.DocumentFragmentTests.class),
                         new MatrixTest(org.apache.axiom.ts.dom.documenttype.TestWithParser1.class),
                         new MatrixTest(org.apache.axiom.ts.dom.documenttype.TestWithParser2.class),
                         new MatrixTest(org.apache.axiom.ts.dom.element.TestAppendChild.class),

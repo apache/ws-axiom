@@ -144,6 +144,20 @@ through the full `setUp()` → `runTest()` → `tearDown()` lifecycle (with
 `tearDown()` called in a `finally` block). The test is skipped if matched by the
 exclusion filters.
 
+### `MatrixTestContainer`
+
+Leaf node for classes that contain multiple test methods annotated with
+`@Test`. Produces a `DynamicContainer` named after the class,
+containing one child `DynamicTest` per annotated method. Methods are sorted
+alphabetically for reproducibility. A fresh Guice-injected instance of the test
+class is created for each method invocation.
+
+Each method is evaluated against the exclusion filters independently: a label
+`"test"` set to the method name is added to the inherited label map before
+testing. Methods that match the exclusion predicate are omitted; if all are
+excluded the node produces nothing. The test class must have an injectable
+constructor (no-arg or `@Inject`-annotated) and may use field injection.
+
 ### `InjectorNode`
 
 A node that creates a child Guice injector from the supplied modules and threads
@@ -172,27 +186,60 @@ OSGi's `FrameworkUtil.createFilter()`). Built via `MatrixTestFilters.builder()`.
 
 ## Writing a test case
 
-Test cases implement `MatrixTestCase` (directly or through a domain-specific abstract base class)
-and implement `runTest()`. Dependencies are declared with `@Inject` — either on fields or via
-constructor. The test case does **not** receive labels through its constructor and
-does **not** call `addLabel()`.
+### Single-method style
+
+The test class implements `Executable` (directly or through a domain-specific abstract base class).
+Dependencies are declared with `@Inject` — either on fields or via constructor.
 
 ```java
-public abstract class MyTestCase implements MatrixTestCase {
-    @Inject protected SomeImplementation impl;
-    @Inject protected SomeDimension dimension;
+public class TestSomeBehavior implements Executable {
+    @Inject private SomeImplementation impl;
+    @Inject private SomeDimension dimension;
 
-    // convenience methods using impl and dimension ...
+    @Override
+    public void execute() throws Throwable {
+        // test logic using injected fields
+    }
 }
 ```
 
+Register it as a leaf node:
+
 ```java
-public class TestSomeBehavior extends MyTestCase {
-    @Override
-    public void runTest() throws Throwable {
-        // test logic using inherited injected fields
+new MatrixTest(TestSomeBehavior.class)
+```
+
+### Multi-method style
+
+When several related tests share the same injected dependencies, they can be grouped into a single
+class with multiple `@Test`-annotated methods. Each method becomes a separate `DynamicTest` inside
+a `DynamicContainer` named after the class. A fresh Guice-injected instance is created for each
+method, so methods are fully independent.
+
+Note: use `@org.apache.axiom.testutils.suite.Test`, **not** JUnit 5's `@Test`, to prevent Surefire
+or other runners from discovering the class as a standalone JUnit test.
+
+```java
+public class SomeBehaviorTests {
+    @Inject private SomeImplementation impl;
+    @Inject private SomeDimension dimension;
+
+    @Test
+    public void behaviorA() throws Throwable {
+        // test logic
+    }
+
+    @Test
+    public void behaviorB() throws Throwable {
+        // test logic
     }
 }
+```
+
+Register the whole class as a single leaf node using `MatrixTestContainer`:
+
+```java
+new MatrixTestContainer(SomeBehaviorTests.class)
 ```
 
 ## Defining a test suite
