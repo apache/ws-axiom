@@ -27,7 +27,7 @@ import org.apache.axiom.ts.saaj.SAAJTestCase;
 public class TestAddChildElementLocalName extends SAAJTestCase {
     @Override
     public void execute() throws Throwable {
-        SOAPElement root = newSOAPFactory().createElement("root", "p", "urn:test");
+        SOAPElement root = soapFactory.createElement("root", "p", "urn:test");
         SOAPElement element = root.addChildElement("child");
         assertThat(element.getLocalName()).isEqualTo("child");
         assertThat(element.getNamespaceURI()).isNull();

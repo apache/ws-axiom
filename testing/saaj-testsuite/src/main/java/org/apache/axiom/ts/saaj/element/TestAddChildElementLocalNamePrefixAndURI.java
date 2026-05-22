@@ -30,7 +30,7 @@ import org.w3c.dom.NamedNodeMap;
 public class TestAddChildElementLocalNamePrefixAndURI extends SAAJTestCase {
     @Override
     public void execute() throws Throwable {
-        SOAPElement root = newSOAPFactory().createElement("root", "ns1", "urn:ns1");
+        SOAPElement root = soapFactory.createElement("root", "ns1", "urn:ns1");
         SOAPElement element = root.addChildElement("child", "ns2", "urn:ns2");
         assertThat(element.getLocalName()).isEqualTo("child");
         assertThat(element.getNamespaceURI()).isEqualTo("urn:ns2");
