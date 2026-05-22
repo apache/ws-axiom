@@ -28,7 +28,7 @@ import org.w3c.dom.NodeList;
 public class TestSetParentElement extends SAAJTestCase {
     @Override
     public void execute() throws Throwable {
-        SOAPElement parent = newSOAPFactory().createElement(new QName("parent"));
+        SOAPElement parent = soapFactory.createElement(new QName("parent"));
         SOAPElement child1 = parent.addChildElement(new QName("child1"));
         SOAPElement child2 = (SOAPElement) parent.getOwnerDocument().createElementNS(null, "child2");
         child2.setParentElement(parent);

@@ -20,23 +20,17 @@ package org.apache.axiom.ts.saaj;
 
 import com.google.inject.Inject;
 import jakarta.xml.soap.MessageFactory;
-import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.junit.jupiter.api.function.Executable;
 
 public abstract class SAAJTestCase implements Executable {
     @Inject
-    protected SAAJImplementation saajImplementation;
-
-    @Inject
     protected SOAPSpec spec;
 
-    protected final MessageFactory newMessageFactory() throws SOAPException {
-        return spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation);
-    }
+    @Inject
+    protected MessageFactory messageFactory;
 
-    protected final SOAPFactory newSOAPFactory() throws SOAPException {
-        return spec.getAdapter(FactorySelector.class).newSOAPFactory(saajImplementation);
-    }
+    @Inject
+    protected SOAPFactory soapFactory;
 }

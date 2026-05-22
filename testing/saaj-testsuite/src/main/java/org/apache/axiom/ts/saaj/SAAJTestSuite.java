@@ -18,8 +18,13 @@
  */
 package org.apache.axiom.ts.saaj;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Key;
+import com.google.inject.Provides;
+import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SAAJMetaFactory;
+import jakarta.xml.soap.SOAPException;
+import jakarta.xml.soap.SOAPFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Binding;
 import org.apache.axiom.testutils.suite.FanOutNode;
@@ -44,12 +49,28 @@ public class SAAJTestSuite {
                         Multiton.getInstances(SOAPSpec.class),
                         Binding.singleton(Key.get(SOAPSpec.class)),
                         LabelBinding.simpleString("spec", SOAPSpec::getName),
-                        new ParentNode(
-                                new MatrixTest(TestAddChildElementReification.class),
-                                new MatrixTest(TestExamineMustUnderstandHeaderElements.class),
-                                new MatrixTest(TestAddChildElementLocalName.class),
-                                new MatrixTest(TestAddChildElementLocalNamePrefixAndURI.class),
-                                new MatrixTest(TestSetParentElement.class),
-                                new MatrixTest(TestGetOwnerDocument.class))));
+                        new InjectorNode(
+                                new AbstractModule() {
+                                    @Provides
+                                    MessageFactory provideMessageFactory(SAAJImplementation impl, SOAPSpec spec)
+                                            throws SOAPException {
+                                        return spec.getAdapter(FactorySelector.class)
+                                                .newMessageFactory(impl);
+                                    }
+
+                                    @Provides
+                                    SOAPFactory provideSOAPFactory(SAAJImplementation impl, SOAPSpec spec)
+                                            throws SOAPException {
+                                        return spec.getAdapter(FactorySelector.class)
+                                                .newSOAPFactory(impl);
+                                    }
+                                },
+                                new ParentNode(
+                                        new MatrixTest(TestAddChildElementReification.class),
+                                        new MatrixTest(TestExamineMustUnderstandHeaderElements.class),
+                                        new MatrixTest(TestAddChildElementLocalName.class),
+                                        new MatrixTest(TestAddChildElementLocalNamePrefixAndURI.class),
+                                        new MatrixTest(TestSetParentElement.class),
+                                        new MatrixTest(TestGetOwnerDocument.class)))));
     }
 }
