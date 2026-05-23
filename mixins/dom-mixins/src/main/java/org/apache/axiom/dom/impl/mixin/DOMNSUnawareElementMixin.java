@@ -20,10 +20,11 @@ package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMNSUnawareElement;
+import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class DOMNSUnawareElementMixin implements DOMNSUnawareElement {
     @Override
-    public final void normalize(DOMConfigurationImpl config) {}
+    public final void normalize(DOMConfigurationImpl config, ScopedNamespaceContext nsContext) {}
 }
