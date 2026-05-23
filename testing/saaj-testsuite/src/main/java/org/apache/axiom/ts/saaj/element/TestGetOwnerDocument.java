@@ -20,10 +20,12 @@ package org.apache.axiom.ts.saaj.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import jakarta.xml.soap.SOAPElement;
+import jakarta.xml.soap.SOAPFactory;
 import jakarta.xml.soap.SOAPPart;
 import javax.xml.namespace.QName;
-import org.apache.axiom.ts.saaj.SAAJTestCase;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -31,7 +33,10 @@ import org.w3c.dom.Node;
  * Tests the behavior of the {@link Node#getOwnerDocument()} method when invoked on a {@link
  * SOAPElement} as well as the properties of the returned document.
  */
-public class TestGetOwnerDocument extends SAAJTestCase {
+public class TestGetOwnerDocument implements Executable {
+    @Inject
+    private SOAPFactory soapFactory;
+
     @Override
     public void execute() throws Throwable {
         Document doc = soapFactory.createElement(new QName("test")).getOwnerDocument();

@@ -20,12 +20,17 @@ package org.apache.axiom.ts.saaj.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import jakarta.xml.soap.SOAPElement;
+import jakarta.xml.soap.SOAPFactory;
 import javax.xml.namespace.QName;
-import org.apache.axiom.ts.saaj.SAAJTestCase;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.NodeList;
 
-public class TestSetParentElement extends SAAJTestCase {
+public class TestSetParentElement implements Executable {
+    @Inject
+    private SOAPFactory soapFactory;
+
     @Override
     public void execute() throws Throwable {
         SOAPElement parent = soapFactory.createElement(new QName("parent"));

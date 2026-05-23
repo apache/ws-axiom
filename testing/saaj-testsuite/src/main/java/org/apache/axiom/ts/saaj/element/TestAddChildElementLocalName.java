@@ -20,11 +20,16 @@ package org.apache.axiom.ts.saaj.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import jakarta.xml.soap.SOAPElement;
-import org.apache.axiom.ts.saaj.SAAJTestCase;
+import jakarta.xml.soap.SOAPFactory;
+import org.junit.jupiter.api.function.Executable;
 
 /** Tests the behavior of {@link SOAPElement#addChildElement(String)}. */
-public class TestAddChildElementLocalName extends SAAJTestCase {
+public class TestAddChildElementLocalName implements Executable {
+    @Inject
+    private SOAPFactory soapFactory;
+
     @Override
     public void execute() throws Throwable {
         SOAPElement root = soapFactory.createElement("root", "p", "urn:test");

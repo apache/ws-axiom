@@ -20,16 +20,25 @@ package org.apache.axiom.ts.saaj.header;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.MimeHeaders;
 import jakarta.xml.soap.SOAPHeader;
 import jakarta.xml.soap.SOAPHeaderElement;
 import jakarta.xml.soap.SOAPMessage;
 import java.io.InputStream;
 import java.util.Iterator;
-import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestExamineMustUnderstandHeaderElements extends SAAJTestCase {
+public class TestExamineMustUnderstandHeaderElements implements Executable {
+    @Inject
+    private SOAPSpec spec;
+
+    @Inject
+    private MessageFactory messageFactory;
+
     @Override
     public void execute() throws Throwable {
         MimeHeaders mimeHeaders = new MimeHeaders();

@@ -20,12 +20,17 @@ package org.apache.axiom.ts.saaj.body;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
+import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPBody;
 import jakarta.xml.soap.SOAPBodyElement;
 import jakarta.xml.soap.SOAPElement;
-import org.apache.axiom.ts.saaj.SAAJTestCase;
+import org.junit.jupiter.api.function.Executable;
 
-public class TestAddChildElementReification extends SAAJTestCase {
+public class TestAddChildElementReification implements Executable {
+    @Inject
+    private MessageFactory messageFactory;
+
     @Override
     public void execute() throws Throwable {
         SOAPBody body = messageFactory.createMessage().getSOAPBody();
