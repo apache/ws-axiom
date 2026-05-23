@@ -50,6 +50,7 @@ import org.apache.axiom.dom.DOMText;
 import org.apache.axiom.dom.ElementsByTagName;
 import org.apache.axiom.dom.ElementsByTagNameNS;
 import org.apache.axiom.dom.NSUtil;
+import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -204,7 +205,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
                 || domConfig.isEnabled(DOMConfigurationImpl.WELLFORMED)) {
             throw new UnsupportedOperationException("TODO");
         } else {
-            normalizeRecursively(domConfig);
+            normalizeRecursively(domConfig, new ScopedNamespaceContext());
         }
     }
 
@@ -481,7 +482,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
     }
 
     @Override
-    public final void normalize(DOMConfigurationImpl config) {}
+    public final void normalize(DOMConfigurationImpl config, ScopedNamespaceContext nsContext) {}
 
     @Override
     public final Node importNode(Node importedNode, boolean deep) throws DOMException {

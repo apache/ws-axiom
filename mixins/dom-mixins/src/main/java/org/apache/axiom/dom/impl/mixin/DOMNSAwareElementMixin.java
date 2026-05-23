@@ -19,53 +19,43 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.core.CoreAttribute;
-import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMNSAwareElement;
 import org.apache.axiom.dom.DOMSemantics;
+import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class DOMNSAwareElementMixin implements DOMNSAwareElement {
     @Override
-    public final void normalize(DOMConfigurationImpl config) {
+    public final void normalize(DOMConfigurationImpl config, ScopedNamespaceContext nsContext) {
         if (config.isEnabled(DOMConfigurationImpl.NAMESPACES)) {
             try {
+                // Add existing namespace declarations on this element to the context so that
+                // they are visible to descendants and so we can check them below.
+                for (CoreAttribute a = coreGetFirstAttribute(); a != null; a = a.coreGetNextAttribute()) {
+                    if (a instanceof CoreNamespaceDeclaration decl) {
+                        nsContext.setPrefix(
+                                decl.coreGetDeclaredPrefix(),
+                                decl.coreGetCharacterData().toString());
+                    }
+                }
                 String namespaceURI = coreGetNamespaceURI();
                 if (namespaceURI.isEmpty()) {
-                    // Walk up from this element looking for the first explicit default namespace
-                    // declaration. If it maps to a non-empty URI, add xmlns="" to override it.
-                    CoreElement current = this;
-                    outer:
-                    while (current != null) {
-                        for (CoreAttribute a = current.coreGetFirstAttribute();
-                                a != null;
-                                a = a.coreGetNextAttribute()) {
-                            if (a instanceof CoreNamespaceDeclaration decl
-                                    && decl.coreGetDeclaredPrefix().isEmpty()) {
-                                if (!decl.coreGetCharacterData().toString().isEmpty()) {
-                                    coreSetAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, "", null, "");
-                                }
-                                break outer;
-                            }
-                        }
-                        current = current.coreGetParentElement();
+                    // If the default namespace is bound to a non-empty URI in the context,
+                    // add xmlns="" to override it.
+                    if (!nsContext.getNamespaceURI("").isEmpty()) {
+                        coreSetAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, "", null, "");
+                        nsContext.setPrefix("", "");
                     }
                 } else {
-                    // Check only this element's own explicit namespace declarations.
                     String prefix = coreGetPrefix();
-                    boolean declared = false;
-                    for (CoreAttribute a = coreGetFirstAttribute(); a != null; a = a.coreGetNextAttribute()) {
-                        if (a instanceof CoreNamespaceDeclaration decl && prefix.equals(decl.coreGetDeclaredPrefix())) {
-                            declared = decl.coreGetCharacterData().toString().equals(namespaceURI);
-                            break;
-                        }
-                    }
-                    if (!declared) {
+                    if (!namespaceURI.equals(nsContext.getNamespaceURI(prefix))) {
                         coreSetAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, prefix, null, namespaceURI);
+                        nsContext.setPrefix(prefix, namespaceURI);
                     }
                 }
             } catch (CoreModelException ex) {

@@ -29,6 +29,7 @@ import org.apache.axiom.dom.DOMNode;
 import org.apache.axiom.dom.DOMParentNode;
 import org.apache.axiom.dom.DOMSemantics;
 import org.apache.axiom.dom.DocumentWhitespaceFilter;
+import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
@@ -101,14 +102,16 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
     }
 
     @Override
-    public final void normalizeRecursively(DOMConfigurationImpl config) {
+    public final void normalizeRecursively(DOMConfigurationImpl config, ScopedNamespaceContext nsContext) {
         try {
-            normalize(config);
+            nsContext.startScope();
+            normalize(config, nsContext);
             CoreChildNode child = coreGetFirstChild();
             while (child != null) {
-                ((DOMNode) child).normalizeRecursively(config);
+                ((DOMNode) child).normalizeRecursively(config, nsContext);
                 child = child.coreGetNextSibling();
             }
+            nsContext.endScope();
         } catch (CoreModelException ex) {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }

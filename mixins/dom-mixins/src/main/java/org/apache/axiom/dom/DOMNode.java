@@ -20,6 +20,7 @@ package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.axiom.weaver.annotation.Inject;
 import org.w3c.dom.Node;
 
@@ -38,5 +39,5 @@ public interface DOMNode extends Node, CoreNode {
      */
     CoreElement getNamespaceContext();
 
-    void normalizeRecursively(DOMConfigurationImpl config);
+    void normalizeRecursively(DOMConfigurationImpl config, ScopedNamespaceContext nsContext);
 }

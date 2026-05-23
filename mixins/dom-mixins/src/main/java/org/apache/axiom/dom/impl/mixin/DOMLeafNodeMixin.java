@@ -24,6 +24,7 @@ import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMLeafNode;
 import org.apache.axiom.dom.EmptyNodeList;
+import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -124,5 +125,5 @@ public abstract class DOMLeafNodeMixin implements DOMLeafNode {
     }
 
     @Override
-    public final void normalizeRecursively(DOMConfigurationImpl config) {}
+    public final void normalizeRecursively(DOMConfigurationImpl config, ScopedNamespaceContext nsContext) {}
 }

@@ -23,6 +23,7 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMEntityReference;
+import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.axiom.weaver.annotation.Mixin;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -141,5 +142,5 @@ public abstract class DOMEntityReferenceMixin implements DOMEntityReference {
     }
 
     @Override
-    public final void normalizeRecursively(DOMConfigurationImpl config) {}
+    public final void normalizeRecursively(DOMConfigurationImpl config, ScopedNamespaceContext nsContext) {}
 }
