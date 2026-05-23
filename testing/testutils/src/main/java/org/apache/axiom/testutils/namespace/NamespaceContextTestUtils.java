@@ -19,29 +19,30 @@
 
 package org.apache.axiom.testutils.namespace;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Iterator;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
-import org.junit.Assert;
 
 public final class NamespaceContextTestUtils {
     private NamespaceContextTestUtils() {}
 
     public static void checkImplicitNamespaces(NamespaceContext nc) {
-        Assert.assertEquals(XMLConstants.XML_NS_URI, nc.getNamespaceURI(XMLConstants.XML_NS_PREFIX));
-        Assert.assertEquals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, nc.getNamespaceURI(XMLConstants.XMLNS_ATTRIBUTE));
+        assertThat(nc.getNamespaceURI(XMLConstants.XML_NS_PREFIX)).isEqualTo(XMLConstants.XML_NS_URI);
+        assertThat(nc.getNamespaceURI(XMLConstants.XMLNS_ATTRIBUTE)).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
 
-        Assert.assertEquals(XMLConstants.XML_NS_PREFIX, nc.getPrefix(XMLConstants.XML_NS_URI));
-        Assert.assertEquals(XMLConstants.XMLNS_ATTRIBUTE, nc.getPrefix(XMLConstants.XMLNS_ATTRIBUTE_NS_URI));
+        assertThat(nc.getPrefix(XMLConstants.XML_NS_URI)).isEqualTo(XMLConstants.XML_NS_PREFIX);
+        assertThat(nc.getPrefix(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE);
 
         Iterator<?> it = nc.getPrefixes(XMLConstants.XML_NS_URI);
-        Assert.assertTrue(it.hasNext());
-        Assert.assertEquals(XMLConstants.XML_NS_PREFIX, it.next());
-        Assert.assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(XMLConstants.XML_NS_PREFIX);
+        assertThat(it.hasNext()).isFalse();
 
         it = nc.getPrefixes(XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
-        Assert.assertTrue(it.hasNext());
-        Assert.assertEquals(XMLConstants.XMLNS_ATTRIBUTE, it.next());
-        Assert.assertFalse(it.hasNext());
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE);
+        assertThat(it.hasNext()).isFalse();
     }
 }
