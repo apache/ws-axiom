@@ -19,6 +19,8 @@
 
 package org.apache.axiom.util.namespace;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -26,10 +28,10 @@ import java.util.Iterator;
 import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
-import junit.framework.TestCase;
 import org.apache.axiom.testutils.namespace.NamespaceContextTestUtils;
+import org.junit.jupiter.api.Test;
 
-public class ScopedNamespaceContextTest extends TestCase {
+public class ScopedNamespaceContextTest {
     private static Set<String> getPrefixes(NamespaceContext nc, String namespaceURI) {
         Set<String> result = new HashSet<String>();
         for (Iterator<?> it = nc.getPrefixes(namespaceURI); it.hasNext(); ) {
@@ -38,82 +40,87 @@ public class ScopedNamespaceContextTest extends TestCase {
         return result;
     }
 
+    @Test
     public void testSimple() {
         ScopedNamespaceContext nc = new ScopedNamespaceContext();
         nc.setPrefix("", "urn:ns1");
         nc.setPrefix("a", "urn:ns2");
         nc.setPrefix("b", "urn:ns3");
-        assertEquals("urn:ns1", nc.getNamespaceURI(""));
-        assertEquals("urn:ns2", nc.getNamespaceURI("a"));
-        assertEquals("urn:ns3", nc.getNamespaceURI("b"));
-        assertEquals("", nc.getPrefix("urn:ns1"));
-        assertEquals("a", nc.getPrefix("urn:ns2"));
-        assertEquals("b", nc.getPrefix("urn:ns3"));
-        assertEquals(Collections.singleton(""), getPrefixes(nc, "urn:ns1"));
-        assertEquals(Collections.singleton("a"), getPrefixes(nc, "urn:ns2"));
-        assertEquals(Collections.singleton("b"), getPrefixes(nc, "urn:ns3"));
+        assertThat(nc.getNamespaceURI("")).isEqualTo("urn:ns1");
+        assertThat(nc.getNamespaceURI("a")).isEqualTo("urn:ns2");
+        assertThat(nc.getNamespaceURI("b")).isEqualTo("urn:ns3");
+        assertThat(nc.getPrefix("urn:ns1")).isEqualTo("");
+        assertThat(nc.getPrefix("urn:ns2")).isEqualTo("a");
+        assertThat(nc.getPrefix("urn:ns3")).isEqualTo("b");
+        assertThat(getPrefixes(nc, "urn:ns1")).isEqualTo(Collections.singleton(""));
+        assertThat(getPrefixes(nc, "urn:ns2")).isEqualTo(Collections.singleton("a"));
+        assertThat(getPrefixes(nc, "urn:ns3")).isEqualTo(Collections.singleton("b"));
     }
 
+    @Test
     public void testMultiplePrefixes() {
         ScopedNamespaceContext nc = new ScopedNamespaceContext();
         nc.setPrefix("", "urn:ns1");
         nc.setPrefix("a", "urn:ns2");
         nc.setPrefix("b", "urn:ns1");
         String prefix = nc.getPrefix("urn:ns1");
-        assertTrue(prefix.equals("") || prefix.equals("b"));
-        assertEquals(new HashSet<String>(Arrays.asList("", "b")), getPrefixes(nc, "urn:ns1"));
+        assertThat(prefix).isIn("", "b");
+        assertThat(getPrefixes(nc, "urn:ns1")).isEqualTo(new HashSet<String>(Arrays.asList("", "b")));
     }
 
+    @Test
     public void testScope() {
         ScopedNamespaceContext nc = new ScopedNamespaceContext();
         nc.setPrefix("ns1", "urn:ns1");
-        assertEquals(0, nc.getFirstBindingInCurrentScope());
-        assertEquals(1, nc.getBindingsCount());
+        assertThat(nc.getFirstBindingInCurrentScope()).isEqualTo(0);
+        assertThat(nc.getBindingsCount()).isEqualTo(1);
         nc.startScope();
         nc.setPrefix("ns2", "urn:ns2");
-        assertEquals(1, nc.getFirstBindingInCurrentScope());
-        assertEquals(2, nc.getBindingsCount());
+        assertThat(nc.getFirstBindingInCurrentScope()).isEqualTo(1);
+        assertThat(nc.getBindingsCount()).isEqualTo(2);
         nc.startScope();
         nc.setPrefix("ns3", "urn:ns3");
-        assertEquals(2, nc.getFirstBindingInCurrentScope());
-        assertEquals(3, nc.getBindingsCount());
-        assertEquals("urn:ns1", nc.getNamespaceURI("ns1"));
-        assertEquals("urn:ns2", nc.getNamespaceURI("ns2"));
-        assertEquals("urn:ns3", nc.getNamespaceURI("ns3"));
-        assertEquals("ns1", nc.getPrefix(0));
-        assertEquals("urn:ns1", nc.getNamespaceURI(0));
-        assertEquals("ns2", nc.getPrefix(1));
-        assertEquals("urn:ns2", nc.getNamespaceURI(1));
-        assertEquals("ns3", nc.getPrefix(2));
-        assertEquals("urn:ns3", nc.getNamespaceURI(2));
+        assertThat(nc.getFirstBindingInCurrentScope()).isEqualTo(2);
+        assertThat(nc.getBindingsCount()).isEqualTo(3);
+        assertThat(nc.getNamespaceURI("ns1")).isEqualTo("urn:ns1");
+        assertThat(nc.getNamespaceURI("ns2")).isEqualTo("urn:ns2");
+        assertThat(nc.getNamespaceURI("ns3")).isEqualTo("urn:ns3");
+        assertThat(nc.getPrefix(0)).isEqualTo("ns1");
+        assertThat(nc.getNamespaceURI(0)).isEqualTo("urn:ns1");
+        assertThat(nc.getPrefix(1)).isEqualTo("ns2");
+        assertThat(nc.getNamespaceURI(1)).isEqualTo("urn:ns2");
+        assertThat(nc.getPrefix(2)).isEqualTo("ns3");
+        assertThat(nc.getNamespaceURI(2)).isEqualTo("urn:ns3");
         nc.endScope();
-        assertEquals(1, nc.getFirstBindingInCurrentScope());
-        assertEquals(2, nc.getBindingsCount());
-        assertEquals("urn:ns1", nc.getNamespaceURI("ns1"));
-        assertEquals("urn:ns2", nc.getNamespaceURI("ns2"));
-        assertEquals(XMLConstants.NULL_NS_URI, nc.getNamespaceURI("ns3"));
+        assertThat(nc.getFirstBindingInCurrentScope()).isEqualTo(1);
+        assertThat(nc.getBindingsCount()).isEqualTo(2);
+        assertThat(nc.getNamespaceURI("ns1")).isEqualTo("urn:ns1");
+        assertThat(nc.getNamespaceURI("ns2")).isEqualTo("urn:ns2");
+        assertThat(nc.getNamespaceURI("ns3")).isEqualTo(XMLConstants.NULL_NS_URI);
         nc.endScope();
-        assertEquals(0, nc.getFirstBindingInCurrentScope());
-        assertEquals(1, nc.getBindingsCount());
-        assertEquals("urn:ns1", nc.getNamespaceURI("ns1"));
-        assertEquals(XMLConstants.NULL_NS_URI, nc.getNamespaceURI("ns2"));
-        assertEquals(XMLConstants.NULL_NS_URI, nc.getNamespaceURI("ns3"));
+        assertThat(nc.getFirstBindingInCurrentScope()).isEqualTo(0);
+        assertThat(nc.getBindingsCount()).isEqualTo(1);
+        assertThat(nc.getNamespaceURI("ns1")).isEqualTo("urn:ns1");
+        assertThat(nc.getNamespaceURI("ns2")).isEqualTo(XMLConstants.NULL_NS_URI);
+        assertThat(nc.getNamespaceURI("ns3")).isEqualTo(XMLConstants.NULL_NS_URI);
     }
 
+    @Test
     public void testMaskedPrefix() {
         ScopedNamespaceContext nc = new ScopedNamespaceContext();
         nc.setPrefix("p", "urn:ns1");
         nc.startScope();
         nc.setPrefix("p", "urn:ns2");
-        assertEquals("urn:ns2", nc.getNamespaceURI("p"));
-        assertNull(nc.getPrefix("urn:ns1"));
-        assertEquals(Collections.singleton("p"), getPrefixes(nc, "urn:ns2"));
-        assertFalse(nc.getPrefixes("urn:ns1").hasNext());
+        assertThat(nc.getNamespaceURI("p")).isEqualTo("urn:ns2");
+        assertThat(nc.getPrefix("urn:ns1")).isNull();
+        assertThat(getPrefixes(nc, "urn:ns2")).isEqualTo(Collections.singleton("p"));
+        assertThat(nc.getPrefixes("urn:ns1").hasNext()).isFalse();
         nc.endScope();
-        assertEquals("p", nc.getPrefix("urn:ns1"));
-        assertEquals(Collections.singleton("p"), getPrefixes(nc, "urn:ns1"));
+        assertThat(nc.getPrefix("urn:ns1")).isEqualTo("p");
+        assertThat(getPrefixes(nc, "urn:ns1")).isEqualTo(Collections.singleton("p"));
     }
 
+    @Test
     public void testImplicitNamespaces() {
         NamespaceContextTestUtils.checkImplicitNamespaces(new ScopedNamespaceContext());
     }
