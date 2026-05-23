@@ -20,14 +20,19 @@ package org.apache.axiom.ts.saaj.element;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.inject.Inject;
 import jakarta.xml.soap.SOAPElement;
+import jakarta.xml.soap.SOAPFactory;
 import javax.xml.XMLConstants;
-import org.apache.axiom.ts.saaj.SAAJTestCase;
+import org.junit.jupiter.api.function.Executable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.NamedNodeMap;
 
 /** Tests the behavior of {@link SOAPElement#addChildElement(String, String, String)}. */
-public class TestAddChildElementLocalNamePrefixAndURI extends SAAJTestCase {
+public class TestAddChildElementLocalNamePrefixAndURI implements Executable {
+    @Inject
+    private SOAPFactory soapFactory;
+
     @Override
     public void execute() throws Throwable {
         SOAPElement root = soapFactory.createElement("root", "ns1", "urn:ns1");
