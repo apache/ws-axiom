@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.saaj.body;
+package org.apache.axiom.ts.saaj;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,14 +25,14 @@ import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPBody;
 import jakarta.xml.soap.SOAPBodyElement;
 import jakarta.xml.soap.SOAPElement;
-import org.junit.jupiter.api.function.Executable;
+import org.apache.axiom.testutils.suite.Test;
 
-public class TestAddChildElementReification implements Executable {
+public class BodyTests {
     @Inject
     private MessageFactory messageFactory;
 
-    @Override
-    public void execute() throws Throwable {
+    @Test
+    public void addChildElementReification() throws Throwable {
         SOAPBody body = messageFactory.createMessage().getSOAPBody();
         SOAPElement child =
                 body.addChildElement((SOAPElement) body.getOwnerDocument().createElementNS("urn:test", "p:test"));
