@@ -29,6 +29,7 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.NodeFactory2;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.Semantics;
@@ -115,10 +116,10 @@ public final class DOMSemantics implements Semantics {
 
     public static final ClonePolicy<Void> DEEP_CLONE = new ClonePolicy<Void>() {
         @Override
-        public Class<? extends CoreNode> getTargetNodeClass(Void options, CoreNode node) {
+        public CoreNode createTargetNode(Void options, CoreNode node, NodeFactory factory) {
             // This is not specified by the API, but it's compatible with versions before
             // 1.2.14
-            return node.coreGetNodeClass();
+            return factory.createNode(node.coreGetNodeClass());
         }
 
         @Override
@@ -142,10 +143,10 @@ public final class DOMSemantics implements Semantics {
 
     public static final ClonePolicy<Void> SHALLOW_CLONE = new ClonePolicy<Void>() {
         @Override
-        public Class<? extends CoreNode> getTargetNodeClass(Void options, CoreNode node) {
+        public CoreNode createTargetNode(Void options, CoreNode node, NodeFactory factory) {
             // This is not specified by the API, but it's compatible with versions before
             // 1.2.14
-            return node.coreGetNodeClass();
+            return factory.createNode(node.coreGetNodeClass());
         }
 
         @Override

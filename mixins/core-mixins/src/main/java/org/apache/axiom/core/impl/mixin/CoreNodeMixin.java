@@ -81,7 +81,7 @@ public abstract class CoreNodeMixin implements CoreNode {
 
     // TODO: merge this into internalClone once it is no longer referenced elsewhere
     public final <T> CoreNode shallowClone(ClonePolicy<T> policy, T options) throws CoreModelException {
-        CoreNode clone = coreGetNodeFactory().createNode(policy.getTargetNodeClass(options, this));
+        CoreNode clone = policy.createTargetNode(options, this, coreGetNodeFactory());
         clone.init(policy, options, this);
         clone.initAncillaryData(policy, options, this);
         return clone;
