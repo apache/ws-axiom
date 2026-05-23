@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.saaj.header;
+package org.apache.axiom.ts.saaj;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,19 +28,19 @@ import jakarta.xml.soap.SOAPHeaderElement;
 import jakarta.xml.soap.SOAPMessage;
 import java.io.InputStream;
 import java.util.Iterator;
+import org.apache.axiom.testutils.suite.Test;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.junit.jupiter.api.function.Executable;
 
-public class TestExamineMustUnderstandHeaderElements implements Executable {
+public class HeaderTests {
     @Inject
     private SOAPSpec spec;
 
     @Inject
     private MessageFactory messageFactory;
 
-    @Override
-    public void execute() throws Throwable {
+    @Test
+    public void examineMustUnderstandHeaderElements() throws Throwable {
         MimeHeaders mimeHeaders = new MimeHeaders();
         mimeHeaders.addHeader("Content-Type", spec.getContentType());
         InputStream in = SOAPSampleSet.MUST_UNDERSTAND.getMessage(spec).getInputStream();
