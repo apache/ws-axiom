@@ -20,7 +20,7 @@ package org.apache.axiom.core;
 
 /** Defines how an object model tree is to be cloned. */
 public interface ClonePolicy<T> {
-    Class<? extends CoreNode> getTargetNodeClass(T options, CoreNode node);
+    CoreNode createTargetNode(T options, CoreNode node, NodeFactory factory);
 
     boolean repairNamespaces(T options);
 
