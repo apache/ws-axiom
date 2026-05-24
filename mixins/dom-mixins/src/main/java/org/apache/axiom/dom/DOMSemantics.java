@@ -25,11 +25,9 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
-import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.NodeFactory2;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.Semantics;
@@ -114,58 +112,18 @@ public final class DOMSemantics implements Semantics {
 
     public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(INSTANCE);
 
-    public static final ClonePolicy<Void> DEEP_CLONE = new ClonePolicy<Void>() {
-        @Override
-        public CoreNode createTargetNode(Void options, CoreNode node, NodeFactory factory) {
-            // This is not specified by the API, but it's compatible with versions before
-            // 1.2.14
-            return factory.createNode(node.coreGetNodeClass());
-        }
-
-        @Override
-        public boolean repairNamespaces(Void options) {
-            return false;
-        }
-
-        @Override
-        public boolean cloneAttributes(Void options) {
-            return true;
-        }
-
+    public static final ClonePolicy<Void> DEEP_CLONE = new DOMClonePolicy() {
         @Override
         public boolean cloneChildren(Void options, NodeType nodeType) {
             return true;
         }
-
-        @Override
-        public void postProcess(Void options, CoreNode clone) {}
     };
 
-    public static final ClonePolicy<Void> SHALLOW_CLONE = new ClonePolicy<Void>() {
-        @Override
-        public CoreNode createTargetNode(Void options, CoreNode node, NodeFactory factory) {
-            // This is not specified by the API, but it's compatible with versions before
-            // 1.2.14
-            return factory.createNode(node.coreGetNodeClass());
-        }
-
-        @Override
-        public boolean repairNamespaces(Void options) {
-            return false;
-        }
-
-        @Override
-        public boolean cloneAttributes(Void options) {
-            return true;
-        }
-
+    public static final ClonePolicy<Void> SHALLOW_CLONE = new DOMClonePolicy() {
         @Override
         public boolean cloneChildren(Void options, NodeType nodeType) {
             return nodeType == NodeType.NS_UNAWARE_ATTRIBUTE || nodeType == NodeType.NS_AWARE_ATTRIBUTE;
         }
-
-        @Override
-        public void postProcess(Void options, CoreNode clone) {}
     };
 
     @Override
