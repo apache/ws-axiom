@@ -19,46 +19,47 @@
 package org.apache.axiom.core;
 
 import java.util.EnumSet;
+import java.util.function.Function;
 
 public enum NodeType {
     /** The node is a {@link CoreDocument}. */
-    DOCUMENT(CoreDocument.class),
+    DOCUMENT(NodeFactory2::createDocument),
 
     /** The node is a {@link CoreDocumentTypeDeclaration}. */
-    DOCUMENT_TYPE_DECLARATION(CoreDocumentTypeDeclaration.class),
+    DOCUMENT_TYPE_DECLARATION(NodeFactory2::createDocumentTypeDeclaration),
 
     /** The node is a {@link CoreNSUnawareElement}. */
-    NS_UNAWARE_ELEMENT(CoreNSUnawareElement.class),
+    NS_UNAWARE_ELEMENT(NodeFactory2::createNSUnawareElement),
 
     /** The node is a {@link CoreNSAwareElement}. */
-    NS_AWARE_ELEMENT(CoreNSAwareElement.class),
+    NS_AWARE_ELEMENT(NodeFactory2::createNSAwareElement),
 
     /** The node is a {@link CoreNSUnawareAttribute}. */
-    NS_UNAWARE_ATTRIBUTE(CoreNSUnawareAttribute.class),
+    NS_UNAWARE_ATTRIBUTE(NodeFactory2::createNSUnawareAttribute),
 
     /** The node is a {@link CoreNSAwareAttribute}. */
-    NS_AWARE_ATTRIBUTE(CoreNSAwareAttribute.class),
+    NS_AWARE_ATTRIBUTE(NodeFactory2::createNSAwareAttribute),
 
     /** The node is a {@link CoreNamespaceDeclaration}. */
-    NAMESPACE_DECLARATION(CoreNamespaceDeclaration.class),
+    NAMESPACE_DECLARATION(NodeFactory2::createNamespaceDeclaration),
 
     /** The node is a {@link CoreProcessingInstruction}. */
-    PROCESSING_INSTRUCTION(CoreProcessingInstruction.class),
+    PROCESSING_INSTRUCTION(NodeFactory2::createProcessingInstruction),
 
     /** The node is a {@link CoreDocumentFragment}. */
-    DOCUMENT_FRAGMENT(CoreDocumentFragment.class),
+    DOCUMENT_FRAGMENT(NodeFactory2::createDocumentFragment),
 
     /** The node is a {@link CoreCharacterDataNode}. */
-    CHARACTER_DATA(CoreCharacterDataNode.class),
+    CHARACTER_DATA(NodeFactory2::createCharacterDataNode),
 
     /** The node is a {@link CoreComment}. */
-    COMMENT(CoreComment.class),
+    COMMENT(NodeFactory2::createComment),
 
     /** The node is a {@link CoreCDATASection}. */
-    CDATA_SECTION(CoreCDATASection.class),
+    CDATA_SECTION(NodeFactory2::createCDATASection),
 
     /** The node is a {@link CoreEntityReference}. */
-    ENTITY_REFERENCE(CoreEntityReference.class);
+    ENTITY_REFERENCE(NodeFactory2::createEntityReference);
 
     static {
         // TODO: add missing node types here (once we have tests that exercise the code)
@@ -87,15 +88,15 @@ public enum NodeType {
         NS_UNAWARE_ELEMENT.allowedChildTypes = s;
     }
 
-    private final Class<? extends CoreNode> iface;
+    private final Function<NodeFactory2, CoreNode> factory2Function;
     private EnumSet<NodeType> allowedChildTypes;
 
-    private NodeType(Class<? extends CoreNode> iface) {
-        this.iface = iface;
+    private NodeType(Function<NodeFactory2, CoreNode> factory2Function) {
+        this.factory2Function = factory2Function;
     }
 
-    public Class<? extends CoreNode> getInterface() {
-        return iface;
+    public CoreNode newInstance(NodeFactory factory) {
+        return factory2Function.apply(factory.getFactory2());
     }
 
     public boolean isChildTypeAllowed(NodeType childType) {
