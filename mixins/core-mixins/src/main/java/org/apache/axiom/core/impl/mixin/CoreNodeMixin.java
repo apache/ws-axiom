@@ -30,12 +30,6 @@ import org.apache.axiom.weaver.annotation.Mixin;
 public abstract class CoreNodeMixin implements CoreNode {
     int flags;
 
-    // Default implementation; may be overridden
-    @Override
-    public Class<? extends CoreNode> coreGetNodeClass() {
-        return coreGetNodeType().getInterface();
-    }
-
     @Override
     public final CoreDocument coreGetOwnerDocument(boolean create) {
         CoreNode root = getRootOrOwnerDocument();

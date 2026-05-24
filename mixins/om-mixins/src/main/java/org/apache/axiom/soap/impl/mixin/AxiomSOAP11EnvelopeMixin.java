@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.soap.impl.mixin;
 
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPHeader;
@@ -28,10 +27,6 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomSOAP11EnvelopeMixin implements AxiomSOAP11Envelope {
-    @Override
-    public final Class<? extends CoreNode> coreGetNodeClass() {
-        return AxiomSOAP11Envelope.class;
-    }
 
     @Override
     public final boolean isChildElementAllowed(OMElement child) {

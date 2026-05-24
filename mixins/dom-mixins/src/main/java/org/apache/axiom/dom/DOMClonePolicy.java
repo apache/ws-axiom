@@ -21,6 +21,7 @@ package org.apache.axiom.dom;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.NodeFactoryException;
 import org.apache.axiom.core.NodeType;
 
 abstract class DOMClonePolicy implements ClonePolicy<Void> {
@@ -28,7 +29,11 @@ abstract class DOMClonePolicy implements ClonePolicy<Void> {
     public CoreNode createTargetNode(Void options, CoreNode node, NodeFactory factory) {
         // This is not specified by the API, but it's compatible with versions before
         // 1.2.14
-        return factory.createNode(node.coreGetNodeClass());
+        try {
+            return (CoreNode) node.getClass().getConstructor().newInstance();
+        } catch (ReflectiveOperationException ex) {
+            throw new NodeFactoryException("Failed to clone node", ex);
+        }
     }
 
     @Override

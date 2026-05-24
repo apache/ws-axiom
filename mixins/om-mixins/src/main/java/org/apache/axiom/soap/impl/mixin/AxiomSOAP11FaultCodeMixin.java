@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import javax.xml.namespace.QName;
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
@@ -31,11 +30,6 @@ public abstract class AxiomSOAP11FaultCodeMixin implements AxiomSOAP11FaultCode 
     @Override
     public final boolean isChildElementAllowed(OMElement child) {
         return false;
-    }
-
-    @Override
-    public final Class<? extends CoreNode> coreGetNodeClass() {
-        return AxiomSOAP11FaultCode.class;
     }
 
     @Override

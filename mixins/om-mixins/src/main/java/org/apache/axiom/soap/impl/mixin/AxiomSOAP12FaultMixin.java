@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.soap.impl.mixin;
 
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.impl.intf.Sequence;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -37,11 +36,6 @@ public abstract class AxiomSOAP12FaultMixin implements AxiomSOAP12Fault {
             SOAPFaultNode.class,
             SOAPFaultRole.class,
             SOAPFaultDetail.class);
-
-    @Override
-    public final Class<? extends CoreNode> coreGetNodeClass() {
-        return AxiomSOAP12Fault.class;
-    }
 
     @Override
     public final Sequence getSequence() {

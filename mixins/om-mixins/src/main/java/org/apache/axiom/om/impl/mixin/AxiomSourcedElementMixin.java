@@ -25,7 +25,6 @@ import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.core.impl.builder.BuilderImpl;
 import org.apache.axiom.core.impl.builder.PlainXMLModel;
@@ -95,11 +94,6 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
         return qName.getNamespaceURI().length() == 0
                 ? null
                 : new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
-    }
-
-    @Override
-    public Class<? extends CoreNode> coreGetNodeClass() {
-        return AxiomSourcedElement.class;
     }
 
     @Override
