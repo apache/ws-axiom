@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.common.util.LocaleUtil;
 import org.apache.axiom.soap.SOAPFaultText;
@@ -31,10 +30,6 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultReason {
-    @Override
-    public final Class<? extends CoreNode> coreGetNodeClass() {
-        return AxiomSOAP12FaultReason.class;
-    }
 
     @Override
     public final boolean isChildElementAllowed(OMElement child) {

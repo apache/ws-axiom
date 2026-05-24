@@ -27,6 +27,7 @@ import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.NodeFactoryException;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.Semantics;
 import org.apache.axiom.om.OMCloneOptions;
@@ -65,7 +66,11 @@ public final class AxiomSemantics implements Semantics {
         @Override
         public CoreNode createTargetNode(OMCloneOptions options, CoreNode node, NodeFactory factory) {
             if (options != null && options.isPreserveModel()) {
-                return factory.createNode(node.coreGetNodeClass());
+                try {
+                    return (CoreNode) node.getClass().getConstructor().newInstance();
+                } catch (ReflectiveOperationException ex) {
+                    throw new NodeFactoryException("Failed to clone node", ex);
+                }
             } else if (options != null && options.isCopyOMDataSources() && node instanceof AxiomSourcedElement) {
                 return ((AxiomNodeFactory) factory.getFactory2()).createSourcedElement();
             } else {

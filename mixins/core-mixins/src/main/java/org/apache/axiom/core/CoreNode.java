@@ -47,8 +47,6 @@ public interface CoreNode {
      */
     NodeType coreGetNodeType();
 
-    Class<? extends CoreNode> coreGetNodeClass();
-
     /**
      * Clone this node according to the provided policy.
      *

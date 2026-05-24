@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import javax.xml.namespace.QName;
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -35,11 +34,6 @@ public abstract class AxiomSOAP12FaultTextMixin implements AxiomSOAP12FaultText 
             SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
             SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
             SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
-
-    @Override
-    public final Class<? extends CoreNode> coreGetNodeClass() {
-        return AxiomSOAP12FaultText.class;
-    }
 
     @Override
     public final boolean isChildElementAllowed(OMElement child) {

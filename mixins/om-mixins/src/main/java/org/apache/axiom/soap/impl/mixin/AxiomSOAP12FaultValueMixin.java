@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.soap.impl.mixin;
 
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12FaultValue;
 import org.apache.axiom.weaver.annotation.Mixin;
@@ -28,10 +27,5 @@ public abstract class AxiomSOAP12FaultValueMixin implements AxiomSOAP12FaultValu
     @Override
     public final boolean isChildElementAllowed(OMElement child) {
         return false;
-    }
-
-    @Override
-    public final Class<? extends CoreNode> coreGetNodeClass() {
-        return AxiomSOAP12FaultValue.class;
     }
 }

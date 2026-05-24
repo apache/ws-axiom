@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.mixin;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.impl.intf.soap11.AxiomSOAP11FaultReason;
@@ -29,10 +28,6 @@ import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class AxiomSOAP11FaultReasonMixin implements AxiomSOAP11FaultReason {
-    @Override
-    public final Class<? extends CoreNode> coreGetNodeClass() {
-        return AxiomSOAP11FaultReason.class;
-    }
 
     @Override
     public final boolean isChildElementAllowed(OMElement child) {

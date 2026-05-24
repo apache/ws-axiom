@@ -33,11 +33,6 @@ public abstract class AxiomSOAPMessageMixin implements AxiomSOAPMessage {
     private SOAPFactory factory;
 
     @Override
-    public Class<? extends CoreNode> coreGetNodeClass() {
-        return AxiomSOAPMessage.class;
-    }
-
-    @Override
     public final void initSOAPFactory(SOAPFactory factory) {
         this.factory = factory;
     }
