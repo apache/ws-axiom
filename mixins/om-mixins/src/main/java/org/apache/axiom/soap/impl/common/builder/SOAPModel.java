@@ -29,9 +29,9 @@ import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.soap11.SOAP11Helper;
+import org.apache.axiom.soap.impl.common.soap12.SOAP12Helper;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
-import org.apache.axiom.soap.impl.intf.soap11.SOAP11Helper;
-import org.apache.axiom.soap.impl.intf.soap12.SOAP12Helper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

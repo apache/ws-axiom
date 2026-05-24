@@ -16,45 +16,45 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.intf.soap12;
+package org.apache.axiom.soap.impl.common.soap11;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
-import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
-import org.apache.axiom.soap.impl.intf.SOAPHelper;
+import org.apache.axiom.soap.impl.common.SOAPHelperImpl;
 
-public final class SOAP12Helper extends SOAPHelper {
-    public static final SOAP12Helper INSTANCE = new SOAP12Helper();
+public final class SOAP11Helper extends SOAPHelperImpl {
+    public static final SOAP11Helper INSTANCE = new SOAP11Helper();
 
-    private SOAP12Helper() {
+    private SOAP11Helper() {
         super(
-                SOAPVersion.SOAP12,
-                "SOAP 1.2",
-                AxiomNodeFactory::createSOAP12Envelope,
-                AxiomNodeFactory::createSOAP12Header,
-                AxiomNodeFactory::createSOAP12HeaderBlock,
-                AxiomNodeFactory::createSOAP12Body,
-                AxiomNodeFactory::createSOAP12Fault,
-                AxiomNodeFactory::createSOAP12FaultCode,
-                AxiomNodeFactory::createSOAP12FaultReason,
-                AxiomNodeFactory::createSOAP12FaultRole,
-                AxiomNodeFactory::createSOAP12FaultDetail,
-                SOAP12Constants.SOAP_ROLE,
-                SOAP12Constants.SOAP_RELAY);
+                SOAPVersion.SOAP11,
+                "SOAP 1.1",
+                AxiomNodeFactory::createSOAP11Envelope,
+                AxiomNodeFactory::createSOAP11Header,
+                AxiomNodeFactory::createSOAP11HeaderBlock,
+                AxiomNodeFactory::createSOAP11Body,
+                AxiomNodeFactory::createSOAP11Fault,
+                AxiomNodeFactory::createSOAP11FaultCode,
+                AxiomNodeFactory::createSOAP11FaultReason,
+                AxiomNodeFactory::createSOAP11FaultRole,
+                AxiomNodeFactory::createSOAP11FaultDetail,
+                SOAP11Constants.ATTR_ACTOR,
+                null);
     }
 
     @Override
     public SOAPFactory getSOAPFactory(OMMetaFactory metaFactory) {
-        return metaFactory.getSOAP12Factory();
+        return metaFactory.getSOAP11Factory();
     }
 
     @Override
     public Boolean parseBoolean(String literal) {
-        if (literal.equals("true") || literal.equals("1")) {
+        if (literal.equals("1")) {
             return Boolean.TRUE;
-        } else if (literal.equals("false") || literal.equals("0")) {
+        } else if (literal.equals("0")) {
             return Boolean.FALSE;
         } else {
             return null;
@@ -63,6 +63,6 @@ public final class SOAP12Helper extends SOAPHelper {
 
     @Override
     public String formatBoolean(boolean value) {
-        return String.valueOf(value);
+        return value ? "1" : "0";
     }
 }
