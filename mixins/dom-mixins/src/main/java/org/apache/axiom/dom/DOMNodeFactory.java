@@ -74,5 +74,6 @@ public interface DOMNodeFactory extends NodeFactory2, DOMImplementation {
     DOMComment createComment();
 
     @FactoryMethod
+    @Override
     DOMDocumentFragment createDocumentFragment();
 }

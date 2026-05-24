@@ -74,7 +74,7 @@ public final class AxiomSemantics implements Semantics {
             } else if (options != null && options.isCopyOMDataSources() && node instanceof AxiomSourcedElement) {
                 return ((AxiomNodeFactory) factory.getFactory2()).createSourcedElement();
             } else {
-                return factory.createNode(node.coreGetNodeType().getInterface());
+                return node.coreGetNodeType().newInstance(factory);
             }
         }
 
