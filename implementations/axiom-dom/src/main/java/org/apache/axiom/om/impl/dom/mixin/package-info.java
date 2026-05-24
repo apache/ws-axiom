@@ -19,6 +19,5 @@
 @org.apache.axiom.weaver.annotation.WeavablePackage(
         mixins = {
             DOOMNodeFactoryMixin.class,
-            DOOMNodeMixin.class,
         })
 package org.apache.axiom.om.impl.dom.mixin;

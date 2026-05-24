@@ -248,12 +248,7 @@
                 <groupId>de.obqo.decycle</groupId>
                 <artifactId>decycle-maven-plugin</artifactId>
                 <configuration>
-                    <!-- TODO: inject the reference to the singleton into mixins directly -->
                     <ignoring>
-                        <ignoredDependency>
-                            <from>org.apache.axiom.om.impl.dom.CoreNodeImpl</from>
-                            <to>org.apache.axiom.om.impl.dom.factory.DOOMNodeFactory</to>
-                        </ignoredDependency>
                         <ignoredDependency>
                             <from>org.apache.axiom.om.impl.dom.CoreNodeImpl</from>
                             <to>org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl</to>

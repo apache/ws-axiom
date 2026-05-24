@@ -20,6 +20,7 @@ package org.apache.axiom.core;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.weaver.annotation.Inject;
 
 public interface CoreNode {
     /**
@@ -38,6 +39,7 @@ public interface CoreNode {
 
     void coreSetOwnerDocument(CoreDocument document);
 
+    @Inject
     NodeFactory coreGetNodeFactory();
 
     /**
