@@ -107,7 +107,6 @@
                                 <weavablePackage>org.apache.axiom.core.impl.mixin</weavablePackage>
                                 <weavablePackage>org.apache.axiom.om.impl.mixin</weavablePackage>
                                 <weavablePackage>org.apache.axiom.soap.impl.mixin</weavablePackage>
-                                <weavablePackage>org.apache.axiom.om.impl.llom.mixin</weavablePackage>
                             </weavablePackages>
                             <interfaces>
                                 <interface>org.apache.axiom.om.impl.intf.AxiomAttribute</interface>
@@ -208,15 +207,10 @@
                 <groupId>de.obqo.decycle</groupId>
                 <artifactId>decycle-maven-plugin</artifactId>
                 <configuration>
-                    <!-- TODO: inject the reference to the singleton into mixins directly -->
                     <ignoring>
                         <ignoredDependency>
                             <from>org.apache.axiom.om.impl.llom.CoreNodeImpl</from>
                             <to>org.apache.axiom.om.impl.llom.factory.AxiomNodeFactoryImpl</to>
-                        </ignoredDependency>
-                        <ignoredDependency>
-                            <from>org.apache.axiom.om.impl.llom.CoreNodeImpl</from>
-                            <to>org.apache.axiom.om.impl.llom.factory.LLOMNodeFactory</to>
                         </ignoredDependency>
                     </ignoring>
                 </configuration>
