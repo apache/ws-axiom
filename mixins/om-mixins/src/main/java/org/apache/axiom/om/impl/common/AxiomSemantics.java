@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.intf.factory.AxiomNodeFactory;
 
 public final class AxiomSemantics implements Semantics {
     public static final AxiomSemantics INSTANCE = new AxiomSemantics();
@@ -63,15 +64,13 @@ public final class AxiomSemantics implements Semantics {
     public static final ClonePolicy<OMCloneOptions> CLONE_POLICY = new ClonePolicy<OMCloneOptions>() {
         @Override
         public CoreNode createTargetNode(OMCloneOptions options, CoreNode node, NodeFactory factory) {
-            Class<? extends CoreNode> nodeClass;
             if (options != null && options.isPreserveModel()) {
-                nodeClass = node.coreGetNodeClass();
+                return factory.createNode(node.coreGetNodeClass());
             } else if (options != null && options.isCopyOMDataSources() && node instanceof AxiomSourcedElement) {
-                nodeClass = AxiomSourcedElement.class;
+                return ((AxiomNodeFactory) factory.getFactory2()).createSourcedElement();
             } else {
-                nodeClass = node.coreGetNodeType().getInterface();
+                return factory.createNode(node.coreGetNodeType().getInterface());
             }
-            return factory.createNode(nodeClass);
         }
 
         @Override
