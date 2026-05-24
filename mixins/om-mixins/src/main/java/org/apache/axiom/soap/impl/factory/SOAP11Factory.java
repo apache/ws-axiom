@@ -27,8 +27,8 @@ import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
+import org.apache.axiom.soap.impl.common.soap11.SOAP11Helper;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
-import org.apache.axiom.soap.impl.intf.soap11.SOAP11Helper;
 
 public class SOAP11Factory extends SOAPFactoryImpl {
     public SOAP11Factory(AxiomNodeFactory nodeFactory) {

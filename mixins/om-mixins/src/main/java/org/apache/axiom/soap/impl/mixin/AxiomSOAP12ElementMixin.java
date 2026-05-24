@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.soap.impl.mixin;
 
+import org.apache.axiom.soap.impl.common.soap12.SOAP12Helper;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
 import org.apache.axiom.soap.impl.intf.soap12.AxiomSOAP12Element;
-import org.apache.axiom.soap.impl.intf.soap12.SOAP12Helper;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
