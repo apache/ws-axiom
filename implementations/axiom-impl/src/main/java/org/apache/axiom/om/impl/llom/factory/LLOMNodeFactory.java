@@ -18,12 +18,23 @@
  */
 package org.apache.axiom.om.impl.llom.factory;
 
-import org.apache.axiom.core.NodeFactoryImpl;
+import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.NodeFactoryException;
 
-public final class LLOMNodeFactory extends NodeFactoryImpl {
-    public static LLOMNodeFactory INSTANCE = new LLOMNodeFactory();
+public final class LLOMNodeFactory {
+    public static final NodeFactory INSTANCE;
 
-    private LLOMNodeFactory() {
-        super(LLOMNodeFactory.class.getClassLoader(), "org.apache.axiom.om.impl.llom.factory.AxiomNodeFactoryImpl");
+    static {
+        try {
+            INSTANCE = (NodeFactory) LLOMNodeFactory.class
+                    .getClassLoader()
+                    .loadClass("org.apache.axiom.om.impl.llom.factory.AxiomNodeFactoryImpl")
+                    .getDeclaredField("INSTANCE")
+                    .get(null);
+        } catch (ReflectiveOperationException ex) {
+            throw new NodeFactoryException("Failed to load NodeFactory implementation", ex);
+        }
     }
+
+    private LLOMNodeFactory() {}
 }

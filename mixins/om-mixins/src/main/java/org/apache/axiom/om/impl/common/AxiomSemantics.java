@@ -72,7 +72,7 @@ public final class AxiomSemantics implements Semantics {
                     throw new NodeFactoryException("Failed to clone node", ex);
                 }
             } else if (options != null && options.isCopyOMDataSources() && node instanceof AxiomSourcedElement) {
-                return ((AxiomNodeFactory) factory.getFactory2()).createSourcedElement();
+                return ((AxiomNodeFactory) factory).createSourcedElement();
             } else {
                 return node.coreGetNodeType().newInstance(factory);
             }

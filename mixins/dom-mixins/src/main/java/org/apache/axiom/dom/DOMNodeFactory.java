@@ -18,13 +18,13 @@
  */
 package org.apache.axiom.dom;
 
-import org.apache.axiom.core.NodeFactory2;
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.weaver.annotation.FactoryMethod;
 import org.apache.axiom.weaver.annotation.Singleton;
 import org.w3c.dom.DOMImplementation;
 
 @Singleton
-public interface DOMNodeFactory extends NodeFactory2, DOMImplementation {
+public interface DOMNodeFactory extends NodeFactory, DOMImplementation {
     @FactoryMethod
     @Override
     DOMDocument createDocument();

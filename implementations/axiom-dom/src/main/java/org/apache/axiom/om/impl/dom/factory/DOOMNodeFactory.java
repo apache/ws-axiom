@@ -18,12 +18,23 @@
  */
 package org.apache.axiom.om.impl.dom.factory;
 
-import org.apache.axiom.core.NodeFactoryImpl;
+import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.NodeFactoryException;
 
-public final class DOOMNodeFactory extends NodeFactoryImpl {
-    public static final DOOMNodeFactory INSTANCE = new DOOMNodeFactory();
+public final class DOOMNodeFactory {
+    public static final NodeFactory INSTANCE;
 
-    private DOOMNodeFactory() {
-        super(DOOMNodeFactory.class.getClassLoader(), "org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl");
+    static {
+        try {
+            INSTANCE = (NodeFactory) DOOMNodeFactory.class
+                    .getClassLoader()
+                    .loadClass("org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl")
+                    .getDeclaredField("INSTANCE")
+                    .get(null);
+        } catch (ReflectiveOperationException ex) {
+            throw new NodeFactoryException("Failed to load NodeFactory implementation", ex);
+        }
     }
+
+    private DOOMNodeFactory() {}
 }

@@ -18,12 +18,12 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
-import org.apache.axiom.core.NodeFactory2;
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.impl.common.builder.OMNamespaceCache;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
-public abstract class NodeFactoryMixin implements NodeFactory2 {
+public abstract class NodeFactoryMixin implements NodeFactory {
     @Override
     public final OMNamespaceCache createNamespaceHelper() {
         return new OMNamespaceCache();

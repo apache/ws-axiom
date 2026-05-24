@@ -109,8 +109,8 @@ final class CustomBuilderManager implements BuilderListener {
                             } else {
                                 type = AxiomNodeFactory::createSourcedElement;
                             }
-                            AxiomSourcedElement newElement = type.create((AxiomNodeFactory)
-                                    element.coreGetNodeFactory().getFactory2());
+                            AxiomSourcedElement newElement =
+                                    type.create((AxiomNodeFactory) element.coreGetNodeFactory());
                             if (log.isDebugEnabled()) {
                                 log.debug("Replacing element with new sourced element of type "
                                         + newElement.getClass().getName());

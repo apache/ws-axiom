@@ -74,7 +74,7 @@ public interface AttributeMatcher {
      * @throws CoreModelException
      */
     CoreAttribute createAttribute(
-            NodeFactory2 nodeFactory, String namespaceURI, String name, String prefix, String value)
+            NodeFactory nodeFactory, String namespaceURI, String name, String prefix, String value)
             throws CoreModelException;
 
     /**

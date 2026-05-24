@@ -23,43 +23,43 @@ import java.util.function.Function;
 
 public enum NodeType {
     /** The node is a {@link CoreDocument}. */
-    DOCUMENT(NodeFactory2::createDocument),
+    DOCUMENT(NodeFactory::createDocument),
 
     /** The node is a {@link CoreDocumentTypeDeclaration}. */
-    DOCUMENT_TYPE_DECLARATION(NodeFactory2::createDocumentTypeDeclaration),
+    DOCUMENT_TYPE_DECLARATION(NodeFactory::createDocumentTypeDeclaration),
 
     /** The node is a {@link CoreNSUnawareElement}. */
-    NS_UNAWARE_ELEMENT(NodeFactory2::createNSUnawareElement),
+    NS_UNAWARE_ELEMENT(NodeFactory::createNSUnawareElement),
 
     /** The node is a {@link CoreNSAwareElement}. */
-    NS_AWARE_ELEMENT(NodeFactory2::createNSAwareElement),
+    NS_AWARE_ELEMENT(NodeFactory::createNSAwareElement),
 
     /** The node is a {@link CoreNSUnawareAttribute}. */
-    NS_UNAWARE_ATTRIBUTE(NodeFactory2::createNSUnawareAttribute),
+    NS_UNAWARE_ATTRIBUTE(NodeFactory::createNSUnawareAttribute),
 
     /** The node is a {@link CoreNSAwareAttribute}. */
-    NS_AWARE_ATTRIBUTE(NodeFactory2::createNSAwareAttribute),
+    NS_AWARE_ATTRIBUTE(NodeFactory::createNSAwareAttribute),
 
     /** The node is a {@link CoreNamespaceDeclaration}. */
-    NAMESPACE_DECLARATION(NodeFactory2::createNamespaceDeclaration),
+    NAMESPACE_DECLARATION(NodeFactory::createNamespaceDeclaration),
 
     /** The node is a {@link CoreProcessingInstruction}. */
-    PROCESSING_INSTRUCTION(NodeFactory2::createProcessingInstruction),
+    PROCESSING_INSTRUCTION(NodeFactory::createProcessingInstruction),
 
     /** The node is a {@link CoreDocumentFragment}. */
-    DOCUMENT_FRAGMENT(NodeFactory2::createDocumentFragment),
+    DOCUMENT_FRAGMENT(NodeFactory::createDocumentFragment),
 
     /** The node is a {@link CoreCharacterDataNode}. */
-    CHARACTER_DATA(NodeFactory2::createCharacterDataNode),
+    CHARACTER_DATA(NodeFactory::createCharacterDataNode),
 
     /** The node is a {@link CoreComment}. */
-    COMMENT(NodeFactory2::createComment),
+    COMMENT(NodeFactory::createComment),
 
     /** The node is a {@link CoreCDATASection}. */
-    CDATA_SECTION(NodeFactory2::createCDATASection),
+    CDATA_SECTION(NodeFactory::createCDATASection),
 
     /** The node is a {@link CoreEntityReference}. */
-    ENTITY_REFERENCE(NodeFactory2::createEntityReference);
+    ENTITY_REFERENCE(NodeFactory::createEntityReference);
 
     static {
         // TODO: add missing node types here (once we have tests that exercise the code)
@@ -88,15 +88,15 @@ public enum NodeType {
         NS_UNAWARE_ELEMENT.allowedChildTypes = s;
     }
 
-    private final Function<NodeFactory2, CoreNode> factory2Function;
+    private final Function<NodeFactory, CoreNode> factory2Function;
     private EnumSet<NodeType> allowedChildTypes;
 
-    private NodeType(Function<NodeFactory2, CoreNode> factory2Function) {
+    private NodeType(Function<NodeFactory, CoreNode> factory2Function) {
         this.factory2Function = factory2Function;
     }
 
     public CoreNode newInstance(NodeFactory factory) {
-        return factory2Function.apply(factory.getFactory2());
+        return factory2Function.apply(factory);
     }
 
     public boolean isChildTypeAllowed(NodeType childType) {
