@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.om.impl.intf.factory;
 
-import org.apache.axiom.core.NodeFactory2;
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
@@ -58,7 +58,7 @@ import org.apache.axiom.weaver.annotation.FactoryMethod;
 import org.apache.axiom.weaver.annotation.Singleton;
 
 @Singleton
-public interface AxiomNodeFactory extends NodeFactory2, OMMetaFactorySPI {
+public interface AxiomNodeFactory extends NodeFactory, OMMetaFactorySPI {
     @FactoryMethod
     @Override
     AxiomDocument createDocument();

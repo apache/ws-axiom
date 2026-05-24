@@ -89,8 +89,7 @@ public abstract class CoreElementMixin implements CoreElement {
             attr = attr.coreGetNextAttribute();
         }
         if (attr == null) {
-            CoreAttribute newAttr =
-                    matcher.createAttribute(coreGetNodeFactory().getFactory2(), namespaceURI, name, prefix, value);
+            CoreAttribute newAttr = matcher.createAttribute(coreGetNodeFactory(), namespaceURI, name, prefix, value);
             if (previousAttr == null) {
                 coreAppendAttribute(newAttr);
             } else {

@@ -26,12 +26,12 @@ import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.DeferredParsingException;
-import org.apache.axiom.core.NodeFactory2;
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 
 final class BuilderHandler implements XmlHandler {
-    final NodeFactory2 nodeFactory;
+    final NodeFactory nodeFactory;
     final Model model;
     final Builder builder;
     final Object namespaceHelper;
@@ -52,7 +52,7 @@ final class BuilderHandler implements XmlHandler {
     private ArrayList<BuilderListener> listeners;
     private Queue<DeferredAction> deferredActions;
 
-    BuilderHandler(NodeFactory2 nodeFactory, Model model, CoreNSAwareElement root, Builder builder) {
+    BuilderHandler(NodeFactory nodeFactory, Model model, CoreNSAwareElement root, Builder builder) {
         this.nodeFactory = nodeFactory;
         this.model = model;
         this.builder = builder;

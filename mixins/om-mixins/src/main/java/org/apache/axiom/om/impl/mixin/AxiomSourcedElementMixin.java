@@ -213,7 +213,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
                 // XML with respect to namespaces.
                 builder = new BuilderImpl(
                         new PushOMDataSourceInput(this, dataSource),
-                        coreGetNodeFactory().getFactory2(),
+                        coreGetNodeFactory(),
                         PlainXMLModel.INSTANCE,
                         this);
             } else {
@@ -229,7 +229,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
                         new FilteredXmlInput(
                                 new StAXPullInput(readerFromDS, AxiomXMLStreamReaderHelperFactory.INSTANCE),
                                 NamespaceRepairingFilter.DEFAULT),
-                        coreGetNodeFactory().getFactory2(),
+                        coreGetNodeFactory(),
                         PlainXMLModel.INSTANCE,
                         this);
             }

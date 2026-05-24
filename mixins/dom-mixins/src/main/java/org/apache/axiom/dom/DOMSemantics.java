@@ -28,7 +28,7 @@ import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
-import org.apache.axiom.core.NodeFactory2;
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.Semantics;
 
@@ -93,7 +93,7 @@ public final class DOMSemantics implements Semantics {
 
         @Override
         public CoreAttribute createAttribute(
-                NodeFactory2 nodeFactory, String namespaceURI, String name, String prefix, String value)
+                NodeFactory nodeFactory, String namespaceURI, String name, String prefix, String value)
                 throws CoreModelException {
             CoreNSUnawareAttribute attr = nodeFactory.createNSUnawareAttribute();
             attr.coreSetName(name);

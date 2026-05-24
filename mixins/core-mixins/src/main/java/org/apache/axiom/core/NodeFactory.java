@@ -18,6 +18,55 @@
  */
 package org.apache.axiom.core;
 
+import org.apache.axiom.weaver.annotation.FactoryMethod;
+import org.apache.axiom.weaver.annotation.Singleton;
+
+@Singleton
 public interface NodeFactory {
-    NodeFactory2 getFactory2();
+    @FactoryMethod
+    CoreDocument createDocument();
+
+    @FactoryMethod
+    CoreDocumentTypeDeclaration createDocumentTypeDeclaration();
+
+    @FactoryMethod
+    CoreNSAwareElement createNSAwareElement();
+
+    @FactoryMethod
+    CoreNSUnawareElement createNSUnawareElement();
+
+    @FactoryMethod
+    CoreNSAwareAttribute createNSAwareAttribute();
+
+    @FactoryMethod
+    CoreNSUnawareAttribute createNSUnawareAttribute();
+
+    @FactoryMethod
+    CoreNamespaceDeclaration createNamespaceDeclaration();
+
+    @FactoryMethod
+    CoreCharacterDataNode createCharacterDataNode();
+
+    @FactoryMethod
+    CoreProcessingInstruction createProcessingInstruction();
+
+    @FactoryMethod
+    CoreComment createComment();
+
+    @FactoryMethod
+    CoreCDATASection createCDATASection();
+
+    @FactoryMethod
+    CoreEntityReference createEntityReference();
+
+    @FactoryMethod
+    CoreDocumentFragment createDocumentFragment();
+
+    /**
+     * Create the namespace helper object that will be passed to {@link
+     * CoreNSAwareNamedNode#initName(String, String, String, Object)}.
+     *
+     * @return the namespace helper
+     */
+    Object createNamespaceHelper();
 }
