@@ -82,6 +82,41 @@ public interface XmlHandler {
 
     void attributesCompleted() throws StreamException;
 
+    /**
+     * Notify the handler of character data. This method is used in several contexts:
+     *
+     * <ul>
+     *   <li>As element text content, after {@link #attributesCompleted()} and before {@link
+     *       #endElement()}.
+     *   <li>As CDATA section content, between {@link #startCDATASection()} and {@link
+     *       #endCDATASection()}.
+     *   <li>As comment body, between {@link #startComment()} and {@link #endComment()}.
+     *   <li>As processing instruction data, between {@link #startProcessingInstruction(String)} and
+     *       {@link #endProcessingInstruction()}.
+     * </ul>
+     *
+     * Multiple consecutive calls in the same context are allowed; callers may split character data
+     * across several invocations.
+     *
+     * <p>The {@code data} argument is either a {@link String} or a {@link CharacterData} instance.
+     * Implementations must at minimum handle any value by calling {@code data.toString()} to obtain
+     * the string representation. Implementations may additionally test for {@link CharacterData} to
+     * take advantage of its more efficient {@link CharacterData#writeTo(CharacterDataSink)} and
+     * {@link CharacterData#appendTo(StringBuilder)} methods. The value is never {@code null}.
+     *
+     * <p>The {@code ignorable} flag corresponds to the SAX distinction between {@link
+     * org.xml.sax.ContentHandler#characters(char[], int, int)} and {@link
+     * org.xml.sax.ContentHandler#ignorableWhitespace(char[], int, int)}: it is {@code true} when
+     * the character data is whitespace that is ignorable according to the DTD or schema, and {@code
+     * false} otherwise. It is only meaningful for element text content; for CDATA sections,
+     * comments, and processing instruction data it is always {@code false}.
+     *
+     * @param data the character data; either a {@link String} or a {@link CharacterData} instance;
+     *     never {@code null}
+     * @param ignorable {@code true} if the character data is ignorable whitespace, {@code false}
+     *     otherwise
+     * @throws StreamException if an error occurs when processing the event
+     */
     void processCharacterData(Object data, boolean ignorable) throws StreamException;
 
     /**
