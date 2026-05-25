@@ -18,14 +18,17 @@
  */
 package org.apache.axiom.om.impl.dom.factory;
 
-import junit.framework.TestCase;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.dom.DOMMetaFactory;
+import org.junit.jupiter.api.Test;
 
-public class DOMFeatureTest extends TestCase {
+public class DOMFeatureTest {
+    @Test
     public void test() {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
-        assertTrue(metaFactory instanceof DOMMetaFactory);
+        assertThat(metaFactory).isInstanceOf(DOMMetaFactory.class);
     }
 }
