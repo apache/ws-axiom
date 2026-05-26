@@ -29,6 +29,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
@@ -355,7 +356,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         switch (state) {
             case STATE_DEFAULT -> {
                 eventType = ignorable ? SPACE : CHARACTERS;
-                characterData = data;
+                characterData = data instanceof CharacterData cd ? cd.retain() : data;
                 state = STATE_EVENT_COMPLETE;
                 return;
             }

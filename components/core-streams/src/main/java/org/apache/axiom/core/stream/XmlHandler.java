@@ -104,6 +104,10 @@ public interface XmlHandler {
      * take advantage of its more efficient {@link CharacterData#writeTo(CharacterDataSink)} and
      * {@link CharacterData#appendTo(StringBuilder)} methods. The value is never {@code null}.
      *
+     * <p>When {@code data} is a {@link CharacterData} instance, the instance is only valid for the
+     * duration of this invocation. Implementations that need to store the value beyond the call
+     * must first invoke {@link CharacterData#retain()} to obtain a permanently valid form.
+     *
      * <p>The {@code ignorable} flag corresponds to the SAX distinction between {@link
      * org.xml.sax.ContentHandler#characters(char[], int, int)} and {@link
      * org.xml.sax.ContentHandler#ignorableWhitespace(char[], int, int)}: it is {@code true} when

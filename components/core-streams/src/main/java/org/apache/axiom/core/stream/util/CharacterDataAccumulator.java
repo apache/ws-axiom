@@ -25,7 +25,7 @@ public class CharacterDataAccumulator {
 
     public void append(Object data) {
         if (content == null) {
-            content = data;
+            content = data instanceof CharacterData cd ? cd.retain() : data;
         } else {
             StringBuilder buffer;
             if (content instanceof StringBuilder stringBuilder) {
