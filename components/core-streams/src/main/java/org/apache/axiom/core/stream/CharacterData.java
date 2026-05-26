@@ -33,4 +33,21 @@ public interface CharacterData {
     void writeTo(CharacterDataSink sink) throws IOException;
 
     void appendTo(StringBuilder buffer);
+
+    /**
+     * Returns a {@link String} or a {@link CharacterData} instance that remains valid beyond the
+     * current {@link XmlHandler#processCharacterData} invocation. If this instance is already valid
+     * beyond that scope, implementations may return {@code this}.
+     *
+     * <p>The return type is {@link Object} because the value is either a {@link String} or a
+     * {@link CharacterData}, consistent with the {@code data} parameter of {@link
+     * XmlHandler#processCharacterData}.
+     *
+     * <p>Callers must invoke this method before storing a {@link CharacterData} value beyond the
+     * duration of a {@link XmlHandler#processCharacterData} invocation.
+     *
+     * @return a {@link String} or {@link CharacterData} representation of this instance that
+     *     remains valid beyond the current invocation
+     */
+    Object retain();
 }

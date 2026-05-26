@@ -198,4 +198,9 @@ public final class TextContent implements CloneableCharacterData {
             buffer.append(value);
         }
     }
+
+    @Override
+    public Object retain() {
+        return this;
+    }
 }

@@ -36,6 +36,7 @@ import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.core.InputContext;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.NullXmlHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
@@ -263,10 +264,10 @@ final class BuildableContext extends Context implements InputContext {
         if (passThroughHandler != null) {
             passThroughHandler.processCharacterData(data, ignorable);
         } else if (!ignorable && pendingCharacterData == null && target.coreGetFirstChildIfAvailable() == null) {
-            pendingCharacterData = data;
+            pendingCharacterData = data instanceof CharacterData cd ? cd.retain() : data;
         } else {
             CoreCharacterDataNode node = builderHandler.nodeFactory.createCharacterDataNode();
-            node.coreSetCharacterData(data);
+            node.coreSetCharacterData(data instanceof CharacterData cd ? cd.retain() : data);
             node.coreSetIgnorable(ignorable);
             addChild(node);
         }
