@@ -21,6 +21,7 @@ package org.apache.axiom.core.stream.sax.input;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.axiom.core.stream.CharArrayCharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
@@ -70,6 +71,8 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     private boolean inEntityReference;
     private int entityReferenceDepth;
 
+    private final CharArrayCharacterData charData = new CharArrayCharacterData();
+
     public XmlHandlerContentHandler(XmlHandler handler, boolean expandEntityReferences) {
         this.handler = handler;
         this.expandEntityReferences = expandEntityReferences;
@@ -103,6 +106,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         } catch (StreamException ex) {
             throw toSAXException(ex);
         }
+        charData.invalidate();
     }
 
     @Override
@@ -312,7 +316,8 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     public void characters(char[] ch, int start, int length) throws SAXException {
         if (!inEntityReference) {
             try {
-                handler.processCharacterData(new String(ch, start, length), false);
+                charData.set(ch, start, length);
+                handler.processCharacterData(charData, false);
             } catch (StreamException ex) {
                 throw toSAXException(ex);
             }
@@ -323,7 +328,8 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
         if (!inEntityReference) {
             try {
-                handler.processCharacterData(new String(ch, start, length), true);
+                charData.set(ch, start, length);
+                handler.processCharacterData(charData, true);
             } catch (StreamException ex) {
                 throw toSAXException(ex);
             }
@@ -348,7 +354,8 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         if (!inEntityReference) {
             try {
                 handler.startComment();
-                handler.processCharacterData(new String(ch, start, length), false);
+                charData.set(ch, start, length);
+                handler.processCharacterData(charData, false);
                 handler.endComment();
             } catch (StreamException ex) {
                 throw toSAXException(ex);
