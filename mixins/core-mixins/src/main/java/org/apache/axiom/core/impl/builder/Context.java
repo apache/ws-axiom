@@ -20,6 +20,7 @@ package org.apache.axiom.core.impl.builder;
 
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 
 abstract class Context {
     protected final BuilderHandler builderHandler;
@@ -62,7 +63,7 @@ abstract class Context {
 
     abstract void attributesCompleted() throws StreamException;
 
-    abstract void processCharacterData(Object data, boolean ignorable) throws StreamException;
+    abstract void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException;
 
     abstract Context startProcessingInstruction(String piTarget) throws StreamException;
 

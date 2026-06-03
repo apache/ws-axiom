@@ -18,11 +18,14 @@
  */
 package org.apache.axiom.core;
 
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+
 public interface CoreCharacterDataNode extends CoreLeafNode, CoreCharacterDataContainer {
     @Override
+    @StringOrCharacterData
     Object coreGetCharacterData();
 
-    void coreSetCharacterData(Object data);
+    void coreSetCharacterData(@StringOrCharacterData Object data);
 
     /**
      * Check whether this text node contains element content whitespace (also called "ignorable

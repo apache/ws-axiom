@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.core.stream;
 
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+
 public interface XmlHandler {
     void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone)
             throws StreamException;
@@ -121,7 +123,7 @@ public interface XmlHandler {
      *     otherwise
      * @throws StreamException if an error occurs when processing the event
      */
-    void processCharacterData(Object data, boolean ignorable) throws StreamException;
+    void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException;
 
     /**
      * Notify the handler of the beginning of a processing instruction.

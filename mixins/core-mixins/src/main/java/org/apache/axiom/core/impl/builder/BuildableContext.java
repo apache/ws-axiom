@@ -40,13 +40,14 @@ import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.NullXmlHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 
 final class BuildableContext extends Context implements InputContext {
     private final Context parentContext;
 
     private CoreParentNode target;
 
-    private Object pendingCharacterData;
+    private @StringOrCharacterData Object pendingCharacterData;
 
     /**
      * The {@link XmlHandler} object to send events to if pass-through is enabled. See {@link
@@ -260,7 +261,7 @@ final class BuildableContext extends Context implements InputContext {
     }
 
     @Override
-    void processCharacterData(Object data, boolean ignorable) throws StreamException {
+    void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.processCharacterData(data, ignorable);
         } else if (!ignorable && pendingCharacterData == null && target.coreGetFirstChildIfAvailable() == null) {

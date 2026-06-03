@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.core;
 
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+
 public interface CoreCharacterDataSourceNode extends CoreNode {
+    @StringOrCharacterData
     Object coreGetCharacterData() throws CoreModelException;
 }

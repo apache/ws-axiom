@@ -52,6 +52,7 @@ import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
@@ -123,7 +124,10 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             Content content = new Content();
             CoreCharacterDataNode cdata = coreGetNodeFactory().createCharacterDataNode();
             cdata.internalSetParent(this);
-            cdata.coreSetCharacterData(this.content);
+            @SuppressWarnings("stringorcharacterdata")
+            @StringOrCharacterData
+            Object characterData = this.content;
+            cdata.coreSetCharacterData(characterData);
             content.firstChild = cdata;
             content.lastChild = cdata;
             this.content = content;
@@ -342,11 +346,15 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     }
 
     @Override
-    public final Object internalGetCharacterData(ElementAction elementAction) throws CoreModelException {
+    public final @StringOrCharacterData Object internalGetCharacterData(ElementAction elementAction)
+            throws CoreModelException {
         if (getState() == COMPACT) {
-            return content;
+            @SuppressWarnings("stringorcharacterdata")
+            @StringOrCharacterData
+            Object result = content;
+            return result;
         } else {
-            Object textContent = null;
+            @StringOrCharacterData Object textContent = null;
             StringBuilder buffer = null;
             int depth = 0;
             CoreChildNode child = coreGetFirstChild();
@@ -371,6 +379,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                     }
                 } else {
                     if (child instanceof CoreCharacterDataNode || child instanceof CoreCDATASection) {
+                        @StringOrCharacterData
                         Object textValue = ((CoreCharacterDataContainer) child).coreGetCharacterData();
                         if (textValue instanceof CharacterData || ((String) textValue).length() != 0) {
                             if (textContent == null) {
@@ -411,7 +420,8 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     }
 
     @Override
-    public final void coreSetCharacterData(Object data, Semantics semantics) throws CoreModelException {
+    public final void coreSetCharacterData(@StringOrCharacterData Object data, Semantics semantics)
+            throws CoreModelException {
         coreRemoveChildren(semantics);
         if (data != null && (data instanceof CharacterData || ((String) data).length() > 0)) {
             coreSetState(COMPACT);
@@ -443,6 +453,8 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         CoreParentNode targetParent = (CoreParentNode) clone;
         if (policy.cloneChildren(options, coreGetNodeType()) && targetParent.isExpanded()) {
             if (getState() == COMPACT) {
+                @SuppressWarnings("stringorcharacterdata")
+                @StringOrCharacterData
                 Object content = this.content;
                 if (content instanceof CloneableCharacterData) {
                     content = ((CloneableCharacterData) content).clone(policy, options);

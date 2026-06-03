@@ -257,8 +257,12 @@ public final class TreeWalkerImpl implements XmlReader {
                         reader = null;
                     }
                 }
-                case STATE_CONTENT_VISITED ->
-                    handler.processCharacterData(((CoreParentNode) nextNode).internalGetContent(), false);
+                case STATE_CONTENT_VISITED -> {
+                    @SuppressWarnings("stringorcharacterdata")
+                    @org.apache.axiom.core.stream.annotations.StringOrCharacterData
+                    Object data = ((CoreParentNode) nextNode).internalGetContent();
+                    handler.processCharacterData(data, false);
+                }
                 default -> throw new IllegalStateException();
             }
             node = nextNode;

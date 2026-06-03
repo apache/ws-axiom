@@ -16,10 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.stream.annotations;
 
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.checkerframework.framework.qual.DefaultQualifierInHierarchy;
+import org.checkerframework.framework.qual.SubtypeOf;
 
-public interface CoreCharacterDataSinkNode {
-    void coreSetCharacterData(@StringOrCharacterData Object data, Semantics semantics) throws CoreModelException;
-}
+/**
+ * The top type in the StringOrCharacterData type hierarchy. This is the default qualifier for
+ * unannotated types and represents an unknown character data type.
+ */
+@Retention(RetentionPolicy.CLASS)
+@Target({ElementType.TYPE_USE})
+@SubtypeOf({})
+@DefaultQualifierInHierarchy
+public @interface UnknownCharacterDataType {}
