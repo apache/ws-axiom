@@ -28,12 +28,13 @@ import org.apache.axiom.core.impl.Flags;
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class CoreCharacterDataNodeMixin implements CoreCharacterDataNode {
     /** Either a {@link String} or a {@link CharacterData} object. */
-    private Object data;
+    private @StringOrCharacterData Object data;
 
     @Override
     public final NodeType coreGetNodeType() {
@@ -51,24 +52,24 @@ public abstract class CoreCharacterDataNodeMixin implements CoreCharacterDataNod
     }
 
     @Override
-    public final Object coreGetCharacterData() {
+    public final @StringOrCharacterData Object coreGetCharacterData() {
         return data == null ? "" : data;
     }
 
     @Override
-    public final void coreSetCharacterData(Object data) {
+    public final void coreSetCharacterData(@StringOrCharacterData Object data) {
         this.data = data;
     }
 
     @Override
-    public final void coreSetCharacterData(Object data, Semantics semantics) {
+    public final void coreSetCharacterData(@StringOrCharacterData Object data, Semantics semantics) {
         this.data = data;
     }
 
     @Override
     public final <T> void init(ClonePolicy<T> policy, T options, CoreNode other) {
         CoreCharacterDataNode o = (CoreCharacterDataNode) other;
-        Object otherData = o.coreGetCharacterData();
+        @StringOrCharacterData Object otherData = o.coreGetCharacterData();
         data = otherData instanceof CloneableCharacterData cloneableCharacterData
                 ? cloneableCharacterData.clone(policy, options)
                 : otherData;

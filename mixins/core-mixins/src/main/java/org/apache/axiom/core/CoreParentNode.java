@@ -21,6 +21,7 @@ package org.apache.axiom.core;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 
 /** Interface for parent nodes. */
 public interface CoreParentNode extends CoreNode {
@@ -101,7 +102,7 @@ public interface CoreParentNode extends CoreNode {
             Mapper<S, ? super T> mapper,
             Semantics semantics);
 
-    void coreSetCharacterData(Object data, Semantics semantics) throws CoreModelException;
+    void coreSetCharacterData(@StringOrCharacterData Object data, Semantics semantics) throws CoreModelException;
 
     void coreRemoveChildren(Semantics semantics) throws CoreModelException;
 
@@ -117,5 +118,6 @@ public interface CoreParentNode extends CoreNode {
 
     Content internalGetContent(boolean create);
 
+    @StringOrCharacterData
     Object internalGetCharacterData(ElementAction elementAction) throws CoreModelException;
 }

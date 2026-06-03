@@ -16,10 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.checker;
 
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import com.google.auto.service.AutoService;
+import javax.annotation.processing.Processor;
+import org.checkerframework.common.basetype.BaseTypeChecker;
 
-public interface CoreCharacterDataSinkNode {
-    void coreSetCharacterData(@StringOrCharacterData Object data, Semantics semantics) throws CoreModelException;
-}
+/**
+ * A Checker Framework checker that enforces that {@code @StringOrCharacterData Object} can only be
+ * assigned from {@link String}, {@link org.apache.axiom.core.stream.CharacterData}, or another
+ * {@code @StringOrCharacterData Object}.
+ */
+@AutoService(Processor.class)
+public class StringOrCharacterDataChecker extends BaseTypeChecker {}

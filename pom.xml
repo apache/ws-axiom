@@ -296,6 +296,7 @@
         <mime4j.version>0.8.14</mime4j.version>
         <surefire.version>3.5.5</surefire.version>
         <jaxws-rt.version>4.0.4</jaxws-rt.version>
+        <checkerframework.version>3.48.4</checkerframework.version>
 
         <skipDeploy>false</skipDeploy>
 
@@ -556,6 +557,16 @@
                 <groupId>com.google.inject</groupId>
                 <artifactId>guice</artifactId>
                 <version>7.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.checkerframework</groupId>
+                <artifactId>checker-qual</artifactId>
+                <version>${checkerframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.checkerframework</groupId>
+                <artifactId>checker</artifactId>
+                <version>${checkerframework.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -1412,6 +1423,25 @@ $${type_declaration}</template></templates>]]></value>
                                 <!-- Temporary file created by maven-shade-plugin -->
                                 <exclude>dependency-reduced-pom.xml</exclude>
                             </inputExcludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>checkerframework</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <annotationProcessorPaths combine.children="append">
+                                <annotationProcessorPath>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>stringorcharacterdata-checker</artifactId>
+                                    <version>${project.version}</version>
+                                </annotationProcessorPath>
+                            </annotationProcessorPaths>
                         </configuration>
                     </plugin>
                 </plugins>

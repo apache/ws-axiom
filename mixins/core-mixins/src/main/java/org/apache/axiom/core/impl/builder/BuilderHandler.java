@@ -29,6 +29,7 @@ import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 
 final class BuilderHandler implements XmlHandler {
     final NodeFactory nodeFactory;
@@ -176,7 +177,7 @@ final class BuilderHandler implements XmlHandler {
     }
 
     @Override
-    public void processCharacterData(Object data, boolean ignorable) throws StreamException {
+    public void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException {
         context.processCharacterData(data, ignorable);
     }
 
