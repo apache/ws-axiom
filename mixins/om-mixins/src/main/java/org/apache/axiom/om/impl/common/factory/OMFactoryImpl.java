@@ -24,6 +24,7 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -99,7 +100,7 @@ public class OMFactoryImpl implements OMFactory {
         return node;
     }
 
-    private AxiomText createAxiomText(OMContainer parent, Object content, int type) {
+    private AxiomText createAxiomText(OMContainer parent, @StringOrCharacterData Object content, int type) {
         AxiomText node;
         switch (type) {
             case OMNode.TEXT_NODE -> {
