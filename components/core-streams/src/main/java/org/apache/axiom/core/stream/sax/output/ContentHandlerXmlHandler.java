@@ -204,6 +204,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     }
 
     @Override
+    @SuppressWarnings("instanceof.pattern.unsafe")
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         try {
             switch (characterDataMode) {

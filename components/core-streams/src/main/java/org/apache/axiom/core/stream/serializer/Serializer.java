@@ -479,6 +479,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
     }
 
     @Override
+    @SuppressWarnings("instanceof.pattern.unsafe")
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         closeStartTag();
         if (data instanceof CharacterData characterData) {

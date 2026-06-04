@@ -20,6 +20,7 @@ package org.apache.axiom.core.stream;
 
 import java.io.IOException;
 import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import org.apache.axiom.core.stream.annotations.UnknownCharacterDataType;
 
 // TODO: clean up this Javadoc
 /**
@@ -29,7 +30,7 @@ import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
  */
 public interface CharacterData {
     @Override
-    String toString();
+    String toString(@UnknownCharacterDataType CharacterData this);
 
     void writeTo(CharacterDataSink sink) throws IOException;
 

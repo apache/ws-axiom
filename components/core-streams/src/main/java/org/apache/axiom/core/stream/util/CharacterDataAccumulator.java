@@ -23,6 +23,7 @@ import org.apache.axiom.core.stream.CharacterData;
 public class CharacterDataAccumulator {
     private Object content;
 
+    @SuppressWarnings("instanceof.pattern.unsafe")
     public void append(Object data) {
         if (content == null) {
             content = data instanceof CharacterData cd ? cd.retain() : data;

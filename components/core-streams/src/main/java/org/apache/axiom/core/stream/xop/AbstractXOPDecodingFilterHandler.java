@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 
 public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper {
     private static final String SOLE_CHILD_MSG =
@@ -44,7 +45,7 @@ public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper
         super(parent);
     }
 
-    protected abstract Object buildCharacterData(String contentID) throws StreamException;
+    protected abstract @StringOrCharacterData Object buildCharacterData(String contentID) throws StreamException;
 
     private void inContent() throws StreamException {
         switch (state) {
@@ -128,7 +129,7 @@ public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper
     }
 
     @Override
-    public void processCharacterData(Object data, boolean ignorable) throws StreamException {
+    public void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException {
         inContent();
         super.processCharacterData(data, ignorable);
     }
