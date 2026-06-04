@@ -19,12 +19,15 @@
 package org.apache.axiom.core.stream;
 
 import java.io.IOException;
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import org.apache.axiom.core.stream.annotations.UnknownCharacterDataType;
 
 /**
  * A reusable {@link CharacterData} implementation backed by a {@code char[]} slice. Instances are
  * only valid for the duration of the {@link XmlHandler#processCharacterData} invocation in which
  * they are passed.
  */
+@SuppressWarnings({"super.invocation", "inconsistent.constructor.type"})
 public final class CharArrayCharacterData implements CharacterData {
     private char[] ch;
     private int start;
@@ -50,7 +53,7 @@ public final class CharArrayCharacterData implements CharacterData {
     }
 
     @Override
-    public String toString() {
+    public String toString(@UnknownCharacterDataType CharArrayCharacterData this) {
         return new String(ch, start, length);
     }
 
@@ -65,7 +68,7 @@ public final class CharArrayCharacterData implements CharacterData {
     }
 
     @Override
-    public Object retain() {
+    public @StringOrCharacterData Object retain() {
         return new String(ch, start, length);
     }
 }

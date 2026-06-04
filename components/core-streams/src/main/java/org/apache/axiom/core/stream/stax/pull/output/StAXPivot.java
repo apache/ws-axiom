@@ -352,6 +352,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     @Override
+    @SuppressWarnings("instanceof.pattern.unsafe")
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         switch (state) {
             case STATE_DEFAULT -> {
