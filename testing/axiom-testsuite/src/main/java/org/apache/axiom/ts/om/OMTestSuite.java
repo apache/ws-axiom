@@ -36,6 +36,7 @@ import org.apache.axiom.testutils.suite.FanOutNode;
 import org.apache.axiom.testutils.suite.InjectorNode;
 import org.apache.axiom.testutils.suite.LabelBinding;
 import org.apache.axiom.testutils.suite.MatrixTest;
+import org.apache.axiom.testutils.suite.MatrixTestContainer;
 import org.apache.axiom.testutils.suite.MatrixTestNode;
 import org.apache.axiom.testutils.suite.ParentNode;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
@@ -730,33 +731,13 @@ public class OMTestSuite {
 
     private static MatrixTestNode factoryTests() {
         return new ParentNode(
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMAttributeGeneratedPrefix.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMAttributeInterfaces.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMAttributeNullPrefixNoNamespace.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace1.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace2.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMCommentWithoutParent.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMDocTypeWithoutParent.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMDocument.class),
+                new MatrixTestContainer(org.apache.axiom.ts.om.factory.OMFactoryTests.class),
                 createOMElementTests(),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource1.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource2.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullURIAndPrefix.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMEntityReference.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMEntityReferenceWithNullParent.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMNamespace.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMNamespaceWithNullURI.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMProcessingInstructionWithoutParent.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMText.class),
                 new FanOutNode<>(
                         ImmutableList.of(false, true),
                         Binding.singleton(Key.get(Boolean.class, Names.named("nullContentId"))),
                         LabelBinding.simpleBoolean("nullContentId"),
-                        new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMTextFromBlobProvider.class)),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMTextFromOMText.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMTextWithNullParent.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestFactoryIsSingleton.class),
-                new MatrixTest(org.apache.axiom.ts.om.factory.TestGetMetaFactory.class));
+                        new MatrixTest(org.apache.axiom.ts.om.factory.TestCreateOMTextFromBlobProvider.class)));
     }
 
     private static MatrixTestNode createOMElementTests() {

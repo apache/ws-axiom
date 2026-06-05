@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace1;
+import org.apache.axiom.ts.om.factory.OMFactoryTests;
 import org.junit.jupiter.api.function.Executable;
 
 /**
@@ -34,7 +34,7 @@ import org.junit.jupiter.api.function.Executable;
  * specified namespace is invalid, i.e. if the {@link OMNamespace} object specifies a prefix for an
  * empty namespace.
  *
- * @see TestCreateOMAttributeWithInvalidNamespace1
+ * @see OMFactoryTests#createOMAttributeWithInvalidNamespace1()
  */
 public class TestAddAttributeWithInvalidNamespace1 implements Executable {
     @Inject
