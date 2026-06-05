@@ -243,7 +243,7 @@ public class OMFactoryTests {
      */
     @Test
     public void factoryIsSingleton() throws Throwable {
-        assertThat(factory).isSameAs(factory);
+        assertThat(metaFactory.getOMFactory()).isSameAs(metaFactory.getOMFactory());
     }
 
     /**
