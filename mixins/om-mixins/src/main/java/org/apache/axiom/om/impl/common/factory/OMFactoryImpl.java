@@ -164,7 +164,7 @@ public class OMFactoryImpl implements OMFactory {
 
     @Override
     public final OMText createOMText(OMContainer parent, QName text) {
-        return createAxiomText(parent, text, OMNode.TEXT_NODE);
+        return createOMText(parent, text, OMNode.TEXT_NODE);
     }
 
     @Override
