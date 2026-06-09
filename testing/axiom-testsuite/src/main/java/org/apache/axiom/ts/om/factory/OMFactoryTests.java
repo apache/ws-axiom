@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.tuple;
 
 import com.google.inject.Inject;
 import javax.xml.namespace.QName;
@@ -234,6 +235,17 @@ public class OMFactoryTests {
     public void createOMTextWithNullParent() throws Throwable {
         OMText text = factory.createOMText(null, "text");
         assertThat(text.getParent()).isNull();
+    }
+
+    @Test
+    public void createOMTextFromQName() {
+        OMElement element = factory.createOMElement("test", null);
+        OMText text = factory.createOMText(element, new QName("urn:test", "foobar", "p"));
+        assertThat(text.getText()).isEqualTo("p:foobar");
+        assertThat(element.getAllDeclaredNamespaces())
+                .toIterable()
+                .extracting(OMNamespace::getPrefix, OMNamespace::getNamespaceURI)
+                .containsExactly(tuple("p", "urn:test"));
     }
 
     /**
