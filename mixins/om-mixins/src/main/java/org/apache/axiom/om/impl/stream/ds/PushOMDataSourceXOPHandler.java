@@ -23,6 +23,7 @@ import java.util.Map;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 import org.apache.axiom.core.stream.xop.AbstractXOPDecodingFilterHandler;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.stream.xop.XOPHandler;
@@ -43,7 +44,7 @@ final class PushOMDataSourceXOPHandler extends AbstractXOPDecodingFilterHandler 
     }
 
     @Override
-    protected Object buildCharacterData(String contentID) throws StreamException {
+    protected @StringOrCharacterData Object buildCharacterData(String contentID) throws StreamException {
         Blob blob = blobs.get(contentID);
         if (blob == null) {
             throw new StreamException("No Blob found for content ID " + contentID);
