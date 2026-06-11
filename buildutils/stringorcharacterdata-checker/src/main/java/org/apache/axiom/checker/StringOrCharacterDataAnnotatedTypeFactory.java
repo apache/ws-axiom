@@ -19,6 +19,7 @@
 package org.apache.axiom.checker;
 
 import com.sun.source.tree.BinaryTree;
+import com.sun.source.tree.TypeCastTree;
 import java.lang.annotation.Annotation;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -70,10 +71,16 @@ public class StringOrCharacterDataAnnotatedTypeFactory extends BaseAnnotatedType
 
     /**
      * Runs after {@link org.checkerframework.framework.type.treeannotator.PropagationTreeAnnotator}
-     * and re-applies {@code @StringOrCharacterData} to binary expressions whose result type is
-     * {@link String}. This is necessary because {@code PropagationTreeAnnotator} computes the LUB
-     * of the operand qualifiers for binary {@code +}, so a string concatenation such as {@code
-     * "literal " + intValue} would otherwise produce {@code @UnknownCharacterDataType String}.
+     * and re-applies {@code @StringOrCharacterData} to:
+     *
+     * <ul>
+     *   <li>Binary expressions whose result type is {@link String}. This is necessary because
+     *       {@code PropagationTreeAnnotator} computes the LUB of the operand qualifiers for binary
+     *       {@code +}, so a string concatenation such as {@code "literal " + intValue} would
+     *       otherwise produce {@code @UnknownCharacterDataType String}.
+     *   <li>Type cast expressions whose target type is {@link String} or implements {@link
+     *       org.apache.axiom.core.stream.CharacterData}.
+     * </ul>
      */
     private class StringOrCharacterDataTreeAnnotator extends TreeAnnotator {
 
@@ -84,6 +91,15 @@ public class StringOrCharacterDataAnnotatedTypeFactory extends BaseAnnotatedType
         @Override
         public Void visitBinary(BinaryTree node, AnnotatedTypeMirror type) {
             if (TypesUtils.isString(type.getUnderlyingType())) {
+                type.replaceAnnotation(STRING_OR_CHARACTER_DATA);
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitTypeCast(TypeCastTree node, AnnotatedTypeMirror type) {
+            TypeMirror underlyingType = type.getUnderlyingType();
+            if (TypesUtils.isString(underlyingType) || isCharacterData(underlyingType)) {
                 type.replaceAnnotation(STRING_OR_CHARACTER_DATA);
             }
             return null;
