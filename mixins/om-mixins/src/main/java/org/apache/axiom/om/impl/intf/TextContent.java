@@ -25,6 +25,8 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CloneableCharacterData;
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.CharacterDataSink;
+import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import org.apache.axiom.core.stream.annotations.UnknownCharacterDataType;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.mime.PartBlob;
 import org.apache.axiom.om.OMCloneOptions;
@@ -34,6 +36,7 @@ import org.apache.axiom.util.base64.AbstractBase64EncodingOutputStream;
 import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
 import org.apache.axiom.util.base64.Base64Utils;
 
+@SuppressWarnings({"super.invocation", "inconsistent.constructor.type"})
 public final class TextContent implements CloneableCharacterData {
     private final String value;
 
@@ -134,7 +137,8 @@ public final class TextContent implements CloneableCharacterData {
     }
 
     @Override
-    public String toString() {
+    @SuppressWarnings("method.invocation")
+    public String toString(@UnknownCharacterDataType TextContent this) {
         if (blobObject != null) {
             try {
                 return Base64Utils.encode(getBlob());
@@ -200,7 +204,7 @@ public final class TextContent implements CloneableCharacterData {
     }
 
     @Override
-    public Object retain() {
+    public @StringOrCharacterData Object retain() {
         return this;
     }
 }
