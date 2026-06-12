@@ -296,7 +296,7 @@
         <mime4j.version>0.8.14</mime4j.version>
         <surefire.version>3.5.6</surefire.version>
         <jaxws-rt.version>4.0.5</jaxws-rt.version>
-        <checkerframework.version>3.48.4</checkerframework.version>
+        <checkerframework.version>4.2.0</checkerframework.version>
 
         <skipDeploy>false</skipDeploy>
 
