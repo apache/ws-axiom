@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.core.CoreNSAwareNamedNode;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
+import org.checkerframework.dataflow.qual.Pure;
 
 public interface AxiomNamedInformationItem extends OMNamedInformationItem, AxiomInformationItem, CoreNSAwareNamedNode {
     void internalSetNamespace(OMNamespace namespace);
@@ -35,4 +36,18 @@ public interface AxiomNamedInformationItem extends OMNamedInformationItem, Axiom
     QName defaultGetQName();
 
     void beforeSetLocalName();
+
+    // Checker Framework assumes that the getLocalName, getPrefix and getNamespaceURI methods defined by DOM are pure.
+    // For compatibility, we need to declare them as pure in Axiom too, even though that might not be entirely correct.
+    @Override
+    @Pure
+    String getLocalName();
+
+    @Override
+    @Pure
+    String getPrefix();
+
+    @Override
+    @Pure
+    String getNamespaceURI();
 }
