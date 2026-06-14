@@ -18,8 +18,10 @@
  */
 package org.apache.axiom.core;
 
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import org.apache.axiom.checker.union.Union;
+import org.apache.axiom.core.stream.CharacterData;
 
 public interface CoreCharacterDataSinkNode {
-    void coreSetCharacterData(@StringOrCharacterData Object data, Semantics semantics) throws CoreModelException;
+    void coreSetCharacterData(@Union(types = {String.class, CharacterData.class}) Object data, Semantics semantics)
+            throws CoreModelException;
 }

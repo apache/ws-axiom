@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.core.impl.mixin;
 
+import org.apache.axiom.checker.union.Union;
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.ChildNotAllowedException;
@@ -52,7 +53,6 @@ import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
@@ -124,10 +124,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             Content content = new Content();
             CoreCharacterDataNode cdata = coreGetNodeFactory().createCharacterDataNode();
             cdata.internalSetParent(this);
-            @SuppressWarnings("stringorcharacterdata")
-            @StringOrCharacterData
-            Object characterData = this.content;
-            cdata.coreSetCharacterData(characterData);
+            cdata.coreSetCharacterData((@Union(types = {String.class, CharacterData.class}) Object) this.content);
             content.firstChild = cdata;
             content.lastChild = cdata;
             this.content = content;
@@ -346,15 +343,13 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     }
 
     @Override
-    public final @StringOrCharacterData Object internalGetCharacterData(ElementAction elementAction)
-            throws CoreModelException {
+    public final @Union(types = {String.class, CharacterData.class}) Object internalGetCharacterData(
+            ElementAction elementAction) throws CoreModelException {
         if (getState() == COMPACT) {
-            @SuppressWarnings("stringorcharacterdata")
-            @StringOrCharacterData
-            Object result = content;
-            return result;
+            return (@Union(types = {String.class, CharacterData.class}) Object) content;
         } else {
-            @StringOrCharacterData Object textContent = null;
+            @Union(types = {String.class, CharacterData.class})
+            Object textContent = null;
             StringBuilder buffer = null;
             int depth = 0;
             CoreChildNode child = coreGetFirstChild();
@@ -379,7 +374,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
                     }
                 } else {
                     if (child instanceof CoreCharacterDataNode || child instanceof CoreCDATASection) {
-                        @StringOrCharacterData
+                        @Union(types = {String.class, CharacterData.class})
                         Object textValue = ((CoreCharacterDataContainer) child).coreGetCharacterData();
                         if (textValue instanceof CharacterData || ((String) textValue).length() != 0) {
                             if (textContent == null) {
@@ -420,7 +415,8 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     }
 
     @Override
-    public final void coreSetCharacterData(@StringOrCharacterData Object data, Semantics semantics)
+    public final void coreSetCharacterData(
+            @Union(types = {String.class, CharacterData.class}) Object data, Semantics semantics)
             throws CoreModelException {
         coreRemoveChildren(semantics);
         if (data != null && (data instanceof CharacterData || ((String) data).length() > 0)) {
@@ -453,9 +449,8 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
         CoreParentNode targetParent = (CoreParentNode) clone;
         if (policy.cloneChildren(options, coreGetNodeType()) && targetParent.isExpanded()) {
             if (getState() == COMPACT) {
-                @SuppressWarnings("stringorcharacterdata")
-                @StringOrCharacterData
-                Object content = this.content;
+                @Union(types = {String.class, CharacterData.class})
+                Object content = (@Union(types = {String.class, CharacterData.class}) Object) this.content;
                 if (content instanceof CloneableCharacterData) {
                     content = ((CloneableCharacterData) content).clone(policy, options);
                 }

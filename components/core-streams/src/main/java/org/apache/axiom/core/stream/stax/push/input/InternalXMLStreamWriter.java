@@ -20,8 +20,9 @@ package org.apache.axiom.core.stream.stax.push.input;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import org.apache.axiom.checker.union.Union;
+import org.apache.axiom.core.stream.CharacterData;
 
 public interface InternalXMLStreamWriter extends XMLStreamWriter {
-    void writeCharacterData(@StringOrCharacterData Object data) throws XMLStreamException;
+    void writeCharacterData(@Union(types = {String.class, CharacterData.class}) Object data) throws XMLStreamException;
 }

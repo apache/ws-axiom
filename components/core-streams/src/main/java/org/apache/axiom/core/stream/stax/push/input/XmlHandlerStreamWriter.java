@@ -26,9 +26,10 @@ import java.util.NoSuchElementException;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
+import org.apache.axiom.checker.union.Union;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 import org.apache.commons.logging.Log;
@@ -362,7 +363,8 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
     }
 
     @Override
-    public void writeCharacterData(@StringOrCharacterData Object data) throws XMLStreamException {
+    public void writeCharacterData(@Union(types = {String.class, CharacterData.class}) Object data)
+            throws XMLStreamException {
         finishStartElement();
         try {
             handler.processCharacterData(data, false);

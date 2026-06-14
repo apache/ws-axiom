@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.core.stream;
 
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import org.apache.axiom.checker.union.Union;
 
 public class XmlHandlerWrapper implements XmlHandler {
     private final XmlHandler parent;
@@ -81,7 +81,8 @@ public class XmlHandlerWrapper implements XmlHandler {
     }
 
     @Override
-    public void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException {
+    public void processCharacterData(@Union(types = {String.class, CharacterData.class}) Object data, boolean ignorable)
+            throws StreamException {
         parent.processCharacterData(data, ignorable);
     }
 

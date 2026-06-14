@@ -19,8 +19,7 @@
 package org.apache.axiom.core.stream;
 
 import java.io.IOException;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
-import org.apache.axiom.core.stream.annotations.UnknownCharacterDataType;
+import org.apache.axiom.checker.union.Union;
 
 // TODO: clean up this Javadoc
 /**
@@ -30,7 +29,7 @@ import org.apache.axiom.core.stream.annotations.UnknownCharacterDataType;
  */
 public interface CharacterData {
     @Override
-    String toString(@UnknownCharacterDataType CharacterData this);
+    String toString();
 
     void writeTo(CharacterDataSink sink) throws IOException;
 
@@ -51,6 +50,6 @@ public interface CharacterData {
      * @return a {@link String} or {@link CharacterData} representation of this instance that
      *     remains valid beyond the current invocation
      */
-    @StringOrCharacterData
+    @Union(types = {String.class, CharacterData.class})
     Object retain();
 }

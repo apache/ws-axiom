@@ -46,7 +46,7 @@
                     <annotationProcessorPaths combine.children="append">
                         <annotationProcessorPath>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>stringorcharacterdata-checker</artifactId>
+                            <artifactId>union-checker</artifactId>
                             <version>${project.version}</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>

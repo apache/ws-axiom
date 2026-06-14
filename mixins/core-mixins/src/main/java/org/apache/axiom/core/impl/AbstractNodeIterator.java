@@ -136,7 +136,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode, S> implements Nod
     }
 
     @Override
-    @SuppressWarnings("stringorcharacterdata")
+    @SuppressWarnings("union")
     public final S next() {
         if (hasNext()) {
             currentNode = nextNode;

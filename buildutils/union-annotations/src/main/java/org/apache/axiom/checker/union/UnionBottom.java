@@ -16,12 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.checker.union;
 
-import org.apache.axiom.checker.union.Union;
-import org.apache.axiom.core.stream.CharacterData;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.checkerframework.framework.qual.LiteralKind;
+import org.checkerframework.framework.qual.QualifierForLiterals;
+import org.checkerframework.framework.qual.SubtypeOf;
 
-public interface CoreMixedContentContainer extends CoreParentNode, CoreCharacterDataSinkNode {
-    @Union(types = {String.class, CharacterData.class})
-    Object coreGetCharacterData(ElementAction elementAction) throws CoreModelException;
-}
+/** The bottom type in the {@link Union} type hierarchy. This is the qualifier for {@code null}. */
+@Retention(RetentionPolicy.CLASS)
+@Target(ElementType.TYPE_USE)
+@SubtypeOf(Union.class)
+@QualifierForLiterals(LiteralKind.NULL)
+public @interface UnionBottom {}
