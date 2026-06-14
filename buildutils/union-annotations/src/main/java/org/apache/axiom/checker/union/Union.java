@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.annotations;
+package org.apache.axiom.checker.union;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -25,14 +25,22 @@ import java.lang.annotation.Target;
 import org.checkerframework.framework.qual.SubtypeOf;
 
 /**
- * Indicates that the annotated {@link Object} type use holds a value that is either a {@link
- * String} or a {@link org.apache.axiom.core.stream.CharacterData} instance.
+ * Indicates that the annotated type use holds a value whose runtime type is a subtype of one of
+ * the {@link #types()}.
  *
- * <p>This annotation is enforced by the {@code StringOrCharacterDataChecker} which ensures that
- * only {@link String}, {@link org.apache.axiom.core.stream.CharacterData}, or another {@code
- * @StringOrCharacterData Object} can be assigned to a position annotated with this qualifier.
+ * <p>This annotation is enforced by the {@code UnionChecker}, which ensures that only values whose
+ * (static) type is a subtype of one of {@link #types()}, or another {@code @Union} type that is a
+ * subtype of this one, can be assigned to a position annotated with this qualifier. {@code
+ * instanceof} checks against one of {@link #types()} (including combinations using {@code ||} and
+ * {@code else if}) narrow a value of unknown type to {@code @Union}.
  */
 @Retention(RetentionPolicy.CLASS)
-@Target({ElementType.TYPE_USE})
-@SubtypeOf(UnknownCharacterDataType.class)
-public @interface StringOrCharacterData {}
+@Target(ElementType.TYPE_USE)
+@SubtypeOf(UnknownUnion.class)
+public @interface Union {
+    /**
+     * The types that make up the union. The annotated value's runtime type must be a subtype of at
+     * least one of these types.
+     */
+    Class<?>[] types();
+}

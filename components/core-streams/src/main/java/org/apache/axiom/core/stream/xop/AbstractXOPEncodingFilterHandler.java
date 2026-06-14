@@ -18,10 +18,11 @@
  */
 package org.apache.axiom.core.stream.xop;
 
+import org.apache.axiom.checker.union.Union;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 
 public abstract class AbstractXOPEncodingFilterHandler extends XmlHandlerWrapper {
     private boolean inXOPInclude;
@@ -30,7 +31,8 @@ public abstract class AbstractXOPEncodingFilterHandler extends XmlHandlerWrapper
         super(parent);
     }
 
-    protected abstract String processCharacterData(@StringOrCharacterData Object data) throws StreamException;
+    protected abstract String processCharacterData(@Union(types = {String.class, CharacterData.class}) Object data)
+            throws StreamException;
 
     /**
      * Build a cid URL from the given content ID as described in RFC2392.
@@ -91,7 +93,8 @@ public abstract class AbstractXOPEncodingFilterHandler extends XmlHandlerWrapper
     }
 
     @Override
-    public void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException {
+    public void processCharacterData(@Union(types = {String.class, CharacterData.class}) Object data, boolean ignorable)
+            throws StreamException {
         if (!ignorable) {
             String contentID = processCharacterData(data);
             if (contentID != null) {

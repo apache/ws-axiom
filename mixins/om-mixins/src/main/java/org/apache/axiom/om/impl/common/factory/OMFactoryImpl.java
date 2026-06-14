@@ -23,8 +23,9 @@ import static org.apache.axiom.util.xml.NSUtils.generatePrefix;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.apache.axiom.blob.Blob;
+import org.apache.axiom.checker.union.Union;
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -100,7 +101,8 @@ public class OMFactoryImpl implements OMFactory {
         return node;
     }
 
-    private AxiomText createAxiomText(OMContainer parent, @StringOrCharacterData Object content, int type) {
+    private AxiomText createAxiomText(
+            OMContainer parent, @Union(types = {String.class, CharacterData.class}) Object content, int type) {
         AxiomText node;
         switch (type) {
             case OMNode.TEXT_NODE -> {
@@ -158,8 +160,8 @@ public class OMFactoryImpl implements OMFactory {
             throw new IllegalArgumentException("QName text arg cannot be null!");
         }
         OMNamespace ns = ((AxiomElement) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
-        return createAxiomText(
-                parent, ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart(), type);
+        String content = ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart();
+        return createAxiomText(parent, content, type);
     }
 
     @Override
@@ -390,6 +392,7 @@ public class OMFactoryImpl implements OMFactory {
             }
             case OMNode.TEXT_NODE, OMNode.SPACE_NODE, OMNode.CDATA_SECTION_NODE -> {
                 OMText text = (OMText) child;
+                @Union(types = {String.class, CharacterData.class})
                 Object content;
                 if (text.isBinary()) {
                     content = new TextContent(text.getContentID(), text.getBlob(), text.isOptimized());

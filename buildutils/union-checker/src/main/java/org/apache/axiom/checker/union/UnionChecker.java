@@ -16,21 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.annotations;
+package org.apache.axiom.checker.union;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.checkerframework.framework.qual.DefaultQualifierInHierarchy;
-import org.checkerframework.framework.qual.SubtypeOf;
+import com.google.auto.service.AutoService;
+import javax.annotation.processing.Processor;
+import org.checkerframework.common.basetype.BaseTypeChecker;
 
 /**
- * The top type in the StringOrCharacterData type hierarchy. This is the default qualifier for
- * unannotated types and represents an unknown character data type.
+ * A Checker Framework checker that enforces that a {@code @Union(types = {A.class, B.class, ...})}
+ * type use can only hold values whose type is a subtype of one of {@code A}, {@code B}, etc., or
+ * another {@code @Union} type that is a subtype of it.
  */
-@Retention(RetentionPolicy.CLASS)
-@Target({ElementType.TYPE_USE})
-@SubtypeOf({})
-@DefaultQualifierInHierarchy
-public @interface UnknownCharacterDataType {}
+@AutoService(Processor.class)
+public class UnionChecker extends BaseTypeChecker {}

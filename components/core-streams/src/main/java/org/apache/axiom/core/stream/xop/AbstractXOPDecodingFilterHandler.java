@@ -21,10 +21,11 @@ package org.apache.axiom.core.stream.xop;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.xml.namespace.QName;
+import org.apache.axiom.checker.union.Union;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 
 public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper {
     private static final String SOLE_CHILD_MSG =
@@ -45,7 +46,8 @@ public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper
         super(parent);
     }
 
-    protected abstract @StringOrCharacterData Object buildCharacterData(String contentID) throws StreamException;
+    protected abstract @Union(types = {String.class, CharacterData.class}) Object buildCharacterData(String contentID)
+            throws StreamException;
 
     private void inContent() throws StreamException {
         switch (state) {
@@ -129,7 +131,8 @@ public abstract class AbstractXOPDecodingFilterHandler extends XmlHandlerWrapper
     }
 
     @Override
-    public void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException {
+    public void processCharacterData(@Union(types = {String.class, CharacterData.class}) Object data, boolean ignorable)
+            throws StreamException {
         inContent();
         super.processCharacterData(data, ignorable);
     }

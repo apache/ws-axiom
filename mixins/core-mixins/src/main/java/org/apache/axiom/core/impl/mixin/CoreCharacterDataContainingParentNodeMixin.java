@@ -18,17 +18,20 @@
  */
 package org.apache.axiom.core.impl.mixin;
 
+import org.apache.axiom.checker.union.Union;
 import org.apache.axiom.core.CoreCharacterDataContainingParentNode;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ElementAction;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class CoreCharacterDataContainingParentNodeMixin implements CoreCharacterDataContainingParentNode {
     @Override
-    public final @StringOrCharacterData Object coreGetCharacterData() throws CoreModelException {
-        @StringOrCharacterData Object characterData = internalGetCharacterData(ElementAction.RETURN_NULL);
+    public final @Union(types = {String.class, CharacterData.class}) Object coreGetCharacterData()
+            throws CoreModelException {
+        @Union(types = {String.class, CharacterData.class})
+        Object characterData = internalGetCharacterData(ElementAction.RETURN_NULL);
         if (characterData == null) {
             throw new IllegalStateException();
         }

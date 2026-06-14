@@ -18,17 +18,18 @@
  */
 package org.apache.axiom.core.impl.mixin;
 
+import org.apache.axiom.checker.union.Union;
 import org.apache.axiom.core.CoreMixedContentContainer;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ElementAction;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.weaver.annotation.Mixin;
 
 @Mixin
 public abstract class CoreMixedContentContainerMixin implements CoreMixedContentContainer {
     @Override
-    public final @StringOrCharacterData Object coreGetCharacterData(ElementAction elementAction)
-            throws CoreModelException {
+    public final @Union(types = {String.class, CharacterData.class}) Object coreGetCharacterData(
+            ElementAction elementAction) throws CoreModelException {
         return internalGetCharacterData(elementAction);
     }
 }

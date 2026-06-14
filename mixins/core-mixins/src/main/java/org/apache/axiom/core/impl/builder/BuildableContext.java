@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.core.impl.builder;
 
+import org.apache.axiom.checker.union.Union;
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
@@ -40,14 +41,13 @@ import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.NullXmlHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 
 final class BuildableContext extends Context implements InputContext {
     private final Context parentContext;
 
     private CoreParentNode target;
 
-    private @StringOrCharacterData Object pendingCharacterData;
+    private @Union(types = {String.class, CharacterData.class}) Object pendingCharacterData;
 
     /**
      * The {@link XmlHandler} object to send events to if pass-through is enabled. See {@link
@@ -261,7 +261,8 @@ final class BuildableContext extends Context implements InputContext {
     }
 
     @Override
-    void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException {
+    void processCharacterData(@Union(types = {String.class, CharacterData.class}) Object data, boolean ignorable)
+            throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.processCharacterData(data, ignorable);
         } else if (!ignorable && pendingCharacterData == null && target.coreGetFirstChildIfAvailable() == null) {

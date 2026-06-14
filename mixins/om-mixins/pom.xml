@@ -50,7 +50,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>checker-annotations</artifactId>
+            <artifactId>union-annotations</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

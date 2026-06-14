@@ -18,10 +18,11 @@
  */
 package org.apache.axiom.core.impl.builder;
 
+import org.apache.axiom.checker.union.Union;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 
 final class UnwrappingContext extends Context {
     private final CoreNSAwareElement root;
@@ -88,7 +89,8 @@ final class UnwrappingContext extends Context {
     }
 
     @Override
-    void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException {
+    void processCharacterData(@Union(types = {String.class, CharacterData.class}) Object data, boolean ignorable)
+            throws StreamException {
         // TODO Auto-generated method stub
 
     }

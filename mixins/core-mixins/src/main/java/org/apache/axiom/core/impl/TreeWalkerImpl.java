@@ -15,6 +15,7 @@
  */
 package org.apache.axiom.core.impl;
 
+import org.apache.axiom.checker.union.Union;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
@@ -27,6 +28,7 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.InputContext;
 import org.apache.axiom.core.NodeConsumedException;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.DocumentElementExtractingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
@@ -258,10 +260,10 @@ public final class TreeWalkerImpl implements XmlReader {
                     }
                 }
                 case STATE_CONTENT_VISITED -> {
-                    @SuppressWarnings("stringorcharacterdata")
-                    @org.apache.axiom.core.stream.annotations.StringOrCharacterData
-                    Object data = ((CoreParentNode) nextNode).internalGetContent();
-                    handler.processCharacterData(data, false);
+                    handler.processCharacterData(
+                            (@Union(types = {String.class, CharacterData.class}) Object)
+                                    ((CoreParentNode) nextNode).internalGetContent(),
+                            false);
                 }
                 default -> throw new IllegalStateException();
             }

@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.core.stream;
 
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import org.apache.axiom.checker.union.Union;
 
 public final class DocumentElementExtractingFilterHandler extends XmlHandlerWrapper {
     private int depth;
@@ -54,7 +54,8 @@ public final class DocumentElementExtractingFilterHandler extends XmlHandlerWrap
             throws StreamException {}
 
     @Override
-    public void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException {
+    public void processCharacterData(@Union(types = {String.class, CharacterData.class}) Object data, boolean ignorable)
+            throws StreamException {
         if (depth > 0) {
             super.processCharacterData(data, ignorable);
         }

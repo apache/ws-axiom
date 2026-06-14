@@ -21,12 +21,11 @@ package org.apache.axiom.om.impl.intf;
 import java.io.IOException;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.Blobs;
+import org.apache.axiom.checker.union.Union;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CloneableCharacterData;
 import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.CharacterDataSink;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
-import org.apache.axiom.core.stream.annotations.UnknownCharacterDataType;
 import org.apache.axiom.ext.stax.BlobProvider;
 import org.apache.axiom.mime.PartBlob;
 import org.apache.axiom.om.OMCloneOptions;
@@ -137,8 +136,7 @@ public final class TextContent implements CloneableCharacterData {
     }
 
     @Override
-    @SuppressWarnings("method.invocation")
-    public String toString(@UnknownCharacterDataType TextContent this) {
+    public String toString() {
         if (blobObject != null) {
             try {
                 return Base64Utils.encode(getBlob());
@@ -204,7 +202,7 @@ public final class TextContent implements CloneableCharacterData {
     }
 
     @Override
-    public @StringOrCharacterData Object retain() {
+    public @Union(types = {String.class, CharacterData.class}) Object retain() {
         return this;
     }
 }

@@ -18,9 +18,10 @@
  */
 package org.apache.axiom.core;
 
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
+import org.apache.axiom.checker.union.Union;
+import org.apache.axiom.core.stream.CharacterData;
 
 public interface CoreCharacterDataSourceNode extends CoreNode {
-    @StringOrCharacterData
+    @Union(types = {String.class, CharacterData.class})
     Object coreGetCharacterData() throws CoreModelException;
 }

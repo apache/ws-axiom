@@ -21,15 +21,16 @@ package org.apache.axiom.core.impl.builder;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import org.apache.axiom.checker.union.Union;
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.stream.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.annotations.StringOrCharacterData;
 
 final class BuilderHandler implements XmlHandler {
     final NodeFactory nodeFactory;
@@ -177,7 +178,8 @@ final class BuilderHandler implements XmlHandler {
     }
 
     @Override
-    public void processCharacterData(@StringOrCharacterData Object data, boolean ignorable) throws StreamException {
+    public void processCharacterData(@Union(types = {String.class, CharacterData.class}) Object data, boolean ignorable)
+            throws StreamException {
         context.processCharacterData(data, ignorable);
     }
 
