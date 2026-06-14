@@ -182,7 +182,10 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Import-Package>*</Import-Package>
+                        <Import-Package>
+                            org.checkerframework.*;resolution:=optional,
+                            *
+                        </Import-Package>
                         <Private-Package>
                             org.apache.axiom.core.*,
                             !org.apache.axiom.om.impl,
