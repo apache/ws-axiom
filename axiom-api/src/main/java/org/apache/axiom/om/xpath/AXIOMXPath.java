@@ -32,7 +32,7 @@ public class AXIOMXPath extends BaseXPath {
 
     private static final long serialVersionUID = -5839161412925154639L;
 
-    private Map<String, String> namespaces = new HashMap<String, String>();
+    private Map<String, String> namespaces = new HashMap<>();
 
     /**
      * Construct an XPath expression from a given string.

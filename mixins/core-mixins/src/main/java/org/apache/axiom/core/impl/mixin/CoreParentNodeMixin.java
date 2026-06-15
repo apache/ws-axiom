@@ -428,7 +428,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
     @Override
     public final <T extends CoreNode, S> NodeIterator<S> coreGetNodes(
             Axis axis, Class<T> type, Mapper<S, ? super T> mapper, Semantics semantics) {
-        return new NodesIterator<T, S>(this, axis, type, mapper, semantics);
+        return new NodesIterator<>(this, axis, type, mapper, semantics);
     }
 
     @Override
@@ -440,7 +440,7 @@ public abstract class CoreParentNodeMixin implements CoreParentNode {
             String name,
             Mapper<S, ? super T> mapper,
             Semantics semantics) {
-        return new ElementsIterator<T, S>(this, axis, type, matcher, namespaceURI, name, mapper, semantics);
+        return new ElementsIterator<>(this, axis, type, matcher, namespaceURI, name, mapper, semantics);
     }
 
     @Override

@@ -40,7 +40,7 @@ public final class W3CDOMTestSuite {
             DOMTestSuiteFactory domTestSuiteFactory,
             DocumentBuilderFactoryFactory dbff,
             DOMFeature... unsupportedFeatures) {
-        Set<DOMFeature> unsupportedFeaturesSet = new HashSet<DOMFeature>(Arrays.asList(unsupportedFeatures));
+        Set<DOMFeature> unsupportedFeaturesSet = new HashSet<>(Arrays.asList(unsupportedFeatures));
 
         final DOMTestDocumentBuilderFactory factory;
         try {
@@ -70,7 +70,7 @@ public final class W3CDOMTestSuite {
             public void addTest(Class<? extends DOMTestCase> testClass) {
                 try {
                     if (!unsupportedFeaturesSet.isEmpty()) {
-                        Set<DOMFeature> usedFeatures = new HashSet<DOMFeature>();
+                        Set<DOMFeature> usedFeatures = new HashSet<>();
                         DOMFeature.matchFeatures(testClass, usedFeatures);
                         ClassReader classReader =
                                 new ClassReader(testClass.getResourceAsStream(testClass.getSimpleName() + ".class"));

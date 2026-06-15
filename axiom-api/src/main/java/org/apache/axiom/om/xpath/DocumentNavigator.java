@@ -366,13 +366,13 @@ public class DocumentNavigator extends DefaultNavigator {
         if (!(contextNode instanceof OMElement omContextNode)) {
             return JaxenConstants.EMPTY_ITERATOR;
         }
-        List<OMNamespaceEx> nsList = new ArrayList<OMNamespaceEx>();
-        Set<String> prefixes = new HashSet<String>();
+        List<OMNamespaceEx> nsList = new ArrayList<>();
+        Set<String> prefixes = new HashSet<>();
         for (OMContainer context = omContextNode;
                 context != null && !(context instanceof OMDocument);
                 context = ((OMElement) context).getParent()) {
             OMElement element = (OMElement) context;
-            List<OMNamespace> declaredNS = new ArrayList<OMNamespace>();
+            List<OMNamespace> declaredNS = new ArrayList<>();
             Iterator<OMNamespace> i = element.getAllDeclaredNamespaces();
             while (i != null && i.hasNext()) {
                 declaredNS.add(i.next());
@@ -487,7 +487,7 @@ public class DocumentNavigator extends DefaultNavigator {
      */
     @Override
     public Iterator<?> getFollowingSiblingAxisIterator(Object contextNode) throws UnsupportedAxisException {
-        List<OMNode> list = new ArrayList<OMNode>();
+        List<OMNode> list = new ArrayList<>();
         if (contextNode != null && contextNode instanceof OMNode node) {
             while (true) {
                 node = node.getNextOMSibling();
@@ -511,7 +511,7 @@ public class DocumentNavigator extends DefaultNavigator {
      */
     @Override
     public Iterator<?> getPrecedingSiblingAxisIterator(Object contextNode) throws UnsupportedAxisException {
-        List<OMNode> list = new ArrayList<OMNode>();
+        List<OMNode> list = new ArrayList<>();
         if (contextNode != null && contextNode instanceof OMNode node) {
             while (true) {
                 node = node.getPreviousOMSibling();

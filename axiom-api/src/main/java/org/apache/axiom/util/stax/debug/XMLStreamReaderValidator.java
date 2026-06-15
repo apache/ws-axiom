@@ -40,7 +40,7 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
     private static boolean IS_ADV_DEBUG_ENABLED = false; // Turn this on to trace every event
 
     private boolean throwExceptions = false; // Indicates whether OMException should be thrown if errors are disovered
-    private Stack<QName> stack = new Stack<QName>(); // Stack keeps track of the nested element QName
+    private Stack<QName> stack = new Stack<>(); // Stack keeps track of the nested element QName
 
     /**
      * @param delegate XMLStreamReader to validate

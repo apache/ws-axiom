@@ -57,7 +57,7 @@ public abstract class AbstractOMDataSource implements OMDataSourceExt {
     @Override
     public final Object setProperty(String key, Object value) {
         if (properties == null) {
-            properties = new HashMap<String, Object>();
+            properties = new HashMap<>();
         }
         return properties.put(key, value);
     }

@@ -47,7 +47,7 @@ public final class LiveNamespaceContext extends AbstractNamespaceContext {
 
     @Override
     protected Iterator<String> doGetPrefixes(String namespaceURI) {
-        List<String> prefixes = new ArrayList<String>();
+        List<String> prefixes = new ArrayList<>();
         for (Iterator<OMNamespace> it = element.getNamespacesInScope(); it.hasNext(); ) {
             OMNamespace ns = it.next();
             if (ns.getNamespaceURI().equals(namespaceURI)) {

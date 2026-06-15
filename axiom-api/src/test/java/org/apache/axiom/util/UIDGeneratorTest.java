@@ -35,7 +35,7 @@ public class UIDGeneratorTest extends TestCase {
 
     public void testGenerateContentIdUniqueness() {
         // Not very sophisticated, but should catch stupid regressions
-        Set<String> values = new HashSet<String>();
+        Set<String> values = new HashSet<>();
         for (int i = 0; i < 1000; i++) {
             assertTrue(values.add(UIDGenerator.generateContentId()));
         }
@@ -46,7 +46,7 @@ public class UIDGeneratorTest extends TestCase {
     }
 
     public void testGenerateUIDThreadSafety() {
-        Set<String> generatedIds = Collections.synchronizedSet(new HashSet<String>());
+        Set<String> generatedIds = Collections.synchronizedSet(new HashSet<>());
         AtomicInteger errorCount = new AtomicInteger(0);
         Thread[] threads = new Thread[100];
         for (int i = 0; i < threads.length; i++) {
@@ -94,7 +94,7 @@ public class UIDGeneratorTest extends TestCase {
             }
         }
 
-        Set<String> set = new HashSet<String>();
+        Set<String> set = new HashSet<>();
         for (int i = 0; i < threads.length; i++) {
             for (int j = 0; j < urns[i].length; j++) {
                 String urn = urns[i][j];

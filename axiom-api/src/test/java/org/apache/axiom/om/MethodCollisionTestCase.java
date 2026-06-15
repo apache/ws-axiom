@@ -41,7 +41,7 @@ public class MethodCollisionTestCase extends TestCase {
     }
 
     private Set<MethodSignature> getMethodSignatures(Class<?> iface) {
-        Set<MethodSignature> result = new HashSet<MethodSignature>();
+        Set<MethodSignature> result = new HashSet<>();
         Method[] methods = iface.getMethods();
         for (int i = 0; i < methods.length; i++) {
             result.add(new MethodSignature(methods[i]));

@@ -80,7 +80,7 @@ final class ImplementationFactory {
         if (log.isDebugEnabled()) {
             log.debug("Loading " + url);
         }
-        List<Implementation> implementations = new ArrayList<Implementation>();
+        List<Implementation> implementations = new ArrayList<>();
         try {
             // Since this code is used to discover Axiom implementations, we have to use DOM here.
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -150,7 +150,7 @@ final class ImplementationFactory {
         if (metaFactory == null) {
             return null;
         }
-        List<Feature> features = new ArrayList<Feature>();
+        List<Feature> features = new ArrayList<>();
         Node child = implementation.getFirstChild();
         while (child != null) {
             if (child instanceof Element) {

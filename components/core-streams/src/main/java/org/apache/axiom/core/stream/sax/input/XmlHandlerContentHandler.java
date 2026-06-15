@@ -154,7 +154,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     @Override
     public void internalEntityDecl(String name, String value) throws SAXException {
         if (entities == null) {
-            entities = new HashMap<String, String>();
+            entities = new HashMap<>();
         }
         entities.put(name, value);
         if (!inExternalSubset) {

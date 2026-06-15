@@ -46,7 +46,7 @@ public final class NamespaceContextPreservationFilterHandler extends XmlHandlerW
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         super.startElement(namespaceURI, localName, prefix);
         if (!done) {
-            prefixesAlreadyBound = new HashSet<String>();
+            prefixesAlreadyBound = new HashSet<>();
         }
     }
 

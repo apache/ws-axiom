@@ -44,7 +44,7 @@ public class Activator implements BundleActivator {
         OMAbstractFactory.setMetaFactoryLocator(locator);
         // Bundle.STARTING covers the case where the implementation bundle has
         // "Bundle-ActivationPolicy: lazy".
-        tracker = new BundleTracker<List<RegisteredImplementation>>(context, Bundle.STARTING | Bundle.ACTIVE, locator);
+        tracker = new BundleTracker<>(context, Bundle.STARTING | Bundle.ACTIVE, locator);
         tracker.open();
         log.debug("OSGi support enabled");
     }

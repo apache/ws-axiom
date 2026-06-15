@@ -50,7 +50,7 @@ public final class AttachmentCacheMonitor {
     // HashMap
     // Key String = Absolute file name
     // Value Long = Last Access Time
-    private Map<String, Long> files = new HashMap<String, Long>();
+    private Map<String, Long> files = new HashMap<>();
 
     // Delete detection is batched
     private Long priorDeleteMillis = getTime();

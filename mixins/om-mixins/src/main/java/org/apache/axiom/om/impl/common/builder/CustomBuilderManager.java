@@ -48,7 +48,7 @@ final class CustomBuilderManager implements BuilderListener {
 
     void register(CustomBuilder.Selector selector, CustomBuilder customBuilder) {
         if (registrations == null) {
-            registrations = new ArrayList<CustomBuilderRegistration>();
+            registrations = new ArrayList<>();
         }
         registrations.add(new CustomBuilderRegistration(selector, customBuilder));
         // Try to apply the new custom builder to the element currently being built (unless it has

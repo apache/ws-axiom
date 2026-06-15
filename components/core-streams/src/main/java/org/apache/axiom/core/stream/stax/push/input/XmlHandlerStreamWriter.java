@@ -103,7 +103,7 @@ public final class XmlHandlerStreamWriter implements InternalXMLStreamWriter, Na
             Object extension = extensionFactory.createExtension(name, this);
             if (extension != null) {
                 if (extensions == null) {
-                    extensions = new HashMap<String, Object>();
+                    extensions = new HashMap<>();
                 }
                 extensions.put(name, extension);
                 return extension;

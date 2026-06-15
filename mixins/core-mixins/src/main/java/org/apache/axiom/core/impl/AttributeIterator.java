@@ -52,7 +52,7 @@ public final class AttributeIterator<T extends CoreAttribute, S> implements Iter
         if (attribute == null) {
             return Collections.<S>emptyList().iterator();
         } else {
-            return new AttributeIterator<T, S>(attribute, type, mapper, semantics);
+            return new AttributeIterator<>(attribute, type, mapper, semantics);
         }
     }
 

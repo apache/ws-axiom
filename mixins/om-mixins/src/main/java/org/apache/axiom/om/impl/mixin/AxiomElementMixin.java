@@ -135,7 +135,7 @@ public abstract class AxiomElementMixin implements AxiomElement {
     @Override
     public NamespaceContext getNamespaceContext(boolean detached) {
         if (detached) {
-            Map<String, String> namespaces = new HashMap<String, String>();
+            Map<String, String> namespaces = new HashMap<>();
             for (Iterator<OMNamespace> it = getNamespacesInScope(); it.hasNext(); ) {
                 OMNamespace ns = it.next();
                 namespaces.put(ns.getPrefix(), ns.getNamespaceURI());

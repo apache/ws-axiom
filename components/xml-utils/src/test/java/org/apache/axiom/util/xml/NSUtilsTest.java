@@ -36,7 +36,7 @@ public class NSUtilsTest {
      */
     @Test
     public void testUniqueness() throws Exception {
-        Set<String> prefixes = new HashSet<String>();
+        Set<String> prefixes = new HashSet<>();
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(NSUtilsTest.class.getResourceAsStream("namespaces.txt"), StandardCharsets.UTF_8));
         try {

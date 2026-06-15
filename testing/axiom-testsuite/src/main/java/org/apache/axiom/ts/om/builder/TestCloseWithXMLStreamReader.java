@@ -41,7 +41,7 @@ public class TestCloseWithXMLStreamReader implements Executable {
         try {
             XMLStreamReader reader = StAXUtils.createXMLStreamReader(in);
             OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(factory, reader);
-            WeakReference<XMLStreamReader> readerWeakRef = new WeakReference<XMLStreamReader>(reader);
+            WeakReference<XMLStreamReader> readerWeakRef = new WeakReference<>(reader);
             reader = null;
             builder.getDocument().build();
             builder.close();

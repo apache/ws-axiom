@@ -27,20 +27,19 @@ import org.junit.jupiter.api.Test;
 public class QNameMapTest {
     @Test
     public void testGetWithNullNamespaceURI() {
-        QNameMap<String> map = new QNameMap<String>();
+        QNameMap<String> map = new QNameMap<>();
         map.put(new QName(null, "name"), "value");
         assertThat(map.get(null, "name")).isEqualTo("value");
     }
 
     @Test
     public void testGetWithNullLocalPart() {
-        assertThatThrownBy(() -> new QNameMap<Object>().get("urn:test", null))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new QNameMap<>().get("urn:test", null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void testReplaceExisting() {
-        QNameMap<String> map = new QNameMap<String>();
+        QNameMap<String> map = new QNameMap<>();
         map.put(new QName("urn:test", "name"), "value1");
         map.put(new QName("urn:test", "name"), "value2");
         assertThat(map.get("urn:test", "name")).isEqualTo("value2");
@@ -48,7 +47,7 @@ public class QNameMapTest {
 
     @Test
     public void testHashCollision() {
-        QNameMap<String> map = new QNameMap<String>();
+        QNameMap<String> map = new QNameMap<>();
         map.put(new QName("a", "b"), "value1");
         map.put(new QName("b", "a"), "value2");
         assertThat(map.get("a", "b")).isEqualTo("value1");

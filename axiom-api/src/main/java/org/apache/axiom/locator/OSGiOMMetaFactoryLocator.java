@@ -34,7 +34,7 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
 final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator
         implements BundleTrackerCustomizer<List<RegisteredImplementation>> {
     private final BundleContext apiBundleContext;
-    private final List<Implementation> implementations = new ArrayList<Implementation>();
+    private final List<Implementation> implementations = new ArrayList<>();
 
     OSGiOMMetaFactoryLocator(BundleContext apiBundleContext) {
         this.apiBundleContext = apiBundleContext;
@@ -53,7 +53,7 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator
             List<Implementation> discoveredImplementations =
                     ImplementationFactory.parseDescriptor(new OSGiLoader(bundle), descriptorUrl);
             List<RegisteredImplementation> registeredImplementations =
-                    new ArrayList<RegisteredImplementation>(discoveredImplementations.size());
+                    new ArrayList<>(discoveredImplementations.size());
             synchronized (this) {
                 implementations.addAll(discoveredImplementations);
                 loadImplementations(implementations);
@@ -62,12 +62,12 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator
                 List<ServiceRegistration<?>> registrations = new ArrayList<ServiceRegistration<?>>();
                 List<ServiceReference<?>> references = new ArrayList<ServiceReference<?>>();
                 for (Feature feature : implementation.getFeatures()) {
-                    List<String> clazzes = new ArrayList<String>();
+                    List<String> clazzes = new ArrayList<>();
                     clazzes.add(OMMetaFactory.class.getName());
                     for (Class<?> extensionInterface : feature.getExtensionInterfaces()) {
                         clazzes.add(extensionInterface.getName());
                     }
-                    Hashtable<String, Object> properties = new Hashtable<String, Object>();
+                    Hashtable<String, Object> properties = new Hashtable<>();
                     properties.put("implementationName", implementation.getName());
                     properties.put("feature", feature.getName());
                     properties.put(Constants.SERVICE_RANKING, feature.getPriority());

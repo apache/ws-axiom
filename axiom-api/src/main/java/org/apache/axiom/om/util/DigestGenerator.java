@@ -260,7 +260,7 @@ public class DigestGenerator {
      * @return Returns the collection of attributes which are none namespace declarations
      */
     public Collection<OMAttribute> getAttributesWithoutNS(OMElement element) {
-        SortedMap<String, OMAttribute> map = new TreeMap<String, OMAttribute>();
+        SortedMap<String, OMAttribute> map = new TreeMap<>();
         Iterator<OMAttribute> itr = element.getAllAttributes();
         while (itr.hasNext()) {
             OMAttribute attribute = itr.next();
@@ -278,7 +278,7 @@ public class DigestGenerator {
      * @return Returns a collection of OMProcessingInstructions and OMElements
      */
     public Collection<OMNode> getValidElements(OMDocument document) {
-        ArrayList<OMNode> list = new ArrayList<OMNode>();
+        ArrayList<OMNode> list = new ArrayList<>();
         Iterator<OMNode> itr = document.getChildren();
         while (itr.hasNext()) {
             OMNode node = itr.next();

@@ -47,7 +47,7 @@ public class TestGetAllDeclaredNamespacesRemove implements Executable {
             for (String prefix : prefixes) {
                 element.declareNamespace("urn:" + prefix, prefix);
             }
-            Set<String> seenPrefixes = new HashSet<String>();
+            Set<String> seenPrefixes = new HashSet<>();
             for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
                 OMNamespace ns = it.next();
                 String prefix = ns.getPrefix();

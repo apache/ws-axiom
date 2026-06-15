@@ -44,7 +44,7 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
 
         Loader loader = new DefaultLoader(classLoader);
 
-        List<Implementation> implementations = new ArrayList<Implementation>();
+        List<Implementation> implementations = new ArrayList<>();
 
         // If a meta factory is specified using the system property, we register it as an
         // implementation with feature "default" and maximum priority, so that it will always

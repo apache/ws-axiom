@@ -40,7 +40,7 @@ import org.springframework.xml.transform.TransformerHelper;
 public class BrokerEndpoint {
     private final CustomerService customerService;
     private final TransformerHelper transformerHelper = new TransformerHelper();
-    private final Deque<String> orderQueue = new LinkedList<String>();
+    private final Deque<String> orderQueue = new LinkedList<>();
 
     public BrokerEndpoint(CustomerService customerService) {
         this.customerService = customerService;

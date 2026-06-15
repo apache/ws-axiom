@@ -157,7 +157,7 @@ public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
 
     @Override
     public final ArrayList<SOAPHeaderBlock> getHeaderBlocksWithNSURI(String nsURI) {
-        ArrayList<SOAPHeaderBlock> result = new ArrayList<SOAPHeaderBlock>();
+        ArrayList<SOAPHeaderBlock> result = new ArrayList<>();
         for (Iterator<SOAPHeaderBlock> it = getHeaderBlocksWithNamespaceURI(nsURI); it.hasNext(); ) {
             result.add(it.next());
         }
@@ -165,7 +165,7 @@ public abstract class AxiomSOAPHeaderMixin implements AxiomSOAPHeader {
     }
 
     private Iterator<SOAPHeaderBlock> extract(Iterator<SOAPHeaderBlock> it) {
-        List<SOAPHeaderBlock> result = new ArrayList<SOAPHeaderBlock>();
+        List<SOAPHeaderBlock> result = new ArrayList<>();
         while (it.hasNext()) {
             SOAPHeaderBlock headerBlock = it.next();
             it.remove();

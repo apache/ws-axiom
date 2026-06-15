@@ -1016,7 +1016,7 @@ public class OMTestSuite {
                 new MatrixTest(org.apache.axiom.ts.om.text.TestGetNamespace.class),
                 new MatrixTest(org.apache.axiom.ts.om.text.TestGetNamespaceNoNamespace.class),
                 new MatrixTest(org.apache.axiom.ts.om.text.TestGetTextCharactersFromDataHandler.class),
-                new FanOutNode<Integer>(
+                new FanOutNode<>(
                         ImmutableList.of(
                                 (int) OMNode.TEXT_NODE, (int) OMNode.SPACE_NODE, (int) OMNode.CDATA_SECTION_NODE),
                         Binding.singleton(Key.get(Integer.class, Names.named("type"))),
