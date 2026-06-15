@@ -36,7 +36,7 @@ import org.apache.axiom.om.impl.intf.TextContent;
 public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler
         implements XOPHandler, OMAttachmentAccessor {
     private final Map<String, @Union(types = {Blob.class, BlobProvider.class}) Object> blobObjects =
-            new LinkedHashMap<String, @Union(types = {Blob.class, BlobProvider.class}) Object>();
+            new LinkedHashMap<>();
     private final ContentIDGenerator contentIDGenerator;
     private final OptimizationPolicy optimizationPolicy;
 
