@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import org.apache.axiom.blob.Blob;
+import org.apache.axiom.checker.union.Union;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.xop.AbstractXOPEncodingFilterHandler;
@@ -34,7 +35,8 @@ import org.apache.axiom.om.impl.intf.TextContent;
 
 public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler
         implements XOPHandler, OMAttachmentAccessor {
-    private final Map<String, Object> blobObjects = new LinkedHashMap<String, Object>();
+    private final Map<String, @Union(types = {Blob.class, BlobProvider.class}) Object> blobObjects =
+            new LinkedHashMap<String, @Union(types = {Blob.class, BlobProvider.class}) Object>();
     private final ContentIDGenerator contentIDGenerator;
     private final OptimizationPolicy optimizationPolicy;
 

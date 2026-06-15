@@ -46,7 +46,7 @@ public final class TextContent implements CloneableCharacterData {
      * Contains a {@link Blob} or {@link BlobProvider} object if the text node represents base64
      * encoded binary data.
      */
-    private Object blobObject;
+    private @Union(types = {Blob.class, BlobProvider.class}) Object blobObject;
 
     private boolean optimize;
     private boolean binary;
@@ -55,7 +55,8 @@ public final class TextContent implements CloneableCharacterData {
         this.value = value;
     }
 
-    public TextContent(String contentID, Object blobObject, boolean optimize) {
+    public TextContent(
+            String contentID, @Union(types = {Blob.class, BlobProvider.class}) Object blobObject, boolean optimize) {
         this.value = null;
         this.contentID = contentID;
         this.blobObject = blobObject;
@@ -107,7 +108,7 @@ public final class TextContent implements CloneableCharacterData {
      *
      * @return a {@link Blob} or {@link BlobProvider} object for the base64 decoded content
      */
-    public Object getBlobObject() {
+    public @Union(types = {Blob.class, BlobProvider.class}) Object getBlobObject() {
         if (!binary) {
             throw new IllegalStateException();
         }
