@@ -86,11 +86,11 @@ public class StAXUtils {
     private static final Log log = LogFactory.getLog(StAXUtils.class);
 
     private static final Map<StAXParserConfiguration, XMLInputFactory> inputFactoryMap =
-            Collections.synchronizedMap(new WeakHashMap<StAXParserConfiguration, XMLInputFactory>());
+            Collections.synchronizedMap(new WeakHashMap<>());
 
     @SuppressWarnings("deprecation")
     private static final Map<StAXWriterConfiguration, XMLOutputFactory> outputFactoryMap =
-            Collections.synchronizedMap(new WeakHashMap<StAXWriterConfiguration, XMLOutputFactory>());
+            Collections.synchronizedMap(new WeakHashMap<>());
 
     /**
      * Get a cached {@link XMLInputFactory} instance using the default configuration.
@@ -322,7 +322,7 @@ public class StAXUtils {
         } else {
             try {
                 Properties rawProps = new Properties();
-                Map<String, Object> props = new HashMap<String, Object>();
+                Map<String, Object> props = new HashMap<>();
                 rawProps.load(in);
                 for (Map.Entry<Object, Object> entry : rawProps.entrySet()) {
                     String strValue = (String) entry.getValue();

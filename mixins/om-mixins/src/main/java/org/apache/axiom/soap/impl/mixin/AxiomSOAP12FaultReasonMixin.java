@@ -48,7 +48,7 @@ public abstract class AxiomSOAP12FaultReasonMixin implements AxiomSOAP12FaultRea
 
     @Override
     public final List<SOAPFaultText> getAllSoapTexts() {
-        List<SOAPFaultText> faultTexts = new ArrayList<SOAPFaultText>();
+        List<SOAPFaultText> faultTexts = new ArrayList<>();
         for (Iterator<OMElement> it = getChildElements(); it.hasNext(); ) {
             faultTexts.add((SOAPFaultText) it.next());
         }

@@ -66,7 +66,7 @@ public class MapBasedNamespaceContext extends AbstractNamespaceContext {
             String uri = entry.getValue();
             if (uri.equals(nsURI)) {
                 if (prefixes == null) {
-                    prefixes = new HashSet<String>();
+                    prefixes = new HashSet<>();
                 }
                 prefixes.add(entry.getKey());
             }

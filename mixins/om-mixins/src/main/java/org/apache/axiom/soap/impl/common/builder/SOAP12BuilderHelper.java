@@ -165,7 +165,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
             } else if (parent.getLocalName().equals(SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
                 elementType = AxiomNodeFactory::createNSAwareElement;
                 processingDetailElements = true;
-                detailElementNames = new Vector<String>();
+                detailElementNames = new Vector<>();
                 detailElementNames.add(localName);
 
             } else {

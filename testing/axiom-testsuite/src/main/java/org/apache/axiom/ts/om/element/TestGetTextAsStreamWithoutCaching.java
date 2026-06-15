@@ -46,7 +46,7 @@ public class TestGetTextAsStreamWithoutCaching implements Executable {
     public void execute() throws Throwable {
         Charset charset = StandardCharsets.US_ASCII;
         Blob blob = new RandomBlob(654321, 64, 128, 20000000);
-        Vector<InputStream> v = new Vector<InputStream>();
+        Vector<InputStream> v = new Vector<>();
         v.add(new ByteArrayInputStream("<root><a>".getBytes(charset)));
         v.add(blob.getInputStream());
         v.add(new ByteArrayInputStream("</a><b/></root>".getBytes(charset)));

@@ -30,7 +30,7 @@ import java.util.Locale;
  */
 public final class ContentTypeBuilder {
     private MediaType mediaType;
-    private final LinkedHashMap<String, String> parameters = new LinkedHashMap<String, String>();
+    private final LinkedHashMap<String, String> parameters = new LinkedHashMap<>();
 
     /**
      * Constructor that initializes the builder with a media type and no parameters.

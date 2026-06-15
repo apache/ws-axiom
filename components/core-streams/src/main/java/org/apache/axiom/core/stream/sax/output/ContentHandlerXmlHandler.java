@@ -47,7 +47,7 @@ public class ContentHandlerXmlHandler implements XmlHandler, CharacterDataSink {
     private int bindings;
     private int[] scopeStack = new int[8];
     private int depth;
-    private Stack<String> elementNameStack = new Stack<String>();
+    private Stack<String> elementNameStack = new Stack<>();
     private String elementURI;
     private String elementLocalName;
     private String elementQName;

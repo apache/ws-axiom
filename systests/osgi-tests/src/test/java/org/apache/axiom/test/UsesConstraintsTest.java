@@ -91,7 +91,7 @@ public class UsesConstraintsTest {
     @Test
     public void test() throws Exception {
         System.setProperty("java.protocol.handler.pkgs", "org.ops4j.pax.url");
-        Map<String, String> p = new HashMap<String, String>();
+        Map<String, String> p = new HashMap<>();
         p.put(FRAMEWORK_STORAGE, new File("target/felix").getAbsolutePath());
         p.put(FRAMEWORK_STORAGE_CLEAN, FRAMEWORK_STORAGE_CLEAN_ONFIRSTINIT);
         FrameworkFactory frameworkFactory = new org.apache.felix.framework.FrameworkFactory();
@@ -100,7 +100,7 @@ public class UsesConstraintsTest {
         BundleContext context = framework.getBundleContext();
         Listener listener = new Listener();
         context.addFrameworkListener(listener);
-        List<Bundle> bundles = new ArrayList<Bundle>();
+        List<Bundle> bundles = new ArrayList<>();
         bundles.add(context.installBundle("link:classpath:META-INF/links/org.ops4j.pax.logging.api.link"));
         bundles.add(context.installBundle("link:classpath:org.apache.aries.spifly.dynamic.framework.extension.link"));
         bundles.add(context.installBundle("link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"));

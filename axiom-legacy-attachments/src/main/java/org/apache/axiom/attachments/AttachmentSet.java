@@ -34,7 +34,7 @@ import org.apache.axiom.om.OMException;
  * attachment parts.
  */
 class AttachmentSet extends AttachmentsDelegate {
-    private final Map<String, DataHandler> attachmentsMap = new LinkedHashMap<String, DataHandler>();
+    private final Map<String, DataHandler> attachmentsMap = new LinkedHashMap<>();
 
     @Override
     ContentType getContentType() {

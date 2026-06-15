@@ -44,7 +44,7 @@ final class MultipartBodyAdapter extends AttachmentsDelegate implements PartCrea
     private static final Log log = LogFactory.getLog(MultipartBodyAdapter.class);
 
     private final MultipartBody message;
-    private final Map<String, DataHandler> map = new LinkedHashMap<String, DataHandler>();
+    private final Map<String, DataHandler> map = new LinkedHashMap<>();
     private final int contentLength;
     private final CountingInputStream filterIS;
     private final Part rootPart;

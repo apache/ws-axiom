@@ -29,10 +29,10 @@ import org.apache.commons.logging.LogFactory;
 class PriorityBasedOMMetaFactoryLocator implements OMMetaFactoryLocator {
     private static final Log log = LogFactory.getLog(PriorityBasedOMMetaFactoryLocator.class);
 
-    private final Map<String, OMMetaFactory> factories = new HashMap<String, OMMetaFactory>();
+    private final Map<String, OMMetaFactory> factories = new HashMap<>();
 
     void loadImplementations(List<Implementation> implementations) {
-        Map<String, Integer> priorityMap = new HashMap<String, Integer>();
+        Map<String, Integer> priorityMap = new HashMap<>();
         factories.clear();
         for (Implementation implementation : implementations) {
             Feature[] features = implementation.getFeatures();

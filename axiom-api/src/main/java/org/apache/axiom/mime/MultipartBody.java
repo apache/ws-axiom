@@ -124,7 +124,7 @@ public final class MultipartBody implements Iterable<Part> {
     private final MimeTokenStream parser;
 
     /** Stores the already parsed MIME parts by Content IDs. */
-    private final Map<String, PartImpl> partMap = new HashMap<String, PartImpl>();
+    private final Map<String, PartImpl> partMap = new HashMap<>();
 
     /** The MIME part currently being processed. */
     private PartImpl currentPart;
@@ -249,7 +249,7 @@ public final class MultipartBody implements Iterable<Part> {
             try {
                 checkParserState(parser.next(), EntityState.T_START_HEADER);
 
-                List<Header> headers = new ArrayList<Header>();
+                List<Header> headers = new ArrayList<>();
                 while (parser.next() == EntityState.T_FIELD) {
                     Field field = parser.getField();
                     String name = field.getName();

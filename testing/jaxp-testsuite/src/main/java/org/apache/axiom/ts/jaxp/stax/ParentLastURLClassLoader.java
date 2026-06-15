@@ -43,7 +43,7 @@ public class ParentLastURLClassLoader extends URLClassLoader {
         // Make sure that we return our own resources first. Otherwise, if an API performs
         // JDK 1.3 service discovery using getResources instead of getResource, we would
         // have a problem.
-        Vector<URL> resources = new Vector<URL>();
+        Vector<URL> resources = new Vector<>();
         Enumeration<URL> e = findResources(name);
         while (e.hasMoreElements()) {
             resources.add(e.nextElement());

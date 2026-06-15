@@ -391,7 +391,7 @@ public class Attachments implements OMAttachmentAccessor {
      * @return List of content IDs in order of appearance in message
      */
     public List<String> getContentIDList() {
-        return new ArrayList<String>(delegate.getContentIDs(false));
+        return new ArrayList<>(delegate.getContentIDs(false));
     }
 
     /**

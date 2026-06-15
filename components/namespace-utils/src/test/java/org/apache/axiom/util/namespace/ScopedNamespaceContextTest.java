@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 
 public class ScopedNamespaceContextTest {
     private static Set<String> getPrefixes(NamespaceContext nc, String namespaceURI) {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (Iterator<?> it = nc.getPrefixes(namespaceURI); it.hasNext(); ) {
             result.add((String) it.next());
         }
@@ -65,7 +65,7 @@ public class ScopedNamespaceContextTest {
         nc.setPrefix("b", "urn:ns1");
         String prefix = nc.getPrefix("urn:ns1");
         assertThat(prefix).isIn("", "b");
-        assertThat(getPrefixes(nc, "urn:ns1")).isEqualTo(new HashSet<String>(Arrays.asList("", "b")));
+        assertThat(getPrefixes(nc, "urn:ns1")).isEqualTo(new HashSet<>(Arrays.asList("", "b")));
     }
 
     @Test

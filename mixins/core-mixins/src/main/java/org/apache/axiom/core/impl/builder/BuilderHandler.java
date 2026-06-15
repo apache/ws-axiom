@@ -66,7 +66,7 @@ final class BuilderHandler implements XmlHandler {
 
     void addListener(BuilderListener listener) {
         if (listeners == null) {
-            listeners = new ArrayList<BuilderListener>();
+            listeners = new ArrayList<>();
         }
         listeners.add(listener);
     }

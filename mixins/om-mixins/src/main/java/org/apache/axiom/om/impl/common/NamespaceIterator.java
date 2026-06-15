@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 
 /** Iterator implementation used by {@link OMElement#getNamespacesInScope()}. */
 public final class NamespaceIterator implements Iterator<OMNamespace> {
-    private final Set<String> seenPrefixes = new HashSet<String>();
+    private final Set<String> seenPrefixes = new HashSet<>();
     private OMElement element;
     private Iterator<OMNamespace> declaredNamespaces;
     private boolean hasNextCalled;

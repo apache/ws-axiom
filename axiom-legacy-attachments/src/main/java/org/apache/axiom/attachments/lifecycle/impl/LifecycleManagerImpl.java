@@ -31,7 +31,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
     private static final Log log = LogFactory.getLog(LifecycleManagerImpl.class);
 
     // Hashtable to store file accessors.
-    private static Hashtable<String, FileAccessor> table = new Hashtable<String, FileAccessor>();
+    private static Hashtable<String, FileAccessor> table = new Hashtable<>();
     private VMShutdownHook hook = null;
 
     public LifecycleManagerImpl() {

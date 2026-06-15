@@ -154,7 +154,7 @@ public abstract class AxiomContainerMixin implements AxiomContainer {
         } catch (StreamException ex) {
             throw new OMException(ex);
         }
-        return new XOPEncoded<XMLStreamReader>(pivot, encoder);
+        return new XOPEncoded<>(pivot, encoder);
     }
 
     @Override

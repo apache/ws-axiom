@@ -58,7 +58,7 @@ public final class QNameMap<V> {
             entry = entry.next;
         }
         if (entry == null) {
-            entry = new QNameMapEntry<V>();
+            entry = new QNameMapEntry<>();
             entry.qname = qname;
             entry.next = buckets[index];
             buckets[index] = entry;

@@ -27,7 +27,7 @@ public final class Mappers {
     @SuppressWarnings("unchecked")
     public static <S, T extends S> Mapper<S, T> upcast() {
         // This is an optimization for the following type safe instruction:
-        // return new IdentityMapper<S,T>();
+        // return new IdentityMapper<>();
         return IDENTITY;
     }
 

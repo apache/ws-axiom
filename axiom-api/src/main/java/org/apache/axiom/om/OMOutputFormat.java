@@ -123,7 +123,7 @@ public class OMOutputFormat {
         contentTypeProvider = format.contentTypeProvider;
         contentTransferEncodingPolicy = format.contentTransferEncodingPolicy;
         if (format.map != null) {
-            map = new HashMap<String, Object>(format.map);
+            map = new HashMap<>(format.map);
         }
     }
 
@@ -145,7 +145,7 @@ public class OMOutputFormat {
      */
     public Object setProperty(String key, Object value) {
         if (map == null) {
-            map = new HashMap<String, Object>();
+            map = new HashMap<>();
         }
         return map.put(key, value);
     }

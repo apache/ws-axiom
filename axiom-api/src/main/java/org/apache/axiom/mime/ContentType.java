@@ -65,7 +65,7 @@ import java.util.Objects;
 public final class ContentType {
     public static final class Builder {
         private MediaType mediaType;
-        private final LinkedHashMap<String, String> parameters = new LinkedHashMap<String, String>();
+        private final LinkedHashMap<String, String> parameters = new LinkedHashMap<>();
 
         Builder() {}
 
@@ -185,7 +185,7 @@ public final class ContentType {
         tokenizer.require('/');
         String subType = tokenizer.requireToken();
         mediaType = new MediaType(primaryType, subType);
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
         while (tokenizer.expect(';')) {
             String name = tokenizer.expectToken();
             if (name == null) {

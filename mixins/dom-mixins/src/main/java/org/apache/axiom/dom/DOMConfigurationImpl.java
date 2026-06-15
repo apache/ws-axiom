@@ -79,7 +79,7 @@ public final class DOMConfigurationImpl implements DOMConfiguration {
             | VALIDATE
             | VALIDATE_IF_SCHEMA;
 
-    private static final Map<String, Integer> paramMap = new HashMap<String, Integer>();
+    private static final Map<String, Integer> paramMap = new HashMap<>();
 
     static {
         paramMap.put(CANONICAL_FORM_PARAM, Integer.valueOf(CANONICAL_FORM));

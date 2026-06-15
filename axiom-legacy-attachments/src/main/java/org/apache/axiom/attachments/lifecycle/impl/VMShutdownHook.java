@@ -35,7 +35,7 @@ import org.apache.commons.logging.LogFactory;
 public class VMShutdownHook extends Thread {
     private static final Log log = LogFactory.getLog(VMShutdownHook.class);
     private static VMShutdownHook instance = null;
-    private static Set<File> files = Collections.synchronizedSet(new HashSet<File>());
+    private static Set<File> files = Collections.synchronizedSet(new HashSet<>());
     private boolean isRegistered = false;
 
     static VMShutdownHook hook() {

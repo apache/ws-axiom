@@ -66,8 +66,7 @@ public class StAXDialectDetector {
      * the case of a JAR file, this is not the URL pointing to the JAR, but a {@code jar:} URL that
      * points to the root folder of the archive.
      */
-    private static final Map<URL, StAXDialect> dialectByUrl =
-            Collections.synchronizedMap(new HashMap<URL, StAXDialect>());
+    private static final Map<URL, StAXDialect> dialectByUrl = Collections.synchronizedMap(new HashMap<>());
 
     private StAXDialectDetector() {}
 

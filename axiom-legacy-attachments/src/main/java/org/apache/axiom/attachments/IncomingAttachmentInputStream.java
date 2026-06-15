@@ -62,8 +62,8 @@ public class IncomingAttachmentInputStream extends InputStream {
      */
     public void addHeader(String name, String value) {
         if (_headers == null) {
-            _headers = new HashMap<String, String>();
-            _headersLowerCase = new HashMap<String, String>();
+            _headers = new HashMap<>();
+            _headersLowerCase = new HashMap<>();
         }
         _headers.put(name, value);
         _headersLowerCase.put(name.toLowerCase(), value);
