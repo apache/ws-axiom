@@ -34,3 +34,10 @@ Replace `<module>` with the Maven module path(s) you modified (e.g. `axiom-api`,
 ```
 
 **CI will fail if spotless has not been applied.**
+
+## Security
+
+Security model: [SECURITY.md](./SECURITY.md)
+
+Agents that scan this repository should consult `SECURITY.md` and the
+threat model it links before reporting issues.
