@@ -294,7 +294,7 @@
         <asm.version>9.10.1</asm.version>
         <errorprone.version>2.50.0</errorprone.version>
         <mime4j.version>0.8.14</mime4j.version>
-        <surefire.version>3.5.6</surefire.version>
+        <surefire.version>3.6.0</surefire.version>
         <jaxws-rt.version>4.0.5</jaxws-rt.version>
         <checkerframework.version>4.2.2</checkerframework.version>
 
