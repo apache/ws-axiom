@@ -293,7 +293,7 @@
         <auto-service.version>1.1.1</auto-service.version>
         <asm.version>9.10.1</asm.version>
         <errorprone.version>2.50.0</errorprone.version>
-        <mime4j.version>0.8.14</mime4j.version>
+        <mime4j.version>0.8.15</mime4j.version>
         <surefire.version>3.6.0</surefire.version>
         <jaxws-rt.version>4.0.5</jaxws-rt.version>
         <checkerframework.version>4.2.3</checkerframework.version>
