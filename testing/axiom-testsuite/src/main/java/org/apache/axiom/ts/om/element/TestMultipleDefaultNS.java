@@ -51,10 +51,12 @@ public class TestMultipleDefaultNS implements Executable {
         // TODO: LLOM's and DOOM's behaviors are slightly different here; need to check if both are
         // allowed
         assertThat(omElementOneChildNS)
-                .satisfiesAnyOf(ns -> assertThat(ns).isNull(), ns -> assertThat(ns.getNamespaceURI())
-                        .isEmpty());
+                .satisfiesAnyOf(
+                        ns -> assertThat(ns).isNull(),
+                        ns -> assertThat(ns.getNamespaceURI()).isEmpty());
         assertThat(omElementTwoChildNS)
-                .satisfiesAnyOf(ns -> assertThat(ns).isNull(), ns -> assertThat(ns.getNamespaceURI())
-                        .isEmpty());
+                .satisfiesAnyOf(
+                        ns -> assertThat(ns).isNull(),
+                        ns -> assertThat(ns.getNamespaceURI()).isEmpty());
     }
 }
