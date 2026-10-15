@@ -304,9 +304,8 @@ public class OMTestSuite {
                                                         injector -> {
                                                             XMLSample file = injector.getInstance(XMLSample.class);
                                                             return getInstances(SerializationStrategy.class).stream()
-                                                                    .filter(
-                                                                            ss -> ss.supportsInternalSubset()
-                                                                                    || !file.hasInternalSubset())
+                                                                    .filter(ss -> ss.supportsInternalSubset()
+                                                                            || !file.hasInternalSubset())
                                                                     .collect(ImmutableList.toImmutableList());
                                                         },
                                                         Binding.singleton(Key.get(SerializationStrategy.class)),
@@ -993,10 +992,8 @@ public class OMTestSuite {
                                                                                 != ElementContext.ORPHAN
                                                                         ? ImmutableList.of(false, true)
                                                                         : ImmutableList.of(false),
-                                                                Binding.singleton(
-                                                                        Key.get(
-                                                                                Boolean.class,
-                                                                                Names.named("serializeParent"))),
+                                                                Binding.singleton(Key.get(
+                                                                        Boolean.class, Names.named("serializeParent"))),
                                                                 LabelBinding.simpleBoolean("serializeParent"),
                                                                 new MatrixTest(
                                                                         org.apache.axiom.ts.om.sourcedelement
