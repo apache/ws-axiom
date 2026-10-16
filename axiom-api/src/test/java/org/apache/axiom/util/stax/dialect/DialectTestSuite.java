@@ -59,6 +59,7 @@ public class DialectTestSuite {
                         new MatrixTest(TestCreateXMLStreamReaderThreadSafety.class),
                         new MatrixTest(TestCreateXMLStreamWriterThreadSafety.class),
                         new MatrixTest(TestCreateXMLStreamWriterWithNullEncoding.class),
+                        new MatrixTest(TestDetectDialectThroughWrapper.class),
                         new MatrixTest(TestDisallowDoctypeDeclWithDenialOfService.class),
                         new MatrixTest(TestDisallowDoctypeDeclWithExternalSubset.class),
                         new MatrixTest(TestDisallowDoctypeDeclWithInternalSubset.class),
@@ -244,6 +245,9 @@ public class DialectTestSuite {
                 .add(
                         TestGetTextInProlog.class,
                         "(|(implementation=sjsxp-*)(implementation=com.ibm.ws.prereq.xlxp.jar)(implementation=xml.jar))")
+                // The BEA reference implementation doesn't support any property that would allow
+                // to identify it through a wrapper
+                .add(TestDetectDialectThroughWrapper.class, "(implementation=stax-1.2.0.jar)")
                 // DTDReader is not supported for all StAX implementations
                 .add(TestDTDReader.class, "(|(implementation=stax-1.2.0.jar)(implementation=wstx-asl-3.*))")
                 // TODO: investigate why this fails; didn't occur with the old
