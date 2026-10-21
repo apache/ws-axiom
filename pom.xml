@@ -291,7 +291,7 @@
         <log4j.version>2.26.1</log4j.version>
         <groovy.version>6.0.0</groovy.version>
         <auto-service.version>1.1.1</auto-service.version>
-        <asm.version>9.11</asm.version>
+        <asm.version>9.11.1</asm.version>
         <errorprone.version>2.50.0</errorprone.version>
         <mime4j.version>0.8.15</mime4j.version>
         <surefire.version>3.6.0</surefire.version>
