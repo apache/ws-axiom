@@ -34,6 +34,8 @@ updates:
         versions:
           # MSOURCES-137
           - "3.3.0"
+      # These are resolved from a p2 repository (via p2-maven-connector) that Dependabot can't query.
+      - dependency-name: "osgi.bundle:*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
