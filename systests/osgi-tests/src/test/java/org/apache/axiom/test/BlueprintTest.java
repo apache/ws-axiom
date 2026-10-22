@@ -38,8 +38,12 @@ public class BlueprintTest {
     @Configuration
     public static Option[] configuration() {
         return options(
+                url("link:classpath:org.apache.aries.spifly.dynamic.framework.extension.link"),
                 url("link:classpath:org.apache.aries.proxy.api.link"),
                 url("link:classpath:org.apache.aries.proxy.link"),
+                url("link:classpath:org.objenesis.link"),
+                url("link:classpath:slf4j.api.link"),
+                url("link:classpath:slf4j.jdk14.link"),
                 url("link:classpath:org.apache.aries.blueprint.api.link"),
                 url("link:classpath:org.apache.aries.blueprint.core.link"),
                 url("link:classpath:org.apache.commons.commons-io.link"),
