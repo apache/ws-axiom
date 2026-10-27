@@ -387,6 +387,7 @@ public class OMTestSuite {
                                 new MatrixTest(org.apache.axiom.ts.om.document.TestRemoveChildren.class))),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeAndConsume.class),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant.class),
+                new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeLargeText.class),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeUTF16.class),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeWithIgnoreXMLDeclaration.class),
                 new MatrixTest(org.apache.axiom.ts.om.document.TestSerializeXML11.class),
