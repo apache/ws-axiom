@@ -120,7 +120,8 @@ final class OutputStreamXmlWriter extends XmlWriter {
                 flush(encoderIn);
             }
             int c = Math.min(length, encoderIn.remaining());
-            encoderIn.put(src, offset, length);
+            // Note: unlike put(char[], offset, length), put(CharSequence, start, end) takes an end index
+            encoderIn.put(src, offset, offset + c);
             offset += c;
             length -= c;
         }
@@ -134,7 +135,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
                 flush(encoderIn);
             }
             int c = Math.min(length, encoderIn.remaining());
-            encoderIn.put(src, offset, length);
+            encoderIn.put(src, offset, c);
             offset += c;
             length -= c;
         }
