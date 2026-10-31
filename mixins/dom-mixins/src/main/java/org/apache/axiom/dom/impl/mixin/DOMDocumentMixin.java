@@ -367,7 +367,7 @@ public abstract class DOMDocumentMixin implements DOMDocument {
             localName = qualifiedName.substring(i + 1);
         }
         namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
-        switch (((DOMNode) node).coreGetNodeType()) {
+        switch (domNode.coreGetNodeType()) {
             case NS_AWARE_ELEMENT -> {
                 NSUtil.validateNamespace(namespaceURI, prefix);
                 ((DOMNSAwareElement) node).coreSetName(namespaceURI, localName, prefix);
