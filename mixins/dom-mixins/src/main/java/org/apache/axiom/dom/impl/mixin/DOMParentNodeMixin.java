@@ -122,7 +122,7 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
             if (!coreHasSameOwnerDocument(newDomChild)) {
                 throw newDOMException(DOMException.WRONG_DOCUMENT_ERR);
             }
-            checkNewChild0((DOMNode) newChild);
+            checkNewChild0(newDomChild);
         } else {
             throw newDOMException(DOMException.WRONG_DOCUMENT_ERR);
         }
@@ -159,9 +159,9 @@ public abstract class DOMParentNodeMixin implements DOMParentNode {
                 }
                 checkNewChild(newChild);
                 if (newChild instanceof CoreChildNode newChildNode) {
-                    ((CoreChildNode) refChild).coreInsertSiblingBefore(newChildNode);
+                    childNode.coreInsertSiblingBefore(newChildNode);
                 } else if (newChild instanceof CoreDocumentFragment documentFragment) {
-                    ((CoreChildNode) refChild).coreInsertSiblingsBefore(documentFragment);
+                    childNode.coreInsertSiblingsBefore(documentFragment);
                 } else {
                     throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
                 }
