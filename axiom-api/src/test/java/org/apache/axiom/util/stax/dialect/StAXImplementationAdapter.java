@@ -36,10 +36,18 @@ public final class StAXImplementationAdapter {
         return impl.getName();
     }
 
+    public XMLInputFactory newXMLInputFactory() {
+        return impl.newXMLInputFactory();
+    }
+
+    public XMLOutputFactory newXMLOutputFactory() {
+        return impl.newXMLOutputFactory();
+    }
+
     public XMLInputFactory newNormalizedXMLInputFactory() {
         XMLInputFactory factory = impl.newXMLInputFactory();
         if (dialect == null) {
-            dialect = StAXDialectDetector.getDialect(factory.getClass());
+            dialect = StAXDialectDetector.getDialect(factory);
         }
         return dialect.normalize(factory);
     }
@@ -48,7 +56,7 @@ public final class StAXImplementationAdapter {
     public XMLOutputFactory newNormalizedXMLOutputFactory() {
         XMLOutputFactory factory = impl.newXMLOutputFactory();
         if (dialect == null) {
-            dialect = StAXDialectDetector.getDialect(factory.getClass());
+            dialect = StAXDialectDetector.getDialect(factory);
         }
         return dialect.normalize(factory);
     }
