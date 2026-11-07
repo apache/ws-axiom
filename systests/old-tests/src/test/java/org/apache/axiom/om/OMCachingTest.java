@@ -30,7 +30,7 @@ public class OMCachingTest extends TestCase {
     /** This will first serialize the element without caching. Then it tries to serialize again . */
     public void testCachingOne() throws Exception {
 
-        // first build the OM tree without caching and see whether up can cosume it again
+        // first build the OM tree without caching and see whether we can consume it again
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
                 SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
         OMElement documentElement = builder.getDocumentElement();
@@ -46,7 +46,7 @@ public class OMCachingTest extends TestCase {
 
         OMElement documentElement = null;
         try {
-            // first build the OM tree without caching and see whether up can cosume it again
+            // first build the OM tree without caching and see whether we can consume it again
             OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
                     SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
             documentElement = builder.getDocumentElement();
@@ -54,7 +54,7 @@ public class OMCachingTest extends TestCase {
             envelopeString = documentElement.toStringWithConsume();
             assertTrue(true);
         } catch (XMLStreamException e) {
-            fail("Parser should not failt as the element was serialized with caching");
+            fail("Parser should not fail as the element was serialized with caching");
         }
 
         documentElement.close(false);

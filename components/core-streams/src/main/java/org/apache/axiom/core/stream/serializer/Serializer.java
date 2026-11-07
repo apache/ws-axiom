@@ -87,7 +87,7 @@ public final class Serializer implements XmlHandler, CharacterDataSink {
 
     /**
      * A utility buffer for converting Strings passed to character() methods to character arrays.
-     * Reusing this buffer means not creating a new character array everytime and it runs faster.
+     * Reusing this buffer means not creating a new character array every time and it runs faster.
      */
     private final char[] charsBuff = new char[CHUNK_SIZE];
 

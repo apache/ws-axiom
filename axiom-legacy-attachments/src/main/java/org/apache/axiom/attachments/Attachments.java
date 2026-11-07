@@ -183,7 +183,7 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     * Use this constructor when instantiating this to store the attachments set programatically
+     * Use this constructor when instantiating this to store the attachments set programmatically
      * through the SwA API.
      */
     public Attachments() {
@@ -237,7 +237,7 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     * Programatically adding an SOAP with Attachments(SwA) Attachment. These attachments will get
+     * Programmatically adding an SOAP with Attachments(SwA) Attachment. These attachments will get
      * serialized only if SOAP with Attachments is enabled.
      *
      * @param contentID
@@ -338,7 +338,7 @@ public class Attachments implements OMAttachmentAccessor {
      * Stream based access
      *
      * @return The stream container of type <code>IncomingAttachmentStreams</code>
-     * @throws IllegalStateException if application has alreadt started using Part's directly
+     * @throws IllegalStateException if application has already started using Part's directly
      */
     public IncomingAttachmentStreams getIncomingAttachmentStreams() throws IllegalStateException {
         return delegate.getIncomingAttachmentStreams();

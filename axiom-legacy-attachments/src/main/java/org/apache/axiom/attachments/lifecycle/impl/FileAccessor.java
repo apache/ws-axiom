@@ -33,7 +33,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * FileAccessor wraps the attachment temp file. It is created from PartOnFile. The idea behind
- * wrapping the file is to give rumtime an ability to track when the file is accessed with streams
+ * wrapping the file is to give runtime an ability to track when the file is accessed with streams
  * or data handler and accordingly trigger events to handle the the files lifecycle.
  */
 public class FileAccessor extends Observable {

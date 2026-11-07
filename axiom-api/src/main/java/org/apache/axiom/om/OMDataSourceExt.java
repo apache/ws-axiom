@@ -56,7 +56,7 @@ public interface OMDataSourceExt extends OMDataSource {
     /**
      * Returns true if reading the backing object is destructive. An example of an object with a
      * destructive read is an InputSteam. The owning OMSourcedElement uses this information to
-     * detemine if OM tree expansion is needed when reading the OMDataSourceExt.
+     * determine if OM tree expansion is needed when reading the OMDataSourceExt.
      *
      * @return boolean
      */
@@ -65,7 +65,7 @@ public interface OMDataSourceExt extends OMDataSource {
     /**
      * Returns true if writing the backing object is destructive. An example of an object with a
      * destructive write is an InputStream. The owning OMSourcedElement uses this information to
-     * detemine if OM tree expansion is needed when writing the OMDataSourceExt.
+     * determine if OM tree expansion is needed when writing the OMDataSourceExt.
      *
      * @return boolean
      */

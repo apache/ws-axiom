@@ -31,7 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * This Axiom DataHandler inplementation allows the user to set custom values for the following MIME
+ * This Axiom DataHandler implementation allows the user to set custom values for the following MIME
  * body part headers.
  *
  * <ul>

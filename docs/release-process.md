@@ -122,7 +122,7 @@ In order to prepare the release artifacts for vote, execute the following steps:
     gpg --armor --export <key_id>
     ```
 
-    If you have multiple keys, you can define a `~/.gnupg/gpg.conf` file for a default. Note that while `gpg --list-keys` will show your public keys, using maven-release-plugin with the command `release:perform` below requires `gpg --list-secret-keys` to have a valid entry that matches your public key, in order to create `asc` files that are used to verify the release artifcats. `release:prepare` creates the sha512 checksum files.
+    If you have multiple keys, you can define a `~/.gnupg/gpg.conf` file for a default. Note that while `gpg --list-keys` will show your public keys, using maven-release-plugin with the command `release:perform` below requires `gpg --list-secret-keys` to have a valid entry that matches your public key, in order to create `asc` files that are used to verify the release artifacts. `release:prepare` creates the sha512 checksum files.
 
     The created artifacts i.e. zip files can be checked with, for example, `sha512sum 'axiom-2.0.0-bin.zip'` which should match the generated sha512 files. In that example, use `gpg --verify axiom-2.0.0-bin.zip.asc axiom-2.0.0-bin.zip.asc` to verify the artifacts were signed correctly.
 

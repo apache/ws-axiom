@@ -43,7 +43,7 @@ public interface DataHandlerExt {
      * files are created for attachment data that is greater than a threshold limit. On client side
      * These temp attachment files are not deleted untilthe virtual machine exits as user can choose
      * to read this dataHandler. So if user is not going to use the data handlers provided on this
-     * temproray files they can choose to purge the file.
+     * temporary files they can choose to purge the file.
      */
     public void purgeDataSource() throws IOException;
 

@@ -211,7 +211,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
             String prefix = getPrefix(qName);
 
             // it is only the prefix we want to learn from the QName! so we can get rid of the
-            // spliting QName
+            // splitting QName
             if (prefix == null) {
                 writer.writeStartElement(namespaceURI, localName);
             } else {

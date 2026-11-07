@@ -52,10 +52,10 @@ public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck extends Samp
         SOAPModelBuilder builder = (SOAPModelBuilder) envelope.getBuilder();
 
         // Do a fault check.  This is normally done in the engine (Axiom) and should
-        // not cause inteference with the custom builder processing
+        // not cause interference with the custom builder processing
         envelope.getBody().hasFault();
 
-        // Do the registration here...this simulates when it could occure in the engine
+        // Do the registration here...this simulates when it could occur in the engine
         // (After the fault check and during phase processing...probably dispatch phase)
         ((CustomBuilderSupport) builder)
                 .registerCustomBuilder(

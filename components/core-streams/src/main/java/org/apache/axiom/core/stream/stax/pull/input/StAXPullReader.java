@@ -254,7 +254,7 @@ final class StAXPullReader implements XmlReader {
             if (log.isDebugEnabled()) {
                 log.debug("An exception occurred while calling getText() for a DOCTYPE.  "
                         + "The exception is ignored because external "
-                        + "entites support is disabled.  "
+                        + "entities support is disabled.  "
                         + "The ignored exception is "
                         + e);
             }
