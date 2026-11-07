@@ -136,7 +136,7 @@ public abstract class AxiomSourcedElementMixin implements AxiomSourcedElement {
     }
 
     /**
-     * Constructor that takes a QName instead of the local name and the namespace seperately
+     * Constructor that takes a QName instead of the local name and the namespace separately
      *
      * @param qName
      * @param factory

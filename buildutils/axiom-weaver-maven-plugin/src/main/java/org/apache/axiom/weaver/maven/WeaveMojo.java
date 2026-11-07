@@ -111,7 +111,7 @@ public final class WeaveMojo extends AbstractMojo {
         try {
             paths = project.getCompileClasspathElements();
         } catch (DependencyResolutionRequiredException ex) {
-            throw new MojoExecutionException("Failed to get copile classpath elements", ex);
+            throw new MojoExecutionException("Failed to get compile classpath elements", ex);
         }
         URL[] urls = new URL[paths.size()];
         int i = 0;

@@ -59,7 +59,7 @@ public interface SOAPConstants {
     static final String FAULT_CODE_MUST_UNDERSTAND = "MustUnderstand";
     static final String FAULT_CODE_DATA_ENCODING_UNKNOWN = "DataEncodingUnknown";
 
-    // Followings are different in SOAP 1.1 and 1.2 specifications
+    // The following are different in SOAP 1.1 and 1.2 specifications
     static final String FAULT_CODE_SENDER = "";
     static final String FAULT_CODE_RECEIVER = "";
 }

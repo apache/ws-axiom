@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 /*
  * VMShutdown Hook will be registered with Runtime object to be invoked
- * when Virutal Machine is shutdown.
+ * when Virtual Machine is shutdown.
  * This class will be used to delete any cached attachments file that where
  * added by runtime to be deleted on VM shutdown.
  */

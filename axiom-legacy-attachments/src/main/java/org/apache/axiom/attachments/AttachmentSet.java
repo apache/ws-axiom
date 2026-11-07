@@ -58,7 +58,7 @@ class AttachmentSet extends AttachmentsDelegate {
 
     @Override
     InputStream getRootPartInputStream(boolean preserve) throws OMException {
-        throw new OMException("Invalid operation. Attachments are created programatically.");
+        throw new OMException("Invalid operation. Attachments are created programmatically.");
     }
 
     @Override
@@ -68,12 +68,12 @@ class AttachmentSet extends AttachmentsDelegate {
 
     @Override
     String getRootPartContentType() {
-        throw new OMException("The attachments map was created programatically. Unsupported operation.");
+        throw new OMException("The attachments map was created programmatically. Unsupported operation.");
     }
 
     @Override
     IncomingAttachmentStreams getIncomingAttachmentStreams() {
-        throw new IllegalStateException("The attachments map was created programatically. No streams are available.");
+        throw new IllegalStateException("The attachments map was created programmatically. No streams are available.");
     }
 
     @Override
@@ -94,6 +94,6 @@ class AttachmentSet extends AttachmentsDelegate {
     @Override
     MultipartBody getMultipartBody() {
         throw new IllegalStateException(
-                "The attachments map was created programatically. MultipartBody is not available.");
+                "The attachments map was created programmatically. MultipartBody is not available.");
     }
 }

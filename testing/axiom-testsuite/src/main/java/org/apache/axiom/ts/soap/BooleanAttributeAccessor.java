@@ -38,7 +38,7 @@ public interface BooleanAttributeAccessor {
     /**
      * Invoke the setter method for this attribute on the given {@link SOAPHeaderBlock}.
      *
-     * @param headerBlock the heaer block
+     * @param headerBlock the header block
      * @param value the value to pass to the setter
      */
     void setValue(SOAPHeaderBlock headerBlock, boolean value);

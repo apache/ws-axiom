@@ -167,11 +167,11 @@ public interface OMNode extends OMSerializable {
     OMNode getPreviousOMSibling();
 
     /**
-     * Builds itself with the OMText binary content. AXIOM supports two levels of deffered building.
-     * First is deffered building of AXIOM using StAX. Second level is the deffered building of
-     * attachments. AXIOM reads in the attachements from the stream only when user asks by calling
+     * Builds itself with the OMText binary content. AXIOM supports two levels of deferred building.
+     * First is deferred building of AXIOM using StAX. Second level is the deferred building of
+     * attachments. AXIOM reads in the attachments from the stream only when user asks by calling
      * getDataHandler(). build() method builds the OM without the attachments. buildAll() builds the
-     * OM together with attachement data. This becomes handy when user wants to free the input
+     * OM together with attachment data. This becomes handy when user wants to free the input
      * stream.
      */
     void buildWithAttachments();

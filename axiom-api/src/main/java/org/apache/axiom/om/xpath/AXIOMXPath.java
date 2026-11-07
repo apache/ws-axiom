@@ -74,7 +74,7 @@ public class AXIOMXPath extends BaseXPath {
 
     /**
      * This override captures any added namespaces, as the Jaxen BaseXPath class nor
-     * NamespaceContext (or SimpleNamespaceContext) exposes thier internal map of the prefixes to
+     * NamespaceContext (or SimpleNamespaceContext) exposes their internal map of the prefixes to
      * the namespaces. This method - although is not the ideal solution to the issue, attempts to
      * provide an override to changing the Jaxen code.
      *

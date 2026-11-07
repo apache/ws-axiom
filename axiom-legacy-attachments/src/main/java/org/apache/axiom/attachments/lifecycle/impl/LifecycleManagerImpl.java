@@ -192,7 +192,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
             } catch (InterruptedException e) {
                 // Log Exception
                 if (log.isDebugEnabled()) {
-                    log.warn("InterruptedException occured " + e.getMessage());
+                    log.warn("InterruptedException occurred " + e.getMessage());
                 }
             }
         }

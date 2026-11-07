@@ -81,7 +81,7 @@ public class ElementHelper {
         String prefix = qname.substring(0, colon);
         String local = qname.substring(colon + 1);
         if (local.length() == 0) {
-            // empy local, exit accordingly
+            // empty local, exit accordingly
             return null;
         }
 

@@ -58,7 +58,7 @@ import org.apache.axiom.om.xpath.AXIOMXPath;
  * possible that the object model contains elements or attributes with namespaces for which no
  * corresponding namespace declarations are in scope.
  *
- * <p>Fortunately, loosing namespace well-formedness has only very limited impact:
+ * <p>Fortunately, losing namespace well-formedness has only very limited impact:
  *
  * <ul>
  *   <li>If namespace well-formedness is lost, the string to {@link QName} resolution for attribute
