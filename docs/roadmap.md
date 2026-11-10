@@ -152,3 +152,43 @@ are safe to reuse.
 the role, relay and mustUnderstand attributes. That shouldn't be necessary; instead `OMSourcedElement`
 should allow setting attributes without expanding the `OMDataSource`. The `setProperty` method
 can then be removed from `OMDataSource`.
+
+#### `OMDataSource`
+
+The `OMDataSource` API has accumulated several problems over time and should be simplified:
+
+*   The deprecated methods should be removed. These are `serialize(OutputStream, OMOutputFormat)`
+    and `serialize(Writer, OMOutputFormat)` in `OMDataSource`, and `getXMLInputStream(String)` and
+    `getXMLBytes(String)` in `OMDataSourceExt`.
+
+*   The property mechanism (`setProperty`, `getProperty` and `hasProperty`) should be removed. Its
+    only real use case is `SOAPHeaderBlock` (see above), which should instead rely on
+    `OMSourcedElement` being able to set attributes without expanding the data source.
+
+*   `OMDataSourceExt` should be eliminated. Most code checks whether a data source is an
+    `OMDataSourceExt` and falls back to a default when it isn't, so the split between the two
+    interfaces adds complexity without real benefit. The remaining methods (`getObject`, `copy`
+    and `close`) should move to `OMDataSource` itself or to the new subinterfaces described below.
+
+*   Whether a data source is pull-based or push-based is currently decided by checking whether it
+    extends `AbstractPullOMDataSource` or `AbstractPushOMDataSource`. There is even a hard-coded
+    check for an Axis2 class name in `OMDataSourceUtil`. Data sources that don't extend either
+    class have to implement both `getReader()` and `serialize(XMLStreamWriter)`, even when one of
+    them can only be emulated inefficiently.
+    This should be replaced by two subinterfaces that mirror the existing abstract base classes:
+
+    *   `PullOMDataSource`, which declares `getReader()` and `isDestructiveRead()`;
+    *   `PushOMDataSource`, which declares `serialize(XMLStreamWriter)` and `isDestructiveWrite()`.
+
+    `OMDataSource` would then only declare the methods common to both kinds of data source. A data
+    source can be purely pull (implementing only `PullOMDataSource`), purely push (implementing only
+    `PushOMDataSource`), or both. For a data source that implements both, `OMSourcedElement` would
+    use the pull interface for expansion, which allows deferred building. For serialization it would
+    use the push interface, which avoids the overhead of copying events from an `XMLStreamReader`.
+
+    `AbstractPullOMDataSource` and `AbstractPushOMDataSource` would be removed. Their only purpose
+    is to provide emulations of the other mode, which are no longer needed, and to mark a data
+    source as pull or push, which the new interfaces now do. `AbstractOMDataSource` would also be
+    removed: once the deprecated methods and the property mechanism are gone, the only defaults
+    left (for `getObject`, `copy` and `close`) can be default methods on `OMDataSource`.
+    `QNameAwareOMDataSource` can stay as a mixin interface that extends `OMDataSource`.
