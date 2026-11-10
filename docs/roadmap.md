@@ -67,21 +67,6 @@ Axiom 1.3 to meet the following requirements:
 
 ### Miscellaneous
 
-#### Make non coalescing mode the default
-
-By default, Axiom configures the underlying parser in coalescing mode. The reason is purely historical.
-Axiom originally used Woodstox 3.x and that version implemented one aspect of the StAX
-specification incorrectly, namely [it configured the parser by default
-in coalescing mode](http://jira.codehaus.org/browse/WSTX-140), while the specification says otherwise. The problem is that (poorly
-written) code that uses Axiom with a parser in coalescing mode doesn't
-necessarily work with non coalescing mode. Therefore the choice was
-made to make coalescing mode the default in order to ensure
-compatibility when using a StAX implementation other than Woodstox 3.x.
-
-A new major release would be the right moment to change this and make non coalescing mode the default.
-This enables a couple of optimizations (e.g. when reading and decoding base64 from a text node) and
-ensures that an XML document can be streamed with constant memory, even if it contains large text nodes.
-
 #### Don't allow `addChild` to reorder children
 
 The `SOAPEnvelope` implementations in LLOM and DOOM override the `addChild` method to
