@@ -104,7 +104,7 @@ public interface StAXParserConfiguration {
 
         @Override
         public String toString() {
-            return "NON_COALESCING";
+            return "COALESCING";
         }
     };
 
