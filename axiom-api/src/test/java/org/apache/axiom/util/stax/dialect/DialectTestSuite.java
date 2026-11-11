@@ -234,6 +234,8 @@ public class DialectTestSuite {
                         new MatrixTest(TestIsStandalone.class),
                         new MatrixTest(TestNextAfterEndDocument.class),
                         new MatrixTest(TestSetPrefixScope.class),
+                        new MatrixTest(TestStandaloneConfigurationWithExternalEntity.class),
+                        new MatrixTest(TestStandaloneConfigurationWithExternalSubset.class),
                         new MatrixTest(TestStandaloneSet.class),
                         new MatrixTest(TestWriteStartDocumentWithNullEncoding.class)));
 
