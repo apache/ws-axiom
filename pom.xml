@@ -874,7 +874,7 @@
                 <plugin>
                     <groupId>de.obqo.decycle</groupId>
                     <artifactId>decycle-maven-plugin</artifactId>
-                    <version>1.2.6</version>
+                    <version>1.2.7</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
