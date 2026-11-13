@@ -147,7 +147,8 @@
             <artifactId>commons-io</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency><!-- We need this in the StAX dialect for Woodstox 4 -->
+        <dependency>
+            <!-- We need this in the StAX dialect for Woodstox 4 -->
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>stax2-api</artifactId>
             <scope>provided</scope>

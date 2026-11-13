@@ -1106,7 +1106,8 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            <plugin><!-- This serves two purposes:
+            <plugin>
+                <!-- This serves two purposes:
                       (1) we want to generate source JARs for all builds, not just release builds;
                       (2) we need (some of) the source JARs to generate the Javadoc in the apidocs module. -->
                 <artifactId>maven-source-plugin</artifactId>
@@ -1129,7 +1130,8 @@
                     <attach>true</attach>
                 </configuration>
             </plugin>
-            <plugin><!-- We need this to make sure that shade:shade is executed after source:jar-no-fork
+            <plugin>
+                <!-- We need this to make sure that shade:shade is executed after source:jar-no-fork
                      (see MSHADE-120). -->
                 <artifactId>maven-shade-plugin</artifactId>
             </plugin>
@@ -1203,7 +1205,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>tidy-maven-plugin</artifactId>
-                <version>1.4.1</version>
+                <version>1.5.0</version>
                 <executions>
                     <execution>
                         <!-- The default binding to the verify phase doesn't work here because some
