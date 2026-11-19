@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import javax.xml.stream.XMLInputFactory;
@@ -37,11 +39,52 @@ import org.apache.commons.logging.LogFactory;
 /**
  * Detects StAX dialects and normalizes factories for a given StAX implementation.
  *
- * <p>Note that this class internally maintains a cache of detected dialects. The overhead caused by
- * invocations of methods in this class is thus small.
+ * <p>The StAX implementation behind a factory is identified using the following strategies, in
+ * this order:
+ *
+ * <ol>
+ *   <li>Querying the factory for properties that are characteristic of a given implementation.
+ *       Since factory wrappers pass property queries through to the wrapped factory, this strategy
+ *       also works for wrapped factories.
+ *   <li>Inspecting the manifest of the JAR file containing the implementation.
+ *   <li>Checking for the presence of classes that are specific to a given implementation.
+ * </ol>
+ *
+ * <p>Note that this class internally maintains a cache of dialects detected using the last two
+ * strategies. The overhead caused by invocations of methods in this class is thus small.
  */
 public class StAXDialectDetector {
     private static final Log log = LogFactory.getLog(StAXDialectDetector.class);
+
+    /**
+     * Read-only property defined by the StAX2 API that returns the name of the implementation.
+     *
+     * <p>It is supported by StAX2 implementations such as Woodstox 4 and above and by Aalto.</p>
+     */
+    static final String STAX2_IMPLEMENTATION_NAME = "org.codehaus.stax2.implName";
+
+    /**
+     * Read-only property that returns the name of the implementation.
+     *
+     * <p>It was introduced by SJSXP and is also supported by Woodstox and Aalto.
+     * It is not supported by the StAX implementation shipped with the JRE.</p>
+     */
+    static final String SUN_IMPLEMENTATION_NAME = "http://java.sun.com/xml/stream/properties/implementation-name";
+
+    /**
+     * Discriminator property for the {@link XMLInputFactory} of the built-in JDK implementation (Zephyr).
+     *
+     * <p>This property is not supported by any other StAX implementation.</p>
+     */
+    static final String JRE_INPUT_FACTORY_HINT = "http://java.sun.com/xml/stream/properties/ignore-external-dtd";
+
+    /**
+     * Discriminator property for the {@link XMLOutputFactory} of the built-in JDK implementation (Zephyr).
+     *
+     * <p>This property is supported by SXSJP (no longer maintained) and its fork in the JDK.
+     * SXSJP reports its name through the properties above, leaving Zephyr as the only possibility.</p>
+     */
+    static final String JRE_OUTPUT_FACTORY_HINT = "reuse-instance";
 
     private static final Attributes.Name IMPLEMENTATION_TITLE = new Attributes.Name("Implementation-Title");
 
@@ -160,10 +203,26 @@ public class StAXDialectDetector {
     /**
      * Detect the StAX dialect of a given {@link XMLInputFactory} instance.
      *
+     * <p>The StAX implementation behind the factory is identified using the following strategies,
+     * in this order:
+     *
+     * <ol>
+     *   <li>Querying the factory for properties that are characteristic of a given implementation.
+     *       Since factory wrappers pass property queries through to the wrapped factory, this
+     *       strategy also works for wrapped factories.
+     *   <li>Inspecting the manifest of the JAR file containing the implementation.
+     *   <li>Checking for the presence of classes that are specific to a given implementation.
+     * </ol>
+     *
      * @param factory the factory instance
      * @return the detected dialect
      */
     public static StAXDialect getDialect(XMLInputFactory factory) {
+        StAXDialect dialect =
+                detectDialectFromProperties(factory::isPropertySupported, factory::getProperty, JRE_INPUT_FACTORY_HINT);
+        if (dialect != null) {
+            return dialect;
+        }
         if (jbossXMLInputFactoryUnwrapper != null) {
             factory = (XMLInputFactory) jbossXMLInputFactoryUnwrapper.unwrap(factory);
         }
@@ -173,14 +232,106 @@ public class StAXDialectDetector {
     /**
      * Detect the StAX dialect of a given {@link XMLOutputFactory} instance.
      *
+     * <p>The StAX implementation behind the factory is identified using the following strategies,
+     * in this order:
+     *
+     * <ol>
+     *   <li>Querying the factory for properties that are characteristic of a given implementation.
+     *       Since factory wrappers pass property queries through to the wrapped factory, this
+     *       strategy also works for wrapped factories.
+     *   <li>Inspecting the manifest of the JAR file containing the implementation.
+     *   <li>Checking for the presence of classes that are specific to a given implementation.
+     * </ol>
+     *
      * @param factory the factory instance
      * @return the detected dialect
      */
     public static StAXDialect getDialect(XMLOutputFactory factory) {
+        StAXDialect dialect = detectDialectFromProperties(
+                factory::isPropertySupported, factory::getProperty, JRE_OUTPUT_FACTORY_HINT);
+        if (dialect != null) {
+            return dialect;
+        }
         if (jbossXMLOutputFactoryUnwrapper != null) {
             factory = (XMLOutputFactory) jbossXMLOutputFactoryUnwrapper.unwrap(factory);
         }
         return getDialect(factory.getClass());
+    }
+
+    private static boolean isPropertySupported(Predicate<String> isPropertySupported, String property) {
+        try {
+            return isPropertySupported.test(property);
+        } catch (RuntimeException ex) {
+            // Be defensive: some implementations or wrappers may throw for unknown properties.
+            log.debug("Unable to query property " + property, ex);
+            return false;
+        }
+    }
+
+    /**
+     * Get the name that a StAX implementation reports for itself.
+     *
+     * @return the implementation name, or {@code null} if the implementation doesn't support any
+     *     of the known implementation name properties
+     */
+    private static String getImplementationName(
+            Predicate<String> isPropertySupported, Function<String, Object> getProperty) {
+        for (String property : new String[] {STAX2_IMPLEMENTATION_NAME, SUN_IMPLEMENTATION_NAME}) {
+            if (!isPropertySupported(isPropertySupported, property)) {
+                continue;
+            }
+            Object value;
+            try {
+                value = getProperty.apply(property);
+            } catch (RuntimeException ex) {
+                // Be defensive: some implementations or wrappers may throw for properties they don't know about.
+                log.debug("Unable to query property " + property, ex);
+                continue;
+            }
+            if (value instanceof String name) {
+                return name;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Detect the dialect by querying the factory for properties that identify the implementation.
+     *
+     * @param jreHintProperty a property that, among the implementations that don't report their
+     *     name, is only supported by the implementation shipped with the JRE
+     * @return the detected dialect, or {@code null} if the implementation could not be identified
+     */
+    private static StAXDialect detectDialectFromProperties(
+            Predicate<String> isPropertySupported, Function<String, Object> getProperty, String jreHintProperty) {
+        String implName = getImplementationName(isPropertySupported, getProperty);
+        if (implName != null) {
+            StAXDialect dialect =
+                    switch (implName.toLowerCase(Locale.ENGLISH)) {
+                        // Only Woodstox 4 and above support the implementation name property.
+                        case "woodstox" -> Woodstox4Dialect.INSTANCE;
+                        case "sjsxp" -> new SJSXPDialect(false);
+                        default -> null;
+                    };
+            if (log.isDebugEnabled()) {
+                log.debug("StAX implementation reports its name as \""
+                        + implName
+                        + "\"; "
+                        + (dialect == null ? "no matching dialect" : "detected StAX dialect: " + dialect.getName()));
+            }
+            if (dialect != null) {
+                return dialect;
+            }
+        }
+        if (isPropertySupported(isPropertySupported, jreHintProperty)) {
+            if (log.isDebugEnabled()) {
+                log.debug("StAX implementation supports the "
+                        + jreHintProperty
+                        + " property; assuming that it is the implementation shipped with the JRE");
+            }
+            return new SJSXPDialect(false);
+        }
+        return null;
     }
 
     private static StAXDialect getDialect(ClassLoader classLoader, URL rootUrl) {
